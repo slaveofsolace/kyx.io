@@ -1,0 +1,113 @@
+{
+  "schema": "kyx.g7.chromium-ax-tree.v1",
+  "capturedAt": "2026-07-22T13:00:00Z",
+  "classification": "BOUNDED_BROWSER_AX_TREE_PASS",
+  "route": "http://127.0.0.1:5194/",
+  "gateStatus": {
+    "G7": "OPEN"
+  },
+  "cases": [
+    {
+      "id": "practice-menu",
+      "pass": true,
+      "observed": {
+        "landmarks": [
+          "banner",
+          "navigation:Practice menu",
+          "complementary:Local profile",
+          "main",
+          "region:IRON BASTION"
+        ],
+        "focusableControls": [
+          "OFFLINE PRACTICE",
+          "LOADOUT",
+          "SETTINGS",
+          "START OFFLINE PRACTICE",
+          "INSPECT LOCKED INKFALL FOUNDRY @2",
+          "INSPECT PRESS HALL V3.2 RUNTIME ART"
+        ],
+        "disabledControl": {
+          "name": "ONLINE MATCH — NOT AVAILABLE",
+          "disabled": true,
+          "description": "No authoritative online endpoint is configured in this build"
+        },
+        "politeAtomicStatus": true
+      }
+    },
+    {
+      "id": "paused-offline-practice-hud",
+      "pass": true,
+      "observed": {
+        "dialog": {
+          "name": "PRACTICE PAUSED",
+          "modal": true
+        },
+        "assertiveAtomicPointerLockAlert": true,
+        "focusableControls": [
+          "RESUME PRACTICE",
+          "QUIT TO PRACTICE MENU"
+        ],
+        "hudName": "Offline practice heads-up display",
+        "groups": [
+          "Player vital status",
+          "Selected abilities"
+        ],
+        "numericNames": [
+          "Health 100 of 100",
+          "Energy 100 of 100",
+          "AR-9 Assault, 30 rounds loaded, 120 reserve"
+        ],
+        "abilityNames": [
+          "Frag grenade, F, 2 available",
+          "Blink, Q, ready",
+          "Smoke grenade, E, 2 available"
+        ]
+      }
+    },
+    {
+      "id": "caption-and-critical-audio-live-regions",
+      "pass": true,
+      "stimulus": "Temporary in-page instance of the production CaptionCueOverlay class; no source mutation.",
+      "observed": {
+        "regions": [
+          {
+            "name": "Subtitles",
+            "live": "polite",
+            "atomic": true
+          },
+          {
+            "name": "Critical sound indicators",
+            "live": "polite",
+            "atomic": true
+          }
+        ],
+        "announcedText": [
+          "ANNOUNCER",
+          "FRONT",
+          "Objective secured",
+          "GRENADE WARNING",
+          "REAR"
+        ]
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/practice-menu.png",
+      "bytes": 635285,
+      "sha256": "7d107fe3152157f15135b75c3596bbbabb121182774b581c7c7a1414187a6295"
+    },
+    {
+      "path": "screenshots/paused-hud-live-regions.png",
+      "bytes": 310577,
+      "sha256": "e82a5e2109835c1ecfc3f94e21b88527867530e7db29ca333195073d9fa01695"
+    }
+  ],
+  "limitations": [
+    "This is a Chromium accessibility-tree inspection, not human NVDA, JAWS, or VoiceOver acceptance.",
+    "The embedded browser denied pointer lock, so the gameplay AX capture is the resulting paused HUD.",
+    "Caption and audio-cue content was stimulated through the production overlay class rather than a gameplay event.",
+    "The screenshots provide visual state context; the accessibility-tree assertions are recorded in this audit.",
+    "G7 remains open pending human screen-reader and literal browser-zoom/readability review."
+  ]
+}

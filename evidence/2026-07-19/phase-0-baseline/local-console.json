@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "consoleEntries": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "location": {
+        "url": "http://127.0.0.1:5999/@vite/client",
+        "line": 850,
+        "column": 8,
+        "lineNumber": 850,
+        "columnNumber": 8
+      }
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "location": {
+        "url": "http://127.0.0.1:5999/@vite/client",
+        "line": 954,
+        "column": 11,
+        "lineNumber": 954,
+        "columnNumber": 11
+      }
+    },
+    {
+      "type": "info",
+      "text": "[net] no VITE_WS_URL configured — using local-only match simulation",
+      "location": {
+        "url": "http://127.0.0.1:5999/src/core/NetClient.js",
+        "line": 28,
+        "column": 33,
+        "lineNumber": 28,
+        "columnNumber": 33
+      }
+    }
+  ],
+  "pageErrors": [
+    {
+      "name": "TagError",
+      "message": "Y",
+      "stack": ""
+    },
+    {
+      "name": "TagError",
+      "message": "Y",
+      "stack": ""
+    }
+  ]
+}

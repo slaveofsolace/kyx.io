@@ -22,15 +22,17 @@ export class GrenadeSystem {
   }
 
   throwFrag(camera) {
-    if (this.frags <= 0) return;
+    if (this.frags <= 0) return false;
     this.frags--;
     this._spawn(camera, 'frag');
+    return true;
   }
 
   throwSmoke(camera) {
-    if (this.smokes <= 0) return;
+    if (this.smokes <= 0) return false;
     this.smokes--;
     this._spawn(camera, 'smoke');
+    return true;
   }
 
   _spawn(camera, type) {

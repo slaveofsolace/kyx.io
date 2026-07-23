@@ -1,0 +1,89 @@
+{
+  "binding": {
+    "artGeometryMayBeAuthority": false,
+    "catalogDefaultRevision": 1,
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "productIntegrated": false,
+    "shippingDefault": false
+  },
+  "boards": [
+    {
+      "bytes": 2759293,
+      "id": "blender_gameplay",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/boards/inkfall-press-hall-v3-3-blender-gameplay-board.png",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "sha256": "10684105033794d14d64a330b62f655859d32d37ed4f39b04b21151d33a5f876"
+    },
+    {
+      "bytes": 2484760,
+      "id": "neutral",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/boards/inkfall-press-hall-v3-3-neutral-board.png",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "sha256": "21f0d462db74d52e30b03df2dedd35be8187d9fb2695ca15b5e58f2ad86c6dd8"
+    }
+  ],
+  "export": {
+    "bytes": 13301752,
+    "explicitBaseColorFactorCount": 9,
+    "materialCount": 9,
+    "nodeCount": 29,
+    "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb",
+    "primitiveCount": 29,
+    "sha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+    "triangleCount": 188576
+  },
+  "id": "inkfall_foundry_press_hall_material_export_v3_3",
+  "kind": "inkfall_foundry_staged_press_hall_material_export_manifest",
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "G8_NOT_PASSED",
+    "FINAL_ART_NOT_ACCEPTED",
+    "ACTUAL_LOADER_REVIEW_PENDING",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+    "NOT_PRODUCT_INTEGRATED",
+    "NOT_SHIPPING_DEFAULT",
+    "NO_DEPLOYMENT_OR_PUBLISHING"
+  ],
+  "schemaVersion": 1,
+  "scope": "G5_BOUNDED_PRESS_HALL_V3_3_EXPLICIT_MATERIAL_EXPORT_ONLY",
+  "source": {
+    "builder": {
+      "bytes": 28082,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/build_press_hall_material_export_v3_3.py",
+      "sha256": "5da1855b5f19308d2191a98e70707ee984def99ef49fd3358c59498e4208c8bf"
+    },
+    "derivedBlend": {
+      "bytes": 975586,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/source/inkfall_foundry_press_hall_material_export_v3_3.blend",
+      "sha256": "1ed1529fb9c8b6b65358155af572325ddacf90e869ee3d24128bcc2275d764c0"
+    },
+    "frozenV32": {
+      "bytes": 990821,
+      "sha256": "5093ae66a4d914d489275df99c82eff3ce2fed5a65fef77bf36481dad94451ff"
+    },
+    "optimizedBlend": {
+      "bytes": 2276648,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/source/inkfall_foundry_press_hall_material_export_v3_3.optimized-export.blend",
+      "sha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5"
+    }
+  },
+  "status": "asset_candidate_pending_actual_loader_review",
+  "validation": {
+    "actualLoaderEvidence": "PENDING",
+    "buildReport": {
+      "bytes": 27796,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/validation/press-hall-material-export-v3-3-build-report.json",
+      "sha256": "fb2e29719f3edac37b8a7b62ad1b4efa0912fd2517e11b908aa09ca25f2a2300",
+      "status": "BOUNDED_PRESS_HALL_V3_3_EXPLICIT_MATERIAL_EXPORT_BUILD_PASS_PENDING_ACTUAL_LOADER_REVIEW"
+    },
+    "independentVerification": "PENDING"
+  }
+}

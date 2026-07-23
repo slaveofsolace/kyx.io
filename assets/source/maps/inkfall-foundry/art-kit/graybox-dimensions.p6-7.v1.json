@@ -1,0 +1,464 @@
+{
+  "schemaVersion": 1,
+  "kind": "inkfall_foundry_modular_art_kit_dimension_contract",
+  "id": "inkfall_foundry_art_kit_dimensions",
+  "revision": 1,
+  "status": "dimension_contract_only",
+  "mapBinding": {
+    "mapId": "inkfall_foundry",
+    "grayboxMapRevision": 2,
+    "grayboxLockRevision": 1
+  },
+  "units": {
+    "distance": "millimeters",
+    "axisOrder": "width_x_height_y_depth_z",
+    "gltfMetersPerUnit": 1
+  },
+  "coordinateSystem": {
+    "handedness": "right_handed",
+    "xAxis": "east",
+    "yAxis": "up",
+    "zAxis": "north",
+    "origin": "press_core_floor_contact"
+  },
+  "grid": {
+    "primaryModuleMm": 1000,
+    "fineAdjustmentMm": 250,
+    "decorativeDetailMm": 50,
+    "rule": "Structural dimensions and pivots snap to the primary grid. Documented clearance interfaces may use the fine grid. Decorative detail may use the decorative grid but cannot define authority collision."
+  },
+  "globalRules": {
+    "pivotPolicy": "Floor-contact center for freestanding modules; lower-left-back grid corner for tiling surfaces; hinge-side floor contact for door frames.",
+    "transformPolicy": "Apply scale and rotation before export. Runtime scale is exactly 1,1,1 and authored rotations are integer milli-degrees.",
+    "collisionPolicy": "Art may replace the render shell only. Authority collision remains the locked revision-2 collision package unless a new map revision passes P6.2-P6.7 again.",
+    "clearancePolicy": "No art shell, trim, decal, conduit, landmark, or proxy may reduce a locked route width, height, landing area, spawn capsule clearance, or recovery exit.",
+    "materialPolicy": "Use stable semantic slots. Team, danger, and interaction meaning must remain readable without color and may not be baked into the base material slot.",
+    "variationPolicy": "Variation comes from authored module combinations and explicit variants; runtime random geometry is prohibited.",
+    "replacementPolicy": "Every production module records the graybox object or reserved envelope it replaces. Unmapped modules cannot enter a locked navigation or sightline envelope."
+  },
+  "materialSlots": [
+    {
+      "id": "env_base_ceramic",
+      "role": "dominant pale structural value"
+    },
+    {
+      "id": "env_secondary_metal",
+      "role": "dark structural and edge value"
+    },
+    {
+      "id": "env_ink_surface",
+      "role": "ink channel and conduit surface"
+    },
+    {
+      "id": "env_vermilion_safety",
+      "role": "danger and teleport confirmation accent; never the only cue"
+    },
+    {
+      "id": "env_garden_fragment",
+      "role": "broken garden and organic conduit seam"
+    },
+    {
+      "id": "env_functional_marking",
+      "role": "route tier, hazard, and interaction marking"
+    },
+    {
+      "id": "env_emissive_signage",
+      "role": "bounded luminance navigation signage"
+    }
+  ],
+  "moduleFamilies": [
+    {
+      "id": "structural_bays",
+      "authorityPolicy": "match_locked_envelope",
+      "modules": [
+        {
+          "id": "bay_6000",
+          "dimensionsMm": { "x": 6000, "y": 6000, "z": 6000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "bay_4000",
+          "dimensionsMm": { "x": 4000, "y": 6000, "z": 4000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        }
+      ]
+    },
+    {
+      "id": "walls",
+      "authorityPolicy": "match_locked_envelope",
+      "modules": [
+        {
+          "id": "wall_1000x3000",
+          "dimensionsMm": { "x": 1000, "y": 3000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "wall_2000x3000",
+          "dimensionsMm": { "x": 2000, "y": 3000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "wall_4000x3000",
+          "dimensionsMm": { "x": 4000, "y": 3000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "wall_4000x6000",
+          "dimensionsMm": { "x": 4000, "y": 6000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        }
+      ]
+    },
+    {
+      "id": "corners",
+      "authorityPolicy": "match_locked_envelope",
+      "modules": [
+        {
+          "id": "corner_1000x3000",
+          "dimensionsMm": { "x": 1000, "y": 3000, "z": 1000 },
+          "wallThicknessMm": 250,
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "corner_1000x6000",
+          "dimensionsMm": { "x": 1000, "y": 6000, "z": 1000 },
+          "wallThicknessMm": 250,
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        }
+      ]
+    },
+    {
+      "id": "columns",
+      "authorityPolicy": "match_locked_envelope",
+      "modules": [
+        {
+          "id": "column_500x3000",
+          "dimensionsMm": { "x": 500, "y": 3000, "z": 500 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_secondary_metal", "env_base_ceramic"]
+        },
+        {
+          "id": "column_1000x6000",
+          "dimensionsMm": { "x": 1000, "y": 6000, "z": 1000 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_secondary_metal", "env_base_ceramic"]
+        }
+      ]
+    },
+    {
+      "id": "floors",
+      "authorityPolicy": "render_shell_over_locked_surface",
+      "modules": [
+        {
+          "id": "floor_1000",
+          "dimensionsMm": { "x": 1000, "y": 250, "z": 1000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_functional_marking"]
+        },
+        {
+          "id": "floor_2000",
+          "dimensionsMm": { "x": 2000, "y": 250, "z": 2000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_functional_marking"]
+        },
+        {
+          "id": "floor_4000",
+          "dimensionsMm": { "x": 4000, "y": 250, "z": 4000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_functional_marking"]
+        }
+      ]
+    },
+    {
+      "id": "ramps",
+      "authorityPolicy": "match_locked_ramp_proxy",
+      "modules": [
+        {
+          "id": "ramp_rise1000_run3000",
+          "dimensionsMm": { "x": 3000, "y": 1000, "z": 3000 },
+          "slopeAngleMilliDegrees": 18435,
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_functional_marking"]
+        },
+        {
+          "id": "ramp_rise2000_run6000",
+          "dimensionsMm": { "x": 3000, "y": 2000, "z": 6000 },
+          "slopeAngleMilliDegrees": 18435,
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_functional_marking"]
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "authorityPolicy": "simple_locked_ramp_or_step_proxy",
+      "modules": [
+        {
+          "id": "stair_flight_rise1000_run2000",
+          "dimensionsMm": { "x": 3000, "y": 1000, "z": 2000 },
+          "stepCount": 4,
+          "stepRiseMm": 250,
+          "stepRunMm": 500,
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_base_ceramic", "env_functional_marking"]
+        }
+      ]
+    },
+    {
+      "id": "platforms",
+      "authorityPolicy": "render_shell_over_locked_surface",
+      "modules": [
+        {
+          "id": "platform_2000x4000",
+          "dimensionsMm": { "x": 2000, "y": 250, "z": 4000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_functional_marking"]
+        },
+        {
+          "id": "platform_4000x4000",
+          "dimensionsMm": { "x": 4000, "y": 250, "z": 4000 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_functional_marking"]
+        }
+      ]
+    },
+    {
+      "id": "rails",
+      "authorityPolicy": "match_locked_rail_proxy",
+      "modules": [
+        {
+          "id": "rail_1000",
+          "dimensionsMm": { "x": 1000, "y": 1000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_vermilion_safety"]
+        },
+        {
+          "id": "rail_2000",
+          "dimensionsMm": { "x": 2000, "y": 1000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_vermilion_safety"]
+        },
+        {
+          "id": "rail_4000",
+          "dimensionsMm": { "x": 4000, "y": 1000, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_vermilion_safety"]
+        }
+      ]
+    },
+    {
+      "id": "door_frames",
+      "authorityPolicy": "preserve_locked_clear_opening",
+      "modules": [
+        {
+          "id": "door_main",
+          "dimensionsMm": { "x": 3000, "y": 3500, "z": 500 },
+          "clearOpeningMm": { "x": 2400, "y": 3000, "z": 500 },
+          "pivot": "hinge_side_floor_contact",
+          "materialSlots": ["env_secondary_metal", "env_functional_marking"]
+        },
+        {
+          "id": "door_flank",
+          "dimensionsMm": { "x": 2000, "y": 3000, "z": 500 },
+          "clearOpeningMm": { "x": 1400, "y": 2400, "z": 500 },
+          "pivot": "hinge_side_floor_contact",
+          "materialSlots": ["env_secondary_metal", "env_functional_marking"]
+        }
+      ]
+    },
+    {
+      "id": "cover",
+      "authorityPolicy": "exact_seed_envelope",
+      "modules": [
+        {
+          "id": "half_cover",
+          "dimensionsMm": { "x": 2400, "y": 1250, "z": 600 },
+          "gridException": "frozen_seed_clearance_interface",
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "full_cover",
+          "dimensionsMm": { "x": 1800, "y": 2400, "z": 800 },
+          "gridException": "frozen_seed_clearance_interface",
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        },
+        {
+          "id": "press_baffle",
+          "dimensionsMm": { "x": 5000, "y": 3000, "z": 500 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal"]
+        }
+      ]
+    },
+    {
+      "id": "vents_and_crouch_tunnels",
+      "authorityPolicy": "preserve_locked_clear_opening",
+      "modules": [
+        {
+          "id": "slide_gate_shell",
+          "dimensionsMm": { "x": 2000, "y": 1850, "z": 4800 },
+          "clearOpeningMm": { "x": 1400, "y": 1350, "z": 4800 },
+          "gridException": "frozen_seed_clearance_interface",
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_ink_surface", "env_functional_marking"]
+        }
+      ]
+    },
+    {
+      "id": "ink_conduits",
+      "authorityPolicy": "render_only_unless_matching_locked_proxy",
+      "modules": [
+        {
+          "id": "ink_conduit_1000x4000",
+          "dimensionsMm": { "x": 1000, "y": 1000, "z": 4000 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_secondary_metal", "env_ink_surface"]
+        },
+        {
+          "id": "ink_conduit_corner_2000",
+          "dimensionsMm": { "x": 2000, "y": 1000, "z": 2000 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_secondary_metal", "env_ink_surface"]
+        }
+      ]
+    },
+    {
+      "id": "garden_fragments",
+      "authorityPolicy": "render_only_inside_reserved_envelope",
+      "modules": [
+        {
+          "id": "garden_planter_3000",
+          "dimensionsMm": { "x": 3000, "y": 750, "z": 1500 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_base_ceramic", "env_garden_fragment"]
+        },
+        {
+          "id": "garden_conduit_break_2000",
+          "dimensionsMm": { "x": 2000, "y": 2500, "z": 2000 },
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_secondary_metal", "env_garden_fragment"]
+        }
+      ]
+    },
+    {
+      "id": "trims_and_decals",
+      "authorityPolicy": "render_only_no_authority_collision",
+      "modules": [
+        {
+          "id": "trim_strip_1000",
+          "dimensionsMm": { "x": 1000, "y": 100, "z": 50 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_secondary_metal", "env_vermilion_safety"]
+        },
+        {
+          "id": "floor_mark_1000",
+          "dimensionsMm": { "x": 1000, "y": 50, "z": 250 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_functional_marking"]
+        },
+        {
+          "id": "sign_panel_2000",
+          "dimensionsMm": { "x": 2000, "y": 1000, "z": 50 },
+          "pivot": "lower_left_back_grid_corner",
+          "materialSlots": ["env_functional_marking", "env_emissive_signage"]
+        }
+      ]
+    },
+    {
+      "id": "landmark_hero_pieces",
+      "authorityPolicy": "render_shell_only_inside_named_reserved_envelope",
+      "modules": [
+        {
+          "id": "press_reactor_shell",
+          "dimensionsMm": { "x": 8000, "y": 9000, "z": 8000 },
+          "reservedZoneId": "press_hall",
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_base_ceramic", "env_secondary_metal", "env_ink_surface", "env_functional_marking"]
+        },
+        {
+          "id": "red_fold_frame",
+          "dimensionsMm": { "x": 6000, "y": 4500, "z": 1500 },
+          "reservedZoneId": "teleport_fold",
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_base_ceramic", "env_vermilion_safety", "env_functional_marking"]
+        },
+        {
+          "id": "paper_drop_frame",
+          "dimensionsMm": { "x": 6000, "y": 5000, "z": 2000 },
+          "reservedZoneId": "paper_drop",
+          "pivot": "floor_contact_center",
+          "materialSlots": ["env_secondary_metal", "env_garden_fragment", "env_functional_marking"]
+        }
+      ]
+    }
+  ],
+  "frozenSeedModuleParity": [
+    {
+      "seedId": "half_cover",
+      "contractModuleId": "half_cover",
+      "dimensionsMm": [2400, 1250, 600]
+    },
+    {
+      "seedId": "full_cover",
+      "contractModuleId": "full_cover",
+      "dimensionsMm": [1800, 2400, 800]
+    },
+    {
+      "seedId": "press_baffle",
+      "contractModuleId": "press_baffle",
+      "dimensionsMm": [5000, 3000, 500]
+    },
+    {
+      "seedId": "slide_gate",
+      "contractModuleId": "slide_gate_shell",
+      "dimensionsMm": [4800, 1350, 1400],
+      "mapping": "seed length-height-width maps to contract clear depth-height-width"
+    },
+    {
+      "seedId": "main_door",
+      "contractModuleId": "door_main",
+      "dimensionsMm": [2400, 3000, 400],
+      "mapping": "seed clear width-height-depth maps to contract clear opening"
+    },
+    {
+      "seedId": "flank_door",
+      "contractModuleId": "door_flank",
+      "dimensionsMm": [1400, 2400, 400],
+      "mapping": "seed clear width-height-depth maps to contract clear opening"
+    }
+  ],
+  "validationRules": [
+    "all_module_family_ids_unique",
+    "all_module_ids_unique",
+    "all_dimensions_positive_integer_millimeters",
+    "all_structural_dimensions_snap_to_primary_or_fine_grid",
+    "all_material_slot_references_exist",
+    "ordinary_ramp_angle_not_above_20000_milli_degrees",
+    "stair_rise_not_above_250_millimeters",
+    "stair_run_not_below_500_millimeters",
+    "main_door_clear_opening_not_below_2400_by_3000_millimeters",
+    "flank_door_clear_opening_not_below_1400_by_2400_millimeters",
+    "slide_gate_clear_opening_exactly_1400_by_1350_by_4800_millimeters",
+    "seed_module_dimensions_reproduce_exactly",
+    "runtime_random_geometry_prohibited",
+    "locked_authority_collision_unchanged"
+  ],
+  "nonClaims": [
+    "MODULE_MESHES_NOT_AUTHORED",
+    "FINAL_ART_NOT_COMPLETE",
+    "MATERIALS_NOT_VISUALLY_ACCEPTED",
+    "PERFORMANCE_NOT_MEASURED",
+    "G5_NOT_PASSED",
+    "G6_NOT_PASSED"
+  ]
+}

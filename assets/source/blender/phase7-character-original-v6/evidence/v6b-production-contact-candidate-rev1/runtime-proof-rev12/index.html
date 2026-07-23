@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>V6-B Contact-First Runtime Proof — Rev12</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --ink: #edf7f5;
+        --muted: #9bb1ae;
+        --panel: rgba(13, 24, 27, 0.86);
+        --line: rgba(150, 205, 198, 0.2);
+        --cyan: #64ebd2;
+        --amber: #f6c36a;
+        --red: #f27b73;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; background: #071013; color: var(--ink); }
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 18% 10%, rgba(30, 91, 90, 0.3), transparent 31rem),
+          linear-gradient(135deg, #071013 0%, #0a1619 52%, #071013 100%);
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+        background-size: 42px 42px;
+      }
+      main { width: min(1540px, calc(100% - 44px)); margin: 0 auto; padding: 32px 0 42px; position: relative; }
+      header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+      .eyebrow { color: var(--cyan); font-size: 12px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
+      h1 { font-size: clamp(30px, 3vw, 54px); letter-spacing: -0.045em; line-height: 0.98; margin: 9px 0 8px; max-width: 920px; }
+      .subtitle { color: var(--muted); font-size: 15px; max-width: 920px; line-height: 1.55; }
+      .gate {
+        min-width: 270px;
+        padding: 13px 15px;
+        border: 1px solid rgba(246, 195, 106, 0.55);
+        border-radius: 8px;
+        background: rgba(75, 53, 19, 0.28);
+      }
+      .gate strong { display: block; color: var(--amber); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; }
+      .gate span { display: block; color: #d9cba9; font-size: 12px; margin-top: 4px; }
+      .top-grid { display: grid; grid-template-columns: minmax(0, 1fr) 370px; gap: 16px; }
+      .stage, .panel, .pose-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: 0 20px 70px rgba(0,0,0,0.28);
+      }
+      .stage { min-height: 690px; border-radius: 12px; overflow: hidden; position: relative; }
+      #viewport { width: 100%; height: 690px; display: block; }
+      .stage-meta {
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        pointer-events: none;
+      }
+      .chip { padding: 7px 9px; border-radius: 5px; background: rgba(5,12,14,0.78); border: 1px solid rgba(255,255,255,0.13); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+      .chip.ok { color: var(--cyan); }
+      .chip.warn { color: var(--amber); }
+      .panel { border-radius: 12px; padding: 20px; }
+      .panel h2 { margin: 0 0 7px; font-size: 16px; letter-spacing: -0.01em; }
+      .panel-copy { color: var(--muted); font-size: 12px; line-height: 1.5; margin-bottom: 16px; }
+      #load-status { border-left: 3px solid var(--amber); padding: 9px 11px; background: rgba(255,255,255,0.035); font-size: 12px; margin-bottom: 15px; }
+      #load-status.ready { border-color: var(--cyan); color: #baf8ec; }
+      #load-status.error { border-color: var(--red); color: #ffc4bf; }
+      .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+      .stat { border: 1px solid var(--line); background: rgba(2,8,10,0.28); padding: 10px; border-radius: 6px; }
+      .stat b { display: block; font-size: 19px; line-height: 1.1; color: var(--cyan); }
+      .stat span { display: block; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+      .pose-buttons { display: grid; gap: 7px; }
+      .pose-button {
+        width: 100%;
+        text-align: left;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 6px;
+        background: rgba(255,255,255,0.03);
+        color: var(--ink);
+        padding: 10px 11px;
+        cursor: pointer;
+        transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+      }
+      .pose-button:hover { border-color: rgba(100,235,210,0.55); transform: translateX(2px); }
+      .pose-button.active { background: rgba(100,235,210,0.12); border-color: var(--cyan); }
+      .pose-button b { display: block; font-size: 12px; }
+      .pose-button span { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; }
+      .gap { margin-top: 18px; padding-top: 15px; border-top: 1px solid var(--line); }
+      .gap h3 { font-size: 11px; color: var(--amber); text-transform: uppercase; letter-spacing: 0.12em; margin: 0 0 7px; }
+      .gap p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+      .sheet-head { display: flex; justify-content: space-between; gap: 20px; align-items: end; margin: 28px 0 12px; }
+      .sheet-head h2 { font-size: 20px; margin: 0 0 4px; }
+      .sheet-head p { margin: 0; color: var(--muted); font-size: 12px; }
+      .seal { color: var(--muted); font: 10px ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; }
+      #pose-sheet { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+      .pose-card { border-radius: 9px; overflow: hidden; min-height: 290px; }
+      .pose-card img { display: block; width: 100%; aspect-ratio: 1.44; object-fit: cover; background: #081215; }
+      .pose-card figcaption { padding: 11px 12px 13px; }
+      .pose-card b { display: block; font-size: 12px; }
+      .pose-card span { display: block; color: var(--muted); font-size: 10px; margin-top: 3px; }
+      .footer-note { margin-top: 17px; color: #728a87; font-size: 10px; line-height: 1.55; max-width: 1120px; }
+      @media (max-width: 1000px) {
+        header { align-items: flex-start; flex-direction: column; }
+        .top-grid { grid-template-columns: 1fr; }
+        #pose-sheet { grid-template-columns: 1fr 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <div class="eyebrow">Exported GLB · Three.js · Fresh endpoint</div>
+          <h1>V6-B contact-first runtime proof</h1>
+          <div class="subtitle">Rev12 loads the isolated runtime candidate itself and selects six named STEP-held deformation diagnostics. These poses prove bounded export behavior; they are not movement animations.</div>
+        </div>
+        <div class="gate"><strong>G6 remains open</strong><span>Idle, walk, run, fire, reload, hit and death clips are not present.</span></div>
+      </header>
+
+      <section class="top-grid">
+        <div class="stage">
+          <canvas id="viewport" aria-label="Interactive V6-B GLB model"></canvas>
+          <div class="stage-meta">
+            <span class="chip ok">actual rev12 glb</span>
+            <span class="chip warn">diagnostic hold</span>
+            <span class="chip" id="selected-chip">loading</span>
+          </div>
+        </div>
+        <aside class="panel">
+          <h2>Runtime clip selector</h2>
+          <div class="panel-copy">Each control selects one real <code>THREE.AnimationClip</code> from the loaded GLB. The two identical keys are held; no between-pose interpolation is claimed.</div>
+          <div id="load-status">Loading runtime candidate…</div>
+          <div class="stats">
+            <div class="stat"><b id="stat-clips">—</b><span>named clips</span></div>
+            <div class="stat"><b id="stat-channels">—</b><span>tracks / clip</span></div>
+            <div class="stat"><b id="stat-bones">—</b><span>skinned bones</span></div>
+            <div class="stat"><b id="stat-meshes">—</b><span>render meshes</span></div>
+          </div>
+          <div class="pose-buttons" id="pose-buttons"></div>
+          <div class="gap">
+            <h3>Animation inventory gap</h3>
+            <p>Third person: idle, walk, run, jump/airborne/land, fire, reload, hit reactions, death.<br />First person: arms idle, movement sway, fire, reload.</p>
+          </div>
+        </aside>
+      </section>
+
+      <div class="sheet-head">
+        <div><h2>Six-pose endpoint sheet</h2><p>Generated in-browser from the loaded GLB and the six exported clip actions.</p></div>
+        <div class="seal">SEALED SOURCE SHA-256<br />029ce233…9326ff</div>
+      </div>
+      <section id="pose-sheet" aria-live="polite"></section>
+      <div class="footer-note">Bounded evidence only. The page does not replace <code>public/player.glb</code>, and it does not claim production gameplay animation, LODs, UV/textures, first-person arms, multiplayer proof, performance acceptance, or G6.</div>
+    </main>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "/node_modules/three/build/three.module.js",
+          "three/addons/": "/node_modules/three/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="./proof.js"></script>
+  </body>
+</html>

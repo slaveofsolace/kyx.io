@@ -1,0 +1,93 @@
+COMMAND C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\dist\pnpm.mjs dlx npm@11.18.0 run validate:assets:release
+EXIT {"code":1,"signal":null}
+
+
+> kyx.io@1.0.0 validate:assets:release
+> node tools/assets/validate-manifests.mjs --release
+
+KYX asset manifest validator (release mode)
+Root: C:\AI Projects\Projects\Games\evio\evio-repo
+ERROR ASSET_APPROVAL_REQUIRED [legacy.player] release disposition must be approved
+ERROR ASSET_CANONICAL_SOURCE_REQUIRED [legacy.player] release requires a canonical source hash
+ERROR ASSET_EXTERNAL_GLTF_REPORT_REQUIRED [legacy.player] release GLBs require a hashed external validator report receipt
+ERROR ASSET_EXTERNAL_GLTF_VALIDATION_REQUIRED [legacy.player] release GLBs require a passing external glTF validator result
+ERROR ASSET_PROVENANCE_REQUIRED [legacy.player] release provenance must be verified
+ERROR ASSET_RELEASE_INELIGIBLE [legacy.player] releaseEligible must be true
+ERROR ASSET_RELEASE_PRIMITIVE_BUDGET [legacy.player] 209 > 3
+ERROR ASSET_TEXTURE_MEMORY_MEASUREMENT_REQUIRED [legacy.player] release requires a measured non-negative texture-memory value
+ERROR ASSET_VALIDATOR_WARNINGS [legacy.player] recorded validation warnings require a resolved evidence-backed waiver
+ERROR ASSET_APPROVAL_REQUIRED [legacy.sakura-wrap] release disposition must be approved
+ERROR ASSET_CANONICAL_SOURCE_REQUIRED [legacy.sakura-wrap] release requires a canonical source hash
+ERROR ASSET_PROVENANCE_REQUIRED [legacy.sakura-wrap] release provenance must be verified
+ERROR ASSET_RELEASE_INELIGIBLE [legacy.sakura-wrap] releaseEligible must be true
+ERROR ASSET_VALIDATOR_WARNINGS [legacy.sakura-wrap] recorded validation warnings require a resolved evidence-backed waiver
+ERROR ASSET_APPROVAL_REQUIRED [legacy.soldier] release disposition must be approved
+ERROR ASSET_CANONICAL_SOURCE_REQUIRED [legacy.soldier] release requires a canonical source hash
+ERROR ASSET_EXTERNAL_GLTF_REPORT_REQUIRED [legacy.soldier] release GLBs require a hashed external validator report receipt
+ERROR ASSET_EXTERNAL_GLTF_VALIDATION_REQUIRED [legacy.soldier] release GLBs require a passing external glTF validator result
+ERROR ASSET_PROVENANCE_REQUIRED [legacy.soldier] release provenance must be verified
+ERROR ASSET_RELEASE_INELIGIBLE [legacy.soldier] releaseEligible must be true
+ERROR ASSET_TEXTURE_MEMORY_MEASUREMENT_REQUIRED [legacy.soldier] release requires a measured non-negative texture-memory value
+ERROR ASSET_VALIDATOR_WARNINGS [legacy.soldier] recorded validation warnings require a resolved evidence-backed waiver
+ERROR ASSET_APPROVAL_REQUIRED [legacy.spartan] release disposition must be approved
+ERROR ASSET_CANONICAL_SOURCE_REQUIRED [legacy.spartan] release requires a canonical source hash
+ERROR ASSET_EXTERNAL_GLTF_REPORT_REQUIRED [legacy.spartan] release GLBs require a hashed external validator report receipt
+ERROR ASSET_EXTERNAL_GLTF_VALIDATION_REQUIRED [legacy.spartan] release GLBs require a passing external glTF validator result
+ERROR ASSET_PROVENANCE_REQUIRED [legacy.spartan] release provenance must be verified
+ERROR ASSET_RELEASE_INELIGIBLE [legacy.spartan] releaseEligible must be true
+ERROR ASSET_RELEASE_PRIMITIVE_BUDGET [legacy.spartan] 5 > 3
+ERROR ASSET_TEXTURE_MEMORY_MEASUREMENT_REQUIRED [legacy.spartan] release requires a measured non-negative texture-memory value
+ERROR ASSET_VALIDATOR_WARNINGS [legacy.spartan] recorded validation warnings require a resolved evidence-backed waiver
+ERROR ASSET_APPROVAL_REQUIRED [legacy.weapons] release disposition must be approved
+ERROR ASSET_CANONICAL_SOURCE_REQUIRED [legacy.weapons] release requires a canonical source hash
+ERROR ASSET_EXTERNAL_GLTF_REPORT_REQUIRED [legacy.weapons] release GLBs require a hashed external validator report receipt
+ERROR ASSET_EXTERNAL_GLTF_VALIDATION_REQUIRED [legacy.weapons] release GLBs require a passing external glTF validator result
+ERROR ASSET_PROVENANCE_REQUIRED [legacy.weapons] release provenance must be verified
+ERROR ASSET_RELEASE_INELIGIBLE [legacy.weapons] releaseEligible must be true
+ERROR ASSET_RELEASE_PRIMITIVE_BUDGET [legacy.weapons] 386 > 2
+ERROR ASSET_RELEASE_TRIANGLE_BUDGET [legacy.weapons] 28920 > 12000
+ERROR ASSET_TEXTURE_MEMORY_MEASUREMENT_REQUIRED [legacy.weapons] release requires a measured non-negative texture-memory value
+ERROR ASSET_VALIDATOR_WARNINGS [legacy.weapons] recorded validation warnings require a resolved evidence-backed waiver
+ERROR ASSET_APPROVAL_REQUIRED [legacy.zombie] release disposition must be approved
+ERROR ASSET_CANONICAL_SOURCE_REQUIRED [legacy.zombie] release requires a canonical source hash
+ERROR ASSET_EXTERNAL_GLTF_REPORT_REQUIRED [legacy.zombie] release GLBs require a hashed external validator report receipt
+ERROR ASSET_EXTERNAL_GLTF_VALIDATION_REQUIRED [legacy.zombie] release GLBs require a passing external glTF validator result
+ERROR ASSET_PROVENANCE_REQUIRED [legacy.zombie] release provenance must be verified
+ERROR ASSET_RELEASE_INELIGIBLE [legacy.zombie] releaseEligible must be true
+ERROR ASSET_RELEASE_PRIMITIVE_BUDGET [legacy.zombie] 122 > 3
+ERROR ASSET_TEXTURE_MEMORY_MEASUREMENT_REQUIRED [legacy.zombie] release requires a measured non-negative texture-memory value
+ERROR ASSET_VALIDATOR_WARNINGS [legacy.zombie] recorded validation warnings require a resolved evidence-backed waiver
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.player] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.player] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.player] disposition is legacy_proxy_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.player] 209 > 3
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.player] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.player] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.sakura-wrap] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_NOT_APPROVED [legacy.sakura-wrap] disposition is audit_then_replace
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.sakura-wrap] creator/source/license review is unresolved
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.soldier] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.soldier] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.soldier] disposition is temporary_diagnostic_only_then_replace
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.soldier] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.soldier] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.spartan] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.spartan] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.spartan] disposition is audit_then_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.spartan] 5 > 3
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.spartan] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.spartan] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.weapons] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.weapons] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.weapons] disposition is legacy_proxy_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.weapons] 386 > 2
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.weapons] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.weapons] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_TRIANGLE_BUDGET_EXCEEDED [legacy.weapons] 28920 > 12000
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.zombie] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.zombie] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.zombie] disposition is legacy_proxy_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.zombie] 122 > 3
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.zombie] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.zombie] GLB texture residency is unknown until a texture-memory measurement is attached
+Summary: 6 manifests, 50 errors, 33 warnings.

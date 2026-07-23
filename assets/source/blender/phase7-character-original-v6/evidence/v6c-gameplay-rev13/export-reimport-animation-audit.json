@@ -1,0 +1,940 @@
+{
+  "schema": "kyx-v6c-gameplay-animation-rev13-audit-v1",
+  "generatedAt": "2026-07-22T19:38:47.075166+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6C_GAMEPLAY_ANIMATION_CANDIDATE_REV13",
+  "status": "PASS_BOUNDED_V6C_GAMEPLAY_ANIMATION_CANDIDATE_NOT_G6",
+  "sourceRev12": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-contact-candidate-rev1\\export\\kyx-v6b-production-contact-candidate-rev1.runtime-candidate-rev12.glb",
+    "bytes": 18685160,
+    "sha256Before": "eb767552e6af30025e6514b4d5c8e71fd3ad6ab3d168208c4450ab1dc6b1eb5a",
+    "sha256After": "eb767552e6af30025e6514b4d5c8e71fd3ad6ab3d168208c4450ab1dc6b1eb5a",
+    "unchanged": true
+  },
+  "candidateBlend": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-gameplay-rev13\\kyx-v6c-gameplay-rev13.blend",
+    "bytes": 10695515,
+    "sha256": "905ec4b489e1c4d756a3d374df88afdac04d44ff7afe9033436ce02f56b07d70"
+  },
+  "rig": {
+    "name": "V6CF11B_ContactFullBodyRig",
+    "bones": 52,
+    "acceptedPalmRelation": [
+      0.9574117064476013,
+      0.28872016072273254,
+      0.0018472238443791866,
+      -0.09628546983003616,
+      -0.28863218426704407,
+      0.9569194316864014,
+      0.03154182434082031,
+      0.20857320725917816,
+      0.007339484058320522,
+      -0.030731335282325745,
+      0.99950110912323,
+      0.019731491804122925,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "contactPolicy": "The rifle/contact fixtures remain one-bone skinned to palm.R. All clips preserve the accepted palm-to-palm relation except the intentional support-hand reload excursion, which returns to the accepted relation on the final key."
+  },
+  "animationContract": [
+    {
+      "name": "KYX_V6C_TP_IDLE",
+      "label": "third-person combat idle",
+      "frameStart": 1,
+      "frameEnd": 49,
+      "durationSeconds": 2.0,
+      "loop": true,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_IDLE__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_WALK",
+      "label": "third-person in-place walk",
+      "frameStart": 1,
+      "frameEnd": 25,
+      "durationSeconds": 1.0,
+      "loop": true,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_WALK__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_RUN",
+      "label": "third-person in-place run",
+      "frameStart": 1,
+      "frameEnd": 19,
+      "durationSeconds": 0.75,
+      "loop": true,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_RUN__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_JUMP_START",
+      "label": "third-person jump anticipation and launch",
+      "frameStart": 1,
+      "frameEnd": 14,
+      "durationSeconds": 0.5416666666666666,
+      "loop": false,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 4,
+      "rigAction": "KYX_V6C_TP_JUMP_START__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_AIRBORNE_LOOP",
+      "label": "third-person airborne loop",
+      "frameStart": 1,
+      "frameEnd": 25,
+      "durationSeconds": 1.0,
+      "loop": true,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_AIRBORNE_LOOP__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_LAND",
+      "label": "third-person landing compression and recovery",
+      "frameStart": 1,
+      "frameEnd": 16,
+      "durationSeconds": 0.625,
+      "loop": false,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_LAND__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_PRIMARY_FIRE",
+      "label": "third-person primary fire recoil",
+      "frameStart": 1,
+      "frameEnd": 12,
+      "durationSeconds": 0.4583333333333333,
+      "loop": false,
+      "interpolation": "LINEAR",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_PRIMARY_FIRE__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both palms invariant; trigger finger articulates"
+    },
+    {
+      "name": "KYX_V6C_TP_RELOAD",
+      "label": "third-person magazine reload",
+      "frameStart": 1,
+      "frameEnd": 49,
+      "durationSeconds": 2.0,
+      "loop": false,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 6,
+      "rigAction": "KYX_V6C_TP_RELOAD__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "right grip invariant; left support hand intentionally departs and returns"
+    },
+    {
+      "name": "KYX_V6C_TP_HIT_REACTION_FRONT",
+      "label": "third-person frontal hit reaction",
+      "frameStart": 1,
+      "frameEnd": 20,
+      "durationSeconds": 0.7916666666666666,
+      "loop": false,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 5,
+      "rigAction": "KYX_V6C_TP_HIT_REACTION_FRONT__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "both-hand rifle contact invariant"
+    },
+    {
+      "name": "KYX_V6C_TP_DEATH_FRONT",
+      "label": "third-person forward collapse death",
+      "frameStart": 1,
+      "frameEnd": 60,
+      "durationSeconds": 2.4583333333333335,
+      "loop": false,
+      "interpolation": "BEZIER",
+      "authoredPoseKeys": 6,
+      "rigAction": "KYX_V6C_TP_DEATH_FRONT__RIG",
+      "rigFcurves": 520,
+      "morphActions": [],
+      "contactPolicy": "rifle remains right-hand bound; support hand stays attached in this candidate"
+    }
+  ],
+  "acceptedCorrectiveSurfaceBake": {
+    "status": "BAKED_TO_STATIC_BASE_BEFORE_GAMEPLAY_EXPORT",
+    "reason": "A controlled Three.js normal-versus-zero-morph render isolated Rev12 imported corrective targets as the source of stretched geometry after GLB re-export. The accepted frame-1 local-space mix is baked into Basis while the 52-bone armature stays live.",
+    "objects": [
+      {
+        "object": "KYX_V6A_AnatomySculpt_Body_Mesh.001",
+        "vertices": 43194,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_RuntimeContact_ForegripContact_Mesh",
+        "vertices": 320,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_bind_rest",
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_RuntimeContact_ForegripHandStop_Mesh",
+        "vertices": 96,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_bind_rest",
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_RuntimeContact_GripContact_Mesh",
+        "vertices": 96,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_bind_rest",
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_RuntimeContact_StockPadContact_Mesh",
+        "vertices": 96,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_bind_rest",
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_RuntimeContact_Trigger_Mesh",
+        "vertices": 192,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_bind_rest",
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_RuntimeContact_TriggerGuard_Mesh",
+        "vertices": 588,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_bind_rest",
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      },
+      {
+        "object": "KYX_V6B_CF_R1_TailoredOnePieceUndersuit_Mesh.001",
+        "vertices": 45795,
+        "removedShapeKeys": [
+          "V6B_CORRECTIVE_accepted_contact",
+          "V6B_CORRECTIVE_firing_shoulder_extreme",
+          "V6B_CORRECTIVE_trigger_wrist_digit_extreme",
+          "V6B_CORRECTIVE_support_hand_extreme",
+          "V6B_CORRECTIVE_locomotion_leg_bend"
+        ],
+        "activeAcceptedMix": [
+          {
+            "name": "V6B_CORRECTIVE_accepted_contact",
+            "value": 1.0
+          }
+        ],
+        "armaturePreserved": true
+      }
+    ]
+  },
+  "firstPersonArms": {
+    "status": "BLOCKED_NOT_AUTHORED",
+    "blocker": "Rev12 contains a continuous full-body anatomy mesh and continuous one-piece undersuit, with no reviewed shoulder cutoff, dedicated first-person topology/UVs, viewmodel camera contract, or occlusion test. Extracting visible arms here would create unreviewed seams and would not be a clean first-person asset.",
+    "requiredFutureClips": [
+      "arms_idle",
+      "arms_walk_sway",
+      "arms_run_sway",
+      "arms_primary_fire",
+      "arms_reload"
+    ]
+  },
+  "export": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-gameplay-rev13\\export\\kyx-v6c-gameplay-rev13.runtime-candidate.glb",
+    "operator": "bpy.ops.export_scene.gltf",
+    "operatorKwargs": {
+      "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-gameplay-rev13\\export\\kyx-v6c-gameplay-rev13.runtime-candidate.glb",
+      "check_existing": false,
+      "export_format": "GLB",
+      "use_selection": true,
+      "export_copyright": "Includes CC0-derived Blender Human Base Meshes anatomy; KYX-authored design, gear, rig, materials, and gameplay-animation candidate. Non-default, non-release, not G6.",
+      "export_texcoords": false,
+      "export_normals": true,
+      "export_tangents": false,
+      "export_materials": "EXPORT",
+      "export_cameras": false,
+      "export_extras": true,
+      "export_yup": true,
+      "export_apply": false,
+      "export_animations": true,
+      "export_frame_range": true,
+      "export_frame_step": 1,
+      "export_force_sampling": false,
+      "export_optimize_animation_size": false,
+      "export_animation_mode": "NLA_TRACKS",
+      "export_merge_animation": "NLA_TRACK",
+      "export_skins": true,
+      "export_influence_nb": 4,
+      "export_all_influences": false,
+      "export_def_bones": true,
+      "export_leaf_bone": false,
+      "export_lights": false
+    },
+    "asset": {
+      "copyright": "Includes CC0-derived Blender Human Base Meshes anatomy; KYX-authored design, gear, rig, materials, and gameplay-animation candidate. Non-default, non-release, not G6.",
+      "generator": "Khronos glTF Blender I/O v5.1.20",
+      "version": "2.0"
+    },
+    "bytes": 9278844,
+    "sha256": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
+    "counts": {
+      "nodes": 159,
+      "meshes": 106,
+      "primitives": 109,
+      "triangles": 297996,
+      "materials": 16,
+      "skins": 1,
+      "animations": 10,
+      "images": 0,
+      "textures": 0
+    },
+    "skinJointCounts": [
+      52
+    ],
+    "externalUris": [],
+    "animations": [
+      {
+        "name": "KYX_V6C_TP_IDLE",
+        "durationSeconds": 1.9999999999999998,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 49,
+        "keyCountMaximum": 49,
+        "distinctKeyCounts": [
+          49
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_WALK",
+        "durationSeconds": 1.0,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 25,
+        "keyCountMaximum": 25,
+        "distinctKeyCounts": [
+          25
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_RUN",
+        "durationSeconds": 0.75,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 19,
+        "keyCountMaximum": 19,
+        "distinctKeyCounts": [
+          19
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_JUMP_START",
+        "durationSeconds": 0.5416666666666667,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 14,
+        "keyCountMaximum": 14,
+        "distinctKeyCounts": [
+          14
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "durationSeconds": 1.0,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 25,
+        "keyCountMaximum": 25,
+        "distinctKeyCounts": [
+          25
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_LAND",
+        "durationSeconds": 0.625,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 16,
+        "keyCountMaximum": 16,
+        "distinctKeyCounts": [
+          16
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_PRIMARY_FIRE",
+        "durationSeconds": 0.4583333333333333,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 12,
+        "keyCountMaximum": 12,
+        "distinctKeyCounts": [
+          12
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_RELOAD",
+        "durationSeconds": 1.9999999999999998,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 49,
+        "keyCountMaximum": 49,
+        "distinctKeyCounts": [
+          49
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_HIT_REACTION_FRONT",
+        "durationSeconds": 0.7916666666666667,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 20,
+        "keyCountMaximum": 20,
+        "distinctKeyCounts": [
+          20
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      },
+      {
+        "name": "KYX_V6C_TP_DEATH_FRONT",
+        "durationSeconds": 2.4583333333333335,
+        "channels": 156,
+        "samplers": 156,
+        "keyCountMinimum": 60,
+        "keyCountMaximum": 60,
+        "distinctKeyCounts": [
+          60
+        ],
+        "interpolations": {
+          "LINEAR": 156
+        },
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        }
+      }
+    ]
+  },
+  "reimport": {
+    "proofBlend": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-gameplay-rev13\\reimport\\kyx-v6c-gameplay-rev13.reimport-proof.blend",
+      "bytes": 11635957,
+      "sha256": "1a58035238343f2a8abc1d305bf59f3528477fc0e9d8809ae0e004872270d01d"
+    },
+    "armatures": 1,
+    "largestRig": "V6CF11B_ContactFullBodyRig",
+    "bones": 52,
+    "meshes": 107,
+    "materials": 16,
+    "shapeKeyMeshes": 0,
+    "nonemptyMeshes": true,
+    "actionNames": [
+      "KYX_V6C_TP_AIRBORNE_LOOP",
+      "KYX_V6C_TP_DEATH_FRONT",
+      "KYX_V6C_TP_HIT_REACTION_FRONT",
+      "KYX_V6C_TP_IDLE",
+      "KYX_V6C_TP_JUMP_START",
+      "KYX_V6C_TP_LAND",
+      "KYX_V6C_TP_PRIMARY_FIRE",
+      "KYX_V6C_TP_RELOAD",
+      "KYX_V6C_TP_RUN",
+      "KYX_V6C_TP_WALK"
+    ],
+    "clips": [
+      {
+        "name": "KYX_V6C_TP_IDLE",
+        "present": true,
+        "frameRange": [
+          1.0,
+          49.0
+        ],
+        "durationSecondsAt24Fps": 2.0,
+        "sampleFrames": [
+          1.0,
+          13.0,
+          25.0,
+          37.0,
+          49.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 49,
+        "keyframeCountMaximum": 49,
+        "maxPoseMatrixDelta": 0.0256863534450531,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 9.96515154838562e-07,
+        "endPalmRelationDelta": 0.0,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_WALK",
+        "present": true,
+        "frameRange": [
+          1.0,
+          25.0
+        ],
+        "durationSecondsAt24Fps": 1.0,
+        "sampleFrames": [
+          1.0,
+          7.0,
+          13.0,
+          19.0,
+          25.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 25,
+        "keyframeCountMaximum": 25,
+        "maxPoseMatrixDelta": 0.8414599299430847,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.7974525690078735e-06,
+        "endPalmRelationDelta": 5.252659320831299e-07,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_RUN",
+        "present": true,
+        "frameRange": [
+          1.0,
+          19.0
+        ],
+        "durationSecondsAt24Fps": 0.75,
+        "sampleFrames": [
+          1.0,
+          5.5,
+          10.0,
+          14.5,
+          19.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 19,
+        "keyframeCountMaximum": 19,
+        "maxPoseMatrixDelta": 1.224513053894043,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.1920928955078125e-06,
+        "endPalmRelationDelta": 1.1920928955078125e-06,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_JUMP_START",
+        "present": true,
+        "frameRange": [
+          1.0,
+          14.0
+        ],
+        "durationSecondsAt24Fps": 0.5416666666666666,
+        "sampleFrames": [
+          1.0,
+          4.25,
+          7.5,
+          10.75,
+          14.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 14,
+        "keyframeCountMaximum": 14,
+        "maxPoseMatrixDelta": 0.36049252598083115,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 6.463378667831421e-07,
+        "endPalmRelationDelta": 5.066394805908203e-07,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "present": true,
+        "frameRange": [
+          1.0,
+          25.0
+        ],
+        "durationSecondsAt24Fps": 1.0,
+        "sampleFrames": [
+          1.0,
+          7.0,
+          13.0,
+          19.0,
+          25.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 25,
+        "keyframeCountMaximum": 25,
+        "maxPoseMatrixDelta": 0.4467994421720505,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.0337680578231812e-06,
+        "endPalmRelationDelta": 5.066394805908203e-07,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_LAND",
+        "present": true,
+        "frameRange": [
+          1.0,
+          16.0
+        ],
+        "durationSecondsAt24Fps": 0.625,
+        "sampleFrames": [
+          1.0,
+          4.75,
+          8.5,
+          12.25,
+          16.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 16,
+        "keyframeCountMaximum": 16,
+        "maxPoseMatrixDelta": 0.2837057411670685,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 8.642673492431641e-07,
+        "endPalmRelationDelta": 0.0,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_PRIMARY_FIRE",
+        "present": true,
+        "frameRange": [
+          1.0,
+          12.0
+        ],
+        "durationSecondsAt24Fps": 0.4583333333333333,
+        "sampleFrames": [
+          1.0,
+          3.75,
+          6.5,
+          9.25,
+          12.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 12,
+        "keyframeCountMaximum": 12,
+        "maxPoseMatrixDelta": 0.592176042497158,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 4.470348358154297e-07,
+        "endPalmRelationDelta": 0.0,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_RELOAD",
+        "present": true,
+        "frameRange": [
+          1.0,
+          49.0
+        ],
+        "durationSecondsAt24Fps": 2.0,
+        "sampleFrames": [
+          1.0,
+          13.0,
+          25.0,
+          37.0,
+          49.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 49,
+        "keyframeCountMaximum": 49,
+        "maxPoseMatrixDelta": 0.7851535081863403,
+        "variedBones": 23,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 0.7212763484567404,
+        "endPalmRelationDelta": 0.0,
+        "contactException": true
+      },
+      {
+        "name": "KYX_V6C_TP_HIT_REACTION_FRONT",
+        "present": true,
+        "frameRange": [
+          1.0,
+          20.0
+        ],
+        "durationSecondsAt24Fps": 0.7916666666666666,
+        "sampleFrames": [
+          1.0,
+          5.75,
+          10.5,
+          15.25,
+          20.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 20,
+        "keyframeCountMaximum": 20,
+        "maxPoseMatrixDelta": 0.2022235319018364,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 8.940696716308594e-07,
+        "endPalmRelationDelta": 0.0,
+        "contactException": false
+      },
+      {
+        "name": "KYX_V6C_TP_DEATH_FRONT",
+        "present": true,
+        "frameRange": [
+          1.0,
+          60.0
+        ],
+        "durationSecondsAt24Fps": 2.4583333333333335,
+        "sampleFrames": [
+          1.0,
+          15.75,
+          30.5,
+          45.25,
+          60.0
+        ],
+        "fcurves": 520,
+        "keyframeCountMinimum": 60,
+        "keyframeCountMaximum": 60,
+        "maxPoseMatrixDelta": 1.5611817240715027,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 6.724148988723755e-07,
+        "endPalmRelationDelta": 6.724148988723755e-07,
+        "contactException": false
+      }
+    ],
+    "contactFixtureSkinGroups": {
+      "KYX_V6B_CF_R1_RuntimeContact_ForegripContact_Mesh": [
+        "palm.R"
+      ],
+      "KYX_V6B_CF_R1_RuntimeContact_ForegripHandStop_Mesh": [
+        "palm.R"
+      ],
+      "KYX_V6B_CF_R1_RuntimeContact_GripContact_Mesh": [
+        "palm.R"
+      ],
+      "KYX_V6B_CF_R1_RuntimeContact_StockPadContact_Mesh": [
+        "palm.R"
+      ],
+      "KYX_V6B_CF_R1_RuntimeContact_Trigger_Mesh": [
+        "palm.R"
+      ],
+      "KYX_V6B_CF_R1_RuntimeContact_TriggerGuard_Mesh": [
+        "palm.R"
+      ]
+    }
+  },
+  "budget": {
+    "measured": {
+      "triangles": 297996,
+      "primitives": 109,
+      "materials": 16,
+      "nodes": 159,
+      "lods": 0
+    },
+    "currentCharacterLimits": {
+      "triangles": 45000,
+      "primitives": 3
+    },
+    "status": "OPEN_OVER_BUDGET_NOT_RELEASE",
+    "safeOptimizationSequence": [
+      "Freeze the visually accepted V6-C high-detail source and never decimate it in place.",
+      "Build a clean authored LOD0 retopology near 45k triangles with one continuous body/undersuit shell and preserve hands, face, helmet silhouette, and rifle contacts.",
+      "Merge rigid armor and rifle subparts by material/skin role, then atlas materials to reduce 109 primitives toward the three-primitive contract.",
+      "Transfer weights and corrective shapes from the frozen high-detail source; replay this exact ten-clip audit before accepting LOD0.",
+      "Derive LOD1/LOD2 from the accepted LOD0 with silhouette/contact constraints, then add screen-size switching and multiplayer performance capture.",
+      "Do not use blind whole-character decimation as the first step; it would jeopardize hands, garment boundaries, helmet facets, and rifle contact."
+    ]
+  },
+  "assertions": {
+    "rev12SourceHashPinnedAndUnchanged": true,
+    "candidateSavedOutsideRev12Path": true,
+    "glbHeaderSelfContained": true,
+    "glbContainsExactGameplayClipSet": true,
+    "glbContainsNoDiagnosticHoldClips": true,
+    "allGlbClipsHaveExpectedNonzeroDurations": true,
+    "allGlbClipsHaveMultiKeyMotionTracks": true,
+    "freshReimportContains52BoneRigAndMeshes": true,
+    "freshReimportContainsExactGameplayClipSet": true,
+    "everyImportedClipHasVisiblePoseDiversity": true,
+    "loopClipsAreSeamClosed": true,
+    "supportAndGripRelationStableOutsideReload": true,
+    "reloadSupportHandDepartsAndReturns": true,
+    "runtimeContactFixturesRemainPalmRightSkinned": true,
+    "acceptedCorrectiveSurfaceBakedAndNoRuntimeMorphTracks": true
+  },
+  "nonClaims": [
+    "This is a non-default, non-release V6-C/Rev13 gameplay-animation candidate.",
+    "It does not replace public/player.glb or any assets/runtime path.",
+    "No first-person arms, LOD, multiplayer, performance, human visual acceptance, or G6 claim is made.",
+    "The Blender and Three.js proofs validate authentic timed motion and runtime playback, not final animation polish."
+  ]
+}

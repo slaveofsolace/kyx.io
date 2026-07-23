@@ -1,0 +1,423 @@
+{
+  "schemaVersion": 1,
+  "kind": "ruleset",
+  "id": "revamped_classic",
+  "revision": 3,
+  "displayName": "Revamped",
+  "implementationStatus": "contract_only",
+  "provenance": {
+    "sourceProfile": "revamped_classic",
+    "evidenceLabel": "PRODUCT_OVERRIDE",
+    "designReason": "Revision 3 pins the first deterministic G4 combat implementation fixture without changing the accepted revision 2 default or claiming room integration and runtime acceptance."
+  },
+  "tickRateHz": 20,
+  "loadout": {
+    "weaponSlots": {
+      "primary": {
+        "capacity": 1,
+        "acquisition": "spawn"
+      },
+      "secondary": {
+        "capacity": 1,
+        "acquisition": "pickup_optional"
+      },
+      "melee": {
+        "capacity": 1,
+        "acquisition": "spawn"
+      }
+    },
+    "abilitySlots": {
+      "damage": 2,
+      "utility": 1
+    },
+    "ammoAbility": {
+      "enabledByDefault": false
+    }
+  },
+  "movementProfile": {
+    "id": "phase3_hypothesis_v1",
+    "revision": 1,
+    "implementationStatus": "fixture_only"
+  },
+  "combatProfile": {
+    "schemaVersion": 1,
+    "implementationStatus": "implementation_fixture",
+    "provenance": {
+      "sourceProfile": "revamped_classic",
+      "evidenceLabel": "PRODUCT_OVERRIDE",
+      "designReason": "Pins the reviewed P5.1 and P5.2 implementation values plus the selected first Impulse Grenade and TDM match contracts; this profile is not playable until authoritative room integration and G4 runtime proof pass."
+    },
+    "life": {
+      "maximumHealthPoints": 100,
+      "maximumShieldPoints": 0,
+      "spawnProtectionTicks": 20,
+      "spawnProtectionBreaksOnOffense": true,
+      "respawnDelayTicks": 160,
+      "assistWindowTicks": 200,
+      "minimumAssistHealthDamagePoints": 1,
+      "friendlyFireEnabled": false,
+      "selfDamageEnabled": false,
+      "regenerationEnabled": false
+    },
+    "match": {
+      "mode": "team_deathmatch",
+      "warmupTicks": 40,
+      "activeTicks": 9600,
+      "postmatchTicks": 200,
+      "teamScoreLimit": 40
+    },
+    "autoRifle": {
+      "weaponId": "vertical_rifle_v1",
+      "baseDamagePoints": 10,
+      "pelletsPerShot": 1,
+      "headMultiplierPermille": 1000,
+      "limbMultiplierPermille": 1000,
+      "rangeMillimeters": 120000,
+      "magazineCapacity": 50,
+      "reserveCapacity": 150,
+      "fireCooldownTicks": 2,
+      "reloadTicks": 60,
+      "readyTicks": 4,
+      "autoReloadEnabled": true,
+      "reloadTransferPolicy": "completion_tick_once",
+      "reloadInterruptionPolicy": "fire_or_sprint_before_transfer_death_always",
+      "sprintFirePolicy": "blocked_ready_delay",
+      "baseSpreadMilliDegrees": 0,
+      "maximumSpreadMilliDegrees": 1146,
+      "recoilPatternId": "kyx_auto_rifle_12_v1"
+    },
+    "impulseGrenade": {
+      "abilityId": "vertical_impulse_grenade_v1",
+      "damageHealthPoints": 0,
+      "areaRadiusMillimeters": 11000,
+      "projectileSpeedMillimetersPerSecond": 18000,
+      "readyTicks": 8,
+      "cooldownTicks": 240,
+      "fuseTicks": 30,
+      "fuseStarts": "first_qualifying_collision",
+      "lifetimeTicks": 120,
+      "projectileRadiusMillimeters": 150,
+      "maximumBounces": 3,
+      "restitutionPermille": 550,
+      "frictionPermille": 200,
+      "ownerImmunityTicks": 6,
+      "ownerCollisionPolicy": "ignored_then_normal",
+      "radialFalloff": "linear_to_zero",
+      "selfImpulseMillimetersPerSecond": 9000,
+      "enemyImpulseMillimetersPerSecond": 7000,
+      "verticalImpulseCapMillimetersPerSecond": 8000,
+      "maximumActivePerPlayer": 2
+    }
+  },
+  "verticalSlice": {
+    "primaryWeaponId": "vertical_rifle_v1",
+    "meleeWeaponId": "vertical_melee_v1",
+    "damageAbilityIds": [
+      "vertical_impulse_grenade_v1",
+      "vertical_deployable_v1"
+    ],
+    "utilityAbilityId": "vertical_teleport_v1"
+  },
+  "weapons": [
+    {
+      "schemaVersion": 1,
+      "kind": "weapon",
+      "id": "vertical_rifle_v1",
+      "displayName": "Auto Rifle",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "modern_v1_7_5",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Normalizes the audited Auto Rifle values and explicit project overrides into a deterministic implementation fixture; the record remains contract-only until authoritative room and runtime evidence pass."
+      },
+      "slot": "primary",
+      "category": "rifle",
+      "equipConstraints": [
+        "one_primary_at_spawn",
+        "authority_validates_cadence_ammo_and_origin"
+      ],
+      "timingsTicks": {
+        "fireCooldown": 2,
+        "reload": 60,
+        "ready": 4
+      },
+      "damage": {
+        "base": 10,
+        "pellets": 1,
+        "headMultiplier": 1,
+        "limbMultiplier": 1
+      },
+      "delivery": {
+        "kind": "hitscan",
+        "rangeMillimeters": 120000,
+        "falloffStartMillimeters": 120000,
+        "areaRadiusMillimeters": null
+      },
+      "ammo": {
+        "magazine": 50,
+        "reserve": 150,
+        "autoReload": true,
+        "pickupPolicy": "spawn"
+      },
+      "spread": {
+        "baseMilliDegrees": 0,
+        "recoilPatternId": "kyx_auto_rifle_12_v1"
+      },
+      "movementConstraints": [
+        "sprint_blocks_fire",
+        "four_ready_ticks_after_sprint"
+      ],
+      "projectilePolicy": null,
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "hitscan"
+        ]
+      },
+      "debugNotes": [
+        "Pure weapon-state foundations exist, but this content remains contract-only until G4 room integration and direct runtime proof."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "kind": "weapon",
+      "id": "vertical_melee_v1",
+      "displayName": "Vertical Slice Melee",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Reserves the always-available melee fallback while leaving unapproved reach, timing, and damage values explicit."
+      },
+      "slot": "melee",
+      "category": "melee",
+      "equipConstraints": [
+        "one_melee_at_spawn",
+        "authority_validates_readiness_and_reach"
+      ],
+      "timingsTicks": {
+        "fireCooldown": null,
+        "reload": null,
+        "ready": null
+      },
+      "damage": {
+        "base": null,
+        "pellets": 1,
+        "headMultiplier": null,
+        "limbMultiplier": null
+      },
+      "delivery": {
+        "kind": "melee",
+        "rangeMillimeters": null,
+        "falloffStartMillimeters": null,
+        "areaRadiusMillimeters": null
+      },
+      "ammo": {
+        "magazine": null,
+        "reserve": null,
+        "autoReload": null,
+        "pickupPolicy": "none"
+      },
+      "spread": {
+        "baseMilliDegrees": null,
+        "recoilPatternId": null
+      },
+      "movementConstraints": [
+        "authority_profile_fixture_only"
+      ],
+      "projectilePolicy": null,
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "close_range"
+        ]
+      },
+      "debugNotes": [
+        "This record is a contract, not a balance claim."
+      ]
+    }
+  ],
+  "abilities": [
+    {
+      "schemaVersion": 1,
+      "kind": "ability",
+      "id": "vertical_impulse_grenade_v1",
+      "displayName": "Impulse Grenade",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "modern_v1_7_5",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Pins the selected zero-damage impulse projectile and explicit deterministic conversion policies; it remains contract-only until projectile authority and runtime proof pass."
+      },
+      "slot": "damage",
+      "category": "grenade",
+      "equipConstraints": [
+        "occupies_one_damage_slot",
+        "authority_spawns_projectile",
+        "maximum_two_active_per_player"
+      ],
+      "timingsTicks": {
+        "cooldown": 240,
+        "active": 120,
+        "ready": 8,
+        "fuse": 30,
+        "arming": 0
+      },
+      "effect": {
+        "damageHealthPoints": 0,
+        "areaRadiusMillimeters": 11000,
+        "impulseMillimetersPerSecond": 9000,
+        "rangeMillimeters": 11000
+      },
+      "projectilePolicy": {
+        "collision": "swept_sphere_world_and_player_earliest_contact",
+        "speedMillimetersPerSecond": 18000,
+        "sticks": false,
+        "bounces": true,
+        "ownerCollision": "ignored_first_6_ticks_then_normal"
+      },
+      "resourcePolicy": "cooldown_only",
+      "movementConstraints": [
+        "authority_applies_collision_safe_impulse"
+      ],
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "impulse",
+          "projectile"
+        ]
+      },
+      "debugNotes": [
+        "The combat profile owns fuse start, radius, bounce count, material response, owner immunity, falloff, impulse caps, and active-count details."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "kind": "ability",
+      "id": "vertical_deployable_v1",
+      "displayName": "Vertical Slice Deployable",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Provides one damage deployable contract so placement and lifecycle can be tested separately from grenade behavior."
+      },
+      "slot": "damage",
+      "category": "deployable",
+      "equipConstraints": [
+        "occupies_one_damage_slot",
+        "authority_places_and_owns_lifecycle"
+      ],
+      "timingsTicks": {
+        "cooldown": null,
+        "active": null,
+        "ready": null,
+        "fuse": null,
+        "arming": null
+      },
+      "effect": {
+        "damageHealthPoints": null,
+        "areaRadiusMillimeters": null,
+        "impulseMillimetersPerSecond": null,
+        "rangeMillimeters": null
+      },
+      "projectilePolicy": {
+        "collision": "unresolved_product_policy",
+        "speedMillimetersPerSecond": null,
+        "sticks": null,
+        "bounces": null,
+        "ownerCollision": "unresolved_product_policy"
+      },
+      "resourcePolicy": "cooldown_only",
+      "movementConstraints": [
+        "authority_profile_fixture_only"
+      ],
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "area_denial",
+          "deployable"
+        ]
+      },
+      "debugNotes": [
+        "Trigger, arming, destruction, and owner policies remain deliberately unselected."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "kind": "ability",
+      "id": "vertical_teleport_v1",
+      "displayName": "Vertical Slice Teleport",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Reserves teleport as the single utility slot while collision validation, range, and cooldown remain explicit authoring decisions."
+      },
+      "slot": "utility",
+      "category": "teleport",
+      "equipConstraints": [
+        "occupies_utility_slot",
+        "authority_validates_destination"
+      ],
+      "timingsTicks": {
+        "cooldown": null,
+        "active": null,
+        "ready": null,
+        "fuse": null,
+        "arming": null
+      },
+      "effect": {
+        "damageHealthPoints": null,
+        "areaRadiusMillimeters": null,
+        "impulseMillimetersPerSecond": null,
+        "rangeMillimeters": null
+      },
+      "projectilePolicy": null,
+      "resourcePolicy": "cooldown_only",
+      "movementConstraints": [
+        "authority_profile_fixture_only",
+        "destination_must_pass_collision_query"
+      ],
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "mobility"
+        ]
+      },
+      "debugNotes": [
+        "No client-authored destination is authoritative."
+      ]
+    }
+  ]
+}

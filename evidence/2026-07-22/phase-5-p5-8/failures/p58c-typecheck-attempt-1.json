@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8c-typecheck-attempt-1",
+  "capturedAt": "2026-07-22T03:45:00-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "commands": [
+    "node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+    "node_modules/typescript/bin/tsc -p tsconfig.worker.json --noEmit"
+  ],
+  "result": {
+    "application": "FAIL",
+    "worker": "FAIL"
+  },
+  "failures": [
+    {
+      "cause": "LoadoutRequestMessage existed in protocol.ts but was not re-exported by src/net/index.ts.",
+      "correction": "The existing protocol type is now part of the public net type surface."
+    },
+    {
+      "cause": "Object.freeze inferred the two damage IDs as a readonly array instead of the required two-slot tuple.",
+      "correction": "The frozen value now has an explicit readonly two-string tuple type."
+    },
+    {
+      "cause": "The evaluator lifecycle union omitted created, idle, and expired room states.",
+      "correction": "All sealed room lifecycle states are represented and every state except lobby rejects as loadout_locked."
+    }
+  ]
+}

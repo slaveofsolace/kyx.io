@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "validatedBeforeDeletion": {
+    "resolvedPath": "C:\\Users\\suhai\\AppData\\Local\\Temp\\kyx-human-base-meshes-v1.4.1-20260722T031922Z",
+    "operatingSystemTempRoot": "C:\\Users\\suhai\\AppData\\Local\\Temp\\",
+    "insideOperatingSystemTempRoot": true,
+    "exactExpectedLeaf": true,
+    "fileCount": 4,
+    "bytes": 100238545
+  },
+  "removedUtc": "2026-07-22T03:37:58.2452683Z",
+  "pathExistsAfterRemoval": false,
+  "recoverable": false,
+  "archiveRetainedInRepository": false,
+  "archiveRetainedOutsideRepository": false,
+  "status": "TEMP_QUARANTINE_REMOVED_AFTER_DURABLE_HASH_EVIDENCE"
+}

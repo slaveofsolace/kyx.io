@@ -1,0 +1,171 @@
+{
+  "candidateRevision": {
+    "collision": {
+      "bytes": 595160,
+      "export": {
+        "operatorArguments": {
+          "export_animations": false,
+          "export_apply": true,
+          "export_cameras": false,
+          "export_extras": true,
+          "export_format": "GLB",
+          "export_lights": false,
+          "export_materials": "EXPORT",
+          "export_yup": true,
+          "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-22\\phase-6-p6-6a-collision-revision2\\failures\\attempt-2-east-and-teleport-refinement\\export\\collision.authority.glb",
+          "use_selection": true
+        },
+        "result": [
+          "FINISHED"
+        ]
+      },
+      "meshNodeCount": 334,
+      "path": "export/collision.authority.glb",
+      "sha256": "e7c9342528c4eb4a96cdcda947f148c5fd0c3e6d7161198ee65f4a014d1e408d"
+    },
+    "render": {
+      "byteIdenticalToRevision1": true,
+      "bytes": 613564,
+      "path": "export/render.graybox.glb",
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    "revision": 2,
+    "sourceBlend": {
+      "bytes": 525274,
+      "path": "source/inkfall_foundry_collision_revision2.blend",
+      "sha256": "40d80aa2308b291487c193e93f4b4f686ac41faacc6b5fc6910bc93f35280db9"
+    }
+  },
+  "collisionCorrection": {
+    "candidateMeshNodeCount": 334,
+    "eastTerminalSupport": {
+      "archiveNodeTopMm": 6000,
+      "centerSeedMm": [
+        23800,
+        5500,
+        14700
+      ],
+      "dimensionsLocalMm": [
+        5200,
+        2000,
+        300
+      ],
+      "id": "C_REV2__ARCHIVE_EAST_TERMINAL_SUPPORT",
+      "measuredIncomingFootMm": 5350,
+      "resultingRisesMm": [
+        300,
+        350
+      ],
+      "supportTopMm": 5650
+    },
+    "originalMeshNodeCount": 346,
+    "removedArchiveTreads": [
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T00",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T01",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T02",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T03",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T04",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T05",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T06",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T07",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T00",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T01",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T02",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T03",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T04",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T05",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T06",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T07"
+    ],
+    "retainedContinuousArchiveRamps": [
+      "C_ROUTE__WEST_CHOICE_ARCHIVE__S01",
+      "C_ROUTE__ARCHIVE_EAST_CHOICE__S01"
+    ],
+    "teleport": {
+      "exitRouteCollider": {
+        "candidateDimensionsLocalMm": [
+          2062,
+          2400,
+          250
+        ],
+        "id": "C_ROUTE__TELEPORT_EXIT_PRESS_CORE__S00",
+        "originalDimensionsLocalMm": [
+          3862,
+          2400,
+          250
+        ],
+        "trimmedStartMm": 1800
+      },
+      "landingNodeAuthorityCollisionChanged": true,
+      "landingNodeVisibleGeometryChanged": false,
+      "landingPadDiameterMm": 4000,
+      "reactorOriginalBoundsPreservedByUpperAndFlankSolids": true,
+      "removedLandingCollider": "C_NODE__TELEPORT_EXIT",
+      "removedReactorCollider": "C_MODULE__PRESS_REACTOR_SOUTH",
+      "replacementLandingCollider": {
+        "castClearanceMm": 100,
+        "dimensionsLocalMm": [
+          4000,
+          4000,
+          250
+        ],
+        "fixedLandingFeetMm": [
+          1539,
+          1431,
+          -4461
+        ],
+        "id": "C_REV2__NODE__TELEPORT_EXIT_SLOPED_LANDING",
+        "surfacePolicy": "parallel_to_fixed_9m_swept_capsule"
+      },
+      "replacementReactorParts": [
+        "C_REV2__PRESS_REACTOR_SOUTH__UPPER_CAP",
+        "C_REV2__PRESS_REACTOR_SOUTH__LOWER_SOUTH",
+        "C_REV2__PRESS_REACTOR_SOUTH__LOWER_EAST",
+        "C_REV2__PRESS_REACTOR_SOUTH__LOWER_WEST_NORTH"
+      ]
+    }
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "id": "inkfall_foundry_p6_6a_bounded_collision_revision",
+    "script": "build_inkfall_foundry_collision_revision2.py",
+    "scriptSha256": "fdffe1d674d0037cd60c908247e6c80f0bb0195800e9976399f7075d459615a6",
+    "version": 2
+  },
+  "nonClaims": [
+    "P6_7_TOPOLOGY_LOCK_NOT_CLAIMED",
+    "FINAL_ART_NOT_CLAIMED",
+    "HUMAN_ACCEPTANCE_NOT_RUN",
+    "G5_NOT_PASSED"
+  ],
+  "preserved": {
+    "movementProfileChanged": false,
+    "renderChanged": false,
+    "revision1ArtifactsChanged": false,
+    "seedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "spawnsChanged": false,
+    "timingBandsChanged": false,
+    "topologyChanged": false
+  },
+  "renderPreservation": {
+    "fingerprintAfter": "0c37f15ebd9ca73cf6a2cf753caeec3129c7b24985e3d0af4f02420767a4c73f",
+    "fingerprintBefore": "0c37f15ebd9ca73cf6a2cf753caeec3129c7b24985e3d0af4f02420767a4c73f",
+    "objectCount": 346,
+    "unchanged": true
+  },
+  "schemaVersion": 1,
+  "sourceRevision": {
+    "blend": {
+      "bytes": 517870,
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\source\\inkfall_foundry.blend",
+      "sha256": "5d7582a64f7bc141e0501646954133451bba2f22ecf9f503dd9927cb88ab5742"
+    },
+    "render": {
+      "bytes": 613564,
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\export\\render.graybox.glb",
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    "revision": 1
+  },
+  "status": "P6_6A_BOUNDED_COLLISION_REVISION_2_CANDIDATE"
+}

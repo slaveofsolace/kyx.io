@@ -44,5 +44,5 @@ export class DamageNumbers {
     setTimeout(() => anchor.remove(), 1100); // safety
   }
 
-  clear() { this.container.innerHTML = ''; }
+  clear() { this.container.replaceChildren(); }
 }

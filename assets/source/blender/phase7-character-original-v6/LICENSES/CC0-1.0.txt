@@ -1,0 +1,39 @@
+Creative Commons CC0 1.0 Universal
+===================================
+
+Canonical legal code:
+https://creativecommons.org/publicdomain/zero/1.0/legalcode.en
+
+Canonical deed:
+https://creativecommons.org/publicdomain/zero/1.0/
+
+This file is an internal license-reference record, not a substitute for the
+canonical legal code at the URL above.
+
+Bundle application evidence
+---------------------------
+
+Product: Blender Human Base Meshes v1.4.1
+Official listing: https://www.blender.org/download/demo-files/
+Official listing observation: "49 MB - CC0"
+Publisher credit: Blender Studio and community contributions
+
+The bundle's embedded README states:
+"All provided assets are public domain under the CC0 license."
+
+CC0 purpose relevant to this record
+-----------------------------------
+
+CC0 is a public-domain dedication with a public-license fallback. The
+canonical legal code describes use, modification, incorporation,
+redistribution, and commercial purposes without an attribution condition,
+subject to its limitations and disclaimers. Trademark, patent, privacy,
+publicity, and third-party rights are not automatically cleared by CC0.
+
+KYX policy
+----------
+
+Although attribution is not required by CC0, the project retains internal
+credit to Blender Studio / Blender Foundation and community contributors,
+the exact source URL/version/hashes, and a clear boundary between the CC0
+anatomy seed and later project-authored work.

@@ -422,7 +422,7 @@ function makeTimesSquareSignTexture() {
   ctx.font = 'bold 18px Arial';
   ctx.shadowBlur = 12;
   ctx.fillStyle = 'rgba(0,229,255,0.65)';
-  ctx.fillText('HALO OF WEB3  ·  PVP  ·  PVE  ·  5 GAME MODES', w / 2, h / 2 + 28);
+  ctx.fillText('OFFLINE PRACTICE  ·  1 LOCAL PLAYER  ·  7 BOTS', w / 2, h / 2 + 28);
   ctx.shadowBlur = 0;
   return new THREE.CanvasTexture(canvas);
 }
@@ -491,7 +491,8 @@ export class World {
     // GPU memory and draw-state low enough to run smoothly.
     this._geo = {
       flower: new THREE.SphereGeometry(0.07, 6, 6),
-      bush: new THREE.SphereGeometry(0.32, 8, 7)
+      bush: new THREE.SphereGeometry(0.32, 8, 7),
+      unitBox: new THREE.BoxGeometry(1, 1, 1),
     };
     this._mats = {
       hedge: new THREE.MeshStandardMaterial({ color: 0x1f3d1b, roughness: 0.95 }),
@@ -545,6 +546,8 @@ export class World {
     };
     this._flowerMats = new Map();
     this._carMats = new Map();
+    this._basicMats = new Map();
+    this._staticInstanceBatches = new Map();
     // Sci-fi neon accent palette + cached emissive materials (bloom does the glow,
     // so these are cheap unlit-looking emissives, no extra point lights).
     // Iconic ev.io accent palette: glowing blue first, with orange + teal.
@@ -586,6 +589,7 @@ export class World {
     this._buildWinterTown();      // bunker blocks, plaza + pavilion, ramps, bridges, lifts
     this._buildSnowProps();       // supply crates + perimeter energy lights
     this._buildOrbitalRing();     // massive ring station overhead — the landmark
+    this._flushStaticInstanceBatches();
     this._buildSpawnPoints();
 
     this.previewPedestalPos = new THREE.Vector3(0, 0, -6);
@@ -704,6 +708,50 @@ export class World {
       this._neonMats.set(c, m);
     }
     return m;
+  }
+
+  _basicMat(c) {
+    let material = this._basicMats.get(c);
+    if (!material) {
+      material = new THREE.MeshBasicMaterial({ color: c });
+      this._basicMats.set(c, material);
+    }
+    return material;
+  }
+
+  _queueStaticInstance(key, geometryFactory, material, position, scale = null, rotationY = 0) {
+    let batch = this._staticInstanceBatches.get(key);
+    if (!batch) {
+      batch = { geometry: geometryFactory(), material, matrices: [] };
+      this._staticInstanceBatches.set(key, batch);
+    }
+    const matrix = new THREE.Matrix4();
+    const quaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rotationY, 0));
+    matrix.compose(
+      position,
+      quaternion,
+      scale ?? new THREE.Vector3(1, 1, 1),
+    );
+    batch.matrices.push(matrix);
+  }
+
+  _flushStaticInstanceBatches() {
+    for (const [key, batch] of this._staticInstanceBatches) {
+      const mesh = new THREE.InstancedMesh(
+        batch.geometry,
+        batch.material,
+        batch.matrices.length,
+      );
+      mesh.name = `static-batch:${key}`;
+      batch.matrices.forEach((matrix, index) => mesh.setMatrixAt(index, matrix));
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.computeBoundingBox();
+      mesh.computeBoundingSphere();
+      mesh.matrixAutoUpdate = false;
+      mesh.updateMatrix();
+      this.scene.add(mesh);
+    }
+    this._staticInstanceBatches.clear();
   }
 
   _randNeon() {
@@ -2353,12 +2401,18 @@ export class World {
       const angle = (i / 8) * Math.PI * 2;
       const nx = Math.cos(angle) * nodeR;
       const nz = Math.sin(angle) * nodeR;
-      const node = new THREE.Mesh(new THREE.SphereGeometry(1.8, 10, 10), metalMat);
-      node.position.set(nx, 120, nz);
-      this.scene.add(node);
-      const nodeTip = new THREE.Mesh(new THREE.SphereGeometry(0.9, 8, 8), nm);
-      nodeTip.position.set(nx, 122.4, nz);
-      this.scene.add(nodeTip);
+      this._queueStaticInstance(
+        'orbital-ring-node',
+        () => new THREE.SphereGeometry(1.8, 10, 10),
+        metalMat,
+        new THREE.Vector3(nx, 120, nz),
+      );
+      this._queueStaticInstance(
+        'orbital-ring-node-tip',
+        () => new THREE.SphereGeometry(0.9, 8, 8),
+        nm,
+        new THREE.Vector3(nx, 122.4, nz),
+      );
     }
   }
 
@@ -2714,17 +2768,25 @@ export class World {
     for (const [cx, cz, w, d] of blocks) {
       for (let i = 0; i < 2; i++) {
         const side = Math.floor(Math.random() * 4);
-        const rubble = new THREE.Mesh(new THREE.SphereGeometry(1, 6, 5), rubbleMat);
         const len = 2.5 + Math.random() * 3;
         let dx = 0, dz = 0;
-        if (side === 0)      { dx =  w / 2 + 0.4; rubble.scale.set(1.1, 0.55, len); }
-        else if (side === 1) { dx = -w / 2 - 0.4; rubble.scale.set(1.1, 0.55, len); }
-        else if (side === 2) { dz =  d / 2 + 0.4; rubble.scale.set(len, 0.55, 1.1); }
-        else                 { dz = -d / 2 - 0.4; rubble.scale.set(len, 0.55, 1.1); }
-        rubble.position.set(cx + dx + (Math.random() - 0.5) * 4, 0.1, cz + dz + (Math.random() - 0.5) * 4);
-        rubble.rotation.y = Math.random() * Math.PI;      // low-poly debris read
-        rubble.userData.noHit = true;
-        this.scene.add(rubble);
+        let scale;
+        if (side === 0)      { dx =  w / 2 + 0.4; scale = new THREE.Vector3(1.1, 0.55, len); }
+        else if (side === 1) { dx = -w / 2 - 0.4; scale = new THREE.Vector3(1.1, 0.55, len); }
+        else if (side === 2) { dz =  d / 2 + 0.4; scale = new THREE.Vector3(len, 0.55, 1.1); }
+        else                 { dz = -d / 2 - 0.4; scale = new THREE.Vector3(len, 0.55, 1.1); }
+        this._queueStaticInstance(
+          'town-rubble',
+          () => new THREE.SphereGeometry(1, 6, 5),
+          rubbleMat,
+          new THREE.Vector3(
+            cx + dx + (Math.random() - 0.5) * 4,
+            0.1,
+            cz + dz + (Math.random() - 0.5) * 4,
+          ),
+          scale,
+          Math.random() * Math.PI,
+        );
       }
     }
 
@@ -2740,7 +2802,7 @@ export class World {
     const g = new THREE.Group();
     const body = new THREE.Mesh(
       new THREE.BoxGeometry(w, h, d),
-      [sideMat, sideMat, mats.roof, mats.roof, sideMat, sideMat]
+      sideMat
     );
     body.position.y = h / 2;
     g.add(body);
@@ -2779,17 +2841,17 @@ export class World {
     const segs = 18;
     for (let i = 0; i <= segs; i++) {
       const t = i / segs;
-      const bulb = new THREE.Mesh(
-        new THREE.SphereGeometry(0.16, 6, 5),
-        new THREE.MeshBasicMaterial({ color: colors[i % colors.length] })
+      const color = colors[i % colors.length];
+      this._queueStaticInstance(
+        `town-conduit-bulb:${color}`,
+        () => new THREE.SphereGeometry(0.16, 6, 5),
+        this._basicMat(color),
+        new THREE.Vector3(
+          x0 + (x1 - x0) * t,
+          y0 + (y1 - y0) * t - Math.sin(t * Math.PI) * 1.4,
+          z0 + (z1 - z0) * t,
+        ),
       );
-      bulb.position.set(
-        x0 + (x1 - x0) * t,
-        y0 + (y1 - y0) * t - Math.sin(t * Math.PI) * 1.4,
-        z0 + (z1 - z0) * t
-      );
-      bulb.matrixAutoUpdate = false; bulb.updateMatrix();
-      this.scene.add(bulb);
     }
   }
 
@@ -2801,24 +2863,46 @@ export class World {
     const glow  = this._neonMat(0x33d4ff);   // status light strip on the lid
 
     const crate = (x, z, s, y = 0) => {
-      const g = new THREE.Group();
-      const box = new THREE.Mesh(new THREE.BoxGeometry(s, s, s), hull);
-      box.position.y = s / 2; g.add(box);
+      this._queueStaticInstance(
+        'supply-crate:hull',
+        () => new THREE.BoxGeometry(1, 1, 1),
+        hull,
+        new THREE.Vector3(x, y + s / 2, z),
+        new THREE.Vector3(s, s, s),
+      );
       // reinforcing edge bands
       for (const ax of ['x', 'z']) {
-        const b = new THREE.Mesh(new THREE.BoxGeometry(ax === 'x' ? s + 0.04 : 0.12, 0.12, ax === 'z' ? s + 0.04 : 0.12), band);
-        b.position.set(0, s / 2, 0); g.add(b);
+        this._queueStaticInstance(
+          'supply-crate:band',
+          () => new THREE.BoxGeometry(1, 1, 1),
+          band,
+          new THREE.Vector3(x, y + s / 2, z),
+          new THREE.Vector3(
+            ax === 'x' ? s + 0.04 : 0.12,
+            0.12,
+            ax === 'z' ? s + 0.04 : 0.12,
+          ),
+        );
       }
       // glowing status strip across the lid
-      const cap = new THREE.Mesh(new THREE.BoxGeometry(s * 0.7, 0.06, 0.14), glow);
-      cap.position.y = s + 0.03; g.add(cap);
-      g.position.set(x, y, z);
-      g.updateMatrixWorld(true);
-      this.scene.add(g);
+      this._queueStaticInstance(
+        'supply-crate:status-strip',
+        () => new THREE.BoxGeometry(1, 1, 1),
+        glow,
+        new THREE.Vector3(x, y + s + 0.03, z),
+        new THREE.Vector3(s * 0.7, 0.06, 0.14),
+      );
+      const collisionMesh = new THREE.Mesh(this._geo.unitBox, hull);
+      collisionMesh.position.set(x, y + s / 2, z);
+      collisionMesh.scale.set(s, s, s);
+      collisionMesh.visible = false;
+      collisionMesh.matrixAutoUpdate = false;
+      collisionMesh.updateMatrix();
+      collisionMesh.updateMatrixWorld(true);
       const half = s / 2;
       this.colliders.push({ box: new THREE.Box3(
         new THREE.Vector3(x - half, y, z - half),
-        new THREE.Vector3(x + half, y + s, z + half)), mesh: box });
+        new THREE.Vector3(x + half, y + s, z + half)), mesh: collisionMesh });
     };
 
     // Crate clusters scattered in the lanes (cover), clear of the centre + ramps.
@@ -2844,13 +2928,12 @@ export class World {
         const x = x0 + (x1 - x0) * t;
         const z = z0 + (z1 - z0) * t;
         const c = bulbColors[i % bulbColors.length];
-        const bulb = new THREE.Mesh(
-          new THREE.SphereGeometry(0.22, 6, 5),
-          new THREE.MeshBasicMaterial({ color: c })
+        this._queueStaticInstance(
+          `perimeter-marker-bulb:${c}`,
+          () => new THREE.SphereGeometry(0.22, 6, 5),
+          this._basicMat(c),
+          new THREE.Vector3(x, y0 - droop, z),
         );
-        bulb.position.set(x, y0 - droop, z);
-        bulb.matrixAutoUpdate = false; bulb.updateMatrix();
-        this.scene.add(bulb);
       }
     };
     const e = half - 1.6;

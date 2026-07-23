@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-6",
+  "capturedAt": "2026-07-22T03:25:25-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 1,
+    "testsFailed": 1
+  },
+  "failure": {
+    "test": "full consequence impairment profiles",
+    "cause": "At ten meters, deterministic rifle spread produced only five hits, so the target correctly remained alive at 50 health.",
+    "correction": "The bounded fixture target is now three meters away, retaining real sealed hit volumes and spread while making the ten-hit lethal consequence deterministic."
+  }
+}

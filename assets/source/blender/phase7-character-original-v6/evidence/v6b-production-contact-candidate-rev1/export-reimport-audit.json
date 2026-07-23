@@ -1,0 +1,862 @@
+{
+  "schema": "kyx-v6b-production-contact-export-reimport-audit-v1",
+  "generatedAt": "2026-07-22T16:23:03.871863+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6B_PRODUCTION_CONTACT_CANDIDATE_REV1",
+  "status": "FAIL_BOUNDED_V6B_EXPORT_REIMPORT_AUDIT",
+  "candidate": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-contact-candidate-rev1\\kyx-v6b-production-contact-candidate-rev1.blend",
+    "bytes": 13363914,
+    "sha256Before": "ac953f87d40677cedc20a2374c7e9fc3bdda541216b200abfe769b00a8b0318a",
+    "sha256After": "ac953f87d40677cedc20a2374c7e9fc3bdda541216b200abfe769b00a8b0318a",
+    "authorReport": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\author-report.json"
+  },
+  "sealedFoundation": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev11b\\kyx-v6-contact-first-rig-rev11b.blend",
+    "sha256": "029ce233dca6ed2119ac0810e07e4392090f0866dde78da04bed390d9a3e0ec0",
+    "body": {
+      "name": "KYX_V6A_AnatomySculpt_Body",
+      "topology": [
+        10582,
+        21170,
+        10590
+      ],
+      "geometrySha256": "2e7786391838bb9f443f78a78043fe5631e234f253184f86f61eeee648637d12"
+    },
+    "rig": {
+      "name": "V6CF11B_ContactFullBodyRig",
+      "boneCount": 52,
+      "digitBoneCount": 30
+    }
+  },
+  "garment": {
+    "name": "KYX_V6B_CF_R1_TailoredOnePieceUndersuit",
+    "baseTopology": {
+      "vertices": 2916,
+      "edges": 5759,
+      "polygons": 2840
+    },
+    "boundaryAudit": {
+      "boundaryEdges": 158,
+      "boundaryVertices": 158,
+      "loops": 5,
+      "allBoundaryVerticesDegreeTwo": true,
+      "degreeHistogram": {
+        "2": 158
+      },
+      "componentVertexCounts": [
+        18,
+        18,
+        28,
+        28,
+        66
+      ]
+    },
+    "evaluatedGeometry": {
+      "vertices": 45753,
+      "edges": 91196,
+      "polygons": 45440,
+      "bounds": {
+        "min": [
+          -0.426043,
+          -0.400077,
+          0.154828
+        ],
+        "max": [
+          0.21405,
+          0.147482,
+          1.502798
+        ]
+      },
+      "maxWorldEdgeLength": 0.04046307,
+      "finite": true
+    },
+    "modifiers": [
+      {
+        "name": "V6CF11B_SmoothDeterministicArmatureDeform",
+        "type": "ARMATURE",
+        "vertexGroup": "",
+        "levels": null,
+        "strength": null
+      },
+      {
+        "name": "TailoredClothSurfaceRelax",
+        "type": "SMOOTH",
+        "vertexGroup": "",
+        "levels": null,
+        "strength": null
+      },
+      {
+        "name": "TailoredClothSubdivision",
+        "type": "SUBSURF",
+        "vertexGroup": "",
+        "levels": 2,
+        "strength": null
+      },
+      {
+        "name": "TailoredClothAllowance",
+        "type": "DISPLACE",
+        "vertexGroup": "GarmentAllowance",
+        "levels": null,
+        "strength": 0.012000000104308128
+      }
+    ]
+  },
+  "materials": {
+    "used": [
+      "KYX_V6B_CF_R1_AshComposite",
+      "KYX_V6B_CF_R1_BlackJointKnit",
+      "KYX_V6B_CF_R1_BootCompositeUpper",
+      "KYX_V6B_CF_R1_ContactAuthorityUnderbody",
+      "KYX_V6B_CF_R1_ContactRubber",
+      "KYX_V6B_CF_R1_CyanTelemetry",
+      "KYX_V6B_CF_R1_DeepGunmetal",
+      "KYX_V6B_CF_R1_GraphiteTailoredWeave",
+      "KYX_V6B_CF_R1_MachinedEdge",
+      "KYX_V6B_CF_R1_OxideIdentity",
+      "KYX_V6B_CF_R1_PetrolBallisticVisor",
+      "KYX_V6B_CF_R1_RecessedSeam",
+      "KYX_V6B_CF_R1_SmokedCeramic",
+      "KYX_V6B_CF_R1_TactileGloveRubber",
+      "KYX_V6B_CF_R1_WeatheredBoneCeramic",
+      "KYX_V6B_CF_R1_WovenTrouserReinforcement"
+    ],
+    "count": 16,
+    "missingMaterialObjects": []
+  },
+  "runtimeContactParenting": [
+    {
+      "source": "V6CF11B_Rifle_GripContact",
+      "runtimeDuplicate": "KYX_V6B_CF_R1_RuntimeContact_GripContact",
+      "type": "MESH",
+      "geometryCountsSource": {
+        "vertices": 8,
+        "edges": 12,
+        "polygons": 6
+      },
+      "geometryCountsDuplicate": {
+        "vertices": 8,
+        "edges": 12,
+        "polygons": 6
+      },
+      "matrixDeltaAtExportPose": 0.0,
+      "boundsDeltaAtExportPose": 0.0,
+      "worldBounds": {
+        "min": [
+          -0.15770158,
+          -0.48230952,
+          1.07999992
+        ],
+        "max": [
+          -0.06922841,
+          -0.38175046,
+          1.25
+        ]
+      },
+      "parent": "V6CF11B_ContactFullBodyRig",
+      "parentType": "BONE",
+      "parentBone": "palm.R"
+    },
+    {
+      "source": "V6CF11B_Rifle_ForegripContact",
+      "runtimeDuplicate": "KYX_V6B_CF_R1_RuntimeContact_ForegripContact",
+      "type": "MESH",
+      "geometryCountsSource": {
+        "vertices": 80,
+        "edges": 120,
+        "polygons": 42
+      },
+      "geometryCountsDuplicate": {
+        "vertices": 80,
+        "edges": 120,
+        "polygons": 42
+      },
+      "matrixDeltaAtExportPose": 0.0,
+      "boundsDeltaAtExportPose": 0.0,
+      "worldBounds": {
+        "min": [
+          -0.09383401,
+          -0.67259902,
+          1.0940001
+        ],
+        "max": [
+          -0.00383399,
+          -0.58259898,
+          1.28600001
+        ]
+      },
+      "parent": "V6CF11B_ContactFullBodyRig",
+      "parentType": "BONE",
+      "parentBone": "palm.R"
+    },
+    {
+      "source": "V6CF11B_Rifle_ForegripHandStop",
+      "runtimeDuplicate": "KYX_V6B_CF_R1_RuntimeContact_ForegripHandStop",
+      "type": "MESH",
+      "geometryCountsSource": {
+        "vertices": 8,
+        "edges": 12,
+        "polygons": 6
+      },
+      "geometryCountsDuplicate": {
+        "vertices": 8,
+        "edges": 12,
+        "polygons": 6
+      },
+      "matrixDeltaAtExportPose": 0.0,
+      "boundsDeltaAtExportPose": 0.0,
+      "worldBounds": {
+        "min": [
+          -0.0832658,
+          -0.69102991,
+          1.24250007
+        ],
+        "max": [
+          0.00628787,
+          -0.65586281,
+          1.28750014
+        ]
+      },
+      "parent": "V6CF11B_ContactFullBodyRig",
+      "parentType": "BONE",
+      "parentBone": "palm.R"
+    },
+    {
+      "source": "V6CF11B_Rifle_StockPadContact",
+      "runtimeDuplicate": "KYX_V6B_CF_R1_RuntimeContact_StockPadContact",
+      "type": "MESH",
+      "geometryCountsSource": {
+        "vertices": 8,
+        "edges": 12,
+        "polygons": 6
+      },
+      "geometryCountsDuplicate": {
+        "vertices": 8,
+        "edges": 12,
+        "polygons": 6
+      },
+      "matrixDeltaAtExportPose": 0.0,
+      "boundsDeltaAtExportPose": 0.0,
+      "worldBounds": {
+        "min": [
+          -0.2325054,
+          -0.18300822,
+          1.28250003
+        ],
+        "max": [
+          -0.1181246,
+          -0.13283378,
+          1.44749999
+        ]
+      },
+      "parent": "V6CF11B_ContactFullBodyRig",
+      "parentType": "BONE",
+      "parentBone": "palm.R"
+    },
+    {
+      "source": "V6CF11B_Rifle_Trigger",
+      "runtimeDuplicate": "KYX_V6B_CF_R1_RuntimeContact_Trigger",
+      "type": "MESH",
+      "geometryCountsSource": {
+        "vertices": 48,
+        "edges": 72,
+        "polygons": 26
+      },
+      "geometryCountsDuplicate": {
+        "vertices": 48,
+        "edges": 72,
+        "polygons": 26
+      },
+      "matrixDeltaAtExportPose": 0.0,
+      "boundsDeltaAtExportPose": 0.0,
+      "worldBounds": {
+        "min": [
+          -0.16731654,
+          -0.40858114,
+          1.17990875
+        ],
+        "max": [
+          -0.15287746,
+          -0.38972288,
+          1.21771717
+        ]
+      },
+      "parent": "V6CF11B_ContactFullBodyRig",
+      "parentType": "BONE",
+      "parentBone": "palm.R"
+    },
+    {
+      "source": "V6CF11B_Rifle_TriggerGuard",
+      "runtimeDuplicate": "KYX_V6B_CF_R1_RuntimeContact_TriggerGuard",
+      "type": "CURVE",
+      "geometryCountsSource": {
+        "splines": 1,
+        "bevelResolution": 4,
+        "resolutionU": 16
+      },
+      "geometryCountsDuplicate": {
+        "splines": 1,
+        "bevelResolution": 4,
+        "resolutionU": 16
+      },
+      "matrixDeltaAtExportPose": 0.0,
+      "boundsDeltaAtExportPose": 0.0,
+      "worldBounds": {
+        "min": [
+          -0.17548071,
+          -0.46334788,
+          1.14473712
+        ],
+        "max": [
+          -0.14107904,
+          -0.35106328,
+          1.23337305
+        ]
+      },
+      "parent": "V6CF11B_ContactFullBodyRig",
+      "parentType": "BONE",
+      "parentBone": "palm.R"
+    }
+  ],
+  "acceptedContactPoseHold": {
+    "name": "V6CF11B_ContactPose_Action",
+    "frameStart": 1,
+    "frameEnd": 20,
+    "identicalPoseKeys": true,
+    "bones": 52,
+    "maxPoseMatrixDeltaFrame1To20": 0.0,
+    "claim": "sealed accepted contact-pose hold only; not a movement-animation matrix"
+  },
+  "export": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-contact-candidate-rev1\\export\\kyx-v6b-production-contact-candidate-rev1.runtime-candidate.glb",
+    "bytes": 1209356,
+    "sha256": "7a957e8354c81ee7dad95a786d30e47a38b2190ae3c89670bb9d4d8a7e5ac5c7",
+    "selectedObjects": 107,
+    "selectedTypeCounts": {
+      "ARMATURE": 1,
+      "CURVE": 6,
+      "MESH": 100
+    },
+    "operator": "bpy.ops.export_scene.gltf",
+    "operatorKwargs": {
+      "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-contact-candidate-rev1\\export\\kyx-v6b-production-contact-candidate-rev1.runtime-candidate.glb",
+      "check_existing": false,
+      "export_format": "GLB",
+      "use_selection": true,
+      "export_copyright": "KYX project-original V6-B bounded production/contact candidate; not G6 or final human acceptance",
+      "export_texcoords": false,
+      "export_normals": true,
+      "export_tangents": false,
+      "export_materials": "EXPORT",
+      "export_cameras": false,
+      "export_extras": true,
+      "export_yup": true,
+      "export_apply": false,
+      "export_animations": true,
+      "export_frame_range": true,
+      "export_frame_step": 1,
+      "export_force_sampling": true,
+      "export_optimize_animation_size": true,
+      "export_animation_mode": "ACTIONS",
+      "export_skins": true,
+      "export_influence_nb": 4,
+      "export_all_influences": false,
+      "export_def_bones": true,
+      "export_leaf_bone": false,
+      "export_lights": false
+    },
+    "glb": {
+      "header": {
+        "magic": "glTF",
+        "version": 2,
+        "declaredLength": 1209356,
+        "actualLength": 1209356
+      },
+      "asset": {
+        "copyright": "KYX project-original V6-B bounded production/contact candidate; not G6 or final human acceptance",
+        "generator": "Khronos glTF Blender I/O v5.1.20",
+        "version": "2.0"
+      },
+      "counts": {
+        "scenes": 1,
+        "nodes": 159,
+        "meshes": 106,
+        "primitives": 111,
+        "materials": 16,
+        "skins": 1,
+        "animations": 1,
+        "accessors": 430,
+        "bufferViews": 430
+      },
+      "materialNames": [
+        "KYX_V6B_CF_R1_AshComposite",
+        "KYX_V6B_CF_R1_BlackJointKnit",
+        "KYX_V6B_CF_R1_BootCompositeUpper",
+        "KYX_V6B_CF_R1_ContactAuthorityUnderbody",
+        "KYX_V6B_CF_R1_ContactRubber",
+        "KYX_V6B_CF_R1_CyanTelemetry",
+        "KYX_V6B_CF_R1_DeepGunmetal",
+        "KYX_V6B_CF_R1_GraphiteTailoredWeave",
+        "KYX_V6B_CF_R1_MachinedEdge",
+        "KYX_V6B_CF_R1_OxideIdentity",
+        "KYX_V6B_CF_R1_PetrolBallisticVisor",
+        "KYX_V6B_CF_R1_RecessedSeam",
+        "KYX_V6B_CF_R1_SmokedCeramic",
+        "KYX_V6B_CF_R1_TactileGloveRubber",
+        "KYX_V6B_CF_R1_WeatheredBoneCeramic",
+        "KYX_V6B_CF_R1_WovenTrouserReinforcement"
+      ],
+      "skinJointCounts": [
+        52
+      ],
+      "skinnedPrimitiveCount": 7,
+      "animationNames": [
+        "V6CF11B_ContactPose_Action"
+      ],
+      "animationChannelCounts": [
+        156
+      ],
+      "externalUris": [],
+      "extensionsUsed": [
+        "KHR_materials_clearcoat",
+        "KHR_materials_emissive_strength"
+      ],
+      "extensionsRequired": []
+    }
+  },
+  "reimport": {
+    "proofBlend": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\reimport\\kyx-v6b-production-contact-candidate-rev1.reimport-proof.blend",
+      "bytes": 1639383,
+      "sha256": "036d5ddf224d0be17272b5879dc709032fb472d3ca4cd16e31fb82ec24afa3fc"
+    },
+    "objects": 108,
+    "meshes": 107,
+    "nonemptyMeshes": 107,
+    "armatures": 1,
+    "largestArmature": "V6CF11B_ContactFullBodyRig",
+    "largestArmatureBones": 52,
+    "skinnedMeshes": [
+      "KYX_V6A_AnatomySculpt_Body",
+      "KYX_V6B_CF_R1_TailoredOnePieceUndersuit"
+    ],
+    "materials": [
+      "KYX_V6B_CF_R1_AshComposite",
+      "KYX_V6B_CF_R1_BlackJointKnit",
+      "KYX_V6B_CF_R1_BootCompositeUpper",
+      "KYX_V6B_CF_R1_ContactAuthorityUnderbody",
+      "KYX_V6B_CF_R1_ContactRubber",
+      "KYX_V6B_CF_R1_CyanTelemetry",
+      "KYX_V6B_CF_R1_DeepGunmetal",
+      "KYX_V6B_CF_R1_GraphiteTailoredWeave",
+      "KYX_V6B_CF_R1_MachinedEdge",
+      "KYX_V6B_CF_R1_OxideIdentity",
+      "KYX_V6B_CF_R1_PetrolBallisticVisor",
+      "KYX_V6B_CF_R1_RecessedSeam",
+      "KYX_V6B_CF_R1_SmokedCeramic",
+      "KYX_V6B_CF_R1_TactileGloveRubber",
+      "KYX_V6B_CF_R1_WeatheredBoneCeramic",
+      "KYX_V6B_CF_R1_WovenTrouserReinforcement"
+    ],
+    "sceneBounds": {
+      "min": [
+        -0.951058,
+        -1.518141,
+        -1.0
+      ],
+      "max": [
+        0.951058,
+        1.0,
+        1.787351
+      ]
+    },
+    "appliedAction": "V6CF11B_ContactPose_Action",
+    "poseSentinelBounds": [
+      {
+        "name": "KYX_V6A_AnatomySculpt_Body",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.40863258,
+            -0.60867167,
+            -3.201e-05
+          ],
+          "max": [
+            0.27113029,
+            0.14987911,
+            1.77623069
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.41547894,
+            -0.60547221,
+            1.1e-07
+          ],
+          "max": [
+            0.27083084,
+            0.11415088,
+            1.77603769
+          ]
+        },
+        "boundsDelta": 0.03572823
+      },
+      {
+        "name": "KYX_V6B_CF_R1_TailoredOnePieceUndersuit",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.42604277,
+            -0.4000774,
+            0.15482792
+          ],
+          "max": [
+            0.21405025,
+            0.14748226,
+            1.50279796
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.41547894,
+            -0.40715978,
+            0.15188444
+          ],
+          "max": [
+            0.21628481,
+            0.11415088,
+            1.50172055
+          ]
+        },
+        "boundsDelta": 0.03333138
+      },
+      {
+        "name": "KYX_V6B_CF_R1_Chest_ContinuousCeramic",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.11816066,
+            -0.1271558,
+            1.25399685
+          ],
+          "max": [
+            0.16277613,
+            -0.06330773,
+            1.44012642
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.11800014,
+            -0.12613973,
+            1.255
+          ],
+          "max": [
+            0.16199993,
+            -0.06413332,
+            1.44000006
+          ]
+        },
+        "boundsDelta": 0.00101607
+      },
+      {
+        "name": "KYX_V6B_CF_R1_Helmet_CrownCenter",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.03745423,
+            -0.09307899,
+            1.73285985
+          ],
+          "max": [
+            0.03745393,
+            -0.00859002,
+            1.78874803
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.03654933,
+            -0.09077551,
+            1.73439562
+          ],
+          "max": [
+            0.03654905,
+            -0.00869952,
+            1.7858485
+          ]
+        },
+        "boundsDelta": 0.00289953
+      },
+      {
+        "name": "KYX_V6B_CF_R1_Boot_R_AnatomicalUpper",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.27631503,
+            -0.18699181,
+            0.0159875
+          ],
+          "max": [
+            -0.12915182,
+            0.10799021,
+            0.18712631
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.27773535,
+            -0.18700057,
+            0.01500078
+          ],
+          "max": [
+            -0.1277339,
+            0.10799972,
+            0.18900076
+          ]
+        },
+        "boundsDelta": 0.00187445
+      },
+      {
+        "name": "KYX_V6B_CF_R1_Rifle_Receiver",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.19735289,
+            -0.67607689,
+            1.17700005
+          ],
+          "max": [
+            -0.01147868,
+            -0.26815605,
+            1.35688913
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.1994068,
+            -0.67954087,
+            1.17699933
+          ],
+          "max": [
+            -0.00947408,
+            -0.26450834,
+            1.35699952
+          ]
+        },
+        "boundsDelta": 0.00364771
+      },
+      {
+        "name": "KYX_V6B_CF_R1_Rifle_StockSpine",
+        "present": true,
+        "expectedBounds": {
+          "min": [
+            -0.21676992,
+            -0.36301985,
+            1.29381549
+          ],
+          "max": [
+            -0.08648234,
+            -0.16252783,
+            1.38610017
+          ]
+        },
+        "bounds": {
+          "min": [
+            -0.21830088,
+            -0.36628792,
+            1.29299951
+          ],
+          "max": [
+            -0.08478581,
+            -0.16025741,
+            1.38699961
+          ]
+        },
+        "boundsDelta": 0.00326807
+      }
+    ],
+    "maxPoseSentinelBoundsDelta": 0.03572823,
+    "contactBounds": [
+      {
+        "name": "KYX_V6B_CF_R1_RuntimeContact_GripContact",
+        "present": true,
+        "bounds": {
+          "min": [
+            -0.15946244,
+            -0.48407048,
+            1.07999945
+          ],
+          "max": [
+            -0.06746738,
+            -0.37998968,
+            1.24999952
+          ]
+        },
+        "boundsDelta": 0.00176103,
+        "parent": "V6CF11B_ContactFullBodyRig",
+        "parentType": "BONE",
+        "parentBone": "palm.R",
+        "geometryCounts": {
+          "vertices": 8,
+          "edges": 18,
+          "polygons": 12
+        }
+      },
+      {
+        "name": "KYX_V6B_CF_R1_RuntimeContact_ForegripContact",
+        "present": true,
+        "bounds": {
+          "min": [
+            -0.09383413,
+            -0.6725992,
+            1.09399939
+          ],
+          "max": [
+            -0.00383395,
+            -0.58259904,
+            1.2859993
+          ]
+        },
+        "boundsDelta": 7.1e-07,
+        "parent": "V6CF11B_ContactFullBodyRig",
+        "parentType": "BONE",
+        "parentBone": "palm.R",
+        "geometryCounts": {
+          "vertices": 80,
+          "edges": 234,
+          "polygons": 156
+        }
+      },
+      {
+        "name": "KYX_V6B_CF_R1_RuntimeContact_ForegripHandStop",
+        "present": true,
+        "bounds": {
+          "min": [
+            -0.08436609,
+            -0.69213063,
+            1.24249947
+          ],
+          "max": [
+            0.0073887,
+            -0.65476245,
+            1.28749967
+          ]
+        },
+        "boundsDelta": 0.00110083,
+        "parent": "V6CF11B_ContactFullBodyRig",
+        "parentType": "BONE",
+        "parentBone": "palm.R",
+        "geometryCounts": {
+          "vertices": 8,
+          "edges": 18,
+          "polygons": 12
+        }
+      },
+      {
+        "name": "KYX_V6B_CF_R1_RuntimeContact_StockPadContact",
+        "present": true,
+        "bounds": {
+          "min": [
+            -0.23470642,
+            -0.18520926,
+            1.28249955
+          ],
+          "max": [
+            -0.11592332,
+            -0.13063265,
+            1.44749951
+          ]
+        },
+        "boundsDelta": 0.00220128,
+        "parent": "V6CF11B_ContactFullBodyRig",
+        "parentType": "BONE",
+        "parentBone": "palm.R",
+        "geometryCounts": {
+          "vertices": 8,
+          "edges": 18,
+          "polygons": 12
+        }
+      },
+      {
+        "name": "KYX_V6B_CF_R1_RuntimeContact_Trigger",
+        "present": true,
+        "bounds": {
+          "min": [
+            -0.16731662,
+            -0.40858132,
+            1.17990828
+          ],
+          "max": [
+            -0.15287751,
+            -0.38972306,
+            1.21771669
+          ]
+        },
+        "boundsDelta": 4.8e-07,
+        "parent": "V6CF11B_ContactFullBodyRig",
+        "parentType": "BONE",
+        "parentBone": "palm.R",
+        "geometryCounts": {
+          "vertices": 48,
+          "edges": 138,
+          "polygons": 92
+        }
+      },
+      {
+        "name": "KYX_V6B_CF_R1_RuntimeContact_TriggerGuard",
+        "present": true,
+        "bounds": {
+          "min": [
+            -0.17548066,
+            -0.46334797,
+            1.14473665
+          ],
+          "max": [
+            -0.14107887,
+            -0.35106331,
+            1.23337257
+          ]
+        },
+        "boundsDelta": 4.8e-07,
+        "parent": "V6CF11B_ContactFullBodyRig",
+        "parentType": "BONE",
+        "parentBone": "palm.R",
+        "geometryCounts": {
+          "vertices": 588,
+          "edges": 1740,
+          "polygons": 1152
+        }
+      }
+    ],
+    "maxContactBoundsDelta": 0.00220128
+  },
+  "assertions": {
+    "candidateBlendMatchesAuthorReport": true,
+    "candidateBlendUnchangedByAudit": true,
+    "sealedRev11bSourceHashPreserved": true,
+    "acceptedBodyTopologyAndGeometryPreserved": true,
+    "accepted52BoneRigPreserved": true,
+    "all30DigitBonesPresent": true,
+    "garmentHasOnlyFiveIntendedBoundaryLoops": true,
+    "garmentEvaluatedGeometryFiniteAndSane": true,
+    "allExportSurfacesHaveMaterials": true,
+    "runtimeContactDuplicatesPreservePoseAndGeometry": true,
+    "glbHeaderValidAndSelfContained": true,
+    "glbContainsMeshesMaterialsAndSkin": true,
+    "glbContainsOnlyAcceptedStaticContactHold": true,
+    "reimportContains52BoneRig": true,
+    "reimportContainsBodyGarmentAndProductionRifle": true,
+    "reimportContainsSkinnedBodyAndGarment": true,
+    "reimportMeshesNonemptyAndBoundsFinite": true,
+    "reimportMaterialsPreserved": true,
+    "allRuntimeContactsReimportedWithinTolerance": false,
+    "contactPoseVisualSentinelsReimportWithinTolerance": false
+  },
+  "nonClaims": [
+    "This is a bounded V6-B contact-preserving export/runtime candidate, not G6 or final human visual acceptance.",
+    "The sole exported action is the sealed static contact-pose hold; no movement animation matrix, LOD set, UV atlas, texture bake, first-person arm set, multiplayer proof, or performance acceptance is claimed.",
+    "The exported GLB is isolated evidence and does not replace the current public/player.glb shipping asset.",
+    "Rear garment and surface detailing remain sparse and require later human polish acceptance."
+  ]
+}

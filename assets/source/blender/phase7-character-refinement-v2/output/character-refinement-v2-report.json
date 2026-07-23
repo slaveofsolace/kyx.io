@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_phase7_character_refinement_v2",
+  "status": "VISUAL_REFINEMENT_CANDIDATE_NOT_G6",
+  "sourceReview": "phase7-benchmark/VISUAL_REVIEW.md NOT APPROVED blocky/shape-like",
+  "blenderVersion": "5.1.2",
+  "blenderBuildHash": "ec6e62d40fa9",
+  "visualIntent": {
+    "silhouette": "human tactical figure with anatomical taper and asymmetrical readable gear",
+    "layers": [
+      "undersuit",
+      "fitted armor",
+      "harness and belt",
+      "gloves",
+      "boots",
+      "helmet",
+      "rifle"
+    ],
+    "formHierarchy": [
+      "primary anatomy and weapon axis",
+      "secondary armor shells",
+      "tertiary straps seams fingers vents and controls"
+    ],
+    "contact": [
+      "butt stock at right shoulder",
+      "right fingers around pistol grip",
+      "left fingers around handguard"
+    ],
+    "palette": [
+      "graphite",
+      "desaturated armor",
+      "oxide faction cue",
+      "teal optic",
+      "brass hardware"
+    ]
+  },
+  "scene": {
+    "forwardAxis": "-Y",
+    "upAxis": "+Z",
+    "units": "meters",
+    "frames": [
+      1,
+      32
+    ],
+    "fps": 24,
+    "renderSize": [
+      900,
+      900
+    ]
+  },
+  "source": {
+    "exportObjects": 92,
+    "meshObjects": 90,
+    "vertices": 11946,
+    "polygons": 12398,
+    "triangles": 23532,
+    "materials": 10,
+    "bones": 20,
+    "actions": [
+      "REFINEV2_CombatReady_Breathe"
+    ],
+    "bodyParts": 78,
+    "weaponParts": 13
+  },
+  "glb": {
+    "version": 2,
+    "declaredBytes": 795320,
+    "generator": "Khronos glTF Blender I/O v5.1.20",
+    "nodes": 110,
+    "meshes": 90,
+    "materials": 10,
+    "skins": 1,
+    "animations": 1,
+    "animationNames": [
+      "REFINEV2_CombatReady_Breathe"
+    ],
+    "animationChannels": 54,
+    "requiredExtensions": [],
+    "path": "output/kyx_phase7_character_refinement_v2.glb",
+    "bytes": 795320,
+    "sha256": "6d97a2da53e49560a87b97f124bb8bbb2621f0ca69267d8c250cda7b1cf9226e",
+    "exportSeconds": 0.444562
+  },
+  "renders": {
+    "paths": [
+      "output/renders/refinement-v2-close-color.png",
+      "output/renders/refinement-v2-tactical-mid-color.png",
+      "output/renders/refinement-v2-far-color.png",
+      "output/renders/refinement-v2-front-ortho-color.png",
+      "output/renders/refinement-v2-side-ortho-color.png",
+      "output/renders/refinement-v2-back-ortho-color.png",
+      "output/renders/refinement-v2-weapon-contact-color.png",
+      "output/renders/refinement-v2-close-grayscale.png",
+      "output/renders/refinement-v2-front-ortho-grayscale.png"
+    ],
+    "timingsSeconds": {
+      "close-color": 0.771414,
+      "tactical-mid-color": 0.266808,
+      "far-color": 0.259334,
+      "front-ortho-color": 0.257673,
+      "side-ortho-color": 0.216853,
+      "back-ortho-color": 0.214139,
+      "weapon-contact-color": 0.265549,
+      "close-grayscale": 0.261526,
+      "front-ortho-grayscale": 0.256287
+    },
+    "totalSeconds": 2.769583
+  },
+  "manifest": [
+    {
+      "path": "output/kyx_phase7_character_refinement_v2.glb",
+      "bytes": 795320,
+      "sha256": "6d97a2da53e49560a87b97f124bb8bbb2621f0ca69267d8c250cda7b1cf9226e"
+    },
+    {
+      "path": "output/renders/refinement-v2-close-color.png",
+      "bytes": 888887,
+      "sha256": "8be20340c36406280e3448b9346982d716b5c45795db9e0acbab6a257d3cba45"
+    },
+    {
+      "path": "output/renders/refinement-v2-tactical-mid-color.png",
+      "bytes": 808630,
+      "sha256": "5e27e8f7d691cffd117d775681439f9a9bcebdd31d33c30cde69066b079f51b5"
+    },
+    {
+      "path": "output/renders/refinement-v2-far-color.png",
+      "bytes": 757449,
+      "sha256": "92f15d43451f65c3acc2d4087849563639cce7f0b27a323da5e2ace8cec6de1f"
+    },
+    {
+      "path": "output/renders/refinement-v2-front-ortho-color.png",
+      "bytes": 816789,
+      "sha256": "7f866147aeb224ce8632a9ffc4e0aac00d48bbc31f12e3e0b8c6988003f81441"
+    },
+    {
+      "path": "output/renders/refinement-v2-side-ortho-color.png",
+      "bytes": 695254,
+      "sha256": "4081d3c479746c868ee70fc988b513dc616b8c85499aa35bff499263102040cb"
+    },
+    {
+      "path": "output/renders/refinement-v2-back-ortho-color.png",
+      "bytes": 693490,
+      "sha256": "6191262b6f43b5f9541a5f097e2bebd6d74c42577ad4ef93ccd916e1c958ebc1"
+    },
+    {
+      "path": "output/renders/refinement-v2-weapon-contact-color.png",
+      "bytes": 880328,
+      "sha256": "618b3567aac4693f61a4f9a698e57d1fd4f1048dead270a6f5c89aef34581e86"
+    },
+    {
+      "path": "output/renders/refinement-v2-close-grayscale.png",
+      "bytes": 882578,
+      "sha256": "78dd9c39a55e907a7f9582d8c07c440cce880033e96f2905ece2a2f5a22d704f"
+    },
+    {
+      "path": "output/renders/refinement-v2-front-ortho-grayscale.png",
+      "bytes": 816514,
+      "sha256": "03f1b482cc9ec4a949d67504a298c02ae0957407a78396db03d835dc5b11c369"
+    }
+  ],
+  "limitations": [
+    "Rigid bone parenting is an animation/export proof, not deformation-capable skin or weight-stress evidence.",
+    "Only a subtle combat-ready breathe loop exists; gameplay clip and first-person arm matrices remain absent.",
+    "No LODs, KTX2, meshopt, runtime outline/contact integration, or 2/4/8-character performance capture exists.",
+    "No Khronos glTF Validator, color-vision simulation, wireframe/topology capture, or human G6 approval is claimed."
+  ],
+  "elapsedSeconds": 3.520778
+}

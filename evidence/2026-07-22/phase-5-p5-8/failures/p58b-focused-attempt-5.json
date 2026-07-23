@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-5",
+  "capturedAt": "2026-07-22T03:24:51-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 1,
+    "testsFailed": 1
+  },
+  "failure": {
+    "test": "full consequence impairment profiles",
+    "cause": "The expectation used ten lethal hits as the shot count, but the sealed held-fire cadence accepted fifteen shots before release; five post-death shots consumed ammo without applying damage.",
+    "correction": "The test now distinguishes fifteen accepted ammo-consuming shots from ten authoritative damage events."
+  }
+}

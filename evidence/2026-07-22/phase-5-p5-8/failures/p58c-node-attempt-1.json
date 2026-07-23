@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8c-node-attempt-1",
+  "capturedAt": "2026-07-22T03:43:54-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/loadoutRequest.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 2,
+    "testsFailed": 2
+  },
+  "failures": [
+    {
+      "cause": "The first expectation used the revision 3 Impulse Grenade ID, while the live Worker deliberately remains on the accepted revision 2 ruleset whose exact damage-slot ID is vertical_grenade_v1.",
+      "correction": "The transport-loadout test now derives and pins the active revision 2 vertical slice without upgrading Worker identity or claiming G4 combat runtime integration."
+    },
+    {
+      "cause": "The initial cross-runtime digest assertion used a calibration placeholder.",
+      "correction": "The canonical revision 2 decision trace is pinned to 810083ecca297f5e."
+    }
+  ]
+}

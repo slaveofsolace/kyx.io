@@ -1,0 +1,35 @@
+{
+  "capturedAt": "2026-07-22T15:49:35.287Z",
+  "error": {
+    "message": "east press-cross leg 1 did not reach {\"x\":27500,\"z\":-1000}",
+    "stack": "Error: east press-cross leg 1 did not reach {\"x\":27500,\"z\":-1000}\n    at moveTo (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:402:9)\n    at async Promise.all (index 1)\n    at async routePair (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:408:26)\n    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:708:28"
+  },
+  "vite": [
+    "  \u001b[32m\u001b[1mVITE\u001b[22m v8.0.16\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m274\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m",
+    "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m5173\u001b[22m/\u001b[39m",
+    "\u001b[2m10:49:10 AM\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m \u001b[32mpage reload \u001b[39m\u001b[2msrc/app/onlineAuthorityRoute.ts\u001b[22m"
+  ],
+  "wrangler": [
+    " ⛅️ wrangler 4.112.0 (update available 4.113.0)",
+    "───────────────────────────────────────────────",
+    "Your Worker has access to the following bindings:",
+    "Binding                                                               Resource                  Mode",
+    "env.KYX_ROOM (KyxRoom)                                                Durable Object            local",
+    "env.ALLOWED_ORIGINS (\"http://127.0.0.1:5173,http://localhos...\")      Environment Variable      local",
+    "env.BUILD_ID (\"phase4-local\")                                         Environment Variable      local",
+    "⎔ Starting local server...",
+    "[wrangler:info] Ready on http://127.0.0.1:8787",
+    "[wrangler:info] GET /health 200 OK (16ms)",
+    "[wrangler:info] OPTIONS /api/rooms/create 204 No Content (2ms)",
+    "[wrangler:info] POST /api/rooms/create 201 Created (48ms)",
+    "[wrangler:info] GET /api/rooms/KYX-N8XJXA/socket 101 Switching Protocols (6ms)",
+    "[wrangler:info] OPTIONS /api/rooms/KYX-N8XJXA 204 No Content (1ms)",
+    "[wrangler:info] POST /api/rooms/KYX-N8XJXA 201 Created (2ms)",
+    "[wrangler:info] GET /api/rooms/KYX-N8XJXA/socket 101 Switching Protocols (2ms)",
+    "[wrangler:info] OPTIONS /api/rooms/KYX-N8XJXA 204 No Content (3ms)",
+    "[wrangler:info] POST /api/rooms/KYX-N8XJXA 201 Created (2ms)",
+    "[wrangler:info] POST /api/rooms/KYX-N8XJXA 201 Created (2ms)",
+    "[wrangler:info] GET /api/rooms/KYX-N8XJXA/socket 101 Switching Protocols (9ms)",
+    "[wrangler:info] GET /api/rooms/KYX-N8XJXA/socket 101 Switching Protocols (2ms)"
+  ]
+}

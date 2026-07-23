@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "localDate": "2026-07-19",
+  "timezone": "America/Chicago",
+  "os": "Microsoft Windows NT 10.0.26200.0",
+  "powershell": "5.1.26100.8875",
+  "git": "2.55.0.windows.2",
+  "repository": {
+    "path": "C:/AI Projects/Projects/Games/evio/evio-repo",
+    "baselineCommit": "81aa1d02acce8e30ba411bb895901d2d2ac6694e",
+    "branch": "main",
+    "upstream": "origin/main",
+    "ahead": 0,
+    "behind": 0,
+    "initialTrackedFiles": 75,
+    "initialTrackedBytes": 7171284,
+    "initialStatus": "clean"
+  },
+  "toolchain": {
+    "targetNode": "20.19.0",
+    "captureNode": "24.14.0",
+    "npm": "11.18.0",
+    "bootstrapPnpm": "11.9.0",
+    "vite": "8.0.16",
+    "playwright": "1.61.0",
+    "three": "0.184.0",
+    "webSocketServerPackage": "ws 8.21.0"
+  },
+  "browserCapture": {
+    "browser": "Chrome 149.0.7827.55",
+    "viewport": "1920x1080",
+    "deviceScaleFactor": 1,
+    "gpu": "ANGLE Vulkan SwiftShader Device (Subzero)",
+    "tier": "capture-only headless software renderer; not a hardware performance tier",
+    "videoCodec": "VP8",
+    "videoFrameRate": 25
+  },
+  "baselineRoster": {
+    "actualLocalPlayers": 1,
+    "aiBots": 7,
+    "networkAuthority": "none",
+    "observedMisleadingHudPopulation": ["3/8 PLAYERS", "5/8 PLAYERS"]
+  },
+  "interactiveHost": {
+    "cpu": "Intel Core i9-14900K (24 cores / 32 threads)",
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "gpuDriver": "32.0.16.1062",
+    "display": "2560x1440 at 540 Hz",
+    "physicalMemoryBytesApprox": 68390000000,
+    "powerPlan": "Ultimate Performance - Codex Tuned",
+    "interactiveBrowserViewport": "1818x1080",
+    "note": "Interactive renderer/frame samples were observed on this host; exact browser/GPU trace metadata was not preserved, so they are session observations rather than a named performance gate."
+  },
+  "inputs": {
+    "canonicalPack": "C:/AI Projects/Projects/Games/evio/codex_handoff_pack_20260719_v2",
+    "canonicalPackZipSha256": "1CF2C287BFD9A7C48A3E8C9F6E20C1CCD1D563DBCE300F0CA1C0612B8FF5FC0D",
+    "canonicalPackFiles": 31,
+    "canonicalPackUncompressedBytes": 218490,
+    "aetherPath": "C:/AI Projects/Projects/Games/aether-foundry-fps",
+    "aetherGitMetadata": "absent"
+  }
+}

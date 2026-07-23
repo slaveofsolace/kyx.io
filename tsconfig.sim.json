@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.cache/typescript/sim.tsbuildinfo",
+    "lib": ["ES2022"],
+    "types": ["node"]
+  },
+  "include": [
+    "src/sim/**/*.ts",
+    "tests/unit/sim/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "evidence",
+    "node_modules",
+    "public",
+    "server"
+  ]
+}

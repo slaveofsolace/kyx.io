@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "evidence": "PHASE4_G3_PRODUCT_ONLINE_PREVIEW_VERIFICATION",
+  "source": "../runs/local-v2/product-online-preview-runtime.json",
+  "verifiedAt": "2026-07-22T09:54:15.322Z",
+  "checks": {
+    "schemaVersion": true,
+    "evidenceIdentity": true,
+    "claimRemainsBounded": true,
+    "captureVerdictPass": true,
+    "allCaptureChecksPass": true,
+    "validRoomCode": true,
+    "joinPathContainsNoAuthorityOverride": true,
+    "movementObserved": true,
+    "peerTrackingBounded": true,
+    "screenshotsComplete": true,
+    "browserErrorsEmpty": true,
+    "timestampsOrdered": true
+  },
+  "verdict": "PASS"
+}

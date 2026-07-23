@@ -1,5 +1,5 @@
-// Tracks kill streaks and calculates per-kill e-coin rewards for deathmatch mode.
-// Base reward: 0.8–1.1 coins. Streak bonus: +current_streak coins on top.
+// Tracks local practice kill streaks. It never grants currency, progression,
+// inventory, or any fact that could be mistaken for server authority.
 
 const STREAK_RESET = 10; // seconds without a kill before streak resets
 
@@ -14,13 +14,11 @@ export class DeathmatchManager {
     this.streakTimer = 0;
   }
 
-  // Call on each confirmed kill. Returns { coins, streak }.
+  // Call on each locally confirmed practice kill.
   onKill() {
     this.killStreak++;
     this.streakTimer = STREAK_RESET;
-    const base  = 0.8 + Math.random() * 0.3;      // 0.80–1.10
-    const bonus = this.killStreak;                 // +N for a streak of N
-    return { coins: +(base + bonus).toFixed(2), streak: this.killStreak };
+    return { streak: this.killStreak };
   }
 
   update(dt) {

@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "auditedAt": "2026-07-20T02:33:10.400Z",
+  "inputDirectory": "public",
+  "summary": {
+    "assets": 6,
+    "bytes": 6161565,
+    "models": 5,
+    "images": 1,
+    "audio": 0,
+    "failures": 0
+  },
+  "assets": [
+    {
+      "path": "public/player.glb",
+      "kind": "model",
+      "extension": ".glb",
+      "bytes": 1363668,
+      "sha256": "cdb9a8d694a132099e2b505f07957bb39683def8ec9356be304d79b6f6f92564",
+      "ok": true,
+      "inspection": {
+        "glbVersion": 2,
+        "scenes": 1,
+        "nodes": 213,
+        "meshes": 209,
+        "primitives": 209,
+        "trianglesEstimated": 21916,
+        "materials": 5,
+        "textures": 0,
+        "images": 0,
+        "skins": 0,
+        "uniqueJoints": 0,
+        "animations": [],
+        "extensionsUsed": [
+          "KHR_materials_emissive_strength"
+        ],
+        "extensionsRequired": []
+      }
+    },
+    {
+      "path": "public/soldier.glb",
+      "kind": "model",
+      "extension": ".glb",
+      "bytes": 2159764,
+      "sha256": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
+      "ok": true,
+      "inspection": {
+        "glbVersion": 2,
+        "scenes": 1,
+        "nodes": 68,
+        "meshes": 2,
+        "primitives": 2,
+        "trianglesEstimated": 11376,
+        "materials": 2,
+        "textures": 0,
+        "images": 0,
+        "skins": 2,
+        "uniqueJoints": 49,
+        "animations": [
+          {
+            "name": "Idle",
+            "durationSeconds": 1.9667,
+            "channels": 156,
+            "samplers": 156
+          },
+          {
+            "name": "Run",
+            "durationSeconds": 0.7,
+            "channels": 156,
+            "samplers": 156
+          },
+          {
+            "name": "TPose",
+            "durationSeconds": 0.0333,
+            "channels": 156,
+            "samplers": 156
+          },
+          {
+            "name": "Walk",
+            "durationSeconds": 1.0333,
+            "channels": 156,
+            "samplers": 156
+          }
+        ],
+        "extensionsUsed": [],
+        "extensionsRequired": []
+      }
+    },
+    {
+      "path": "public/spartan.glb",
+      "kind": "model",
+      "extension": ".glb",
+      "bytes": 256508,
+      "sha256": "377d6461d47c4324880832d9bff81d5a4bc8470ad3f2a4412a21c1e892dce43c",
+      "ok": true,
+      "inspection": {
+        "glbVersion": 2,
+        "scenes": 1,
+        "nodes": 1,
+        "meshes": 1,
+        "primitives": 5,
+        "trianglesEstimated": 8648,
+        "materials": 5,
+        "textures": 0,
+        "images": 0,
+        "skins": 0,
+        "uniqueJoints": 0,
+        "animations": [],
+        "extensionsUsed": [
+          "KHR_materials_emissive_strength"
+        ],
+        "extensionsRequired": []
+      }
+    },
+    {
+      "path": "public/textures/sakura/wrap.png",
+      "kind": "image",
+      "extension": ".png",
+      "bytes": 127881,
+      "sha256": "376c4a7688e0d76afc1308d91bf7deca0ccef48bcc2bc51cdc4438066dc7137c",
+      "ok": true,
+      "inspection": {
+        "format": "png",
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "path": "public/weapons.glb",
+      "kind": "model",
+      "extension": ".glb",
+      "bytes": 2019140,
+      "sha256": "3c0ded95defbb4ddc52e8b9a2bc22de233cdfdccbeb4e6cbcc548252f5d08ce8",
+      "ok": true,
+      "inspection": {
+        "glbVersion": 2,
+        "scenes": 1,
+        "nodes": 414,
+        "meshes": 386,
+        "primitives": 386,
+        "trianglesEstimated": 28920,
+        "materials": 7,
+        "textures": 0,
+        "images": 0,
+        "skins": 0,
+        "uniqueJoints": 0,
+        "animations": [],
+        "extensionsUsed": [
+          "KHR_materials_clearcoat",
+          "KHR_materials_emissive_strength"
+        ],
+        "extensionsRequired": []
+      }
+    },
+    {
+      "path": "public/zombie.glb",
+      "kind": "model",
+      "extension": ".glb",
+      "bytes": 234604,
+      "sha256": "f67258d00882c787653f3996b7478e14b2a04211b83be2487a9f87346767d6ef",
+      "ok": true,
+      "inspection": {
+        "glbVersion": 2,
+        "scenes": 1,
+        "nodes": 138,
+        "meshes": 122,
+        "primitives": 122,
+        "trianglesEstimated": 2430,
+        "materials": 0,
+        "textures": 0,
+        "images": 0,
+        "skins": 0,
+        "uniqueJoints": 0,
+        "animations": [],
+        "extensionsUsed": [],
+        "extensionsRequired": []
+      }
+    }
+  ]
+}

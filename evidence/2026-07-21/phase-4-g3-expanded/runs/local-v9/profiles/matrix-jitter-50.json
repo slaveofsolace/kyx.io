@@ -1,0 +1,1637 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T04:44:46.145Z",
+  "profile": "matrix-jitter-50",
+  "dimension": "jitter",
+  "requiredValue": 50,
+  "roomCode": "KYX-RFS54T",
+  "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+  "simulationIdentity": {
+    "schemaVersion": 1,
+    "mapId": "phase4_flat_run",
+    "rulesetId": "revamped_classic",
+    "rulesetRevision": 2,
+    "rulesetHash": "039ae95bed7ee716",
+    "movementProfileId": "phase3_hypothesis_v1",
+    "movementProfileRevision": 1,
+    "movementProfileHash": "8ab4ed437a4393c0",
+    "fixtureId": "flat_run",
+    "fixtureHash": "44bfdf2fdced9d9c",
+    "physicsAdapterId": "rapier3d_deterministic_compat",
+    "physicsAdapterVersion": "0.19.3"
+  },
+  "authorityTick": {
+    "before": 3,
+    "after": 23,
+    "elapsedMilliseconds": 1006,
+    "measuredHz": 19.880715705765407
+  },
+  "movement": {
+    "authorityDeltaMillimeters": 5800,
+    "predictionLeadDeltaMillimeters": 450,
+    "authorityLeadDeltaMillimeters": 0
+  },
+  "correction": {
+    "peerA": {
+      "sampleCount": 37,
+      "maximumPositionErrorMillimeters": 350,
+      "histogram": {
+        "zero": 31,
+        "oneTo52": 0,
+        "fiftyThreeTo1999": 6,
+        "atLeast2000": 0
+      }
+    },
+    "peerB": {
+      "sampleCount": 37,
+      "maximumPositionErrorMillimeters": 0,
+      "histogram": {
+        "zero": 37,
+        "oneTo52": 0,
+        "fiftyThreeTo1999": 0,
+        "atLeast2000": 0
+      }
+    },
+    "modesA": {
+      "stale_snapshot": 0,
+      "confirmed": 13,
+      "subthreshold_correction": 18,
+      "soft_correction": 6,
+      "hard_snap": 0,
+      "teleport_snap": 0,
+      "history_gap_snap": 0
+    },
+    "modesB": {
+      "stale_snapshot": 0,
+      "confirmed": 17,
+      "subthreshold_correction": 20,
+      "soft_correction": 0,
+      "hard_snap": 0,
+      "teleport_snap": 0,
+      "history_gap_snap": 0
+    }
+  },
+  "remotePresentation": {
+    "peerA": {
+      "samples": 1,
+      "insertions": {
+        "accepted": 0,
+        "accepted_out_of_order": 0,
+        "duplicate": 0,
+        "conflicting_duplicate": 0,
+        "stale_before_discontinuity": 0,
+        "semantic_discontinuity_reset": 1,
+        "implicit_teleport_reset": 0
+      },
+      "modes": {
+        "empty": 0,
+        "held": 35,
+        "authoritative": 0,
+        "interpolated": 0,
+        "extrapolated": 64,
+        "stale": 2231
+      }
+    },
+    "peerB": {
+      "samples": 10,
+      "insertions": {
+        "accepted": 9,
+        "accepted_out_of_order": 0,
+        "duplicate": 0,
+        "conflicting_duplicate": 0,
+        "stale_before_discontinuity": 0,
+        "semantic_discontinuity_reset": 1,
+        "implicit_teleport_reset": 0
+      },
+      "modes": {
+        "empty": 0,
+        "held": 0,
+        "authoritative": 77,
+        "interpolated": 412,
+        "extrapolated": 212,
+        "stale": 1710
+      }
+    }
+  },
+  "impairment": {
+    "observed": {
+      "sentPackets": 426,
+      "deliveredCopies": 420,
+      "droppedPackets": 0,
+      "duplicatedPackets": 0,
+      "reorderImpairedPackets": 0,
+      "reorderedPackets": 72,
+      "overflowRejectedPackets": 0,
+      "maximumObservedQueueDepth": 4,
+      "minimumDeliveryLatencyMilliseconds": 10,
+      "maximumDeliveryLatencyMilliseconds": 110
+    },
+    "peerA": {
+      "profile": "matrix-jitter-50",
+      "enabled": true,
+      "policy": {
+        "socketWrapping": "fresh_per_connect",
+        "harnessLifecycle": "fresh_inbound_and_outbound_per_connection",
+        "seedLifecycle": "restart_profile_seed_per_connection",
+        "metricsRetention": "transport_lifetime_aggregate_and_per_connection",
+        "closePolicy": "cancel_delivery_timers_and_retain_stranded_queue_metrics",
+        "aggregation": "sum_counters_extrema_across_sessions_weighted_latency_average",
+        "frameScope": "gameplay_input_snapshot_ack_after_initial_full_snapshot",
+        "reliableControlPolicy": "bypass_synthetic_loss_duplication_reorder_and_latency",
+        "bootstrapPolicy": "first_full_snapshot_delivered_before_gameplay_impairment"
+      },
+      "connectionsCreated": 1,
+      "activeConnectionOrdinal": 1,
+      "reliableControlFramesBypassedInbound": 9,
+      "reliableControlFramesBypassedOutbound": 42,
+      "bootstrapGameplayFramesBypassedInbound": 1,
+      "bootstrapGameplayFramesBypassedOutbound": 0,
+      "inbound": {
+        "config": {
+          "kind": "seeded",
+          "startingClockMilliseconds": 0,
+          "maximumQueueDepth": 4096,
+          "seed": 1793,
+          "baseLatencyMilliseconds": 60,
+          "jitterMilliseconds": 50,
+          "lossRatePermille": 0,
+          "duplicateRatePermille": 0,
+          "duplicateDelayMilliseconds": 0,
+          "reorderRatePermille": 0,
+          "reorderDelayMilliseconds": 0
+        },
+        "metrics": {
+          "sentPackets": 126,
+          "droppedPackets": 0,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 30,
+          "scheduledCopies": 126,
+          "deliveredPackets": 124,
+          "deliveredCopies": 124,
+          "overflowRejectedPackets": 0,
+          "currentQueueDepth": 2,
+          "maximumObservedQueueDepth": 4,
+          "minimumDeliveryLatencyMilliseconds": 10,
+          "maximumDeliveryLatencyMilliseconds": 110,
+          "totalDeliveryLatencyMilliseconds": 7508,
+          "averageDeliveryLatencyMilliseconds": 60.54838709677419
+        }
+      },
+      "outbound": {
+        "config": {
+          "kind": "seeded",
+          "startingClockMilliseconds": 0,
+          "maximumQueueDepth": 4096,
+          "seed": 1794,
+          "baseLatencyMilliseconds": 60,
+          "jitterMilliseconds": 50,
+          "lossRatePermille": 0,
+          "duplicateRatePermille": 0,
+          "duplicateDelayMilliseconds": 0,
+          "reorderRatePermille": 0,
+          "reorderDelayMilliseconds": 0
+        },
+        "metrics": {
+          "sentPackets": 87,
+          "droppedPackets": 0,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 4,
+          "scheduledCopies": 87,
+          "deliveredPackets": 86,
+          "deliveredCopies": 86,
+          "overflowRejectedPackets": 0,
+          "currentQueueDepth": 1,
+          "maximumObservedQueueDepth": 3,
+          "minimumDeliveryLatencyMilliseconds": 10,
+          "maximumDeliveryLatencyMilliseconds": 108,
+          "totalDeliveryLatencyMilliseconds": 4865,
+          "averageDeliveryLatencyMilliseconds": 56.56976744186046
+        }
+      },
+      "sessions": [
+        {
+          "connectionOrdinal": 1,
+          "socketState": "open",
+          "gameplayImpairmentActive": true,
+          "reliableControlFramesBypassedInbound": 9,
+          "reliableControlFramesBypassedOutbound": 42,
+          "bootstrapGameplayFramesBypassedInbound": 1,
+          "bootstrapGameplayFramesBypassedOutbound": 0,
+          "inboundMetrics": {
+            "sentPackets": 126,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 30,
+            "scheduledCopies": 126,
+            "deliveredPackets": 124,
+            "deliveredCopies": 124,
+            "overflowRejectedPackets": 0,
+            "maximumObservedQueueDepth": 4,
+            "minimumDeliveryLatencyMilliseconds": 10,
+            "maximumDeliveryLatencyMilliseconds": 110,
+            "totalDeliveryLatencyMilliseconds": 7508,
+            "currentQueueDepth": 2,
+            "averageDeliveryLatencyMilliseconds": 60.54838709677419
+          },
+          "outboundMetrics": {
+            "sentPackets": 87,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 4,
+            "scheduledCopies": 87,
+            "deliveredPackets": 86,
+            "deliveredCopies": 86,
+            "overflowRejectedPackets": 0,
+            "maximumObservedQueueDepth": 3,
+            "minimumDeliveryLatencyMilliseconds": 10,
+            "maximumDeliveryLatencyMilliseconds": 108,
+            "totalDeliveryLatencyMilliseconds": 4865,
+            "currentQueueDepth": 1,
+            "averageDeliveryLatencyMilliseconds": 56.56976744186046
+          },
+          "strandedCopiesAtClose": 0,
+          "impairmentFaults": 0
+        }
+      ]
+    },
+    "peerB": {
+      "profile": "matrix-jitter-50",
+      "enabled": true,
+      "policy": {
+        "socketWrapping": "fresh_per_connect",
+        "harnessLifecycle": "fresh_inbound_and_outbound_per_connection",
+        "seedLifecycle": "restart_profile_seed_per_connection",
+        "metricsRetention": "transport_lifetime_aggregate_and_per_connection",
+        "closePolicy": "cancel_delivery_timers_and_retain_stranded_queue_metrics",
+        "aggregation": "sum_counters_extrema_across_sessions_weighted_latency_average",
+        "frameScope": "gameplay_input_snapshot_ack_after_initial_full_snapshot",
+        "reliableControlPolicy": "bypass_synthetic_loss_duplication_reorder_and_latency",
+        "bootstrapPolicy": "first_full_snapshot_delivered_before_gameplay_impairment"
+      },
+      "connectionsCreated": 1,
+      "activeConnectionOrdinal": 1,
+      "reliableControlFramesBypassedInbound": 12,
+      "reliableControlFramesBypassedOutbound": 41,
+      "bootstrapGameplayFramesBypassedInbound": 1,
+      "bootstrapGameplayFramesBypassedOutbound": 0,
+      "inbound": {
+        "config": {
+          "kind": "seeded",
+          "startingClockMilliseconds": 0,
+          "maximumQueueDepth": 4096,
+          "seed": 1793,
+          "baseLatencyMilliseconds": 60,
+          "jitterMilliseconds": 50,
+          "lossRatePermille": 0,
+          "duplicateRatePermille": 0,
+          "duplicateDelayMilliseconds": 0,
+          "reorderRatePermille": 0,
+          "reorderDelayMilliseconds": 0
+        },
+        "metrics": {
+          "sentPackets": 126,
+          "droppedPackets": 0,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 30,
+          "scheduledCopies": 126,
+          "deliveredPackets": 124,
+          "deliveredCopies": 124,
+          "overflowRejectedPackets": 0,
+          "currentQueueDepth": 2,
+          "maximumObservedQueueDepth": 4,
+          "minimumDeliveryLatencyMilliseconds": 10,
+          "maximumDeliveryLatencyMilliseconds": 110,
+          "totalDeliveryLatencyMilliseconds": 7508,
+          "averageDeliveryLatencyMilliseconds": 60.54838709677419
+        }
+      },
+      "outbound": {
+        "config": {
+          "kind": "seeded",
+          "startingClockMilliseconds": 0,
+          "maximumQueueDepth": 4096,
+          "seed": 1794,
+          "baseLatencyMilliseconds": 60,
+          "jitterMilliseconds": 50,
+          "lossRatePermille": 0,
+          "duplicateRatePermille": 0,
+          "duplicateDelayMilliseconds": 0,
+          "reorderRatePermille": 0,
+          "reorderDelayMilliseconds": 0
+        },
+        "metrics": {
+          "sentPackets": 87,
+          "droppedPackets": 0,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 8,
+          "scheduledCopies": 87,
+          "deliveredPackets": 86,
+          "deliveredCopies": 86,
+          "overflowRejectedPackets": 0,
+          "currentQueueDepth": 1,
+          "maximumObservedQueueDepth": 3,
+          "minimumDeliveryLatencyMilliseconds": 10,
+          "maximumDeliveryLatencyMilliseconds": 108,
+          "totalDeliveryLatencyMilliseconds": 4865,
+          "averageDeliveryLatencyMilliseconds": 56.56976744186046
+        }
+      },
+      "sessions": [
+        {
+          "connectionOrdinal": 1,
+          "socketState": "open",
+          "gameplayImpairmentActive": true,
+          "reliableControlFramesBypassedInbound": 12,
+          "reliableControlFramesBypassedOutbound": 41,
+          "bootstrapGameplayFramesBypassedInbound": 1,
+          "bootstrapGameplayFramesBypassedOutbound": 0,
+          "inboundMetrics": {
+            "sentPackets": 126,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 30,
+            "scheduledCopies": 126,
+            "deliveredPackets": 124,
+            "deliveredCopies": 124,
+            "overflowRejectedPackets": 0,
+            "maximumObservedQueueDepth": 4,
+            "minimumDeliveryLatencyMilliseconds": 10,
+            "maximumDeliveryLatencyMilliseconds": 110,
+            "totalDeliveryLatencyMilliseconds": 7508,
+            "currentQueueDepth": 2,
+            "averageDeliveryLatencyMilliseconds": 60.54838709677419
+          },
+          "outboundMetrics": {
+            "sentPackets": 87,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 8,
+            "scheduledCopies": 87,
+            "deliveredPackets": 86,
+            "deliveredCopies": 86,
+            "overflowRejectedPackets": 0,
+            "maximumObservedQueueDepth": 3,
+            "minimumDeliveryLatencyMilliseconds": 10,
+            "maximumDeliveryLatencyMilliseconds": 108,
+            "totalDeliveryLatencyMilliseconds": 4865,
+            "currentQueueDepth": 1,
+            "averageDeliveryLatencyMilliseconds": 56.56976744186046
+          },
+          "strandedCopiesAtClose": 0,
+          "impairmentFaults": 0
+        }
+      ]
+    }
+  },
+  "workerMetrics": {
+    "tickBefore": {
+      "serverTick": 3,
+      "lifecycle": "warmup",
+      "players": 2,
+      "connectedPlayers": 2,
+      "ticks": 3,
+      "acceptedInputs": 0,
+      "inputRejections": {
+        "duplicate_sequence": 0,
+        "stale_sequence": 0,
+        "sequence_too_far_ahead": 0,
+        "client_tick_too_far_ahead": 0,
+        "client_tick_too_old": 0,
+        "queue_full": 0
+      },
+      "maximumObservedQueueDepth": 0,
+      "missedSchedulerTicks": 0,
+      "queryMetrics": {
+        "moveCapsuleCalls": 6,
+        "overlapCapsuleCalls": 0,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 6,
+        "shapeCasts": 6,
+        "overlapTests": 18,
+        "contacts": 0
+      },
+      "transport": {
+        "fullSnapshotsSent": 2,
+        "deltaSnapshotsSent": 2,
+        "snapshotAcksAccepted": 7,
+        "snapshotAcksRejected": 0,
+        "snapshotAckTimeoutFallbacks": 0,
+        "snapshotHistoryFallbacks": 0,
+        "reliableEventsRecorded": 2,
+        "reliableEventBatchesSent": 3,
+        "reliableEventResendBatches": 0,
+        "reliableEventAcksAccepted": 7,
+        "reliableEventAcksRejected": 0,
+        "reliableEventHistoryFallbacks": 0
+      }
+    },
+    "tickAfter": {
+      "serverTick": 23,
+      "lifecycle": "warmup",
+      "players": 2,
+      "connectedPlayers": 2,
+      "ticks": 23,
+      "acceptedInputs": 33,
+      "inputRejections": {
+        "duplicate_sequence": 0,
+        "stale_sequence": 5,
+        "sequence_too_far_ahead": 0,
+        "client_tick_too_far_ahead": 0,
+        "client_tick_too_old": 0,
+        "queue_full": 0
+      },
+      "maximumObservedQueueDepth": 2,
+      "missedSchedulerTicks": 0,
+      "queryMetrics": {
+        "moveCapsuleCalls": 46,
+        "overlapCapsuleCalls": 0,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 46,
+        "shapeCasts": 46,
+        "overlapTests": 138,
+        "contacts": 0
+      },
+      "transport": {
+        "fullSnapshotsSent": 2,
+        "deltaSnapshotsSent": 18,
+        "snapshotAcksAccepted": 23,
+        "snapshotAcksRejected": 0,
+        "snapshotAckTimeoutFallbacks": 0,
+        "snapshotHistoryFallbacks": 0,
+        "reliableEventsRecorded": 2,
+        "reliableEventBatchesSent": 3,
+        "reliableEventResendBatches": 0,
+        "reliableEventAcksAccepted": 23,
+        "reliableEventAcksRejected": 0,
+        "reliableEventHistoryFallbacks": 0
+      }
+    },
+    "final": {
+      "serverTick": 89,
+      "lifecycle": "active",
+      "players": 2,
+      "connectedPlayers": 2,
+      "ticks": 89,
+      "acceptedInputs": 160,
+      "inputRejections": {
+        "duplicate_sequence": 0,
+        "stale_sequence": 13,
+        "sequence_too_far_ahead": 0,
+        "client_tick_too_far_ahead": 0,
+        "client_tick_too_old": 0,
+        "queue_full": 0
+      },
+      "maximumObservedQueueDepth": 3,
+      "missedSchedulerTicks": 0,
+      "queryMetrics": {
+        "moveCapsuleCalls": 178,
+        "overlapCapsuleCalls": 0,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 178,
+        "shapeCasts": 178,
+        "overlapTests": 534,
+        "contacts": 7
+      },
+      "transport": {
+        "fullSnapshotsSent": 2,
+        "deltaSnapshotsSent": 74,
+        "snapshotAcksAccepted": 79,
+        "snapshotAcksRejected": 0,
+        "snapshotAckTimeoutFallbacks": 0,
+        "snapshotHistoryFallbacks": 0,
+        "reliableEventsRecorded": 2,
+        "reliableEventBatchesSent": 3,
+        "reliableEventResendBatches": 0,
+        "reliableEventAcksAccepted": 79,
+        "reliableEventAcksRejected": 0,
+        "reliableEventHistoryFallbacks": 0
+      }
+    }
+  },
+  "browserLog": [
+    {
+      "at": "2026-07-22T04:44:41.271Z",
+      "peer": "matrix-jitter-50:A",
+      "kind": "console",
+      "level": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "at": "2026-07-22T04:44:41.279Z",
+      "peer": "matrix-jitter-50:A",
+      "kind": "console",
+      "level": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "at": "2026-07-22T04:44:41.354Z",
+      "peer": "matrix-jitter-50:A",
+      "kind": "console",
+      "level": "warning",
+      "text": "using deprecated parameters for the initialization function; pass a single object instead"
+    },
+    {
+      "at": "2026-07-22T04:44:41.477Z",
+      "peer": "matrix-jitter-50:B",
+      "kind": "console",
+      "level": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "at": "2026-07-22T04:44:41.485Z",
+      "peer": "matrix-jitter-50:B",
+      "kind": "console",
+      "level": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "at": "2026-07-22T04:44:41.563Z",
+      "peer": "matrix-jitter-50:B",
+      "kind": "console",
+      "level": "warning",
+      "text": "using deprecated parameters for the initialization function; pass a single object instead"
+    }
+  ],
+  "criticalBrowserLog": [],
+  "assertions": {
+    "twoIsolatedBrowserContexts": true,
+    "sameRoom": true,
+    "sameMatch": true,
+    "sameSimulationIdentity": true,
+    "protocolV2": true,
+    "authorityTickNear20Hz": true,
+    "authorityMovementObserved": true,
+    "predictionLeadAtHighRtt": true,
+    "remoteSamplesAdvanced": true,
+    "remoteInterpolationRendered": true,
+    "reconciliationMeasured": true,
+    "reconciliationBelowTwoMeterSnapBoundary": true,
+    "exactNamedConfiguration": true,
+    "expectedPhenomenaObserved": true,
+    "impairmentQueuesBounded": true,
+    "controlFramesBypassedTruthfully": true,
+    "bothClientsStayedJoined": true,
+    "noClientErrors": true,
+    "noCriticalBrowserErrors": true,
+    "workerQueueBounded": true
+  },
+  "passed": true,
+  "snapshots": {
+    "joinedA": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.299734bb-dc0e-450e-9c3d-45714ac407c3",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1",
+        "matchPhase": "lobby",
+        "phaseEndsAtTick": 0,
+        "serverTick": 0,
+        "estimatedServerTick": 0,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 0,
+        "lastAppliedSnapshotBaselineId": "baseline.0.1",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.1",
+        "lastReliableEventSequence": 1,
+        "seenReliableEventIds": 1
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 0,
+        "nextSequence": 0,
+        "nextClientTick": 0,
+        "lastAcknowledgedSequence": -1,
+        "authorityInputRejections": {
+          "messages": 0,
+          "rejectedCommands": 0,
+          "duplicateSequence": 0,
+          "staleSequence": 0,
+          "lastCategory": null
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": -1500,
+          "y": 0,
+          "z": -2000
+        },
+        "predictedPosition": {
+          "x": -1500,
+          "y": 0,
+          "z": -2000
+        },
+        "predictionHistoryCommands": 0,
+        "lastReconciliationMode": null,
+        "lastPositionErrorMillimeters": null,
+        "correctionBounds": {
+          "sampleCount": 0,
+          "maximumPositionErrorMillimeters": null,
+          "histogram": {
+            "zero": 0,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 0,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 0,
+        "entityIds": []
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 5,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 5,
+        "commandsGenerated": 0,
+        "batchesSent": 0,
+        "inputAcks": 0,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 0,
+        "snapshotAcksSent": 2,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 1,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 2,
+        "reconciliations": 0,
+        "remoteSamples": 0,
+        "interpolationFrames": 5,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 0,
+        "recoverableInputRejectedCommands": 0,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 0,
+          "subthreshold_correction": 0,
+          "soft_correction": 0,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 0,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 0,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 0,
+          "authoritative": 0,
+          "interpolated": 0,
+          "extrapolated": 0,
+          "stale": 0
+        }
+      },
+      "lastNotice": null,
+      "lastError": null
+    },
+    "joinedB": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.f7518e86-174d-4641-ac16-31dbfb1f588c",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.b7d066c3-b0f0-41c9-977c-51bc790a074c",
+        "matchPhase": "lobby",
+        "phaseEndsAtTick": 0,
+        "serverTick": 0,
+        "estimatedServerTick": 0,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 0,
+        "lastAppliedSnapshotBaselineId": "baseline.0.2",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.2",
+        "lastReliableEventSequence": 2,
+        "seenReliableEventIds": 1
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 0,
+        "nextSequence": 0,
+        "nextClientTick": 0,
+        "lastAcknowledgedSequence": -1,
+        "authorityInputRejections": {
+          "messages": 0,
+          "rejectedCommands": 0,
+          "duplicateSequence": 0,
+          "staleSequence": 0,
+          "lastCategory": null
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        },
+        "predictedPosition": {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        },
+        "predictionHistoryCommands": 0,
+        "lastReconciliationMode": null,
+        "lastPositionErrorMillimeters": null,
+        "correctionBounds": {
+          "sampleCount": 0,
+          "maximumPositionErrorMillimeters": null,
+          "histogram": {
+            "zero": 0,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 0,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 1,
+        "entityIds": [
+          "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1"
+        ]
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 5,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 5,
+        "commandsGenerated": 0,
+        "batchesSent": 0,
+        "inputAcks": 0,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 0,
+        "snapshotAcksSent": 2,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 1,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 2,
+        "reconciliations": 0,
+        "remoteSamples": 1,
+        "interpolationFrames": 5,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 0,
+        "recoverableInputRejectedCommands": 0,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 0,
+          "subthreshold_correction": 0,
+          "soft_correction": 0,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 0,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 1,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 0,
+          "authoritative": 1,
+          "interpolated": 0,
+          "extrapolated": 0,
+          "stale": 0
+        }
+      },
+      "lastNotice": null,
+      "lastError": null
+    },
+    "beforeA": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.299734bb-dc0e-450e-9c3d-45714ac407c3",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1",
+        "matchPhase": "warmup",
+        "phaseEndsAtTick": 40,
+        "serverTick": 22,
+        "estimatedServerTick": 22.1960000000149,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 22,
+        "lastAppliedSnapshotBaselineId": "baseline.22.13",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.2",
+        "lastReliableEventSequence": 2,
+        "seenReliableEventIds": 2
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 0,
+        "nextSequence": 21,
+        "nextClientTick": 21,
+        "lastAcknowledgedSequence": 16,
+        "authorityInputRejections": {
+          "messages": 2,
+          "rejectedCommands": 2,
+          "duplicateSequence": 0,
+          "staleSequence": 2,
+          "lastCategory": "stale_sequence"
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": -1500,
+          "y": 0,
+          "z": -2000
+        },
+        "predictedPosition": {
+          "x": -1500,
+          "y": 0,
+          "z": -2000
+        },
+        "predictionHistoryCommands": 4,
+        "lastReconciliationMode": "subthreshold_correction",
+        "lastPositionErrorMillimeters": 0,
+        "correctionBounds": {
+          "sampleCount": 9,
+          "maximumPositionErrorMillimeters": 0,
+          "histogram": {
+            "zero": 9,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 0,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 1,
+        "entityIds": [
+          "player.b7d066c3-b0f0-41c9-977c-51bc790a074c"
+        ]
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 39,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 23,
+        "commandsGenerated": 21,
+        "batchesSent": 21,
+        "inputAcks": 22,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 9,
+        "snapshotAcksSent": 12,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 2,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 12,
+        "reconciliations": 9,
+        "remoteSamples": 1,
+        "interpolationFrames": 733,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 2,
+        "recoverableInputRejectedCommands": 2,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 3,
+          "subthreshold_correction": 6,
+          "soft_correction": 0,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 0,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 1,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 35,
+          "authoritative": 0,
+          "interpolated": 0,
+          "extrapolated": 64,
+          "stale": 440
+        }
+      },
+      "lastNotice": "INPUT_REJECTED: authority ignored 1 duplicate or stale input command",
+      "lastError": null
+    },
+    "beforeB": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.f7518e86-174d-4641-ac16-31dbfb1f588c",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.b7d066c3-b0f0-41c9-977c-51bc790a074c",
+        "matchPhase": "warmup",
+        "phaseEndsAtTick": 40,
+        "serverTick": 22,
+        "estimatedServerTick": 22.23800000000745,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 22,
+        "lastAppliedSnapshotBaselineId": "baseline.22.13",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.2",
+        "lastReliableEventSequence": 2,
+        "seenReliableEventIds": 1
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 0,
+        "nextSequence": 20,
+        "nextClientTick": 20,
+        "lastAcknowledgedSequence": 16,
+        "authorityInputRejections": {
+          "messages": 3,
+          "rejectedCommands": 3,
+          "duplicateSequence": 0,
+          "staleSequence": 3,
+          "lastCategory": "stale_sequence"
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        },
+        "predictedPosition": {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        },
+        "predictionHistoryCommands": 3,
+        "lastReconciliationMode": "subthreshold_correction",
+        "lastPositionErrorMillimeters": 0,
+        "correctionBounds": {
+          "sampleCount": 9,
+          "maximumPositionErrorMillimeters": 0,
+          "histogram": {
+            "zero": 9,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 0,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 1,
+        "entityIds": [
+          "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1"
+        ]
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 39,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 23,
+        "commandsGenerated": 20,
+        "batchesSent": 20,
+        "inputAcks": 22,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 9,
+        "snapshotAcksSent": 11,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 1,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 11,
+        "reconciliations": 9,
+        "remoteSamples": 1,
+        "interpolationFrames": 622,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 3,
+        "recoverableInputRejectedCommands": 3,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 3,
+          "subthreshold_correction": 6,
+          "soft_correction": 0,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 0,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 1,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 0,
+          "authoritative": 77,
+          "interpolated": 0,
+          "extrapolated": 36,
+          "stale": 505
+        }
+      },
+      "lastNotice": "INPUT_REJECTED: authority ignored 1 duplicate or stale input command",
+      "lastError": null
+    },
+    "predictionLead": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.299734bb-dc0e-450e-9c3d-45714ac407c3",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1",
+        "matchPhase": "warmup",
+        "phaseEndsAtTick": 40,
+        "serverTick": 25,
+        "estimatedServerTick": 25.1260000000149,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 22,
+        "lastAppliedSnapshotBaselineId": "baseline.22.13",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.2",
+        "lastReliableEventSequence": 2,
+        "seenReliableEventIds": 2
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 127,
+        "nextSequence": 23,
+        "nextClientTick": 23,
+        "lastAcknowledgedSequence": 20,
+        "authorityInputRejections": {
+          "messages": 2,
+          "rejectedCommands": 2,
+          "duplicateSequence": 0,
+          "staleSequence": 2,
+          "lastCategory": "stale_sequence"
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": -1500,
+          "y": 0,
+          "z": -2000
+        },
+        "predictedPosition": {
+          "x": -1500,
+          "y": 0,
+          "z": -1550
+        },
+        "predictionHistoryCommands": 6,
+        "lastReconciliationMode": "subthreshold_correction",
+        "lastPositionErrorMillimeters": 0,
+        "correctionBounds": {
+          "sampleCount": 9,
+          "maximumPositionErrorMillimeters": 0,
+          "histogram": {
+            "zero": 9,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 0,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 1,
+        "entityIds": [
+          "player.b7d066c3-b0f0-41c9-977c-51bc790a074c"
+        ]
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 42,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 23,
+        "commandsGenerated": 23,
+        "batchesSent": 23,
+        "inputAcks": 25,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 9,
+        "snapshotAcksSent": 12,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 2,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 12,
+        "reconciliations": 9,
+        "remoteSamples": 1,
+        "interpolationFrames": 807,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 2,
+        "recoverableInputRejectedCommands": 2,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 3,
+          "subthreshold_correction": 6,
+          "soft_correction": 0,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 0,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 1,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 35,
+          "authoritative": 0,
+          "interpolated": 0,
+          "extrapolated": 64,
+          "stale": 514
+        }
+      },
+      "lastNotice": "INPUT_REJECTED: authority ignored 1 duplicate or stale input command",
+      "lastError": null
+    },
+    "finalA": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.299734bb-dc0e-450e-9c3d-45714ac407c3",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1",
+        "matchPhase": "active",
+        "phaseEndsAtTick": 9640,
+        "serverTick": 87,
+        "estimatedServerTick": 88.5260000000149,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 86,
+        "lastAppliedSnapshotBaselineId": "baseline.86.45",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.2",
+        "lastReliableEventSequence": 2,
+        "seenReliableEventIds": 2
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 0,
+        "nextSequence": 87,
+        "nextClientTick": 87,
+        "lastAcknowledgedSequence": 82,
+        "authorityInputRejections": {
+          "messages": 4,
+          "rejectedCommands": 4,
+          "duplicateSequence": 0,
+          "staleSequence": 4,
+          "lastCategory": "stale_sequence"
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": -1500,
+          "y": 0,
+          "z": 3800
+        },
+        "predictedPosition": {
+          "x": -1500,
+          "y": 0,
+          "z": 3800
+        },
+        "predictionHistoryCommands": 6,
+        "lastReconciliationMode": "confirmed",
+        "lastPositionErrorMillimeters": 0,
+        "correctionBounds": {
+          "sampleCount": 37,
+          "maximumPositionErrorMillimeters": 350,
+          "histogram": {
+            "zero": 31,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 6,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 1,
+        "entityIds": [
+          "player.b7d066c3-b0f0-41c9-977c-51bc790a074c"
+        ]
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 134,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 79,
+        "commandsGenerated": 87,
+        "batchesSent": 87,
+        "inputAcks": 87,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 37,
+        "snapshotAcksSent": 40,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 2,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 40,
+        "reconciliations": 37,
+        "remoteSamples": 1,
+        "interpolationFrames": 2524,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 4,
+        "recoverableInputRejectedCommands": 4,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 13,
+          "subthreshold_correction": 18,
+          "soft_correction": 6,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 0,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 1,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 35,
+          "authoritative": 0,
+          "interpolated": 0,
+          "extrapolated": 64,
+          "stale": 2231
+        }
+      },
+      "lastNotice": "INPUT_REJECTED: authority ignored 1 duplicate or stale input command",
+      "lastError": null
+    },
+    "finalB": {
+      "connection": {
+        "phase": "joined",
+        "connectionId": "connection.f7518e86-174d-4641-ac16-31dbfb1f588c",
+        "connectionMode": "joined",
+        "socketState": "open",
+        "lastCloseCode": null,
+        "lastCloseReason": null
+      },
+      "authority": {
+        "protocolVersion": 2,
+        "roomId": "room.KYX-RFS54T",
+        "matchId": "match.d4a6b68ed6644debb5d0c7f2c7a78f25",
+        "playerId": "player.b7d066c3-b0f0-41c9-977c-51bc790a074c",
+        "matchPhase": "active",
+        "phaseEndsAtTick": 9640,
+        "serverTick": 87,
+        "estimatedServerTick": 88.58199999999255,
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "phase4_flat_run",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "lastAppliedSnapshotTick": 86,
+        "lastAppliedSnapshotBaselineId": "baseline.86.45",
+        "pendingFullSnapshotRequestId": null,
+        "lastReliableEventId": "event.2",
+        "lastReliableEventSequence": 2,
+        "seenReliableEventIds": 1
+      },
+      "input": {
+        "moveX": 0,
+        "moveY": 0,
+        "nextSequence": 87,
+        "nextClientTick": 87,
+        "lastAcknowledgedSequence": 81,
+        "authorityInputRejections": {
+          "messages": 8,
+          "rejectedCommands": 8,
+          "duplicateSequence": 0,
+          "staleSequence": 8,
+          "lastCategory": "stale_sequence"
+        }
+      },
+      "local": {
+        "authoritativePosition": {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        },
+        "predictedPosition": {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        },
+        "predictionHistoryCommands": 6,
+        "lastReconciliationMode": "confirmed",
+        "lastPositionErrorMillimeters": 0,
+        "correctionBounds": {
+          "sampleCount": 37,
+          "maximumPositionErrorMillimeters": 0,
+          "histogram": {
+            "zero": 37,
+            "oneTo52": 0,
+            "fiftyThreeTo1999": 0,
+            "atLeast2000": 0
+          }
+        }
+      },
+      "remote": {
+        "playerCount": 1,
+        "entityIds": [
+          "player.c6f96e8c-0598-455d-8391-bc9ff117e8a1"
+        ]
+      },
+      "resume": {
+        "available": true,
+        "tokenLength": 43,
+        "generation": 0
+      },
+      "counters": {
+        "connectionAttempts": 1,
+        "socketOpens": 1,
+        "socketCloses": 0,
+        "serverMessages": 137,
+        "protocolDecodeFailures": 0,
+        "identityChecks": 79,
+        "commandsGenerated": 87,
+        "batchesSent": 87,
+        "inputAcks": 87,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 37,
+        "snapshotAcksSent": 39,
+        "staleSnapshotsIgnored": 0,
+        "deltaBaselineMisses": 0,
+        "fullSnapshotRequests": 0,
+        "reliableEvents": 1,
+        "reliableEventDuplicates": 0,
+        "reliableEventHistoryGaps": 0,
+        "reliableEventAcksSent": 39,
+        "reconciliations": 37,
+        "remoteSamples": 10,
+        "interpolationFrames": 2415,
+        "resumeAttempts": 0,
+        "resumeSuccesses": 0,
+        "resumeTokenRotations": 0,
+        "resumePredictionResets": 0,
+        "transportErrors": 0,
+        "applicationErrors": 0,
+        "recoverableInputRejectionMessages": 8,
+        "recoverableInputRejectedCommands": 8,
+        "reconciliationModes": {
+          "stale_snapshot": 0,
+          "confirmed": 17,
+          "subthreshold_correction": 20,
+          "soft_correction": 0,
+          "hard_snap": 0,
+          "teleport_snap": 0,
+          "history_gap_snap": 0
+        },
+        "remoteInsertions": {
+          "accepted": 9,
+          "accepted_out_of_order": 0,
+          "duplicate": 0,
+          "conflicting_duplicate": 0,
+          "stale_before_discontinuity": 0,
+          "semantic_discontinuity_reset": 1,
+          "implicit_teleport_reset": 0
+        },
+        "interpolationModes": {
+          "empty": 0,
+          "held": 0,
+          "authoritative": 77,
+          "interpolated": 412,
+          "extrapolated": 212,
+          "stale": 1710
+        }
+      },
+      "lastNotice": "INPUT_REJECTED: authority ignored 1 duplicate or stale input command",
+      "lastError": null
+    }
+  }
+}

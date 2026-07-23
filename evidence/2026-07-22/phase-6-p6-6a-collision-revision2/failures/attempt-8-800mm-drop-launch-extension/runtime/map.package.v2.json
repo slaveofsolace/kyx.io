@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "kind": "runtime_map_package",
+  "id": "inkfall_foundry",
+  "revision": 2,
+  "displayName": "Inkfall Foundry",
+  "implementationStatus": "runtime_fixture_only",
+  "identity": {
+    "algorithm": "sha256-canonical-json-zeroed-digest-v1",
+    "digest": "da033eec4b644bfd4b1554fd589a0aa8e8a93d698869fe97b9cb607ba4ef43cf"
+  },
+  "sourceSeed": {
+    "path": "inkfall-foundry.layout-seed.v1.json",
+    "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+  },
+  "units": {
+    "distance": "millimeters",
+    "angle": "milli_degrees",
+    "gltfMetersPerUnit": 1,
+    "millimetersPerRapierUnit": 1000
+  },
+  "coordinateSystem": {
+    "handedness": "right_handed",
+    "xAxis": "east",
+    "yAxis": "up",
+    "zAxis": "north",
+    "origin": "press_core_floor_contact",
+    "gltfToMap": "x_y_negative_z"
+  },
+  "boundsMm": {
+    "minimum": {
+      "x": -36000,
+      "y": -5000,
+      "z": -28000
+    },
+    "maximum": {
+      "x": 36000,
+      "y": 10000,
+      "z": 28000
+    }
+  },
+  "supportedModes": [
+    "deathmatch",
+    "team_deathmatch"
+  ],
+  "artifacts": {
+    "render": {
+      "role": "render_only",
+      "path": "revisions/revision-2/export/render.graybox.glb",
+      "format": "glb",
+      "bytes": 613564,
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "expectedMeshNodeCount": 346
+    },
+    "collision": {
+      "role": "authority_collision",
+      "path": "revisions/revision-2/export/collision.authority.glb",
+      "format": "glb",
+      "bytes": 604208,
+      "sha256": "a1409244f5f501c9b96e8320b22817060330c33e1478ec5fefcc213762b42b2b",
+      "expectedMeshNodeCount": 339
+    }
+  },
+  "zones": [
+    {
+      "id": "west_gallery",
+      "callout": "West Galley",
+      "family": "spawn",
+      "centerMm": {
+        "x": -30000,
+        "y": 0,
+        "z": 0
+      },
+      "halfExtentsMm": {
+        "x": 6000,
+        "y": 4000,
+        "z": 9000
+      }
+    },
+    {
+      "id": "east_gallery",
+      "callout": "East Galley",
+      "family": "spawn",
+      "centerMm": {
+        "x": 30000,
+        "y": 0,
+        "z": 0
+      },
+      "halfExtentsMm": {
+        "x": 6000,
+        "y": 4000,
+        "z": 9000
+      }
+    },
+    {
+      "id": "press_hall",
+      "callout": "Press Hall",
+      "family": "press_hall",
+      "centerMm": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "halfExtentsMm": {
+        "x": 22000,
+        "y": 4500,
+        "z": 10000
+      }
+    },
+    {
+      "id": "ink_channel_west",
+      "callout": "Ink Sump",
+      "family": "ink_channel",
+      "centerMm": {
+        "x": -15000,
+        "y": -3000,
+        "z": -18500
+      },
+      "halfExtentsMm": {
+        "x": 11000,
+        "y": 3000,
+        "z": 7000
+      }
+    },
+    {
+      "id": "ink_channel_east",
+      "callout": "Cistern Fold",
+      "family": "ink_channel",
+      "centerMm": {
+        "x": 15000,
+        "y": -3000,
+        "z": -17500
+      },
+      "halfExtentsMm": {
+        "x": 11000,
+        "y": 3000,
+        "z": 7000
+      }
+    },
+    {
+      "id": "archive_walk_west",
+      "callout": "Paper Archive",
+      "family": "archive_walk",
+      "centerMm": {
+        "x": -15000,
+        "y": 6000,
+        "z": 18500
+      },
+      "halfExtentsMm": {
+        "x": 11000,
+        "y": 3500,
+        "z": 7000
+      }
+    },
+    {
+      "id": "archive_walk_east",
+      "callout": "Ledger Bridge",
+      "family": "archive_walk",
+      "centerMm": {
+        "x": 15000,
+        "y": 6000,
+        "z": 18000
+      },
+      "halfExtentsMm": {
+        "x": 11000,
+        "y": 3500,
+        "z": 7000
+      }
+    },
+    {
+      "id": "teleport_fold",
+      "callout": "Red Fold",
+      "family": "crosslink",
+      "centerMm": {
+        "x": -1500,
+        "y": -1000,
+        "z": -7500
+      },
+      "halfExtentsMm": {
+        "x": 6500,
+        "y": 4500,
+        "z": 6000
+      }
+    },
+    {
+      "id": "paper_drop",
+      "callout": "Paper Drop",
+      "family": "crosslink",
+      "centerMm": {
+        "x": -4000,
+        "y": 3000,
+        "z": 8000
+      },
+      "halfExtentsMm": {
+        "x": 6000,
+        "y": 5000,
+        "z": 6000
+      }
+    }
+  ],
+  "spawns": [
+    {
+      "id": "spawn_w_press_a",
+      "set": "west_team",
+      "feetPositionMm": {
+        "x": -33500,
+        "y": 0,
+        "z": -3500
+      },
+      "yawMilliDegrees": 0,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_w_press_b",
+      "set": "west_team",
+      "feetPositionMm": {
+        "x": -33500,
+        "y": 0,
+        "z": 3500
+      },
+      "yawMilliDegrees": 0,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_w_ink",
+      "set": "west_team",
+      "feetPositionMm": {
+        "x": -30500,
+        "y": 0,
+        "z": -7000
+      },
+      "yawMilliDegrees": -25000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "press_hall"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_w_archive",
+      "set": "west_team",
+      "feetPositionMm": {
+        "x": -30500,
+        "y": 0,
+        "z": 7000
+      },
+      "yawMilliDegrees": 25000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "press_hall"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_e_press_a",
+      "set": "east_team",
+      "feetPositionMm": {
+        "x": 33500,
+        "y": 0,
+        "z": 3500
+      },
+      "yawMilliDegrees": 180000,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_e_press_b",
+      "set": "east_team",
+      "feetPositionMm": {
+        "x": 33500,
+        "y": 0,
+        "z": -3500
+      },
+      "yawMilliDegrees": 180000,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_e_ink",
+      "set": "east_team",
+      "feetPositionMm": {
+        "x": 30500,
+        "y": 0,
+        "z": -7000
+      },
+      "yawMilliDegrees": -155000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "press_hall"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_e_archive",
+      "set": "east_team",
+      "feetPositionMm": {
+        "x": 30500,
+        "y": 0,
+        "z": 7000
+      },
+      "yawMilliDegrees": 155000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "press_hall"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_dm_ink_w",
+      "set": "deathmatch_candidate",
+      "feetPositionMm": {
+        "x": -27000,
+        "y": -3000,
+        "z": -22000
+      },
+      "yawMilliDegrees": 45000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "crosslink"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_dm_ink_e",
+      "set": "deathmatch_candidate",
+      "feetPositionMm": {
+        "x": 27000,
+        "y": -3000,
+        "z": -21000
+      },
+      "yawMilliDegrees": 135000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "crosslink"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_dm_archive_w",
+      "set": "deathmatch_candidate",
+      "feetPositionMm": {
+        "x": -27000,
+        "y": 6000,
+        "z": 22000
+      },
+      "yawMilliDegrees": -45000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "crosslink"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    },
+    {
+      "id": "spawn_dm_archive_e",
+      "set": "deathmatch_candidate",
+      "feetPositionMm": {
+        "x": 27000,
+        "y": 6000,
+        "z": 21000
+      },
+      "yawMilliDegrees": -135000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "crosslink"
+      ],
+      "validationStatus": "capsule_clear_unscored"
+    }
+  ],
+  "pickups": [],
+  "triggers": [
+    {
+      "id": "red_fold_teleport_entry",
+      "kind": "teleport",
+      "centerMm": {
+        "x": -4000,
+        "y": -3000,
+        "z": -10000
+      },
+      "halfExtentsMm": {
+        "x": 1500,
+        "y": 1000,
+        "z": 1500
+      },
+      "destinationFeetMm": {
+        "x": 1539,
+        "y": 1431,
+        "z": -4461
+      },
+      "destinationYawMilliDegrees": 45000,
+      "implementationStatus": "contract_only"
+    }
+  ],
+  "authorityVolumes": [
+    {
+      "id": "lower_void_recovery",
+      "kind": "recovery",
+      "centerMm": {
+        "x": 0,
+        "y": -3750,
+        "z": 0
+      },
+      "halfExtentsMm": {
+        "x": 35000,
+        "y": 250,
+        "z": 27000
+      }
+    },
+    {
+      "id": "lower_void_kill",
+      "kind": "kill",
+      "centerMm": {
+        "x": 0,
+        "y": -4750,
+        "z": 0
+      },
+      "halfExtentsMm": {
+        "x": 36000,
+        "y": 250,
+        "z": 28000
+      }
+    }
+  ],
+  "authority": {
+    "defaultSpawnId": "spawn_w_press_a",
+    "collisionPrimitive": "oriented_box",
+    "collisionLayer": "world_static",
+    "renderMeshesMayBeAuthority": false
+  },
+  "scope": {
+    "phase": "P6.3",
+    "runtimeFixtureLoaded": true,
+    "spawnScoringComplete": false,
+    "traversalPlaytestComplete": false,
+    "g5Passed": false
+  }
+}
+

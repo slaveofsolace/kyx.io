@@ -1,0 +1,6 @@
+page.evaluate: Error: First delta ACK was rejected: {"acknowledgement":{"serverTick":2,"snapshotBaselineId":"baseline.2.3","lastEventId":"event.2"},"snapshotsSeen":[{"at":1114.4000000003725,"type":"fullSnapshot","serverTick":0,"snapshotBaselineId":"baseline.0.1"},{"at":2382.60000000149,"type":"deltaSnapshot","serverTick":2,"baseTick":0,"snapshotBaselineId":"baseline.2.3","baseSnapshotBaselineId":"baseline.0.1"},{"at":2383,"type":"fullSnapshot","serverTick":24,"snapshotBaselineId":"baseline.24.14"}],"error":{"protocolVersion":2,"type":"error","code":"ACK_REJECTED","detail":"snapshot_tick_not_sent","requestId":null}}
+    at eval (eval at evaluate (:303:30), <anonymous>:224:13)
+    at async <anonymous>:329:30
+    at captureBrowserContract (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-transport-v1.mjs:166:21)
+    at main (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-transport-v1.mjs:758:28)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-transport-v1.mjs:860:1

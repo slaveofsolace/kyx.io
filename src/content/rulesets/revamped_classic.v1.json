@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "kind": "ruleset",
+  "id": "revamped_classic",
+  "revision": 1,
+  "displayName": "Revamped",
+  "implementationStatus": "contract_only",
+  "provenance": {
+    "sourceProfile": "modern_v1_7_5",
+    "evidenceLabel": "PRODUCT_OVERRIDE",
+    "designReason": "Default product profile: retain later technical fixes while explicitly authoring and testing selected classic equip behavior."
+  },
+  "tickRateHz": 20,
+  "loadout": {
+    "weaponSlots": {
+      "primary": {
+        "capacity": 1,
+        "acquisition": "spawn"
+      },
+      "secondary": {
+        "capacity": 1,
+        "acquisition": "pickup_optional"
+      },
+      "melee": {
+        "capacity": 1,
+        "acquisition": "spawn"
+      }
+    },
+    "abilitySlots": {
+      "damage": 2,
+      "utility": 1
+    },
+    "ammoAbility": {
+      "enabledByDefault": false
+    }
+  },
+  "movementProfile": {
+    "id": "revamped_classic_movement_v1",
+    "revision": 1,
+    "implementationStatus": "contract_only"
+  },
+  "verticalSlice": {
+    "primaryWeaponId": "vertical_rifle_v1",
+    "meleeWeaponId": "vertical_melee_v1",
+    "damageAbilityIds": [
+      "vertical_grenade_v1",
+      "vertical_deployable_v1"
+    ],
+    "utilityAbilityId": "vertical_teleport_v1"
+  },
+  "weapons": [
+    {
+      "schemaVersion": 1,
+      "kind": "weapon",
+      "id": "vertical_rifle_v1",
+      "displayName": "Vertical Slice Rifle",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "modern_v1_7_5",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Defines the required rifle seam without claiming unselected live balance values; every unresolved tuning field remains null."
+      },
+      "slot": "primary",
+      "category": "rifle",
+      "equipConstraints": [
+        "one_primary_at_spawn",
+        "authority_validates_cadence_ammo_and_origin"
+      ],
+      "timingsTicks": {
+        "fireCooldown": null,
+        "reload": null,
+        "ready": null
+      },
+      "damage": {
+        "base": null,
+        "pellets": 1,
+        "headMultiplier": null,
+        "limbMultiplier": null
+      },
+      "delivery": {
+        "kind": "hitscan",
+        "rangeMillimeters": null,
+        "falloffStartMillimeters": null,
+        "areaRadiusMillimeters": null
+      },
+      "ammo": {
+        "magazine": null,
+        "reserve": null,
+        "autoReload": null,
+        "pickupPolicy": "spawn"
+      },
+      "spread": {
+        "baseMilliDegrees": null,
+        "recoilPatternId": null
+      },
+      "movementConstraints": [
+        "authority_profile_pending"
+      ],
+      "projectilePolicy": null,
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "hitscan"
+        ]
+      },
+      "debugNotes": [
+        "Balance and presentation IDs must be selected from audited data before status can become playable."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "kind": "weapon",
+      "id": "vertical_melee_v1",
+      "displayName": "Vertical Slice Melee",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Reserves the always-available melee fallback while leaving unapproved reach, timing, and damage values explicit."
+      },
+      "slot": "melee",
+      "category": "melee",
+      "equipConstraints": [
+        "one_melee_at_spawn",
+        "authority_validates_readiness_and_reach"
+      ],
+      "timingsTicks": {
+        "fireCooldown": null,
+        "reload": null,
+        "ready": null
+      },
+      "damage": {
+        "base": null,
+        "pellets": 1,
+        "headMultiplier": null,
+        "limbMultiplier": null
+      },
+      "delivery": {
+        "kind": "melee",
+        "rangeMillimeters": null,
+        "falloffStartMillimeters": null,
+        "areaRadiusMillimeters": null
+      },
+      "ammo": {
+        "magazine": null,
+        "reserve": null,
+        "autoReload": null,
+        "pickupPolicy": "none"
+      },
+      "spread": {
+        "baseMilliDegrees": null,
+        "recoilPatternId": null
+      },
+      "movementConstraints": [
+        "authority_profile_pending"
+      ],
+      "projectilePolicy": null,
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "close_range"
+        ]
+      },
+      "debugNotes": [
+        "This record is a contract, not a balance claim."
+      ]
+    }
+  ],
+  "abilities": [
+    {
+      "schemaVersion": 1,
+      "kind": "ability",
+      "id": "vertical_grenade_v1",
+      "displayName": "Vertical Slice Grenade",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Provides one damage-projectile contract without silently selecting disputed classic fuse, bounce, damage, or radius values."
+      },
+      "slot": "damage",
+      "category": "grenade",
+      "equipConstraints": [
+        "occupies_one_damage_slot",
+        "authority_spawns_projectile"
+      ],
+      "timingsTicks": {
+        "cooldown": null,
+        "active": null,
+        "ready": null,
+        "fuse": null,
+        "arming": null
+      },
+      "effect": {
+        "damageHealthPoints": null,
+        "areaRadiusMillimeters": null,
+        "impulseMillimetersPerSecond": null,
+        "rangeMillimeters": null
+      },
+      "projectilePolicy": {
+        "collision": "unresolved_product_policy",
+        "speedMillimetersPerSecond": null,
+        "sticks": null,
+        "bounces": null,
+        "ownerCollision": "unresolved_product_policy"
+      },
+      "resourcePolicy": "cooldown_only",
+      "movementConstraints": [
+        "authority_profile_pending"
+      ],
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "area_denial",
+          "projectile"
+        ]
+      },
+      "debugNotes": [
+        "Choose and document an exact source or product override before gameplay implementation."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "kind": "ability",
+      "id": "vertical_deployable_v1",
+      "displayName": "Vertical Slice Deployable",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Provides one damage deployable contract so placement and lifecycle can be tested separately from grenade behavior."
+      },
+      "slot": "damage",
+      "category": "deployable",
+      "equipConstraints": [
+        "occupies_one_damage_slot",
+        "authority_places_and_owns_lifecycle"
+      ],
+      "timingsTicks": {
+        "cooldown": null,
+        "active": null,
+        "ready": null,
+        "fuse": null,
+        "arming": null
+      },
+      "effect": {
+        "damageHealthPoints": null,
+        "areaRadiusMillimeters": null,
+        "impulseMillimetersPerSecond": null,
+        "rangeMillimeters": null
+      },
+      "projectilePolicy": {
+        "collision": "unresolved_product_policy",
+        "speedMillimetersPerSecond": null,
+        "sticks": null,
+        "bounces": null,
+        "ownerCollision": "unresolved_product_policy"
+      },
+      "resourcePolicy": "cooldown_only",
+      "movementConstraints": [
+        "authority_profile_pending"
+      ],
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "area_denial",
+          "deployable"
+        ]
+      },
+      "debugNotes": [
+        "Trigger, arming, destruction, and owner policies remain deliberately unselected."
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "kind": "ability",
+      "id": "vertical_teleport_v1",
+      "displayName": "Vertical Slice Teleport",
+      "implementationStatus": "contract_only",
+      "provenance": {
+        "sourceProfile": "revamped_classic",
+        "evidenceLabel": "PRODUCT_OVERRIDE",
+        "designReason": "Reserves teleport as the single utility slot while collision validation, range, and cooldown remain explicit authoring decisions."
+      },
+      "slot": "utility",
+      "category": "teleport",
+      "equipConstraints": [
+        "occupies_utility_slot",
+        "authority_validates_destination"
+      ],
+      "timingsTicks": {
+        "cooldown": null,
+        "active": null,
+        "ready": null,
+        "fuse": null,
+        "arming": null
+      },
+      "effect": {
+        "damageHealthPoints": null,
+        "areaRadiusMillimeters": null,
+        "impulseMillimetersPerSecond": null,
+        "rangeMillimeters": null
+      },
+      "projectilePolicy": null,
+      "resourcePolicy": "cooldown_only",
+      "movementConstraints": [
+        "authority_profile_pending",
+        "destination_must_pass_collision_query"
+      ],
+      "presentation": {
+        "animationId": null,
+        "audioId": null,
+        "vfxId": null,
+        "markerIds": []
+      },
+      "bot": {
+        "desirability": null,
+        "dangerTags": [
+          "mobility"
+        ]
+      },
+      "debugNotes": [
+        "No client-authored destination is authoritative."
+      ]
+    }
+  ]
+}

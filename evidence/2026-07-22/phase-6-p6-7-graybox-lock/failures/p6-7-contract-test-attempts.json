@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "status": "PRESERVED_DEVELOPMENT_FAILURES",
+  "command": "vitest run tests/integration/content/inkfallGrayboxLock.test.ts",
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "FAIL",
+      "failedTest": "defines every required modular family with unique IDs, dimensions, pivots, and material slots",
+      "assertionLabel": "door_flank",
+      "observed": "outer height 2900 mm did not snap to the 250 mm structural fine grid",
+      "resolution": "Changed only the prospective art-kit outer frame envelope to 2000 x 3000 x 500 mm while preserving the locked 1400 x 2400 x 500 mm clear opening. No graybox geometry changed."
+    },
+    {
+      "attempt": 2,
+      "result": "FAIL",
+      "failedTest": "defines every required modular family with unique IDs, dimensions, pivots, and material slots",
+      "assertionLabel": "half_cover",
+      "observed": "the original 2400 x 1250 x 600 mm seed module is an authored clearance exception rather than a 250 mm grid multiple",
+      "resolution": "Added the explicit frozen_seed_clearance_interface exception to half_cover, full_cover, and slide_gate_shell. Their exact seed dimensions remain unchanged and the validator now distinguishes locked clearance exceptions from ordinary structural snapping."
+    }
+  ],
+  "finalFocusedResult": {
+    "filesPassed": 1,
+    "filesTotal": 1,
+    "testsPassed": 7,
+    "testsTotal": 7
+  },
+  "nonClaims": [
+    "FAILURES_NOT_RELABELED_AS_PASS",
+    "NO_GRAYBOX_GEOMETRY_CHANGED"
+  ]
+}

@@ -1,0 +1,10 @@
+node --check evidence/2026-07-22/phase-5-g4-product-presentation-bridge/runtime-v1/capture-runtime.mjs
+node evidence/2026-07-22/phase-5-g4-product-presentation-bridge/runtime-v1/capture-runtime.mjs
+node evidence/2026-07-22/phase-5-g4-product-presentation-bridge/runtime-v1/verify-evidence.mjs
+node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit
+node node_modules/typescript/bin/tsc -p tsconfig.worker.json --noEmit
+node node_modules/vitest/vitest.mjs run
+node node_modules/vitest/vitest.mjs run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate
+node node_modules/eslint/bin/eslint.js src/**/*.ts worker/**/*.ts tests/**/*.ts tools/**/*.mjs vitest.worker.config.ts --no-error-on-unmatched-pattern
+node node_modules/vite/bin/vite.js build
+node node_modules/wrangler/bin/wrangler.js deploy --dry-run --outdir .wrangler/g4-presentation-dry-run --env=

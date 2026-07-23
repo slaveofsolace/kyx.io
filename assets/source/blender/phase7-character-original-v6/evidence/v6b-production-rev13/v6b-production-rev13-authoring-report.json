@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:03:33.280010+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-B_PRODUCTION_SCULPT_REV13",
+  "inputs": {
+    "rev12": {
+      "path": "kyx_vanguard_v6b_production_sculpt_rev12.blend",
+      "sha256Before": "f28afd3f6f095b82d607015a88fef1caabb4ef514376c08b384879e529ebb440",
+      "sha256After": "f28afd3f6f095b82d607015a88fef1caabb4ef514376c08b384879e529ebb440",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6b_production_sculpt_rev13.blend",
+    "bytes": 12687853,
+    "sha256": "4c6d1b386c90895a15b3d0713c916ba7270dbe81b74d265975db0109e152d1bb"
+  },
+  "removedFailedProjectionObjects": [
+    "KYX_V6B_PROD_R13_ForearmShield_L",
+    "KYX_V6B_PROD_R13_LateralThighShield_L",
+    "KYX_V6B_PROD_R13_KneeShell_L",
+    "KYX_V6B_PROD_R13_ShinShield_L",
+    "KYX_V6B_PROD_R13_ForearmShield_R",
+    "KYX_V6B_PROD_R13_LateralThighShield_R",
+    "KYX_V6B_PROD_R13_KneeShell_R",
+    "KYX_V6B_PROD_R13_ShinShield_R"
+  ],
+  "replacementBounds": {
+    "KYX_V6B_PROD_R13_ShoulderFrontFlange_L": [
+      0.130049,
+      0.03781,
+      0.102981
+    ],
+    "KYX_V6B_PROD_R13_ForearmGuard_L": [
+      0.095516,
+      0.029622,
+      0.153968
+    ],
+    "KYX_V6B_PROD_R13_ThighGuard_L": [
+      0.079112,
+      0.032173,
+      0.153373
+    ],
+    "KYX_V6B_PROD_R13_KneeGuard_L": [
+      0.082593,
+      0.040234,
+      0.099887
+    ],
+    "KYX_V6B_PROD_R13_ShinGuard_L": [
+      0.077743,
+      0.036614,
+      0.201893
+    ],
+    "KYX_V6B_PROD_R13_BootHeelCup_L": [
+      0.106114,
+      0.049816,
+      0.094
+    ],
+    "KYX_V6B_PROD_R13_ShoulderFrontFlange_R": [
+      0.130049,
+      0.03781,
+      0.102981
+    ],
+    "KYX_V6B_PROD_R13_ForearmGuard_R": [
+      0.095516,
+      0.029622,
+      0.153968
+    ],
+    "KYX_V6B_PROD_R13_ThighGuard_R": [
+      0.079112,
+      0.032173,
+      0.153373
+    ],
+    "KYX_V6B_PROD_R13_KneeGuard_R": [
+      0.082593,
+      0.040234,
+      0.099887
+    ],
+    "KYX_V6B_PROD_R13_ShinGuard_R": [
+      0.077743,
+      0.036614,
+      0.201893
+    ],
+    "KYX_V6B_PROD_R13_BootHeelCup_R": [
+      0.106114,
+      0.049816,
+      0.094
+    ]
+  },
+  "corrections": [
+    "Removed all eight failed projected forearm, thigh, knee, and shin objects.",
+    "Added bounded regular-quad curved guards with no body projection.",
+    "Added front shoulder flanges beneath the retained saddle surfaces.",
+    "Added vertical heel cups to close the rear boot silhouette.",
+    "Pulled the waist harness into the continuous garment."
+  ],
+  "assertions": {
+    "rev12Preserved": true,
+    "acceptedV6APreserved": true,
+    "allFailedProjectionObjectsRemoved": true,
+    "allReplacementBoundsLimited": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6B_PRODUCTION_SCULPT_REV13_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 13 is a V6-B visual construction candidate only; it is not G6.",
+    "Rifle contact remains open until a defensible rigged pose exists.",
+    "No final retopology, UV, texture bake, rig, animation, LOD, GLB, runtime, or performance claim is made."
+  ]
+}

@@ -1,0 +1,7 @@
+Command: node node_modules/vitest/vitest.mjs run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate
+Exit code: 1
+
+FAIL tests/worker/protocolV2Socket.test.ts > protocol-v2 WebSocket Worker integration > sends deltas only from acknowledged baselines and resends reliable events until cumulative ACK
+AssertionError: expected false to be true
+
+The first client acknowledged a one-player full snapshot at tick 0. A second join then produced a two-player full snapshot at the same authority tick. A store keyed only by tick replaced the first baseline, so the next delta incorrectly omitted the newly added player. This failure proves that tick alone is not a unique snapshot baseline when authoritative membership can change between simulation ticks. The repair adds an opaque baseline ID to full snapshots, deltas, and acknowledgements while retaining tick validation.

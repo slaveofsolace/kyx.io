@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "slice": "P5.11 explicit Inkfall Foundry revision-2 Worker combat profile",
+  "capturedAt": "2026-07-22T11:40:18.249Z",
+  "status": "BOUNDED_PASS",
+  "roomProfile": {
+    "id": "p511-inkfall-foundry-revision-2-combat-v1",
+    "selection": {
+      "kind": "explicit_opt_in_http_header",
+      "header": "x-kyx-evidence-profile"
+    },
+    "wireIdentitySchema": 1,
+    "persistedProfileSchema": 1,
+    "persistedProfileTable": "room_profile_v1",
+    "mapReference": "inkfall_foundry@2",
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "fixtureId": "inkfall_foundry_map_collision",
+    "fixtureHash": "bf85e42731fd088e",
+    "solidColliderCount": 339,
+    "authorityVolumeCount": 2,
+    "physicsAdapterId": "rapier3d_deterministic_compat",
+    "physicsAdapterVersion": "0.19.3"
+  },
+  "presentationCoordinates": {
+    "xAxis": "east",
+    "yAxis": "up",
+    "zAxis": "north",
+    "origin": "press_core_floor_contact",
+    "gltfToMap": "x_y_negative_z",
+    "distanceUnit": "millimeters",
+    "angleUnit": "milli_degrees"
+  },
+  "lockedClientSpawns": {
+    "firstClient": {
+      "spawnId": "spawn_w_press_a",
+      "feetPosition": { "x": -33500, "y": 0, "z": -3500 },
+      "yawMilliDegrees": 0
+    },
+    "secondClient": {
+      "spawnId": "spawn_e_press_a",
+      "feetPosition": { "x": 33500, "y": 0, "z": 3500 },
+      "yawMilliDegrees": 180000
+    },
+    "totalPinnedTeamSpawns": 8
+  },
+  "runtimeBinding": {
+    "singleAuthoritativeWorld": true,
+    "movementQueriesUseInkfallWorld": true,
+    "hitscanWorldOcclusionUsesP510Port": true,
+    "grenadeSweepUsesP510Port": true,
+    "grenadeRadialOcclusionUsesP510Port": true,
+    "grenadeCollisionSafeImpulseUsesP510Port": true,
+    "pinnedHitscanProbe": {
+      "colliderId": "map_collision_spawn_pad_spawn_w_press_a",
+      "distanceMillimeters": 2000
+    },
+    "pinnedGrenadeSweepProbe": {
+      "colliderId": "map_collision_spawn_pocket_floor_west",
+      "timeOfImpactPermille": 450
+    }
+  },
+  "durableObjectProof": {
+    "realHibernatableObjectEviction": true,
+    "lobbyCheckpointReconstituted": true,
+    "restoredPlayerCount": 1,
+    "secondRealWebSocketClientJoinedAfterReconstitution": true,
+    "bothClientsObservedSameSimulationIdentity": true,
+    "bothClientsObservedLockedMapCoordinates": true,
+    "legacyP59MissingProfileRowBackfilled": true,
+    "activeMatchCheckpointClaimed": false
+  },
+  "strictMismatchProof": {
+    "wrongProfileOnExistingRoom": "409 ROOM_PROFILE_MISMATCH",
+    "crossProfileResumeToken": "RESUME_REJECTED",
+    "flatRunIdentitySubstitutedUnderInkfallProfile": "503 ROOM_UNAVAILABLE",
+    "mismatchRequestDoesNotPoisonCorrectRoomIncarnation": true,
+    "profileAndSimulationIdentityMustAgree": true
+  },
+  "defaultsPreserved": {
+    "noHeaderRoute": "phase4_flat_run revision-2 ruleset; unchanged",
+    "acceptedP59Profile": "p58d-rev3-combat-v1",
+    "acceptedP59MapId": "phase4_flat_run",
+    "acceptedP59ClearEmptyCombatPorts": "unchanged",
+    "defaultMapRevision": 1,
+    "inkfallProfileIsDefault": false,
+    "priorEvidenceSuperseded": false
+  },
+  "validation": {
+    "focusedP511Worker": "PASS; 1 file, 3 tests",
+    "focusedP510RapierAndInkfall": "PASS; 2 files, 27 tests",
+    "acceptedP59WorkerRegression": "PASS; 1 file, 3 tests",
+    "appTypeScript": "PASS",
+    "workerTypeScript": "PASS",
+    "fullEslint": "PASS",
+    "viteProductionBuild": "PASS; 143 modules transformed",
+    "nodeVitest": "PASS; 79 files, 668 tests",
+    "workerVitest": "PASS; 8 files, 29 tests",
+    "wranglerDryRun": "PASS; 2828.96 KiB upload, 772.99 KiB gzip"
+  },
+  "sourceHashes": {
+    "worker/combatRuntime.ts": "5527ffcf846bb6ca37f3f967f4a84b69481669755e24f09050a7d7ae06e24786",
+    "worker/room.ts": "b1beb84427ac1237ed6275d93e9f9ddfeaf85b9eb1648b9d567dc187bbfeec1b",
+    "worker/worker.ts": "b5b6129492854e0d3c94d961aa6f1931b928f1837ec361ea28b1fc1a06a870a1",
+    "tests/worker/inkfallRev2CombatProfile.test.ts": "91f9b5b4e515f2cc0aa6d4940fc27bc4fcf083d3a4528480b1ea5569db159680",
+    "src/authority/combat/inkfallRapierCombatWorld.ts": "9b9a6cac857a58e37c26e25653b8e699d88776c5ce7caef748ef473ca62ebe10",
+    "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json": "d04669cc6efbc3970d21572e6d06b009416558a4475ea1744d862b70b1cd9a83",
+    "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb"
+  },
+  "remainingSeam": [
+    "The player-facing online client does not yet select this opt-in profile.",
+    "Active-match Durable Object checkpoint recovery remains intentionally unavailable; this proof covers world reconstruction plus lobby checkpoint/socket reconstitution before two-client warmup.",
+    "Locked ordinal spawns are bound, but final spawn scoring and human map/combat play acceptance remain open.",
+    "Final map visuals, traversal acceptance, and paired player-visible combat footage remain open."
+  ],
+  "nonClaims": [
+    "G4_NOT_CLAIMED",
+    "G5_NOT_CLAIMED",
+    "FINAL_3D_MAP_INTEGRATION_NOT_CLAIMED",
+    "ACTIVE_MATCH_CHECKPOINT_RECOVERY_NOT_CLAIMED",
+    "P59_EVIDENCE_NOT_SUPERSEDED"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "capturedOn": "2026-07-22",
+  "platform": "win32",
+  "osRelease": "10.0.26200",
+  "architecture": "x64",
+  "node": "v24.14.0",
+  "chrome": "150.0.7871.129",
+  "chromeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "vite": "8.0.16",
+  "vitest": "4.1.10",
+  "wrangler": "4.112.0",
+  "appOrigin": "http://127.0.0.1:5173",
+  "authorityOrigin": "http://127.0.0.1:8787",
+  "captureMode": "headless system Chrome, two isolated browser contexts, real local Worker/Durable Object"
+}

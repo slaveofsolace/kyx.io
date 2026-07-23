@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T04:03:05.393316+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": {
+    "fileName": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "bytes": 12580228,
+    "sha256BeforeRender": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "sha256AfterRender": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "unchanged": true
+  },
+  "clayViews": [
+    {
+      "view": "front",
+      "fileName": "kyx-v6a-authored-anatomy-front.png",
+      "bytes": 1067807,
+      "sha256": "5f1809c15c6293da1822fb0441915b279a4defc44adb57540b994481d4006c1e",
+      "cameraLocation": [
+        -6.9e-05,
+        -4.232922,
+        0.907515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "orthographicScale": 2.076921,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.254895,
+          "maxX": 0.745105,
+          "minY": 0.072339,
+          "maxY": 0.927661,
+          "minDepth": 4.058438
+        },
+        "projectedPixels": {
+          "width": 441.188,
+          "height": 940.853
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    },
+    {
+      "view": "side",
+      "fileName": "kyx-v6a-authored-anatomy-side.png",
+      "bytes": 1032676,
+      "sha256": "5172b89be8f88b457fbc41b4650cbe479097839088ab2bb95977f1280b2d0e7e",
+      "cameraLocation": [
+        4.199931,
+        -0.032922,
+        0.907515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "orthographicScale": 2.076921,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.419153,
+          "maxX": 0.580848,
+          "minY": 0.071699,
+          "maxY": 0.9283,
+          "minDepth": 3.779319
+        },
+        "projectedPixels": {
+          "width": 145.526,
+          "height": 942.261
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    },
+    {
+      "view": "back",
+      "fileName": "kyx-v6a-authored-anatomy-back.png",
+      "bytes": 1043739,
+      "sha256": "74f9496c72fe71a63a163c75eef9db676e0fca5b2a30e566afb61c6c497881fc",
+      "cameraLocation": [
+        -6.9e-05,
+        4.167078,
+        0.907515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "orthographicScale": 2.076921,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.254895,
+          "maxX": 0.745105,
+          "minY": 0.072339,
+          "maxY": 0.92766,
+          "minDepth": 4.058438
+        },
+        "projectedPixels": {
+          "width": 441.188,
+          "height": 940.853
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    },
+    {
+      "view": "three-quarter",
+      "fileName": "kyx-v6a-authored-anatomy-three-quarter.png",
+      "bytes": 1075219,
+      "sha256": "ac3c0e037dc35a72bd4389b85075e035e0a9b4b5a58a3eb27110c2d98913383e",
+      "cameraLocation": [
+        2.999931,
+        -3.032922,
+        1.037515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "orthographicScale": 2.076921,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.269517,
+          "maxX": 0.730483,
+          "minY": 0.066253,
+          "maxY": 0.933746,
+          "minDepth": 3.822515
+        },
+        "projectedPixels": {
+          "width": 414.869,
+          "height": 954.242
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    }
+  ],
+  "clayReviewSheet": {
+    "fileName": "kyx-v6a-authored-anatomy-review-sheet.png",
+    "bytes": 283620,
+    "sha256": "22d3062197a573009395ac598887210f07409e2e9aada8f9fc25ed6196ad2ace",
+    "dimensions": [
+      1800,
+      550
+    ],
+    "sources": [
+      "kyx-v6a-authored-anatomy-front.png",
+      "kyx-v6a-authored-anatomy-side.png",
+      "kyx-v6a-authored-anatomy-back.png",
+      "kyx-v6a-authored-anatomy-three-quarter.png"
+    ]
+  },
+  "sourceVsCandidateSheet": {
+    "fileName": "kyx-v6a-source-vs-candidate-sheet.png",
+    "bytes": 408941,
+    "sha256": "2d3cc1ae24b95793e8b42cb8259642927a5dfef87a874a3dabedac8a5a001648",
+    "dimensions": [
+      1800,
+      550
+    ],
+    "sources": [
+      "kyx-v6-cc0-anatomy-seed-front.png",
+      "kyx-v6a-authored-anatomy-front.png",
+      "kyx-v6-cc0-anatomy-seed-side.png",
+      "kyx-v6a-authored-anatomy-side.png"
+    ]
+  },
+  "distanceSilhouettes": [
+    {
+      "distanceMeters": 5,
+      "fileName": "kyx-v6a-silhouette-5m.png",
+      "bytes": 508166,
+      "sha256": "d978139bd3a527d28f1b9a185731a3177c88175ceb032995d7d478739c2d2794",
+      "cameraLocation": [
+        0.0,
+        -5.0,
+        0.887515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "lensMillimeters": 50.0,
+      "sensorWidthMillimeters": 36.0,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.380224,
+          "maxX": 0.619775,
+          "minY": 0.2898,
+          "maxY": 0.710199,
+          "minDepth": 4.829688
+        },
+        "projectedPixels": {
+          "width": 167.686,
+          "height": 357.339
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    },
+    {
+      "distanceMeters": 20,
+      "fileName": "kyx-v6a-silhouette-20m.png",
+      "bytes": 493594,
+      "sha256": "89ba7d4988dc1638e48ebc0d53bb6976cadad5a38364f51bed6787250fff4b56",
+      "cameraLocation": [
+        0.0,
+        -20.0,
+        0.887515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "lensMillimeters": 50.0,
+      "sensorWidthMillimeters": 36.0,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.470828,
+          "maxX": 0.529172,
+          "minY": 0.448804,
+          "maxY": 0.551196,
+          "minDepth": 19.829693
+        },
+        "projectedPixels": {
+          "width": 40.841,
+          "height": 87.033
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    },
+    {
+      "distanceMeters": 40,
+      "fileName": "kyx-v6a-silhouette-40m.png",
+      "bytes": 491369,
+      "sha256": "327445e83949017630b8d5f5375187629c99292f87cd834893ec4194ec590b86",
+      "cameraLocation": [
+        0.0,
+        -40.0,
+        0.887515
+      ],
+      "cameraTarget": [
+        -6.9e-05,
+        -0.032922,
+        0.887515
+      ],
+      "lensMillimeters": 50.0,
+      "sensorWidthMillimeters": 36.0,
+      "projection": {
+        "normalizedBounds": {
+          "minX": 0.485476,
+          "maxX": 0.514524,
+          "minY": 0.474511,
+          "maxY": 0.525488,
+          "minDepth": 39.829693
+        },
+        "projectedPixels": {
+          "width": 20.333,
+          "height": 43.33
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "pass": true
+      }
+    }
+  ],
+  "distanceReviewSheet": {
+    "fileName": "kyx-v6a-distance-read-review-sheet.png",
+    "bytes": 610566,
+    "sha256": "f2f1fbecb48320639baaac827e1115ad1f19c62c880266c2222e13bb769eb839",
+    "dimensions": [
+      1470,
+      595
+    ],
+    "sources": [
+      "kyx-v6a-silhouette-5m.png",
+      "kyx-v6a-silhouette-20m.png",
+      "kyx-v6a-silhouette-40m.png"
+    ]
+  },
+  "assertions": {
+    "checkpointUnchangedByRender": true,
+    "allClayFramesPass": true,
+    "allDistanceFramesPass": true,
+    "fourClayViewsRendered": true,
+    "threeTrueDistanceViewsRendered": true,
+    "allArtifactsNonEmpty": true
+  },
+  "status": "V6A_REVIEW_EVIDENCE_RENDER_PASS_HUMAN_DECISION_REQUIRED",
+  "nonClaims": [
+    "Projection and file checks do not constitute visual acceptance.",
+    "V6-A remains an anatomy/silhouette candidate only.",
+    "No costume, armor, helmet, rifle, rig, animation, retopology, runtime export, G6, or release claim is made."
+  ]
+}

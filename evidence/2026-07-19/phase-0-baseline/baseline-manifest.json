@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T03:15:17.352Z",
+  "root": "phase-0-baseline",
+  "files": 21,
+  "bytes": 8711194,
+  "entries": [
+    {
+      "path": "asset-reports/current-assets.json",
+      "bytes": 4430,
+      "sha256": "b4d57f49f0533e6d75ea323b5ea8430ab34c6b42a3d4908123fbd44505fd0c05"
+    },
+    {
+      "path": "commands.txt",
+      "bytes": 2599,
+      "sha256": "5dd5c118a671786cb04e84efc703c06507a0d5de621477bca654cff7cfec94a0"
+    },
+    {
+      "path": "dependency-inventory.json",
+      "bytes": 27810,
+      "sha256": "eb1560414fcdaff10ea6e83efedf7db9fc95d25d46b0de221548082d4451590d"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 2199,
+      "sha256": "cde070764599060eb2f58344134754a24d1da67c3295ca66769050f98ab6007a"
+    },
+    {
+      "path": "git-state-after.txt",
+      "bytes": 693,
+      "sha256": "7ede5cf2fd88f51d95e9b26e6360aa2d6c2c5f5731fea272311db7b2a38a5a89"
+    },
+    {
+      "path": "git-state-before.txt",
+      "bytes": 1108,
+      "sha256": "e026ec02f001fffb353885b127ba74508d3dba369c5114955c3b3584fbbd7784"
+    },
+    {
+      "path": "install-build.log",
+      "bytes": 1264,
+      "sha256": "8a5b79f4558a4ba54e64dc05960f85033e7bbac5dca7863fe5bdd9206aff3b0d"
+    },
+    {
+      "path": "known-issues.md",
+      "bytes": 2109,
+      "sha256": "d4da8ecbbae38bb611e9a4e6fb7456b347015679c9bfc614daf59c4fa2e77b60"
+    },
+    {
+      "path": "live-console.json",
+      "bytes": 576,
+      "sha256": "69ba6a5d3177342b27f55d3932e9bf10f09db2edeea294e90e889f2ef2b65d0e"
+    },
+    {
+      "path": "local-console.json",
+      "bytes": 1037,
+      "sha256": "69c4c2014905aa2c33b35dbbe9bf9e117ed4bd7924efbf32d2262014b9d33f10"
+    },
+    {
+      "path": "network/live-network.json",
+      "bytes": 12379,
+      "sha256": "0e3ca6cd6055ff2f75d2724a53051e2577e2af4a17c86cb6a2fce5ab2fc10843"
+    },
+    {
+      "path": "network/local-network.json",
+      "bytes": 11651,
+      "sha256": "860dc4d7ecf669f865e3aa69e0c34fff673dbd005fb4b083c59690731929922c"
+    },
+    {
+      "path": "profiles/live-runtime.json",
+      "bytes": 10722,
+      "sha256": "ec8b548e9f4a7eaea14b14ad555459ce5d6d09c29e4dbac1b4c31a0f3d39d5be"
+    },
+    {
+      "path": "profiles/local-runtime.json",
+      "bytes": 53090,
+      "sha256": "cdae443c1e196ea7a906f8bd6977699982ada00fa1e894ea0a52f2e5868962d9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7742,
+      "sha256": "3d65fb747830b75e8e94a062f2bb7d2b2922e114a39da229f53221675c15ae76"
+    },
+    {
+      "path": "repository-state.json",
+      "bytes": 8272,
+      "sha256": "b385bbdf1bdf6bb1c4293e68391e63bc017999f0b94e7832fcd9c7a24ecd8f5c"
+    },
+    {
+      "path": "screenshots/live-gameplay-1920x1080.png",
+      "bytes": 611647,
+      "sha256": "ab35dd5a9cf83495180dee78786084c699224e041997d792bf403c5d9ba17981"
+    },
+    {
+      "path": "screenshots/live-menu-1920x1080.png",
+      "bytes": 305057,
+      "sha256": "daf2d4af0a2c35e46155200211b08b6bb1c628db92a7d7723d561f87728cc1d9"
+    },
+    {
+      "path": "screenshots/local-gameplay-1920x1080.png",
+      "bytes": 602157,
+      "sha256": "794201508b2f77d865d28b0e5680413de0ae6298645d260e4d606951bf8f3348"
+    },
+    {
+      "path": "screenshots/local-menu-1920x1080.png",
+      "bytes": 420476,
+      "sha256": "a696b9f267e090e54e5c0bdd69012e422f36355e43ffd8ce07c0dd7189393bb8"
+    },
+    {
+      "path": "video/local-baseline-with-30s-gameplay.webm",
+      "bytes": 6624176,
+      "sha256": "f185ea7710190462812b1d059d83cf419ff2a1d195c09642f6e71d0dafc49dff"
+    }
+  ]
+}

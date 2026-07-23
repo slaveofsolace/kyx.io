@@ -1,0 +1,39 @@
+Repository: C:/AI Projects/Projects/Games/evio/evio-repo
+Git directory: C:/AI Projects/Projects/Games/evio/evio-repo/.git
+Inside work tree: true
+
+git status --porcelain=v2 --branch
+# branch.oid 81aa1d02acce8e30ba411bb895901d2d2ac6694e
+# branch.head main
+# branch.upstream origin/main
+# branch.ab +0 -0
+
+git status
+On branch main
+Your branch is up to date with 'origin/main'.
+nothing to commit, working tree clean
+
+Initial staged paths: 0
+Initial unstaged paths: 0
+Initial non-ignored untracked paths: 0
+Initial tracked files: 75
+Initial tracked bytes: 7,171,284
+Initial node_modules: absent
+Initial server/node_modules: absent
+Initial dist: absent
+
+HEAD
+81aa1d02acce8e30ba411bb895901d2d2ac6694e
+81aa1d0 2026-07-15T20:51:56-04:00 NotHereButAfk
+Fix SSH key loading by using heredoc syntax to preserve line breaks
+
+Worktree
+worktree C:/AI Projects/Projects/Games/evio/evio-repo
+HEAD 81aa1d02acce8e30ba411bb895901d2d2ac6694e
+branch refs/heads/main
+
+Remote
+origin https://github.com/NotHereButAfk/Ev.io (fetch)
+origin https://github.com/NotHereButAfk/Ev.io (push)
+
+No .gitmodules file or submodules were present.

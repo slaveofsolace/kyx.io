@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "capturedOn": "2026-07-22",
+  "slice": "P5.8D",
+  "status": "pass",
+  "scope": "Explicit revision-3 authoritative combat through the real Worker/WebSocket seam, impairment/reconnect proof, and Node/Worker/browser replay parity",
+  "roomProfiles": {
+    "default": {
+      "rulesetRevision": 2,
+      "rulesetHash": "039ae95bed7ee716",
+      "combatSnapshotPresent": false
+    },
+    "explicitCombat": {
+      "profile": "p58d-rev3-combat-v1",
+      "requestHeader": "x-kyx-evidence-profile",
+      "rulesetRevision": 3,
+      "rulesetHash": "d5f0418d1d927370",
+      "combatSnapshotSchemaVersion": 1
+    }
+  },
+  "replayParity": {
+    "algorithm": "canonical fixed-shape FNV-1a-64",
+    "digest": "c614736551a1a503",
+    "surfaces": [
+      "Node AuthoritativeRoom",
+      "Cloudflare Worker isolate over real WebSockets",
+      "development browser route"
+    ],
+    "workerDeliveryProfiles": [
+      "baseline",
+      "loss",
+      "reorder",
+      "duplicate"
+    ],
+    "consequence": {
+      "acceptedShotCount": 10,
+      "magazineRounds": 40,
+      "targetHealthPoints": 0,
+      "targetDeathOrdinal": 1,
+      "blueScore": 1,
+      "feedSequence": 1,
+      "eventCounts": {
+        "shotAccepted": 10,
+        "damageApplied": 10,
+        "playerKilled": 1
+      }
+    }
+  },
+  "compositeResume": {
+    "activeReload": true,
+    "activeProjectile": true,
+    "deadPlayerRespawnCountdown": true,
+    "activeMatch": true,
+    "secureResumeFullSnapshot": true,
+    "uniqueReliableEventIds": true
+  },
+  "gates": {
+    "fullNode": {
+      "status": "pass",
+      "files": 69,
+      "tests": 636,
+      "durationSeconds": 34.44,
+      "note": "Existing Rapier initialization deprecation warnings only"
+    },
+    "fullWorker": {
+      "status": "pass",
+      "files": 7,
+      "tests": 26,
+      "durationSeconds": 15.76,
+      "commandConstraint": "--maxWorkers=1 --no-isolate"
+    },
+    "focusedNodeReplayParity": {
+      "status": "pass",
+      "files": 1,
+      "tests": 1
+    },
+    "browserReplayParity": {
+      "status": "pass",
+      "project": "chromium-desktop",
+      "tests": 1,
+      "durationSeconds": 7.6
+    },
+    "applicationTypecheck": {
+      "status": "pass",
+      "diagnostics": 0
+    },
+    "workerTypecheck": {
+      "status": "pass",
+      "diagnostics": 0
+    },
+    "fullLint": {
+      "status": "pass",
+      "errors": 0,
+      "warnings": 0
+    },
+    "productionBuild": {
+      "status": "pass",
+      "modulesTransformed": 138,
+      "note": "Vite emitted its existing large-chunk advisory"
+    },
+    "wranglerDryRun": {
+      "status": "pass",
+      "deployed": false,
+      "uploadKiB": 2606.42,
+      "gzipKiB": 756.94
+    }
+  },
+  "retainedFailures": [
+    "failures/p58d-worker-red-01.md",
+    "failures/p58d-worker-red-02.md",
+    "failures/p58d-worker-red-03.md",
+    "failures/p58d-worker-red-04.md",
+    "failures/p58d-worker-red-05.md",
+    "failures/p58d-worker-red-06.md",
+    "failures/p58d-cors-red-01.md",
+    "failures/p58d-node-parity-red-01.md"
+  ],
+  "artifactSha256": {
+    "src/net/protocol.ts": "7e2ab11e17135777b885997e87595767f34dcb58efc35d8d31ee87d343dbe729",
+    "src/net/schemas.ts": "8e0974ab9e980120e74f4d8f99751b1de4adc0eddc28eb74419dc64bea8c5b19",
+    "src/net/index.ts": "84f3205018be887d6a86e3cda972c9c1dcb7ece16c143bfaf88e8ab85abf95b5",
+    "src/net/combatConsequence.ts": "9a744108265a4e19bb060772347d66b6dfae1a39afbac102209ff7e9b133e767",
+    "worker/combatRuntime.ts": "13bce97d18b9b93e788640afee28359bbb36599a778c09a6e236266517211414",
+    "worker/room.ts": "b378b535efe4bfea345394357d7573444c82ca87e044bf2a34bfb0e89636374a",
+    "worker/worker.ts": "b9106a7fd59967f5aeb04d07eb135cb579d81361d3a86d37f4ccbb205cc094b9",
+    "tests/worker/combatRev3.test.ts": "c795f3f7642a1f95f030670d6c99d4a4c8f9288690a0f148a1fa41e22b6bd301",
+    "tests/worker/cors.test.ts": "5a28e89962a252a35aca35f887e15f9b4df8dd43598b18576221a1ea63908186",
+    "tests/unit/authority/combat/p58dReplayParity.test.ts": "bb9be635fc93dc89ea02be62f0c7e84e08b6250b967cefdb44c0125b94b5b6aa",
+    "tests/browser/p58d-combat-replay-digest.spec.ts": "759b56ccbe6060149edecce4f137347b24888fea032d02b912cdc7de9c72cb3c"
+  },
+  "nonClaims": [
+    "No deployment was performed",
+    "P5.9 two-real-browser visible gameplay proof remains open",
+    "G4 is not accepted by this automated slice",
+    "The deterministic empty grenade collision evidence port is not real-map collision acceptance",
+    "The replay browser route is machine-readable parity evidence, not a product screenshot or gameplay video"
+  ]
+}

@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "status": "BOUNDED_G4_PRODUCT_PRESENTATION_BRIDGE_RUNTIME_PASS_G4_OPEN",
+  "capturedAt": "2026-07-22T16:37:52.029Z",
+  "browser": {
+    "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "version": "150.0.7871.129",
+    "headless": true
+  },
+  "services": {
+    "app": "http://127.0.0.1:5173",
+    "authority": "http://127.0.0.1:8787"
+  },
+  "roomUrl": "http://127.0.0.1:5173/online?mode=join&room=KYX-P26XWM",
+  "players": {
+    "a": "player.3b5da6f3-20e1-4023-a7cc-1e5ea160994f",
+    "b": "player.60ffa534-b60c-4f89-a2fc-66e8f1d69052"
+  },
+  "initial": {
+    "a": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 1,
+      "confirmedIntentCount": 0,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "snapshot",
+      "lastAuthorityEventId": null,
+      "audioCueAttempts": 0
+    },
+    "b": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 1,
+      "confirmedIntentCount": 0,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "snapshot",
+      "lastAuthorityEventId": null,
+      "audioCueAttempts": 0
+    }
+  },
+  "body": {
+    "presentation": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 2,
+      "confirmedIntentCount": 1,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "body",
+      "lastAuthorityEventId": "combat.damage.0",
+      "audioCueAttempts": 1
+    },
+    "dom": {
+      "status": {
+        "testid": "online-presentation-status",
+        "lastCue": "body",
+        "confirmedIntents": "1",
+        "duplicateEvents": "0"
+      },
+      "hud": {
+        "text": "BODY HIT · CONFIRMED",
+        "dataset": {
+          "testid": "online-confirmed-hud",
+          "cue": "body",
+          "authorityEventId": "combat.damage.0",
+          "active": "true",
+          "audio": "played"
+        }
+      },
+      "vfx": {
+        "testid": "online-confirmed-vfx",
+        "cue": "body",
+        "authorityEventId": "combat.damage.0",
+        "active": "true",
+        "reducedMotion": "false"
+      }
+    }
+  },
+  "kill": {
+    "shooterPresentation": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 11,
+      "confirmedIntentCount": 10,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "kill",
+      "lastAuthorityEventId": "combat.damage.9",
+      "audioCueAttempts": 10
+    },
+    "victimPresentation": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 11,
+      "confirmedIntentCount": 10,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "snapshot",
+      "lastAuthorityEventId": null,
+      "audioCueAttempts": 0
+    },
+    "shooterDom": {
+      "status": {
+        "testid": "online-presentation-status",
+        "lastCue": "kill",
+        "confirmedIntents": "10",
+        "duplicateEvents": "0"
+      },
+      "hud": {
+        "text": "ELIMINATION · CONFIRMED",
+        "dataset": {
+          "testid": "online-confirmed-hud",
+          "cue": "kill",
+          "authorityEventId": "combat.damage.9",
+          "active": "true",
+          "audio": "played"
+        }
+      },
+      "vfx": {
+        "testid": "online-confirmed-vfx",
+        "cue": "kill",
+        "authorityEventId": "combat.damage.9",
+        "active": "true",
+        "reducedMotion": "false"
+      }
+    },
+    "victimLife": {
+      "playerId": "player.60ffa534-b60c-4f89-a2fc-66e8f1d69052",
+      "connected": true,
+      "teamId": "team_red",
+      "lifePhase": "dead",
+      "healthPoints": 0,
+      "shieldPoints": 0,
+      "deathOrdinal": 1,
+      "respawnEligibleAtTick": 223,
+      "riflePhase": "dead",
+      "magazineRounds": 50,
+      "reserveRounds": 150,
+      "nextShotAtTick": 0,
+      "reloadCompletesAtTick": null,
+      "acceptedShotCount": 0,
+      "grenadePhase": "dead",
+      "grenadeCooldownEndsAtTick": 0,
+      "acceptedThrowCount": 0,
+      "activeProjectileCount": 0
+    }
+  },
+  "teleport": {
+    "beforePosition": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "afterPosition": {
+      "x": 0,
+      "y": 0,
+      "z": 9000
+    },
+    "presentation": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 12,
+      "confirmedIntentCount": 11,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "teleport",
+      "lastAuthorityEventId": "combat.4a0d5e3ac74ca206",
+      "audioCueAttempts": 11
+    },
+    "dom": {
+      "status": {
+        "testid": "online-presentation-status",
+        "lastCue": "teleport",
+        "confirmedIntents": "11",
+        "duplicateEvents": "0"
+      },
+      "hud": {
+        "text": "TELEPORT · CONFIRMED",
+        "dataset": {
+          "testid": "online-confirmed-hud",
+          "cue": "teleport",
+          "authorityEventId": "combat.4a0d5e3ac74ca206",
+          "active": "true",
+          "audio": "played"
+        }
+      },
+      "vfx": {
+        "testid": "online-confirmed-vfx",
+        "cue": "teleport",
+        "authorityEventId": "combat.4a0d5e3ac74ca206",
+        "active": "true",
+        "reducedMotion": "false"
+      }
+    },
+    "reliableEvents": [
+      {
+        "id": "event.24",
+        "serverTick": 69,
+        "kind": "abilityActivated",
+        "subjectId": "combat.4a0d5e3ac74ca206",
+        "actorId": "player.3b5da6f3-20e1-4023-a7cc-1e5ea160994f",
+        "targetId": null,
+        "amountHealthPoints": null,
+        "presentation": {
+          "schemaVersion": 1,
+          "kind": "teleport_resource_confirmed",
+          "eventId": "combat.4a0d5e3ac74ca206",
+          "authorityTick": 69,
+          "playerId": "player.3b5da6f3-20e1-4023-a7cc-1e5ea160994f",
+          "abilityId": "vertical_teleport_v1",
+          "outcome": "full",
+          "from": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "to": {
+            "x": 0,
+            "y": 0,
+            "z": 9000
+          },
+          "cooldownTicksRemaining": 160,
+          "weaponRecoveryTicks": 0,
+          "combatStatePolicy": "preserve_existing_combat_state"
+        }
+      }
+    ]
+  },
+  "reconnect": {
+    "presentation": {
+      "status": "ready",
+      "hydrationCount": 2,
+      "intentCount": 13,
+      "confirmedIntentCount": 11,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "snapshot",
+      "lastAuthorityEventId": null,
+      "audioCueAttempts": 11
+    },
+    "dom": {
+      "status": {
+        "testid": "online-presentation-status",
+        "lastCue": "snapshot",
+        "confirmedIntents": "11",
+        "duplicateEvents": "0"
+      },
+      "hud": {
+        "text": "AUTHORITY STATE SYNCHRONIZED",
+        "dataset": {
+          "testid": "online-confirmed-hud",
+          "cue": "snapshot",
+          "authorityEventId": "",
+          "active": "true",
+          "audio": "not_played"
+        }
+      },
+      "vfx": {
+        "testid": "online-confirmed-vfx",
+        "cue": "snapshot",
+        "authorityEventId": "",
+        "active": "false",
+        "reducedMotion": "false"
+      }
+    },
+    "confirmedBeforeResume": 11,
+    "noConfirmedReplay": true,
+    "noDuplicateReplay": true
+  },
+  "browserErrors": {
+    "consoleA": [],
+    "consoleB": [],
+    "pageA": [],
+    "pageB": [],
+    "requestA": [],
+    "requestB": []
+  },
+  "screenshots": {
+    "raw": [
+      "screenshots/g4-01-confirmed-teleport-hud-vfx.png",
+      "screenshots/g4-02-confirmed-body-hit-hud-vfx.png",
+      "screenshots/g4-03-confirmed-kill-hud-vfx.png",
+      "screenshots/g4-04-reconnect-hydration-no-replay.png"
+    ],
+    "readableBoards": [
+      "screenshots/g4-board-01-confirmed-teleport.png",
+      "screenshots/g4-board-02-confirmed-body-hit.png",
+      "screenshots/g4-board-03-confirmed-kill.png",
+      "screenshots/g4-board-04-reconnect-no-replay.png"
+    ]
+  }
+}

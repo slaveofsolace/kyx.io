@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T10:06:24.965442+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV11",
+  "input": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev11\\kyx_vanguard_v6c_visual_benchmark_rev11.blend",
+    "sha256Before": "7d6fbd8f1494240519d58f3dda0acbb98f8bab3fe8e6a1ac3b446f98c5992e53",
+    "sha256After": "7d6fbd8f1494240519d58f3dda0acbb98f8bab3fe8e6a1ac3b446f98c5992e53",
+    "unchanged": true
+  },
+  "sourceReference": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+    "sha256Before": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+    "sha256After": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+    "pinnedSha256": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+    "unchanged": true,
+    "usage": "sole visual construction reference; accepted V6-A anatomy remains authoritative"
+  },
+  "renderExposure": -0.12,
+  "characterBounds": {
+    "minimum": [
+      -0.44763,
+      -0.223701,
+      -5.8e-05
+    ],
+    "maximum": [
+      0.44763,
+      0.175482,
+      1.861451
+    ]
+  },
+  "fullViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev11-front",
+      "fileName": "kyx-v6c-benchmark-rev11-front.png",
+      "bytes": 1471526,
+      "sha256": "1f013ec1f30a664329ed038f43cb3eb39beaf107e8867d018d7fa08022699391",
+      "cameraLocation": [
+        0.0,
+        -4.67411,
+        0.978619
+      ],
+      "target": [
+        0.0,
+        -0.02411,
+        0.958619
+      ],
+      "orthographicScale": 2.08489,
+      "resolution": [
+        1040,
+        1260
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-side",
+      "fileName": "kyx-v6c-benchmark-rev11-side.png",
+      "bytes": 1385902,
+      "sha256": "eb3a5b5719bbed22dbb1ad8ac22b81a770ed7a25f52a567d8469bfd20561abe2",
+      "cameraLocation": [
+        4.65,
+        -0.02411,
+        0.978619
+      ],
+      "target": [
+        0.0,
+        -0.02411,
+        0.958619
+      ],
+      "orthographicScale": 2.08489,
+      "resolution": [
+        1040,
+        1260
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-back",
+      "fileName": "kyx-v6c-benchmark-rev11-back.png",
+      "bytes": 1519564,
+      "sha256": "17695217a75add8f465bd14f80ab9a8fe1f35522b7d5a10b98c708606be94482",
+      "cameraLocation": [
+        0.0,
+        4.62589,
+        0.978619
+      ],
+      "target": [
+        0.0,
+        -0.02411,
+        0.958619
+      ],
+      "orthographicScale": 2.08489,
+      "resolution": [
+        1040,
+        1260
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-three-quarter",
+      "fileName": "kyx-v6c-benchmark-rev11-three-quarter.png",
+      "bytes": 1502209,
+      "sha256": "6c7388ea765989ac264deefeb3f6948dedef29b3db9f3a226890637c875c42d1",
+      "cameraLocation": [
+        3.18,
+        -3.64411,
+        1.178619
+      ],
+      "target": [
+        0.0,
+        -0.02411,
+        0.958619
+      ],
+      "orthographicScale": 2.08489,
+      "resolution": [
+        1040,
+        1260
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-rear-three-quarter",
+      "fileName": "kyx-v6c-benchmark-rev11-rear-three-quarter.png",
+      "bytes": 1510091,
+      "sha256": "e16438c74e22dfcaa59c1f659581474682b40d63e4c9c51c8e540b2e568370d2",
+      "cameraLocation": [
+        -3.15,
+        3.55589,
+        1.158619
+      ],
+      "target": [
+        0.0,
+        -0.02411,
+        0.958619
+      ],
+      "orthographicScale": 2.08489,
+      "resolution": [
+        1040,
+        1260
+      ]
+    }
+  ],
+  "heroViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev11-hero-three-quarter",
+      "fileName": "kyx-v6c-benchmark-rev11-hero-three-quarter.png",
+      "bytes": 2056369,
+      "sha256": "0ce41d287699bd447ce126f3a432647e38d178fb5fdaa3a3cdde2b563b1d01f0",
+      "cameraLocation": [
+        2.86,
+        -4.212,
+        1.16
+      ],
+      "target": [
+        0.0,
+        -0.012,
+        0.93
+      ],
+      "orthographicScale": 2.16,
+      "resolution": [
+        1260,
+        1460
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-gameplay-low-three-quarter",
+      "fileName": "kyx-v6c-benchmark-rev11-gameplay-low-three-quarter.png",
+      "bytes": 1825436,
+      "sha256": "b5dfd2accdaa7dd8b040284202dee8f56499fe50be9e96f8c4025dedc61dee75",
+      "cameraLocation": [
+        3.3,
+        -4.512,
+        0.75
+      ],
+      "target": [
+        0.0,
+        -0.012,
+        0.93
+      ],
+      "orthographicScale": 2.18,
+      "resolution": [
+        1260,
+        1460
+      ]
+    }
+  ],
+  "componentViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev11-helmet",
+      "fileName": "kyx-v6c-benchmark-rev11-helmet.png",
+      "bytes": 1594083,
+      "sha256": "e8059bd821aba2ffc6b02c5e8872fb70ccf19968bd78d48cedeb06952881197a",
+      "cameraLocation": [
+        0.82,
+        -3.31,
+        1.965
+      ],
+      "target": [
+        0.0,
+        -0.01,
+        1.665
+      ],
+      "orthographicScale": 0.48,
+      "resolution": [
+        1280,
+        1000
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-torso-loadpaths",
+      "fileName": "kyx-v6c-benchmark-rev11-torso-loadpaths.png",
+      "bytes": 2009225,
+      "sha256": "ef0a23294961abad997d9f1781f5ad4d6ac772c8679a0737bbec25962c696dc0",
+      "cameraLocation": [
+        1.12,
+        -3.36,
+        1.56
+      ],
+      "target": [
+        0.0,
+        -0.01,
+        1.26
+      ],
+      "orthographicScale": 0.7,
+      "resolution": [
+        1280,
+        1080
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-rear-loadpaths",
+      "fileName": "kyx-v6c-benchmark-rev11-rear-loadpaths.png",
+      "bytes": 2116530,
+      "sha256": "f9ac61fd40f4fb309ef424049c0c651344c0fb25fec1bad849f73967c4013967",
+      "cameraLocation": [
+        1.06,
+        3.392,
+        1.565
+      ],
+      "target": [
+        0.0,
+        0.012,
+        1.245
+      ],
+      "orthographicScale": 0.72,
+      "resolution": [
+        1280,
+        1080
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-arm-articulation",
+      "fileName": "kyx-v6c-benchmark-rev11-arm-articulation.png",
+      "bytes": 1882961,
+      "sha256": "8650adcc618b924d8b61c163273eb1598c8d65654a9190866fe0991f79b8f105",
+      "cameraLocation": [
+        1.805,
+        -3.558,
+        1.485
+      ],
+      "target": [
+        0.255,
+        -0.008,
+        1.125
+      ],
+      "orthographicScale": 0.95,
+      "resolution": [
+        1080,
+        1320
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-pelvis-lowerbody",
+      "fileName": "kyx-v6c-benchmark-rev11-pelvis-lowerbody.png",
+      "bytes": 1858051,
+      "sha256": "a14e4f0ba1cf286bf004b2f2385de34db31694dfca452be4b27d98ebbc9066f2",
+      "cameraLocation": [
+        1.2,
+        -3.308,
+        1.0
+      ],
+      "target": [
+        0.0,
+        -0.008,
+        0.66
+      ],
+      "orthographicScale": 1.0,
+      "resolution": [
+        1280,
+        1160
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-boots",
+      "fileName": "kyx-v6c-benchmark-rev11-boots.png",
+      "bytes": 1543658,
+      "sha256": "2a42941c4116e4c8114a2b7cd28bb2edaceaa2486bbd3cd47e01503f330a89a1",
+      "cameraLocation": [
+        1.2,
+        -3.24,
+        0.445
+      ],
+      "target": [
+        0.0,
+        -0.04,
+        0.145
+      ],
+      "orthographicScale": 0.58,
+      "resolution": [
+        1320,
+        900
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-rifle",
+      "fileName": "kyx-v6c-benchmark-rev11-rifle.png",
+      "bytes": 1850001,
+      "sha256": "78734c359522a75fe84d7ac21469d42799cf1ffe059ae2d8785b21bf62e50901",
+      "cameraLocation": [
+        1.45,
+        -3.55,
+        1.42
+      ],
+      "target": [
+        0.17,
+        0.0,
+        1.0
+      ],
+      "orthographicScale": 2.15,
+      "resolution": [
+        1900,
+        980
+      ]
+    }
+  ],
+  "distanceViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev11-distance-5m",
+      "fileName": "kyx-v6c-benchmark-rev11-distance-5m.png",
+      "bytes": 1031153,
+      "sha256": "d52138246602695355e398f5917b1e191202812a6d2087d9442e7c2d0f064f1b",
+      "distanceMeters": 5.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-distance-12m",
+      "fileName": "kyx-v6c-benchmark-rev11-distance-12m.png",
+      "bytes": 908144,
+      "sha256": "c15f01177c378ac3b509ba021bf10d53a8f1e9afc1449781fd1edb5ec426b634",
+      "distanceMeters": 12.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-distance-20m",
+      "fileName": "kyx-v6c-benchmark-rev11-distance-20m.png",
+      "bytes": 878507,
+      "sha256": "254bbe35d294de349d137da4da77e2e15fa18f714eafc9ae81fa8f078e307712",
+      "distanceMeters": 20.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev11-distance-40m",
+      "fileName": "kyx-v6c-benchmark-rev11-distance-40m.png",
+      "bytes": 859765,
+      "sha256": "8ce2003747d424fb61b6f6712c95eb1e22869d88d3008647894c1d6e1b6d6faf",
+      "distanceMeters": 40.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    }
+  ],
+  "boards": {
+    "direct": {
+      "fileName": "kyx-v6c-benchmark-rev11-direct-review-board.png",
+      "bytes": 6951880,
+      "sha256": "c6464229e725e5a3144b9070d02c924efe6ebd6f0ef8a742b7de47947bb9045d",
+      "resolution": [
+        3120,
+        2520
+      ]
+    },
+    "heroGameplay": {
+      "fileName": "kyx-v6c-benchmark-rev11-hero-gameplay-board.png",
+      "bytes": 5684549,
+      "sha256": "9012d0c66c98b4f939aa01db3d9d4150146e1f3666c8554bc3919b0c7d2e6439",
+      "resolution": [
+        2520,
+        2920
+      ]
+    },
+    "components": {
+      "fileName": "kyx-v6c-benchmark-rev11-component-review-board.png",
+      "bytes": 13715223,
+      "sha256": "0188229d51a3165ad4a05f1f5ecdb4cfe9a496c28052a0f2355e4f04b8acee5a",
+      "resolution": [
+        5700,
+        3960
+      ]
+    },
+    "sourceReference": {
+      "fileName": "kyx-v6c-benchmark-rev11-source-reference-board.png",
+      "bytes": 16492974,
+      "sha256": "fae0dcfcd5c54cef496df2ff3b57fbd69285ae3433a307d28669b3d895d0985b",
+      "resolution": [
+        6240,
+        5840
+      ]
+    }
+  },
+  "contactEvidence": {
+    "heldContactBoardOmittedByContract": true,
+    "literalTwoHandOrShoulderContactClaimed": false,
+    "note": "Three witness empties remain for a future accepted rigged phase; no contact image is presented as proof."
+  },
+  "visualDecision": "PENDING_DIRECT_INSPECTION",
+  "nonClaims": [
+    "This packet is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "No retopology, UV, rig, animation, LOD, GLB, runtime, contact, or performance claim is made."
+  ]
+}

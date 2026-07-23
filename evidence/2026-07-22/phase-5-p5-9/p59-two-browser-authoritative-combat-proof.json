@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "phase": "P5.9",
+  "capturedAt": "2026-07-22T10:43:16.425Z",
+  "status": "BOUNDED_PASS",
+  "gateClaim": "G4_NOT_CLAIMED",
+  "summary": "Two separate real Chrome processes exercised the production /online route against a real local Vite plus Wrangler Durable Object authority. Both peer views showed authoritative rifle damage, death, score/feed, automatic respawn, grenade and reload state, same-session resume, and converged combat snapshots.",
+  "topology": {
+    "route": "/online",
+    "frontendOrigin": "http://127.0.0.1:5173",
+    "authorityOrigin": "http://127.0.0.1:8787",
+    "browserProcesses": 2,
+    "browser": "Google Chrome system installation driven by Playwright",
+    "contexts": 2,
+    "displayNames": [
+      "Blue Vanguard",
+      "Red Sentinel"
+    ],
+    "syntheticDashboard": false
+  },
+  "identity": {
+    "defaultRevision": 2,
+    "defaultRulesetHash": "039ae95bed7ee716",
+    "optInRevision": 3,
+    "optInRulesetHash": "d5f0418d1d927370",
+    "profileHeader": "x-kyx-evidence-profile",
+    "profileId": "p58d-rev3-combat-v1",
+    "defaultRevisionRemainsDefault": true
+  },
+  "focusedRoom": {
+    "roomCode": "KYX-LBZTXY",
+    "matchId": "match.bc0867e3a0f24c69ba48abcb57853376",
+    "shooter": {
+      "playerId": "player.9b5396af-a8d4-42f7-9f72-af7bf6156cc0",
+      "teamId": "team_red"
+    },
+    "victim": {
+      "playerId": "player.85c2f76b-7fb9-4d88-9d94-514df5cb9a82",
+      "teamId": "team_blue"
+    },
+    "death": {
+      "bothPeersObserved": true,
+      "lifePhase": "dead",
+      "healthPoints": 0,
+      "deathOrdinal": 1,
+      "respawnEligibleAtTick": 689,
+      "teamScores": {
+        "team_blue": 0,
+        "team_red": 1
+      },
+      "feedSequence": 1
+    },
+    "respawn": {
+      "bothPeersObserved": true,
+      "lifePhase": "alive",
+      "healthPoints": 100,
+      "deathOrdinal": 1,
+      "respawnEligibleAtTick": null,
+      "scoreAndFeedPreserved": true
+    },
+    "resumeDuringCombat": {
+      "samePlayerBeforeAndAfter": true,
+      "sameMatchBeforeAndAfter": true,
+      "resumeSuccessesBefore": 0,
+      "resumeSuccessesAfter": 1,
+      "riflePhaseBefore": "reloading",
+      "riflePhaseAfter": "reloading",
+      "magazineRoundsBefore": 36,
+      "magazineRoundsAfter": 36,
+      "acceptedThrowCountBefore": 1,
+      "acceptedThrowCountAfter": 1,
+      "activeProjectileCountBefore": 1,
+      "activeProjectileCountAfter": 1,
+      "projectileIdBefore": "combat.8b57008dcf2f4d8a",
+      "projectileIdAfter": "combat.8b57008dcf2f4d8a",
+      "scoreAndFeedPreserved": true
+    }
+  },
+  "convergenceRoom": {
+    "roomCode": "KYX-768NLJ",
+    "matchId": "match.1d783bbb692e4c7690f74cbcee07f1c9",
+    "resumedPlayerId": "player.355034bc-f279-4dcb-b645-0efdeba3d12e",
+    "peerPlayerId": "player.527f2811-347e-497c-b0a4-b1ceb25481f6",
+    "resumeSuccesses": 2,
+    "teamScores": {
+      "team_blue": 2,
+      "team_red": 0
+    },
+    "feedSequence": 2,
+    "exactCombatSnapshotConvergence": true,
+    "normalizedCombatSnapshotConvergence": true
+  },
+  "runtimeObservations": {
+    "rifleDamagePerAcceptedHit": 10,
+    "acceptedHitsToKillFromFullHealth": 10,
+    "automaticRespawnObserved": true,
+    "grenadeProjectileObserved": true,
+    "reloadCompletionObserved": true,
+    "reliableKillFeedObserved": true,
+    "browserConsoleErrors": 0,
+    "browserConsoleWarnings": [
+      "using deprecated parameters for the initialization function; pass a single object instead"
+    ]
+  },
+  "regressions": {
+    "appTypecheck": "PASS",
+    "workerTypecheck": "PASS",
+    "eslint": "PASS",
+    "viteBuild": "PASS",
+    "wranglerDryRun": "PASS",
+    "nodeVitest": {
+      "status": "PASS",
+      "tests": 651
+    },
+    "workerVitest": {
+      "status": "PASS",
+      "files": 7,
+      "tests": 26
+    }
+  },
+  "browserFallback": {
+    "browserPluginRuntimeAvailable": false,
+    "managedPlaywrightChromiumAvailable": false,
+    "fallback": "Two separate system Chrome processes launched directly through Playwright",
+    "reason": "The in-app Browser runtime reported zero available browsers and the managed Chromium executable was absent. The system Chrome fallback preserved the required real-browser and distinct-process topology."
+  },
+  "knownLimits": [
+    "Movement uses the real phase4_flat_run Rapier authority fixture, not the final accepted production map.",
+    "Hitscan uses a deterministic clear-occlusion evidence port.",
+    "Impulse Grenade uses deterministic empty collision and clear radial-occlusion evidence ports.",
+    "This closes bounded presentation and authority subclaims only; it does not close real-map combat collision or G4 overall."
+  ],
+  "selectedArtifactsSha256": {
+    "screenshots/p59-13-shooter-kill-arena-panel.png": "053c9fef4ff6dd543a1429f0428d7adae6bbfb5cf1a573edcf212cd4644b1618",
+    "screenshots/p59-14-victim-death-arena-panel.png": "d8396c87921afbbfef85858aaec60406a5a9558349cd3cabcbffa90865dbde0b",
+    "screenshots/p59-15-shooter-kill-feed-panel.png": "1dd7bbdea73072ea84963048a826fc9d9b2404a407287b722053c1af7bbffe39",
+    "screenshots/p59-18-victim-respawn-panel.png": "eec03a7367775a554420bd8c5c20f8b9f14768cc323976a5d09c9e87fd00ee88",
+    "screenshots/p59-19-live-grenade-before-resume.png": "23c2e01ff1f1a6d764ef9d81accd6ad7d65dbc9cc2ef10379601df2317990553",
+    "screenshots/p59-20-reload-grenade-before-resume.png": "007a169c7d9beff5fdc9bbb8d44118e25a05f687cee9a25a5bbf499bfb2b4b98",
+    "screenshots/p59-21-live-grenade-after-resume.png": "0208aa02c893b0c03b8a74c82eab227f47a5c6a85f1738682c8231758075b34e",
+    "screenshots/p59-22-reload-grenade-after-resume.png": "007a169c7d9beff5fdc9bbb8d44118e25a05f687cee9a25a5bbf499bfb2b4b98",
+    "videos/p59-client-a-two-room-combat.webm": "8dc4b1858690bf6ec9447ae75801b2ba8b511a6b78f791c16ecf736a28600c32",
+    "videos/p59-client-b-two-room-combat.webm": "62dbcc6d9b1e53a1c71dfa40c32aa94467dcd904eaba432a78939316fca1a525"
+  },
+  "sourceSha256": {
+    "src/app/onlineAuthorityGateway.ts": "5989b3d2b39b5a070f84d89706320df176a79346bd89e55d5484af10fe1d249d",
+    "src/app/onlineAuthorityRoute.ts": "f27e9dd4f32254d07986c8bf4e5b46dc6ceb572416be949486f9e809bbc6ef91",
+    "src/dev/authorityEvidenceClient.ts": "7b6497e2cec6ab68710973da2ab70aa368715ea90f5f0215d6776625a2b0144e",
+    "src/dev/authorityEvidenceModel.ts": "e343a9bc8adac7a64d4b4730a59bd9ed1834192181c9fcfbe1fef0d6109d8fb3",
+    "src/main.js": "68f6c0eb38bd0b0da257216c553ffaa1c03797511e7eafcdeef3ca29078b0b5a",
+    "worker/room.ts": "ae3bbba9214d3563558b9fee866829cdec48d0b42e180c53530ff555f7f63759"
+  }
+}

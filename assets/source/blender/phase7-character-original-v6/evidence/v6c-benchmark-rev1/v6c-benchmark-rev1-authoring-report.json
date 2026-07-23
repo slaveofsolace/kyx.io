@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:21:52.749113+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV1",
+  "input": {
+    "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "unchanged": true
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev1.blend",
+    "bytes": 12718459,
+    "sha256": "3cfea3ad9c17d310dec45a83e40804f7386fb487ad49b7223afc7e3bde9289f8"
+  },
+  "constructionMethod": {
+    "undersuit": "Accepted V6-A body retained as the single continuous anatomical woven undersuit.",
+    "chest": "Independent tapered clavicle-rib surface patches plus a narrow sternum keel; no bib slab.",
+    "limbs": "High-resolution almond-tapered axial sweeps wrapping muscle and joint arcs; no rectangular appliques.",
+    "helmet": "One enclosed low-volume superelliptical shell with compound visor, curved chin seal, and continuous cowl.",
+    "boots": "Anatomical heel-ball-instep-toe loft, forward-canted ankle shaft, contoured outsole, and long dorsal guard.",
+    "rifle": "One continuous stock-receiver-handguard-root-grip profile with seated shroud, magazine, barrel, and contact witnesses."
+  },
+  "inventory": {
+    "collections": [
+      "KYX_V6C_BENCH_R1_ContinuousUndersuit",
+      "KYX_V6C_BENCH_R1_AuthoredArmorSurfaces",
+      "KYX_V6C_BENCH_R1_IntegratedEquipment",
+      "KYX_V6C_BENCH_R1_OriginalAutoRifle"
+    ],
+    "objects": 44,
+    "meshObjects": 35,
+    "curveObjects": 6,
+    "meshVertices": 18616,
+    "meshPolygons": 17520,
+    "materials": [
+      "KYX_V6C_BENCH_R1_ArticulationKnit",
+      "KYX_V6C_BENCH_R1_BootUpper",
+      "KYX_V6C_BENCH_R1_ContinuousWovenUndersuit",
+      "KYX_V6C_BENCH_R1_CyanReadout",
+      "KYX_V6C_BENCH_R1_DeepVisor",
+      "KYX_V6C_BENCH_R1_GraphiteStructure",
+      "KYX_V6C_BENCH_R1_GripComposite",
+      "KYX_V6C_BENCH_R1_OutsoleRubber",
+      "KYX_V6C_BENCH_R1_SignalCoral",
+      "KYX_V6C_BENCH_R1_WarmIvoryCeramic"
+    ],
+    "namedObjects": [
+      "KYX_V6C_BENCH_R1_AbdominalVSeam",
+      "KYX_V6C_BENCH_R1_AutoRifleBarrel",
+      "KYX_V6C_BENCH_R1_AutoRifleContinuousChassis",
+      "KYX_V6C_BENCH_R1_AutoRifleFlowingShroud",
+      "KYX_V6C_BENCH_R1_AutoRifleIdentityRoute",
+      "KYX_V6C_BENCH_R1_AutoRifleMagazine",
+      "KYX_V6C_BENCH_R1_AutoRifleMuzzle",
+      "KYX_V6C_BENCH_R1_AutoRifleStatus",
+      "KYX_V6C_BENCH_R1_AutoRifleTriggerGuard",
+      "KYX_V6C_BENCH_R1_BackScapularShell_L",
+      "KYX_V6C_BENCH_R1_BackScapularShell_R",
+      "KYX_V6C_BENCH_R1_BootAnkleShaft_L",
+      "KYX_V6C_BENCH_R1_BootAnkleShaft_R",
+      "KYX_V6C_BENCH_R1_BootDorsalFlow_L",
+      "KYX_V6C_BENCH_R1_BootDorsalFlow_R",
+      "KYX_V6C_BENCH_R1_BootOutsole_L",
+      "KYX_V6C_BENCH_R1_BootOutsole_R",
+      "KYX_V6C_BENCH_R1_BootUpper_L",
+      "KYX_V6C_BENCH_R1_BootUpper_R",
+      "KYX_V6C_BENCH_R1_CONTACT_primary_grip",
+      "KYX_V6C_BENCH_R1_CONTACT_shoulder",
+      "KYX_V6C_BENCH_R1_CONTACT_support_grip",
+      "KYX_V6C_BENCH_R1_ChestReadout",
+      "KYX_V6C_BENCH_R1_ClavicleRibShell_L",
+      "KYX_V6C_BENCH_R1_ClavicleRibShell_R",
+      "KYX_V6C_BENCH_R1_ContinuousAnatomicalUndersuit",
+      "KYX_V6C_BENCH_R1_DeltoidShell_L",
+      "KYX_V6C_BENCH_R1_DeltoidShell_R",
+      "KYX_V6C_BENCH_R1_ForearmWrap_L",
+      "KYX_V6C_BENCH_R1_ForearmWrap_R",
+      "KYX_V6C_BENCH_R1_HelmetBrowRoute",
+      "KYX_V6C_BENCH_R1_HelmetChinSeal",
+      "KYX_V6C_BENCH_R1_HelmetCompoundVisor",
+      "KYX_V6C_BENCH_R1_HelmetCowlTransition",
+      "KYX_V6C_BENCH_R1_HelmetSagittalSeam",
+      "KYX_V6C_BENCH_R1_HelmetUnifiedShell",
+      "KYX_V6C_BENCH_R1_LeftShoulderIdentityRoute",
+      "KYX_V6C_BENCH_R1_PatellaShell_L",
+      "KYX_V6C_BENCH_R1_PatellaShell_R",
+      "KYX_V6C_BENCH_R1_SternumKeel",
+      "KYX_V6C_BENCH_R1_ThighFlowGuard_L",
+      "KYX_V6C_BENCH_R1_ThighFlowGuard_R",
+      "KYX_V6C_BENCH_R1_TibiaWrap_L",
+      "KYX_V6C_BENCH_R1_TibiaWrap_R"
+    ]
+  },
+  "objectCounts": {
+    "character": 33,
+    "rifleVisible": 8
+  },
+  "futureContactWitnesses": {
+    "primaryGrip": [
+      -0.142,
+      -0.076,
+      1.01
+    ],
+    "supportGrip": [
+      0.33,
+      -0.078,
+      1.155
+    ],
+    "shoulder": [
+      -0.646,
+      0.0,
+      1.232
+    ]
+  },
+  "assertions": {
+    "acceptedV6APinned": true,
+    "acceptedV6AUnchanged": true,
+    "outputDiffersFromInput": true,
+    "startsFromV6AOnly": true,
+    "noV6BVisibleObjectsInherited": true,
+    "continuousAnatomicalUndersuit": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV1_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "This is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact witnesses establish future intent only; no literal posed two-hand contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

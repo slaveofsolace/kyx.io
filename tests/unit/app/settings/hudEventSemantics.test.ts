@@ -1,0 +1,90 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import { HUD } from '../../../../src/ui/HUD.js';
+
+class ClassListDouble {
+  readonly values = new Set<string>();
+  add(...names: string[]): void { names.forEach((name) => this.values.add(name)); }
+  remove(...names: string[]): void { names.forEach((name) => this.values.delete(name)); }
+  contains(name: string): boolean { return this.values.has(name); }
+  toggle(name: string, force?: boolean): boolean {
+    const enabled = force ?? !this.values.has(name);
+    if (enabled) this.values.add(name);
+    else this.values.delete(name);
+    return enabled;
+  }
+}
+
+class ElementDouble {
+  readonly classList = new ClassListDouble();
+  readonly dataset: Record<string, string> = {};
+  readonly attributes = new Map<string, string>();
+  readonly styleValues = new Map<string, unknown>();
+  readonly style = { setProperty: (key: string, value: unknown) => this.styleValues.set(key, value) };
+  textContent: string | number | null = '';
+  offsetWidth = 1;
+
+  setAttribute(name: string, value: string): void { this.attributes.set(name, value); }
+}
+
+describe('HUD event and ability semantics', () => {
+  afterEach(() => {
+    vi.clearAllTimers();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  function createHud() {
+    const elements = new Map<string, ElementDouble>();
+    vi.stubGlobal('document', {
+      getElementById: (id: string) => {
+        const element = elements.get(id) ?? new ElementDouble();
+        elements.set(id, element);
+        return element;
+      },
+    });
+    return { hud: new HUD(), elements };
+  }
+
+  it('exposes three real ability states with text and unavailable reasons', () => {
+    vi.useFakeTimers();
+    const { hud, elements } = createHud();
+
+    hud.updateGrenades(0, 2);
+    hud.updateTeleport(0.42);
+    expect(elements.get('ability-frag')?.dataset.state).toBe('empty');
+    expect(elements.get('ability-frag-state')?.textContent).toBe('EMPTY');
+    expect(elements.get('ability-smoke-state')?.textContent).toBe('READY');
+    expect(elements.get('ability-q')?.dataset.state).toBe('charging');
+    expect(elements.get('ability-q-state')?.textContent).toBe('CHARGE 42%');
+
+    expect(hud.showAbilityUnavailable('Q', 'blink recharging 2.9s')).toBe(true);
+    expect(elements.get('ability-reason')?.textContent).toBe('Q // BLINK RECHARGING 2.9S');
+    expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(false);
+    vi.advanceTimersByTime(1_400);
+    expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(true);
+  });
+
+  it('renders bounded direction, interaction, and conditional connection hooks', () => {
+    vi.useFakeTimers();
+    const { hud, elements } = createHud();
+
+    expect(hud.showDamageDirection('left')).toBe(true);
+    expect(elements.get('damage-direction')?.dataset.direction).toBe('left');
+    expect(elements.get('damage-direction-text')?.textContent).toBe('DAMAGE LEFT');
+    expect(hud.showDamageDirection('unknown')).toBe(false);
+
+    expect(hud.showInteractionPrompt('E', 'open terminal')).toBe(true);
+    expect(elements.get('interaction-key')?.textContent).toBe('E');
+    expect(elements.get('interaction-text')?.textContent).toBe('OPEN TERMINAL');
+
+    expect(hud.setConnectionWarning(true, 'packet loss 8%')).toBe(true);
+    expect(elements.get('connection-warning')?.classList.contains('hidden')).toBe(false);
+    expect(elements.get('connection-warning-detail')?.textContent).toBe('PACKET LOSS 8%');
+
+    hud.clearTransientEvents();
+    expect(elements.get('damage-direction')?.classList.contains('hidden')).toBe(true);
+    expect(elements.get('interaction-prompt')?.classList.contains('hidden')).toBe(true);
+    expect(elements.get('connection-warning')?.classList.contains('hidden')).toBe(true);
+  });
+});

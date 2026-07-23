@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_phase7_tactical_mannequin_benchmark_v1",
+  "creator": "KYX project scripted benchmark",
+  "creationMethod": "Blender Python primitives, project-authored proportions, palette, rig, pose loop, camera, and lighting",
+  "createdDate": "2026-07-20",
+  "sourceInputs": [],
+  "thirdPartyArt": false,
+  "thirdPartyTextures": false,
+  "generativeImageInputs": false,
+  "referenceGameFiles": false,
+  "license": "Project source; benchmark-only pending repository license policy review",
+  "notes": [
+    "No legacy GLB, asset pack, downloaded mesh, mocap, font, logo, or texture is imported.",
+    "Broad cel shading, print design, and tactical product-design principles are used without imitating a named artist, studio, franchise, or reference game's expression.",
+    "This provenance record is not a release-license completion certificate."
+  ]
+}

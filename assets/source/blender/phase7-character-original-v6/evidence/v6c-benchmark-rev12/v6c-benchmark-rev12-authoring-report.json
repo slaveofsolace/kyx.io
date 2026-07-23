@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T10:55:44.045548+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV12",
+  "sources": {
+    "acceptedV6A": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true,
+      "bodyGeometrySha256Before": "83af5095af6866b186bed5f2caa5903f45c630a0958c74dff15cad5c1fa71856",
+      "bodyGeometrySha256After": "83af5095af6866b186bed5f2caa5903f45c630a0958c74dff15cad5c1fa71856",
+      "visibleInBenchmark": false,
+      "usage": "hidden anatomical and proportion cage only"
+    },
+    "productionTarget": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+      "sha256Before": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "sha256After": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "unchanged": true,
+      "usage": "sole visual construction reference"
+    }
+  },
+  "output": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev12\\kyx_vanguard_v6c_visual_benchmark_rev12.blend",
+    "bytes": 12782573,
+    "sha256": "7a05872b098daf0931fe3f6558bdd7d051b2c4d4ce5351a51bb57149d1d8499a"
+  },
+  "method": {
+    "strategyReset": "No prior armor geometry. Visible anatomy is a new athletic cross-section loft; V6-A is hidden.",
+    "sculptSubdivision": "Organic suit, hands, legs, helmet sock, and boot lasts use authored multi-ring loft topology with Catmull-Clark subdivision.",
+    "fittedArmor": "Open curved surface grids follow torso and limb cross sections, then receive physical shell thickness and manufactured bevel radii.",
+    "retopologyIntent": "Primary surfaces are quad grids with controlled longitudinal and circumferential flow; profile volumes are reserved for hard manufactured plates.",
+    "helmet": "Segmented ellipsoid patches, separate brow/cheek/jaw/chin shells, continuous gasket, and a narrow angular visor replace a generic dome.",
+    "loadPath": "Clavicle, sternum, oblique, waist, hip, thigh, knee, shin, ankle, scapular, and spine structures form one readable system.",
+    "weapon": "A new receiver/stock/handguard/grip/magazine/barrel/optic assembly with layered depths, negative-space inserts, rail teeth, vents, controls, and hardware.",
+    "materials": "Dark graphite weave, smoked ceramic, deep gunmetal, restrained warm ceramic, cyan telemetry, and safety red hierarchy."
+  },
+  "inventory": {
+    "objects": 242,
+    "meshes": 210,
+    "curves": 29,
+    "empties": 3,
+    "baseVertices": 5542,
+    "basePolygons": 4009,
+    "evaluatedPolygons": 35610,
+    "materials": [
+      "KYX_V6C_BENCH_R12_BlackFlexJoint",
+      "KYX_V6C_BENCH_R12_CyanTelemetry",
+      "KYX_V6C_BENCH_R12_DeepGunmetalFrame",
+      "KYX_V6C_BENCH_R12_GraphiteHexWeave",
+      "KYX_V6C_BENCH_R12_MachinedEdge",
+      "KYX_V6C_BENCH_R12_PetrolBallisticVisor",
+      "KYX_V6C_BENCH_R12_SafetyRed",
+      "KYX_V6C_BENCH_R12_SmokedCeramic",
+      "KYX_V6C_BENCH_R12_TreadRubber",
+      "KYX_V6C_BENCH_R12_WarmGunmetalCeramic"
+    ],
+    "collections": [
+      "KYX_V6C_BENCH_R12_ArticulatedPelvisLimbLoadPath",
+      "KYX_V6C_BENCH_R12_AthleticTechnicalUndersuit",
+      "KYX_V6C_BENCH_R12_ClavicleSternumObliqueCarrier",
+      "KYX_V6C_BENCH_R12_ProductionHardSurfaceRifle",
+      "KYX_V6C_BENCH_R12_RearSpinePackSystem",
+      "KYX_V6C_BENCH_R12_SecondaryTertiaryDetail",
+      "KYX_V6C_BENCH_R12_SegmentedHelmetSystem"
+    ]
+  },
+  "contactIntent": [
+    "KYX_V6C_BENCH_R12_CONTACT_primary_grip",
+    "KYX_V6C_BENCH_R12_CONTACT_support_grip",
+    "KYX_V6C_BENCH_R12_CONTACT_shoulder"
+  ],
+  "assertions": {
+    "builtFromAcceptedV6AOnly": true,
+    "acceptedV6AUsedAsHiddenCageOnly": true,
+    "noPriorRevisionBlendOpenedAppendedOrLinked": true,
+    "acceptedV6AFilePreserved": true,
+    "acceptedV6ABodyGeometryPreserved": true,
+    "productionTargetPinnedAndPreserved": true,
+    "noRev9Rev10Rev11OrV6BNames": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true,
+    "threeContactIntentEmptiesOnly": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV12_REQUIRES_STRICT_DIRECT_AUDIT",
+  "nonClaims": [
+    "Revision 12 is a visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact empties are future intent only; no held-contact proof is claimed.",
+    "No authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance acceptance is claimed."
+  ]
+}

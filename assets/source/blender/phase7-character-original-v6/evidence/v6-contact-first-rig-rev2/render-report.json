@@ -1,0 +1,247 @@
+{
+  "schema": "kyx-v6-contact-first-rig-render-report-v2",
+  "generatedAt": "2026-07-22T12:33:37.093909+00:00",
+  "blenderVersion": "5.1.2",
+  "blend": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev2\\kyx-v6-contact-first-rig-rev2.blend",
+    "sha256": "9aa2a787a7d2e2036936ca94387549ddd144fc44132ebecc977ed9fd680912eb"
+  },
+  "status": "EARLY_REV2_VISUAL_PROOF_REVIEW_REQUIRED",
+  "panels": [
+    {
+      "name": "full-body-front-three-quarter",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-full-body-front-three-quarter.png",
+      "bytes": 1528795,
+      "sha256": "cb3060cad3487d7be01ffa6921aaabd56c80fe6a2d35c51d27f6a2ef6bc68863",
+      "camera": {
+        "location": [
+          3.2,
+          -4.8,
+          2.35
+        ],
+        "target": [
+          0.0,
+          -0.3,
+          0.94
+        ],
+        "orthographicScale": 2.18
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "CONTINUOUS V6-A BODY \u2022 BOTH ARMS + HANDS \u2022 CONTACT-FIRST EARLY PROOF"
+    },
+    {
+      "name": "full-body-rear-side",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-full-body-rear-side.png",
+      "bytes": 1569024,
+      "sha256": "21d9f37fd1bff5cee0e24c59f96142d3dfbb76eb0a9f668a1a6942664b13780c",
+      "camera": {
+        "location": [
+          -3.6,
+          3.4,
+          2.05
+        ],
+        "target": [
+          0.0,
+          -0.28,
+          0.98
+        ],
+        "orthographicScale": 2.18
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "REAR-SIDE \u2022 SHOULDER / ELBOW / WRIST CONTINUITY \u2022 EARLY PROOF"
+    },
+    {
+      "name": "full-upper-body-rig-witness",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-full-upper-body-rig-witness.png",
+      "bytes": 1695558,
+      "sha256": "63e0a131f6e59a3959f58554dafbb42add1fe715ee09b262e85c3b76d4a06a06",
+      "camera": {
+        "location": [
+          2.8,
+          -4.1,
+          2.25
+        ],
+        "target": [
+          0.0,
+          -0.38,
+          1.2
+        ],
+        "orthographicScale": 1.45
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "REAL DEFORMATION ARMATURE \u2022 SPINE / CLAVICLES / ARMS / PALMS / ALL DIGIT CHAINS"
+    },
+    {
+      "name": "firing-palm-wrap-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-firing-palm-wrap-ortho.png",
+      "bytes": 1401582,
+      "sha256": "55fdfe432665fe5c8480392d3f059ab8ebcc10b3665af8db674644377b6c6d54",
+      "camera": {
+        "location": [
+          0.166421,
+          -1.445274,
+          1.185
+        ],
+        "target": [
+          -0.113465,
+          -0.43203,
+          1.18
+        ],
+        "orthographicScale": 0.4
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "ORTHO ALONG BORE \u2022 FIRING PALM + FOUR DIGITS \u2022 SECTIONED RECEIVER"
+    },
+    {
+      "name": "firing-index-trigger-guard-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-firing-index-trigger-guard-ortho.png",
+      "bytes": 1728487,
+      "sha256": "9046faf18e5bd6fc51c53cd05ac14ccfbb01e255b4480129742f9ce7d13efe5b",
+      "camera": {
+        "location": [
+          0.919589,
+          -0.239936,
+          1.27
+        ],
+        "target": [
+          -0.109063,
+          -0.451539,
+          1.27
+        ],
+        "orthographicScale": 0.4
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "ORTHO FROM RIFLE RIGHT \u2022 INDEX / TRIGGER / GUARD CLEARANCE"
+    },
+    {
+      "name": "support-palm-foregrip-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-support-palm-foregrip-ortho.png",
+      "bytes": 1790616,
+      "sha256": "f71055e65d309608c9a51178576ec6e78fd1a06e2912d072aa1ee5e8816a6048",
+      "camera": {
+        "location": [
+          -0.245979,
+          0.291549,
+          1.19
+        ],
+        "target": [
+          -0.044131,
+          -0.739304,
+          1.195
+        ],
+        "orthographicScale": 0.42
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "ORTHO FROM REAR \u2022 SUPPORT PALM + FOUR DIGITS / FOREGRIP"
+    },
+    {
+      "name": "support-hand-section-side",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-support-hand-section-side.png",
+      "bytes": 1387344,
+      "sha256": "39505eb0b4f3a77e215e0da3d4045234d1730425bb274344c28442955a548bd7",
+      "camera": {
+        "location": [
+          -1.063979,
+          -0.989926,
+          1.19
+        ],
+        "target": [
+          -0.044131,
+          -0.739304,
+          1.19
+        ],
+        "orthographicScale": 0.42
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "ORTHO FROM RIFLE LEFT \u2022 SUPPORT WRIST / PALM / THUMB / DIGITS"
+    },
+    {
+      "name": "stock-shoulder-tangent-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-stock-shoulder-tangent-ortho.png",
+      "bytes": 1628727,
+      "sha256": "dad4f2181dcf90938821ee376393123e14f692d427c64963cf867a76e154fdae",
+      "camera": {
+        "location": [
+          0.888024,
+          0.127118,
+          1.375
+        ],
+        "target": [
+          -0.180598,
+          -0.13451,
+          1.365
+        ],
+        "orthographicScale": 0.48
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "ORTHO \u2022 STOCK PAD CONTACT SURFACE / SHOULDER POCKET TANGENCY"
+    },
+    {
+      "name": "upper-body-contact-context",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-upper-body-contact-context.png",
+      "bytes": 1559561,
+      "sha256": "14f72eb390239121ac820a177ed6ac4884be98a9a837f4b7a64fffc2dc951773",
+      "camera": {
+        "location": [
+          1.9,
+          -3.2,
+          1.95
+        ],
+        "target": [
+          0.0,
+          -0.43,
+          1.29
+        ],
+        "orthographicScale": 1.2
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "UPPER BODY \u2022 BOTH HANDS ON SAME RIFLE \u2022 PLAUSIBLE ELBOW / WRIST LINES"
+    }
+  ],
+  "board": {
+    "name": "early-proof-board",
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev2\\renders\\kyx-v6-contact-first-rig-rev2-early-proof-board.png",
+    "bytes": 6677910,
+    "sha256": "2dcdd5a6ac5e733d1699c5337c16d40c6a8133a2a8ff58bf9e5fb72893df8419",
+    "resolution": [
+      3000,
+      3000
+    ]
+  },
+  "renderContract": {
+    "receiver": "translucent/sectioned in authored asset",
+    "cameras": "orthographic for all four literal contact families",
+    "fullBodyContinuity": true,
+    "rearSideContinuity": true,
+    "armatureWitness": true,
+    "automaticAcceptance": false
+  },
+  "rev2Invariant": "all pose bones unit scale; native-length arm and digit solves"
+}

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T05:55:55.997837+00:00",
+  "blenderVersion": "5.1.2",
+  "blend": {
+    "path": "kyx_vanguard_v6b_construction_working.blend",
+    "sha256Before": "9b1663e673a0b502bf3add5b8152e5e05d53b0fab5e244f973c4f202931b1181",
+    "sha256After": "9b1663e673a0b502bf3add5b8152e5e05d53b0fab5e244f973c4f202931b1181",
+    "unchanged": true
+  },
+  "bounds": {
+    "minimum": [
+      -0.497839,
+      -0.238147,
+      -0.01
+    ],
+    "maximum": [
+      0.79,
+      0.139179,
+      1.795938
+    ]
+  },
+  "views": [
+    {
+      "view": "front",
+      "fileName": "kyx-v6b-construction-front.png",
+      "bytes": 1102215,
+      "sha256": "aab871a1e0f1f6326c657b953bb83f419545c6768854e9f019e9aad3b0e86ed1",
+      "cameraLocation": [
+        0.146081,
+        -4.449484,
+        0.932969
+      ],
+      "orthographicScale": 2.094888
+    },
+    {
+      "view": "side",
+      "fileName": "kyx-v6b-construction-side.png",
+      "bytes": 1058439,
+      "sha256": "ffb9e5c5705bedb3552a426f8d4724182716742a4757a3ee0bd107990a5c078c",
+      "cameraLocation": [
+        4.546081,
+        -0.049484,
+        0.932969
+      ],
+      "orthographicScale": 2.094888
+    },
+    {
+      "view": "back",
+      "fileName": "kyx-v6b-construction-back.png",
+      "bytes": 1065189,
+      "sha256": "b0519e477b80720f20dbb9f38bd1f963c9ca509b11a91c77c1ff698066b4ef6a",
+      "cameraLocation": [
+        0.146081,
+        4.350516,
+        0.932969
+      ],
+      "orthographicScale": 2.094888
+    },
+    {
+      "view": "three-quarter",
+      "fileName": "kyx-v6b-construction-three-quarter.png",
+      "bytes": 1120417,
+      "sha256": "2f89be73ed4a15f860fe4615167c6f318a35e63d703044ca8a0dbc609db024fa",
+      "cameraLocation": [
+        3.346081,
+        -3.249484,
+        1.072969
+      ],
+      "orthographicScale": 2.094888
+    },
+    {
+      "view": "rifle-design",
+      "fileName": "kyx-v6b-rifle-design.png",
+      "bytes": 918830,
+      "sha256": "052061a51a2efe60206e9140fc4ada7179096673ac2b710d462b08294198046a"
+    },
+    {
+      "view": "helmet-chest",
+      "fileName": "kyx-v6b-helmet-chest.png",
+      "bytes": 975205,
+      "sha256": "28fd2fb2dade1a82b7932ac7510055cea94079ba2c5e5d31b133470c9baea0d4"
+    }
+  ],
+  "contactWitnesses": {
+    "shoulderTarget": [
+      -0.385,
+      -0.055,
+      1.235
+    ],
+    "supportTarget": [
+      0.255,
+      -0.12,
+      1.19
+    ],
+    "triggerTarget": [
+      -0.055,
+      -0.12,
+      1.11
+    ]
+  },
+  "assertions": {
+    "sixImagesRendered": true,
+    "allImagesNonEmpty": true,
+    "blendUnchanged": true,
+    "threeContactTargets": true
+  },
+  "status": "V6B_DIRECT_REVIEW_RENDERS_COMPLETE_REQUIRES_VISUAL_AUDIT",
+  "nonClaims": [
+    "Images show a V6-B construction candidate, not final retopology/material/rig/animation/runtime work.",
+    "Contact targets do not substitute for final literal two-hand and shoulder contact review after rigging.",
+    "No G6 acceptance is claimed."
+  ]
+}

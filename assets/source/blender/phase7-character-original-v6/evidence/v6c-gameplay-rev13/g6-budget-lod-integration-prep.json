@@ -1,0 +1,307 @@
+{
+  "schema": "kyx-v6c-rev13-g6-budget-lod-integration-prep-v1",
+  "generatedAt": "2026-07-22T20:18:00Z",
+  "status": "READY_FOR_NONDESTRUCTIVE_RETOPO_AND_FEATURE_GATED_INTEGRATION_PREP_NOT_G6",
+  "scope": {
+    "candidateOnly": true,
+    "defaultChanged": false,
+    "publicOrRuntimeAssetCopied": false,
+    "acceptedRev12Modified": false,
+    "g6Claim": false,
+    "releaseClaim": false
+  },
+  "immutableRev13Closeout": {
+    "rev12Source": {
+      "bytes": 18685160,
+      "sha256": "eb767552e6af30025e6514b4d5c8e71fd3ad6ab3d168208c4450ab1dc6b1eb5a"
+    },
+    "rev13Glb": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/model/v6c-gameplay-rev13/export/kyx-v6c-gameplay-rev13.runtime-candidate.glb",
+      "bytes": 9278844,
+      "sha256": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee"
+    },
+    "candidateBlend": {
+      "bytes": 10695515,
+      "sha256": "905ec4b489e1c4d756a3d374df88afdac04d44ff7afe9033436ce02f56b07d70"
+    },
+    "freshReimportBlend": {
+      "bytes": 11635957,
+      "sha256": "1a58035238343f2a8abc1d305bf59f3528477fc0e9d8809ae0e004872270d01d"
+    },
+    "blenderAudit": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/evidence/v6c-gameplay-rev13/export-reimport-animation-audit.json",
+      "bytes": 29822,
+      "sha256": "50aa1db688814533d9d325f95d560b84ceb897b6d4c7df05f5f2ab5378de5930",
+      "status": "PASS_BOUNDED_V6C_GAMEPLAY_ANIMATION_CANDIDATE_NOT_G6",
+      "assertionsPassed": 15,
+      "assertionsFailed": 0
+    },
+    "threeRuntimeAudit": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/evidence/v6c-gameplay-rev13/runtime-playback-visual-audit.json",
+      "bytes": 7535,
+      "sha256": "1010e5250c2d59f654f6b7280e02f76eb23ce50ad2e15e783c10dfd53fba2ca7",
+      "status": "PASS_BOUNDED_RUNTIME_AND_AGENT_VISUAL_QA_NOT_HUMAN_ACCEPTANCE_NOT_G6"
+    },
+    "acceptedTenClipSheet": {
+      "bytes": 280427,
+      "sha256": "a0f25271315468b0a42a72f77350c58c546a30b3d63e73d21380a488a9b8fdab"
+    },
+    "acceptedInteractiveProofScreenshot": {
+      "bytes": 432419,
+      "sha256": "5ccc75380b35d672ab93ae0395735bd5fdeaea66deedfecff31b2764cbf5ed28"
+    },
+    "closeoutHashVerification": "PASS_ALL_PINNED_FILES_MATCH",
+    "mutationPolicy": "Any changed pinned SHA creates a new revision and requires complete Blender reimport plus actual Three.js proof; never relabel changed data as this Rev13 closeout."
+  },
+  "actualThreeRuntimeCloseoutReplay": {
+    "method": "Fresh installed-Chrome headless session using actual GLTFLoader and AnimationMixer; every clip observed across six requestAnimationFrame callbacks.",
+    "clipsLoaded": 10,
+    "tracksPerClip": 156,
+    "maxBones": 52,
+    "skinnedMeshes": 109,
+    "morphMeshes": 0,
+    "observedMixerAdvanceSecondsPerClip": 0.3,
+    "allClipPoseDeltasNonzero": true,
+    "loaderErrors": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestFailures": 0,
+    "result": "PASS_ACTUAL_THREE_RUNTIME_REVERIFIED"
+  },
+  "measuredHighDetailSource": {
+    "triangles": 297996,
+    "primitives": 109,
+    "meshes": 106,
+    "materials": 16,
+    "nodes": 159,
+    "joints": 52,
+    "summedPrimitiveVertices": 150609,
+    "images": 0,
+    "textures": 0,
+    "uvSets": 0,
+    "morphTargets": 0,
+    "primitiveVertexLayout": ["JOINTS_0", "NORMAL", "POSITION", "WEIGHTS_0"],
+    "allMeshNodesUseSkinZero": true,
+    "allMeshNodeTransformsIdentity": true,
+    "meshNodesAnimatedDirectly": false,
+    "allMaterialsOpaqueAndDoubleSided": true,
+    "overHardCap": {
+      "triangleMultiple": 6.62,
+      "primitiveMultiple": 36.33,
+      "trianglesToRemoveAt45000": 252996,
+      "triangleReductionPercentAt45000": 84.9,
+      "primitivesToRemoveAt3": 106,
+      "primitiveReductionPercentAt3": 97.25
+    }
+  },
+  "measuredCostGroups": [
+    {"group": "main_undersuit", "triangles": 90880, "primitives": 2, "percentTriangles": 30.5},
+    {"group": "anatomy_body", "triangles": 84680, "primitives": 3, "percentTriangles": 28.42},
+    {"group": "helmet", "triangles": 38874, "primitives": 15, "percentTriangles": 13.05},
+    {"group": "torso_and_forearm_armor", "triangles": 38726, "primitives": 12, "percentTriangles": 13.0},
+    {"group": "external_boots", "triangles": 16320, "primitives": 10, "percentTriangles": 5.48},
+    {"group": "secondary_undersuit_panels_and_seams", "triangles": 15804, "primitives": 20, "percentTriangles": 5.3},
+    {"group": "rifle_and_contact_geometry", "triangles": 12712, "primitives": 47, "percentTriangles": 4.27}
+  ],
+  "costConcentration": {
+    "topTwoMeshes": ["TailoredOnePieceUndersuit", "AnatomySculpt_Body"],
+    "topTwoTriangles": 175560,
+    "topTwoPercent": 58.91,
+    "smallMeshCountAtOrBelow500Triangles": 69,
+    "smallMeshCountAtOrBelow250Triangles": 48,
+    "drawCallHotspots": [
+      {"name": "rifle_and_contacts", "primitives": 47, "triangles": 12712},
+      {"name": "MachinedEdge_material", "primitives": 25, "triangles": 5944},
+      {"name": "DeepGunmetal_material", "primitives": 20, "triangles": 23092},
+      {"name": "RecessedSeam_material", "primitives": 14, "triangles": 2888}
+    ]
+  },
+  "recommendedLodContract": {
+    "hardLimit": {"triangles": 45000, "primitives": 3},
+    "lod0": {
+      "authoringTargetTriangles": 42000,
+      "safetyMarginTriangles": 3000,
+      "maximumPrimitives": 3,
+      "allocation": {
+        "softBodyUndersuitGloves": 20000,
+        "hardArmorHelmetBoots": 15000,
+        "separableRifleAndContact": 7000
+      }
+    },
+    "lod1": {
+      "targetTriangles": 22000,
+      "maximumPrimitives": 3,
+      "allocation": {"soft": 10000, "hard": 8000, "rifle": 4000}
+    },
+    "lod2": {
+      "targetTriangles": 10000,
+      "preferredPrimitives": 2,
+      "maximumPrimitivesWhenRifleMustRemainSwappable": 3,
+      "allocation": {"soft": 4500, "hardAndRifle": 5500},
+      "minimumRifleSilhouetteReserveWithinHardAndRifle": 1500
+    },
+    "provisionalDistanceBandsMeters": {
+      "lod0": [0, 12],
+      "lod1": [12, 28],
+      "lod2": [28, null],
+      "hysteresisPercent": 15,
+      "note": "Starting recommendation only; accept thresholds from measured 5m, 20m, and 40m boards plus 2/4/8-player profiling."
+    }
+  },
+  "recommendedThreePrimitivePackage": [
+    {
+      "primitive": 1,
+      "role": "soft_character",
+      "contents": "continuous body, undersuit, gloves, deforming soft panels",
+      "material": "authored soft-surface atlas"
+    },
+    {
+      "primitive": 2,
+      "role": "hard_character",
+      "contents": "helmet, opaque visor, torso armor, limb armor, boots, identity/emissive masks",
+      "material": "authored hard-surface atlas"
+    },
+    {
+      "primitive": 3,
+      "role": "separable_world_rifle",
+      "contents": "Auto Rifle world geometry; contact fixtures become named sockets or non-rendering metadata",
+      "material": "authored rifle atlas"
+    }
+  ],
+  "safeRetopologySequence": [
+    "Freeze the pinned Rev13 source and create new LOD candidate paths; never retopologize or decimate the closeout source in place.",
+    "Manually retopologize the main anatomy and undersuit first because those two meshes consume 58.91 percent of triangles.",
+    "Delete fully occluded anatomy and overlapping interior shell faces only after pose-sweeping all ten clips.",
+    "Build one continuous deforming soft shell; preserve hands, face/helmet silhouette, knees, elbows, and palm contact islands.",
+    "Retopologize hard armor, helmet, boots, and rifle as controlled silhouette pieces; do not blind-decimate the whole character.",
+    "Author UV0 and project-authored basecolor, ORM, emissive, and optional clearcoat atlases because Rev13 currently contains no UVs, images, or textures.",
+    "Join by the three runtime roles and transfer no more than four normalized weights per vertex while preserving the exact 52-bone names.",
+    "Keep the grip/trigger/stock contact authority exactly on palm.R; convert visible diagnostic contact fixtures to named non-rendering sockets or metadata.",
+    "Fresh-export and reimport LOD0, then replay the exact ten-clip pose, loop-seam, palm relation, reload-return, and actual Three.js visual audits.",
+    "Derive LOD1 and LOD2 only from accepted LOD0 and rerun deformation, silhouette, contact, and switching tests at 5m, 20m, and 40m."
+  ],
+  "canonicalAnimationInterface": {
+    "clips": {
+      "idle": "KYX_V6C_TP_IDLE",
+      "walk": "KYX_V6C_TP_WALK",
+      "run": "KYX_V6C_TP_RUN",
+      "jumpStart": "KYX_V6C_TP_JUMP_START",
+      "airborneLoop": "KYX_V6C_TP_AIRBORNE_LOOP",
+      "land": "KYX_V6C_TP_LAND",
+      "primaryFire": "KYX_V6C_TP_PRIMARY_FIRE",
+      "reload": "KYX_V6C_TP_RELOAD",
+      "hitReactionFront": "KYX_V6C_TP_HIT_REACTION_FRONT",
+      "deathFront": "KYX_V6C_TP_DEATH_FRONT"
+    },
+    "looping": ["idle", "walk", "run", "airborneLoop"],
+    "oneShotPriorityHighToLow": ["deathFront", "hitReactionFront", "reload", "primaryFire", "land", "jumpStart", "locomotion"],
+    "requiredMarkersStillOpen": [
+      "foot_L", "foot_R", "takeoff", "land_contact", "muzzle", "mag_release", "mag_out", "mag_in", "bolt", "death_commit"
+    ],
+    "markerEvidenceInCurrentGlb": "NONE_ANIMATION_EXTRAS_ARE_NULL"
+  },
+  "runtimeBoneAliasesNeeded": {
+    "hips": "root",
+    "spine": "spine_01",
+    "spine1": "spine_02",
+    "spine2": "chest",
+    "neck": "neck",
+    "head": "head",
+    "rightUpperArm": "upper_arm.R",
+    "rightForearm": "forearm.R",
+    "rightWrist": "wrist.R",
+    "rightPalmAndWeaponSocket": "palm.R",
+    "leftUpperArm": "upper_arm.L",
+    "leftForearm": "forearm.L",
+    "leftWrist": "wrist.L",
+    "leftPalm": "palm.L",
+    "rightThigh": "thigh_anchor.R",
+    "rightShin": "shin_anchor.R",
+    "rightFoot": "foot_anchor.R",
+    "leftThigh": "thigh_anchor.L",
+    "leftShin": "shin_anchor.L",
+    "leftFoot": "foot_anchor.L"
+  },
+  "currentProductIntegrationProbe": {
+    "unchangedDefaultAsset": {
+      "path": "public/soldier.glb",
+      "bytes": 2159764,
+      "sha256": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde"
+    },
+    "loader": {
+      "path": "src/player/HumanSoldier.js",
+      "line": 19,
+      "currentUri": "/soldier.glb"
+    },
+    "currentClipContract": {
+      "path": "src/player/HumanSoldier.js",
+      "lines": [128, 137],
+      "expects": ["Idle", "Walk", "Run"],
+      "incompatibleWithRev13NamesWithoutAdapter": true
+    },
+    "currentMixamoBoneResolver": {
+      "path": "src/player/HumanSoldier.js",
+      "lines": [72, 79],
+      "incompatibleWithRev13BoneNamesWithoutAliases": true
+    },
+    "currentProceduralOverlays": {
+      "path": "src/player/HumanSoldier.js",
+      "conflicts": [
+        "procedural airborne pose would double-author jump and airborne clips",
+        "procedural fire recoil would double-author PRIMARY_FIRE",
+        "procedural hit flinch would double-author HIT_REACTION_FRONT",
+        "procedural weapon-hold arm offsets can break accepted palm/rifle contacts"
+      ]
+    },
+    "currentWeaponAttachment": {
+      "path": "src/player/HumanSoldier.js",
+      "lines": [474, 506],
+      "currentBone": "RightHand",
+      "rev13Bone": "palm.R",
+      "risk": "Rev13 currently embeds a rifle, while Game and Bot attach external weapons; enabling it unchanged would create duplicate weapon geometry and competing hold poses."
+    },
+    "callSites": [
+      {"path": "src/core/Game.js", "line": 99, "role": "preload"},
+      {"path": "src/core/Game.js", "line": 361, "role": "fire hook"},
+      {"path": "src/core/Game.js", "line": 810, "role": "hit hook"},
+      {"path": "src/core/Game.js", "line": 1066, "role": "weapon attachment"},
+      {"path": "src/core/Game.js", "line": 1082, "role": "player locomotion"},
+      {"path": "src/entities/Bot.js", "line": 134, "role": "bot weapon attachment"},
+      {"path": "src/entities/Bot.js", "line": 215, "role": "bot fire hook"},
+      {"path": "src/entities/Bot.js", "line": 354, "role": "bot locomotion"},
+      {"path": "src/ui/ArmorPreviewRenderer.js", "line": 110, "role": "preview idle"}
+    ]
+  },
+  "futureFeatureGatedIntegrationPlan": [
+    "Do not replace public/soldier.glb. First finish and accept LOD0-2 plus the separable world-rifle package.",
+    "Add a candidate-only manifest that pins asset SHA, bytes, 52 joints, exact clip names, triangle/primitive limits, UV/material slots, and provenance; fail closed on mismatch.",
+    "Load through a local-development feature flag disabled by default and retain the current soldier as rollback fallback.",
+    "Add the exact Rev13 clip-name map and bone alias table rather than renaming the frozen source clips or joints.",
+    "Disable corresponding procedural overlays while authored one-shots play; preserve only additive aim/strafe layers proven not to break contacts.",
+    "Use the separable palm.R socket for the world rifle and suppress current external attachment only for the candidate path; never render both rifles.",
+    "Wire authored reload and death lifecycle events, then validate player, bot, and armor-preview consumers.",
+    "Capture 5m, 20m, and 40m LOD/silhouette boards, color-vision/grayscale boards, and real 2/4/8-player performance before considering default promotion."
+  ],
+  "g6RequirementMatrix": [
+    {"requirement": "explicit human-approved concept and final benchmark", "status": "OPEN"},
+    {"requirement": "authored non-generator-looking LOD0-2 character", "status": "OPEN_HIGH_DETAIL_SOURCE_ONLY"},
+    {"requirement": "canonical skeleton rig retarget and sockets", "status": "PARTIAL_52_BONE_RUNTIME_RIG_CONTACT_PASS_ADAPTER_AND_SOCKET_CONTRACT_OPEN"},
+    {"requirement": "dedicated first-person arms", "status": "BLOCKED_NO_CLEAN_SEPARABLE_VIEWMODEL_ARMS"},
+    {"requirement": "authored Auto Rifle world and viewmodel", "status": "PARTIAL_EMBEDDED_WORLD_RIFLE_ONLY_VIEWMODEL_AND_SEPARATION_OPEN"},
+    {"requirement": "complete first and third-person clip matrix and markers", "status": "PARTIAL_TEN_THIRD_PERSON_CLIPS_PASS_FIRST_PERSON_AND_MARKERS_OPEN"},
+    {"requirement": "cel PBR outline pipeline", "status": "OPEN_NO_UVS_TEXTURES_OR_PRODUCT_SHADER_PROOF"},
+    {"requirement": "valid glTF manifests and provenance", "status": "PARTIAL_REV13_GLTF_AUDITS_AND_PROVENANCE_PASS_FINAL_LOD_MANIFESTS_OPEN"},
+    {"requirement": "deformation contact and clipping review", "status": "PARTIAL_REV13_CONTACT_AND_RUNTIME_VISUAL_PASS_POST_RETOPO_REVIEW_OPEN"},
+    {"requirement": "close mid far grayscale quality and color-vision captures", "status": "OPEN_FOR_FINAL_LODS_AND_INTEGRATED_RUNTIME"},
+    {"requirement": "2 4 8 player performance", "status": "OPEN"},
+    {"requirement": "explicit human G6 acceptance", "status": "OPEN"}
+  ],
+  "stopConditions": [
+    "Stop if any pinned Rev13 closeout hash changes.",
+    "Stop if LOD0 exceeds 45000 triangles or 3 primitives.",
+    "Stop if any expected joint or clip name changes without a versioned manifest.",
+    "Stop if palm.R contact fixtures gain non-palm weights or the reload fails to return.",
+    "Stop if actual Three.js playback shows stretched geometry, blank frames, missing motion, contact separation, or loader errors.",
+    "Stop before default promotion until human acceptance and 2/4/8 performance are explicit."
+  ]
+}

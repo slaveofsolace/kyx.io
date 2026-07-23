@@ -1,0 +1,927 @@
+{
+  "blenderVersion": "5.1.2",
+  "checks": [
+    {
+      "evidence": {
+        "dimension_contract": {
+          "actualSha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+          "expectedSha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json"
+        },
+        "graybox_lock": {
+          "actualSha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd",
+          "expectedSha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd",
+          "path": "assets/source/maps/inkfall-foundry/runtime/graybox-lock.p6-7.v1.json"
+        },
+        "revision2_blend": {
+          "actualSha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+          "expectedSha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+          "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend"
+        },
+        "revision2_collision": {
+          "actualSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+          "expectedSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+          "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb"
+        },
+        "revision2_render": {
+          "actualSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+          "expectedSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+          "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb"
+        }
+      },
+      "id": "immutable_p67_hashes",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "builder": {
+          "actualSha256": "63023443ed9047a63f5f20a042ac13640e7b625a2f2a2da749a36599c97ca77a",
+          "expectedSha256": "63023443ed9047a63f5f20a042ac13640e7b625a2f2a2da749a36599c97ca77a",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/build_press_hall_final_art_v3.py"
+        },
+        "glb": {
+          "actualSha256": "0699bf53860261d4204c3e9b1b5e61cec51324bf195ab5a3dc4852cfcf573e20",
+          "expectedSha256": "0699bf53860261d4204c3e9b1b5e61cec51324bf195ab5a3dc4852cfcf573e20",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/export/inkfall_foundry_press_hall_final_art_v3.glb"
+        },
+        "manifest": {
+          "actualSha256": "9bae11f5ae75d1fce1794b41f7ca9653827ee6649e4b42c543b17b1976880909",
+          "expectedSha256": "9bae11f5ae75d1fce1794b41f7ca9653827ee6649e4b42c543b17b1976880909",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/manifest.press-hall-final-art-v3.json"
+        },
+        "mechanical_board": {
+          "actualSha256": "1276ad31c19e73101c08d7c7a4ceff7a1d5e47f03d9cb750a4e5471d911cc02b",
+          "expectedSha256": "1276ad31c19e73101c08d7c7a4ceff7a1d5e47f03d9cb750a4e5471d911cc02b",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/boards/inkfall-press-hall-v3-mechanical-review-board.png"
+        },
+        "primary_board": {
+          "actualSha256": "51b0809d597be11f4f3bf88cadd3d1ced902cbc2aa3badb56a8fbadfb13046fa",
+          "expectedSha256": "51b0809d597be11f4f3bf88cadd3d1ced902cbc2aa3badb56a8fbadfb13046fa",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/boards/inkfall-press-hall-v3-primary-review-board.png"
+        },
+        "report": {
+          "actualSha256": "573adae86fa96e02a92a2b49e1575e2dfa17aa1e73ba509015446a31be8d9c9d",
+          "expectedSha256": "573adae86fa96e02a92a2b49e1575e2dfa17aa1e73ba509015446a31be8d9c9d",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/validation/press-hall-final-art-v3-build-report.json"
+        },
+        "source": {
+          "actualSha256": "160ce9e8be88f88149f55732200652d48d608dd26ad404804f794585c5aaf09b",
+          "expectedSha256": "160ce9e8be88f88149f55732200652d48d608dd26ad404804f794585c5aaf09b",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/source/inkfall_foundry_press_hall_final_art_v3.blend"
+        },
+        "verifier": {
+          "actualSha256": "45d1373c24665d8805bb8a8fb1d8ca15819514613bf6cc35ff872a258066af86",
+          "expectedSha256": "45d1373c24665d8805bb8a8fb1d8ca15819514613bf6cc35ff872a258066af86",
+          "path": "tools/evidence/verify-inkfall-g5-press-hall-final-art-v3.py"
+        }
+      },
+      "id": "frozen_final_core_hashes",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "path": "src/content/maps/constants.ts",
+        "sha256": "cc9b938ccfa0b9d2d8e7d6ac08baf8fb3fc014868bd630f05928513a25a2186f"
+      },
+      "id": "catalog_default_revision_is_1",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "checks": {
+          "allReplacementEnvelopesContained": true,
+          "authorityCollisionObjectsAbsent": true,
+          "catalogDefaultStillRevision1": true,
+          "compressionWithheldWithoutLoaderProof": true,
+          "eightColorReadabilityViewsRendered": true,
+          "fourNeutralDiagnosticViewsRendered": true,
+          "frozenFinalPackageUnchanged": true,
+          "gameplayEyeMechanismViewsRendered": true,
+          "northForceReadabilityImproved": true,
+          "optimizedExportPreservesTriangleCount": true,
+          "p67InputsUnchanged": true,
+          "payloadMetricsRecorded": true,
+          "spatialMaterialJoinedExportUnder50Primitives": true,
+          "standardStagedGlbWritten": true,
+          "threeReviewBoardsRendered": true
+        },
+        "status": "BOUNDED_PRESS_HALL_V3_2_READABILITY_BUILD_PASS"
+      },
+      "id": "build_report_pass",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "buildReportPreReview": "PENDING_PARENT_FINAL_REVIEW",
+        "manifest": "V3_2_BOUNDED_READABILITY_AND_BATCHING_PASS / ART_DIRECTION_AND_RUNTIME_CANDIDATE_ONLY",
+        "parentReview": {
+          "decision": "V3_2_BOUNDED_READABILITY_AND_BATCHING_PASS / ART_DIRECTION_AND_RUNTIME_CANDIDATE_ONLY",
+          "note": {
+            "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/PARENT_REVIEW_DECISION.md",
+            "sha256": "bfaa68ff134a1738a837a31d3ec639a6127b94c81bdaea5b638924c664c4b972"
+          },
+          "scopeClosed": "bounded_readability_and_static_batching_only"
+        }
+      },
+      "id": "bounded_parent_decision_sealed",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "actualSha256": "bfaa68ff134a1738a837a31d3ec639a6127b94c81bdaea5b638924c664c4b972",
+        "expectedSha256": "bfaa68ff134a1738a837a31d3ec639a6127b94c81bdaea5b638924c664c4b972",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/PARENT_REVIEW_DECISION.md"
+      },
+      "id": "parent_review_note_hash",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "G5_NOT_PASSED",
+        "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+        "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+        "PERFORMANCE_NOT_MEASURED",
+        "NO_SNAG_RUNTIME_PROOF_NOT_COMPLETE",
+        "COLOR_VISION_REVIEW_NOT_COMPLETE",
+        "PRODUCT_INTEGRATION_NOT_COMPLETE",
+        "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+        "PAYLOAD_MEASURED_NOT_RUNTIME_PROFILED",
+        "DEPLOYMENT_NOT_AUTHORIZED"
+      ],
+      "id": "nonclaims_present",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "binding": {
+          "catalogDefaultRevision": 1,
+          "grayboxLockRevision": 1,
+          "grayboxRevision": 2,
+          "mapId": "inkfall_foundry",
+          "parentArtCandidate": "inkfall_foundry_press_hall_final_art_v3_conditional",
+          "productSelectable": false,
+          "runtimeIntegrated": false,
+          "shippingDefault": false
+        },
+        "status": "bounded_readability_and_batching_pass_art_direction_and_runtime_candidate_only_non_default"
+      },
+      "id": "manifest_nondefault_boundary",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "actualSha256": "5093ae66a4d914d489275df99c82eff3ce2fed5a65fef77bf36481dad94451ff",
+          "bytes": 990821,
+          "expectedSha256": "5093ae66a4d914d489275df99c82eff3ce2fed5a65fef77bf36481dad94451ff",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/source/inkfall_foundry_press_hall_readability_v3_2.blend"
+        },
+        {
+          "actualSha256": "8b896a34ec3fd69a2015db9b5669c1d190aea2bb8d32bc4695f583ad196e0bba",
+          "bytes": 2292912,
+          "expectedSha256": "8b896a34ec3fd69a2015db9b5669c1d190aea2bb8d32bc4695f583ad196e0bba",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/source/inkfall_foundry_press_hall_readability_v3_2.optimized-export.blend"
+        },
+        {
+          "actualSha256": "0699bf53860261d4204c3e9b1b5e61cec51324bf195ab5a3dc4852cfcf573e20",
+          "bytes": 11980752,
+          "expectedSha256": "0699bf53860261d4204c3e9b1b5e61cec51324bf195ab5a3dc4852cfcf573e20",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.glb"
+        },
+        {
+          "actualSha256": "56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119",
+          "bytes": 13300676,
+          "expectedSha256": "56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb"
+        },
+        {
+          "actualSha256": "2591f69e490b3666b474bd7d6a59fd85b4e0c328f8e0e0708377d1b2724d170f",
+          "bytes": 2080410,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "2591f69e490b3666b474bd7d6a59fd85b4e0c328f8e0e0708377d1b2724d170f",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-gameplay_lane-color.png"
+        },
+        {
+          "actualSha256": "eb4934b84544458830409356bbae278d21d61996ee3769ca3af204ead784a9e3",
+          "bytes": 2119102,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "eb4934b84544458830409356bbae278d21d61996ee3769ca3af204ead784a9e3",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-gameplay_north-color.png"
+        },
+        {
+          "actualSha256": "1b868d36916d3c570319f1c92efa6a7390c7483fb6296e1f1112c6d125c5c29c",
+          "bytes": 2146772,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "1b868d36916d3c570319f1c92efa6a7390c7483fb6296e1f1112c6d125c5c29c",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-gameplay_south-color.png"
+        },
+        {
+          "actualSha256": "dffec42178e37db7dbc0038bff38af5f37a76071af46902be6d69591495c68fd",
+          "bytes": 2526843,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "dffec42178e37db7dbc0038bff38af5f37a76071af46902be6d69591495c68fd",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-north_force-color.png"
+        },
+        {
+          "actualSha256": "caa9f2dfdbcbc83560f94f1cbce7f2cba94ce784474875d3c7c726e1eb1f33c2",
+          "bytes": 2658795,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "caa9f2dfdbcbc83560f94f1cbce7f2cba94ce784474875d3c7c726e1eb1f33c2",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-south_tension-color.png"
+        },
+        {
+          "actualSha256": "05e97c6843f8748b090137d9444a23b52b9a3e7ca67340062df269b3b4e9b0b3",
+          "bytes": 2492344,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "05e97c6843f8748b090137d9444a23b52b9a3e7ca67340062df269b3b4e9b0b3",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-baffle_detail-color.png"
+        },
+        {
+          "actualSha256": "32484aa96048bec6d587856e521cc0876e7099c4d4e38fc43251663782520bcb",
+          "bytes": 2238683,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "32484aa96048bec6d587856e521cc0876e7099c4d4e38fc43251663782520bcb",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-cover_detail-color.png"
+        },
+        {
+          "actualSha256": "ac7d510730a4452bf7c307b0c6337413c5b2b0030ff017d92777c1b06395d570",
+          "bytes": 2313002,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "ac7d510730a4452bf7c307b0c6337413c5b2b0030ff017d92777c1b06395d570",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-overhead_context-color.png"
+        },
+        {
+          "actualSha256": "fee8488c69b1d301a4f9753faf2acd369b237825b3364bf1e29ca2c19955740e",
+          "bytes": 1868834,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "fee8488c69b1d301a4f9753faf2acd369b237825b3364bf1e29ca2c19955740e",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-gameplay_north-neutral.png"
+        },
+        {
+          "actualSha256": "8a34148227363d08eb3c7098997c0dece6d9fc25809fb0c313bd59cf0e1a04ad",
+          "bytes": 1885555,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "8a34148227363d08eb3c7098997c0dece6d9fc25809fb0c313bd59cf0e1a04ad",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-gameplay_south-neutral.png"
+        },
+        {
+          "actualSha256": "0ec68a09ba54c2999740044a0058b2cf3ad973c5fbd856bb6b7a506051423229",
+          "bytes": 2345513,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "0ec68a09ba54c2999740044a0058b2cf3ad973c5fbd856bb6b7a506051423229",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-north_force-neutral.png"
+        },
+        {
+          "actualSha256": "fb18cb2a7bbd5c3962e3f478ebb1fb620dda5039c27ef8614de7c1e0ba13f3df",
+          "bytes": 2401556,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "expectedDimensions": [
+            1600,
+            900
+          ],
+          "expectedSha256": "fb18cb2a7bbd5c3962e3f478ebb1fb620dda5039c27ef8614de7c1e0ba13f3df",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/renders/inkfall-press-hall-v3-2-south_tension-neutral.png"
+        },
+        {
+          "actualSha256": "db66ebc5018aabc88dfc85dc5dfda8bad0fd787e39b85f5c1e4b13a044f1d49c",
+          "bytes": 3262770,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "expectedDimensions": [
+            1920,
+            1080
+          ],
+          "expectedSha256": "db66ebc5018aabc88dfc85dc5dfda8bad0fd787e39b85f5c1e4b13a044f1d49c",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/boards/inkfall-press-hall-v3-2-gameplay-readability-board.png"
+        },
+        {
+          "actualSha256": "480292d8379fe32329f484d7cf0c6eb158cbf97bfecd7c15cfb293b06a0ca63a",
+          "bytes": 3739725,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "expectedDimensions": [
+            1920,
+            1080
+          ],
+          "expectedSha256": "480292d8379fe32329f484d7cf0c6eb158cbf97bfecd7c15cfb293b06a0ca63a",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/boards/inkfall-press-hall-v3-2-mechanical-readability-board.png"
+        },
+        {
+          "actualSha256": "76f3a4585859529ae6812fe8da77c97d6dd5ec82ef511ceadd5fc30dde1c87be",
+          "bytes": 3179311,
+          "dimensions": [
+            1920,
+            1080
+          ],
+          "expectedDimensions": [
+            1920,
+            1080
+          ],
+          "expectedSha256": "76f3a4585859529ae6812fe8da77c97d6dd5ec82ef511ceadd5fc30dde1c87be",
+          "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/boards/inkfall-press-hall-v3-2-neutral-diagnostic-board.png"
+        }
+      ],
+      "id": "artifact_hashes_and_dimensions",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "optimized": {
+          "bytes": 13300676,
+          "declaredBytes": 13300676,
+          "drawCallProxy": 29,
+          "extensionsRequired": [],
+          "extensionsUsed": [
+            "KHR_materials_emissive_strength"
+          ],
+          "imageCount": 0,
+          "materialCount": 9,
+          "meshCount": 29,
+          "nodeCount": 29,
+          "primitiveCount": 29,
+          "summedPositionVertices": 364844,
+          "textureCount": 0,
+          "triangleCount": 188576
+        },
+        "standard": {
+          "bytes": 11980752,
+          "declaredBytes": 11980752,
+          "drawCallProxy": 654,
+          "extensionsRequired": [],
+          "extensionsUsed": [
+            "KHR_materials_emissive_strength"
+          ],
+          "imageCount": 0,
+          "materialCount": 9,
+          "meshCount": 654,
+          "nodeCount": 654,
+          "primitiveCount": 654,
+          "summedPositionVertices": 364984,
+          "textureCount": 0,
+          "triangleCount": 188576
+        }
+      },
+      "id": "glb_metrics_match_report",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "optimized": {
+          "bytes": 13300676,
+          "declaredBytes": 13300676,
+          "drawCallProxy": 29,
+          "extensionsRequired": [],
+          "extensionsUsed": [
+            "KHR_materials_emissive_strength"
+          ],
+          "imageCount": 0,
+          "materialCount": 9,
+          "meshCount": 29,
+          "nodeCount": 29,
+          "primitiveCount": 29,
+          "summedPositionVertices": 364844,
+          "textureCount": 0,
+          "triangleCount": 188576
+        },
+        "standard": {
+          "bytes": 11980752,
+          "declaredBytes": 11980752,
+          "drawCallProxy": 654,
+          "extensionsRequired": [],
+          "extensionsUsed": [
+            "KHR_materials_emissive_strength"
+          ],
+          "imageCount": 0,
+          "materialCount": 9,
+          "meshCount": 654,
+          "nodeCount": 654,
+          "primitiveCount": 654,
+          "summedPositionVertices": 364984,
+          "textureCount": 0,
+          "triangleCount": 188576
+        }
+      },
+      "id": "joined_export_primitive_target",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "optimized": {
+          "bytes": 13300676,
+          "declaredBytes": 13300676,
+          "drawCallProxy": 29,
+          "extensionsRequired": [],
+          "extensionsUsed": [
+            "KHR_materials_emissive_strength"
+          ],
+          "imageCount": 0,
+          "materialCount": 9,
+          "meshCount": 29,
+          "nodeCount": 29,
+          "primitiveCount": 29,
+          "summedPositionVertices": 364844,
+          "textureCount": 0,
+          "triangleCount": 188576
+        },
+        "standard": {
+          "bytes": 11980752,
+          "declaredBytes": 11980752,
+          "drawCallProxy": 654,
+          "extensionsRequired": [],
+          "extensionsUsed": [
+            "KHR_materials_emissive_strength"
+          ],
+          "imageCount": 0,
+          "materialCount": 9,
+          "meshCount": 654,
+          "nodeCount": 654,
+          "primitiveCount": 654,
+          "summedPositionVertices": 364984,
+          "textureCount": 0,
+          "triangleCount": 188576
+        }
+      },
+      "id": "joined_export_geometry_preserved",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "applied": false,
+        "reason": "No repository/runtime proof of KHR_draco_mesh_compression or EXT_meshopt_compression loader support; compression intentionally not applied"
+      },
+      "id": "compression_withheld_without_loader_proof",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "parent final visual review is still required",
+        "runtime performance, draw calls, frame time, shader cost, memory, and no-snag behavior are not measured",
+        "drawCallProxy is an offline structural estimate and not an engine capture",
+        "the optimized GLB is staged evidence only and is not runtime integrated",
+        "mesh compression is withheld until loader support is proven"
+      ],
+      "id": "offline_payload_not_runtime_claim",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "frozenFinalNorthForce": {
+          "mean": 0.010623,
+          "median": 0.000283,
+          "p10": 0.0,
+          "p90": 0.024595,
+          "shadowFractionBelow0035": 0.919053
+        },
+        "v32GameplayNorthColor": {
+          "mean": 0.357347,
+          "median": 0.147975,
+          "p10": 0.032809,
+          "p90": 0.930214,
+          "shadowFractionBelow0035": 0.364036
+        },
+        "v32GameplaySouthColor": {
+          "mean": 0.229911,
+          "median": 0.04429,
+          "p10": 0.022181,
+          "p90": 0.799151,
+          "shadowFractionBelow0035": 0.427463
+        },
+        "v32NorthForceColor": {
+          "mean": 0.461819,
+          "median": 0.479198,
+          "p10": 0.032809,
+          "p90": 0.848679,
+          "shadowFractionBelow0035": 0.157674
+        },
+        "v32NorthForceNeutral": {
+          "mean": 0.548147,
+          "median": 0.597304,
+          "p10": 0.154681,
+          "p90": 0.849632,
+          "shadowFractionBelow0035": 0.0
+        }
+      },
+      "id": "north_force_readability_lift",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "authorityCollisionIncluded": false,
+        "catalogDefaultRevision": 1,
+        "g5Claimed": false,
+        "grayboxLockRevision": 1,
+        "grayboxRevision": 2,
+        "mapId": "inkfall_foundry",
+        "parent": "inkfall_foundry_press_hall_final_art_v3_conditional",
+        "productSelectable": false,
+        "readabilityRevision": "3.2",
+        "scope": "G5_BOUNDED_PRESS_HALL_V3_2_READABILITY_PREVIEW_ONLY",
+        "shippingDefault": false,
+        "visualDecision": "PENDING_PARENT_FINAL_REVIEW"
+      },
+      "id": "blend_scene_boundary",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        "G5_PRESS_HALL_ARCHITECTURE",
+        "G5_PRESS_HALL_AUTHORED_DETAILS",
+        "G5_PRESS_HALL_MODULAR_ASSETS",
+        "G5_REVIEW_CAMERAS",
+        "G5_REVIEW_LIGHTING",
+        "G5_TRANSITION_PAPER_DROP",
+        "G5_TRANSITION_RED_FOLD",
+        "G5_V3_1_HERO_PRESS_MACHINERY",
+        "G5_V3_1_SUPPORTED_PAPER_SYSTEMS",
+        "G5_V3_2_READABILITY_CAMERAS",
+        "G5_V3_2_READABILITY_LIGHTING",
+        "G5_V3_FINAL_MECHANICAL_DELTA"
+      ],
+      "id": "readability_review_rig",
+      "status": "PASS"
+    },
+    {
+      "evidence": [],
+      "id": "no_authority_collision_objects",
+      "status": "PASS"
+    },
+    {
+      "evidence": {
+        "CAM_V32_GAMEPLAY_NORTH": [
+          -11.800000190734863,
+          -1.2999999523162842,
+          1.7200000286102295
+        ],
+        "CAM_V32_GAMEPLAY_SOUTH": [
+          11.800000190734863,
+          1.0,
+          1.7200000286102295
+        ]
+      },
+      "id": "gameplay_eye_height_views",
+      "status": "PASS"
+    },
+    {
+      "evidence": [
+        {
+          "authoredLowerMeters": [
+            14.69,
+            7.625,
+            0.03
+          ],
+          "authoredUpperMeters": [
+            16.309999,
+            8.31,
+            2.309525
+          ],
+          "lockedCenterMeters": [
+            15.5,
+            8.0,
+            1.2
+          ],
+          "lockedSizeMeters": [
+            1.8,
+            0.8,
+            2.4
+          ],
+          "memberCount": 16,
+          "status": "PASS",
+          "target": "R_MODULE__FULL_COVER_PRESS_E"
+        },
+        {
+          "authoredLowerMeters": [
+            -10.81,
+            -8.375,
+            0.03
+          ],
+          "authoredUpperMeters": [
+            -9.19,
+            -7.69,
+            2.309525
+          ],
+          "lockedCenterMeters": [
+            -10.0,
+            -8.0,
+            1.2
+          ],
+          "lockedSizeMeters": [
+            1.8,
+            0.8,
+            2.4
+          ],
+          "memberCount": 16,
+          "status": "PASS",
+          "target": "R_MODULE__FULL_COVER_PRESS_W"
+        },
+        {
+          "authoredLowerMeters": [
+            5.91,
+            -1.99,
+            0.025
+          ],
+          "authoredUpperMeters": [
+            8.09,
+            -1.47,
+            0.995
+          ],
+          "lockedCenterMeters": [
+            7.0,
+            -1.7,
+            0.625
+          ],
+          "lockedSizeMeters": [
+            2.4,
+            0.6,
+            1.25
+          ],
+          "memberCount": 12,
+          "status": "PASS",
+          "target": "R_MODULE__HALF_COVER_PRESS_E"
+        },
+        {
+          "authoredLowerMeters": [
+            -8.09,
+            5.71,
+            0.025
+          ],
+          "authoredUpperMeters": [
+            -5.91,
+            6.23,
+            0.995
+          ],
+          "lockedCenterMeters": [
+            -7.0,
+            6.0,
+            0.625
+          ],
+          "lockedSizeMeters": [
+            2.4,
+            0.6,
+            1.25
+          ],
+          "memberCount": 12,
+          "status": "PASS",
+          "target": "R_MODULE__HALF_COVER_PRESS_W"
+        },
+        {
+          "authoredLowerMeters": [
+            2.81,
+            -4.895,
+            0.02
+          ],
+          "authoredUpperMeters": [
+            7.59,
+            -4.505,
+            2.93
+          ],
+          "lockedCenterMeters": [
+            5.2,
+            -4.7,
+            1.5
+          ],
+          "lockedSizeMeters": [
+            5.0,
+            0.5,
+            3.0
+          ],
+          "memberCount": 25,
+          "status": "PASS",
+          "target": "R_MODULE__PRESS_BAFFLE_E_INNER"
+        },
+        {
+          "authoredLowerMeters": [
+            8.11,
+            5.405,
+            0.02
+          ],
+          "authoredUpperMeters": [
+            12.89,
+            5.795,
+            2.93
+          ],
+          "lockedCenterMeters": [
+            10.5,
+            5.6,
+            1.5
+          ],
+          "lockedSizeMeters": [
+            5.0,
+            0.5,
+            3.0
+          ],
+          "memberCount": 25,
+          "status": "PASS",
+          "target": "R_MODULE__PRESS_BAFFLE_E_OUTER"
+        },
+        {
+          "authoredLowerMeters": [
+            -7.59,
+            -4.895,
+            0.02
+          ],
+          "authoredUpperMeters": [
+            -2.81,
+            -4.505,
+            2.93
+          ],
+          "lockedCenterMeters": [
+            -5.2,
+            -4.7,
+            1.5
+          ],
+          "lockedSizeMeters": [
+            5.0,
+            0.5,
+            3.0
+          ],
+          "memberCount": 25,
+          "status": "PASS",
+          "target": "R_MODULE__PRESS_BAFFLE_W_INNER"
+        },
+        {
+          "authoredLowerMeters": [
+            -12.89,
+            5.405,
+            0.02
+          ],
+          "authoredUpperMeters": [
+            -8.11,
+            5.795,
+            2.93
+          ],
+          "lockedCenterMeters": [
+            -10.5,
+            5.6,
+            1.5
+          ],
+          "lockedSizeMeters": [
+            5.0,
+            0.5,
+            3.0
+          ],
+          "memberCount": 25,
+          "status": "PASS",
+          "target": "R_MODULE__PRESS_BAFFLE_W_OUTER"
+        },
+        {
+          "authoredLowerMeters": [
+            -1.65,
+            6.0,
+            0.015
+          ],
+          "authoredUpperMeters": [
+            1.655,
+            8.94,
+            5.73
+          ],
+          "lockedCenterMeters": [
+            0.0,
+            7.5,
+            3.0
+          ],
+          "lockedSizeMeters": [
+            3.4,
+            3.0,
+            6.0
+          ],
+          "memberCount": 123,
+          "status": "PASS",
+          "target": "R_MODULE__PRESS_REACTOR_NORTH"
+        },
+        {
+          "authoredLowerMeters": [
+            -1.65,
+            -8.94,
+            0.015
+          ],
+          "authoredUpperMeters": [
+            1.65,
+            -6.0,
+            5.16
+          ],
+          "lockedCenterMeters": [
+            0.0,
+            -7.5,
+            3.0
+          ],
+          "lockedSizeMeters": [
+            3.4,
+            3.0,
+            6.0
+          ],
+          "memberCount": 140,
+          "status": "PASS",
+          "target": "R_MODULE__PRESS_REACTOR_SOUTH"
+        }
+      ],
+      "id": "replacement_envelopes",
+      "status": "PASS"
+    }
+  ],
+  "kind": "inkfall_foundry_press_hall_v3_2_readability_independent_verification",
+  "nonClaims": [
+    "COLOR_VISION_REVIEW_NOT_COMPLETE",
+    "DEPLOYMENT_NOT_AUTHORIZED",
+    "G5_NOT_PASSED",
+    "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "NO_SNAG_RUNTIME_PROOF_NOT_COMPLETE",
+    "PAYLOAD_MEASURED_NOT_RUNTIME_PROFILED",
+    "PERFORMANCE_NOT_MEASURED",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING"
+  ],
+  "schemaVersion": 1,
+  "status": "INDEPENDENT_PRESS_HALL_V3_2_READABILITY_VERIFICATION_PASS",
+  "summary": {
+    "checkCount": 20,
+    "failCount": 0,
+    "passCount": 20
+  },
+  "verifier": "tools/evidence/verify-inkfall-g5-press-hall-readability-v3-2.py",
+  "visualDecision": "PENDING_PARENT_FINAL_REVIEW"
+}

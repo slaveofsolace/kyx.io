@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "contract": {
+    "schemaVersion": 1,
+    "path": "worker/transport-limits.json",
+    "sha256": "7fc752092ac1b00fc712a5a84f85690656d25831faa4b3a4ca2e82108e80b956",
+    "maxMessagesPerRateWindow": 384,
+    "maxBytesPerRateWindow": 524288,
+    "rateWindowMilliseconds": 10000,
+    "maxSocketBufferedBytes": 262144,
+    "slowConsumerGraceMilliseconds": 1000
+  },
+  "messagesSent": 257,
+  "workerCounters": {
+    "before": {
+      "inboundMessagesReceived": 14,
+      "inboundMessagesRateAccepted": 14,
+      "inboundMessagesRateRejected": 0
+    },
+    "after": {
+      "inboundMessagesReceived": 399,
+      "inboundMessagesRateAccepted": 398,
+      "inboundMessagesRateRejected": 1
+    }
+  },
+  "rejectionCode": "RATE_LIMITED",
+  "close": {
+    "code": 1008,
+    "reason": "Rate limit exceeded",
+    "wasClean": true
+  },
+  "passed": true,
+  "assertions": {
+    "queueFloodRateLimitedAndDisconnected": true,
+    "queueFloodRejectedAndBounded": true
+  }
+}

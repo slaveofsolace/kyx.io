@@ -1,0 +1,334 @@
+{
+  "schema": "kyx-runtime-publication-prep-v1",
+  "assetId": "kyx-vanguard-v6b-rev12",
+  "generatedAt": "2026-07-22T18:41:28.306Z",
+  "recordStatus": "BLOCKED_NOT_PROMOTED",
+  "nonGating": true,
+  "canonicalArtifact": {
+    "uri": "assets/source/blender/phase7-character-original-v6/model/v6b-production-contact-candidate-rev1/export/kyx-v6b-production-contact-candidate-rev1.runtime-candidate-rev12.glb",
+    "bytes": 18685160,
+    "sha256": "eb767552e6af30025e6514b4d5c8e71fd3ad6ab3d168208c4450ab1dc6b1eb5a",
+    "format": "GLB glTF 2.0",
+    "observedCopyright": "KYX project-original V6-B bounded production/contact candidate; not G6 or final human acceptance",
+    "selfContained": true,
+    "externalUris": [],
+    "images": 0,
+    "textures": 0,
+    "samplers": 0,
+    "metrics": {
+      "triangles": 297996,
+      "primitives": 111,
+      "materials": 16,
+      "nodes": 159,
+      "bones": 52,
+      "clips": 6
+    }
+  },
+  "provenance": {
+    "status": "PARTIALLY_VERIFIED_RELEASE_BLOCKED",
+    "thirdPartyAnatomySeed": {
+      "product": "Blender Human Base Meshes 1.4.1",
+      "publisher": "Blender Studio / Blender Foundation with community contributions",
+      "selectedAsset": "Body Male - Realistic",
+      "officialListing": "https://www.blender.org/download/demo-files/",
+      "officialDownload": "https://download.blender.org/demo/asset-bundles/human-base-meshes/human-base-meshes-bundle-v1.4.1.zip",
+      "license": "CC0-1.0",
+      "archive": {
+        "bytes": 50643039,
+        "sha256": "811f43accbb31a88266d932f8f5563b2d13586fca0ba2693aad1f5fe582b3515"
+      },
+      "vendorBlend": {
+        "bytes": 49420489,
+        "sha256": "3c121505651140ceb4d69fd1d8923f7788ffadd81672f5be14845a5f2c75c137"
+      },
+      "sanitizedBlend": {
+        "uri": "assets/source/blender/phase7-character-original-v6/source/kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+        "bytes": 12582373,
+        "sha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+        "selectionOnly": true,
+        "texts": 0,
+        "drivers": 0,
+        "actions": 0,
+        "materials": 0,
+        "images": 0,
+        "libraries": 0,
+        "externalPaths": 0
+      },
+      "records": [
+        {
+          "uri": "assets/source/blender/phase7-character-original-v6/PROVENANCE.md",
+          "bytes": 5635,
+          "sha256": "366b2e1886417c2881f7a20bdc326064ab51120ba7f6ad8af55ab6edfe63bbe9"
+        },
+        {
+          "uri": "assets/source/blender/phase7-character-original-v6/SOURCE.lock.json",
+          "bytes": 5141,
+          "sha256": "1acce7540348acb057f5171b25ca164096a1608aa000e949ea3ea64e297260ab"
+        },
+        {
+          "uri": "assets/source/blender/phase7-character-original-v6/LICENSES/CC0-1.0.txt",
+          "bytes": 1429,
+          "sha256": "28d216ccc471a62cd402fa58ac630d728f4c64862938d303110062ca6ad2514c"
+        }
+      ]
+    },
+    "authoredChain": [
+      {
+        "role": "project-authored V6-A anatomy deformation",
+        "script": "assets/source/blender/phase7-character-original-v6/scripts/author_v6a_anatomy.py",
+        "scriptBytes": 21894,
+        "scriptSha256": "fb30dbb92b15d6502073019d40e671decaabf34b217b73280f187d42bb2f584b",
+        "output": "assets/source/blender/phase7-character-original-v6/model/kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+        "outputBytes": 12580228,
+        "outputSha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+        "report": "assets/source/blender/phase7-character-original-v6/evidence/v6a-authoring-report.json",
+        "reportBytes": 5596,
+        "reportSha256": "1c8ab21b2508883196b4efaeda00803a400a50e83354eb4a58d687dc89fe10ba"
+      },
+      {
+        "role": "project-authored 52-bone contact rig and contact blockout",
+        "script": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev11b.py",
+        "scriptBytes": 3272,
+        "scriptSha256": "37e90c61197929a7fee0381b211acf16dfb7148c73e0351866e3b81895609d9a",
+        "scriptChain": [
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev1.py",
+            "bytes": 30223,
+            "sha256": "59e0a5dd089e4d541786772f7fd8136110144e96c8a03a29233ee123dbf89203"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev2.py",
+            "bytes": 17841,
+            "sha256": "5d66be36eb5d1cd43c8f9533e2d68a439681b285fde75d2f874c0de037d53bf1"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev3.py",
+            "bytes": 8396,
+            "sha256": "08e221b09cc05d05e19b76210044de0ae67802dac87325599f66e0362454485d"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev4.py",
+            "bytes": 9143,
+            "sha256": "1df0c57f3f1e3e55f01e4b9ede5097f864148010ba370eca2d5fe135ec83fbc1"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev5.py",
+            "bytes": 7642,
+            "sha256": "df64c4722ab163fda145753fc7acfa92e440008578f5e57432f08fefda4990c0"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev6.py",
+            "bytes": 2733,
+            "sha256": "eaf823626b18d55bf404de5aeb2fd16fe9c1f49a2a29fccfef3ca46dbfbb4422"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev7.py",
+            "bytes": 11837,
+            "sha256": "8c8b711feb09187dbf52ea05b674fcacc64a83e1cb33a7505faf9972e064f134"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev8.py",
+            "bytes": 4231,
+            "sha256": "f679e5d72666b03e5acf6af10b42e0235dead2083e28f4eef5730740fa3bee37"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev9.py",
+            "bytes": 15282,
+            "sha256": "f174fccd213d559c71b26bbf87f6ee7111d5041688bd645762fbf2aabab7a408"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev10.py",
+            "bytes": 9227,
+            "sha256": "f3e5634e20e039c6dac3ee92a9a9232394037c830913d2c802692740020c2d2c"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev11.py",
+            "bytes": 6588,
+            "sha256": "d0c038d939616f81c1621021e14024654b7c48a3c9cbdda8df25c413ed0f8330"
+          },
+          {
+            "path": "assets/source/blender/phase7-character-original-v6/scripts/author_v6_contact_first_rig_rev11b.py",
+            "bytes": 3272,
+            "sha256": "37e90c61197929a7fee0381b211acf16dfb7148c73e0351866e3b81895609d9a"
+          }
+        ],
+        "output": "assets/source/blender/phase7-character-original-v6/model/v6-contact-first-rig-rev11b/kyx-v6-contact-first-rig-rev11b.blend",
+        "outputBytes": 12926508,
+        "outputSha256": "029ce233dca6ed2119ac0810e07e4392090f0866dde78da04bed390d9a3e0ec0",
+        "report": "assets/source/blender/phase7-character-original-v6/evidence/v6-contact-first-rig-rev11b/author-report.json",
+        "reportBytes": 65015,
+        "reportSha256": "07c72581c2238973958601116ed0731433a86b6c3db63331b4a649f7221a2495"
+      },
+      {
+        "role": "project-authored garment, helmet, armor, boots, rifle shell, and procedural materials",
+        "script": "assets/source/blender/phase7-character-original-v6/scripts/author_v6b_production_contact_candidate_rev1.py",
+        "scriptBytes": 74603,
+        "scriptSha256": "272e001d04188fa08c8a1dba527f8c22aa5f009da9f879492baf1d2a1e1d97ea",
+        "output": "assets/source/blender/phase7-character-original-v6/model/v6b-production-contact-candidate-rev1/kyx-v6b-production-contact-candidate-rev1.blend",
+        "outputBytes": 13363914,
+        "outputSha256": "ac953f87d40677cedc20a2374c7e9fc3bdda541216b200abfe769b00a8b0318a",
+        "report": "assets/source/blender/phase7-character-original-v6/evidence/v6b-production-contact-candidate-rev1/author-report.json",
+        "reportBytes": 11880,
+        "reportSha256": "c0c7697de5d776e324f5cab790b27bafe6d5de38d9841277fa655c7fc87dfd21"
+      },
+      {
+        "role": "project-authored export and six diagnostic hold clips",
+        "script": "assets/source/blender/phase7-character-original-v6/scripts/export_audit_v6b_production_contact_candidate_rev1.py",
+        "scriptBytes": 105700,
+        "scriptSha256": "5be2a0fa0bc50baa53c47982f88e39a55c6187833e2dd292e92e0d6491d4e953"
+      }
+    ],
+    "anatomyDesignReference": {
+      "usage": "V6-A anatomy deformation reference only; not embedded geometry, texture, or animation",
+      "generationPath": "built-in OpenAI image-generation tool",
+      "image": "assets/source/characters/kyx-vanguard/concept/kyx-vanguard-model-sheet-v1.png",
+      "imageBytes": 2454416,
+      "imageSha256": "067a3eba77f9c9e566fe7aeba9684346bfd9fcd162de8ead14194640c0fb76c3",
+      "record": "assets/source/characters/kyx-vanguard/concept/CONCEPT_BRIEF.md",
+      "recordBytes": 5167,
+      "recordSha256": "0dbf6154892c9bad654c5bae705ff12c99cc9257ea0266b0904b50bc0b5d18c5",
+      "releaseRightsReview": "NOT_RECORDED"
+    },
+    "productionDesignReference": {
+      "usage": "construction language only; not embedded geometry, texture, or animation",
+      "generationPath": "built-in image-generation tool",
+      "image": "assets/source/blender/phase7-character-original-v6/concept/kyx-vanguard-v6c-production-target-v1.png",
+      "imageBytes": 2479237,
+      "imageSha256": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "record": "assets/source/blender/phase7-character-original-v6/concept/V6C_PRODUCTION_TARGET_V1.md",
+      "recordBytes": 5010,
+      "recordSha256": "ec16b96c2e9b775eaf700c50813f3726027f2e164460d79eaa2cc7e886b8c424",
+      "releaseRightsReview": "NOT_RECORDED"
+    },
+    "directBlendDependencyAudit": {
+      "tool": "Blender 5.1.2 background reopen with auto-execution disabled",
+      "libraries": 0,
+      "linkedDatablocks": 0,
+      "images": 0,
+      "imageTextureNodes": 0,
+      "movieClips": 0,
+      "sounds": 0,
+      "forbiddenNameHits": [],
+      "actions": [
+        "V6CF11B_ContactPose_Action"
+      ]
+    },
+    "directGlbDependencyAudit": {
+      "forbiddenStringCounts": {
+        "mixamo": 0,
+        "legacy": 0,
+        "soldier": 0
+      },
+      "externalUris": [],
+      "conclusion": "No Mixamo, legacy public player, or external binary dependency is present in the Rev12 GLB. This conclusion does not clear the repository's separate legacy runtime assets."
+    }
+  },
+  "diagnosticClipBoundary": {
+    "classification": "SIX_INDEPENDENT_STEP_HELD_DEFORMATION_DIAGNOSTICS_NOT_GAMEPLAY",
+    "channelsPerClip": {
+      "total": 164,
+      "translation": 52,
+      "rotation": 52,
+      "scale": 52,
+      "weights": 8
+    },
+    "clips": [
+      "V6B_DIAG_BIND_REST_HOLD_NOT_G6",
+      "V6B_DIAG_ACCEPTED_CONTACT_HOLD_NOT_G6",
+      "V6B_DIAG_FIRING_SHOULDER_EXTREME_HOLD_NOT_G6",
+      "V6B_DIAG_TRIGGER_WRIST_DIGIT_EXTREME_HOLD_NOT_G6",
+      "V6B_DIAG_SUPPORT_HAND_EXTREME_HOLD_NOT_G6",
+      "V6B_DIAG_LOCOMOTION_LEG_BEND_HOLD_NOT_G6"
+    ],
+    "availableGameplayClips": [],
+    "requiredGameplayClipsStillMissing": [
+      "idle",
+      "walk",
+      "run",
+      "jump_start",
+      "airborne_loop",
+      "land",
+      "primary_fire",
+      "reload",
+      "hit_reactions",
+      "death",
+      "arms_idle",
+      "arms_walk_sway",
+      "arms_run_sway",
+      "arms_primary_fire",
+      "arms_reload"
+    ],
+    "g6Claim": false
+  },
+  "validation": {
+    "boundedBlenderExportReimport": {
+      "status": "PASS_BOUNDED_V6B_EXPORT_RUNTIME_CANDIDATE_NOT_G6",
+      "report": "assets/source/blender/phase7-character-original-v6/evidence/v6b-production-contact-candidate-rev1/export-reimport-audit-rev12.json",
+      "reportBytes": 515463,
+      "reportSha256": "b4ec2a07cdaf6a04676cc31b326ff13626f922a7393cad012d6a35bc3a80176c"
+    },
+    "boundedThreeRuntimeProof": {
+      "status": "PASS_BOUNDED_V6B_THREE_RUNTIME_PROOF_NOT_G6",
+      "report": "assets/source/blender/phase7-character-original-v6/evidence/v6b-production-contact-candidate-rev1/runtime-proof-rev12/runtime-proof-report.json",
+      "reportBytes": 5349,
+      "reportSha256": "576fe34549e2ba3df8ecf6a04a9205ffd025dd72c02cf8136bed16622de7fb35"
+    },
+    "khronosExternalGltfValidator": {
+      "status": "NOT_RUN",
+      "report": null
+    },
+    "releaseBudgetCheck": {
+      "characterLimit": {
+        "triangles": 45000,
+        "primitives": 3
+      },
+      "measured": {
+        "triangles": 297996,
+        "primitives": 111
+      },
+      "waiver": null,
+      "status": "EXCEEDED"
+    }
+  },
+  "releaseDecision": {
+    "releaseEligible": false,
+    "disposition": "BLOCKED",
+    "targetRuntimeDirectory": "assets/runtime/characters/kyx-v6b/rev12/",
+    "runtimeCopyCreated": false,
+    "productDefaultChanged": false,
+    "repositoryLegacyState": "UNCHANGED; separate Mixamo/legacy public assets remain outside this Rev12 dependency chain",
+    "blockers": [
+      {
+        "code": "PROJECT_ASSET_LICENSE_NOT_RECORDED",
+        "detail": "The repository has no root LICENSE file. package.json says ISC, but no evidence explicitly applies that metadata to the project-authored character, rifle, rig, materials, diagnostic animation data, or AI-assisted design reference."
+      },
+      {
+        "code": "HUMAN_RIGHTS_REVIEW_AND_APPROVAL_NOT_RECORDED",
+        "detail": "No named rights reviewer, approved disposition, or owner-authorized public asset distribution grant is recorded."
+      },
+      {
+        "code": "AI_DESIGN_REFERENCE_RIGHTS_SNAPSHOT_NOT_RECORDED",
+        "detail": "Both image-generation concept references have pinned prompts, paths, and hashes, but no local output-rights terms snapshot or generation receipt has been reviewed for public distribution. Neither image is embedded in the GLB."
+      },
+      {
+        "code": "DERIVATION_NOTICE_INCOMPLETE",
+        "detail": "The GLB copyright string says project-original without preserving the documented CC0-derived anatomy boundary; a corrected notice and public third-party notice package require a regenerated, rehashed artifact."
+      },
+      {
+        "code": "EXTERNAL_GLTF_VALIDATOR_NOT_RUN",
+        "detail": "No complete Khronos glTF Validator report is bound by hash to these exact GLB bytes."
+      },
+      {
+        "code": "RUNTIME_CHARACTER_BUDGET_EXCEEDED",
+        "detail": "The diagnostic candidate measures 297,996 triangles and 111 primitives against the current character limits of 45,000 and 3, with no evidence-backed waiver."
+      }
+    ],
+    "unblockRequirements": [
+      "Record the rights owner's explicit asset distribution license and a named human rights review covering all project-authored and AI-assisted portions.",
+      "Regenerate the GLB with an accurate CC0-derived-anatomy and project-authorship notice, then update every bound hash and byte count.",
+      "Package the CC0 source/provenance notice and the chosen license for project-authored additions with the public asset.",
+      "Run the official Khronos glTF Validator on the exact regenerated GLB and retain a complete hashed report receipt.",
+      "Produce a runtime-budget-compliant character export or an owned, evidence-backed waiver supported by the release validator."
+    ]
+  }
+}

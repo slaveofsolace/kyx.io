@@ -1,0 +1,45 @@
+{
+  "schema": "kyx.g7.pointer-lock-escape.v1",
+  "capturedAt": "2026-07-22T13:40:00Z",
+  "classification": "BOUNDED_POINTER_LOCK_ESCAPE_PASS",
+  "gateStatus": {
+    "G7": "OPEN"
+  },
+  "change": {
+    "summary": "Escape explicitly neutralizes held inputs and requests pointer-lock release when a runtime delivers the key event without performing native release."
+  },
+  "sources": [
+    {
+      "path": "src/core/InputManager.js",
+      "bytes": 7172,
+      "sha256": "992d9e3e25d682df9d7b499000be5d768892cd5ece02f8fb65a4faa20b3178cf"
+    },
+    {
+      "path": "tests/unit/app/settings/inputManagerAccessibility.test.ts",
+      "bytes": 3274,
+      "sha256": "7e98f297727d6605c8e929cef1b0102f6ff4eb864ccd2a2746cf71294a751a34"
+    },
+    {
+      "path": "tests/accessibility/phase8-runtime.spec.ts",
+      "bytes": 12832,
+      "sha256": "ad8f24d6a32165e7a45c8cadf06f17d17c6fca788d070c48eee73ceb1ef23a70"
+    }
+  ],
+  "verification": {
+    "unit": "1 file / 3 tests passed",
+    "pointerLockBrowser": "1 passed with asserted acquisition, Escape release, pause visibility, and Resume focus",
+    "combinedStrictBrowser": "4 passed / 0 skipped / 0 failed",
+    "focusedLint": "PASS"
+  },
+  "observation": "observation.json",
+  "screenshot": {
+    "path": "screenshots/after-escape-paused.png",
+    "bytes": 281408,
+    "sha256": "9777c5b95b16b46e1a460c6525bbd449d09286dd0e2126510196c6d54d33b93b"
+  },
+  "limitations": [
+    "The browser probe uses the explicit flat_run development movement fixture.",
+    "This bounded interaction result does not close G7.",
+    "Literal browser zoom and human screen-reader acceptance remain open."
+  ]
+}

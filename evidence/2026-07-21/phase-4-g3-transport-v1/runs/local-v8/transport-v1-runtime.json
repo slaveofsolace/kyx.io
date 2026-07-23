@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-4-g3-transport-v1-local-v8-2026-07-21",
+  "capturedAt": "2026-07-22T06:24:58.465Z",
+  "status": "LOCAL_G3_TRANSPORT_V1_EVIDENCE_PASS",
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "deploymentPerformed": false,
+  "exactInvocation": [
+    "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\tools\\evidence\\capture-phase4-g3-transport-v1.mjs"
+  ],
+  "serviceCommands": [
+    [
+      "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "node_modules/wrangler/bin/wrangler.js",
+      "dev",
+      "--config",
+      "wrangler.jsonc",
+      "--port",
+      "8787"
+    ],
+    [
+      "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "node_modules/vite/bin/vite.js",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "5173",
+      "--strictPort"
+    ]
+  ],
+  "runtime": {
+    "node": "v24.14.0",
+    "platform": "win32-x64",
+    "chromeExecutable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "health": {
+      "ok": true,
+      "service": "kyx-authority",
+      "buildId": "phase4-local",
+      "roomBinding": true
+    }
+  },
+  "sourceHashes": {
+    "src/net/protocol.ts": "0a9f65a571bef66dad4507a969b69c5c762848219b6f32e4c8bcb254403c037c",
+    "src/net/schemas.ts": "3f1654d1ca380b77a605439a11262afd05a54250255b852196d3256f3ac9ce9d",
+    "src/dev/authorityEvidenceClient.ts": "d8db2e273ead88a81fe6405da27016054e93aa38b454faaf2d360a31dabf665b",
+    "worker/room.ts": "1fa5c818261fe8b642910f6e7791e05ffd8be237913c4ebff7549dc4294c7015",
+    "worker/security.ts": "9e2e3803af8fe7f29bd65ab8d6a701473469853fdfa9e555540156850a875abb",
+    "worker/snapshotBaselines.ts": "5809f54ed59f653af85ea4e82dc0d882ddd7454c4e23f6462f4c91c3e78cbd4c",
+    "worker/reliableEvents.ts": "bf142bb8435fdd3f4b96e7e6620a577e70a591471dc1dd3206b2ee22e00594bb",
+    "tests/unit/worker/snapshotBaselines.test.ts": "9458e98d9eadad272ca468cf76abf4179e9a501651bd4d7adcf28d8bfa441b39",
+    "tests/unit/worker/reliableEvents.test.ts": "c985b22396d740ea8042ca955acd9f554b8b6428d638edd08749a9af7f13c944",
+    "tests/worker/protocolV2Socket.test.ts": "37454318573bef4eb2380b0c826bdfe2eae7e91419a8a607b71c20256ac0fb83",
+    "tests/worker/socketAttachmentCache.test.ts": "8da4ced83e9859aebe5798cb54d6d6a326a5ffc403cd2f1d580e9d2391480044",
+    "tools/evidence/capture-phase4-g3-transport-v1.mjs": "fa0526024806eea3ae19c22b053591657e5b8199ec73b559402ba4f4a0e31ae5",
+    "tools/evidence/verify-phase4-g3-transport-v1.mjs": "39bbabf9a1c7160934c30304866e1b872f58469bcd4f5917ccc14608569656a9"
+  },
+  "contract": {
+    "roomCode": "KYX-WRDU3J",
+    "versions": {
+      "protocol": 2,
+      "snapshotBaseline": 1,
+      "reliableEvents": 1
+    },
+    "sameTickBaselines": {
+      "first": {
+        "tick": 0,
+        "id": "baseline.0.1"
+      },
+      "second": {
+        "tick": 0,
+        "id": "baseline.0.2"
+      }
+    },
+    "firstDelta": {
+      "protocolVersion": 2,
+      "type": "deltaSnapshot",
+      "snapshotBaselineVersion": 1,
+      "baseSnapshotBaselineId": "baseline.0.1",
+      "snapshotBaselineId": "baseline.2.3",
+      "matchId": "match.a6e4e2c845174304a513cc51a65a789a",
+      "baseTick": 0,
+      "serverTick": 2,
+      "phase": "warmup",
+      "phaseEndsAtTick": 40,
+      "localReconciliation": {
+        "schemaVersion": 1,
+        "identity": {
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "simulationRateHz": 20,
+        "tick": 2,
+        "player": {
+          "id": "player.92ea3f2d-fa2f-4a8b-8b26-f0e26706cd90",
+          "feetPosition": {
+            "x": -1500,
+            "y": 0,
+            "z": -2000
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "integrationRemainders": {
+            "positionX": 0,
+            "positionY": 0,
+            "positionZ": 0,
+            "planarAcceleration": 0,
+            "gravity": 0
+          },
+          "yawMilliDegrees": 0,
+          "pitchMilliDegrees": 0,
+          "lastProcessedSequence": -1,
+          "ticksSinceAcceptedCommand": 2,
+          "intent": {
+            "moveX": 0,
+            "moveZ": 0,
+            "heldButtons": 0,
+            "pressedButtons": 0,
+            "releasedButtons": 0,
+            "selectedSlot": 0
+          },
+          "stance": "standing",
+          "locomotion": "grounded",
+          "grounded": true,
+          "support": {
+            "colliderId": "flat_ground",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "coyoteTicksRemaining": 2,
+          "jumpBufferTicksRemaining": 0,
+          "slideTicksRemaining": 0,
+          "slideCooldownTicksRemaining": 0,
+          "teleportCooldownTicksRemaining": 0,
+          "standBlocked": false,
+          "activeVolumes": []
+        }
+      },
+      "entities": [
+        {
+          "id": "player.e6a0588f-3ff7-4534-bcf8-b2fc66dcf2d5",
+          "kind": "player",
+          "xMillimeters": 0,
+          "yMillimeters": 0,
+          "zMillimeters": -2000,
+          "velocityXMillimetersPerSecond": 0,
+          "velocityYMillimetersPerSecond": 0,
+          "velocityZMillimetersPerSecond": 0,
+          "yawMilliDegrees": 0,
+          "pitchMilliDegrees": 0,
+          "healthPoints": 100,
+          "shieldPoints": 0
+        }
+      ],
+      "removedEntityIds": []
+    },
+    "chainedDelta": {
+      "protocolVersion": 2,
+      "type": "deltaSnapshot",
+      "snapshotBaselineVersion": 1,
+      "baseSnapshotBaselineId": "baseline.2.3",
+      "snapshotBaselineId": "baseline.4.4",
+      "matchId": "match.a6e4e2c845174304a513cc51a65a789a",
+      "baseTick": 2,
+      "serverTick": 4,
+      "phase": "warmup",
+      "phaseEndsAtTick": 40,
+      "localReconciliation": {
+        "schemaVersion": 1,
+        "identity": {
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 2,
+          "rulesetHash": "039ae95bed7ee716",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "flat_run",
+          "fixtureHash": "44bfdf2fdced9d9c",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "simulationRateHz": 20,
+        "tick": 4,
+        "player": {
+          "id": "player.92ea3f2d-fa2f-4a8b-8b26-f0e26706cd90",
+          "feetPosition": {
+            "x": -1500,
+            "y": 0,
+            "z": -2000
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "integrationRemainders": {
+            "positionX": 0,
+            "positionY": 0,
+            "positionZ": 0,
+            "planarAcceleration": 0,
+            "gravity": 0
+          },
+          "yawMilliDegrees": 0,
+          "pitchMilliDegrees": 0,
+          "lastProcessedSequence": -1,
+          "ticksSinceAcceptedCommand": 4,
+          "intent": {
+            "moveX": 0,
+            "moveZ": 0,
+            "heldButtons": 0,
+            "pressedButtons": 0,
+            "releasedButtons": 0,
+            "selectedSlot": 0
+          },
+          "stance": "standing",
+          "locomotion": "grounded",
+          "grounded": true,
+          "support": {
+            "colliderId": "flat_ground",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "coyoteTicksRemaining": 2,
+          "jumpBufferTicksRemaining": 0,
+          "slideTicksRemaining": 0,
+          "slideCooldownTicksRemaining": 0,
+          "teleportCooldownTicksRemaining": 0,
+          "standBlocked": false,
+          "activeVolumes": []
+        }
+      },
+      "entities": [],
+      "removedEntityIds": []
+    },
+    "reliable": {
+      "eventId": "event.2",
+      "deliveriesBeforeAck": 2,
+      "deliveriesAfterAckWindow": 2,
+      "uniqueAppliedIds": [
+        "event.2"
+      ]
+    },
+    "futureReliableAckError": {
+      "protocolVersion": 2,
+      "type": "error",
+      "code": "ACK_REJECTED",
+      "detail": "event_unknown_event",
+      "requestId": null
+    },
+    "futureAckError": {
+      "protocolVersion": 2,
+      "type": "error",
+      "code": "ACK_REJECTED",
+      "detail": "snapshot_tick_future",
+      "requestId": null
+    },
+    "oldAckError": {
+      "protocolVersion": 2,
+      "type": "error",
+      "code": "ACK_REJECTED",
+      "detail": "snapshot_tick_regression",
+      "requestId": null
+    },
+    "correlatedFull": {
+      "requestId": "request.transport.missing-baseline",
+      "serverTick": 36,
+      "baselineId": "baseline.36.20"
+    },
+    "timeoutFallback": {
+      "unacknowledgedDeltaTick": 38,
+      "unacknowledgedDeltaReceivedAt": 3460.2999999970198,
+      "fullTick": 58,
+      "fullReceivedAt": 4464.79999999702,
+      "elapsedMilliseconds": 1004.5,
+      "fullBaselineId": "baseline.58.31"
+    },
+    "errors": [
+      {
+        "code": "ACK_REJECTED",
+        "detail": "event_unknown_event"
+      },
+      {
+        "code": "ACK_REJECTED",
+        "detail": "snapshot_tick_future"
+      },
+      {
+        "code": "ACK_REJECTED",
+        "detail": "snapshot_tick_regression"
+      }
+    ],
+    "assertions": {
+      "protocolVersionsAdvertised": true,
+      "sameTickBaselineIdsDistinct": true,
+      "oldBaselineDeltaIncludesLateJoin": true,
+      "deltaChainedFromAcknowledgedBaseline": true,
+      "reliableEventResentBeforeAck": true,
+      "reliableEventDeduplicatedBySequence": true,
+      "reliableAckStoppedPendingEvent": true,
+      "futureReliableAckRejected": true,
+      "futureAckRejected": true,
+      "oldAckRejected": true,
+      "missingBaselineFullCorrelated": true,
+      "unacknowledgedDeltaTimedOutToFull": true,
+      "transportMetricsConfirmPaths": true,
+      "roomHealthy": true
+    },
+    "passed": true
+  },
+  "honestClient": {
+    "roomCode": "KYX-39ALUQ",
+    "durationMilliseconds": 11004.400000002235,
+    "inputMessages": 210,
+    "snapshotAndEventAcks": 110,
+    "totalGameplayMessages": 320,
+    "maximumRollingTenSecondMessages": 301,
+    "measuredInputHz": 19.083275780592977,
+    "measuredAckHz": 9.996001599358225,
+    "lastProcessedInputSequence": 209,
+    "deltasReceived": 111,
+    "fullRecoveryRequests": 0,
+    "reliableDuplicatesSuppressed": 0,
+    "reliableHistoryGaps": 0,
+    "errors": [],
+    "socketReadyState": 1,
+    "assertions": {
+      "inputCadenceNear20Hz": true,
+      "snapshotAckCadenceNear10Hz": true,
+      "rollingWindowBelow384": true,
+      "authorityProcessedStream": true,
+      "noRateLimit": true,
+      "noUnexpectedErrors": true,
+      "socketRemainedOpen": true,
+      "deltasObserved": true,
+      "noBaselineRecoveryRequests": true,
+      "noReliableHistoryGap": true,
+      "authorityAcceptedInputs": true,
+      "workerSentDeltas": true
+    },
+    "passed": true
+  },
+  "abuse": {
+    "roomCode": "KYX-SLMN7Z",
+    "configuredWindowMessages": 384,
+    "sentMessages": 385,
+    "rateLimitError": {
+      "protocolVersion": 2,
+      "type": "error",
+      "code": "RATE_LIMITED",
+      "detail": null,
+      "requestId": null
+    },
+    "close": {
+      "code": 1008,
+      "reason": "Rate limit exceeded",
+      "wasClean": true
+    },
+    "assertions": {
+      "sentExactly385Messages": true,
+      "revisedLimitCrossed": true,
+      "rateLimited": true,
+      "policyClose1008": true
+    },
+    "passed": true
+  },
+  "metrics": {
+    "contract": {
+      "serverTick": 259,
+      "lifecycle": "idle",
+      "players": 0,
+      "connectedPlayers": 0,
+      "ticks": 259,
+      "acceptedInputs": 0,
+      "inputRejections": {
+        "duplicate_sequence": 0,
+        "stale_sequence": 0,
+        "sequence_too_far_ahead": 0,
+        "client_tick_too_far_ahead": 0,
+        "client_tick_too_old": 0,
+        "queue_full": 0
+      },
+      "maximumObservedQueueDepth": 0,
+      "missedSchedulerTicks": 0,
+      "queryMetrics": {
+        "moveCapsuleCalls": 116,
+        "overlapCapsuleCalls": 0,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 116,
+        "shapeCasts": 116,
+        "overlapTests": 348,
+        "contacts": 0
+      },
+      "transport": {
+        "inboundMessagesReceived": 29,
+        "inboundMessagesRateAccepted": 29,
+        "inboundMessagesRateRejected": 0,
+        "fullSnapshotsSent": 5,
+        "deltaSnapshotsSent": 21,
+        "snapshotAcksAccepted": 23,
+        "snapshotAcksRejected": 2,
+        "snapshotAckTimeoutFallbacks": 2,
+        "snapshotHistoryFallbacks": 0,
+        "reliableEventsRecorded": 4,
+        "reliableEventBatchesSent": 4,
+        "reliableEventResendBatches": 1,
+        "reliableEventAcksAccepted": 23,
+        "reliableEventAcksRejected": 1,
+        "reliableEventHistoryFallbacks": 0,
+        "backpressureEpisodes": 0,
+        "backpressureMessagesCoalesced": 0,
+        "slowConsumerRecoveries": 0,
+        "slowConsumerEvictions": 0,
+        "maximumObservedSocketBufferedBytes": 0
+      }
+    },
+    "honest": {
+      "serverTick": 224,
+      "lifecycle": "active",
+      "players": 2,
+      "connectedPlayers": 0,
+      "ticks": 224,
+      "acceptedInputs": 210,
+      "inputRejections": {
+        "duplicate_sequence": 0,
+        "stale_sequence": 0,
+        "sequence_too_far_ahead": 0,
+        "client_tick_too_far_ahead": 0,
+        "client_tick_too_old": 0,
+        "queue_full": 0
+      },
+      "maximumObservedQueueDepth": 1,
+      "missedSchedulerTicks": 0,
+      "queryMetrics": {
+        "moveCapsuleCalls": 444,
+        "overlapCapsuleCalls": 0,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 444,
+        "shapeCasts": 444,
+        "overlapTests": 1510,
+        "contacts": 13
+      },
+      "transport": {
+        "inboundMessagesReceived": 439,
+        "inboundMessagesRateAccepted": 439,
+        "inboundMessagesRateRejected": 0,
+        "fullSnapshotsSent": 2,
+        "deltaSnapshotsSent": 222,
+        "snapshotAcksAccepted": 227,
+        "snapshotAcksRejected": 0,
+        "snapshotAckTimeoutFallbacks": 0,
+        "snapshotHistoryFallbacks": 0,
+        "reliableEventsRecorded": 2,
+        "reliableEventBatchesSent": 3,
+        "reliableEventResendBatches": 0,
+        "reliableEventAcksAccepted": 227,
+        "reliableEventAcksRejected": 0,
+        "reliableEventHistoryFallbacks": 0,
+        "backpressureEpisodes": 0,
+        "backpressureMessagesCoalesced": 0,
+        "slowConsumerRecoveries": 0,
+        "slowConsumerEvictions": 0,
+        "maximumObservedSocketBufferedBytes": 0
+      }
+    },
+    "abuse": {
+      "serverTick": 0,
+      "lifecycle": "created",
+      "players": 0,
+      "connectedPlayers": 0,
+      "ticks": 0,
+      "acceptedInputs": 0,
+      "inputRejections": {
+        "duplicate_sequence": 0,
+        "stale_sequence": 0,
+        "sequence_too_far_ahead": 0,
+        "client_tick_too_far_ahead": 0,
+        "client_tick_too_old": 0,
+        "queue_full": 0
+      },
+      "maximumObservedQueueDepth": 0,
+      "missedSchedulerTicks": 0,
+      "queryMetrics": {
+        "moveCapsuleCalls": 0,
+        "overlapCapsuleCalls": 0,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 0,
+        "shapeCasts": 0,
+        "overlapTests": 0,
+        "contacts": 0
+      },
+      "transport": {
+        "inboundMessagesReceived": 385,
+        "inboundMessagesRateAccepted": 384,
+        "inboundMessagesRateRejected": 1,
+        "fullSnapshotsSent": 0,
+        "deltaSnapshotsSent": 0,
+        "snapshotAcksAccepted": 0,
+        "snapshotAcksRejected": 0,
+        "snapshotAckTimeoutFallbacks": 0,
+        "snapshotHistoryFallbacks": 0,
+        "reliableEventsRecorded": 0,
+        "reliableEventBatchesSent": 0,
+        "reliableEventResendBatches": 0,
+        "reliableEventAcksAccepted": 0,
+        "reliableEventAcksRejected": 0,
+        "reliableEventHistoryFallbacks": 0,
+        "backpressureEpisodes": 0,
+        "backpressureMessagesCoalesced": 0,
+        "slowConsumerRecoveries": 0,
+        "slowConsumerEvictions": 0,
+        "maximumObservedSocketBufferedBytes": 0
+      }
+    }
+  },
+  "browserLog": [
+    {
+      "at": "2026-07-22T06:24:44.214Z",
+      "kind": "console",
+      "level": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "at": "2026-07-22T06:24:44.324Z",
+      "kind": "console",
+      "level": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "at": "2026-07-22T06:24:45.002Z",
+      "kind": "console",
+      "level": "warning",
+      "text": "THREE.WebGLProgram: Program Info Log: (210,81-129): warning X4122: sum of 0.996094 and -2.98545e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.49272e-017 cannot be represented accurately in double precision\n(209,37-61): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n(210,82-106): warning X4122: sum of 1 and -1.66644e-018 cannot be represented accurately in double precision\n\n\n\u0000"
+    }
+  ],
+  "criticalBrowserLog": [],
+  "aggregateAssertions": {
+    "contractPassed": true,
+    "honestClientPassed": true,
+    "revisedAbuseLimitPassed": true,
+    "noCriticalBrowserErrors": true,
+    "ownedPortsReleased": true
+  },
+  "scopeBoundary": [
+    "This is successor local HTTP/WS evidence against a real local Wrangler Durable Object and a real Chromium WebSocket origin.",
+    "It supersedes only the stale delta/reliable/rate-limit claims from the immutable expanded run; it does not rewrite that run.",
+    "The reliable-event runtime row uses join/leave lifecycle events; combat reliable events remain separately unproved.",
+    "Slow-consumer bufferedAmount saturation, public authentication, production origin/WSS, staging, checkpoint recovery, load/soak, cost, and human acceptance remain open.",
+    "No deployment, publication, commit, reset, clean, or stash was performed.",
+    "G3 remains unaccepted."
+  ],
+  "cleanup": {
+    "vitePort5173Free": true,
+    "authorityPort8787Free": true
+  },
+  "artifactInventory": [
+    {
+      "path": "evidence/2026-07-21/phase-4-g3-transport-v1/runs/local-v8/logs/vite.jsonl",
+      "bytes": 350,
+      "sha256": "5a46c468644ab130ef6d2358fb0ed01a738da2a759f4003ae42f13da27d34ed4"
+    },
+    {
+      "path": "evidence/2026-07-21/phase-4-g3-transport-v1/runs/local-v8/logs/wrangler.jsonl",
+      "bytes": 2968,
+      "sha256": "93130905be1792eaaac61581878f014509ca8c52552aa8451ef610d24bb6db11"
+    }
+  ]
+}

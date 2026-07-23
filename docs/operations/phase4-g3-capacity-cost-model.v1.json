@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "status": "PLANNING_MODEL_NOT_BILLING_EVIDENCE",
+  "capturedAtDate": "2026-07-22",
+  "currency": "USD",
+  "sources": [
+    "https://developers.cloudflare.com/durable-objects/platform/pricing/",
+    "https://developers.cloudflare.com/durable-objects/best-practices/websockets/"
+  ],
+  "pricingInputs": {
+    "includedRequestsPerMonth": 1000000,
+    "requestOverageUsdPerMillion": 0.15,
+    "includedDurationGbSecondsPerMonth": 400000,
+    "durationOverageUsdPerMillionGbSeconds": 12.5,
+    "webSocketIncomingMessagesPerRequestEquivalent": 20,
+    "webSocketOutgoingMessagesChargedAsRequests": false,
+    "durationBillingMemoryIncrementGb": 0.128
+  },
+  "runtimeAssumptions": {
+    "durableObjectsPerRoom": 1,
+    "activeTickHz": 20,
+    "inputMessagesPerSecondPerPlayer": 20,
+    "ackMessagesPerSecondPerPlayer": 10,
+    "activeRoomHibernationDiscountApplied": false
+  },
+  "modeledRoomHourRows": [
+    {
+      "players": 2,
+      "incomingMessagesPerSecond": 60,
+      "incomingMessagesPerRoomHour": 216000,
+      "requestEquivalentsPerRoomHour": 10800,
+      "requestOverageUsdPerRoomHour": 0.00162,
+      "durationGbSecondsPerRoomHour": 460.8,
+      "durationOverageUsdPerRoomHour": 0.00576,
+      "modeledIncrementalTotalUsdPerRoomHour": 0.00738
+    },
+    {
+      "players": 4,
+      "incomingMessagesPerSecond": 120,
+      "incomingMessagesPerRoomHour": 432000,
+      "requestEquivalentsPerRoomHour": 21600,
+      "requestOverageUsdPerRoomHour": 0.00324,
+      "durationGbSecondsPerRoomHour": 460.8,
+      "durationOverageUsdPerRoomHour": 0.00576,
+      "modeledIncrementalTotalUsdPerRoomHour": 0.009
+    },
+    {
+      "players": 8,
+      "incomingMessagesPerSecond": 240,
+      "incomingMessagesPerRoomHour": 864000,
+      "requestEquivalentsPerRoomHour": 43200,
+      "requestOverageUsdPerRoomHour": 0.00648,
+      "durationGbSecondsPerRoomHour": 460.8,
+      "durationOverageUsdPerRoomHour": 0.00576,
+      "modeledIncrementalTotalUsdPerRoomHour": 0.01224
+    }
+  ],
+  "includedActiveRoomHoursAt128MbBeforeOtherDuration": 868.0555555556,
+  "exclusions": [
+    "plan minimums",
+    "non-Durable-Object Worker requests",
+    "storage reads and writes",
+    "logs and analytics",
+    "identity-provider costs",
+    "provider-side CPU, memory, and billed-usage measurement"
+  ],
+  "gateClaim": "G3_NOT_ACCEPTED"
+}

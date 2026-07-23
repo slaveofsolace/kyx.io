@@ -1,0 +1,4 @@
+COMMAND git rev-parse HEAD
+EXIT {"code":0,"signal":null}
+
+81aa1d02acce8e30ba411bb895901d2d2ac6694e

@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "status": "INDEPENDENT_G5_PRODUCT_MAP_SELECTION_VERIFICATION_READY_G5_OPEN",
+  "capturePath": "evidence/2026-07-22/phase-6-g5-product-map-selection/runs/local-v2/capture.json",
+  "checkedAt": "2026-07-22T09:21:07.645Z",
+  "checkCount": 30,
+  "passedCount": 30,
+  "failedCount": 0,
+  "checks": [
+    {
+      "id": "capture_status",
+      "passed": true,
+      "details": "G5_PRODUCT_MAP_SELECTION_EVIDENCE_READY_G5_OPEN"
+    },
+    {
+      "id": "explicit_selection",
+      "passed": true,
+      "details": {
+        "source": "explicit_query",
+        "explicit": true,
+        "reference": "inkfall_foundry@2",
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2
+      }
+    },
+    {
+      "id": "locked_revision",
+      "passed": true,
+      "details": 2
+    },
+    {
+      "id": "default_revision_unchanged",
+      "passed": true,
+      "details": {
+        "mapId": "inkfall_foundry",
+        "mapRevision": 1,
+        "unchanged": true
+      }
+    },
+    {
+      "id": "render_role",
+      "passed": true,
+      "details": "render_only"
+    },
+    {
+      "id": "collision_role",
+      "passed": true,
+      "details": "authority_collision"
+    },
+    {
+      "id": "separate_requests",
+      "passed": true,
+      "details": [
+        "/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+        "/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb"
+      ]
+    },
+    {
+      "id": "render_identity",
+      "passed": true,
+      "details": {
+        "role": "render_only",
+        "path": "revisions/revision-2/export/render.graybox.glb",
+        "bytes": 613564,
+        "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+        "meshNodeCount": 346,
+        "verified": true
+      }
+    },
+    {
+      "id": "collision_identity",
+      "passed": true,
+      "details": {
+        "role": "authority_collision",
+        "path": "revisions/revision-2/export/collision.authority.glb",
+        "bytes": 604228,
+        "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+        "meshNodeCount": 339,
+        "authorityVolumeCount": 2,
+        "totalColliderCount": 341,
+        "fixtureHash": "bf85e42731fd088e",
+        "verified": true
+      }
+    },
+    {
+      "id": "package_digest",
+      "passed": true,
+      "details": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520"
+    },
+    {
+      "id": "practice_not_loaded",
+      "passed": true,
+      "details": {
+        "loadedIntoOfflinePractice": false,
+        "playableFromPreview": false,
+        "shippingDefaultChanged": false,
+        "finalArt": false,
+        "performanceAccepted": false,
+        "g5Passed": false
+      }
+    },
+    {
+      "id": "no_promotion",
+      "passed": true,
+      "details": {
+        "loadedIntoOfflinePractice": false,
+        "playableFromPreview": false,
+        "shippingDefaultChanged": false,
+        "finalArt": false,
+        "performanceAccepted": false,
+        "g5Passed": false
+      }
+    },
+    {
+      "id": "visible_boundary",
+      "passed": true,
+      "details": "G5 and practice boundaries visible"
+    },
+    {
+      "id": "read_only_surface",
+      "passed": true,
+      "details": {
+        "value": {
+          "schemaVersion": 1
+        },
+        "writable": false,
+        "enumerable": false,
+        "configurable": false
+      }
+    },
+    {
+      "id": "canvas_rendered",
+      "passed": true,
+      "details": 206462
+    },
+    {
+      "id": "entry_path",
+      "passed": true,
+      "details": {
+        "href": "?mapPackage=inkfall_foundry%402",
+        "label": "INSPECT LOCKED INKFALL FOUNDRY @2",
+        "errors": []
+      }
+    },
+    {
+      "id": "browser_clean",
+      "passed": true,
+      "details": {
+        "consoleErrors": [],
+        "pageErrors": [],
+        "failedRequests": [],
+        "httpErrors": [],
+        "requestedUrls": [
+          "http://127.0.0.1:4317/?mapPackage=inkfall_foundry%402",
+          "http://127.0.0.1:4317/@vite/client",
+          "http://127.0.0.1:4317/src/style.css",
+          "http://127.0.0.1:4317/src/main.js",
+          "http://127.0.0.1:4317/src/style.css",
+          "http://127.0.0.1:4317/src/config/productConfig.js",
+          "http://127.0.0.1:4317/src/app/lockedGrayboxSelection.ts",
+          "http://127.0.0.1:4317/src/content/maps/index.ts",
+          "http://127.0.0.1:4317/src/content/maps/catalog.ts",
+          "http://127.0.0.1:4317/src/content/maps/loader.ts",
+          "http://127.0.0.1:4317/src/content/maps/schema.ts",
+          "http://127.0.0.1:4317/src/content/maps/validateMapPackage.ts",
+          "http://127.0.0.1:4317/node_modules/vite/dist/client/env.mjs",
+          "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/runtime/map.package.v1.json?import",
+          "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/runtime/map.package.v2.json?import",
+          "http://127.0.0.1:4317/src/app/lockedGrayboxPreviewRoute.ts",
+          "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb?import&url",
+          "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb?import&url",
+          "http://127.0.0.1:4317/src/physics/index.ts",
+          "http://127.0.0.1:4317/src/physics/collisionLayers.ts",
+          "http://127.0.0.1:4317/src/physics/fixtureSchema.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/index.ts",
+          "http://127.0.0.1:4317/src/physics/mapColliderLoader.ts",
+          "http://127.0.0.1:4317/src/physics/rapier/index.ts",
+          "http://127.0.0.1:4317/src/physics/rapier/contracts.ts",
+          "http://127.0.0.1:4317/src/physics/rapier/create.ts",
+          "http://127.0.0.1:4317/src/physics/rapier/runtime.ts",
+          "http://127.0.0.1:4317/src/physics/rapier/world.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/catalog.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/tapeCatalog.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/contactLab.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/flatRun.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/slideLab.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/teleportLab.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/verticalLab.ts",
+          "http://127.0.0.1:4317/node_modules/.vite/deps/@dimforge_rapier3d-deterministic-compat.js?v=d55ac12c",
+          "http://127.0.0.1:4317/src/sim/movement/queryPort.ts",
+          "http://127.0.0.1:4317/src/sim/units.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/primitives.ts",
+          "http://127.0.0.1:4317/src/sim/index.ts",
+          "http://127.0.0.1:4317/src/physics/fixtures/recordedTapeResults.ts",
+          "http://127.0.0.1:4317/src/sim/canonical.ts",
+          "http://127.0.0.1:4317/src/sim/commands.ts",
+          "http://127.0.0.1:4317/src/sim/foundationFixture.ts",
+          "http://127.0.0.1:4317/src/sim/movement/index.ts",
+          "http://127.0.0.1:4317/src/sim/replay.ts",
+          "http://127.0.0.1:4317/src/sim/rng.ts",
+          "http://127.0.0.1:4317/src/sim/state.ts",
+          "http://127.0.0.1:4317/src/sim/step.ts",
+          "http://127.0.0.1:4317/src/sim/tickClock.ts",
+          "http://127.0.0.1:4317/src/sim/movement/canonical.ts",
+          "http://127.0.0.1:4317/src/sim/movement/controller.ts",
+          "http://127.0.0.1:4317/src/sim/movement/events.ts",
+          "http://127.0.0.1:4317/src/sim/movement/fixedMath.ts",
+          "http://127.0.0.1:4317/src/sim/movement/profile.ts",
+          "http://127.0.0.1:4317/src/sim/movement/profileIdentity.ts",
+          "http://127.0.0.1:4317/src/sim/movement/replay.ts",
+          "http://127.0.0.1:4317/src/sim/movement/state.ts",
+          "http://127.0.0.1:4317/src/sim/movement/hash.ts",
+          "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+          "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb"
+        ]
+      }
+    },
+    {
+      "id": "no_external_requests",
+      "passed": true,
+      "details": "http://127.0.0.1:4317"
+    },
+    {
+      "id": "screenshot_hash_lockedGrayboxPreview",
+      "passed": true,
+      "details": {
+        "expected": "6cc7e99a7505da1b5d08e9a14a5f2b27eae483f89cba49e3863ef260b87a7ecc",
+        "actual": "6cc7e99a7505da1b5d08e9a14a5f2b27eae483f89cba49e3863ef260b87a7ecc"
+      }
+    },
+    {
+      "id": "screenshot_hash_productEntrySelection",
+      "passed": true,
+      "details": {
+        "expected": "7a6eef881ccd445d0afc2b144b70821ee511ea6e2cac4d76f4fba24943f12494",
+        "actual": "7a6eef881ccd445d0afc2b144b70821ee511ea6e2cac4d76f4fba24943f12494"
+      }
+    },
+    {
+      "id": "source_hash_src/app/lockedGrayboxSelection.ts",
+      "passed": true,
+      "details": {
+        "expected": "82306ac1030d25a4f66793309916073e177b41d30ef8bb868d99a23335320479",
+        "actual": "82306ac1030d25a4f66793309916073e177b41d30ef8bb868d99a23335320479"
+      }
+    },
+    {
+      "id": "source_hash_src/app/lockedGrayboxPreviewRoute.ts",
+      "passed": true,
+      "details": {
+        "expected": "6e47674df79e6028cb33d28f86af9b169547d1f494de9c3fc92e2a7c8608d588",
+        "actual": "6e47674df79e6028cb33d28f86af9b169547d1f494de9c3fc92e2a7c8608d588"
+      }
+    },
+    {
+      "id": "source_hash_src/content/maps/catalog.ts",
+      "passed": true,
+      "details": {
+        "expected": "b14b68b0c0d93668bc801b83afbf4d45be77404baf17234ca624a1be1f95bc59",
+        "actual": "b14b68b0c0d93668bc801b83afbf4d45be77404baf17234ca624a1be1f95bc59"
+      }
+    },
+    {
+      "id": "source_hash_src/main.js",
+      "passed": true,
+      "details": {
+        "expected": "e886ff0bae9d98358a277b982c63bb40a82d16991b471edf23356b68147e3fbc",
+        "actual": "e886ff0bae9d98358a277b982c63bb40a82d16991b471edf23356b68147e3fbc"
+      }
+    },
+    {
+      "id": "source_hash_index.html",
+      "passed": true,
+      "details": {
+        "expected": "2f1b86bf632dbb817ab09c478e77211e423fce1f708285f356da0354cb271de5",
+        "actual": "2f1b86bf632dbb817ab09c478e77211e423fce1f708285f356da0354cb271de5"
+      }
+    },
+    {
+      "id": "source_hash_src/style.css",
+      "passed": true,
+      "details": {
+        "expected": "d92a9095e766dac9e9c28b552a560a8d6fa711e6e49728715abcf06a693f6c93",
+        "actual": "d92a9095e766dac9e9c28b552a560a8d6fa711e6e49728715abcf06a693f6c93"
+      }
+    },
+    {
+      "id": "source_hash_tests/unit/app/lockedGrayboxSelection.test.ts",
+      "passed": true,
+      "details": {
+        "expected": "2871513caffe4f2ff1e34dab161f2ef52ad539d1c50b893d7fd3b71425ca48c1",
+        "actual": "2871513caffe4f2ff1e34dab161f2ef52ad539d1c50b893d7fd3b71425ca48c1"
+      }
+    },
+    {
+      "id": "source_hash_tests/browser/locked-graybox-preview.spec.ts",
+      "passed": true,
+      "details": {
+        "expected": "2bac8554971f677dc95622f8860e9979e76a9c27bedfadc18c4a14cf713497cc",
+        "actual": "2bac8554971f677dc95622f8860e9979e76a9c27bedfadc18c4a14cf713497cc"
+      }
+    },
+    {
+      "id": "source_hash_tools/evidence/capture-phase6-g5-product-map-selection.mjs",
+      "passed": true,
+      "details": {
+        "expected": "44f7bd1385792e1f1cc878679bddaba12299be31046a36dc6e0888e71e6133f5",
+        "actual": "44f7bd1385792e1f1cc878679bddaba12299be31046a36dc6e0888e71e6133f5"
+      }
+    },
+    {
+      "id": "source_hash_tools/evidence/verify-phase6-g5-product-map-selection.mjs",
+      "passed": true,
+      "details": {
+        "expected": "38d3c0c522a7a54cf318d1c655f04cb2ae0936a70c7f001251abaa0edfebb3c3",
+        "actual": "38d3c0c522a7a54cf318d1c655f04cb2ae0936a70c7f001251abaa0edfebb3c3"
+      }
+    }
+  ],
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "LOCKED_GRAYBOX_NOT_LOADED_INTO_OFFLINE_PRACTICE",
+    "NO_FINAL_ART_ACCEPTANCE",
+    "NO_HUMAN_PLAYTEST_ACCEPTANCE",
+    "NO_PERFORMANCE_ACCEPTANCE",
+    "NO_SHIPPING_OR_DEPLOYMENT_PROMOTION"
+  ]
+}

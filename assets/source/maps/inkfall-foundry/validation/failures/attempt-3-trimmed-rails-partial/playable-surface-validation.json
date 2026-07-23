@@ -1,0 +1,890 @@
+{
+  "artifacts": {
+    "artifactValidation": "validation/graybox-artifact-validation.json",
+    "buildReport": "validation/graybox-build-report.json",
+    "collisionGlb": {
+      "bytes": 625844,
+      "path": "export/collision.authority.glb",
+      "sha256": "e70124e14e4bcae7c6b6326af3ee952fcc95481f2fb145f344e19e891d5d26db"
+    },
+    "renderGlb": {
+      "bytes": 624804,
+      "path": "export/render.graybox.glb",
+      "sha256": "c656af99fe46c4fbfd78e1ce226fadfdf157c413030af511833657f73eee4592"
+    },
+    "sourceBlend": {
+      "bytes": 535725,
+      "path": "source/inkfall_foundry.blend",
+      "sha256": "2c480bb80cff7a2ed844d990068052418bda8f5f74140143a9cc0dac33d02bbe"
+    }
+  },
+  "assertionSummary": {
+    "failed": 1,
+    "passed": 12,
+    "total": 13
+  },
+  "assertions": [
+    {
+      "actual": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "id": "approved_seed_unchanged",
+      "passed": true
+    },
+    {
+      "actual": 2,
+      "id": "generator_v2_playability_candidate",
+      "passed": true
+    },
+    {
+      "id": "artifact_validator_passed",
+      "passed": true,
+      "report": "validation/graybox-artifact-validation.json"
+    },
+    {
+      "collisionSha256": "e70124e14e4bcae7c6b6326af3ee952fcc95481f2fb145f344e19e891d5d26db",
+      "id": "render_and_collision_packages_distinct",
+      "passed": true,
+      "renderSha256": "c656af99fe46c4fbfd78e1ce226fadfdf157c413030af511833657f73eee4592"
+    },
+    {
+      "failures": [],
+      "id": "all_collision_seed_bounded",
+      "passed": true
+    },
+    {
+      "actualLinks": 25,
+      "expectedLinks": 25,
+      "failedLinks": [
+        "west_choice_press",
+        "press_west_core",
+        "press_east_choice",
+        "ink_mid_w_mid_e",
+        "archive_mid_w_mid_e",
+        "press_west_ink",
+        "press_east_archive",
+        "ink_mid_w_teleport_entry",
+        "teleport_exit_press_core",
+        "archive_mid_w_drop"
+      ],
+      "id": "every_physical_seed_link_capsule_sweep_passed",
+      "passed": false
+    },
+    {
+      "id": "capsule_sweep_sample_density",
+      "passed": true,
+      "sampleSpacingMm": 250,
+      "totalSamples": 1451
+    },
+    {
+      "crouchedHits": [],
+      "id": "slide_gate_capsule_contract",
+      "measuredClearHeightMm": 1350.000024,
+      "measuredClearWidthMm": 1399.953914,
+      "passed": true,
+      "standingHits": [
+        "C_MODULE__INK_SLIDE_GATE_ROOF"
+      ]
+    },
+    {
+      "failedSpawns": [],
+      "id": "all_spawn_candidates_supported_clear_and_seed_bounded",
+      "passed": true
+    },
+    {
+      "boundaryMarkers": 8,
+      "id": "teleport_boundary_nonphysical_and_legible",
+      "passed": true,
+      "physicalConnectors": []
+    },
+    {
+      "id": "paper_drop_intentional_fall_not_accidental_ramp",
+      "passed": true,
+      "physicalDropConnectors": [],
+      "shoulderGuards": 2
+    },
+    {
+      "failedFeatures": [],
+      "id": "explicit_jump_gap_geometry_valid",
+      "passed": true
+    },
+    {
+      "frameIds": [
+        "EAST_ARCHIVE_ENTRY",
+        "EAST_INK_ENTRY",
+        "EAST_SPAWN_MAIN",
+        "WEST_ARCHIVE_ENTRY",
+        "WEST_INK_ENTRY",
+        "WEST_SPAWN_MAIN"
+      ],
+      "id": "six_authored_transition_frames",
+      "parts": 18,
+      "passed": true
+    }
+  ],
+  "capsule": {
+    "contactSkinMm": 20,
+    "crouchedHeightMm": 1100,
+    "method": "dense upright capsule medial-axis spheres against oriented boxes",
+    "radiusMm": 350,
+    "sampleSpacingMm": 250,
+    "standingHeightMm": 1800,
+    "totalCompletedSamples": 1451
+  },
+  "edgeClassification": {
+    "futureTriggerVolumes": "P6.3_NOT_CLAIMED",
+    "guardedRouteRailObjects": 118,
+    "intentionalDropSeams": 1,
+    "intentionalJumpGaps": 2,
+    "killBoundaryGuardObjects": 4,
+    "nonphysicalTeleportConnectors": 1
+  },
+  "interpretation": "PASS proves the saved P6.2 Blender graybox and separate collider export are seed-identical, seed-bounded, capsule-continuous across all 25 physical links, clear at all 12 spawn candidates, and explicit about guarded versus intentional fall edges. It does not prove runtime loading, engine collision, spawn LOS/scoring, telemetry, 2/4/8-player fun/readability, performance, or G5.",
+  "jumpGaps": [
+    {
+      "actualGapMm": 4199.667926,
+      "bridgeObjects": [],
+      "edgePolicy": "intentional_jump_gap",
+      "featureId": "press_gap_west",
+      "maximumBallisticHorizontalDistanceMm": 8000,
+      "passed": true,
+      "sideGuards": 4,
+      "targetGapMm": 4200
+    },
+    {
+      "actualGapMm": 5200.423333,
+      "bridgeObjects": [],
+      "edgePolicy": "intentional_jump_gap",
+      "featureId": "archive_gap_east",
+      "maximumBallisticHorizontalDistanceMm": 8000,
+      "passed": true,
+      "sideGuards": 4,
+      "targetGapMm": 5200
+    }
+  ],
+  "physicalLinkSweeps": [
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "spawn",
+      "linkId": "west_spawn_choice",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 48,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 48
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "spawn",
+      "linkId": "east_choice_spawn",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 48,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 48
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__PRESS_GAP_WEST__TAKEOFF__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 8,
+          "segment": 1,
+          "t": 0.363636
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "west_choice_press",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 27,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 28
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__HALF_COVER_PRESS_W"
+          ],
+          "posture": "standing",
+          "sample": 10,
+          "segment": 1,
+          "t": 0.285714
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "press_west_core",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 54,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 55
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "press_hall",
+      "linkId": "press_core_east",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 90,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 90
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_EAST_ARCHIVE__S00__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 12,
+          "segment": 0,
+          "t": 0.545455
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "press_east_choice",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 31,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 32
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "ink_channel",
+      "linkId": "west_choice_ink",
+      "maximumSlopeDegrees": 11.309932,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": true,
+      "samplesCompleted": 79,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 79
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "ink_channel",
+      "linkId": "ink_west_mid_w",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "passed": true,
+      "samplesCompleted": 64,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 64
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__INK_MID_W_TELEPORT_ENTRY__S00__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 10,
+          "segment": 0,
+          "t": 0.25
+        }
+      ],
+      "family": "ink_channel",
+      "linkId": "ink_mid_w_mid_e",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 44,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 45
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "ink_channel",
+      "linkId": "ink_mid_e_east",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "passed": true,
+      "samplesCompleted": 66,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 66
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "ink_channel",
+      "linkId": "ink_east_choice",
+      "maximumSlopeDegrees": 11.309932,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": true,
+      "samplesCompleted": 79,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 79
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "west_choice_archive",
+      "maximumSlopeDegrees": 21.416714,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 84,
+      "segments": 3,
+      "stairSegments": [
+        {
+          "maximumAllowedRiseMm": 250.0,
+          "minimumAllowedRunMm": 500.0,
+          "passed": true,
+          "riseMm": 250.0,
+          "runMm": 637.377439,
+          "segment": 1,
+          "steps": 8
+        }
+      ],
+      "standingSamples": 84
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "archive_west_mid_w",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 64,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 64
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__ARCHIVE_GAP_EAST__TAKEOFF__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 9,
+          "segment": 0,
+          "t": 0.225
+        },
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__ARCHIVE_GAP_EAST__LANDING__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 19,
+          "segment": 1,
+          "t": 0.575758
+        }
+      ],
+      "family": "archive_walk",
+      "linkId": "archive_mid_w_mid_e",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 28,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 30
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "archive_mid_e_east",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 70,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 70
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "archive_east_choice",
+      "maximumSlopeDegrees": 21.416714,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 84,
+      "segments": 3,
+      "stairSegments": [
+        {
+          "maximumAllowedRiseMm": 250.0,
+          "minimumAllowedRunMm": 500.0,
+          "passed": true,
+          "riseMm": 250.0,
+          "runMm": 637.377439,
+          "segment": 1,
+          "steps": 8
+        }
+      ],
+      "standingSamples": 84
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__PRESS_GAP_WEST__TAKEOFF__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 10,
+          "segment": 0,
+          "t": 0.333333
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "press_west_ink",
+      "maximumSlopeDegrees": 8.478713,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 68,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 69
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "crosslink",
+      "linkId": "press_east_ink",
+      "maximumSlopeDegrees": 10.519735,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": true,
+      "samplesCompleted": 73,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 73
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "crosslink",
+      "linkId": "press_west_archive",
+      "maximumSlopeDegrees": 20.374527,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 76,
+      "segments": 3,
+      "stairSegments": [
+        {
+          "maximumAllowedRiseMm": 250.0,
+          "minimumAllowedRunMm": 500.0,
+          "passed": true,
+          "riseMm": 250.0,
+          "runMm": 673.145601,
+          "segment": 0,
+          "steps": 8
+        }
+      ],
+      "standingSamples": 76
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_EAST_CHOICE__S00__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 12,
+          "segment": 0,
+          "t": 0.387097
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "press_east_archive",
+      "maximumSlopeDegrees": 16.60155,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 70,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 71
+    },
+    {
+      "crouchedSamples": 20,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__INK_MID_W_MID_E__S00__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 12,
+          "segment": 0,
+          "t": 0.5
+        },
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__INK_SLIDE_GATE_ROOF"
+          ],
+          "posture": "standing",
+          "sample": 20,
+          "segment": 1,
+          "t": 0.952381
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "ink_mid_w_teleport_entry",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "passed": false,
+      "samplesCompleted": 32,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 14
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_TELEPORT_BOUNDARY__TELEPORT_EXIT__NE"
+          ],
+          "posture": "standing",
+          "sample": 10,
+          "segment": 0,
+          "t": 0.666667
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "teleport_exit_press_core",
+      "maximumSlopeDegrees": 15.50136,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 26,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 27
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__ARCHIVE_MID_W_MID_E__S00__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 13,
+          "segment": 0,
+          "t": 0.590909
+        }
+      ],
+      "family": "drop",
+      "linkId": "archive_mid_w_drop",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 35,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 36
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "crosslink",
+      "linkId": "press_north_core",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 28,
+      "segments": 1,
+      "stairSegments": [],
+      "standingSamples": 28
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "crosslink",
+      "linkId": "press_core_archive_mid_e",
+      "maximumSlopeDegrees": 19.68573,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 83,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 83
+    }
+  ],
+  "result": "FAIL",
+  "schemaVersion": 1,
+  "scope": {
+    "g5Passed": false,
+    "g6Passed": false,
+    "phase": "P6.2",
+    "playtestRun": false,
+    "runtimeIntegrated": false,
+    "runtimeTraversalProven": false,
+    "status": "PLAYABLE_GRAYBOX_CANDIDATE_FAILED_VALIDATION"
+  },
+  "seed": {
+    "bytes": 52549,
+    "links": 27,
+    "nodes": 19,
+    "path": "inkfall-foundry.layout-seed.v1.json",
+    "physicalLinks": 25,
+    "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "spawnCandidates": 12
+  },
+  "spawnSweeps": [
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_PRESS_A",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_press_a"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_PRESS_B",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_press_b"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_INK",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_ink"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_ARCHIVE",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_archive"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_PRESS_A",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_press_a"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_PRESS_B",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_press_b"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_INK",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_ink"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_ARCHIVE",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_archive"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_INK_W",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_ink_w"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_INK_E",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_ink_e"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_ARCHIVE_W",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_archive_w"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_ARCHIVE_E",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_archive_e"
+    }
+  ],
+  "validator": {
+    "blenderVersion": "5.1.2",
+    "independentOfBuilderImports": true,
+    "script": "validate_inkfall_playability.py",
+    "scriptSha256": "b126659f203deb85df74ec606f4110c82f6e6c900be60af16ba408fd65aad330"
+  }
+}

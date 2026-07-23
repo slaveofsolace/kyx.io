@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T06:10:37.325676+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-B_ATTEMPT_3_FITTED_CONSTRUCTION",
+  "input": {
+    "path": "kyx_vanguard_v6b_fitted_attempt3.blend",
+    "sha256Before": "6c698071aeb4efb958a337102315191f5dbbe7c74035b0e2d1edafdb26f989a5",
+    "sha256After": "6c698071aeb4efb958a337102315191f5dbbe7c74035b0e2d1edafdb26f989a5",
+    "unchanged": true
+  },
+  "characterBounds": {
+    "minimum": [
+      -0.422891,
+      -0.181858,
+      -0.013876
+    ],
+    "maximum": [
+      0.422781,
+      0.115043,
+      1.789036
+    ]
+  },
+  "fullViews": [
+    {
+      "view": "kyx-v6b-v3-fitted-front",
+      "fileName": "kyx-v6b-v3-fitted-front.png",
+      "bytes": 972067,
+      "sha256": "800f88bafe5d85ca335c077bf9ca951bf1930ae0b972aab36a9758859b12d1d4",
+      "cameraLocation": [
+        -5.5e-05,
+        -4.433407,
+        0.925609
+      ],
+      "target": [
+        -5.5e-05,
+        -0.033407,
+        0.905609
+      ],
+      "orthographicScale": 2.073349,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6b-v3-fitted-side",
+      "fileName": "kyx-v6b-v3-fitted-side.png",
+      "bytes": 908092,
+      "sha256": "3e5ffe433ac9ae61970a49b2e19862b45539af5c922188d2bd6aa47ee7f5a042",
+      "cameraLocation": [
+        4.399945,
+        -0.033407,
+        0.925609
+      ],
+      "target": [
+        -5.5e-05,
+        -0.033407,
+        0.905609
+      ],
+      "orthographicScale": 2.073349,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6b-v3-fitted-back",
+      "fileName": "kyx-v6b-v3-fitted-back.png",
+      "bytes": 934561,
+      "sha256": "55ac07c122eec2acd6a0849f220ae738f72a356be8cfaa4a731c07d73d78262b",
+      "cameraLocation": [
+        -5.5e-05,
+        4.366593,
+        0.925609
+      ],
+      "target": [
+        -5.5e-05,
+        -0.033407,
+        0.905609
+      ],
+      "orthographicScale": 2.073349,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6b-v3-fitted-three-quarter",
+      "fileName": "kyx-v6b-v3-fitted-three-quarter.png",
+      "bytes": 1005469,
+      "sha256": "ada501a80a3581e7a34d3e90a6e7c9c75968ee803fd7908e6eb89359888eac35",
+      "cameraLocation": [
+        3.199945,
+        -3.233407,
+        1.125609
+      ],
+      "target": [
+        -5.5e-05,
+        -0.033407,
+        0.905609
+      ],
+      "orthographicScale": 2.073349,
+      "resolution": [
+        900,
+        1100
+      ]
+    }
+  ],
+  "detailViews": [
+    {
+      "view": "kyx-v6b-v3-helmet-chest",
+      "fileName": "kyx-v6b-v3-helmet-chest.png",
+      "bytes": 1074252,
+      "sha256": "51d476d24c844e6e3b04ce8568eca2d0dc2156215094ced08bcef6ededa9ccc0",
+      "cameraLocation": [
+        1.35,
+        -3.12,
+        2.165
+      ],
+      "target": [
+        0.0,
+        -0.02,
+        1.465
+      ],
+      "orthographicScale": 0.7,
+      "resolution": [
+        1000,
+        1000
+      ]
+    },
+    {
+      "view": "kyx-v6b-v3-limb-fit",
+      "fileName": "kyx-v6b-v3-limb-fit.png",
+      "bytes": 1088765,
+      "sha256": "8d807a36777342e9e1c569f156638dbf022ff4d3198fcaee08df456f797f9b2d",
+      "cameraLocation": [
+        1.78,
+        -3.42,
+        1.35
+      ],
+      "target": [
+        0.23,
+        -0.02,
+        0.8
+      ],
+      "orthographicScale": 1.3,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6b-v3-boot-detail",
+      "fileName": "kyx-v6b-v3-boot-detail.png",
+      "bytes": 1000830,
+      "sha256": "6b5c54d50eccdae9bfef8c59d7569e21558ed55b9a387865f671992c90e94761",
+      "cameraLocation": [
+        1.2,
+        -3.06,
+        0.67
+      ],
+      "target": [
+        0.0,
+        -0.06,
+        0.12
+      ],
+      "orthographicScale": 0.46,
+      "resolution": [
+        1100,
+        760
+      ]
+    },
+    {
+      "view": "kyx-v6b-v3-rifle-design",
+      "fileName": "kyx-v6b-v3-rifle-design.png",
+      "bytes": 990285,
+      "sha256": "090c0a4cfcd592b8364af0c0af5fb244160fac279f64fbf9bf5da9e9384d433f",
+      "cameraLocation": [
+        0.36,
+        -4.02,
+        2.3
+      ],
+      "target": [
+        0.18,
+        -0.02,
+        1.15
+      ],
+      "orthographicScale": 1.12,
+      "resolution": [
+        1400,
+        760
+      ]
+    }
+  ],
+  "visualDecision": "PENDING_DIRECT_INSPECTION",
+  "nonClaims": [
+    "These are construction-review renders, not a G6 decision.",
+    "The rifle is deliberately standalone; two-hand and shoulder contact remain open.",
+    "No rig, animation, runtime export, final retopology, UV, texture, LOD, or performance claim is made."
+  ]
+}

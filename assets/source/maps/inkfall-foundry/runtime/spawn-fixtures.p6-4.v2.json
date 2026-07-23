@@ -1,0 +1,515 @@
+{
+  "schemaVersion": 1,
+  "kind": "authority_spawn_fixture_set",
+  "id": "inkfall_foundry_p6_4_r2",
+  "mapId": "inkfall_foundry",
+  "mapRevision": 2,
+  "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+  "fixtureHash": "bf85e42731fd088e",
+  "authorityBoundary": "server_state_and_authority_collision_only",
+  "scenarios": [
+    {
+      "id": "ffa_2_player_occluded",
+      "purpose": "Two-player FFA with the enemy inside the protected west archive pocket.",
+      "expected": {
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "ce3bd1acc10ee6b0"
+      },
+      "input": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "fixtureHash": "bf85e42731fd088e",
+        "mode": "deathmatch",
+        "tick": 1000,
+        "requester": {
+          "id": "requester",
+          "teamId": null,
+          "territory": null
+        },
+        "players": [
+          {
+            "id": "enemy_2_0",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -30500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          }
+        ],
+        "recentDeaths": [],
+        "recentSpawnUses": [],
+        "objectives": []
+      }
+    },
+    {
+      "id": "ffa_4_player_all_enemy_aggregate",
+      "purpose": "Four-player FFA proving all three enemies contribute to every candidate score.",
+      "expected": {
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "2f490c09ee239e75"
+      },
+      "input": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "fixtureHash": "bf85e42731fd088e",
+        "mode": "deathmatch",
+        "tick": 1000,
+        "requester": {
+          "id": "requester",
+          "teamId": null,
+          "territory": null
+        },
+        "players": [
+          {
+            "id": "enemy_4_west_archive",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -30500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_4_east_archive",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": 30500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": -32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_4_west_press",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": -3500
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          }
+        ],
+        "recentDeaths": [],
+        "recentSpawnUses": [],
+        "objectives": []
+      }
+    },
+    {
+      "id": "ffa_8_player_safe_pockets",
+      "purpose": "Eight-player FFA occupancy arrangement using both protected gallery pockets.",
+      "expected": {
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "4882737c21f26463"
+      },
+      "input": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "fixtureHash": "bf85e42731fd088e",
+        "mode": "deathmatch",
+        "tick": 1000,
+        "requester": {
+          "id": "requester",
+          "teamId": null,
+          "territory": null
+        },
+        "players": [
+          {
+            "id": "enemy_8_0",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -30500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_8_1",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": 30500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": -32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_8_2",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -31500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_8_3",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": 31500,
+              "y": 0,
+              "z": 7000
+            },
+            "aimDirectionQ15": {
+              "x": -32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_8_4",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -30500,
+              "y": 0,
+              "z": 8000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_8_5",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": 30500,
+              "y": 0,
+              "z": 8000
+            },
+            "aimDirectionQ15": {
+              "x": -32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_8_6",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -31500,
+              "y": 0,
+              "z": 8000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          }
+        ],
+        "recentDeaths": [],
+        "recentSpawnUses": [],
+        "objectives": []
+      }
+    },
+    {
+      "id": "tdm_4_player_team_cluster",
+      "purpose": "West-territory TDM with a three-player friendly cluster blocking one candidate.",
+      "expected": {
+        "status": "selected",
+        "selectedSpawnId": "spawn_w_archive",
+        "decisionHash": "ab01b8a2f7b11ac2"
+      },
+      "input": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "fixtureHash": "bf85e42731fd088e",
+        "mode": "team_deathmatch",
+        "tick": 1000,
+        "requester": {
+          "id": "requester",
+          "teamId": "red",
+          "territory": "west"
+        },
+        "players": [
+          {
+            "id": "teammate_a",
+            "teamId": "red",
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": -3500
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "teammate_b",
+            "teamId": "red",
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": -3000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "teammate_c",
+            "teamId": "red",
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": -4000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          }
+        ],
+        "recentDeaths": [],
+        "recentSpawnUses": [],
+        "objectives": []
+      }
+    },
+    {
+      "id": "ffa_visual_score_pressure",
+      "purpose": "Dev-only P6.4 visualization fixture with LOS, aim, travel, history, use, and objective components.",
+      "expected": {
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "0898506a3bdc65fb"
+      },
+      "input": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "fixtureHash": "bf85e42731fd088e",
+        "mode": "deathmatch",
+        "tick": 1000,
+        "requester": {
+          "id": "requester",
+          "teamId": null,
+          "territory": null
+        },
+        "players": [
+          {
+            "id": "enemy_visual",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": -3500
+            },
+            "aimDirectionQ15": {
+              "x": 30244,
+              "y": 2999,
+              "z": 12247
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": [
+              {
+                "spawnId": "spawn_dm_archive_e",
+                "milliseconds": 100
+              }
+            ]
+          }
+        ],
+        "recentDeaths": [
+          {
+            "playerId": "requester",
+            "feetPositionMm": {
+              "x": 27000,
+              "y": 6000,
+              "z": 21000
+            },
+            "tick": 990
+          }
+        ],
+        "recentSpawnUses": [
+          {
+            "spawnId": "spawn_dm_archive_e",
+            "tick": 995
+          }
+        ],
+        "objectives": [
+          {
+            "id": "reactor_objective",
+            "feetPositionMm": {
+              "x": 27000,
+              "y": 6000,
+              "z": 21000
+            },
+            "controllingTeamId": null,
+            "pressurePermille": 1000
+          }
+        ]
+      }
+    },
+    {
+      "id": "ffa_no_safe_spawn",
+      "purpose": "All four FFA candidates are authority-occupied and directly exposed.",
+      "expected": {
+        "status": "no_safe_spawn",
+        "selectedSpawnId": null,
+        "decisionHash": "31ecf34c976ffe14"
+      },
+      "input": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "fixtureHash": "bf85e42731fd088e",
+        "mode": "deathmatch",
+        "tick": 1000,
+        "requester": {
+          "id": "requester",
+          "teamId": null,
+          "territory": null
+        },
+        "players": [
+          {
+            "id": "enemy_archive_e",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": 27000,
+              "y": 6000,
+              "z": 21000
+            },
+            "aimDirectionQ15": {
+              "x": -32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_archive_w",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -27000,
+              "y": 6000,
+              "z": 22000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_ink_e",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": 27000,
+              "y": -3000,
+              "z": -21000
+            },
+            "aimDirectionQ15": {
+              "x": -32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          },
+          {
+            "id": "enemy_ink_w",
+            "teamId": null,
+            "feetPositionMm": {
+              "x": -27000,
+              "y": -3000,
+              "z": -22000
+            },
+            "aimDirectionQ15": {
+              "x": 32767,
+              "y": 0,
+              "z": 0
+            },
+            "aimSampleTick": 1000,
+            "authorityArrivalEstimates": []
+          }
+        ],
+        "recentDeaths": [],
+        "recentSpawnUses": [],
+        "objectives": []
+      }
+    }
+  ],
+  "nonClaims": [
+    "P6.5_NOT_CLAIMED",
+    "P6.6_NOT_CLAIMED",
+    "G5_NOT_PASSED"
+  ]
+}
+

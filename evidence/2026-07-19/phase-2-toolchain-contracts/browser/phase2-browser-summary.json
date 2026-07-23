@@ -1,0 +1,946 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-20T05:06:29.263Z",
+  "baseUrl": "http://127.0.0.1:4176",
+  "viewport": {
+    "width": 1600,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "expectedReplay": {
+    "profile": "authority_20hz",
+    "tickDurationMs": 50,
+    "finalTick": 6,
+    "finalStateHash": "d7201dfc006e72ee",
+    "entityCount": 2,
+    "eventCount": 6
+  },
+  "checks": [
+    {
+      "id": "route.profile",
+      "passed": true,
+      "details": {
+        "actual": "authority_20hz"
+      }
+    },
+    {
+      "id": "route.tick_duration",
+      "passed": true,
+      "details": {
+        "actual": 50
+      }
+    },
+    {
+      "id": "route.final_tick",
+      "passed": true,
+      "details": {
+        "actual": 6
+      }
+    },
+    {
+      "id": "route.final_hash",
+      "passed": true,
+      "details": {
+        "actual": "d7201dfc006e72ee"
+      }
+    },
+    {
+      "id": "route.entity_count",
+      "passed": true,
+      "details": {
+        "actual": 2
+      }
+    },
+    {
+      "id": "route.event_count",
+      "passed": true,
+      "details": {
+        "actual": 6
+      }
+    },
+    {
+      "id": "route.no_canvas",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "route.repeat_hash",
+      "passed": true,
+      "details": {
+        "first": "d7201dfc006e72ee",
+        "second": "d7201dfc006e72ee"
+      }
+    },
+    {
+      "id": "metrics.schema",
+      "passed": true,
+      "details": {
+        "actual": 1
+      }
+    },
+    {
+      "id": "metrics.state",
+      "passed": true,
+      "details": {
+        "actual": "menu"
+      }
+    },
+    {
+      "id": "metrics.render_counters",
+      "passed": true,
+      "details": {
+        "renderRange": {
+          "count": 20,
+          "maxCalls": 838,
+          "maxTriangles": 106272
+        }
+      }
+    },
+    {
+      "id": "metrics.frame_percentiles",
+      "passed": true,
+      "details": {
+        "frameTimes": {
+          "count": 19,
+          "p50Ms": 283.3000000000002,
+          "p95Ms": 866.5999999999999,
+          "p99Ms": 866.5999999999999,
+          "maxMs": 866.5999999999999
+        }
+      }
+    },
+    {
+      "id": "metrics.no_mutable_game_global",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "browser.same_origin",
+      "passed": true,
+      "details": {
+        "origins": [
+          "http://127.0.0.1:4176"
+        ]
+      }
+    },
+    {
+      "id": "browser.no_failed_requests",
+      "passed": true,
+      "details": {
+        "failedRequests": []
+      }
+    },
+    {
+      "id": "browser.no_application_websocket",
+      "passed": true,
+      "details": {
+        "sockets": [
+          "ws://127.0.0.1:4176/?token=iae8m3Z0ar6D",
+          "ws://127.0.0.1:4176/?token=iae8m3Z0ar6D",
+          "ws://127.0.0.1:4176/?token=iae8m3Z0ar6D"
+        ],
+        "applicationSockets": []
+      }
+    },
+    {
+      "id": "browser.no_console_errors",
+      "passed": true,
+      "details": {
+        "consoleErrors": []
+      }
+    },
+    {
+      "id": "browser.no_page_errors",
+      "passed": true,
+      "details": {
+        "pageErrors": []
+      }
+    }
+  ],
+  "failures": [],
+  "network": {
+    "requests": [
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/__test__/determinism"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/@vite/client"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/style.css"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/main.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/style.css"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/Game.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/config/productConfig.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_environments_RoomEnvironment__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_EffectComposer__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_RenderPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_UnrealBloomPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_OutputPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/world/World.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/Player.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/BotManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/InputManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/AudioManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/HUD.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/DamageNumbers.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/Nameplates.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/MainMenu.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/UserAccount.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/GameSettings.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/effects/DeathEffects.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/GameModes.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/skins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/PreviewCharacter.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/ArmorTypes.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/GrenadeSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/Loadout.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/ZombieManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/SurvivalManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/DeathmatchManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/Zombie.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/HumanSoldier.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponModels.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/world/PickupSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three.module-Dhi4sXJn.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/Pass-DDtSGcVB.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/CopyShader-Djd0Zn4R.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/Bot.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/vite/dist/client/env.mjs"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/WeaponThumbnails.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/weaponDefs.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponSkins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/SwordSkins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_geometries_RoundedBoxGeometry__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponTextures.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/dev/deterministicTestRoute.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/foundationFixture.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/commands.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/replay.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/state.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/units.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/canonical.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/step.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/rng.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/__test__/determinism"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/@vite/client"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/style.css"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/main.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/vite/dist/client/env.mjs"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/style.css"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/Game.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/config/productConfig.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_environments_RoomEnvironment__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_EffectComposer__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_RenderPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_UnrealBloomPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_OutputPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/world/World.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/Player.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/BotManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/InputManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/AudioManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/HUD.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/DamageNumbers.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/Nameplates.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/MainMenu.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/UserAccount.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/GameSettings.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/effects/DeathEffects.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/GameModes.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/skins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/PreviewCharacter.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/ArmorTypes.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/GrenadeSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/Loadout.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/ZombieManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/SurvivalManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/DeathmatchManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/Zombie.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/HumanSoldier.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponModels.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/world/PickupSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three.module-Dhi4sXJn.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/CopyShader-Djd0Zn4R.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/Pass-DDtSGcVB.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/Bot.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/weaponDefs.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponSkins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/SwordSkins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/WeaponThumbnails.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_geometries_RoundedBoxGeometry__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponTextures.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/dev/deterministicTestRoute.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/foundationFixture.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/commands.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/replay.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/state.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/units.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/canonical.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/step.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/sim/rng.ts"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/@vite/client"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/style.css"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/main.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/vite/dist/client/env.mjs"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/style.css"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/Game.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/config/productConfig.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_environments_RoomEnvironment__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_EffectComposer__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_RenderPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_UnrealBloomPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_postprocessing_OutputPass__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/world/World.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/Player.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/BotManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/InputManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/AudioManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/HUD.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/DamageNumbers.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/Nameplates.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/MainMenu.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/UserAccount.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/GameSettings.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/effects/DeathEffects.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/GameModes.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/skins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/PreviewCharacter.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/ArmorTypes.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/GrenadeSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/Loadout.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/ZombieManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/SurvivalManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/core/DeathmatchManager.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/Zombie.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/player/HumanSoldier.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponModels.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/world/PickupSystem.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three.module-Dhi4sXJn.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/CopyShader-Djd0Zn4R.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/Pass-DDtSGcVB.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/weaponDefs.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponSkins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/SwordSkins.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/entities/Bot.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/ui/WeaponThumbnails.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/node_modules/.vite/deps/three_addons_geometries_RoundedBoxGeometry__js.js?v=826c803c"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/weapons/WeaponTextures.js"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/soldier.glb"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/player.glb"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/spartan.glb"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/weapons.glb"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/zombie.glb"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4176/src/render/debugMetrics.ts"
+      }
+    ],
+    "failedRequests": [],
+    "webSockets": [
+      "ws://127.0.0.1:4176/?token=iae8m3Z0ar6D",
+      "ws://127.0.0.1:4176/?token=iae8m3Z0ar6D",
+      "ws://127.0.0.1:4176/?token=iae8m3Z0ar6D"
+    ],
+    "console": [
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connecting..."
+      },
+      {
+        "type": "debug",
+        "text": "[vite] connected."
+      },
+      {
+        "type": "warning",
+        "text": "[.WebGL-0x6e0c001c3600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      },
+      {
+        "type": "warning",
+        "text": "[.WebGL-0x6e0c001c3600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      },
+      {
+        "type": "warning",
+        "text": "[.WebGL-0x6e0c001c3600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      },
+      {
+        "type": "warning",
+        "text": "[.WebGL-0x6e0c001c3600]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+      }
+    ],
+    "pageErrors": []
+  },
+  "screenshots": [
+    "screenshots/phase2-determinism-route-1600x900.png",
+    "screenshots/phase2-renderer-metrics-menu-1600x900.png"
+  ],
+  "server": {
+    "exactChildPid": 24808,
+    "exitCode": null,
+    "signalCode": "SIGTERM",
+    "terminated": true
+  },
+  "fatalError": null,
+  "ok": true
+}

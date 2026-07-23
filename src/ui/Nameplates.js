@@ -43,9 +43,18 @@ export class Nameplates {
       if (!el) {
         el = document.createElement('div');
         el.className = 'nameplate';
-        el.innerHTML = '<div class="np-name"></div><div class="np-bar"><div class="np-bar-fg"></div></div>';
-        el._name = el.querySelector('.np-name');
-        el._fg   = el.querySelector('.np-bar-fg');
+
+        const name = document.createElement('div');
+        name.className = 'np-name';
+        const bar = document.createElement('div');
+        bar.className = 'np-bar';
+        const fill = document.createElement('div');
+        fill.className = 'np-bar-fg';
+        bar.appendChild(fill);
+        el.append(name, bar);
+
+        el._name = name;
+        el._fg   = fill;
         el._name.textContent = bot.displayName || 'Enemy';
         this.container.appendChild(el);
         this._labels.set(bot, el);
@@ -67,7 +76,7 @@ export class Nameplates {
   }
 
   clear() {
-    this.container.innerHTML = '';
+    this.container.replaceChildren();
     this._labels.clear();
   }
 }

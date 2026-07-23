@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowJs": true,
+    "checkJs": false,
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "strict": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@content/*": ["./src/content/*"],
+      "@sim/*": ["./src/sim/*"],
+      "@physics/*": ["./src/physics/*"],
+      "@net/*": ["./src/net/*"],
+      "@render/*": ["./src/render/*"],
+      "@ui/*": ["./src/ui/*"],
+      "@audio/*": ["./src/audio/*"],
+      "@platform/*": ["./src/platform/*"]
+    }
+  }
+}

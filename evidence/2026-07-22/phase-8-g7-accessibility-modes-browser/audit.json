@@ -1,0 +1,74 @@
+{
+  "schema": "kyxio.g7.accessibility_modes_browser.v1",
+  "captured_at": "2026-07-22",
+  "classification": "BOUNDED_G7_ACCESSIBILITY_MODE_BROWSER_PASS",
+  "gate_status": "G7_OPEN",
+  "browser": "Codex in-app Chromium",
+  "viewport": [1280, 720],
+  "fix": {
+    "finding": "The reduced-motion universal selector lost to higher-specificity important transition shorthands, leaving settings controls at 120ms.",
+    "change": "Scoped the reduced-motion rules through #app so both the saved preference and OS media preference force 0.001ms animation and transition durations while preserving completion-event lifecycles.",
+    "regression_test": "tests/unit/app/settings/reducedMotionCss.test.ts",
+    "focused_result": "1 file, 2 tests passed"
+  },
+  "cases": {
+    "forced_colors": {
+      "active": true,
+      "overflow": [0, 0],
+      "hud_display": "block",
+      "pause_display": "flex",
+      "visible_redundant_cues": [
+        "PRACTICE PAUSED",
+        "RESUME PRACTICE",
+        "QUIT TO PRACTICE MENU",
+        "HP 100",
+        "NRG 100",
+        "AR-9 ASSAULT 30 / 120",
+        "OFFLINE PRACTICE 7 BOTS",
+        "BOTS DEFEATED 0",
+        "SCORE 0",
+        "F FRAG 2 READY",
+        "Q BLINK READY",
+        "E SMOKE 2 READY"
+      ]
+    },
+    "saved_reduced_high_contrast": {
+      "body": {
+        "highContrast": "true",
+        "reducedMotion": "true",
+        "reducedFlash": "true",
+        "crosshairColor": "cyan"
+      },
+      "overflow": [0, 0],
+      "settings_button_animation_seconds": 0.000001,
+      "settings_button_transition_seconds": 0.000001,
+      "damage_flash_opacity": 0,
+      "damage_flash_transition_seconds": 0.000001,
+      "teleport_flash_opacity": 0,
+      "teleport_flash_transition_seconds": 0.000001,
+      "ability_transition_seconds": 0.000001
+    },
+    "os_reduced_motion": {
+      "media_matches": true,
+      "saved_reduced_motion": false,
+      "overflow": [0, 0],
+      "settings_button_animation_seconds": 0.000001,
+      "settings_button_transition_seconds": 0.000001,
+      "intro_lifecycle_end_state": {
+        "className": "ml-fade hidden",
+        "display": "none",
+        "opacity": 0
+      }
+    }
+  },
+  "screenshots": [
+    {"file":"screenshots/forced-colors-1280x720.png","bytes":59363,"sha256":"317c3e37d3752a77e70752c98ddb6d5b21eef261b643f086e9f3d7ee538cb247"},
+    {"file":"screenshots/saved-reduced-high-contrast-1280x720.png","bytes":56351,"sha256":"d5cd67f135923f2acfa269b005efe950c931f241630e9b2d600376ed12e4c0fa"}
+  ],
+  "limitations": [
+    "Forced-colors and reduced modes were inspected at one viewport only.",
+    "This is automated rendered-state evidence, not screen-reader or human color-vision approval.",
+    "Pointer lock was denied by the embedded browser, so combat-state interaction video remains open.",
+    "G7 remains open."
+  ]
+}

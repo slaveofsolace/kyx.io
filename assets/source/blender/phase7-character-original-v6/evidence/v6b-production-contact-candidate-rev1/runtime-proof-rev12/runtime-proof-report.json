@@ -1,0 +1,141 @@
+{
+  "schema": "kyx-v6b-three-runtime-proof-v1",
+  "capturedAt": "2026-07-22T18:25:42.605Z",
+  "status": "PASS_BOUNDED_V6B_THREE_RUNTIME_PROOF_NOT_G6",
+  "scope": "Actual Rev12 GLB load plus six discrete STEP-held diagnostic clip selections",
+  "harness": {
+    "library": "Playwright",
+    "libraryVersion": "1.61.1",
+    "browser": "Chrome 150.0.7871.129",
+    "viewport": [1600, 1100],
+    "browserPluginAvailable": false,
+    "browserPluginDisposition": "Browser plugin was not exposed in the active tool set; regular Playwright drove installed Chrome.",
+    "route": "http://127.0.0.1:4177/assets/source/blender/phase7-character-original-v6/evidence/v6b-production-contact-candidate-rev1/runtime-proof-rev12/",
+    "navigationStatus": 200
+  },
+  "assetResponse": {
+    "url": "http://127.0.0.1:4177/assets/source/blender/phase7-character-original-v6/model/v6b-production-contact-candidate-rev1/export/kyx-v6b-production-contact-candidate-rev1.runtime-candidate-rev12.glb",
+    "status": 200,
+    "contentType": "application/octet-stream",
+    "contentLength": 18685160,
+    "sha256": "eb767552e6af30025e6514b4d5c8e71fd3ad6ab3d168208c4450ab1dc6b1eb5a"
+  },
+  "runtime": {
+    "loaded": true,
+    "poseSheetReady": true,
+    "animationClips": 6,
+    "glTFChannelsPerClip": 164,
+    "threeTracksPerClip": 169,
+    "threeTrackExpansion": "GLTFLoader expands 8 glTF weight channels across 13 rendered morph meshes; all 156 bone transform channels remain present.",
+    "meshes": 111,
+    "skinnedMeshes": 111,
+    "maxBones": 52,
+    "materials": 111,
+    "morphMeshes": 13,
+    "clipNames": [
+      "V6B_DIAG_BIND_REST_HOLD_NOT_G6",
+      "V6B_DIAG_ACCEPTED_CONTACT_HOLD_NOT_G6",
+      "V6B_DIAG_FIRING_SHOULDER_EXTREME_HOLD_NOT_G6",
+      "V6B_DIAG_TRIGGER_WRIST_DIGIT_EXTREME_HOLD_NOT_G6",
+      "V6B_DIAG_SUPPORT_HAND_EXTREME_HOLD_NOT_G6",
+      "V6B_DIAG_LOCOMOTION_LEG_BEND_HOLD_NOT_G6"
+    ]
+  },
+  "clipSelections": [
+    {
+      "clip": "V6B_DIAG_BIND_REST_HOLD_NOT_G6",
+      "selectedAndActive": true,
+      "screenshot": "pose-01-bind-rest.png",
+      "bytes": 159589,
+      "sha256": "83b851811f5bda3cc3e31039286836f6a8511521ed5a30acb0ecbb55a74569e0"
+    },
+    {
+      "clip": "V6B_DIAG_ACCEPTED_CONTACT_HOLD_NOT_G6",
+      "selectedAndActive": true,
+      "screenshot": "pose-02-accepted-contact.png",
+      "bytes": 146316,
+      "sha256": "acd92581f0d4334d3060f81804722209e832783d783806c60d7f91e9df717a1f"
+    },
+    {
+      "clip": "V6B_DIAG_FIRING_SHOULDER_EXTREME_HOLD_NOT_G6",
+      "selectedAndActive": true,
+      "screenshot": "pose-03-firing-shoulder.png",
+      "bytes": 148367,
+      "sha256": "25bdee93ba5fd327a5619b9aed3d13e7fecada003fe816d50438ec90dfc58212"
+    },
+    {
+      "clip": "V6B_DIAG_TRIGGER_WRIST_DIGIT_EXTREME_HOLD_NOT_G6",
+      "selectedAndActive": true,
+      "screenshot": "pose-04-trigger-wrist-digits.png",
+      "bytes": 152595,
+      "sha256": "6ed7cd00055b4e17d14fe8c4f71c355ee2f293d6759468db72d72ded2243a918"
+    },
+    {
+      "clip": "V6B_DIAG_SUPPORT_HAND_EXTREME_HOLD_NOT_G6",
+      "selectedAndActive": true,
+      "screenshot": "pose-05-support-hand.png",
+      "bytes": 144772,
+      "sha256": "765f3c145cbdc1d7cae99ed94925d99f63c1d3e3c036c928980f447a5c23a39a"
+    },
+    {
+      "clip": "V6B_DIAG_LOCOMOTION_LEG_BEND_HOLD_NOT_G6",
+      "selectedAndActive": true,
+      "screenshot": "pose-06-leg-bend.png",
+      "bytes": 145679,
+      "sha256": "6750b4e1bee2779a5ea304141c0896c89e36e3da9137e833c479860745516a63"
+    }
+  ],
+  "screenshots": {
+    "uniqueClipImages": 6,
+    "hero": {
+      "path": "v6b-rev12-accepted-contact-three.png",
+      "bytes": 156633,
+      "sha256": "01ae69a626f9e8bf34635f12023c568568f76660bc61653239acc0f34202161b"
+    },
+    "sixPoseSheet": {
+      "path": "v6b-rev12-three-runtime-six-pose-sheet.png",
+      "bytes": 771258,
+      "sha256": "cff45b681f059476f52b69aea6c3b3dfa30587447553c93decb698926773185c"
+    },
+    "inPagePoseImages": {
+      "count": 6,
+      "allComplete": true,
+      "naturalSize": [1152, 690]
+    }
+  },
+  "health": {
+    "pageErrors": [],
+    "consoleErrors": [],
+    "httpErrors": [],
+    "consoleWarnings": [
+      "Headless Chrome reported its software-WebGL fallback deprecation warning; the WebGL render completed and this is not a page or runtime error."
+    ]
+  },
+  "assertions": {
+    "routeReturns200": true,
+    "actualRev12GLBReturns200WithExpectedByteLength": true,
+    "actualRev12GLBLoadsWithoutFallback": true,
+    "exactlySixExpectedDiagnosticClipsPresent": true,
+    "eachClipExposes169ThreeTracksFrom164GlTFChannels": true,
+    "allSixButtonsSelectTheCorrespondingAnimationClip": true,
+    "allSixSelectionsProduceDistinctRenderedImages": true,
+    "allSixPoseSheetImagesCompleteAndNonblank": true,
+    "noPageConsoleOrHttpErrors": true
+  },
+  "pageFiles": {
+    "index.html": {
+      "bytes": 9384,
+      "sha256": "c23bed4a5a1087f6547834656e4d01f701036d29b7f2ec2bcc933c0dd6a22daa"
+    },
+    "proof.js": {
+      "bytes": 9453,
+      "sha256": "7f4e47cccfa28f8d922168b119a94e358a8047542251a2284cfddc6168db01c5"
+    }
+  },
+  "nonClaims": [
+    "The six clips are independent held deformation diagnostics, not production gameplay animations.",
+    "No between-pose interpolation is claimed.",
+    "The candidate does not replace public/player.glb.",
+    "G6 and final human visual acceptance remain open."
+  ]
+}

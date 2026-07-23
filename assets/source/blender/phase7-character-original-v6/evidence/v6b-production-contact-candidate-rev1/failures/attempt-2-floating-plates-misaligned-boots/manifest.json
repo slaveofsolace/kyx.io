@@ -1,0 +1,31 @@
+{
+  "schema": "kyx-v6b-production-contact-failed-attempt-manifest-v1",
+  "attempt": 2,
+  "status": "SELF_REJECTED_NOT_V6B_NOT_G6",
+  "files": {
+    "kyx-v6b-production-contact-candidate-rev1-attempt2.blend": {
+      "bytes": 13014467,
+      "sha256": "5b8d69e093974d4fbbb0587c2b57596098fddb61bb0b88f0fdd84cd1b4f29a50"
+    },
+    "author_v6b_production_contact_candidate_rev1.py": {
+      "bytes": 50935,
+      "sha256": "b4ca0338868ac804973c6bbf4b181342cc0e8c0275e08a7eef3428149b0debeb"
+    },
+    "render_v6b_production_contact_candidate_rev1.py": {
+      "bytes": 12698,
+      "sha256": "70e941a4e3d532e1a42d49b230934dfff1f0b54963fea4a6b67f94a9a5afdd5f"
+    },
+    "author-report.json": {
+      "bytes": 10049,
+      "sha256": "766c0ee17c1160dc49c5b2b2324b5ec3c2cd77b4428aeee2e41a5df7a60ee250"
+    },
+    "render-report.json": {
+      "bytes": 10254,
+      "sha256": "c9cb415f164642353bce1b866da4ce608b588a2f8d9fd1fcae8d5e031772875e"
+    },
+    "renders/kyx-v6b-production-contact-candidate-rev1-early-review-board.png": {
+      "bytes": 8293180,
+      "sha256": "59358c6b2c7bf79a97ee0601fa5b37176f355c1d6a86260a7d8ab5a273f550f2"
+    }
+  }
+}

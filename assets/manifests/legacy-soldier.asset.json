@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "assetId": "legacy.soldier",
+  "kind": "character",
+  "releaseEligible": false,
+  "sourceHash": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
+  "sourceHashKind": "runtime_snapshot",
+  "runtime": {
+    "uri": "public/soldier.glb",
+    "hash": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
+    "bytes": 2159764
+  },
+  "budgets": {
+    "triangles": 11376,
+    "primitives": 2,
+    "materials": 2,
+    "nodes": 68,
+    "bones": 49,
+    "clips": 4,
+    "textures": 0,
+    "estimatedTextureBytes": null,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": ["INCOMPLETE_ANIMATION_SET", "UNRESOLVED_PROVENANCE"]
+  },
+  "provenance": {
+    "status": "unresolved",
+    "creator": null,
+    "source": null,
+    "acquiredAt": null,
+    "license": null,
+    "licenseSnapshot": null,
+    "attribution": null,
+    "reviewer": null,
+    "notes": "Temporary rig and animation diagnostic only. Four clips are not the production animation contract."
+  },
+  "disposition": "temporary_diagnostic_only_then_replace"
+}

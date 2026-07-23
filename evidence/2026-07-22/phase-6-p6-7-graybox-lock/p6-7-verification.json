@@ -1,0 +1,408 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_7_GRAYBOX_LOCK_EVIDENCE_VERIFICATION_FAILED",
+  "summaryPath": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/p6-7-summary.json",
+  "hashChecks": [
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/P6_7_GRAYBOX_LOCK_REPORT.md",
+      "expectedSha256": "4c2982ba5eb4bfd28c07f5191462b435e306a76742832cee3327307549e7a593",
+      "actualSha256": "4c2982ba5eb4bfd28c07f5191462b435e306a76742832cee3327307549e7a593",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/runtime/graybox-lock.p6-7.v1.json",
+      "expectedSha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd",
+      "actualSha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+      "expectedSha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+      "actualSha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+      "expectedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "actualSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json",
+      "expectedSha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+      "actualSha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+      "expectedSha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "actualSha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json",
+      "expectedSha256": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+      "actualSha256": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+      "expectedSha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "actualSha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend",
+      "expectedSha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+      "actualSha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "expectedSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "actualSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "expectedSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "actualSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "src/content/maps/catalog.ts",
+      "expectedSha256": "b14b68b0c0d93668bc801b83afbf4d45be77404baf17234ca624a1be1f95bc59",
+      "actualSha256": "b14b68b0c0d93668bc801b83afbf4d45be77404baf17234ca624a1be1f95bc59",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "src/content/maps/index.ts",
+      "expectedSha256": "dc621adcec45a76fd0e5f232b4d0348236784e493657b3933ffe26ab3c59f6ad",
+      "actualSha256": "dc621adcec45a76fd0e5f232b4d0348236784e493657b3933ffe26ab3c59f6ad",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "tests/integration/content/inkfallGrayboxLock.test.ts",
+      "expectedSha256": "b3e8facba7a33f4f3c130031d418e78d14ea82f3bf0c7c5bf2345239dccc0c2b",
+      "actualSha256": "b3e8facba7a33f4f3c130031d418e78d14ea82f3bf0c7c5bf2345239dccc0c2b",
+      "matches": true
+    },
+    {
+      "kind": "source",
+      "path": "tools/evidence/verify-inkfall-p6-7-graybox-lock.mjs",
+      "expectedSha256": "cde3f1b10ba557a484ccd4e8efb1192b91bebf3857a0d99ca888b46d005d7923",
+      "actualSha256": "cde3f1b10ba557a484ccd4e8efb1192b91bebf3857a0d99ca888b46d005d7923",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/P6_7_WORK_LOG.md",
+      "expectedSha256": "4bc25e83832450ff5ce72be064445e272cb95b00cb2245bab8740fd915993c9f",
+      "actualSha256": "4bc25e83832450ff5ce72be064445e272cb95b00cb2245bab8740fd915993c9f",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/validation-results.json",
+      "expectedSha256": "96a12025de9f32877869e04c4e5b768d471b9cda791ab6737ed675d15ae42174",
+      "actualSha256": "96a12025de9f32877869e04c4e5b768d471b9cda791ab6737ed675d15ae42174",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/failures/p6-7-contract-test-attempts.json",
+      "expectedSha256": "e1aaf1e8a66c08c37b5012eb22d19d4a71f7054e7e053ff5d41e3ceb0565f815",
+      "actualSha256": "e1aaf1e8a66c08c37b5012eb22d19d4a71f7054e7e053ff5d41e3ceb0565f815",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/adjacent/p6-2-revision2-lock-rerun.json",
+      "expectedSha256": "f309ce78db7d7aaebe2624f3c125d2c705baa1f7039696bd744f09bf4e7fe514",
+      "actualSha256": "f309ce78db7d7aaebe2624f3c125d2c705baa1f7039696bd744f09bf4e7fe514",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/adjacent/p6-2-revision2-lock-rerun-pass.json",
+      "expectedSha256": "3249d9a66a07aae8a240924c7e9b72df4d7b2a40dd894a521a0ff4e70fbc0f94",
+      "actualSha256": "3249d9a66a07aae8a240924c7e9b72df4d7b2a40dd894a521a0ff4e70fbc0f94",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/adjacent/p6-2-revision1-regression.json",
+      "expectedSha256": "dd8beb2495c8b9784479a1f1453828351e70bc3b09b4ac890f78722a891f7ed6",
+      "actualSha256": "dd8beb2495c8b9784479a1f1453828351e70bc3b09b4ac890f78722a891f7ed6",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/authority-playtest-raw.json",
+      "expectedSha256": "a0b7ff2f57e614afbe6a331d728bfc90a695beca283a80e692e904130ad9f3da",
+      "actualSha256": "a0b7ff2f57e614afbe6a331d728bfc90a695beca283a80e692e904130ad9f3da",
+      "matches": true
+    },
+    {
+      "kind": "evidence",
+      "path": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json",
+      "expectedSha256": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
+      "actualSha256": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
+      "matches": true
+    }
+  ],
+  "sourceSetChecks": [
+    {
+      "role": "topology_seed",
+      "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+      "expectedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "actualSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "matches": true
+    },
+    {
+      "role": "runtime_map_package",
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json",
+      "expectedSha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+      "actualSha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+      "matches": true
+    },
+    {
+      "role": "spawn_fixture",
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+      "expectedSha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "actualSha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "matches": true
+    },
+    {
+      "role": "telemetry_fixture",
+      "path": "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json",
+      "expectedSha256": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+      "actualSha256": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+      "matches": true
+    },
+    {
+      "role": "authority_playtest_tape",
+      "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+      "expectedSha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "actualSha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "matches": true
+    },
+    {
+      "role": "blender_source",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend",
+      "expectedSha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+      "actualSha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+      "matches": true
+    },
+    {
+      "role": "render_graybox",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "expectedSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "actualSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "matches": true
+    },
+    {
+      "role": "authority_collision",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "expectedSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "actualSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "matches": true
+    },
+    {
+      "role": "collision_build_report",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/collision-revision2-build-report.json",
+      "expectedSha256": "6efd11f41046974613ebf022b3bf01cb804983bb1d6de17bc4131c404e95ecc3",
+      "actualSha256": "6efd11f41046974613ebf022b3bf01cb804983bb1d6de17bc4131c404e95ecc3",
+      "matches": true
+    },
+    {
+      "role": "playable_surface_validation",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/playable-surface-validation.revision2.json",
+      "expectedSha256": "00679d36481862d037c9313b6cf06eefb7cf9988ce03c10652ee843b673c5520",
+      "actualSha256": "00679d36481862d037c9313b6cf06eefb7cf9988ce03c10652ee843b673c5520",
+      "matches": true
+    },
+    {
+      "role": "p6_6b_independent_verification",
+      "path": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json",
+      "expectedSha256": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
+      "actualSha256": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
+      "matches": true
+    },
+    {
+      "role": "art_kit_dimension_contract",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+      "expectedSha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+      "actualSha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+      "matches": true
+    }
+  ],
+  "fingerprintChecks": [
+    {
+      "name": "topology",
+      "expectedSha256": "fff6f80ad8ac7ac235faee53668ca573050082ea93debce440478260a65c9716",
+      "actualSha256": "fff6f80ad8ac7ac235faee53668ca573050082ea93debce440478260a65c9716",
+      "matches": true
+    },
+    {
+      "name": "zones",
+      "expectedSha256": "999833874d94349f2ae31af3ecf61ff82f4a1f35602b935ba8f6d097b6e8f8c0",
+      "actualSha256": "999833874d94349f2ae31af3ecf61ff82f4a1f35602b935ba8f6d097b6e8f8c0",
+      "matches": true
+    },
+    {
+      "name": "nodes",
+      "expectedSha256": "437b365e22308ba7381bb1ad6708d889645d3477249c3f4b0dce2cb5e23379a8",
+      "actualSha256": "437b365e22308ba7381bb1ad6708d889645d3477249c3f4b0dce2cb5e23379a8",
+      "matches": true
+    },
+    {
+      "name": "links",
+      "expectedSha256": "47fcf84d6e268b7aebc55647d2df193d13198cd9d2002bd50e313ba5991ff8b4",
+      "actualSha256": "47fcf84d6e268b7aebc55647d2df193d13198cd9d2002bd50e313ba5991ff8b4",
+      "matches": true
+    },
+    {
+      "name": "strongPositions",
+      "expectedSha256": "6244b7a985f3c8cc32725feaa10fe722f950f7c085e52d2c0be976f8c9ea3e64",
+      "actualSha256": "6244b7a985f3c8cc32725feaa10fe722f950f7c085e52d2c0be976f8c9ea3e64",
+      "matches": true
+    },
+    {
+      "name": "runtimeSpawns",
+      "expectedSha256": "01c4fbd42336aad54b457d8b1dd8f1cb85a3669981c38726963cf8d5dbfda994",
+      "actualSha256": "01c4fbd42336aad54b457d8b1dd8f1cb85a3669981c38726963cf8d5dbfda994",
+      "matches": true
+    },
+    {
+      "name": "seedSpawns",
+      "expectedSha256": "6cec3863c2a13cb2a0e28dca91c631e76dc47c59f39cd33ffccc6cf9738bf645",
+      "actualSha256": "6cec3863c2a13cb2a0e28dca91c631e76dc47c59f39cd33ffccc6cf9738bf645",
+      "matches": true
+    },
+    {
+      "name": "routeMetrics",
+      "expectedSha256": "b0e0c8626179551f9411d8cb122f09c11e283a2e6ab008dd621353c34cabd91f",
+      "actualSha256": "b0e0c8626179551f9411d8cb122f09c11e283a2e6ab008dd621353c34cabd91f",
+      "matches": true
+    },
+    {
+      "name": "authorityTapeScenarios",
+      "expectedSha256": "ec0d2e1d8ed673a992dc543c9152d1697ee72f0daa2e3b443af4b617ae98a5f9",
+      "actualSha256": "ec0d2e1d8ed673a992dc543c9152d1697ee72f0daa2e3b443af4b617ae98a5f9",
+      "matches": true
+    },
+    {
+      "name": "movementSizing",
+      "expectedSha256": "7247b65f13d42448e98b2813e3a74df6749967d8d0909e9bcbc58653011aa4ea",
+      "actualSha256": "7247b65f13d42448e98b2813e3a74df6749967d8d0909e9bcbc58653011aa4ea",
+      "matches": true
+    },
+    {
+      "name": "coordinateAndGrid",
+      "expectedSha256": "a7b14012f8c40d0f7e28f738bc6b68b8d1653ef59eb6a9eed5963fb36ab807d3",
+      "actualSha256": "a7b14012f8c40d0f7e28f738bc6b68b8d1653ef59eb6a9eed5963fb36ab807d3",
+      "matches": true
+    },
+    {
+      "name": "seedArtModules",
+      "expectedSha256": "54a6e7c2e58341df13ffe4af4256b14578a1f4d1b26697c18b627201cee0969a",
+      "actualSha256": "54a6e7c2e58341df13ffe4af4256b14578a1f4d1b26697c18b627201cee0969a",
+      "matches": true
+    },
+    {
+      "name": "runtimeFunctionalPackage",
+      "expectedSha256": "646c759de7d0d790af6cb8d3567f7ad1d530b00f6999b0c3652bfed2bbbe8062",
+      "actualSha256": "646c759de7d0d790af6cb8d3567f7ad1d530b00f6999b0c3652bfed2bbbe8062",
+      "matches": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "all summary source and evidence hashes recompute",
+      "passed": true
+    },
+    {
+      "name": "all twelve frozen graybox source hashes recompute",
+      "passed": true
+    },
+    {
+      "name": "all thirteen topology/spawn/route/movement fingerprints recompute",
+      "passed": true
+    },
+    {
+      "name": "revision 2 is promoted only to a non-default graybox lock",
+      "passed": true
+    },
+    {
+      "name": "native map, movement, physics, and artifact identity is exact",
+      "passed": true
+    },
+    {
+      "name": "frozen counts remain 9/19/27/12/12 with 339 solids and two volumes",
+      "passed": true
+    },
+    {
+      "name": "corrected 2/4/8 authority result remains exact and defect-free",
+      "passed": true
+    },
+    {
+      "name": "locked route timing bands remain exact with 3950 ms teleport and 3300 ms drop",
+      "passed": true
+    },
+    {
+      "name": "art-kit contract contains all sixteen required families and thirty-seven unique modules",
+      "passed": true
+    },
+    {
+      "name": "art-kit ramp, stair, door, slide, and seed interfaces remain bounded",
+      "passed": true
+    },
+    {
+      "name": "locked revision-2 and preserved revision-1 Blender sweeps pass",
+      "passed": true
+    },
+    {
+      "name": "the command-contract Blender failure remains preserved and classified",
+      "passed": true
+    },
+    {
+      "name": "focused and adjacent validation is complete",
+      "passed": false
+    },
+    {
+      "name": "summary carries only the P6.7 lock claim",
+      "passed": true
+    },
+    {
+      "name": "human, visual, final-art, performance, product, shipping, and deployment claims stay open",
+      "passed": true
+    }
+  ],
+  "passedChecks": 14,
+  "totalChecks": 15,
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "HUMAN_FUN_OR_READABILITY_NOT_ACCEPTED",
+    "VISUAL_ACCEPTANCE_NOT_PASSED",
+    "FINAL_ART_NOT_COMPLETE",
+    "PERFORMANCE_NOT_ACCEPTED",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+    "DEPLOYMENT_NOT_AUTHORIZED"
+  ]
+}

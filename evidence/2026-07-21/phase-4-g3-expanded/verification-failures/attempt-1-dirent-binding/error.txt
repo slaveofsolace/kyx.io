@@ -1,0 +1,9 @@
+Command: node tools/evidence/verify-phase4-g3-expanded.mjs
+Exit code: 1
+
+TypeError: Cannot read properties of undefined (reading 'Symbol(type)')
+    at isDirectory (node:internal/fs/utils:167:16)
+    at tools/evidence/verify-phase4-g3-expanded.mjs:105:65
+
+Cause: destructuring Dirent.isDirectory detached the method from its Dirent receiver.
+Disposition: preserved verifier failure; it is not evidence of a successful verification.

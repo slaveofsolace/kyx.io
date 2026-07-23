@@ -1,0 +1,1326 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-22T03:22:21.947Z",
+  "input": {
+    "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/runs/reliable-control-split/runtime-matrix.json",
+    "bytes": 718713,
+    "sha256": "33304566248cfde1e8dbe9f2e9c1dfdf50f7fe31b97fdb4079de842032bc01b3"
+  },
+  "status": "INDEPENDENT_FIVE_PROFILE_VERIFICATION_PASS",
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "topChecks": [
+    {
+      "name": "declared five-profile status is pass",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "artifact makes no G3 acceptance decision",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "artifact declares no deployment",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "required profile order is exact",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "exactly five raw profile results exist",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "all aggregate declarations are true",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "forged transform was rejected without mutation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "scope explicitly denies full-matrix or gate completion",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "profiles": [
+    {
+      "profile": "nominal",
+      "passed": true,
+      "checks": [
+        {
+          "name": "declared profile pass",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "all declared assertions true",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same room in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same match in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same simulation identity in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "protocol v2 on both raw peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "raw idle authority tick rate is 17-23 Hz",
+          "passed": true,
+          "detail": 19.893899204244033
+        },
+        {
+          "name": "reported tick rate matches raw worker metrics",
+          "passed": true,
+          "detail": 19.893899204244033
+        },
+        {
+          "name": "raw authority movement before resume",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "reported initial movement matches raw positions",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "raw authority movement after resume",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "reported resumed movement matches raw positions",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "remote samples increased on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "remote interpolation sampled on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved server-owned player identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved match identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume rotated opaque 43-character token without capture",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume began from a full snapshot and reset prediction once",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "authority server ticks never moved backward across captured lifecycle",
+          "passed": true,
+          "detail": [
+            0,
+            0,
+            32,
+            87,
+            94,
+            149
+          ]
+        },
+        {
+          "name": "raw impairment counters equal reported aggregate",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 731,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 0,
+            "maximumDeliveryLatencyMilliseconds": 0,
+            "maximumObservedQueueDepth": 1
+          }
+        },
+        {
+          "name": "profile-specific impairment actually occurred",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 731,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 0,
+            "maximumDeliveryLatencyMilliseconds": 0,
+            "maximumObservedQueueDepth": 1
+          }
+        },
+        {
+          "name": "all impairment queues remained within the hard bound",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "control and bootstrap policy is explicit on both peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "joined/resumed bootstrap full snapshots bypass gameplay impairment",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both final sockets remain joined and open",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both clients are error-free",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "browser critical log is empty",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "reconciliation never reached a 2 m hard-snap bucket",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker queue stayed bounded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker remained live with both peers",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "recomputed": {
+        "rawTickHz": 19.893899204244033,
+        "initialDelta": 7200,
+        "resumedDelta": 7200,
+        "observed": {
+          "deliveredCopies": 731,
+          "droppedPackets": 0,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 0,
+          "maximumDeliveryLatencyMilliseconds": 0,
+          "maximumObservedQueueDepth": 1
+        },
+        "tickOrder": [
+          0,
+          0,
+          32,
+          87,
+          94,
+          149
+        ]
+      }
+    },
+    {
+      "profile": "latency-jitter",
+      "passed": true,
+      "checks": [
+        {
+          "name": "declared profile pass",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "all declared assertions true",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same room in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same match in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same simulation identity in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "protocol v2 on both raw peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "raw idle authority tick rate is 17-23 Hz",
+          "passed": true,
+          "detail": 19.880715705765407
+        },
+        {
+          "name": "reported tick rate matches raw worker metrics",
+          "passed": true,
+          "detail": 19.880715705765407
+        },
+        {
+          "name": "raw authority movement before resume",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "reported initial movement matches raw positions",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "raw authority movement after resume",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "reported resumed movement matches raw positions",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "remote samples increased on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "remote interpolation sampled on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved server-owned player identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved match identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume rotated opaque 43-character token without capture",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume began from a full snapshot and reset prediction once",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "authority server ticks never moved backward across captured lifecycle",
+          "passed": true,
+          "detail": [
+            0,
+            0,
+            32,
+            86,
+            95,
+            148
+          ]
+        },
+        {
+          "name": "raw impairment counters equal reported aggregate",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 725,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 99,
+            "maximumDeliveryLatencyMilliseconds": 130,
+            "maximumObservedQueueDepth": 5
+          }
+        },
+        {
+          "name": "profile-specific impairment actually occurred",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 725,
+            "droppedPackets": 0,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 99,
+            "maximumDeliveryLatencyMilliseconds": 130,
+            "maximumObservedQueueDepth": 5
+          }
+        },
+        {
+          "name": "all impairment queues remained within the hard bound",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "control and bootstrap policy is explicit on both peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "joined/resumed bootstrap full snapshots bypass gameplay impairment",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both final sockets remain joined and open",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both clients are error-free",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "browser critical log is empty",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "reconciliation never reached a 2 m hard-snap bucket",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker queue stayed bounded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker remained live with both peers",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "recomputed": {
+        "rawTickHz": 19.880715705765407,
+        "initialDelta": 6850,
+        "resumedDelta": 7200,
+        "observed": {
+          "deliveredCopies": 725,
+          "droppedPackets": 0,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 99,
+          "maximumDeliveryLatencyMilliseconds": 130,
+          "maximumObservedQueueDepth": 5
+        },
+        "tickOrder": [
+          0,
+          0,
+          32,
+          86,
+          95,
+          148
+        ]
+      }
+    },
+    {
+      "profile": "loss",
+      "passed": true,
+      "checks": [
+        {
+          "name": "declared profile pass",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "all declared assertions true",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same room in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same match in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same simulation identity in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "protocol v2 on both raw peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "raw idle authority tick rate is 17-23 Hz",
+          "passed": true,
+          "detail": 19.880715705765407
+        },
+        {
+          "name": "reported tick rate matches raw worker metrics",
+          "passed": true,
+          "detail": 19.880715705765407
+        },
+        {
+          "name": "raw authority movement before resume",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "reported initial movement matches raw positions",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "raw authority movement after resume",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "reported resumed movement matches raw positions",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "remote samples increased on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "remote interpolation sampled on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved server-owned player identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved match identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume rotated opaque 43-character token without capture",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume began from a full snapshot and reset prediction once",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "authority server ticks never moved backward across captured lifecycle",
+          "passed": true,
+          "detail": [
+            0,
+            0,
+            32,
+            87,
+            95,
+            150
+          ]
+        },
+        {
+          "name": "raw impairment counters equal reported aggregate",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 667,
+            "droppedPackets": 64,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 53,
+            "maximumDeliveryLatencyMilliseconds": 40,
+            "maximumObservedQueueDepth": 2
+          }
+        },
+        {
+          "name": "profile-specific impairment actually occurred",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 667,
+            "droppedPackets": 64,
+            "duplicatedPackets": 0,
+            "reorderImpairedPackets": 0,
+            "reorderedPackets": 53,
+            "maximumDeliveryLatencyMilliseconds": 40,
+            "maximumObservedQueueDepth": 2
+          }
+        },
+        {
+          "name": "all impairment queues remained within the hard bound",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "control and bootstrap policy is explicit on both peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "joined/resumed bootstrap full snapshots bypass gameplay impairment",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both final sockets remain joined and open",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both clients are error-free",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "browser critical log is empty",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "reconciliation never reached a 2 m hard-snap bucket",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker queue stayed bounded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker remained live with both peers",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "recomputed": {
+        "rawTickHz": 19.880715705765407,
+        "initialDelta": 6850,
+        "resumedDelta": 6850,
+        "observed": {
+          "deliveredCopies": 667,
+          "droppedPackets": 64,
+          "duplicatedPackets": 0,
+          "reorderImpairedPackets": 0,
+          "reorderedPackets": 53,
+          "maximumDeliveryLatencyMilliseconds": 40,
+          "maximumObservedQueueDepth": 2
+        },
+        "tickOrder": [
+          0,
+          0,
+          32,
+          87,
+          95,
+          150
+        ]
+      }
+    },
+    {
+      "profile": "reorder-duplicate",
+      "passed": true,
+      "checks": [
+        {
+          "name": "declared profile pass",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "all declared assertions true",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same room in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same match in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same simulation identity in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "protocol v2 on both raw peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "raw idle authority tick rate is 17-23 Hz",
+          "passed": true,
+          "detail": 19.788918205804748
+        },
+        {
+          "name": "reported tick rate matches raw worker metrics",
+          "passed": true,
+          "detail": 19.788918205804748
+        },
+        {
+          "name": "raw authority movement before resume",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "reported initial movement matches raw positions",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "raw authority movement after resume",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "reported resumed movement matches raw positions",
+          "passed": true,
+          "detail": 7200
+        },
+        {
+          "name": "remote samples increased on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "remote interpolation sampled on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved server-owned player identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved match identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume rotated opaque 43-character token without capture",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume began from a full snapshot and reset prediction once",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "authority server ticks never moved backward across captured lifecycle",
+          "passed": true,
+          "detail": [
+            0,
+            0,
+            32,
+            87,
+            95,
+            150
+          ]
+        },
+        {
+          "name": "raw impairment counters equal reported aggregate",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 801,
+            "droppedPackets": 0,
+            "duplicatedPackets": 79,
+            "reorderImpairedPackets": 118,
+            "reorderedPackets": 143,
+            "maximumDeliveryLatencyMilliseconds": 140,
+            "maximumObservedQueueDepth": 7
+          }
+        },
+        {
+          "name": "profile-specific impairment actually occurred",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 801,
+            "droppedPackets": 0,
+            "duplicatedPackets": 79,
+            "reorderImpairedPackets": 118,
+            "reorderedPackets": 143,
+            "maximumDeliveryLatencyMilliseconds": 140,
+            "maximumObservedQueueDepth": 7
+          }
+        },
+        {
+          "name": "all impairment queues remained within the hard bound",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "control and bootstrap policy is explicit on both peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "joined/resumed bootstrap full snapshots bypass gameplay impairment",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both final sockets remain joined and open",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both clients are error-free",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "browser critical log is empty",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "reconciliation never reached a 2 m hard-snap bucket",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker queue stayed bounded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker remained live with both peers",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "recomputed": {
+        "rawTickHz": 19.788918205804748,
+        "initialDelta": 6850,
+        "resumedDelta": 7200,
+        "observed": {
+          "deliveredCopies": 801,
+          "droppedPackets": 0,
+          "duplicatedPackets": 79,
+          "reorderImpairedPackets": 118,
+          "reorderedPackets": 143,
+          "maximumDeliveryLatencyMilliseconds": 140,
+          "maximumObservedQueueDepth": 7
+        },
+        "tickOrder": [
+          0,
+          0,
+          32,
+          87,
+          95,
+          150
+        ]
+      }
+    },
+    {
+      "profile": "combined-stress",
+      "passed": true,
+      "checks": [
+        {
+          "name": "declared profile pass",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "all declared assertions true",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same room in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same match in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "same simulation identity in raw joined snapshots",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "protocol v2 on both raw peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "raw idle authority tick rate is 17-23 Hz",
+          "passed": true,
+          "detail": 19.907100199071003
+        },
+        {
+          "name": "reported tick rate matches raw worker metrics",
+          "passed": true,
+          "detail": 19.907100199071003
+        },
+        {
+          "name": "raw authority movement before resume",
+          "passed": true,
+          "detail": 7550
+        },
+        {
+          "name": "reported initial movement matches raw positions",
+          "passed": true,
+          "detail": 7550
+        },
+        {
+          "name": "raw authority movement after resume",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "reported resumed movement matches raw positions",
+          "passed": true,
+          "detail": 6850
+        },
+        {
+          "name": "remote samples increased on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "remote interpolation sampled on witness peer",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved server-owned player identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume preserved match identity",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume rotated opaque 43-character token without capture",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "resume began from a full snapshot and reset prediction once",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "authority server ticks never moved backward across captured lifecycle",
+          "passed": true,
+          "detail": [
+            0,
+            0,
+            32,
+            87,
+            97,
+            150
+          ]
+        },
+        {
+          "name": "raw impairment counters equal reported aggregate",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 719,
+            "droppedPackets": 54,
+            "duplicatedPackets": 52,
+            "reorderImpairedPackets": 110,
+            "reorderedPackets": 182,
+            "maximumDeliveryLatencyMilliseconds": 289,
+            "maximumObservedQueueDepth": 10
+          }
+        },
+        {
+          "name": "profile-specific impairment actually occurred",
+          "passed": true,
+          "detail": {
+            "deliveredCopies": 719,
+            "droppedPackets": 54,
+            "duplicatedPackets": 52,
+            "reorderImpairedPackets": 110,
+            "reorderedPackets": 182,
+            "maximumDeliveryLatencyMilliseconds": 289,
+            "maximumObservedQueueDepth": 10
+          }
+        },
+        {
+          "name": "all impairment queues remained within the hard bound",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "control and bootstrap policy is explicit on both peers",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "joined/resumed bootstrap full snapshots bypass gameplay impairment",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both final sockets remain joined and open",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "both clients are error-free",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "browser critical log is empty",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "reconciliation never reached a 2 m hard-snap bucket",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker queue stayed bounded",
+          "passed": true,
+          "detail": null
+        },
+        {
+          "name": "worker remained live with both peers",
+          "passed": true,
+          "detail": null
+        }
+      ],
+      "recomputed": {
+        "rawTickHz": 19.907100199071003,
+        "initialDelta": 7550,
+        "resumedDelta": 6850,
+        "observed": {
+          "deliveredCopies": 719,
+          "droppedPackets": 54,
+          "duplicatedPackets": 52,
+          "reorderImpairedPackets": 110,
+          "reorderedPackets": 182,
+          "maximumDeliveryLatencyMilliseconds": 289,
+          "maximumObservedQueueDepth": 10
+        },
+        "tickOrder": [
+          0,
+          0,
+          32,
+          87,
+          97,
+          150
+        ]
+      }
+    }
+  ],
+  "preservedFailureArtifacts": {
+    "count": 51,
+    "files": [
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/logs/capture-error.txt",
+        "bytes": 521,
+        "sha256": "acfe194a2e804281cc68fafbd24c7d1f1c09f63663fc4f2478749040b6f95c78"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/logs/vite.jsonl",
+        "bytes": 201,
+        "sha256": "1de77a3f971071e85c84efa2e03fe1f29e32b30e78a817a20679e8f52b92e5bb"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/logs/wrangler.jsonl",
+        "bytes": 4664,
+        "sha256": "644e0f423ad24349f6dfc5ab38f487a465a24bbfcc953baa364ab6b2c12f1295"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/latency-jitter-a-after-resume.png",
+        "bytes": 146035,
+        "sha256": "9c74dd2921d1b5fa6505312883227b6cf8b7d889ca087eecfa9c662d5a990d1e"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/latency-jitter-a-before-resume.png",
+        "bytes": 138773,
+        "sha256": "8a4008bdf7bc51bd999c6c7c0eda2e25204be1414b59b735b6a99fc834919838"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/latency-jitter-b-peer.png",
+        "bytes": 138487,
+        "sha256": "208958ad1534120ae8e7cc6369a55f263681558feed4efb0c1dbe5da8ad43285"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/loss-a-after-resume.png",
+        "bytes": 145714,
+        "sha256": "f03801953335df12edb34e69cd9fa356d93a4f71e98520a4a2444ca0ee351dd8"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/loss-a-before-resume.png",
+        "bytes": 137426,
+        "sha256": "2d2aeb65fdf5733604901ccae0f13d3e743ac9a85c2a49abb080dcf0f8c45ccc"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/loss-b-peer.png",
+        "bytes": 137792,
+        "sha256": "1277c77daf7426f4adcf0c84e43d411f4ad0d41c633641c56d0acb1eb22c4e4b"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/nominal-a-after-resume.png",
+        "bytes": 144916,
+        "sha256": "e8234351ceec019bef3bc076cc0e3d05affcdfe35d96a47f7c8460cf0ac8c1fc"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/nominal-a-before-resume.png",
+        "bytes": 137641,
+        "sha256": "fc11d77fb5f9751c8750178b4071d491d959a36937004b54a28ec07ca40fdf89"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/nominal-b-peer.png",
+        "bytes": 137791,
+        "sha256": "848b61c05c9e0acfe35a9dfab7ae9e96757229d6923aacad6e7b71080e4c914f"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/reorder-duplicate-a-after-resume.png",
+        "bytes": 146708,
+        "sha256": "c69ff3a836eac91a0471aa82a903f439a2253dc90e77fded228f99123a1ec14c"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/reorder-duplicate-a-before-resume.png",
+        "bytes": 136789,
+        "sha256": "86cf433b1414092d8f8ab564084e4f886f3cbedb1f84d6288f39e7edfa804cdb"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-1/screenshots/reorder-duplicate-b-peer.png",
+        "bytes": 137108,
+        "sha256": "598f017f31ee9bba02133db5524cc40d6ffed1f2b5a2ac6702460c67685ccbb5"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/logs/capture-error.txt",
+        "bytes": 526,
+        "sha256": "7d2e926cdf9d2e293984b8baf9607e6502508a6dee5eefaa169f4e8555522196"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/logs/vite.jsonl",
+        "bytes": 201,
+        "sha256": "2bd0b0b3c022a165f2f70eb8190d526328e0a04b51578b1ac7700a94f030d100"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/logs/wrangler.jsonl",
+        "bytes": 5589,
+        "sha256": "f70d5a4e15fc7cc6cafedcd2898db192520af2e7f8c4a74b45a6d365fe9fa69f"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/combined-stress-a-after-resume.png",
+        "bytes": 116706,
+        "sha256": "d42f417bd350bb44e68071b507a1007c3acf3d5e035bdd74c1c164efffc8145c"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/combined-stress-a-before-resume.png",
+        "bytes": 118907,
+        "sha256": "28a72f300466fab922fcae3d168a79e87e5d5763d66639c4301bdd333251d7f6"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/combined-stress-b-peer.png",
+        "bytes": 118732,
+        "sha256": "990ea04981d7d5215d87204dab74673507e3b56fe062a09faa3d233b0e903cea"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/latency-jitter-a-after-resume.png",
+        "bytes": 117542,
+        "sha256": "c1b8f6a3681885894699fc48a3b59788b2a43e04887eae38cb11e97c0db2cada"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/latency-jitter-a-before-resume.png",
+        "bytes": 118013,
+        "sha256": "de7148f2fa42b959fe56f8d226da1ae3ca09b93c44753efb3247da5e74b8e770"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/latency-jitter-b-peer.png",
+        "bytes": 117883,
+        "sha256": "7315e06686da6b36e7cdcf1308f19598be1f44effdc2a42ea89bee9c35baabdb"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/loss-a-after-resume.png",
+        "bytes": 115301,
+        "sha256": "375c6ce419dfbb8361a93c0e00d2029eebdadf77c5a695f484d2fd5567f72efe"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/loss-a-before-resume.png",
+        "bytes": 116695,
+        "sha256": "f9bd77a61cdf819073a3370de76642bae73d108b0afe61a01576fb72604519b1"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/loss-b-peer.png",
+        "bytes": 115011,
+        "sha256": "10e14e7e4360d3a1ea6b3bc706dbe04ce7e8c3978410b09fd18de7f7b8871624"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/nominal-a-after-resume.png",
+        "bytes": 117278,
+        "sha256": "f5963ba796037a077c57aa08ad6911a50877204f4716c94578be7bd1b461b3af"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/nominal-a-before-resume.png",
+        "bytes": 117272,
+        "sha256": "758267467a2dead423468460406feedfdfc9cfe3f0f5dd3ee6f351e9431ce702"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/nominal-b-peer.png",
+        "bytes": 117196,
+        "sha256": "96cbde7b3164d821541ce4163641c4ebaab62f88265f34efd09970fd164c6201"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/reorder-duplicate-a-after-resume.png",
+        "bytes": 118967,
+        "sha256": "15c566792ece70dca19cc90a58f573bef5a63fddd1970746d3f73cb786dec139"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/reorder-duplicate-a-before-resume.png",
+        "bytes": 118916,
+        "sha256": "18ccb851599e2867fa54ae737aa7d448baebb15a71be8cf23d8d12aa43de0051"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-2/screenshots/reorder-duplicate-b-peer.png",
+        "bytes": 118568,
+        "sha256": "5238743665927f026d0c31dd9b296f20221395e15ab4f2a1a4e7a518f6660df1"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/logs/vite.jsonl",
+        "bytes": 201,
+        "sha256": "9203363ef6c153ad6db3abbe22320bc6e62f627b4ff6f8b21ec7f54fe611f57f"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/logs/wrangler.jsonl",
+        "bytes": 5730,
+        "sha256": "445581be835376ef63e49239823c58ee0cdbf8b33a14a865491e682c5f7538aa"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/runtime-matrix.json",
+        "bytes": 721891,
+        "sha256": "b1d6b6fa98d551b82e7cb60803f42a003e19485b7ad96f84f3fd5b648d02dfe9"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/combined-stress-a-after-resume.png",
+        "bytes": 116667,
+        "sha256": "52662b84fb3a855d36816aabf48159442cd0520b768c1c5fa9d20b8a103fe97b"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/combined-stress-a-before-resume.png",
+        "bytes": 118859,
+        "sha256": "da3236e8fef751df95d163dc5a63e3b1ff1a28c3751eaba914b36680290501a9"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/combined-stress-b-peer.png",
+        "bytes": 118903,
+        "sha256": "a43bf82d567980e8963e5ccd7b5fc885390f1b09f2887aa13f85813ab54b465c"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/latency-jitter-a-after-resume.png",
+        "bytes": 118190,
+        "sha256": "6011334626969e6cc95c2733e1d86a5c815027f239aa13b5d10792b050d3e200"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/latency-jitter-a-before-resume.png",
+        "bytes": 116197,
+        "sha256": "f755c420607f10d0b0dc7a95638edc487c73a7442a568c46bd50501575df7925"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/latency-jitter-b-peer.png",
+        "bytes": 115501,
+        "sha256": "98f232a8c97105171032a7e1a07970018ae9fdde98e15d3ec0daa62bf1096709"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/loss-a-after-resume.png",
+        "bytes": 117440,
+        "sha256": "f971f463ed0b843e2bede8c51ed81b06c39c40f4d7692a313815e46d12bb6013"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/loss-a-before-resume.png",
+        "bytes": 117320,
+        "sha256": "677485275e2c19d639a62bb19028e99b99d4ec9f2aae73dfd0b065ec3811a992"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/loss-b-peer.png",
+        "bytes": 117732,
+        "sha256": "eee8af9b45b12e7d64841760c445783ee6c7734086bd0ef4e3eded5ad6453423"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/nominal-a-after-resume.png",
+        "bytes": 116981,
+        "sha256": "1587887f283f961fdb7752d699a2a6e70aab5790b9db4a89322745cc45ac0ac0"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/nominal-a-before-resume.png",
+        "bytes": 117144,
+        "sha256": "06c0495239d2feb2d926f305cee0961be33ae205c353816014752f66d3beaab2"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/nominal-b-peer.png",
+        "bytes": 117486,
+        "sha256": "9b93dbcbe85cfce8b5fcedd4cae5a7e4f59c0725411b817eac93111c19f6ed1b"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/reorder-duplicate-a-after-resume.png",
+        "bytes": 118532,
+        "sha256": "ff0d65cb8be900adb7db3a4b227a2ab1744f8cb893c33d42acb6fcc03341c4dd"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/reorder-duplicate-a-before-resume.png",
+        "bytes": 118806,
+        "sha256": "3edc32085673507cf84af299dba997467b5ac28f4b72d5f2348f5dd585e6cdb0"
+      },
+      {
+        "path": "evidence/2026-07-20/phase-4-g3-authoritative-movement/failures/attempt-3-rate-limit/screenshots/reorder-duplicate-b-peer.png",
+        "bytes": 116416,
+        "sha256": "97fd83cb5e8b17e097c8db85d9a176135cb8069ef63452d9a46066fa16e8edf3"
+      }
+    ]
+  },
+  "boundary": [
+    "This independently recalculates the existing five-profile artifact from raw snapshots and metrics.",
+    "It does not expand the ADR-005 matrix and cannot accept G3.",
+    "Preservation hashes inventory prior failures but do not convert those failures into passing evidence."
+  ]
+}

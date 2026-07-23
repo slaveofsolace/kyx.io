@@ -1,0 +1,147 @@
+{
+  "schema": "kyx.integration-checkpoint.v2",
+  "capturedAt": "2026-07-22T13:47:00Z",
+  "classification": "INTEGRATED_BOUNDED_CHECKPOINT_PASS",
+  "acceptedGates": [
+    "G0",
+    "G1",
+    "G2"
+  ],
+  "openGates": [
+    "G3",
+    "G4",
+    "G5",
+    "G6",
+    "G7",
+    "G8",
+    "G9"
+  ],
+  "boundedResults": {
+    "p5_13": {
+      "status": "PASS",
+      "profile": "p511-inkfall-foundry-revision-2-combat-v1",
+      "activeCheckpointState": "active_checkpointed",
+      "twoClientExactTickEvictionParity": true,
+      "deadPlayerRestored": true,
+      "activeProjectileRestored": true,
+      "reliableOrdinalRestored": true,
+      "corruptAndMapMismatchFail503": true,
+      "rootSourceHashes": "8/8",
+      "rootFocusedNodeTests": "3 files / 18 tests passed",
+      "rootFocusedWorkerTests": "1 file / 5 tests passed",
+      "gateClaims": []
+    },
+    "pressHallV3_3": {
+      "status": "PRESS_HALL_V3_3_ACTUAL_GLTFLOADER_EVIDENCE_VERIFIED_ASSET_ONLY_G5_G8_OPEN",
+      "actualLoaderChecks": "67/67",
+      "assetSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "meshes": 29,
+      "triangles": 188576,
+      "materials": 9,
+      "whiteFallbackMaterials": 0,
+      "rootIndependentVerifier": "67/67 PASS in validated temporary output",
+      "productIntegrated": false,
+      "gateClaims": []
+    },
+    "contactRigRev11b": {
+      "status": "CONTACT_RIG_FOUNDATION_ONLY_ACCEPTED",
+      "rigBones": 52,
+      "poseTargets": 45,
+      "poseFailures": 0,
+      "continuousBodyVertices": 10582,
+      "zeroWeightVertices": 0,
+      "allThirtyDigitBonesWeighted": true,
+      "blendHashVerified": true,
+      "boardHashVerified": true,
+      "v6bAccepted": false,
+      "g6Accepted": false,
+      "gateClaims": []
+    },
+    "g7StrictRuntime": {
+      "status": "BOUNDED_STRICT_G7_RUNTIME_PASS",
+      "combinedBrowserTests": "4 passed / 0 skipped / 0 failed",
+      "pointerLockEscape": {
+        "pointerLockedAfterEscape": false,
+        "pauseVisible": true,
+        "focus": "resume-btn"
+      },
+      "literalBrowserZoom": "OPEN",
+      "humanScreenReader": "OPEN",
+      "gateClaims": []
+    }
+  },
+  "artifacts": [
+    {
+      "path": "evidence/2026-07-22/integration-checkpoint-p512-g7-press-hall/checkpoint.json",
+      "bytes": 3465,
+      "sha256": "4de81c076869dfd6d3f37424b3422839ebb5d19f0c1a67d73edddd4783067a15"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-5-p5-13/runtime-proof.json",
+      "bytes": 1442,
+      "sha256": "f3ac1a1db909c1cfd68d78fccd4a9388dcfdc42deedc4a1a18c852761c7577d2"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-5-p5-13/verification.json",
+      "bytes": 1524,
+      "sha256": "74331aee6bd1a6cfc95ffcfa9be88252ed606513c765f7924400a84265eea1db"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-5-p5-13/source-hashes.json",
+      "bytes": 1345,
+      "sha256": "bf2dbd5ee6530f4b26a9a016895cafa8f6c290933927e56759d492e6a354af27"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb",
+      "bytes": 13301752,
+      "sha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/verification.json",
+      "bytes": 28894,
+      "sha256": "08d61aef3b63ead45e59d4e1851f120dd7acdfc0193f94ee19995c2672ebf4c8"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/blender-vs-actual-loader-four-view-comparison.png",
+      "bytes": 1000156,
+      "sha256": "3669be8c03a1693eca09a07fd1d1e9dbdc606a49606d04098e5eba5d15efae7b"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6-contact-first-rig-rev11b/kyx-v6-contact-first-rig-rev11b.blend",
+      "bytes": 12926508,
+      "sha256": "029ce233dca6ed2119ac0810e07e4392090f0866dde78da04bed390d9a3e0ec0"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/evidence/v6-contact-first-rig-rev11b/renders/kyx-v6-contact-first-rig-rev11b-early-proof-board.png",
+      "bytes": 8339091,
+      "sha256": "5c6f5c3666d328406bc513271f03cd0a78643a32b2b7947fb2e72b668d67462b"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/evidence/v6-contact-first-rig-rev11b/contact-rig-foundation-seal.json",
+      "bytes": 2864,
+      "sha256": "8423751cf9e23e04667e1c295682570894fa9dbdffb631925957388af8f3abdf"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-8-g7-strict-runtime/audit.json",
+      "bytes": 2338,
+      "sha256": "f67acd08d3394f324523e2b215c043bc736d553888fb02be690b8bb4b01e50fd"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-8-g7-pointer-lock-escape/audit.json",
+      "bytes": 1639,
+      "sha256": "7b7e65f544c283c8227bcfc424f924a5605182b215098ed1f697904a628ef8a9"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-8-g7-pointer-lock-escape/screenshots/after-escape-paused.png",
+      "bytes": 281408,
+      "sha256": "9777c5b95b16b46e1a460c6525bbd449d09286dd0e2126510196c6d54d33b93b"
+    }
+  ],
+  "nonClaims": [
+    "NO_G3_THROUGH_G9_GATE_CLOSURE",
+    "PRESS_HALL_V3_3_NOT_YET_PRODUCT_INTEGRATED",
+    "CONTACT_RIG_FOUNDATION_IS_NOT_V6B_OR_G6",
+    "G7_LITERAL_ZOOM_AND_HUMAN_SCREEN_READER_OPEN",
+    "NO_DEPLOY_OR_PUBLISH"
+  ]
+}

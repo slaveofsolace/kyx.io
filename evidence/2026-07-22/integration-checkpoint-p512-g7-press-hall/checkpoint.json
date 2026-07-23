@@ -1,0 +1,56 @@
+{
+  "schema": "kyxio.integration_checkpoint.v1",
+  "captured_at": "2026-07-22",
+  "classification": "INTEGRATED_BOUNDED_CHECKPOINT_PASS",
+  "formal_gates_accepted": ["G0", "G1", "G2"],
+  "formal_gates_open": ["G3", "G4", "G5", "G6", "G7", "G8", "G9"],
+  "checks": {
+    "app_typecheck": "PASS",
+    "worker_typecheck": "PASS",
+    "full_lint": "PASS",
+    "app_test_files": 83,
+    "app_tests": 684,
+    "worker_test_files": 8,
+    "worker_tests": 29,
+    "production_build": "PASS",
+    "worker_dry_run": "PASS",
+    "worker_upload_kib": 2829.83,
+    "worker_gzip_kib": 773.11,
+    "press_hall_chromium_projects": 2,
+    "press_hall_chromium_cases": 4,
+    "press_hall_chromium_passed": 4,
+    "g7_viewport_hud_cases": 12,
+    "g7_viewport_hud_passed": 12,
+    "g7_zoom_equivalent_cases": 3,
+    "g7_zoom_equivalent_passed": 3,
+    "p512_root_reverification": "PASS",
+    "press_hall_root_reverification": "42/42 PASS"
+  },
+  "bounded_decisions": {
+    "p5_12": "BOUNDED_PASS_G4_G5_OPEN",
+    "g7_browser_slices": "BOUNDED_PASS_G7_OPEN",
+    "press_hall_runtime": "BOUNDED_RUNTIME_INTEGRATION_PASS_G5_G8_OPEN",
+    "press_hall_asset": "NOT_G5_READY_MISSING_ENCODED_MATERIAL_COLORS_OR_TEXTURES",
+    "character": "NOT_PRODUCTION_READY_CONTACT_RIG_RECOVERY_ACTIVE"
+  },
+  "open_critical_path": [
+    "P5.13 active-match checkpoint and Durable Object reconstitution",
+    "production-quality full-body contact rig and animation proof",
+    "Press Hall material-correct v3.3 export and actual-loader runtime recapture",
+    "literal browser zoom, screen reader, pointer-lock/focus, organic HUD states, and human readability",
+    "named-machine G8 performance and 30-minute soak",
+    "phases 10-12 content, progression, security, legal, staging, rollback, packaging, and final regression"
+  ],
+  "hashes": [
+    {"file":"src/style.css","bytes":175385,"sha256":"022b3e52248fc86bdf6f63f10f8b642edfde56773f1a480b641151e8b9891991"},
+    {"file":"tests/unit/app/settings/reducedMotionCss.test.ts","bytes":1384,"sha256":"8704a2cf29e722b1b59769c783e67214ff1c9e9d39b3459d9887a71f93a738f1"},
+    {"file":"tests/unit/app/settings/desktopZoomCss.test.ts","bytes":781,"sha256":"2d55d84f33d68888236b6d392577b8750e8d3eb415ce86d03af9610d56d7ba0d"},
+    {"file":"src/app/pressHallInspectionRoute.ts","bytes":39180,"sha256":"f63afd641cb121ca0faf07707e1e05169ccc665acf45265ba2d81e8d580bca1e"},
+    {"file":"evidence/2026-07-22/phase-8-g7-browser-matrix/matrix.json","bytes":4317,"sha256":"30eb8daf1419c2bffe2c6d20547a817a38bd1d91bc2eccb38bf7c0ffec08bab5"},
+    {"file":"evidence/2026-07-22/phase-8-g7-accessibility-modes-browser/audit.json","bytes":2829,"sha256":"004b47c692c20a92e46c99ae651e3a64b5ea182ccee6808670afbf636b585872"},
+    {"file":"evidence/2026-07-22/phase-8-g7-browser-zoom-equivalent/audit.json","bytes":2278,"sha256":"c332777c8e3085f100f21c790531ea1b734e19b45adf33dd63c517363802107b"},
+    {"file":"evidence/2026-07-22/phase-5-p5-12/runtime-v6/p512-two-browser-inkfall-product-client-proof.json","bytes":12986,"sha256":"4d29a8f6b552aeafd255e71f9f839185071f22d0cf5df5cc0bcb841785d4c820"},
+    {"file":"evidence/2026-07-22/phase-5-p5-12/runtime-v6/artifact-manifest.json","bytes":1656,"sha256":"2527de6bbb18bf1786f4f5126ff7f53d5aa5c789d57f72a9273c81dbf9671002"},
+    {"file":"evidence/2026-07-22/phase-9-g8-press-hall-runtime-v3-2/independent-verification-root-audit.json","bytes":35029,"sha256":"1eb25edcb1cd183c10a70378fa865d9d3836c9fff651dcd1b5bfc4f521f64cb1"}
+  ]
+}

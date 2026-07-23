@@ -1,0 +1,121 @@
+{
+  "schema": "kyx-v6c-rev13-three-runtime-visual-audit-v1",
+  "generatedAt": "2026-07-22T19:40:15.037Z",
+  "status": "PASS_BOUNDED_RUNTIME_AND_AGENT_VISUAL_QA_NOT_HUMAN_ACCEPTANCE_NOT_G6",
+  "candidate": {
+    "glb": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/model/v6c-gameplay-rev13/export/kyx-v6c-gameplay-rev13.runtime-candidate.glb",
+      "bytes": 9278844,
+      "sha256": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee"
+    },
+    "blenderAudit": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/evidence/v6c-gameplay-rev13/export-reimport-animation-audit.json",
+      "sha256": "50aa1db688814533d9d325f95d560b84ceb897b6d4c7df05f5f2ab5378de5930",
+      "assertionsPassed": 15,
+      "assertionsFailed": 0
+    }
+  },
+  "runtimeMethod": {
+    "loader": "THREE.GLTFLoader",
+    "mixer": "THREE.AnimationMixer",
+    "browser": "installed Google Chrome headless with ANGLE SwiftShader",
+    "captureIsolation": "one fresh browser context per clip",
+    "viewport": [1600, 1000],
+    "realElapsedPlaybackMillisecondsPerClip": 180,
+    "consoleWarningsOrErrors": 0,
+    "pageErrors": 0,
+    "requestFailures": 0
+  },
+  "loadedAsset": {
+    "clips": 10,
+    "meshes": 109,
+    "skinnedMeshes": 109,
+    "maxBones": 52,
+    "morphMeshes": 0,
+    "tracksPerClip": 156,
+    "fallbackAssetUsed": false
+  },
+  "correctiveRoundTripFix": {
+    "diagnosis": "A stable normal-versus-zero-morph Three.js comparison proved that imported Rev12 corrective targets caused the stretched spike geometry after GLB re-export; the skeleton bind was not the source.",
+    "fix": "Bake the accepted Rev12 frame-1 relative-key mix into each local-space Basis, remove the unsafe runtime morph targets, preserve the live 52-bone armature, then regenerate and fresh-reimport Rev13.",
+    "postFixRuntimeMorphMeshes": 0,
+    "postFixVisibleStretchedGeometry": false
+  },
+  "clips": [
+    {"name": "KYX_V6C_TP_IDLE", "durationSeconds": 2.041667, "tracks": 156, "maxMatrixDelta": 0.019199, "realTimeAdvanceSeconds": 0.0538},
+    {"name": "KYX_V6C_TP_WALK", "durationSeconds": 1.041667, "tracks": 156, "maxMatrixDelta": 0.587481, "realTimeAdvanceSeconds": 0.0518},
+    {"name": "KYX_V6C_TP_RUN", "durationSeconds": 0.791667, "tracks": 156, "maxMatrixDelta": 0.895949, "realTimeAdvanceSeconds": 0.0519},
+    {"name": "KYX_V6C_TP_JUMP_START", "durationSeconds": 0.583333, "tracks": 156, "maxMatrixDelta": 0.390368, "realTimeAdvanceSeconds": 0.0518},
+    {"name": "KYX_V6C_TP_AIRBORNE_LOOP", "durationSeconds": 1.041667, "tracks": 156, "maxMatrixDelta": 0.254696, "realTimeAdvanceSeconds": 0.0519},
+    {"name": "KYX_V6C_TP_LAND", "durationSeconds": 0.666667, "tracks": 156, "maxMatrixDelta": 0.226443, "realTimeAdvanceSeconds": 0.05},
+    {"name": "KYX_V6C_TP_PRIMARY_FIRE", "durationSeconds": 0.5, "tracks": 156, "maxMatrixDelta": 0.612407, "realTimeAdvanceSeconds": 0.05},
+    {"name": "KYX_V6C_TP_RELOAD", "durationSeconds": 2.041667, "tracks": 156, "maxMatrixDelta": 0.799387, "realTimeAdvanceSeconds": 0.0519},
+    {"name": "KYX_V6C_TP_HIT_REACTION_FRONT", "durationSeconds": 0.833333, "tracks": 156, "maxMatrixDelta": 0.079496, "realTimeAdvanceSeconds": 0.052},
+    {"name": "KYX_V6C_TP_DEATH_FRONT", "durationSeconds": 2.5, "tracks": 156, "maxMatrixDelta": 0.716634, "realTimeAdvanceSeconds": 0.05}
+  ],
+  "visualReview": {
+    "reviewer": "Codex agent visual inspection of the accepted ten-clip sheet plus full-resolution run, fire, reload, and death frames",
+    "result": "PASS_BOUNDED_AGENT_VISUAL_QA",
+    "checks": {
+      "allTenNamedGameplayPosesVisible": true,
+      "noLongStretchedGeometrySpikes": true,
+      "noBlankOrLostWebglFrames": true,
+      "characterSilhouettePresent": true,
+      "productionRiflePresent": true,
+      "grossGripOrSupportContactDetachmentOutsideReload": false,
+      "reloadSupportHandExcursionVisibleAndIntentional": true,
+      "deathPoseDistinct": true
+    }
+  },
+  "evidence": {
+    "tenClipSheet": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/evidence/v6c-gameplay-rev13/runtime-proof/v6c-rev13-three-runtime-ten-clip-sheet-accepted.png",
+      "bytes": 280427,
+      "sha256": "a0f25271315468b0a42a72f77350c58c546a30b3d63e73d21380a488a9b8fdab"
+    },
+    "interactiveProofScreenshot": {
+      "path": "C:/AI Projects/Projects/Games/evio/evio-repo/assets/source/blender/phase7-character-original-v6/evidence/v6c-gameplay-rev13/runtime-proof/v6c-rev13-three-runtime-proof-accepted.png",
+      "bytes": 432419,
+      "sha256": "5ccc75380b35d672ab93ae0395735bd5fdeaea66deedfecff31b2764cbf5ed28"
+    },
+    "individualFrames": [
+      {"name": "idle", "file": "accepted-frame-01-idle.png", "sha256": "a90d39581a163528bf16ecf41d6e14c61b151b034e39d4b4b7090f7aa91c7db0"},
+      {"name": "walk", "file": "accepted-frame-02-walk.png", "sha256": "df27698c7030b65df492f9a8fe0bec2354bef1db643d0f06f4951910e287af7e"},
+      {"name": "run", "file": "accepted-frame-03-run.png", "sha256": "e9159b98dd225849506b8d03b2abef3d9db33e93ef28746c483a90ecd4e952b8"},
+      {"name": "jump_start", "file": "accepted-frame-04-jump-start.png", "sha256": "fe46a638c9b619a8a2108ea02f8c67b083e67e11ada4551cb12e119fa5a2a9bf"},
+      {"name": "airborne_loop", "file": "accepted-frame-05-airborne-loop.png", "sha256": "5420cfd6ecb484865adfb893048639dffba5c40659e81350e65af3a5f9bfb4ab"},
+      {"name": "land", "file": "accepted-frame-06-land.png", "sha256": "9ab3d0a9de27485708b85fea4e30d4760d666cabb009f9c86dd05455512edde4"},
+      {"name": "primary_fire", "file": "accepted-frame-07-primary-fire.png", "sha256": "323e5952dd947971246d68d508062d7e4fe49a9af1fb8541c3a044c842ee523f"},
+      {"name": "reload", "file": "accepted-frame-08-reload.png", "sha256": "6140f708d50291e4a596a9be1ce43e4b3714565d474ce55c0cb246f28d63e7ca"},
+      {"name": "hit_reaction", "file": "accepted-frame-09-hit-reaction.png", "sha256": "c25a81f4f02cac12906b1c810c3e49bfa1841f0f2bf9bc000207c9cc6cb0723e"},
+      {"name": "death", "file": "accepted-frame-10-death.png", "sha256": "c94eff922b4d57cafda194a665ba58ad8a5628c36afde2e66d45185007fc77d4"}
+    ]
+  },
+  "assertions": {
+    "exactTenClipSetLoaded": true,
+    "allClipsHave156RuntimeTracks": true,
+    "allClipsHaveNonzeroDurations": true,
+    "allClipsHaveNonzeroSampledBoneMotion": true,
+    "allClipsAdvanceUnderRealElapsedMixerTime": true,
+    "full52BoneRigLoaded": true,
+    "unsafeRuntimeMorphTargetsAbsent": true,
+    "tenFreshScreenshotsCaptured": true,
+    "noBrowserConsolePageOrRequestFailures": true,
+    "acceptedRev12SourceNotModified": true,
+    "candidateRemainsOutsideRuntimeAndPublicPaths": true
+  },
+  "rejectedDiagnosticArtifacts": [
+    "runtime-proof/v6c-rev13-three-runtime-ten-clip-sheet.png",
+    "runtime-proof/failure-diagnostic-idle-stable-swiftshader.png",
+    "runtime-proof/diagnostic-idle-normal-stable.png",
+    "runtime-proof/diagnostic-idle-zero-morph-stable.png"
+  ],
+  "nonClaims": [
+    "Agent visual QA is not human visual acceptance.",
+    "The candidate is non-default, non-release, and not G6.",
+    "It has not been copied to public/ or assets/runtime/.",
+    "First-person arms remain blocked because no clean separable viewmodel asset exists.",
+    "The 297996-triangle, 109-primitive high-detail asset remains over the 45000-triangle, 3-primitive runtime budget and has no LOD set.",
+    "Multiplayer integration and performance remain open."
+  ]
+}

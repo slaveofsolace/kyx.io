@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "assetId": "legacy.spartan",
+  "kind": "character",
+  "releaseEligible": false,
+  "sourceHash": "377d6461d47c4324880832d9bff81d5a4bc8470ad3f2a4412a21c1e892dce43c",
+  "sourceHashKind": "runtime_snapshot",
+  "runtime": {
+    "uri": "public/spartan.glb",
+    "hash": "377d6461d47c4324880832d9bff81d5a4bc8470ad3f2a4412a21c1e892dce43c",
+    "bytes": 256508
+  },
+  "budgets": {
+    "triangles": 8648,
+    "primitives": 5,
+    "materials": 5,
+    "nodes": 1,
+    "bones": 0,
+    "clips": 0,
+    "textures": 0,
+    "estimatedTextureBytes": null,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": ["MISSING_RIG", "PRIMITIVE_BUDGET_EXCEEDED", "UNRESOLVED_PROVENANCE"]
+  },
+  "provenance": {
+    "status": "unresolved",
+    "creator": null,
+    "source": null,
+    "acquiredAt": null,
+    "license": null,
+    "licenseSnapshot": null,
+    "attribution": null,
+    "reviewer": null,
+    "notes": "Legacy unrigged proxy. Style and rights review are unresolved."
+  },
+  "disposition": "audit_then_replace"
+}

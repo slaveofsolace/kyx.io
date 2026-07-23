@@ -1,0 +1,11 @@
+{
+  "host": "127.0.0.1",
+  "port": 5999,
+  "baseUrl": "http://127.0.0.1:5999/",
+  "pid": 26784,
+  "ready": true,
+  "exactChildTerminationRequested": true,
+  "exitCode": null,
+  "signalCode": "SIGTERM",
+  "unreachableAfterStop": true
+}

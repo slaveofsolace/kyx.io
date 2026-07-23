@@ -1,0 +1,17 @@
+P5.11 verification snapshot — 2026-07-22T11:40:18.249Z
+
+PASS  focused P5.11 Worker: 1 file / 3 tests
+PASS  focused P5.10 Rapier and Inkfall: 2 files / 27 tests
+PASS  accepted P5.9 Worker regression: 1 file / 3 tests
+PASS  app TypeScript
+PASS  Worker TypeScript
+PASS  full ESLint
+PASS  Vite production build: 143 modules
+PASS  Node Vitest: 79 files / 668 tests
+PASS  Worker Vitest: 8 files / 29 tests
+PASS  Wrangler deploy --dry-run: 2828.96 KiB / gzip 772.99 KiB
+
+Non-failing observations retained:
+- Vite reports existing large production chunks.
+- Rapier emits its existing deprecated-initialization warning in Node tests.
+- This is a bounded opt-in profile pass, not G4/G5 acceptance.

@@ -1,0 +1,98 @@
+Expanded G3 profile matrix-rtt-0...
+Expanded G3 profile matrix-rtt-50...
+Expanded G3 profile matrix-rtt-100...
+Expanded G3 profile matrix-rtt-200...
+Expanded G3 profile matrix-rtt-350...
+Expanded G3 profile matrix-jitter-15...
+Expanded G3 profile matrix-jitter-50...
+Expanded G3 profile matrix-loss-1...
+Expanded G3 profile matrix-loss-3...
+Expanded G3 profile matrix-loss-8...
+Expanded G3 profile matrix-duplicate-1...
+Expanded G3 profile matrix-duplicate-5...
+Expanded G3 profile matrix-targeted-reorder...
+Expanded G3 profile matrix-outage-recovery...
+Expanded G3 render-rate sweep...
+Expanded G3 lifecycle sweep...
+Expanded G3 real-refresh resume...
+Expanded G3 abuse sweep...
+{
+  "outputDirectory": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-21\\phase-4-g3-expanded\\runs\\expanded-local",
+  "status": "EXPANDED_LOCAL_G3_EVIDENCE_PASS",
+  "profiles": [
+    {
+      "profile": "matrix-rtt-0",
+      "passed": true
+    },
+    {
+      "profile": "matrix-rtt-50",
+      "passed": true
+    },
+    {
+      "profile": "matrix-rtt-100",
+      "passed": true
+    },
+    {
+      "profile": "matrix-rtt-200",
+      "passed": true
+    },
+    {
+      "profile": "matrix-rtt-350",
+      "passed": true
+    },
+    {
+      "profile": "matrix-jitter-15",
+      "passed": true
+    },
+    {
+      "profile": "matrix-jitter-50",
+      "passed": true
+    },
+    {
+      "profile": "matrix-loss-1",
+      "passed": true
+    },
+    {
+      "profile": "matrix-loss-3",
+      "passed": true
+    },
+    {
+      "profile": "matrix-loss-8",
+      "passed": true
+    },
+    {
+      "profile": "matrix-duplicate-1",
+      "passed": true
+    },
+    {
+      "profile": "matrix-duplicate-5",
+      "passed": true
+    },
+    {
+      "profile": "matrix-targeted-reorder",
+      "passed": true
+    },
+    {
+      "profile": "matrix-outage-recovery",
+      "passed": true
+    }
+  ],
+  "renderRates": [
+    {
+      "targetHz": 30,
+      "passed": true
+    },
+    {
+      "targetHz": 60,
+      "passed": true
+    },
+    {
+      "targetHz": 120,
+      "passed": true
+    }
+  ],
+  "lifecyclePassed": true,
+  "refreshResumePassed": true,
+  "abusePassed": true,
+  "aggregatePassed": true
+}

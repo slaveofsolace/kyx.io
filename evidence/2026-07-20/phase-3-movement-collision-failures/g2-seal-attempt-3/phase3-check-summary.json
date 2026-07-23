@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-20T14:21:03.013Z",
+  "artifactScope": "PHASE3_G2_CLEAN_SEAL",
+  "g2Status": "OPEN_AUTOMATED_FAILURE",
+  "humanReviewStatus": "PENDING_HUMAN_REVIEW",
+  "visualApproval": "NOT_PERFORMED_OR_CLAIMED",
+  "evidenceLabel": "HYPOTHESIS",
+  "productStatus": "NON_PRODUCT_FIXTURE_EVIDENCE",
+  "baselineCommit": "81aa1d02acce8e30ba411bb895901d2d2ac6694e",
+  "dirtyWorktreePreserved": true,
+  "initialDirtyEntries": [
+    " M .env.example",
+    " M .github/workflows/deploy-vps.yml",
+    " M CLAUDE.md",
+    " M index.html",
+    " M login.html",
+    " M package-lock.json",
+    " M package.json",
+    " M register.html",
+    " M server/README.md",
+    " M server/index.js",
+    " M server/package.json",
+    " M src/core/DeathmatchManager.js",
+    " M src/core/Game.js",
+    " M src/core/GameModes.js",
+    " M src/core/InputManager.js",
+    " D src/core/NetClient.js",
+    " D src/core/ServerSim.js",
+    " M src/core/UserAccount.js",
+    " M src/entities/Bot.js",
+    " M src/entities/BotManager.js",
+    " M src/loginPage.js",
+    " M src/main.js",
+    " M src/player/Player.js",
+    " M src/registerPage.js",
+    " M src/style.css",
+    " M src/ui/DamageNumbers.js",
+    " M src/ui/HUD.js",
+    " M src/ui/InventoryPanel.js",
+    " M src/ui/MainMenu.js",
+    " M src/ui/MobileControls.js",
+    " M src/ui/Nameplates.js",
+    " M src/world/World.js",
+    "?? .nvmrc",
+    "?? assets/",
+    "?? docs/",
+    "?? eslint.config.mjs",
+    "?? evidence/",
+    "?? playwright.config.js",
+    "?? pnpm-lock.yaml",
+    "?? src/app/",
+    "?? src/config/",
+    "?? src/content/",
+    "?? src/dev/",
+    "?? src/net/",
+    "?? src/physics/",
+    "?? src/render/",
+    "?? src/sim/",
+    "?? tests/",
+    "?? tools/",
+    "?? tsconfig.base.json",
+    "?? tsconfig.json",
+    "?? tsconfig.sim-source.json",
+    "?? tsconfig.sim.json",
+    "?? vitest.config.js"
+  ],
+  "runtime": {
+    "node": "v24.14.0",
+    "platform": "win32",
+    "arch": "x64",
+    "packageManager": "npm@11.18.0 via bundled pnpm dlx",
+    "packageVersions": {
+      "typescript": "5.9.3",
+      "eslint": "10.7.0",
+      "typescriptEslint": "8.64.0",
+      "vitest": "4.1.10",
+      "playwrightTest": "1.61.1",
+      "vite": "^8.0.16",
+      "rapier": "0.19.3"
+    },
+    "browser": {
+      "node": "v24.14.0",
+      "platform": "win32",
+      "arch": "x64",
+      "playwright": "1.61.1",
+      "chromium": "149.0.7827.55",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7827.55 Safari/537.36",
+      "userAgentData": {
+        "brands": [
+          {
+            "brand": "HeadlessChrome",
+            "version": "149"
+          },
+          {
+            "brand": "Chromium",
+            "version": "149"
+          },
+          {
+            "brand": "Not)A;Brand",
+            "version": "24"
+          }
+        ],
+        "mobile": false,
+        "platform": "Windows"
+      }
+    },
+    "viewport": {
+      "width": 1600,
+      "height": 900,
+      "deviceScaleFactor": 1
+    },
+    "baseUrl": "http://127.0.0.1:5999/"
+  },
+  "results": {
+    "cleanInstall": "passed",
+    "aggregateStages": "10/10",
+    "vitest": "323/323",
+    "browserTests": "27 passed, 7 intentionally skipped",
+    "assetRelease": "expected rejection",
+    "productionBoundary": "10 text artifacts, 0 DEV-only signatures",
+    "movementTapes": "18/18",
+    "tuningMetrics": "7/7",
+    "canonicalMovementHash": "66fcaf19c3fd94ad",
+    "movementProfileHash": "8ab4ed437a4393c0",
+    "phase2FoundationHash": "d7201dfc006e72ee",
+    "browserChecks": "67/67",
+    "screenshots": 6,
+    "videos": 1
+  },
+  "assertions": {
+    "baselineHeadPreserved": true,
+    "cleanInstall": true,
+    "whitespace": true,
+    "aggregateStages": true,
+    "vitest": false,
+    "browserMatrix": true,
+    "assetReleaseRejected": true,
+    "productionDevSurfacesExcluded": true,
+    "tapeCapture": true,
+    "tapeCount": true,
+    "tapeRepeatAndRecordedParity": true,
+    "canonicalMovementHash": true,
+    "movementProfileHash": true,
+    "phase2Foundation": true,
+    "tuningMetrics": true,
+    "browserCapture": true,
+    "browserCheckCount": true,
+    "browserScopeTruthful": true,
+    "browserActions": false,
+    "browserNetwork": true,
+    "screenshots": true,
+    "video": true,
+    "artifactHashes": true,
+    "exactServerLifecycle": true
+  },
+  "failedAssertions": [
+    "vitest",
+    "browserActions"
+  ],
+  "artifactChecks": [
+    {
+      "id": "fixture_lab",
+      "path": "screenshots/phase3-fixture-lab.png",
+      "declaredBytes": 308895,
+      "actualBytes": 308895,
+      "declaredSha256": "68e84003b05ada01ee0b38814137f5660e07896adfb56a24d855c03d2b2b6f5d",
+      "actualSha256": "68e84003b05ada01ee0b38814137f5660e07896adfb56a24d855c03d2b2b6f5d",
+      "passed": true
+    },
+    {
+      "id": "driver_ready",
+      "path": "screenshots/phase3-driver-ready.png",
+      "declaredBytes": 334600,
+      "actualBytes": 334600,
+      "declaredSha256": "afb19556d2e88ea208478108ed3a79c4bfc6f470aa1a062c0f130a8460e44857",
+      "actualSha256": "afb19556d2e88ea208478108ed3a79c4bfc6f470aa1a062c0f130a8460e44857",
+      "passed": true
+    },
+    {
+      "id": "driver_run",
+      "path": "screenshots/phase3-driver-run.png",
+      "declaredBytes": 550405,
+      "actualBytes": 550405,
+      "declaredSha256": "bbda8404510daf712f34978646054cf11c84c6e70099c4df2edd72448b134025",
+      "actualSha256": "bbda8404510daf712f34978646054cf11c84c6e70099c4df2edd72448b134025",
+      "passed": true
+    },
+    {
+      "id": "driver_jump",
+      "path": "screenshots/phase3-driver-jump.png",
+      "declaredBytes": 523732,
+      "actualBytes": 523732,
+      "declaredSha256": "c916ad06bc68d7fa6a9b2bd8aee08b414ed4f15304a8c8997ada16ae60626f46",
+      "actualSha256": "c916ad06bc68d7fa6a9b2bd8aee08b414ed4f15304a8c8997ada16ae60626f46",
+      "passed": true
+    },
+    {
+      "id": "driver_slide",
+      "path": "screenshots/phase3-driver-slide.png",
+      "declaredBytes": 502456,
+      "actualBytes": 502456,
+      "declaredSha256": "e696272058e3affb735270b5903fb827254e8282240df327cbba3c1e43980484",
+      "actualSha256": "e696272058e3affb735270b5903fb827254e8282240df327cbba3c1e43980484",
+      "passed": true
+    },
+    {
+      "id": "driver_teleport",
+      "path": "screenshots/phase3-driver-teleport.png",
+      "declaredBytes": 396205,
+      "actualBytes": 396205,
+      "declaredSha256": "f21ed17b9e746c126c9f472902be55541cb297e19a2e9b2f52f2d50e628d0b98",
+      "actualSha256": "f21ed17b9e746c126c9f472902be55541cb297e19a2e9b2f52f2d50e628d0b98",
+      "passed": true
+    },
+    {
+      "id": "phase3_driver_session",
+      "path": "videos/page@f21aff20ed3f143e211cf7553de51da2.webm",
+      "declaredBytes": 2577585,
+      "actualBytes": 2577585,
+      "declaredSha256": "b3826704fbccfc7422ea5b52ebb32eb0cd50d1b56a73c05c348d414b31e3e78c",
+      "actualSha256": "b3826704fbccfc7422ea5b52ebb32eb0cd50d1b56a73c05c348d414b31e3e78c",
+      "passed": true
+    }
+  ],
+  "serverLifecycle": {
+    "host": "127.0.0.1",
+    "port": 5999,
+    "baseUrl": "http://127.0.0.1:5999/",
+    "pid": 2988,
+    "ready": true,
+    "exactChildTerminationRequested": true,
+    "exitCode": null,
+    "signalCode": "SIGTERM",
+    "unreachableAfterStop": true
+  },
+  "knownOpenGates": [
+    "Human visual and playtest review is pending; no visual approval is claimed.",
+    "The movement profile remains HYPOTHESIS and fixture_only until measured playtest acceptance.",
+    "Legacy assets remain release-ineligible pending provenance and external glTF/texture reports.",
+    "Rapier 0.19.3 emits its recorded upstream initialization deprecation warning.",
+    "Authoritative rooms, wire-command adaptation, prediction, reconciliation, and two-client proof are Phase 4 / G3.",
+    "No production deployment was performed or authorized."
+  ],
+  "productionDeploymentPerformed": false,
+  "startedAt": "2026-07-20T14:20:38.294Z",
+  "completedAt": "2026-07-20T14:21:03.013Z",
+  "ok": false
+}

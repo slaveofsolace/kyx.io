@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_5_AUTHORITY_TELEMETRY_AUTOMATED_AND_BROWSER_PASS",
+  "map": {
+    "id": "inkfall_foundry",
+    "revision": 1,
+    "packageDigest": "a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267",
+    "fixtureHash": "2a0a446a0b152395",
+    "authorityColliderCount": 346
+  },
+  "telemetryFixture": {
+    "path": "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v1.json",
+    "sha256": "4fd1d58657a9bb79bf3818a639a0bae527cdbab1571545fa5ee1137152bd3e8c",
+    "bytes": 8347,
+    "eventCount": 18,
+    "eventFamilyCount": 10,
+    "snapshotHash": "264136593a919c7f",
+    "arrangementSamples": {
+      "twoPlayers": 1,
+      "fourPlayers": 1,
+      "eightPlayers": 1,
+      "other": 0
+    }
+  },
+  "contract": {
+    "authorityRateHz": 20,
+    "tickMilliseconds": 50,
+    "heatCellMillimeters": { "x": 4000, "y": 3000, "z": 4000 },
+    "actorIdentity": "ephemeral_match_slot_0_through_63",
+    "exactPositionsRetained": false,
+    "clientOutcomeAuthorityAccepted": false,
+    "retainedEventCapacityDefault": 256,
+    "retainedEventCapacityMaximum": 4096,
+    "maximumBatchEvents": 64
+  },
+  "automatedProof": {
+    "focusedIntegration": { "filesPassed": 1, "filesTotal": 1, "testsPassed": 9, "testsTotal": 9 },
+    "authorityRegression": { "filesPassed": 8, "filesTotal": 8, "testsPassed": 60, "testsTotal": 60 },
+    "mainRegression": { "filesPassed": 48, "filesTotal": 48, "testsPassed": 482, "testsTotal": 482 },
+    "typescript": {
+      "app": "PASS",
+      "worker": "PASS",
+      "simulationSource": "PASS",
+      "simulation": "PASS"
+    },
+    "workerRegression": { "filesPassed": 3, "filesTotal": 3, "testsPassed": 8, "testsTotal": 8 },
+    "eslint": { "status": "PASS", "files": 188 },
+    "explicitProductionBuild": {
+      "status": "PASS",
+      "gameChunkBytes": 937896,
+      "developmentMapRoutePathPresent": false,
+      "developmentEvidenceSurfacePresent": false,
+      "telemetryFixtureHashPresent": false
+    }
+  },
+  "browserEvidence": {
+    "status": "P6_5_AUTHORITY_TELEMETRY_BROWSER_PASS",
+    "browser": "Chromium 149.0.7827.55",
+    "viewport": { "width": 1600, "height": 1200 },
+    "screenshot": {
+      "path": "evidence/2026-07-21/phase-6-p6-5-authority-telemetry/inkfall-authority-telemetry.png",
+      "bytes": 240561,
+      "sha256": "875369f28f37f15323e6ef8446fabfd38fdf1c2bd4c91de42574a9927d9895bc"
+    },
+    "glbRequests": 2,
+    "externalRequests": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "httpErrors": 0,
+    "humanVisualAcceptance": false
+  },
+  "nonClaims": [
+    "PRODUCT_RESPAWN_OR_WORKER_TELEMETRY_INTEGRATION_NOT_CLAIMED",
+    "P6_6_NOT_CLAIMED",
+    "G5_NOT_PASSED",
+    "HUMAN_ACCEPTANCE_NOT_RUN"
+  ]
+}

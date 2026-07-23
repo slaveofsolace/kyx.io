@@ -1,0 +1,909 @@
+{
+  "schemaVersion": 1,
+  "status": "PRESS_HALL_V3_3_ACTUAL_GLTFLOADER_CAPTURE_PASS_ASSET_ONLY_G5_G8_OPEN",
+  "capturedAt": "2026-07-22T13:32:34.400Z",
+  "scope": "PRESS_HALL_V3_3_EXPLICIT_MATERIAL_EXPORT_ACTUAL_LOADER_COMPARISON_ONLY",
+  "outputDirectory": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4",
+  "asset": {
+    "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb",
+    "bytes": 13301752,
+    "sha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+    "nodeCount": 29,
+    "meshCount": 29,
+    "primitiveCount": 29,
+    "triangleCount": 188576,
+    "materialCount": 9,
+    "generator": "Khronos glTF Blender I/O v5.1.20",
+    "explicitBaseColorFactorCount": 9,
+    "baseColorTextureReferenceCount": 0,
+    "imageCount": 0
+  },
+  "harness": {
+    "origin": "http://127.0.0.1:51776",
+    "loader": "THREE.GLTFLoader.parse(ArrayBuffer)",
+    "threeVersion": "0.184.0",
+    "browserAsset": {
+      "bytes": 13301752,
+      "sha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564"
+    },
+    "loadDurationMs": 50.29999999701977,
+    "scene": {
+      "meshCount": 29,
+      "geometryTriangleCount": 188576,
+      "materialCount": 9,
+      "bounds": {
+        "min": [
+          -22.760000228881836,
+          -2.990000106394291,
+          -10.530000448226929
+        ],
+        "max": [
+          22.760000228881836,
+          8.809999965131283,
+          11.84000015258789
+        ]
+      }
+    },
+    "evidenceSurfaceDescriptor": {
+      "writable": false,
+      "configurable": false
+    },
+    "softwareRendererRequested": true,
+    "browserVersion": "149.0.7827.55",
+    "host": {
+      "machineName": "sol",
+      "platform": "win32",
+      "release": "10.0.26200",
+      "arch": "x64"
+    }
+  },
+  "materialAudit": {
+    "explicitFamilyCount": 9,
+    "instantiatedMaterialCount": 9,
+    "instantiatedWhiteFallbackMaterialCount": 0,
+    "exactBaseColorMatch": true,
+    "comparisons": [
+      {
+        "name": "V3_AQUA_INDICATOR",
+        "expectedBaseColorLinear": [
+          0.019500000402331352,
+          0.41999998688697815,
+          0.38999998569488525
+        ],
+        "actualBaseColorLinear": [
+          0.019500000402331352,
+          0.41999998688697815,
+          0.38999998569488525
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0,
+        "actualMetalness": 0,
+        "expectedRoughness": 0.33500000834465027,
+        "actualRoughness": 0.33500000834465027,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_CAST_IRON",
+        "expectedBaseColorLinear": [
+          0.051500000059604645,
+          0.07400000095367432,
+          0.08049999922513962
+        ],
+        "actualBaseColorLinear": [
+          0.051500000059604645,
+          0.07400000095367432,
+          0.08049999922513962
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.9200000166893005,
+        "actualMetalness": 0.9200000166893005,
+        "expectedRoughness": 0.45500001311302185,
+        "actualRoughness": 0.45500001311302185,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_CHIPPED_SAFETY_RED",
+        "expectedBaseColorLinear": [
+          0.4399999976158142,
+          0.035999998450279236,
+          0.012000000104308128
+        ],
+        "actualBaseColorLinear": [
+          0.4399999976158142,
+          0.035999998450279236,
+          0.012000000104308128
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.23999999463558197,
+        "actualMetalness": 0.23999999463558197,
+        "expectedRoughness": 0.5350000262260437,
+        "actualRoughness": 0.5350000262260437,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_GARDEN_FRAGMENT",
+        "expectedBaseColorLinear": [
+          0.08500000089406967,
+          0.1574999988079071,
+          0.04500000178813934
+        ],
+        "actualBaseColorLinear": [
+          0.08500000089406967,
+          0.1574999988079071,
+          0.04500000178813934
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0,
+        "actualMetalness": 0,
+        "expectedRoughness": 0.8199999928474426,
+        "actualRoughness": 0.8199999928474426,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_GREASED_LINKAGE",
+        "expectedBaseColorLinear": [
+          0.017999999225139618,
+          0.014000000432133675,
+          0.009999999776482582
+        ],
+        "actualBaseColorLinear": [
+          0.017999999225139618,
+          0.014000000432133675,
+          0.009999999776482582
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.2800000011920929,
+        "actualMetalness": 0.2800000011920929,
+        "expectedRoughness": 0.3199999928474426,
+        "actualRoughness": 0.3199999928474426,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_INK_BLACK",
+        "expectedBaseColorLinear": [
+          0.013000000268220901,
+          0.01899999938905239,
+          0.023499999195337296
+        ],
+        "actualBaseColorLinear": [
+          0.013000000268220901,
+          0.01899999938905239,
+          0.023499999195337296
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.07999999821186066,
+        "actualMetalness": 0.07999999821186066,
+        "expectedRoughness": 0.5550000071525574,
+        "actualRoughness": 0.5550000071525574,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_USED_CERAMIC",
+        "expectedBaseColorLinear": [
+          0.4399999976158142,
+          0.4050000011920929,
+          0.33500000834465027
+        ],
+        "actualBaseColorLinear": [
+          0.4399999976158142,
+          0.4050000011920929,
+          0.33500000834465027
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.019999999552965164,
+        "actualMetalness": 0.019999999552965164,
+        "expectedRoughness": 0.7300000190734863,
+        "actualRoughness": 0.7300000190734863,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_WORN_AMBER",
+        "expectedBaseColorLinear": [
+          0.5950000286102295,
+          0.2849999964237213,
+          0.016499999910593033
+        ],
+        "actualBaseColorLinear": [
+          0.5950000286102295,
+          0.2849999964237213,
+          0.016499999910593033
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.18000000715255737,
+        "actualMetalness": 0.18000000715255737,
+        "expectedRoughness": 0.5099999904632568,
+        "actualRoughness": 0.5099999904632568,
+        "hasBaseColorMap": false
+      },
+      {
+        "name": "V3_WORN_STEEL",
+        "expectedBaseColorLinear": [
+          0.17000000178813934,
+          0.1940000057220459,
+          0.19099999964237213
+        ],
+        "actualBaseColorLinear": [
+          0.17000000178813934,
+          0.1940000057220459,
+          0.19099999964237213
+        ],
+        "maximumBaseColorDelta": 0,
+        "expectedMetalness": 0.9599999785423279,
+        "actualMetalness": 0.9599999785423279,
+        "expectedRoughness": 0.3499999940395355,
+        "actualRoughness": 0.3499999940395355,
+        "hasBaseColorMap": false
+      }
+    ],
+    "loaded": [
+      {
+        "name": "V3_AQUA_INDICATOR",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.019500000402331352,
+          0.41999998688697815,
+          0.38999998569488525
+        ],
+        "metalness": 0,
+        "roughness": 0.33500000834465027,
+        "emissiveLinear": [
+          0.04861110938643975,
+          1,
+          0.9166666666666666
+        ],
+        "emissiveIntensity": 1.7280001373291043,
+        "map": false
+      },
+      {
+        "name": "V3_CAST_IRON",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.051500000059604645,
+          0.07400000095367432,
+          0.08049999922513962
+        ],
+        "metalness": 0.9200000166893005,
+        "roughness": 0.45500001311302185,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_CHIPPED_SAFETY_RED",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.4399999976158142,
+          0.035999998450279236,
+          0.012000000104308128
+        ],
+        "metalness": 0.23999999463558197,
+        "roughness": 0.5350000262260437,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_GARDEN_FRAGMENT",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.08500000089406967,
+          0.1574999988079071,
+          0.04500000178813934
+        ],
+        "metalness": 0,
+        "roughness": 0.8199999928474426,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_GREASED_LINKAGE",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.017999999225139618,
+          0.014000000432133675,
+          0.009999999776482582
+        ],
+        "metalness": 0.2800000011920929,
+        "roughness": 0.3199999928474426,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_INK_BLACK",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.013000000268220901,
+          0.01899999938905239,
+          0.023499999195337296
+        ],
+        "metalness": 0.07999999821186066,
+        "roughness": 0.5550000071525574,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_USED_CERAMIC",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.4399999976158142,
+          0.4050000011920929,
+          0.33500000834465027
+        ],
+        "metalness": 0.019999999552965164,
+        "roughness": 0.7300000190734863,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_WORN_AMBER",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.5950000286102295,
+          0.2849999964237213,
+          0.016499999910593033
+        ],
+        "metalness": 0.18000000715255737,
+        "roughness": 0.5099999904632568,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      },
+      {
+        "name": "V3_WORN_STEEL",
+        "type": "MeshStandardMaterial",
+        "colorLinear": [
+          0.17000000178813934,
+          0.1940000057220459,
+          0.19099999964237213
+        ],
+        "metalness": 0.9599999785423279,
+        "roughness": 0.3499999940395355,
+        "emissiveLinear": [
+          0,
+          0,
+          0
+        ],
+        "emissiveIntensity": 1,
+        "map": false
+      }
+    ]
+  },
+  "network": {
+    "requestCount": 8,
+    "assetRequestCount": 1,
+    "externalRequests": [],
+    "responses": [
+      {
+        "url": "http://127.0.0.1:51776/harness",
+        "status": 200,
+        "contentLength": "8246",
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/RoomEnvironment.js",
+        "status": 200,
+        "contentLength": "4960",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/GLTFLoader.js",
+        "status": 200,
+        "contentLength": "114959",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/utils/BufferGeometryUtils.js",
+        "status": 200,
+        "contentLength": "35539",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/utils/SkeletonUtils.js",
+        "status": 200,
+        "contentLength": "11535",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/three.module.js",
+        "status": 200,
+        "contentLength": "648961",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/three.core.js",
+        "status": 200,
+        "contentLength": "1427497",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/asset.glb",
+        "status": 200,
+        "contentLength": "13301752",
+        "contentType": "model/gltf-binary"
+      }
+    ]
+  },
+  "browserDiagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": [],
+    "requestedUrls": [
+      "http://127.0.0.1:51776/harness",
+      "http://127.0.0.1:51776/vendor/three.module.js",
+      "http://127.0.0.1:51776/vendor/GLTFLoader.js",
+      "http://127.0.0.1:51776/vendor/RoomEnvironment.js",
+      "http://127.0.0.1:51776/utils/BufferGeometryUtils.js",
+      "http://127.0.0.1:51776/utils/SkeletonUtils.js",
+      "http://127.0.0.1:51776/vendor/three.core.js",
+      "http://127.0.0.1:51776/asset.glb"
+    ],
+    "responses": [
+      {
+        "url": "http://127.0.0.1:51776/harness",
+        "status": 200,
+        "contentLength": "8246",
+        "contentType": "text/html; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/RoomEnvironment.js",
+        "status": 200,
+        "contentLength": "4960",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/GLTFLoader.js",
+        "status": 200,
+        "contentLength": "114959",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/utils/BufferGeometryUtils.js",
+        "status": 200,
+        "contentLength": "35539",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/utils/SkeletonUtils.js",
+        "status": 200,
+        "contentLength": "11535",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/three.module.js",
+        "status": 200,
+        "contentLength": "648961",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/vendor/three.core.js",
+        "status": 200,
+        "contentLength": "1427497",
+        "contentType": "text/javascript; charset=utf-8"
+      },
+      {
+        "url": "http://127.0.0.1:51776/asset.glb",
+        "status": 200,
+        "contentLength": "13301752",
+        "contentType": "model/gltf-binary"
+      }
+    ]
+  },
+  "screenshots": {
+    "gameplay_lane": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/actual-loader-gameplay_lane.png",
+      "bytes": 185268,
+      "sha256": "416e70e25b5e7bc8703b64c92509bf8e1d51853274a3ce1a5f71a553a0d8b292",
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "meanRgbSrgb": [
+          0.395521,
+          0.407556,
+          0.404385
+        ],
+        "nearWhiteFraction": 0.000006,
+        "nearBlackFraction": 0.285519,
+        "colorfulFraction": 0.083424
+      },
+      "camera": {
+        "position": [
+          -15.800000190734863,
+          -0.800000011920929,
+          1.7200000286102295
+        ],
+        "forward": [
+          0.9971083998680115,
+          0.050486430525779724,
+          0.05679736286401749
+        ],
+        "up": [
+          -0.05672469735145569,
+          -0.002872153650969267,
+          0.9983857274055481
+        ],
+        "lens": 31
+      },
+      "runtime": {
+        "viewId": "gameplay_lane",
+        "renderer": {
+          "calls": 27,
+          "triangles": 188387,
+          "points": 0,
+          "lines": 0
+        }
+      }
+    },
+    "gameplay_north": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/actual-loader-gameplay_north.png",
+      "bytes": 168518,
+      "sha256": "a333e616fce91995137f1c90cd5a98ee6c4cfbc7115df12873f513cdcfc86c8e",
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "meanRgbSrgb": [
+          0.338638,
+          0.350426,
+          0.347401
+        ],
+        "nearWhiteFraction": 0.000071,
+        "nearBlackFraction": 0.327517,
+        "colorfulFraction": 0.078821
+      },
+      "camera": {
+        "position": [
+          -11.800000190734863,
+          -1.2999999523162842,
+          1.7200000286102295
+        ],
+        "forward": [
+          0.8302736282348633,
+          0.5523431301116943,
+          0.0745839923620224
+        ],
+        "up": [
+          -0.062098097056150436,
+          -0.04131099209189415,
+          0.9972147345542908
+        ],
+        "lens": 38
+      },
+      "runtime": {
+        "viewId": "gameplay_north",
+        "renderer": {
+          "calls": 23,
+          "triangles": 180894,
+          "points": 0,
+          "lines": 0
+        }
+      }
+    },
+    "gameplay_south": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/actual-loader-gameplay_south.png",
+      "bytes": 194121,
+      "sha256": "95026a670e45ee1bd379b2bd384493b2e16714a9655413533756b6c4a89f28c0",
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "meanRgbSrgb": [
+          0.265261,
+          0.274874,
+          0.275267
+        ],
+        "nearWhiteFraction": 0.000095,
+        "nearBlackFraction": 0.375473,
+        "colorfulFraction": 0.10929
+      },
+      "camera": {
+        "position": [
+          11.800000190734863,
+          1,
+          1.7200000286102295
+        ],
+        "forward": [
+          -0.8205806612968445,
+          -0.5667571425437927,
+          0.07371342182159424
+        ],
+        "up": [
+          0.06065276265144348,
+          0.04189165681600571,
+          0.9972794651985168
+        ],
+        "lens": 38
+      },
+      "runtime": {
+        "viewId": "gameplay_south",
+        "renderer": {
+          "calls": 23,
+          "triangles": 180553,
+          "points": 0,
+          "lines": 0
+        }
+      }
+    },
+    "overhead_context": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/actual-loader-overhead_context.png",
+      "bytes": 213936,
+      "sha256": "61c310a09e0ba1f2533c4b4d4dd45d426c39a69d0b99e758b5ec90ca602c0b59",
+      "stats": {
+        "width": 960,
+        "height": 540,
+        "meanRgbSrgb": [
+          0.577597,
+          0.584462,
+          0.574409
+        ],
+        "nearWhiteFraction": 0.00001,
+        "nearBlackFraction": 0.113968,
+        "colorfulFraction": 0.144134
+      },
+      "camera": {
+        "position": [
+          -14,
+          -6.5,
+          6.349999904632568
+        ],
+        "forward": [
+          0.8825082778930664,
+          0.390825092792511,
+          -0.26160064339637756
+        ],
+        "up": [
+          0.2391943782567978,
+          0.10592897236347198,
+          0.9651762247085571
+        ],
+        "lens": 35
+      },
+      "runtime": {
+        "viewId": "overhead_context",
+        "renderer": {
+          "calls": 27,
+          "triangles": 188387,
+          "points": 0,
+          "lines": 0
+        }
+      }
+    }
+  },
+  "boards": {
+    "actualLoaderFourView": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/actual-loader-four-view-board.png",
+      "bytes": 787737,
+      "sha256": "175d02cd0b5006d06cb6172caa39f8a7947d040ff6ccfe888af1624f9e8a3f34",
+      "resolution": [
+        1920,
+        1080
+      ]
+    },
+    "blenderVsActualLoader": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-material-export-v3-3/actual-loader-v4/blender-vs-actual-loader-four-view-comparison.png",
+      "bytes": 1000156,
+      "sha256": "3669be8c03a1693eca09a07fd1d1e9dbdc606a49606d04098e5eba5d15efae7b",
+      "resolution": [
+        1920,
+        1080
+      ]
+    }
+  },
+  "blenderComparisonSource": {
+    "gameplay_lane": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-gameplay_lane-color.png",
+      "diagnosticsVsFrozenV32": {
+        "frozenV32": {
+          "meanLuminance": 0.380495,
+          "meanRgbLinear": [
+            0.376883,
+            0.382375,
+            0.372503
+          ],
+          "medianLuminance": 0.25555,
+          "shadowFractionBelow0035": 0.340833
+        },
+        "pair": {
+          "meanAbsoluteRgbLinear": 0.006028,
+          "p95AbsoluteRgbLinear": 0.023529
+        },
+        "v33": {
+          "meanLuminance": 0.37863,
+          "meanRgbLinear": [
+            0.375037,
+            0.380533,
+            0.370365
+          ],
+          "medianLuminance": 0.250285,
+          "shadowFractionBelow0035": 0.342014
+        }
+      }
+    },
+    "gameplay_north": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-gameplay_north-color.png",
+      "diagnosticsVsFrozenV32": {
+        "frozenV32": {
+          "meanLuminance": 0.357303,
+          "meanRgbLinear": [
+            0.351175,
+            0.359766,
+            0.350953
+          ],
+          "medianLuminance": 0.175745,
+          "shadowFractionBelow0035": 0.401476
+        },
+        "pair": {
+          "meanAbsoluteRgbLinear": 0.007205,
+          "p95AbsoluteRgbLinear": 0.031373
+        },
+        "v33": {
+          "meanLuminance": 0.355114,
+          "meanRgbLinear": [
+            0.348801,
+            0.357681,
+            0.348278
+          ],
+          "medianLuminance": 0.170902,
+          "shadowFractionBelow0035": 0.403194
+        }
+      }
+    },
+    "gameplay_south": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-gameplay_south-color.png",
+      "diagnosticsVsFrozenV32": {
+        "frozenV32": {
+          "meanLuminance": 0.229824,
+          "meanRgbLinear": [
+            0.214645,
+            0.233851,
+            0.234631
+          ],
+          "medianLuminance": 0.06202,
+          "shadowFractionBelow0035": 0.467274
+        },
+        "pair": {
+          "meanAbsoluteRgbLinear": 0.007347,
+          "p95AbsoluteRgbLinear": 0.035294
+        },
+        "v33": {
+          "meanLuminance": 0.227713,
+          "meanRgbLinear": [
+            0.212664,
+            0.231768,
+            0.231856
+          ],
+          "medianLuminance": 0.060599,
+          "shadowFractionBelow0035": 0.468472
+        }
+      }
+    },
+    "overhead_context": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-overhead_context-color.png",
+      "diagnosticsVsFrozenV32": {
+        "frozenV32": {
+          "meanLuminance": 0.53726,
+          "meanRgbLinear": [
+            0.535954,
+            0.53911,
+            0.522781
+          ],
+          "medianLuminance": 0.585364,
+          "shadowFractionBelow0035": 0.152378
+        },
+        "pair": {
+          "meanAbsoluteRgbLinear": 0.008606,
+          "p95AbsoluteRgbLinear": 0.031373
+        },
+        "v33": {
+          "meanLuminance": 0.535155,
+          "meanRgbLinear": [
+            0.533824,
+            0.537059,
+            0.520215
+          ],
+          "medianLuminance": 0.580415,
+          "shadowFractionBelow0035": 0.15349
+        }
+      }
+    }
+  },
+  "sources": {
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb": {
+      "bytes": 13301752,
+      "sha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/validation/press-hall-material-export-v3-3-build-report.json": {
+      "bytes": 27796,
+      "sha256": "fb2e29719f3edac37b8a7b62ad1b4efa0912fd2517e11b908aa09ca25f2a2300"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/manifest.press-hall-material-export-v3-3.json": {
+      "bytes": 3622,
+      "sha256": "474157c9c4811b6c718fbd17a58ea59cf521bf95b0b74afe4f9bed595af098ee"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/build_press_hall_material_export_v3_3.py": {
+      "bytes": 28082,
+      "sha256": "5da1855b5f19308d2191a98e70707ee984def99ef49fd3358c59498e4208c8bf"
+    },
+    "tools/evidence/capture-press-hall-material-export-v3-3.mjs": {
+      "bytes": 32913,
+      "sha256": "63ea9d68b9be8c66091a1592fa1d86785e69772ad2623938162098e0ad3cdb46"
+    },
+    "tools/evidence/verify-press-hall-material-export-v3-3.mjs": {
+      "bytes": 8851,
+      "sha256": "e5839fe49c23fe722cf3c466ebd6394b04db93ab824b798c02d4ff2c2ec99254"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-gameplay_lane-color.png": {
+      "bytes": 1729861,
+      "sha256": "cdb838d141ab497fa37c0c1ba491559112aeb9b7c78e31d8e532cf5cc7efc8c3"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-gameplay_north-color.png": {
+      "bytes": 1741528,
+      "sha256": "6ac63628ce095aa9c0fd8f67ec8ee70575dc8ca2e0c16301e43b8b97633b675e"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-gameplay_south-color.png": {
+      "bytes": 1776860,
+      "sha256": "dc4eb1809ec38e683b88cd428d11b80140b50f3c59297bad4c2a847b4d323e52"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/renders/inkfall-press-hall-v3-3-overhead_context-color.png": {
+      "bytes": 1917406,
+      "sha256": "040c4300eedb718f2f85cab22a19d2c0b9ce2bd6ec2727252eb23376b2d0b2e3"
+    }
+  },
+  "assessment": {
+    "exactAssetShaThroughActualGltfLoader": "PASS",
+    "instantiatedMaterialValuesMatchGltf": "PASS",
+    "whiteFallbackRegression": "PASS_IN_ISOLATED_ASSET_HARNESS",
+    "fourViewRuntimeCapture": "PASS",
+    "directBlenderComparisonBoard": "PROVIDED_PENDING_HUMAN_ACCEPTANCE",
+    "productIntegration": "NOT_PERFORMED",
+    "shippingDefault": "UNCHANGED",
+    "runtimePerformance": "NOT_PROFILED_FOR_GATE",
+    "collisionNoSnag": "NOT_PROVEN",
+    "humanVisualAcceptance": "NOT_PERFORMED",
+    "humanPlaytestAcceptance": "NOT_PERFORMED",
+    "g5": "OPEN",
+    "g8": "OPEN"
+  },
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "G8_NOT_PASSED",
+    "FINAL_ART_NOT_ACCEPTED",
+    "NOT_PRODUCT_INTEGRATED",
+    "NOT_SHIPPING_DEFAULT",
+    "NO_RUNTIME_PERFORMANCE_GATE_CLAIM",
+    "NO_COLLISION_NO_SNAG_CLAIM",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+    "NO_DEPLOYMENT_OR_PUBLISHING"
+  ]
+}

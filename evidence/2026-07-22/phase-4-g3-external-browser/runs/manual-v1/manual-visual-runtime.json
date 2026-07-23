@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "status": "EXTERNAL_TWO_BROWSER_VISIBLE_AUTHORITY_MANUAL_PASS",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "capturedAtUtc": "2026-07-22T09:30:07.822Z",
+  "target": {
+    "workerOrigin": "https://kyx-io-authority.heliotrope-contraption.workers.dev",
+    "buildId": "g3tmp-93ae5c5c1604",
+    "frontendOrigin": "http://127.0.0.1:5173",
+    "frontendRoute": "/__test__/authority",
+    "browser": {
+      "name": "Google Chrome via Playwright",
+      "version": "150.0.7871.129",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    }
+  },
+  "session": {
+    "roomCode": "KYX-E9MTA8",
+    "matchId": "match.184bb0060c4b49dfb3497fcbe24f7f5c",
+    "resumedPlayerId": "player.292b220e-b4d2-4156-a5ec-bfd0d3723dd1",
+    "impairmentProfile": "matrix-rtt-50"
+  },
+  "measurements": {
+    "authoritativeMovementDeltaMillimeters": 7900,
+    "peerRemoteSamplesBeforeMovement": 1,
+    "peerRemoteSamplesAfterMovement": 14,
+    "finalRemoteSamplesClientA": 2,
+    "finalRemoteSamplesClientB": 25,
+    "resumeGeneration": 1,
+    "browserErrorCount": 0
+  },
+  "assertions": {
+    "twoIsolatedBrowserContexts": true,
+    "bothClientsJoined": true,
+    "sameVisibleRoom": true,
+    "sameVisibleMatch": true,
+    "externalHttpsAndWssTarget": true,
+    "matrixRtt50EnabledOnBothClients": true,
+    "clientAAuthorityPositionMoved": true,
+    "clientBReceivedRemoteSamples": true,
+    "resumePreservedPlayer": true,
+    "resumePreservedMatch": true,
+    "resumeCredentialGenerationRotated": true,
+    "bothClientsEndedJoined": true,
+    "noClientLastError": true,
+    "noBrowserConsoleOrPageErrors": true,
+    "noCredentialSerialized": true
+  },
+  "artifactInventory": [
+    {
+      "file": "external-a-moved.png",
+      "bytes": 139875,
+      "sha256": "3bb90fd3ea02266d5ef87b5eaba401a95e29a7bb7d44e1667d3ac0d9b48d30e3"
+    },
+    {
+      "file": "external-b-peer.png",
+      "bytes": 138286,
+      "sha256": "ba7b7eacf5028a5514ec1f6beb3f9850cdd2d9070ac0f0fe0deea7c0a9fd1d26"
+    },
+    {
+      "file": "external-a-resumed.png",
+      "bytes": 145761,
+      "sha256": "03b00c6580479bb2f4c600a4a40a22bceeff77789ee73312fbff1204f3660622"
+    },
+    {
+      "file": "external-a-resumed-viewport.png",
+      "bytes": 119016,
+      "sha256": "42bb8003366105fe14fa09128a6457e08ba6c3b0047da3257ef19f43578bec34"
+    },
+    {
+      "file": "external-b-peer-viewport.png",
+      "bytes": 118646,
+      "sha256": "d574389d3f6113ff8562499aeef1135bb3674855ef9e2cd26244d0c80fb37af2"
+    }
+  ],
+  "boundaries": {
+    "manualCapture": true,
+    "independentVerifier": false,
+    "developmentEvidenceRoute": true,
+    "productOnlineFlow": false,
+    "productionOriginAuthentication": false,
+    "durableStaging": false,
+    "humanFeelAcceptance": false
+  },
+  "notes": [
+    "Opaque resume credentials remained only in browser memory and are not included here.",
+    "This visual record supplements the source-frozen direct-WSS capture; it does not replace its independent verifier.",
+    "The route labels itself development G3 evidence and not product online play."
+  ]
+}

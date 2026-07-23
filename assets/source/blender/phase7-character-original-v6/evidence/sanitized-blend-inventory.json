@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "inventoryUtc": "2026-07-22T03:38:26.734715+00:00",
+  "blenderVersion": "5.1.2",
+  "autoexecFail": false,
+  "source": {
+    "fileName": "kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+    "bytes": 12582373,
+    "sha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d"
+  },
+  "collections": [
+    {
+      "name": "KYX_V6_CC0_AnatomySeed_MaleRealistic",
+      "objects": [
+        "KYX_V6_CC0_AnatomySeed_Body",
+        "KYX_V6_CC0_AnatomySeed_Eye.L",
+        "KYX_V6_CC0_AnatomySeed_Eye.R"
+      ],
+      "children": [],
+      "assetData": false,
+      "library": null
+    }
+  ],
+  "objects": [
+    {
+      "name": "KYX_V6_CC0_AnatomySeed_Body",
+      "type": "MESH",
+      "data": "KYX_V6_CC0_AnatomySeed_Body_Mesh",
+      "collections": [
+        "KYX_V6_CC0_AnatomySeed_MaleRealistic"
+      ],
+      "parent": null,
+      "library": null,
+      "vertexCount": 10582,
+      "edgeCount": 21170,
+      "polygonCount": 10590,
+      "materialSlots": [],
+      "modifierTypes": [
+        "MULTIRES"
+      ],
+      "shapeKeys": [],
+      "boundBoxLocal": [
+        [
+          -0.441579,
+          -0.179825,
+          -0.005641
+        ],
+        [
+          -0.441579,
+          -0.179825,
+          1.684443
+        ],
+        [
+          -0.441579,
+          0.112069,
+          1.684443
+        ],
+        [
+          -0.441579,
+          0.112069,
+          -0.005641
+        ],
+        [
+          0.441429,
+          -0.179825,
+          -0.005641
+        ],
+        [
+          0.441429,
+          -0.179825,
+          1.684443
+        ],
+        [
+          0.441429,
+          0.112069,
+          1.684443
+        ],
+        [
+          0.441429,
+          0.112069,
+          -0.005641
+        ]
+      ],
+      "assetData": false,
+      "customProperties": [
+        "kyx_asset_stage",
+        "kyx_source_collection",
+        "kyx_source_license",
+        "kyx_source_object",
+        "kyx_source_product"
+      ]
+    },
+    {
+      "name": "KYX_V6_CC0_AnatomySeed_Eye.L",
+      "type": "MESH",
+      "data": "KYX_V6_CC0_AnatomySeed_Eye.L_Mesh",
+      "collections": [
+        "KYX_V6_CC0_AnatomySeed_MaleRealistic"
+      ],
+      "parent": "KYX_V6_CC0_AnatomySeed_Body",
+      "library": null,
+      "vertexCount": 546,
+      "edgeCount": 1088,
+      "polygonCount": 544,
+      "materialSlots": [],
+      "modifierTypes": [],
+      "shapeKeys": [],
+      "boundBoxLocal": [
+        [
+          -0.013951,
+          -0.013952,
+          -0.013873
+        ],
+        [
+          -0.013951,
+          -0.013952,
+          0.01386
+        ],
+        [
+          -0.013951,
+          0.013927,
+          0.01386
+        ],
+        [
+          -0.013951,
+          0.013927,
+          -0.013873
+        ],
+        [
+          0.0139,
+          -0.013952,
+          -0.013873
+        ],
+        [
+          0.0139,
+          -0.013952,
+          0.01386
+        ],
+        [
+          0.0139,
+          0.013927,
+          0.01386
+        ],
+        [
+          0.0139,
+          0.013927,
+          -0.013873
+        ]
+      ],
+      "assetData": false,
+      "customProperties": [
+        "kyx_asset_stage",
+        "kyx_source_collection",
+        "kyx_source_license",
+        "kyx_source_object",
+        "kyx_source_product"
+      ]
+    },
+    {
+      "name": "KYX_V6_CC0_AnatomySeed_Eye.R",
+      "type": "MESH",
+      "data": "KYX_V6_CC0_AnatomySeed_Eye.R_Mesh",
+      "collections": [
+        "KYX_V6_CC0_AnatomySeed_MaleRealistic"
+      ],
+      "parent": "KYX_V6_CC0_AnatomySeed_Body",
+      "library": null,
+      "vertexCount": 546,
+      "edgeCount": 1088,
+      "polygonCount": 544,
+      "materialSlots": [],
+      "modifierTypes": [],
+      "shapeKeys": [],
+      "boundBoxLocal": [
+        [
+          -0.013895,
+          -0.013952,
+          -0.013876
+        ],
+        [
+          -0.013895,
+          -0.013952,
+          0.013882
+        ],
+        [
+          -0.013895,
+          0.013927,
+          0.013882
+        ],
+        [
+          -0.013895,
+          0.013927,
+          -0.013876
+        ],
+        [
+          0.013964,
+          -0.013952,
+          -0.013876
+        ],
+        [
+          0.013964,
+          -0.013952,
+          0.013882
+        ],
+        [
+          0.013964,
+          0.013927,
+          0.013882
+        ],
+        [
+          0.013964,
+          0.013927,
+          -0.013876
+        ]
+      ],
+      "assetData": false,
+      "customProperties": [
+        "kyx_asset_stage",
+        "kyx_source_collection",
+        "kyx_source_license",
+        "kyx_source_object",
+        "kyx_source_product"
+      ]
+    }
+  ],
+  "meshes": [
+    "KYX_V6_CC0_AnatomySeed_Body_Mesh",
+    "KYX_V6_CC0_AnatomySeed_Eye.L_Mesh",
+    "KYX_V6_CC0_AnatomySeed_Eye.R_Mesh"
+  ],
+  "materials": [],
+  "images": [],
+  "texts": [],
+  "actions": [],
+  "armatures": [],
+  "nodeGroups": [],
+  "worlds": [
+    "World"
+  ],
+  "scenes": [
+    "Scene"
+  ],
+  "libraries": [],
+  "drivers": [],
+  "handlers": {
+    "load_post": [
+      "_on_blendfile_load_post",
+      "_on_blendfile_load_post"
+    ],
+    "depsgraph_update_post": [],
+    "frame_change_pre": [],
+    "frame_change_post": [],
+    "render_pre": [],
+    "render_post": [],
+    "save_post": []
+  },
+  "externalFiles": []
+}

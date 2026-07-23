@@ -1,0 +1,14 @@
+00:01.328  blend            | Read blend: "C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v1\source\inkfall_foundry_press_hall_final_art_v1.blend"
+C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\build_press_hall_hero_checkpoint_v3.py:175: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\build_press_hall_hero_checkpoint_v3.py:590: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  scene.world.use_nodes = True
+00:12.703  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\checkpoint-v3-1\renders\inkfall-press-hall-v3-1-gameplay_eye.png'
+00:13.281  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\checkpoint-v3-1\renders\inkfall-press-hall-v3-1-hero_close.png'
+00:13.859  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\checkpoint-v3-1\renders\inkfall-press-hall-v3-1-overhead_context.png'
+Info: Saved as "inkfall_foundry_press_hall_hero_checkpoint_v3_1.blend"
+Info: Saved as "inkfall_foundry_press_hall_hero_checkpoint_v3_1.blend"
+G5_PRESS_HALL_V3_1_CHECKPOINT={"board": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\art-kit\\press-hall-final-art-v3\\checkpoint-v3-1\\boards\\inkfall-press-hall-v3-1-hero-checkpoint-board.png", "report": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\art-kit\\press-hall-final-art-v3\\checkpoint-v3-1\\validation\\press-hall-v3-1-hero-checkpoint-delta-report.json", "status": "PRESS_HALL_V3_1_HERO_CHECKPOINT_BUILD_PASS"}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:37:34)
+
+Blender quit

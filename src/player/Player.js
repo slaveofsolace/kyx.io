@@ -33,7 +33,7 @@ export class Player {
     this.velocity = new THREE.Vector3();
     this.yaw = Math.PI;
     this.pitch = 0;
-    this.invertY = false; // when true, vertical look is inverted (mouse + touch)
+    this.invertY = false; // when true, vertical mouse look is inverted
     this.onGround = true;
 
     this.maxHealth = 100;
@@ -65,6 +65,7 @@ export class Player {
     this.teleportCooldown    = 0;
     this.teleportMaxCooldown = TELEPORT_COOLDOWN;
     this.onTeleport = null; // (fromPos, toPos) => void
+    this.onTeleportUnavailable = null; // (remainingSeconds) => void
 
     // Sound state
     this._wasOnGround = true;
@@ -103,6 +104,7 @@ export class Player {
     this._shieldRegenDelay  = 0;
     this.position.copy(position);
     this.velocity.set(0, 0, 0);
+    this.resetDrivenPresentation();
   }
 
   takeDamage(amount) {
@@ -118,6 +120,27 @@ export class Player {
     this.recoilPitchVel -= amount;
   }
 
+  setReducedMotion(enabled) {
+    this.reducedMotion = Boolean(enabled);
+    if (this.reducedMotion) {
+      this.recoilPitch *= 0.12;
+      this.recoilPitchVel *= 0.12;
+      this.camera.rotation.z = 0;
+    }
+  }
+
+  resetDrivenPresentation() {
+    this.bobTime = 0;
+    this.recoilPitch = 0;
+    this.recoilPitchVel = 0;
+    this.reducedMotion = false;
+    this._sprintT = 0;
+    this._eyeHeight = EYE_HEIGHT;
+    this._stepPhase = 0;
+    this._lastBobSign = 1;
+    this.camera.rotation.z = 0;
+  }
+
   update(dt, input, world) {
     // --- third-person camera zoom (scroll wheel) ---
     if (input.wheelDelta !== 0) {
@@ -125,8 +148,8 @@ export class Player {
     }
 
     // --- look ---
-    // Standard (non-inverted) is mouse/finger up → look up. invertY flips the
-    // vertical axis for players who prefer inverted aim (applies to touch too).
+    // Standard (non-inverted) is mouse up -> look up. invertY flips the
+    // vertical axis for players who prefer inverted aim.
     const pitchSign = this.invertY ? 1 : -1;
     this.yaw -= input.mouseDX * MOUSE_SENSITIVITY * this.sensitivityMult;
     this.pitch += pitchSign * input.mouseDY * MOUSE_SENSITIVITY * this.sensitivityMult;
@@ -146,8 +169,7 @@ export class Player {
     if (input.isDown('KeyD')) moveX += 1;
 
     const moving = moveX !== 0 || moveZ !== 0;
-    // On mobile the joystick sets ShiftLeft virtually; also auto-sprint any forward motion
-    const wantSprint = input.isDown('ShiftLeft') || (input.isMobile && moveZ > 0);
+    const wantSprint = input.isDown('ShiftLeft');
     this.isSprinting = moving && wantSprint && moveZ > 0 && this.stamina > 2 && !this.isSliding && !this.isCrouching;
 
     // smooth sprint blend for camera roll
@@ -226,7 +248,10 @@ export class Player {
 
     // --- teleport blink (Q key) ---
     if (this.teleportCooldown > 0) this.teleportCooldown = Math.max(0, this.teleportCooldown - dt);
-    if (input.consumeJustPressed('KeyQ') && this.teleportCooldown <= 0) {
+    const teleportRequested = input.consumeJustPressed('KeyQ');
+    if (teleportRequested && this.teleportCooldown > 0) {
+      this.onTeleportUnavailable?.(this.teleportCooldown);
+    } else if (teleportRequested) {
       const camPos = new THREE.Vector3();
       this.camera.getWorldPosition(camPos);
       const camDir = new THREE.Vector3();
@@ -341,7 +366,8 @@ export class Player {
       this.bobTime += dt * 4;
       this._lastBobSign = 1;
     }
-    const bobAmount = moving && this.onGround ? 0.045 : 0.012;
+    const presentationMotionScale = this.reducedMotion ? 0.12 : 1;
+    const bobAmount = (moving && this.onGround ? 0.045 : 0.012) * presentationMotionScale;
     const bobOffset = Math.sin(this.bobTime) * bobAmount;
 
     // --- apply to camera ---
@@ -362,8 +388,65 @@ export class Player {
       this.camera.position.set(this.position.x, this.position.y + this._eyeHeight + bobOffset, this.position.z);
       this.camera.rotation.order = 'YXZ';
       this.camera.rotation.y = this.yaw;
-      this.camera.rotation.x = this.pitch + this.recoilPitch;
-      this.camera.rotation.z = this._sprintT * -0.025; // slight COD-style lean while sprinting
+      this.camera.rotation.x = this.pitch + this.recoilPitch * presentationMotionScale;
+      this.camera.rotation.z = this._sprintT * -0.025 * presentationMotionScale; // reduced-motion safe sprint lean
+    }
+  }
+
+  /**
+   * Render-only camera presentation for an injected movement authority.
+   *
+   * This deliberately has no World parameter and never integrates or changes
+   * position, velocity, collision, teleport, or other gameplay authority. The
+   * existing update() path above remains the complete legacy controller.
+   */
+  updateDrivenPresentation(dt, input) {
+    // Third-person camera zoom remains responsive at the render-frame rate.
+    if (input.wheelDelta !== 0) {
+      this._camDist = THREE.MathUtils.clamp(this._camDist + input.wheelDelta * 0.9, 0, 6.0);
+    }
+
+    // The driver supplies an immediate render orientation reconciled against
+    // fixed-tick authority. This method never integrates its own look stream.
+    this.yaw = input.yawRadians;
+    this.pitch = input.pitchRadians;
+
+    const recoilSpring = -this.recoilPitch * 18 - this.recoilPitchVel * 6;
+    this.recoilPitchVel += recoilSpring * dt;
+    this.recoilPitch += this.recoilPitchVel * dt;
+
+    this._sprintT += ((this.isSprinting ? 1 : 0) - this._sprintT) * Math.min(1, dt * 9);
+    const targetEye = (this.isSliding || this.isCrouching) ? CROUCH_HEIGHT : EYE_HEIGHT;
+    this._eyeHeight += (targetEye - this._eyeHeight) * Math.min(1, dt * 16);
+
+    const moving = Math.hypot(this.velocity.x, this.velocity.z) > 0.05;
+    if (moving && this.onGround) {
+      this.bobTime += dt * (this.isSprinting ? 11 : (this.isCrouching ? 6 : 8));
+    } else {
+      this.bobTime += dt * 4;
+    }
+    const presentationMotionScale = this.reducedMotion ? 0.12 : 1;
+    const bobAmount = (moving && this.onGround ? 0.045 : 0.012) * presentationMotionScale;
+    const bobOffset = Math.sin(this.bobTime) * bobAmount;
+
+    if (this._camDist > 0) {
+      const d = this._camDist;
+      const sinY = Math.sin(this.yaw);
+      const cosY = Math.cos(this.yaw);
+      const pitchBlend = Math.sin(Math.max(0, this.pitch) * 0.5);
+      this.camera.position.set(
+        this.position.x + sinY * d * (1 - pitchBlend * 0.4),
+        this.position.y + 1.4 + 0.5 * d * 0.18 + pitchBlend * d * 0.6,
+        this.position.z + cosY * d * (1 - pitchBlend * 0.4)
+      );
+      this._tpsTarget.set(this.position.x, this.position.y + 1.2, this.position.z);
+      this.camera.lookAt(this._tpsTarget);
+    } else {
+      this.camera.position.set(this.position.x, this.position.y + this._eyeHeight + bobOffset, this.position.z);
+      this.camera.rotation.order = 'YXZ';
+      this.camera.rotation.y = this.yaw;
+      this.camera.rotation.x = this.pitch + this.recoilPitch * presentationMotionScale;
+      this.camera.rotation.z = this._sprintT * -0.025 * presentationMotionScale;
     }
   }
 }

@@ -1,0 +1,2561 @@
+{
+  "schema": "kyx-v6-contact-first-rig-author-report-v10",
+  "generatedAt": "2026-07-22T13:09:30.503522+00:00",
+  "blenderVersion": "5.1.2",
+  "status": "EARLY_CONTACT_RIG_REV10_REACHABLE_CURLED_VISUAL_REVIEW_REQUIRED",
+  "scope": "CONTACT_RIG_FOUNDATION_ONLY_CANDIDATE_REV10",
+  "source": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "sha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d"
+  },
+  "working": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev10\\kyx-v6-contact-first-rig-rev10.blend",
+    "initialSha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "finalSha256": "7e623baab4aad44f5fc70b95e6c2c0b836d7b2d8c82a387c6e975b240ffadc3c"
+  },
+  "body": {
+    "name": "KYX_V6A_AnatomySculpt_Body",
+    "continuousObjectCount": 1,
+    "sourceTopology": {
+      "vertices": 10582,
+      "edges": 21170,
+      "polygons": 10590
+    },
+    "posedTopology": {
+      "vertices": 10582,
+      "edges": 21170,
+      "polygons": 10590
+    },
+    "topologyPreserved": true,
+    "armatureModifiers": [
+      "V6CF10_ContactFullBodyRig"
+    ]
+  },
+  "rig": {
+    "name": "V6CF10_ContactFullBodyRig",
+    "boneCount": 52,
+    "bones": [
+      {
+        "name": "root",
+        "parent": null,
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          0.0,
+          0.82
+        ],
+        "restTail": [
+          0.0,
+          0.0,
+          0.96
+        ],
+        "posedHead": [
+          0.0,
+          0.0,
+          0.82
+        ],
+        "posedTail": [
+          0.0,
+          0.0,
+          0.96
+        ]
+      },
+      {
+        "name": "spine_01",
+        "parent": "root",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          0.0,
+          0.96
+        ],
+        "restTail": [
+          0.0,
+          -0.002,
+          1.14
+        ],
+        "posedHead": [
+          0.0,
+          0.0,
+          0.96
+        ],
+        "posedTail": [
+          -0.0,
+          -0.002,
+          1.14
+        ]
+      },
+      {
+        "name": "spine_02",
+        "parent": "spine_01",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.002,
+          1.14
+        ],
+        "restTail": [
+          0.0,
+          -0.008,
+          1.3
+        ],
+        "posedHead": [
+          -0.0,
+          -0.002,
+          1.14
+        ],
+        "posedTail": [
+          -0.0,
+          -0.008,
+          1.3
+        ]
+      },
+      {
+        "name": "chest",
+        "parent": "spine_02",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.008,
+          1.3
+        ],
+        "restTail": [
+          0.0,
+          -0.01,
+          1.43
+        ],
+        "posedHead": [
+          -0.0,
+          -0.008,
+          1.3
+        ],
+        "posedTail": [
+          -0.0,
+          -0.01,
+          1.43
+        ]
+      },
+      {
+        "name": "neck",
+        "parent": "chest",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.015,
+          1.43
+        ],
+        "restTail": [
+          0.0,
+          -0.025,
+          1.56
+        ],
+        "posedHead": [
+          -0.0,
+          -0.015,
+          1.43
+        ],
+        "posedTail": [
+          -0.0,
+          -0.025,
+          1.56
+        ]
+      },
+      {
+        "name": "head",
+        "parent": "neck",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.025,
+          1.56
+        ],
+        "restTail": [
+          0.0,
+          -0.04,
+          1.73
+        ],
+        "posedHead": [
+          -0.0,
+          -0.025,
+          1.56
+        ],
+        "posedTail": [
+          -0.0,
+          -0.04,
+          1.73
+        ]
+      },
+      {
+        "name": "clavicle.R",
+        "parent": "chest",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.01,
+          1.405
+        ],
+        "restTail": [
+          -0.185,
+          -0.012,
+          1.392
+        ],
+        "posedHead": [
+          0.0,
+          -0.01,
+          1.405
+        ],
+        "posedTail": [
+          -0.185,
+          -0.012,
+          1.392
+        ]
+      },
+      {
+        "name": "upper_arm.R",
+        "parent": "clavicle.R",
+        "useDeform": true,
+        "restHead": [
+          -0.185,
+          -0.012,
+          1.392
+        ],
+        "restTail": [
+          -0.325,
+          -0.025,
+          1.135
+        ],
+        "posedHead": [
+          -0.185,
+          -0.012,
+          1.392
+        ],
+        "posedTail": [
+          -0.382875,
+          -0.161839,
+          1.236399
+        ]
+      },
+      {
+        "name": "forearm.R",
+        "parent": "upper_arm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.325,
+          -0.025,
+          1.135
+        ],
+        "restTail": [
+          -0.392,
+          -0.058,
+          0.9
+        ],
+        "posedHead": [
+          -0.382875,
+          -0.161839,
+          1.236399
+        ],
+        "posedTail": [
+          -0.204107,
+          -0.328134,
+          1.20189
+        ]
+      },
+      {
+        "name": "wrist.R",
+        "parent": "forearm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.392,
+          -0.058,
+          0.9
+        ],
+        "restTail": [
+          -0.405,
+          -0.09,
+          0.845
+        ],
+        "posedHead": [
+          -0.204107,
+          -0.328134,
+          1.20189
+        ],
+        "posedTail": [
+          -0.181879,
+          -0.389136,
+          1.203541
+        ]
+      },
+      {
+        "name": "palm.R",
+        "parent": "wrist.R",
+        "useDeform": true,
+        "restHead": [
+          -0.405,
+          -0.09,
+          0.845
+        ],
+        "restTail": [
+          -0.405,
+          -0.112,
+          0.792
+        ],
+        "posedHead": [
+          -0.181879,
+          -0.389136,
+          1.203541
+        ],
+        "posedTail": [
+          -0.162239,
+          -0.443035,
+          1.205
+        ]
+      },
+      {
+        "name": "index_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.151,
+          0.866
+        ],
+        "restTail": [
+          -0.4055,
+          -0.151,
+          0.833
+        ],
+        "posedHead": [
+          -0.180892,
+          -0.394764,
+          1.139273
+        ],
+        "posedTail": [
+          -0.156174,
+          -0.408877,
+          1.15604
+        ]
+      },
+      {
+        "name": "index_02.R",
+        "parent": "index_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.151,
+          0.833
+        ],
+        "restTail": [
+          -0.4065,
+          -0.151,
+          0.803
+        ],
+        "posedHead": [
+          -0.156174,
+          -0.408877,
+          1.15604
+        ],
+        "posedTail": [
+          -0.136923,
+          -0.424685,
+          1.172787
+        ]
+      },
+      {
+        "name": "index_03.R",
+        "parent": "index_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.151,
+          0.803
+        ],
+        "restTail": [
+          -0.407,
+          -0.151,
+          0.778
+        ],
+        "posedHead": [
+          -0.136923,
+          -0.424685,
+          1.172787
+        ],
+        "posedTail": [
+          -0.123193,
+          -0.439549,
+          1.187478
+        ]
+      },
+      {
+        "name": "middle_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.126,
+          0.866
+        ],
+        "restTail": [
+          -0.4055,
+          -0.126,
+          0.83
+        ],
+        "posedHead": [
+          -0.184374,
+          -0.385211,
+          1.162112
+        ],
+        "posedTail": [
+          -0.153976,
+          -0.400268,
+          1.149967
+        ]
+      },
+      {
+        "name": "middle_02.R",
+        "parent": "middle_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.126,
+          0.83
+        ],
+        "restTail": [
+          -0.4065,
+          -0.126,
+          0.798
+        ],
+        "posedHead": [
+          -0.153976,
+          -0.400268,
+          1.149967
+        ],
+        "posedTail": [
+          -0.127491,
+          -0.416805,
+          1.14289
+        ]
+      },
+      {
+        "name": "middle_03.R",
+        "parent": "middle_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.126,
+          0.798
+        ],
+        "restTail": [
+          -0.407,
+          -0.126,
+          0.771
+        ],
+        "posedHead": [
+          -0.127491,
+          -0.416805,
+          1.14289
+        ],
+        "posedTail": [
+          -0.105942,
+          -0.432764,
+          1.139696
+        ]
+      },
+      {
+        "name": "ring_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.101,
+          0.858
+        ],
+        "restTail": [
+          -0.4055,
+          -0.101,
+          0.824
+        ],
+        "posedHead": [
+          -0.185353,
+          -0.382523,
+          1.188205
+        ],
+        "posedTail": [
+          -0.156859,
+          -0.397272,
+          1.176855
+        ]
+      },
+      {
+        "name": "ring_02.R",
+        "parent": "ring_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.101,
+          0.824
+        ],
+        "restTail": [
+          -0.4065,
+          -0.101,
+          0.794
+        ],
+        "posedHead": [
+          -0.156859,
+          -0.397272,
+          1.176855
+        ],
+        "posedTail": [
+          -0.132259,
+          -0.413188,
+          1.170334
+        ]
+      },
+      {
+        "name": "ring_03.R",
+        "parent": "ring_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.101,
+          0.794
+        ],
+        "restTail": [
+          -0.407,
+          -0.101,
+          0.768
+        ],
+        "posedHead": [
+          -0.132259,
+          -0.413188,
+          1.170334
+        ],
+        "posedTail": [
+          -0.111739,
+          -0.428891,
+          1.167396
+        ]
+      },
+      {
+        "name": "pinky_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.076,
+          0.858
+        ],
+        "restTail": [
+          -0.4055,
+          -0.076,
+          0.829
+        ],
+        "posedHead": [
+          -0.188834,
+          -0.372969,
+          1.211043
+        ],
+        "posedTail": [
+          -0.165185,
+          -0.387023,
+          1.201745
+        ]
+      },
+      {
+        "name": "pinky_02.R",
+        "parent": "pinky_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.076,
+          0.829
+        ],
+        "restTail": [
+          -0.4065,
+          -0.076,
+          0.803
+        ],
+        "posedHead": [
+          -0.165185,
+          -0.387023,
+          1.201745
+        ],
+        "posedTail": [
+          -0.144575,
+          -0.402026,
+          1.196533
+        ]
+      },
+      {
+        "name": "pinky_03.R",
+        "parent": "pinky_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.076,
+          0.803
+        ],
+        "restTail": [
+          -0.407,
+          -0.076,
+          0.781
+        ],
+        "posedHead": [
+          -0.144575,
+          -0.402026,
+          1.196533
+        ],
+        "posedTail": [
+          -0.127888,
+          -0.41622,
+          1.194462
+        ]
+      },
+      {
+        "name": "thumb_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.382,
+          -0.151,
+          0.9
+        ],
+        "restTail": [
+          -0.364,
+          -0.161,
+          0.875
+        ],
+        "posedHead": [
+          -0.212197,
+          -0.373113,
+          1.125444
+        ],
+        "posedTail": [
+          -0.190432,
+          -0.391166,
+          1.141236
+        ]
+      },
+      {
+        "name": "thumb_02.R",
+        "parent": "thumb_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.364,
+          -0.161,
+          0.875
+        ],
+        "restTail": [
+          -0.349,
+          -0.169,
+          0.851
+        ],
+        "posedHead": [
+          -0.190432,
+          -0.391166,
+          1.141236
+        ],
+        "posedTail": [
+          -0.168037,
+          -0.404093,
+          1.155249
+        ]
+      },
+      {
+        "name": "thumb_03.R",
+        "parent": "thumb_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.349,
+          -0.169,
+          0.851
+        ],
+        "restTail": [
+          -0.339,
+          -0.169,
+          0.831
+        ],
+        "posedHead": [
+          -0.168037,
+          -0.404093,
+          1.155249
+        ],
+        "posedTail": [
+          -0.149528,
+          -0.411359,
+          1.165476
+        ]
+      },
+      {
+        "name": "clavicle.L",
+        "parent": "chest",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.01,
+          1.405
+        ],
+        "restTail": [
+          0.185,
+          -0.012,
+          1.392
+        ],
+        "posedHead": [
+          -0.0,
+          -0.01,
+          1.405
+        ],
+        "posedTail": [
+          0.185,
+          -0.012,
+          1.392
+        ]
+      },
+      {
+        "name": "upper_arm.L",
+        "parent": "clavicle.L",
+        "useDeform": true,
+        "restHead": [
+          0.185,
+          -0.012,
+          1.392
+        ],
+        "restTail": [
+          0.325,
+          -0.025,
+          1.135
+        ],
+        "posedHead": [
+          0.185,
+          -0.012,
+          1.392
+        ],
+        "posedTail": [
+          0.077036,
+          -0.270225,
+          1.305502
+        ]
+      },
+      {
+        "name": "forearm.L",
+        "parent": "upper_arm.L",
+        "useDeform": true,
+        "restHead": [
+          0.325,
+          -0.025,
+          1.135
+        ],
+        "restTail": [
+          0.392,
+          -0.058,
+          0.9
+        ],
+        "posedHead": [
+          0.077036,
+          -0.270225,
+          1.305502
+        ],
+        "posedTail": [
+          -0.016237,
+          -0.487011,
+          1.23404
+        ]
+      },
+      {
+        "name": "wrist.L",
+        "parent": "forearm.L",
+        "useDeform": true,
+        "restHead": [
+          0.392,
+          -0.058,
+          0.9
+        ],
+        "restTail": [
+          0.405,
+          -0.09,
+          0.845
+        ],
+        "posedHead": [
+          -0.016237,
+          -0.487011,
+          1.23404
+        ],
+        "posedTail": [
+          -0.020199,
+          -0.551605,
+          1.228569
+        ]
+      },
+      {
+        "name": "palm.L",
+        "parent": "wrist.L",
+        "useDeform": true,
+        "restHead": [
+          0.405,
+          -0.09,
+          0.845
+        ],
+        "restTail": [
+          0.405,
+          -0.112,
+          0.792
+        ],
+        "posedHead": [
+          -0.020199,
+          -0.551605,
+          1.228569
+        ],
+        "posedTail": [
+          -0.016956,
+          -0.608897,
+          1.228203
+        ]
+      },
+      {
+        "name": "index_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.151,
+          0.866
+        ],
+        "restTail": [
+          0.4055,
+          -0.151,
+          0.833
+        ],
+        "posedHead": [
+          -0.018998,
+          -0.555121,
+          1.164155
+        ],
+        "posedTail": [
+          -0.035786,
+          -0.58174,
+          1.154112
+        ]
+      },
+      {
+        "name": "index_02.L",
+        "parent": "index_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.151,
+          0.833
+        ],
+        "restTail": [
+          0.4065,
+          -0.151,
+          0.803
+        ],
+        "posedHead": [
+          -0.035786,
+          -0.58174,
+          1.154112
+        ],
+        "posedTail": [
+          -0.049189,
+          -0.608035,
+          1.148639
+        ]
+      },
+      {
+        "name": "index_03.L",
+        "parent": "index_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.151,
+          0.803
+        ],
+        "restTail": [
+          0.407,
+          -0.151,
+          0.778
+        ],
+        "posedHead": [
+          -0.049189,
+          -0.608035,
+          1.148639
+        ],
+        "posedTail": [
+          -0.058842,
+          -0.631023,
+          1.14674
+        ]
+      },
+      {
+        "name": "middle_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.126,
+          0.866
+        ],
+        "restTail": [
+          0.4055,
+          -0.126,
+          0.83
+        ],
+        "posedHead": [
+          -0.019531,
+          -0.5457,
+          1.187305
+        ],
+        "posedTail": [
+          -0.036733,
+          -0.575543,
+          1.176737
+        ]
+      },
+      {
+        "name": "middle_02.L",
+        "parent": "middle_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.126,
+          0.83
+        ],
+        "restTail": [
+          0.4065,
+          -0.126,
+          0.798
+        ],
+        "posedHead": [
+          -0.036733,
+          -0.575543,
+          1.176737
+        ],
+        "posedTail": [
+          -0.050016,
+          -0.604163,
+          1.171308
+        ]
+      },
+      {
+        "name": "middle_03.L",
+        "parent": "middle_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.126,
+          0.798
+        ],
+        "restTail": [
+          0.407,
+          -0.126,
+          0.771
+        ],
+        "posedHead": [
+          -0.050016,
+          -0.604163,
+          1.171308
+        ],
+        "posedTail": [
+          -0.059592,
+          -0.629357,
+          1.169627
+        ]
+      },
+      {
+        "name": "ring_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.101,
+          0.858
+        ],
+        "restTail": [
+          0.4055,
+          -0.101,
+          0.824
+        ],
+        "posedHead": [
+          -0.019646,
+          -0.543675,
+          1.213476
+        ],
+        "posedTail": [
+          -0.035691,
+          -0.571998,
+          1.203547
+        ]
+      },
+      {
+        "name": "ring_02.L",
+        "parent": "ring_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.101,
+          0.824
+        ],
+        "restTail": [
+          0.4065,
+          -0.101,
+          0.794
+        ],
+        "posedHead": [
+          -0.035691,
+          -0.571998,
+          1.203547
+        ],
+        "posedTail": [
+          -0.047973,
+          -0.598917,
+          1.198496
+        ]
+      },
+      {
+        "name": "ring_03.L",
+        "parent": "ring_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.101,
+          0.794
+        ],
+        "restTail": [
+          0.407,
+          -0.101,
+          0.768
+        ],
+        "posedHead": [
+          -0.047973,
+          -0.598917,
+          1.198496
+        ],
+        "posedTail": [
+          -0.057035,
+          -0.623243,
+          1.196942
+        ]
+      },
+      {
+        "name": "pinky_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.076,
+          0.858
+        ],
+        "restTail": [
+          0.4055,
+          -0.076,
+          0.829
+        ],
+        "posedHead": [
+          -0.020179,
+          -0.534253,
+          1.236627
+        ],
+        "posedTail": [
+          -0.033081,
+          -0.558938,
+          1.228412
+        ]
+      },
+      {
+        "name": "pinky_02.L",
+        "parent": "pinky_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.076,
+          0.829
+        ],
+        "restTail": [
+          0.4065,
+          -0.076,
+          0.803
+        ],
+        "posedHead": [
+          -0.033081,
+          -0.558938,
+          1.228412
+        ],
+        "posedTail": [
+          -0.043003,
+          -0.582641,
+          1.224326
+        ]
+      },
+      {
+        "name": "pinky_03.L",
+        "parent": "pinky_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.076,
+          0.803
+        ],
+        "restTail": [
+          0.407,
+          -0.076,
+          0.781
+        ],
+        "posedHead": [
+          -0.043003,
+          -0.582641,
+          1.224326
+        ],
+        "posedTail": [
+          -0.050064,
+          -0.603457,
+          1.223282
+        ]
+      },
+      {
+        "name": "thumb_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.382,
+          -0.151,
+          0.9
+        ],
+        "restTail": [
+          0.364,
+          -0.161,
+          0.875
+        ],
+        "posedHead": [
+          0.001188,
+          -0.522444,
+          1.151321
+        ],
+        "posedTail": [
+          -0.007622,
+          -0.550673,
+          1.16453
+        ]
+      },
+      {
+        "name": "thumb_02.L",
+        "parent": "thumb_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.364,
+          -0.161,
+          0.875
+        ],
+        "restTail": [
+          0.349,
+          -0.169,
+          0.851
+        ],
+        "posedHead": [
+          -0.007622,
+          -0.550673,
+          1.16453
+        ],
+        "posedTail": [
+          -0.01957,
+          -0.57507,
+          1.175803
+        ]
+      },
+      {
+        "name": "thumb_03.L",
+        "parent": "thumb_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.349,
+          -0.169,
+          0.851
+        ],
+        "restTail": [
+          0.339,
+          -0.169,
+          0.831
+        ],
+        "posedHead": [
+          -0.01957,
+          -0.57507,
+          1.175803
+        ],
+        "posedTail": [
+          -0.03135,
+          -0.592364,
+          1.183685
+        ]
+      },
+      {
+        "name": "thigh_anchor.R",
+        "parent": "root",
+        "useDeform": true,
+        "restHead": [
+          -0.085,
+          0.0,
+          0.93
+        ],
+        "restTail": [
+          -0.115,
+          0.0,
+          0.55
+        ],
+        "posedHead": [
+          -0.085,
+          0.0,
+          0.93
+        ],
+        "posedTail": [
+          -0.115,
+          -0.0,
+          0.55
+        ]
+      },
+      {
+        "name": "shin_anchor.R",
+        "parent": "thigh_anchor.R",
+        "useDeform": true,
+        "restHead": [
+          -0.115,
+          0.0,
+          0.55
+        ],
+        "restTail": [
+          -0.105,
+          -0.01,
+          0.13
+        ],
+        "posedHead": [
+          -0.115,
+          -0.0,
+          0.55
+        ],
+        "posedTail": [
+          -0.105,
+          -0.01,
+          0.13
+        ]
+      },
+      {
+        "name": "foot_anchor.R",
+        "parent": "shin_anchor.R",
+        "useDeform": true,
+        "restHead": [
+          -0.105,
+          -0.01,
+          0.13
+        ],
+        "restTail": [
+          -0.105,
+          -0.13,
+          0.035
+        ],
+        "posedHead": [
+          -0.105,
+          -0.01,
+          0.13
+        ],
+        "posedTail": [
+          -0.105,
+          -0.13,
+          0.035
+        ]
+      },
+      {
+        "name": "thigh_anchor.L",
+        "parent": "root",
+        "useDeform": true,
+        "restHead": [
+          0.085,
+          0.0,
+          0.93
+        ],
+        "restTail": [
+          0.115,
+          0.0,
+          0.55
+        ],
+        "posedHead": [
+          0.085,
+          0.0,
+          0.93
+        ],
+        "posedTail": [
+          0.115,
+          -0.0,
+          0.55
+        ]
+      },
+      {
+        "name": "shin_anchor.L",
+        "parent": "thigh_anchor.L",
+        "useDeform": true,
+        "restHead": [
+          0.115,
+          0.0,
+          0.55
+        ],
+        "restTail": [
+          0.105,
+          -0.01,
+          0.13
+        ],
+        "posedHead": [
+          0.115,
+          -0.0,
+          0.55
+        ],
+        "posedTail": [
+          0.105,
+          -0.01,
+          0.13
+        ]
+      },
+      {
+        "name": "foot_anchor.L",
+        "parent": "shin_anchor.L",
+        "useDeform": true,
+        "restHead": [
+          0.105,
+          -0.01,
+          0.13
+        ],
+        "restTail": [
+          0.105,
+          -0.13,
+          0.035
+        ],
+        "posedHead": [
+          0.105,
+          -0.01,
+          0.13
+        ],
+        "posedTail": [
+          0.105,
+          -0.13,
+          0.035
+        ]
+      }
+    ],
+    "action": "V6CF10_ContactPose_Action",
+    "actionFrameRange": [
+      1,
+      20
+    ],
+    "poseMethod": "explicit armature-space bone matrices; keyed frame 1 and frame 20",
+    "weightingOperator": "SMOOTH_DETERMINISTIC_FOUR_INFLUENCE_CONTINUOUS_HAND_ROOTS",
+    "weights": {
+      "vertexCount": 10582,
+      "groupCount": 53,
+      "deformBoneCount": 52,
+      "zeroWeightVertices": 0,
+      "minimumWeightSum": 1.0,
+      "maximumWeightSum": 1.0,
+      "verticesPerGroup": {
+        "chest": 5407,
+        "clavicle.L": 358,
+        "clavicle.R": 358,
+        "foot_anchor.L": 1255,
+        "foot_anchor.R": 1255,
+        "forearm.L": 516,
+        "forearm.R": 516,
+        "head": 4302,
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "neck": 4903,
+        "palm.L": 402,
+        "palm.R": 402,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "root": 620,
+        "shin_anchor.L": 390,
+        "shin_anchor.R": 390,
+        "spine_01": 1106,
+        "spine_02": 5408,
+        "thigh_anchor.L": 180,
+        "thigh_anchor.R": 180,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10,
+        "upper_arm.L": 518,
+        "upper_arm.R": 518,
+        "wrist.L": 696,
+        "wrist.R": 696
+      },
+      "missingDeformGroups": [],
+      "nonDeformGroupsExcluded": [
+        "V6CF10_CorrectiveMask"
+      ]
+    }
+  },
+  "weaponContactBlockout": {
+    "objects": [
+      "V6CF10_Rifle_Barrel",
+      "V6CF10_Rifle_ForegripContact",
+      "V6CF10_Rifle_ForegripHandStop",
+      "V6CF10_Rifle_GripContact",
+      "V6CF10_Rifle_Muzzle",
+      "V6CF10_Rifle_ReceiverSectioned",
+      "V6CF10_Rifle_StockBeam",
+      "V6CF10_Rifle_StockPadContact",
+      "V6CF10_Rifle_Trigger",
+      "V6CF10_Rifle_TriggerGuard"
+    ],
+    "requiredNamedSurfaces": [
+      "V6CF10_Rifle_GripContact",
+      "V6CF10_Rifle_Trigger",
+      "V6CF10_Rifle_TriggerGuard",
+      "V6CF10_Rifle_ForegripContact",
+      "V6CF10_Rifle_StockPadContact"
+    ],
+    "landmarks": {
+      "forward": [
+        0.220107,
+        -0.975476,
+        0.0
+      ],
+      "right": [
+        0.975476,
+        0.220107,
+        0.0
+      ],
+      "shoulderPad": [
+        -0.185,
+        -0.115,
+        1.365
+      ],
+      "receiver": [
+        -0.121169,
+        -0.397888,
+        1.31
+      ],
+      "grip": [
+        -0.113465,
+        -0.43203,
+        1.165
+      ],
+      "foregrip": [
+        -0.063941,
+        -0.651511,
+        1.19
+      ],
+      "trigger": [
+        -0.123194,
+        -0.439549,
+        1.187478
+      ],
+      "firingPalm": [
+        -0.162239,
+        -0.443035,
+        1.205
+      ],
+      "supportPalm": [
+        -0.015167,
+        -0.640506,
+        1.228
+      ],
+      "palmMappedDigitRoots": {
+        "middle.R": [
+          -0.184374,
+          -0.385211,
+          1.162112
+        ],
+        "ring.R": [
+          -0.185353,
+          -0.382523,
+          1.188205
+        ],
+        "pinky.R": [
+          -0.188834,
+          -0.37297,
+          1.211043
+        ],
+        "index.R": [
+          -0.180892,
+          -0.394765,
+          1.139273
+        ],
+        "thumb.R": [
+          -0.212197,
+          -0.373113,
+          1.125444
+        ],
+        "index.L": [
+          -0.018998,
+          -0.555122,
+          1.164155
+        ],
+        "middle.L": [
+          -0.019531,
+          -0.5457,
+          1.187306
+        ],
+        "ring.L": [
+          -0.019646,
+          -0.543675,
+          1.213476
+        ],
+        "pinky.L": [
+          -0.020179,
+          -0.534253,
+          1.236627
+        ],
+        "thumb.L": [
+          0.001188,
+          -0.522444,
+          1.151321
+        ]
+      }
+    },
+    "receiverPresentation": "sectioned translucent volume; contact surfaces remain opaque"
+  },
+  "prohibitions": {
+    "garmentOrArmorObjects": [],
+    "externalLibraries": [],
+    "runtimeSourceTouched": false,
+    "mapOrOnlineTouched": false,
+    "productionWeaponArtClaim": false,
+    "v6bClaim": false,
+    "g6Claim": false
+  },
+  "reviewContract": {
+    "mustShow": [
+      "continuous full-body firing pose",
+      "firing palm seated on grip with four-digit wrap",
+      "index visibly clear of guard and reaching trigger",
+      "support palm and four digits seated around foregrip",
+      "stock pad tangent to shoulder pocket",
+      "plausible elbows and wrists",
+      "no tearing, collapse, blocky/mannequin silhouette"
+    ],
+    "automaticAcceptance": false,
+    "selfRejectOnInferredContact": true
+  },
+  "rev2Corrections": {
+    "rev1Preserved": true,
+    "poseBoneScale": "forbidden; every posed bone remains unit scale",
+    "restChains": "anatomically sized upper-arm, forearm, wrist, palm, all digit chains",
+    "armSolve": "native-length analytic two-bone solve",
+    "indexSolve": "native-length FABRIK endpoint at trigger surface",
+    "distalWeights": {
+      "allThirtyDigitBonesWeighted": true,
+      "familyLocalOnlyBelowHandBase": true,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    }
+  },
+  "rev3Corrections": {
+    "rev1AndRev2Preserved": true,
+    "orientationMethod": "Vector.to_track_quat local Y, local Z up",
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    },
+    "distalWeightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "familyLocalOnlyBelowHandBase": true,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "weightNormalization": "all vertex groups normalized after deterministic distal assignment"
+  },
+  "rev4Corrections": {
+    "rev1ThroughRev3Preserved": true,
+    "heatWeightsUsed": false,
+    "fullBodyWeightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "corrective": {
+        "excludedHandVertices": 1242,
+        "factor": 0.5199999809265137,
+        "handCorrectiveWeight": 0.0,
+        "isBind": true,
+        "iterations": 10,
+        "maskGroup": "V6CF10_CorrectiveMask",
+        "maskVertexCount": 1778,
+        "modifierStack": [
+          {
+            "index": 0,
+            "name": "V6CF10_SmoothDeterministicArmatureDeform",
+            "type": "ARMATURE"
+          },
+          {
+            "index": 1,
+            "name": "V6CF10_RestBoundCorrectiveSmooth",
+            "type": "CORRECTIVE_SMOOTH"
+          },
+          {
+            "index": 2,
+            "name": "Multires",
+            "type": "MULTIRES"
+          }
+        ],
+        "multiresLevels": {
+          "render": 1,
+          "sculpt": 1,
+          "viewport": 1
+        },
+        "restSource": "BIND",
+        "smoothType": "LENGTH_WEIGHTED"
+      },
+      "distalFamilyCounts": {
+        "index.L": 65,
+        "index.R": 66,
+        "middle.L": 84,
+        "middle.R": 84,
+        "pinky.L": 125,
+        "pinky.R": 125,
+        "ring.L": 103,
+        "ring.R": 103,
+        "thumb.L": 11,
+        "thumb.R": 10
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 372,
+        "3": 366,
+        "4": 6082,
+        "6": 4,
+        "7": 235,
+        "8": 502
+      },
+      "maximumInfluences": 8,
+      "method": "smooth deterministic four-influence arm plus family-local three-influence digits",
+      "modifierStack": [
+        {
+          "index": 0,
+          "name": "V6CF10_SmoothDeterministicArmatureDeform",
+          "type": "ARMATURE"
+        },
+        {
+          "index": 1,
+          "name": "V6CF10_RestBoundCorrectiveSmooth",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "index": 2,
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "regionCounts": {
+        "arm": 372,
+        "axial": 4667,
+        "digit": 776,
+        "handBase": 710,
+        "lower": 3393,
+        "shoulderBlend": 664
+      },
+      "vertexCount": 10582,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    }
+  },
+  "rev5Corrections": {
+    "rev1ThroughRev4Preserved": true,
+    "axialAndClaviclePose": "reviewed V6-A rest",
+    "movedPoseChains": "upper arms, forearms, wrists, palms, all digit chains only",
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    },
+    "fullBodyWeightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "corrective": {
+        "excludedHandVertices": 1242,
+        "factor": 0.5199999809265137,
+        "handCorrectiveWeight": 0.0,
+        "isBind": true,
+        "iterations": 10,
+        "maskGroup": "V6CF10_CorrectiveMask",
+        "maskVertexCount": 1778,
+        "modifierStack": [
+          {
+            "index": 0,
+            "name": "V6CF10_SmoothDeterministicArmatureDeform",
+            "type": "ARMATURE"
+          },
+          {
+            "index": 1,
+            "name": "V6CF10_RestBoundCorrectiveSmooth",
+            "type": "CORRECTIVE_SMOOTH"
+          },
+          {
+            "index": 2,
+            "name": "Multires",
+            "type": "MULTIRES"
+          }
+        ],
+        "multiresLevels": {
+          "render": 1,
+          "sculpt": 1,
+          "viewport": 1
+        },
+        "restSource": "BIND",
+        "smoothType": "LENGTH_WEIGHTED"
+      },
+      "distalFamilyCounts": {
+        "index.L": 65,
+        "index.R": 66,
+        "middle.L": 84,
+        "middle.R": 84,
+        "pinky.L": 125,
+        "pinky.R": 125,
+        "ring.L": 103,
+        "ring.R": 103,
+        "thumb.L": 11,
+        "thumb.R": 10
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 372,
+        "3": 366,
+        "4": 6082,
+        "6": 4,
+        "7": 235,
+        "8": 502
+      },
+      "maximumInfluences": 8,
+      "method": "smooth deterministic four-influence arm plus family-local three-influence digits",
+      "modifierStack": [
+        {
+          "index": 0,
+          "name": "V6CF10_SmoothDeterministicArmatureDeform",
+          "type": "ARMATURE"
+        },
+        {
+          "index": 1,
+          "name": "V6CF10_RestBoundCorrectiveSmooth",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "index": 2,
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "regionCounts": {
+        "arm": 372,
+        "axial": 4667,
+        "digit": 776,
+        "handBase": 710,
+        "lower": 3393,
+        "shoulderBlend": 664
+      },
+      "vertexCount": 10582,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "distalAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "familyLocalOnlyBelowHandBase": true,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    }
+  },
+  "rev7Corrections": {
+    "rev1ThroughRev6Preserved": true,
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    },
+    "fullBodyWeightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "corrective": {
+        "excludedHandVertices": 1242,
+        "factor": 0.5199999809265137,
+        "handCorrectiveWeight": 0.0,
+        "isBind": true,
+        "iterations": 10,
+        "maskGroup": "V6CF10_CorrectiveMask",
+        "maskVertexCount": 1778,
+        "modifierStack": [
+          {
+            "index": 0,
+            "name": "V6CF10_SmoothDeterministicArmatureDeform",
+            "type": "ARMATURE"
+          },
+          {
+            "index": 1,
+            "name": "V6CF10_RestBoundCorrectiveSmooth",
+            "type": "CORRECTIVE_SMOOTH"
+          },
+          {
+            "index": 2,
+            "name": "Multires",
+            "type": "MULTIRES"
+          }
+        ],
+        "multiresLevels": {
+          "render": 1,
+          "sculpt": 1,
+          "viewport": 1
+        },
+        "restSource": "BIND",
+        "smoothType": "LENGTH_WEIGHTED"
+      },
+      "distalFamilyCounts": {
+        "index.L": 65,
+        "index.R": 66,
+        "middle.L": 84,
+        "middle.R": 84,
+        "pinky.L": 125,
+        "pinky.R": 125,
+        "ring.L": 103,
+        "ring.R": 103,
+        "thumb.L": 11,
+        "thumb.R": 10
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 372,
+        "3": 366,
+        "4": 6082,
+        "6": 4,
+        "7": 235,
+        "8": 502
+      },
+      "maximumInfluences": 8,
+      "method": "smooth deterministic four-influence arm plus family-local three-influence digits",
+      "modifierStack": [
+        {
+          "index": 0,
+          "name": "V6CF10_SmoothDeterministicArmatureDeform",
+          "type": "ARMATURE"
+        },
+        {
+          "index": 1,
+          "name": "V6CF10_RestBoundCorrectiveSmooth",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "index": 2,
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "regionCounts": {
+        "arm": 372,
+        "axial": 4667,
+        "digit": 776,
+        "handBase": 710,
+        "lower": 3393,
+        "shoulderBlend": 664
+      },
+      "vertexCount": 10582,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "distalAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "familyLocalOnlyBelowHandBase": true,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    }
+  },
+  "rev8Corrections": {
+    "rev1ThroughRev7Preserved": true,
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    },
+    "fullBodyWeightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "corrective": {
+        "excludedHandVertices": 1242,
+        "factor": 0.5199999809265137,
+        "handCorrectiveWeight": 0.0,
+        "isBind": true,
+        "iterations": 10,
+        "maskGroup": "V6CF10_CorrectiveMask",
+        "maskVertexCount": 1778,
+        "modifierStack": [
+          {
+            "index": 0,
+            "name": "V6CF10_SmoothDeterministicArmatureDeform",
+            "type": "ARMATURE"
+          },
+          {
+            "index": 1,
+            "name": "V6CF10_RestBoundCorrectiveSmooth",
+            "type": "CORRECTIVE_SMOOTH"
+          },
+          {
+            "index": 2,
+            "name": "Multires",
+            "type": "MULTIRES"
+          }
+        ],
+        "multiresLevels": {
+          "render": 1,
+          "sculpt": 1,
+          "viewport": 1
+        },
+        "restSource": "BIND",
+        "smoothType": "LENGTH_WEIGHTED"
+      },
+      "distalFamilyCounts": {
+        "index.L": 65,
+        "index.R": 66,
+        "middle.L": 84,
+        "middle.R": 84,
+        "pinky.L": 125,
+        "pinky.R": 125,
+        "ring.L": 103,
+        "ring.R": 103,
+        "thumb.L": 11,
+        "thumb.R": 10
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 372,
+        "3": 366,
+        "4": 6082,
+        "6": 4,
+        "7": 235,
+        "8": 502
+      },
+      "maximumInfluences": 8,
+      "method": "smooth deterministic four-influence arm plus family-local three-influence digits",
+      "modifierStack": [
+        {
+          "index": 0,
+          "name": "V6CF10_SmoothDeterministicArmatureDeform",
+          "type": "ARMATURE"
+        },
+        {
+          "index": 1,
+          "name": "V6CF10_RestBoundCorrectiveSmooth",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "index": 2,
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "regionCounts": {
+        "arm": 372,
+        "axial": 4667,
+        "digit": 776,
+        "handBase": 710,
+        "lower": 3393,
+        "shoulderBlend": 664
+      },
+      "vertexCount": 10582,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "distalAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "familyLocalOnlyBelowHandBase": true,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "contactRenderScope": "authored for section-only presentation by paired rev8 renderer"
+  },
+  "rev9Corrections": {
+    "rev1ThroughRev8Preserved": true,
+    "digitRoots": "derived from posed palm matrices; never independently teleported to fixture",
+    "fixtureCalibration": "narrow grip and foregrip centered between opposing palm/thumb and digit surfaces",
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    },
+    "fullBodyWeightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "corrective": {
+        "excludedHandVertices": 1242,
+        "factor": 0.5199999809265137,
+        "handCorrectiveWeight": 0.0,
+        "isBind": true,
+        "iterations": 10,
+        "maskGroup": "V6CF10_CorrectiveMask",
+        "maskVertexCount": 1778,
+        "modifierStack": [
+          {
+            "index": 0,
+            "name": "V6CF10_SmoothDeterministicArmatureDeform",
+            "type": "ARMATURE"
+          },
+          {
+            "index": 1,
+            "name": "V6CF10_RestBoundCorrectiveSmooth",
+            "type": "CORRECTIVE_SMOOTH"
+          },
+          {
+            "index": 2,
+            "name": "Multires",
+            "type": "MULTIRES"
+          }
+        ],
+        "multiresLevels": {
+          "render": 1,
+          "sculpt": 1,
+          "viewport": 1
+        },
+        "restSource": "BIND",
+        "smoothType": "LENGTH_WEIGHTED"
+      },
+      "distalFamilyCounts": {
+        "index.L": 65,
+        "index.R": 66,
+        "middle.L": 84,
+        "middle.R": 84,
+        "pinky.L": 125,
+        "pinky.R": 125,
+        "ring.L": 103,
+        "ring.R": 103,
+        "thumb.L": 11,
+        "thumb.R": 10
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 372,
+        "3": 366,
+        "4": 6082,
+        "6": 4,
+        "7": 235,
+        "8": 502
+      },
+      "maximumInfluences": 8,
+      "method": "smooth deterministic four-influence arm plus family-local three-influence digits",
+      "modifierStack": [
+        {
+          "index": 0,
+          "name": "V6CF10_SmoothDeterministicArmatureDeform",
+          "type": "ARMATURE"
+        },
+        {
+          "index": 1,
+          "name": "V6CF10_RestBoundCorrectiveSmooth",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "index": 2,
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "regionCounts": {
+        "arm": 372,
+        "axial": 4667,
+        "digit": 776,
+        "handBase": 710,
+        "lower": 3393,
+        "shoulderBlend": 664
+      },
+      "vertexCount": 10582,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    },
+    "distalAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "familyLocalOnlyBelowHandBase": true,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    }
+  },
+  "rev10Corrections": {
+    "rev1ThroughRev9Preserved": true,
+    "supportArm": "foregrip moved rearward on rifle axis and native-length arm re-solved to reachable palm",
+    "digitChains": "palm-mapped roots with deliberately slack FABRIK endpoints for visible curl",
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 1.6895741925311934e-07,
+      "maximumScaleError": 6.556510925292969e-07,
+      "maximumTailErrorMeters": 1.6895741925311934e-07,
+      "targetCount": 45
+    },
+    "weightAudit": {
+      "allThirtyDigitBonesWeighted": true,
+      "corrective": {
+        "excludedHandVertices": 1242,
+        "factor": 0.5199999809265137,
+        "handCorrectiveWeight": 0.0,
+        "isBind": true,
+        "iterations": 10,
+        "maskGroup": "V6CF10_CorrectiveMask",
+        "maskVertexCount": 1778,
+        "modifierStack": [
+          {
+            "index": 0,
+            "name": "V6CF10_SmoothDeterministicArmatureDeform",
+            "type": "ARMATURE"
+          },
+          {
+            "index": 1,
+            "name": "V6CF10_RestBoundCorrectiveSmooth",
+            "type": "CORRECTIVE_SMOOTH"
+          },
+          {
+            "index": 2,
+            "name": "Multires",
+            "type": "MULTIRES"
+          }
+        ],
+        "multiresLevels": {
+          "render": 1,
+          "sculpt": 1,
+          "viewport": 1
+        },
+        "restSource": "BIND",
+        "smoothType": "LENGTH_WEIGHTED"
+      },
+      "distalFamilyCounts": {
+        "index.L": 65,
+        "index.R": 66,
+        "middle.L": 84,
+        "middle.R": 84,
+        "pinky.L": 125,
+        "pinky.R": 125,
+        "ring.L": 103,
+        "ring.R": 103,
+        "thumb.L": 11,
+        "thumb.R": 10
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 372,
+        "3": 366,
+        "4": 6082,
+        "6": 4,
+        "7": 235,
+        "8": 502
+      },
+      "maximumInfluences": 8,
+      "method": "smooth deterministic four-influence arm plus family-local three-influence digits",
+      "modifierStack": [
+        {
+          "index": 0,
+          "name": "V6CF10_SmoothDeterministicArmatureDeform",
+          "type": "ARMATURE"
+        },
+        {
+          "index": 1,
+          "name": "V6CF10_RestBoundCorrectiveSmooth",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "index": 2,
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "regionCounts": {
+        "arm": 372,
+        "axial": 4667,
+        "digit": 776,
+        "handBase": 710,
+        "lower": 3393,
+        "shoulderBlend": 664
+      },
+      "vertexCount": 10582,
+      "verticesPerDigitGroup": {
+        "index_01.L": 171,
+        "index_01.R": 172,
+        "index_02.L": 65,
+        "index_02.R": 66,
+        "index_03.L": 65,
+        "index_03.R": 66,
+        "middle_01.L": 283,
+        "middle_01.R": 283,
+        "middle_02.L": 84,
+        "middle_02.R": 84,
+        "middle_03.L": 84,
+        "middle_03.R": 84,
+        "pinky_01.L": 316,
+        "pinky_01.R": 316,
+        "pinky_02.L": 125,
+        "pinky_02.R": 125,
+        "pinky_03.L": 125,
+        "pinky_03.R": 125,
+        "ring_01.L": 384,
+        "ring_01.R": 384,
+        "ring_02.L": 103,
+        "ring_02.R": 103,
+        "ring_03.L": 103,
+        "ring_03.R": 103,
+        "thumb_01.L": 320,
+        "thumb_01.R": 319,
+        "thumb_02.L": 11,
+        "thumb_02.R": 10,
+        "thumb_03.L": 11,
+        "thumb_03.R": 10
+      }
+    }
+  }
+}

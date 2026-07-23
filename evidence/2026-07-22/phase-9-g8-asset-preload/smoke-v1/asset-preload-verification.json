@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-22T11:29:52.501Z",
+  "artifactScope": "PHASE_9_G8_DEFAULT_PATH_ASSET_PRELOAD_VERIFICATION",
+  "g8Status": "OPEN",
+  "capturePath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-22\\phase-9-g8-asset-preload\\smoke-v1\\runtime-instrumentation.json",
+  "captureFingerprint": {
+    "bytes": 44804,
+    "sha256": "667b83b8c2baaad43363cbb9d7b35c97835636e7984af3675b2ba2eff489f322"
+  },
+  "glbRequests": [
+    {
+      "path": "/soldier.glb",
+      "responseBodySize": 2159764
+    }
+  ],
+  "checks": [
+    {
+      "id": "capture.is_non_qualifying_smoke",
+      "passed": true,
+      "details": {
+        "evidenceLabel": "NON_QUALIFYING_INSTRUMENTATION_SMOKE",
+        "g8Status": "OPEN",
+        "qualifyingCandidate": false
+      }
+    },
+    {
+      "id": "capture.completed_without_errors",
+      "passed": true,
+      "details": {
+        "failures": [],
+        "errors": []
+      }
+    },
+    {
+      "id": "general_independent_verification.passed",
+      "passed": true,
+      "details": {
+        "ok": true,
+        "failures": []
+      }
+    },
+    {
+      "id": "default_path.requests_only_preferred_soldier_glb",
+      "passed": true,
+      "details": {
+        "glbRequests": [
+          {
+            "path": "/soldier.glb",
+            "responseBodySize": 2159764
+          }
+        ]
+      }
+    },
+    {
+      "id": "default_path.removed_eager_glbs_absent",
+      "passed": true,
+      "details": {
+        "removedEagerPaths": [
+          "/player.glb",
+          "/spartan.glb",
+          "/weapons.glb",
+          "/zombie.glb"
+        ],
+        "glbPaths": [
+          "/soldier.glb"
+        ]
+      }
+    },
+    {
+      "id": "default_path.soldier_body_size_recorded",
+      "passed": true,
+      "details": {
+        "request": {
+          "path": "/soldier.glb",
+          "responseBodySize": 2159764
+        }
+      }
+    },
+    {
+      "id": "budget.first_playable_transfer_signal_passes",
+      "passed": true,
+      "details": {
+        "signal": {
+          "targetMaximumBytes": 12000000,
+          "observedBytes": 9720514,
+          "passed": true,
+          "limitation": "Request body sizes are a browser-observed transfer signal; cold/warm cache proof remains separate."
+        },
+        "transferBytes": 9720514
+      }
+    },
+    {
+      "id": "source.game_fingerprint_present",
+      "passed": true,
+      "details": {
+        "recordedGame": {
+          "bytes": 53678,
+          "sha256": "e152d6b93b211b38238661a07f21c6fd34203cacd33fecef3cf84a2c08da7780"
+        }
+      }
+    },
+    {
+      "id": "source.game_fingerprint_matches_current",
+      "passed": true,
+      "details": {
+        "recordedGame": {
+          "bytes": 53678,
+          "sha256": "e152d6b93b211b38238661a07f21c6fd34203cacd33fecef3cf84a2c08da7780"
+        },
+        "currentGame": {
+          "bytes": 53678,
+          "sha256": "e152d6b93b211b38238661a07f21c6fd34203cacd33fecef3cf84a2c08da7780"
+        },
+        "gamePath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\src\\core\\Game.js"
+      }
+    },
+    {
+      "id": "g8.remains_open_for_other_budgets",
+      "passed": true,
+      "details": {
+        "gateDecision": "G8_OPEN_REQUIRES_FINAL_INTEGRATED_REVIEW",
+        "drawCalls": {
+          "targetMaximum": 300,
+          "observedMaximum": 455,
+          "passed": false
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "ok": true
+}

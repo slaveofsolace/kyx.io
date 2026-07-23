@@ -1,59 +1,45 @@
-# kyx-server
+# Legacy relay (comparison only)
 
-A small always-on WebSocket relay that shares the deathmatch countdown timer
-and the roster of real connected players across everyone's browser — so
-joining the arena mid-match shows the real elapsed time and real other
-players instead of everyone getting a private simulated match.
+This directory preserves KYX's original WebSocket match-state relay as a
+comparison fixture while the authoritative multiplayer runtime is built.
 
-It does **not** simulate positions, movement, or hit detection — that all
-stays client-side exactly as it is today. If this server is unreachable or
-never deployed, the game falls back to the existing local-only simulation
-automatically; nothing breaks.
+It is **not an online multiplayer server** and must never be presented or
+deployed as one. The relay trusts client-authored `kill` messages, does not
+simulate movement or combat, and cannot establish authoritative match truth.
+It exists only to make the old protocol and its failure modes reproducible on
+one developer machine.
 
-## Why this is separate from the main site
+## Containment rules
 
-The main site (`dist/`) is deployed to Hostinger as static files over FTP —
-that hosting can only serve files, it can't keep a Node process running.
-This server needs to run continuously somewhere else. Any host that can run
-`npm start` and keep the process alive works:
+- The process always binds to `127.0.0.1`; it has no public-listen option.
+- There is no `start`, `dev`, or deployment script.
+- The browser application has no active environment variable that connects to
+  this relay.
+- CI does not launch or deploy it.
+- Do not expose it through a proxy, tunnel, VPS, or public WebSocket URL.
+- Do not use its timer, roster, score, or kill messages as proof of server
+  authority.
 
-- A VPS (including a Hostinger VPS, if you have one — plain shared hosting
-  does not support this)
-- Render.com — "Web Service" (the **paid** tier; the free tier sleeps after
-  15 minutes of inactivity, which defeats "24/7")
-- Railway.app
-- Fly.io
-- Any small always-on Linux box you already have
+## Run the historical comparison fixture
 
-## Deploy
+From `server/`, install the locked dependency graph and invoke the deliberately
+legacy-named script:
 
-1. `cd server && npm install`
-2. `npm start` (reads `PORT` from the environment, defaults to 8787)
-3. Point your host's process at `server/` as the working directory with
-   `npm start` as the run command.
-4. Once deployed, you'll have a URL like `wss://your-app.example.com`.
-
-## Wire the client to it
-
-In the repo root, set the build-time env var `VITE_WS_URL` to your server's
-`wss://` URL (see `.env.example`). If you deploy via the existing GitHub
-Action (`.github/workflows/deploy-hostinger.yml`), add a repo secret named
-`VITE_WS_URL` — the workflow already passes it through to the build. Leaving
-it unset keeps today's local-only behavior.
-
-## Local testing
-
-```
-cd server
-npm install
-npm start
+```powershell
+npm ci
+npm run legacy:relay
 ```
 
-Then in the repo root, create `.env.local` with:
+The local endpoint is `ws://127.0.0.1:8787`. To avoid a local port collision,
+set `LEGACY_RELAY_PORT` before starting it; the host remains loopback-only.
 
-```
-VITE_WS_URL=ws://localhost:8787
+```powershell
+$env:LEGACY_RELAY_PORT = '8790'
+npm run legacy:relay
 ```
 
-and run the usual dev server (`npx vite --port 5999 --host`). Open two
-browser tabs — both should show the same countdown and each other's kills.
+The direct `ws` dependency is retained so this isolated fixture remains
+reproducible. The replacement multiplayer path must use a fixed server tick,
+validated input commands, server-owned movement/collision/combat/scoring, and
+versioned protocol contracts. Production deployment requires explicit user
+authorization after the staging and authority gates pass.

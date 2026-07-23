@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T08:01:33.426709+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV6",
+  "inputs": {
+    "rev5": {
+      "path": "kyx_vanguard_v6c_visual_benchmark_rev5.blend",
+      "sha256Before": "4b4d18f844688df0698ef1f28969bc6d996cb2963a76c116de2306f9a29a1c23",
+      "sha256After": "4b4d18f844688df0698ef1f28969bc6d996cb2963a76c116de2306f9a29a1c23",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev6.blend",
+    "bytes": 12742886,
+    "sha256": "bb3ec3a885ae0f36740ed979a38bcdfe6e354b93e497f29280b131f42aed89a2"
+  },
+  "removedRev5Objects": [
+    "KYX_V6C_BENCH_R6_OccipitalBlade_L",
+    "KYX_V6C_BENCH_R6_OccipitalBlade_R",
+    "KYX_V6C_BENCH_R6_ForearmCeramicRoute_L",
+    "KYX_V6C_BENCH_R6_ThighCeramicRoute_L",
+    "KYX_V6C_BENCH_R6_PatellaCeramicRoute_L",
+    "KYX_V6C_BENCH_R6_TibiaCeramicRoute_L",
+    "KYX_V6C_BENCH_R6_ForearmCeramicRoute_R",
+    "KYX_V6C_BENCH_R6_ThighCeramicRoute_R",
+    "KYX_V6C_BENCH_R6_PatellaCeramicRoute_R",
+    "KYX_V6C_BENCH_R6_TibiaCeramicRoute_R"
+  ],
+  "smoothedFittedSurfaces": [
+    "KYX_V6C_BENCH_R6_ClavicleGraphiteUnderlay_L",
+    "KYX_V6C_BENCH_R6_ClavicleCeramicInlay_L",
+    "KYX_V6C_BENCH_R6_DeltoidFittedWrap_L",
+    "KYX_V6C_BENCH_R6_DeltoidCeramicRoute_L",
+    "KYX_V6C_BENCH_R6_ForearmFittedWrap_L",
+    "KYX_V6C_BENCH_R6_ThighFittedWrap_L",
+    "KYX_V6C_BENCH_R6_PatellaFittedWrap_L",
+    "KYX_V6C_BENCH_R6_TibiaFittedWrap_L",
+    "KYX_V6C_BENCH_R6_ClavicleGraphiteUnderlay_R",
+    "KYX_V6C_BENCH_R6_ClavicleCeramicInlay_R",
+    "KYX_V6C_BENCH_R6_DeltoidFittedWrap_R",
+    "KYX_V6C_BENCH_R6_DeltoidCeramicRoute_R",
+    "KYX_V6C_BENCH_R6_ForearmFittedWrap_R",
+    "KYX_V6C_BENCH_R6_ThighFittedWrap_R",
+    "KYX_V6C_BENCH_R6_PatellaFittedWrap_R",
+    "KYX_V6C_BENCH_R6_TibiaFittedWrap_R"
+  ],
+  "corrections": [
+    "Smoothed every V6-A-derived fitted panel before solidify/bevel to remove pixel-stepped borders.",
+    "Replaced eight broad white limb patches with narrow surface-projected ceramic splines.",
+    "Removed both rectangular occipital plates and replaced them with two tapered rear routes.",
+    "Darkened and roughened the gunmetal rifle finish to reduce toy-plastic read."
+  ],
+  "assertions": {
+    "rev5Preserved": true,
+    "acceptedV6APreserved": true,
+    "fittedSurfacesSmoothed": true,
+    "noV6BObjects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV6_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 6 is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

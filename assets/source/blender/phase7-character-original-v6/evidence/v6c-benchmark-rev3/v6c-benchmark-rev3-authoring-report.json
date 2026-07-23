@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:38:51.391061+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV3",
+  "inputs": {
+    "rev2": {
+      "path": "kyx_vanguard_v6c_visual_benchmark_rev2.blend",
+      "sha256Before": "392020bc9c1b122e975c8f872fbfe3ff72f8b834407c38c495a00b7cf3f30388",
+      "sha256After": "392020bc9c1b122e975c8f872fbfe3ff72f8b834407c38c495a00b7cf3f30388",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev3.blend",
+    "bytes": 12760526,
+    "sha256": "0268b3299ecce743c22f2404af6f0ba0e74dd88f7c24304fd3a21ff3246020a0"
+  },
+  "removedRejectedObjects": [
+    "KYX_V6C_BENCH_R3_UpperClavicle_L",
+    "KYX_V6C_BENCH_R3_UpperClavicle_R",
+    "KYX_V6C_BENCH_R3_LowerRibFlow_L",
+    "KYX_V6C_BENCH_R3_LowerRibFlow_R",
+    "KYX_V6C_BENCH_R3_SternumInset",
+    "KYX_V6C_BENCH_R3_DeltoidLeaf_L",
+    "KYX_V6C_BENCH_R3_DeltoidLeaf_R",
+    "KYX_V6C_BENCH_R3_LeftShoulderIdentitySeam",
+    "KYX_V6C_BENCH_R3_HelmetOpenCrown",
+    "KYX_V6C_BENCH_R3_HelmetCrownSeam"
+  ],
+  "replacementBounds": {
+    "KYX_V6C_BENCH_R3_ClavicleBlade_L": [
+      0.143812,
+      0.080957,
+      0.126062
+    ],
+    "KYX_V6C_BENCH_R3_ClavicleBlade_R": [
+      0.138233,
+      0.07818,
+      0.121929
+    ],
+    "KYX_V6C_BENCH_R3_RibBlade_L": [
+      0.082619,
+      0.043811,
+      0.067803
+    ],
+    "KYX_V6C_BENCH_R3_RibBlade_R": [
+      0.082593,
+      0.040119,
+      0.068138
+    ],
+    "KYX_V6C_BENCH_R3_ShortSternumPlacket": [
+      0.040584,
+      0.034062,
+      0.114284
+    ],
+    "KYX_V6C_BENCH_R3_DeltoidUnderlay_L": [
+      0.131704,
+      0.04225,
+      0.138887
+    ],
+    "KYX_V6C_BENCH_R3_DeltoidCeramicLeaf_L": [
+      0.095765,
+      0.035052,
+      0.101466
+    ],
+    "KYX_V6C_BENCH_R3_DeltoidUnderlay_R": [
+      0.131704,
+      0.04225,
+      0.138887
+    ],
+    "KYX_V6C_BENCH_R3_DeltoidCeramicLeaf_R": [
+      0.095765,
+      0.035052,
+      0.101466
+    ],
+    "KYX_V6C_BENCH_R3_LeftShoulderIdentitySeam": [
+      0.065686,
+      0.020883,
+      0.072388
+    ],
+    "KYX_V6C_BENCH_R3_ForearmIntegratedSeam_L": [
+      0.042395,
+      0.010587,
+      0.114182
+    ],
+    "KYX_V6C_BENCH_R3_ThighIntegratedSeam_L": [
+      0.013587,
+      0.016576,
+      0.120496
+    ],
+    "KYX_V6C_BENCH_R3_KneeIntegratedSeam_L": [
+      0.00659,
+      0.016033,
+      0.055878
+    ],
+    "KYX_V6C_BENCH_R3_ShinIntegratedSeam_L": [
+      0.018585,
+      0.018584,
+      0.162468
+    ],
+    "KYX_V6C_BENCH_R3_ForearmIntegratedSeam_R": [
+      0.042395,
+      0.010587,
+      0.114182
+    ],
+    "KYX_V6C_BENCH_R3_ThighIntegratedSeam_R": [
+      0.013587,
+      0.016576,
+      0.120496
+    ],
+    "KYX_V6C_BENCH_R3_KneeIntegratedSeam_R": [
+      0.00659,
+      0.016033,
+      0.055878
+    ],
+    "KYX_V6C_BENCH_R3_ShinIntegratedSeam_R": [
+      0.018585,
+      0.018584,
+      0.162468
+    ],
+    "KYX_V6C_BENCH_R3_HelmetHighCrown": [
+      0.207423,
+      0.185191,
+      0.113973
+    ],
+    "KYX_V6C_BENCH_R3_HelmetCrownSeam": [
+      0.0046,
+      0.150811,
+      0.055359
+    ],
+    "KYX_V6C_BENCH_R3_AutoRifleHandguardVent_1": [
+      0.060806,
+      0.010163,
+      0.008187
+    ],
+    "KYX_V6C_BENCH_R3_AutoRifleHandguardVent_2": [
+      0.060806,
+      0.010163,
+      0.008187
+    ],
+    "KYX_V6C_BENCH_R3_AutoRifleHandguardVent_3": [
+      0.060806,
+      0.010163,
+      0.008187
+    ]
+  },
+  "rifleLongitudinalScale": 0.8,
+  "rifleScaledObjects": [
+    "KYX_V6C_BENCH_R3_AutoRifleContinuousPrimaryVolume",
+    "KYX_V6C_BENCH_R3_AutoRifleCeramicFlowShell",
+    "KYX_V6C_BENCH_R3_AutoRifleStockCheekFlow",
+    "KYX_V6C_BENCH_R3_AutoRifleIntegratedGrip",
+    "KYX_V6C_BENCH_R3_AutoRifleMagazine",
+    "KYX_V6C_BENCH_R3_AutoRifleBarrel",
+    "KYX_V6C_BENCH_R3_AutoRifleMuzzle",
+    "KYX_V6C_BENCH_R3_AutoRifleTriggerGuard",
+    "KYX_V6C_BENCH_R3_AutoRifleIdentityRoute",
+    "KYX_V6C_BENCH_R3_AutoRifleStatus"
+  ],
+  "corrections": [
+    "Removed every invalid or cup-like rev2 front chest patch and the long sternum strip.",
+    "Added dense bounded no-subdivision clavicle, rib, and short sternum surfaces.",
+    "Replaced shoulder knobs with elongated nested graphite and ceramic deltoid layers.",
+    "Added flush center seams to visually integrate forearm, thigh, knee, and tibia leaves.",
+    "Raised the ivory helmet cap above the temporal band and retained the tight dark liner.",
+    "Shortened the continuous-loft rifle and added three seated handguard vents."
+  ],
+  "assertions": {
+    "rev2Preserved": true,
+    "acceptedV6APreserved": true,
+    "allChestReplacementBoundsLimited": true,
+    "noV6BObjects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV3_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 3 is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact witnesses establish future intent only; no literal posed contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

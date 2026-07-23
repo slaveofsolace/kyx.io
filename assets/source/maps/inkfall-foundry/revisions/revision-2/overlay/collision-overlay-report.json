@@ -1,0 +1,251 @@
+{
+  "blenderVersion": "5.1.2",
+  "candidate": {
+    "meshNodeCount": 339,
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\revisions\\revision-2\\export\\collision.authority.glb",
+    "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+  },
+  "comparison": {
+    "added": [
+      "C_REV2__ARCHIVE_DROP_PRESS_NORTH__LANDING_RUNOUT",
+      "C_REV2__ARCHIVE_DROP__LAUNCH_EXTENSION",
+      "C_REV2__ARCHIVE_EAST_TERMINAL_SUPPORT_LOWER",
+      "C_REV2__ARCHIVE_EAST_TERMINAL_SUPPORT_UPPER",
+      "C_REV2__ARCHIVE_WEST_TERMINAL_SUPPORT_LOWER",
+      "C_REV2__ARCHIVE_WEST_TERMINAL_SUPPORT_UPPER",
+      "C_REV2__NODE__TELEPORT_EXIT_SLOPED_LANDING",
+      "C_REV2__PRESS_REACTOR_SOUTH__LOWER_EAST",
+      "C_REV2__PRESS_REACTOR_SOUTH__LOWER_SOUTH",
+      "C_REV2__PRESS_REACTOR_SOUTH__LOWER_WEST_NORTH",
+      "C_REV2__PRESS_REACTOR_SOUTH__UPPER_CAP"
+    ],
+    "addedCount": 11,
+    "commonCount": 328,
+    "modified": [
+      "C_ROUTE__TELEPORT_EXIT_PRESS_CORE__S00"
+    ],
+    "modifiedCount": 1,
+    "removed": [
+      "C_MODULE__PRESS_REACTOR_SOUTH",
+      "C_NODE__TELEPORT_EXIT",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T00",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T01",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T02",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T03",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T04",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T05",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T06",
+      "C_STAIR__ARCHIVE_EAST_CHOICE__S01__T07",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T00",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T01",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T02",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T03",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T04",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T05",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T06",
+      "C_STAIR__WEST_CHOICE_ARCHIVE__S01__T07"
+    ],
+    "removedCount": 18,
+    "unchangedCount": 327
+  },
+  "evidenceId": "inkfall_foundry_p6_6a_attempt9_frozen_collision_overlay",
+  "legend": {
+    "addedCandidate": {
+      "color": "green",
+      "rgba": [
+        0.12,
+        0.95,
+        0.3,
+        1.0
+      ]
+    },
+    "modifiedCandidate": {
+      "color": "cyan",
+      "rgba": [
+        0.0,
+        0.78,
+        1.0,
+        1.0
+      ]
+    },
+    "modifiedRevision1Wire": {
+      "color": "orange",
+      "rgba": [
+        1.0,
+        0.43,
+        0.05,
+        1.0
+      ]
+    },
+    "removedRevision1": {
+      "color": "red",
+      "rgba": [
+        0.95,
+        0.08,
+        0.1,
+        1.0
+      ]
+    },
+    "unchanged": {
+      "color": "slate",
+      "rgba": [
+        0.2,
+        0.29,
+        0.42,
+        1.0
+      ]
+    }
+  },
+  "nonClaims": [
+    "P6_7_TOPOLOGY_LOCK_NOT_CLAIMED",
+    "G5_NOT_PASSED",
+    "HUMAN_ACCEPTANCE_NOT_RUN",
+    "FINAL_ART_NOT_CLAIMED"
+  ],
+  "renders": [
+    {
+      "bytes": 1415286,
+      "camera": {
+        "location": [
+          0.0,
+          0.0,
+          112.800003
+        ],
+        "orthographicScale": 63.84,
+        "rotationEuler": [
+          0.0,
+          -0.0,
+          0.0
+        ]
+      },
+      "height": 1080,
+      "mode": "revision1",
+      "path": "revision1-authority-collision-plan.png",
+      "sha256": "9504cc2ed469644626c8529af94124af60c43b885dc1dad030bf8e44197dc278",
+      "view": "plan",
+      "width": 1920
+    },
+    {
+      "bytes": 1018697,
+      "camera": {
+        "location": [
+          85.206993,
+          -105.49437,
+          77.22924
+        ],
+        "orthographicScale": 106.559998,
+        "rotationEuler": [
+          1.067536,
+          -0.0,
+          0.679414
+        ]
+      },
+      "height": 1080,
+      "mode": "revision1",
+      "path": "revision1-authority-collision-oblique.png",
+      "sha256": "79cef8ed7925c5cb6908d3e317825e6bd8d57a4f38bfcf8b43ab174e319f457f",
+      "view": "oblique",
+      "width": 1920
+    },
+    {
+      "bytes": 1414692,
+      "camera": {
+        "location": [
+          0.0,
+          0.0,
+          112.800003
+        ],
+        "orthographicScale": 63.84,
+        "rotationEuler": [
+          0.0,
+          -0.0,
+          0.0
+        ]
+      },
+      "height": 1080,
+      "mode": "candidate",
+      "path": "candidate-authority-collision-plan.png",
+      "sha256": "d91fd27e71cb451c79cd81c24d67883356d9892b52cbaa5dcb686af730fc9d0d",
+      "view": "plan",
+      "width": 1920
+    },
+    {
+      "bytes": 1018019,
+      "camera": {
+        "location": [
+          85.206993,
+          -105.49437,
+          77.22924
+        ],
+        "orthographicScale": 106.559998,
+        "rotationEuler": [
+          1.067536,
+          -0.0,
+          0.679414
+        ]
+      },
+      "height": 1080,
+      "mode": "candidate",
+      "path": "candidate-authority-collision-oblique.png",
+      "sha256": "6b2a4ebb03dcad13dace02df1791868faf411b105ddf24b83700e5df0e1161a3",
+      "view": "oblique",
+      "width": 1920
+    },
+    {
+      "bytes": 1426615,
+      "camera": {
+        "location": [
+          0.0,
+          0.0,
+          112.800003
+        ],
+        "orthographicScale": 63.84,
+        "rotationEuler": [
+          0.0,
+          -0.0,
+          0.0
+        ]
+      },
+      "height": 1080,
+      "mode": "overlay",
+      "path": "revision1-vs-candidate-collision-diff-plan.png",
+      "sha256": "104b563afe6086c8f7893c4c0b748a3b5b9d8d5ebaf3c0b8794213266a4fc975",
+      "view": "plan",
+      "width": 1920
+    },
+    {
+      "bytes": 1028397,
+      "camera": {
+        "location": [
+          85.206993,
+          -105.49437,
+          77.22924
+        ],
+        "orthographicScale": 106.559998,
+        "rotationEuler": [
+          1.067536,
+          -0.0,
+          0.679414
+        ]
+      },
+      "height": 1080,
+      "mode": "overlay",
+      "path": "revision1-vs-candidate-collision-diff-oblique.png",
+      "sha256": "6d2f668cdc4d9e0d417d8161cf134266e65ba4ee316cbd1704129413ac0f9c23",
+      "view": "oblique",
+      "width": 1920
+    }
+  ],
+  "revision1": {
+    "meshNodeCount": 346,
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\export\\collision.authority.glb",
+    "sha256": "40fc9fa07da89779bb2cb150cc9b642b3598fdf54d041f23d4b6ab203df2d2f0"
+  },
+  "schemaVersion": 1,
+  "scope": "P6.6A_ATTEMPT9_FROZEN_VISUAL_COLLISION_EVIDENCE_ONLY",
+  "script": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\render_inkfall_collision_revision_overlay.py",
+    "sha256": "aca4b947e88f928ca2371269f8808078eca367f4315d90422dfc2417b85b15cb",
+    "version": 2
+  }
+}

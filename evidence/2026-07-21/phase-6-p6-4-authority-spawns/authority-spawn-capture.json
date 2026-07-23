@@ -1,0 +1,877 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_4_AUTHORITY_SPAWN_EVIDENCE_PASS",
+  "capturedAtUtc": "2026-07-22T03:59:02.495Z",
+  "route": "http://127.0.0.1:4184/__test__/map",
+  "browser": {
+    "name": "chromium",
+    "version": "149.0.7827.55",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  "pageState": {
+    "launchSupport": "map-package-evidence",
+    "mapStatus": "ready"
+  },
+  "snapshot": {
+    "schemaVersion": 1,
+    "status": "P6.3_RUNTIME_FIXTURE_LOADED_G5_NOT_PASSED",
+    "mapId": "inkfall_foundry",
+    "mapRevision": 1,
+    "displayName": "Inkfall Foundry",
+    "packageDigest": "a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267",
+    "boundsMm": {
+      "minimum": {
+        "x": -36000,
+        "y": -5000,
+        "z": -28000
+      },
+      "maximum": {
+        "x": 36000,
+        "y": 10000,
+        "z": 28000
+      }
+    },
+    "renderPath": "export/render.graybox.glb",
+    "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+    "renderMeshNodeCount": 346,
+    "authorityCollisionPath": "export/collision.authority.glb",
+    "authorityCollisionSha256": "40fc9fa07da89779bb2cb150cc9b642b3598fdf54d041f23d4b6ab203df2d2f0",
+    "authorityCollisionMeshNodeCount": 346,
+    "authorityVolumeCount": 2,
+    "totalAuthorityColliderCount": 348,
+    "fixtureHash": "2a0a446a0b152395",
+    "spawnCount": 12,
+    "zoneCount": 9,
+    "pickupCount": 0,
+    "triggerCount": 1,
+    "renderMeshesMayBeAuthority": false,
+    "spawnAuthority": {
+      "status": "P6.4_DETERMINISTIC_AUTHORITY_FIXTURE_G5_NOT_PASSED",
+      "fixtureSetId": "inkfall_foundry_p6_4",
+      "scenarioId": "ffa_visual_score_pressure",
+      "expectedDecisionHash": "81286ef1c04ce7e4",
+      "decision": {
+        "schemaVersion": 1,
+        "status": "selected",
+        "mapId": "inkfall_foundry",
+        "mapRevision": 1,
+        "fixtureHash": "2a0a446a0b152395",
+        "mode": "deathmatch",
+        "tick": 1000,
+        "selected": {
+          "spawnId": "spawn_dm_ink_e",
+          "feetPositionMm": {
+            "x": 27000,
+            "y": -3000,
+            "z": -21000
+          },
+          "yawMilliDegrees": 135000,
+          "score": 333
+        },
+        "evaluations": [
+          {
+            "spawnId": "spawn_dm_archive_e",
+            "set": "deathmatch_candidate",
+            "feetPositionMm": {
+              "x": 27000,
+              "y": 6000,
+              "z": 21000
+            },
+            "yawMilliDegrees": -135000,
+            "eligible": true,
+            "rejectionReasons": [],
+            "score": -3189,
+            "components": {
+              "enemyDistanceSafety": 400,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": -600,
+              "enemyTravelArrivalPressure": -780,
+              "recentDeathLocation": -1140,
+              "recentSpawnUse": -969,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": -500,
+              "occupancy": 0,
+              "modeTeamTerritory": 0,
+              "escapeRouteCountQuality": 400
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 65548,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_guard_rail_press_core_archive_mid_e_s01_right",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_guard_rail_press_core_archive_mid_e_s01_right",
+                "aimAlignmentPermille": 1000,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 100,
+                "arrivalSource": "authority_route_probe",
+                "components": {
+                  "distanceSafety": 400,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": -600,
+                  "travelArrivalPressure": -780
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "crosslink"
+            ]
+          },
+          {
+            "spawnId": "spawn_dm_archive_w",
+            "set": "deathmatch_candidate",
+            "feetPositionMm": {
+              "x": -27000,
+              "y": 6000,
+              "z": 22000
+            },
+            "yawMilliDegrees": -45000,
+            "eligible": false,
+            "rejectionReasons": [
+              "direct_enemy_line_of_sight"
+            ],
+            "score": -4888,
+            "components": {
+              "enemyDistanceSafety": 270,
+              "lineOfSightExposure": -5000,
+              "recentEnemyAimAlignment": -358,
+              "enemyTravelArrivalPressure": -200,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": 0,
+              "escapeRouteCountQuality": 400
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 26991,
+                "standingLineOfSight": true,
+                "standingBlockerId": null,
+                "crouchedLineOfSight": true,
+                "crouchedBlockerId": null,
+                "aimAlignmentPermille": 596,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 2999,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 270,
+                  "lineOfSightExposure": -5000,
+                  "recentAimAlignment": -358,
+                  "travelArrivalPressure": -200
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "crosslink"
+            ]
+          },
+          {
+            "spawnId": "spawn_dm_ink_e",
+            "set": "deathmatch_candidate",
+            "feetPositionMm": {
+              "x": 27000,
+              "y": -3000,
+              "z": -21000
+            },
+            "yawMilliDegrees": 135000,
+            "eligible": true,
+            "rejectionReasons": [],
+            "score": 333,
+            "components": {
+              "enemyDistanceSafety": 400,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": -467,
+              "enemyTravelArrivalPressure": 0,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": 0,
+              "escapeRouteCountQuality": 400
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 63052,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_spawn_sight_blocker_west_ink",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_spawn_sight_blocker_west_ink",
+                "aimAlignmentPermille": 778,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 7006,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 400,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": -467,
+                  "travelArrivalPressure": 0
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "crosslink"
+            ]
+          },
+          {
+            "spawnId": "spawn_dm_ink_w",
+            "set": "deathmatch_candidate",
+            "feetPositionMm": {
+              "x": -27000,
+              "y": -3000,
+              "z": -22000
+            },
+            "yawMilliDegrees": 45000,
+            "eligible": true,
+            "rejectionReasons": [],
+            "score": 239,
+            "components": {
+              "enemyDistanceSafety": 198,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": 0,
+              "enemyTravelArrivalPressure": -359,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": 0,
+              "escapeRouteCountQuality": 400
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 19837,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_spawn_pocket_wall_west_south",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_spawn_pocket_wall_west_south",
+                "aimAlignmentPermille": 0,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 2204,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 198,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": 0,
+                  "travelArrivalPressure": -359
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "crosslink"
+            ]
+          },
+          {
+            "spawnId": "spawn_e_archive",
+            "set": "east_team",
+            "feetPositionMm": {
+              "x": 30500,
+              "y": 0,
+              "z": 7000
+            },
+            "yawMilliDegrees": 155000,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid"
+            ],
+            "score": -99862,
+            "components": {
+              "enemyDistanceSafety": 400,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": -583,
+              "enemyTravelArrivalPressure": 0,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": -109,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 430
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 64856,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_route_press_east_archive_s00",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_route_press_core_archive_mid_e_s00",
+                "aimAlignmentPermille": 971,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 7206,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 400,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": -583,
+                  "travelArrivalPressure": 0
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "press_hall"
+            ]
+          },
+          {
+            "spawnId": "spawn_e_ink",
+            "set": "east_team",
+            "feetPositionMm": {
+              "x": 30500,
+              "y": 0,
+              "z": -7000
+            },
+            "yawMilliDegrees": -155000,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid"
+            ],
+            "score": -99711,
+            "components": {
+              "enemyDistanceSafety": 400,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": -541,
+              "enemyTravelArrivalPressure": 0,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 430
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 64096,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_spawn_sight_blocker_west_ink",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_spawn_sight_blocker_west_ink",
+                "aimAlignmentPermille": 901,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 7122,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 400,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": -541,
+                  "travelArrivalPressure": 0
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "press_hall"
+            ]
+          },
+          {
+            "spawnId": "spawn_e_press_a",
+            "set": "east_team",
+            "feetPositionMm": {
+              "x": 33500,
+              "y": 0,
+              "z": 3500
+            },
+            "yawMilliDegrees": 180000,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid"
+            ],
+            "score": -99544,
+            "components": {
+              "enemyDistanceSafety": 400,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": -574,
+              "enemyTravelArrivalPressure": 0,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": -10,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 640
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 67365,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_door_frame_west_ink_entry_right",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_door_frame_west_ink_entry_right",
+                "aimAlignmentPermille": 957,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 7485,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 400,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": -574,
+                  "travelArrivalPressure": 0
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ]
+          },
+          {
+            "spawnId": "spawn_e_press_b",
+            "set": "east_team",
+            "feetPositionMm": {
+              "x": 33500,
+              "y": 0,
+              "z": -3500
+            },
+            "yawMilliDegrees": 180000,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid"
+            ],
+            "score": -99514,
+            "components": {
+              "enemyDistanceSafety": 400,
+              "lineOfSightExposure": 0,
+              "recentEnemyAimAlignment": -554,
+              "enemyTravelArrivalPressure": 0,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 640
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 67000,
+                "standingLineOfSight": false,
+                "standingBlockerId": "map_collision_spawn_sight_blocker_west_ink",
+                "crouchedLineOfSight": false,
+                "crouchedBlockerId": "map_collision_spawn_sight_blocker_west_ink",
+                "aimAlignmentPermille": 923,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 7444,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 400,
+                  "lineOfSightExposure": 0,
+                  "recentAimAlignment": -554,
+                  "travelArrivalPressure": 0
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ]
+          },
+          {
+            "spawnId": "spawn_w_archive",
+            "set": "west_team",
+            "feetPositionMm": {
+              "x": -30500,
+              "y": 0,
+              "z": 7000
+            },
+            "yawMilliDegrees": 25000,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid",
+              "direct_enemy_line_of_sight"
+            ],
+            "score": -105386,
+            "components": {
+              "enemyDistanceSafety": 109,
+              "lineOfSightExposure": -5000,
+              "recentEnemyAimAlignment": -368,
+              "enemyTravelArrivalPressure": -557,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 430
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 10920,
+                "standingLineOfSight": true,
+                "standingBlockerId": null,
+                "crouchedLineOfSight": true,
+                "crouchedBlockerId": null,
+                "aimAlignmentPermille": 613,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 1213,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 109,
+                  "lineOfSightExposure": -5000,
+                  "recentAimAlignment": -368,
+                  "travelArrivalPressure": -557
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "press_hall"
+            ]
+          },
+          {
+            "spawnId": "spawn_w_ink",
+            "set": "west_team",
+            "feetPositionMm": {
+              "x": -30500,
+              "y": 0,
+              "z": -7000
+            },
+            "yawMilliDegrees": -25000,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid",
+              "direct_enemy_line_of_sight"
+            ],
+            "score": -105412,
+            "components": {
+              "enemyDistanceSafety": 46,
+              "lineOfSightExposure": -5000,
+              "recentEnemyAimAlignment": -190,
+              "enemyTravelArrivalPressure": -698,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 430
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 4610,
+                "standingLineOfSight": true,
+                "standingBlockerId": null,
+                "crouchedLineOfSight": true,
+                "crouchedBlockerId": null,
+                "aimAlignmentPermille": 317,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 512,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 46,
+                  "lineOfSightExposure": -5000,
+                  "recentAimAlignment": -190,
+                  "travelArrivalPressure": -698
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "press_hall"
+            ]
+          },
+          {
+            "spawnId": "spawn_w_press_a",
+            "set": "west_team",
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": -3500
+            },
+            "yawMilliDegrees": 0,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid",
+              "authority_occupancy_overlap",
+              "direct_enemy_line_of_sight"
+            ],
+            "score": -115760,
+            "components": {
+              "enemyDistanceSafety": 0,
+              "lineOfSightExposure": -5000,
+              "recentEnemyAimAlignment": -600,
+              "enemyTravelArrivalPressure": -800,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": -10000,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 640
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 0,
+                "standingLineOfSight": true,
+                "standingBlockerId": null,
+                "crouchedLineOfSight": true,
+                "crouchedBlockerId": null,
+                "aimAlignmentPermille": 1000,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 0,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 0,
+                  "lineOfSightExposure": -5000,
+                  "recentAimAlignment": -600,
+                  "travelArrivalPressure": -800
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ]
+          },
+          {
+            "spawnId": "spawn_w_press_b",
+            "set": "west_team",
+            "feetPositionMm": {
+              "x": -33500,
+              "y": 0,
+              "z": 3500
+            },
+            "yawMilliDegrees": 0,
+            "eligible": false,
+            "rejectionReasons": [
+              "mode_team_territory_invalid",
+              "direct_enemy_line_of_sight"
+            ],
+            "score": -105158,
+            "components": {
+              "enemyDistanceSafety": 70,
+              "lineOfSightExposure": -5000,
+              "recentEnemyAimAlignment": -224,
+              "enemyTravelArrivalPressure": -644,
+              "recentDeathLocation": 0,
+              "recentSpawnUse": 0,
+              "teammateSupport": 0,
+              "teamClustering": 0,
+              "objectiveProximityPressure": 0,
+              "occupancy": 0,
+              "modeTeamTerritory": -100000,
+              "escapeRouteCountQuality": 640
+            },
+            "enemies": [
+              {
+                "enemyId": "enemy_visual",
+                "distanceMm": 7000,
+                "standingLineOfSight": true,
+                "standingBlockerId": null,
+                "crouchedLineOfSight": true,
+                "crouchedBlockerId": null,
+                "aimAlignmentPermille": 374,
+                "aimSampleAgeTicks": 0,
+                "arrivalTimeMs": 778,
+                "arrivalSource": "spatial_lower_bound",
+                "components": {
+                  "distanceSafety": 70,
+                  "lineOfSightExposure": -5000,
+                  "recentAimAlignment": -224,
+                  "travelArrivalPressure": -644
+                }
+              }
+            ],
+            "objectivePolicy": "authority_objectives_applied",
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ]
+          }
+        ],
+        "decisionHash": "81286ef1c04ce7e4",
+        "authorityBoundary": "server_state_and_authority_collision_only",
+        "clientPositionOrScoreAccepted": false,
+        "nonClaims": [
+          "P6.5_NOT_CLAIMED",
+          "P6.6_NOT_CLAIMED",
+          "G5_NOT_PASSED"
+        ]
+      },
+      "fixtureResults": [
+        {
+          "id": "ffa_2_player_occluded",
+          "status": "selected",
+          "selectedSpawnId": "spawn_dm_ink_w",
+          "decisionHash": "2ff86027cd9ca213"
+        },
+        {
+          "id": "ffa_4_player_all_enemy_aggregate",
+          "status": "selected",
+          "selectedSpawnId": "spawn_dm_ink_e",
+          "decisionHash": "aabbcef2ce8f30cc"
+        },
+        {
+          "id": "ffa_8_player_safe_pockets",
+          "status": "selected",
+          "selectedSpawnId": "spawn_dm_ink_w",
+          "decisionHash": "196138c60153ded0"
+        },
+        {
+          "id": "tdm_4_player_team_cluster",
+          "status": "selected",
+          "selectedSpawnId": "spawn_w_archive",
+          "decisionHash": "4ad48c0fd9e11aeb"
+        },
+        {
+          "id": "ffa_visual_score_pressure",
+          "status": "selected",
+          "selectedSpawnId": "spawn_dm_ink_e",
+          "decisionHash": "81286ef1c04ce7e4"
+        },
+        {
+          "id": "ffa_no_safe_spawn",
+          "status": "no_safe_spawn",
+          "selectedSpawnId": null,
+          "decisionHash": "4ad254e4323673e7"
+        }
+      ]
+    },
+    "remaining": [
+      "P6.5 route, combat, sightline, and occupancy telemetry",
+      "P6.6 authoritative movement tapes and 2/4/8-player playtests",
+      "P6.7 graybox lock and modular art-kit dimensions",
+      "G5 final-art room, metrics, no-snag proof, and human playtest acceptance"
+    ]
+  },
+  "fixtureSet": {
+    "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v1.json",
+    "scenarioCount": 6,
+    "expectedResults": [
+      {
+        "id": "ffa_2_player_occluded",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "2ff86027cd9ca213"
+      },
+      {
+        "id": "ffa_4_player_all_enemy_aggregate",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "aabbcef2ce8f30cc"
+      },
+      {
+        "id": "ffa_8_player_safe_pockets",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "196138c60153ded0"
+      },
+      {
+        "id": "tdm_4_player_team_cluster",
+        "status": "selected",
+        "selectedSpawnId": "spawn_w_archive",
+        "decisionHash": "4ad48c0fd9e11aeb"
+      },
+      {
+        "id": "ffa_visual_score_pressure",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "81286ef1c04ce7e4"
+      },
+      {
+        "id": "ffa_no_safe_spawn",
+        "status": "no_safe_spawn",
+        "selectedSpawnId": null,
+        "decisionHash": "4ad254e4323673e7"
+      }
+    ]
+  },
+  "sourceFingerprints": {
+    "fixture": {
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v1.json",
+      "sha256": "beebe56866dc405ab393bedffbc33cbee958419ac9948d9cb70ffb6700bb05ca"
+    },
+    "scoring": {
+      "path": "src/authority/spawn/inkfallSpawnAuthority.ts",
+      "sha256": "c73ad15b614f2954f8ead44ca2a5a5d99d9a901cabab312e09c046d789143f60"
+    },
+    "lineOfSight": {
+      "path": "src/authority/spawn/fixtureLineOfSight.ts",
+      "sha256": "a52723a01864f3a6efb79e7b8052aecd3400346cb7d41924baecd767b523b22b"
+    },
+    "route": {
+      "path": "src/dev/mapTestRoute.ts",
+      "sha256": "a5265e7ecb4a706dc208a6c3abb720a6dd99a117612ca7ef6ff1bca0f2a79f8f"
+    }
+  },
+  "artifactResponses": [
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:4184/assets/source/maps/inkfall-foundry/export/collision.authority.glb"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:4184/assets/source/maps/inkfall-foundry/export/render.graybox.glb"
+    }
+  ],
+  "diagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": []
+  },
+  "screenshot": {
+    "path": "evidence/2026-07-21/phase-6-p6-4-authority-spawns/screenshots/inkfall-spawn-authority.png",
+    "bytes": 237623,
+    "sha256": "7b6f91d19012f401a8b806d2d9df2e5ca9281d89745d540b093fbd58eea1aa0e"
+  },
+  "assertions": {
+    "mapReady": true,
+    "exactArtifactResponses": true,
+    "noRuntimeErrors": true,
+    "immutableP63Binding": true,
+    "p64FixtureIdentity": true,
+    "allSavedFixtureResultsExact": true,
+    "visualDecisionExact": true,
+    "allScoreComponentsPresent": true,
+    "allEnemiesAggregated": true,
+    "directAndOccludedLosMeasured": true,
+    "noClientAuthority": true,
+    "boundedNonClaims": true
+  }
+}

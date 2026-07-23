@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "assetId": "legacy.player",
+  "kind": "character",
+  "releaseEligible": false,
+  "sourceHash": "cdb9a8d694a132099e2b505f07957bb39683def8ec9356be304d79b6f6f92564",
+  "sourceHashKind": "runtime_snapshot",
+  "runtime": {
+    "uri": "public/player.glb",
+    "hash": "cdb9a8d694a132099e2b505f07957bb39683def8ec9356be304d79b6f6f92564",
+    "bytes": 1363668
+  },
+  "budgets": {
+    "triangles": 21916,
+    "primitives": 209,
+    "materials": 5,
+    "nodes": 213,
+    "bones": 0,
+    "clips": 0,
+    "textures": 0,
+    "estimatedTextureBytes": null,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": ["EXCESSIVE_PRIMITIVES", "MISSING_RIG", "UNRESOLVED_PROVENANCE"]
+  },
+  "provenance": {
+    "status": "unresolved",
+    "creator": null,
+    "source": null,
+    "acquiredAt": null,
+    "license": null,
+    "licenseSnapshot": null,
+    "attribution": null,
+    "reviewer": null,
+    "notes": "Legacy runtime proxy. Original source and rights evidence were not present in the handoff."
+  },
+  "disposition": "legacy_proxy_replace"
+}

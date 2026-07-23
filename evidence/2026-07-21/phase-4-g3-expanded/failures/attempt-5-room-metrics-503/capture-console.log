@@ -1,0 +1,14 @@
+Expanded G3 profile matrix-rtt-0...
+Expanded G3 profile matrix-rtt-50...
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: Room metrics failed for KYX-EYM4PW: HTTP 503
+    at roomMetrics (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:128:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async captureDimensionProfile (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:441:23)
+    at async main (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:1527:21)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:1679:1
+
+Node.js v24.14.0

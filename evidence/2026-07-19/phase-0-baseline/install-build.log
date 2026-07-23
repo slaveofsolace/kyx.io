@@ -1,0 +1,36 @@
+[root] pnpm dlx npm@11.18.0 ci --no-audit --no-fund
+
+added 18 packages in 13s
+
+[server] pnpm dlx npm@11.18.0 ci --no-audit --no-fund
+
+added 1 package in 832ms
+
+[server] node --check index.js
+server/index.js syntax: PASS
+
+[root] pnpm dlx npm@11.18.0 run build
+
+> kyx.io@1.0.0 build
+> vite build
+
+vite v8.0.16 building client environment for production...
+transforming... 71 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/register.html                      2.68 kB | gzip:   0.94 kB
+dist/login.html                         2.89 kB | gzip:   1.00 kB
+dist/index.html                        28.49 kB | gzip:   6.46 kB
+dist/assets/UserAccount-BxD405Ux.css  106.38 kB | gzip:  21.19 kB
+dist/assets/register-BGYADgYV.js        0.70 kB | gzip:   0.35 kB
+dist/assets/login-BT5wqv-s.js           1.20 kB | gzip:   0.52 kB
+dist/assets/UserAccount-CIn5jV7B.js     2.28 kB | gzip:   1.03 kB
+dist/assets/main-DEa2Vw6v.js          979.75 kB | gzip: 258.12 kB
+
+built in 407ms
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking
+- Adjust chunk size limit via build.chunkSizeWarningLimit

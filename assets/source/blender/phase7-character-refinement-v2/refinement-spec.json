@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_phase7_character_refinement_v2",
+  "status": "visual_refinement_candidate_not_g6",
+  "sourceReview": "../phase7-benchmark/VISUAL_REVIEW.md",
+  "requiredResponse": {
+    "rejection": "Current player model is too blocky and shape-like",
+    "preserveBenchmark": true,
+    "separateVersionedLane": true,
+    "humanSilhouette": true,
+    "layeredSoftGoodsAndArmor": true,
+    "controlledCurvatureAndBevelHierarchy": true,
+    "handsAndWeaponContacts": true,
+    "primarySecondaryTertiaryForms": true,
+    "purposefulColorBlocking": true,
+    "grayscaleEvidence": true
+  },
+  "coordinateContract": {
+    "units": "meters",
+    "up": "+Z",
+    "forward": "-Y",
+    "characterHeightApproxMeters": 2.02,
+    "rootMotion": "in_place"
+  },
+  "paletteRoles": {
+    "graphite": "soft goods, mechanical breaks, silhouette boundaries",
+    "desaturatedArmor": "primary protective shells",
+    "oxide": "faction and left-side asymmetry cue",
+    "teal": "optics and device state",
+    "brass": "small functional hardware only"
+  },
+  "renderMatrix": [
+    "close-color",
+    "tactical-mid-color",
+    "far-color",
+    "front-ortho-color",
+    "side-ortho-color",
+    "back-ortho-color",
+    "weapon-contact-color",
+    "close-grayscale",
+    "front-ortho-grayscale"
+  ],
+  "explicitNonClaims": [
+    "G6",
+    "human visual approval",
+    "deformation-capable skin",
+    "weight-stress proof",
+    "first-person arms",
+    "complete gameplay clips",
+    "LODs",
+    "runtime outline/contact integration",
+    "2/4/8-character performance"
+  ]
+}

@@ -1,0 +1,994 @@
+{
+  "schema": "kyx-v6-contact-surface-diagnostic-v11",
+  "shoulderPad": {
+    "candidateCount": 74,
+    "frontmost": [
+      {
+        "forwardOffset": 0.0289468,
+        "vertex": 3971,
+        "point": [
+          -0.1370353,
+          -0.1338517,
+          1.3481306
+        ],
+        "rightOffset": 0.042639,
+        "zOffset": -0.0168694
+      },
+      {
+        "forwardOffset": 0.0255095,
+        "vertex": 3085,
+        "point": [
+          -0.124629,
+          -0.1275287,
+          1.3926419
+        ],
+        "rightOffset": 0.0561328,
+        "zOffset": 0.0276419
+      },
+      {
+        "forwardOffset": 0.0246961,
+        "vertex": 3964,
+        "point": [
+          -0.1289185,
+          -0.1276627,
+          1.2999251
+        ],
+        "rightOffset": 0.051919,
+        "zOffset": -0.0650749
+      },
+      {
+        "forwardOffset": 0.0215808,
+        "vertex": 3978,
+        "point": [
+          -0.1507875,
+          -0.1294037,
+          1.3786838
+        ],
+        "rightOffset": 0.0302032,
+        "zOffset": 0.0136838
+      },
+      {
+        "forwardOffset": 0.0213343,
+        "vertex": 3082,
+        "point": [
+          -0.1321402,
+          -0.1249434,
+          1.4038452
+        ],
+        "rightOffset": 0.0493749,
+        "zOffset": 0.0388452
+      },
+      {
+        "forwardOffset": 0.0193156,
+        "vertex": 3891,
+        "point": [
+          -0.1324031,
+          -0.1229332,
+          1.3158914
+        ],
+        "rightOffset": 0.0495608,
+        "zOffset": -0.0491086
+      },
+      {
+        "forwardOffset": 0.0147144,
+        "vertex": 8344,
+        "point": [
+          -0.1323963,
+          -0.1182148,
+          1.3638132
+        ],
+        "rightOffset": 0.0506061,
+        "zOffset": -0.0011868
+      },
+      {
+        "forwardOffset": 0.013138,
+        "vertex": 4285,
+        "point": [
+          -0.1423378,
+          -0.118842,
+          1.4034129
+        ],
+        "rightOffset": 0.0407703,
+        "zOffset": 0.0384129
+      },
+      {
+        "forwardOffset": 0.0129778,
+        "vertex": 9235,
+        "point": [
+          -0.1278306,
+          -0.1154043,
+          1.2909051
+        ],
+        "rightOffset": 0.0556784,
+        "zOffset": -0.0740949
+      },
+      {
+        "forwardOffset": 0.0126522,
+        "vertex": 8597,
+        "point": [
+          -0.1295443,
+          -0.1154572,
+          1.4170291
+        ],
+        "rightOffset": 0.0539951,
+        "zOffset": 0.0520291
+      },
+      {
+        "forwardOffset": 0.0123221,
+        "vertex": 3888,
+        "point": [
+          -0.1522334,
+          -0.1202384,
+          1.3720834
+        ],
+        "rightOffset": 0.03081,
+        "zOffset": 0.0070834
+      },
+      {
+        "forwardOffset": 0.0105997,
+        "vertex": 3086,
+        "point": [
+          -0.1432778,
+          -0.116452,
+          1.4066172
+        ],
+        "rightOffset": 0.0403794,
+        "zOffset": 0.0416172
+      }
+    ]
+  },
+  "firingGrip": {
+    "middle": {
+      "checkedVertices": 84,
+      "nearest": [
+        {
+          "distance": 0.0002434,
+          "vertex": 4346,
+          "point": [
+            -0.139099,
+            -0.3919322,
+            1.1574165
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0008449,
+          "vertex": 4498,
+          "point": [
+            -0.1561192,
+            -0.3961214,
+            1.1794202
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0009284,
+          "vertex": 4439,
+          "point": [
+            -0.1398915,
+            -0.3909098,
+            1.1731393
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0012937,
+          "vertex": 4500,
+          "point": [
+            -0.1480453,
+            -0.3923751,
+            1.1842254
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0014471,
+          "vertex": 4536,
+          "point": [
+            -0.1401707,
+            -0.390441,
+            1.1626996
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0015592,
+          "vertex": 4441,
+          "point": [
+            -0.151841,
+            -0.3963733,
+            1.1682049
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0019871,
+          "vertex": 4351,
+          "point": [
+            -0.1367203,
+            -0.3931831,
+            1.149683
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0022021,
+          "vertex": 4347,
+          "point": [
+            -0.1370118,
+            -0.3934692,
+            1.1572843
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "ring": {
+      "checkedVertices": 103,
+      "nearest": [
+        {
+          "distance": 8.33e-05,
+          "vertex": 4388,
+          "point": [
+            -0.1518466,
+            -0.3947095,
+            1.1851383
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0007349,
+          "vertex": 4392,
+          "point": [
+            -0.1558695,
+            -0.3959503,
+            1.1941395
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0008466,
+          "vertex": 4404,
+          "point": [
+            -0.1552639,
+            -0.3979343,
+            1.2071319
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0008573,
+          "vertex": 4374,
+          "point": [
+            -0.1469645,
+            -0.3925786,
+            1.1857996
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0009768,
+          "vertex": 4375,
+          "point": [
+            -0.1471913,
+            -0.39451,
+            1.1775931
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.001482,
+          "vertex": 4400,
+          "point": [
+            -0.1507048,
+            -0.3958207,
+            1.2091763
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0015851,
+          "vertex": 4343,
+          "point": [
+            -0.1446989,
+            -0.3945712,
+            1.1823949
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0016366,
+          "vertex": 4373,
+          "point": [
+            -0.1434987,
+            -0.3943532,
+            1.1893314
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "pinky": {
+      "checkedVertices": 125,
+      "nearest": [
+        {
+          "distance": 0.0001365,
+          "vertex": 4422,
+          "point": [
+            -0.1520881,
+            -0.3945879,
+            1.2334561
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0005324,
+          "vertex": 4598,
+          "point": [
+            -0.1547076,
+            -0.3967183,
+            1.2173607
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0007262,
+          "vertex": 4548,
+          "point": [
+            -0.1504092,
+            -0.3949792,
+            1.2201667
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0014636,
+          "vertex": 4416,
+          "point": [
+            -0.1561892,
+            -0.4028775,
+            1.2325889
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0015247,
+          "vertex": 4597,
+          "point": [
+            -0.1560758,
+            -0.4015522,
+            1.2184252
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0016358,
+          "vertex": 4549,
+          "point": [
+            -0.1490843,
+            -0.3956127,
+            1.2248981
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0019069,
+          "vertex": 4417,
+          "point": [
+            -0.1595091,
+            -0.4015296,
+            1.2290034
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0029411,
+          "vertex": 4596,
+          "point": [
+            -0.1543505,
+            -0.4055704,
+            1.2216092
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "thumb": {
+      "checkedVertices": 10,
+      "nearest": [
+        {
+          "distance": 0.0325751,
+          "vertex": 4566,
+          "point": [
+            -0.1485871,
+            -0.3604295,
+            1.1296279
+          ],
+          "familyWeight": 0.99976
+        },
+        {
+          "distance": 0.0344455,
+          "vertex": 4572,
+          "point": [
+            -0.1464493,
+            -0.3580297,
+            1.1346887
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0410719,
+          "vertex": 4491,
+          "point": [
+            -0.1660937,
+            -0.356065,
+            1.1373644
+          ],
+          "familyWeight": 0.9301
+        },
+        {
+          "distance": 0.0421074,
+          "vertex": 5016,
+          "point": [
+            -0.180031,
+            -0.3623444,
+            1.1344801
+          ],
+          "familyWeight": 0.81796
+        },
+        {
+          "distance": 0.0443652,
+          "vertex": 5025,
+          "point": [
+            -0.1762924,
+            -0.3573433,
+            1.1392223
+          ],
+          "familyWeight": 0.85593
+        },
+        {
+          "distance": 0.0477429,
+          "vertex": 5017,
+          "point": [
+            -0.1895687,
+            -0.3631757,
+            1.1353266
+          ],
+          "familyWeight": 0.74285
+        },
+        {
+          "distance": 0.0485149,
+          "vertex": 5024,
+          "point": [
+            -0.1856759,
+            -0.3585937,
+            1.1407286
+          ],
+          "familyWeight": 0.78291
+        },
+        {
+          "distance": 0.0540295,
+          "vertex": 4484,
+          "point": [
+            -0.1983885,
+            -0.3638149,
+            1.1367885
+          ],
+          "familyWeight": 0.68372
+        }
+      ]
+    }
+  },
+  "trigger": {
+    "checkedVertices": 66,
+    "nearest": [
+      {
+        "distance": 0.0143539,
+        "vertex": 4541,
+        "point": [
+          -0.1600969,
+          -0.3991525,
+          1.1988127
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0145692,
+        "vertex": 4593,
+        "point": [
+          -0.1616025,
+          -0.4011987,
+          1.2009611
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0151694,
+        "vertex": 4540,
+        "point": [
+          -0.1595118,
+          -0.3971561,
+          1.2018616
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0155902,
+        "vertex": 4354,
+        "point": [
+          -0.1602645,
+          -0.3975152,
+          1.197914
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0166289,
+        "vertex": 4350,
+        "point": [
+          -0.1601382,
+          -0.3955641,
+          1.1991777
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0171973,
+        "vertex": 4542,
+        "point": [
+          -0.1620316,
+          -0.3987356,
+          1.1937978
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0174489,
+        "vertex": 4584,
+        "point": [
+          -0.1644105,
+          -0.4015481,
+          1.1956083
+        ],
+        "familyWeight": 1.0
+      },
+      {
+        "distance": 0.0183571,
+        "vertex": 4353,
+        "point": [
+          -0.162455,
+          -0.3964626,
+          1.195354
+        ],
+        "familyWeight": 1.0
+      }
+    ]
+  },
+  "supportForegrip": {
+    "index": {
+      "checkedVertices": 65,
+      "nearest": [
+        {
+          "distance": 0.0007934,
+          "vertex": 9879,
+          "point": [
+            -0.0242329,
+            -0.6037455,
+            1.1720288
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0038687,
+          "vertex": 9880,
+          "point": [
+            -0.0244742,
+            -0.6081983,
+            1.161756
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0041272,
+          "vertex": 9831,
+          "point": [
+            -0.0299168,
+            -0.6031662,
+            1.172066
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0053181,
+          "vertex": 9838,
+          "point": [
+            -0.028091,
+            -0.6062918,
+            1.1619231
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0070712,
+          "vertex": 9889,
+          "point": [
+            -0.0264847,
+            -0.6107754,
+            1.1558793
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0072584,
+          "vertex": 9648,
+          "point": [
+            -0.0308484,
+            -0.6064882,
+            1.1683819
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0075156,
+          "vertex": 9837,
+          "point": [
+            -0.0288873,
+            -0.6086466,
+            1.1567276
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0077875,
+          "vertex": 9649,
+          "point": [
+            -0.0302968,
+            -0.6076552,
+            1.1628965
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "middle": {
+      "checkedVertices": 84,
+      "nearest": [
+        {
+          "distance": 0.0058063,
+          "vertex": 9884,
+          "point": [
+            -0.0328894,
+            -0.590044,
+            1.1732218
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0064473,
+          "vertex": 9875,
+          "point": [
+            -0.032587,
+            -0.5894754,
+            1.1832343
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0074857,
+          "vertex": 9834,
+          "point": [
+            -0.0339502,
+            -0.5877868,
+            1.1741359
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0076112,
+          "vertex": 9883,
+          "point": [
+            -0.0283749,
+            -0.5901704,
+            1.1724337
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0076841,
+          "vertex": 9876,
+          "point": [
+            -0.0278925,
+            -0.5903805,
+            1.182767
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0079177,
+          "vertex": 9885,
+          "point": [
+            -0.0317322,
+            -0.5882379,
+            1.1672039
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0084147,
+          "vertex": 9886,
+          "point": [
+            -0.0288753,
+            -0.5889344,
+            1.1675563
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.008519,
+          "vertex": 9835,
+          "point": [
+            -0.0336913,
+            -0.5867755,
+            1.1689801
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "ring": {
+      "checkedVertices": 103,
+      "nearest": [
+        {
+          "distance": 0.0095262,
+          "vertex": 9681,
+          "point": [
+            -0.0242261,
+            -0.5904669,
+            1.2113141
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0103119,
+          "vertex": 9682,
+          "point": [
+            -0.0229725,
+            -0.5903135,
+            1.1996622
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0106531,
+          "vertex": 9676,
+          "point": [
+            -0.0284725,
+            -0.5866347,
+            1.2095718
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0106939,
+          "vertex": 9675,
+          "point": [
+            -0.0269199,
+            -0.5874465,
+            1.1994988
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0114122,
+          "vertex": 9635,
+          "point": [
+            -0.0283763,
+            -0.5858468,
+            1.2000753
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0116727,
+          "vertex": 9634,
+          "point": [
+            -0.0286649,
+            -0.585444,
+            1.2050627
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0119771,
+          "vertex": 9638,
+          "point": [
+            -0.0281957,
+            -0.5853096,
+            1.1957636
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0122236,
+          "vertex": 9674,
+          "point": [
+            -0.0264437,
+            -0.5859443,
+            1.1942197
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "pinky": {
+      "checkedVertices": 125,
+      "nearest": [
+        {
+          "distance": 0.0098072,
+          "vertex": 9848,
+          "point": [
+            -0.0243646,
+            -0.5900524,
+            1.2415676
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0098666,
+          "vertex": 9624,
+          "point": [
+            -0.0257197,
+            -0.5891523,
+            1.2422774
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.010152,
+          "vertex": 9849,
+          "point": [
+            -0.0253661,
+            -0.5890343,
+            1.2383543
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0103477,
+          "vertex": 9900,
+          "point": [
+            -0.0223083,
+            -0.5906977,
+            1.2410014
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0103692,
+          "vertex": 9625,
+          "point": [
+            -0.0266913,
+            -0.5879673,
+            1.2408468
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0113961,
+          "vertex": 10126,
+          "point": [
+            -0.0225897,
+            -0.5892765,
+            1.2366343
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0117895,
+          "vertex": 9899,
+          "point": [
+            -0.0221539,
+            -0.5890822,
+            1.2467782
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0118604,
+          "vertex": 9901,
+          "point": [
+            -0.0205643,
+            -0.5901293,
+            1.2410611
+          ],
+          "familyWeight": 1.0
+        }
+      ]
+    },
+    "thumb": {
+      "checkedVertices": 11,
+      "nearest": [
+        {
+          "distance": 0.0369475,
+          "vertex": 9862,
+          "point": [
+            -0.0532284,
+            -0.5557832,
+            1.1544709
+          ],
+          "familyWeight": 0.99974
+        },
+        {
+          "distance": 0.0374022,
+          "vertex": 9868,
+          "point": [
+            -0.0565299,
+            -0.5555869,
+            1.1595782
+          ],
+          "familyWeight": 1.0
+        },
+        {
+          "distance": 0.0450436,
+          "vertex": 9764,
+          "point": [
+            -0.0513434,
+            -0.5475253,
+            1.1602013
+          ],
+          "familyWeight": 0.98564
+        },
+        {
+          "distance": 0.0523214,
+          "vertex": 9787,
+          "point": [
+            -0.0437065,
+            -0.5404194,
+            1.1625681
+          ],
+          "familyWeight": 0.92997
+        },
+        {
+          "distance": 0.0591907,
+          "vertex": 10321,
+          "point": [
+            -0.0354805,
+            -0.534265,
+            1.164638
+          ],
+          "familyWeight": 0.85608
+        },
+        {
+          "distance": 0.0593665,
+          "vertex": 10312,
+          "point": [
+            -0.0295713,
+            -0.5351841,
+            1.1596348
+          ],
+          "familyWeight": 0.81785
+        },
+        {
+          "distance": 0.0660808,
+          "vertex": 10320,
+          "point": [
+            -0.0278543,
+            -0.5286912,
+            1.1660665
+          ],
+          "familyWeight": 0.78268
+        },
+        {
+          "distance": 0.0667677,
+          "vertex": 10313,
+          "point": [
+            -0.0220635,
+            -0.529376,
+            1.1606593
+          ],
+          "familyWeight": 0.74315
+        }
+      ]
+    }
+  }
+}

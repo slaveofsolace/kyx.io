@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8a-focused-attempt-1",
+  "capturedAt": "2026-07-22",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58AbuseBoundaries.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 18,
+    "testsFailed": 1
+  },
+  "failure": {
+    "test": "rejects a sequence outside the accepted lead window without mutating combat state",
+    "cause": "The first probe used sequence 1000, which is inside the room default maximum lead of 1024.",
+    "correction": "The probe was moved to sequence 2000 so it exercises the intended hostile lead boundary."
+  }
+}

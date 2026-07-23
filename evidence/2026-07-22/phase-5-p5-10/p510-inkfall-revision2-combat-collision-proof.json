@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "slice": "P5.10 Inkfall revision-2 deterministic combat collision binding",
+  "capturedAt": "2026-07-22T11:14:12.604Z",
+  "status": "BOUNDED_PASS",
+  "capabilityId": "authoritative_inkfall_revision_2_rapier_combat_v1",
+  "authorityFixture": {
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "collisionPath": "revisions/revision-2/export/collision.authority.glb",
+    "collisionSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+    "collisionBytes": 604228,
+    "fixtureId": "inkfall_foundry_map_collision",
+    "fixtureHash": "bf85e42731fd088e",
+    "solidColliderCount": 339,
+    "authorityVolumeCount": 2,
+    "generatedSnapshot": {
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json",
+      "bytes": 204357,
+      "sha256": "d04669cc6efbc3970d21572e6d06b009416558a4475ea1744d862b70b1cd9a83",
+      "regenerationByteIdentical": true
+    }
+  },
+  "ports": {
+    "hitscanWorldOcclusion": "strict deterministic per-collider Rapier solid ray",
+    "grenadeSphereSweep": "Rapier spherical capsule cast against authority solid layers",
+    "grenadeRadialOcclusion": "strict deterministic per-collider Rapier solid ray",
+    "grenadeCollisionSafeImpulse": "one-tick capsule cast with requested-axis clamp toward zero"
+  },
+  "pinnedProbes": {
+    "hitscan": {
+      "colliderId": "map_collision_spawn_pad_spawn_w_press_a",
+      "distanceMillimeters": 2000
+    },
+    "grenadeSweep": {
+      "colliderId": "map_collision_spawn_pocket_floor_west",
+      "layer": "world_static",
+      "timeOfImpactPermille": 450,
+      "normalQ15": { "x": 0, "y": 32767, "z": 0 }
+    },
+    "grenadeRadialOcclusion": {
+      "kind": "blocked",
+      "colliderId": "map_collision_spawn_pad_spawn_w_press_a"
+    },
+    "grenadeCollisionSafeImpulse": {
+      "requested": { "x": 0, "y": -20000, "z": 0 },
+      "applied": { "x": 0, "y": 0, "z": 0 }
+    }
+  },
+  "abuseAndDeterminism": {
+    "independentWorldParity": true,
+    "reversedColliderOrderParity": true,
+    "equalDistanceTieBreak": "stable collider ID",
+    "malformedNonFiniteRayRejected": true,
+    "forgedLayerListRejected": true,
+    "accessorPayloadRejected": true,
+    "wrongFixtureRejected": true,
+    "negativeZeroCanonicalized": true
+  },
+  "validation": {
+    "fixtureGenerator": "PASS; two consecutive runs byte-identical",
+    "focusedRapierAndInkfall": "PASS; 2 files, 27 tests",
+    "appTypeScript": "PASS",
+    "workerTypeScript": "PASS",
+    "fullEslint": "PASS",
+    "viteProductionBuild": "PASS",
+    "nodeVitest": "PASS; 79 files, 668 tests",
+    "workerVitest": "PASS; 7 files, 26 tests",
+    "wranglerDryRun": "PASS"
+  },
+  "sourceHashes": {
+    "src/physics/rapier/world.ts": "ed97ac10a76ae65af7777078cecf3d3a879f7f34c20cc7ffaf27403f58a42acb",
+    "src/authority/combat/inkfallRapierCombatWorld.ts": "9b9a6cac857a58e37c26e25653b8e699d88776c5ce7caef748ef473ca62ebe10",
+    "src/authority/combat/index.ts": "40a98fef4be3932456b1ed3854ac56b28da0f6bfe7f4734c6bb6db73d2d11a24",
+    "tools/assets/build-inkfall-revision2-combat-fixture.mjs": "b5ae0572abc954ce6b8607eafe63f2b20ab0baebcded59d4efd6518bdb2064f5",
+    "tools/assets/build-inkfall-revision2-combat-fixture.module.ts": "b5926ba38e0b3b670c2fcc440ae9600f7d89baa52eed06a0581df5df42d407da",
+    "tests/unit/physics/rapierWorld.test.ts": "ca6b29831f0aca51967cfc2061a642056b3e442faf1bd9cb0e2b0debdee031f3",
+    "tests/integration/authority/inkfallRapierCombatWorld.test.ts": "e8d317428361127f0f5b1fce8ee4d3c982773ac0b9970427f71df5fcb5456f49"
+  },
+  "defaultsPreserved": {
+    "defaultMapRevision": 1,
+    "existingP59OnlineProfile": "p58d-rev3-combat-v1",
+    "existingP59WorkerCollisionPorts": "unchanged deterministic clear/empty evidence ports",
+    "existingP59Evidence": "not superseded"
+  },
+  "productIntegrationSeam": {
+    "state": "STAGED_NOT_CONSUMED_BY_CURRENT_WORKER_PROFILE",
+    "reason": "The current persisted SimulationIdentityV1 identifies phase4_flat_run and one flat_run fixture. Attaching a second Inkfall collision world would create an unpersisted authority dependency and resume mismatch; replacing the one world would also change the accepted P5.9 flat-run coordinates and presentation.",
+    "requiredNext": [
+      "Choose an explicit new profile whose persisted identity names Inkfall revision 2, or version the simulation identity to carry a second combat fixture identity.",
+      "Construct RapierMovementWorld from the generated hash-locked fixture during Durable Object initialization.",
+      "Pass createInkfallRevision2RapierCombatWorldPorts(world).worldOcclusion and .impulseGrenadeWorld into the room combat options.",
+      "Move the opt-in spawn resolver and client presentation into Inkfall coordinates, then prove resume/reconstitution and two-client play against the same identity."
+    ]
+  },
+  "nonClaims": [
+    "G4_NOT_CLAIMED",
+    "FINAL_3D_MAP_INTEGRATION_NOT_CLAIMED",
+    "CURRENT_P59_WORKER_PROFILE_NOT_BOUND_TO_INKFALL_COLLISION",
+    "P59_EVIDENCE_NOT_SUPERSEDED"
+  ]
+}

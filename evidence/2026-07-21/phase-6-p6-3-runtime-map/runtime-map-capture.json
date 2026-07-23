@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "capturedAtUtc": "2026-07-22T03:37:24.893Z",
+  "route": "http://127.0.0.1:4183/__test__/map",
+  "browser": {
+    "name": "chromium",
+    "version": "149.0.7827.55",
+    "viewport": {
+      "width": 1600,
+      "height": 1000
+    }
+  },
+  "pageState": {
+    "launchSupport": "map-package-evidence",
+    "mapStatus": "ready"
+  },
+  "snapshot": {
+    "schemaVersion": 1,
+    "status": "P6.3_RUNTIME_FIXTURE_LOADED_G5_NOT_PASSED",
+    "mapId": "inkfall_foundry",
+    "mapRevision": 1,
+    "displayName": "Inkfall Foundry",
+    "packageDigest": "a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267",
+    "boundsMm": {
+      "minimum": {
+        "x": -36000,
+        "y": -5000,
+        "z": -28000
+      },
+      "maximum": {
+        "x": 36000,
+        "y": 10000,
+        "z": 28000
+      }
+    },
+    "renderPath": "export/render.graybox.glb",
+    "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+    "renderMeshNodeCount": 346,
+    "authorityCollisionPath": "export/collision.authority.glb",
+    "authorityCollisionSha256": "40fc9fa07da89779bb2cb150cc9b642b3598fdf54d041f23d4b6ab203df2d2f0",
+    "authorityCollisionMeshNodeCount": 346,
+    "authorityVolumeCount": 2,
+    "totalAuthorityColliderCount": 348,
+    "fixtureHash": "2a0a446a0b152395",
+    "spawnCount": 12,
+    "zoneCount": 9,
+    "pickupCount": 0,
+    "triggerCount": 1,
+    "renderMeshesMayBeAuthority": false,
+    "remaining": [
+      "P6.4 spawn scoring, LOS fixtures, and score visualization",
+      "P6.5 route, combat, sightline, and occupancy telemetry",
+      "P6.6 authoritative movement tapes and 2/4/8-player playtests",
+      "P6.7 graybox lock and modular art-kit dimensions",
+      "G5 final-art room, metrics, no-snag proof, and human playtest acceptance"
+    ]
+  },
+  "artifactResponses": [
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:4183/assets/source/maps/inkfall-foundry/export/collision.authority.glb"
+    },
+    {
+      "status": 200,
+      "url": "http://127.0.0.1:4183/assets/source/maps/inkfall-foundry/export/render.graybox.glb"
+    }
+  ],
+  "diagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": []
+  },
+  "screenshot": {
+    "path": "evidence/2026-07-21/phase-6-p6-3-runtime-map/screenshots/inkfall-map-runtime.png",
+    "bytes": 218900,
+    "sha256": "49fa2f37fce2db1c9892c725404415cac614d1053836f1c4e207881fc50e4c71"
+  },
+  "assertions": {
+    "mapReady": true,
+    "exactArtifactResponses": true,
+    "noRuntimeErrors": true,
+    "renderExcludedFromAuthority": true,
+    "expectedCounts": true,
+    "g5NotClaimed": true
+  },
+  "status": "PASS"
+}

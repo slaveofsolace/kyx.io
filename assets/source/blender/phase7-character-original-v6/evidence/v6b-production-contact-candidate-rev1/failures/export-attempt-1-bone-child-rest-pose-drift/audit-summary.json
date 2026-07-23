@@ -1,0 +1,18 @@
+{
+  "schema": "kyx-v6b-export-defect-summary-v1",
+  "checkpoint": "V6B_PRODUCTION_CONTACT_CANDIDATE_REV1",
+  "status": "REJECTED_EXPORT_DEFECT",
+  "attempt": 1,
+  "defect": "The GLB omitted the sealed contact-pose action, so a fresh glTF reimport returned the skeleton to bind/rest while rigid armor, weapon, and runtime contact nodes retained bone-relative offsets authored for the held pose.",
+  "measured": {
+    "maxRuntimeContactBoundsDeltaMeters": 0.75091783,
+    "rigBonesReimported": 52,
+    "digitBonesReimported": 30,
+    "materialsReimported": 16
+  },
+  "disposition": "Rejected. The GLB and reimport proof were superseded; this summary freezes the observed failure and must not be used as acceptance evidence.",
+  "nonClaims": [
+    "No runtime/export pass is claimed.",
+    "No G6 or final human acceptance is claimed."
+  ]
+}

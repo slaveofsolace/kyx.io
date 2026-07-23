@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "status": "EXTERNAL_WORKER_8_ROOM_BOUNDED_BURST_PASS",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "target": {
+    "workerOrigin": "https://kyx-io-authority.heliotrope-contraption.workers.dev",
+    "buildId": "g3tmp-93ae5c5c1604"
+  },
+  "scope": {
+    "concurrentRooms": 8,
+    "gameplayClients": 16,
+    "physicalConnections": 24,
+    "elapsedWallMilliseconds": 4425,
+    "soak": false,
+    "platformCpuMemoryBilling": false
+  },
+  "capture": {
+    "passed": 8,
+    "total": 8,
+    "assertionsPerRun": 24
+  },
+  "verification": {
+    "passed": 8,
+    "total": 8,
+    "checksPerRun": 24
+  },
+  "timingNearestRankMilliseconds": {
+    "healthMs": {
+      "min": 77.459,
+      "p50": 87.027,
+      "p95": 92.234,
+      "p99": 92.234,
+      "max": 92.234
+    },
+    "forbiddenOriginMs": {
+      "min": 19.883,
+      "p50": 21.206,
+      "p95": 28.458,
+      "p99": 28.458,
+      "max": 28.458
+    },
+    "createRoomMs": {
+      "min": 629.263,
+      "p50": 670.68,
+      "p95": 746.692,
+      "p99": 746.692,
+      "max": 746.692
+    },
+    "clientAOpenMs": {
+      "min": 117.469,
+      "p50": 122.125,
+      "p95": 135.546,
+      "p99": 135.546,
+      "max": 135.546
+    },
+    "clientAJoinAcceptedMs": {
+      "min": 61.915,
+      "p50": 63.887,
+      "p95": 64.419,
+      "p99": 64.419,
+      "max": 64.419
+    },
+    "clientAInitialFullMs": {
+      "min": 61.994,
+      "p50": 63.973,
+      "p95": 64.53,
+      "p99": 64.53,
+      "max": 64.53
+    },
+    "clientBOpenMs": {
+      "min": 69.282,
+      "p50": 70.514,
+      "p95": 124.205,
+      "p99": 124.205,
+      "max": 124.205
+    },
+    "clientBJoinAcceptedMs": {
+      "min": 61.564,
+      "p50": 63.626,
+      "p95": 63.985,
+      "p99": 63.985,
+      "max": 63.985
+    },
+    "clientBInitialFullMs": {
+      "min": 61.578,
+      "p50": 63.645,
+      "p95": 64.001,
+      "p99": 64.001,
+      "max": 64.001
+    },
+    "tickAdvanceMs": {
+      "min": 187.925,
+      "p50": 188.665,
+      "p95": 204.809,
+      "p99": 204.809,
+      "max": 204.809
+    },
+    "inputAckMs": {
+      "min": 45.504,
+      "p50": 47.627,
+      "p95": 63.637,
+      "p99": 63.637,
+      "max": 63.637
+    },
+    "clientAAuthorityMovementMs": {
+      "min": 91.445,
+      "p50": 107.545,
+      "p95": 110.149,
+      "p99": 110.149,
+      "max": 110.149
+    },
+    "clientBObservedMovementMs": {
+      "min": 91.493,
+      "p50": 107.585,
+      "p95": 110.181,
+      "p99": 110.181,
+      "max": 110.181
+    },
+    "forgedTransformRejectionMs": {
+      "min": 29.989,
+      "p50": 30.944,
+      "p95": 31.891,
+      "p99": 31.891,
+      "max": 31.891
+    },
+    "postForgerySnapshotMs": {
+      "min": 93.893,
+      "p50": 107.497,
+      "p95": 110.44,
+      "p99": 110.44,
+      "max": 110.44
+    },
+    "resumeOpenMs": {
+      "min": 62.145,
+      "p50": 72.377,
+      "p95": 80.635,
+      "p99": 80.635,
+      "max": 80.635
+    },
+    "resumeAcceptedMs": {
+      "min": 52.606,
+      "p50": 62.583,
+      "p95": 64.905,
+      "p99": 64.905,
+      "max": 64.905
+    },
+    "resumeFullSnapshotMs": {
+      "min": 52.642,
+      "p50": 62.628,
+      "p95": 64.942,
+      "p99": 64.942,
+      "max": 64.942
+    },
+    "metricsMs": {
+      "min": 25.6,
+      "p50": 28.903,
+      "p95": 32.473,
+      "p99": 32.473,
+      "max": 32.473
+    },
+    "totalMs": {
+      "min": 2018.43,
+      "p50": 2070.996,
+      "p95": 2222.728,
+      "p99": 2222.728,
+      "max": 2222.728
+    }
+  },
+  "runs": [
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r01",
+      "runtimeSha256": "3458a46cfd045c4a9b01f58d3a0afc3698d747c2c694478db60a2635f54eb98b",
+      "verificationSha256": "1cc8da3696077b9dd452cb74af087663b9bb5ccf20bfdca7f5b699847e0ef4fc",
+      "totalMs": 2033.897,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r02",
+      "runtimeSha256": "e804d4817b7b84fd361d707c5bb73e245f3824d68012b9e23f5f1d3cfcf56d2b",
+      "verificationSha256": "f518d38e4fb340505e8f6c3034ac976bbe72bf889e8743684bfd23fa1dba75ea",
+      "totalMs": 2185.813,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r03",
+      "runtimeSha256": "eaed1cfb3c7901ad8be94830774e0c013f4223574811fcf91373e29c89318f76",
+      "verificationSha256": "b4f93c82295dacf5acdc888a8db88482bcb6f00a413d98bd3c323b3787459005",
+      "totalMs": 2029.413,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r04",
+      "runtimeSha256": "58a8673085b330590fae7b76fecdc7194a61f50f0bc06b7073165f69057f8708",
+      "verificationSha256": "600fed21b9d7f1f9f0db5c6520c8d5eea604bc0ad8b1636a93cb51d6413daf8d",
+      "totalMs": 2119.643,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r05",
+      "runtimeSha256": "d574eeb983d0b5feff628619279977b975c7494c0164da190ebbec28444f8be8",
+      "verificationSha256": "903243ec56de31beb8e0f00990d87178231b8fa04c360ba9911d38be22b75be0",
+      "totalMs": 2070.996,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r06",
+      "runtimeSha256": "dae12d328e5c83e3178f5c5489374296c99c297e3828147c4dac687ba0824c0d",
+      "verificationSha256": "b1c9d1aa3838d82c162d7c4db28daeb491be10244996f47496ba1fdf33f820f5",
+      "totalMs": 2018.43,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r07",
+      "runtimeSha256": "578e4e21575f0fbccf393d9b2d18a9f7788a58397c526018a05bd54212b16657",
+      "verificationSha256": "2c6fff2fba1ae34a0d5ca3ccf52bce1616ab4de2a8983c56273a1b09c49c5ce0",
+      "totalMs": 2109.885,
+      "serverTick": 18,
+      "inboundMessages": 25,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    },
+    {
+      "id": "preview-g3tmp-93ae5c5c1604-burst-v2-r08",
+      "runtimeSha256": "f06a0c3a61d48655ed676e4c271dc62b77c59d5e83e7055bca552d7f7355bd86",
+      "verificationSha256": "51a30ea2b2b29e464599cc1bd76fe99075578b1aacef54f7db05a36280f60627",
+      "totalMs": 2222.728,
+      "serverTick": 21,
+      "inboundMessages": 26,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "slowConsumerEvictions": 0
+    }
+  ],
+  "nonClaims": [
+    "not a sustained soak",
+    "not Cloudflare CPU or memory measurement",
+    "not a cost acceptance",
+    "not production-origin authentication",
+    "not product flow",
+    "G3 remains unaccepted"
+  ]
+}

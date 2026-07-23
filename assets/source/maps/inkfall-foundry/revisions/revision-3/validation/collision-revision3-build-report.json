@@ -1,0 +1,240 @@
+{
+  "candidateRevision": {
+    "collision": {
+      "bytes": 604508,
+      "export": {
+        "operatorArguments": {
+          "export_animations": false,
+          "export_apply": true,
+          "export_cameras": false,
+          "export_extras": true,
+          "export_format": "GLB",
+          "export_lights": false,
+          "export_materials": "EXPORT",
+          "export_yup": true,
+          "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\revisions\\revision-3\\export\\collision.authority.glb",
+          "use_selection": true
+        },
+        "result": [
+          "FINISHED"
+        ]
+      },
+      "meshNodeCount": 339,
+      "path": "export/collision.authority.glb",
+      "sha256": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca"
+    },
+    "render": {
+      "byteIdenticalToRevision2": true,
+      "bytes": 613564,
+      "path": "export/render.graybox.glb",
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    "revision": 3,
+    "sourceBlend": {
+      "bytes": 528114,
+      "path": "source/inkfall_foundry.blend",
+      "sha256": "1be08bd0897e1ca6d13349149f2c9d7b1f8c65d29814867c476d171bbf0b2902"
+    }
+  },
+  "collisionCorrection": {
+    "after": {
+      "location": [
+        -16.178636551,
+        -1.329967976,
+        -0.067794412
+      ],
+      "name": "C_GUARD_RAIL__PRESS_WEST_INK__S00__LEFT",
+      "properties": {
+        "kyx_clear_width_mm": 2200,
+        "kyx_collision_revision": 3,
+        "kyx_dimensions_mm": "[1148,160,900]",
+        "kyx_edge_policy": "guarded_except_junction_apron",
+        "kyx_guard_side": "left",
+        "kyx_junction_apron_end_mm": 3000,
+        "kyx_junction_apron_mm": 3000,
+        "kyx_junction_apron_start_mm": 3200,
+        "kyx_render_geometry_changed": false,
+        "kyx_revision_reason": "trim_left_press_west_ink_guard_start_away_from_west_choice_press_canonical_approach",
+        "kyx_role": "authoritative_collider",
+        "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+        "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+        "kyx_segment_index": 0,
+        "kyx_shape": "box",
+        "kyx_source_id": "press_west_ink",
+        "kyx_source_kind": "route_guard_rail",
+        "kyx_trimmed_start_mm": 200
+      },
+      "rotation": [
+        0.600793362,
+        0.054447528,
+        0.041069828,
+        -0.796489894
+      ],
+      "vertices": [
+        [
+          -0.574000001,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.574000001,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.574000001,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.574000001,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.574000001,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.574000001,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.574000001,
+          0.079999998,
+          0.449999988
+        ],
+        [
+          -0.574000001,
+          0.079999998,
+          0.449999988
+        ]
+      ]
+    },
+    "before": {
+      "location": [
+        -16.151420593,
+        -1.234709978,
+        -0.054186136
+      ],
+      "name": "C_GUARD_RAIL__PRESS_WEST_INK__S00__LEFT",
+      "properties": {
+        "kyx_clear_width_mm": 2200,
+        "kyx_dimensions_mm": "[1348,160,900]",
+        "kyx_edge_policy": "guarded_except_junction_apron",
+        "kyx_guard_side": "left",
+        "kyx_junction_apron_mm": 3000,
+        "kyx_role": "authoritative_collider",
+        "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+        "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+        "kyx_segment_index": 0,
+        "kyx_shape": "box",
+        "kyx_source_id": "press_west_ink",
+        "kyx_source_kind": "route_guard_rail"
+      },
+      "rotation": [
+        0.600793362,
+        0.054447528,
+        0.041069828,
+        -0.796489894
+      ],
+      "vertices": [
+        [
+          -0.674000025,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.674000025,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.674000025,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.674000025,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.674000025,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.674000025,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.674000025,
+          0.079999998,
+          0.449999988
+        ],
+        [
+          -0.674000025,
+          0.079999998,
+          0.449999988
+        ]
+      ]
+    },
+    "candidateJunctionApronStartMm": 3200,
+    "changedCollider": "C_GUARD_RAIL__PRESS_WEST_INK__S00__LEFT",
+    "changedColliderCount": 1,
+    "junctionApronEndMm": 3000,
+    "originalJunctionApronStartMm": 3000,
+    "trimmedStartMm": 200
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "id": "inkfall_foundry_g5_bounded_canonical_traversal_collision_revision",
+    "script": "build_inkfall_foundry_collision_revision3.version1.py",
+    "scriptSha256": "cd85c69ae95b970101a6fbb712e3c4b337e555079ac45e02b062c00e61125b69",
+    "version": 1
+  },
+  "nonClaims": [
+    "REVISION_3_NOT_DEFAULT",
+    "REVISION_3_NOT_PROMOTED",
+    "EXACT_PRODUCT_RUNTIME_REPLAY_NOT_RUN",
+    "HUMAN_ACCEPTANCE_NOT_RUN",
+    "G5_NOT_PASSED"
+  ],
+  "preservation": {
+    "allNonTargetCollidersUnchanged": true,
+    "colliderCardinalityUnchanged": true,
+    "movementProfileChanged": false,
+    "renderChanged": false,
+    "renderFingerprintAfter": "0c37f15ebd9ca73cf6a2cf753caeec3129c7b24985e3d0af4f02420767a4c73f",
+    "renderFingerprintBefore": "0c37f15ebd9ca73cf6a2cf753caeec3129c7b24985e3d0af4f02420767a4c73f",
+    "renderUnchanged": true,
+    "revision2ArtifactsChanged": false,
+    "seedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "spawnsChanged": false,
+    "timingBandsChanged": false,
+    "topologyChanged": false,
+    "untouchedCollisionFingerprintAfter": "b09d718ef68809c5ecc75a9f3b32d3a57d839bc9bea24c8a08f6392cdcf8265f",
+    "untouchedCollisionFingerprintBefore": "b09d718ef68809c5ecc75a9f3b32d3a57d839bc9bea24c8a08f6392cdcf8265f"
+  },
+  "schemaVersion": 1,
+  "sourceRevision": {
+    "blend": {
+      "bytes": 527768,
+      "sha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224"
+    },
+    "collision": {
+      "bytes": 604228,
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    "render": {
+      "bytes": 613564,
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    "revision": 2
+  },
+  "status": "G5_BOUNDED_COLLISION_REVISION_3_CANDIDATE"
+}

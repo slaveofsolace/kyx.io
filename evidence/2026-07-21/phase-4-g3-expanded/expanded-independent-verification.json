@@ -1,0 +1,1146 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-22T03:22:21.882Z",
+  "matrixPath": "evidence/2026-07-21/phase-4-g3-expanded/runs/expanded-local/expanded-runtime-matrix.json",
+  "status": "INDEPENDENT_EXPANDED_G3_VERIFICATION_PASS",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "checks": {
+    "matrixStatusPass": true,
+    "gateRemainsUnaccepted": true,
+    "noDeploymentPerformed": true,
+    "exactProfileOrder": true,
+    "exactEmbeddedProfiles": true,
+    "everyProfilePassed": true,
+    "rawProfilesMatchEmbedded": true,
+    "exactRttRows": true,
+    "exactJitterRows": true,
+    "exactLossRows": true,
+    "exactDuplicationRows": true,
+    "exactTargetedReorderRow": true,
+    "exactBoundedRecoveryRow": true,
+    "exactRenderRows": true,
+    "everyRenderAssertionPassed": true,
+    "exactLifecycleAssertions": true,
+    "everyLifecycleAssertionPassed": true,
+    "exactRefreshAssertions": true,
+    "everyRefreshAssertionPassed": true,
+    "exactAbuseAssertions": true,
+    "everyAbuseAssertionPassed": true,
+    "aggregateAssertionsPassed": true,
+    "artifactPathsUnique": true,
+    "artifactHashesAndSizesMatch": true,
+    "priorFailedAttemptsPreserved": true,
+    "factoredSweepBoundaryDeclared": true,
+    "physical120HzBoundaryDeclared": true,
+    "deltaBaselineGapDeclared": true,
+    "slowClientAndStagingGapsDeclared": true
+  },
+  "profileCount": 14,
+  "renderRowCount": 3,
+  "lifecycleAssertionCount": 14,
+  "refreshAssertionCount": 8,
+  "abuseAssertionCount": 10,
+  "artifactCount": 50,
+  "preservedFailureAttempts": [
+    {
+      "attempt": "attempt-1-lifecycle-fetch-failed",
+      "files": [
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/capture-console.log",
+          "bytes": 1307,
+          "sha256": "10006c40cf97c21d7ad3dc52ced1b10606c6d6e70911542045f46f328b5ab2b6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/logs/capture-error.txt",
+          "bytes": 569,
+          "sha256": "8b2e8985d66035dd80fb27dc58d9f01efefb057b700e570b7fc337dce377414f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/logs/vite.jsonl",
+          "bytes": 201,
+          "sha256": "a388b98e73b2b21cb5d708d4302bff34136aec8ef2fd70741ceec4a71948c0e4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/logs/wrangler.jsonl",
+          "bytes": 11744,
+          "sha256": "75f56bd98902a30aa63da9fa1cc49e69bce8fca145144f2d641f429c8419005f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-duplicate-1.json",
+          "bytes": 45917,
+          "sha256": "6f559811c66fcb4e91145add732b3f852df5f772d63fbb5bbac1466d2b2968e3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-duplicate-5.json",
+          "bytes": 46026,
+          "sha256": "b35758bc5bfd1278e6869afdf113f827ca1623651c232b8f06314d7ca551bc31"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-jitter-15.json",
+          "bytes": 45683,
+          "sha256": "e7fd1b9419b2f20d63d77c8464c23f5e8e6efb10afb2384064db5033c9a17cfc"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-jitter-50.json",
+          "bytes": 46091,
+          "sha256": "58c68fdaba8e4db657febc76bf92659f3032154703657e8316ecc24664383c85"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-loss-1.json",
+          "bytes": 45537,
+          "sha256": "a31134254edb6abd72208b302f6272d17b0914d4acf9c253e1276ec4566247f7"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-loss-3.json",
+          "bytes": 45482,
+          "sha256": "b0806808c6cd1b8852cb6b8e8443f72691d8277481f661483bbae2c06b4b9243"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-loss-8.json",
+          "bytes": 45522,
+          "sha256": "d07211b1c6d7ab37d3f4012244f6df5e6e744d27ca3c061698923ed03694db57"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-outage-recovery.json",
+          "bytes": 46304,
+          "sha256": "0a83d9a1fe4239fd7f8b148da128f979efc83bd90cfaae9ddd157cf7e9361b20"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-rtt-0.json",
+          "bytes": 45437,
+          "sha256": "168751139c3d33ab7989acf69c83854f7d001b97ad43b8ab5cefa2c0c7feccd6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-rtt-100.json",
+          "bytes": 45492,
+          "sha256": "4f4a0c584a456d32a0602f2a1241e808a80fc67917191ac71267838d4b1c877c"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-rtt-200.json",
+          "bytes": 45546,
+          "sha256": "b5c509d1dbe60ac60e16a53a6eb3f29b7e15ff7e5641a7add6350995c5118dae"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-rtt-350.json",
+          "bytes": 45543,
+          "sha256": "e77b7e87ec941c098c19aaeb862562ed74506d8ce5cb6fda9a45a82418e8b9b4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-rtt-50.json",
+          "bytes": 45495,
+          "sha256": "840ba217e46c9c214a7d69cfce9a673d0dfb5a386fdb8aec332a6e13843c3e3c"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/profiles/matrix-targeted-reorder.json",
+          "bytes": 47916,
+          "sha256": "6d5a781e05c84159b56b2b4282580500837211aeefe8c6d3d9d793e34a8f642f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-duplicate-1-a.png",
+          "bytes": 99919,
+          "sha256": "753c3295d07d1f8090c5d77dd2bbabf2df2a0c98f142b976682d8fe538bd3d9f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-duplicate-1-b.png",
+          "bytes": 99698,
+          "sha256": "5c1bec35c0ff9b3bae790f80c7e19732ab1562d207f910d2607dee94d0343613"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-duplicate-5-a.png",
+          "bytes": 100491,
+          "sha256": "d158d67ffe592d482685b6431f3c18a1eee3cab76c89d2d4335ef1a2d48fdef3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-duplicate-5-b.png",
+          "bytes": 100373,
+          "sha256": "f7489f7b8028c17ed03b3fdc72afedc76608f24b0a53fc1045707fbd57e3a52d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-jitter-15-a.png",
+          "bytes": 101607,
+          "sha256": "2617267cac04fb753e85febf14a32865f3c72ce2edc84251269df316153e2705"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-jitter-15-b.png",
+          "bytes": 99502,
+          "sha256": "9fd661cd497ef2963db6b40bed0b4d324df3c8bc66f91d16055f60ff0bd2f5e3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-jitter-50-a.png",
+          "bytes": 99661,
+          "sha256": "d82546362de84c474af076c357bd4c262e1d2be3cacbabaca1959057d8ed5a00"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-jitter-50-b.png",
+          "bytes": 99815,
+          "sha256": "ac07221c7c87272e0e8a93fb2910fbe7a3878ffe82c9e5159abc5cec7ac9681a"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-loss-1-a.png",
+          "bytes": 101468,
+          "sha256": "8e81137333b6f1d025ac13ece111418932cc62727087e5721e0accaeb0e7a854"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-loss-1-b.png",
+          "bytes": 99484,
+          "sha256": "2cad6e1a2018d3728b75c66120f68f6816af5c2003d57cf5197e37c71b2ce342"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-loss-3-a.png",
+          "bytes": 99570,
+          "sha256": "93ced6da4839a4ab4090b787f660e851f4aaec28fb79781d3dd6ef5400cf5e83"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-loss-3-b.png",
+          "bytes": 99762,
+          "sha256": "9f1b2565d8da7f373e5e781860fc2c119f1545315d8fc570fa4162d3df34f2ff"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-loss-8-a.png",
+          "bytes": 99600,
+          "sha256": "79885638d5814e565b7af65cdc0dbe6fc2ab0079831c2870139908d31bb84648"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-loss-8-b.png",
+          "bytes": 99028,
+          "sha256": "0e757dc408fabd4c1e369a51abf0c058f75181db1835675d19a12c6d2ea5055b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-outage-recovery-a.png",
+          "bytes": 100680,
+          "sha256": "f6ff04e21ecb5f2b33f436b10f8d185987695429591c4006a758ff1c7bc34464"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-outage-recovery-b.png",
+          "bytes": 100656,
+          "sha256": "561fa4f57790bbbe0a95c6720b1c478f1942d883de970c38445fbfbdd9f3ed6e"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-0-a.png",
+          "bytes": 99645,
+          "sha256": "140680361d881896d844331bdeff5dbd0c59fc7dbc9f76dfcb71b9bb8c5be792"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-0-b.png",
+          "bytes": 99488,
+          "sha256": "e6e36c30588531ee0ddacb9bcced540daa848e12164f3c2868c292327c078653"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-100-a.png",
+          "bytes": 99646,
+          "sha256": "889a1bfe608a93efe1529e83a5f46e76d62173a3e1accc75c58b8723059d877c"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-100-b.png",
+          "bytes": 99568,
+          "sha256": "b9fd465f4d63df21ee56a08f8b12c0f6d4aa438bf8fcfe7cc493428775402ecc"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-200-a.png",
+          "bytes": 99720,
+          "sha256": "e463a6b72e3ca71bfb7041984926db9fea966b78bb71f8295f6061eccc1c6ccb"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-200-b.png",
+          "bytes": 99502,
+          "sha256": "4eaceb74028e11c844f699fb5acc9584d38b08410a468ba3f05c2011c43ce05e"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-350-a.png",
+          "bytes": 99971,
+          "sha256": "ade68728f9b4683afbdbc3aaf2fb641f0c3881527ba06b429da5ef9dfce6a4f4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-350-b.png",
+          "bytes": 99531,
+          "sha256": "40725d5e7e1d6091c9793bfccb45d1c89243ca319d7fb5f8501255df8d7f25d6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-50-a.png",
+          "bytes": 99592,
+          "sha256": "b30098017f6ea143e3e7232f90fbc218241edd0a2cbf26d80851ed9721e2886a"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-rtt-50-b.png",
+          "bytes": 99433,
+          "sha256": "be9a697db806f9fc1d5d9cc05f9ea9b15788af9efece68964224ee6fc77cc37f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-targeted-reorder-a.png",
+          "bytes": 101685,
+          "sha256": "6201a75b445d00047c7e1346a9e4a26141c543639ebf56e23842182b2a7d46d8"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/screenshots/matrix-targeted-reorder-b.png",
+          "bytes": 101892,
+          "sha256": "df96dc50e8cf1cd6d4680074fcf04e528104058965fc26e795fcdfdd76b5698b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/video/.playwright/page@3d1e974ba49ef072325b6b2911c1f2ba.webm",
+          "bytes": 579821,
+          "sha256": "10f9b47d76d032335dc3d17374e79324ec8142edd8b3b470a67c839173f84ddf"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/video/.playwright/page@7ef4ac511d3f021aeeadf36ede233a36.webm",
+          "bytes": 630571,
+          "sha256": "cc36f603b5b44d9815065ea428f4de1eca75ffd0716dd9d88081dc6c75f7c866"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/video/.playwright/page@b99e63944f29c7cc9a45b71b87f7e893.webm",
+          "bytes": 649940,
+          "sha256": "ebd3c02873310c1dcb5a98d8ad4037f6feee774f7c72b6ffddcbed3ee8b9c914"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/video/matrix-outage-recovery-a.webm",
+          "bytes": 630571,
+          "sha256": "cc36f603b5b44d9815065ea428f4de1eca75ffd0716dd9d88081dc6c75f7c866"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/video/matrix-rtt-350-a.webm",
+          "bytes": 579821,
+          "sha256": "10f9b47d76d032335dc3d17374e79324ec8142edd8b3b470a67c839173f84ddf"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-1-lifecycle-fetch-failed/video/matrix-targeted-reorder-a.webm",
+          "bytes": 649940,
+          "sha256": "ebd3c02873310c1dcb5a98d8ad4037f6feee774f7c72b6ffddcbed3ee8b9c914"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt-2-minimum-player-tick-precondition",
+      "files": [
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/capture-console.log",
+          "bytes": 1373,
+          "sha256": "92f92fb16e5aebd30b172006d8b3d6b6697729a6a9b2df5008a6adc56d3becd2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/logs/capture-error.txt",
+          "bytes": 635,
+          "sha256": "32490553702b4695f53e36a6bd2583b25dd9628e539aada91a45cea2b448c033"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/logs/vite.jsonl",
+          "bytes": 201,
+          "sha256": "4e53ea44f1dce75fee52b6e2b9f2df8df493d2936f52621615535b4828a50637"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/logs/wrangler.jsonl",
+          "bytes": 11994,
+          "sha256": "ff0d9139002236f1565f98e9ef8e1e82873d809915791992ead124c940318310"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-duplicate-1.json",
+          "bytes": 45895,
+          "sha256": "5eb6b724c70feb1859b8e2f39e4f3c33e7a20264cafcbc6f11611c418e73f7e4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-duplicate-5.json",
+          "bytes": 46087,
+          "sha256": "74969aed5c8d7229936f1efbaa09ab64fe6dbfcc6d1243491dd7b853ec4463e4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-jitter-15.json",
+          "bytes": 45688,
+          "sha256": "8307b8422c8e52761479b13e38004197d9e74d40fb145295812fdda5bce0f514"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-jitter-50.json",
+          "bytes": 46103,
+          "sha256": "b67e89c4b191a1882be520bd16b20f4103096d17dcc048203b5e1d9ef0fb3399"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-loss-1.json",
+          "bytes": 45495,
+          "sha256": "2def6dd19d0905be3803429e02e63e21db105986a34624c6c44282b23db7ab54"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-loss-3.json",
+          "bytes": 45471,
+          "sha256": "661028deb72f9a0e1eda3dc27c6b460871c7008a62f5cd23e6db4a4d3ee3d2a1"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-loss-8.json",
+          "bytes": 45479,
+          "sha256": "f6cdb1c555661b0d1af3c3f7417580202aea888a47d7fe347c2ea1bf09013b8f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-outage-recovery.json",
+          "bytes": 46256,
+          "sha256": "2897f60eade8b2a4c4e6c43cef4dbef5e8d53d3ca51369a988b3bd0d9168881b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-rtt-0.json",
+          "bytes": 45437,
+          "sha256": "acc5eb9d193c5998c580ac414081f8b614a0e1e21b7ff5b65da1095161df4099"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-rtt-100.json",
+          "bytes": 45493,
+          "sha256": "89d7fa5bc375bf86f399c7b6ce79104855943ab21fa29b72ab1d163bb94fbffc"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-rtt-200.json",
+          "bytes": 45550,
+          "sha256": "2fe268e3c94beb238a3221cf084a1ae7972a52fb3267bc429a91733a79d6fe5a"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-rtt-350.json",
+          "bytes": 45544,
+          "sha256": "2faf573d55262aae0d2c51563b743703d489346ed68d9ec9d6405e103dc98479"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-rtt-50.json",
+          "bytes": 45486,
+          "sha256": "de4380ec7b737cfac239302ad1ceea4e6c0b0d4fc54c5e68c2799e0dfeea374e"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/profiles/matrix-targeted-reorder.json",
+          "bytes": 47935,
+          "sha256": "ad92fcc96ce811120e5c682c0ed53f569b6e52140c67b3c21c2e0d2173566d45"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-duplicate-1-a.png",
+          "bytes": 100017,
+          "sha256": "49e71428b9d05016aed7476fc8cf0046eb78a67146d70c2d3849cf2c55f3c5d4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-duplicate-1-b.png",
+          "bytes": 99922,
+          "sha256": "1e124cd7b0136912e720645aaaf5373bdd4686d5410d04e976888821f69971e4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-duplicate-5-a.png",
+          "bytes": 100178,
+          "sha256": "e354dde3c2e1c248fa965a7f393ba794ecfd85e63deb2b75748a84ff3068aaa1"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-duplicate-5-b.png",
+          "bytes": 100133,
+          "sha256": "9d55f58dcefe51f72faf67f13e083efca57ffbb24530bd0ec644dd5b09ebcfe5"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-jitter-15-a.png",
+          "bytes": 99886,
+          "sha256": "538a7194c4e88b9aa44c1bdb4e902b32e424db7684e5d655699281c04dcc932d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-jitter-15-b.png",
+          "bytes": 101471,
+          "sha256": "38fca5f01f7598c9c1772b4ad1e490fdfb33c003cedd868b3d81fb334c0fa361"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-jitter-50-a.png",
+          "bytes": 100278,
+          "sha256": "09700dda7bd7017f201a8d16bded618e43a982678b1e35a2e700523d6fce16b0"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-jitter-50-b.png",
+          "bytes": 100395,
+          "sha256": "a35ef90ff598e7b5d24b387985ecb071bbcd0bd2ba152972bad4f95ddf35170d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-loss-1-a.png",
+          "bytes": 99544,
+          "sha256": "550e7586b2673306c156248464547503ef6c5df4cc10876ec99f18add31cba0c"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-loss-1-b.png",
+          "bytes": 99609,
+          "sha256": "d397a4edc23edf45e8051d09efad64388411e2fde95dc72d3189fe4a7a60e8f7"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-loss-3-a.png",
+          "bytes": 99195,
+          "sha256": "4e48ba9b7a36bbd42bdc73bf9578b1a6ff780eb862c5eff4e31e0d2393fe44cf"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-loss-3-b.png",
+          "bytes": 99334,
+          "sha256": "f49ffbf1aa74a1ce40b32c5861f65c98caf0d13313208ff044fdf9a4c8d8cb3f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-loss-8-a.png",
+          "bytes": 99458,
+          "sha256": "11791b0644cbd112d25bafe15a6d8acfefabcc33f0b8ad2ffa1b8714252bcfe5"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-loss-8-b.png",
+          "bytes": 99421,
+          "sha256": "105b7edee67d36669b3f72808f61309a70b02c0e95aea382c2b980c94ec4c44d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-outage-recovery-a.png",
+          "bytes": 100011,
+          "sha256": "09ab85f9d629e88005c6fd8bdeb0005c363d5eecf67b828808e6a3b102d45a8a"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-outage-recovery-b.png",
+          "bytes": 99758,
+          "sha256": "ab83e271fed4148bbdd5a5ad2336060b49f067a2e4234612a7511255b744a789"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-0-a.png",
+          "bytes": 99729,
+          "sha256": "d0549696dc1efdb9f891b00c2620e0e102726177d3409abab7e2c4c3fa227128"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-0-b.png",
+          "bytes": 99505,
+          "sha256": "8480fac8bf4b65dc206c3f71cd136f7a94f6b614c0a097dcd583c368adf01335"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-100-a.png",
+          "bytes": 99578,
+          "sha256": "fe5d7eacfa5dc29928778f72517e24004bbfe7e46a185203269f66dbbe493db9"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-100-b.png",
+          "bytes": 99209,
+          "sha256": "24389ca84d41a6930fdbbb11051eac963ddad109aa6a74fc9aa866bfc3a2091f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-200-a.png",
+          "bytes": 99678,
+          "sha256": "56f170eaa0d79396dd39b9f412c958a80229c14a841702e1e4f15ecf84c3a0ea"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-200-b.png",
+          "bytes": 99558,
+          "sha256": "3609119a37060add958ff5a646f72a71caab029faa9ea7c163c46d4843bc41d5"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-350-a.png",
+          "bytes": 99536,
+          "sha256": "1bc23e69df1b47cc61866b86e8921d1bd940fa18a71d4d6afc4ba3d0c077fe36"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-350-b.png",
+          "bytes": 99629,
+          "sha256": "9c0a7c5460d50e9f360912d4de9b0b20e0522f3ce1e564f30bececbd52efe9fa"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-50-a.png",
+          "bytes": 99995,
+          "sha256": "c3bc873ee21d5a2662faeb9aa33f4a3654563dfe705fa1711c9c19792c4896b0"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-rtt-50-b.png",
+          "bytes": 99602,
+          "sha256": "f61d9f11e19bf2b27b98f850a5c5ab8767c03eb54c054bd862132109261d4221"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-targeted-reorder-a.png",
+          "bytes": 101586,
+          "sha256": "ac11b86aecdd1ae7f5f0e351d6e7e2943cf041662934dd172f9d3e177139a75c"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/screenshots/matrix-targeted-reorder-b.png",
+          "bytes": 102183,
+          "sha256": "eb5c5f065a6014975fc3c464be7d2c6420ae69c3e80495cc998d3b94630453f6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/video/.playwright/page@62563ba1fef896a5d9491471f94338ac.webm",
+          "bytes": 636175,
+          "sha256": "5c31cf4f5c2ec14b25623b244b65552b14dc570fba6f5c90edfdf8ec0a02d7b6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/video/.playwright/page@9a4ff8cbcf8de23a0e51ae79d3630052.webm",
+          "bytes": 637870,
+          "sha256": "72ed77ab80ec5bc39748739c1b44991f69a2aecd96a7e7cde45519303552c33f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/video/.playwright/page@f220b3f4c06d2c8a7908066365822007.webm",
+          "bytes": 571962,
+          "sha256": "733fd3ba526c7ecb98d7c38b2293c9834828936a2fab4bc419bb71dc9981b037"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/video/matrix-outage-recovery-a.webm",
+          "bytes": 637870,
+          "sha256": "72ed77ab80ec5bc39748739c1b44991f69a2aecd96a7e7cde45519303552c33f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/video/matrix-rtt-350-a.webm",
+          "bytes": 571962,
+          "sha256": "733fd3ba526c7ecb98d7c38b2293c9834828936a2fab4bc419bb71dc9981b037"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-2-minimum-player-tick-precondition/video/matrix-targeted-reorder-a.webm",
+          "bytes": 636175,
+          "sha256": "5c31cf4f5c2ec14b25623b244b65552b14dc570fba6f5c90edfdf8ec0a02d7b6"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt-3-queue-flood-not-saturated",
+      "files": [
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/capture-console.log",
+          "bytes": 4673,
+          "sha256": "9180a104b801d6c8832d835303ae0802851fce9654086547b7ef59890880bc2b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/logs/capture-error.txt",
+          "bytes": 3873,
+          "sha256": "2f4ea05097b8eb3e26f02e11a46a07b0203f63fdd6d8e793ab8c0f6fd6cefaf8"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/logs/vite.jsonl",
+          "bytes": 201,
+          "sha256": "f84f297a20f6c0610fc60eade65c2a75655860cfd71c095be689b559e6021be6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/logs/wrangler.jsonl",
+          "bytes": 13783,
+          "sha256": "ff8859aebf2dc3c74cddeaa1733703ba4bdd7efc043b379c2f4147d1ce242baf"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-duplicate-1.json",
+          "bytes": 45882,
+          "sha256": "5ce4b51d95176fb6ab26b882cf6cf95859188b68d8e14b6af6d458e690b85026"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-duplicate-5.json",
+          "bytes": 46071,
+          "sha256": "01022c665ee52d774a4edd84bbe2e8076d03cd58af3e11717ff75edec4202d24"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-jitter-15.json",
+          "bytes": 45662,
+          "sha256": "fef80fe8151791c2a20570d42c1a55b810be8fc73cb92e475dff854178e2d3a2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-jitter-50.json",
+          "bytes": 46111,
+          "sha256": "b78584b95a4871926b47331313e77be4cf778df1be5bad624b7511f8691f3945"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-loss-1.json",
+          "bytes": 45466,
+          "sha256": "31392286e8d05dfc76772bf98af10eea142ef2fb1d39939e5cac2f75b0828744"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-loss-3.json",
+          "bytes": 45485,
+          "sha256": "7c1470aabdeab3044a45a5a1f3a5cbb2e4a5771b4ea7406521925fb494848a06"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-loss-8.json",
+          "bytes": 45517,
+          "sha256": "b9896e3d1007bb09b5c3e710c17273d4806a05f9bc1f87401668f3af23cc7611"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-outage-recovery.json",
+          "bytes": 46305,
+          "sha256": "7c65c4f93eb830c4d1389651c7144bd45d4077e87cb24b9d98853951fe735d2b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-rtt-0.json",
+          "bytes": 45414,
+          "sha256": "071441c49a0b2ac6b39393741c4ed56a625a31874ba90ad6ec20d2a49c8e28d3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-rtt-100.json",
+          "bytes": 45483,
+          "sha256": "cd8e6e5d004ae961c3ed3108f10c68f74d5fc1047dbfe661f30e58f9bdf313c2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-rtt-200.json",
+          "bytes": 45523,
+          "sha256": "8011f5ae2b993e07149b0fa0726a650d4f826f18d8d4ea03e469f81f8232e802"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-rtt-350.json",
+          "bytes": 45552,
+          "sha256": "7070137d9912dd4338c7aa101e0a82673601e09767f541b90605eb2f5164a743"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-rtt-50.json",
+          "bytes": 45513,
+          "sha256": "7ff7c11c0d7aeaee48af260a7714d5f7606cf5999d2f6b698a754647930b86ba"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/profiles/matrix-targeted-reorder.json",
+          "bytes": 47832,
+          "sha256": "92d7b00f3914016623bce89ea8411d20ca04b4878783e425074cc9f0199b43d2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-duplicate-1-a.png",
+          "bytes": 100028,
+          "sha256": "b0572608f51cae54e8f7effd0cecf9bb8f39d8013f495da80d3d50fcfa56f055"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-duplicate-1-b.png",
+          "bytes": 99704,
+          "sha256": "30f2d9e108db88777bd22eb72ebeaff9eff4001062f6c6445b67d5c56825e028"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-duplicate-5-a.png",
+          "bytes": 99946,
+          "sha256": "57482847c697a5aeeaa401b741ae6d74a0e4c0bd92a9ae1b99569d5804105d46"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-duplicate-5-b.png",
+          "bytes": 99651,
+          "sha256": "897b98f018f4387baaff6f8bff9839c0fb89849d8f9c88d1315489139623e395"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-jitter-15-a.png",
+          "bytes": 99961,
+          "sha256": "af18bd071b674ee4b732cc7b2cfbf9c03ba1d775dfb64f9c61ed96c8cd86509d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-jitter-15-b.png",
+          "bytes": 99762,
+          "sha256": "c65895538b25183bfdae7cdb5e956fdeba25f346c17011c5f2e00cc2dfeb9f68"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-jitter-50-a.png",
+          "bytes": 100469,
+          "sha256": "c5d01c9576951d60fb05d1a3877cf9a29d3a60bf66723b85eb4b1c70c7e4dece"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-jitter-50-b.png",
+          "bytes": 102422,
+          "sha256": "6b33b27f37d38198f10aa6f6168936148e3f33f54019593e480d8381ec758206"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-loss-1-a.png",
+          "bytes": 99669,
+          "sha256": "633fd09c3272a4737b4ccde6d8a970a971483bf44b2cbdabf11bbd167e86988a"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-loss-1-b.png",
+          "bytes": 99718,
+          "sha256": "c87da607b778b34d622abbe559316fcbad5d6c99ff94ab76e0c86f09296bb520"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-loss-3-a.png",
+          "bytes": 99852,
+          "sha256": "4e41fcea7e2ac0f4a25c4a090fa6dac6317cfc7e2e9100229a2f848c9a93815b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-loss-3-b.png",
+          "bytes": 99436,
+          "sha256": "4a33fa55d7b84c66d879cdc34d75976c5dc9cbf1a6816087c93f1914df83f5dc"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-loss-8-a.png",
+          "bytes": 99159,
+          "sha256": "bf5f42493c39dad769210551940638c6946b345aef3b131fd522cb541ff59726"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-loss-8-b.png",
+          "bytes": 99118,
+          "sha256": "e9942698cd643e48c1b756348e724d26f6d6cc507540724dc6d461251d0c34a0"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-outage-recovery-a.png",
+          "bytes": 101990,
+          "sha256": "ab5164a354b949bf518206f7ef5dea97287195b792f8515b194d8ec02134c440"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-outage-recovery-b.png",
+          "bytes": 101605,
+          "sha256": "36087340342a9cf4bb6b0f5d2f3f0ae730540049680275326947ef78b33540b4"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-0-a.png",
+          "bytes": 99430,
+          "sha256": "0dbd55265feceff32680f6e3e0d24865da3048374c051f57706f5a2b8df0c15e"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-0-b.png",
+          "bytes": 99528,
+          "sha256": "5a45b89341f44520246bf6b52bb16b14746ac8c3aa7e4cf27f1ee3802e521188"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-100-a.png",
+          "bytes": 99581,
+          "sha256": "fb4e884670a3a618d28ed442ab33d82fca3c3ac3523e2c81d1190773a260c1d6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-100-b.png",
+          "bytes": 99707,
+          "sha256": "5410e218444bdd3927b988bb5effdf15daee5feea3e0d0a505794dca4bf8b2fe"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-200-a.png",
+          "bytes": 99537,
+          "sha256": "01e19b2167b4dde0c72317933cc4e8fd0bf8ab91d3069b183cf8c158e20e8f00"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-200-b.png",
+          "bytes": 99446,
+          "sha256": "96567ccf7cb1b033c72afd450193ee0e40e58e990f1b3f971eb7244b5755dffd"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-350-a.png",
+          "bytes": 99925,
+          "sha256": "baeeb4329168bcace4d6200958d6823e3578cc816abdbfe8d9ce67eea35564de"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-350-b.png",
+          "bytes": 99612,
+          "sha256": "3227f0f75aef2a8426059787205e0a3aff06868a01c11f6d2695936b9c42a5ae"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-50-a.png",
+          "bytes": 99587,
+          "sha256": "c5504c8c288d93c6939980535a546d0dda31d9cf625b784f8b3c97f93edd2e48"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-rtt-50-b.png",
+          "bytes": 99584,
+          "sha256": "710a612cc623d076df75139c60d8d66a029d09ef9a1b635987bb1f51c2c3c0ab"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-targeted-reorder-a.png",
+          "bytes": 102152,
+          "sha256": "5fb7e791cd7f2d776e703d144e5b95d8ce17e5ab7c57a395946b389a4ee5b399"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/screenshots/matrix-targeted-reorder-b.png",
+          "bytes": 102452,
+          "sha256": "64bad7eec2695518768bdd1801347968873b17ecc96416091cc501c62d7d271d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/video/.playwright/page@9ce94415626ab1b38392bfc463fdf7d6.webm",
+          "bytes": 574209,
+          "sha256": "2ebed20c9af75e7baa3c7db15e37b1a0e6a06239d9456df0f2abf4428a8c2787"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/video/.playwright/page@aaaceb2bba27a6bd59a0a599f70b2215.webm",
+          "bytes": 670408,
+          "sha256": "54740394441055500821975adb0477121538754cb8fbe8d1e629c7848423e60b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/video/.playwright/page@bd269532219a66e2d9e04fb6fc96f2bd.webm",
+          "bytes": 638510,
+          "sha256": "9b6e62f28dcaf2fe6248ceba5203df0c9f4d293f68d42dda9ab1d72182a64bed"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/video/matrix-outage-recovery-a.webm",
+          "bytes": 638510,
+          "sha256": "9b6e62f28dcaf2fe6248ceba5203df0c9f4d293f68d42dda9ab1d72182a64bed"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/video/matrix-rtt-350-a.webm",
+          "bytes": 574209,
+          "sha256": "2ebed20c9af75e7baa3c7db15e37b1a0e6a06239d9456df0f2abf4428a8c2787"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-3-queue-flood-not-saturated/video/matrix-targeted-reorder-a.webm",
+          "bytes": 670408,
+          "sha256": "54740394441055500821975adb0477121538754cb8fbe8d1e629c7848423e60b"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt-4-reload-abort-misclassified",
+      "files": [
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/capture-console.log",
+          "bytes": 2181,
+          "sha256": "649a13aeecb18708d81567ca609031b3ac1a9b55bc1598ea471e89dfe546a2f6"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/expanded-runtime-matrix.json",
+          "bytes": 756480,
+          "sha256": "7dbc600814e48bad11d737ae00a9eb44c7f2414897f8ee82c60cd78a96da1a9c"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/logs/vite.jsonl",
+          "bytes": 201,
+          "sha256": "c8ac022bfedad621b6aa1ab8a952fa1a2bd9c080d06c7c9a221dd1998b0e694d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/logs/wrangler.jsonl",
+          "bytes": 14051,
+          "sha256": "6790888c13c7abbf9c3fad05dfffbfac870ed42a4c7cca3e28afe3bc91050fe8"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-duplicate-1.json",
+          "bytes": 45919,
+          "sha256": "52c9c5120317fe0ee071ea73faa0da4f07a2b380f0823e7aee1ac3fcfb538d67"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-duplicate-5.json",
+          "bytes": 46039,
+          "sha256": "ea74ce59388b21cf330f545c7d0a3a633334213c035cb2d65c4c56bce16f0f01"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-jitter-15.json",
+          "bytes": 45664,
+          "sha256": "b0e5c5608b3cb62868cbbb0525fd865db61394b0eefd2772fab1aa1ca39126e9"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-jitter-50.json",
+          "bytes": 46108,
+          "sha256": "32f30f75e566fafa6471f79464a25eb063f0849295ef41b51fb624e0f1c89def"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-loss-1.json",
+          "bytes": 45494,
+          "sha256": "a9988b50cfbfa409459922c485b02633085bcaa340f33427736b8feea1211d12"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-loss-3.json",
+          "bytes": 45488,
+          "sha256": "52f1eab520fa6fc64078fe1c5cc52981b3e463620c94d334f4a73a4f0cb16fae"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-loss-8.json",
+          "bytes": 45518,
+          "sha256": "49f056219853a27f1d36a861509af29e102cfde9635f57b1abd1cbd0c7656197"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-outage-recovery.json",
+          "bytes": 46291,
+          "sha256": "ffb80ce061713646746a7d70dcf54dd16cb297d342329309cb92104c0b02d451"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-rtt-0.json",
+          "bytes": 45457,
+          "sha256": "d95a9247d34f2063f3c058c16a3e2a8c9a124c2afb5154c37f910c382cab109f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-rtt-100.json",
+          "bytes": 45505,
+          "sha256": "ab284c7c475ddd723026bc5a02d29e3fe2ea69f2d562a7f99403df35af9688ef"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-rtt-200.json",
+          "bytes": 45522,
+          "sha256": "d88e3fe7f896ec5eb9e2a823373ad8dd445ee905140c4e900589ee531235117e"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-rtt-350.json",
+          "bytes": 45533,
+          "sha256": "93e9d3801a5a79d07248042858d7506909ae3ef8af5e8bc17965202baf7d1593"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-rtt-50.json",
+          "bytes": 45484,
+          "sha256": "3644bf229d25afe8eb904e9824bff66891c0c600d89761ff4044a275c2c5be98"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/profiles/matrix-targeted-reorder.json",
+          "bytes": 47736,
+          "sha256": "9413142e1854d469a1062f2181e378b094357c0b2a573c668e66db744ffcf196"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-duplicate-1-a.png",
+          "bytes": 100479,
+          "sha256": "b629cb18468badd633ef880f2f89628c41dc2543a5854f96d437776e90d1d5a3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-duplicate-1-b.png",
+          "bytes": 101900,
+          "sha256": "57ff37f6b3f8b6e44dd5723683ff44c8e856f1c9cc7f3c6ca7170cdb1b3c3616"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-duplicate-5-a.png",
+          "bytes": 100527,
+          "sha256": "fd1547c5902dff8cba7f7711737d04f7ad1f27a94acb92631b70045d1bcf47ea"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-duplicate-5-b.png",
+          "bytes": 100320,
+          "sha256": "16c4d8b991fbf0f39a95c7ebd563e4ec5b0fd7aea2b85291960004a36f39cec2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-jitter-15-a.png",
+          "bytes": 99911,
+          "sha256": "5e0b85bbdb6a377ea11e30659449c9bd4ebcb372a1fb622ca76d8683fa97fd90"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-jitter-15-b.png",
+          "bytes": 99730,
+          "sha256": "1a8a25dcb6d3bdd9f84461e9255c8dd112ffc87c7a454f7d29cc8e298e2d7637"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-jitter-50-a.png",
+          "bytes": 99990,
+          "sha256": "96428125428a9f0d1992d6fad09d7395ba36aa8852d6a3594b88d78a04a6b7e2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-jitter-50-b.png",
+          "bytes": 99726,
+          "sha256": "4d8c09ba541110f440314b4d6bf8c11d053cca46906a79d8824ad45aaa9fbb0d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-loss-1-a.png",
+          "bytes": 100192,
+          "sha256": "2598658614e740b4638f64af9997cab86961b92ed3cd869c369137ee65e7b362"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-loss-1-b.png",
+          "bytes": 100004,
+          "sha256": "8ebedf89887aaebf7dcf626a3610d0d6aeab5cd9b3d39e9921ceb7d89c22b5ca"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-loss-3-a.png",
+          "bytes": 99750,
+          "sha256": "005a274df7ee9ea30137d55fc0071848167dc28be3357e705fe3c12feaa72ce2"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-loss-3-b.png",
+          "bytes": 99391,
+          "sha256": "955c29834874d904c8accbf9dab0c68fe60d7922eb6c1cccaf597ca3358ff593"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-loss-8-a.png",
+          "bytes": 99574,
+          "sha256": "8c2108f09d445166d80c7970660556250e3e3d6aceb5ceb77c4beedd861053f7"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-loss-8-b.png",
+          "bytes": 99139,
+          "sha256": "ecf7d6cae4685c3c70fdbe895bd83fc85b67811230c43daf08ad425a56245eab"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-outage-recovery-a.png",
+          "bytes": 101560,
+          "sha256": "bd2f4578663ef933c2df38bd97207700b8013f1229b5f4f38728313cb8d5037f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-outage-recovery-b.png",
+          "bytes": 101626,
+          "sha256": "4b618d2d573943dffd240cf5bb2c37f72354e15f79eec3d93340ef327933a977"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-0-a.png",
+          "bytes": 99502,
+          "sha256": "579a7cb1bb2e506d4140252bf9eff8d689aac1d721acc7cc853f395d4abbc761"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-0-b.png",
+          "bytes": 99901,
+          "sha256": "66e2e91a121cb70f69ef6dc95c07f975290a1ea3d07e9d61b5542005ee2acb51"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-100-a.png",
+          "bytes": 99843,
+          "sha256": "f7a388bd9075d720706b285b3d828837c00db2e6fe1cc1514bb68af44813b43b"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-100-b.png",
+          "bytes": 99502,
+          "sha256": "89a3a5d65787c7b538f671d4d3cff849dc6af4bf773c06efeb27374f298569c7"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-200-a.png",
+          "bytes": 99632,
+          "sha256": "ff11e25e3166577ad565f9c719bd4c4a841e4a1ddacb16ebbe3b98e38fa525b5"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-200-b.png",
+          "bytes": 99517,
+          "sha256": "543b9470e0ca866769027bdc8e867145f100412c89785e2bdd0f0fec51c34fbf"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-350-a.png",
+          "bytes": 99587,
+          "sha256": "ad773216170e26d5a1d7bb6b869123a1c891cca54a5f9185ab1a5d2af9d72a1d"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-350-b.png",
+          "bytes": 99551,
+          "sha256": "c642f1e70eaf987072e3ac34915cf0c4257ab9c1127216d09d189a1bab2a72a7"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-50-a.png",
+          "bytes": 99499,
+          "sha256": "961103da90d7df621f0f59155337bb13297383ca418c269ae9ec492e0e25ee31"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-rtt-50-b.png",
+          "bytes": 99256,
+          "sha256": "df80527ac745e03023285b360a89b546c1c07e79bf0e1721b5f34b5e23abda58"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-targeted-reorder-a.png",
+          "bytes": 101568,
+          "sha256": "e651c75b2e609e1ffc480f4ca900eaef5487bd80837d374e649390271ecc8290"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/screenshots/matrix-targeted-reorder-b.png",
+          "bytes": 102088,
+          "sha256": "a51623ee6587927c2f0833e178c85cfcffbc3bf7ed9bc52c587def392124c1f3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/video/.playwright/page@0c8a0c310ea41e2822d474293cf68b0b.webm",
+          "bytes": 569637,
+          "sha256": "9037dd44f0abdee185d7c998dfe679594c7fc1367d2a5ad9d7bb849b9e9b8234"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/video/.playwright/page@4d40c2b0d7f102ec0a960ab3a4505c5d.webm",
+          "bytes": 661425,
+          "sha256": "371a91ea012ce06fdda07c4cb5ae6e9d86245804de917cfb77136237d585ca46"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/video/.playwright/page@bf7afb0eeb88cdc61e34047c2c970d12.webm",
+          "bytes": 652591,
+          "sha256": "5514452e207e550d3e537a65e43437ec76073c34412019b011139a730c031253"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/video/matrix-outage-recovery-a.webm",
+          "bytes": 661425,
+          "sha256": "371a91ea012ce06fdda07c4cb5ae6e9d86245804de917cfb77136237d585ca46"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/video/matrix-rtt-350-a.webm",
+          "bytes": 569637,
+          "sha256": "9037dd44f0abdee185d7c998dfe679594c7fc1367d2a5ad9d7bb849b9e9b8234"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-4-reload-abort-misclassified/video/matrix-targeted-reorder-a.webm",
+          "bytes": 652591,
+          "sha256": "5514452e207e550d3e537a65e43437ec76073c34412019b011139a730c031253"
+        }
+      ]
+    },
+    {
+      "attempt": "attempt-5-room-metrics-503",
+      "files": [
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/capture-console.log",
+          "bytes": 836,
+          "sha256": "05d7dd6c91ffa1ef85eed7501a6fd4ab0cb202af0a94b56369a6ea0aaaeb3622"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/logs/capture-error.txt",
+          "bytes": 661,
+          "sha256": "4842693ab083ee607382cbb1a4b7470102d2dd300829272776457130a731f883"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/logs/vite.jsonl",
+          "bytes": 325,
+          "sha256": "52c88bad843e1bd73b78e8e1f4b96aa2ca26dc88d1409acae9f0a43247a5893f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/logs/wrangler.jsonl",
+          "bytes": 3104,
+          "sha256": "2007cfdce12eba511a8c8a4e4b615723a56b07afc410f3c4ccc6edec6ee0a7f3"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/profiles/matrix-rtt-0.json",
+          "bytes": 45402,
+          "sha256": "72e88c76e424c07ebacd525dac484d775368bed111a54c37599ade24b660422f"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/screenshots/matrix-rtt-0-a.png",
+          "bytes": 99734,
+          "sha256": "521bdce163ef87eae5b0e19c79c005373618a67e0d306a3e0ac70ca0d1a43d6e"
+        },
+        {
+          "path": "evidence/2026-07-21/phase-4-g3-expanded/failures/attempt-5-room-metrics-503/screenshots/matrix-rtt-0-b.png",
+          "bytes": 99535,
+          "sha256": "050b881b3e5bc8a92335a97b954be68cc199e22fe27cc033a6c8d0d3ea8f411e"
+        }
+      ]
+    }
+  ]
+}

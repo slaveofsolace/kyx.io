@@ -1,0 +1,546 @@
+{
+  "schemaVersion": 1,
+  "status": "PRESS_HALL_V3_2_BOUNDED_RUNTIME_CAPTURE_PASS_G5_G8_OPEN",
+  "capturedAt": "2026-07-22T12:24:27.472Z",
+  "scope": "G5_G8_NON_DEFAULT_PRESS_HALL_V3_2_RUNTIME_INSPECTION",
+  "origin": "http://127.0.0.1:4332",
+  "route": "/?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.2%2Fspatial-material-joined",
+  "host": {
+    "machineName": "sol",
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpuModel": "Intel(R) Core(TM) i9-14900K",
+    "logicalCpuCount": 32,
+    "totalMemoryBytes": 68388204544,
+    "freeMemoryBytesAtCapture": 40558829568
+  },
+  "browser": {
+    "product": "Chromium",
+    "version": "149.0.7827.55",
+    "headless": true,
+    "softwareRendererRequested": true,
+    "viewport": {
+      "width": 1600,
+      "height": 900,
+      "deviceScaleFactor": 1
+    },
+    "runtimeIdentity": {
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7827.55 Safari/537.36",
+      "platform": "Win32",
+      "hardwareConcurrency": 32,
+      "deviceMemoryGb": 32,
+      "viewport": {
+        "width": 1600,
+        "height": 900,
+        "devicePixelRatio": 1
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "shadingLanguageVersion": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+      }
+    }
+  },
+  "routeSnapshot": {
+    "evidence": {
+      "schemaVersion": 1,
+      "status": "PRESS_HALL_V3_2_RUNTIME_INSPECTION_READY_G5_G8_OPEN",
+      "selection": {
+        "source": "explicit_query",
+        "explicit": true,
+        "reference": "inkfall_foundry@2/press_hall/v3.2/spatial-material-joined",
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "artRevision": "3.2",
+        "exportVariant": "spatial-material-joined"
+      },
+      "catalogDefault": {
+        "mapId": "inkfall_foundry",
+        "mapRevision": 1,
+        "unchanged": true
+      },
+      "art": {
+        "role": "presentation_only",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb",
+        "requestUrl": "/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb",
+        "bytes": 13300676,
+        "sha256": "56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119",
+        "expectedSha256": "56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119",
+        "hashVerified": true,
+        "loadedBy": "THREE.GLTFLoader.parse",
+        "nodeCount": 29,
+        "meshCount": 29,
+        "primitiveCount": 29,
+        "triangleCount": 188576,
+        "materialCount": 9,
+        "textureCount": 0,
+        "boundsMeters": {
+          "minimum": {
+            "x": -22.760000228881836,
+            "y": -2.990000106394291,
+            "z": -10.530000448226929
+          },
+          "maximum": {
+            "x": 22.760000228881836,
+            "y": 8.809999965131283,
+            "z": 11.84000015258789
+          },
+          "size": {
+            "x": 45.52000045776367,
+            "y": 11.800000071525574,
+            "z": 22.37000060081482
+          }
+        }
+      },
+      "authorityAlignment": {
+        "role": "separate_authority_fixture_overlay",
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2,
+        "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+        "fixtureHash": "bf85e42731fd088e",
+        "collisionSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+        "solidColliderCount": 339,
+        "authorityVolumeCount": 2,
+        "spawnCount": 12,
+        "zoneCount": 9,
+        "artGeometryMayBeAuthority": false,
+        "overlayVisible": true,
+        "coordinateBinding": "map X/Y/Z millimeters -> glTF X/Y/-Z meters"
+      },
+      "renderer": {
+        "artOnly": {
+          "calls": 27,
+          "triangles": 188387,
+          "lines": 0,
+          "points": 0,
+          "geometries": 27,
+          "textures": 1,
+          "programs": 1
+        },
+        "artPlusAuthorityOverlay": {
+          "calls": 30,
+          "triangles": 188627,
+          "lines": 12276,
+          "points": 0,
+          "geometries": 29,
+          "textures": 1,
+          "programs": 3
+        },
+        "profileOverlayVisible": true
+      },
+      "performance": {
+        "warmupFrames": 60,
+        "measuredFrames": 180,
+        "frameTimes": {
+          "count": 180,
+          "minimumMs": 16.599999999998545,
+          "p50Ms": 166.70000000000073,
+          "p95Ms": 216.6999999999971,
+          "p99Ms": 349.8999999999942,
+          "maximumMs": 366.6999999999971,
+          "meanMs": 171.93777777777777
+        },
+        "loadTimingMs": {
+          "fetchMs": 42.19999999552965,
+          "hashMs": 7.5,
+          "parseMs": 12.800000004470348,
+          "authorityValidationMs": 14.399999998509884,
+          "totalMs": 38492.29999999702
+        },
+        "heapBefore": {
+          "usedJsHeapBytes": 60300000,
+          "totalJsHeapBytes": 68000000,
+          "jsHeapLimitBytes": 3760000000
+        },
+        "heapAfter": {
+          "usedJsHeapBytes": 60300000,
+          "totalJsHeapBytes": 68000000,
+          "jsHeapLimitBytes": 3760000000
+        },
+        "namedBrowserHost": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7827.55 Safari/537.36",
+          "platform": "Win32",
+          "hardwareConcurrency": 32,
+          "deviceMemoryGb": 32,
+          "viewport": {
+            "width": 1600,
+            "height": 900,
+            "devicePixelRatio": 1
+          },
+          "webgl": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "shadingLanguageVersion": "WebGL GLSL ES 3.00 (OpenGL ES GLSL ES 3.0 Chromium)",
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          }
+        },
+        "qualification": "BOUNDED_HEADLESS_BROWSER_RUNTIME_PROFILE_NOT_FINAL_NAMED_HARDWARE_SOAK"
+      },
+      "camera": {
+        "currentView": "overhead",
+        "presetCount": 4,
+        "sweep": {
+          "kind": "camera_only_visual_readability_sweep",
+          "status": "complete",
+          "completedSegments": 4,
+          "durationMs": 3319.2999999970198,
+          "collisionNoSnagClaim": false
+        }
+      },
+      "browserRuntimeErrors": [],
+      "productBoundary": {
+        "explicitNonDefaultInspection": true,
+        "loadedIntoOfflinePractice": false,
+        "playableMatch": false,
+        "shippingDefaultChanged": false,
+        "artGeometryUsedForAuthority": false,
+        "performanceAccepted": false,
+        "humanAccepted": false,
+        "g5Passed": false,
+        "g8Passed": false
+      },
+      "nonClaims": [
+        "G5_NOT_PASSED",
+        "G8_NOT_PASSED",
+        "FINAL_ART_NOT_ACCEPTED",
+        "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+        "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+        "NO_COLLISION_NO_SNAG_CLAIM_FROM_CAMERA_SWEEP",
+        "NOT_SHIPPING_DEFAULT",
+        "NO_DEPLOYMENT_OR_PUBLISHING_AUTHORIZATION_USED"
+      ]
+    },
+    "evidenceDescriptor": {
+      "value": {
+        "schemaVersion": 1
+      },
+      "writable": false,
+      "enumerable": false,
+      "configurable": false
+    },
+    "bodyDataset": {
+      "launchSupport": "press-hall-v3-2-inspection",
+      "pressHallStatus": "ready",
+      "pressHallReference": "inkfall_foundry@2/press_hall/v3.2/spatial-material-joined",
+      "catalogDefault": "inkfall_foundry@1"
+    },
+    "title": "Press Hall v3.2 — Runtime Inspection",
+    "visibleText": "EXPLICIT NON-DEFAULT RUNTIME INSPECTION · PRESENTATION ART + SEPARATE REVISION-2 AUTHORITY OVERLAY · G5 / G8 OPEN\n← OFFLINE PRACTICE\n\nINKFALL FOUNDRY · PRESS HALL CANDIDATE\n\nPRESS HALL V3.2\n\ninkfall_foundry@2/press_hall/v3.2/spatial-material-joined art 56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119 authority 77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520 fixture bf85e42731fd088e\n\nART CALLS\n27\nTRIANGLES\n188,576\nFRAME P95\n216.70 ms\nPRIMITIVES\n29\nCOLLIDERS\n339\nPAYLOAD\n13.30 MB\nGAMEPLAY\nNORTH\nSOUTH\nOVERHEAD\nAUTHORITY OVERLAY\nCAMERA SWEEP COMPLETE\n\nVERIFIED + PARSED · ART 27 CALLS / 188,387 TRIANGLES WITH AUTHORITY OVERLAY · 30 CALLS / 339 LOCKED SOLIDS FRAME 180 SAMPLES AFTER 60 WARMUP · P50 166.70 · P95 216.70 · P99 349.90 MS Authority boxes are inspection overlays only; render geometry is never authority. Visual camera sweep complete: 4 segments / 3319.3 ms. No collision claim.\n\nCAMERA SWEEP IS VISUAL-ONLY · NO COLLISION/NO-SNAG CLAIM · NOT FINAL ART · NO HUMAN ACCEPTANCE · NOT SHIPPING DEFAULT · G5 AND G8 REMAIN OPEN",
+    "canvas": {
+      "width": 1600,
+      "height": 900,
+      "dataLength": 41914
+    }
+  },
+  "cdp": {
+    "jsHeapUsedBytes": 8995340,
+    "jsHeapTotalBytes": 11108352,
+    "taskDurationSeconds": 4.741801,
+    "scriptDurationSeconds": 0.147059,
+    "layoutDurationSeconds": 0.020728,
+    "domCounters": {
+      "documents": 1,
+      "nodes": 841,
+      "jsEventListeners": 47
+    }
+  },
+  "network": {
+    "distinctGlbRequests": [
+      "/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb",
+      "/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb"
+    ],
+    "glbResponses": [
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb?import&url",
+        "status": 200,
+        "contentLength": "622",
+        "contentType": "text/javascript"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb?import&url",
+        "status": 200,
+        "contentLength": "1007",
+        "contentType": "text/javascript"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb?import&url",
+        "status": 200,
+        "contentLength": "643",
+        "contentType": "text/javascript"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb",
+        "status": 200,
+        "contentLength": "13300676",
+        "contentType": "model/gltf-binary"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+        "status": 200,
+        "contentLength": "613564",
+        "contentType": "model/gltf-binary"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+        "status": 200,
+        "contentLength": "604228",
+        "contentType": "model/gltf-binary"
+      }
+    ],
+    "requestCount": 81,
+    "externalRequests": []
+  },
+  "browserDiagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": [],
+    "requestedUrls": [
+      "http://127.0.0.1:4332/?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.2%2Fspatial-material-joined",
+      "http://127.0.0.1:4332/@vite/client",
+      "http://127.0.0.1:4332/src/style.css",
+      "http://127.0.0.1:4332/src/main.js",
+      "http://127.0.0.1:4332/src/style.css",
+      "http://127.0.0.1:4332/src/config/productConfig.js",
+      "http://127.0.0.1:4332/src/app/lockedGrayboxSelection.ts",
+      "http://127.0.0.1:4332/src/app/onlineAuthoritySelection.ts",
+      "http://127.0.0.1:4332/src/app/pressHallInspectionSelection.ts",
+      "http://127.0.0.1:4332/src/content/maps/constants.ts",
+      "http://127.0.0.1:4332/src/net/index.ts",
+      "http://127.0.0.1:4332/src/dev/authorityEvidenceModel.ts",
+      "http://127.0.0.1:4332/src/app/onlineAuthorityProfiles.ts",
+      "http://127.0.0.1:4332/node_modules/vite/dist/client/env.mjs",
+      "http://127.0.0.1:4332/src/net/protocol.ts",
+      "http://127.0.0.1:4332/src/sim/index.ts",
+      "http://127.0.0.1:4332/src/dev/authorityEvidenceImpairment.ts",
+      "http://127.0.0.1:4332/src/net/codec.ts",
+      "http://127.0.0.1:4332/src/net/combatConsequence.ts",
+      "http://127.0.0.1:4332/src/net/schemas.ts",
+      "http://127.0.0.1:4332/src/client/netcode/networkImpairment.ts",
+      "http://127.0.0.1:4332/src/sim/canonical.ts",
+      "http://127.0.0.1:4332/src/sim/commands.ts",
+      "http://127.0.0.1:4332/src/sim/foundationFixture.ts",
+      "http://127.0.0.1:4332/src/sim/movement/index.ts",
+      "http://127.0.0.1:4332/src/sim/replay.ts",
+      "http://127.0.0.1:4332/src/sim/rng.ts",
+      "http://127.0.0.1:4332/src/sim/state.ts",
+      "http://127.0.0.1:4332/src/sim/step.ts",
+      "http://127.0.0.1:4332/src/sim/tickClock.ts",
+      "http://127.0.0.1:4332/src/sim/units.ts",
+      "http://127.0.0.1:4332/src/sim/movement/canonical.ts",
+      "http://127.0.0.1:4332/src/sim/movement/controller.ts",
+      "http://127.0.0.1:4332/src/sim/movement/events.ts",
+      "http://127.0.0.1:4332/src/sim/movement/fixedMath.ts",
+      "http://127.0.0.1:4332/src/sim/movement/profile.ts",
+      "http://127.0.0.1:4332/src/sim/movement/profileIdentity.ts",
+      "http://127.0.0.1:4332/src/sim/movement/queryPort.ts",
+      "http://127.0.0.1:4332/src/sim/movement/replay.ts",
+      "http://127.0.0.1:4332/src/sim/movement/state.ts",
+      "http://127.0.0.1:4332/src/sim/movement/hash.ts",
+      "http://127.0.0.1:4332/src/app/pressHallInspectionRoute.ts",
+      "http://127.0.0.1:4332/node_modules/.vite/deps/three.js?v=6842f3c0",
+      "http://127.0.0.1:4332/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=6842f3c0",
+      "http://127.0.0.1:4332/node_modules/.vite/deps/three_addons_controls_OrbitControls__js.js?v=6842f3c0",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb?import&url",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb?import&url",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb?import&url",
+      "http://127.0.0.1:4332/src/content/maps/index.ts",
+      "http://127.0.0.1:4332/src/physics/index.ts",
+      "http://127.0.0.1:4332/src/authority/inkfallMapIdentity.ts",
+      "http://127.0.0.1:4332/node_modules/.vite/deps/three.module-Dhi4sXJn.js?v=6842f3c0",
+      "http://127.0.0.1:4332/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=6842f3c0",
+      "http://127.0.0.1:4332/src/content/maps/catalog.ts",
+      "http://127.0.0.1:4332/src/content/maps/loader.ts",
+      "http://127.0.0.1:4332/src/content/maps/schema.ts",
+      "http://127.0.0.1:4332/src/content/maps/validateMapPackage.ts",
+      "http://127.0.0.1:4332/src/physics/collisionLayers.ts",
+      "http://127.0.0.1:4332/src/physics/fixtureSchema.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/index.ts",
+      "http://127.0.0.1:4332/src/physics/mapColliderLoader.ts",
+      "http://127.0.0.1:4332/src/physics/rapier/index.ts",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/runtime/map.package.v1.json?import",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/runtime/map.package.v2.json?import",
+      "http://127.0.0.1:4332/src/physics/rapier/contracts.ts",
+      "http://127.0.0.1:4332/src/physics/rapier/create.ts",
+      "http://127.0.0.1:4332/src/physics/rapier/runtime.ts",
+      "http://127.0.0.1:4332/src/physics/rapier/world.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/catalog.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/tapeCatalog.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/contactLab.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/flatRun.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/slideLab.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/teleportLab.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/verticalLab.ts",
+      "http://127.0.0.1:4332/node_modules/.vite/deps/@dimforge_rapier3d-deterministic-compat.js?v=6842f3c0",
+      "http://127.0.0.1:4332/src/physics/fixtures/primitives.ts",
+      "http://127.0.0.1:4332/src/physics/fixtures/recordedTapeResults.ts",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb"
+    ],
+    "responses": [
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb?import&url",
+        "status": 200,
+        "contentLength": "622",
+        "contentType": "text/javascript"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb?import&url",
+        "status": 200,
+        "contentLength": "1007",
+        "contentType": "text/javascript"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb?import&url",
+        "status": 200,
+        "contentLength": "643",
+        "contentType": "text/javascript"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb",
+        "status": 200,
+        "contentLength": "13300676",
+        "contentType": "model/gltf-binary"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+        "status": 200,
+        "contentLength": "613564",
+        "contentType": "model/gltf-binary"
+      },
+      {
+        "url": "http://127.0.0.1:4332/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+        "status": 200,
+        "contentLength": "604228",
+        "contentType": "model/gltf-binary"
+      }
+    ]
+  },
+  "screenshots": {
+    "gameplayArtOnly": {
+      "path": "evidence/2026-07-22/phase-9-g8-press-hall-runtime-v3-2/runtime-v1/gameplay-art-only.png",
+      "bytes": 324809,
+      "sha256": "49e8a277fdc7cf931860d16f2009873c8a8cc326269e4454e682e0bd9ec35e8d",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      }
+    },
+    "gameplayAuthorityOverlay": {
+      "path": "evidence/2026-07-22/phase-9-g8-press-hall-runtime-v3-2/runtime-v1/gameplay-authority-overlay.png",
+      "bytes": 457956,
+      "sha256": "078853cb933c8534bf7bfd0a76cb4656415c7becd10e7a8e2707c887dc03452f",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      }
+    },
+    "overheadAuthorityOverlay": {
+      "path": "evidence/2026-07-22/phase-9-g8-press-hall-runtime-v3-2/runtime-v1/overhead-authority-overlay.png",
+      "bytes": 601272,
+      "sha256": "055e8715a5a78e04082fbad643845e1fbb106d02e605d8ad4df5bb16d7bc7ff1",
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      }
+    }
+  },
+  "sources": {
+    "src/app/pressHallInspectionSelection.ts": {
+      "bytes": 2111,
+      "sha256": "89c40899905bf0ce4510884ba4e19b5844cedb5fcddd86b07258229d19076a61"
+    },
+    "src/app/pressHallInspectionRoute.ts": {
+      "bytes": 35239,
+      "sha256": "4f7e784ae63a36c9f4bbbc11d4c43080fbe48569e453d2ac7ffb1a9ae3f36357"
+    },
+    "src/main.js": {
+      "bytes": 11401,
+      "sha256": "e939be8ad559dab1d1d4df6b0d16e54c5556c8cde05155cc0927fb300b918e33"
+    },
+    "index.html": {
+      "bytes": 21670,
+      "sha256": "1e6edd71afcb37c57c812159a85b83fe8a33dbe4474511f77504a50094e696e8"
+    },
+    "src/content/maps/constants.ts": {
+      "bytes": 161,
+      "sha256": "cc9b938ccfa0b9d2d8e7d6ac08baf8fb3fc014868bd630f05928513a25a2186f"
+    },
+    "src/content/maps/catalog.ts": {
+      "bytes": 1809,
+      "sha256": "b6745b1b36e9580102ccb67e6d2cb6ce613d3ff7dcfe48df53a72a346eb78143"
+    },
+    "src/authority/inkfallMapIdentity.ts": {
+      "bytes": 1324,
+      "sha256": "415995903bd58e44409228f838c83fc100f03faca726aff2ba0c7f9ed7a8618f"
+    },
+    "tests/unit/app/pressHallInspectionSelection.test.ts": {
+      "bytes": 1581,
+      "sha256": "b3f4d48ba9f827715cff05de1c756dc6e0042477163993b2de89da6a56435d0b"
+    },
+    "tests/browser/press-hall-runtime-inspection.spec.ts": {
+      "bytes": 5814,
+      "sha256": "0802e185b449350c1036cbb42c9c6b4028e8780bc7593de0d8d6e20acc729aef"
+    },
+    "tools/evidence/capture-phase9-g8-press-hall-runtime-v3-2.mjs": {
+      "bytes": 14226,
+      "sha256": "e8905f71cb538c2fe814764ab48e3f3ad02e1cbc8f6a3a369612ef39697ec81e"
+    },
+    "tools/evidence/verify-phase9-g8-press-hall-runtime-v3-2.mjs": {
+      "bytes": 8496,
+      "sha256": "5d088303fbbfa68ae61eabd06f5d20f2fecf5f762fea22e4b5aa81faa352d2fa"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/readability-v3-2/export/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined.glb": {
+      "bytes": 13300676,
+      "sha256": "56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119"
+    },
+    "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb": {
+      "bytes": 613564,
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb": {
+      "bytes": 604228,
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json": {
+      "bytes": 9651,
+      "sha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb"
+    },
+    "assets/source/maps/inkfall-foundry/runtime/graybox-lock.p6-7.v1.json": {
+      "bytes": 8640,
+      "sha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd"
+    },
+    "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json": {
+      "bytes": 16479,
+      "sha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83"
+    }
+  },
+  "assessment": {
+    "boundedRuntimeIntegration": "PASS",
+    "exactArtHashAndThreeLoader": "PASS",
+    "separateRevision2AuthorityOverlay": "PASS",
+    "actualRendererProfile": "PASS",
+    "boundedCameraSweep": "PASS_VISUAL_ONLY",
+    "collisionNoSnag": "NOT_PROVEN",
+    "finalNamedHardwarePerformance": "NOT_PROVEN",
+    "thirtyMinuteSoak": "NOT_RUN",
+    "humanVisualAcceptance": "NOT_PERFORMED",
+    "humanPlaytestAcceptance": "NOT_PERFORMED",
+    "g5": "OPEN",
+    "g8": "OPEN"
+  },
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "G8_NOT_PASSED",
+    "FINAL_ART_NOT_ACCEPTED",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+    "NO_COLLISION_NO_SNAG_CLAIM_FROM_CAMERA_SWEEP",
+    "NOT_SHIPPING_DEFAULT",
+    "NO_DEPLOYMENT_OR_PUBLISHING_AUTHORIZATION_USED"
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:56:42.767614+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV5",
+  "inputs": {
+    "rev4": {
+      "path": "kyx_vanguard_v6c_visual_benchmark_rev4.blend",
+      "sha256Before": "46ea58445aa92f2f59ecb5993d008ac4a14164300c5b276993cab28d94c8be2c",
+      "sha256After": "46ea58445aa92f2f59ecb5993d008ac4a14164300c5b276993cab28d94c8be2c",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev5.blend",
+    "bytes": 12772436,
+    "sha256": "4b4d18f844688df0698ef1f28969bc6d996cb2963a76c116de2306f9a29a1c23"
+  },
+  "removedRev4Objects": [
+    "KYX_V6C_BENCH_R5_ClavicleBlade_L",
+    "KYX_V6C_BENCH_R5_ClavicleBlade_R",
+    "KYX_V6C_BENCH_R5_ShortSternumPlacket",
+    "KYX_V6C_BENCH_R5_DeltoidUnderlay_L",
+    "KYX_V6C_BENCH_R5_DeltoidUnderlay_R",
+    "KYX_V6C_BENCH_R5_DeltoidCeramicLeaf_L",
+    "KYX_V6C_BENCH_R5_DeltoidCeramicLeaf_R",
+    "KYX_V6C_BENCH_R5_LeftShoulderIdentitySeam",
+    "KYX_V6C_BENCH_R5_ForearmGraphiteWrap_L",
+    "KYX_V6C_BENCH_R5_ForearmCeramicInset_L",
+    "KYX_V6C_BENCH_R5_ThighGraphiteWrap_L",
+    "KYX_V6C_BENCH_R5_ThighCeramicInset_L",
+    "KYX_V6C_BENCH_R5_PatellaGraphiteWrap_L",
+    "KYX_V6C_BENCH_R5_PatellaCeramicInset_L",
+    "KYX_V6C_BENCH_R5_TibiaGraphiteWrap_L",
+    "KYX_V6C_BENCH_R5_TibiaCeramicInset_L",
+    "KYX_V6C_BENCH_R5_ForearmInsetRoute_L",
+    "KYX_V6C_BENCH_R5_LegContinuousRoute_L",
+    "KYX_V6C_BENCH_R5_ForearmGraphiteWrap_R",
+    "KYX_V6C_BENCH_R5_ForearmCeramicInset_R",
+    "KYX_V6C_BENCH_R5_ThighGraphiteWrap_R",
+    "KYX_V6C_BENCH_R5_ThighCeramicInset_R",
+    "KYX_V6C_BENCH_R5_PatellaGraphiteWrap_R",
+    "KYX_V6C_BENCH_R5_PatellaCeramicInset_R",
+    "KYX_V6C_BENCH_R5_TibiaGraphiteWrap_R",
+    "KYX_V6C_BENCH_R5_TibiaCeramicInset_R",
+    "KYX_V6C_BENCH_R5_ForearmInsetRoute_R",
+    "KYX_V6C_BENCH_R5_LegContinuousRoute_R"
+  ],
+  "fittedSurfaceSourcePolygonCounts": {
+    "KYX_V6C_BENCH_R5_ClavicleGraphiteUnderlay_L": 82,
+    "KYX_V6C_BENCH_R5_ClavicleCeramicInlay_L": 29,
+    "KYX_V6C_BENCH_R5_DeltoidFittedWrap_L": 37,
+    "KYX_V6C_BENCH_R5_DeltoidCeramicRoute_L": 12,
+    "KYX_V6C_BENCH_R5_ForearmFittedWrap_L": 225,
+    "KYX_V6C_BENCH_R5_ForearmCeramicRoute_L": 112,
+    "KYX_V6C_BENCH_R5_ThighFittedWrap_L": 448,
+    "KYX_V6C_BENCH_R5_ThighCeramicRoute_L": 292,
+    "KYX_V6C_BENCH_R5_PatellaFittedWrap_L": 26,
+    "KYX_V6C_BENCH_R5_PatellaCeramicRoute_L": 10,
+    "KYX_V6C_BENCH_R5_TibiaFittedWrap_L": 55,
+    "KYX_V6C_BENCH_R5_TibiaCeramicRoute_L": 21,
+    "KYX_V6C_BENCH_R5_ClavicleGraphiteUnderlay_R": 82,
+    "KYX_V6C_BENCH_R5_ClavicleCeramicInlay_R": 29,
+    "KYX_V6C_BENCH_R5_DeltoidFittedWrap_R": 37,
+    "KYX_V6C_BENCH_R5_DeltoidCeramicRoute_R": 12,
+    "KYX_V6C_BENCH_R5_ForearmFittedWrap_R": 225,
+    "KYX_V6C_BENCH_R5_ForearmCeramicRoute_R": 113,
+    "KYX_V6C_BENCH_R5_ThighFittedWrap_R": 447,
+    "KYX_V6C_BENCH_R5_ThighCeramicRoute_R": 291,
+    "KYX_V6C_BENCH_R5_PatellaFittedWrap_R": 25,
+    "KYX_V6C_BENCH_R5_PatellaCeramicRoute_R": 10,
+    "KYX_V6C_BENCH_R5_TibiaFittedWrap_R": 55,
+    "KYX_V6C_BENCH_R5_TibiaCeramicRoute_R": 21,
+    "KYX_V6C_BENCH_R5_OccipitalBlade_L": 29,
+    "KYX_V6C_BENCH_R5_OccipitalBlade_R": 29
+  },
+  "rifleRematerializedObjects": [
+    "KYX_V6C_BENCH_R5_AutoRifleCeramicFlowShell",
+    "KYX_V6C_BENCH_R5_AutoRifleStockCheekFlow"
+  ],
+  "corrections": [
+    "Removed every rev4 capsule-like shoulder and limb sweep.",
+    "Built chest, shoulder, forearm, thigh, patella, and tibia protection from accepted V6-A surface topology.",
+    "Kept every new protection surface low-profile with nested narrow ceramic routes rather than isolated pads.",
+    "Added small tapered rear helmet blades and a center seam to break the featureless orb read.",
+    "Replaced the bright rifle slab material with warm gunmetal while retaining a restrained light top index.",
+    "Replaced long flex-gap routes with two short local asymmetric identity marks."
+  ],
+  "assertions": {
+    "rev4Preserved": true,
+    "acceptedV6APreserved": true,
+    "allFittedSurfacesHaveSourceTopology": true,
+    "noV6BObjects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV5_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 5 is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact witnesses establish future intent only; no literal posed contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_6_AUTOMATED_AUTHORITY_PLAYTEST_PARTIAL_8P_BLOCKED_G5_NOT_PASSED",
+  "classification": "automated_synthetic_authority_playtest_not_human",
+  "binding": {
+    "mapId": "inkfall_foundry",
+    "mapRevision": 1,
+    "packageDigest": "a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267",
+    "fixtureHash": "2a0a446a0b152395",
+    "topologySeedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "movementProfileId": "phase3_hypothesis_v1",
+    "movementProfileRevision": 1,
+    "physicsAdapterVersion": "0.19.3"
+  },
+  "suiteHash": "cec7553cd9d45701",
+  "allAutomatedThresholdsPassed": false,
+  "issueCount": 16,
+  "scenarioStatus": [
+    {
+      "id": "synthetic_2_player_press_cross",
+      "playerCount": 2,
+      "status": "PASS",
+      "elapsedTicks": 162,
+      "replayHash": "0f7f6c2965a594c6",
+      "completedAgents": 2,
+      "totalAgents": 2,
+      "timingMetrics": [
+        {
+          "slot": 0,
+          "metricId": "spawn_to_choice_west",
+          "measuredMilliseconds": 1600,
+          "targetBandMilliseconds": [
+            1000,
+            2500
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 0,
+          "metricId": "spawn_to_press_contact_west",
+          "measuredMilliseconds": 5450,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 0,
+          "metricId": "press_fast_central_crossing",
+          "measuredMilliseconds": 5300,
+          "targetBandMilliseconds": [
+            4000,
+            7000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 1,
+          "metricId": "spawn_to_choice_east",
+          "measuredMilliseconds": 1600,
+          "targetBandMilliseconds": [
+            1000,
+            2500
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 1,
+          "metricId": "spawn_to_press_contact_east",
+          "measuredMilliseconds": 5200,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        }
+      ],
+      "embedSamples": 0,
+      "snagEvents": 0,
+      "bodyOverlapSamples": 0,
+      "volumeEntries": {
+        "recovery": 0,
+        "kill": 0
+      },
+      "telemetry": {
+        "eventCount": 27,
+        "routeEvents": 8,
+        "occupancyEvents": 10,
+        "sightlineEvents": 1,
+        "damageEvents": 1,
+        "deathEvents": 1,
+        "zoneCount": 3,
+        "snapshotHash": "a0cccb1a45f10158",
+        "privacy": {
+          "actorIdentity": "ephemeral_match_slot_0_through_63",
+          "exactPositionsRetained": false,
+          "accountIdentifiersRetained": false,
+          "networkIdentifiersRetained": false,
+          "clientOutcomeAuthorityAccepted": false
+        }
+      },
+      "queryMetrics": {
+        "moveCapsuleCalls": 324,
+        "overlapCapsuleCalls": 327,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 327,
+        "shapeCasts": 112104,
+        "overlapTests": 112697,
+        "contacts": 125,
+        "explicitEmbedChecks": 327,
+        "maximumCallsPerAgentTick": 3
+      }
+    },
+    {
+      "id": "synthetic_4_player_press_and_ink",
+      "playerCount": 4,
+      "status": "PASS",
+      "elapsedTicks": 193,
+      "replayHash": "88ce02f1c029c9d9",
+      "completedAgents": 4,
+      "totalAgents": 4,
+      "timingMetrics": [
+        {
+          "slot": 0,
+          "metricId": "spawn_to_press_contact_west",
+          "measuredMilliseconds": 4800,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 1,
+          "metricId": "spawn_to_press_contact_east",
+          "measuredMilliseconds": 5300,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 2,
+          "metricId": "spawn_to_ink_contact_west",
+          "measuredMilliseconds": 8450,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 3,
+          "metricId": "spawn_to_ink_contact_east",
+          "measuredMilliseconds": 8750,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        }
+      ],
+      "embedSamples": 0,
+      "snagEvents": 0,
+      "bodyOverlapSamples": 0,
+      "volumeEntries": {
+        "recovery": 0,
+        "kill": 0
+      },
+      "telemetry": {
+        "eventCount": 30,
+        "routeEvents": 13,
+        "occupancyEvents": 8,
+        "sightlineEvents": 1,
+        "damageEvents": 1,
+        "deathEvents": 1,
+        "zoneCount": 5,
+        "snapshotHash": "6c504d46a8056b9a",
+        "privacy": {
+          "actorIdentity": "ephemeral_match_slot_0_through_63",
+          "exactPositionsRetained": false,
+          "accountIdentifiersRetained": false,
+          "networkIdentifiersRetained": false,
+          "clientOutcomeAuthorityAccepted": false
+        }
+      },
+      "queryMetrics": {
+        "moveCapsuleCalls": 772,
+        "overlapCapsuleCalls": 779,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 775,
+        "shapeCasts": 267112,
+        "overlapTests": 268877,
+        "contacts": 70,
+        "explicitEmbedChecks": 777,
+        "maximumCallsPerAgentTick": 4
+      }
+    },
+    {
+      "id": "synthetic_8_player_full_route_occupancy",
+      "playerCount": 8,
+      "status": "FAIL",
+      "elapsedTicks": 650,
+      "replayHash": "c47c2acd6ab3541e",
+      "completedAgents": 4,
+      "totalAgents": 8,
+      "timingMetrics": [
+        {
+          "slot": 0,
+          "metricId": "spawn_to_press_contact_west",
+          "measuredMilliseconds": 4800,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 0,
+          "metricId": "press_fast_central_crossing",
+          "measuredMilliseconds": 4600,
+          "targetBandMilliseconds": [
+            4000,
+            7000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 1,
+          "metricId": "spawn_to_press_contact_east",
+          "measuredMilliseconds": 5200,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 2,
+          "metricId": "spawn_to_ink_contact_west",
+          "measuredMilliseconds": 8450,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 3,
+          "metricId": "spawn_to_ink_contact_east",
+          "measuredMilliseconds": 8750,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 4,
+          "metricId": "spawn_to_archive_contact_west",
+          "measuredMilliseconds": null,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": false
+        },
+        {
+          "slot": 5,
+          "metricId": "spawn_to_archive_contact_east",
+          "measuredMilliseconds": null,
+          "targetBandMilliseconds": [
+            4000,
+            9000
+          ],
+          "insideTargetBand": false
+        },
+        {
+          "slot": 6,
+          "metricId": "spawn_to_choice_west",
+          "measuredMilliseconds": 1650,
+          "targetBandMilliseconds": [
+            1000,
+            2500
+          ],
+          "insideTargetBand": true
+        },
+        {
+          "slot": 6,
+          "metricId": "full_outer_loop",
+          "measuredMilliseconds": null,
+          "targetBandMilliseconds": [
+            15000,
+            28000
+          ],
+          "insideTargetBand": false
+        },
+        {
+          "slot": 7,
+          "metricId": "ink_teleport_flank",
+          "measuredMilliseconds": null,
+          "targetBandMilliseconds": [
+            1800,
+            4000
+          ],
+          "insideTargetBand": false
+        },
+        {
+          "slot": 7,
+          "metricId": "archive_drop_flank",
+          "measuredMilliseconds": null,
+          "targetBandMilliseconds": [
+            2500,
+            5000
+          ],
+          "insideTargetBand": false
+        }
+      ],
+      "embedSamples": 0,
+      "snagEvents": 38,
+      "bodyOverlapSamples": 1,
+      "volumeEntries": {
+        "recovery": 1,
+        "kill": 1
+      },
+      "telemetry": {
+        "eventCount": 32,
+        "routeEvents": 23,
+        "occupancyEvents": 0,
+        "sightlineEvents": 1,
+        "damageEvents": 1,
+        "deathEvents": 1,
+        "zoneCount": 2,
+        "snapshotHash": "027edfe7c299ebef",
+        "privacy": {
+          "actorIdentity": "ephemeral_match_slot_0_through_63",
+          "exactPositionsRetained": false,
+          "accountIdentifiersRetained": false,
+          "networkIdentifiersRetained": false,
+          "clientOutcomeAuthorityAccepted": false
+        }
+      },
+      "queryMetrics": {
+        "moveCapsuleCalls": 4640,
+        "overlapCapsuleCalls": 4664,
+        "castCapsuleCalls": 1,
+        "volumeCalls": 4643,
+        "shapeCasts": 1605786,
+        "overlapTests": 1614055,
+        "contacts": 1331,
+        "explicitEmbedChecks": 4649,
+        "maximumCallsPerAgentTick": 6
+      }
+    }
+  ],
+  "persistentMapFindings": [
+    {
+      "code": "MOVEMENT_QUERY_EXCEPTION",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": 4,
+      "tick": 91,
+      "detail": "PHYSICS_DEPENETRATION_FAILED; step=west_choice_archive; waypoint=2; position=(-25265,2571,7778); target=(-26000,4000,12000); velocity=(206,0,41); support=map_collision_stair_west_choice_archive_s01_t01; queryContacts=none.",
+      "topologyMutationAuthorized": false
+    },
+    {
+      "code": "SYNTHETIC_BODY_OVERLAP",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": null,
+      "tick": 120,
+      "detail": "Slots 4 (-25265,2571,7778) and 6 (-25254,2605,7925) overlapped analytical capsules.",
+      "topologyMutationAuthorized": false
+    },
+    {
+      "code": "AUTHORED_ROUTE_ENTERED_UNSAFE_VOLUME",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": 7,
+      "tick": 155,
+      "detail": "Synthetic route entered recovery volume map_volume_lower_void_recovery at (569,-3870,-5360).",
+      "topologyMutationAuthorized": false
+    },
+    {
+      "code": "AUTHORED_ROUTE_ENTERED_UNSAFE_VOLUME",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": 7,
+      "tick": 157,
+      "detail": "Synthetic route entered kill volume map_volume_lower_void_kill at (1178,-5020,-4846).",
+      "topologyMutationAuthorized": false
+    },
+    {
+      "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": 5,
+      "tick": 161,
+      "detail": "No 250 mm progress toward archive_east_choice waypoint 3 for 40 ticks; position=(21992,5350,14430); target=(22000,6000,17000); distance=2651 mm; velocity=(1,11,0); support=map_collision_route_press_east_archive_s02; tickContacts=map_collision_node_archive_east.",
+      "topologyMutationAuthorized": false
+    },
+    {
+      "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": 6,
+      "tick": 166,
+      "detail": "No 250 mm progress toward west_choice_archive waypoint 2 for 40 ticks; position=(-25566,3386,9836); target=(-26000,4000,12000); distance=2291 mm; velocity=(0,0,0); support=map_collision_stair_west_choice_archive_s01_t05; tickContacts=map_collision_stair_west_choice_archive_s01_t05.",
+      "topologyMutationAuthorized": false
+    },
+    {
+      "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+      "scenarioId": "synthetic_8_player_full_route_occupancy",
+      "agentSlot": 7,
+      "tick": 190,
+      "detail": "No 250 mm progress toward teleport_shortcut waypoint 1 for 40 ticks; position=(-330,-46870,-6122); target=(1000,1000,-5000); distance=47902 mm; velocity=(1859,-30000,1570); support=none; tickContacts=none.",
+      "topologyMutationAuthorized": false
+    }
+  ],
+  "topologyRecommendation": "REPORT_REQUIRED_BEFORE_PACKAGE_CHANGE",
+  "mapMutationPerformed": false,
+  "nonClaims": [
+    "SYNTHETIC_AGENTS_NOT_HUMAN_PLAYTESTERS",
+    "HUMAN_FUN_AND_READABILITY_NOT_CLAIMED",
+    "P6_7_TOPOLOGY_LOCK_NOT_CLAIMED",
+    "FINAL_ART_NOT_CLAIMED",
+    "G5_NOT_PASSED"
+  ]
+}

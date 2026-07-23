@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T08:41:28.499472+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV8",
+  "sources": {
+    "acceptedV6A": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true,
+      "bodyGeometrySha256Before": "eeb7c72910bc918c832836d8f0e6912fa6afe01bc6248b78811b8f3aa52fea1f",
+      "bodyGeometrySha256After": "eeb7c72910bc918c832836d8f0e6912fa6afe01bc6248b78811b8f3aa52fea1f",
+      "bodyGeometryUnchangedInOutput": true
+    },
+    "preservedRev7": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev7\\kyx_vanguard_v6c_visual_benchmark_rev7.blend",
+      "sha256Before": "b07d9657cefe68d33f4657da8fb2cf3498339bbc49c333036f0782c78137e4d6",
+      "sha256After": "b07d9657cefe68d33f4657da8fb2cf3498339bbc49c333036f0782c78137e4d6",
+      "unchanged": true,
+      "usedAsGeometrySource": false
+    },
+    "productionTarget": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+      "sha256Before": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "sha256After": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "unchanged": true,
+      "usage": "construction language only; body bulk and proportions ignored"
+    }
+  },
+  "output": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev8\\kyx_vanguard_v6c_visual_benchmark_rev8.blend",
+    "bytes": 12701177,
+    "sha256": "9f4c21b756c54f93710c5c0435326aaa321faeccd79d2524a0c5a61ed651d886"
+  },
+  "constructionSummary": [
+    "Single front-side-back tapered cuirass foundation with interlocking angular clavicle, rib, sternum, abdomen, waist, scapular, lumbar, and back-spine plates.",
+    "Recessed seams and flush hex fasteners replace floating foam patches and decorative cable arcs.",
+    "Low-profile faceted closed helmet shell with complete brow, visor, jaw, temple, crown, chin, and structured occipital vent housing.",
+    "Faceted fitted shoulder, upper-arm, elbow, forearm, thigh, knee, shin, ankle, and technical boot construction with woven flex zones retained.",
+    "Open skeleton-stock compact rifle with stepped receiver, ejection port, separate magazine, trigger guard, support zone, vented handguard, rooted faceted barrel, muzzle device, and indexed rail."
+  ],
+  "contactWitnesses": {
+    "primary_grip": [
+      -0.225,
+      -0.06,
+      1.02
+    ],
+    "support_grip": [
+      0.33,
+      -0.06,
+      1.085
+    ],
+    "shoulder": [
+      -0.716,
+      0.0,
+      1.165
+    ]
+  },
+  "inventory": {
+    "objects": 173,
+    "meshes": 170,
+    "empties": 3,
+    "materials": [
+      "KYX_V6C_BENCH_R8_BootComposite",
+      "KYX_V6C_BENCH_R8_CharcoalWovenSuit",
+      "KYX_V6C_BENCH_R8_CoralSafety",
+      "KYX_V6C_BENCH_R8_CyanTelemetry",
+      "KYX_V6C_BENCH_R8_DeepCyanVisor",
+      "KYX_V6C_BENCH_R8_GripRubber",
+      "KYX_V6C_BENCH_R8_RecessedSeam",
+      "KYX_V6C_BENCH_R8_SatinGunmetal",
+      "KYX_V6C_BENCH_R8_StructuralSteel",
+      "KYX_V6C_BENCH_R8_WarmPearlCeramic"
+    ],
+    "collections": [
+      "KYX_V6C_BENCH_R8_AcceptedAnatomyGarment",
+      "KYX_V6C_BENCH_R8_InterlockingArmorSystem",
+      "KYX_V6C_BENCH_R8_ManufacturedSeamsFastenersVents",
+      "KYX_V6C_BENCH_R8_ProductionAutoRifle"
+    ]
+  },
+  "objectCounts": {
+    "character": 118,
+    "rifleMeshes": 52,
+    "contactWitnesses": 3
+  },
+  "assertions": {
+    "builtFromAcceptedV6A": true,
+    "acceptedV6AFilePreserved": true,
+    "acceptedV6ABodyGeometryPreservedInOutput": true,
+    "rev7Preserved": true,
+    "productionTargetPinnedAndPreserved": true,
+    "rev7NotUsedAsGeometrySource": true,
+    "noV6BObjects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true,
+    "contactWitnessCount": true,
+    "noLiteralHeldContactClaim": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV8_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 8 is a visual benchmark candidate; it is not V6-C or G6 acceptance.",
+    "Contact empties record future intent only; no held, two-hand, or shoulder contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

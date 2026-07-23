@@ -1,0 +1,7 @@
+page.evaluate: Error: Timed out waiting for A authoritative movement: welcome,joinAccepted,fullSnapshot,reliableEventBatch,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,fullSnapshot,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,fullSnapshot,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck,inputAck
+    at waitFor (eval at evaluate (:303:30), <anonymous>:28:15)
+    at async eval (eval at evaluate (:303:30), <anonymous>:89:22)
+    at async <anonymous>:329:30
+    at captureLifecycle (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-expanded.mjs:837:31)
+    at async main (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-expanded.mjs:1740:23)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:1900:1

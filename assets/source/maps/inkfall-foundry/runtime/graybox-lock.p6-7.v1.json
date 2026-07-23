@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "kind": "inkfall_foundry_graybox_lock",
+  "id": "inkfall_foundry_graybox_lock",
+  "lockRevision": 1,
+  "status": "graybox_locked_non_default",
+  "lockedDate": "2026-07-22",
+  "binding": {
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "fixtureHash": "bf85e42731fd088e",
+    "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+    "collisionSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+    "movementProfileId": "phase3_hypothesis_v1",
+    "movementProfileRevision": 1,
+    "movementProfileHash": "8ab4ed437a4393c0",
+    "canonicalMovementHash": "66fcaf19c3fd94ad",
+    "physicsAdapterVersion": "0.19.3",
+    "authorityRateHz": 20
+  },
+  "promotion": {
+    "from": "staged_native_revision_2",
+    "to": "locked_graybox_revision_2",
+    "scope": "phase_6_graybox_only",
+    "catalogDefaultRevision": 1,
+    "catalogLockedGrayboxRevision": 2,
+    "explicitRevisionSelectionRequired": true,
+    "productSelectable": false,
+    "shippingDefault": false,
+    "deploymentAuthorized": false
+  },
+  "frozenSourceSet": [
+    {
+      "role": "topology_seed",
+      "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+      "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+    },
+    {
+      "role": "runtime_map_package",
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json",
+      "sha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb"
+    },
+    {
+      "role": "spawn_fixture",
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+      "sha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210"
+    },
+    {
+      "role": "telemetry_fixture",
+      "path": "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json",
+      "sha256": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719"
+    },
+    {
+      "role": "authority_playtest_tape",
+      "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+      "sha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5"
+    },
+    {
+      "role": "blender_source",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend",
+      "sha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224"
+    },
+    {
+      "role": "render_graybox",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    {
+      "role": "authority_collision",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    {
+      "role": "collision_build_report",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/collision-revision2-build-report.json",
+      "sha256": "6efd11f41046974613ebf022b3bf01cb804983bb1d6de17bc4131c404e95ecc3"
+    },
+    {
+      "role": "playable_surface_validation",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/playable-surface-validation.revision2.json",
+      "sha256": "00679d36481862d037c9313b6cf06eefb7cf9988ce03c10652ee843b673c5520"
+    },
+    {
+      "role": "p6_6b_independent_verification",
+      "path": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json",
+      "sha256": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4"
+    },
+    {
+      "role": "art_kit_dimension_contract",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+      "sha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83"
+    }
+  ],
+  "canonicalFingerprintAlgorithm": "sha256-canonical-json-sorted-keys-array-order-v1",
+  "frozenContractFingerprints": {
+    "topology": {
+      "projection": "seed.boundsMm+verticalTiers+zones+nodes+links+strongPositions+movementFeatures",
+      "sha256": "fff6f80ad8ac7ac235faee53668ca573050082ea93debce440478260a65c9716"
+    },
+    "zones": {
+      "projection": "seed.zones",
+      "sha256": "999833874d94349f2ae31af3ecf61ff82f4a1f35602b935ba8f6d097b6e8f8c0"
+    },
+    "nodes": {
+      "projection": "seed.nodes",
+      "sha256": "437b365e22308ba7381bb1ad6708d889645d3477249c3f4b0dce2cb5e23379a8"
+    },
+    "links": {
+      "projection": "seed.links",
+      "sha256": "47fcf84d6e268b7aebc55647d2df193d13198cd9d2002bd50e313ba5991ff8b4"
+    },
+    "strongPositions": {
+      "projection": "seed.strongPositions",
+      "sha256": "6244b7a985f3c8cc32725feaa10fe722f950f7c085e52d2c0be976f8c9ea3e64"
+    },
+    "runtimeSpawns": {
+      "projection": "mapPackage.spawns",
+      "sha256": "01c4fbd42336aad54b457d8b1dd8f1cb85a3669981c38726963cf8d5dbfda994"
+    },
+    "seedSpawns": {
+      "projection": "seed.spawnCandidates",
+      "sha256": "6cec3863c2a13cb2a0e28dca91c631e76dc47c59f39cd33ffccc6cf9738bf645"
+    },
+    "routeMetrics": {
+      "projection": "seed.routeMetrics",
+      "sha256": "b0e0c8626179551f9411d8cb122f09c11e283a2e6ab008dd621353c34cabd91f"
+    },
+    "authorityTapeScenarios": {
+      "projection": "playtestTape.scenarios",
+      "sha256": "ec0d2e1d8ed673a992dc543c9152d1697ee72f0daa2e3b443af4b617ae98a5f9"
+    },
+    "movementSizing": {
+      "projection": "seed.movementSizing",
+      "sha256": "7247b65f13d42448e98b2813e3a74df6749967d8d0909e9bcbc58653011aa4ea"
+    },
+    "coordinateAndGrid": {
+      "projection": "seed.units+coordinateSystem+grid",
+      "sha256": "a7b14012f8c40d0f7e28f738bc6b68b8d1653ef59eb6a9eed5963fb36ab807d3"
+    },
+    "seedArtModules": {
+      "projection": "seed.coverAndClearance.modules",
+      "sha256": "54a6e7c2e58341df13ffe4af4256b14578a1f4d1b26697c18b627201cee0969a"
+    },
+    "runtimeFunctionalPackage": {
+      "projection": "mapPackage.boundsMm+zones+spawns+pickups+triggers+authorityVolumes+authority",
+      "sha256": "646c759de7d0d790af6cb8d3567f7ad1d530b00f6999b0c3652bfed2bbbe8062"
+    }
+  },
+  "frozenCounts": {
+    "zones": 9,
+    "nodes": 19,
+    "links": 27,
+    "routeMetrics": 12,
+    "spawns": 12,
+    "strongPositions": 3,
+    "movementFeatures": 5,
+    "authorityPlaytestScenarios": 3,
+    "renderMeshNodes": 346,
+    "authorityCollisionSolids": 339,
+    "authorityVolumes": 2
+  },
+  "acceptedAutomatedResult": {
+    "claim": "P6_6_CORRECTED_AUTOMATED_TAPES_PASS",
+    "scenarioStatuses": ["PASS", "PASS", "PASS"],
+    "issueCount": 0,
+    "suiteHash": "143d09532b9c2b24",
+    "scenarioReplayHashes": [
+      "92aa8378d2e0d27e",
+      "2010f3a3d1897f31",
+      "909814a9d725d187"
+    ],
+    "inkTeleportFlankMilliseconds": 3950,
+    "inkTeleportFlankBandMilliseconds": [1800, 4000],
+    "archiveDropFlankMilliseconds": 3300,
+    "archiveDropFlankBandMilliseconds": [2500, 5000],
+    "zeroDefects": {
+      "capsuleEmbeds": 0,
+      "depenetrationFailures": 0,
+      "routeSnags": 0,
+      "routeIncompletes": 0,
+      "recoveryEntries": 0,
+      "killEntries": 0,
+      "analyticalPlayerOverlaps": 0
+    }
+  },
+  "artKitDimensionContract": {
+    "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+    "sha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+    "familyCount": 16,
+    "moduleCount": 37,
+    "seedParityCount": 6,
+    "status": "dimension_contract_only"
+  },
+  "mutationRules": [
+    "Any change to a frozen source hash requires a new map revision and a new lock revision.",
+    "Any change to topology, zones, nodes, links, strong-position counters, spawns, route endpoints, route bands, movement sizing, trigger destination, authority volumes, or collision requires P6.2-P6.7 re-acceptance.",
+    "Render-only art may iterate inside named locked envelopes when it preserves all route, spawn, sightline, landing, and recovery clearances.",
+    "Revision 2 may be selected only by explicit development or evidence binding until product integration rules authorize a separate default-revision change.",
+    "Prior P6.1-P6.6 evidence remains immutable and is never rewritten by this lock."
+  ],
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "HUMAN_FUN_OR_READABILITY_NOT_ACCEPTED",
+    "VISUAL_ACCEPTANCE_NOT_PASSED",
+    "FINAL_ART_NOT_COMPLETE",
+    "PERFORMANCE_NOT_ACCEPTED",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+    "DEPLOYMENT_NOT_AUTHORIZED"
+  ]
+}

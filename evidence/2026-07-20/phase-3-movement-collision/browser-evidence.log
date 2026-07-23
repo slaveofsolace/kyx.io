@@ -1,0 +1,28 @@
+COMMAND C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe tools/evidence/capture-phase3-browser.mjs --base-url=http://127.0.0.1:5999/ "--output-dir=C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\browser" "--node-evidence=C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\movement-tapes.json"
+EXIT {"code":0,"signal":null}
+
+[phase3-browser] 2026-07-20T15:00:39.908Z preflight: http://127.0.0.1:5999/
+[phase3-browser] 2026-07-20T15:00:40.041Z browser ready: Chromium 149.0.7827.55
+[phase3-browser] 2026-07-20T15:00:40.084Z fixture lab: loading Chromium tape payload
+[phase3-browser] 2026-07-20T15:00:40.820Z development driver: loading exact flat_run DEV boundary
+[phase3-browser] 2026-07-20T15:01:03.438Z complete: PASS (67 checks, 0 failures)
+{
+  "ok": true,
+  "artifactScope": "PHASE3_BROWSER_CAPTURE_ONLY",
+  "g2Status": "OPEN",
+  "humanReviewStatus": "PENDING_HUMAN_REVIEW",
+  "summaryPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\browser\\phase3-browser-summary.json",
+  "checks": 67,
+  "failures": [],
+  "screenshots": [
+    "screenshots/phase3-fixture-lab.png",
+    "screenshots/phase3-driver-ready.png",
+    "screenshots/phase3-driver-run.png",
+    "screenshots/phase3-driver-jump.png",
+    "screenshots/phase3-driver-slide.png",
+    "screenshots/phase3-driver-teleport.png"
+  ],
+  "videos": [
+    "videos/page@228ad9880f54c3221b94a60209e77eb8.webm"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "status": "EXTERNAL_WORKER_8_ROOM_BOUNDED_BURST_FAIL_CAPTURE_HARNESS_RACE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "target": {
+    "workerOrigin": "https://kyx-io-authority.heliotrope-contraption.workers.dev",
+    "buildId": "g3tmp-93ae5c5c1604"
+  },
+  "attempted": {
+    "concurrentRooms": 8,
+    "gameplayClients": 16,
+    "physicalConnections": 24,
+    "elapsedWallMilliseconds": 4500
+  },
+  "results": {
+    "cleanProcessExits": 3,
+    "lateUnhandledCaptureErrors": 5,
+    "affectedRuns": [
+      "preview-g3tmp-93ae5c5c1604-burst-v1-r02",
+      "preview-g3tmp-93ae5c5c1604-burst-v1-r04",
+      "preview-g3tmp-93ae5c5c1604-burst-v1-r06",
+      "preview-g3tmp-93ae5c5c1604-burst-v1-r07",
+      "preview-g3tmp-93ae5c5c1604-burst-v1-r08"
+    ]
+  },
+  "failure": {
+    "message": "client-a-resumed socket is not open.",
+    "location": "ProtocolV2Probe.acknowledge -> send after the resumed socket close began",
+    "classification": "capture_harness_lifecycle_race",
+    "workerFailureProved": false
+  },
+  "integrity": {
+    "nominalPassArtifactsTrusted": false,
+    "reason": "The affected processes wrote their runtime JSON before the late unhandled error; process exit status therefore overrides the embedded nominal status.",
+    "captureSourceSha256": "2737fd6c7fc3c28ac43fbb28e8891bb0a2296e7ee92efdd89ad5c397f0781325",
+    "preserved": true
+  },
+  "correction": {
+    "captureSourceSha256": "ec4609a232cb8b4c908de9f9bd706a6a471ece8d8a880f34627f889dc0b0e35a",
+    "change": "Best-effort receive-path ACK and full-recovery sends now no-op after socket close while explicit test actions retain fail-closed send behavior.",
+    "validatedBy": "fresh burst v2"
+  }
+}

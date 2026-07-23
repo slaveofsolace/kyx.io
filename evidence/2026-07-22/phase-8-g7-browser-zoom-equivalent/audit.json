@@ -1,0 +1,30 @@
+{
+  "schema": "kyxio.g7.zoom_equivalent_browser.v1",
+  "captured_at": "2026-07-22",
+  "classification": "BOUNDED_G7_ZOOM_EQUIVALENT_LAYOUT_PASS",
+  "gate_status": "G7_OPEN",
+  "browser": "Codex in-app Chromium",
+  "method": "A 1280x720 physical desktop at 100%, 125%, and 200% browser zoom was represented by the corresponding CSS layout viewports 1280x720, 1024x576, and 640x360. This verifies reflow/containment behavior, not the browser's zoom control itself.",
+  "fix": {
+    "finding": "At the 640x360 CSS viewport, a max-width media query incorrectly displayed the touch-only DESKTOP REQUIRED overlay on a fine-pointer desktop.",
+    "change": "Removed viewport width from the overlay media trigger; coarse/no-hover input remains the CSS fallback and JavaScript user-agent/pointer policy remains unchanged.",
+    "regression_test": "tests/unit/app/settings/desktopZoomCss.test.ts",
+    "focused_result": "2 files, 3 tests passed including reduced-motion precedence"
+  },
+  "cases": [
+    {"zoom_percent":100,"css_viewport":[1280,720],"overflow":[0,0],"outside":[],"visible_semantic":13,"desktop_overlay_display":"none"},
+    {"zoom_percent":125,"css_viewport":[1024,576],"overflow":[0,0],"outside":[],"visible_semantic":13,"desktop_overlay_display":"none"},
+    {"zoom_percent":200,"css_viewport":[640,360],"overflow":[0,0],"outside":[],"visible_semantic":13,"desktop_overlay_display":"none"}
+  ],
+  "screenshots": [
+    {"file":"screenshots/zoom-100-percent-equivalent.png","bytes":53200,"sha256":"9b374bced4456201b7bc4c517b9d3ca76775da8cf416f221a4ab1d4b31fb8064"},
+    {"file":"screenshots/zoom-125-percent-equivalent.png","bytes":43809,"sha256":"a12d8840d4cad391317f6ca2f46bf0decee20706972e5fa461e3fa27c9c6af09"},
+    {"file":"screenshots/zoom-200-percent-equivalent.png","bytes":29557,"sha256":"120c8c0901f435e30086511ad352075ede31b23e616c418fd0d9346f80e88532"}
+  ],
+  "limitations": [
+    "The in-app browser exposes viewport control but not its native browser-zoom control, so this is a CSS-layout equivalent rather than a literal zoom-toggle recording.",
+    "The 200% layout is mechanically contained but still needs human five-second readability review.",
+    "Pointer-lock interaction remains unavailable in this embedded browser.",
+    "G7 remains open."
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:06:55.911219+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-B_PRODUCTION_SCULPT_REV14",
+  "inputs": {
+    "rev13": {
+      "path": "kyx_vanguard_v6b_production_sculpt_rev13.blend",
+      "sha256Before": "4c6d1b386c90895a15b3d0713c916ba7270dbe81b74d265975db0109e152d1bb",
+      "sha256After": "4c6d1b386c90895a15b3d0713c916ba7270dbe81b74d265975db0109e152d1bb",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6b_production_sculpt_rev14.blend",
+    "bytes": 12689917,
+    "sha256": "7e45e0c2144a612c681dd184a842c71fae1d289301858c9da80825e3b1e3843e"
+  },
+  "harnessBounds": {
+    "before": {
+      "center": [
+        0.0,
+        -0.00344,
+        0.744483
+      ],
+      "span": [
+        0.320908,
+        0.162629,
+        0.034676
+      ]
+    },
+    "after": {
+      "center": [
+        0.0,
+        -0.00344,
+        1.034004
+      ],
+      "span": [
+        0.320908,
+        0.162629,
+        0.048161
+      ]
+    }
+  },
+  "heelCupBounds": {
+    "L": {
+      "before": {
+        "center": [
+          0.172,
+          0.092,
+          0.075
+        ],
+        "span": [
+          0.106114,
+          0.049816,
+          0.094
+        ]
+      },
+      "after": {
+        "center": [
+          0.172,
+          0.092,
+          0.071
+        ],
+        "span": [
+          0.082877,
+          0.039528,
+          0.06768
+        ]
+      }
+    },
+    "R": {
+      "before": {
+        "center": [
+          -0.172,
+          0.092,
+          0.075
+        ],
+        "span": [
+          0.106114,
+          0.049816,
+          0.094
+        ]
+      },
+      "after": {
+        "center": [
+          -0.172,
+          0.092,
+          0.071
+        ],
+        "span": [
+          0.082877,
+          0.039528,
+          0.06768
+        ]
+      }
+    }
+  },
+  "addedDetails": [
+    "KYX_V6B_PROD_R14_HelmetCrownKeel"
+  ],
+  "assertions": {
+    "rev13Preserved": true,
+    "acceptedV6APreserved": true,
+    "harnessAtWaist": true,
+    "heelCupsReduced": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6B_PRODUCTION_SCULPT_REV14_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 14 is a V6-B visual construction candidate only; it is not G6.",
+    "Rifle contact remains open until a defensible rigged pose exists.",
+    "No final retopology, UV, texture bake, rig, animation, LOD, GLB, runtime, or performance claim is made."
+  ]
+}

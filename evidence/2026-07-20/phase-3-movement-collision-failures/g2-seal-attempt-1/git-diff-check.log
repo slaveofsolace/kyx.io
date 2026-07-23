@@ -1,0 +1,32 @@
+COMMAND git diff --check
+EXIT {"code":0,"signal":null}
+
+warning: in the working copy of '.env.example', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of '.github/workflows/deploy-vps.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'CLAUDE.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'login.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'register.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/README.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/index.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/core/DeathmatchManager.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/core/Game.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/core/GameModes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/core/InputManager.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/core/UserAccount.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/entities/Bot.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/entities/BotManager.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/loginPage.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/main.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/player/Player.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/registerPage.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/style.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/ui/DamageNumbers.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/ui/HUD.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/ui/InventoryPanel.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/ui/MainMenu.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/ui/MobileControls.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/ui/Nameplates.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/world/World.js', LF will be replaced by CRLF the next time Git touches it

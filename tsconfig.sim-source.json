@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.cache/typescript/sim-source.tsbuildinfo",
+    "lib": ["ES2022"],
+    "types": []
+  },
+  "include": [
+    "src/sim/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "evidence",
+    "node_modules",
+    "public",
+    "server"
+  ]
+}

@@ -1,0 +1,560 @@
+{
+  "assertionSummary": {
+    "failed": 2,
+    "passed": 27,
+    "total": 29
+  },
+  "assertions": [
+    {
+      "actual": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "id": "approved_seed_sha",
+      "passed": true
+    },
+    {
+      "actual": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "id": "scene_seed_sha",
+      "passed": true
+    },
+    {
+      "detail": "P6.2 artifacts must not claim runtime integration or G5/G6.",
+      "id": "scene_truth_boundary",
+      "passed": true
+    },
+    {
+      "actual": [
+        "P6_2_AUTHORITATIVE_COLLISION",
+        "P6_2_EDITOR_GUIDES",
+        "P6_2_PREVIEW_STAGE",
+        "P6_2_RENDER_GRAYBOX"
+      ],
+      "expected": [
+        "P6_2_AUTHORITATIVE_COLLISION",
+        "P6_2_EDITOR_GUIDES",
+        "P6_2_PREVIEW_STAGE",
+        "P6_2_RENDER_GRAYBOX"
+      ],
+      "id": "required_collections",
+      "passed": true
+    },
+    {
+      "actual": 133,
+      "expected": 133,
+      "id": "render_collision_one_to_one",
+      "passed": true
+    },
+    {
+      "id": "separate_blend_collections",
+      "passed": true
+    },
+    {
+      "actual": 59,
+      "expected": 59,
+      "id": "all_seed_route_segments_present",
+      "passed": true
+    },
+    {
+      "actual": 34,
+      "expected": 34,
+      "id": "all_seed_waypoint_seams_present",
+      "passed": true
+    },
+    {
+      "actual": 19,
+      "expected": 19,
+      "id": "all_seed_node_platforms_present",
+      "passed": true
+    },
+    {
+      "id": "teleport_connector_not_physical",
+      "passed": true
+    },
+    {
+      "id": "drop_connector_not_returnable_ramp",
+      "passed": true
+    },
+    {
+      "actual": {
+        "maxPolygons": 6,
+        "maxVertices": 8,
+        "objects": 133
+      },
+      "id": "collision_convex_boxes_only",
+      "passed": true
+    },
+    {
+      "id": "collision_roles_only",
+      "passed": true
+    },
+    {
+      "id": "render_roles_only",
+      "passed": true
+    },
+    {
+      "id": "integer_millimeter_proxy_dimensions",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "id": "route_proxy_widths_match_seed_minima",
+      "passed": true
+    },
+    {
+      "id": "slide_gate_three_proxy_parts",
+      "passed": true
+    },
+    {
+      "actual": 0.0,
+      "expected": ">1.0 m",
+      "id": "slide_gate_walls_are_distinct",
+      "passed": false
+    },
+    {
+      "actual": {
+        "heightMm": 1350,
+        "widthMm": 1400
+      },
+      "expected": {
+        "heightMm": 1350,
+        "widthMm": 1400
+      },
+      "id": "slide_gate_seed_clearance",
+      "passed": true
+    },
+    {
+      "actual": {
+        "maximum": [
+          37.0,
+          23.0,
+          8.4
+        ],
+        "minimum": [
+          -37.0,
+          -23.0,
+          -3.256622
+        ]
+      },
+      "expected": {
+        "maximum": [
+          36.0,
+          28.0,
+          10.0
+        ],
+        "minimum": [
+          -36.0,
+          -28.0,
+          -5.0
+        ]
+      },
+      "id": "collision_aabb_inside_seed_bounds",
+      "passed": false
+    },
+    {
+      "actual": 133,
+      "expected": 133,
+      "id": "render_glb_exact_mesh_node_set",
+      "passed": true
+    },
+    {
+      "actual": 133,
+      "expected": 133,
+      "id": "collision_glb_exact_mesh_node_set",
+      "passed": true
+    },
+    {
+      "id": "collision_glb_contains_no_render_or_guides",
+      "passed": true
+    },
+    {
+      "id": "render_glb_contains_no_collision_or_guides",
+      "passed": true
+    },
+    {
+      "id": "glb_artifacts_are_distinct",
+      "passed": true
+    },
+    {
+      "actual": {
+        "animations": 0,
+        "images": 0,
+        "skins": 0,
+        "textures": 0
+      },
+      "id": "collision_glb_static_only",
+      "passed": true
+    },
+    {
+      "actual": 1596,
+      "expected": 1596,
+      "id": "collision_glb_triangle_count_matches_boxes",
+      "passed": true
+    },
+    {
+      "actual": {
+        "collisionGlb": "dda96677b114d26720dc23ba903ca028609697da2bd7cfaa5e7062bca392b0db",
+        "renderGlb": "45d5cee5cb674841c37cc8a11942ff58df9573dcb3cefb7749db9eb5e82b675a",
+        "sourceBlend": "4c8823a7d592cedee9d1d28a026c70bd533cd925b791021277ac0953f7fe15fe"
+      },
+      "expected": {
+        "collisionGlb": "dda96677b114d26720dc23ba903ca028609697da2bd7cfaa5e7062bca392b0db",
+        "renderGlb": "45d5cee5cb674841c37cc8a11942ff58df9573dcb3cefb7749db9eb5e82b675a",
+        "sourceBlend": "4c8823a7d592cedee9d1d28a026c70bd533cd925b791021277ac0953f7fe15fe"
+      },
+      "id": "build_report_hashes_match_disk",
+      "passed": true
+    },
+    {
+      "id": "build_report_passed",
+      "passed": true
+    }
+  ],
+  "blend": {
+    "bytes": 280308,
+    "collisionAabbBlenderMeters": {
+      "maximum": [
+        37.0,
+        23.0,
+        8.4
+      ],
+      "minimum": [
+        -37.0,
+        -23.0,
+        -3.256622
+      ]
+    },
+    "collisionObjects": 133,
+    "path": "source/inkfall_foundry.blend",
+    "renderObjects": 133,
+    "sha256": "4c8823a7d592cedee9d1d28a026c70bd533cd925b791021277ac0953f7fe15fe"
+  },
+  "glb": {
+    "collision": {
+      "animations": 0,
+      "binaryBytes": 76680,
+      "bytes": 226648,
+      "chunks": 2,
+      "extensionsUsed": [],
+      "images": 0,
+      "materials": 1,
+      "meshes": 133,
+      "nodeNames": [
+        "C_MODULE__FULL_COVER_ARCHIVE_E",
+        "C_MODULE__FULL_COVER_ARCHIVE_W",
+        "C_MODULE__FULL_COVER_PRESS_E",
+        "C_MODULE__FULL_COVER_PRESS_W",
+        "C_MODULE__HALF_COVER_INK_E",
+        "C_MODULE__HALF_COVER_INK_W",
+        "C_MODULE__HALF_COVER_PRESS_E",
+        "C_MODULE__HALF_COVER_PRESS_W",
+        "C_MODULE__INK_SLIDE_GATE_LEFT",
+        "C_MODULE__INK_SLIDE_GATE_RIGHT",
+        "C_MODULE__INK_SLIDE_GATE_ROOF",
+        "C_MODULE__PRESS_BAFFLE_E_INNER",
+        "C_MODULE__PRESS_BAFFLE_E_OUTER",
+        "C_MODULE__PRESS_BAFFLE_W_INNER",
+        "C_MODULE__PRESS_BAFFLE_W_OUTER",
+        "C_MODULE__PRESS_REACTOR_NORTH",
+        "C_MODULE__PRESS_REACTOR_SOUTH",
+        "C_MODULE__RED_FOLD_ENTRY_EAST",
+        "C_MODULE__RED_FOLD_ENTRY_WEST",
+        "C_MODULE__RED_FOLD_EXIT_EAST",
+        "C_MODULE__RED_FOLD_EXIT_WEST",
+        "C_NODE__ARCHIVE_DROP",
+        "C_NODE__ARCHIVE_EAST",
+        "C_NODE__ARCHIVE_MID_E",
+        "C_NODE__ARCHIVE_MID_W",
+        "C_NODE__ARCHIVE_WEST",
+        "C_NODE__EAST_CHOICE",
+        "C_NODE__EAST_SPAWN",
+        "C_NODE__INK_EAST",
+        "C_NODE__INK_MID_E",
+        "C_NODE__INK_MID_W",
+        "C_NODE__INK_WEST",
+        "C_NODE__PRESS_CORE",
+        "C_NODE__PRESS_EAST",
+        "C_NODE__PRESS_NORTH",
+        "C_NODE__PRESS_WEST",
+        "C_NODE__TELEPORT_ENTRY",
+        "C_NODE__TELEPORT_EXIT",
+        "C_NODE__WEST_CHOICE",
+        "C_NODE__WEST_SPAWN",
+        "C_ROUTE__ARCHIVE_EAST_CHOICE__S00",
+        "C_ROUTE__ARCHIVE_EAST_CHOICE__S01",
+        "C_ROUTE__ARCHIVE_EAST_CHOICE__S02",
+        "C_ROUTE__ARCHIVE_MID_E_EAST__S00",
+        "C_ROUTE__ARCHIVE_MID_E_EAST__S01",
+        "C_ROUTE__ARCHIVE_MID_W_DROP__S00",
+        "C_ROUTE__ARCHIVE_MID_W_DROP__S01",
+        "C_ROUTE__ARCHIVE_MID_W_MID_E__S00",
+        "C_ROUTE__ARCHIVE_MID_W_MID_E__S01",
+        "C_ROUTE__ARCHIVE_WEST_MID_W__S00",
+        "C_ROUTE__ARCHIVE_WEST_MID_W__S01",
+        "C_ROUTE__EAST_CHOICE_SPAWN__S00",
+        "C_ROUTE__EAST_CHOICE_SPAWN__S01",
+        "C_ROUTE__INK_EAST_CHOICE__S00",
+        "C_ROUTE__INK_EAST_CHOICE__S01",
+        "C_ROUTE__INK_EAST_CHOICE__S02",
+        "C_ROUTE__INK_MID_E_EAST__S00",
+        "C_ROUTE__INK_MID_E_EAST__S01",
+        "C_ROUTE__INK_MID_W_MID_E__S00",
+        "C_ROUTE__INK_MID_W_MID_E__S01",
+        "C_ROUTE__INK_MID_W_TELEPORT_ENTRY__S00",
+        "C_ROUTE__INK_MID_W_TELEPORT_ENTRY__S01",
+        "C_ROUTE__INK_WEST_MID_W__S00",
+        "C_ROUTE__INK_WEST_MID_W__S01",
+        "C_ROUTE__PRESS_CORE_ARCHIVE_MID_E__S00",
+        "C_ROUTE__PRESS_CORE_ARCHIVE_MID_E__S01",
+        "C_ROUTE__PRESS_CORE_EAST__S00",
+        "C_ROUTE__PRESS_CORE_EAST__S01",
+        "C_ROUTE__PRESS_CORE_EAST__S02",
+        "C_ROUTE__PRESS_EAST_ARCHIVE__S00",
+        "C_ROUTE__PRESS_EAST_ARCHIVE__S01",
+        "C_ROUTE__PRESS_EAST_ARCHIVE__S02",
+        "C_ROUTE__PRESS_EAST_CHOICE__S00",
+        "C_ROUTE__PRESS_EAST_CHOICE__S01",
+        "C_ROUTE__PRESS_EAST_INK__S00",
+        "C_ROUTE__PRESS_EAST_INK__S01",
+        "C_ROUTE__PRESS_EAST_INK__S02",
+        "C_ROUTE__PRESS_NORTH_CORE__S00",
+        "C_ROUTE__PRESS_WEST_ARCHIVE__S00",
+        "C_ROUTE__PRESS_WEST_ARCHIVE__S01",
+        "C_ROUTE__PRESS_WEST_ARCHIVE__S02",
+        "C_ROUTE__PRESS_WEST_CORE__S00",
+        "C_ROUTE__PRESS_WEST_CORE__S01",
+        "C_ROUTE__PRESS_WEST_CORE__S02",
+        "C_ROUTE__PRESS_WEST_INK__S00",
+        "C_ROUTE__PRESS_WEST_INK__S01",
+        "C_ROUTE__PRESS_WEST_INK__S02",
+        "C_ROUTE__TELEPORT_EXIT_PRESS_CORE__S00",
+        "C_ROUTE__TELEPORT_EXIT_PRESS_CORE__S01",
+        "C_ROUTE__WEST_CHOICE_ARCHIVE__S00",
+        "C_ROUTE__WEST_CHOICE_ARCHIVE__S01",
+        "C_ROUTE__WEST_CHOICE_ARCHIVE__S02",
+        "C_ROUTE__WEST_CHOICE_INK__S00",
+        "C_ROUTE__WEST_CHOICE_INK__S01",
+        "C_ROUTE__WEST_CHOICE_INK__S02",
+        "C_ROUTE__WEST_CHOICE_PRESS__S00",
+        "C_ROUTE__WEST_CHOICE_PRESS__S01",
+        "C_ROUTE__WEST_SPAWN_CHOICE__S00",
+        "C_ROUTE__WEST_SPAWN_CHOICE__S01",
+        "C_WAYPOINT__ARCHIVE_EAST_CHOICE__W01",
+        "C_WAYPOINT__ARCHIVE_EAST_CHOICE__W02",
+        "C_WAYPOINT__ARCHIVE_MID_E_EAST__W01",
+        "C_WAYPOINT__ARCHIVE_MID_W_DROP__W01",
+        "C_WAYPOINT__ARCHIVE_MID_W_MID_E__W01",
+        "C_WAYPOINT__ARCHIVE_WEST_MID_W__W01",
+        "C_WAYPOINT__EAST_CHOICE_SPAWN__W01",
+        "C_WAYPOINT__INK_EAST_CHOICE__W01",
+        "C_WAYPOINT__INK_EAST_CHOICE__W02",
+        "C_WAYPOINT__INK_MID_E_EAST__W01",
+        "C_WAYPOINT__INK_MID_W_MID_E__W01",
+        "C_WAYPOINT__INK_MID_W_TELEPORT_ENTRY__W01",
+        "C_WAYPOINT__INK_WEST_MID_W__W01",
+        "C_WAYPOINT__PRESS_CORE_ARCHIVE_MID_E__W01",
+        "C_WAYPOINT__PRESS_CORE_EAST__W01",
+        "C_WAYPOINT__PRESS_CORE_EAST__W02",
+        "C_WAYPOINT__PRESS_EAST_ARCHIVE__W01",
+        "C_WAYPOINT__PRESS_EAST_ARCHIVE__W02",
+        "C_WAYPOINT__PRESS_EAST_CHOICE__W01",
+        "C_WAYPOINT__PRESS_EAST_INK__W01",
+        "C_WAYPOINT__PRESS_EAST_INK__W02",
+        "C_WAYPOINT__PRESS_WEST_ARCHIVE__W01",
+        "C_WAYPOINT__PRESS_WEST_ARCHIVE__W02",
+        "C_WAYPOINT__PRESS_WEST_CORE__W01",
+        "C_WAYPOINT__PRESS_WEST_CORE__W02",
+        "C_WAYPOINT__PRESS_WEST_INK__W01",
+        "C_WAYPOINT__PRESS_WEST_INK__W02",
+        "C_WAYPOINT__TELEPORT_EXIT_PRESS_CORE__W01",
+        "C_WAYPOINT__WEST_CHOICE_ARCHIVE__W01",
+        "C_WAYPOINT__WEST_CHOICE_ARCHIVE__W02",
+        "C_WAYPOINT__WEST_CHOICE_INK__W01",
+        "C_WAYPOINT__WEST_CHOICE_INK__W02",
+        "C_WAYPOINT__WEST_CHOICE_PRESS__W01",
+        "C_WAYPOINT__WEST_SPAWN_CHOICE__W01"
+      ],
+      "nodes": 133,
+      "path": "export/collision.authority.glb",
+      "primitives": 133,
+      "scenes": 1,
+      "sha256": "dda96677b114d26720dc23ba903ca028609697da2bd7cfaa5e7062bca392b0db",
+      "skins": 0,
+      "textures": 0,
+      "triangles": 1596
+    },
+    "render": {
+      "animations": 0,
+      "binaryBytes": 76680,
+      "bytes": 227372,
+      "chunks": 2,
+      "extensionsUsed": [],
+      "images": 0,
+      "materials": 10,
+      "meshes": 133,
+      "nodeNames": [
+        "R_MODULE__FULL_COVER_ARCHIVE_E",
+        "R_MODULE__FULL_COVER_ARCHIVE_W",
+        "R_MODULE__FULL_COVER_PRESS_E",
+        "R_MODULE__FULL_COVER_PRESS_W",
+        "R_MODULE__HALF_COVER_INK_E",
+        "R_MODULE__HALF_COVER_INK_W",
+        "R_MODULE__HALF_COVER_PRESS_E",
+        "R_MODULE__HALF_COVER_PRESS_W",
+        "R_MODULE__INK_SLIDE_GATE_LEFT",
+        "R_MODULE__INK_SLIDE_GATE_RIGHT",
+        "R_MODULE__INK_SLIDE_GATE_ROOF",
+        "R_MODULE__PRESS_BAFFLE_E_INNER",
+        "R_MODULE__PRESS_BAFFLE_E_OUTER",
+        "R_MODULE__PRESS_BAFFLE_W_INNER",
+        "R_MODULE__PRESS_BAFFLE_W_OUTER",
+        "R_MODULE__PRESS_REACTOR_NORTH",
+        "R_MODULE__PRESS_REACTOR_SOUTH",
+        "R_MODULE__RED_FOLD_ENTRY_EAST",
+        "R_MODULE__RED_FOLD_ENTRY_WEST",
+        "R_MODULE__RED_FOLD_EXIT_EAST",
+        "R_MODULE__RED_FOLD_EXIT_WEST",
+        "R_NODE__ARCHIVE_DROP",
+        "R_NODE__ARCHIVE_EAST",
+        "R_NODE__ARCHIVE_MID_E",
+        "R_NODE__ARCHIVE_MID_W",
+        "R_NODE__ARCHIVE_WEST",
+        "R_NODE__EAST_CHOICE",
+        "R_NODE__EAST_SPAWN",
+        "R_NODE__INK_EAST",
+        "R_NODE__INK_MID_E",
+        "R_NODE__INK_MID_W",
+        "R_NODE__INK_WEST",
+        "R_NODE__PRESS_CORE",
+        "R_NODE__PRESS_EAST",
+        "R_NODE__PRESS_NORTH",
+        "R_NODE__PRESS_WEST",
+        "R_NODE__TELEPORT_ENTRY",
+        "R_NODE__TELEPORT_EXIT",
+        "R_NODE__WEST_CHOICE",
+        "R_NODE__WEST_SPAWN",
+        "R_ROUTE__ARCHIVE_EAST_CHOICE__S00",
+        "R_ROUTE__ARCHIVE_EAST_CHOICE__S01",
+        "R_ROUTE__ARCHIVE_EAST_CHOICE__S02",
+        "R_ROUTE__ARCHIVE_MID_E_EAST__S00",
+        "R_ROUTE__ARCHIVE_MID_E_EAST__S01",
+        "R_ROUTE__ARCHIVE_MID_W_DROP__S00",
+        "R_ROUTE__ARCHIVE_MID_W_DROP__S01",
+        "R_ROUTE__ARCHIVE_MID_W_MID_E__S00",
+        "R_ROUTE__ARCHIVE_MID_W_MID_E__S01",
+        "R_ROUTE__ARCHIVE_WEST_MID_W__S00",
+        "R_ROUTE__ARCHIVE_WEST_MID_W__S01",
+        "R_ROUTE__EAST_CHOICE_SPAWN__S00",
+        "R_ROUTE__EAST_CHOICE_SPAWN__S01",
+        "R_ROUTE__INK_EAST_CHOICE__S00",
+        "R_ROUTE__INK_EAST_CHOICE__S01",
+        "R_ROUTE__INK_EAST_CHOICE__S02",
+        "R_ROUTE__INK_MID_E_EAST__S00",
+        "R_ROUTE__INK_MID_E_EAST__S01",
+        "R_ROUTE__INK_MID_W_MID_E__S00",
+        "R_ROUTE__INK_MID_W_MID_E__S01",
+        "R_ROUTE__INK_MID_W_TELEPORT_ENTRY__S00",
+        "R_ROUTE__INK_MID_W_TELEPORT_ENTRY__S01",
+        "R_ROUTE__INK_WEST_MID_W__S00",
+        "R_ROUTE__INK_WEST_MID_W__S01",
+        "R_ROUTE__PRESS_CORE_ARCHIVE_MID_E__S00",
+        "R_ROUTE__PRESS_CORE_ARCHIVE_MID_E__S01",
+        "R_ROUTE__PRESS_CORE_EAST__S00",
+        "R_ROUTE__PRESS_CORE_EAST__S01",
+        "R_ROUTE__PRESS_CORE_EAST__S02",
+        "R_ROUTE__PRESS_EAST_ARCHIVE__S00",
+        "R_ROUTE__PRESS_EAST_ARCHIVE__S01",
+        "R_ROUTE__PRESS_EAST_ARCHIVE__S02",
+        "R_ROUTE__PRESS_EAST_CHOICE__S00",
+        "R_ROUTE__PRESS_EAST_CHOICE__S01",
+        "R_ROUTE__PRESS_EAST_INK__S00",
+        "R_ROUTE__PRESS_EAST_INK__S01",
+        "R_ROUTE__PRESS_EAST_INK__S02",
+        "R_ROUTE__PRESS_NORTH_CORE__S00",
+        "R_ROUTE__PRESS_WEST_ARCHIVE__S00",
+        "R_ROUTE__PRESS_WEST_ARCHIVE__S01",
+        "R_ROUTE__PRESS_WEST_ARCHIVE__S02",
+        "R_ROUTE__PRESS_WEST_CORE__S00",
+        "R_ROUTE__PRESS_WEST_CORE__S01",
+        "R_ROUTE__PRESS_WEST_CORE__S02",
+        "R_ROUTE__PRESS_WEST_INK__S00",
+        "R_ROUTE__PRESS_WEST_INK__S01",
+        "R_ROUTE__PRESS_WEST_INK__S02",
+        "R_ROUTE__TELEPORT_EXIT_PRESS_CORE__S00",
+        "R_ROUTE__TELEPORT_EXIT_PRESS_CORE__S01",
+        "R_ROUTE__WEST_CHOICE_ARCHIVE__S00",
+        "R_ROUTE__WEST_CHOICE_ARCHIVE__S01",
+        "R_ROUTE__WEST_CHOICE_ARCHIVE__S02",
+        "R_ROUTE__WEST_CHOICE_INK__S00",
+        "R_ROUTE__WEST_CHOICE_INK__S01",
+        "R_ROUTE__WEST_CHOICE_INK__S02",
+        "R_ROUTE__WEST_CHOICE_PRESS__S00",
+        "R_ROUTE__WEST_CHOICE_PRESS__S01",
+        "R_ROUTE__WEST_SPAWN_CHOICE__S00",
+        "R_ROUTE__WEST_SPAWN_CHOICE__S01",
+        "R_WAYPOINT__ARCHIVE_EAST_CHOICE__W01",
+        "R_WAYPOINT__ARCHIVE_EAST_CHOICE__W02",
+        "R_WAYPOINT__ARCHIVE_MID_E_EAST__W01",
+        "R_WAYPOINT__ARCHIVE_MID_W_DROP__W01",
+        "R_WAYPOINT__ARCHIVE_MID_W_MID_E__W01",
+        "R_WAYPOINT__ARCHIVE_WEST_MID_W__W01",
+        "R_WAYPOINT__EAST_CHOICE_SPAWN__W01",
+        "R_WAYPOINT__INK_EAST_CHOICE__W01",
+        "R_WAYPOINT__INK_EAST_CHOICE__W02",
+        "R_WAYPOINT__INK_MID_E_EAST__W01",
+        "R_WAYPOINT__INK_MID_W_MID_E__W01",
+        "R_WAYPOINT__INK_MID_W_TELEPORT_ENTRY__W01",
+        "R_WAYPOINT__INK_WEST_MID_W__W01",
+        "R_WAYPOINT__PRESS_CORE_ARCHIVE_MID_E__W01",
+        "R_WAYPOINT__PRESS_CORE_EAST__W01",
+        "R_WAYPOINT__PRESS_CORE_EAST__W02",
+        "R_WAYPOINT__PRESS_EAST_ARCHIVE__W01",
+        "R_WAYPOINT__PRESS_EAST_ARCHIVE__W02",
+        "R_WAYPOINT__PRESS_EAST_CHOICE__W01",
+        "R_WAYPOINT__PRESS_EAST_INK__W01",
+        "R_WAYPOINT__PRESS_EAST_INK__W02",
+        "R_WAYPOINT__PRESS_WEST_ARCHIVE__W01",
+        "R_WAYPOINT__PRESS_WEST_ARCHIVE__W02",
+        "R_WAYPOINT__PRESS_WEST_CORE__W01",
+        "R_WAYPOINT__PRESS_WEST_CORE__W02",
+        "R_WAYPOINT__PRESS_WEST_INK__W01",
+        "R_WAYPOINT__PRESS_WEST_INK__W02",
+        "R_WAYPOINT__TELEPORT_EXIT_PRESS_CORE__W01",
+        "R_WAYPOINT__WEST_CHOICE_ARCHIVE__W01",
+        "R_WAYPOINT__WEST_CHOICE_ARCHIVE__W02",
+        "R_WAYPOINT__WEST_CHOICE_INK__W01",
+        "R_WAYPOINT__WEST_CHOICE_INK__W02",
+        "R_WAYPOINT__WEST_CHOICE_PRESS__W01",
+        "R_WAYPOINT__WEST_SPAWN_CHOICE__W01"
+      ],
+      "nodes": 133,
+      "path": "export/render.graybox.glb",
+      "primitives": 133,
+      "scenes": 1,
+      "sha256": "45d5cee5cb674841c37cc8a11942ff58df9573dcb3cefb7749db9eb5e82b675a",
+      "skins": 0,
+      "textures": 0,
+      "triangles": 1596
+    }
+  },
+  "interpretation": "PASS proves deterministic-source traceability, collection/export separation, seed topology coverage, simple-box collider policy, and artifact integrity. It does not prove runtime loading, traversal, LOS, spawn safety, fun, performance, G5, or G6.",
+  "result": "FAIL",
+  "schemaVersion": 1,
+  "scope": {
+    "g5Passed": false,
+    "g6Passed": false,
+    "phase": "P6.2",
+    "runtimeIntegrated": false
+  },
+  "seed": {
+    "bytes": 52549,
+    "links": 27,
+    "nodes": 19,
+    "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "zones": 9
+  },
+  "validator": {
+    "blenderVersion": "5.1.2",
+    "script": "validate_inkfall_foundry_graybox.py",
+    "scriptSha256": "b13e2495e3f48a3cff43324de7ccb119ebdd56e2fbeda546d3bc6e424f0b5c99"
+  }
+}

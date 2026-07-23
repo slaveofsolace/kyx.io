@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "status": "INDEPENDENT_MANUAL_VISUAL_INTEGRITY_PASS",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "checks": {
+    "exactRuntimeIdentity": true,
+    "exactAssertionContract": true,
+    "everyAssertionPassed": true,
+    "externalBuildPinned": true,
+    "twoBrowserViewportPinned": true,
+    "sharedRoomAndMatchRecorded": true,
+    "impairmentAndMovementRecorded": true,
+    "resumeAndClientHealthRecorded": true,
+    "exactManualBoundary": true,
+    "exactFiveImageInventory": true,
+    "imageBytesAndHashesMatch": true,
+    "readableViewportDimensions": true,
+    "fullPageDimensions": true,
+    "noSensitiveKeysOrOpaqueCredentials": true
+  },
+  "counts": {
+    "passed": 14,
+    "total": 14
+  },
+  "runtimeSha256": "89f2da3216716229bac08029188b326f302cdc21dbeb0121b5685450d0aed74c",
+  "verifierSha256": "dafacffad253dc6790b3c7c262d0f464854d7aa08c89ad7bf678d38b25e79bff",
+  "inventoryResults": [
+    {
+      "file": "external-a-moved.png",
+      "contained": true,
+      "bytesMatch": true,
+      "hashMatch": true,
+      "dimensions": {
+        "width": 1440,
+        "height": 4188
+      }
+    },
+    {
+      "file": "external-b-peer.png",
+      "contained": true,
+      "bytesMatch": true,
+      "hashMatch": true,
+      "dimensions": {
+        "width": 1440,
+        "height": 4198
+      }
+    },
+    {
+      "file": "external-a-resumed.png",
+      "contained": true,
+      "bytesMatch": true,
+      "hashMatch": true,
+      "dimensions": {
+        "width": 1440,
+        "height": 5435
+      }
+    },
+    {
+      "file": "external-a-resumed-viewport.png",
+      "contained": true,
+      "bytesMatch": true,
+      "hashMatch": true,
+      "dimensions": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "external-b-peer-viewport.png",
+      "contained": true,
+      "bytesMatch": true,
+      "hashMatch": true,
+      "dimensions": {
+        "width": 1440,
+        "height": 1000
+      }
+    }
+  ],
+  "credentialAudit": {
+    "keys": [],
+    "opaqueValues": []
+  },
+  "boundaries": {
+    "verifiesArtifactIntegrityOnly": true,
+    "independentlyReplaysBrowserSession": false,
+    "productOnlineFlowOrProductionAuthenticationProved": false,
+    "g3Accepted": false
+  }
+}

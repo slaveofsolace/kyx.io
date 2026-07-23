@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "verifiedAtUtc": "2026-07-22T04:05:39.697Z",
+  "status": "INDEPENDENT_P6_4_AUTHORITY_SPAWN_VERIFICATION_PASS",
+  "inputs": {
+    "capture": "evidence/2026-07-21/phase-6-p6-4-authority-spawns/authority-spawn-capture.json",
+    "fixture": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v1.json",
+    "screenshot": "evidence/2026-07-21/phase-6-p6-4-authority-spawns/screenshots/inkfall-spawn-authority.png"
+  },
+  "fingerprints": {
+    "fixtureSha256": "beebe56866dc405ab393bedffbc33cbee958419ac9948d9cb70ffb6700bb05ca",
+    "screenshotSha256": "7b6f91d19012f401a8b806d2d9df2e5ca9281d89745d540b093fbd58eea1aa0e",
+    "sources": {
+      "fixture": {
+        "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v1.json",
+        "sha256": "beebe56866dc405ab393bedffbc33cbee958419ac9948d9cb70ffb6700bb05ca"
+      },
+      "scoring": {
+        "path": "src/authority/spawn/inkfallSpawnAuthority.ts",
+        "sha256": "c73ad15b614f2954f8ead44ca2a5a5d99d9a901cabab312e09c046d789143f60"
+      },
+      "lineOfSight": {
+        "path": "src/authority/spawn/fixtureLineOfSight.ts",
+        "sha256": "a52723a01864f3a6efb79e7b8052aecd3400346cb7d41924baecd767b523b22b"
+      },
+      "route": {
+        "path": "src/dev/mapTestRoute.ts",
+        "sha256": "a5265e7ecb4a706dc208a6c3abb720a6dd99a117612ca7ef6ff1bca0f2a79f8f"
+      }
+    },
+    "packageDigest": "a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267",
+    "fixtureHash": "2a0a446a0b152395",
+    "visualDecisionHash": "81286ef1c04ce7e4"
+  },
+  "assertions": {
+    "capturePassed": true,
+    "sourceFingerprintsMatch": true,
+    "screenshotMatches": true,
+    "immutableMapBinding": true,
+    "sixSavedFixturesExact": true,
+    "arrangementCounts": true,
+    "ffaAndTdmCovered": true,
+    "visualDecisionExact": true,
+    "everyScoreComponentIsInteger": true,
+    "allEnemyRowsRetained": true,
+    "authorityLosHasOpenAndBlockedRows": true,
+    "unsafeFixtureFailsClosed": true,
+    "noClientAuthority": true,
+    "scopeRemainsBounded": true
+  }
+}

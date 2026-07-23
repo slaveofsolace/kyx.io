@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "evidenceKind": "g3-external-worker-transport-smoke",
+  "evidenceId": "preview-g3tmp-93ae5c5c1604-burst-v2-r03",
+  "status": "EXTERNAL_WORKER_TRANSPORT_SMOKE_PASS",
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "deploymentPerformed": false,
+  "startedAt": "2026-07-22T09:16:58.691Z",
+  "completedAt": "2026-07-22T09:17:00.722Z",
+  "target": {
+    "workerOrigin": "https://kyx-io-authority.heliotrope-contraption.workers.dev",
+    "targetKind": "ephemeral-preview",
+    "expectedBuildId": "g3tmp-93ae5c5c1604",
+    "observedBuildId": "g3tmp-93ae5c5c1604",
+    "tls": {
+      "httpScheme": "https:",
+      "webSocketScheme": "wss:",
+      "certificateVerification": "node-default-strict"
+    }
+  },
+  "boundaries": {
+    "localhostOriginAllowed": true,
+    "allowedOrigin": "http://127.0.0.1:5173",
+    "productionOriginAuthenticationExercised": false,
+    "productionProductFlowExercised": false,
+    "externalAccessCredentialExercised": false,
+    "opaqueResumePossessionAuthenticationExercised": true,
+    "ephemeralPreviewOnly": true,
+    "durableStagingClaimed": false,
+    "remoteSourceAttestation": "expected-build-id-only",
+    "g3AcceptanceClaimed": false
+  },
+  "sourceFreeze": {
+    "files": [
+      "package-lock.json",
+      "src/net/protocol.ts",
+      "src/net/schemas.ts",
+      "worker/reliableEvents.ts",
+      "worker/resumeSessions.ts",
+      "worker/resumeToken.ts",
+      "worker/room.ts",
+      "worker/security.ts",
+      "worker/snapshotBaselines.ts",
+      "worker/worker.ts",
+      "tools/evidence/capture-phase4-g3-external-worker.mjs",
+      "tools/evidence/verify-phase4-g3-external-worker.mjs"
+    ],
+    "hashesAtStart": {
+      "package-lock.json": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3",
+      "src/net/protocol.ts": "0a9f65a571bef66dad4507a969b69c5c762848219b6f32e4c8bcb254403c037c",
+      "src/net/schemas.ts": "3f1654d1ca380b77a605439a11262afd05a54250255b852196d3256f3ac9ce9d",
+      "worker/reliableEvents.ts": "bf142bb8435fdd3f4b96e7e6620a577e70a591471dc1dd3206b2ee22e00594bb",
+      "worker/resumeSessions.ts": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3",
+      "worker/resumeToken.ts": "1059e269a02b57e64241df1565404ca3985ce0aee5cb598624e7814d2390bf36",
+      "worker/room.ts": "918d1ab69d69e66b70719a493a31f6d4e53906a95b83e37059df2240ae77d05f",
+      "worker/security.ts": "bfcd7713263ec6601e00fa125597056933ef3d5f83f3f436e96e6452cec5f403",
+      "worker/snapshotBaselines.ts": "5809f54ed59f653af85ea4e82dc0d882ddd7454c4e23f6462f4c91c3e78cbd4c",
+      "worker/worker.ts": "7f9a078294db6b5c49f8a0a4374f19080b2e3412cbc47e5ab528c4857cbb572f",
+      "tools/evidence/capture-phase4-g3-external-worker.mjs": "ec4609a232cb8b4c908de9f9bd706a6a471ece8d8a880f34627f889dc0b0e35a",
+      "tools/evidence/verify-phase4-g3-external-worker.mjs": "dd7f382cba5c7c0b775ae546024919c67e69c2ec7fc3b789f30c7043396daff8"
+    },
+    "hashesAtEnd": {
+      "package-lock.json": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3",
+      "src/net/protocol.ts": "0a9f65a571bef66dad4507a969b69c5c762848219b6f32e4c8bcb254403c037c",
+      "src/net/schemas.ts": "3f1654d1ca380b77a605439a11262afd05a54250255b852196d3256f3ac9ce9d",
+      "worker/reliableEvents.ts": "bf142bb8435fdd3f4b96e7e6620a577e70a591471dc1dd3206b2ee22e00594bb",
+      "worker/resumeSessions.ts": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3",
+      "worker/resumeToken.ts": "1059e269a02b57e64241df1565404ca3985ce0aee5cb598624e7814d2390bf36",
+      "worker/room.ts": "918d1ab69d69e66b70719a493a31f6d4e53906a95b83e37059df2240ae77d05f",
+      "worker/security.ts": "bfcd7713263ec6601e00fa125597056933ef3d5f83f3f436e96e6452cec5f403",
+      "worker/snapshotBaselines.ts": "5809f54ed59f653af85ea4e82dc0d882ddd7454c4e23f6462f4c91c3e78cbd4c",
+      "worker/worker.ts": "7f9a078294db6b5c49f8a0a4374f19080b2e3412cbc47e5ab528c4857cbb572f",
+      "tools/evidence/capture-phase4-g3-external-worker.mjs": "ec4609a232cb8b4c908de9f9bd706a6a471ece8d8a880f34627f889dc0b0e35a",
+      "tools/evidence/verify-phase4-g3-external-worker.mjs": "dd7f382cba5c7c0b775ae546024919c67e69c2ec7fc3b789f30c7043396daff8"
+    },
+    "unchanged": true
+  },
+  "http": {
+    "health": {
+      "status": 200,
+      "ok": true,
+      "service": "kyx-authority",
+      "expectedBuildIdMatched": true,
+      "roomBinding": true
+    },
+    "forbiddenOrigin": {
+      "origin": "https://g3-forbidden-origin.invalid",
+      "status": 403,
+      "code": "ORIGIN_NOT_ALLOWED"
+    },
+    "createRoom": {
+      "status": 201,
+      "ok": true,
+      "roomCodePatternMatched": true,
+      "socketPathMatched": true,
+      "metricsPathMatched": true
+    }
+  },
+  "transport": {
+    "protocolVersion": 2,
+    "concurrentGameplayClients": 2,
+    "maximumConcurrentOpenSockets": 2,
+    "physicalConnectionsOpened": 3,
+    "clientA": {
+      "wss": true,
+      "upgradeStatus": 101,
+      "openLatencyMs": 122.836,
+      "sentMessages": 9,
+      "receivedMessages": 17,
+      "protocolVersionViolations": 0,
+      "binaryMessages": 0,
+      "parseFailures": 0,
+      "fullSnapshotsMaterialized": 1,
+      "deltaSnapshotsMaterialized": 4,
+      "deltaBaselineMisses": 0,
+      "fullRecoveryRequests": 0,
+      "acknowledgementsSent": 7,
+      "reliableHistoryGaps": 0,
+      "socketErrors": 0
+    },
+    "clientB": {
+      "wss": true,
+      "upgradeStatus": 101,
+      "openLatencyMs": 75.53,
+      "sentMessages": 13,
+      "receivedMessages": 32,
+      "protocolVersionViolations": 0,
+      "binaryMessages": 0,
+      "parseFailures": 0,
+      "fullSnapshotsMaterialized": 1,
+      "deltaSnapshotsMaterialized": 9,
+      "deltaBaselineMisses": 0,
+      "fullRecoveryRequests": 0,
+      "acknowledgementsSent": 11,
+      "reliableHistoryGaps": 0,
+      "socketErrors": 0
+    },
+    "resumedClientA": {
+      "wss": true,
+      "upgradeStatus": 101,
+      "openLatencyMs": 72.641,
+      "sentMessages": 3,
+      "receivedMessages": 5,
+      "protocolVersionViolations": 0,
+      "binaryMessages": 0,
+      "parseFailures": 0,
+      "fullSnapshotsMaterialized": 1,
+      "deltaSnapshotsMaterialized": 1,
+      "deltaBaselineMisses": 0,
+      "fullRecoveryRequests": 0,
+      "acknowledgementsSent": 2,
+      "reliableHistoryGaps": 0,
+      "socketErrors": 0
+    },
+    "tick": {
+      "initial": 0,
+      "advanced": 4,
+      "inputAcknowledged": 5,
+      "resumed": 17
+    },
+    "inputAuthority": {
+      "acceptedSequence": 0,
+      "acceptedByMetrics": 1,
+      "movementObservedBySender": true,
+      "movementObservedByPeer": true
+    },
+    "forgedTransform": {
+      "rejectionCode": "PROTOCOL_FORBIDDEN_COMMAND",
+      "authoritativeTargetAbsent": true
+    },
+    "resume": {
+      "originalCloseCode": 1000,
+      "connectionMode": "resumed",
+      "playerIdentityPreserved": true,
+      "matchIdentityPreserved": true,
+      "opaqueCredentialRotated": true,
+      "fullSnapshotFirst": true
+    }
+  },
+  "metrics": {
+    "status": 200,
+    "ok": true,
+    "healthy": true,
+    "snapshot": {
+      "serverTick": 18,
+      "lifecycle": "warmup",
+      "players": 2,
+      "connectedPlayers": 2,
+      "acceptedInputs": 1,
+      "inputRejections": 0,
+      "missedSchedulerTicks": 0,
+      "transport": {
+        "inboundMessagesReceived": 25,
+        "inboundMessagesRateAccepted": 25,
+        "inboundMessagesRateRejected": 0,
+        "fullSnapshotsSent": 3,
+        "deltaSnapshotsSent": 14,
+        "snapshotAcksAccepted": 20,
+        "snapshotAcksRejected": 0,
+        "slowConsumerEvictions": 0
+      }
+    }
+  },
+  "timings": {
+    "healthMs": 80.24,
+    "forbiddenOriginMs": 19.883,
+    "createRoomMs": 629.277,
+    "clientAOpenMs": 122.836,
+    "clientAJoinAcceptedMs": 61.923,
+    "clientAInitialFullMs": 62.01,
+    "clientBOpenMs": 75.53,
+    "clientBJoinAcceptedMs": 63.985,
+    "clientBInitialFullMs": 64.001,
+    "tickAdvanceMs": 203.939,
+    "inputAckMs": 47.627,
+    "clientAAuthorityMovementMs": 110.149,
+    "clientBObservedMovementMs": 110.181,
+    "forgedTransformRejectionMs": 30.912,
+    "postForgerySnapshotMs": 106.857,
+    "resumeOpenMs": 72.641,
+    "resumeAcceptedMs": 63.077,
+    "resumeFullSnapshotMs": 63.111,
+    "metricsMs": 28.903,
+    "totalMs": 2029.413
+  },
+  "security": {
+    "rawProtocolPayloadsSerialized": false,
+    "sensitiveValuesSerialized": false,
+    "externalAccessCredentialExercised": false,
+    "resumePossessionAuthenticationExercised": true
+  },
+  "assertions": {
+    "httpsHealthReached": true,
+    "expectedBuildIdMatched": true,
+    "roomBindingHealthy": true,
+    "forbiddenOriginRejected": true,
+    "httpsRoomCreated": true,
+    "wssTransportUsed": true,
+    "twoConcurrentProtocolV2Clients": true,
+    "bothClientsJoined": true,
+    "serverTickAdvanced": true,
+    "bothClientsMaterializedDeltas": true,
+    "bothClientsAutoAcknowledged": true,
+    "inputAcceptedByAuthority": true,
+    "authoritativeMovementObservedByBothClients": true,
+    "forgedTransformRejected": true,
+    "forgedTransformDidNotMutateAuthority": true,
+    "initialSocketClosedCleanly": true,
+    "resumeAuthenticatedByOpaqueCredential": true,
+    "resumeIdentityPreserved": true,
+    "resumeCredentialRotatedWithoutSerialization": true,
+    "resumeStartedWithFullSnapshot": true,
+    "metricsHealthy": true,
+    "sourceFrozen": true,
+    "sensitiveValuesNotSerialized": true,
+    "scopeBoundariesRecorded": true
+  }
+}

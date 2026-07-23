@@ -1,0 +1,285 @@
+{
+  "schema": "kyx-v6b-production-contact-candidate-author-report-v1",
+  "generatedAt": "2026-07-22T15:17:38.145682+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-B_PRODUCTION_CONTACT_CANDIDATE_REV1",
+  "status": "EARLY_V6B_PRODUCTION_CONTACT_VISUAL_REVIEW_REQUIRED",
+  "source": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev11b\\kyx-v6-contact-first-rig-rev11b.blend",
+    "sha256Before": "029ce233dca6ed2119ac0810e07e4392090f0866dde78da04bed390d9a3e0ec0",
+    "sha256After": "029ce233dca6ed2119ac0810e07e4392090f0866dde78da04bed390d9a3e0ec0",
+    "unchanged": true
+  },
+  "output": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-contact-candidate-rev1\\kyx-v6b-production-contact-candidate-rev1.blend",
+    "bytes": 13291836,
+    "sha256": "fdf95621ec8ce0c4bae8f0d289c3a84d4fe130ae1d775aa3cd99908c11c18700"
+  },
+  "preservedFoundation": {
+    "body": {
+      "name": "KYX_V6A_AnatomySculpt_Body",
+      "topologyBefore": [
+        10582,
+        21170,
+        10590
+      ],
+      "topologyAfter": [
+        10582,
+        21170,
+        10590
+      ],
+      "geometrySha256Before": "2e7786391838bb9f443f78a78043fe5631e234f253184f86f61eeee648637d12",
+      "geometrySha256After": "2e7786391838bb9f443f78a78043fe5631e234f253184f86f61eeee648637d12",
+      "unchanged": true
+    },
+    "rig": {
+      "name": "V6CF11B_ContactFullBodyRig",
+      "boneCount": 52,
+      "boneNames": [
+        "chest",
+        "clavicle.L",
+        "clavicle.R",
+        "foot_anchor.L",
+        "foot_anchor.R",
+        "forearm.L",
+        "forearm.R",
+        "head",
+        "index_01.L",
+        "index_01.R",
+        "index_02.L",
+        "index_02.R",
+        "index_03.L",
+        "index_03.R",
+        "middle_01.L",
+        "middle_01.R",
+        "middle_02.L",
+        "middle_02.R",
+        "middle_03.L",
+        "middle_03.R",
+        "neck",
+        "palm.L",
+        "palm.R",
+        "pinky_01.L",
+        "pinky_01.R",
+        "pinky_02.L",
+        "pinky_02.R",
+        "pinky_03.L",
+        "pinky_03.R",
+        "ring_01.L",
+        "ring_01.R",
+        "ring_02.L",
+        "ring_02.R",
+        "ring_03.L",
+        "ring_03.R",
+        "root",
+        "shin_anchor.L",
+        "shin_anchor.R",
+        "spine_01",
+        "spine_02",
+        "thigh_anchor.L",
+        "thigh_anchor.R",
+        "thumb_01.L",
+        "thumb_01.R",
+        "thumb_02.L",
+        "thumb_02.R",
+        "thumb_03.L",
+        "thumb_03.R",
+        "upper_arm.L",
+        "upper_arm.R",
+        "wrist.L",
+        "wrist.R"
+      ],
+      "unchanged": true
+    },
+    "contactFixtures": {
+      "unchangedAtCurrentPose": true,
+      "deltas": {
+        "V6CF11B_Rifle_Barrel": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_ForegripContact": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_ForegripHandStop": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_GripContact": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_Muzzle": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_ReceiverSectioned": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_StockBeam": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_StockPadContact": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_Trigger": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        },
+        "V6CF11B_Rifle_TriggerGuard": {
+          "maxMatrixDelta": 0.0,
+          "maxBoundsDelta": 0.0,
+          "sameGeometryCounts": true
+        }
+      }
+    }
+  },
+  "garment": {
+    "method": "unchanged continuous skinned human topology made visible as tailored technical cloth; project-authored procedural weave, flex, glove, and boot regions",
+    "polygonRegions": {
+      "suit": 5550,
+      "flex": 1044,
+      "glove": 1524,
+      "boot": 2472
+    }
+  },
+  "authoredConstruction": {
+    "helmetObjects": 13,
+    "torsoObjects": 9,
+    "limbObjects": 7,
+    "bootObjects": 10,
+    "weaponShellObjects": 41,
+    "deformationPolicy": "continuous body remains skinned; rigid armor/helmet/boots are explicit bone children; held weapon is a palm.R bone child",
+    "contactPolicy": "sealed grip, trigger, guard, foregrip, hand-stop, and stock-pad geometry preserved exactly and wrapped by non-contact weapon surfacing"
+  },
+  "inventory": {
+    "objects": 80,
+    "meshes": 75,
+    "curves": 5,
+    "meshVertices": 10681,
+    "meshPolygons": 9248,
+    "names": [
+      "KYX_V6B_CF_R1_Abdomen_FlexLamella_1",
+      "KYX_V6B_CF_R1_Abdomen_FlexLamella_2",
+      "KYX_V6B_CF_R1_Abdomen_FlexLamella_3",
+      "KYX_V6B_CF_R1_Back_ContinuousScapularCarrier",
+      "KYX_V6B_CF_R1_Boot_L_AnatomicalUpper",
+      "KYX_V6B_CF_R1_Boot_L_ContouredOutsole",
+      "KYX_V6B_CF_R1_Boot_L_RetentionBridge_1",
+      "KYX_V6B_CF_R1_Boot_L_RetentionBridge_2",
+      "KYX_V6B_CF_R1_Boot_L_ToeCap",
+      "KYX_V6B_CF_R1_Boot_R_AnatomicalUpper",
+      "KYX_V6B_CF_R1_Boot_R_ContouredOutsole",
+      "KYX_V6B_CF_R1_Boot_R_RetentionBridge_1",
+      "KYX_V6B_CF_R1_Boot_R_RetentionBridge_2",
+      "KYX_V6B_CF_R1_Boot_R_ToeCap",
+      "KYX_V6B_CF_R1_Chest_ContinuousCeramic",
+      "KYX_V6B_CF_R1_Chest_LowerRibCarrier",
+      "KYX_V6B_CF_R1_Chest_SternumKeel",
+      "KYX_V6B_CF_R1_Chest_Telemetry",
+      "KYX_V6B_CF_R1_FiringForearm_FittedGuard",
+      "KYX_V6B_CF_R1_Helmet_BrowBridge",
+      "KYX_V6B_CF_R1_Helmet_ChinBridge",
+      "KYX_V6B_CF_R1_Helmet_CrownArmor",
+      "KYX_V6B_CF_R1_Helmet_CrownKeel",
+      "KYX_V6B_CF_R1_Helmet_LeftTelemetry",
+      "KYX_V6B_CF_R1_Helmet_OccipitalArmor",
+      "KYX_V6B_CF_R1_Helmet_TailoredUnderShell",
+      "KYX_V6B_CF_R1_Helmet_TempleArmor_L",
+      "KYX_V6B_CF_R1_Helmet_TempleArmor_R",
+      "KYX_V6B_CF_R1_Helmet_TemplePivot_L",
+      "KYX_V6B_CF_R1_Helmet_TemplePivot_R",
+      "KYX_V6B_CF_R1_Helmet_Visor",
+      "KYX_V6B_CF_R1_Helmet_VisorGasket",
+      "KYX_V6B_CF_R1_L_Shin_AnteriorCarrier",
+      "KYX_V6B_CF_R1_L_Thigh_LateralCarrier",
+      "KYX_V6B_CF_R1_R_Shin_AnteriorCarrier",
+      "KYX_V6B_CF_R1_R_Thigh_LateralCarrier",
+      "KYX_V6B_CF_R1_Rifle_EjectionPort",
+      "KYX_V6B_CF_R1_Rifle_FreeFloatBarrel",
+      "KYX_V6B_CF_R1_Rifle_GasBlock",
+      "KYX_V6B_CF_R1_Rifle_HandguardBody",
+      "KYX_V6B_CF_R1_Rifle_HandguardLowerRail",
+      "KYX_V6B_CF_R1_Rifle_HandguardTopRail",
+      "KYX_V6B_CF_R1_Rifle_HandguardVent_1",
+      "KYX_V6B_CF_R1_Rifle_HandguardVent_2",
+      "KYX_V6B_CF_R1_Rifle_HandguardVent_3",
+      "KYX_V6B_CF_R1_Rifle_HandguardVent_4",
+      "KYX_V6B_CF_R1_Rifle_HandguardVent_5",
+      "KYX_V6B_CF_R1_Rifle_Magazine",
+      "KYX_V6B_CF_R1_Rifle_MagazineRib_1",
+      "KYX_V6B_CF_R1_Rifle_MagazineRib_2",
+      "KYX_V6B_CF_R1_Rifle_MagazineRib_3",
+      "KYX_V6B_CF_R1_Rifle_Magwell",
+      "KYX_V6B_CF_R1_Rifle_MuzzleBrake",
+      "KYX_V6B_CF_R1_Rifle_Optic",
+      "KYX_V6B_CF_R1_Rifle_OpticLens",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_1",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_10",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_2",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_3",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_4",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_5",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_6",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_7",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_8",
+      "KYX_V6B_CF_R1_Rifle_RailTooth_9",
+      "KYX_V6B_CF_R1_Rifle_Receiver",
+      "KYX_V6B_CF_R1_Rifle_ReceiverLowerRail",
+      "KYX_V6B_CF_R1_Rifle_ReceiverUpperShell",
+      "KYX_V6B_CF_R1_Rifle_SideFastener_1",
+      "KYX_V6B_CF_R1_Rifle_SideFastener_2",
+      "KYX_V6B_CF_R1_Rifle_SideFastener_3",
+      "KYX_V6B_CF_R1_Rifle_SideFastener_4",
+      "KYX_V6B_CF_R1_Rifle_SideFastener_5",
+      "KYX_V6B_CF_R1_Rifle_StatusLight",
+      "KYX_V6B_CF_R1_Rifle_StockCheekInset",
+      "KYX_V6B_CF_R1_Rifle_StockLowerRail",
+      "KYX_V6B_CF_R1_Rifle_StockSpine",
+      "KYX_V6B_CF_R1_SupportForearm_FittedGuard",
+      "KYX_V6B_CF_R1_SupportShoulder_Mantle",
+      "KYX_V6B_CF_R1_Torso_TailoredCarrier"
+    ]
+  },
+  "materials": [
+    "KYX_V6B_CF_R1_BlackJointKnit",
+    "KYX_V6B_CF_R1_BootCompositeUpper",
+    "KYX_V6B_CF_R1_ContactRubber",
+    "KYX_V6B_CF_R1_CyanTelemetry",
+    "KYX_V6B_CF_R1_DeepGunmetal",
+    "KYX_V6B_CF_R1_GraphiteTailoredWeave",
+    "KYX_V6B_CF_R1_MachinedEdge",
+    "KYX_V6B_CF_R1_OxideIdentity",
+    "KYX_V6B_CF_R1_PetrolBallisticVisor",
+    "KYX_V6B_CF_R1_RecessedSeam",
+    "KYX_V6B_CF_R1_SmokedCeramic",
+    "KYX_V6B_CF_R1_TactileGloveRubber",
+    "KYX_V6B_CF_R1_WeatheredBoneCeramic"
+  ],
+  "assertions": {
+    "sealedRev11bPreserved": true,
+    "bodyTopologyAndGeometryPreserved": true,
+    "rig52BonesPreserved": true,
+    "contactFixturesPreservedAtCurrentPose": true,
+    "all30DigitBonesStillPresent": true,
+    "noExternalLibraries": true
+  },
+  "nonClaims": [
+    "This is the first bounded V6-B production/contact visual candidate; it is not G6 or final human acceptance.",
+    "The accepted rev11b contact proof remains the literal-contact authority until the candidate contact audit and close renders are reviewed.",
+    "No final authored UV atlas, texture bake, LOD set, animation matrix, runtime integration, multiplayer capture, or performance acceptance is claimed."
+  ]
+}

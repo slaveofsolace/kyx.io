@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-22T07:04:03.040Z",
+  "evidencePath": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v2/lobby-hibernation-focused.json",
+  "status": "INDEPENDENT_FOCUSED_LOBBY_HIBERNATION_VERIFICATION_PASS",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "checks": {
+    "focusedStatusPassed": true,
+    "exactEvidenceIdentity": true,
+    "gateRemainsUnaccepted": true,
+    "noDeploymentPerformed": true,
+    "captureSourceStayedStable": true,
+    "exactSourceHashesAndSizes": true,
+    "artifactHashesAndSizesMatch": true,
+    "artifactPathsScopedToRun": true,
+    "exactFocusedCommand": true,
+    "exactTypecheckCommand": true,
+    "exactLintCommand": true,
+    "workerDryRunCommandScoped": true,
+    "exactRawHibernationTestsPassed": true,
+    "rawReportMatchesEmbedded": true,
+    "captureChecksPassed": true,
+    "directIsolateBoundaryDeclared": true,
+    "activeSimulationNonClaimDeclared": true,
+    "operationalNonClaimsDeclared": true
+  }
+}

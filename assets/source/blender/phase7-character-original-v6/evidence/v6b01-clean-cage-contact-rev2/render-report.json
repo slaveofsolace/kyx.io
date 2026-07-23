@@ -1,0 +1,188 @@
+{
+  "checkpoint": "V6-B0.1 clean-cage/contact proof rev2",
+  "status": "DIRECT HUMAN VISUAL REVIEW REQUIRED / NO ACCEPTANCE CLAIM",
+  "blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b01-clean-cage-contact-rev2\\kyx_vanguard_v6b01_clean_cage_contact_rev2.blend",
+  "blend_sha256": "aa046b0435ef5b42f863f97af783d414efba316682e3caf58778570aecd5ab5d",
+  "engine": "BLENDER_EEVEE",
+  "views": [
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-garment-front-wire.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-garment-front-wire.png",
+      "bytes": 1103798,
+      "sha256": "7f5be2611e493cb7056c1a3089609c6e1285fdeb13c8fc243d07a219881751fd",
+      "camera": "V6B01_RENDER_Camera_GarmentFront",
+      "location": [
+        0.0,
+        -2.75,
+        1.245
+      ],
+      "lens_mm": 98.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-garment-side-wire.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-garment-side-wire.png",
+      "bytes": 839941,
+      "sha256": "f91311a56f6f93d379a17868c736eeb8269080b041272d4a86e5c580b381aea9",
+      "camera": "V6B01_RENDER_Camera_GarmentSide",
+      "location": [
+        2.65,
+        -0.16,
+        1.25
+      ],
+      "lens_mm": 98.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-garment-three-quarter-wire.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-garment-three-quarter-wire.png",
+      "bytes": 987997,
+      "sha256": "dfb996c3b07d7e8b70f6a6413e9f9bf7e26eb66c3d9de668051bebad415014ed",
+      "camera": "V6B01_RENDER_Camera_GarmentThreeQuarter",
+      "location": [
+        1.85,
+        -2.45,
+        1.36
+      ],
+      "lens_mm": 98.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-armor-close.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-armor-close.png",
+      "bytes": 1123530,
+      "sha256": "7277ef4608565b168538ac8aca877daad8facc3f65d9d11580a2c03cc494bba5",
+      "camera": "V6B01_RENDER_Camera_ArmorClose",
+      "location": [
+        0.98,
+        -2.2,
+        1.48
+      ],
+      "lens_mm": 105.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-transparent-contact-close.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-transparent-contact-close.png",
+      "bytes": 1112071,
+      "sha256": "3257edb81452ad5272c1a210b48e35363aa40f8076a78a8bbaee8ff734636b00",
+      "camera": "V6B01_RENDER_Camera_TransparentContactWide",
+      "location": [
+        1.75,
+        -0.72,
+        1.1
+      ],
+      "lens_mm": 70.0,
+      "resolution": [
+        1400,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-contact-palm-four-fingers-ortho.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-contact-palm-four-fingers-ortho.png",
+      "bytes": 1420708,
+      "sha256": "e6c7426ba970af7bc0bbd965a93c59faec6366a568200d8cf4214544b3cd86cc",
+      "camera": "V6B01_RENDER_Camera_ContactPalmOrtho",
+      "location": [
+        1.2,
+        -0.105,
+        0.865
+      ],
+      "lens_mm": 70.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-contact-index-trigger-guard-ortho.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-contact-index-trigger-guard-ortho.png",
+      "bytes": 1302199,
+      "sha256": "2c24ca6a0b4d60d735b81f13bf5be26f80abf8ffba7cc6e35d9a47b17dfecdaa",
+      "camera": "V6B01_RENDER_Camera_ContactIndexOrtho",
+      "location": [
+        0.39,
+        -1.05,
+        0.94
+      ],
+      "lens_mm": 70.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-contact-stock-shoulder-ortho.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-contact-stock-shoulder-ortho.png",
+      "bytes": 1288246,
+      "sha256": "c2db6bc3481e1724123dd4f88e81f26c702b2f02726588169c5ed7df6031c9c7",
+      "camera": "V6B01_RENDER_Camera_ContactStockOrtho",
+      "location": [
+        0.92,
+        -0.88,
+        1.405
+      ],
+      "lens_mm": 70.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev2-concept-crop.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-concept-crop.png",
+      "bytes": 2079256,
+      "sha256": "1ca2002065507251ce326264d4f50eed72b9a5378dc70089292a75934adf0e74",
+      "source": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+      "source_sha256": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "crop_uv": [
+        0.015,
+        0.285,
+        0.345,
+        0.995
+      ],
+      "resolution": [
+        1200,
+        1200
+      ]
+    }
+  ],
+  "board": {
+    "filename": "kyx-v6b01-clean-cage-contact-rev2-proof-board.png",
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev2\\renders\\kyx-v6b01-clean-cage-contact-rev2-proof-board.png",
+    "bytes": 5555325,
+    "sha256": "31f3bfceaf96a075bc9318fb27d0fc46f45679b9e0b0261352da7a4744dead79",
+    "resolution": [
+      3000,
+      2000
+    ],
+    "panels": [
+      "kyx-v6b01-clean-cage-contact-rev2-garment-three-quarter-wire.png",
+      "kyx-v6b01-clean-cage-contact-rev2-armor-close.png",
+      "kyx-v6b01-clean-cage-contact-rev2-concept-crop.png",
+      "kyx-v6b01-clean-cage-contact-rev2-contact-palm-four-fingers-ortho.png",
+      "kyx-v6b01-clean-cage-contact-rev2-contact-index-trigger-guard-ortho.png",
+      "kyx-v6b01-clean-cage-contact-rev2-contact-stock-shoulder-ortho.png"
+    ]
+  },
+  "framing_contract": [
+    "front, side and three-quarter wire views must show one clean connected garment cage seated through neckline, axilla and waist",
+    "armor close must show one continuous manufactured perimeter, thickness, bevel, recessed gasket, restrained attachments and arm clearance",
+    "separate orthographic contact crops must independently show palm seating plus four wrapped digits, index at trigger with guard clearance, and stock pad shoulder contact",
+    "the sectioned receiver may not occlude the literal hand or shoulder contacts",
+    "no view may be used to claim V6-B, V6-C or G6"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-1",
+  "capturedAt": "2026-07-22T03:19:33-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 0,
+    "testsFailed": 2
+  },
+  "failure": {
+    "error": "RangeError: room TDM match requires the exact revision 3 match durations",
+    "cause": "The new test fixture supplied a one-tick warmup instead of the sealed revision 3 TDM warmup of 40 ticks.",
+    "correction": "The fixture now uses the exact 40/9600/200 revision 3 TDM durations."
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-07-22T06:00:11.268Z",
+  "status": "P6_6_FOUNDATION_VERIFIED_8_PLAYER_MAP_FINDINGS_PRESERVED_G5_NOT_PASSED",
+  "execution": {
+    "shellFallback": "persistent_node_repl_due_unrelated_nonresponsive_powershell_host",
+    "focusedVitest": {
+      "status": "PASS",
+      "files": 1,
+      "tests": 8,
+      "failed": 0,
+      "testFile": "tests/integration/authority/inkfallAuthorityPlaytest.test.ts"
+    },
+    "authorityVitest": {
+      "status": "PASS",
+      "files": 13,
+      "tests": 111,
+      "failed": 0,
+      "roots": [
+        "tests/unit/authority",
+        "tests/integration/authority"
+      ]
+    },
+    "eslint": {
+      "status": "PASS",
+      "errors": 0,
+      "warnings": 0,
+      "files": [
+        "src/authority/playtest/index.ts",
+        "src/authority/playtest/inkfallAuthorityPlaytest.ts",
+        "src/authority/playtest/schema.ts",
+        "tests/integration/authority/inkfallAuthorityPlaytest.test.ts"
+      ]
+    },
+    "typescript": {
+      "p6_6Status": "PASS",
+      "p6_6Diagnostics": 0,
+      "projectStatusAtCapture": "PASS",
+      "projectDiagnosticsAtCapture": []
+    },
+    "productionBuildBoundary": {
+      "status": "PASS",
+      "write": false,
+      "chunksInspected": 14,
+      "playtestRunnerMarkersFound": 0,
+      "authorityBarrelExportsPlaytest": false
+    }
+  },
+  "deterministicOutcome": {
+    "suiteHash": "cec7553cd9d45701",
+    "scenarioStatuses": [
+      "PASS",
+      "PASS",
+      "FAIL"
+    ],
+    "scenarioReplayHashes": [
+      "0f7f6c2965a594c6",
+      "88ce02f1c029c9d9",
+      "c47c2acd6ab3541e"
+    ],
+    "issueCount": 16,
+    "mapMutationPerformed": false,
+    "allAutomatedThresholdsPassed": false,
+    "topologyRecommendation": "REPORT_REQUIRED_BEFORE_PACKAGE_CHANGE"
+  },
+  "sha256": {
+    "src/authority/playtest/schema.ts": "92d9b6e137a3ded4c28c0d17477a3311b0842529b56d473fa7dc25e9d9d98967",
+    "src/authority/playtest/inkfallAuthorityPlaytest.ts": "b0131549c0d3d091d65f61c4655aa3e5e142fb382d3a338c45cf3baf43ddae58",
+    "src/authority/playtest/index.ts": "1eda0748a7bdcc99c5028744e7f4a250152920d879f24d22d2e1a182975017d3",
+    "tests/integration/authority/inkfallAuthorityPlaytest.test.ts": "6533a28f4f5b633ee6b936b85e8fb38e0b8d0f6431383540c19eb1fa963d6d51",
+    "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v1.json": "e4cc9203a335d343a5de2ae8daeaf092df2a7f435676ae59124d009d684c5024",
+    "assets/source/maps/inkfall-foundry/P6_6_AUTHORITY_PLAYTEST_REPORT.md": "9cdcbe2a4a4343c1743bdee5fdfd08a6d3990adfcd4ee02da3b0bba09bfa59f5",
+    "evidence/2026-07-22/phase-6-p6-6-authority-playtest/failures/attempt-1-unrefined-synthetic-tapes.json": "9bd1a962684c3e45090c8a691a9a0a55796336b1e2d0c2c5e2542f167dc833db",
+    "evidence/2026-07-22/phase-6-p6-6-authority-playtest/failures/attempt-2-corrected-harness-persistent-map-findings.json": "6c307eb9f4ba5bf4b1dfb676ae7b40c95edd0768e83d53755ef7a9e56c7a26a2",
+    "evidence/2026-07-22/phase-6-p6-6-authority-playtest/failures/attempt-3-enriched-persistent-map-diagnostics.json": "5b3ba37be59e2a05d9cc6fe3a014c5d20b3203bf3174b2670187d068b2af6791",
+    "evidence/2026-07-22/phase-6-p6-6-authority-playtest/authority-playtest-raw.json": "a9eb1546c36bfa9f58a5bed9b86d83b0fb832e6077779549f0a751bffec1a276",
+    "evidence/2026-07-22/phase-6-p6-6-authority-playtest/authority-playtest-summary.json": "08b2bea9200a9b20b82763180d9cf0fd6917d507a590e21db84a9b56090ee87b",
+    "evidence/2026-07-22/phase-6-p6-6-authority-playtest/P6_6_WORK_LOG.md": "5a87c20e31ff03e3cf0999840b2e9ed0282ff157aafe9cfceda163ff89760b1c"
+  },
+  "nonClaims": [
+    "SYNTHETIC_AGENTS_NOT_HUMAN_PLAYTESTERS",
+    "HUMAN_FUN_AND_READABILITY_NOT_CLAIMED",
+    "P6_7_TOPOLOGY_LOCK_NOT_CLAIMED",
+    "FINAL_ART_NOT_CLAIMED",
+    "G5_NOT_PASSED"
+  ]
+}

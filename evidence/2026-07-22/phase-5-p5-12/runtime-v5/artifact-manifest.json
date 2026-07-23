@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "files": {
+    "screenshots/p512-01-visible-opt-in-selection.png": "5386cb846d579ae0956b3df0f33386dec49a130703677f2cfa1d90988bf47219",
+    "screenshots/p512-02-west-spawn-profile-identity.png": "173ca2a7e8b38c9fc64f7230c61923c0377e0a3b9d9bddcda460418baf9056f5",
+    "screenshots/p512-03-east-spawn-profile-identity.png": "db45b317885d5c8150b7d0c998cf8615f1faf526ddac12c42798fe6786171a8d",
+    "screenshots/p512-04-real-occlusion-blocks-cross-map-fire.png": "37ee5d469567b412cb0dbc8ad6306eff2a75be077514f841623f214180788f3a",
+    "screenshots/p512-05-west-authoritative-damage.png": "78f1cd1dd62e8a70c64df4747122a638c5163a0ba6ba15d29fe4572f3cf48ead",
+    "screenshots/p512-06-east-authoritative-damage.png": "44a469567cc554f4d4f3d1b29fca1acc8ee3dd578b21fe9a006ecf0b0fa3bf73",
+    "screenshots/p512-07-west-authoritative-kill.png": "b9b97a453f834f4873e61ca8c79ada7976b3b5f4e3c2b85b5a31795eac1b77e4",
+    "screenshots/p512-08-east-authoritative-death.png": "97f339a2ce0903dfaca0123e45d356162db1cb63dece8762f565fd8e7119a422",
+    "screenshots/p512-09-real-grenade-port-active.png": "0218a4bc2c0402fed8abba1a2011cc918a5cdb08add6ed96f7069ad0d9384a81",
+    "screenshots/p512-10-profile-mismatch-fails-closed.png": "cab6bbc1f9a3e6bd1af734c129e81ed24d1002437af142bebd862ebbab578d3e",
+    "videos/p512-east-product-client.webm": "54bd97a54ee2cf186ff909f13157d2b18f7d0c0df63d2a9f93ba48a35d0ded09",
+    "videos/p512-west-product-client.webm": "4b15b3e243cc9410536771c50e0b6f37d6ceaf315697889795d11104a2d958c4",
+    "p512-two-browser-inkfall-product-client-proof.json": "6c012c043edafbd60070be4bcd44874c4784a3dc5c194512c9e944d9507e2460"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T04:02:36.621Z",
+  "root": "phase-1-truth",
+  "files": 25,
+  "bytes": 4387519,
+  "entries": [
+    {
+      "path": "dev-server.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dev-server.stdout.log",
+      "bytes": 160,
+      "sha256": "556bf518992236a25543395ab114accf56634fa5097c2e35d1752691a56d9739"
+    },
+    {
+      "path": "phase1-truth-summary.json",
+      "bytes": 47815,
+      "sha256": "64f7219cf25246a42a7a5e6607dad22e9784365af28437129c39f81fa0846f48"
+    },
+    {
+      "path": "production/phase1-truth-summary.json",
+      "bytes": 40369,
+      "sha256": "9c7d49284a40db32ddb17a68a9b887f6e54a7fb14151053c3fdb671731388e11"
+    },
+    {
+      "path": "production/preview-server.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "production/preview-server.stdout.log",
+      "bytes": 77,
+      "sha256": "eeb70f892fd883ac5110668a31081978e8638c6e646b8c9443b81cab6a5c61eb"
+    },
+    {
+      "path": "production/screenshots/phase1-fresh-home-1920x1080.png",
+      "bytes": 372617,
+      "sha256": "0ea9a82aa841b0e7b1011e30b2ba236771f981e641369262d45b530807f8ca28"
+    },
+    {
+      "path": "production/screenshots/phase1-gameplay-1920x1080.png",
+      "bytes": 587917,
+      "sha256": "1f28f43fa0eae1893f0cf2b3e550bd6251f7e4965e07526b147499ac516723ca"
+    },
+    {
+      "path": "production/screenshots/phase1-login-fresh-1920x1080.png",
+      "bytes": 25141,
+      "sha256": "e2710963a30dd3fe95b31f8ed314191b2dc9a419d177bf8140e39a8ae8604230"
+    },
+    {
+      "path": "production/screenshots/phase1-login-returning-1920x1080.png",
+      "bytes": 26425,
+      "sha256": "b65be6371344060d69e117ab82a788d204d57a8bd02271df7095bdcac89a7890"
+    },
+    {
+      "path": "production/screenshots/phase1-mobile-desktop-required-390x844.png",
+      "bytes": 38329,
+      "sha256": "1f8fe07e6c9afaf488f35f3e35f7606993ee89465064dfba58d17dbab9796285"
+    },
+    {
+      "path": "production/screenshots/phase1-profile-migrated-1920x1080.png",
+      "bytes": 26498,
+      "sha256": "2cf9f0215e62a35c256405d106608a2e672b47d23d20903041334ba65f94239a"
+    },
+    {
+      "path": "production/screenshots/phase1-register-returning-1920x1080.png",
+      "bytes": 26425,
+      "sha256": "b65be6371344060d69e117ab82a788d204d57a8bd02271df7095bdcac89a7890"
+    },
+    {
+      "path": "production/screenshots/phase1-returning-home-1920x1080.png",
+      "bytes": 374767,
+      "sha256": "0baf9860504346690d6b3e205e82ad82adb960d6f3b5f7adfbba1619a378b630"
+    },
+    {
+      "path": "production/screenshots/phase1-scoreboard-1920x1080.png",
+      "bytes": 639779,
+      "sha256": "be93491c75d71ac2deade06831bf8757f2bf097477fc09699fb79890ecf23609"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7682,
+      "sha256": "059c5ce3667b9239fb2de7224a46dbabdf8134270bbba49bfd5ec06acddc573e"
+    },
+    {
+      "path": "screenshots/phase1-fresh-home-1920x1080.png",
+      "bytes": 382602,
+      "sha256": "3002370ec460e812ac7e0d165802695d6bf0f183b9af0d9393ca9d8838439a9a"
+    },
+    {
+      "path": "screenshots/phase1-gameplay-1920x1080.png",
+      "bytes": 615984,
+      "sha256": "64c4324a8b0c61ec7a325d7f4bf8160ffd5db3cf9a955f0f7c31f7e64fb87ee6"
+    },
+    {
+      "path": "screenshots/phase1-login-fresh-1920x1080.png",
+      "bytes": 25141,
+      "sha256": "e2710963a30dd3fe95b31f8ed314191b2dc9a419d177bf8140e39a8ae8604230"
+    },
+    {
+      "path": "screenshots/phase1-login-returning-1920x1080.png",
+      "bytes": 26425,
+      "sha256": "b65be6371344060d69e117ab82a788d204d57a8bd02271df7095bdcac89a7890"
+    },
+    {
+      "path": "screenshots/phase1-mobile-desktop-required-390x844.png",
+      "bytes": 38329,
+      "sha256": "1f8fe07e6c9afaf488f35f3e35f7606993ee89465064dfba58d17dbab9796285"
+    },
+    {
+      "path": "screenshots/phase1-profile-migrated-1920x1080.png",
+      "bytes": 26498,
+      "sha256": "2cf9f0215e62a35c256405d106608a2e672b47d23d20903041334ba65f94239a"
+    },
+    {
+      "path": "screenshots/phase1-register-returning-1920x1080.png",
+      "bytes": 26425,
+      "sha256": "b65be6371344060d69e117ab82a788d204d57a8bd02271df7095bdcac89a7890"
+    },
+    {
+      "path": "screenshots/phase1-returning-home-1920x1080.png",
+      "bytes": 375489,
+      "sha256": "c54b60199cc17f99dd0252233f741d50d7e17f96c47ad3ac7054d3a9dda6a329"
+    },
+    {
+      "path": "screenshots/phase1-scoreboard-1920x1080.png",
+      "bytes": 656625,
+      "sha256": "383519af9f2091f663d5ab7fac18a26ddfac60d1a957363849c435e5d8457689"
+    }
+  ]
+}

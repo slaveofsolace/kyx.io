@@ -1,0 +1,434 @@
+{
+  "checkpoint": "V6-B0.1 clean-cage/contact proof rev1",
+  "status": "EARLY METHOD PROOF / HUMAN VISUAL REVIEW REQUIRED / NO V6-B OR G6 CLAIM",
+  "source_blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+  "source_sha256_before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+  "source_sha256_after": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+  "concept": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+  "concept_sha256": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+  "output_blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b01-clean-cage-contact-rev1\\kyx_vanguard_v6b01_clean_cage_contact_rev1.blend",
+  "output_blend_sha256": "7ff54bd11ed38bfd08ca7405d18cd02bdb3ff8b20f99aada8653017a992ee98e",
+  "garment_topology": {
+    "vertices": 162,
+    "edges": 292,
+    "faces": 128,
+    "quad_faces": 128,
+    "non_quad_faces": 0,
+    "connected_components": 1,
+    "boundary_edges": 72,
+    "boundary_loops": 4,
+    "boundary_loop_contract": "waist + neck + left armhole + right armhole"
+  },
+  "armor_panel_topology": {
+    "vertices": 20,
+    "edges": 31,
+    "faces": 12,
+    "quad_faces": 12,
+    "non_quad_faces": 0,
+    "connected_components": 1,
+    "boundary_edges": 14,
+    "boundary_loops": 1,
+    "boundary_loop_contract": "one continuous manufactured armor perimeter"
+  },
+  "temporary_contact_rig": {
+    "bones": 16,
+    "deform_bones": 16,
+    "actions": 0,
+    "assigned_vertices_by_bone": {
+      "contact_root": 0,
+      "hand.R": 0,
+      "index.01.R": 7,
+      "index.02.R": 30,
+      "index.03.R": 25,
+      "middle.01.R": 27,
+      "middle.02.R": 24,
+      "middle.03.R": 31,
+      "ring.01.R": 30,
+      "ring.02.R": 34,
+      "ring.03.R": 49,
+      "pinky.01.R": 34,
+      "pinky.02.R": 29,
+      "pinky.03.R": 41,
+      "thumb.01.R": 84,
+      "thumb.02.R": 14
+    },
+    "body_vertices": 10582,
+    "body_faces": 10590,
+    "body_connected_mesh_preserved": true,
+    "independent_finger_meshes": 0
+  },
+  "contact_fixture": {
+    "grip": "V6B01_ContactFixture_ErgonomicGrip",
+    "guard": "V6B01_ContactFixture_TriggerGuard",
+    "trigger": "V6B01_ContactFixture_Trigger",
+    "stock_rails": [
+      "V6B01_ContactFixture_StockRail_01",
+      "V6B01_ContactFixture_StockRail_02"
+    ],
+    "shoulder_pad": "V6B01_ContactFixture_ShoulderPad",
+    "receiver": "V6B01_ContactFixture_SectionedReceiver"
+  },
+  "authored_object_count": 24,
+  "armatures": 1,
+  "actions": 0,
+  "inventory": [
+    {
+      "name": "V6B01_Armor_AttachmentBolt_01",
+      "type": "MESH",
+      "role": "attachment logic",
+      "method": "seated fastener through gasket",
+      "modifiers": [
+        {
+          "name": "ATTACHMENT_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 34,
+      "evaluated_vertices": 256,
+      "evaluated_faces": 226,
+      "evaluated_triangles": 508
+    },
+    {
+      "name": "V6B01_Armor_AttachmentBolt_02",
+      "type": "MESH",
+      "role": "attachment logic",
+      "method": "seated fastener through gasket",
+      "modifiers": [
+        {
+          "name": "ATTACHMENT_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 34,
+      "evaluated_vertices": 256,
+      "evaluated_faces": 226,
+      "evaluated_triangles": 508
+    },
+    {
+      "name": "V6B01_Armor_AttachmentBolt_03",
+      "type": "MESH",
+      "role": "attachment logic",
+      "method": "seated fastener through gasket",
+      "modifiers": [
+        {
+          "name": "ATTACHMENT_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 34,
+      "evaluated_vertices": 256,
+      "evaluated_faces": 226,
+      "evaluated_triangles": 508
+    },
+    {
+      "name": "V6B01_Armor_AttachmentGasket_01",
+      "type": "MESH",
+      "role": "attachment logic",
+      "method": "backed panel standoff",
+      "modifiers": [
+        {
+          "name": "ATTACHMENT_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 34,
+      "evaluated_vertices": 256,
+      "evaluated_faces": 226,
+      "evaluated_triangles": 508
+    },
+    {
+      "name": "V6B01_Armor_AttachmentGasket_02",
+      "type": "MESH",
+      "role": "attachment logic",
+      "method": "backed panel standoff",
+      "modifiers": [
+        {
+          "name": "ATTACHMENT_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 34,
+      "evaluated_vertices": 256,
+      "evaluated_faces": 226,
+      "evaluated_triangles": 508
+    },
+    {
+      "name": "V6B01_Armor_AttachmentGasket_03",
+      "type": "MESH",
+      "role": "attachment logic",
+      "method": "backed panel standoff",
+      "modifiers": [
+        {
+          "name": "ATTACHMENT_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 34,
+      "evaluated_vertices": 256,
+      "evaluated_faces": 226,
+      "evaluated_triangles": 508
+    },
+    {
+      "name": "V6B01_Armor_ChestShoulderCleanRetopo",
+      "type": "MESH",
+      "role": "single chest/shoulder armor panel",
+      "method": "clean 4x5 quad retopo outline projected to garment; solidify and bevel",
+      "modifiers": [
+        {
+          "name": "01_PROJECT_CLEAN_OUTLINE_TO_GARMENT",
+          "type": "SHRINKWRAP"
+        },
+        {
+          "name": "02_CONTINUOUS_MANUFACTURED_THICKNESS",
+          "type": "SOLIDIFY"
+        },
+        {
+          "name": "03_CONTINUOUS_PERIMETER_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 20,
+      "base_faces": 12,
+      "evaluated_vertices": 264,
+      "evaluated_faces": 262,
+      "evaluated_triangles": 524
+    },
+    {
+      "name": "V6B01_Armor_ContinuousPerimeterSeal",
+      "type": "CURVE",
+      "role": "manufactured perimeter witness",
+      "method": "single cyclic perimeter seal from clean panel boundary",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_ContactAnatomyContinuousBody",
+      "type": "MESH",
+      "role": "literal five-digit contact witness",
+      "method": "continuous V6-A body copy posed by temporary hand/finger armature",
+      "modifiers": [
+        {
+          "name": "Multires",
+          "type": "MULTIRES"
+        },
+        {
+          "name": "TEMPORARY_CONTINUOUS_HAND_ARMATURE",
+          "type": "ARMATURE"
+        }
+      ],
+      "base_vertices": 10582,
+      "base_faces": 10590,
+      "evaluated_vertices": 677442,
+      "evaluated_faces": 677440,
+      "evaluated_triangles": 1354880
+    },
+    {
+      "name": "V6B01_ContactFixture_ErgonomicGrip",
+      "type": "MESH",
+      "role": "simplified grip contact fixture",
+      "method": "connected multi-ring ergonomic loft",
+      "modifiers": [
+        {
+          "name": "ERGONOMIC_GRIP_EDGE_SOFTEN",
+          "type": "BEVEL"
+        },
+        {
+          "name": "ERGONOMIC_GRIP_SUBDIVISION",
+          "type": "SUBSURF"
+        }
+      ],
+      "base_vertices": 64,
+      "base_faces": 50,
+      "evaluated_vertices": 970,
+      "evaluated_faces": 968,
+      "evaluated_triangles": 1936
+    },
+    {
+      "name": "V6B01_ContactFixture_SectionedReceiver",
+      "type": "MESH",
+      "role": "occlusion-controlled context",
+      "method": "transparent sectioned receiver witness",
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 8,
+      "base_faces": 6,
+      "evaluated_vertices": 96,
+      "evaluated_faces": 98,
+      "evaluated_triangles": 188
+    },
+    {
+      "name": "V6B01_ContactFixture_ShoulderContactWitness",
+      "type": "CURVE",
+      "role": "pad-to-shoulder visibility aid",
+      "method": "thin tangent contact witness",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_ContactFixture_ShoulderPad",
+      "type": "MESH",
+      "role": "stock/shoulder contact witness",
+      "method": "rubberized tangent pad seated at shoulder pocket",
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 8,
+      "base_faces": 6,
+      "evaluated_vertices": 96,
+      "evaluated_faces": 98,
+      "evaluated_triangles": 188
+    },
+    {
+      "name": "V6B01_ContactFixture_StockRail_01",
+      "type": "CURVE",
+      "role": "shoulder-contact load path",
+      "method": "continuous skeletal stock load rail",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_ContactFixture_StockRail_02",
+      "type": "CURVE",
+      "role": "shoulder-contact load path",
+      "method": "continuous skeletal stock load rail",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_ContactFixture_Trigger",
+      "type": "CURVE",
+      "role": "index-on-trigger witness",
+      "method": "continuous trigger curve",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_ContactFixture_TriggerGuard",
+      "type": "CURVE",
+      "role": "trigger/index clearance witness",
+      "method": "continuous ergonomic guard curve",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_ContactHandRig",
+      "type": "ARMATURE",
+      "role": "contact authoring rig; not runtime skeleton",
+      "method": "temporary hand/finger armature",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_Garment_CageWireWitness",
+      "type": "MESH",
+      "role": "wireframe audit",
+      "method": "exact unsmoothed cage topology witness",
+      "modifiers": [
+        {
+          "name": "01_SAME_CAGE_SHRINKWRAP",
+          "type": "SHRINKWRAP"
+        },
+        {
+          "name": "02_TOPOLOGY_WIREFRAME",
+          "type": "WIREFRAME"
+        }
+      ],
+      "base_vertices": 162,
+      "base_faces": 128,
+      "evaluated_vertices": 836,
+      "evaluated_faces": 1024,
+      "evaluated_triangles": 2048
+    },
+    {
+      "name": "V6B01_Garment_CleanQuadCage",
+      "type": "MESH",
+      "role": "technical undersuit proof",
+      "method": "independently drawn connected quad cage; index-defined arm holes; live shrinkwrap/solidify/subdivision",
+      "modifiers": [
+        {
+          "name": "01_CLEAN_CAGE_SHRINKWRAP_TO_V6A",
+          "type": "SHRINKWRAP"
+        },
+        {
+          "name": "02_CLEAN_CAGE_SUBDIVISION",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "03_GARMENT_PHYSICAL_THICKNESS",
+          "type": "SOLIDIFY"
+        },
+        {
+          "name": "04_RESTRAINED_SEAM_EDGE_SOFTEN",
+          "type": "BEVEL"
+        }
+      ],
+      "base_vertices": 162,
+      "base_faces": 128,
+      "evaluated_vertices": 1978,
+      "evaluated_faces": 1982,
+      "evaluated_triangles": 3964
+    },
+    {
+      "name": "V6B01_Garment_Seam_CenterFront",
+      "type": "CURVE",
+      "role": "garment seam/tension witness",
+      "method": "restrained anatomical seam route",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_Garment_Seam_L_ClavicleTension",
+      "type": "CURVE",
+      "role": "garment seam/tension witness",
+      "method": "restrained anatomical seam route",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_Garment_Seam_R_ClavicleTension",
+      "type": "CURVE",
+      "role": "garment seam/tension witness",
+      "method": "restrained anatomical seam route",
+      "modifiers": []
+    },
+    {
+      "name": "V6B01_GarmentAnatomyWitness",
+      "type": "MESH",
+      "role": "garment fit witness",
+      "method": "unaltered continuous V6-A anatomy copy",
+      "modifiers": [
+        {
+          "name": "Multires",
+          "type": "MULTIRES"
+        }
+      ],
+      "base_vertices": 10582,
+      "base_faces": 10590,
+      "evaluated_vertices": 677442,
+      "evaluated_faces": 677440,
+      "evaluated_triangles": 1354880
+    }
+  ],
+  "method_guards": {
+    "anatomy_face_extraction_used_for_garment": false,
+    "anatomy_face_extraction_used_for_armor": false,
+    "independent_finger_tubes": false,
+    "continuous_source_hand_preserved": true,
+    "full_character_authored": false,
+    "full_rifle_authored": false,
+    "runtime_integration": false
+  },
+  "nonclaims": [
+    "NOT V6-B",
+    "NOT V6-C",
+    "NOT G6",
+    "NO RUNTIME RIG",
+    "NO EXPORT",
+    "NO LOD",
+    "NO RUNTIME INTEGRATION"
+  ]
+}

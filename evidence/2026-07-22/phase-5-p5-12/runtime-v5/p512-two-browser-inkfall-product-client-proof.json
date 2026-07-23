@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 1,
+  "phase": "P5.12",
+  "capturedAt": "2026-07-22T12:29:37.390Z",
+  "status": "BOUNDED_PASS",
+  "gateClaim": "G4_NOT_CLAIMED_G5_NOT_CLAIMED",
+  "topology": {
+    "route": "/online",
+    "frontendOrigin": "http://127.0.0.1:5173",
+    "authorityOrigin": "http://127.0.0.1:8787",
+    "browserLaunches": 2,
+    "browserProcesses": 2,
+    "westBrowserProcessId": 31864,
+    "eastBrowserProcessId": 36560,
+    "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "headless": true,
+    "syntheticDashboard": false
+  },
+  "selection": {
+    "visibleUncheckedByDefault": true,
+    "explicitProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "joinUrl": "http://127.0.0.1:5173/online?mode=join&room=KYX-TV6YR9&profile=p511-inkfall-foundry-revision-2-combat-v1",
+    "profileSentOnCreateAndJoinMetadataCheck": true,
+    "mismatchFailsClosedBeforeSocket": true,
+    "mismatchCopy": "Inkfall room verification failed.\n\nAuthority Inkfall room join verification failed (HTTP 409).\n\nBACK TO ONLINE LOBBY",
+    "expectedMismatchConsoleError": "Failed to load resource: the server responded with a status of 409 (Conflict)"
+  },
+  "lockedAuthority": {
+    "roomCode": "KYX-TV6YR9",
+    "matchId": "match.cd1aa16bd97449f0a7d3e67f7b9b1d49",
+    "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "mapBinding": {
+      "mapReference": "inkfall_foundry@2",
+      "mapId": "inkfall_foundry",
+      "mapRevision": 2,
+      "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+      "fixtureId": "inkfall_foundry_map_collision",
+      "fixtureHash": "bf85e42731fd088e",
+      "xAxis": "east",
+      "yAxis": "up",
+      "zAxis": "north",
+      "origin": "press_core_floor_contact",
+      "gltfToMap": "x_y_negative_z",
+      "distanceUnit": "millimeters",
+      "angleUnit": "milli_degrees",
+      "colliderCardinality": 339,
+      "spawns": [
+        {
+          "spawnId": "spawn_w_press_a",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -33500,
+            "y": 0,
+            "z": -3500
+          },
+          "yawMilliDegrees": 0
+        },
+        {
+          "spawnId": "spawn_e_press_a",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 33500,
+            "y": 0,
+            "z": 3500
+          },
+          "yawMilliDegrees": 180000
+        },
+        {
+          "spawnId": "spawn_w_press_b",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -33500,
+            "y": 0,
+            "z": 3500
+          },
+          "yawMilliDegrees": 0
+        },
+        {
+          "spawnId": "spawn_e_press_b",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          },
+          "yawMilliDegrees": 180000
+        },
+        {
+          "spawnId": "spawn_w_ink",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -30500,
+            "y": 0,
+            "z": -7000
+          },
+          "yawMilliDegrees": -25000
+        },
+        {
+          "spawnId": "spawn_e_ink",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 30500,
+            "y": 0,
+            "z": -7000
+          },
+          "yawMilliDegrees": -155000
+        },
+        {
+          "spawnId": "spawn_w_archive",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -30500,
+            "y": 0,
+            "z": 7000
+          },
+          "yawMilliDegrees": 25000
+        },
+        {
+          "spawnId": "spawn_e_archive",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 30500,
+            "y": 0,
+            "z": 7000
+          },
+          "yawMilliDegrees": 155000
+        }
+      ]
+    },
+    "simulationIdentity": {
+      "schemaVersion": 1,
+      "mapId": "inkfall_foundry",
+      "rulesetId": "revamped_classic",
+      "rulesetRevision": 3,
+      "rulesetHash": "d5f0418d1d927370",
+      "movementProfileId": "phase3_hypothesis_v1",
+      "movementProfileRevision": 1,
+      "movementProfileHash": "8ab4ed437a4393c0",
+      "fixtureId": "inkfall_foundry_map_collision",
+      "fixtureHash": "bf85e42731fd088e",
+      "physicsAdapterId": "rapier3d_deterministic_compat",
+      "physicsAdapterVersion": "0.19.3"
+    },
+    "westIdentityChecks": 7,
+    "eastIdentityChecks": 7
+  },
+  "spawns": {
+    "west": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    },
+    "east": {
+      "x": 33500,
+      "y": 0,
+      "z": 3500
+    },
+    "westPlayerId": "player.6e947069-b802-482a-a3ee-7d14b586ce83",
+    "eastPlayerId": "player.3c3e696b-2317-498b-90d4-85f463fedf70"
+  },
+  "pressCross": {
+    "routeId": "synthetic_2_player_press_cross",
+    "westRoute": [
+      {
+        "x": -33000,
+        "z": 0
+      },
+      {
+        "x": -27500,
+        "z": 1000
+      },
+      {
+        "x": -22000,
+        "z": 0
+      },
+      {
+        "x": -18000,
+        "z": -1500
+      },
+      {
+        "x": -14000,
+        "z": 2000
+      },
+      {
+        "x": -9000,
+        "z": 4500
+      },
+      {
+        "x": -4000,
+        "z": -2500
+      }
+    ],
+    "eastRoute": [
+      {
+        "x": 33000,
+        "z": 0
+      },
+      {
+        "x": 27500,
+        "z": -1000
+      },
+      {
+        "x": 22000,
+        "z": 0
+      },
+      {
+        "x": 18000,
+        "z": 1500
+      },
+      {
+        "x": 14000,
+        "z": -2000
+      },
+      {
+        "x": 9000,
+        "z": 4500
+      },
+      {
+        "x": 4000,
+        "z": -2500
+      }
+    ],
+    "observedCheckpoints": [
+      {
+        "index": 0,
+        "west": {
+          "x": -32973,
+          "y": 53,
+          "z": 507
+        },
+        "east": {
+          "x": 32973,
+          "y": 53,
+          "z": -507
+        }
+      },
+      {
+        "index": 1,
+        "west": {
+          "x": -28248,
+          "y": 53,
+          "z": 1003
+        },
+        "east": {
+          "x": 27900,
+          "y": 53,
+          "z": -1040
+        }
+      },
+      {
+        "index": 2,
+        "west": {
+          "x": -21431,
+          "y": 132,
+          "z": -174
+        },
+        "east": {
+          "x": 21447,
+          "y": 179,
+          "z": 117
+        }
+      },
+      {
+        "index": 3,
+        "west": {
+          "x": -17876,
+          "y": 132,
+          "z": -1551
+        },
+        "east": {
+          "x": 17703,
+          "y": 179,
+          "z": 1656
+        }
+      },
+      {
+        "index": 4,
+        "west": {
+          "x": -14412,
+          "y": 159,
+          "z": 1537
+        },
+        "east": {
+          "x": 13237,
+          "y": 123,
+          "z": -2268
+        }
+      },
+      {
+        "index": 5,
+        "west": {
+          "x": -8774,
+          "y": 92,
+          "z": 4664
+        },
+        "east": {
+          "x": 8845,
+          "y": 123,
+          "z": 4741
+        }
+      },
+      {
+        "index": 6,
+        "west": {
+          "x": -3723,
+          "y": 92,
+          "z": -2838
+        },
+        "east": {
+          "x": 3786,
+          "y": 123,
+          "z": -2736
+        }
+      }
+    ],
+    "crossAim": {
+      "westYaw": 88912,
+      "eastYaw": -91088
+    },
+    "acceptedShotsBefore": 0,
+    "acceptedShotsAfter": 7,
+    "victimHealthBefore": 100,
+    "victimHealthAfter": 100,
+    "realOcclusionBlockedCrossMapDamage": true
+  },
+  "closeCombat": {
+    "aim": {
+      "westYaw": 109713,
+      "eastYaw": -70287
+    },
+    "damageHealth": 70,
+    "death": {
+      "lifePhase": "dead",
+      "healthPoints": 0,
+      "deathOrdinal": 1,
+      "feedSequence": 1,
+      "teamScores": [
+        {
+          "teamId": "team_blue",
+          "score": 1
+        },
+        {
+          "teamId": "team_red",
+          "score": 0
+        }
+      ]
+    },
+    "damageEventObserved": true,
+    "killEventObserved": true,
+    "grenade": {
+      "localPlayer": {
+        "playerId": "player.6e947069-b802-482a-a3ee-7d14b586ce83",
+        "connected": true,
+        "teamId": "team_blue",
+        "lifePhase": "alive",
+        "healthPoints": 100,
+        "shieldPoints": 0,
+        "deathOrdinal": 0,
+        "respawnEligibleAtTick": null,
+        "riflePhase": "ready",
+        "magazineRounds": 40,
+        "reserveRounds": 143,
+        "nextShotAtTick": 807,
+        "reloadCompletesAtTick": null,
+        "acceptedShotCount": 17,
+        "grenadePhase": "cooldown",
+        "grenadeCooldownEndsAtTick": 1056,
+        "acceptedThrowCount": 1,
+        "activeProjectileCount": 1
+      },
+      "projectiles": [
+        {
+          "projectileId": "combat.53fb0640ccf75c66",
+          "ownerPlayerId": "player.6e947069-b802-482a-a3ee-7d14b586ce83",
+          "ownerTeamId": "team_blue",
+          "phase": "active",
+          "spawnTick": 816,
+          "lifetimeEndsAtTick": 936,
+          "fuseStartedAtTick": null,
+          "detonatesAtTick": null,
+          "xMillimeters": 170,
+          "yMillimeters": 1792,
+          "zMillimeters": 62,
+          "velocityXMillimetersPerSecond": 16968,
+          "velocityYMillimetersPerSecond": 0,
+          "velocityZMillimetersPerSecond": -6009,
+          "bounceCount": 0,
+          "settled": false
+        }
+      ]
+    },
+    "clientErrors": [
+      null,
+      null,
+      null
+    ]
+  },
+  "browserConsole": {
+    "errors": {
+      "west": [
+        "Failed to load resource: the server responded with a status of 409 (Conflict)"
+      ],
+      "east": []
+    },
+    "warnings": {
+      "west": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "east": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ]
+    }
+  },
+  "discoveredAndFixedDuringSlice": {
+    "symptom": "Non-cardinal muzzle rotation produced a fractional world-ray origin rejected by the strict Inkfall port.",
+    "correction": "Authority-derived eye and muzzle origins are deterministically rounded to integer millimeters before ray construction.",
+    "regressionTest": "tests/unit/authority/combat/rewindHitscan.test.ts"
+  },
+  "knownLimits": [
+    "The full active-match checkpoint and final traversal matrix remain open.",
+    "The final integrated visual map and human visual acceptance remain open.",
+    "This capture does not close G4 or G5."
+  ],
+  "selectedArtifactsSha256": {
+    "screenshots/p512-01-visible-opt-in-selection.png": "5386cb846d579ae0956b3df0f33386dec49a130703677f2cfa1d90988bf47219",
+    "screenshots/p512-02-west-spawn-profile-identity.png": "173ca2a7e8b38c9fc64f7230c61923c0377e0a3b9d9bddcda460418baf9056f5",
+    "screenshots/p512-03-east-spawn-profile-identity.png": "db45b317885d5c8150b7d0c998cf8615f1faf526ddac12c42798fe6786171a8d",
+    "screenshots/p512-04-real-occlusion-blocks-cross-map-fire.png": "37ee5d469567b412cb0dbc8ad6306eff2a75be077514f841623f214180788f3a",
+    "screenshots/p512-05-west-authoritative-damage.png": "78f1cd1dd62e8a70c64df4747122a638c5163a0ba6ba15d29fe4572f3cf48ead",
+    "screenshots/p512-06-east-authoritative-damage.png": "44a469567cc554f4d4f3d1b29fca1acc8ee3dd578b21fe9a006ecf0b0fa3bf73",
+    "screenshots/p512-07-west-authoritative-kill.png": "b9b97a453f834f4873e61ca8c79ada7976b3b5f4e3c2b85b5a31795eac1b77e4",
+    "screenshots/p512-08-east-authoritative-death.png": "97f339a2ce0903dfaca0123e45d356162db1cb63dece8762f565fd8e7119a422",
+    "screenshots/p512-09-real-grenade-port-active.png": "0218a4bc2c0402fed8abba1a2011cc918a5cdb08add6ed96f7069ad0d9384a81",
+    "screenshots/p512-10-profile-mismatch-fails-closed.png": "cab6bbc1f9a3e6bd1af734c129e81ed24d1002437af142bebd862ebbab578d3e",
+    "videos/p512-east-product-client.webm": "54bd97a54ee2cf186ff909f13157d2b18f7d0c0df63d2a9f93ba48a35d0ded09",
+    "videos/p512-west-product-client.webm": "4b15b3e243cc9410536771c50e0b6f37d6ceaf315697889795d11104a2d958c4"
+  },
+  "sourceSha256": {
+    "src/app/onlineAuthorityProfiles.ts": "8fb685061cc5ff643b62f68e6a1b07edf7aee233da4dc6b8b08cf56d04e5cb34",
+    "src/app/onlineAuthoritySelection.ts": "5f5d00c724c22e769b4ba1e86e7f5cc9b72c04069395694e402b56eb37fd74d0",
+    "src/app/onlineAuthorityGateway.ts": "2ae8e9264494926e0027adbba246e65ac3c6cb9c69ea6339020e1066b63fb4b4",
+    "src/app/onlineAuthorityInkfallWorld.ts": "eae8d15688f635a73532b4b49fab0b7bbb8a33e7a00eb22b24801a863edb207d",
+    "src/app/onlineAuthorityRoute.ts": "99c7b0e981269d0e1bc6dfcdf380984c4e9ca39adf42e683582a0a0418f9dd69",
+    "src/dev/authorityEvidenceModel.ts": "4287d64a0c28bd9f964d7c77b82a52d74f211c2ad6008e466f5bb8c6750fbe59",
+    "src/dev/authorityEvidenceClient.ts": "4c9856c151a8df53fc233ba71d53f5b7b41d6b3c68c945eeee77ca54d04bca30",
+    "src/authority/combat/rewindHitscan.ts": "3bad12ca6c6253fa109ce7936908b108b39e55cc8dbb4052090132becdbd7ae7",
+    "worker/worker.ts": "26098ba6290692bd008354c01a6d1ee09499a324887def743e746fe34024ca01",
+    "tools/evidence/capture-phase5-p512-inkfall-product-client.mjs": "6d35a2a12c980f0520a986a8271409f034f7f8a3198271c94334f635d3cd9ffa"
+  }
+}

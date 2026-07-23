@@ -1,0 +1,1553 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T11:19:52.721Z",
+  "artifactScope": "PHASE_9_G8_RUNTIME_INSTRUMENTATION",
+  "evidenceLabel": "NON_QUALIFYING_INSTRUMENTATION_SMOKE",
+  "g8Status": "OPEN",
+  "visualApproval": "NOT_PERFORMED_OR_CLAIMED",
+  "nonClaims": [
+    "This capture does not prove final-map, final-character, eight-player, GPU-timer, or named-hardware performance.",
+    "A duration below 30 minutes is a harness smoke, not a soak result.",
+    "A 30-minute run without --qualifying-candidate and complete named-machine metadata remains non-qualifying.",
+    "Passing structural checks does not close G8."
+  ],
+  "baseUrl": "http://127.0.0.1:5193/",
+  "requested": {
+    "tier": "low",
+    "quality": "low",
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "deviceScaleFactor": 1
+    },
+    "durationMs": 5000,
+    "sampleIntervalMs": 1000,
+    "warmupMs": 2000,
+    "minimumQualifyingSoakMs": 1800000,
+    "qualifyingCandidate": false,
+    "headed": false,
+    "softwareRenderer": true,
+    "finalIntegratedBuild": false,
+    "scenario": "offline-practice-eight-character-traversal",
+    "matchSeed": "offline-practice-default",
+    "playerCount": 1,
+    "botCount": 7
+  },
+  "host": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "logicalCpuCount": 32,
+    "cpuModel": "Intel(R) Core(TM) i9-14900K",
+    "totalMemoryBytes": 68388204544,
+    "freeMemoryBytesAtStart": 43015708672,
+    "machineId": null,
+    "gpuDriver": null,
+    "powerMode": null,
+    "thermalState": null,
+    "displayRefreshHz": null,
+    "missingMachineMetadata": [
+      "machineId",
+      "gpuDriver",
+      "powerMode",
+      "thermalState",
+      "displayRefreshHz"
+    ]
+  },
+  "browser": {
+    "product": "Chromium",
+    "version": "149.0.7827.55",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7827.55 Safari/537.36",
+    "language": "en-US",
+    "hardwareConcurrency": 32,
+    "deviceMemoryGb": 32,
+    "screen": {
+      "width": 1280,
+      "height": 720,
+      "colorDepth": 24
+    },
+    "webgl": {
+      "vendor": "Google Inc. (Google)",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    }
+  },
+  "product": {
+    "title": "KYX.IO — Offline Practice",
+    "url": "http://127.0.0.1:5193/",
+    "menuMetrics": {
+      "schemaVersion": 1,
+      "state": "menu",
+      "render": {
+        "frame": 49,
+        "calls": 371,
+        "triangles": 111930,
+        "points": 0,
+        "lines": 0
+      },
+      "renderRange": {
+        "count": 15,
+        "maxCalls": 372,
+        "maxTriangles": 111942
+      },
+      "memory": {
+        "geometries": 848,
+        "textures": 26
+      },
+      "programs": 18,
+      "sceneObjects": 1561,
+      "pixelRatio": 0.6,
+      "canvas": {
+        "width": 768,
+        "height": 432
+      },
+      "frameTimes": {
+        "count": 14,
+        "p50Ms": 50,
+        "p95Ms": 166.60000000000014,
+        "p99Ms": 166.60000000000014,
+        "maxMs": 166.60000000000014
+      },
+      "longTasks": {
+        "supported": true,
+        "totalCount": 1,
+        "totalDurationMs": 100,
+        "maxDurationMs": 100,
+        "recent": {
+          "windowMs": 60000,
+          "count": 1,
+          "totalDurationMs": 100,
+          "p95DurationMs": 100,
+          "maxDurationMs": 100
+        }
+      },
+      "heap": {
+        "usedBytes": 56800000,
+        "totalBytes": 81400000,
+        "limitBytes": 3760000000
+      }
+    },
+    "startupAndTransitionAggregate": {
+      "durationMs": 7054.79999999702,
+      "frameTimes": {
+        "count": 133,
+        "p50Ms": 33.400000000000546,
+        "p95Ms": 100.09999999999991,
+        "p99Ms": 450.10000000000036,
+        "maxMs": 566.6999999999999
+      },
+      "droppedFrameSamples": 0,
+      "longTasks": {
+        "count": 12,
+        "p50Ms": 80,
+        "p95Ms": 427,
+        "p99Ms": 427,
+        "maxMs": 427,
+        "totalDurationMs": 1705,
+        "over50MsCount": 12
+      }
+    },
+    "warmup": {
+      "requestedDurationMs": 2000,
+      "actualDurationMs": 2036,
+      "activitySteps": 4,
+      "aggregate": {
+        "durationMs": 2057.7999999970198,
+        "frameTimes": {
+          "count": 37,
+          "p50Ms": 50,
+          "p95Ms": 99.90000000000055,
+          "p99Ms": 216.60000000000036,
+          "maxMs": 216.60000000000036
+        },
+        "droppedFrameSamples": 0,
+        "longTasks": {
+          "count": 1,
+          "p50Ms": 51,
+          "p95Ms": 51,
+          "p99Ms": 51,
+          "maxMs": 51,
+          "totalDurationMs": 51,
+          "over50MsCount": 1
+        }
+      }
+    }
+  },
+  "samples": [
+    {
+      "elapsedMs": 1108,
+      "renderer": {
+        "schemaVersion": 1,
+        "state": "playing",
+        "render": {
+          "frame": 209,
+          "calls": 412,
+          "triangles": 120050,
+          "points": 0,
+          "lines": 0
+        },
+        "renderRange": {
+          "count": 175,
+          "maxCalls": 455,
+          "maxTriangles": 128102
+        },
+        "memory": {
+          "geometries": 1230,
+          "textures": 40
+        },
+        "programs": 19,
+        "sceneObjects": 1846,
+        "pixelRatio": 0.6,
+        "canvas": {
+          "width": 768,
+          "height": 432
+        },
+        "frameTimes": {
+          "count": 174,
+          "p50Ms": 50,
+          "p95Ms": 100,
+          "p99Ms": 216.60000000000036,
+          "maxMs": 450.10000000000036
+        },
+        "longTasks": {
+          "supported": true,
+          "totalCount": 11,
+          "totalDurationMs": 1177,
+          "maxDurationMs": 422,
+          "recent": {
+            "windowMs": 60000,
+            "count": 11,
+            "totalDurationMs": 1177,
+            "p95DurationMs": 422,
+            "maxDurationMs": 422
+          }
+        },
+        "heap": {
+          "usedBytes": 56800000,
+          "totalBytes": 81400000,
+          "limitBytes": 3760000000
+        }
+      },
+      "chromium": {
+        "jsHeapUsedBytes": 39233880,
+        "jsHeapTotalBytes": 64794624,
+        "taskDurationSeconds": 4.15708,
+        "scriptDurationSeconds": 3.399026,
+        "layoutDurationSeconds": 0.201197,
+        "nodes": 2103,
+        "documents": 1,
+        "jsEventListeners": 84,
+        "interval": null
+      },
+      "hostFreeMemoryBytes": 42264440832
+    },
+    {
+      "elapsedMs": 2742,
+      "renderer": {
+        "schemaVersion": 1,
+        "state": "playing",
+        "render": {
+          "frame": 229,
+          "calls": 408,
+          "triangles": 120002,
+          "points": 0,
+          "lines": 0
+        },
+        "renderRange": {
+          "count": 180,
+          "maxCalls": 455,
+          "maxTriangles": 128102
+        },
+        "memory": {
+          "geometries": 1230,
+          "textures": 40
+        },
+        "programs": 19,
+        "sceneObjects": 1846,
+        "pixelRatio": 0.6,
+        "canvas": {
+          "width": 768,
+          "height": 432
+        },
+        "frameTimes": {
+          "count": 180,
+          "p50Ms": 50,
+          "p95Ms": 83.40000000000009,
+          "p99Ms": 216.60000000000036,
+          "maxMs": 450.10000000000036
+        },
+        "longTasks": {
+          "supported": true,
+          "totalCount": 11,
+          "totalDurationMs": 1177,
+          "maxDurationMs": 422,
+          "recent": {
+            "windowMs": 60000,
+            "count": 11,
+            "totalDurationMs": 1177,
+            "p95DurationMs": 422,
+            "maxDurationMs": 422
+          }
+        },
+        "heap": {
+          "usedBytes": 56800000,
+          "totalBytes": 81400000,
+          "limitBytes": 3760000000
+        }
+      },
+      "chromium": {
+        "jsHeapUsedBytes": 32702432,
+        "jsHeapTotalBytes": 64794624,
+        "taskDurationSeconds": 5.278093,
+        "scriptDurationSeconds": 4.29931,
+        "layoutDurationSeconds": 0.252388,
+        "nodes": 2494,
+        "documents": 1,
+        "jsEventListeners": 84,
+        "interval": {
+          "elapsedMs": 1634,
+          "taskDurationMs": 1121.0130000000004,
+          "scriptDurationMs": 900.2840000000001,
+          "layoutDurationMs": 51.19100000000002
+        }
+      },
+      "hostFreeMemoryBytes": 42242138112
+    },
+    {
+      "elapsedMs": 3798,
+      "renderer": {
+        "schemaVersion": 1,
+        "state": "playing",
+        "render": {
+          "frame": 264,
+          "calls": 412,
+          "triangles": 120454,
+          "points": 0,
+          "lines": 0
+        },
+        "renderRange": {
+          "count": 180,
+          "maxCalls": 455,
+          "maxTriangles": 128102
+        },
+        "memory": {
+          "geometries": 1230,
+          "textures": 40
+        },
+        "programs": 19,
+        "sceneObjects": 1846,
+        "pixelRatio": 0.6,
+        "canvas": {
+          "width": 768,
+          "height": 432
+        },
+        "frameTimes": {
+          "count": 180,
+          "p50Ms": 50,
+          "p95Ms": 99.90000000000055,
+          "p99Ms": 216.60000000000036,
+          "maxMs": 450.10000000000036
+        },
+        "longTasks": {
+          "supported": true,
+          "totalCount": 29,
+          "totalDurationMs": 2642,
+          "maxDurationMs": 422,
+          "recent": {
+            "windowMs": 60000,
+            "count": 29,
+            "totalDurationMs": 2642,
+            "p95DurationMs": 120,
+            "maxDurationMs": 422
+          }
+        },
+        "heap": {
+          "usedBytes": 56800000,
+          "totalBytes": 81400000,
+          "limitBytes": 3760000000
+        }
+      },
+      "chromium": {
+        "jsHeapUsedBytes": 40561904,
+        "jsHeapTotalBytes": 64794624,
+        "taskDurationSeconds": 6.550239,
+        "scriptDurationSeconds": 5.351257,
+        "layoutDurationSeconds": 0.301249,
+        "nodes": 2970,
+        "documents": 1,
+        "jsEventListeners": 84,
+        "interval": {
+          "elapsedMs": 1056,
+          "taskDurationMs": 1272.1460000000002,
+          "scriptDurationMs": 1051.9470000000001,
+          "layoutDurationMs": 48.86099999999999
+        }
+      },
+      "hostFreeMemoryBytes": 42296582144
+    },
+    {
+      "elapsedMs": 5042,
+      "renderer": {
+        "schemaVersion": 1,
+        "state": "playing",
+        "render": {
+          "frame": 288,
+          "calls": 416,
+          "triangles": 120502,
+          "points": 0,
+          "lines": 0
+        },
+        "renderRange": {
+          "count": 180,
+          "maxCalls": 455,
+          "maxTriangles": 128102
+        },
+        "memory": {
+          "geometries": 1230,
+          "textures": 40
+        },
+        "programs": 19,
+        "sceneObjects": 1846,
+        "pixelRatio": 0.6,
+        "canvas": {
+          "width": 768,
+          "height": 432
+        },
+        "frameTimes": {
+          "count": 180,
+          "p50Ms": 50,
+          "p95Ms": 99.90000000000055,
+          "p99Ms": 216.60000000000036,
+          "maxMs": 450.10000000000036
+        },
+        "longTasks": {
+          "supported": true,
+          "totalCount": 34,
+          "totalDurationMs": 3081,
+          "maxDurationMs": 422,
+          "recent": {
+            "windowMs": 60000,
+            "count": 34,
+            "totalDurationMs": 3081,
+            "p95DurationMs": 120,
+            "maxDurationMs": 422
+          }
+        },
+        "heap": {
+          "usedBytes": 56800000,
+          "totalBytes": 81400000,
+          "limitBytes": 3760000000
+        }
+      },
+      "chromium": {
+        "jsHeapUsedBytes": 31403180,
+        "jsHeapTotalBytes": 64794624,
+        "taskDurationSeconds": 7.738365,
+        "scriptDurationSeconds": 6.348024,
+        "layoutDurationSeconds": 0.341799,
+        "nodes": 3446,
+        "documents": 1,
+        "jsEventListeners": 84,
+        "interval": {
+          "elapsedMs": 1244,
+          "taskDurationMs": 1188.1259999999995,
+          "scriptDurationMs": 996.7669999999993,
+          "layoutDurationMs": 40.55000000000003
+        }
+      },
+      "hostFreeMemoryBytes": 42311839744
+    }
+  ],
+  "aggregate": {
+    "durationMs": 5128.19999999553,
+    "frameTimes": {
+      "count": 102,
+      "p50Ms": 50,
+      "p95Ms": 99.90000000000146,
+      "p99Ms": 116.70000000000073,
+      "maxMs": 133.3000000000011
+    },
+    "droppedFrameSamples": 0,
+    "longTasks": {
+      "count": 28,
+      "p50Ms": 75,
+      "p95Ms": 119,
+      "p99Ms": 120,
+      "maxMs": 120,
+      "totalDurationMs": 2253,
+      "over50MsCount": 28
+    },
+    "qualifyingSoakDuration": false,
+    "qualifyingSoakInput": false,
+    "sampleCount": 4,
+    "activitySteps": 4,
+    "jsHeapGrowthBytes": -7830700,
+    "nodeGrowth": 1343,
+    "listenerGrowth": 0,
+    "resourceRanges": {
+      "renderCalls": {
+        "count": 4,
+        "min": 455,
+        "p50": 455,
+        "p95": 455,
+        "p99": 455,
+        "max": 455
+      },
+      "renderTriangles": {
+        "count": 4,
+        "min": 128102,
+        "p50": 128102,
+        "p95": 128102,
+        "p99": 128102,
+        "max": 128102
+      },
+      "sceneObjects": {
+        "count": 4,
+        "min": 1846,
+        "p50": 1846,
+        "p95": 1846,
+        "p99": 1846,
+        "max": 1846
+      },
+      "geometries": {
+        "count": 4,
+        "min": 1230,
+        "p50": 1230,
+        "p95": 1230,
+        "p99": 1230,
+        "max": 1230
+      },
+      "textures": {
+        "count": 4,
+        "min": 40,
+        "p50": 40,
+        "p95": 40,
+        "p99": 40,
+        "max": 40
+      }
+    },
+    "chromiumIntervals": {
+      "taskDurationMs": {
+        "count": 3,
+        "min": 1121.0130000000004,
+        "p50": 1188.1259999999995,
+        "p95": 1272.1460000000002,
+        "p99": 1272.1460000000002,
+        "max": 1272.1460000000002
+      },
+      "scriptDurationMs": {
+        "count": 3,
+        "min": 900.2840000000001,
+        "p50": 996.7669999999993,
+        "p95": 1051.9470000000001,
+        "p99": 1051.9470000000001,
+        "max": 1051.9470000000001
+      },
+      "layoutDurationMs": {
+        "count": 3,
+        "min": 40.55000000000003,
+        "p50": 48.86099999999999,
+        "p95": 51.19100000000002,
+        "p99": 51.19100000000002,
+        "max": 51.19100000000002
+      },
+      "note": "Each value is accumulated Chromium work during one sampling interval, not per-frame main-thread timing."
+    },
+    "trendsPerMinute": {
+      "jsHeapUsedBytes": -79174430.93168747,
+      "nodes": 20768.904017161018,
+      "jsEventListeners": 0,
+      "hostFreeMemoryBytes": 851844699.8363646
+    }
+  },
+  "network": {
+    "requestCount": 91,
+    "transferBytes": 9720514,
+    "resources": [
+      {
+        "url": "http://127.0.0.1:5193/",
+        "resourceType": "document",
+        "requestBodySize": 0,
+        "requestHeadersSize": 642,
+        "responseBodySize": 21332,
+        "responseHeadersSize": 256
+      },
+      {
+        "url": "http://127.0.0.1:5193/@vite/client",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 537,
+        "responseBodySize": 209913,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/style.css",
+        "resourceType": "stylesheet",
+        "requestBodySize": 0,
+        "requestHeadersSize": 524,
+        "responseBodySize": 174913,
+        "responseHeadersSize": 235
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/main.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 536,
+        "responseBodySize": 49563,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/vite/dist/client/env.mjs",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 574,
+        "responseBodySize": 3478,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/style.css",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 603,
+        "responseBodySize": 185785,
+        "responseHeadersSize": 294
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/config/productConfig.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 563,
+        "responseBodySize": 4392,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/app/lockedGrayboxSelection.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 569,
+        "responseBodySize": 4823,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/app/onlineAuthoritySelection.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 571,
+        "responseBodySize": 13156,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/net/index.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 576,
+        "responseBodySize": 3621,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/dev/authorityEvidenceModel.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 593,
+        "responseBodySize": 31381,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/content/maps/constants.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 587,
+        "responseBodySize": 609,
+        "responseHeadersSize": 288
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/net/codec.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 557,
+        "responseBodySize": 11054,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/net/combatConsequence.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 569,
+        "responseBodySize": 5233,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/net/protocol.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 560,
+        "responseBodySize": 27605,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/net/schemas.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 559,
+        "responseBodySize": 178300,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/index.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 574,
+        "responseBodySize": 1055,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/dev/authorityEvidenceImpairment.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 596,
+        "responseBodySize": 75415,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/canonical.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 561,
+        "responseBodySize": 8820,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/commands.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 560,
+        "responseBodySize": 14696,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/foundationFixture.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 569,
+        "responseBodySize": 11857,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/index.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 566,
+        "responseBodySize": 1062,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/replay.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 558,
+        "responseBodySize": 5885,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/rng.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 555,
+        "responseBodySize": 13614,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/state.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 557,
+        "responseBodySize": 21281,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/step.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 556,
+        "responseBodySize": 25597,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/tickClock.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 561,
+        "responseBodySize": 6134,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/units.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 557,
+        "responseBodySize": 11241,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/client/netcode/networkImpairment.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 602,
+        "responseBodySize": 53347,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/canonical.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 579,
+        "responseBodySize": 11172,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/controller.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 580,
+        "responseBodySize": 108855,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/events.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 576,
+        "responseBodySize": 3960,
+        "responseHeadersSize": 289
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/fixedMath.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 579,
+        "responseBodySize": 18927,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/profile.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 577,
+        "responseBodySize": 11029,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/profileIdentity.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 585,
+        "responseBodySize": 21464,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/queryPort.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 579,
+        "responseBodySize": 6354,
+        "responseHeadersSize": 289
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/replay.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 576,
+        "responseBodySize": 51587,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/state.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 575,
+        "responseBodySize": 43919,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/sim/movement/hash.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 578,
+        "responseBodySize": 3605,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/Game.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 552,
+        "responseBodySize": 285172,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 573,
+        "responseBodySize": 72004,
+        "responseHeadersSize": 310
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_environments_RoomEnvironment__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 613,
+        "responseBodySize": 4731,
+        "responseHeadersSize": 309
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_postprocessing_EffectComposer__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 614,
+        "responseBodySize": 15351,
+        "responseHeadersSize": 310
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_postprocessing_RenderPass__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 610,
+        "responseBodySize": 4184,
+        "responseHeadersSize": 309
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_postprocessing_UnrealBloomPass__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 615,
+        "responseBodySize": 15252,
+        "responseHeadersSize": 310
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_postprocessing_OutputPass__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 610,
+        "responseBodySize": 5814,
+        "responseHeadersSize": 309
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/world/World.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 559,
+        "responseBodySize": 781482,
+        "responseHeadersSize": 294
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/player/Player.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 561,
+        "responseBodySize": 95725,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/WeaponSystem.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 568,
+        "responseBodySize": 249360,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/entities/BotManager.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 567,
+        "responseBodySize": 9578,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/InputManager.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 565,
+        "responseBodySize": 34233,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/AudioManager.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 565,
+        "responseBodySize": 254698,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/HUD.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 554,
+        "responseBodySize": 107024,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/DamageNumbers.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 564,
+        "responseBodySize": 10656,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/Nameplates.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 561,
+        "responseBodySize": 17485,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/MainMenu.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 559,
+        "responseBodySize": 87288,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/UserAccount.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 564,
+        "responseBodySize": 29644,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/GameSettings.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 565,
+        "responseBodySize": 20999,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/AccessibilityPreferences.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 575,
+        "responseBodySize": 5736,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/CaptionCueOverlay.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 568,
+        "responseBodySize": 28695,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/DamageDirection.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 566,
+        "responseBodySize": 7113,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/effects/DeathEffects.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 568,
+        "responseBodySize": 31618,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/GameModes.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 562,
+        "responseBodySize": 5488,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/player/skins.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 560,
+        "responseBodySize": 2572,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/player/PreviewCharacter.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 571,
+        "responseBodySize": 128044,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/player/ArmorTypes.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 565,
+        "responseBodySize": 5878,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/GrenadeSystem.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 569,
+        "responseBodySize": 46933,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/Loadout.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 560,
+        "responseBodySize": 7218,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/entities/ZombieManager.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 570,
+        "responseBodySize": 15329,
+        "responseHeadersSize": 291
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/SurvivalManager.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 568,
+        "responseBodySize": 28859,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/core/DeathmatchManager.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 570,
+        "responseBodySize": 4108,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/entities/Zombie.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 563,
+        "responseBodySize": 271329,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/player/HumanSoldier.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 567,
+        "responseBodySize": 269123,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/WeaponModels.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 568,
+        "responseBodySize": 451223,
+        "responseHeadersSize": 294
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/world/PickupSystem.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 566,
+        "responseBodySize": 36990,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three.module-Dhi4sXJn.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 653,
+        "responseBodySize": 1854888,
+        "responseHeadersSize": 314
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/Pass-DDtSGcVB.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 645,
+        "responseBodySize": 4127,
+        "responseHeadersSize": 309
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/CopyShader-Djd0Zn4R.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 655,
+        "responseBodySize": 818,
+        "responseHeadersSize": 307
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/entities/Bot.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 570,
+        "responseBodySize": 112430,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/weaponDefs.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 577,
+        "responseBodySize": 47301,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/WeaponSkins.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 578,
+        "responseBodySize": 68868,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/SwordSkins.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 577,
+        "responseBodySize": 28992,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/app/movement/pointerLock.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 580,
+        "responseBodySize": 5496,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/WeaponThumbnails.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 564,
+        "responseBodySize": 38217,
+        "responseHeadersSize": 292
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/ui/KeyboardFocus.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 566,
+        "responseBodySize": 7003,
+        "responseHeadersSize": 290
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 617,
+        "responseBodySize": 100072,
+        "responseHeadersSize": 312
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 614,
+        "responseBodySize": 9267,
+        "responseHeadersSize": 309
+      },
+      {
+        "url": "http://127.0.0.1:5193/node_modules/.vite/deps/three_addons_geometries_RoundedBoxGeometry__js.js?v=d55ac12c",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 625,
+        "responseBodySize": 5489,
+        "responseHeadersSize": 309
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/weapons/WeaponTextures.js",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 581,
+        "responseBodySize": 350974,
+        "responseHeadersSize": 293
+      },
+      {
+        "url": "http://127.0.0.1:5193/soldier.glb",
+        "resourceType": "fetch",
+        "requestBodySize": 0,
+        "requestHeadersSize": 504,
+        "responseBodySize": 2159764,
+        "responseHeadersSize": 279
+      },
+      {
+        "url": "http://127.0.0.1:5193/src/render/debugMetrics.ts",
+        "resourceType": "script",
+        "requestBodySize": 0,
+        "requestHeadersSize": 562,
+        "responseBodySize": 23838,
+        "responseHeadersSize": 292
+      }
+    ]
+  },
+  "assessment": {
+    "gateDecision": "G8_OPEN_REQUIRES_FINAL_INTEGRATED_REVIEW",
+    "eligibleSoakInput": false,
+    "eligibilityDisqualifiers": [
+      "qualifying_candidate_not_requested",
+      "active_duration_below_30_minutes",
+      "browser_not_headed",
+      "software_renderer_detected",
+      "final_integrated_build_not_declared",
+      "named_machine_metadata_incomplete"
+    ],
+    "detectedSoftwareRenderer": true,
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "budgetSignals": {
+      "frameP95": {
+        "targetMs": 16.67,
+        "observedMs": 99.90000000000146,
+        "passed": false
+      },
+      "frameP99": {
+        "target": "tracked; no broad pass threshold is specified by the governing budget",
+        "observedMs": 116.70000000000073,
+        "passed": null
+      },
+      "recurringLongTasks": {
+        "target": "zero recurring active-match tasks over 50 ms",
+        "observedOver50MsCount": 28,
+        "passed": false
+      },
+      "drawCalls": {
+        "targetMaximum": 300,
+        "observedMaximum": 455,
+        "passed": false
+      },
+      "visibleTriangles": {
+        "targetMaximum": 700000,
+        "observedMaximum": 128102,
+        "passed": true
+      },
+      "firstPlayableTransfer": {
+        "targetMaximumBytes": 12000000,
+        "observedBytes": 9720514,
+        "passed": true,
+        "limitation": "Request body sizes are a browser-observed transfer signal; cold/warm cache proof remains separate."
+      }
+    },
+    "unavailableOrSeparateEvidence": [
+      "GPU p95 timer-query evidence is not produced by this browser harness.",
+      "Authoritative room tick p99 and network cost require a separate full-occupancy Worker capture.",
+      "Eight-character visibility, final VFX caps, and visual readability require direct scene review.",
+      "A flat first-to-last memory delta is not a leak verdict; trend and retained-object review remain required."
+    ]
+  },
+  "artifacts": [
+    {
+      "id": "active_match",
+      "path": "active-match.png",
+      "bytes": 335126,
+      "sha256": "992f247762b31d9d5c8d3efc2a1bbdcb23fe37947d201e5ad073e487584a9b68"
+    }
+  ],
+  "sources": {
+    "captureScript": {
+      "bytes": 29678,
+      "sha256": "445988d9338a24e9f8998c59899d06bcdf1e6c13dc16d9515c078576fe496802"
+    },
+    "debugMetrics": {
+      "bytes": 9067,
+      "sha256": "ed328da7eea6c22a34ca31d91bc1bad1cbf8b82a088d185df3002da0f4c39c27"
+    },
+    "world": {
+      "bytes": 131690,
+      "sha256": "795515f1b2ee8c9084b01735abae0eb3f396c5332ac770149c9ed201ed8955fb"
+    },
+    "game": {
+      "bytes": 53678,
+      "sha256": "e152d6b93b211b38238661a07f21c6fd34203cacd33fecef3cf84a2c08da7780"
+    },
+    "main": {
+      "bytes": 10249,
+      "sha256": "68f6c0eb38bd0b0da257216c553ffaa1c03797511e7eafcdeef3ca29078b0b5a"
+    },
+    "packageLock": {
+      "bytes": 141862,
+      "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+    }
+  },
+  "checks": [
+    {
+      "id": "preflight.server_available",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "finalUrl": "http://127.0.0.1:5193/"
+      }
+    },
+    {
+      "id": "product.document_ok",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "finalUrl": "http://127.0.0.1:5193/"
+      }
+    },
+    {
+      "id": "runtime.active_state_sampled",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "runtime.minimum_sample_count",
+      "passed": true,
+      "details": {
+        "sampleCount": 4
+      }
+    },
+    {
+      "id": "runtime.frame_distribution_present",
+      "passed": true,
+      "details": {
+        "count": 102,
+        "p50Ms": 50,
+        "p95Ms": 99.90000000000146,
+        "p99Ms": 116.70000000000073,
+        "maxMs": 133.3000000000011
+      }
+    },
+    {
+      "id": "runtime.warmup_completed",
+      "passed": true,
+      "details": {
+        "warmup": {
+          "requestedDurationMs": 2000,
+          "actualDurationMs": 2036,
+          "activitySteps": 4,
+          "aggregate": {
+            "durationMs": 2057.7999999970198,
+            "frameTimes": {
+              "count": 37,
+              "p50Ms": 50,
+              "p95Ms": 99.90000000000055,
+              "p99Ms": 216.60000000000036,
+              "maxMs": 216.60000000000036
+            },
+            "droppedFrameSamples": 0,
+            "longTasks": {
+              "count": 1,
+              "p50Ms": 51,
+              "p95Ms": 51,
+              "p99Ms": 51,
+              "maxMs": 51,
+              "totalDurationMs": 51,
+              "over50MsCount": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "runtime.resource_distributions_present",
+      "passed": true,
+      "details": {
+        "resourceRanges": {
+          "renderCalls": {
+            "count": 4,
+            "min": 455,
+            "p50": 455,
+            "p95": 455,
+            "p99": 455,
+            "max": 455
+          },
+          "renderTriangles": {
+            "count": 4,
+            "min": 128102,
+            "p50": 128102,
+            "p95": 128102,
+            "p99": 128102,
+            "max": 128102
+          },
+          "sceneObjects": {
+            "count": 4,
+            "min": 1846,
+            "p50": 1846,
+            "p95": 1846,
+            "p99": 1846,
+            "max": 1846
+          },
+          "geometries": {
+            "count": 4,
+            "min": 1230,
+            "p50": 1230,
+            "p95": 1230,
+            "p99": 1230,
+            "max": 1230
+          },
+          "textures": {
+            "count": 4,
+            "min": 40,
+            "p50": 40,
+            "p95": 40,
+            "p99": 40,
+            "max": 40
+          }
+        }
+      }
+    },
+    {
+      "id": "runtime.assessment_is_nonclaiming",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "runtime.long_task_surface_present",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "runtime.heap_surface_present",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "runtime.no_console_errors",
+      "passed": true,
+      "details": {
+        "consoleErrors": []
+      }
+    },
+    {
+      "id": "runtime.no_page_errors",
+      "passed": true,
+      "details": {
+        "pageErrors": []
+      }
+    },
+    {
+      "id": "artifact.active_match_present",
+      "passed": true,
+      "details": {
+        "id": "active_match",
+        "path": "active-match.png",
+        "bytes": 335126,
+        "sha256": "992f247762b31d9d5c8d3efc2a1bbdcb23fe37947d201e5ad073e487584a9b68"
+      }
+    },
+    {
+      "id": "capture.completed",
+      "passed": true,
+      "details": {
+        "errors": []
+      }
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "ok": true,
+  "completedAt": "2026-07-22T11:20:09.465Z"
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "kyx-v6-contact-rig-foundation-seal-v1",
+  "status": "CONTACT_RIG_FOUNDATION_ONLY_ACCEPTED",
+  "revision": "v6-contact-first-rig-rev11b",
+  "scope": {
+    "accepted": "temporary full upper-body armature and continuous-body rifle-contact foundation",
+    "v6bAccepted": false,
+    "g6Accepted": false,
+    "garmentOrArmorAccepted": false,
+    "productionWeaponArtAccepted": false
+  },
+  "immutableSource": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "sha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d"
+  },
+  "acceptedBlend": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev11b\\kyx-v6-contact-first-rig-rev11b.blend",
+    "sha256": "029ce233dca6ed2119ac0810e07e4392090f0866dde78da04bed390d9a3e0ec0"
+  },
+  "reviewBoard": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev11b\\renders\\kyx-v6-contact-first-rig-rev11b-early-proof-board.png",
+    "sha256": "5c6f5c3666d328406bc513271f03cd0a78643a32b2b7947fb2e72b668d67462b",
+    "resolution": [3000, 3000],
+    "transparentContactSections": true
+  },
+  "structuralAcceptance": {
+    "continuousBodyObjects": 1,
+    "topologyPreserved": true,
+    "vertices": 10582,
+    "edges": 21170,
+    "polygons": 10590,
+    "rigBones": 52,
+    "assertedPoseTargets": 45,
+    "poseFailures": 0,
+    "maximumPoseErrorMeters": 1.6895741925311934e-7,
+    "zeroWeightVertices": 0,
+    "minimumWeightSum": 1.0,
+    "maximumWeightSum": 1.0,
+    "allThirtyDigitBonesWeighted": true
+  },
+  "literalContactAuditMeters": {
+    "firingMiddleToGrip": 0.0002434,
+    "firingRingToGrip": 0.0000833,
+    "firingPinkyToGrip": 0.0001365,
+    "firingIndexToTrigger": 0.0002877,
+    "supportIndexSurfaceOffsetAbsolute": 0.0062399,
+    "supportMiddleToForegrip": 0.0000832,
+    "supportRingToForegrip": 0.0003434,
+    "supportPinkyToForegrip": 0.0000029,
+    "stockPadToShoulder": 0.0000533
+  },
+  "visualDisposition": {
+    "firingPalmAndCurledGripDigitsVisible": true,
+    "indexOnTriggerInsideGuardVisible": true,
+    "supportPalmAndFourCurledDigitsVisible": true,
+    "stockShoulderTangencyVisible": true,
+    "continuousFullBodyAndRearSideVisible": true,
+    "armatureWitnessVisible": true,
+    "collapsedOrBlockyHandDeformation": false,
+    "contactInferredOnly": false
+  },
+  "prohibitionsVerified": {
+    "garmentOrArmorObjects": [],
+    "externalLibraries": [],
+    "runtimeSourceTouched": false,
+    "mapOrOnlineTouched": false
+  },
+  "supportingEvidence": [
+    "author-report.json",
+    "render-report.json",
+    "contact-surface-diagnostic.json"
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T09:40:44.358444+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV10",
+  "sources": {
+    "acceptedV6A": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true,
+      "bodyGeometrySha256Before": "eeb7c72910bc918c832836d8f0e6912fa6afe01bc6248b78811b8f3aa52fea1f",
+      "bodyGeometrySha256After": "eeb7c72910bc918c832836d8f0e6912fa6afe01bc6248b78811b8f3aa52fea1f",
+      "bodyGeometryUnchangedInOutput": true
+    },
+    "preservedRev9": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev9\\kyx_vanguard_v6c_visual_benchmark_rev9.blend",
+      "sha256Before": "4ab1bf6db12d99194ddc896077f631d5216053b343aa42c81ab2ec39c7877a19",
+      "sha256After": "4ab1bf6db12d99194ddc896077f631d5216053b343aa42c81ab2ec39c7877a19",
+      "unchanged": true,
+      "usedAsGeometrySource": false
+    },
+    "productionTarget": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+      "sha256Before": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "sha256After": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "unchanged": true,
+      "usage": "construction language only; accepted V6-A body bulk and proportions remain authoritative"
+    }
+  },
+  "output": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev10\\kyx_vanguard_v6c_visual_benchmark_rev10.blend",
+    "bytes": 12915677,
+    "sha256": "b9f7e23d216bb03c91b98b3c1bd000f86c98d1c577b0c9371ff119b627e20c42"
+  },
+  "constructionMethod": {
+    "torso": "Direct V6-A BVH projection with continuous dark cuirass, separate overlapping clavicle, pectoral, rib, sternum, abdominal, waist, and fully armored pelvic systems.",
+    "limbs": "Deep 214-258 degree anatomical joint housings, overlapping under-shells and strike plates, structural bridges, side rails, and functional pivot hardware.",
+    "helmet": "Compact faceted sealed liner, separate crown/brow/cheek/jaw/temple/occipital plates, recessed non-planar visor, concentric pivots, vents, and close neck seal.",
+    "boots": "Low angular last, contoured outsole, segmented tread, compound dorsal/toe/instep armor, armored ankle upper, mechanical heel cage, and pivot.",
+    "rifle": "New multi-depth receiver and handguard with true cutouts, open stock, rooted barrel, optic, charging handle, fasteners, and restrained telemetry."
+  },
+  "contactWitnesses": {
+    "primary_grip": [
+      -0.245,
+      -0.052,
+      1.025
+    ],
+    "support_grip": [
+      0.335,
+      -0.052,
+      1.098
+    ],
+    "shoulder": [
+      -0.708,
+      0.0,
+      1.165
+    ]
+  },
+  "inventory": {
+    "objects": 227,
+    "meshes": 219,
+    "curves": 5,
+    "empties": 3,
+    "materials": [
+      "KYX_V6C_BENCH_R10_BlackJointKnit",
+      "KYX_V6C_BENCH_R10_BlueBlackTitanium",
+      "KYX_V6C_BENCH_R10_GraphiteGunmetal",
+      "KYX_V6C_BENCH_R10_GraphiteWovenSuit",
+      "KYX_V6C_BENCH_R10_MutedBronzeHardware",
+      "KYX_V6C_BENCH_R10_RecessedPetrolVisor",
+      "KYX_V6C_BENCH_R10_RecessedSeam",
+      "KYX_V6C_BENCH_R10_RestrainedCyan",
+      "KYX_V6C_BENCH_R10_SafetyCoral",
+      "KYX_V6C_BENCH_R10_SmokedCeramic",
+      "KYX_V6C_BENCH_R10_TreadRubber",
+      "KYX_V6C_BENCH_R10_WarmTitaniumCeramic"
+    ],
+    "collections": [
+      "KYX_V6C_BENCH_R10_ContinuousTechnicalUndersuit",
+      "KYX_V6C_BENCH_R10_FunctionalMicroDetail",
+      "KYX_V6C_BENCH_R10_InterlockingProductionArmor",
+      "KYX_V6C_BENCH_R10_MultiDepthAutoRifle"
+    ]
+  },
+  "objectCounts": {
+    "character": 173,
+    "rifle": 51,
+    "contactWitnesses": 3
+  },
+  "assertions": {
+    "builtFromAcceptedV6A": true,
+    "acceptedV6AFilePreserved": true,
+    "acceptedV6ABodyGeometryPreservedInOutput": true,
+    "rev9Preserved": true,
+    "rev9NotUsedAsGeometrySource": true,
+    "productionTargetPinnedAndPreserved": true,
+    "noV6BObjects": true,
+    "noRev9Objects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true,
+    "contactWitnessCount": true,
+    "noLiteralHeldContactClaim": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV10_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 10 is a visual benchmark candidate; it is not V6-C or G6 acceptance.",
+    "Contact empties record future intent only; no held, two-hand, or shoulder contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

@@ -1,0 +1,28 @@
+COMMAND C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe tools/evidence/capture-phase2-browser.mjs
+EXIT {"code":0,"signal":null}
+
+PASS route.profile
+PASS route.tick_duration
+PASS route.final_tick
+PASS route.final_hash
+PASS route.entity_count
+PASS route.event_count
+PASS route.no_canvas
+PASS route.repeat_hash
+PASS metrics.schema
+PASS metrics.state
+PASS metrics.render_counters
+PASS metrics.frame_percentiles
+PASS metrics.no_mutable_game_global
+PASS browser.same_origin
+PASS browser.no_failed_requests
+PASS browser.no_application_websocket
+PASS browser.no_console_errors
+PASS browser.no_page_errors
+{
+  "ok": true,
+  "summaryPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-19\\phase-2-toolchain-contracts\\browser\\phase2-browser-summary.json",
+  "checks": 18,
+  "failures": [],
+  "fatalError": null
+}

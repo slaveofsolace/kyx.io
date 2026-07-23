@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:31:23.602573+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV2",
+  "inputs": {
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    },
+    "preservedRev1IntegrityPin": {
+      "path": "kyx_vanguard_v6c_visual_benchmark_rev1.blend",
+      "sha256Before": "3cfea3ad9c17d310dec45a83e40804f7386fb487ad49b7223afc7e3bde9289f8",
+      "sha256After": "3cfea3ad9c17d310dec45a83e40804f7386fb487ad49b7223afc7e3bde9289f8",
+      "unchanged": true,
+      "sceneLoaded": false
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev2.blend",
+    "bytes": 12751000,
+    "sha256": "392020bc9c1b122e975c8f872fbfe3ff72f8b834407c38c495a00b7cf3f30388"
+  },
+  "constructionMethod": {
+    "undersuit": "Accepted V6-A body retained as a single continuous anatomical undersuit.",
+    "chest": "Four small upper-clavicle and lower-rib layers with visible garment gaps and a narrow sternum inset.",
+    "limbs": "Strongly almond-tapered wrap sweeps with narrow end spans and muscle/joint-aligned centerlines.",
+    "helmet": "Tight measured dark liner, open ivory crown, compound visor, curved chin seal, and fitted cowl.",
+    "boots": "Measured wider foot envelope, articulated upper and shaft overlap, full-foot outsole, recessed graphite dorsal flow.",
+    "rifle": "Continuous three-dimensional primary path loft with curved seated shells, joined grip, magazine, and barrel volumes."
+  },
+  "measuredDesignBounds": {
+    "acceptedFootLeft": {
+      "minimum": [
+        0.134394,
+        -0.132563,
+        0.0
+      ],
+      "maximum": [
+        0.270831,
+        0.103295,
+        0.185623
+      ]
+    },
+    "acceptedHead": {
+      "minimum": [
+        -0.118681,
+        -0.157064,
+        1.500111
+      ],
+      "maximum": [
+        0.118752,
+        0.057004,
+        1.775
+      ]
+    }
+  },
+  "inventory": {
+    "collections": [
+      "KYX_V6C_BENCH_R2_ContinuousUndersuit",
+      "KYX_V6C_BENCH_R2_AuthoredArmorSurfaces",
+      "KYX_V6C_BENCH_R2_IntegratedEquipment",
+      "KYX_V6C_BENCH_R2_OriginalAutoRifle"
+    ],
+    "objects": 49,
+    "meshObjects": 40,
+    "curveObjects": 6,
+    "meshVertices": 21204,
+    "meshPolygons": 19812,
+    "materials": [
+      "KYX_V6C_BENCH_R2_ArticulationKnit",
+      "KYX_V6C_BENCH_R2_BootUpper",
+      "KYX_V6C_BENCH_R2_ContinuousWovenUndersuit",
+      "KYX_V6C_BENCH_R2_CyanReadout",
+      "KYX_V6C_BENCH_R2_DeepVisor",
+      "KYX_V6C_BENCH_R2_GraphiteStructure",
+      "KYX_V6C_BENCH_R2_GripComposite",
+      "KYX_V6C_BENCH_R2_OutsoleRubber",
+      "KYX_V6C_BENCH_R2_SignalCoral",
+      "KYX_V6C_BENCH_R2_WarmIvoryCeramic"
+    ],
+    "namedObjects": [
+      "KYX_V6C_BENCH_R2_AbdominalTailoringSeam",
+      "KYX_V6C_BENCH_R2_AutoRifleBarrel",
+      "KYX_V6C_BENCH_R2_AutoRifleCeramicFlowShell",
+      "KYX_V6C_BENCH_R2_AutoRifleContinuousPrimaryVolume",
+      "KYX_V6C_BENCH_R2_AutoRifleIdentityRoute",
+      "KYX_V6C_BENCH_R2_AutoRifleIntegratedGrip",
+      "KYX_V6C_BENCH_R2_AutoRifleMagazine",
+      "KYX_V6C_BENCH_R2_AutoRifleMuzzle",
+      "KYX_V6C_BENCH_R2_AutoRifleStatus",
+      "KYX_V6C_BENCH_R2_AutoRifleStockCheekFlow",
+      "KYX_V6C_BENCH_R2_AutoRifleTriggerGuard",
+      "KYX_V6C_BENCH_R2_BootDorsalArticulation_L",
+      "KYX_V6C_BENCH_R2_BootDorsalArticulation_R",
+      "KYX_V6C_BENCH_R2_BootOutsole_L",
+      "KYX_V6C_BENCH_R2_BootOutsole_R",
+      "KYX_V6C_BENCH_R2_BootShaft_L",
+      "KYX_V6C_BENCH_R2_BootShaft_R",
+      "KYX_V6C_BENCH_R2_BootUpper_L",
+      "KYX_V6C_BENCH_R2_BootUpper_R",
+      "KYX_V6C_BENCH_R2_CONTACT_primary_grip",
+      "KYX_V6C_BENCH_R2_CONTACT_shoulder",
+      "KYX_V6C_BENCH_R2_CONTACT_support_grip",
+      "KYX_V6C_BENCH_R2_ChestReadout",
+      "KYX_V6C_BENCH_R2_CompactScapular_L",
+      "KYX_V6C_BENCH_R2_CompactScapular_R",
+      "KYX_V6C_BENCH_R2_ContinuousAnatomicalUndersuit",
+      "KYX_V6C_BENCH_R2_DeltoidLeaf_L",
+      "KYX_V6C_BENCH_R2_DeltoidLeaf_R",
+      "KYX_V6C_BENCH_R2_ForearmLeaf_L",
+      "KYX_V6C_BENCH_R2_ForearmLeaf_R",
+      "KYX_V6C_BENCH_R2_HelmetBrowRoute",
+      "KYX_V6C_BENCH_R2_HelmetChinSeal",
+      "KYX_V6C_BENCH_R2_HelmetCompoundVisor",
+      "KYX_V6C_BENCH_R2_HelmetCowlTransition",
+      "KYX_V6C_BENCH_R2_HelmetCrownSeam",
+      "KYX_V6C_BENCH_R2_HelmetOpenCrown",
+      "KYX_V6C_BENCH_R2_HelmetTightLiner",
+      "KYX_V6C_BENCH_R2_LeftShoulderIdentitySeam",
+      "KYX_V6C_BENCH_R2_LowerRibFlow_L",
+      "KYX_V6C_BENCH_R2_LowerRibFlow_R",
+      "KYX_V6C_BENCH_R2_PatellaLeaf_L",
+      "KYX_V6C_BENCH_R2_PatellaLeaf_R",
+      "KYX_V6C_BENCH_R2_SternumInset",
+      "KYX_V6C_BENCH_R2_ThighLeaf_L",
+      "KYX_V6C_BENCH_R2_ThighLeaf_R",
+      "KYX_V6C_BENCH_R2_TibiaLeaf_L",
+      "KYX_V6C_BENCH_R2_TibiaLeaf_R",
+      "KYX_V6C_BENCH_R2_UpperClavicle_L",
+      "KYX_V6C_BENCH_R2_UpperClavicle_R"
+    ]
+  },
+  "objectCounts": {
+    "character": 36,
+    "rifleVisible": 10
+  },
+  "assertions": {
+    "acceptedV6APreserved": true,
+    "rev1Preserved": true,
+    "startsFromV6AOnly": true,
+    "noV6BVisibleObjectsInherited": true,
+    "noRev1VisibleObjectsInherited": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV2_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "This is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact witnesses establish future intent only; no literal posed contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

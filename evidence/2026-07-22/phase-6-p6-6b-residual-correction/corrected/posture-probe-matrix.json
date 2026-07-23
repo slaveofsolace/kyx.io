@@ -1,0 +1,996 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_6B_BOUNDED_POSTURE_PROBES_PRESERVED",
+  "governingMetric": {
+    "id": "ink_teleport_flank",
+    "targetBandMilliseconds": [
+      1800,
+      4000
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": "attempt-1-native-v2-exact-egress-baseline",
+      "suiteHash": "6e96172f2ea64eb4",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 1,
+      "teleportMs": 5100,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "crouch",
+          "ticks": 61
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 7
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 427,
+          "detail": "ink_teleport_flank measured 5100 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-1-native-v2-exact-egress-baseline/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-2-waypoint-run-to-crouch",
+      "suiteHash": "477b915db8db450a",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 4,
+      "teleportMs": 4100,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 42
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 245,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-15610,1557,5330); target=(-16000,2000,7000); velocity=(-283,0,0); support=map_collision_stair_press_west_archive_s00_t06; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4100 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-2-waypoint-run-to-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-3-waypoint-run-to-crouch-plus-1",
+      "suiteHash": "477b915db8db450a",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 4,
+      "teleportMs": 4100,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 42
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 245,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-15610,1557,5330); target=(-16000,2000,7000); velocity=(-283,0,0); support=map_collision_stair_press_west_archive_s00_t06; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4100 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-3-waypoint-run-to-crouch-plus-1/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-4-waypoint-run-to-crouch-plus-2",
+      "suiteHash": "d4ce8155f967dbbd",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 4,
+      "teleportMs": 4100,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 42
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 10,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+          "tick": 285,
+          "detail": "No 250 mm progress toward press_west_archive waypoint 3 for 40 ticks; position=(-20830,5305,14430); target=(-22000,6000,17000); distance=2908 mm; velocity=(0,0,0); support=map_collision_rev2_archive_west_terminal_support_lower; tickContacts=map_collision_node_archive_west,map_collision_rev2_archive_west_terminal_support_upper."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 650,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4100 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-4-waypoint-run-to-crouch-plus-2/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-5-waypoint-run-to-crouch-plus-3",
+      "suiteHash": "166864f32dba694d",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 4,
+      "teleportMs": 4150,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 43
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 209,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-14692,516,2707); target=(-16000,2000,7000); velocity=(-585,0,-234); support=map_collision_stair_press_west_archive_s00_t01; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4150 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-5-waypoint-run-to-crouch-plus-3/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-6-waypoint-run-to-slide",
+      "suiteHash": "66c169b708719a0a",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 3,
+      "teleportMs": 3650,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 32
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 7
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 209,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-15636,781,3105); target=(-16000,2000,7000); velocity=(1968,0,1236); support=map_collision_stair_press_west_archive_s00_t02; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-6-waypoint-run-to-slide/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-7-waypoint-slide-4ticks-then-crouch",
+      "suiteHash": "66c169b708719a0a",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 3,
+      "teleportMs": 3650,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 32
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 7
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 209,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-15636,781,3105); target=(-16000,2000,7000); velocity=(1968,0,1236); support=map_collision_stair_press_west_archive_s00_t02; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-7-waypoint-slide-4ticks-then-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-8-waypoint-slide-2ticks-then-crouch",
+      "suiteHash": "66c169b708719a0a",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 3,
+      "teleportMs": 3650,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 32
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 7
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 209,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-15636,781,3105); target=(-16000,2000,7000); velocity=(1968,0,1236); support=map_collision_stair_press_west_archive_s00_t02; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-8-waypoint-slide-2ticks-then-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-9-waypoint1-slide-at-8-waypoint2-crouch",
+      "suiteHash": "c72712880ff24f4f",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 4,
+      "teleportMs": 4050,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 41
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 7
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 35
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 211,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-14350,520,2827); target=(-16000,2000,7000); velocity=(-1120,0,-448); support=map_collision_stair_press_west_archive_s00_t01; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4050 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-9-waypoint1-slide-at-8-waypoint2-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-10-waypoint1-slide-at-7-waypoint2-crouch",
+      "suiteHash": "91c34513057edc54",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 2,
+      "teleportMs": 4100,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 43
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 35
+        }
+      ],
+      "completed": true,
+      "overlaps": 1,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "SYNTHETIC_BODY_OVERLAP",
+          "tick": 290,
+          "detail": "Slots 4 (-7682,6140,19969) and 7 (-8111,6116,19878) overlapped analytical capsules."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 404,
+          "detail": "ink_teleport_flank measured 4100 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-10-waypoint1-slide-at-7-waypoint2-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-11-waypoint1-slide-at-6-waypoint2-crouch",
+      "suiteHash": "f4ff06cc28ba86ae",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 1,
+      "teleportMs": 4150,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 35
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 407,
+          "detail": "ink_teleport_flank measured 4150 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-11-waypoint1-slide-at-6-waypoint2-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-12-waypoint1-slide-at-9-waypoint2-crouch",
+      "suiteHash": "e320b52042ff7619",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 5,
+      "teleportMs": 4000,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 40
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 10,
+      "recovery": 1,
+      "kill": 1,
+      "issues": [
+        {
+          "code": "AUTHORED_ROUTE_ENTERED_UNSAFE_VOLUME",
+          "tick": 229,
+          "detail": "Synthetic route entered recovery volume map_volume_lower_void_recovery at (-17456,-3934,7240)."
+        },
+        {
+          "code": "AUTHORED_ROUTE_ENTERED_UNSAFE_VOLUME",
+          "tick": 230,
+          "detail": "Synthetic route entered kill volume map_volume_lower_void_kill at (-17371,-4584,7403)."
+        },
+        {
+          "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+          "tick": 260,
+          "detail": "No 250 mm progress toward press_west_archive waypoint 1 for 40 ticks; position=(-15983,-42784,7278); target=(-16000,2000,7000); distance=44785 mm; velocity=(596,-30000,-2016); support=none; tickContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 650,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-12-waypoint1-slide-at-9-waypoint2-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-13-clean-entry-plus-exit-slide-at-6",
+      "suiteHash": "51f71d1cdf8e1d31",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 1,
+      "teleportMs": 4400,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 40
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 413,
+          "detail": "ink_teleport_flank measured 4400 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-13-clean-entry-plus-exit-slide-at-6/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-14-clean-entry-plus-exit-jump",
+      "suiteHash": "12e37ff30ae58186",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 1,
+      "teleportMs": 4150,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "jump",
+          "ticks": 35
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 411,
+          "detail": "ink_teleport_flank measured 4150 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-14-clean-entry-plus-exit-jump/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-15-clean-entry-plus-exit-slide",
+      "suiteHash": "4e4fa07280096abb",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 5,
+      "teleportMs": 4600,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "slide",
+          "ticks": 44
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 1,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+          "tick": 268,
+          "detail": "No 250 mm progress toward press_west_archive waypoint 1 for 40 ticks; position=(-15646,1557,5319); target=(-16000,2000,7000); distance=1774 mm; velocity=(245,0,0); support=map_collision_stair_press_west_archive_s00_t06; tickContacts=map_collision_stair_press_west_archive_s00_t06,map_collision_waypoint_press_west_archive_w01."
+        },
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 276,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-15609,1559,5330); target=(-16000,2000,7000); velocity=(-290,0,0); support=map_collision_stair_press_west_archive_s00_t06; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4600 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-15-clean-entry-plus-exit-slide/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-16-two-tick-slide-burst-before-crouch",
+      "suiteHash": "c630aa6d5f06d706",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 1,
+      "teleportMs": 4150,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 35
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 407,
+          "detail": "ink_teleport_flank measured 4150 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-16-two-tick-slide-burst-before-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-17-three-tick-slide-burst-before-crouch",
+      "suiteHash": "c403562dc8e00362",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 1,
+      "teleportMs": 4150,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 35
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": 407,
+          "detail": "ink_teleport_flank measured 4150 ms; target is 1800-4000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-17-three-tick-slide-burst-before-crouch/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-18-clean-entry-exit-jump-at-4",
+      "suiteHash": "15fd3d7490c1d41c",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "FAIL"
+      ],
+      "issueCount": 4,
+      "teleportMs": 4200,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 44
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "run",
+          "ticks": 36
+        }
+      ],
+      "completed": false,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [
+        {
+          "code": "MOVEMENT_QUERY_EXCEPTION",
+          "tick": 208,
+          "detail": "PHYSICS_DEPENETRATION_FAILED; step=press_west_archive; waypoint=1; position=(-13580,253,2435); target=(-16000,2000,7000); velocity=(-3027,0,-1211); support=map_collision_stair_press_west_archive_s00_t00; queryContacts=none."
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "tick": 600,
+          "detail": "Completed 5 of 11 authored route steps."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "ink_teleport_flank measured 4200 ms; target is 1800-4000 ms."
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms."
+        }
+      ],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-18-clean-entry-exit-jump-at-4/authority-playtest-result.json",
+      "classification": "DIAGNOSTIC_FAILURE_NOT_ACCEPTED"
+    },
+    {
+      "attempt": "attempt-19-exact-band-entry-plus-exit-jump",
+      "suiteHash": "143d09532b9c2b24",
+      "statuses": [
+        "PASS",
+        "PASS",
+        "PASS"
+      ],
+      "issueCount": 0,
+      "teleportMs": 3950,
+      "constituents": [
+        {
+          "linkId": "ink_mid_w_teleport_entry",
+          "movementMode": "run",
+          "ticks": 40
+        },
+        {
+          "linkId": "teleport_shortcut",
+          "movementMode": "teleport",
+          "ticks": 6
+        },
+        {
+          "linkId": "teleport_exit_press_core",
+          "movementMode": "jump",
+          "ticks": 35
+        }
+      ],
+      "completed": true,
+      "overlaps": 0,
+      "embeds": 0,
+      "snags": 0,
+      "recovery": 0,
+      "kill": 0,
+      "issues": [],
+      "resultPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/failures/attempt-19-exact-band-entry-plus-exit-jump/authority-playtest-result.json",
+      "classification": "CORRECTED_ZERO_ISSUE_RESULT"
+    }
+  ],
+  "nonClaims": [
+    "FAILED_PROBES_NOT_RELABELLED_PASSING",
+    "METRIC_BAND_UNCHANGED",
+    "GEOMETRY_AND_MOVEMENT_PROFILE_UNCHANGED",
+    "P6_7_NOT_CLAIMED",
+    "G5_NOT_PASSED"
+  ]
+}

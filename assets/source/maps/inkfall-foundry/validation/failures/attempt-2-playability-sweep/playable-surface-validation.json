@@ -1,0 +1,1017 @@
+{
+  "artifacts": {
+    "artifactValidation": "validation/graybox-artifact-validation.json",
+    "buildReport": "validation/graybox-build-report.json",
+    "collisionGlb": {
+      "bytes": 626136,
+      "path": "export/collision.authority.glb",
+      "sha256": "4ee03cd90ff817f52a6f27d5df010fe49fce980249d53eb8267b029c639b3c84"
+    },
+    "renderGlb": {
+      "bytes": 625100,
+      "path": "export/render.graybox.glb",
+      "sha256": "32378f048015a4a44cca764bc8ffda4cd703c69b1e3f1ec407038cd2cff2362b"
+    },
+    "sourceBlend": {
+      "bytes": 537217,
+      "path": "source/inkfall_foundry.blend",
+      "sha256": "73f81ae1693facf1aa3b3e5fcbd8d56af615dbd76e34ed21da73237adb594499"
+    }
+  },
+  "assertionSummary": {
+    "failed": 3,
+    "passed": 10,
+    "total": 13
+  },
+  "assertions": [
+    {
+      "actual": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "id": "approved_seed_unchanged",
+      "passed": true
+    },
+    {
+      "actual": 2,
+      "id": "generator_v2_playability_candidate",
+      "passed": true
+    },
+    {
+      "id": "artifact_validator_passed",
+      "passed": true,
+      "report": "validation/graybox-artifact-validation.json"
+    },
+    {
+      "collisionSha256": "4ee03cd90ff817f52a6f27d5df010fe49fce980249d53eb8267b029c639b3c84",
+      "id": "render_and_collision_packages_distinct",
+      "passed": true,
+      "renderSha256": "32378f048015a4a44cca764bc8ffda4cd703c69b1e3f1ec407038cd2cff2362b"
+    },
+    {
+      "failures": [],
+      "id": "all_collision_seed_bounded",
+      "passed": true
+    },
+    {
+      "actualLinks": 25,
+      "expectedLinks": 25,
+      "failedLinks": [
+        "west_spawn_choice",
+        "east_choice_spawn",
+        "west_choice_press",
+        "press_west_core",
+        "press_core_east",
+        "press_east_choice",
+        "west_choice_ink",
+        "ink_mid_w_mid_e",
+        "ink_mid_e_east",
+        "ink_east_choice",
+        "west_choice_archive",
+        "archive_mid_w_mid_e",
+        "press_west_ink",
+        "press_east_ink",
+        "press_east_archive",
+        "ink_mid_w_teleport_entry",
+        "teleport_exit_press_core",
+        "archive_mid_w_drop",
+        "press_north_core"
+      ],
+      "id": "every_physical_seed_link_capsule_sweep_passed",
+      "passed": false
+    },
+    {
+      "id": "capsule_sweep_sample_density",
+      "passed": true,
+      "sampleSpacingMm": 250,
+      "totalSamples": 1247
+    },
+    {
+      "crouchedHits": [
+        "C_GUARD_RAIL__INK_MID_W_MID_E__S00__RIGHT"
+      ],
+      "id": "slide_gate_capsule_contract",
+      "measuredClearHeightMm": 1350.000024,
+      "measuredClearWidthMm": 1400.392605,
+      "passed": false,
+      "standingHits": [
+        "C_GUARD_RAIL__INK_MID_W_MID_E__S00__RIGHT",
+        "C_MODULE__INK_SLIDE_GATE_ROOF"
+      ]
+    },
+    {
+      "failedSpawns": [],
+      "id": "all_spawn_candidates_supported_clear_and_seed_bounded",
+      "passed": true
+    },
+    {
+      "boundaryMarkers": 8,
+      "id": "teleport_boundary_nonphysical_and_legible",
+      "passed": true,
+      "physicalConnectors": []
+    },
+    {
+      "id": "paper_drop_intentional_fall_not_accidental_ramp",
+      "passed": true,
+      "physicalDropConnectors": [],
+      "shoulderGuards": 2
+    },
+    {
+      "failedFeatures": [
+        "press_gap_west"
+      ],
+      "id": "explicit_jump_gap_geometry_valid",
+      "passed": false
+    },
+    {
+      "frameIds": [
+        "EAST_ARCHIVE_ENTRY",
+        "EAST_INK_ENTRY",
+        "EAST_SPAWN_MAIN",
+        "WEST_ARCHIVE_ENTRY",
+        "WEST_INK_ENTRY",
+        "WEST_SPAWN_MAIN"
+      ],
+      "id": "six_authored_transition_frames",
+      "parts": 18,
+      "passed": true
+    }
+  ],
+  "capsule": {
+    "contactSkinMm": 20,
+    "crouchedHeightMm": 1100,
+    "method": "dense upright capsule medial-axis spheres against oriented boxes",
+    "radiusMm": 350,
+    "sampleSpacingMm": 250,
+    "standingHeightMm": 1800,
+    "totalCompletedSamples": 1247
+  },
+  "edgeClassification": {
+    "futureTriggerVolumes": "P6.3_NOT_CLAIMED",
+    "guardedRouteRailObjects": 118,
+    "intentionalDropSeams": 1,
+    "intentionalJumpGaps": 2,
+    "killBoundaryGuardObjects": 4,
+    "nonphysicalTeleportConnectors": 1
+  },
+  "interpretation": "PASS proves the saved P6.2 Blender graybox and separate collider export are seed-identical, seed-bounded, capsule-continuous across all 25 physical links, clear at all 12 spawn candidates, and explicit about guarded versus intentional fall edges. It does not prove runtime loading, engine collision, spawn LOS/scoring, telemetry, 2/4/8-player fun/readability, performance, or G5.",
+  "jumpGaps": [
+    {
+      "actualGapMm": 4200.658706,
+      "bridgeObjects": [
+        "C_NODE__PRESS_NORTH",
+        "C_ROUTE__PRESS_WEST_CORE__S01",
+        "C_WAYPOINT__PRESS_WEST_CORE__W01"
+      ],
+      "edgePolicy": "intentional_jump_gap",
+      "featureId": "press_gap_west",
+      "maximumBallisticHorizontalDistanceMm": 8000,
+      "passed": false,
+      "sideGuards": 4,
+      "targetGapMm": 4200
+    },
+    {
+      "actualGapMm": 5200.423333,
+      "bridgeObjects": [],
+      "edgePolicy": "intentional_jump_gap",
+      "featureId": "archive_gap_east",
+      "maximumBallisticHorizontalDistanceMm": 8000,
+      "passed": true,
+      "sideGuards": 4,
+      "targetGapMm": 5200
+    }
+  ],
+  "physicalLinkSweeps": [
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__WEST_CHOICE_ARCHIVE__S00__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 14,
+          "segment": 1,
+          "t": 0.608696
+        }
+      ],
+      "family": "spawn",
+      "linkId": "west_spawn_choice",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 38,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 39
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__INK_EAST_CHOICE__S02__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 7,
+          "segment": 0,
+          "t": 0.304348
+        }
+      ],
+      "family": "spawn",
+      "linkId": "east_choice_spawn",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 31,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 32
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_WEST_INK__S00__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 10,
+          "segment": 1,
+          "t": 0.454545
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "west_choice_press",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 29,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 30
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__PRESS_GAP_WEST__TAKEOFF__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 4,
+          "segment": 1,
+          "t": 0.114286
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "press_west_core",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 48,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 49
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_EAST_ARCHIVE__S00__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 25,
+          "segment": 2,
+          "t": 0.757576
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "press_core_east",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 81,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 82
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_EAST_ARCHIVE__S00__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 7,
+          "segment": 0,
+          "t": 0.318182
+        }
+      ],
+      "family": "press_hall",
+      "linkId": "press_east_choice",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 26,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 27
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_WEST_INK__S02__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 17,
+          "segment": 2,
+          "t": 0.708333
+        }
+      ],
+      "family": "ink_channel",
+      "linkId": "west_choice_ink",
+      "maximumSlopeDegrees": 11.309932,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 71,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 72
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "ink_channel",
+      "linkId": "ink_west_mid_w",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "passed": true,
+      "samplesCompleted": 64,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 64
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__INK_SLIDE_GATE_ROOF"
+          ],
+          "posture": "standing",
+          "sample": 1,
+          "segment": 0,
+          "t": 0.025
+        }
+      ],
+      "family": "ink_channel",
+      "linkId": "ink_mid_w_mid_e",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 35,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 36
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__HALF_COVER_INK_E"
+          ],
+          "posture": "standing",
+          "sample": 17,
+          "segment": 0,
+          "t": 0.515152
+        }
+      ],
+      "family": "ink_channel",
+      "linkId": "ink_mid_e_east",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "passed": false,
+      "samplesCompleted": 49,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 50
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_EAST_INK__S02__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 6,
+          "segment": 0,
+          "t": 0.25
+        },
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__EAST_CHOICE_SPAWN__S00__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 22,
+          "segment": 2,
+          "t": 0.709677
+        }
+      ],
+      "family": "ink_channel",
+      "linkId": "ink_east_choice",
+      "maximumSlopeDegrees": 11.309932,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 50,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 52
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__WEST_SPAWN_CHOICE__S01__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 7,
+          "segment": 0,
+          "t": 0.21875
+        }
+      ],
+      "family": "archive_walk",
+      "linkId": "west_choice_archive",
+      "maximumSlopeDegrees": 21.416714,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 58,
+      "segments": 3,
+      "stairSegments": [
+        {
+          "maximumAllowedRiseMm": 250.0,
+          "minimumAllowedRunMm": 500.0,
+          "passed": true,
+          "riseMm": 250.0,
+          "runMm": 637.377439,
+          "segment": 1,
+          "steps": 8
+        }
+      ],
+      "standingSamples": 59
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "archive_west_mid_w",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 64,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 64
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__ARCHIVE_MID_W_DROP__S00__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 5,
+          "segment": 0,
+          "t": 0.125
+        },
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__ARCHIVE_GAP_EAST__LANDING__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 19,
+          "segment": 1,
+          "t": 0.575758
+        }
+      ],
+      "family": "archive_walk",
+      "linkId": "archive_mid_w_mid_e",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 24,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 26
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "archive_mid_e_east",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 70,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 70
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "archive_walk",
+      "linkId": "archive_east_choice",
+      "maximumSlopeDegrees": 21.416714,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 84,
+      "segments": 3,
+      "stairSegments": [
+        {
+          "maximumAllowedRiseMm": 250.0,
+          "minimumAllowedRunMm": 500.0,
+          "passed": true,
+          "riseMm": 250.0,
+          "runMm": 637.377439,
+          "segment": 1,
+          "steps": 8
+        }
+      ],
+      "standingSamples": 84
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__WEST_CHOICE_PRESS__S01__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 11,
+          "segment": 0,
+          "t": 0.366667
+        },
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__WEST_CHOICE_INK__S02__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 20,
+          "segment": 2,
+          "t": 0.714286
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "press_west_ink",
+      "maximumSlopeDegrees": 8.478713,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 60,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 62
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__INK_EAST_CHOICE__S00__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 17,
+          "segment": 2,
+          "t": 0.708333
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "press_east_ink",
+      "maximumSlopeDegrees": 10.519735,
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "passed": false,
+      "samplesCompleted": 65,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 66
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "crosslink",
+      "linkId": "press_west_archive",
+      "maximumSlopeDegrees": 20.374527,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 76,
+      "segments": 3,
+      "stairSegments": [
+        {
+          "maximumAllowedRiseMm": 250.0,
+          "minimumAllowedRunMm": 500.0,
+          "passed": true,
+          "riseMm": 250.0,
+          "runMm": 673.145601,
+          "segment": 0,
+          "steps": 8
+        }
+      ],
+      "standingSamples": 76
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_GUARD_RAIL__PRESS_CORE_EAST__S02__RIGHT"
+          ],
+          "posture": "standing",
+          "sample": 8,
+          "segment": 0,
+          "t": 0.258065
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "press_east_archive",
+      "maximumSlopeDegrees": 16.60155,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 66,
+      "segments": 3,
+      "stairSegments": [],
+      "standingSamples": 67
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__INK_SLIDE_GATE_ROOF"
+          ],
+          "posture": "standing",
+          "sample": 1,
+          "segment": 0,
+          "t": 0.041667
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "ink_mid_w_teleport_entry",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "passed": false,
+      "samplesCompleted": 23,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 24
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__PRESS_REACTOR_SOUTH"
+          ],
+          "posture": "standing",
+          "sample": 0,
+          "segment": 0,
+          "t": 0.0
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "teleport_exit_press_core",
+      "maximumSlopeDegrees": 15.50136,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 16,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 17
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_JUMP_GUARD__ARCHIVE_GAP_EAST__TAKEOFF__LEFT"
+          ],
+          "posture": "standing",
+          "sample": 5,
+          "segment": 0,
+          "t": 0.227273
+        }
+      ],
+      "family": "drop",
+      "linkId": "archive_mid_w_drop",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 27,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 28
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [
+        {
+          "kind": "capsule_obstruction",
+          "objects": [
+            "C_MODULE__PRESS_REACTOR_NORTH"
+          ],
+          "posture": "standing",
+          "sample": 9,
+          "segment": 0,
+          "t": 0.333333
+        }
+      ],
+      "family": "crosslink",
+      "linkId": "press_north_core",
+      "maximumSlopeDegrees": 0.0,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": false,
+      "samplesCompleted": 9,
+      "segments": 1,
+      "stairSegments": [],
+      "standingSamples": 10
+    },
+    {
+      "crouchedSamples": 0,
+      "edgePolicy": "guarded_except_junction_aprons",
+      "failures": [],
+      "family": "crosslink",
+      "linkId": "press_core_archive_mid_e",
+      "maximumSlopeDegrees": 19.68573,
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "passed": true,
+      "samplesCompleted": 83,
+      "segments": 2,
+      "stairSegments": [],
+      "standingSamples": 83
+    }
+  ],
+  "result": "FAIL",
+  "schemaVersion": 1,
+  "scope": {
+    "g5Passed": false,
+    "g6Passed": false,
+    "phase": "P6.2",
+    "playtestRun": false,
+    "runtimeIntegrated": false,
+    "runtimeTraversalProven": false,
+    "status": "PLAYABLE_GRAYBOX_CANDIDATE_FAILED_VALIDATION"
+  },
+  "seed": {
+    "bytes": 52549,
+    "links": 27,
+    "nodes": 19,
+    "path": "inkfall-foundry.layout-seed.v1.json",
+    "physicalLinks": 25,
+    "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "spawnCandidates": 12
+  },
+  "spawnSweeps": [
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_PRESS_A",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_press_a"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_PRESS_B",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_press_b"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_INK",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_ink"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_W_ARCHIVE",
+      "passed": true,
+      "set": "west_team",
+      "spawnId": "spawn_w_archive"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_PRESS_A",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_press_a"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_PRESS_B",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_press_b"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_INK",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_ink"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_E_ARCHIVE",
+      "passed": true,
+      "set": "east_team",
+      "spawnId": "spawn_e_archive"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_INK_W",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_ink_w"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_INK_E",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_ink_e"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_ARCHIVE_W",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_archive_w"
+    },
+    {
+      "capsuleFootprintSupported": true,
+      "inBoundsWithCapsule": true,
+      "obstructions": [],
+      "pad": "C_SPAWN_PAD__SPAWN_DM_ARCHIVE_E",
+      "passed": true,
+      "set": "deathmatch_candidate",
+      "spawnId": "spawn_dm_archive_e"
+    }
+  ],
+  "validator": {
+    "blenderVersion": "5.1.2",
+    "independentOfBuilderImports": true,
+    "script": "validate_inkfall_playability.py",
+    "scriptSha256": "b126659f203deb85df74ec606f4110c82f6e6c900be60af16ba408fd65aad330"
+  }
+}

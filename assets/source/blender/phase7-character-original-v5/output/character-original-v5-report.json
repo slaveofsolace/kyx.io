@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_vanguard_original_v5",
+  "status": "HUMAN_VISUAL_REVIEW_REQUIRED_NOT_G6",
+  "releaseEligible": false,
+  "runtimeIntegrationAllowed": false,
+  "humanApproved": false,
+  "originality": {
+    "sourceType": "clean_room_project_original_blender_python_build",
+    "importsThirdPartyGeometry": false,
+    "derivesFromLegacySoldier": false,
+    "explicitlyForbiddenSource": "public/soldier.glb",
+    "conceptReference": "assets/source/characters/kyx-vanguard/concept/kyx-vanguard-model-sheet-v1.png",
+    "conceptSha256": "067a3eba77f9c9e566fe7aeba9684346bfd9fcd162de8ead14194640c0fb76c3",
+    "script": "evio-repo/assets/source/blender/phase7-character-original-v5/build_character_original_v5.py",
+    "note": "Broad tactical garment and industrial design principles only; no named artist or franchise source geometry."
+  },
+  "intent": {
+    "visualCorrections": [
+      "one voxel-fused continuous adult-proportion undersuit instead of tube limbs",
+      "limited constructed ceramic shells over cloth instead of pasted plate clutter",
+      "multi-part crown visor cheek chin and gasket helmet instead of an egg primitive",
+      "profiled boot upper outsole heel counter toe cap and retention instead of blocks",
+      "separate palm thumb knuckles and articulated digits with literal grip contact",
+      "one shared authored rifle design frame with open stock unified receiver curved magazine vents barrel optic and muzzle"
+    ],
+    "asymmetry": "larger left pauldron with oxide identity ribbon and compact forearm device",
+    "paletteMasses": [
+      "charcoal technical cloth",
+      "paper ceramic",
+      "gunmetal",
+      "oxide identity",
+      "teal system light"
+    ]
+  },
+  "blenderVersion": "5.1.2",
+  "scene": {
+    "forwardAxis": "-Y",
+    "upAxis": "+Z",
+    "units": "meters",
+    "frames": [
+      1,
+      32
+    ],
+    "fps": 24,
+    "renderSize": [
+      1080,
+      1080
+    ]
+  },
+  "source": {
+    "meshObjects": 79,
+    "curveObjects": 25,
+    "vertices": 42532,
+    "polygons": 42659,
+    "triangles": 84696,
+    "armatures": 1,
+    "bones": 22,
+    "materials": 9,
+    "continuousBodyVertices": 23250,
+    "weightCounts": {
+      "pelvis": 2949,
+      "spine": 2061,
+      "chest": 1161,
+      "neck": 934,
+      "head": 728,
+      "thigh.L": 1783,
+      "shin.L": 1995,
+      "upper_arm.L": 2373,
+      "forearm.L": 1536,
+      "thigh.R": 1754,
+      "shin.R": 1999,
+      "upper_arm.R": 2202,
+      "forearm.R": 1775
+    },
+    "gearObjectCounts": {
+      "torso": 4,
+      "limbs": 10,
+      "helmet": 9,
+      "boots": 14,
+      "details": 13
+    },
+    "rifleObjects": 30,
+    "handObjects": 23,
+    "action": "KYX_V5_CombatIdle_ContactLocked"
+  },
+  "contact": {
+    "weaponAnchors": {
+      "stockShoulderPoint": [
+        -0.231815,
+        -0.229497,
+        1.446535
+      ],
+      "triggerGripCenter": [
+        0.035109,
+        -0.44222,
+        1.207266
+      ],
+      "triggerPoint": [
+        0.107965,
+        -0.446423,
+        1.260411
+      ],
+      "supportHandguardCenter": [
+        0.299314,
+        -0.580193,
+        1.219899
+      ],
+      "rifleAxis": [
+        0.869697,
+        -0.454175,
+        -0.193266
+      ],
+      "rifleObjectCount": 30,
+      "construction": "single_common_design_frame_with_literal_open_stock_curved_receiver_grip_magazine_vents_barrel_and_muzzle"
+    },
+    "hands": {
+      "literalContactCount": 10,
+      "contacts": [
+        {
+          "hand": "R",
+          "digit": 2,
+          "surface": "pistol_grip",
+          "endpoint": [
+            0.106567,
+            -0.3498,
+            1.218504
+          ]
+        },
+        {
+          "hand": "R",
+          "digit": 3,
+          "surface": "pistol_grip",
+          "endpoint": [
+            0.100572,
+            -0.346669,
+            1.184164
+          ]
+        },
+        {
+          "hand": "R",
+          "digit": 4,
+          "surface": "pistol_grip",
+          "endpoint": [
+            0.09509,
+            -0.343806,
+            1.152767
+          ]
+        },
+        {
+          "hand": "R",
+          "digit": 1,
+          "surface": "trigger",
+          "endpoint": [
+            0.118444,
+            -0.432716,
+            1.259831
+          ]
+        },
+        {
+          "hand": "R",
+          "digit": "thumb",
+          "surface": "pistol_grip",
+          "endpoint": [
+            0.068503,
+            -0.335563,
+            1.262121
+          ]
+        },
+        {
+          "hand": "L",
+          "digit": 1,
+          "surface": "handguard",
+          "endpoint": [
+            0.305884,
+            -0.438094,
+            1.267381
+          ]
+        },
+        {
+          "hand": "L",
+          "digit": 2,
+          "surface": "handguard",
+          "endpoint": [
+            0.342412,
+            -0.457169,
+            1.259264
+          ]
+        },
+        {
+          "hand": "L",
+          "digit": 3,
+          "surface": "handguard",
+          "endpoint": [
+            0.378939,
+            -0.476244,
+            1.251147
+          ]
+        },
+        {
+          "hand": "L",
+          "digit": 4,
+          "surface": "handguard",
+          "endpoint": [
+            0.415466,
+            -0.49532,
+            1.24303
+          ]
+        },
+        {
+          "hand": "L",
+          "digit": "thumb",
+          "surface": "handguard",
+          "endpoint": [
+            0.366778,
+            -0.530814,
+            1.329832
+          ]
+        }
+      ],
+      "rightTriggerFingerOccupiesGuard": true,
+      "rightPalmOverlapsGrip": true,
+      "leftPalmOverlapsHandguard": true,
+      "supportFingerCount": 4,
+      "triggerWrappedFingerCount": 3,
+      "thumbsOpposed": true,
+      "note": "Authored geometry endpoints are embedded on the modeled trigger, grip, and handguard surfaces; renders remain visual authority."
+    }
+  },
+  "glb": {
+    "version": 2,
+    "declaredBytes": 2257792,
+    "generator": "Khronos glTF Blender I/O v5.1.20",
+    "nodes": 126,
+    "meshes": 104,
+    "primitives": 104,
+    "materials": 9,
+    "skins": 1,
+    "animations": 1,
+    "animationNames": [
+      "KYX_V5_CombatIdle_ContactLocked"
+    ],
+    "animationChannels": 63,
+    "requiredExtensions": [],
+    "path": "output/kyx_vanguard_original_v5.glb",
+    "bytes": 2257792,
+    "sha256": "4da3ffa76b6e6a1bac7eee791a5bdda48648ff3daed428d79f1ca7c8890119f7",
+    "exportSeconds": 0.925481
+  },
+  "renders": {
+    "paths": [
+      "output/renders/kyx-vanguard-v5-hero-close-color.png",
+      "output/renders/kyx-vanguard-v5-three-quarter-color.png",
+      "output/renders/kyx-vanguard-v5-front-ortho-color.png",
+      "output/renders/kyx-vanguard-v5-side-ortho-color.png",
+      "output/renders/kyx-vanguard-v5-back-ortho-color.png",
+      "output/renders/kyx-vanguard-v5-weapon-contact-color.png",
+      "output/renders/kyx-vanguard-v5-trigger-contact-color.png",
+      "output/renders/kyx-vanguard-v5-hero-close-grayscale.png",
+      "output/renders/kyx-vanguard-v5-front-ortho-grayscale.png"
+    ],
+    "timingsSeconds": {
+      "hero-close-color": 1.521167,
+      "three-quarter-color": 0.627336,
+      "front-ortho-color": 0.629782,
+      "side-ortho-color": 0.416421,
+      "back-ortho-color": 0.406046,
+      "weapon-contact-color": 0.626971,
+      "trigger-contact-color": 0.624332,
+      "hero-close-grayscale": 0.629315,
+      "front-ortho-grayscale": 0.629286
+    },
+    "totalSeconds": 6.110656
+  },
+  "verification": {
+    "status": "PASS",
+    "checks": {
+      "glbHeaderValid": true,
+      "glbContainsMeshes": true,
+      "glbContainsSkin": true,
+      "glbContainsAnimation": true,
+      "glbContainsRequiredNamedForms": true,
+      "continuousBodySingleMesh": true,
+      "originalSourceMetadata": true,
+      "twoHandContactGeometryAuthored": true,
+      "reviewRendersPresent": true,
+      "conceptDigestPinned": true
+    },
+    "scope": "source and export structure plus authored contact geometry only; never human visual approval, runtime integration, deformation approval, LOD approval, or G6"
+  },
+  "knownOpenRequirements": [
+    "human visual decision against close front side back grayscale and contact renders",
+    "deformation review through full benchmark locomotion and combat clip matrix",
+    "authored UV texture sets and final texel-density review",
+    "LOD0 LOD1 LOD2 generation plus measured 2 4 8 player runtime performance",
+    "first-person arms and canonical runtime skeleton integration",
+    "runtime material outline contact shadow and clipping review"
+  ],
+  "manifest": [
+    {
+      "path": "output/kyx_vanguard_original_v5.glb",
+      "bytes": 2257792,
+      "sha256": "4da3ffa76b6e6a1bac7eee791a5bdda48648ff3daed428d79f1ca7c8890119f7"
+    },
+    {
+      "path": "output/kyx_vanguard_original_v5.blend",
+      "bytes": 1261942,
+      "sha256": "2f07a82fbf772123a1c7df7d55e75836f70e0c90362fc8977f3d930d9adcae38"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-hero-close-color.png",
+      "bytes": 1278346,
+      "sha256": "96cc87c1cac7619c1be06a74f874b4ad4800151a7b504c8088a84efbcf8e6cd3"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-three-quarter-color.png",
+      "bytes": 1227323,
+      "sha256": "72549648be165f84bc8b5066c4d10e7590478e1280f3147c3a6ddc1fbf3c1cc6"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-front-ortho-color.png",
+      "bytes": 1189313,
+      "sha256": "80086c8cc32e11c6c8c89c314b45cb178c3b5c13fa3b7ff43c2f59042d6667a7"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-side-ortho-color.png",
+      "bytes": 1064423,
+      "sha256": "4841241cbe31cf344905edf7517cf79ae73a702ccb2ebd90850d1ffa2f1d5142"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-back-ortho-color.png",
+      "bytes": 1107303,
+      "sha256": "dfc5da25b4958dadb513ed82bf79c7a0cb4f3a0f6a6a4ca2503740a01270002b"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-weapon-contact-color.png",
+      "bytes": 1299925,
+      "sha256": "f169fff1f8e19a220a57bf62de98893b33148e4ab837909164b5c15e5ebc2f85"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-trigger-contact-color.png",
+      "bytes": 1260593,
+      "sha256": "5aa1ef030616648f8abe1a1a441ea64392725df6c7d88393f6bee00b9c5bc293"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-hero-close-grayscale.png",
+      "bytes": 1269725,
+      "sha256": "a9ee30efd8865068c0cdccfd332b62564d5e0c719a2e56cee54a167055c8511e"
+    },
+    {
+      "path": "output/renders/kyx-vanguard-v5-front-ortho-grayscale.png",
+      "bytes": 1183009,
+      "sha256": "cd3cbba341e22610791191c4281b8a733aec4cd981efce109c0dfecb2401a17c"
+    }
+  ]
+}

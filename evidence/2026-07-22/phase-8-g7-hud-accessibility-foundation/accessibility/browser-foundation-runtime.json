@@ -1,0 +1,45 @@
+{
+  "capturedAt": "2026-07-22T10:38:52.857Z",
+  "url": "http://127.0.0.1:5173/",
+  "browserVersion": "150.0.7871.129",
+  "appliedBeforeReload": {
+    "dataset": {
+      "highContrast": "true",
+      "reducedMotion": "true",
+      "reducedFlash": "true",
+      "crosshairColor": "amber"
+    },
+    "hudScale": "1.25",
+    "crosshairScale": "1.5",
+    "crosshairColor": "#ffd166",
+    "status": "SETTINGS SAVED ON THIS DEVICE",
+    "activeStates": [
+      "NORMAL",
+      "MEDIUM",
+      "AMBER",
+      "HIGH",
+      "REDUCED",
+      "REDUCED"
+    ]
+  },
+  "persistedAfterReload": {
+    "hudScale": "125",
+    "crosshairScale": "150",
+    "crosshairColor": "amber",
+    "highContrast": "on",
+    "reducedMotion": "on",
+    "reducedFlash": "on"
+  },
+  "pointerLock": {
+    "acquiredInHeadlessChrome": true,
+    "lossTrigger": "document.exitPointerLock()",
+    "escapeKeyManualAcceptance": "OPEN",
+    "focusInitial": "resume-btn",
+    "focusAfterShiftTab": "quit-btn",
+    "focusAfterTab": "resume-btn",
+    "denialStatus": null
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "failedRequests": []
+}

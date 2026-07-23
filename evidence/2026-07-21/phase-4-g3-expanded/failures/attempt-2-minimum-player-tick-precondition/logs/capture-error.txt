@@ -1,0 +1,7 @@
+page.evaluate: Error: Timed out waiting for input-independent tick advance: welcome,joinAccepted,fullSnapshot
+    at waitFor (eval at evaluate (:303:30), <anonymous>:28:15)
+    at async eval (eval at evaluate (:303:30), <anonymous>:55:32)
+    at async <anonymous>:329:30
+    at captureLifecycle (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-expanded.mjs:686:31)
+    at async main (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-expanded.mjs:1440:23)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:1587:1

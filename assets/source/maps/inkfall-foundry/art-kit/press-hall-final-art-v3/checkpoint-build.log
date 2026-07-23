@@ -1,0 +1,14 @@
+00:01.344  blend            | Read blend: "C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v1\source\inkfall_foundry_press_hall_final_art_v1.blend"
+C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\build_press_hall_hero_checkpoint_v3.py:144: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\build_press_hall_hero_checkpoint_v3.py:503: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  scene.world.use_nodes = True
+00:06.719  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\checkpoint\renders\inkfall-press-hall-v3-gameplay_eye.png'
+00:07.078  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\checkpoint\renders\inkfall-press-hall-v3-hero_close.png'
+00:07.437  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\maps\inkfall-foundry\art-kit\press-hall-final-art-v3\checkpoint\renders\inkfall-press-hall-v3-overhead_context.png'
+Info: Saved as "inkfall_foundry_press_hall_hero_checkpoint_v3.blend"
+Info: Saved as "inkfall_foundry_press_hall_hero_checkpoint_v3.blend"
+G5_PRESS_HALL_V3_CHECKPOINT={"board": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\art-kit\\press-hall-final-art-v3\\checkpoint\\boards\\inkfall-press-hall-v3-hero-checkpoint-board.png", "report": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\art-kit\\press-hall-final-art-v3\\checkpoint\\validation\\press-hall-v3-hero-checkpoint-build-report.json", "status": "PRESS_HALL_V3_HERO_CHECKPOINT_BUILD_PASS"}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:37:34)
+
+Blender quit

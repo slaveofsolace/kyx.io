@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T11:15:43.084Z",
+  "status": "G7_NOT_CLAIMED_SOURCE_FREEZE",
+  "sourceCommit": "81aa1d02acce8e30ba411bb895901d2d2ac6694e",
+  "note": "Shared dirty-worktree snapshot before the parent preload optimization; rerun verification after integration changes.",
+  "files": {
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/README.md": {
+      "sha256": "e0b97806acac755b177150612183d518133bf1edbaf703efdae3d88ac1def9e5",
+      "bytes": 5364
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/accessibility/browser-caption-audio-runtime.json": {
+      "sha256": "bc1ad5c9b4c4ded4c6d4385cf8991f7f7db79924a2ed3803d2c28d44556245b8",
+      "bytes": 1841
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/accessibility/browser-combat-hud-runtime.json": {
+      "sha256": "5a23c0f1533d63ca49faa63e7f648b1efa251580d80f2d0e76d64b33e5a879a5",
+      "bytes": 2352
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/accessibility/browser-foundation-runtime.json": {
+      "sha256": "231e9011c1f1009b5260ea1d2144bc2da7b1513a8725ffc88354285837398417",
+      "bytes": 1099
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/accessibility/phase8-static-observational.json": {
+      "sha256": "8cbfda57ebde61f7463dc61feae7eef3c092179432bdac545a200fd64230ae24",
+      "bytes": 12889
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/accessibility/phase8-static-strict-exit.json": {
+      "sha256": "0195e3730c620d8f28a650fd176790d007a637142cd3ae08d259fe9f772e268f",
+      "bytes": 134
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/accessibility/phase8-static-strict-expected-fail.json": {
+      "sha256": "7a46e5af2e09d2679cdd4341c3f62f5fa3357d9e9bdf2abaa8887eeb9bc8d4ab",
+      "bytes": 12839
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/known-issues.md": {
+      "sha256": "5514190dbc04a48a2216f95fd3a9259990d180331f154f996ead6565c35bed59",
+      "bytes": 2300
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/screenshots/ability-rack-state-fixture.png": {
+      "sha256": "615603ac4e9dc883e5d5b1a6612fee72982ae6c3425d740f353f6ed0ca1f7503",
+      "bytes": 5470
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/screenshots/caption-critical-audio-cue-1280x720.png": {
+      "sha256": "65f5ecb1be829b5adc26168ab7ece62b38893f8d509f0b9c0e47b92cd8d41012",
+      "bytes": 291718
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/screenshots/combat-hud-hierarchy-1280x720.png": {
+      "sha256": "d0ae24369e6b1f219098cd429872201a6cd6369a0662104cda90b3132f652c82",
+      "bytes": 359493
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/screenshots/pause-keyboard-recovery-1280x720.png": {
+      "sha256": "c1e8db6c2500f0a5718b7a88e00b41c1bad9b4d24169aba2abfa7ec73b6d2e31",
+      "bytes": 192748
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/screenshots/settings-caption-audio-1440x900.png": {
+      "sha256": "04a4c637ffcfb3fc8e6be5ce497378f95a90850a8e18285f47245a503ee7e6d5",
+      "bytes": 338289
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/screenshots/settings-high-contrast-1440x900.png": {
+      "sha256": "bbbd99efda93658b6625959beabf5e21ebf93cb2c58dda4b769d67212a5474e8",
+      "bytes": 370851
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/test-results/adjacent-input-vitest.txt": {
+      "sha256": "062c543873430ff4af4a934db6d85e01b00912fbc4cfc5a0fa980581fcd989a3",
+      "bytes": 1463
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/test-results/build.txt": {
+      "sha256": "ac475bfa189648efc87b05ed4d90182d4bdab7e4bb22b2f173f0493b62c81078",
+      "bytes": 1956
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/test-results/focused-vitest.txt": {
+      "sha256": "195ed31d4fed381002facdd9008da4199121ba8dd4ef95f3f19b3d9ac0bcd4f2",
+      "bytes": 941
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/test-results/full-vitest.txt": {
+      "sha256": "5069c155a8f471e8901a932c4fe8383952236921b23d60cc423b4a231b854c5d",
+      "bytes": 7484
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/test-results/lint.txt": {
+      "sha256": "6f7b1c59bce29ae7b8a51834b5f28152f2c416b98cfdbb605168de40f38472d0",
+      "bytes": 179
+    },
+    "evidence/2026-07-22/phase-8-g7-hud-accessibility-foundation/test-results/typecheck.txt": {
+      "sha256": "a19281085de764e961b6500c2214dea78b93507bb01b43fcb8941bf362cf9e4b",
+      "bytes": 96
+    },
+    "index.html": {
+      "sha256": "0606d00be679eff352d271e87ddf13fda23cf5e101ae07262906aaacc2e26fbf",
+      "bytes": 21277
+    },
+    "src/core/AudioManager.js": {
+      "sha256": "688bb1006aae3be274ea7a3251f79fd9994ef5f8fe9c065f59dde3824c363a35",
+      "bytes": 45163
+    },
+    "src/core/Game.js": {
+      "sha256": "62ff71787e3327ef9ed22d7770ddca911bfc6f54cf211e7439ddff2ce1abb50a",
+      "bytes": 53720
+    },
+    "src/core/GameSettings.js": {
+      "sha256": "aa3cd4e740df5ad1a4303091b79960594406e53f415c3f8941c6c59e3131b556",
+      "bytes": 3832
+    },
+    "src/core/InputManager.js": {
+      "sha256": "76f25ac300a67ca626410d20e5be52ccb6c5267e224da94192f82ad58e36f8c5",
+      "bytes": 6680
+    },
+    "src/entities/Bot.js": {
+      "sha256": "101d4e19e157c6e62568787aa34be0d304d4708e820c158caad471ed4f1550c8",
+      "bytes": 19422
+    },
+    "src/entities/Zombie.js": {
+      "sha256": "d0225ad86933f9dd7e267de3f6fba3dfa7261cd3b1c9c1f598b6b918fcc388f7",
+      "bytes": 46903
+    },
+    "src/player/Player.js": {
+      "sha256": "bda4061fd45f2883af1d96008fbe0dab13559d5a78a05c8564b1eb2ef15ea131",
+      "bytes": 17167
+    },
+    "src/style.css": {
+      "sha256": "93eb69967ec70c505395c8ceadb85f8f25c9f3c00eb4aacda93b6dd10601417c",
+      "bytes": 174913
+    },
+    "src/ui/AccessibilityPreferences.js": {
+      "sha256": "cd466dd061161b822740280c91a6a6df86190b00f74557587591889e757a2bce",
+      "bytes": 1303
+    },
+    "src/ui/CaptionCueOverlay.js": {
+      "sha256": "0daef34b4f01f7b968b7011eb59a1b83087096ff4ef3b83b34f5006e01b8fd41",
+      "bytes": 5760
+    },
+    "src/ui/DamageDirection.js": {
+      "sha256": "cad82794eb3edf7ef13fec0636597b04d566d357b6335dccc3920c1d869a6b1e",
+      "bytes": 1454
+    },
+    "src/ui/HUD.js": {
+      "sha256": "d8154085181ee70023a5b1c39fe9a7bf5f0c51d022623b9d58fa5168d2c35f95",
+      "bytes": 20485
+    },
+    "src/ui/KeyboardFocus.js": {
+      "sha256": "8673e372fcea3c51cef37b7ab11ea310f61806f2e24080ca1885476958163d88",
+      "bytes": 1328
+    },
+    "src/ui/MainMenu.js": {
+      "sha256": "688376aa96cfb75114a412d74f74ab665f4ca94a3eed67de77d5e0cf5804d370",
+      "bytes": 16773
+    },
+    "src/weapons/GrenadeSystem.js": {
+      "sha256": "5fa136e6a491c74b8d045e4ad9a6295b0b8af92d47b421ba421843c67c4866ec",
+      "bytes": 7639
+    },
+    "src/weapons/WeaponSystem.js": {
+      "sha256": "2c1c0c2922e8d9fa1cdde652bd0c5c18ee47ecd8befb505a251eff3a09b1013b",
+      "bytes": 43486
+    },
+    "tests/accessibility/PHASE8_AUDIT_MATRIX.md": {
+      "sha256": "01df1e9c5bb56cdb33b2f82a8dc3388ce0905187b04d76eabf7375a204b9275d",
+      "bytes": 12061
+    },
+    "tests/unit/app/settings/accessibilityPreferences.test.ts": {
+      "sha256": "e91bfad3dba1f3fc6feaad1d841938528a3083c7a96cb3b2d39665a1dca87617",
+      "bytes": 2133
+    },
+    "tests/unit/app/settings/audioAccessibilityCues.test.ts": {
+      "sha256": "d549ffb2ec2eaeffc1efea7bcbd65eac829c65cd89d092535411d705a983d937",
+      "bytes": 1881
+    },
+    "tests/unit/app/settings/captionCueOverlay.test.ts": {
+      "sha256": "0dc52b55bc4e9c75f4cb318a2d69c21ecfe198c1eab0b5f1ea3cdc9472521461",
+      "bytes": 3780
+    },
+    "tests/unit/app/settings/damageDirection.test.ts": {
+      "sha256": "8035b4117017295be47cd284008d8dc7aa82b31feb15a08faf0a019edaa86bb8",
+      "bytes": 906
+    },
+    "tests/unit/app/settings/gameSettings.test.ts": {
+      "sha256": "a0c611ad249ffe17162b51cd2ec6ef8bfd31b2d24e308d68c674d80eecf13284",
+      "bytes": 3071
+    },
+    "tests/unit/app/settings/hudEventSemantics.test.ts": {
+      "sha256": "559e2b2e7a2a5f47d10c745e49335a4622c2f52c1ee90c050aee0b8742ff544a",
+      "bytes": 3786
+    },
+    "tests/unit/app/settings/hudStateSemantics.test.ts": {
+      "sha256": "8c444db72f6c0cc1627805859246793329291e041a53450424547b220380d341",
+      "bytes": 2438
+    },
+    "tests/unit/app/settings/inputManagerAccessibility.test.ts": {
+      "sha256": "c932325fa9150909296c9cfbd55162c3018a9149d6f8ad87a23917d32e42bf14",
+      "bytes": 2622
+    },
+    "tests/unit/app/settings/keyboardFocus.test.ts": {
+      "sha256": "ce5233d9886a0e37b11d753a0e8a30ac6216bae011ae81f27c4b8936fb0b3f88",
+      "bytes": 1855
+    },
+    "tools/a11y/audit-phase8-static.mjs": {
+      "sha256": "1420c0af6c81b017a64d4b49172b145f2cfdba915a83c1d0711a1a7057df693e",
+      "bytes": 19132
+    }
+  }
+}

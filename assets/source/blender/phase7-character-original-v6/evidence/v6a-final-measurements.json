@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "measuredUtc": "2026-07-22T04:02:57.764385+00:00",
+  "label": "V6A_AUTHORED_CANDIDATE",
+  "blenderVersion": "5.1.2",
+  "autoexecFail": false,
+  "blend": {
+    "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "bytes": 12580228,
+    "sha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d"
+  },
+  "body": {
+    "name": "KYX_V6A_AnatomySculpt_Body",
+    "data": "KYX_V6A_AnatomySculpt_Body_Mesh",
+    "objectLocation": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "objectRotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "objectScale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "baseVertices": 10582,
+    "baseEdges": 21170,
+    "basePolygons": 10590,
+    "bounds": {
+      "min": [
+        -0.415344,
+        -0.169871,
+        0.0
+      ],
+      "max": [
+        0.415194,
+        0.10361,
+        1.775
+      ],
+      "height": 1.775,
+      "width": 0.830538,
+      "depth": 0.273481
+    },
+    "bandMeasurements": {
+      "foot": {
+        "zFraction": [
+          0.0,
+          0.085
+        ],
+        "vertexCount": 2402,
+        "widthP98": 0.535909,
+        "depthP98": 0.230082,
+        "medianAbsX": 0.2172,
+        "medianY": -0.048823
+      },
+      "lowerLeg": {
+        "zFraction": [
+          0.085,
+          0.31
+        ],
+        "vertexCount": 612,
+        "widthP98": 0.403329,
+        "depthP98": 0.133843,
+        "medianAbsX": 0.157095,
+        "medianY": 0.043818
+      },
+      "knee": {
+        "zFraction": [
+          0.27,
+          0.36
+        ],
+        "vertexCount": 165,
+        "widthP98": 0.362622,
+        "depthP98": 0.134902,
+        "medianAbsX": 0.131124,
+        "medianY": 0.012107
+      },
+      "thigh": {
+        "zFraction": [
+          0.36,
+          0.52
+        ],
+        "vertexCount": 1280,
+        "widthP98": 0.824655,
+        "depthP98": 0.226047,
+        "medianAbsX": 0.392258,
+        "medianY": -0.097085
+      },
+      "pelvis": {
+        "zFraction": [
+          0.48,
+          0.61
+        ],
+        "vertexCount": 1549,
+        "widthP98": 0.811795,
+        "depthP98": 0.244414,
+        "medianAbsX": 0.355185,
+        "medianY": -0.074488
+      },
+      "waist": {
+        "zFraction": [
+          0.57,
+          0.69
+        ],
+        "vertexCount": 822,
+        "widthP98": 0.713558,
+        "depthP98": 0.164362,
+        "medianAbsX": 0.278415,
+        "medianY": -0.021666
+      },
+      "chest": {
+        "zFraction": [
+          0.67,
+          0.82
+        ],
+        "vertexCount": 1006,
+        "widthP98": 0.582976,
+        "depthP98": 0.217878,
+        "medianAbsX": 0.158912,
+        "medianY": -0.022279
+      },
+      "shoulderNeck": {
+        "zFraction": [
+          0.79,
+          0.9
+        ],
+        "vertexCount": 975,
+        "widthP98": 0.430201,
+        "depthP98": 0.219614,
+        "medianAbsX": 0.045998,
+        "medianY": -0.053669
+      },
+      "head": {
+        "zFraction": [
+          0.88,
+          1.001
+        ],
+        "vertexCount": 3504,
+        "widthP98": 0.157133,
+        "depthP98": 0.181921,
+        "medianAbsX": 0.030565,
+        "medianY": -0.108083
+      }
+    },
+    "centralBodyMeasurements": {
+      "pelvisCore": {
+        "zFraction": [
+          0.49,
+          0.6
+        ],
+        "maxAbsXFilter": 0.235,
+        "vertexCount": 216,
+        "widthP98": 0.34033,
+        "depthP98": 0.207668
+      },
+      "waistCore": {
+        "zFraction": [
+          0.58,
+          0.69
+        ],
+        "maxAbsXFilter": 0.215,
+        "vertexCount": 255,
+        "widthP98": 0.411592,
+        "depthP98": 0.169431
+      },
+      "chestCore": {
+        "zFraction": [
+          0.69,
+          0.81
+        ],
+        "maxAbsXFilter": 0.245,
+        "vertexCount": 687,
+        "widthP98": 0.48309,
+        "depthP98": 0.221627
+      },
+      "neckJawCore": {
+        "zFraction": [
+          0.83,
+          0.91
+        ],
+        "maxAbsXFilter": 0.18,
+        "vertexCount": 1038,
+        "widthP98": 0.263829,
+        "depthP98": 0.196042
+      }
+    },
+    "topology": {
+      "connectedComponentCount": 1,
+      "connectedComponentSizes": [
+        10582
+      ],
+      "boundaryEdgeCount": 0,
+      "nonManifoldEdgeCount": 0,
+      "wireEdgeCount": 0,
+      "degeneratePolygonCount": 0,
+      "uvLayerCount": 1,
+      "colorAttributeCount": 0,
+      "shapeKeyCount": 0
+    },
+    "multires": [
+      {
+        "name": "Multires",
+        "levels": 3,
+        "sculptLevels": 3,
+        "renderLevels": 3,
+        "totalLevels": 3,
+        "showViewport": true,
+        "showRender": true
+      }
+    ]
+  },
+  "eyes": [
+    {
+      "name": "KYX_V6A_AnatomySculpt_Eye.L",
+      "parent": "KYX_V6A_AnatomySculpt_Body",
+      "location": [
+        -2.233074,
+        -0.11906,
+        1.678102
+      ],
+      "matrixLocalTranslation": [
+        0.031228,
+        -0.11906,
+        1.678102
+      ],
+      "matrixWorldTranslation": [
+        0.031228,
+        -0.11906,
+        1.678102
+      ],
+      "scale": [
+        0.861651,
+        0.861651,
+        0.861651
+      ],
+      "vertices": 546,
+      "polygons": 544
+    },
+    {
+      "name": "KYX_V6A_AnatomySculpt_Eye.R",
+      "parent": "KYX_V6A_AnatomySculpt_Body",
+      "location": [
+        -2.295572,
+        -0.119059,
+        1.678102
+      ],
+      "matrixLocalTranslation": [
+        -0.031269,
+        -0.119059,
+        1.678102
+      ],
+      "matrixWorldTranslation": [
+        -0.031269,
+        -0.119059,
+        1.678102
+      ],
+      "scale": [
+        0.861651,
+        0.861651,
+        0.861651
+      ],
+      "vertices": 546,
+      "polygons": 544
+    }
+  ],
+  "sceneInventory": {
+    "collections": 1,
+    "objects": 3,
+    "meshes": 3,
+    "materials": 0,
+    "images": 0,
+    "texts": 0,
+    "actions": 0,
+    "armatures": 0,
+    "libraries": 0,
+    "drivers": [],
+    "externalPaths": []
+  },
+  "assertions": {
+    "autoexecDidNotFail": true,
+    "noTextBlocks": true,
+    "noActions": true,
+    "noArmatures": true,
+    "noLibraries": true,
+    "noDrivers": true,
+    "noExternalPaths": true,
+    "oneConnectedBodyComponent": true,
+    "noDegeneratePolygons": true,
+    "multiresThreeLevelsPreserved": true
+  },
+  "status": "ANATOMY_MEASUREMENT_PASS"
+}

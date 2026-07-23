@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_6A_REVISION_2_STAGED_P6_6_BLOCKED",
+  "candidate": {
+    "mapId": "inkfall_foundry",
+    "revision": 2,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "manifestFileSha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+    "fixtureHash": "bf85e42731fd088e",
+    "render": {
+      "bytes": 613564,
+      "meshNodeCount": 346,
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "byteIdenticalToRevision1": true
+    },
+    "collision": {
+      "bytes": 604228,
+      "meshNodeCount": 339,
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    "sourceBlend": {
+      "bytes": 527768,
+      "sha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224"
+    },
+    "seedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+  },
+  "promotion": {
+    "registeredBundledRevisions": [
+      1,
+      2
+    ],
+    "defaultMapRevision": 1,
+    "revision2Promoted": false,
+    "reason": "P6.6 remains blocked by one governing timing-band miss and three retained-agent overlaps."
+  },
+  "p6_2": {
+    "result": "PASS",
+    "assertions": {
+      "failed": 0,
+      "passed": 15,
+      "total": 15
+    },
+    "physicalLinks": 25,
+    "spawnCandidates": 12,
+    "completedCapsuleSamples": 1646,
+    "continuousRampExceptions": [
+      {
+        "linkId": "west_choice_archive",
+        "segments": [
+          {
+            "policy": "explicit_bounded_collision_revision_exception",
+            "segment": 1,
+            "slopeDegrees": 21.416714
+          }
+        ]
+      },
+      {
+        "linkId": "archive_east_choice",
+        "segments": [
+          {
+            "policy": "explicit_bounded_collision_revision_exception",
+            "segment": 1,
+            "slopeDegrees": 21.416714
+          }
+        ]
+      }
+    ],
+    "teleportLandingContract": {
+      "castClearanceMm": 100,
+      "connectorDistanceMm": 1351.994453,
+      "contractSatisfied": true,
+      "destinationFeetMm": [
+        1539,
+        1431,
+        -4461
+      ],
+      "id": "revision2_teleport_landing_and_trimmed_route_contract",
+      "landingDimensionsMm": [
+        4000,
+        4000,
+        250
+      ],
+      "passed": true,
+      "trimmedRouteStartMm": [
+        1962,
+        519,
+        -3557
+      ]
+    },
+    "report": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/playable-surface-validation.revision2.json",
+    "reportSha256": "00679d36481862d037c9313b6cf06eefb7cf9988ce03c10652ee843b673c5520"
+  },
+  "p6_3": {
+    "result": "PASS_STAGED_NOT_DEFAULT",
+    "nativePackageLoad": true,
+    "authorityBoxes": 339,
+    "authorityVolumes": 2,
+    "totalAuthorityColliders": 341,
+    "renderNodes": 346,
+    "manifest": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json"
+  },
+  "p6_4": {
+    "result": "PASS_NATIVE_REVISION_2_FIXTURES",
+    "fixture": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+    "fixtureSha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+    "scenarios": [
+      {
+        "id": "ffa_2_player_occluded",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "ce3bd1acc10ee6b0"
+      },
+      {
+        "id": "ffa_4_player_all_enemy_aggregate",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "2f490c09ee239e75"
+      },
+      {
+        "id": "ffa_8_player_safe_pockets",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "4882737c21f26463"
+      },
+      {
+        "id": "tdm_4_player_team_cluster",
+        "status": "selected",
+        "selectedSpawnId": "spawn_w_archive",
+        "decisionHash": "ab01b8a2f7b11ac2"
+      },
+      {
+        "id": "ffa_visual_score_pressure",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "0898506a3bdc65fb"
+      },
+      {
+        "id": "ffa_no_safe_spawn",
+        "status": "no_safe_spawn",
+        "selectedSpawnId": null,
+        "decisionHash": "31ecf34c976ffe14"
+      }
+    ]
+  },
+  "p6_5": {
+    "result": "PASS_NATIVE_REVISION_2_FIXTURE",
+    "fixture": "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json",
+    "fixtureSha256": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+    "eventCount": 18,
+    "snapshotHash": "b1fe23e2b3ba0570",
+    "arrangementSamples": {
+      "twoPlayers": 1,
+      "fourPlayers": 1,
+      "eightPlayers": 1,
+      "other": 0
+    }
+  },
+  "verification": {
+    "revision1OfflineP6_2Regression": {
+      "passed": 14,
+      "total": 14,
+      "completedCapsuleSamples": 1653
+    },
+    "focusedRevisionRegression": {
+      "passed": 44,
+      "total": 44
+    },
+    "fullAuthority": {
+      "passed": 143,
+      "total": 143,
+      "files": 18
+    },
+    "fullMain": {
+      "passed": 567,
+      "total": 568,
+      "filesPassed": 58,
+      "filesTotal": 59,
+      "outOfSliceFailure": "tests/unit/worker/security.test.ts :: validates only complete version-4 bounded attachments"
+    },
+    "lint": {
+      "files": 214,
+      "errors": 0,
+      "warnings": 0
+    },
+    "sliceTypeScript": {
+      "rootFiles": 9,
+      "errors": 0
+    },
+    "applicationTypeScript": {
+      "errors": 1,
+      "outOfSliceError": "tests/unit/worker/security.test.ts:19 Type 4 is not assignable to type 5"
+    },
+    "workerTypeScript": {
+      "errors": 1,
+      "outOfSliceError": "worker/room.ts:235 snapshotAckDebtStartedAt missing from SocketAttachment initializer"
+    },
+    "simulationSourceTypeScript": {
+      "errors": 0
+    },
+    "simulationTypeScript": {
+      "errors": 0
+    },
+    "productionBuild": "PASS"
+  },
+  "visualOverlay": {
+    "report": "assets/source/maps/inkfall-foundry/revisions/revision-2/overlay/collision-overlay-report.json",
+    "reportSha256": "f2e51aae9d7b16ed2cfe33e78870d43e08bb06b8f118b57dd39e230e08053e30",
+    "plan": "assets/source/maps/inkfall-foundry/revisions/revision-2/overlay/revision1-vs-candidate-collision-diff-plan.png",
+    "planSha256": "104b563afe6086c8f7893c4c0b748a3b5b9d8d5ebaf3c0b8794213266a4fc975",
+    "oblique": "assets/source/maps/inkfall-foundry/revisions/revision-2/overlay/revision1-vs-candidate-collision-diff-oblique.png",
+    "obliqueSha256": "6d2f668cdc4d9e0d417d8161cf134266e65ba4ee316cbd1704129413ac0f9c23",
+    "comparison": {
+      "revision1Meshes": 346,
+      "candidateMeshes": 339,
+      "removed": 18,
+      "added": 11,
+      "modified": 1,
+      "unchanged": 327
+    },
+    "unexpectedVisibleRenderChange": false
+  },
+  "p6_6_audit": {
+    "result": "BLOCKED_NOT_PASS",
+    "adaptedCandidateSuiteHash": "f715642abbc126f0",
+    "scenarioStatuses": [
+      "FAIL",
+      "FAIL",
+      "FAIL"
+    ],
+    "adaptedIssueCount": 7,
+    "nativeRevision2SpawnFixturesRemoveThreeAdapterBindingMismatchesOnly": true,
+    "blockingFindings": [
+      {
+        "code": "SYNTHETIC_BODY_OVERLAP",
+        "tick": 430,
+        "detail": "Slots 0 (13895,161,-2113) and 7 (14343,189,-2325) overlapped analytical capsules."
+      },
+      {
+        "code": "SYNTHETIC_BODY_OVERLAP",
+        "tick": 430,
+        "detail": "Slots 3 (7887,-2814,-15939) and 6 (8339,-2830,-16315) overlapped analytical capsules."
+      },
+      {
+        "code": "SYNTHETIC_BODY_OVERLAP",
+        "tick": 470,
+        "detail": "Slots 2 (-7941,-2830,-19988) and 6 (-7478,-2830,-19623) overlapped analytical capsules."
+      },
+      {
+        "code": "GOVERNING_TIMING_BAND_MISS",
+        "agentSlot": 7,
+        "tick": 427,
+        "detail": "ink_teleport_flank measured 5100 ms; target is 1800-4000 ms."
+      }
+    ]
+  },
+  "proposedOnlyNotImplemented": {
+    "teleportTiming": [
+      {
+        "option": "measure_then_adjust_route_or_tape",
+        "description": "Capture the three constituent link durations, then separately authorize the smallest activation, landing-to-exit route, or tape adjustment that removes at least 1100 ms without changing the governing 1800-4000 ms band."
+      },
+      {
+        "option": "separate_actuation_metric",
+        "description": "If design intent is to evaluate teleport actuation alone, add a new actuation-only metric while leaving the current end-to-end ink_teleport_flank result blocking. Any band rewrite requires separate topology/timing approval."
+      }
+    ],
+    "retainedAgentOverlaps": [
+      {
+        "option": "authored_idle_or_schedule_tape_change",
+        "description": "Separately authorize safe post-completion idle targets or minimal tape staggering that preserves all eight retained agents and clears the three exact pairwise samples."
+      },
+      {
+        "option": "production_lifecycle_semantics",
+        "description": "Exclude completed agents from overlap sampling only if the production lifecycle actually removes or disables their bodies; change the acceptance contract explicitly and add retained-versus-removed lifecycle regression tests."
+      }
+    ]
+  },
+  "artifacts": {
+    "builder": {
+      "path": "assets/source/maps/inkfall-foundry/build_inkfall_foundry_collision_revision2.py",
+      "sha256": "05ff5b4d3ffe354105ab4f4c4905169629fed1119753695b12ce8b2ed9f6b8c7"
+    },
+    "buildReport": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/collision-revision2-build-report.json",
+      "sha256": "6efd11f41046974613ebf022b3bf01cb804983bb1d6de17bc4131c404e95ecc3"
+    },
+    "playabilityValidator": {
+      "path": "assets/source/maps/inkfall-foundry/validate_inkfall_playability.py",
+      "sha256": "cc5022be841a0486cfa34ce5dbbec2be08aa6acd07d3878e67dc09ed11b0e283"
+    },
+    "overlayRenderer": {
+      "path": "assets/source/maps/inkfall-foundry/render_inkfall_collision_revision_overlay.py",
+      "sha256": "aca4b947e88f928ca2371269f8808078eca367f4315d90422dfc2417b85b15cb"
+    },
+    "nativeRevisionTest": {
+      "path": "tests/integration/authority/inkfallRevision2Staging.test.ts",
+      "sha256": "0954284f38fa859121b3d8baa70c2d67d720381a788fdeef5d7a815dc85594de"
+    }
+  },
+  "nonClaims": [
+    "P6_6_NOT_PASSED",
+    "P6_7_TOPOLOGY_LOCK_NOT_CLAIMED",
+    "G5_NOT_PASSED",
+    "HUMAN_ACCEPTANCE_NOT_RUN",
+    "FINAL_ART_NOT_CLAIMED"
+  ]
+}

@@ -1,0 +1,1081 @@
+{
+  "checkpoint": "V6-B0 proof-of-method rev1",
+  "status": "EARLY METHOD CHECKPOINT / HUMAN VISUAL REVIEW REQUIRED / NO G6 CLAIM",
+  "source_blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+  "output_blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b0-proof-method-rev1\\kyx_vanguard_v6b0_proof_method_rev1.blend",
+  "object_count": 54,
+  "visible_object_count": 41,
+  "construction_witness_count": 13,
+  "base_vertices": 7492,
+  "base_polygons": 6992,
+  "evaluated_vertices": 54879,
+  "evaluated_polygons": 54315,
+  "evaluated_triangles": 109674,
+  "armatures": 0,
+  "actions": 0,
+  "external_libraries": 0,
+  "materials": [
+    "V6B0_MAT_CyanDevice",
+    "V6B0_MAT_EdgeMetal",
+    "V6B0_MAT_GloveTextile",
+    "V6B0_MAT_Graphite",
+    "V6B0_MAT_GripRubber",
+    "V6B0_MAT_SafetyRed",
+    "V6B0_MAT_SeamRubber",
+    "V6B0_MAT_TechnicalFabric",
+    "V6B0_MAT_WarmCeramic"
+  ],
+  "inventory": [
+    {
+      "name": "V6B0_Armor_ChestCoreDevice",
+      "type": "MESH",
+      "role": "backed chest aperture",
+      "method": "recessed device insert",
+      "hide_render": false,
+      "base_vertices": 10,
+      "base_polygons": 7,
+      "evaluated_vertices": 190,
+      "evaluated_polygons": 187,
+      "evaluated_triangles": 376,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_CyanDevice"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_RightDeltoidEdgeSeal",
+      "type": "CURVE",
+      "role": "manufactured armor edge",
+      "method": "boundary-derived curve trim",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_RightDeltoidSurfaceRetopo",
+      "type": "MESH",
+      "role": "articulated shoulder armor",
+      "method": "deltoid surface retopology, clearance offset, solidify and bevel",
+      "hide_render": false,
+      "base_vertices": 113,
+      "base_polygons": 89,
+      "evaluated_vertices": 3258,
+      "evaluated_polygons": 3180,
+      "evaluated_triangles": 6520,
+      "modifiers": [
+        {
+          "name": "01_NATIVE_SURFACE_FIT",
+          "type": "SHRINKWRAP"
+        },
+        {
+          "name": "02_NATIVE_SURFACE_SMOOTH",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "03_NATIVE_PHYSICAL_THICKNESS",
+          "type": "SOLIDIFY"
+        },
+        {
+          "name": "04_NATIVE_MANUFACTURED_BEVEL",
+          "type": "BEVEL"
+        },
+        {
+          "name": "06_NATIVE_VENT_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "07_NATIVE_VENT_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_WarmCeramic"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ShoulderLoadRail_01",
+      "type": "CURVE",
+      "role": "physical chest-to-shoulder attachment",
+      "method": "curved load rail",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ShoulderLoadRail_02",
+      "type": "CURVE",
+      "role": "physical chest-to-shoulder attachment",
+      "method": "curved load rail",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ShoulderPivot",
+      "type": "MESH",
+      "role": "mechanical fastener",
+      "method": "lathed attachment hardware",
+      "hide_render": false,
+      "base_vertices": 96,
+      "base_polygons": 50,
+      "evaluated_vertices": 384,
+      "evaluated_polygons": 338,
+      "evaluated_triangles": 764,
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_Graphite"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ShoulderPivotCap_Front",
+      "type": "MESH",
+      "role": "mechanical fastener",
+      "method": "lathed attachment hardware",
+      "hide_render": false,
+      "base_vertices": 96,
+      "base_polygons": 50,
+      "evaluated_vertices": 384,
+      "evaluated_polygons": 338,
+      "evaluated_triangles": 764,
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ShoulderPivotCap_Rear",
+      "type": "MESH",
+      "role": "mechanical fastener",
+      "method": "lathed attachment hardware",
+      "hide_render": false,
+      "base_vertices": 96,
+      "base_polygons": 50,
+      "evaluated_vertices": 384,
+      "evaluated_polygons": 338,
+      "evaluated_triangles": 764,
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ThoracicEdgeSeal",
+      "type": "CURVE",
+      "role": "manufactured armor edge",
+      "method": "boundary-derived curve trim",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Armor_ThoracicSurfaceRetopo",
+      "type": "MESH",
+      "role": "manufactured thoracic armor",
+      "method": "surface retopology, shrinkwrap, solidify, bevel and boolean",
+      "hide_render": false,
+      "base_vertices": 427,
+      "base_polygons": 372,
+      "evaluated_vertices": 10054,
+      "evaluated_polygons": 9833,
+      "evaluated_triangles": 20116,
+      "modifiers": [
+        {
+          "name": "01_NATIVE_SURFACE_FIT",
+          "type": "SHRINKWRAP"
+        },
+        {
+          "name": "02_NATIVE_SURFACE_SMOOTH",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "03_NATIVE_PHYSICAL_THICKNESS",
+          "type": "SOLIDIFY"
+        },
+        {
+          "name": "04_NATIVE_MANUFACTURED_BEVEL",
+          "type": "BEVEL"
+        },
+        {
+          "name": "06_NATIVE_CARVED_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "07_NATIVE_CARVED_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "08_NATIVE_CARVED_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "09_NATIVE_CARVED_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "10_NATIVE_CARVED_NEGATIVE_SPACE",
+          "type": "BOOLEAN"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_WarmCeramic"
+      ]
+    },
+    {
+      "name": "V6B0_CUT_ChestCore",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ChestVentL1",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ChestVentL2",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ChestVentR1",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ChestVentR2",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_HandguardVent_01",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_HandguardVent_02",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_HandguardVent_03",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ReceiverEjection",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ReceiverVent1",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ReceiverWindow",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ShoulderVent1",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_CUT_ShoulderVent2",
+      "type": "MESH",
+      "role": "non-render construction witness",
+      "method": "boolean cutter",
+      "hide_render": true,
+      "base_vertices": 216,
+      "base_polygons": 218,
+      "evaluated_vertices": 216,
+      "evaluated_polygons": 218,
+      "evaluated_triangles": 428,
+      "modifiers": [],
+      "materials": []
+    },
+    {
+      "name": "V6B0_ClothFold_01",
+      "type": "CURVE",
+      "role": "elbow or axilla compression witness",
+      "method": "shaped cloth fold curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_ClothFold_02",
+      "type": "CURVE",
+      "role": "elbow or axilla compression witness",
+      "method": "shaped cloth fold curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_ClothFold_03",
+      "type": "CURVE",
+      "role": "elbow or axilla compression witness",
+      "method": "shaped cloth fold curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Glove_SourceSurfaceExtract",
+      "type": "MESH",
+      "role": "five-digit glove",
+      "method": "source-surface extraction plus proportional sculpt deformation",
+      "hide_render": false,
+      "base_vertices": 777,
+      "base_polygons": 763,
+      "evaluated_vertices": 6158,
+      "evaluated_polygons": 6156,
+      "evaluated_triangles": 12312,
+      "modifiers": [
+        {
+          "name": "01_NATIVE_PROPORTIONAL_SCULPT_RELAX",
+          "type": "CORRECTIVE_SMOOTH"
+        },
+        {
+          "name": "02_NATIVE_GLOVE_SURFACE_SMOOTH",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "03_NATIVE_GLOVE_THICKNESS",
+          "type": "SOLIDIFY"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_GloveTextile"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_BoltRelease",
+      "type": "CURVE",
+      "role": "",
+      "method": "",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_CeramicReceiverShell",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 12,
+      "base_polygons": 8,
+      "evaluated_vertices": 144,
+      "evaluated_polygons": 140,
+      "evaluated_triangles": 284,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_WarmCeramic"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_ContinuousTopRail",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 90,
+      "base_polygons": 47,
+      "evaluated_vertices": 1654,
+      "evaluated_polygons": 1611,
+      "evaluated_triangles": 3304,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_EjectionBacking",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 8,
+      "base_polygons": 6,
+      "evaluated_vertices": 152,
+      "evaluated_polygons": 150,
+      "evaluated_triangles": 300,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_Grip",
+      "type": "MESH",
+      "role": "rifle pistol grip",
+      "method": "multi-ring ergonomic loft",
+      "hide_render": false,
+      "base_vertices": 80,
+      "base_polygons": 66,
+      "evaluated_vertices": 724,
+      "evaluated_polygons": 722,
+      "evaluated_triangles": 1444,
+      "modifiers": [
+        {
+          "name": "NATIVE_GRIP_EDGE_SOFTEN",
+          "type": "BEVEL"
+        },
+        {
+          "name": "NATIVE_GRIP_SUBDIV",
+          "type": "SUBSURF"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_GripRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_GripRib_01",
+      "type": "CURVE",
+      "role": "tactile grip detail",
+      "method": "fitted grip seam rib",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_GripRib_02",
+      "type": "CURVE",
+      "role": "tactile grip detail",
+      "method": "fitted grip seam rib",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_GripRib_03",
+      "type": "CURVE",
+      "role": "tactile grip detail",
+      "method": "fitted grip seam rib",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_GripRib_04",
+      "type": "CURVE",
+      "role": "tactile grip detail",
+      "method": "fitted grip seam rib",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_HandguardStub",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 8,
+      "base_polygons": 6,
+      "evaluated_vertices": 299,
+      "evaluated_polygons": 228,
+      "evaluated_triangles": 606,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        },
+        {
+          "name": "BOOL_VENT_01",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "BOOL_VENT_02",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "BOOL_VENT_03",
+          "type": "BOOLEAN"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_WarmCeramic"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_MagRelease",
+      "type": "MESH",
+      "role": "mechanical fastener",
+      "method": "lathed attachment hardware",
+      "hide_render": false,
+      "base_vertices": 96,
+      "base_polygons": 50,
+      "evaluated_vertices": 384,
+      "evaluated_polygons": 338,
+      "evaluated_triangles": 764,
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_SafetyRed"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_MagWell",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 8,
+      "base_polygons": 6,
+      "evaluated_vertices": 152,
+      "evaluated_polygons": 150,
+      "evaluated_triangles": 300,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_EdgeMetal"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_Magazine",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 8,
+      "base_polygons": 6,
+      "evaluated_vertices": 152,
+      "evaluated_polygons": 150,
+      "evaluated_triangles": 300,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_Graphite"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_ReceiverCore",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 22,
+      "base_polygons": 13,
+      "evaluated_vertices": 392,
+      "evaluated_polygons": 299,
+      "evaluated_triangles": 788,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        },
+        {
+          "name": "BOOL_01_TRUE_CUT",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "BOOL_02_TRUE_CUT",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "BOOL_03_TRUE_CUT",
+          "type": "BOOLEAN"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_Graphite"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_SafetySelector",
+      "type": "MESH",
+      "role": "mechanical fastener",
+      "method": "lathed attachment hardware",
+      "hide_render": false,
+      "base_vertices": 96,
+      "base_polygons": 50,
+      "evaluated_vertices": 384,
+      "evaluated_polygons": 338,
+      "evaluated_triangles": 764,
+      "modifiers": [
+        {
+          "name": "MANUFACTURED_EDGE",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_SafetyRed"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_StatusIndicator",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 8,
+      "base_polygons": 6,
+      "evaluated_vertices": 152,
+      "evaluated_polygons": 150,
+      "evaluated_triangles": 300,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_CyanDevice"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_StockBridge",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 16,
+      "base_polygons": 10,
+      "evaluated_vertices": 192,
+      "evaluated_polygons": 186,
+      "evaluated_triangles": 380,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_Graphite"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_StockContactPad",
+      "type": "MESH",
+      "role": "hard-surface manufactured volume",
+      "method": "custom profile extrusion and bevel",
+      "hide_render": false,
+      "base_vertices": 10,
+      "base_polygons": 7,
+      "evaluated_vertices": 190,
+      "evaluated_polygons": 187,
+      "evaluated_triangles": 376,
+      "modifiers": [
+        {
+          "name": "NATIVE_HARD_SURFACE_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_GripRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_Trigger",
+      "type": "CURVE",
+      "role": "reachable fire control",
+      "method": "continuous trigger curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SafetyRed"
+      ]
+    },
+    {
+      "name": "V6B0_Rifle_TriggerGuard",
+      "type": "CURVE",
+      "role": "reachable control protection",
+      "method": "continuous curved trigger guard",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_Graphite"
+      ]
+    },
+    {
+      "name": "V6B0_Seam_LeftClavicleSeam",
+      "type": "CURVE",
+      "role": "garment seam and tension routing",
+      "method": "anatomical seam curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Seam_LeftRibTension",
+      "type": "CURVE",
+      "role": "garment seam and tension routing",
+      "method": "anatomical seam curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Seam_RightArmBiasSeam",
+      "type": "CURVE",
+      "role": "garment seam and tension routing",
+      "method": "anatomical seam curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Seam_RightClavicleSeam",
+      "type": "CURVE",
+      "role": "garment seam and tension routing",
+      "method": "anatomical seam curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Seam_RightRibTension",
+      "type": "CURVE",
+      "role": "garment seam and tension routing",
+      "method": "anatomical seam curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Seam_TorsoCenterSeam",
+      "type": "CURVE",
+      "role": "garment seam and tension routing",
+      "method": "anatomical seam curve",
+      "hide_render": false,
+      "base_vertices": 0,
+      "base_polygons": 0,
+      "evaluated_vertices": 0,
+      "evaluated_polygons": 0,
+      "evaluated_triangles": 0,
+      "modifiers": [],
+      "materials": [
+        "V6B0_MAT_SeamRubber"
+      ]
+    },
+    {
+      "name": "V6B0_Undersuit_TorsoRightArm_SurfaceExtract",
+      "type": "MESH",
+      "role": "fitted undersuit torso and right arm",
+      "method": "surface extraction, shrinkwrap, subdivision and solidify",
+      "hide_render": false,
+      "base_vertices": 2607,
+      "base_polygons": 2496,
+      "evaluated_vertices": 26288,
+      "evaluated_polygons": 26462,
+      "evaluated_triangles": 52584,
+      "modifiers": [
+        {
+          "name": "01_NATIVE_SURFACE_FIT",
+          "type": "SHRINKWRAP"
+        },
+        {
+          "name": "02_NATIVE_SURFACE_SMOOTH",
+          "type": "SUBSURF"
+        },
+        {
+          "name": "03_NATIVE_PHYSICAL_THICKNESS",
+          "type": "SOLIDIFY"
+        },
+        {
+          "name": "04_NATIVE_MANUFACTURED_BEVEL",
+          "type": "BEVEL"
+        }
+      ],
+      "materials": [
+        "V6B0_MAT_TechnicalFabric"
+      ]
+    }
+  ],
+  "nonclaims": [
+    "NOT V6-B",
+    "NOT V6-C",
+    "NOT G6",
+    "NO RIG",
+    "NO EXPORT",
+    "NO RUNTIME INTEGRATION"
+  ]
+}

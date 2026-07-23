@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "sanitizedUtc": "2026-07-22T03:26:55.298402+00:00",
+  "blenderVersion": "5.1.2",
+  "source": {
+    "fileName": "human_base_meshes_bundle.blend",
+    "bytes": 49420489,
+    "sha256": "3c121505651140ceb4d69fd1d8923f7788ffadd81672f5be14845a5f2c75c137",
+    "selectedCollection": "Body Male - Realistic",
+    "selectedObjects": [
+      "GEO-body_male_realistic",
+      "GEO-body_male_realistic.eye.L",
+      "GEO-body_male_realistic.eye.R"
+    ]
+  },
+  "sanitized": {
+    "path": "kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+    "bytes": 12582373,
+    "sha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+    "collection": "KYX_V6_CC0_AnatomySeed_MaleRealistic",
+    "objects": [
+      "KYX_V6_CC0_AnatomySeed_Body",
+      "KYX_V6_CC0_AnatomySeed_Eye.L",
+      "KYX_V6_CC0_AnatomySeed_Eye.R"
+    ],
+    "body": {
+      "vertices": 10582,
+      "edges": 21170,
+      "polygons": 10590,
+      "modifiers": [
+        {
+          "name": "Multires",
+          "type": "MULTIRES",
+          "showViewport": true,
+          "showRender": true,
+          "levels": 3,
+          "sculptLevels": 3,
+          "renderLevels": 3,
+          "totalLevels": 3
+        }
+      ]
+    }
+  },
+  "sanitization": {
+    "appendOnly": true,
+    "texts": 0,
+    "drivers": 0,
+    "driversRemoved": 0,
+    "actions": 0,
+    "materials": 0,
+    "images": 0,
+    "nodeGroups": 0,
+    "libraries": 0,
+    "externalPaths": [],
+    "factoryHandlersBeforeAppend": {
+      "_extension_repos_files_clear": [
+        "bl_pkg.extension_repos_files_clear"
+      ],
+      "_extension_repos_sync": [
+        "bl_pkg.extension_repos_sync"
+      ],
+      "_extension_repos_update_post": [
+        "bl_pkg.monkeypatch_extensions_repos_update_post"
+      ],
+      "_extension_repos_update_pre": [
+        "bl_pkg.monkeypatch_extensions_repos_update_pre"
+      ],
+      "animation_playback_post": [],
+      "animation_playback_pre": [],
+      "annotation_post": [],
+      "annotation_pre": [],
+      "blend_import_post": [],
+      "blend_import_pre": [],
+      "composite_cancel": [],
+      "composite_post": [],
+      "composite_pre": [],
+      "depsgraph_update_post": [],
+      "depsgraph_update_pre": [],
+      "exit_pre": [],
+      "frame_change_post": [],
+      "frame_change_pre": [],
+      "load_factory_preferences_post": [],
+      "load_factory_startup_post": [],
+      "load_post": [
+        "bl_operators.copy_global_transform._on_blendfile_load_post",
+        "pose_library.gui._on_blendfile_load_post"
+      ],
+      "load_post_fail": [],
+      "load_pre": [
+        "pose_library.gui._on_blendfile_load_pre"
+      ],
+      "object_bake_cancel": [],
+      "object_bake_complete": [],
+      "object_bake_pre": [],
+      "redo_post": [],
+      "redo_pre": [],
+      "render_cancel": [],
+      "render_complete": [],
+      "render_init": [],
+      "render_post": [],
+      "render_pre": [],
+      "render_stats": [],
+      "render_write": [],
+      "save_post": [],
+      "save_post_fail": [],
+      "save_pre": [],
+      "translation_update_post": [
+        "bl_ui.translation_update"
+      ],
+      "undo_post": [],
+      "undo_pre": [],
+      "version_update": [
+        "cycles.version_update.do_versions"
+      ],
+      "xr_session_start_pre": []
+    },
+    "factoryHandlersAfterAppend": {
+      "_extension_repos_files_clear": [
+        "bl_pkg.extension_repos_files_clear"
+      ],
+      "_extension_repos_sync": [
+        "bl_pkg.extension_repos_sync"
+      ],
+      "_extension_repos_update_post": [
+        "bl_pkg.monkeypatch_extensions_repos_update_post"
+      ],
+      "_extension_repos_update_pre": [
+        "bl_pkg.monkeypatch_extensions_repos_update_pre"
+      ],
+      "animation_playback_post": [],
+      "animation_playback_pre": [],
+      "annotation_post": [],
+      "annotation_pre": [],
+      "blend_import_post": [],
+      "blend_import_pre": [],
+      "composite_cancel": [],
+      "composite_post": [],
+      "composite_pre": [],
+      "depsgraph_update_post": [],
+      "depsgraph_update_pre": [],
+      "exit_pre": [],
+      "frame_change_post": [],
+      "frame_change_pre": [],
+      "load_factory_preferences_post": [],
+      "load_factory_startup_post": [],
+      "load_post": [
+        "bl_operators.copy_global_transform._on_blendfile_load_post",
+        "pose_library.gui._on_blendfile_load_post"
+      ],
+      "load_post_fail": [],
+      "load_pre": [
+        "pose_library.gui._on_blendfile_load_pre"
+      ],
+      "object_bake_cancel": [],
+      "object_bake_complete": [],
+      "object_bake_pre": [],
+      "redo_post": [],
+      "redo_pre": [],
+      "render_cancel": [],
+      "render_complete": [],
+      "render_init": [],
+      "render_post": [],
+      "render_pre": [],
+      "render_stats": [],
+      "render_write": [],
+      "save_post": [],
+      "save_post_fail": [],
+      "save_pre": [],
+      "translation_update_post": [
+        "bl_ui.translation_update"
+      ],
+      "undo_post": [],
+      "undo_pre": [],
+      "version_update": [
+        "cycles.version_update.do_versions"
+      ],
+      "xr_session_start_pre": []
+    },
+    "vendorHandlersImported": false,
+    "unneededCollections": 0
+  },
+  "assertions": {
+    "singleApprovedCollectionOnly": true,
+    "expectedThreeObjectsOnly": true,
+    "noTextBlocks": true,
+    "noDrivers": true,
+    "noVendorHandlersImported": true,
+    "noActions": true,
+    "noMaterialsOrImages": true,
+    "noExternalLibrariesOrPaths": true,
+    "multiresSculptDataPreserved": true
+  },
+  "status": "SANITIZED_CC0_SCULPT_SEED_PASS",
+  "nonClaims": [
+    "This is CC0 anatomy sculpt-seed prework, not project-original anatomy.",
+    "No KYX design sculpt, retopology, UV, texture, rig, LOD, weapon, animation, or runtime asset is claimed.",
+    "This does not satisfy G6 or human visual acceptance."
+  ]
+}

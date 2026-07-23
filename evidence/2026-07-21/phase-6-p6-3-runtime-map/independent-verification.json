@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "verifiedAtUtc": "2026-07-22T04:01:21.040Z",
+  "status": "INDEPENDENT_P6_3_RUNTIME_EVIDENCE_PASS",
+  "inputs": {
+    "manifest": "assets/source/maps/inkfall-foundry/runtime/map.package.v1.json",
+    "capture": "evidence/2026-07-21/phase-6-p6-3-runtime-map/runtime-map-capture.json",
+    "render": "assets/source/maps/inkfall-foundry/export/render.graybox.glb",
+    "collision": "assets/source/maps/inkfall-foundry/export/collision.authority.glb",
+    "screenshot": "evidence/2026-07-21/phase-6-p6-3-runtime-map/screenshots/inkfall-map-runtime.png"
+  },
+  "fingerprints": {
+    "packageDigest": "a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267",
+    "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+    "collisionSha256": "40fc9fa07da89779bb2cb150cc9b642b3598fdf54d041f23d4b6ab203df2d2f0",
+    "screenshotSha256": "49fa2f37fce2db1c9892c725404415cac614d1053836f1c4e207881fc50e4c71",
+    "fixtureHash": "2a0a446a0b152395"
+  },
+  "assertions": {
+    "packageIdentityMatches": true,
+    "sourceSeedIsImmutable": true,
+    "renderArtifactMatches": true,
+    "collisionArtifactMatches": true,
+    "rolesAreSeparated": true,
+    "identityAndBoundsMatch": true,
+    "expectedRuntimeCounts": true,
+    "deterministicFixtureHash": true,
+    "browserCapturePassed": true,
+    "screenshotMatches": true,
+    "scopeRemainsBounded": true
+  }
+}

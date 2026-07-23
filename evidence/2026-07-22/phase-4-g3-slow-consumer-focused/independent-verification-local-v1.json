@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-22T06:20:11.392Z",
+  "evidencePath": "evidence/2026-07-22/phase-4-g3-slow-consumer-focused/runs/local-v1/slow-consumer-focused.json",
+  "status": "INDEPENDENT_FOCUSED_SLOW_CONSUMER_VERIFICATION_PASS",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "checks": {
+    "focusedStatusPassed": true,
+    "exactEvidenceIdentity": true,
+    "gateRemainsUnaccepted": true,
+    "noDeploymentPerformed": true,
+    "exactSourceHashesAndSizes": true,
+    "artifactHashesAndSizesMatch": true,
+    "artifactPathsScopedToRun": true,
+    "deterministicPolicyRawReportPassed": true,
+    "workerIsolateRawReportPassed": true,
+    "exactFocusedCommands": true,
+    "rawReportsMatchEmbedded": true,
+    "captureChecksPassed": true,
+    "deterministicOnlyBoundaryDeclared": true,
+    "realNetworkNonClaimDeclared": true,
+    "operationalBoundaryDeclared": true
+  }
+}

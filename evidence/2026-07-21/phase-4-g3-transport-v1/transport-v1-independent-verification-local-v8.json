@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-22T06:25:35.120Z",
+  "source": "evidence/2026-07-21/phase-4-g3-transport-v1/runs/local-v8/transport-v1-runtime.json",
+  "status": "INDEPENDENT_G3_TRANSPORT_V1_VERIFICATION_PASS",
+  "checks": {
+    "runtimeStatusPass": true,
+    "freshRunIdentity": true,
+    "gateRemainsUnaccepted": true,
+    "noDeploymentPerformed": true,
+    "exactContractAssertions": true,
+    "everyContractAssertionPassed": true,
+    "exactHonestAssertions": true,
+    "everyHonestAssertionPassed": true,
+    "exactAbuseAssertions": true,
+    "everyAbuseAssertionPassed": true,
+    "exactAdvertisedVersions": true,
+    "sameTickBaselinesActuallyDistinct": true,
+    "exactDeltaChain": true,
+    "reliableDeliveryActuallyDeduped": true,
+    "futureReliableAckActuallyRejected": true,
+    "futureAndOldAcksActuallyRejected": true,
+    "correlatedFallbackActuallyPresent": true,
+    "timeoutFallbackElapsedAtLeast900ms": true,
+    "honestRatesMeasured": true,
+    "honestWindowBelowLimit": true,
+    "honestAuthorityHealthy": true,
+    "abuseCrossedExactRevisedLimit": true,
+    "transportMetricsSupportClaims": true,
+    "sourceHashesStillMatch": true,
+    "artifactInventoryMatches": true,
+    "artifactPathsUnique": true,
+    "artifactInventoryScopedToRun": true,
+    "successfulRunHasNoCaptureError": true,
+    "ownedRuntimePortsReleased": true,
+    "criticalBrowserLogEmpty": true,
+    "aggregateAssertionsPassed": true,
+    "bothPreservedFailuresPresent": true,
+    "allTransportCaptureFailuresPreserved": true,
+    "scopeExplicitlyRetainsG3Boundary": true
+  },
+  "preservedFailures": [
+    "attempt-1-red-contract",
+    "attempt-2-tick-only-baseline-alias",
+    "attempt-3-future-reliable-ack-detail",
+    "attempt-4-test-error-selector"
+  ],
+  "preservedTransportFailures": [
+    "local-v1",
+    "local-v2",
+    "local-v3",
+    "local-v4",
+    "local-v5",
+    "local-v6",
+    "local-v7"
+  ],
+  "independentlyComputed": {
+    "sourceHashes": {
+      "src/net/protocol.ts": "0a9f65a571bef66dad4507a969b69c5c762848219b6f32e4c8bcb254403c037c",
+      "src/net/schemas.ts": "3f1654d1ca380b77a605439a11262afd05a54250255b852196d3256f3ac9ce9d",
+      "src/dev/authorityEvidenceClient.ts": "d8db2e273ead88a81fe6405da27016054e93aa38b454faaf2d360a31dabf665b",
+      "worker/room.ts": "1fa5c818261fe8b642910f6e7791e05ffd8be237913c4ebff7549dc4294c7015",
+      "worker/security.ts": "9e2e3803af8fe7f29bd65ab8d6a701473469853fdfa9e555540156850a875abb",
+      "worker/snapshotBaselines.ts": "5809f54ed59f653af85ea4e82dc0d882ddd7454c4e23f6462f4c91c3e78cbd4c",
+      "worker/reliableEvents.ts": "bf142bb8435fdd3f4b96e7e6620a577e70a591471dc1dd3206b2ee22e00594bb",
+      "tests/unit/worker/snapshotBaselines.test.ts": "9458e98d9eadad272ca468cf76abf4179e9a501651bd4d7adcf28d8bfa441b39",
+      "tests/unit/worker/reliableEvents.test.ts": "c985b22396d740ea8042ca955acd9f554b8b6428d638edd08749a9af7f13c944",
+      "tests/worker/protocolV2Socket.test.ts": "37454318573bef4eb2380b0c826bdfe2eae7e91419a8a607b71c20256ac0fb83",
+      "tests/worker/socketAttachmentCache.test.ts": "8da4ced83e9859aebe5798cb54d6d6a326a5ffc403cd2f1d580e9d2391480044",
+      "tools/evidence/capture-phase4-g3-transport-v1.mjs": "fa0526024806eea3ae19c22b053591657e5b8199ec73b559402ba4f4a0e31ae5",
+      "tools/evidence/verify-phase4-g3-transport-v1.mjs": "39bbabf9a1c7160934c30304866e1b872f58469bcd4f5917ccc14608569656a9"
+    },
+    "artifactInventory": [
+      {
+        "path": "evidence/2026-07-21/phase-4-g3-transport-v1/runs/local-v8/logs/vite.jsonl",
+        "bytes": 350,
+        "sha256": "5a46c468644ab130ef6d2358fb0ed01a738da2a759f4003ae42f13da27d34ed4"
+      },
+      {
+        "path": "evidence/2026-07-21/phase-4-g3-transport-v1/runs/local-v8/logs/wrangler.jsonl",
+        "bytes": 2968,
+        "sha256": "93130905be1792eaaac61581878f014509ca8c52552aa8451ef610d24bb6db11"
+      }
+    ],
+    "measuredInputHz": 19.083275780592977,
+    "measuredAckHz": 9.996001599358225,
+    "maximumRollingTenSecondMessages": 301,
+    "deltaChain": {
+      "baseTick": 2,
+      "priorTick": 2,
+      "baseId": "baseline.2.3",
+      "priorId": "baseline.2.3"
+    }
+  },
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "deploymentPerformed": false
+}

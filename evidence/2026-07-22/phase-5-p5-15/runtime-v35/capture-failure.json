@@ -1,0 +1,110 @@
+{
+  "capturedAt": "2026-07-22T20:07:58.465Z",
+  "error": {
+    "message": "page.waitForFunction: Timeout 45000ms exceeded.",
+    "stack": "page.waitForFunction: Timeout 45000ms exceeded.\n    at prewarmClient (C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\tools\\evidence\\capture-phase5-p515-inkfall-product-population.mjs:1160:21)\n    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:1265:3"
+  },
+  "wireDiagnostics": {
+    "file": "p515-failure-normalized-wire-log.jsonl",
+    "entries": 24,
+    "sha256": "16c31c9e12d5bccc2f950b5de032e97f94b806df97b785e0dc3900505a7f4ff8",
+    "receivedSnapshots": 0,
+    "sentSnapshotAcknowledgements": 0,
+    "acknowledgementRejections": 0,
+    "socketClosures": []
+  },
+  "clients": [
+    {
+      "clientId": "client-0",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-1",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-2",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-3",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-4",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-5",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-6",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-7",
+      "snapshot": null,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+      ],
+      "consoleWarnings": [],
+      "pageErrors": []
+    }
+  ],
+  "connectionTimeline": [],
+  "roomMetricsTimeline": [],
+  "vite": [
+    "\u001b[2m3:07:02 PM\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m Re-optimizing dependencies because vite config has changed",
+    "  \u001b[32m\u001b[1mVITE\u001b[22m v8.0.16\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m425\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m",
+    "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m5173\u001b[22m/\u001b[39m",
+    "\u001b[2m3:07:03 PM\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m [optimizer] scanning dependencies..."
+  ],
+  "wrangler": [
+    " ⛅️ wrangler 4.112.0 (update available 4.113.0)",
+    "───────────────────────────────────────────────",
+    "Your Worker has access to the following bindings:",
+    "Binding                                                               Resource                  Mode",
+    "env.KYX_ROOM (KyxRoom)                                                Durable Object            local",
+    "env.ALLOWED_ORIGINS (\"http://127.0.0.1:5173,http://localhos...\")      Environment Variable      local",
+    "env.BUILD_ID (\"phase4-local\")                                         Environment Variable      local",
+    "⎔ Starting local server...",
+    "[wrangler:info] Ready on http://127.0.0.1:8787",
+    "[wrangler:info] GET /health 200 OK (246ms)"
+  ]
+}

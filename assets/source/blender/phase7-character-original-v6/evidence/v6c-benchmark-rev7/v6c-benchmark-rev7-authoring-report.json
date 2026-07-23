@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T08:13:43.492940+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV7",
+  "inputs": {
+    "rev6": {
+      "path": "kyx_vanguard_v6c_visual_benchmark_rev6.blend",
+      "sha256Before": "bb3ec3a885ae0f36740ed979a38bcdfe6e354b93e497f29280b131f42aed89a2",
+      "sha256After": "bb3ec3a885ae0f36740ed979a38bcdfe6e354b93e497f29280b131f42aed89a2",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev7.blend",
+    "bytes": 12787802,
+    "sha256": "b07d9657cefe68d33f4657da8fb2cf3498339bbc49c333036f0782c78137e4d6"
+  },
+  "removedRev6Objects": [
+    "KYX_V6C_BENCH_R7_ClavicleCeramicInlay_L",
+    "KYX_V6C_BENCH_R7_ClavicleCeramicInlay_R",
+    "KYX_V6C_BENCH_R7_ClavicleGraphiteUnderlay_L",
+    "KYX_V6C_BENCH_R7_ClavicleGraphiteUnderlay_R",
+    "KYX_V6C_BENCH_R7_RibTailoringSeam_L",
+    "KYX_V6C_BENCH_R7_RibTailoringSeam_R",
+    "KYX_V6C_BENCH_R7_OccipitalTaperRoute_L",
+    "KYX_V6C_BENCH_R7_OccipitalTaperRoute_R"
+  ],
+  "contactWitnesses": {
+    "primary_grip": [
+      -0.15,
+      -0.058,
+      1.035
+    ],
+    "support_grip": [
+      0.3,
+      -0.062,
+      1.155
+    ],
+    "shoulder": [
+      -0.577,
+      0.0,
+      1.222
+    ]
+  },
+  "corrections": [
+    "Built a continuous front-side-back yoke, sternum/rear spines, side rib panels, rib arcs, and waist load band.",
+    "Moved ceramic chest protection high onto the clavicles so it reads as inlay within the harness, not isolated cups.",
+    "Added overlapping shoulder bridges plus elbow and knee articulation bands and hinge rails.",
+    "Added temporal frames, jaw rails, an occipital load shell, visor mullion/lower frame, and rear vents.",
+    "Introduced a structural blue-steel middle value between near-black graphite and warm ceramic.",
+    "Rebuilt the rifle as an angular forged chassis with receiver armor, ventilated handguard, cheek/butt pads, top rail, grip, magazine, hand stop, rooted barrel, and muzzle."
+  ],
+  "assertions": {
+    "rev6Preserved": true,
+    "acceptedV6APreserved": true,
+    "rifleContinuousPrimaryVolume": true,
+    "contactWitnessCount": true,
+    "noLiteralHeldContactClaim": true,
+    "noV6BObjects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV7_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 7 is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "The three contact witnesses establish future intent only; no held, two-hand, or shoulder contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

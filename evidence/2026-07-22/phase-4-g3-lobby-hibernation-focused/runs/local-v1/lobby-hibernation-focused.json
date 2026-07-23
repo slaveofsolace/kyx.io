@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-4-g3-lobby-hibernation-focused-local-v1-2026-07-22",
+  "capturedAt": "2026-07-22T07:02:46.925Z",
+  "status": "FOCUSED_LOBBY_HIBERNATION_EVIDENCE_FAIL",
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "deploymentPerformed": false,
+  "runtime": {
+    "node": "v24.14.0",
+    "platform": "win32-x64"
+  },
+  "exactInvocation": [
+    "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\tools\\evidence\\capture-phase4-g3-lobby-hibernation-focused.mjs",
+    "--output",
+    "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1"
+  ],
+  "probes": {
+    "workerIsolateHibernation": {
+      "command": [
+        "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/worker/protocolV2Socket.test.ts",
+        "--config",
+        "vitest.worker.config.ts",
+        "--maxWorkers=1",
+        "--no-isolate",
+        "--reporter=json",
+        "-t",
+        "rehydrates one connected lobby player|rehydrates a disconnected lobby player|expires an evicted reconnect-wait lobby"
+      ],
+      "exitCode": 0,
+      "signal": null,
+      "startedAt": "2026-07-22T07:02:41.337Z",
+      "completedAt": "2026-07-22T07:02:44.427Z",
+      "durationMilliseconds": 3089,
+      "report": {
+        "numTotalTestSuites": 2,
+        "numPassedTestSuites": 2,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 6,
+        "numPassedTests": 3,
+        "numFailedTests": 0,
+        "numPendingTests": 3,
+        "numTodoTests": 0,
+        "snapshot": {
+          "added": 0,
+          "failure": false,
+          "filesAdded": 0,
+          "filesRemoved": 0,
+          "filesRemovedList": [],
+          "filesUnmatched": 0,
+          "filesUpdated": 0,
+          "matched": 0,
+          "total": 0,
+          "unchecked": 0,
+          "uncheckedKeysByFile": [],
+          "unmatched": 0,
+          "updated": 0,
+          "didUpdate": false
+        },
+        "startTime": 1784703762141,
+        "success": true,
+        "testResults": [
+          {
+            "assertionResults": [
+              {
+                "ancestorTitles": [
+                  "protocol-v2 WebSocket Worker integration"
+                ],
+                "fullName": "protocol-v2 WebSocket Worker integration reports exact received, accepted, and rejected rate-window counter deltas",
+                "status": "skipped",
+                "title": "reports exact received, accepted, and rejected rate-window counter deltas",
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "protocol-v2 WebSocket Worker integration"
+                ],
+                "fullName": "protocol-v2 WebSocket Worker integration sends deltas only from acknowledged baselines and resends reliable events until cumulative ACK",
+                "status": "skipped",
+                "title": "sends deltas only from acknowledged baselines and resends reliable events until cumulative ACK",
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "protocol-v2 WebSocket Worker integration"
+                ],
+                "fullName": "protocol-v2 WebSocket Worker integration runs two authoritative sockets and securely resumes one immutable player session",
+                "status": "skipped",
+                "title": "runs two authoritative sockets and securely resumes one immutable player session",
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "protocol-v2 WebSocket Worker integration"
+                ],
+                "fullName": "protocol-v2 WebSocket Worker integration rehydrates one connected lobby player across a real hibernatable-object eviction",
+                "status": "passed",
+                "title": "rehydrates one connected lobby player across a real hibernatable-object eviction",
+                "duration": 121,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "protocol-v2 WebSocket Worker integration"
+                ],
+                "fullName": "protocol-v2 WebSocket Worker integration rehydrates a disconnected lobby player and rotates its resume token after eviction",
+                "status": "passed",
+                "title": "rehydrates a disconnected lobby player and rotates its resume token after eviction",
+                "duration": 54,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "protocol-v2 WebSocket Worker integration"
+                ],
+                "fullName": "protocol-v2 WebSocket Worker integration expires an evicted reconnect-wait lobby idempotently through its durable alarm",
+                "status": "passed",
+                "title": "expires an evicted reconnect-wait lobby idempotently through its durable alarm",
+                "duration": 57,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              }
+            ],
+            "startTime": 1784703764129,
+            "endTime": 1784703764361,
+            "status": "passed",
+            "message": "",
+            "name": "C:/AI Projects/Projects/Games/evio/evio-repo/tests/worker/protocolV2Socket.test.ts"
+          }
+        ]
+      }
+    },
+    "workerTypecheck": {
+      "command": [
+        "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "tsconfig.worker.json",
+        "--noEmit"
+      ],
+      "exitCode": 0,
+      "signal": null
+    },
+    "focusedLint": {
+      "command": [
+        "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "node_modules/eslint/bin/eslint.js",
+        "worker/room.ts",
+        "tests/worker/protocolV2Socket.test.ts"
+      ],
+      "exitCode": 0,
+      "signal": null
+    },
+    "workerDryRun": {
+      "command": [
+        "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "node_modules/wrangler/bin/wrangler.js",
+        "deploy",
+        "--dry-run",
+        "--outdir",
+        "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-22\\phase-4-g3-lobby-hibernation-focused\\runs\\local-v1\\worker-dry-run",
+        "--env="
+      ],
+      "exitCode": 0,
+      "signal": null
+    }
+  },
+  "sourceInventory": [
+    {
+      "path": "worker/room.ts",
+      "bytes": 63014,
+      "sha256": "211303d9273792e555d258ea9a1239808a4915b99f40dde8127675fbac5b1daa"
+    },
+    {
+      "path": "worker/resumeSessions.ts",
+      "bytes": 6664,
+      "sha256": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3"
+    },
+    {
+      "path": "worker/resumeToken.ts",
+      "bytes": 1491,
+      "sha256": "1059e269a02b57e64241df1565404ca3985ce0aee5cb598624e7814d2390bf36"
+    },
+    {
+      "path": "worker/security.ts",
+      "bytes": 8668,
+      "sha256": "9e2e3803af8fe7f29bd65ab8d6a701473469853fdfa9e555540156850a875abb"
+    },
+    {
+      "path": "worker/worker.ts",
+      "bytes": 2482,
+      "sha256": "7f9a078294db6b5c49f8a0a4374f19080b2e3412cbc47e5ab528c4857cbb572f"
+    },
+    {
+      "path": "src/authority/room.ts",
+      "bytes": 74282,
+      "sha256": "d420e73a4915544983a8b8e5d822ff3b28e9b55940b29a9ff583c51690a40dbf"
+    },
+    {
+      "path": "tests/worker/protocolV2Socket.test.ts",
+      "bytes": 33690,
+      "sha256": "7a7aff706877f05227257d6367cd42394c7ed48b1c8fcf997fb47c2f99456be0"
+    },
+    {
+      "path": "vitest.worker.config.ts",
+      "bytes": 441,
+      "sha256": "06cfa71aab3875d991158ef6f63409dc040ef144246f99f8b55fe4aef0735a8b"
+    },
+    {
+      "path": "tsconfig.worker.json",
+      "bytes": 488,
+      "sha256": "f8fff93d8ebc29324e22dd842c7f235f318791c0b119e0562dc6df43bc40c78c"
+    },
+    {
+      "path": "wrangler.jsonc",
+      "bytes": 698,
+      "sha256": "8233d7edd2880fc2145967dfa8943a5efad6ba1b894527462ccea52eb63e674e"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 141862,
+      "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+    },
+    {
+      "path": "tools/evidence/capture-phase4-g3-lobby-hibernation-focused.mjs",
+      "bytes": 10626,
+      "sha256": "a86ee89c0335c614f8b42523af009f602ac92d6e9502ac8a7a06483f0fd35c39"
+    },
+    {
+      "path": "tools/evidence/verify-phase4-g3-lobby-hibernation-focused.mjs",
+      "bytes": 8293,
+      "sha256": "2af4cbfd7c3f7149881c2c54e124ea0455a999833cb409f4e0d0566f2ccc3895"
+    }
+  ],
+  "checks": {
+    "sourceStableDuringCapture": true,
+    "workerIsolateProcessPassed": true,
+    "exactHibernationTestsPassed": false,
+    "workerTypecheckPassed": true,
+    "focusedLintPassed": true,
+    "workerDryRunPassed": true
+  },
+  "scopeBoundary": [
+    "This record exercises Cloudflare Worker-isolate Durable Object eviction with hibernatable WebSockets, persisted lobby identity, connected and disconnected player reconstruction, resume-token rotation, full-snapshot resynchronization, active-match transition, and an idempotent durable expiry alarm.",
+    "The eviction helper is a direct Worker test-runtime hibernation boundary; this is not an external workerd process restart, staging execution, or production runtime proof.",
+    "Active warmup, match, and postmatch simulation deliberately remain awake and active_uncheckpointed; an active-object crash still fails closed.",
+    "Real socket saturation, public authentication, staging WSS, load, resource, cost, physical-refresh, product-flow, final adjacent regression, and G3 acceptance remain separate work.",
+    "No deployment or gate decision is performed by this focused evidence tool."
+  ],
+  "artifactInventory": [
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/focused-eslint-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/focused-eslint-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/worker-dry-run-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/worker-dry-run-stdout.txt",
+      "bytes": 704,
+      "sha256": "b5d0eec29ce262d66e1b41b47f1f22dae97d007e00f94a3738b10101dd4402b8"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/worker-isolate-hibernation-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/worker-isolate-hibernation-stdout.txt",
+      "bytes": 2832,
+      "sha256": "7a24e818975db7f2956503ec4ed419b778ac9817af7b93a21f945fc00921e600"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/worker-typecheck-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/logs/worker-typecheck-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/worker-dry-run/30a031a6ee11327a42ae2d301de9b2f1bb2bde2e-rapier_wasm3d_bg.wasm",
+      "bytes": 1601515,
+      "sha256": "f27e91563c97bc402e1e8bb0531d6238f7ecf3a7f6a193b2e44278b5d9670470"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/worker-dry-run/README.md",
+      "bytes": 117,
+      "sha256": "c04f31a9b0b7bf882a90b0bd11dc9da71e61a74bf9fb95d8da7b7c23682df927"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/worker-dry-run/worker.js",
+      "bytes": 3708209,
+      "sha256": "43cabdef0345ea7a893fdd78f63fe8a120b9f79cf46ae54840e5f9a3b3b64af1"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-lobby-hibernation-focused/runs/local-v1/worker-dry-run/worker.js.map",
+      "bytes": 3386709,
+      "sha256": "ba16946abf117f2d839f06e437f06a7b0f863e566c5bfce0eabff5fb41cf3bf0"
+    }
+  ]
+}

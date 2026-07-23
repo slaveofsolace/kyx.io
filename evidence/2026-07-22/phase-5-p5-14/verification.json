@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T15:12:51.684Z",
+  "status": "PASS",
+  "matrix": [
+    {
+      "check": "P5.14 focused Worker population proof",
+      "command": "vitest run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate tests/worker/inkfallPopulation.test.ts",
+      "status": "PASS",
+      "testFiles": 1,
+      "tests": 3,
+      "durationSeconds": 7.42
+    },
+    {
+      "check": "app TypeScript",
+      "command": "tsc -p tsconfig.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "check": "Worker TypeScript",
+      "command": "tsc -p tsconfig.worker.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "check": "ESLint",
+      "command": "eslint src/**/*.ts worker/**/*.ts tests/**/*.ts tools/**/*.mjs vitest.worker.config.ts --no-error-on-unmatched-pattern",
+      "status": "PASS"
+    },
+    {
+      "check": "Vite production build",
+      "command": "vite build",
+      "status": "PASS",
+      "modulesTransformed": 150
+    },
+    {
+      "check": "Node Vitest",
+      "command": "vitest run",
+      "status": "PASS",
+      "testFiles": 84,
+      "tests": 696,
+      "durationSeconds": 22.05
+    },
+    {
+      "check": "Worker Vitest",
+      "command": "vitest run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
+      "status": "PASS",
+      "testFiles": 9,
+      "tests": 34,
+      "durationSeconds": 32.71
+    },
+    {
+      "check": "Wrangler dry run",
+      "command": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env=",
+      "status": "PASS",
+      "totalUploadKiB": 2896.84,
+      "gzipKiB": 785.31
+    }
+  ],
+  "knownNonBlockingOutput": [
+    "Existing Rapier initialization deprecation warnings in Node tests",
+    "Existing Vite chunk-size warning"
+  ]
+}

@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "phase": 8,
+  "gate": "G7_FOUNDATION_OPEN",
+  "mode": "strict",
+  "root": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo",
+  "counts": {
+    "pass": 21,
+    "partial": 2,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "id": "P8-KBM-SEMANTICS",
+      "area": "desktop-kbm",
+      "status": "pass",
+      "summary": "The shell exposes native controls and a named, focusable game canvas.",
+      "evidence": [
+        "index.html:15",
+        "index.html:33",
+        "index.html:38",
+        "index.html:39",
+        "index.html:40",
+        "index.html:66",
+        "index.html:79",
+        "index.html:117",
+        "index.html:118"
+      ]
+    },
+    {
+      "id": "P8-KBM-TAB-SCOPE",
+      "area": "desktop-kbm",
+      "status": "pass",
+      "summary": "Tab interception is scoped away from menu navigation.",
+      "evidence": [
+        "src/core/InputManager.js:43"
+      ]
+    },
+    {
+      "id": "P8-KBM-FOCUS-VISIBLE",
+      "area": "desktop-kbm",
+      "status": "pass",
+      "summary": "A focus-visible treatment exists.",
+      "evidence": [
+        "src/style.css:27",
+        "src/style.css:109",
+        "src/style.css:110",
+        "src/style.css:1412",
+        "src/style.css:2853",
+        "src/style.css:2858",
+        "src/style.css:3220",
+        "src/style.css:3222"
+      ]
+    },
+    {
+      "id": "P8-KBM-FOCUS-MANAGEMENT",
+      "area": "desktop-kbm",
+      "status": "pass",
+      "summary": "Panel and dialog transitions move focus, restore panel triggers, and expose expanded state.",
+      "evidence": [
+        "src/ui/MainMenu.js:119",
+        "src/ui/MainMenu.js:161",
+        "src/ui/MainMenu.js:366",
+        "index.html:211",
+        "index.html:221",
+        "index.html:349"
+      ]
+    },
+    {
+      "id": "P8-LOCK-NEUTRALIZE",
+      "area": "pointer-lock",
+      "status": "pass",
+      "summary": "Pointer-lock loss releases held input and neutralizes the deterministic movement driver.",
+      "evidence": [
+        "src/core/InputManager.js:80",
+        "src/core/InputManager.js:124",
+        "src/core/InputManager.js:178",
+        "src/core/Game.js:217",
+        "src/core/Game.js:221",
+        "src/core/Game.js:227",
+        "src/core/Game.js:280",
+        "src/core/Game.js:753"
+      ]
+    },
+    {
+      "id": "P8-LOCK-RAW-FALLBACK",
+      "area": "pointer-lock",
+      "status": "pass",
+      "summary": "The active input path requests unadjusted movement and retries standard pointer lock.",
+      "evidence": [
+        "src/app/movement/pointerLock.ts:2",
+        "src/app/movement/pointerLock.ts:29",
+        "src/app/movement/pointerLock.ts:61",
+        "src/core/InputManager.js:1",
+        "src/core/InputManager.js:142",
+        "src/core/InputManager.js:145"
+      ]
+    },
+    {
+      "id": "P8-LOCK-DENIAL-UI",
+      "area": "pointer-lock",
+      "status": "pass",
+      "summary": "Pointer-lock rejection reopens the keyboard-reachable pause dialog with retry guidance.",
+      "evidence": [
+        "src/core/InputManager.js:1",
+        "src/core/InputManager.js:20",
+        "src/core/InputManager.js:95",
+        "src/core/InputManager.js:97",
+        "src/core/InputManager.js:125",
+        "src/core/InputManager.js:142",
+        "src/core/InputManager.js:145",
+        "src/core/InputManager.js:179",
+        "index.html:215"
+      ]
+    },
+    {
+      "id": "P8-MOTION-CONTRACT",
+      "area": "reduced-motion",
+      "status": "pass",
+      "summary": "Reduced motion is a validated product setting with an authority-isolated camera contract.",
+      "evidence": [
+        "src/app/movement/cameraSettings.ts:14",
+        "src/app/movement/cameraSettings.ts:49",
+        "src/app/movement/cameraSettings.ts:63",
+        "src/app/movement/cameraSettings.ts:70",
+        "src/app/movement/cameraSettings.ts:252",
+        "src/app/movement/cameraSettings.ts:268",
+        "src/app/movement/cameraSettings.ts:279",
+        "index.html:177",
+        "index.html:178",
+        "index.html:179",
+        "index.html:180"
+      ]
+    },
+    {
+      "id": "P8-MOTION-CSS",
+      "area": "reduced-motion",
+      "status": "pass",
+      "summary": "Nonessential CSS animation and transitions must honor prefers-reduced-motion.",
+      "evidence": [
+        "src/style.css:132",
+        "src/style.css:385",
+        "src/style.css:412",
+        "src/style.css:532",
+        "src/style.css:616",
+        "src/style.css:696",
+        "src/style.css:1243",
+        "src/style.css:1293"
+      ]
+    },
+    {
+      "id": "P8-FLASH-REDUCTION",
+      "area": "reduced-motion",
+      "status": "pass",
+      "summary": "A persisted reduced-flash setting suppresses full-screen damage and teleport flashes.",
+      "evidence": [
+        "src/ui/HUD.js:252",
+        "src/ui/HUD.js:269",
+        "src/ui/HUD.js:344",
+        "src/style.css:132",
+        "src/style.css:385",
+        "src/style.css:412",
+        "src/style.css:532",
+        "src/style.css:616",
+        "src/style.css:696",
+        "src/style.css:1243",
+        "src/style.css:1293"
+      ]
+    },
+    {
+      "id": "P8-CONTRAST-MODE",
+      "area": "contrast-color",
+      "status": "pass",
+      "summary": "A persisted high-contrast product mode is represented; forced-colors runtime proof remains separate.",
+      "evidence": [
+        "index.html:171",
+        "index.html:172",
+        "index.html:173",
+        "index.html:174"
+      ]
+    },
+    {
+      "id": "P8-COLOR-INDEPENDENCE",
+      "area": "contrast-color",
+      "status": "partial",
+      "summary": "Vital values and LOW/CRITICAL warnings use text and patterns; the wider active/ready state inventory remains open.",
+      "evidence": [
+        "index.html:241",
+        "index.html:262",
+        "src/ui/HUD.js:116",
+        "src/ui/HUD.js:174",
+        "src/ui/HUD.js:190",
+        "src/ui/HUD.js:208",
+        "src/ui/HUD.js:210",
+        "src/ui/HUD.js:220",
+        "src/ui/HUD.js:237",
+        "src/ui/HUD.js:238"
+      ]
+    },
+    {
+      "id": "P8-SCALE-HUD",
+      "area": "scaling",
+      "status": "pass",
+      "summary": "Bounded HUD and crosshair scale settings publish shared presentation tokens.",
+      "evidence": [
+        "index.html:5",
+        "index.html:152",
+        "index.html:154",
+        "index.html:155",
+        "index.html:158",
+        "index.html:160",
+        "index.html:161",
+        "src/style.css:353",
+        "src/style.css:388",
+        "src/style.css:389",
+        "src/style.css:390",
+        "src/style.css:391",
+        "src/style.css:1218",
+        "src/style.css:1918",
+        "src/style.css:2109"
+      ]
+    },
+    {
+      "id": "P8-SCALE-RESPONSIVE",
+      "area": "scaling",
+      "status": "partial",
+      "summary": "Some responsive sizing exists, but 720p, 1440p, ultrawide, and 125%/200% zoom remain unproved.",
+      "evidence": [
+        "src/style.css:60",
+        "src/style.css:947",
+        "src/style.css:1710",
+        "src/style.css:1725",
+        "src/style.css:1832",
+        "src/style.css:2594",
+        "src/style.css:2726",
+        "src/style.css:2990"
+      ]
+    },
+    {
+      "id": "P8-CAPTIONS-HOOK",
+      "area": "captions-audio",
+      "status": "pass",
+      "summary": "Subtitle preference, live region, semantic speaker/direction renderer, and audio dialogue hook are wired.",
+      "evidence": [
+        "index.html:128",
+        "index.html:129",
+        "index.html:130",
+        "index.html:131",
+        "index.html:275",
+        "src/ui/CaptionCueOverlay.js:51",
+        "src/ui/CaptionCueOverlay.js:64",
+        "src/ui/CaptionCueOverlay.js:71",
+        "src/core/AudioManager.js:7",
+        "src/core/AudioManager.js:24",
+        "src/core/AudioManager.js:27"
+      ]
+    },
+    {
+      "id": "P8-AUDIO-CUE-HOOK",
+      "area": "captions-audio",
+      "status": "pass",
+      "summary": "Optional, rate-limited visual alternatives are wired to critical gameplay sounds without fabricated exact positions.",
+      "evidence": [
+        "index.html:134",
+        "index.html:276",
+        "src/ui/CaptionCueOverlay.js:27",
+        "src/ui/CaptionCueOverlay.js:51",
+        "src/ui/CaptionCueOverlay.js:56",
+        "src/ui/CaptionCueOverlay.js:59",
+        "src/ui/CaptionCueOverlay.js:68",
+        "src/ui/CaptionCueOverlay.js:69",
+        "src/ui/CaptionCueOverlay.js:70",
+        "src/ui/CaptionCueOverlay.js:71",
+        "src/core/AudioManager.js:6",
+        "src/core/AudioManager.js:11",
+        "src/core/AudioManager.js:17",
+        "src/core/AudioManager.js:667",
+        "src/core/AudioManager.js:757",
+        "src/core/AudioManager.js:777",
+        "src/core/AudioManager.js:857",
+        "src/core/AudioManager.js:970"
+      ]
+    },
+    {
+      "id": "P8-HUD-CORE-HIERARCHY",
+      "area": "hud-hierarchy",
+      "status": "pass",
+      "summary": "Core HUD hooks present: 8/8; three real abilities and a dormant online-only connection warning are defined.",
+      "evidence": [
+        "index.html:232",
+        "index.html:241",
+        "index.html:248",
+        "index.html:261",
+        "index.html:262",
+        "index.html:266",
+        "index.html:287",
+        "index.html:302",
+        "index.html:284",
+        "index.html:285",
+        "index.html:298",
+        "src/ui/HUD.js:232",
+        "src/ui/HUD.js:278",
+        "src/ui/HUD.js:322",
+        "src/ui/HUD.js:341"
+      ]
+    },
+    {
+      "id": "P8-HUD-EVENT-HIERARCHY",
+      "area": "hud-hierarchy",
+      "status": "pass",
+      "summary": "Hit, kill, pickup, unavailable-reason, respawn, and interaction hooks exist; damage direction is derived from real attacker positions.",
+      "evidence": [
+        "index.html:233",
+        "index.html:234",
+        "index.html:274",
+        "index.html:294",
+        "index.html:280",
+        "src/ui/DamageDirection.js:14",
+        "src/core/Game.js:125",
+        "src/core/Game.js:800",
+        "src/core/Game.js:805",
+        "src/core/Game.js:807",
+        "src/core/Game.js:1002",
+        "src/core/Game.js:1010",
+        "src/core/Game.js:1015",
+        "src/ui/HUD.js:300",
+        "src/ui/HUD.js:310",
+        "src/world/PickupSystem.js:101",
+        "src/world/PickupSystem.js:106",
+        "src/world/PickupSystem.js:110",
+        "src/world/PickupSystem.js:123"
+      ]
+    },
+    {
+      "id": "P8-HUD-LIVE-REGIONS",
+      "area": "hud-hierarchy",
+      "status": "pass",
+      "summary": "11 live regions exist; critical status announcement policy still needs a deliberate contract.",
+      "evidence": [
+        "index.html:21",
+        "index.html:190",
+        "index.html:201",
+        "index.html:274",
+        "index.html:275",
+        "index.html:276",
+        "index.html:277",
+        "index.html:280"
+      ]
+    },
+    {
+      "id": "P8-DEV-OVERLAY-BOUNDARY",
+      "area": "hud-hierarchy",
+      "status": "pass",
+      "summary": "Development diagnostics remain gated from the default player surface.",
+      "evidence": [
+        "src/main.js:14",
+        "src/main.js:16",
+        "src/main.js:18",
+        "src/main.js:20",
+        "src/main.js:28",
+        "src/main.js:31",
+        "src/main.js:206",
+        "src/main.js:216",
+        "index.html:358"
+      ]
+    },
+    {
+      "id": "P8-PERF-HUD-DOM",
+      "area": "performance",
+      "status": "pass",
+      "summary": "The hot HUD update mutates existing text/style nodes instead of rebuilding the DOM tree.",
+      "evidence": [
+        "src/ui/HUD.js:72",
+        "src/ui/HUD.js:77",
+        "src/ui/HUD.js:83",
+        "src/ui/HUD.js:96",
+        "src/ui/HUD.js:102",
+        "src/ui/HUD.js:105",
+        "src/ui/HUD.js:148",
+        "src/ui/HUD.js:152"
+      ]
+    },
+    {
+      "id": "P8-SELECTOR-CONTRACT",
+      "area": "automation",
+      "status": "pass",
+      "summary": "Existing IDs are stable, but explicit accessibility/state data contracts have not been introduced.",
+      "evidence": [
+        "index.html:232",
+        "index.html:241",
+        "index.html:248",
+        "index.html:261",
+        "index.html:262",
+        "index.html:266",
+        "index.html:287",
+        "index.html:302"
+      ]
+    },
+    {
+      "id": "P8-EVIDENCE-MATRIX",
+      "area": "evidence",
+      "status": "pass",
+      "summary": "The scaffold records the required viewport, zoom, mode, pointer-lock, grayscale, and timed-readability evidence.",
+      "evidence": [
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:21",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:40",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:41",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:49",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:53",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:60",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:62",
+        "tests/accessibility/PHASE8_AUDIT_MATRIX.md:65"
+      ]
+    }
+  ],
+  "note": "Strict mode requires every scaffolded contract to pass."
+}

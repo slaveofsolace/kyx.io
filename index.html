@@ -2,479 +2,265 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>KYX.IO — The Halo of Web3</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0c10" />
+  <meta name="description" content="KYX.IO offline combat practice prototype." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0c10'/%3E%3Cpath d='M7 7h5v7l7-7h6l-8 8 8 10h-6l-7-9v9H7z' fill='%23ffd166'/%3E%3C/svg%3E" />
+  <title>KYX.IO &mdash; Offline Practice</title>
   <link rel="stylesheet" href="/src/style.css" />
-  <!--
-    Google AdSense — replace data-ad-client with your publisher ID (ca-pub-XXXXXXXXXXXXXXXX)
-    and each data-ad-slot with your per-unit slot IDs before going live.
-  -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-          crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="app">
-    <canvas id="game-canvas"></canvas>
+    <canvas
+      id="game-canvas"
+      tabindex="0"
+      aria-label="KYX.IO offline practice game viewport"
+    ></canvas>
 
-    <!-- ===================== BOOT SCREEN (pulsating logo) ===================== -->
-    <div id="connect-screen" class="overlay">
+    <!-- Boot status. The live arena remains visible behind this local-only shell. -->
+    <div id="connect-screen" class="overlay" role="status" aria-live="polite">
       <div class="connect-panel">
         <h1 class="logo boot-logo">KYX<span>.IO</span></h1>
-        <p class="tagline boot-tagline">The Halo of Web3</p>
+        <p class="tagline boot-tagline">Local combat prototype</p>
       </div>
     </div>
 
-    <!-- Login & register are standalone pages: /login and /register -->
-
-    <!-- ===================== TOP NAV (ev.io-style) ===================== -->
-    <div id="top-nav" class="hidden">
-      <div class="nav-brand">KYX<span>.IO</span></div>
-      <nav class="nav-items">
-        <!-- PUBLIC GAME — game-mode picker dropdown -->
-        <div class="nav-dd-wrap">
-          <button class="nav-item nav-dd-btn" data-dd="publicgame">PUBLIC GAME &#9660;</button>
-          <div class="nav-dd modes-dropdown hidden" id="dd-publicgame">
-            <button class="mode-option" data-mode="deathmatch">
-              <span class="mode-opt-icon">&#9876;</span>
-              <div class="mode-opt-body">
-                <div class="mode-opt-name">DEATHMATCH</div>
-                <div class="mode-opt-sub">FFA &bull; 8 Players &bull; 8 Minutes</div>
-              </div>
-            </button>
-            <button class="mode-option" data-mode="survival">
-              <span class="mode-opt-icon">&#129503;</span>
-              <div class="mode-opt-body">
-                <div class="mode-opt-name">SURVIVAL</div>
-                <div class="mode-opt-sub">Co-op &bull; Up to 5 &bull; Wave Defense</div>
-              </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- PROFILE dropdown — Inventory / Career / Achievements (gated) -->
-        <div class="nav-dd-wrap">
-          <button class="nav-item nav-dd-btn" data-dd="profile">PROFILE &#9660;</button>
-          <div class="nav-dd profile-dropdown hidden" id="dd-profile">
-            <button class="profile-menu-item" data-panel="loadout" data-gated="1">
-              <span class="pm-icon">&#9776;</span>
-              <div class="pm-body"><div class="pm-name">INVENTORY</div><div class="pm-sub">Weapons, skins &amp; character</div></div>
-            </button>
-            <button class="profile-menu-item" data-panel="profile" data-gated="1">
-              <span class="pm-icon">&#9733;</span>
-              <div class="pm-body"><div class="pm-name">CAREER</div><div class="pm-sub">Stats, rank &amp; record</div></div>
-            </button>
-            <button class="profile-menu-item" data-panel="achievements" data-gated="1">
-              <span class="pm-icon">&#127942;</span>
-              <div class="pm-body"><div class="pm-name">ACHIEVEMENTS</div><div class="pm-sub">Challenges &amp; rewards</div></div>
-            </button>
-          </div>
-        </div>
-
-        <!-- NIGHT MARKET dropdown — Night Market + Battle Pass (gated) -->
-        <div class="nav-dd-wrap">
-          <button class="nav-item nav-dd-btn" data-dd="store">NIGHT MARKET &#9660;</button>
-          <div class="nav-dd profile-dropdown hidden" id="dd-store">
-            <button class="profile-menu-item" data-panel="shop" data-gated="1">
-              <span class="pm-icon">&#127769;</span>
-              <div class="pm-body"><div class="pm-name">NIGHT MARKET</div><div class="pm-sub">5 daily exclusive deals</div></div>
-            </button>
-            <button class="profile-menu-item" data-panel="battlepass" data-gated="1">
-              <span class="pm-icon">&#127903;</span>
-              <div class="pm-body"><div class="pm-name">BATTLE PASS</div><div class="pm-sub">Season 1 rewards track</div></div>
-            </button>
-          </div>
-        </div>
-
-        <!-- SOCIAL dropdown — Fireteam + community links (gated fireteam) -->
-        <div class="nav-dd-wrap">
-          <button class="nav-item nav-dd-btn" data-dd="social">SOCIAL &#9660;</button>
-          <div class="nav-dd profile-dropdown hidden" id="dd-social">
-            <button class="profile-menu-item" data-panel="party" data-gated="1">
-              <span class="pm-icon">&#128101;</span>
-              <div class="pm-body"><div class="pm-name">FIRETEAM</div><div class="pm-sub">Squad up with friends</div></div>
-            </button>
-            <a class="profile-menu-item" href="https://twitter.com" target="_blank" rel="noopener">
-              <span class="pm-icon">&#128038;</span>
-              <div class="pm-body"><div class="pm-name">TWITTER</div><div class="pm-sub">Follow for updates</div></div>
-            </a>
-            <a class="profile-menu-item" href="https://discord.com" target="_blank" rel="noopener">
-              <span class="pm-icon">&#128172;</span>
-              <div class="pm-body"><div class="pm-name">DISCORD</div><div class="pm-sub">Join the community</div></div>
-            </a>
-          </div>
-        </div>
-
-        <!-- SETTINGS — open to everyone (local config) -->
-        <button class="nav-item" data-panel="settings">SETTINGS</button>
+    <!-- Truthful desktop navigation: only working local paths are actionable. -->
+    <header id="top-nav" class="hidden">
+      <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
+      <span class="local-build-chip">LOCAL BUILD</span>
+      <nav class="nav-items" aria-label="Practice menu">
+        <button
+          type="button"
+          class="nav-item mode-option practice-nav-mode"
+          data-mode="deathmatch"
+        >OFFLINE PRACTICE</button>
+        <button type="button" class="nav-item" data-panel="loadout" aria-controls="panel-loadout" aria-expanded="false">LOADOUT</button>
+        <button type="button" class="nav-item" data-panel="settings" aria-controls="panel-settings" aria-expanded="false">SETTINGS</button>
+        <button
+          id="online-match-button"
+          type="button"
+          class="nav-item online-unavailable"
+          disabled
+          aria-disabled="true"
+          title="No authoritative online endpoint is configured in this build"
+        >ONLINE MATCH &mdash; NOT AVAILABLE</button>
       </nav>
-    </div>
+    </header>
 
-    <!-- Right-side vertical menu (ev.io): login / rankings -->
-    <div id="nav-side" class="hidden">
-      <a id="nav-login-link" class="side-login" href="/login">login</a>
-      <div id="nav-account" class="side-account hidden">
-        <span id="nav-username" class="side-user"></span>
-        <span id="nav-coins" class="side-coins">&#128176; 500</span>
-        <button id="nav-logout-btn" class="side-link side-logout">logout</button>
-      </div>
-      <button class="side-link" data-panel="rankings">rankings</button>
-    </div>
+    <aside id="nav-side" class="hidden local-profile-card" aria-label="Local profile">
+      <span class="local-profile-kicker">LOCAL GUEST PROFILE</span>
+      <span id="nav-username" class="side-user">Recruit</span>
+      <span class="local-profile-storage">SAVED ON THIS DEVICE</span>
+    </aside>
 
-    <!-- Bottom-left: share game -->
-    <div id="share-game" class="hidden">
-      <span class="share-ico">&#128279;</span> share game
-    </div>
+    <!-- Primary mode card and explicit local population disclosure. -->
+    <main id="center-play" class="hidden">
+      <section class="practice-launch-card" aria-labelledby="practice-title">
+        <p class="practice-eyebrow">OFFLINE PRACTICE</p>
+        <h2 id="practice-title">IRON BASTION</h2>
+        <div class="map-preview-window" aria-label="Live map preview">
+          <span>MAP PREVIEW</span>
+        </div>
+        <p class="practice-population">1 LOCAL PLAYER / 7 BOTS</p>
+        <button id="play-btn" type="button" class="click-to-play">START OFFLINE PRACTICE</button>
+        <a
+          id="locked-graybox-preview-link"
+          class="locked-graybox-preview-link"
+          href="?mapPackage=inkfall_foundry%402"
+        >INSPECT LOCKED INKFALL FOUNDRY @2</a>
+        <p class="locked-graybox-preview-note">Graybox package inspection only. It does not change or launch the Offline Practice map.</p>
+        <a
+          id="press-hall-inspection-link"
+          class="locked-graybox-preview-link"
+          href="?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined"
+        >INSPECT PRESS HALL V3.3 MATERIAL RUNTIME</a>
+        <p class="locked-graybox-preview-note">Hash-pinned non-default presentation inspection with explicit materials and separate revision-2 authority overlay. G5 and G8 remain open.</p>
+        <p class="practice-footnote">Runs entirely on this device. Nothing shown here represents online players or shared progression.</p>
+      </section>
+    </main>
 
-    <!-- Right edge: community icons -->
-    <div id="social-icons" class="hidden">
-      <a class="social-ico social-tw" href="https://twitter.com" target="_blank" rel="noopener" title="Twitter">&#119990;</a>
-      <a class="social-ico social-dc" href="https://discord.com" target="_blank" rel="noopener" title="Discord">&#9862;</a>
-    </div>
-
-    <!-- ===================== CENTER PLAY ===================== -->
-    <div id="center-play" class="hidden">
-      <button id="play-btn" class="click-to-play">CLICK TO PLAY</button>
-      <div class="spectate-hint">[ SPECTATE ]</div>
-    </div>
-
-    <!-- ===================== PANEL: LOADOUT (ev.io-style) ===================== -->
-    <div id="panel-loadout" class="nav-panel nav-panel-inv hidden">
-      <button id="inv-close-btn" class="inv-close-btn" title="Close">[X]</button>
-
+    <!-- Local loadout. Cosmetic ownership and currency claims are intentionally absent. -->
+    <section id="panel-loadout" class="nav-panel nav-panel-inv hidden" aria-label="Local loadout">
+      <button id="inv-close-btn" type="button" class="inv-close-btn" title="Close loadout">[X]</button>
       <div class="inv-header">
-        <div class="inv-avatar-big"><canvas id="armor-preview-canvas" width="200" height="200"></canvas></div>
+        <div class="inv-avatar-big">
+          <canvas id="armor-preview-canvas" width="200" height="200" aria-label="Armor preview"></canvas>
+        </div>
         <div class="inv-id">
+          <div class="local-panel-kicker">LOCAL LOADOUT</div>
           <div class="inv-username" id="inv-username">Recruit</div>
           <input id="player-name" type="hidden" value="Recruit" />
-          <div class="inv-meta">Balance:
-            <span class="inv-ecoin"></span>
-            <span id="inv-balance">500</span>
-          </div>
-          <div class="inv-meta">Networth: <span id="inv-networth">0</span>
-            <span class="inv-tt" title="Total value of the skins you own">?</span>
-          </div>
+          <div class="inv-meta local-only-note">Changes are stored on this device.</div>
         </div>
       </div>
-
       <div class="inv-section-label">EQUIPPED</div>
       <div id="inv-equipped" class="inv-card-row"></div>
-
-      <div class="inv-section-label">INVENTORY</div>
+      <div class="inv-section-label">AVAILABLE LOCALLY</div>
       <div id="inv-tabs" class="inv-tabs"></div>
       <div id="inv-grid" class="inv-grid"></div>
-    </div>
+    </section>
 
-    <!-- ===================== PANEL: MODES ===================== -->
-    <div id="panel-modes" class="nav-panel hidden">
-      <p class="modes-intro">Choose a game mode for your next session.</p>
-      <div id="mode-cards" class="mode-cards"></div>
-    </div>
-
-    <!-- ===================== PANEL: SETTINGS ===================== -->
-    <div id="panel-settings" class="nav-panel hidden">
-
+    <!-- Local settings are the only other active shell panel. -->
+    <section id="panel-settings" class="nav-panel hidden" aria-label="Local settings">
+      <p class="settings-brief">DISPLAY / INPUT PROFILE <span>Saved only on this device</span></p>
       <div class="settings-section">CONTROLS</div>
 
-      <label class="field-label">Mouse Sensitivity</label>
+      <label class="field-label" for="set-sens">Mouse Sensitivity</label>
       <div class="setting-row">
         <input type="range" id="set-sens" min="30" max="300" step="5" value="100" class="setting-slider" />
-        <span id="set-sens-val" class="setting-val">1.0×</span>
+        <output id="set-sens-val" class="setting-val" for="set-sens">1.0&times;</output>
       </div>
 
-      <label class="field-label">Field of View</label>
+      <label class="field-label" for="set-fov">Field of View</label>
       <div class="setting-row">
         <input type="range" id="set-fov" min="60" max="110" step="5" value="78" class="setting-slider" />
-        <span id="set-fov-val" class="setting-val">78°</span>
+        <output id="set-fov-val" class="setting-val" for="set-fov">78&deg;</output>
       </div>
 
-      <label class="field-label">Invert Look (Vertical)</label>
-      <div class="quality-btns" id="invert-btns">
-        <button class="quality-btn invert-btn active" data-inv="off">NORMAL</button>
-        <button class="quality-btn invert-btn" data-inv="on">INVERTED</button>
+      <span class="field-label" id="invert-look-label">Invert Look (Vertical)</span>
+      <div class="quality-btns" id="invert-btns" role="group" aria-labelledby="invert-look-label">
+        <button type="button" class="quality-btn invert-btn active" data-inv="off" aria-pressed="true">NORMAL</button>
+        <button type="button" class="quality-btn invert-btn" data-inv="on" aria-pressed="false">INVERTED</button>
       </div>
 
       <div class="settings-section">AUDIO</div>
-
-      <label class="field-label">Master Volume</label>
+      <label class="field-label" for="set-vol">Master Volume</label>
       <div class="setting-row">
         <input type="range" id="set-vol" min="0" max="100" step="5" value="50" class="setting-slider" />
-        <span id="set-vol-val" class="setting-val">50%</span>
+        <output id="set-vol-val" class="setting-val" for="set-vol">50%</output>
       </div>
+
+      <span class="field-label" id="subtitles-label">Subtitles</span>
+      <div class="quality-btns binary-choice" id="subtitles-btns" role="group" aria-labelledby="subtitles-label">
+        <button type="button" class="quality-btn" data-subtitles="off" aria-pressed="false">OFF</button>
+        <button type="button" class="quality-btn active" data-subtitles="on" aria-pressed="true">ON</button>
+      </div>
+
+      <span class="field-label" id="visual-audio-cues-label">Critical Sound Indicators</span>
+      <div class="quality-btns binary-choice" id="visual-audio-cues-btns" role="group" aria-labelledby="visual-audio-cues-label" aria-describedby="visual-audio-cues-note">
+        <button type="button" class="quality-btn active" data-visual-audio-cues="off" aria-pressed="true">OFF</button>
+        <button type="button" class="quality-btn" data-visual-audio-cues="on" aria-pressed="false">ON</button>
+      </div>
+      <p id="visual-audio-cues-note" class="settings-note">Shows bounded threat and status labels for critical sounds without revealing exact enemy positions.</p>
 
       <div class="settings-section">GRAPHICS</div>
-
-      <label class="field-label">Render Quality</label>
-      <div class="quality-btns" id="quality-btns">
-        <button class="quality-btn" data-q="low">LOW</button>
-        <button class="quality-btn active" data-q="medium">MEDIUM</button>
-        <button class="quality-btn" data-q="high">HIGH</button>
+      <span class="field-label" id="quality-label">Render Quality</span>
+      <div class="quality-btns" id="quality-btns" role="group" aria-labelledby="quality-label">
+        <button type="button" class="quality-btn" data-q="low" aria-pressed="false">LOW</button>
+        <button type="button" class="quality-btn active" data-q="medium" aria-pressed="true">MEDIUM</button>
+        <button type="button" class="quality-btn" data-q="high" aria-pressed="false">HIGH</button>
       </div>
 
-      <button id="settings-save-btn" class="play-btn" style="margin-top:22px">SAVE SETTINGS</button>
+      <div class="settings-section">HUD / ACCESSIBILITY</div>
+      <p class="settings-note">Vital, ammo, reload, and timer warnings always retain text or numeric cues.</p>
+
+      <label class="field-label" for="set-hud-scale">HUD Scale</label>
+      <div class="setting-row">
+        <input type="range" id="set-hud-scale" min="80" max="140" step="5" value="100" class="setting-slider" />
+        <output id="set-hud-scale-val" class="setting-val" for="set-hud-scale">100%</output>
+      </div>
+
+      <label class="field-label" for="set-crosshair-scale">Crosshair Size</label>
+      <div class="setting-row">
+        <input type="range" id="set-crosshair-scale" min="75" max="175" step="5" value="100" class="setting-slider" />
+        <output id="set-crosshair-scale-val" class="setting-val" for="set-crosshair-scale">100%</output>
+      </div>
+
+      <span class="field-label" id="crosshair-color-label">Crosshair Color</span>
+      <div class="quality-btns accessibility-choice-grid" id="crosshair-color-btns" role="group" aria-labelledby="crosshair-color-label">
+        <button type="button" class="quality-btn crosshair-choice active" data-crosshair-color="cyan" aria-pressed="true"><span class="choice-swatch swatch-cyan" aria-hidden="true"></span>CYAN</button>
+        <button type="button" class="quality-btn crosshair-choice" data-crosshair-color="white" aria-pressed="false"><span class="choice-swatch swatch-white" aria-hidden="true"></span>WHITE</button>
+        <button type="button" class="quality-btn crosshair-choice" data-crosshair-color="amber" aria-pressed="false"><span class="choice-swatch swatch-amber" aria-hidden="true"></span>AMBER</button>
+      </div>
+
+      <span class="field-label" id="high-contrast-label">High Contrast</span>
+      <div class="quality-btns binary-choice" id="high-contrast-btns" role="group" aria-labelledby="high-contrast-label">
+        <button type="button" class="quality-btn active" data-high-contrast="off" aria-pressed="true">STANDARD</button>
+        <button type="button" class="quality-btn" data-high-contrast="on" aria-pressed="false">HIGH</button>
+      </div>
+
+      <span class="field-label" id="reduced-motion-label">Camera / HUD Motion</span>
+      <div class="quality-btns binary-choice" id="reduced-motion-btns" role="group" aria-labelledby="reduced-motion-label">
+        <button type="button" class="quality-btn active" data-reduced-motion="off" aria-pressed="true">FULL</button>
+        <button type="button" class="quality-btn" data-reduced-motion="on" aria-pressed="false">REDUCED</button>
+      </div>
+
+      <span class="field-label" id="reduced-flash-label">Full-Screen Flash</span>
+      <div class="quality-btns binary-choice" id="reduced-flash-btns" role="group" aria-labelledby="reduced-flash-label">
+        <button type="button" class="quality-btn active" data-reduced-flash="off" aria-pressed="true">FULL</button>
+        <button type="button" class="quality-btn" data-reduced-flash="on" aria-pressed="false">REDUCED</button>
+      </div>
+
+      <button id="settings-save-btn" type="button" class="play-btn">SAVE LOCAL SETTINGS</button>
+      <p id="settings-save-status" class="settings-save-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- Required initialization hooks, kept inaccessible and free of product claims. -->
+    <div id="panel-modes" class="nav-panel hidden" aria-hidden="true">
+      <div id="mode-cards" class="hidden"></div>
     </div>
+    <div id="skin-grid" class="hidden" aria-hidden="true"></div>
+    <button id="profile-logout-btn" type="button" class="hidden" tabindex="-1" aria-hidden="true">RESET LOCAL PROFILE</button>
 
-    <!-- ===================== PANEL: FIRETEAM ===================== -->
-    <div id="panel-party" class="nav-panel hidden">
-      <div class="party-header">
-        <div class="panel-label">YOUR FIRETEAM</div>
-        <div class="party-size-badge" id="party-size-badge">1 / 4</div>
-      </div>
-      <div id="party-slots" class="party-slots">
-        <div class="party-slot party-slot-you">
-          <div class="party-slot-avatar"></div>
-          <div class="party-slot-name">You</div>
-          <div class="party-slot-badge">LEADER</div>
-        </div>
-        <div class="party-slot party-slot-empty">
-          <div class="party-slot-plus">+</div>
-          <div class="party-slot-name">Open Slot</div>
-        </div>
-        <div class="party-slot party-slot-empty">
-          <div class="party-slot-plus">+</div>
-          <div class="party-slot-name">Open Slot</div>
-        </div>
-        <div class="party-slot party-slot-empty">
-          <div class="party-slot-plus">+</div>
-          <div class="party-slot-name">Open Slot</div>
-        </div>
-      </div>
-      <div class="panel-divider"></div>
-      <div class="panel-label" style="margin-bottom:10px">INVITE SPARTAN</div>
-      <div class="party-invite-row">
-        <input id="party-invite-input" class="text-input" placeholder="Enter callsign" style="flex:1" />
-        <button class="play-btn" style="width:auto;margin:0;padding:10px 18px">INVITE</button>
-      </div>
-      <div class="panel-divider"></div>
-      <div class="panel-label" style="margin-bottom:10px">FIRETEAM CODE</div>
-      <div class="party-code-wrap">
-        <div class="party-code" id="party-code">KYX-4F2A</div>
-        <button class="ghost-btn" style="width:auto;padding:8px 14px;margin:0">COPY</button>
-      </div>
-      <p class="party-hint">Share this code so squadmates can join your fireteam directly.</p>
-    </div>
-
-    <!-- ===================== PANEL: PRIVATE GAME ===================== -->
-    <div id="panel-private" class="nav-panel hidden">
-      <div class="panel-label" style="margin-bottom:6px">PRIVATE MATCH</div>
-      <p class="private-desc">Create a custom game for your fireteam. Only players with the room code can join.</p>
-
-      <div class="private-section-label">CREATE ROOM</div>
-      <div class="private-form">
-        <label class="field-label">Game Mode</label>
-        <div class="private-mode-select">
-          <button class="private-mode-btn active" data-mode="deathmatch">FFA</button>
-          <button class="private-mode-btn" data-mode="teamslayer">TEAM SLAYER</button>
-          <button class="private-mode-btn" data-mode="ctf">CTF</button>
-          <button class="private-mode-btn" data-mode="koth">KING OF HILL</button>
-          <button class="private-mode-btn" data-mode="survival">FIREFIGHT</button>
-        </div>
-        <label class="field-label" style="margin-top:14px">Max Players</label>
-        <div class="private-mode-select">
-          <button class="private-mode-btn" data-count="2">2</button>
-          <button class="private-mode-btn active" data-count="4">4</button>
-          <button class="private-mode-btn" data-count="8">8</button>
-          <button class="private-mode-btn" data-count="16">16</button>
-        </div>
-        <button class="play-btn" style="margin-top:18px">CREATE PRIVATE MATCH</button>
-      </div>
-
-      <div class="panel-divider"></div>
-      <div class="private-section-label">JOIN ROOM</div>
-      <div class="party-invite-row">
-        <input class="text-input" placeholder="Room code (e.g. KYX-4F2A)" style="flex:1" />
-        <button class="play-btn" style="width:auto;margin:0;padding:10px 18px">JOIN</button>
-      </div>
-    </div>
-
-    <!-- ===================== PANEL: PROFILE ===================== -->
-    <div id="panel-profile" class="nav-panel nav-panel-wide hidden">
-      <div id="profile-username" class="prof-username">RECRUIT</div>
-      <div class="prof-tabs">
-        <button class="prof-tab active">VIEW</button>
-        <button class="prof-tab prof-tab-dim">EDIT</button>
-      </div>
-      <div class="prof-body">
-        <div class="prof-char">
-          <canvas id="profile-char-canvas" width="320" height="480"></canvas>
-        </div>
-        <div class="prof-stats">
-          <div class="prof-stat"><div class="prof-stat-label">KILLS</div><div class="prof-stat-val" id="ps-kills">0</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">DEATHS</div><div class="prof-stat-val" id="ps-deaths">0</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">K/D</div><div class="prof-stat-val" id="ps-kd">0.00</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">RATING</div><div class="prof-stat-val" id="ps-rating">0</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">SCORE THIS WEEK</div><div class="prof-stat-val" id="ps-scoreweek">0</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">ALL TIME SCORE</div><div class="prof-stat-val" id="ps-score">0</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">TOTAL GAMES</div><div class="prof-stat-val" id="ps-games">0</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">BEST SURVIVAL</div><div class="prof-stat-val" id="ps-survival">00:00:00</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">RANK</div><div class="prof-stat-val" id="ps-rank">RECRUIT</div></div>
-          <div class="prof-stat"><div class="prof-stat-label">BALANCE</div><div class="prof-stat-val" id="ps-balance">0e</div></div>
-        </div>
-      </div>
-      <button id="profile-logout-btn" class="ghost-btn" style="margin-top:16px;display:none">LOGOUT</button>
-    </div>
-
-    <!-- ===================== PANEL: ACHIEVEMENTS ===================== -->
-    <div id="panel-achievements" class="nav-panel nav-panel-wide hidden">
-      <div class="ach-header">
-        <div class="inv-section-label" style="margin-top:0">ACHIEVEMENTS</div>
-        <div class="ach-progress-pill"><span id="ach-done">0</span> / <span id="ach-total">0</span> COMPLETE</div>
-      </div>
-      <div id="ach-grid" class="ach-grid"></div>
-    </div>
-
-    <!-- ===================== PANEL: RANKINGS ===================== -->
-    <div id="panel-rankings" class="nav-panel nav-panel-wide hidden">
-      <div class="rnk-header">
-        <div class="inv-section-label" style="margin-top:0">RANKINGS</div>
-        <div class="rnk-sub">All players ranked by total kills</div>
-      </div>
-      <table class="rnk-table">
-        <thead><tr>
-          <th class="rnk-th-rank">#</th>
-          <th class="rnk-th-name">PLAYER</th>
-          <th>KILLS</th>
-          <th>DEATHS</th>
-          <th>K/D</th>
-          <th>SCORE</th>
-          <th>GAMES</th>
-        </tr></thead>
-        <tbody id="rnk-rows"></tbody>
-      </table>
-    </div>
-
-    <!-- ===================== PANEL: NIGHT MARKET ===================== -->
-    <div id="panel-shop" class="nav-panel nav-panel-shop hidden">
-      <!-- Top bar -->
-      <div class="nm-topbar">
-        <div class="nm-brand">&#127769; NIGHT MARKET</div>
-        <div class="stp-currency">
-          <span class="stp-coin-icon">&#9670;</span>
-          <span id="shop-coin-balance">0</span>
-          <span class="stp-coin-name">E-COINS</span>
-        </div>
-      </div>
-
-      <!-- Guest / not-logged-in wall -->
-      <div id="shop-auth-wall" class="shop-auth-wall hidden">
-        <div class="saw-lock">&#128274;</div>
-        <div class="saw-title">SIGN IN TO ACCESS THE NIGHT MARKET</div>
-        <div class="saw-sub">Create a free account to browse today's exclusive deals.</div>
-      </div>
-
-      <!-- Main Night Market content (shown when logged in) -->
-      <div id="shop-content" class="hidden">
-        <div class="nm-header">
-          <div class="nm-title">NIGHT MARKET</div>
-          <div class="nm-sub">5 exclusive deals &mdash; resets daily</div>
-          <div class="nm-timer" id="nm-timer">Refreshes in 00:00:00</div>
-        </div>
-        <div id="shop-grid-root"></div>
-        <div class="shop-earn-tip">Earn E-Coins in-game &middot; 10 per kill &middot; 100 match bonus &middot; Daily challenges</div>
-      </div>
-    </div>
-
-    <!-- ===================== PANEL: BATTLE PASS ===================== -->
-    <div id="panel-battlepass" class="nav-panel nav-panel-wide hidden">
-      <div class="bp-header-row">
-        <div>
-          <div class="panel-label">BATTLE PASS <span class="bp-season-tag">SEASON 1</span></div>
-          <div id="bp-tier-label" class="bp-tier-label">Tier 1 / 30</div>
-          <div class="bp-xp-bar-wrap">
-            <div class="bp-xp-bar-bg"><div id="bp-xp-bar" class="bp-xp-bar-fill"></div></div>
-            <span id="bp-xp-text" class="bp-xp-text">0 / 500 XP</span>
-          </div>
-        </div>
-        <div class="bp-premium-box" id="bp-premium-box">
-          <div class="bp-prem-label">PREMIUM PASS</div>
-          <div class="bp-prem-desc">Unlock 14 extra skins + bonus coins</div>
-          <button id="bp-unlock-btn" class="bp-unlock-btn">UNLOCK — &#128176; 1000</button>
-        </div>
-      </div>
-      <div id="bp-track" class="bp-track"></div>
-    </div>
-
-    <!-- ===================== MAP LOADING SCREEN (ev.io style) ===================== -->
-    <div id="map-loading" class="hidden">
+    <!-- Local map transition. -->
+    <div id="map-loading" class="hidden" role="status" aria-live="polite">
       <div class="ml-panel">
-        <div class="ml-name">IRON-<br/>BASTION</div>
-        <div class="ml-region">Auto</div>
-        <div class="ml-mode" id="ml-mode">Deathmatch</div>
-        <div class="ml-players" id="ml-players">8 players</div>
-        <div class="ml-tip" id="ml-tip">TIP: press Q to blink-teleport forward</div>
+        <div class="ml-name">IRON-<br />BASTION</div>
+        <div class="ml-region" id="ml-region">Local device</div>
+        <div class="ml-mode" id="ml-mode">Offline Practice</div>
+        <div class="ml-players" id="ml-players">1 local player / 7 bots</div>
+        <div class="ml-tip" id="ml-tip">TIP: press Q to blink forward</div>
       </div>
     </div>
 
-    <!-- ===================== PAUSE MENU ===================== -->
-    <div id="pause-menu" class="overlay hidden">
+    <div id="pause-menu" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pause-title" inert>
       <div class="menu-panel small">
-        <h2>PAUSED</h2>
-        <button id="resume-btn" class="play-btn">RESUME</button>
-        <button id="quit-btn" class="ghost-btn">QUIT TO MENU</button>
+        <h2 id="pause-title">PRACTICE PAUSED</h2>
+        <p class="pause-recovery-note">POINTER RELEASED // TAB TO SELECT // ENTER TO CONFIRM</p>
+        <p id="pause-lock-status" class="pause-lock-status hidden" role="alert"></p>
+        <button id="resume-btn" type="button" class="play-btn">RESUME PRACTICE</button>
+        <button id="quit-btn" type="button" class="ghost-btn">QUIT TO PRACTICE MENU</button>
       </div>
     </div>
 
-    <!-- ===================== GAME OVER ===================== -->
-    <div id="gameover-menu" class="overlay hidden">
+    <div id="gameover-menu" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameover-title" inert>
       <div class="menu-panel small">
         <h2 id="gameover-title">YOU DIED</h2>
         <div class="stats" id="gameover-stats"></div>
-        <!-- Ad: death screen 300×250 — captive audience between stats and respawn -->
-        <div class="ad-slot ad-slot-gameover">
-          <ins class="adsbygoogle"
-               style="display:block;width:300px;height:250px"
-               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-               data-ad-slot="2222222222"
-               data-ad-format="rectangle"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-        <button id="restart-btn" class="play-btn">RESPAWN</button>
-        <button id="menu-btn" class="ghost-btn">MAIN MENU</button>
+        <button id="restart-btn" type="button" class="play-btn">RESPAWN OFFLINE</button>
+        <button id="menu-btn" type="button" class="ghost-btn">PRACTICE MENU</button>
       </div>
     </div>
 
-    <!-- ===================== HUD ===================== -->
-    <div id="hud" class="hidden">
-      <div id="crosshair">
-        <span></span><span></span><span></span><span></span>
-      </div>
-      <div id="hitmarker"></div>
-      <div id="damage-flash"></div>
-
+    <!-- In-practice HUD: every population label identifies bots explicitly. -->
+    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="g7-foundation-v1" data-kyx-a11y="text-and-pattern-critical-states">
+      <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div id="hitmarker" aria-hidden="true"></div>
+      <div id="damage-flash" aria-hidden="true"></div>
       <div id="mode-info" class="hidden"></div>
 
-      <div id="health-wrap" class="hud-panel">
-        <div class="hud-icon health-icon">&hearts;</div>
-        <div class="bar-bg"><div id="health-bar" class="bar-fill"></div></div>
-        <span id="health-text">100</span>
-      </div>
-
-      <div id="shield-wrap" class="hud-panel hidden">
-        <div class="hud-icon shield-icon">&#128737;</div>
-        <div class="bar-bg"><div id="shield-bar" class="bar-fill shield-fill"></div></div>
-        <span id="shield-text">0</span>
-      </div>
-
-      <div id="stamina-wrap" class="hud-panel">
-        <div class="hud-icon stamina-icon">&#9889;</div>
-        <div class="bar-bg"><div id="stamina-bar" class="bar-fill stamina-fill"></div></div>
-        <span id="stamina-text">100</span>
-      </div>
-
-      <div id="grenade-wrap" class="hud-panel">
-        <div class="grenade-slot">
-          <span class="grenade-icon frag-icon">&#128163;</span>
-          <span id="frag-count">2</span>
-          <span class="grenade-label">FRAG</span>
+      <div id="hud-vitals" class="hud-vitals-cluster" role="group" aria-label="Player vital status">
+        <div id="health-wrap" class="hud-panel" aria-label="Health 100 of 100">
+          <span class="hud-readout-label">HP</span>
+          <div class="bar-bg"><div id="health-bar" class="bar-fill"></div></div>
+          <span id="health-text">100</span>
+          <span id="health-state" class="hud-state-label hidden">LOW</span>
         </div>
-        <div class="grenade-divider"></div>
-        <div class="grenade-slot">
-          <span class="grenade-icon smoke-icon">&#127787;</span>
-          <span id="smoke-count">2</span>
-          <span class="grenade-label">SMOKE</span>
+
+        <div id="shield-wrap" class="hud-panel hidden" aria-label="Shield 0">
+          <span class="hud-readout-label">SHD</span>
+          <div class="bar-bg"><div id="shield-bar" class="bar-fill shield-fill"></div></div>
+          <span id="shield-text">0</span>
         </div>
+
+        <div id="stamina-wrap" class="hud-panel" aria-label="Energy 100 of 100">
+          <span class="hud-readout-label">NRG</span>
+          <div class="bar-bg"><div id="stamina-bar" class="bar-fill stamina-fill"></div></div>
+          <span id="stamina-text">100</span>
+          <span id="stamina-state" class="hud-state-label hidden">LOW</span>
+        </div>
+
       </div>
 
       <div id="weapon-wrap" class="hud-panel">
@@ -484,117 +270,98 @@
       </div>
 
       <div id="score-wrap" class="hud-panel">
-        <div id="server-pop">🌐 <span id="server-pop-count">1</span>/<span id="server-pop-max">8</span> PLAYERS</div>
-        <div>KILLS <span id="kill-count">0</span></div>
+        <div class="hud-practice-label">OFFLINE PRACTICE</div>
+        <div id="server-pop">1 LOCAL PLAYER / 7 BOTS<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
+        <div>BOTS DEFEATED <span id="kill-count">0</span></div>
         <div>SCORE <span id="score-count">0</span></div>
       </div>
 
       <div id="weapon-slots"></div>
-      <div id="killfeed"></div>
-
-      <!-- Large center timer for deathmatch -->
+      <div id="killfeed" aria-live="polite"></div>
+      <div id="caption-region" class="caption-region hidden" aria-live="polite" aria-atomic="true" aria-label="Subtitles" data-caption-contract="speaker-text-direction"></div>
+      <div id="audio-cue-region" class="audio-cue-region hidden" aria-live="polite" aria-atomic="true" aria-label="Critical sound indicators" data-audio-cue-contract="bounded-non-positional"></div>
+      <div id="damage-direction" class="damage-direction hidden" data-direction="front" aria-live="polite" aria-atomic="true">
+        <div class="damage-direction-card"><span class="damage-direction-marker" aria-hidden="true"></span><span id="damage-direction-text">DAMAGE FRONT</span></div>
+      </div>
+      <div id="ability-reason" class="ability-reason hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+      <div id="interaction-prompt" class="interaction-prompt hidden" role="status" aria-live="polite" aria-atomic="true">
+        <span id="interaction-key" class="interaction-key">E</span><span id="interaction-text">INTERACT</span>
+      </div>
+      <div id="connection-warning" class="connection-warning hidden" role="status" aria-live="polite" aria-atomic="true" data-condition="online-session-only">
+        <span class="connection-warning-label">CONNECTION DEGRADED</span><span id="connection-warning-detail"></span>
+      </div>
       <div id="dm-timer" class="hidden"></div>
-
-      <!-- Kill streak badge -->
       <div id="streak-badge" class="hidden"></div>
 
-      <!-- Survival: downed overlay -->
       <div id="downed-overlay" class="hidden">
         <div class="downed-text">DOWNED</div>
-        <div class="downed-sub">TEAMMATE REVIVING...</div>
+        <div class="downed-sub">AUTO-REVIVE IN PROGRESS</div>
         <div class="downed-bar-wrap"><div id="downed-bar"></div></div>
         <div id="downed-countdown" class="downed-countdown"></div>
       </div>
-
-      <!-- Survival: wave incoming banner (auto-hides) -->
       <div id="wave-banner" class="hidden"></div>
-
-      <!-- Mid-match player join/leave toast (auto-hides) -->
-      <div id="join-notification" class="hidden"></div>
-
-      <!-- Teleport blink screen flash -->
       <div id="teleport-flash"></div>
-
-      <!-- Q ability indicator (teleport blink cooldown ring) -->
-      <div id="ability-q" class="ability-indicator">
-        <span class="ability-key">Q</span>
-        <span class="ability-name">BLINK</span>
+      <div id="ability-rack" role="group" aria-label="Selected abilities" data-ability-count="3">
+        <div id="ability-frag" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Frag grenade, F, 2 available">
+          <span class="ability-key">F</span><span class="ability-name">FRAG</span><span id="frag-count" class="ability-count">2</span><span id="ability-frag-state" class="ability-state">READY</span>
+        </div>
+        <div id="ability-q" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Blink, Q, ready">
+          <span class="ability-key">Q</span><span class="ability-name">BLINK</span><span id="ability-q-state" class="ability-state">READY</span>
+        </div>
+        <div id="ability-smoke" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Smoke grenade, E, 2 available">
+          <span class="ability-key">E</span><span class="ability-name">SMOKE</span><span id="smoke-count" class="ability-count">2</span><span id="ability-smoke-state" class="ability-state">READY</span>
+        </div>
       </div>
 
-      <!-- Scope overlay: visible when ADS on scoped weapons -->
-      <div id="scope-overlay">
+      <div id="scope-overlay" aria-hidden="true">
         <div class="scope-ring">
-          <div class="scope-ch-v"></div>
-          <div class="scope-ch-h"></div>
-          <div class="scope-mildot scope-mildot-l"></div>
-          <div class="scope-mildot scope-mildot-r"></div>
-          <div class="scope-mildot scope-mildot-t"></div>
-          <div class="scope-mildot scope-mildot-b"></div>
+          <div class="scope-ch-v"></div><div class="scope-ch-h"></div>
+          <div class="scope-mildot scope-mildot-l"></div><div class="scope-mildot scope-mildot-r"></div>
+          <div class="scope-mildot scope-mildot-t"></div><div class="scope-mildot scope-mildot-b"></div>
           <div class="scope-ch-dot"></div>
         </div>
       </div>
     </div>
 
-    <!-- ===================== POST-MATCH LEADERBOARD ===================== -->
-    <!-- Sits outside #hud so hud.hide() doesn't bury it -->
+    <!-- Local post-practice results. No currency or remote-population claims. -->
     <div id="leaderboard-overlay" class="hidden">
       <div class="lb-panel">
-        <div class="lb-winner"><span id="lb-winner-name">SPARTAN</span> <span class="lb-won">WON</span></div>
-        <div class="lb-match-over-sub">FREE FOR ALL &bull; IRON-BASTION</div>
+        <div class="lb-winner"><span id="lb-winner-name">RECRUIT</span> <span class="lb-won">PRACTICE COMPLETE</span></div>
+        <div class="lb-match-over-sub">OFFLINE PRACTICE &bull; IRON BASTION &bull; 7 BOTS</div>
         <table class="lb-table">
-          <thead><tr>
-            <th class="lb-th-rank">#</th>
-            <th class="lb-th-name">PLAYER</th>
-            <th>SCORE</th>
-            <th>ASSISTS</th>
-            <th>KILLS</th>
-            <th>DEATHS</th>
-            <th>K/D</th>
-          </tr></thead>
+          <thead><tr><th class="lb-th-rank">#</th><th class="lb-th-name">COMBATANT</th><th>SCORE</th><th>ASSISTS</th><th>DEFEATS</th><th>DEATHS</th><th>K/D</th></tr></thead>
           <tbody id="lb-rows"></tbody>
         </table>
-        <div class="lb-earned">YOU EARNED <span class="lb-earned-coin">&#9670;</span> <span id="lb-earned-val">0</span></div>
-        <!-- Ad: post-match banner — 10-second countdown = captive audience -->
-        <div class="ad-slot ad-slot-leaderboard">
-          <ins class="adsbygoogle"
-               style="display:block;width:100%;height:100%"
-               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-               data-ad-slot="3333333333"
-               data-ad-format="horizontal"
-               data-full-width-responsive="true"></ins>
-          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
         <div class="lb-footer">
-          <div class="lb-new-match">NEW MATCH STARTING IN <span id="lb-countdown">10</span>s</div>
+          <div class="lb-new-match">NEXT OFFLINE ROUND IN <span id="lb-countdown">10</span>s</div>
           <div class="lb-bar-wrap"><div id="lb-bar"></div></div>
         </div>
       </div>
     </div>
 
-    <!-- ===================== IN-GAME SCOREBOARD (hold TAB) ===================== -->
     <div id="scoreboard-overlay" class="hidden">
       <div class="sb-panel">
-        <div class="sb-head">
-          <div class="sb-title">SCOREBOARD</div>
-          <div class="sb-sub" id="sb-sub">FREE FOR ALL</div>
-        </div>
-        <div class="sb-tabs">
-          <button class="sb-tab active">LEADERBOARD</button>
-          <button class="sb-tab sb-tab-dim">EARN</button>
-          <button class="sb-tab sb-tab-dim">PERFORMANCE</button>
-        </div>
+        <div class="sb-head"><div class="sb-title">PRACTICE SCOREBOARD</div><div class="sb-sub" id="sb-sub">OFFLINE PRACTICE &bull; 7 BOTS</div></div>
+        <div class="sb-tabs"><span class="sb-tab active">CURRENT ROUND</span></div>
         <table class="sb-table">
-          <thead><tr>
-            <th class="sb-th-rank">#</th>
-            <th class="sb-th-name">PLAYER</th>
-            <th>KILLS</th>
-            <th>SCORE</th>
-          </tr></thead>
+          <thead><tr><th class="sb-th-rank">#</th><th class="sb-th-name">COMBATANT</th><th>DEFEATS</th><th>SCORE</th></tr></thead>
           <tbody id="sb-rows"></tbody>
         </table>
-        <div class="sb-hint">Hold <span class="sb-key">TAB</span> to view scores</div>
+        <div class="sb-hint">Hold <span class="sb-key">TAB</span> to view practice scores</div>
       </div>
     </div>
+
+    <!-- CSS reveals this only on coarse-pointer or narrow devices. -->
+    <div id="desktop-required-overlay" class="overlay desktop-required hidden" role="dialog" aria-modal="true" aria-labelledby="desktop-required-title">
+      <div class="desktop-required-card">
+        <p class="practice-eyebrow">INPUT REQUIREMENT</p>
+        <h2 id="desktop-required-title">DESKTOP REQUIRED</h2>
+        <p>This prototype currently requires a keyboard and mouse. Touch controls are not part of this build.</p>
+      </div>
+    </div>
+
+    <!-- Development builds may publish renderer/runtime facts here. -->
+    <output id="dev-build-diagnostics" class="dev-build-diagnostics hidden" aria-live="polite"></output>
   </div>
 
   <script type="module" src="/src/main.js"></script>

@@ -1,0 +1,5 @@
+{
+  "expectedExit": 1,
+  "actualExit": 1,
+  "reason": "Two current runtime/manual evidence rows remain partial; G7 is not claimed."
+}

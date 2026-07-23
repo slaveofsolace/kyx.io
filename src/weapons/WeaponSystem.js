@@ -984,11 +984,12 @@ export class WeaponSystem {
 
     // Sprint blend for COD carry animation (blocks ADS)
     this._sprintT += ((player.isSprinting ? 1 : 0) - this._sprintT) * Math.min(1, dt * 9);
+    const presentationMotionScale = player.reducedMotion ? 0.12 : 1;
 
     // scope zoom — disabled while sprinting
     const wantScope = !!def.scoped && input.rightMouseDown && !player.isSprinting;
     this.scopeT += ((wantScope ? 1 : 0) - this.scopeT) * Math.min(1, dt * 10);
-    const sprintFovBoost = this._sprintT * 6;
+    const sprintFovBoost = this._sprintT * 6 * presentationMotionScale;
     const targetFov = THREE.MathUtils.lerp(player.baseFov + sprintFovBoost, 28, this.scopeT);
     if (Math.abs(this.camera.fov - targetFov) > 0.01) {
       this.camera.fov = targetFov;
@@ -998,8 +999,12 @@ export class WeaponSystem {
     // recoil spring back
     this.kickPos.multiplyScalar(Math.max(0, 1 - dt * 10));
     this.kickRotX *= Math.max(0, 1 - dt * 10);
-    this.kickGroup.position.set(this.kickPos.x, this.kickPos.y, this.kickPos.z);
-    this.kickGroup.rotation.x = this.kickRotX;
+    this.kickGroup.position.set(
+      this.kickPos.x * presentationMotionScale,
+      this.kickPos.y * presentationMotionScale,
+      this.kickPos.z * presentationMotionScale,
+    );
+    this.kickGroup.rotation.x = this.kickRotX * presentationMotionScale;
 
     // sword swing animation — windup → fast diagonal slash → recover
     if (def.kind === 'melee' && this.swingPhase < 1) {
@@ -1037,20 +1042,20 @@ export class WeaponSystem {
     this._idleT += dt;
     if (def.kind !== 'melee') {
       const breatheAmt = 1.0 - this._sprintT;
-      const breathe = Math.sin(this._idleT * 1.6) * 0.004 * breatheAmt;
-      const swayB   = Math.cos(this._idleT * 1.1) * 0.003 * breatheAmt;
+      const breathe = Math.sin(this._idleT * 1.6) * 0.004 * breatheAmt * presentationMotionScale;
+      const swayB   = Math.cos(this._idleT * 1.1) * 0.003 * breatheAmt * presentationMotionScale;
       this.kickGroup.position.y += breathe;
       this.kickGroup.rotation.z = swayB;
     }
 
     // viewmodel sway based on mouse movement (weighty feel)
-    const swayTargetX = THREE.MathUtils.clamp(-input.mouseDX * 0.0006, -0.06, 0.06);
-    const swayTargetY = THREE.MathUtils.clamp(-input.mouseDY * 0.0006, -0.05, 0.05);
+    const swayTargetX = THREE.MathUtils.clamp(-input.mouseDX * 0.0006, -0.06, 0.06) * presentationMotionScale;
+    const swayTargetY = THREE.MathUtils.clamp(-input.mouseDY * 0.0006, -0.05, 0.05) * presentationMotionScale;
     this.swayGroup.rotation.y += (swayTargetX - this.swayGroup.rotation.y) * Math.min(1, dt * 8);
     this.swayGroup.rotation.x += (swayTargetY - this.swayGroup.rotation.x) * Math.min(1, dt * 8);
 
     // COD-style weapon bob: larger amplitude, lateral sway component
-    const bobAmt = player.onGround ? (player.isSprinting ? 0.026 : 0.016) : 0;
+    const bobAmt = (player.onGround ? (player.isSprinting ? 0.026 : 0.016) : 0) * presentationMotionScale;
     const bobV   = Math.sin(player.bobTime) * bobAmt;
     const bobH   = Math.sin(player.bobTime * 0.5) * bobAmt * 0.55;
 
@@ -1058,11 +1063,11 @@ export class WeaponSystem {
     const adsShiftX = -this.scopeT * 0.32;
 
     // Sprint carry: raise gun and tilt to side like COD
-    const sprintRaiseY = this._sprintT * 0.12;
-    const sprintShiftX = -this._sprintT * 0.12;
+    const sprintRaiseY = this._sprintT * 0.12 * presentationMotionScale;
+    const sprintShiftX = -this._sprintT * 0.12 * presentationMotionScale;
     this.weaponMount.position.set(0.32 + sprintShiftX + adsShiftX + bobH, -0.26 + sprintRaiseY + bobV, -0.5);
-    this.weaponMount.rotation.x = this._sprintT * 0.22;
-    this.weaponMount.rotation.z = this._sprintT * -1.0;
+    this.weaponMount.rotation.x = this._sprintT * 0.22 * presentationMotionScale;
+    this.weaponMount.rotation.z = this._sprintT * -1.0 * presentationMotionScale;
 
     // muzzle flash decay
     if (this._flashTimer !== undefined && this._flashTimer > 0) {

@@ -1,0 +1,39 @@
+# top-level Phase 3 seal reproduction (PowerShell)
+$env:KYX_PNPM_CLI = 'C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\dist\pnpm.mjs'
+& 'C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' tools/evidence/capture-phase3-check.mjs
+
+# baseline HEAD
+git rev-parse HEAD
+
+# pre-run dirty state
+git status --short
+
+# pinned npm version
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\dist\pnpm.mjs dlx npm@11.18.0 --version
+
+# clean package-lock install
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\dist\pnpm.mjs dlx npm@11.18.0 ci --no-audit
+
+# repository whitespace check
+git diff --check
+
+# aggregate Phase 3 check including browsers
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\dist\pnpm.mjs dlx npm@11.18.0 run check:full
+
+# expected legacy-asset release rejection
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\dist\pnpm.mjs dlx npm@11.18.0 run validate:assets:release
+
+# Phase 3 deterministic movement tape capture
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe tools/evidence/capture-phase3-tapes.mjs "--repository-root=C:\\AI Projects\\Projects\\Games\\evio\\evio-repo" "--output-dir=C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision"
+
+# Phase 3 exact loopback Vite server
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5999 --strictPort
+
+# Phase 3 Chromium evidence capture
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe tools/evidence/capture-phase3-browser.mjs --base-url=http://127.0.0.1:5999/ "--output-dir=C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\browser" "--node-evidence=C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\movement-tapes.json"
+
+# sealed Phase 3 evidence manifest generation
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe tools/evidence/build-manifest.mjs "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision" phase3-manifest.json
+
+# independent Phase 3 evidence manifest verification
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe tools/evidence/verify-manifest.mjs "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\phase3-manifest.json" --output "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase3-manifest-verification.json"

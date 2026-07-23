@@ -30,29 +30,45 @@ export class MobileControls {
     const el = document.createElement('div');
     el.id = 'mobile-controls';
     el.className = 'hidden';
-    el.innerHTML = `
-      <!-- Joystick (fixed position, always visible) -->
-      <div id="joy-outer">
-        <div id="joy-ring"></div>
-        <div id="joy-inner"></div>
-      </div>
 
-      <!-- Action buttons — right side -->
-      <div id="m-top-btns">
-        <button class="mbtn mbtn-sm mbtn-menu" data-role="menu">≡</button>
-        <button class="mbtn mbtn-sm" data-role="swap">⇄</button>
-        <button class="mbtn mbtn-sm" data-role="reload">R</button>
-        <button class="mbtn mbtn-sm" data-role="ability">Q</button>
-        <button class="mbtn mbtn-sm" data-role="grenade">G</button>
-      </div>
-      <div id="m-bot-btns">
-        <button class="mbtn mbtn-jump" data-role="jump">↑</button>
-        <button class="mbtn mbtn-fire" data-role="fire">●</button>
-      </div>
-    `;
+    const joyOuter = document.createElement('div');
+    joyOuter.id = 'joy-outer';
+    const joyRing = document.createElement('div');
+    joyRing.id = 'joy-ring';
+    const joyInner = document.createElement('div');
+    joyInner.id = 'joy-inner';
+    joyOuter.append(joyRing, joyInner);
+
+    const createButton = (className, role, label) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = className;
+      button.dataset.role = role;
+      button.textContent = label;
+      return button;
+    };
+
+    const topButtons = document.createElement('div');
+    topButtons.id = 'm-top-btns';
+    topButtons.append(
+      createButton('mbtn mbtn-sm mbtn-menu', 'menu', '≡'),
+      createButton('mbtn mbtn-sm', 'swap', '⇄'),
+      createButton('mbtn mbtn-sm', 'reload', 'R'),
+      createButton('mbtn mbtn-sm', 'ability', 'Q'),
+      createButton('mbtn mbtn-sm', 'grenade', 'G'),
+    );
+
+    const bottomButtons = document.createElement('div');
+    bottomButtons.id = 'm-bot-btns';
+    bottomButtons.append(
+      createButton('mbtn mbtn-jump', 'jump', '↑'),
+      createButton('mbtn mbtn-fire', 'fire', '●'),
+    );
+
+    el.append(joyOuter, topButtons, bottomButtons);
     document.body.appendChild(el);
     this._el       = el;
-    this._joyInner = el.querySelector('#joy-inner');
+    this._joyInner = joyInner;
   }
 
   _updateJoyCenter() {

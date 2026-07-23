@@ -1,0 +1,5 @@
+# Run from repository root with the configured Node 20.19-24 runtime.
+node tools/evidence/capture-phase6-p63-map.mjs
+node tools/evidence/verify-phase6-p63-map.mjs
+node node_modules/vitest/vitest.mjs run tests/unit/content/mapPackage.test.ts tests/integration/physics/inkfallMapRuntime.test.ts
+node node_modules/@playwright/test/cli.js test tests/browser/map-package-route.spec.ts --project=chromium-desktop

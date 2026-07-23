@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-4",
+  "capturedAt": "2026-07-22T03:23:39-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 0,
+    "testsFailed": 2
+  },
+  "failures": [
+    {
+      "test": "full consequence impairment profiles",
+      "cause": "Sparse command delivery reached the room stale-input boundary before ten cadence shots and a lost sequence changed exact early shot timing.",
+      "correction": "The live-fire interval now carries continuous held-state commands, while each profile is required to reproduce its own hash and the duplicate profile remains byte-identical to baseline."
+    },
+    {
+      "test": "composite reconnect continuation",
+      "cause": "An array-shaped partial matcher required one player while the authoritative snapshot correctly contained both players.",
+      "correction": "The final snapshot envelope and the local player combat state are asserted separately."
+    }
+  ]
+}

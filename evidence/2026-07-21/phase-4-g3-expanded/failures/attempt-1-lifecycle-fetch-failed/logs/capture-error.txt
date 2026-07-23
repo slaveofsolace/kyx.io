@@ -1,0 +1,7 @@
+page.evaluate: TypeError: Failed to fetch
+    at eval (eval at evaluate (:303:30), <anonymous>:30:36)
+    at UtilityScript.evaluate (<anonymous>:305:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at captureLifecycle (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-expanded.mjs:672:31)
+    at async main (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-expanded.mjs:1421:23)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-expanded.mjs:1568:1

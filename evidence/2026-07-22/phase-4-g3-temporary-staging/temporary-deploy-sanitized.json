@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "status": "TEMPORARY_WORKER_LIVE_EXTERNAL_PROTOCOL_NOT_YET_VERIFIED",
+  "capturedAtUtc": "2026-07-22T09:08:40.394Z",
+  "security": {
+    "claimUrlPersisted": false,
+    "accountIdentifierPersisted": false,
+    "apiTokenPersisted": false
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "UPLOAD_REJECTED",
+      "wranglerCode": 10027,
+      "reason": "Temporary/free Worker exceeded the 1 MiB compressed upload ceiling.",
+      "bundle": {
+        "totalKiB": 5201.77,
+        "gzipKiB": 1602.65,
+        "workerJsSha256": "bb2e35a9896471d7d4d9c9848075d233892debd357e313ca10508a5ca0417fc7"
+      },
+      "deploymentCreated": false
+    },
+    {
+      "attempt": 2,
+      "result": "MINIFIED_PREFLIGHT_STILL_OVERSIZE",
+      "bundle": {
+        "gzipKiB": 1529.51,
+        "workerJsSha256": "782b1bfa59169fc0e62c084b6d3d290ba90c8b4618a04e111b486e31ed570bd4"
+      },
+      "deploymentCreated": false
+    },
+    {
+      "attempt": 3,
+      "result": "DEPLOYED_EPHEMERAL",
+      "workerUrl": "https://kyx-io-authority.heliotrope-contraption.workers.dev",
+      "buildId": "g3tmp-93ae5c5c1604",
+      "versionId": "8b21d027-c1e0-4913-be7a-ac16bb8207ff",
+      "startupMilliseconds": 12,
+      "bundle": {
+        "totalKiB": 2041.67,
+        "gzipKiB": 687.13,
+        "workerJsBytes": 489153,
+        "workerJsSha256": "93ae5c5c16041eef583a9da6a3e0a674a8b7e3c97f122154401a8764d5227d64",
+        "rapierWasmBytes": 1601515,
+        "rapierWasmSha256": "f27e91563c97bc402e1e8bb0531d6238f7ecf3a7f6a193b2e44278b5d9670470"
+      },
+      "probes": [
+        {
+          "operation": "GET /health",
+          "status": 200,
+          "buildIdMatched": true,
+          "durableObjectBindingReported": true
+        },
+        {
+          "operation": "POST /api/rooms/create",
+          "status": 503,
+          "result": "ROOM_INITIALIZATION_FAILED"
+        },
+        {
+          "operation": "POST /api/rooms/create immediate retry",
+          "status": 201,
+          "result": "ROOM_CREATED"
+        }
+      ]
+    }
+  ],
+  "claims": {
+    "workerDeploymentLiveAtCapture": true,
+    "healthBuildIdentityVerified": true,
+    "durableObjectRoomCreatedAfterTransientFailure": true,
+    "externalWssProtocolVerified": false,
+    "durableStagingEnvironment": false,
+    "productionDeployment": false,
+    "g3Accepted": false
+  },
+  "notes": [
+    "The temporary account and its resources expire unless the user claims it within Wrangler's displayed window.",
+    "The first room-initialization failure is retained and is not relabeled as a pass.",
+    "External WSS capture and independent verification must complete before any external protocol claim."
+  ]
+}

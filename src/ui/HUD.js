@@ -1,25 +1,33 @@
 import { getWeaponThumb } from './WeaponThumbnails.js';
+import { isDamageDirection } from './DamageDirection.js';
 
 export class HUD {
   constructor() {
     this.root        = document.getElementById('hud');
+    this.healthWrap  = document.getElementById('health-wrap');
     this.healthBar   = document.getElementById('health-bar');
     this.healthText  = document.getElementById('health-text');
+    this.healthState = document.getElementById('health-state');
     this.shieldWrap  = document.getElementById('shield-wrap');
     this.shieldBar   = document.getElementById('shield-bar');
     this.shieldText  = document.getElementById('shield-text');
+    this.staminaWrap = document.getElementById('stamina-wrap');
     this.staminaBar  = document.getElementById('stamina-bar');
     this.staminaText = document.getElementById('stamina-text');
+    this.staminaState = document.getElementById('stamina-state');
     this.fragCount   = document.getElementById('frag-count');
     this.smokeCount  = document.getElementById('smoke-count');
+    this.fragSlot    = document.getElementById('ability-frag');
+    this.smokeSlot   = document.getElementById('ability-smoke');
+    this.fragState   = document.getElementById('ability-frag-state');
+    this.smokeState  = document.getElementById('ability-smoke-state');
     this.weaponName  = document.getElementById('weapon-name');
+    this.weaponWrap  = document.getElementById('weapon-wrap');
     this.ammoText    = document.getElementById('ammo-text');
     this.reloadText  = document.getElementById('reload-text');
     this.killCount   = document.getElementById('kill-count');
     this.scoreCount  = document.getElementById('score-count');
-    this.serverPop      = document.getElementById('server-pop');
-    this.serverPopCount = document.getElementById('server-pop-count');
-    this.serverPopMax   = document.getElementById('server-pop-max');
+    this.practiceStatus = document.getElementById('server-pop');
     this.weaponSlots = document.getElementById('weapon-slots');
     this.hitmarker   = document.getElementById('hitmarker');
     this.damageFlash = document.getElementById('damage-flash');
@@ -33,18 +41,29 @@ export class HUD {
     this.waveBanner     = document.getElementById('wave-banner');
     this._teleportFlash    = document.getElementById('teleport-flash');
     this._abilityQ         = document.getElementById('ability-q');
-    this._joinNotification = document.getElementById('join-notification');
+    this._abilityQState    = document.getElementById('ability-q-state');
+    this.damageDirection   = document.getElementById('damage-direction');
+    this.damageDirectionText = document.getElementById('damage-direction-text');
+    this.abilityReason     = document.getElementById('ability-reason');
+    this.interactionPrompt = document.getElementById('interaction-prompt');
+    this.interactionKey    = document.getElementById('interaction-key');
+    this.interactionText   = document.getElementById('interaction-text');
+    this.connectionWarning = document.getElementById('connection-warning');
+    this.connectionWarningDetail = document.getElementById('connection-warning-detail');
     this._hitmarkerTimeout    = null;
     this._damageTimeout       = null;
     this._waveBannerTimer     = null;
     this._streakTimeout       = null;
     this._teleportFlashTimeout = null;
-    this._joinNotifTimer      = null;
-    this._joinFadeTimer       = null;
+    this._damageDirectionTimeout = null;
+    this._abilityReasonTimeout = null;
   }
 
   show() { this.root?.classList.remove('hidden'); }
-  hide() { this.root?.classList.add('hidden'); }
+  hide() {
+    this.root?.classList.add('hidden');
+    this.clearTransientEvents();
+  }
 
   // Mode-specific top-center overlay (timer, wave, lives, + optional 3rd line).
   setModeHUD(primary, secondary = '', tertiary = '') {
@@ -70,7 +89,7 @@ export class HUD {
 
   hideModeHUD() { this.modeInfo.classList.add('hidden'); }
 
-  // Survival "Wave Bonus" coin multiplier (top-right).
+  // Survival wave-score multiplier (top-right).
   setWaveBonus(mult) {
     let el = document.getElementById('wave-bonus');
     if (!el) {
@@ -79,7 +98,14 @@ export class HUD {
       (this.root || document.getElementById('hud') || document.body).appendChild(el);
     }
     el.classList.remove('hidden');
-    el.innerHTML = `<span class="wb-label">WAVE BONUS</span><span class="wb-mult">${mult}x</span>`;
+    el.textContent = '';
+    const label = document.createElement('span');
+    label.className = 'wb-label';
+    label.textContent = 'WAVE SCORE';
+    const value = document.createElement('span');
+    value.className = 'wb-mult';
+    value.textContent = `${mult}x`;
+    el.append(label, value);
   }
   hideWaveBonus() { document.getElementById('wave-bonus')?.classList.add('hidden'); }
 
@@ -88,13 +114,14 @@ export class HUD {
     this.dmTimer.textContent = timeStr;
     this.dmTimer.classList.remove('hidden');
     this.dmTimer.classList.toggle('dm-low', isLow);
+    this.dmTimer.setAttribute('aria-label', `Round time ${timeStr}${isLow ? ', time low' : ''}`);
   }
   hideDMTimer() { this.dmTimer.classList.add('hidden'); }
 
   // Kill streak badge (shown briefly above the DM timer)
-  showStreak(streak, coins) {
+  showStreak(streak) {
     if (streak < 2) return;
-    this.streakBadge.textContent = `🔥 x${streak} KILL STREAK  +${coins} COINS`;
+    this.streakBadge.textContent = `STREAK // x${streak} PRACTICE TARGETS`;
     this.streakBadge.classList.remove('hidden');
     clearTimeout(this._streakTimeout);
     this._streakTimeout = setTimeout(() => this.streakBadge.classList.add('hidden'), 2500);
@@ -118,7 +145,7 @@ export class HUD {
   }
 
   buildWeaponSlots(slots, activeIndex) {
-    this.weaponSlots.innerHTML = '';
+    this.weaponSlots.replaceChildren();
     slots.forEach((slot, i) => {
       const key = (typeof slot === 'object') ? slot.key : slot;
       const id  = (typeof slot === 'object') ? slot.id  : null;
@@ -142,20 +169,6 @@ export class HUD {
     });
   }
 
-  // Floating "+N" coin-earn popup near the crosshair (ev.io-style).
-  showCoinEarn(amount) {
-    const amt = Math.round(amount * 100) / 100;
-    if (!amt) return;
-    const host = this.root || document.getElementById('hud') || document.body;
-    const el = document.createElement('div');
-    el.className = 'coin-earn';
-    el.innerHTML = `+${amt} <span class="coin-earn-icon">&#9670;</span>`;
-    el.style.setProperty('--cx', `${(Math.random() * 2 - 1) * 30}px`);
-    host.appendChild(el);
-    el.addEventListener('animationend', () => el.remove());
-    setTimeout(() => el.remove(), 1300);
-  }
-
   setActiveSlot(index) {
     this.weaponSlots.querySelectorAll('.weapon-slot').forEach((el, i) => {
       el.classList.toggle('active', i === index);
@@ -164,14 +177,27 @@ export class HUD {
 
   update(player, weaponInfo, kills, score) {
     const hpct = Math.max(0, (player.health / player.maxHealth) * 100);
+    const healthValue = Math.ceil(player.health);
     this.healthBar.style.width  = `${hpct}%`;
-    this.healthText.textContent = Math.ceil(player.health);
+    this.healthText.textContent = healthValue;
+    const healthState = hpct <= 25 ? 'critical' : hpct <= 50 ? 'low' : 'stable';
+    this.healthWrap.dataset.state = healthState;
+    this.healthWrap.setAttribute(
+      'aria-label',
+      `Health ${healthValue} of ${Math.ceil(player.maxHealth)}${healthState === 'stable' ? '' : `, ${healthState}`}`,
+    );
+    this.healthState.textContent = healthState === 'critical' ? 'CRITICAL' : 'LOW';
+    this.healthState.classList.toggle('hidden', healthState === 'stable');
 
     if (player.maxShield > 0) {
       this.shieldWrap.classList.remove('hidden');
       const spct = Math.max(0, (player.shield / player.maxShield) * 100);
       this.shieldBar.style.width  = `${spct}%`;
       this.shieldText.textContent = Math.ceil(player.shield);
+      this.shieldWrap.setAttribute(
+        'aria-label',
+        `Shield ${Math.ceil(player.shield)} of ${Math.ceil(player.maxShield)}`,
+      );
     } else {
       this.shieldWrap.classList.add('hidden');
     }
@@ -180,22 +206,47 @@ export class HUD {
     this.staminaBar.style.width  = `${spct}%`;
     this.staminaText.textContent = Math.ceil(player.stamina);
     this.staminaBar.classList.toggle('stamina-low', player.stamina < 25);
+    this.staminaState.textContent = 'LOW';
+    this.staminaState.classList.toggle('hidden', player.stamina >= 25);
+    this.staminaWrap?.setAttribute(
+      'aria-label',
+      `Energy ${Math.ceil(player.stamina)} of ${Math.ceil(player.maxStamina)}${player.stamina < 25 ? ', low' : ''}`,
+    );
 
     this.weaponName.textContent = weaponInfo.name.toUpperCase();
     this.ammoText.textContent = weaponInfo.isMelee
       ? '∞'
       : `${weaponInfo.magAmmo} / ${weaponInfo.reserveAmmo}`;
     this.reloadText.classList.toggle('hidden', !weaponInfo.isReloading);
+    this.weaponWrap?.setAttribute(
+      'aria-label',
+      weaponInfo.isMelee
+        ? `${weaponInfo.name}, melee weapon`
+        : `${weaponInfo.name}, ${weaponInfo.magAmmo} rounds loaded, ${weaponInfo.reserveAmmo} reserve${weaponInfo.isReloading ? ', reloading' : ''}`,
+    );
 
     this.killCount.textContent  = kills;
     this.scoreCount.textContent = score;
   }
 
   updateGrenades(frags, smokes) {
-    this.fragCount.textContent  = `${frags}`;
-    this.smokeCount.textContent = `${smokes}`;
-    this.fragCount.classList.toggle('grenade-empty',  frags  === 0);
-    this.smokeCount.classList.toggle('grenade-empty', smokes === 0);
+    const safeFrags = Number.isFinite(frags) ? Math.max(0, Math.floor(frags)) : 0;
+    const safeSmokes = Number.isFinite(smokes) ? Math.max(0, Math.floor(smokes)) : 0;
+    this.fragCount.textContent  = `${safeFrags}`;
+    this.smokeCount.textContent = `${safeSmokes}`;
+    this.fragCount.classList.toggle('grenade-empty', safeFrags === 0);
+    this.smokeCount.classList.toggle('grenade-empty', safeSmokes === 0);
+
+    for (const [slot, state, count, name, key] of [
+      [this.fragSlot, this.fragState, safeFrags, 'Frag grenade', 'F'],
+      [this.smokeSlot, this.smokeState, safeSmokes, 'Smoke grenade', 'E'],
+    ]) {
+      const ready = count > 0;
+      slot?.classList.toggle('ready', ready);
+      if (slot) slot.dataset.state = ready ? 'ready' : 'empty';
+      if (state) state.textContent = ready ? 'READY' : 'EMPTY';
+      slot?.setAttribute('aria-label', `${name}, ${key}, ${count} available${ready ? '' : ', empty'}`);
+    }
   }
 
   flashHitmarker(headshot = false) {
@@ -210,7 +261,7 @@ export class HUD {
   showHeadshotFlair() {
     const el = document.createElement('div');
     el.className = 'hs-flair';
-    el.textContent = '🎯 HEADSHOT';
+    el.textContent = 'HEADSHOT // CONFIRMED';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 1200);
   }
@@ -226,8 +277,70 @@ export class HUD {
 
   updateTeleport(ratio) {
     if (!this._abilityQ) return;
-    this._abilityQ.style.setProperty('--ratio', Math.max(0, Math.min(1, ratio)));
-    this._abilityQ.classList.toggle('ready', ratio >= 1);
+    const safeRatio = Number.isFinite(ratio) ? Math.max(0, Math.min(1, ratio)) : 0;
+    const ready = safeRatio >= 1;
+    this._abilityQ.style.setProperty('--ratio', safeRatio);
+    this._abilityQ.classList.toggle('ready', ready);
+    this._abilityQ.dataset.state = ready ? 'ready' : 'charging';
+    if (this._abilityQState) this._abilityQState.textContent = ready ? 'READY' : `CHARGE ${Math.round(safeRatio * 100)}%`;
+    this._abilityQ.setAttribute('aria-label', ready ? 'Blink, Q, ready' : `Blink, Q, charging ${Math.round(safeRatio * 100)} percent`);
+  }
+
+  showAbilityUnavailable(key, reason, durationMs = 1_400) {
+    if (!this.abilityReason || typeof reason !== 'string' || !reason.trim()) return false;
+    const safeKey = String(key ?? '').replace(/[^A-Z0-9]/giu, '').slice(0, 6) || 'ABILITY';
+    const safeReason = reason.replace(/\s+/gu, ' ').trim().slice(0, 80).toUpperCase();
+    this.abilityReason.textContent = `${safeKey.toUpperCase()} // ${safeReason}`;
+    this.abilityReason.classList.remove('hidden');
+    clearTimeout(this._abilityReasonTimeout);
+    const safeDuration = Number.isFinite(durationMs) ? Math.min(5_000, Math.max(500, durationMs)) : 1_400;
+    this._abilityReasonTimeout = setTimeout(() => this.abilityReason.classList.add('hidden'), safeDuration);
+    return true;
+  }
+
+  showDamageDirection(direction, durationMs = 750) {
+    if (!this.damageDirection || !this.damageDirectionText || !isDamageDirection(direction)) return false;
+    this.damageDirection.dataset.direction = direction;
+    this.damageDirectionText.textContent = `DAMAGE ${direction.toUpperCase()}`;
+    this.damageDirection.classList.remove('hidden');
+    clearTimeout(this._damageDirectionTimeout);
+    const safeDuration = Number.isFinite(durationMs) ? Math.min(3_000, Math.max(300, durationMs)) : 750;
+    this._damageDirectionTimeout = setTimeout(() => this.damageDirection.classList.add('hidden'), safeDuration);
+    return true;
+  }
+
+  showInteractionPrompt(key, text) {
+    if (!this.interactionPrompt || typeof text !== 'string' || !text.trim()) return false;
+    if (this.interactionKey) this.interactionKey.textContent = String(key ?? 'E').replace(/\s+/gu, '').slice(0, 8).toUpperCase();
+    if (this.interactionText) this.interactionText.textContent = text.replace(/\s+/gu, ' ').trim().slice(0, 80).toUpperCase();
+    this.interactionPrompt.classList.remove('hidden');
+    return true;
+  }
+
+  hideInteractionPrompt() {
+    this.interactionPrompt?.classList.add('hidden');
+  }
+
+  setConnectionWarning(visible, detail = '') {
+    if (!this.connectionWarning) return false;
+    this.connectionWarning.classList.toggle('hidden', visible !== true);
+    if (this.connectionWarningDetail) {
+      this.connectionWarningDetail.textContent = visible
+        ? String(detail).replace(/\s+/gu, ' ').trim().slice(0, 80).toUpperCase()
+        : '';
+    }
+    return true;
+  }
+
+  clearTransientEvents() {
+    clearTimeout(this._damageDirectionTimeout);
+    clearTimeout(this._abilityReasonTimeout);
+    this._damageDirectionTimeout = null;
+    this._abilityReasonTimeout = null;
+    this.damageDirection?.classList.add('hidden');
+    this.abilityReason?.classList.add('hidden');
+    this.hideInteractionPrompt();
+    this.setConnectionWarning(false);
   }
 
   flashDamage() {
@@ -238,67 +351,51 @@ export class HUD {
     this._damageTimeout = setTimeout(() => this.damageFlash.classList.remove('show'), 600);
   }
 
-  // Mid-match player join/leave toast — slides in from left, fades after 3s.
-  showJoinNotification(text, isLeave = false) {
-    const el = this._joinNotification;
-    if (!el) return;
-    clearTimeout(this._joinNotifTimer);
-    clearTimeout(this._joinFadeTimer);
-    el.textContent = text;
-    el.classList.remove('hidden', 'fade-out', 'leave');
-    if (isLeave) el.classList.add('leave');
-    // Force reflow to restart animation
-    void el.offsetWidth;
-    el.style.animation = 'none';
-    void el.offsetWidth;
-    el.style.animation = '';
-    this._joinNotifTimer = setTimeout(() => {
-      el.classList.add('fade-out');
-      this._joinFadeTimer = setTimeout(() => el.classList.add('hidden'), 420);
-    }, 3000);
-  }
-
-  // Live server population indicator (you + remote players, out of capacity).
-  setServerPop(count, max) {
-    if (this.serverPopCount) this.serverPopCount.textContent = count;
-    if (this.serverPopMax)   this.serverPopMax.textContent   = max;
-  }
-
-  showServerPop(show) {
-    this.serverPop?.classList.toggle('hidden', !show);
+  showPracticeStatus(show, botCount = 7, label = 'OFFLINE PRACTICE') {
+    if (!this.practiceStatus) return;
+    this.practiceStatus.classList.toggle('hidden', !show);
+    if (show) {
+      this.practiceStatus.textContent = botCount > 0
+        ? `${label} · ${botCount} BOTS`
+        : label;
+    }
   }
 
   // Post-match leaderboard (outside #hud, so hud.hide() won't touch it).
-  showLeaderboard(rows, playerName, earnedCoins = 0) {
+  showLeaderboard(rows, playerName) {
     const overlay = document.getElementById('leaderboard-overlay');
     const tbody   = document.getElementById('lb-rows');
     if (!overlay || !tbody) return;
-    tbody.innerHTML = '';
+    tbody.replaceChildren();
 
-    // Winner banner + earned coins
+    // Practice result banner. Only locally measured facts are displayed.
     const winner = rows[0];
     const winEl  = document.getElementById('lb-winner-name');
     if (winEl && winner) winEl.textContent = winner.name;
-    const earnedEl = document.getElementById('lb-earned-val');
-    if (earnedEl) earnedEl.textContent = earnedCoins.toLocaleString();
 
     rows.forEach((row, i) => {
       const rank   = i + 1;
       const rankCls = rank <= 3 ? `lb-rank lb-rank-${rank}` : 'lb-rank';
       const tr = document.createElement('tr');
-      tr.className = row.isYou ? 'lb-row-you' : '';
+      const isCurrentPlayer = row.isYou || row.name === playerName;
+      tr.className = isCurrentPlayer ? 'lb-row-you' : '';
 
       const nameTd = document.createElement('td');
       nameTd.className = 'lb-name-cell';
       nameTd.textContent = row.name;
-      if (row.isYou) {
+      if (isCurrentPlayer) {
         const badge = document.createElement('span');
         badge.className = 'lb-you-badge';
         badge.textContent = 'YOU';
         nameTd.appendChild(badge);
       }
 
-      tr.innerHTML = `<td><span class="${rankCls}">${rank}</span></td>`;
+      const rankTd = document.createElement('td');
+      const rankSpan = document.createElement('span');
+      rankSpan.className = rankCls;
+      rankSpan.textContent = rank;
+      rankTd.appendChild(rankSpan);
+      tr.appendChild(rankTd);
       tr.appendChild(nameTd);
 
       const cell = (val, cls) => {
@@ -329,7 +426,7 @@ export class HUD {
     if (!ov || !tb) return;
     const subEl = document.getElementById('sb-sub');
     if (subEl && sub) subEl.textContent = sub;
-    tb.innerHTML = '';
+    tb.replaceChildren();
     rows.forEach((r, i) => {
       const rank = i + 1;
       const tr = document.createElement('tr');
@@ -344,10 +441,16 @@ export class HUD {
         b.className = 'sb-you-badge'; b.textContent = 'YOU';
         nameTd.appendChild(b);
       }
-      tr.innerHTML = `<td><span class="${rankCls}">${rank}</span></td>`;
+      const rankTd = document.createElement('td');
+      const rankSpan = document.createElement('span');
+      rankSpan.className = rankCls;
+      rankSpan.textContent = rank;
+      rankTd.appendChild(rankSpan);
+      tr.appendChild(rankTd);
       tr.appendChild(nameTd);
       const k = document.createElement('td'); k.className = 'sb-kills'; k.textContent = r.kills;
-      const s = document.createElement('td'); s.className = 'sb-score'; s.textContent = (r.score || 0).toLocaleString();
+      const s = document.createElement('td'); s.className = 'sb-score';
+      s.textContent = typeof r.score === 'number' ? r.score.toLocaleString() : r.score;
       tr.appendChild(k); tr.appendChild(s);
       tb.appendChild(tr);
     });

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_7_GRAYBOX_LOCK_EVIDENCE_COMPLETE",
+  "claim": "P6_7_GRAYBOX_LOCK_PASS",
+  "lockStatus": "graybox_locked_non_default",
+  "binding": {
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "lockRevision": 1,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "fixtureHash": "bf85e42731fd088e",
+    "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+    "collisionSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+    "movementProfileId": "phase3_hypothesis_v1",
+    "movementProfileRevision": 1,
+    "movementProfileHash": "8ab4ed437a4393c0",
+    "canonicalMovementHash": "66fcaf19c3fd94ad",
+    "physicsAdapterVersion": "0.19.3",
+    "authorityRateHz": 20
+  },
+  "catalog": {
+    "defaultRevision": 1,
+    "lockedGrayboxRevision": 2,
+    "explicitRevisionSelectionRequired": true,
+    "productSelectable": false,
+    "shippingDefault": false
+  },
+  "frozenCounts": {
+    "zones": 9,
+    "nodes": 19,
+    "links": 27,
+    "routeMetrics": 12,
+    "spawns": 12,
+    "strongPositions": 3,
+    "movementFeatures": 5,
+    "authorityPlaytestScenarios": 3,
+    "renderMeshNodes": 346,
+    "authorityCollisionSolids": 339,
+    "authorityVolumes": 2
+  },
+  "fingerprints": {
+    "topology": "fff6f80ad8ac7ac235faee53668ca573050082ea93debce440478260a65c9716",
+    "zones": "999833874d94349f2ae31af3ecf61ff82f4a1f35602b935ba8f6d097b6e8f8c0",
+    "nodes": "437b365e22308ba7381bb1ad6708d889645d3477249c3f4b0dce2cb5e23379a8",
+    "links": "47fcf84d6e268b7aebc55647d2df193d13198cd9d2002bd50e313ba5991ff8b4",
+    "strongPositions": "6244b7a985f3c8cc32725feaa10fe722f950f7c085e52d2c0be976f8c9ea3e64",
+    "runtimeSpawns": "01c4fbd42336aad54b457d8b1dd8f1cb85a3669981c38726963cf8d5dbfda994",
+    "seedSpawns": "6cec3863c2a13cb2a0e28dca91c631e76dc47c59f39cd33ffccc6cf9738bf645",
+    "routeMetrics": "b0e0c8626179551f9411d8cb122f09c11e283a2e6ab008dd621353c34cabd91f",
+    "authorityTapeScenarios": "ec0d2e1d8ed673a992dc543c9152d1697ee72f0daa2e3b443af4b617ae98a5f9",
+    "movementSizing": "7247b65f13d42448e98b2813e3a74df6749967d8d0909e9bcbc58653011aa4ea",
+    "coordinateAndGrid": "a7b14012f8c40d0f7e28f738bc6b68b8d1653ef59eb6a9eed5963fb36ab807d3",
+    "seedArtModules": "54a6e7c2e58341df13ffe4af4256b14578a1f4d1b26697c18b627201cee0969a",
+    "runtimeFunctionalPackage": "646c759de7d0d790af6cb8d3567f7ad1d530b00f6999b0c3652bfed2bbbe8062"
+  },
+  "acceptedAutomatedResult": {
+    "scenarioStatuses": ["PASS", "PASS", "PASS"],
+    "issueCount": 0,
+    "suiteHash": "143d09532b9c2b24",
+    "scenarioReplayHashes": [
+      "92aa8378d2e0d27e",
+      "2010f3a3d1897f31",
+      "909814a9d725d187"
+    ],
+    "inkTeleportFlankMilliseconds": 3950,
+    "inkTeleportFlankBandMilliseconds": [1800, 4000],
+    "archiveDropFlankMilliseconds": 3300,
+    "archiveDropFlankBandMilliseconds": [2500, 5000],
+    "allDefectCountersZero": true
+  },
+  "artKitDimensionContract": {
+    "status": "dimension_contract_only",
+    "familyCount": 16,
+    "moduleCount": 37,
+    "seedParityCount": 6,
+    "sha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83"
+  },
+  "validation": {
+    "lockTestsPassed": 7,
+    "lockTestsTotal": 7,
+    "adjacentTestsPassed": 58,
+    "adjacentTestsTotal": 58,
+    "revision2BlenderAssertionsPassed": 15,
+    "revision2BlenderAssertionsTotal": 15,
+    "revision1BlenderAssertionsPassed": 14,
+    "revision1BlenderAssertionsTotal": 14,
+    "typescript": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "preservedFailureCount": 4
+  },
+  "sourceInventory": {
+    "assets/source/maps/inkfall-foundry/P6_7_GRAYBOX_LOCK_REPORT.md": "4f7f484991e6a9e43f9ab112c087e3bb1525b5e0dc7112c3cad732c178bf8999",
+    "assets/source/maps/inkfall-foundry/runtime/graybox-lock.p6-7.v1.json": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd",
+    "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+    "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+    "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+    "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+    "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+    "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224",
+    "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+    "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+    "src/content/maps/catalog.ts": "b14b68b0c0d93668bc801b83afbf4d45be77404baf17234ca624a1be1f95bc59",
+    "src/content/maps/index.ts": "dc621adcec45a76fd0e5f232b4d0348236784e493657b3933ffe26ab3c59f6ad",
+    "tests/integration/content/inkfallGrayboxLock.test.ts": "b3e8facba7a33f4f3c130031d418e78d14ea82f3bf0c7c5bf2345239dccc0c2b",
+    "tools/evidence/verify-inkfall-p6-7-graybox-lock.mjs": "c40da0f81f65720dfa595813fee4d9e5daeb6e7070733f85f4cf27bdd589f217"
+  },
+  "evidenceInventory": {
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/P6_7_WORK_LOG.md": "4e901d0f2a51fc0c257ed372bf0a14c467ce2fe70faa3386e2d3698b683d4f45",
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/validation-results.json": "ea86f0d27d35d6ed35f0f694548bf9ef1c62698285d6218d333776a0ea243943",
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/failures/p6-7-contract-test-attempts.json": "e1aaf1e8a66c08c37b5012eb22d19d4a71f7054e7e053ff5d41e3ceb0565f815",
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/adjacent/p6-2-revision2-lock-rerun.json": "f309ce78db7d7aaebe2624f3c125d2c705baa1f7039696bd744f09bf4e7fe514",
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/adjacent/p6-2-revision2-lock-rerun-pass.json": "3249d9a66a07aae8a240924c7e9b72df4d7b2a40dd894a521a0ff4e70fbc0f94",
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/adjacent/p6-2-revision1-regression.json": "dd8beb2495c8b9784479a1f1453828351e70bc3b09b4ac890f78722a891f7ed6",
+    "evidence/2026-07-22/phase-6-p6-7-graybox-lock/p6-7-verification.json": "4d234c7589f4ccc654c4addf3257d34da36ab30072964f7f0a0496579a137ac1",
+    "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/authority-playtest-raw.json": "a0b7ff2f57e614afbe6a331d728bfc90a695beca283a80e692e904130ad9f3da",
+    "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4"
+  },
+  "remainingG5": [
+    "product-visible map selection and load path using locked render and separate authority collision",
+    "human multi-role fun, navigation, readability, no-snag, and counterplay playtests",
+    "representative final-art Press Hall room and two transitions from authored modular meshes",
+    "post-art topology, collision, spawn, route, movement, and accessibility regression",
+    "named-tier frame, payload, unload, and soak performance evidence"
+  ],
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "HUMAN_FUN_OR_READABILITY_NOT_ACCEPTED",
+    "VISUAL_ACCEPTANCE_NOT_PASSED",
+    "FINAL_ART_NOT_COMPLETE",
+    "PERFORMANCE_NOT_ACCEPTED",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+    "DEPLOYMENT_NOT_AUTHORIZED"
+  ]
+}

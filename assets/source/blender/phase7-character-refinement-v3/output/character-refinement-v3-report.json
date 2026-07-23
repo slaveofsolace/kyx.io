@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_phase7_character_refinement_v3",
+  "status": "VISUAL_REFINEMENT_CANDIDATE_NOT_G6",
+  "supersedesForReviewOnly": "phase7-character-refinement-v2 remains preserved and rejected",
+  "blenderVersion": "5.1.2",
+  "blenderBuildHash": "ec6e62d40fa9",
+  "visualIntent": {
+    "silhouette": "cohesive medium-poly adult tactical human with realistic 1:8-ish head ratio and modest extremities",
+    "connectedSurface": "single connected Skin/Subdivision tailored undersuit from neck through torso arms and legs",
+    "layers": [
+      "continuous undersuit",
+      "seams and cloth folds",
+      "conforming vital-area armor",
+      "low-profile webbing",
+      "articulated gloves",
+      "fitted boots",
+      "slender rifle"
+    ],
+    "contact": [
+      "stock pad intersects right shoulder pocket",
+      "right glove wraps pistol grip",
+      "left glove wraps handguard"
+    ],
+    "avoidance": [
+      "Roblox",
+      "toy",
+      "mannequin",
+      "block assembly",
+      "capsule assembly",
+      "oversized head hands and boots"
+    ]
+  },
+  "scene": {
+    "forwardAxis": "-Y",
+    "upAxis": "+Z",
+    "units": "meters",
+    "approxCharacterHeightMeters": 1.91,
+    "frames": [
+      1,
+      32
+    ],
+    "fps": 24,
+    "renderSize": [
+      960,
+      960
+    ]
+  },
+  "source": {
+    "exportObjects": 154,
+    "meshObjects": 92,
+    "vertices": 19290,
+    "polygons": 18930,
+    "triangles": 38216,
+    "materials": 10,
+    "bones": 20,
+    "actions": [
+      "REFINEV3_CombatReady_Breathe"
+    ],
+    "bodyParts": 130,
+    "weaponParts": 23,
+    "connectedSuitObjects": 1
+  },
+  "glb": {
+    "version": 2,
+    "declaredBytes": 1048212,
+    "generator": "Khronos glTF Blender I/O v5.1.20",
+    "nodes": 171,
+    "meshes": 152,
+    "materials": 10,
+    "skins": 1,
+    "animations": 1,
+    "animationNames": [
+      "REFINEV3_CombatReady_Breathe"
+    ],
+    "animationChannels": 51,
+    "requiredExtensions": [],
+    "path": "output/kyx_phase7_character_refinement_v3.glb",
+    "bytes": 1048212,
+    "sha256": "727437f5dd1336e1b3e82c1be0078ffc42153b0710420f0782ad8309dc9100dc",
+    "exportSeconds": 0.491355
+  },
+  "renders": {
+    "paths": [
+      "output/renders/refinement-v3-close-color.png",
+      "output/renders/refinement-v3-tactical-color.png",
+      "output/renders/refinement-v3-front-ortho-color.png",
+      "output/renders/refinement-v3-side-ortho-color.png",
+      "output/renders/refinement-v3-back-ortho-color.png",
+      "output/renders/refinement-v3-weapon-contact-color.png",
+      "output/renders/refinement-v3-trigger-contact-color.png",
+      "output/renders/refinement-v3-close-grayscale.png",
+      "output/renders/refinement-v3-front-ortho-grayscale.png"
+    ],
+    "timingsSeconds": {
+      "close-color": 1.034765,
+      "tactical-color": 0.443687,
+      "front-ortho-color": 0.43336,
+      "side-ortho-color": 0.347247,
+      "back-ortho-color": 0.331682,
+      "weapon-contact-color": 0.423154,
+      "trigger-contact-color": 0.421185,
+      "close-grayscale": 0.436753,
+      "front-ortho-grayscale": 0.415571
+    },
+    "totalSeconds": 4.287404
+  },
+  "verification": {
+    "status": "PASS",
+    "checks": {
+      "glbHeaderValid": true,
+      "glbContainsMeshes": true,
+      "glbContainsMaterials": true,
+      "glbContainsAnimation": true,
+      "renderCount": true,
+      "connectedSuitPresent": true,
+      "anatomicalFormsPresent": true,
+      "contactFormsPresent": true
+    }
+  },
+  "selfCritique": {
+    "improved": [
+      "Authored limb section profiles now establish readable deltoid, biceps, elbow, forearm, quadriceps, knee, and calf transitions.",
+      "Rounded profiled boot uppers and soles replace the previous four-corner stacked-block construction.",
+      "Helmet shell, forehead layer, visor, cheek interfaces, respirator, chin guard, ear interfaces, neck shroud, and seams now separate into a tactical head assembly.",
+      "The rifle has a skeletal stock, split receiver, hollow trigger guard, tapered grip, compact magazine, ventilated handguard, and explicit palm/finger intersections."
+    ],
+    "stillWeak": [
+      "This remains a stylized medium-poly direction model; hands and facial equipment are not production sculpt quality.",
+      "The static cross-chest pose hides some torso layering and makes the dominant-arm silhouette read heavier from front view.",
+      "Rigid bone parenting is metadata/pose scaffolding only; skin weights, deformation stress poses, gameplay animation, and first-person arms remain absent.",
+      "Procedural flat materials do not prove final texel density, authored wear, outline behavior, or runtime lighting readability."
+    ],
+    "decision": "CANDIDATE_ONLY_AWAIT_HUMAN_VISUAL_REVIEW"
+  },
+  "manifest": [
+    {
+      "path": "output/kyx_phase7_character_refinement_v3.glb",
+      "bytes": 1048212,
+      "sha256": "727437f5dd1336e1b3e82c1be0078ffc42153b0710420f0782ad8309dc9100dc"
+    },
+    {
+      "path": "output/renders/refinement-v3-close-color.png",
+      "bytes": 1011028,
+      "sha256": "6408f2e0766a916ee97819ce82643370a1e1138bbdd2f272dddf4b59817609d9"
+    },
+    {
+      "path": "output/renders/refinement-v3-tactical-color.png",
+      "bytes": 981195,
+      "sha256": "d778f8678b53b1881c9b55c07bd878a7d51be68356758aa7b6d96bb4a19ff69f"
+    },
+    {
+      "path": "output/renders/refinement-v3-front-ortho-color.png",
+      "bytes": 942942,
+      "sha256": "128fce73ad6a38c36e8ee1cd0874d810daf5a0d652fd5507b7da77a1abcff22f"
+    },
+    {
+      "path": "output/renders/refinement-v3-side-ortho-color.png",
+      "bytes": 796938,
+      "sha256": "4c6961779404ee9844d2faddf3d64456de7ecb1ff688276a70ac4e487dd15be3"
+    },
+    {
+      "path": "output/renders/refinement-v3-back-ortho-color.png",
+      "bytes": 812972,
+      "sha256": "7bbd121d2bfecc8040c5f1b41454355f38598c7197f66c9a56949e93eb1044bf"
+    },
+    {
+      "path": "output/renders/refinement-v3-weapon-contact-color.png",
+      "bytes": 1026005,
+      "sha256": "c3d1215c2bbd1180864c44a517752aa3c02f03aeeb5b846339bb3f5c1e147be9"
+    },
+    {
+      "path": "output/renders/refinement-v3-trigger-contact-color.png",
+      "bytes": 1040448,
+      "sha256": "e9591b55ff2e4d9f08b501657af38074d01fbeaa48ed94a0b9d48805c3c600e0"
+    },
+    {
+      "path": "output/renders/refinement-v3-close-grayscale.png",
+      "bytes": 1003156,
+      "sha256": "1ab9cd5872712278c2c7b0ae9023057d5e7e75b0194e8462ec2bbcef6dd20661"
+    },
+    {
+      "path": "output/renders/refinement-v3-front-ortho-grayscale.png",
+      "bytes": 938781,
+      "sha256": "63aa646235a54c8e60e9c49ca2c702b1d16ed71bfb61c78aff6b4b4970e1c476"
+    }
+  ],
+  "limitations": [
+    "No human visual approval or G6 claim exists; this is a direction candidate.",
+    "The connected body is a baked modeled surface parented rigidly for export, not deformation-weight or stress-pose proof.",
+    "Only an in-place presentation breathe loop exists; gameplay clips and first-person arms are absent.",
+    "No runtime integration, LODs, KTX2, meshopt, outline/contact validation, or multi-character performance evidence exists.",
+    "Materials use procedural micro-detail, not authored UV texture sets or production wear passes."
+  ],
+  "elapsedSeconds": 5.240095
+}

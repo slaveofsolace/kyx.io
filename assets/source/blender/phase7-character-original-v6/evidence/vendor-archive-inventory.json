@@ -1,0 +1,347 @@
+﻿{
+    "schemaVersion":  1,
+    "inspectedUtc":  "2026-07-22T03:21:44.8246299Z",
+    "archive":  {
+                    "fileName":  "human-base-meshes-bundle-v1.4.1.zip",
+                    "bytes":  50643039,
+                    "sha256":  "811f43accbb31a88266d932f8f5563b2d13586fca0ba2693aad1f5fe582b3515"
+                },
+    "policy":  {
+                   "allowedExtensions":  [
+                                             ".blend",
+                                             ".png",
+                                             ".txt"
+                                         ],
+                   "forbiddenExtensions":  [
+                                               ".bat",
+                                               ".cmd",
+                                               ".com",
+                                               ".dll",
+                                               ".dylib",
+                                               ".exe",
+                                               ".hta",
+                                               ".jar",
+                                               ".js",
+                                               ".lnk",
+                                               ".msi",
+                                               ".ps1",
+                                               ".py",
+                                               ".pyc",
+                                               ".pyd",
+                                               ".scr",
+                                               ".sh",
+                                               ".so",
+                                               ".vbs",
+                                               ".wsf"
+                                           ],
+                   "rejectAbsolutePaths":  true,
+                   "rejectParentTraversal":  true,
+                   "rejectDuplicateNames":  true,
+                   "rejectSymbolicLinks":  true,
+                   "maxUncompressedBytes":  536870912,
+                   "expectedBlendCount":  1
+               },
+    "summary":  {
+                    "entryCount":  29,
+                    "fileCount":  27,
+                    "directoryCount":  2,
+                    "uncompressedBytes":  50805476,
+                    "blendEntryCount":  1
+                },
+    "entries":  [
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/",
+                        "directory":  true,
+                        "bytes":  0,
+                        "compressedBytes":  0,
+                        "extension":  "",
+                        "unixMode":  "0x41fd",
+                        "symbolicLink":  false,
+                        "sha256":  null
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/blender_assets.cats.txt",
+                        "directory":  false,
+                        "bytes":  713,
+                        "compressedBytes":  394,
+                        "extension":  ".txt",
+                        "unixMode":  "0x81b4",
+                        "symbolicLink":  false,
+                        "sha256":  "dfd8261cae28403a179f67c8d8a10cc0d566407608e3066eb7f29f5fad81f027"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/human_base_meshes_bundle.blend",
+                        "directory":  false,
+                        "bytes":  49420489,
+                        "compressedBytes":  49258629,
+                        "extension":  ".blend",
+                        "unixMode":  "0x81b4",
+                        "symbolicLink":  false,
+                        "sha256":  "3c121505651140ceb4d69fd1d8923f7788ffadd81672f5be14845a5f2c75c137"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/",
+                        "directory":  true,
+                        "bytes":  0,
+                        "compressedBytes":  0,
+                        "extension":  "",
+                        "unixMode":  "0x41fd",
+                        "symbolicLink":  false,
+                        "sha256":  null
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/planar_head.png",
+                        "directory":  false,
+                        "bytes":  76111,
+                        "compressedBytes":  76012,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "ceab67bb869aca51ddc47934108ce4a862891aa231f1b507420ccbef8d230afd"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/planar_skull.png",
+                        "directory":  false,
+                        "bytes":  72481,
+                        "compressedBytes":  72355,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "1914cd55a518ec3352305037db9effa9847bc13f176a6fb75a1ccb48e3f6c3e7"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/primitive_body_female_realistic.png",
+                        "directory":  false,
+                        "bytes":  64344,
+                        "compressedBytes":  64016,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "9468731e11168005f99e6c4dffbc7c8b8fb5a138b4f1fb5258f73e98fe692432"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/primitive_body_female_stylized.png",
+                        "directory":  false,
+                        "bytes":  61869,
+                        "compressedBytes":  61499,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "93f0106a5668813009ff5427f9d560a3fb9ae91972c5e25265f79f410f9d804f"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/primitive_body_male_realistic.png",
+                        "directory":  false,
+                        "bytes":  65643,
+                        "compressedBytes":  65329,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "d25e1fc6972aa55743ccfc0bd94db9336b57b88cca891f6ee7256cf2e3821480"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/primitive_body_male_stylized.png",
+                        "directory":  false,
+                        "bytes":  65756,
+                        "compressedBytes":  65337,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "f9583518ea5629de707633b189aa71299cdbb063fc0dc72666a96d2f1b9e56d1"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/primitive_head_generic.png",
+                        "directory":  false,
+                        "bytes":  69019,
+                        "compressedBytes":  68898,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "ceaf7a346b4a2ba90f84ebb797561ac73eb385a262004a4693f2f8da0df16105"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/primitive_head_realistic.png",
+                        "directory":  false,
+                        "bytes":  84386,
+                        "compressedBytes":  84293,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "3f198a67486640e0725406fe157f33aad5d4176fb3743cf1b011a0ba3d5e5b13"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_body_female.png",
+                        "directory":  false,
+                        "bytes":  32548,
+                        "compressedBytes":  32426,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "65376817a4920f4a296203c047daa415940a58abf8a898253ab747a9046b6145"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_body_male.png",
+                        "directory":  false,
+                        "bytes":  66179,
+                        "compressedBytes":  65831,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "05dc03b62a9e76216217f2026103accdd823894e0d0f7d7bfbe930359efb9c44"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_eye.png",
+                        "directory":  false,
+                        "bytes":  37504,
+                        "compressedBytes":  36770,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "600a723105c7c5e92ea5670954c75cab0b959f9d4abf4c66aff0b9d14092517e"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_foot.png",
+                        "directory":  false,
+                        "bytes":  44861,
+                        "compressedBytes":  44730,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "7e49d6879d0d41bceac17c4c04a3a86499b0546e6b0766bda598d4995c18640b"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_hand.png",
+                        "directory":  false,
+                        "bytes":  36889,
+                        "compressedBytes":  36717,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "01b118b9a3c58fadd748cf0febe32bbc210de4fd3a2b734bdd577ed8dd7ba5c4"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_head_anim.png",
+                        "directory":  false,
+                        "bytes":  57406,
+                        "compressedBytes":  57352,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "36a3f33a554ab4b934a6eb7b96012e3e73256678c35bd0eedbb202f76afa1f52"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_head_sculpt.png",
+                        "directory":  false,
+                        "bytes":  56695,
+                        "compressedBytes":  56638,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "e179b6aba8385b270a24d3b030b3cae6e3d826e16c5c1134707905fd78d73f61"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_jaw.png",
+                        "directory":  false,
+                        "bytes":  52225,
+                        "compressedBytes":  51389,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "dd4e660be8b2ade390ed185928c6f4d5bc2eb0b924637d45332b38fd09979693"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_skeleton.png",
+                        "directory":  false,
+                        "bytes":  46098,
+                        "compressedBytes":  46007,
+                        "extension":  ".png",
+                        "unixMode":  "0x81b4",
+                        "symbolicLink":  false,
+                        "sha256":  "7bec948d2f2dca06c8aa363e4ae44b91208e4f51732116e2f15a3928bb50a635"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/realistic_skull.png",
+                        "directory":  false,
+                        "bytes":  66590,
+                        "compressedBytes":  66519,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "dc1855a381e7c8e0cd0db0a09e254a69fe8ecf422a2a11ef768d13a799adef2a"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_body_female.png",
+                        "directory":  false,
+                        "bytes":  31134,
+                        "compressedBytes":  31031,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "f191195d68b022fb17a0bbee533b2a28ec50de9ab8c8527fff77e17eeef62c09"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_body_male.png",
+                        "directory":  false,
+                        "bytes":  33545,
+                        "compressedBytes":  33383,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "615f3f74dd47403689b3132ee2f6c163c5012d422513edbbba6afdb975171104"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_eye.png",
+                        "directory":  false,
+                        "bytes":  50533,
+                        "compressedBytes":  49863,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "2d075219197c5b2bcfc62be7cc6cb705a29a13fe97ff25004dd33c111c09879f"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_foot.png",
+                        "directory":  false,
+                        "bytes":  49571,
+                        "compressedBytes":  48954,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "3dfb8f5083f37a072b106cb178e088a6ba6852c5e4ef4509141978591d1ad8b4"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_hand.png",
+                        "directory":  false,
+                        "bytes":  40899,
+                        "compressedBytes":  40603,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "879f9fb0f0695bed847c3a7181ae3b68804b4b581b742c264f6007db32776292"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_head.png",
+                        "directory":  false,
+                        "bytes":  64317,
+                        "compressedBytes":  64294,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "ca88ee174b22a2d433fbcf4e7b0149a2fbeffdf205339a82d67c8d5bf8e1ab65"
+                    },
+                    {
+                        "name":  "human-base-meshes-bundle-v1.4.1/thumbnails/stylized_jaw.png",
+                        "directory":  false,
+                        "bytes":  57671,
+                        "compressedBytes":  56856,
+                        "extension":  ".png",
+                        "unixMode":  "0x81a4",
+                        "symbolicLink":  false,
+                        "sha256":  "4a5748a282d86f188576790cf189ef4f5e8556ab78c495feee917504c9d335c2"
+                    }
+                ],
+    "violations":  [
+
+                   ],
+    "status":  "PASS"
+}

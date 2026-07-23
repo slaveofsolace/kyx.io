@@ -1,0 +1,559 @@
+{
+  "schemaVersion": 2,
+  "mapId": "inkfall_foundry",
+  "mapRevision": 2,
+  "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+  "fixtureHash": "bf85e42731fd088e",
+  "topologySeedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+  "authorityRateHz": 20,
+  "agents": "synthetic_non_human_deterministic",
+  "scenarios": [
+    {
+      "id": "synthetic_2_player_press_cross",
+      "playerCount": 2,
+      "maximumTicks": 220,
+      "spawnProbe": {
+        "fixtureScenarioId": "ffa_2_player_occluded",
+        "expectedStatus": "selected",
+        "expectedSpawnId": "spawn_dm_ink_w",
+        "expectedDecisionHash": "ce3bd1acc10ee6b0"
+      },
+      "agents": [
+        {
+          "slot": 0,
+          "spawnId": "spawn_w_press_a",
+          "startDelayTicks": 0,
+          "routeMetricIds": [
+            "spawn_to_choice_west",
+            "spawn_to_press_contact_west",
+            "press_fast_central_crossing"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_press",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "forward",
+              "movementMode": "jump"
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "forward",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "spawnId": "spawn_e_press_a",
+          "startDelayTicks": 12,
+          "routeMetricIds": [
+            "spawn_to_choice_east",
+            "spawn_to_press_contact_east"
+          ],
+          "steps": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic_4_player_press_and_ink",
+      "playerCount": 4,
+      "maximumTicks": 300,
+      "spawnProbe": {
+        "fixtureScenarioId": "ffa_4_player_all_enemy_aggregate",
+        "expectedStatus": "selected",
+        "expectedSpawnId": "spawn_dm_ink_e",
+        "expectedDecisionHash": "2f490c09ee239e75"
+      },
+      "agents": [
+        {
+          "slot": 0,
+          "spawnId": "spawn_w_press_b",
+          "startDelayTicks": 0,
+          "routeMetricIds": [
+            "spawn_to_press_contact_west"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_press",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "forward",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "spawnId": "spawn_e_press_b",
+          "startDelayTicks": 10,
+          "routeMetricIds": [
+            "spawn_to_press_contact_east"
+          ],
+          "steps": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "spawnId": "spawn_w_ink",
+          "startDelayTicks": 6,
+          "routeMetricIds": [
+            "spawn_to_ink_contact_west"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "forward",
+              "movementMode": "slide"
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "spawnId": "spawn_e_ink",
+          "startDelayTicks": 18,
+          "routeMetricIds": [
+            "spawn_to_ink_contact_east"
+          ],
+          "steps": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_east_choice",
+              "direction": "reverse",
+              "movementMode": "slide"
+            },
+            {
+              "linkId": "ink_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "synthetic_8_player_full_route_occupancy",
+      "playerCount": 8,
+      "maximumTicks": 650,
+      "spawnProbe": {
+        "fixtureScenarioId": "ffa_8_player_safe_pockets",
+        "expectedStatus": "selected",
+        "expectedSpawnId": "spawn_dm_ink_w",
+        "expectedDecisionHash": "4882737c21f26463"
+      },
+      "agents": [
+        {
+          "slot": 0,
+          "spawnId": "spawn_w_press_a",
+          "startDelayTicks": 0,
+          "routeMetricIds": [
+            "spawn_to_press_contact_west",
+            "press_fast_central_crossing"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_press",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "forward",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "spawnId": "spawn_e_press_a",
+          "startDelayTicks": 10,
+          "routeMetricIds": [
+            "spawn_to_press_contact_east"
+          ],
+          "steps": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "spawnId": "spawn_w_ink",
+          "startDelayTicks": 40,
+          "routeMetricIds": [
+            "spawn_to_ink_contact_west"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "forward",
+              "movementMode": "slide"
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "spawnId": "spawn_e_ink",
+          "startDelayTicks": 50,
+          "routeMetricIds": [
+            "spawn_to_ink_contact_east"
+          ],
+          "steps": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_east_choice",
+              "direction": "reverse",
+              "movementMode": "slide"
+            },
+            {
+              "linkId": "ink_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_mid_w_mid_e",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_mid_w_teleport_entry",
+              "direction": "forward",
+              "movementMode": "crouch"
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "spawnId": "spawn_w_archive",
+          "startDelayTicks": 20,
+          "routeMetricIds": [
+            "spawn_to_archive_contact_west"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_archive",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "spawnId": "spawn_e_archive",
+          "startDelayTicks": 30,
+          "routeMetricIds": [
+            "spawn_to_archive_contact_east"
+          ],
+          "steps": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_east_choice",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "spawnId": "spawn_w_press_b",
+          "startDelayTicks": 60,
+          "routeMetricIds": [
+            "spawn_to_choice_west",
+            "full_outer_loop"
+          ],
+          "steps": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "west_choice_archive",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_mid_w_mid_e",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_mid_e_east",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_east_choice",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_east_choice",
+              "direction": "reverse",
+              "movementMode": "slide"
+            },
+            {
+              "linkId": "ink_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_mid_w_mid_e",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "reverse",
+              "movementMode": "crouch"
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "reverse",
+              "movementMode": "run"
+            }
+          ]
+        },
+        {
+          "slot": 7,
+          "spawnId": "spawn_dm_ink_w",
+          "startDelayTicks": 30,
+          "routeMetricIds": [
+            "ink_teleport_flank",
+            "archive_drop_flank"
+          ],
+          "steps": [
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+          {
+            "linkId": "ink_mid_w_teleport_entry",
+            "direction": "forward",
+            "movementMode": "run",
+            "postureTransitions": [
+              {
+                "atWaypointIndex": 1,
+                "afterTargetedTicks": 9,
+                "movementMode": "slide"
+              },
+              {
+                "atWaypointIndex": 2,
+                "afterTargetedTicks": 0,
+                "movementMode": "crouch"
+              }
+            ]
+          },
+            {
+              "linkId": "teleport_shortcut",
+              "direction": "forward",
+              "movementMode": "teleport"
+            },
+          {
+            "linkId": "teleport_exit_press_core",
+            "direction": "forward",
+            "movementMode": "jump"
+          },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_west_archive",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "archive_mid_w_drop",
+              "direction": "forward",
+              "movementMode": "drop"
+            },
+            {
+              "linkId": "archive_drop_press_north",
+              "direction": "forward",
+              "movementMode": "drop"
+            },
+            {
+              "linkId": "press_north_core",
+              "direction": "forward",
+              "movementMode": "run"
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "forward",
+              "movementMode": "run"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

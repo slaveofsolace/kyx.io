@@ -1,27 +1,34 @@
-import { createServer } from 'http';
+import { createServer } from 'node:http';
 import { WebSocketServer } from 'ws';
 
-// ───────────────────────────────────────────────────────────────────────────
-// kyx.io match-state relay.
+// LEGACY COMPARISON FIXTURE ONLY.
 //
-// This is NOT a full authoritative game server — it doesn't simulate player
-// positions, movement, or hit detection (that stays client-side, same as
-// before). Its only job is to keep the deathmatch countdown timer and the
-// roster of real connected players SHARED across everyone's browser, so
-// joining mid-match shows the real elapsed time and the real other players
-// instead of everyone getting their own private simulated match.
+// This process deliberately preserves the original relay protocol so its
+// client-trusting behavior can be inspected while an authoritative runtime is
+// developed. It does not simulate or validate movement, collision, weapons,
+// damage, kills, or scoring. A client can claim a kill, so none of the state
+// emitted here is authoritative multiplayer state.
 //
-// Deploy this anywhere that can run a persistent Node process (a VPS,
-// Fly.io, Railway, Render's paid Web Service tier, ...) — NOT Hostinger
-// shared hosting, which only serves static files. Point the client at it by
-// setting VITE_WS_URL at build time (see ../.env.example).
-// ───────────────────────────────────────────────────────────────────────────
+// Containment is enforced by binding only to IPv4 loopback. Do not proxy,
+// tunnel, expose, or deploy this process.
 
-const PORT = process.env.PORT || 8787;
-const MATCH_DURATION_MS = 8 * 60 * 1000; // matches the client's deathmatch length
+const HOST = '127.0.0.1';
+const DEFAULT_PORT = 8787;
+const MATCH_DURATION_MS = 8 * 60 * 1000;
 const MAX_NAME_LEN = 24;
-const KILL_RATE_LIMIT_MS = 150; // guards against a client spamming fake kills
+const KILL_RATE_LIMIT_MS = 150;
+const MAX_MESSAGE_BYTES = 8 * 1024;
 
+function readPort(value) {
+  if (value === undefined || value === '') return DEFAULT_PORT;
+  const port = Number(value);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new Error('LEGACY_RELAY_PORT must be an integer from 1 through 65535');
+  }
+  return port;
+}
+
+const port = readPort(process.env.LEGACY_RELAY_PORT);
 let matchStart = Date.now();
 /** @type {Map<import('ws').WebSocket, {id:number, name:string, kills:number, score:number, lastKillAt:number}>} */
 const players = new Map();
@@ -36,10 +43,10 @@ function rosterPayload() {
   return Array.from(players.values()).map(({ id, name, kills, score }) => ({ id, name, kills, score }));
 }
 
-function broadcast(msg) {
-  const data = JSON.stringify(msg);
-  for (const ws of players.keys()) {
-    if (ws.readyState === ws.OPEN) ws.send(data);
+function broadcast(message) {
+  const data = JSON.stringify(message);
+  for (const socket of players.keys()) {
+    if (socket.readyState === socket.OPEN) socket.send(data);
   }
 }
 
@@ -47,32 +54,38 @@ function broadcastState() {
   broadcast({ type: 'state', matchStart, matchDurationMs: MATCH_DURATION_MS, players: rosterPayload() });
 }
 
-// Cycle the match automatically so the arena never actually "ends" — this is
-// what makes it a 24/7 server instead of one private match per visit.
-setInterval(() => {
-  if (Date.now() - matchStart >= MATCH_DURATION_MS) {
-    matchStart = Date.now();
-    for (const p of players.values()) { p.kills = 0; p.score = 0; }
-    broadcastState();
+const matchCycle = setInterval(() => {
+  if (Date.now() - matchStart < MATCH_DURATION_MS) return;
+
+  matchStart = Date.now();
+  for (const player of players.values()) {
+    player.kills = 0;
+    player.score = 0;
   }
+  broadcastState();
 }, 1000);
 
-// Heartbeat so long-idle clients stay resynced even with no join/leave/kill
-// activity (corrects for client clock drift).
-setInterval(broadcastState, 5000);
+const heartbeat = setInterval(broadcastState, 5000);
 
-const httpServer = createServer((req, res) => {
-  res.writeHead(200, { 'content-type': 'text/plain' });
-  res.end('kyx.io match server\n');
+const httpServer = createServer((request, response) => {
+  response.writeHead(200, {
+    'content-type': 'text/plain; charset=utf-8',
+    'cache-control': 'no-store',
+    'x-content-type-options': 'nosniff',
+  });
+  response.end('KYX legacy relay - loopback comparison fixture only\n');
 });
 
-const wss = new WebSocketServer({ server: httpServer });
+const webSocketServer = new WebSocketServer({
+  server: httpServer,
+  maxPayload: MAX_MESSAGE_BYTES,
+});
 
-wss.on('connection', (ws) => {
+webSocketServer.on('connection', (socket) => {
   const player = { id: nextId++, name: 'Recruit', kills: 0, score: 0, lastKillAt: 0 };
-  players.set(ws, player);
+  players.set(socket, player);
 
-  ws.send(JSON.stringify({
+  socket.send(JSON.stringify({
     type: 'welcome',
     id: player.id,
     matchStart,
@@ -80,18 +93,28 @@ wss.on('connection', (ws) => {
     players: rosterPayload(),
   }));
 
-  ws.on('message', (raw) => {
-    let msg;
-    try { msg = JSON.parse(raw.toString()); } catch { return; }
-    if (!msg || typeof msg.type !== 'string') return;
+  socket.on('message', (raw) => {
+    let message;
+    try {
+      message = JSON.parse(raw.toString());
+    } catch {
+      return;
+    }
 
-    if (msg.type === 'hello') {
-      player.name = sanitizeName(msg.name);
+    if (!message || typeof message.type !== 'string') return;
+
+    if (message.type === 'hello') {
+      player.name = sanitizeName(message.name);
       broadcast({ type: 'joined', name: player.name });
       broadcastState();
-    } else if (msg.type === 'kill') {
+      return;
+    }
+
+    // Preserved only to demonstrate why the old protocol is non-authoritative:
+    // the relay accepts a client's claim instead of validating a combat event.
+    if (message.type === 'kill') {
       const now = Date.now();
-      if (now - player.lastKillAt < KILL_RATE_LIMIT_MS) return; // drop spam
+      if (now - player.lastKillAt < KILL_RATE_LIMIT_MS) return;
       player.lastKillAt = now;
       player.kills += 1;
       player.score += 100;
@@ -100,13 +123,23 @@ wss.on('connection', (ws) => {
     }
   });
 
-  ws.on('close', () => {
-    players.delete(ws);
+  socket.on('close', () => {
+    players.delete(socket);
     broadcast({ type: 'left', name: player.name });
     broadcastState();
   });
 });
 
-httpServer.listen(PORT, () => {
-  console.log(`[kyx-server] listening on :${PORT}`);
+function shutdown() {
+  clearInterval(matchCycle);
+  clearInterval(heartbeat);
+  webSocketServer.close(() => httpServer.close());
+}
+
+process.once('SIGINT', shutdown);
+process.once('SIGTERM', shutdown);
+
+httpServer.listen(port, HOST, () => {
+  console.log(`[kyx-legacy-relay] comparison fixture listening at ws://${HOST}:${port}`);
+  console.log('[kyx-legacy-relay] non-authoritative; loopback only; do not expose or deploy');
 });

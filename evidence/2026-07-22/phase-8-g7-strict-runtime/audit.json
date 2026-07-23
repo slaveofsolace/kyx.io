@@ -1,0 +1,63 @@
+{
+  "schema": "kyx.g7.strict-runtime.v1",
+  "capturedAt": "2026-07-22T13:32:00Z",
+  "classification": "BOUNDED_STRICT_G7_RUNTIME_PASS",
+  "gateStatus": {
+    "G7": "OPEN"
+  },
+  "sourceCorrection": {
+    "path": "tests/accessibility/phase8-runtime.spec.ts",
+    "bytes": 12832,
+    "sha256": "ad8f24d6a32165e7a45c8cadf06f17d17c6fca788d070c48eee73ceb1ef23a70",
+    "summary": "The strict reduced-mode test now opens the rendered Settings panel and targets its actual semantic groups and slider before asserting visibility."
+  },
+  "verification": {
+    "command": "KYX_PHASE8_A11Y_STRICT=1 KYX_PHASE8_POINTER_LOCK_PROBE=1 node node_modules/@playwright/test/cli.js test accessibility/phase8-runtime.spec.ts --project=chromium-desktop --reporter=line",
+    "project": "chromium-desktop",
+    "tests": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "covered": [
+      "observational desktop shell contract",
+      "strict keyboard focus and visible focus indicator",
+      "Settings-panel focus containment",
+      "OS reduced-motion animation inventory",
+      "forced-colors activation",
+      "HUD scale, subtitles, high-contrast, and Camera / HUD Motion controls",
+      "pointer-lock acquisition, Escape release, pause visibility, and Resume focus restoration"
+    ],
+    "focusedLint": "PASS"
+  },
+  "screenshots": [
+    {
+      "path": "screenshots/settings-accessibility-controls.png",
+      "bytes": 86942,
+      "sha256": "64de41059746f6e06abe798aaedc533bba26275c7c6eb3d3c5f62d6498b702ae"
+    },
+    {
+      "path": "screenshots/settings-hud-accessibility-controls.png",
+      "bytes": 89806,
+      "sha256": "0414bee714e59445d9fa911533d81ddcd7de59b2cb9f1025e46eb4930d67b91e"
+    }
+  ],
+  "browserZoomProbe": {
+    "baseline": {
+      "innerWidth": 1280,
+      "innerHeight": 720,
+      "devicePixelRatio": 1.25,
+      "visualScale": 1
+    },
+    "shortcutAttempts": [
+      "CTRL + +",
+      "CTRL + SHIFT + ="
+    ],
+    "result": "The in-app browser did not forward a measurable browser-level zoom change; this is not accepted as literal browser-zoom evidence."
+  },
+  "limitations": [
+    "G7 remains open.",
+    "Literal 125% and 200% browser zoom remains unproven; existing CSS-viewport equivalents are supporting evidence only.",
+    "Human NVDA, JAWS, or VoiceOver acceptance remains required."
+  ]
+}

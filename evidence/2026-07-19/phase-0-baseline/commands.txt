@@ -1,0 +1,56 @@
+P0.1 repository state
+  git status --porcelain=v2 --branch
+  git rev-parse HEAD
+  git branch --all --verbose --no-abbrev
+  git remote -v
+  git worktree list --porcelain
+  git submodule status --recursive
+
+P0.2 toolchain
+  git --version
+  <bundled-node> --version
+  <bundled-pnpm> --version
+  pnpm dlx npm@11.18.0 --version
+  npm lock inventories preserved in dependency-inventory.json
+
+P0.3 install/build
+  pnpm dlx npm@11.18.0 ci --no-audit --no-fund
+    PASS: added 18 packages
+  pnpm dlx npm@11.18.0 run build
+    PASS: Vite 8.0.16; 71 modules; built in 415 ms
+    WARN: main minified chunk 979.75 kB (>500 kB)
+  (server) pnpm dlx npm@11.18.0 ci --no-audit --no-fund
+    PASS: added 1 package
+  node --check server/index.js
+    PASS
+
+P0.4/P0.5 runtime capture
+  node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5999 --strictPort
+  node tools/evidence/capture-baseline.mjs --url=http://127.0.0.1:5999/ --label=local --output=evidence/2026-07-19/phase-0-baseline --duration-ms=30000 --width=1920 --height=1080 --seed=19072026
+    PASS: menu, gameplay, 30-second gameplay segment, console/network/runtime evidence
+  node tools/evidence/capture-baseline.mjs --url=https://mistyrose-boar-758424.hostingersite.com/ --label=live --output=evidence/2026-07-19/phase-0-baseline --duration-ms=5000 --width=1920 --height=1080 --seed=19072026 --record-video=false
+    PASS: read-only public menu/gameplay, console/network/runtime evidence
+
+P0.6 asset audit
+  node tools/assets/audit-assets.mjs --input=public --output=evidence/2026-07-19/phase-0-baseline/asset-reports/current-assets.json
+    PASS: 6 assets / 6,161,565 bytes / 0 parse failures
+
+P0.7 manifest
+  node tools/evidence/build-manifest.mjs evidence/2026-07-19/phase-0-baseline
+    PASS: SHA-256 index generated after all Phase-0 evidence files were finalized
+
+P0 repository/dependency snapshot
+  node tools/evidence/capture-repository-state.mjs . evidence/2026-07-19/phase-0-baseline
+    PASS: exact status/branches/remotes/worktrees/submodules/HEAD tree and root/server lock inventories
+
+Verification
+  node --check tools/evidence/capture-baseline.mjs
+  node --check tools/evidence/build-manifest.mjs
+  node --check tools/assets/audit-assets.mjs
+  git diff --check
+  npm ci (final lockfile verification)
+  npm run build
+    NOTE: the first final npm ci attempt hit EPERM while the local Vite process held
+          Rolldown's native binding; PID 6264 was verified as that Vite process,
+          stopped cleanly, and npm ci was rerun successfully (18 packages, 3 s).
+    PASS: latest final Vite 8.0.16 build; 71 modules; built in 407 ms

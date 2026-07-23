@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "assetId": "legacy.weapons",
+  "kind": "weapon_world",
+  "releaseEligible": false,
+  "sourceHash": "3c0ded95defbb4ddc52e8b9a2bc22de233cdfdccbeb4e6cbcc548252f5d08ce8",
+  "sourceHashKind": "runtime_snapshot",
+  "runtime": {
+    "uri": "public/weapons.glb",
+    "hash": "3c0ded95defbb4ddc52e8b9a2bc22de233cdfdccbeb4e6cbcc548252f5d08ce8",
+    "bytes": 2019140
+  },
+  "budgets": {
+    "triangles": 28920,
+    "primitives": 386,
+    "materials": 7,
+    "nodes": 414,
+    "bones": 0,
+    "clips": 0,
+    "textures": 0,
+    "estimatedTextureBytes": null,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": ["EXCESSIVE_PRIMITIVES", "MONOLITHIC_CATALOG", "UNRESOLVED_PROVENANCE"]
+  },
+  "provenance": {
+    "status": "unresolved",
+    "creator": null,
+    "source": null,
+    "acquiredAt": null,
+    "license": null,
+    "licenseSnapshot": null,
+    "attribution": null,
+    "reviewer": null,
+    "notes": "Legacy monolithic weapon proxy. The 386 primitives must be split and replaced by semantic assets."
+  },
+  "disposition": "legacy_proxy_replace"
+}

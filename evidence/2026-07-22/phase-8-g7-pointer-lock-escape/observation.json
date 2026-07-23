@@ -1,0 +1,19 @@
+{
+  "gate": "G7_NOT_EVALUATED",
+  "capabilityDependent": true,
+  "before": {
+    "pointerLocked": false,
+    "activeElement": "play-btn"
+  },
+  "afterStart": {
+    "pointerLocked": true,
+    "activeElement": "game-canvas",
+    "launchStatus": "running"
+  },
+  "afterEscape": {
+    "pointerLocked": false,
+    "pauseVisible": true,
+    "activeElement": "resume-btn"
+  },
+  "manualFollowUp": "Human screen-reader and literal browser-zoom acceptance remain outside this bounded slice."
+}

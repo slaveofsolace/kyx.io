@@ -1,0 +1,11 @@
+
+ ⛅️ wrangler 4.112.0 (update available 4.113.0)
+───────────────────────────────────────────────
+Total Upload: 5185.28 KiB / gzip: 1599.62 KiB
+Your Worker has access to the following bindings:
+Binding                                                               Resource                  
+env.KYX_ROOM (KyxRoom)                                                Durable Object            
+env.ALLOWED_ORIGINS ("http://127.0.0.1:5173,http://localhos...")      Environment Variable      
+env.BUILD_ID ("phase4-local")                                         Environment Variable      
+
+--dry-run: exiting now.

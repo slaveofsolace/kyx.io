@@ -15,42 +15,58 @@ import { DamageNumbers } from '../ui/DamageNumbers.js';
 import { Nameplates } from '../ui/Nameplates.js';
 import { MenuUI } from '../ui/MainMenu.js';
 import { UserAccount } from './UserAccount.js';
-import { Armory } from './Armory.js';
 import { GameSettings } from './GameSettings.js';
+import { applyAccessibilityPreferences } from '../ui/AccessibilityPreferences.js';
+import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
+import { classifyDamageDirection } from '../ui/DamageDirection.js';
 import { DeathEffectManager } from '../effects/DeathEffects.js';
 import { getMode } from './GameModes.js';
 import { getSkin } from '../player/skins.js';
 import { buildPreviewCharacter, applySkinToCharacter, rigCharacterLimbs } from '../player/PreviewCharacter.js';
 import { loadArmorType } from '../player/ArmorTypes.js';
 import { GrenadeSystem } from '../weapons/GrenadeSystem.js';
-import { Shop } from './Shop.js';
 import { Loadout } from './Loadout.js';
-import { BattlePass } from './BattlePass.js';
-import { getArmorSkin, ARMOR_SKINS } from '../player/ArmorSkins.js';
-import { WEAPON_SKINS } from '../weapons/WeaponSkins.js';
-import { SWORD_SKINS } from '../weapons/SwordSkins.js';
-import { MobileControls } from '../ui/MobileControls.js';
-import { KILL_MULT_BONUS } from './RarityPerks.js';
 import { ZombieManager } from '../entities/ZombieManager.js';
 import { SurvivalManager } from './SurvivalManager.js';
 import { DeathmatchManager } from './DeathmatchManager.js';
-import { ServerSim } from './ServerSim.js';
-import { NetClient } from './NetClient.js';
 import { preloadZombieModel } from '../entities/Zombie.js';
-import { preloadPlayerModel, preloadSpartanModel } from '../player/PreviewCharacter.js';
 import { preloadHumanSoldier } from '../player/HumanSoldier.js';
-import { preloadWeaponModels, buildWeaponModel } from '../weapons/WeaponModels.js';
+import { buildWeaponModel } from '../weapons/WeaponModels.js';
 import { PickupSystem } from '../world/PickupSystem.js';
+import { PRODUCT_CONFIG } from '../config/productConfig.js';
 
 const SPAWN_POINT = new THREE.Vector3(0, 0, 8);
 
-// The arena is an always-on server with a fixed capacity. You take one slot;
-// the rest are filled with bots and simulated remote players (see ServerSim).
-const MAX_PLAYERS = 8;
+const PRACTICE_BOTS = PRODUCT_CONFIG.practice.bots;
+const PRACTICE_DURATION_SECONDS = PRODUCT_CONFIG.practice.durationSeconds;
+const DEVELOPMENT_MOVEMENT_VISUALIZATION_BOUNDARY =
+  'development_flat_run_visualization_only_v1';
+
+// Small optional seam for development movement authorities. Keeping the
+// legacy call in this dispatcher makes the unconfigured product path explicit
+// and independently testable.
+export function updatePlayerMovementFrame(movementDriver, context) {
+  if (movementDriver) {
+    movementDriver.update({
+      elapsedMilliseconds:
+        context.movementElapsedMilliseconds ?? context.elapsedSeconds * 1000,
+      presentationElapsedSeconds: context.elapsedSeconds,
+      input: context.input,
+      player: context.player,
+    });
+    return;
+  }
+  context.player.update(context.elapsedSeconds, context.input, context.legacyWorld);
+}
 
 export class Game {
-  constructor(canvas) {
+  constructor(canvas, options = undefined) {
     this.canvas = canvas;
+    this._movementDriver = options?.movementDriver ?? null;
+    this._onMovementDriverFault = options?.onMovementDriverFault ?? null;
+    this._movementDriverFaulted = false;
+    this._disposed = false;
+    this._scheduledTimeouts = new Set();
     GameSettings.load();
     const _q = GameSettings.get('quality');
     // Quality-aware renderer: MSAA + full pixel ratio + shadows only on 'high',
@@ -67,9 +83,10 @@ export class Game {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 0.78;
 
-    // Kick off model fetches immediately so they're ready before first use.
-    // The real rigged human soldier is preferred; both callbacks swap the
-    // preview to the best available model once it finishes loading.
+    // Fetch only the preferred player model during menu initialization. The
+    // older player/Spartan GLBs are procedural fallbacks, and eagerly fetching
+    // every fallback plus the weapon catalog inflated the first-play path by
+    // several megabytes. Mode-specific assets are loaded only when selected.
     const swapPreview = () => {
       const wasVisible = this.previewCharacter?.visible ?? false;
       this._rebuildPreviewCharacter();
@@ -80,9 +97,6 @@ export class Game {
       }
     };
     preloadHumanSoldier(swapPreview);
-    preloadPlayerModel(swapPreview);
-    preloadSpartanModel(swapPreview);
-    preloadWeaponModels();
 
     this.world        = new World();
 
@@ -97,11 +111,15 @@ export class Game {
     // skins, muzzle flashes, lamps — bleed light for a cinematic glow.
     this._buildPostFX();
     this.player       = new Player(window.innerWidth / window.innerHeight);
+    this._damageForward = new THREE.Vector3();
     this.audio        = new AudioManager();
     this.player.audio = this.audio;
     this.player.onTeleport = () => {
       this.audio.playTeleport();
       this.hud.flashTeleport();
+    };
+    this.player.onTeleportUnavailable = (remainingSeconds) => {
+      this.hud.showAbilityUnavailable('Q', `BLINK RECHARGING ${remainingSeconds.toFixed(1)}S`);
     };
     this.weaponSystem = new WeaponSystem(this.player.camera, this.world.scene, this.audio);
     // Hide FPS viewmodel during menu — it floats in the scene otherwise.
@@ -113,45 +131,20 @@ export class Game {
     this.deathEffects = new DeathEffectManager(this.world.scene);
     this.botManager      = new BotManager(this.world, this.world.scene);
     this.zombieManager   = new ZombieManager(this.world, this.world.scene, this.audio);
-    preloadZombieModel();   // start fetching zombie.glb during the 60s grace period
     this.survivalManager = new SurvivalManager();
     this.dmManager       = new DeathmatchManager();
-    this.serverSim       = null; // built once the HUD exists (see below)
     this._activeManager  = this.botManager;  // switches between botManager / zombieManager
     this._isSurvival     = false;
     this._isDM           = false;
     this._playerDowned   = false;
-    this._pendingCoins   = 0;   // fractional coin accumulator for survival
     this.input        = new InputManager(canvas);
-    this.mobileControls = this.input.isMobile
-      ? new MobileControls(this.input, { onMenu: () => this._openMenu() })
-      : null;
+    this._movementDriver?.attach({ player: this.player });
     this.hud            = new HUD();
+    this.captionCues    = new CaptionCueOverlay();
+    this.audio.onCriticalCue = (cue) => this.captionCues.showAudioCue(cue);
+    this.audio.onSubtitle = (cue) => this.captionCues.showSubtitle(cue);
     this.damageNumbers  = new DamageNumbers();
     this.nameplates     = new Nameplates();
-    this.serverSim      = new ServerSim({ maxPlayers: MAX_PLAYERS, botManager: this.botManager, hud: this.hud });
-
-    // Optional shared match-state relay (see src/core/NetClient.js and
-    // /server) — when configured (VITE_WS_URL) and reachable, deathmatch's
-    // countdown timer and roster are shared across everyone's browser, so
-    // joining mid-match shows the real elapsed time and real other players.
-    // With no URL, or if it's unreachable, this is a no-op and the game
-    // falls back to ServerSim's local-only simulation.
-    this.net       = new NetClient(import.meta.env.VITE_WS_URL || '');
-    this._netSlots = new Map(); // net player id -> Bot instance representing them
-    this._netDriven = false;    // true for the duration of a match started while net was connected
-    this.net.onState = (matchStart, durationMs, roster) => this._onNetState(matchStart, durationMs, roster);
-    this.net.onKillFeed = (name) => {
-      if (this._isDM && this.state === 'playing') this.hud.addKillFeed(`${name} eliminated a target`);
-    };
-    this.net.onJoined = (name) => {
-      if (this._isDM && this.state === 'playing') this.hud.showJoinNotification(`▶  ${name}  joined the match`);
-    };
-    this.net.onLeft = (name) => {
-      if (this._isDM && this.state === 'playing') this.hud.showJoinNotification(`◀  ${name}  left the match`, true);
-    };
-    this.net.connect();
-
     this._scopeOverlay  = document.getElementById('scope-overlay');
     this._hudCrosshair  = document.getElementById('crosshair');
     this._menuOpen      = false; // in-match menu overlay (the match keeps running)
@@ -176,7 +169,7 @@ export class Game {
 
     this.selectedSkin      = getSkin('spartan');
     this.selectedArmorType = loadArmorType();
-    this.selectedArmorSkin = getArmorSkin(Shop.getEquipped());
+    this.selectedArmorSkin = null;
     this.previewCharacter  = buildPreviewCharacter(this.selectedSkin, this.selectedArmorType, this.selectedArmorSkin);
     this.previewCharacter.position.copy(this.world.previewPedestalPos);
     this.previewCharacter.visible = false;
@@ -187,11 +180,10 @@ export class Game {
     this.score   = 0;
     this.deaths  = 0;
     this._sbShown = false;   // in-game scoreboard (hold TAB)
-    this._sbStats = {};      // stable per-match bot scores
     this._sbRefreshT = 0;
     this.playTime = 0;
     this._statsSaved  = true;
-    this.currentUsername = null;
+    this.currentProfileKind = 'local_guest';
 
     // Game-mode runtime state
     this._mode      = null; // current mode definition object
@@ -208,16 +200,27 @@ export class Game {
     this._wireMenu();
     // Auth is deferred until after the connect sequence
 
-    this.canvas.addEventListener('click', () => {
+    this._onCanvasClick = () => {
       this.audio.resume();
       if (this._menuOpen) this._resume();
-    });
-    window.addEventListener('resize', () => this._onResize());
+    };
+    this._onWindowResize = () => this._onResize();
+    this.canvas.addEventListener('click', this._onCanvasClick);
+    window.addEventListener('resize', this._onWindowResize);
     this.input.onLockChange = (locked) => {
-      // Losing pointer lock (e.g. pressing ESC) opens the in-match menu, but the
-      // match keeps simulating in the background — this is a multiplayer game.
+      // Losing pointer lock (for example, pressing ESC) opens the practice menu
+      // while the local simulation continues.
+      if (!locked) this._movementDriver?.neutralize();
       if (!locked && this.state === 'playing' && !this._menuOpen) this._openMenu();
     };
+    this.input.onPointerLockError = () => {
+      this._movementDriver?.neutralize();
+      if (this.state !== 'playing') return;
+      this._menuOpen = true;
+      this.menu.showPause();
+      this.menu.showPointerLockError();
+    };
+    this.input.onFocusLoss = () => this._movementDriver?.neutralize();
 
     this._rafId = requestAnimationFrame(() => this._loop());
     this._runConnectSequence();
@@ -225,21 +228,65 @@ export class Game {
 
   // Release all global event listeners and cancel the render loop.
   dispose() {
+    if (this._disposed) return;
+    this._disposed = true;
     cancelAnimationFrame(this._rafId);
+    this._clearAllScheduledTimeouts();
+    this.canvas.removeEventListener('click', this._onCanvasClick);
+    window.removeEventListener('resize', this._onWindowResize);
+    this.input.onLockChange = null;
+    this.input.onFocusLoss = null;
+    this._movementDriver?.dispose();
+    this._movementDriver = null;
     this.input.dispose();
+    this.captionCues.dispose();
+    this.timer.dispose();
     this.renderer.dispose();
     this.botManager.clear();
     this.zombieManager.clear();
   }
 
+  _scheduleTimeout(callback, delayMilliseconds) {
+    let handle = null;
+    handle = setTimeout(() => {
+      this._scheduledTimeouts.delete(handle);
+      if (!this._disposed) callback();
+    }, delayMilliseconds);
+    this._scheduledTimeouts.add(handle);
+    return handle;
+  }
+
+  _clearScheduledTimeout(handle) {
+    if (handle === null || handle === undefined) return;
+    clearTimeout(handle);
+    this._scheduledTimeouts.delete(handle);
+  }
+
+  _clearAllScheduledTimeouts() {
+    for (const handle of this._scheduledTimeouts) clearTimeout(handle);
+    this._scheduledTimeouts.clear();
+  }
+
+  _handleMovementDriverFault(error) {
+    if (this._movementDriverFaulted || this._disposed) return;
+    this._movementDriverFaulted = true;
+    cancelAnimationFrame(this._rafId);
+    const driver = this._movementDriver;
+    this._movementDriver = null;
+    try { driver?.neutralize(); } catch { /* Preserve the original fault. */ }
+    try { driver?.dispose(); } catch { /* Preserve the original fault. */ }
+    this.input.endFrame();
+    this._onMovementDriverFault?.(error);
+  }
+
   // ── Connect sequence ─────────────────────────────────────────────────────────
 
-  // ev.io-style boot flow: pulsating logo → map-loading card (map name) → GUI.
+  // Local boot flow: logo -> arena preview card -> offline-practice menu.
   _runConnectSequence() {
     const screen = document.getElementById('connect-screen');
-    setTimeout(() => {
+    this._scheduleTimeout(() => {
       screen.classList.add('fade-out');
-      setTimeout(() => {
+      this._scheduleTimeout(() => {
         screen.classList.add('hidden');
         this._runMapIntro();
       }, 700);
@@ -256,49 +303,53 @@ export class Game {
       const players = document.getElementById('ml-players');
       const tip     = document.getElementById('ml-tip');
       if (region)  region.textContent  = 'Bastion Sector';
-      if (mode)    mode.textContent     = 'Loading map…';
-      if (players) players.textContent  = 'Spectating';
-      if (tip)     tip.textContent      = 'TIP: press PLAY to drop into the match';
-      clearTimeout(this._mlTimer1); clearTimeout(this._mlTimer2);
+      if (mode)    mode.textContent     = 'Offline Practice Preview';
+      if (players) players.textContent  = `1 LOCAL PLAYER · ${PRACTICE_BOTS} PRACTICE BOTS`;
+      if (tip)     tip.textContent      = 'TIP: start offline practice when ready';
+      this._clearScheduledTimeout(this._mlTimer1); this._clearScheduledTimeout(this._mlTimer2);
       el.classList.remove('hidden', 'ml-fade');
-      this._mlTimer1 = setTimeout(() => el.classList.add('ml-fade'), 2000);
-      this._mlTimer2 = setTimeout(() => el.classList.add('hidden'), 2700);
+      this._mlTimer1 = this._scheduleTimeout(() => el.classList.add('ml-fade'), 2000);
+      this._mlTimer2 = this._scheduleTimeout(() => {
+        el.classList.add('hidden');
+        this._initAuth();
+      }, 2700);
+      return;
     }
     this._initAuth();
   }
 
-  // ── Auth ────────────────────────────────────────────────────────────────────
+  // ── Local guest profile ─────────────────────────────────────────────────────
 
   _initAuth() {
-    // ev.io-style: land on the main menu immediately (spectating). Registered
-    // accounts resume signed in; login/register happen on their own /login and
-    // /register pages, which set the session and bounce back here.
-    this._onAuth(UserAccount.isLoggedIn() ? UserAccount.current() : null);
+    this._onProfileLoaded();
   }
 
-  _onAuth(username) {
-    this.currentUsername = username;
-    this.menu.setUsername(username);
-    if (username && !UserAccount.isGuest()) {
-      document.getElementById('player-name').value = UserAccount.getDisplayName(username);
-    }
+  _onProfileLoaded() {
+    const displayName = UserAccount.getDisplayName();
+    this.currentProfileKind = 'local_guest';
+    this.menu.setUsername(displayName);
+    const input = document.getElementById('player-name');
+    if (input) input.value = displayName;
     this.menu.showMain();
   }
 
   // ── Settings application ────────────────────────────────────────────────────
 
-  _applySettings() {
-    this.player.sensitivityMult = GameSettings.get('sensitivity');
-    this.player.invertY         = GameSettings.get('invertY');
-    this.player.baseFov         = GameSettings.get('fov');
+  _applySettings(settings = GameSettings.snapshot()) {
+    this.player.sensitivityMult = settings.sensitivity;
+    this.player.invertY         = settings.invertY;
+    this.player.baseFov         = settings.fov;
+    this.player.setReducedMotion(settings.reducedMotion);
     this.player.camera.fov      = this.player.baseFov;
     this.player.camera.updateProjectionMatrix();
-    const vol = GameSettings.get('volume');
-    this.audio.setVolume(vol);
-    const q = GameSettings.get('quality');
+    this.audio.setVolume(settings.volume);
+    const q = settings.quality;
     const pr = q === 'high' ? Math.min(window.devicePixelRatio, 2)
              : q === 'low'  ? 0.6 : 1;
     this.renderer.setPixelRatio(pr);
+    this._bloomEnabled = q !== 'low';
+    applyAccessibilityPreferences(settings);
+    this.captionCues.setPreferences(settings);
   }
 
   // ── Wire callbacks ──────────────────────────────────────────────────────────
@@ -343,25 +394,10 @@ export class Game {
           isMelee
         );
         this.audio.playKill();
-        const skinMult = this._computeSkinKillMult();
         const baseMult = meta?.rewardMult || 1;
-        this._onEnemyKilled(enemy, entry, baseMult * skinMult, meta?.headshot);
+        this._onEnemyKilled(enemy, entry, baseMult, meta?.headshot);
       }
     };
-  }
-
-  _computeSkinKillMult() {
-    const bonus = (skinList, id) => {
-      const s = skinList.find(s => s.id === id);
-      return KILL_MULT_BONUS[s?.rarity] ?? 0;
-    };
-    const gunId    = Loadout.getGun();
-    const meleeId  = Loadout.getMelee();
-    const armorId  = Shop.getEquipped();
-    const gunBonus   = bonus(WEAPON_SKINS, Armory.getSkinId(gunId,   false));
-    const meleeBonus = bonus(SWORD_SKINS,  Armory.getSkinId(meleeId, true));
-    const armorBonus = bonus(ARMOR_SKINS,  armorId);
-    return Math.min(5.0, 1.0 + gunBonus + meleeBonus + armorBonus);
   }
 
   _onEnemyKilled(enemy, weaponEntry, rewardMult = 1, headshot = false) {
@@ -370,43 +406,24 @@ export class Game {
     const knifeTag = rewardMult > 1 ? `  🔪 KNIFE THROW x${rewardMult.toFixed(1)}!` : '';
 
     if (this._isSurvival) {
-      const coins = this.survivalManager.zombieKillReward() * rewardMult * this.survivalManager.waveBonus();
-      this.score += 50 * rewardMult;
-      this._pendingCoins += coins;
-      if (this._pendingCoins >= 1) {
-        Shop.addCoins(Math.floor(this._pendingCoins));
-        this._pendingCoins -= Math.floor(this._pendingCoins);
-      }
-      BattlePass.addXP(10 * rewardMult);
-      this.hud.showCoinEarn(coins);
-      this.hud.addKillFeed(`ZOMBIE DOWN!  💰+${coins}${hsTag}${knifeTag}`);
+      const points = Math.round(50 * rewardMult * this.survivalManager.waveBonus());
+      this.score += points;
+      this.hud.addKillFeed(`ZOMBIE DOWN  +${points} PRACTICE SCORE${hsTag}${knifeTag}`);
     } else if (this._isDM) {
-      const { coins, streak } = this.dmManager.onKill();
-      const reward = coins * rewardMult;
-      this.score += 100 * rewardMult;
-      Shop.addCoins(Math.round(reward));
-      BattlePass.addXP(25 * rewardMult);
-      this._refreshNavCoins();
-      if (this._netDriven) this.net.sendKill(); // report to the shared 24/7 roster
-      this.hud.showCoinEarn(reward);
+      const { streak } = this.dmManager.onKill();
+      const points = Math.round(100 * rewardMult);
+      this.score += points;
       if (streak >= 2) {
-        this.hud.showStreak(streak, reward.toFixed(1));
-        this.hud.addKillFeed(`ELIMINATED — 🔥 x${streak} STREAK  💰+${reward.toFixed(1)}${hsTag}${knifeTag}`);
+        this.hud.showStreak(streak);
+        this.hud.addKillFeed(`PRACTICE BOT ELIMINATED — 🔥 x${streak} STREAK  +${points}${hsTag}${knifeTag}`);
       } else {
-        this.hud.addKillFeed(`ELIMINATED  💰+${reward.toFixed(1)}${knifeTag}`);
+        this.hud.addKillFeed(`PRACTICE BOT ELIMINATED  +${points}${hsTag}${knifeTag}`);
       }
     } else {
-      this.score += 100 * rewardMult;
-      Shop.addCoins(10 * rewardMult);
-      BattlePass.addXP(25 * rewardMult);
-      this.hud.showCoinEarn(10 * rewardMult);
-      this.hud.addKillFeed(`${this.player.name} eliminated a target  +${100 * rewardMult}  💰+${10 * rewardMult}${hsTag}${knifeTag}`);
+      const points = Math.round(100 * rewardMult);
+      this.score += points;
+      this.hud.addKillFeed(`${this.player.name} eliminated a practice target  +${points}${hsTag}${knifeTag}`);
     }
-  }
-
-  _refreshNavCoins() {
-    const el = document.getElementById('nav-coins');
-    if (el) el.textContent = `💰 ${Shop.getCoins()}`;
   }
 
   _wireMenu() {
@@ -416,45 +433,18 @@ export class Game {
     this.menu.onRestart       = () => this._restart();
     this.menu.onBackToMenu    = () => this._quitToMenu();
     this.menu.onArmorChanged  = (armorTypeId) => this._rebuildPreviewCharacter(armorTypeId, undefined);
-    this.menu.onArmorSkinEquipped = (skinId)  => this._rebuildPreviewCharacter(undefined, skinId);
-    this.menu.onLoadoutOpen   = () => { this.previewCharacter.visible = true; };
-    this.menu.onLoadoutClose  = () => { this.previewCharacter.visible = false; };
-    this.menu.onArmoryChanged = () => {
-      // Re-apply armory skins to live weapon models
-      const map = Armory.buildSkinMap(this.weaponSystem.allWeapons);
-      this.weaponSystem.applyArmoryMap(map);
-    };
     this.menu.onSettingsSaved = (s) => {
-      this.player.sensitivityMult = s.sensitivity;
-      this.player.invertY         = s.invertY;
-      this.player.baseFov         = s.fov;
-      if (this.state !== 'playing') {
-        this.player.camera.fov = s.fov;
-        this.player.camera.updateProjectionMatrix();
-      }
-      this.audio.setVolume(s.volume);
-      const pr = s.quality === 'high' ? Math.min(window.devicePixelRatio, 2)
-               : s.quality === 'low'  ? 0.6 : 1;
-      this.renderer.setPixelRatio(pr);
-      // Apply the heavy toggles live so a quality drop gives immediate relief
-      // (bloom + shadows). The decorative light budget is baked at world build,
-      // so the lighting part of the change takes full effect on the next reload.
-      this._bloomEnabled = s.quality !== 'low';
-      // shadows stay off — sky-only lighting has no shadow casters.
+      this._applySettings(s);
+      // The decorative light budget is baked at world build, so that part of a
+      // quality change takes full effect on the next reload. Shadows stay off.
     };
-    this.menu.onLoginRequest = () => { window.location.href = '/login'; };
-    this.menu.onLogout = () => {
-      UserAccount.logout();
-      // Stay on the main menu, now as a logged-out spectator.
-      this._onAuth(null);
-    };
+    this.menu.onProfileEdit = () => { window.location.href = '/login'; };
   }
 
   // ── Game start / restart ────────────────────────────────────────────────────
 
-  _rebuildPreviewCharacter(armorTypeId, armorSkinId) {
+  _rebuildPreviewCharacter(armorTypeId) {
     if (armorTypeId !== undefined) this.selectedArmorType = armorTypeId;
-    if (armorSkinId !== undefined) this.selectedArmorSkin = getArmorSkin(armorSkinId);
     this.world.scene.remove(this.previewCharacter);
     this.previewCharacter = buildPreviewCharacter(this.selectedSkin, this.selectedArmorType, this.selectedArmorSkin);
     this.previewCharacter.position.copy(this.world.previewPedestalPos);
@@ -466,20 +456,17 @@ export class Game {
     this._clearMenuBots();
     this.audio.resume();
     this.selectedSkin      = getSkin(skinId);
-    this.selectedArmorSkin = getArmorSkin(Shop.getEquipped());
+    this.selectedArmorSkin = null;
     applySkinToCharacter(this.previewCharacter, this.selectedSkin, this.selectedArmorSkin);
     this.weaponSystem.setSkin(this.selectedSkin);
 
     // Equip exactly the chosen gun + melee for this match.
     this.weaponSystem.setLoadout(Loadout.getGun(), Loadout.getMelee());
 
-    const armoryMap = Armory.buildSkinMap(this.weaponSystem.allWeapons);
-    this.weaponSystem.applyArmoryMap(armoryMap);
-
     this.player.name = name;
     this.player.skin = this.selectedSkin;
     this.player.setMaxShield(this.selectedArmorSkin?.shield || 0);
-    this.player.respawn(SPAWN_POINT);
+    this._respawnPlayer(SPAWN_POINT);
     this.weaponSystem.resetState(this.player.baseFov);
     this.grenadeSystem.reset();
 
@@ -487,10 +474,8 @@ export class Game {
     this.kills    = 0;
     this.score    = 0;
     this.deaths   = 0;
-    this._sbStats = {};
     this.playTime = 0;
     this._statsSaved   = false;
-    this._pendingCoins = 0;
     this._playerDowned = false;
 
     // Mode-specific setup
@@ -509,44 +494,31 @@ export class Game {
       this._activeManager = this.botManager;
       this.zombieManager.clear();
       this.dmManager.reset();
-      // Fill the 8-slot server: you + (MAX_PLAYERS - 1) bots. Either the real
-      // 24/7 relay (net) or the local ServerSim then flags some of those
-      // bot slots as remote players as they come and go.
-      this.botManager.spawnAll(MAX_PLAYERS - 1, false, 1);
-      this._netSlots.clear();
-      this._netDriven = this.net.connected;
-      if (this._netDriven) {
-        this.net.sendHello(name);
-        this._modeTimer = (this.net.matchStart != null)
-          ? THREE.MathUtils.clamp(this.net.matchDurationMs / 1000 - (Date.now() - this.net.matchStart) / 1000, 0, this.net.matchDurationMs / 1000)
-          : 480;
-        this._applyNetRoster(this.net.roster);
-      } else {
-        this._modeTimer = 480; // 8 minutes
-        this.serverSim.start(false, 1);
-      }
-      this.hud.showServerPop(true);
+      this.botManager.spawnAll(PRACTICE_BOTS, false, 1);
+      this._modeTimer = PRACTICE_DURATION_SECONDS;
+      this.hud.showPracticeStatus(true, PRACTICE_BOTS);
       // (re)create pickup system for fresh match
       this.pickupSystem?.dispose();
       this.pickupSystem = new PickupSystem(this.world.scene);
       const _mm = Math.floor(this._modeTimer / 60), _ss = Math.floor(this._modeTimer % 60);
       this.hud.showDMTimer(`${_mm}:${String(_ss).padStart(2, '0')}`);
     } else if (this._isSurvival) {
+      // Survival has a 60-second grace period, so its dedicated model can load
+      // here without penalizing the default Offline Practice launch.
+      preloadZombieModel();
       this._activeManager = this.zombieManager;
       this.botManager.clear();
       this.zombieManager.clear();
       this.survivalManager.reset();
       this._modeTimer = 0;
-      this.serverSim.stop();
-      this.hud.showServerPop(false);
+      this.hud.showPracticeStatus(true, 0, 'SOLO WAVE PRACTICE');
       this._wireSurvivalCallbacks();
       this.hud.setModeHUD('GRACE PERIOD', '1:00 REMAINING');
     } else {
       // Legacy modes (kept for compatibility)
       this._activeManager = this.botManager;
       this.zombieManager.clear();
-      this.serverSim.stop();
-      this.hud.showServerPop(false);
+      this.hud.showPracticeStatus(false);
       this._modeTimer = this._mode.timeLimit || 0;
       this._lives     = this._mode.lives === Infinity ? Infinity : this._mode.lives;
       this._wave      = 1;
@@ -581,9 +553,17 @@ export class Game {
 
     this.state = 'playing';
     this.player._camDist = 0;  // always start in FPS on new game
+    this.canvas.focus({ preventScroll: true });
     this.input.requestPointerLock();
-    this.mobileControls?.show();
     this.audio.startAmbientCity();
+  }
+
+  _respawnPlayer(position) {
+    this.player.respawn(position);
+    this._movementDriver?.reset({
+      player: this.player,
+      spawnPosition: position,
+    });
   }
 
   _wireSurvivalCallbacks() {
@@ -612,10 +592,10 @@ export class Game {
     sm.onRevive = () => {
       this._playerDowned = false;
       this.hud.hideDowned();
-      this.player.respawn(SPAWN_POINT);
+      this._respawnPlayer(SPAWN_POINT);
       this.player.health = 50;
       this.player.shield = Math.min(this.player.maxShield, this.player.maxShield * 0.3);
-      this.hud.addKillFeed('REVIVED BY TEAMMATE — 50 HP');
+      this.hud.addKillFeed('LOCAL AUTO-REVIVE — 50 HP');
       this.hud.flashDamage();
     };
 
@@ -644,64 +624,6 @@ export class Game {
     }
   }
 
-  // ── Shared 24/7 match state (see NetClient / server/) ───────────────────────
-
-  // Fired whenever the net relay pushes a state snapshot. If the current
-  // deathmatch started OFFLINE (the WebSocket races page load, so clicking
-  // PLAY quickly lands before it connects — the timer shows a private 8:00),
-  // adopt the shared server state as soon as it arrives: snap the countdown
-  // to the real match time and swap the roster to real players. Better a
-  // one-time timer jump than a whole match on a private clock.
-  _onNetState(matchStart, durationMs, roster) {
-    if (!this._isDM || this.state !== 'playing') return;
-    if (!this._netDriven) {
-      this._netDriven = true;
-      this.serverSim.stop();           // hand the roster over to the real server
-      // Release any slots the local sim had flagged as fake remote players so
-      // the real roster below can claim them.
-      for (const b of this.botManager.bots) { b.isHumanSlot = false; b._netId = null; }
-      this._netSlots.clear();
-      this.net.sendHello(this.player.name);
-      console.info('[net] match server state adopted mid-match — timer synced to the shared 24/7 match');
-    }
-    const remaining = durationMs / 1000 - (Date.now() - matchStart) / 1000;
-    this._modeTimer = THREE.MathUtils.clamp(remaining, 0, durationMs / 1000);
-    this._applyNetRoster(roster);
-  }
-
-  // Reconcile which existing bot slots represent real connected players vs
-  // pure AI. Never resizes the roster — always exactly MAX_PLAYERS
-  // combatants; a "net slot" just relabels an existing bot with a real
-  // player's name and real kills/score instead of the usual random ones.
-  _applyNetRoster(roster) {
-    const others = (roster || []).filter((p) => p.id !== this.net.selfId).slice(0, MAX_PLAYERS - 1);
-    const seenIds = new Set(others.map((p) => p.id));
-
-    // Release slots for players who left — back to plain AI.
-    for (const [id, bot] of this._netSlots) {
-      if (!seenIds.has(id)) {
-        bot.isHumanSlot = false;
-        bot._netId = null;
-        this._netSlots.delete(id);
-      }
-    }
-    // Claim/refresh slots for current real players.
-    for (const p of others) {
-      let bot = this._netSlots.get(p.id);
-      if (!bot) {
-        bot = this.botManager.bots.find((b) => !b.isHumanSlot);
-        if (!bot) continue; // no free slot (shouldn't happen at capacity)
-        bot.isHumanSlot = true;
-        bot._netId = p.id;
-        this._netSlots.set(p.id, bot);
-      }
-      bot.displayName = p.name;
-      bot._netKills = p.kills;
-      bot._netScore = p.score;
-    }
-    this.hud.setServerPop(1 + others.length, MAX_PLAYERS);
-  }
-
   // Format seconds as HH:MM:SS (survival best-time display).
   _fmtHMS(secs) {
     secs = Math.max(0, Math.floor(secs));
@@ -710,44 +632,33 @@ export class Game {
     return `${pad(h)}:${pad(m)}:${pad(s)}`;
   }
 
-  // Live scoreboard rows (you + opponents). Bot scores are seeded once per match
-  // so they stay stable while you hold TAB. Net-flagged slots (real connected
-  // players) use their real kills/score from the shared server instead.
-  // Survival shows just you (vs. zombies).
+  // Practice scoreboard: local facts only. Bot combat statistics are not yet
+  // tracked, so they are explicitly unknown rather than fabricated.
   _buildScoreboardRows() {
     const rows = [{ name: this.player.name || 'You', kills: this.kills, score: this.score, isYou: true }];
     if (!this._isSurvival) {
       for (const bot of (this.botManager?.bots || [])) {
-        const key = bot.displayName || 'Spartan';
-        let kills, score;
-        if (bot._netId != null) {
-          kills = bot._netKills || 0;
-          score = bot._netScore || 0;
-        } else {
-          if (this._sbStats[key] == null) {
-            const k = Math.floor(Math.random() * 9);
-            this._sbStats[key] = { kills: k, score: k * 100 };
-          }
-          kills = this._sbStats[key].kills;
-          score = this._sbStats[key].score;
-        }
-        rows.push({ name: key, kills, score, isYou: false });
+        rows.push({
+          name: bot.displayName || 'PRACTICE BOT',
+          kills: '—',
+          score: '—',
+          isYou: false,
+        });
       }
     }
-    rows.sort((a, b) => b.kills - a.kills || b.score - a.score);
     return rows;
   }
 
   // ── Post-match leaderboard ───────────────────────────────────────────────────
 
   _showLeaderboard() {
-    this.serverSim?.stop();
     this._saveStats();
     this._menuOpen = false;
     if (this._scopeOverlay) this._scopeOverlay.classList.remove('active');
     if (this._hudCrosshair) this._hudCrosshair.classList.remove('hidden');
 
-    // Build leaderboard: player + all current bots with generated kill stats.
+    // Results contain measured local-player facts only. Bot results remain
+    // unavailable until the practice AI owns explicit statistic tracking.
     const kd = (k, d) => (d > 0 ? (k / d).toFixed(1) : k.toFixed(1));
     const rows = [{
       name:    this.player.name,
@@ -758,38 +669,15 @@ export class Game {
       kd:      kd(this.kills, this.deaths),
       isYou:   true,
     }];
-    for (const bot of this.botManager.bots) {
-      let k, d, a, score;
-      if (bot._netId != null) {
-        // Real connected player — use their actual reported stats. Deaths
-        // aren't tracked server-side yet (out of scope for the shared-state
-        // relay), so kd falls back to raw kills the same way the formula
-        // already does for anyone with 0 recorded deaths.
-        k = bot._netKills || 0;
-        d = 0;
-        a = 0;
-        score = bot._netScore || 0;
-      } else {
-        k = 3 + Math.floor(Math.random() * 14); // 3–16 kills
-        d = 1 + Math.floor(Math.random() * 9);  // 1–9 deaths
-        a = Math.floor(Math.random() * 6);
-        score = k * 100;
-      }
-      rows.push({ name: bot.displayName, score, assists: a, kills: k, deaths: d, kd: kd(k, d), isYou: false });
-    }
-    rows.sort((a, b) => b.kills - a.kills || b.score - a.score);
-    const earnedCoins = Math.max(0, this.kills) * 10 + 100; // 10/kill + 100 match bonus
-
     if (this.weaponSystem.weaponMount) this.weaponSystem.weaponMount.visible = false;
     this.state    = 'leaderboard';
     this._lbTimer = 10;
     this.input.exitPointerLock();
-    this.mobileControls?.hide();
     this.hud.hide();         // hide crosshair / ammo / health
     this.hud.hideDMTimer();
     this.hud.hideScoreboard(); this._sbShown = false;
     this.hud.hideLeaderboard(); // reset in case it was shown before
-    this.hud.showLeaderboard(rows, this.player.name, earnedCoins);
+    this.hud.showLeaderboard(rows, this.player.name);
     this.hud.updateLeaderboardCountdown(10, 10);
   }
 
@@ -813,21 +701,17 @@ export class Game {
   _saveStats() {
     if (this._statsSaved) return;
     this._statsSaved = true;
-    UserAccount.addGameStats(this.currentUsername, this.kills, this.score);
-    Shop.addCoins(100);
-    BattlePass.addXP(100);
   }
 
   _resume() {
     this.menu.hidePause();
     this._menuOpen = false;
+    this.canvas.focus({ preventScroll: true });
     this.input.requestPointerLock();
-    this.mobileControls?.show();
   }
 
-  // ESC during a match opens the menu as an overlay. The state stays 'playing'
-  // so zombies/bots/timers keep running — you can't freeze a multiplayer match.
-  // ev.io-style map loading card: map name / region / mode / players / TIP,
+  // ESC during practice opens the menu as an overlay while local simulation
+  // continues. The loading card states the local roster explicitly.
   // shown over the fly-through for a beat as the match starts, then fades.
   _showMapLoading(modeId) {
     const el = document.getElementById('map-loading');
@@ -838,33 +722,35 @@ export class Game {
       'TIP: F throws a frag grenade, E throws smoke',
       'TIP: headshots deal bonus damage — aim high',
       'TIP: grav-lifts by the plaza launch you onto the rooftops',
-      'TIP: rarer skins earn more coins per kill',
+      'TIP: all opponents in this build are local practice bots',
     ];
     const modeNames = {
-      deathmatch: 'Deathmatch', teamslayer: 'Team Slayer', ctf: 'Capture the Flag',
-      koth: 'King of the Hill', survival: 'Firefight',
+      deathmatch: 'Offline Practice',
+      survival: 'Solo Wave Practice',
     };
     const mode = document.getElementById('ml-mode');
-    if (mode) mode.textContent = modeNames[modeId] || 'Deathmatch';
+    if (mode) mode.textContent = modeNames[modeId] || 'Offline Practice';
     const players = document.getElementById('ml-players');
-    if (players) players.textContent = `${MAX_PLAYERS} players`;
+    if (players) players.textContent = modeId === 'survival'
+      ? '1 LOCAL PLAYER · SOLO WAVES'
+      : `1 LOCAL PLAYER · ${PRACTICE_BOTS} BOTS`;
     const tip = document.getElementById('ml-tip');
     if (tip) tip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
 
-    clearTimeout(this._mlTimer1); clearTimeout(this._mlTimer2);
+    this._clearScheduledTimeout(this._mlTimer1); this._clearScheduledTimeout(this._mlTimer2);
     el.classList.remove('hidden', 'ml-fade');
-    this._mlTimer1 = setTimeout(() => el.classList.add('ml-fade'), 2600);
-    this._mlTimer2 = setTimeout(() => el.classList.add('hidden'), 3300);
+    this._mlTimer1 = this._scheduleTimeout(() => el.classList.add('ml-fade'), 2600);
+    this._mlTimer2 = this._scheduleTimeout(() => el.classList.add('hidden'), 3300);
   }
 
   _hideMapLoading() {
-    clearTimeout(this._mlTimer1); clearTimeout(this._mlTimer2);
+    this._clearScheduledTimeout(this._mlTimer1); this._clearScheduledTimeout(this._mlTimer2);
     document.getElementById('map-loading')?.classList.add('hidden');
   }
 
   _openMenu() {
+    this._movementDriver?.neutralize();
     this._menuOpen = true;
-    this.mobileControls?.hide();
     this.menu.showPause();
   }
 
@@ -874,21 +760,20 @@ export class Game {
     this._hideMapLoading();
     this.hud.hideLeaderboard();
     this.audio.stopAmbientCity();
-    this.serverSim?.stop();
-    this.hud.showServerPop(false);
+    this.hud.showPracticeStatus(false);
     this._menuOpen = false;
     if (this._scopeOverlay) this._scopeOverlay.classList.remove('active');
     if (this._hudCrosshair) this._hudCrosshair.classList.remove('hidden');
     if (this._playerBody) { this.world.scene.remove(this._playerBody); this._playerBody = null; }
     if (this.weaponSystem.weaponMount) this.weaponSystem.weaponMount.visible = false;
     this.state = 'menu';
-    this.mobileControls?.hide();
     this.menu.hidePause();
     this.menu.hideGameOver();
     this.hud.hide();
     this.hud.hideModeHUD();
     this.hud.hideDMTimer();
     this.hud.hideDowned();
+    this.captionCues.clear();
     this.input.exitPointerLock();
     this.botManager.clear();
     this.zombieManager.clear();
@@ -911,11 +796,16 @@ export class Game {
 
   // ── Player damage / death ───────────────────────────────────────────────────
 
-  _onPlayerDamaged(dmg) {
+  _onPlayerDamaged(dmg, sourcePosition = null) {
     if (this.player.isDead || this._playerDowned) return;
     const died = this.player.takeDamage(dmg);
     this.audio.playHurt();
     this.hud.flashDamage();
+    if (sourcePosition) {
+      this.player.camera.getWorldDirection(this._damageForward);
+      const direction = classifyDamageDirection(sourcePosition, this.player.position, this._damageForward);
+      if (direction) this.hud.showDamageDirection(direction);
+    }
     // Damage flinch on the third-person body model.
     this._playerBody?.userData?.triggerHit?.(0, 1);
     if (died) this._onPlayerDeath();
@@ -934,8 +824,8 @@ export class Game {
 
     // Deathmatch: respawn immediately (infinite lives)
     if (this._isDM) {
-      setTimeout(() => {
-        this.player.respawn(SPAWN_POINT);
+      this._scheduleTimeout(() => {
+        this._respawnPlayer(SPAWN_POINT);
         this.player.setMaxShield(this.selectedArmorSkin?.shield || 0);
         this.hud.addKillFeed('RESPAWNING...');
       }, 1200);
@@ -946,8 +836,8 @@ export class Game {
     if (this._mode?.lives !== Infinity) {
       this._lives = Math.max(0, this._lives - 1);
       if (this._lives > 0 && this._mode?.waves) {
-        setTimeout(() => {
-          this.player.respawn(SPAWN_POINT);
+        this._scheduleTimeout(() => {
+          this._respawnPlayer(SPAWN_POINT);
           this._refreshModeHUD();
         }, 1500);
         return;
@@ -1018,14 +908,67 @@ export class Game {
 
   // ── Update loop ─────────────────────────────────────────────────────────────
 
-  _updatePlaying(dt) {
+  _usesMovementFixtureVisualizationPolicy() {
+    const capability = this._movementDriver?.capability;
+    return capability?.boundary === DEVELOPMENT_MOVEMENT_VISUALIZATION_BOUNDARY
+      && capability.legacyGameplayPolicy === 'pause'
+      && Object.isFrozen(capability);
+  }
+
+  _updateMovementFixtureVisualization(dt, movementElapsedMilliseconds) {
+    this.playTime += dt;
+    const menuOpen = this._menuOpen;
+
+    if (!menuOpen) {
+      updatePlayerMovementFrame(this._movementDriver, {
+        elapsedSeconds: dt,
+        movementElapsedMilliseconds,
+        input: this.input,
+        player: this.player,
+        legacyWorld: this.world,
+      });
+    }
+    this.player.camera.updateMatrixWorld(true);
+    this.world.update(dt);
+
+    const inTPS = this.player._camDist > 0;
+    if (this._playerBody) {
+      this._playerBody.visible = inTPS;
+      if (inTPS) {
+        this._playerBody.position.copy(this.player.position);
+        this._playerBody.rotation.y = this.player.yaw;
+        this._syncTpsWeapon();
+        this._animatePlayerBody(dt);
+      }
+    }
+    if (this.weaponSystem.weaponMount) this.weaponSystem.weaponMount.visible = !inTPS;
+
+    this.hud.update(this.player, this.weaponSystem.getHudInfo(), this.kills, this.score);
+    this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
+    this.hud.setActiveSlot(this.weaponSystem.currentIndex);
+    this.hud.updateTeleport(1 - this.player.teleportCooldown / this.player.teleportMaxCooldown);
+  }
+
+  _updatePlaying(dt, movementElapsedMilliseconds = dt * 1000) {
+    if (this._usesMovementFixtureVisualizationPolicy()) {
+      this._updateMovementFixtureVisualization(dt, movementElapsedMilliseconds);
+      return;
+    }
     this.playTime += dt;
 
     const menuOpen = this._menuOpen;
 
     // Player input is blocked while the menu overlay is open (no pointer lock),
-    // but the match keeps running — this is a multiplayer game.
-    if (!menuOpen) this.player.update(dt, this.input, this.world);
+    // while the local practice simulation continues.
+    if (!menuOpen) {
+      updatePlayerMovementFrame(this._movementDriver, {
+        elapsedSeconds: dt,
+        movementElapsedMilliseconds,
+        input: this.input,
+        player: this.player,
+        legacyWorld: this.world,
+      });
+    }
     this.player.camera.updateMatrixWorld(true);
 
     // Animate the living sci-fi city (flying traffic, pulsing energy).
@@ -1051,16 +994,24 @@ export class Game {
       this.weaponSystem.update(dt, this.input, this.world, this._activeManager, this.player);
     }
     this.deathEffects.update(dt);
-    this._activeManager.update(dt, this.player, this.player.camera, (dmg) => this._onPlayerDamaged(dmg), this.world);
+    this._activeManager.update(
+      dt,
+      this.player,
+      this.player.camera,
+      (dmg, sourcePosition) => this._onPlayerDamaged(dmg, sourcePosition),
+      this.world,
+    );
     this.pickupSystem?.update(dt, this.player, this.weaponSystem, this.hud);
 
     // grenade input  F = frag  E = smoke
     if (!menuOpen && this.input.consumeJustPressed('KeyF')) {
-      this.grenadeSystem.throwFrag(this.player.camera);
+      const thrown = this.grenadeSystem.throwFrag(this.player.camera);
+      if (!thrown) this.hud.showAbilityUnavailable('F', 'NO FRAG GRENADES');
       this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
     }
     if (!menuOpen && this.input.consumeJustPressed('KeyE')) {
-      this.grenadeSystem.throwSmoke(this.player.camera);
+      const thrown = this.grenadeSystem.throwSmoke(this.player.camera);
+      if (!thrown) this.hud.showAbilityUnavailable('E', 'NO SMOKE GRENADES');
       this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
     }
     this.grenadeSystem.update(dt, this.player);
@@ -1163,9 +1114,6 @@ export class Game {
     // ─── DEATHMATCH ─────────────────────────────────────────────────────────────
     if (this._isDM) {
       this.dmManager.update(dt);
-      // Net-driven matches get their roster/timer resynced from the real
-      // server via _onNetState; otherwise fall back to the local simulation.
-      if (!this._netDriven) this.serverSim.update(dt);
       this._modeTimer = Math.max(0, this._modeTimer - dt);
       const mins = Math.floor(this._modeTimer / 60);
       const secs = Math.floor(this._modeTimer % 60);
@@ -1233,6 +1181,22 @@ export class Game {
     }
   }
 
+  _updateStateForFrame(dt, rawDeltaSeconds) {
+    if (
+      this._usesMovementFixtureVisualizationPolicy()
+      && (this.state === 'playing' || this.state === 'leaderboard')
+    ) {
+      this._updateMovementFixtureVisualization(dt, rawDeltaSeconds * 1000);
+    } else if (this.state === 'playing') {
+      this._updatePlaying(dt, rawDeltaSeconds * 1000);
+    } else if (this.state === 'leaderboard') {
+      this._updateLeaderboard(dt);
+    } else {
+      // Cinematic camera runs for every non-playing state (connecting, auth, menu, paused, gameover)
+      this._updateMenuScene(dt);
+    }
+  }
+
   _spawnMenuBots() {
     if (this._menuBotsActive) return;
     this._menuBotsActive = true;
@@ -1285,17 +1249,20 @@ export class Game {
   }
 
   _loop() {
+    if (this._disposed || this._movementDriverFaulted) return;
     this._rafId = requestAnimationFrame(() => this._loop());
     this.timer.update();
-    const dt = Math.min(0.05, this.timer.getDelta());
+    const rawDeltaSeconds = this.timer.getDelta();
+    const dt = Math.min(0.05, rawDeltaSeconds);
 
-    if (this.state === 'playing') {
-      this._updatePlaying(dt);
-    } else if (this.state === 'leaderboard') {
-      this._updateLeaderboard(dt);
-    } else {
-      // Cinematic camera runs for every non-playing state (connecting, auth, menu, paused, gameover)
-      this._updateMenuScene(dt);
+    try {
+      this._updateStateForFrame(dt, rawDeltaSeconds);
+    } catch (error) {
+      if (this._movementDriver !== null) {
+        this._handleMovementDriverFault(error);
+        return;
+      }
+      throw error;
     }
 
     const camera = this.state === 'playing' ? this.player.camera : this.menuCamera;

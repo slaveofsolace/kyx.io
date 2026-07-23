@@ -1,0 +1,73 @@
+{
+  "checkpoint": "V6-B0 proof-of-method rev1",
+  "status": "DIRECT VISUAL REVIEW REQUIRED / NO ACCEPTANCE CLAIM",
+  "blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b0-proof-method-rev1\\kyx_vanguard_v6b0_proof_method_rev1.blend",
+  "engine": "BLENDER_EEVEE",
+  "resolution": [
+    1120,
+    1120
+  ],
+  "views": [
+    {
+      "filename": "kyx-v6b0-proof-method-rev1-front.png",
+      "bytes": 1395208,
+      "camera": "V6B0_RENDER_Camera_Front",
+      "location": [
+        -0.1,
+        -3.5,
+        1.3
+      ],
+      "lens_mm": 75.0
+    },
+    {
+      "filename": "kyx-v6b0-proof-method-rev1-three-quarter.png",
+      "bytes": 1425382,
+      "camera": "V6B0_RENDER_Camera_ThreeQuarter",
+      "location": [
+        2.55,
+        -3.55,
+        1.7
+      ],
+      "lens_mm": 83.0
+    },
+    {
+      "filename": "kyx-v6b0-proof-method-rev1-right-side.png",
+      "bytes": 1505143,
+      "camera": "V6B0_RENDER_Camera_RightSide",
+      "location": [
+        3.35,
+        -0.18,
+        1.37
+      ],
+      "lens_mm": 86.0
+    },
+    {
+      "filename": "kyx-v6b0-proof-method-rev1-contact-close.png",
+      "bytes": 1541661,
+      "camera": "V6B0_RENDER_Camera_Contact",
+      "location": [
+        -0.25,
+        -1.6,
+        1.1
+      ],
+      "lens_mm": 92.0
+    },
+    {
+      "filename": "kyx-v6b0-proof-method-rev1-armor-close.png",
+      "bytes": 1635178,
+      "camera": "V6B0_RENDER_Camera_ArmorClose",
+      "location": [
+        1.35,
+        -1.95,
+        1.62
+      ],
+      "lens_mm": 105.0
+    }
+  ],
+  "framing_contract": [
+    "front, three-quarter, and right-side close views all show garment/armor/contact study",
+    "contact close must visibly show five digits, trigger digit, palm and receiver/grip contact",
+    "armor close must visibly show thickness, bevel, attachment and arm-clearance gap",
+    "no render may be used to claim V6-B, V6-C or G6"
+  ]
+}

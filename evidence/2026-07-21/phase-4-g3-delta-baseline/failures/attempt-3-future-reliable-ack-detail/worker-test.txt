@@ -1,0 +1,15 @@
+Status: FAIL (preserved development attempt)
+Date: 2026-07-21
+
+Command path: MCP Node REPL -> Vitest startVitest with vitest.worker.config.ts
+Test: tests/worker/protocolV2Socket.test.ts
+
+The new reliable-event future-ACK assertion waited for ACK_REJECTED detail
+`event_future` and timed out after the Worker emitted one error response.
+
+Cause: ReliableEventStore.validateAcknowledgement() intentionally classifies an
+event sequence at or beyond nextSequence as `unknown_event`; worker/room.ts
+therefore exposes the wire detail as `event_unknown_event`. The future event ACK
+was rejected, but the first test expected the wrong existing detail string.
+
+No G3 gate or live successor-evidence claim was made from this failed attempt.

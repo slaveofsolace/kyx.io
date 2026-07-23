@@ -37,16 +37,32 @@ const TABS = [
 ];
 
 // ── helpers ──────────────────────────────────────────────────────────────────
-const CHAR_SVG = `
-  <svg viewBox="0 0 32 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-    <ellipse cx="16" cy="7" rx="5" ry="6" fill="rgba(0,0,0,0.55)"/>
-    <rect x="9" y="14" width="14" height="14" rx="2" fill="rgba(0,0,0,0.45)"/>
-    <rect x="3" y="14" width="5" height="11" rx="2" fill="rgba(0,0,0,0.4)"/>
-    <rect x="24" y="14" width="5" height="11" rx="2" fill="rgba(0,0,0,0.4)"/>
-    <rect x="9" y="29" width="5" height="13" rx="2" fill="rgba(0,0,0,0.45)"/>
-    <rect x="18" y="29" width="5" height="13" rx="2" fill="rgba(0,0,0,0.45)"/>
-    <rect x="10" y="11" width="12" height="4" rx="1" fill="rgba(0,207,255,0.6)"/>
-  </svg>`;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const CHARACTER_SHAPES = [
+  ['ellipse', { cx: '16', cy: '7', rx: '5', ry: '6', fill: 'rgba(0,0,0,0.55)' }],
+  ['rect', { x: '9', y: '14', width: '14', height: '14', rx: '2', fill: 'rgba(0,0,0,0.45)' }],
+  ['rect', { x: '3', y: '14', width: '5', height: '11', rx: '2', fill: 'rgba(0,0,0,0.4)' }],
+  ['rect', { x: '24', y: '14', width: '5', height: '11', rx: '2', fill: 'rgba(0,0,0,0.4)' }],
+  ['rect', { x: '9', y: '29', width: '5', height: '13', rx: '2', fill: 'rgba(0,0,0,0.45)' }],
+  ['rect', { x: '18', y: '29', width: '5', height: '13', rx: '2', fill: 'rgba(0,0,0,0.45)' }],
+  ['rect', { x: '10', y: '11', width: '12', height: '4', rx: '1', fill: 'rgba(0,207,255,0.6)' }],
+];
+
+function _characterFigure() {
+  const figure = document.createElement('div');
+  figure.className = 'inv-card-fig';
+
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 32 48');
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  for (const [tagName, attributes] of CHARACTER_SHAPES) {
+    const shape = document.createElementNS(SVG_NS, tagName);
+    for (const [name, value] of Object.entries(attributes)) shape.setAttribute(name, value);
+    svg.appendChild(shape);
+  }
+  figure.appendChild(svg);
+  return figure;
+}
 
 function _hex(n) { return n.toString(16).padStart(6, '0'); }
 function _grad(a, b) { return `linear-gradient(155deg, #${_hex(a >>> 0)}, #${_hex(b >>> 0)})`; }
@@ -117,7 +133,7 @@ export class InventoryPanel {
   _renderTabs() {
     const tabs = document.getElementById('inv-tabs');
     if (!tabs) return;
-    tabs.innerHTML = '';
+    tabs.replaceChildren();
     for (const t of TABS) {
       const b = document.createElement('button');
       b.className = 'inv-tab' + (t.id === this._tab ? ' active' : '');
@@ -138,7 +154,7 @@ export class InventoryPanel {
   _renderEquipped() {
     const row = document.getElementById('inv-equipped');
     if (!row) return;
-    row.innerHTML = '';
+    row.replaceChildren();
 
     // Character card — shows the equipped armor finish (or Default look).
     const armorSkinId = Shop.getEquipped();
@@ -165,7 +181,7 @@ export class InventoryPanel {
   _renderGrid() {
     const grid = document.getElementById('inv-grid');
     if (!grid) return;
-    grid.innerHTML = '';
+    grid.replaceChildren();
     this._renderToken++;
     const token = this._renderToken;
 
@@ -292,9 +308,7 @@ export class InventoryPanel {
       bg, rarity: armorSkin.rarity, equipped, onClick,
       name: _clean(armorSkin.name),
     });
-    const fig = document.createElement('div');
-    fig.className = 'inv-card-fig';
-    fig.innerHTML = CHAR_SVG;
+    const fig = _characterFigure();
     card.insertBefore(fig, card.firstChild);
     return card;
   }
@@ -305,9 +319,7 @@ export class InventoryPanel {
       bg, rarity: null, equipped, onClick,
       name: 'Default',
     });
-    const fig = document.createElement('div');
-    fig.className = 'inv-card-fig';
-    fig.innerHTML = CHAR_SVG;
+    const fig = _characterFigure();
     card.insertBefore(fig, card.firstChild);
     return card;
   }

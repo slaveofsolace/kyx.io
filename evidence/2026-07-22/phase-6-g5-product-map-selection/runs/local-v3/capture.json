@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "status": "G5_PRODUCT_MAP_SELECTION_EVIDENCE_READY_G5_OPEN",
+  "capturedAt": "2026-07-22T09:23:22.597Z",
+  "origin": "http://127.0.0.1:4317",
+  "route": "/?mapPackage=inkfall_foundry%402",
+  "routeSnapshot": {
+    "evidence": {
+      "schemaVersion": 1,
+      "status": "LOCKED_GRAYBOX_EXPLICIT_PREVIEW_READY_G5_OPEN",
+      "selection": {
+        "source": "explicit_query",
+        "explicit": true,
+        "reference": "inkfall_foundry@2",
+        "mapId": "inkfall_foundry",
+        "mapRevision": 2
+      },
+      "catalogDefault": {
+        "mapId": "inkfall_foundry",
+        "mapRevision": 1,
+        "unchanged": true
+      },
+      "package": {
+        "displayName": "Inkfall Foundry",
+        "digest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+        "boundsMm": {
+          "minimum": {
+            "x": -36000,
+            "y": -5000,
+            "z": -28000
+          },
+          "maximum": {
+            "x": 36000,
+            "y": 10000,
+            "z": 28000
+          }
+        },
+        "zoneCount": 9,
+        "spawnCount": 12,
+        "authorityVolumeCount": 2
+      },
+      "assets": {
+        "requestedSeparately": true,
+        "render": {
+          "role": "render_only",
+          "path": "revisions/revision-2/export/render.graybox.glb",
+          "bytes": 613564,
+          "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+          "meshNodeCount": 346,
+          "verified": true
+        },
+        "authorityCollision": {
+          "role": "authority_collision",
+          "path": "revisions/revision-2/export/collision.authority.glb",
+          "bytes": 604228,
+          "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+          "meshNodeCount": 339,
+          "authorityVolumeCount": 2,
+          "totalColliderCount": 341,
+          "fixtureHash": "bf85e42731fd088e",
+          "verified": true
+        }
+      },
+      "productBoundary": {
+        "loadedIntoOfflinePractice": false,
+        "playableFromPreview": false,
+        "shippingDefaultChanged": false,
+        "finalArt": false,
+        "performanceAccepted": false,
+        "g5Passed": false
+      },
+      "nonClaims": [
+        "GRAYBOX_INSPECTION_ONLY",
+        "OFFLINE_PRACTICE_MAP_UNCHANGED",
+        "NOT_PLAYABLE_FROM_THIS_SURFACE",
+        "NOT_FINAL_ART",
+        "NO_PERFORMANCE_ACCEPTANCE",
+        "NO_SHIPPING_OR_DEPLOYMENT_PROMOTION",
+        "G5_REMAINS_OPEN"
+      ]
+    },
+    "evidenceDescriptor": {
+      "value": {
+        "schemaVersion": 1
+      },
+      "writable": false,
+      "enumerable": false,
+      "configurable": false
+    },
+    "bodyDataset": {
+      "launchSupport": "locked-graybox-preview",
+      "mapPreviewStatus": "ready",
+      "mapPreviewReference": "inkfall_foundry@2",
+      "catalogDefault": "inkfall_foundry@1"
+    },
+    "title": "Inkfall Foundry @2 — Locked Graybox Preview",
+    "canvasDataLength": 206462,
+    "returnHref": "/",
+    "visibleText": "LOCKED P6.7 GRAYBOX · PRODUCT INSPECTION ONLY · G5 OPEN\n← RETURN TO OFFLINE PRACTICE\n\nEXPLICIT NON-DEFAULT PACKAGE SELECTION\n\nINKFALL FOUNDRY\n\nThis surface loads the locked revision-2 package for inspection. It verifies the presentation GLB and the separate authority-collision GLB independently. Offline Practice remains the existing Iron Bastion local slice; this preview does not replace or launch it.\n\nSELECTED PACKAGE\ninkfall_foundry@2\nEXPLICIT @2 · CATALOG DEFAULT REMAINS inkfall_foundry@1\nPRESENTATION STREAM\nLOADED + HASH VERIFIED\nRENDER-ONLY GLB\n\nrevisions/revision-2/export/render.graybox.glb\n\nROLE\nrender_only\nBYTES\n613,564\nMESH NODES\n346\nSHA-256\n90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634\nAUTHORITY STREAM\nLOADED + HASH VERIFIED\nAUTHORITY-COLLISION GLB\n\nrevisions/revision-2/export/collision.authority.glb\n\nROLE\nauthority_collision\nBYTES\n604,228\nMESH NODES\n339\nFIXTURE\nbf85e42731fd088e\nAUTHORITY-COLLISION PLAN\nRENDER MESHES EXCLUDED\nauthority geometry\nrail / boundary\nroute / floor\nspawn\nPRODUCT BOUNDARY\nEXPLICITLY PRESERVED\nExplicit selection only\ninkfall_foundry@2 loads only after the exact mapPackage query is requested.\nDefault revision unchanged\ninkfall_foundry@1 remains the catalog default.\nOffline Practice unchanged\nReturning removes the query and restores the existing Iron Bastion local practice flow.\nGate remains open\nFinal art, human playtest acceptance, performance, shipping, and deployment are not claimed.\n\nGRAYBOX INSPECTION ONLY · NOT PLAYABLE HERE · NOT FINAL ART · G5 REMAINS OPEN"
+  },
+  "artifactRequests": [
+    "/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+    "/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb"
+  ],
+  "browserDiagnostics": {
+    "consoleErrors": [],
+    "pageErrors": [],
+    "failedRequests": [],
+    "httpErrors": [],
+    "requestedUrls": [
+      "http://127.0.0.1:4317/?mapPackage=inkfall_foundry%402",
+      "http://127.0.0.1:4317/@vite/client",
+      "http://127.0.0.1:4317/src/style.css",
+      "http://127.0.0.1:4317/src/main.js",
+      "http://127.0.0.1:4317/src/style.css",
+      "http://127.0.0.1:4317/src/config/productConfig.js",
+      "http://127.0.0.1:4317/src/app/lockedGrayboxSelection.ts",
+      "http://127.0.0.1:4317/src/content/maps/constants.ts",
+      "http://127.0.0.1:4317/node_modules/vite/dist/client/env.mjs",
+      "http://127.0.0.1:4317/src/app/lockedGrayboxPreviewRoute.ts",
+      "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb?import&url",
+      "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb?import&url",
+      "http://127.0.0.1:4317/src/content/maps/index.ts",
+      "http://127.0.0.1:4317/src/physics/index.ts",
+      "http://127.0.0.1:4317/src/content/maps/catalog.ts",
+      "http://127.0.0.1:4317/src/content/maps/loader.ts",
+      "http://127.0.0.1:4317/src/content/maps/schema.ts",
+      "http://127.0.0.1:4317/src/content/maps/validateMapPackage.ts",
+      "http://127.0.0.1:4317/src/physics/collisionLayers.ts",
+      "http://127.0.0.1:4317/src/physics/fixtureSchema.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/index.ts",
+      "http://127.0.0.1:4317/src/physics/mapColliderLoader.ts",
+      "http://127.0.0.1:4317/src/physics/rapier/index.ts",
+      "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/runtime/map.package.v1.json?import",
+      "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/runtime/map.package.v2.json?import",
+      "http://127.0.0.1:4317/src/physics/rapier/contracts.ts",
+      "http://127.0.0.1:4317/src/physics/rapier/create.ts",
+      "http://127.0.0.1:4317/src/physics/rapier/runtime.ts",
+      "http://127.0.0.1:4317/src/physics/rapier/world.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/catalog.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/tapeCatalog.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/contactLab.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/flatRun.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/slideLab.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/teleportLab.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/verticalLab.ts",
+      "http://127.0.0.1:4317/node_modules/.vite/deps/@dimforge_rapier3d-deterministic-compat.js?v=d55ac12c",
+      "http://127.0.0.1:4317/src/sim/movement/queryPort.ts",
+      "http://127.0.0.1:4317/src/sim/units.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/primitives.ts",
+      "http://127.0.0.1:4317/src/sim/index.ts",
+      "http://127.0.0.1:4317/src/physics/fixtures/recordedTapeResults.ts",
+      "http://127.0.0.1:4317/src/sim/canonical.ts",
+      "http://127.0.0.1:4317/src/sim/commands.ts",
+      "http://127.0.0.1:4317/src/sim/foundationFixture.ts",
+      "http://127.0.0.1:4317/src/sim/movement/index.ts",
+      "http://127.0.0.1:4317/src/sim/replay.ts",
+      "http://127.0.0.1:4317/src/sim/rng.ts",
+      "http://127.0.0.1:4317/src/sim/state.ts",
+      "http://127.0.0.1:4317/src/sim/step.ts",
+      "http://127.0.0.1:4317/src/sim/tickClock.ts",
+      "http://127.0.0.1:4317/src/sim/movement/canonical.ts",
+      "http://127.0.0.1:4317/src/sim/movement/controller.ts",
+      "http://127.0.0.1:4317/src/sim/movement/events.ts",
+      "http://127.0.0.1:4317/src/sim/movement/fixedMath.ts",
+      "http://127.0.0.1:4317/src/sim/movement/profile.ts",
+      "http://127.0.0.1:4317/src/sim/movement/profileIdentity.ts",
+      "http://127.0.0.1:4317/src/sim/movement/replay.ts",
+      "http://127.0.0.1:4317/src/sim/movement/state.ts",
+      "http://127.0.0.1:4317/src/sim/movement/hash.ts",
+      "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "http://127.0.0.1:4317/assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb"
+    ]
+  },
+  "entry": {
+    "href": "?mapPackage=inkfall_foundry%402",
+    "label": "INSPECT LOCKED INKFALL FOUNDRY @2",
+    "errors": []
+  },
+  "screenshots": {
+    "lockedGrayboxPreview": {
+      "path": "evidence/2026-07-22/phase-6-g5-product-map-selection/runs/local-v3/locked-graybox-preview.png",
+      "sha256": "6cc7e99a7505da1b5d08e9a14a5f2b27eae483f89cba49e3863ef260b87a7ecc"
+    },
+    "productEntrySelection": {
+      "path": "evidence/2026-07-22/phase-6-g5-product-map-selection/runs/local-v3/product-entry-selection.png",
+      "sha256": "5f8f994de46e316ae1ee4987ebe96901cf91d36dcf4288ed69c559f6aaaa7083"
+    }
+  },
+  "sourceHashes": {
+    "src/app/lockedGrayboxSelection.ts": "3c69e2600a233cce507bbe28bd7cb33fc4640ee99269cf54f9da11a266de444e",
+    "src/app/lockedGrayboxPreviewRoute.ts": "6e47674df79e6028cb33d28f86af9b169547d1f494de9c3fc92e2a7c8608d588",
+    "src/content/maps/catalog.ts": "b6745b1b36e9580102ccb67e6d2cb6ce613d3ff7dcfe48df53a72a346eb78143",
+    "src/content/maps/constants.ts": "cc9b938ccfa0b9d2d8e7d6ac08baf8fb3fc014868bd630f05928513a25a2186f",
+    "src/main.js": "e886ff0bae9d98358a277b982c63bb40a82d16991b471edf23356b68147e3fbc",
+    "index.html": "2f1b86bf632dbb817ab09c478e77211e423fce1f708285f356da0354cb271de5",
+    "src/style.css": "d92a9095e766dac9e9c28b552a560a8d6fa711e6e49728715abcf06a693f6c93",
+    "tests/unit/app/lockedGrayboxSelection.test.ts": "2871513caffe4f2ff1e34dab161f2ef52ad539d1c50b893d7fd3b71425ca48c1",
+    "tests/browser/locked-graybox-preview.spec.ts": "2bac8554971f677dc95622f8860e9979e76a9c27bedfadc18c4a14cf713497cc",
+    "tools/evidence/capture-phase6-g5-product-map-selection.mjs": "2b8ad9753c23021ebfd5a2ad2311f40ca69fad4ac5bd4d91d43c6bcf85852b81",
+    "tools/evidence/verify-phase6-g5-product-map-selection.mjs": "38d3c0c522a7a54cf318d1c655f04cb2ae0936a70c7f001251abaa0edfebb3c3"
+  },
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "LOCKED_GRAYBOX_NOT_LOADED_INTO_OFFLINE_PRACTICE",
+    "NO_FINAL_ART_ACCEPTANCE",
+    "NO_HUMAN_PLAYTEST_ACCEPTANCE",
+    "NO_PERFORMANCE_ACCEPTANCE",
+    "NO_SHIPPING_OR_DEPLOYMENT_PROMOTION"
+  ]
+}

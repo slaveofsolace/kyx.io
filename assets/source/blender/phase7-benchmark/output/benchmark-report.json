@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "status": "EXECUTED_BENCHMARK_ONLY",
+  "g6Claimed": false,
+  "source": {
+    "script": "assets/source/blender/phase7-benchmark/build_phase7_benchmark.py",
+    "blend": "output/kyx_phase7_tactical_benchmark.blend",
+    "provenance": "Project-original scripted primitive geometry; no third-party art or textures."
+  },
+  "environment": {
+    "blenderVersion": "5.1.2",
+    "blenderVersionTuple": [
+      5,
+      1,
+      2
+    ],
+    "background": true,
+    "renderEngine": "BLENDER_EEVEE",
+    "resolution": [
+      720,
+      720
+    ],
+    "fps": 24
+  },
+  "asset": {
+    "objects": 31,
+    "meshObjects": 28,
+    "vertices": 930,
+    "triangles": 1748,
+    "primitives": 28,
+    "materials": 8,
+    "bones": 23,
+    "actions": [
+      {
+        "name": "BENCH_TacticalShift_Loop",
+        "frameStart": 1,
+        "frameEnd": 24,
+        "durationSeconds": 0.958333,
+        "fcurves": 45,
+        "keyframes": 135
+      }
+    ],
+    "markers": [
+      {
+        "name": "equip_ready",
+        "frame": 1,
+        "role": "presentation"
+      },
+      {
+        "name": "ability_commit",
+        "frame": 12,
+        "role": "both"
+      },
+      {
+        "name": "pose_recover",
+        "frame": 24,
+        "role": "presentation"
+      }
+    ],
+    "rootMotion": "in_place",
+    "asymmetricalFeature": "left shoulder shell and forearm device"
+  },
+  "outputs": {
+    "glb": "output/kyx_phase7_tactical_benchmark.glb",
+    "glbBytes": 139236,
+    "glbSha256": "6761391bb7eb88bcbb826ef9db9744905aa4f272ec102ecb09456c0653de75c2",
+    "glbMagicValid": true,
+    "blend": "output/kyx_phase7_tactical_benchmark.blend",
+    "blendBytes": 141246,
+    "blendSha256": "3e1c1fd8f069a2c1867b789ca6adeb54b1a84a2f8ecb94bbf7e02e52d99d9d81",
+    "renders": [
+      "output/renders/phase7-benchmark-frame-001.png",
+      "output/renders/phase7-benchmark-frame-012.png",
+      "output/renders/phase7-benchmark-frame-024.png"
+    ],
+    "renderSha256": {
+      "output/renders/phase7-benchmark-frame-001.png": "d7a4c50a95fff2ce24fc5e382e80589ddb437eb72664aa3744b30e4346171496",
+      "output/renders/phase7-benchmark-frame-012.png": "0117fb0cfd8e1ba3ab25fcfc9312453cac47ef67521473339527be3a0927bc56",
+      "output/renders/phase7-benchmark-frame-024.png": "6c65bc977214e77e4027ce913962f7b34ce6112c7314fdfd564e568d94ff679b"
+    },
+    "glbInspection": {
+      "version": 2,
+      "declaredBytes": 139236,
+      "generator": "Khronos glTF Blender I/O v5.1.20",
+      "scenes": 1,
+      "nodes": 48,
+      "meshes": 28,
+      "materials": 8,
+      "skins": 1,
+      "animations": [
+        {
+          "name": "BENCH_TacticalShift_Loop",
+          "channels": 51,
+          "samplers": 51
+        }
+      ],
+      "extensionsUsed": []
+    }
+  },
+  "timingsSeconds": {
+    "glbExport": 0.390096,
+    "rendersByFrame": {
+      "1": 0.869134,
+      "12": 0.332663,
+      "24": 0.320615
+    },
+    "total": 2.0486
+  },
+  "warnings": [
+    "BENCHMARK_ONLY_NOT_RUNTIME_INTEGRATED",
+    "NO_G6_CLAIM",
+    "RIGID_BONE_PARENTED_MANNEQUIN_NOT_SKIN_DEFORMATION_PROOF",
+    "NO_LODS_TEXTURE_ATLASES_KTX2_MESHOPT_OR_VIEWMODEL",
+    "ONE_POSE_LOOP_NOT_COMPLETE_FIRST_OR_THIRD_PERSON_CLIP_MATRIX",
+    "FREESTYLE_RENDER_LINES_ARE_PRESENTATION_ONLY_NOT_RUNTIME_OUTLINE_PROOF",
+    "KHRONOS_GLTF_VALIDATOR_NOT_RUN",
+    "BLEND_AND_RENDER_HASHES_ARE_ARTIFACT_IDS_NOT_CROSS_RUN_SENTINELS"
+  ]
+}

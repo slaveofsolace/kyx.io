@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "status": "PRESS_HALL_V3_2_FOCUSED_CHECKS_PASS_G5_G8_OPEN",
+  "recordedAt": "2026-07-22T12:31:30Z",
+  "checks": [
+    {
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js src/app/pressHallInspectionSelection.ts src/app/pressHallInspectionRoute.ts tests/unit/app/pressHallInspectionSelection.test.ts tests/browser/press-hall-runtime-inspection.spec.ts tools/evidence/capture-phase9-g8-press-hall-runtime-v3-2.mjs tools/evidence/verify-phase9-g8-press-hall-runtime-v3-2.mjs",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run tests/unit/app/pressHallInspectionSelection.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFiles": 1,
+      "testsPassed": 6,
+      "testsFailed": 0
+    },
+    {
+      "command": "node node_modules/@playwright/test/cli.js test tests/browser/press-hall-runtime-inspection.spec.ts --project=chromium-desktop --workers=1",
+      "status": "PASS",
+      "exitCode": 0,
+      "testsPassed": 2,
+      "testsFailed": 0,
+      "durationSeconds": 58.4
+    },
+    {
+      "command": "node node_modules/vite/bin/vite.js build",
+      "status": "PASS_WITH_EXISTING_CHUNK_SIZE_WARNING",
+      "exitCode": 0,
+      "modulesTransformed": 151,
+      "pressHallRouteChunkBytes": 42310,
+      "pressHallGlbBytes": 13300676,
+      "note": "The non-default dynamic route preserves the small main entry chunk, but the exact GLB remains a 13.30 MB payload and the shared physics chunk remains above Vite's advisory threshold."
+    },
+    {
+      "command": "node tools/evidence/capture-phase9-g8-press-hall-runtime-v3-2.mjs",
+      "status": "PASS_BOUNDED_CAPTURE_G5_G8_OPEN",
+      "exitCode": 0,
+      "canonicalRun": "runtime-v3"
+    },
+    {
+      "command": "node tools/evidence/verify-phase9-g8-press-hall-runtime-v3-2.mjs",
+      "status": "PASS_G5_G8_OPEN",
+      "exitCode": 0,
+      "checksPassed": 42,
+      "checksFailed": 0,
+      "output": "independent-verification-v3.json"
+    }
+  ],
+  "nonClaims": [
+    "These focused checks do not replace the final integrated full regression.",
+    "The SwiftShader browser profile is bounded evidence, not a named-GPU performance acceptance run.",
+    "No human visual or gameplay acceptance was performed.",
+    "G5 and G8 remain open."
+  ]
+}

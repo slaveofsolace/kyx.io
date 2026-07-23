@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-20T15:01:03.475Z",
+  "repositoryRoot": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo",
+  "baselineCommit": "81aa1d02acce8e30ba411bb895901d2d2ac6694e",
+  "initialDirtyEntries": [
+    " M .env.example",
+    " M .github/workflows/deploy-vps.yml",
+    " M CLAUDE.md",
+    " M index.html",
+    " M login.html",
+    " M package-lock.json",
+    " M package.json",
+    " M register.html",
+    " M server/README.md",
+    " M server/index.js",
+    " M server/package.json",
+    " M src/core/DeathmatchManager.js",
+    " M src/core/Game.js",
+    " M src/core/GameModes.js",
+    " M src/core/InputManager.js",
+    " D src/core/NetClient.js",
+    " D src/core/ServerSim.js",
+    " M src/core/UserAccount.js",
+    " M src/entities/Bot.js",
+    " M src/entities/BotManager.js",
+    " M src/loginPage.js",
+    " M src/main.js",
+    " M src/player/Player.js",
+    " M src/registerPage.js",
+    " M src/style.css",
+    " M src/ui/DamageNumbers.js",
+    " M src/ui/HUD.js",
+    " M src/ui/InventoryPanel.js",
+    " M src/ui/MainMenu.js",
+    " M src/ui/MobileControls.js",
+    " M src/ui/Nameplates.js",
+    " M src/world/World.js",
+    "?? .nvmrc",
+    "?? assets/",
+    "?? docs/",
+    "?? eslint.config.mjs",
+    "?? evidence/",
+    "?? playwright.config.js",
+    "?? pnpm-lock.yaml",
+    "?? src/app/",
+    "?? src/config/",
+    "?? src/content/",
+    "?? src/dev/",
+    "?? src/net/",
+    "?? src/physics/",
+    "?? src/render/",
+    "?? src/sim/",
+    "?? tests/",
+    "?? tools/",
+    "?? tsconfig.base.json",
+    "?? tsconfig.json",
+    "?? tsconfig.sim-source.json",
+    "?? tsconfig.sim.json",
+    "?? vitest.config.js"
+  ],
+  "node": "v24.14.0",
+  "platform": "win32",
+  "arch": "x64",
+  "packageManager": "npm@11.18.0 via bundled pnpm dlx",
+  "packageVersions": {
+    "typescript": "5.9.3",
+    "eslint": "10.7.0",
+    "typescriptEslint": "8.64.0",
+    "vitest": "4.1.10",
+    "playwrightTest": "1.61.1",
+    "vite": "^8.0.16",
+    "rapier": "0.19.3"
+  },
+  "browser": {
+    "node": "v24.14.0",
+    "platform": "win32",
+    "arch": "x64",
+    "playwright": "1.61.1",
+    "chromium": "149.0.7827.55",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.7827.55 Safari/537.36",
+    "userAgentData": {
+      "brands": [
+        {
+          "brand": "HeadlessChrome",
+          "version": "149"
+        },
+        {
+          "brand": "Chromium",
+          "version": "149"
+        },
+        {
+          "brand": "Not)A;Brand",
+          "version": "24"
+        }
+      ],
+      "mobile": false,
+      "platform": "Windows"
+    }
+  },
+  "viewport": {
+    "width": 1600,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "baseUrl": "http://127.0.0.1:5999/",
+  "fixture": null,
+  "movementProfile": {
+    "id": "phase3_hypothesis_v1",
+    "revision": 1,
+    "hash": "8ab4ed437a4393c0",
+    "evidenceLabel": "HYPOTHESIS",
+    "implementationStatus": "fixture_only",
+    "values": {
+      "schemaVersion": 1,
+      "id": "phase3_hypothesis_v1",
+      "revision": 1,
+      "implementationStatus": "fixture_only",
+      "provenance": {
+        "evidenceLabel": "HYPOTHESIS",
+        "designReason": "Initial 20 Hz controller envelope for deterministic fixture tuning."
+      },
+      "simulationRateHz": 20,
+      "standingShape": {
+        "height": 1800,
+        "radius": 350
+      },
+      "crouchedShape": {
+        "height": 1100,
+        "radius": 350
+      },
+      "query": {
+        "contactSkin": 20,
+        "maxStepHeight": 350,
+        "minimumStepWidth": 400,
+        "snapToGroundDistance": 150,
+        "maximumSlopeClimb": 45000,
+        "minimumSlopeSlide": 30000,
+        "allowDynamicBodyAutostep": false,
+        "maximumContacts": 8
+      },
+      "locomotion": {
+        "walkSpeedMmPerSecond": 7000,
+        "sprintSpeedMmPerSecond": 9000,
+        "crouchSpeedMmPerSecond": 3500,
+        "groundAccelerationMmPerSecondSquared": 60000,
+        "reverseAccelerationMmPerSecondSquared": 60000,
+        "groundBrakingMmPerSecondSquared": 40000,
+        "airAccelerationMmPerSecondSquared": 16000,
+        "airSpeedCapMmPerSecond": 8000,
+        "gravityMmPerSecondSquared": 20000,
+        "maximumFallSpeedMmPerSecond": 30000,
+        "jumpImpulseMmPerSecond": 11000,
+        "coyoteTicks": 2,
+        "jumpBufferTicks": 2,
+        "heldCommandReuseTicks": 2
+      },
+      "slide": {
+        "minimumEntrySpeedMmPerSecond": 7000,
+        "entryBoostMmPerSecond": 500,
+        "maximumSpeedMmPerSecond": 10000,
+        "frictionMmPerSecondSquared": 8000,
+        "steeringAccelerationMmPerSecondSquared": 6000,
+        "durationTicks": 12,
+        "cooldownTicks": 8
+      },
+      "teleport": {
+        "maximumRangeMm": 9000,
+        "backwardSearchStepMm": 100,
+        "maximumBackwardSearchSteps": 90,
+        "cooldownTicks": 160,
+        "cooldownOnFailure": false,
+        "retainPlanarVelocityPermille": 1000,
+        "retainVerticalVelocityPermille": 0,
+        "requireGroundedDestination": false
+      }
+    }
+  }
+}

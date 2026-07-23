@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T03:38:32.165401+00:00",
+  "blenderVersion": "5.1.2",
+  "source": {
+    "fileName": "kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+    "bytes": 12582373,
+    "sha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d"
+  },
+  "resolution": [
+    900,
+    1100
+  ],
+  "engine": "BLENDER_EEVEE",
+  "views": [
+    {
+      "view": "front",
+      "fileName": "kyx-v6-cc0-anatomy-seed-front.png",
+      "bytes": 932149,
+      "sha256": "59aeb76ac3f03694e8f1afee72247d0ea11fa215e195ee6265c456c5d19757d0",
+      "cameraLocation": [
+        -2.264377,
+        -4.033878,
+        0.859401
+      ],
+      "cameraTarget": [
+        -2.264377,
+        -0.033878,
+        0.839401
+      ],
+      "orthographicScale": 1.9800000190734863,
+      "projection": {
+        "bounds": {
+          "minX": 0.227467,
+          "maxX": 0.772533,
+          "minY": 0.072848,
+          "maxY": 0.927152,
+          "minDepth": 3.849879
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "assertions": {
+          "inFrontOfCamera": true,
+          "insideHorizontalFrame": true,
+          "insideVerticalFrame": true,
+          "meaningfulProjectedWidth": true,
+          "meaningfulProjectedHeight": true,
+          "centered": true
+        },
+        "pass": true
+      },
+      "imageContent": {
+        "sampleStridePixels": 6,
+        "sampleRegionY": [
+          0.12,
+          0.9
+        ],
+        "sampleCount": 21450,
+        "brightSampleCount": 4335,
+        "brightOccupancyRatio": 0.202098,
+        "minimumRequiredRatio": 0.02,
+        "pass": true
+      }
+    },
+    {
+      "view": "side",
+      "fileName": "kyx-v6-cc0-anatomy-seed-side.png",
+      "bytes": 889920,
+      "sha256": "8020bda23bea59181d2f37f154aa13087992613e206d37f5e659639a97d2f58e",
+      "cameraLocation": [
+        1.735623,
+        -0.033878,
+        0.859401
+      ],
+      "cameraTarget": [
+        -2.264377,
+        -0.033878,
+        0.839401
+      ],
+      "orthographicScale": 1.9800000190734863,
+      "projection": {
+        "bounds": {
+          "minX": 0.409909,
+          "maxX": 0.590091,
+          "minY": 0.072101,
+          "maxY": 0.927898,
+          "minDepth": 3.554326
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "assertions": {
+          "inFrontOfCamera": true,
+          "insideHorizontalFrame": true,
+          "insideVerticalFrame": true,
+          "meaningfulProjectedWidth": true,
+          "meaningfulProjectedHeight": true,
+          "centered": true
+        },
+        "pass": true
+      },
+      "imageContent": {
+        "sampleStridePixels": 6,
+        "sampleRegionY": [
+          0.12,
+          0.9
+        ],
+        "sampleCount": 21450,
+        "brightSampleCount": 2329,
+        "brightOccupancyRatio": 0.108578,
+        "minimumRequiredRatio": 0.02,
+        "pass": true
+      }
+    },
+    {
+      "view": "back",
+      "fileName": "kyx-v6-cc0-anatomy-seed-back.png",
+      "bytes": 912521,
+      "sha256": "295feae827ce76a06e323ad2da28b5ff0ba63ba67377a611d5960c932f9e78f7",
+      "cameraLocation": [
+        -2.264377,
+        3.966122,
+        0.859401
+      ],
+      "cameraTarget": [
+        -2.264377,
+        -0.033878,
+        0.839401
+      ],
+      "orthographicScale": 1.9800000190734863,
+      "projection": {
+        "bounds": {
+          "minX": 0.227467,
+          "maxX": 0.772534,
+          "minY": 0.072848,
+          "maxY": 0.927152,
+          "minDepth": 3.849879
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "assertions": {
+          "inFrontOfCamera": true,
+          "insideHorizontalFrame": true,
+          "insideVerticalFrame": true,
+          "meaningfulProjectedWidth": true,
+          "meaningfulProjectedHeight": true,
+          "centered": true
+        },
+        "pass": true
+      },
+      "imageContent": {
+        "sampleStridePixels": 6,
+        "sampleRegionY": [
+          0.12,
+          0.9
+        ],
+        "sampleCount": 21450,
+        "brightSampleCount": 4333,
+        "brightOccupancyRatio": 0.202005,
+        "minimumRequiredRatio": 0.02,
+        "pass": true
+      }
+    },
+    {
+      "view": "three-quarter",
+      "fileName": "kyx-v6-cc0-anatomy-seed-three-quarter.png",
+      "bytes": 965890,
+      "sha256": "5c9f63d9aba6e7bfbdc51459b3b502d066f6b7a343c44b95fc5f7cc4a336bdce",
+      "cameraLocation": [
+        0.635623,
+        -2.933878,
+        1.019401
+      ],
+      "cameraTarget": [
+        -2.264377,
+        -0.033878,
+        0.839401
+      ],
+      "orthographicScale": 1.9800000190734863,
+      "projection": {
+        "bounds": {
+          "minX": 0.243586,
+          "maxX": 0.756414,
+          "minY": 0.064423,
+          "maxY": 0.935577,
+          "minDepth": 3.653124
+        },
+        "center": [
+          0.5,
+          0.5
+        ],
+        "assertions": {
+          "inFrontOfCamera": true,
+          "insideHorizontalFrame": true,
+          "insideVerticalFrame": true,
+          "meaningfulProjectedWidth": true,
+          "meaningfulProjectedHeight": true,
+          "centered": true
+        },
+        "pass": true
+      },
+      "imageContent": {
+        "sampleStridePixels": 6,
+        "sampleRegionY": [
+          0.12,
+          0.9
+        ],
+        "sampleCount": 21450,
+        "brightSampleCount": 5879,
+        "brightOccupancyRatio": 0.274079,
+        "minimumRequiredRatio": 0.02,
+        "pass": true
+      }
+    }
+  ],
+  "label": "CC0 anatomy sculpt-seed prework; not final KYX and not G6",
+  "status": "NEUTRAL_BASELINE_REVIEW_RENDERS_COMPLETE",
+  "attempt": 2,
+  "failedAttempt1PreservedAt": "evidence/failures/attempt-1-camera-orientation",
+  "allProjectionAndImageContentAssertionsPass": true,
+  "nonClaims": [
+    "The shown anatomy is the unmodified CC0 sculpt seed, not original KYX anatomy.",
+    "The plates are source-baseline evidence only and are not visual acceptance.",
+    "No final character, armor, rifle, rig, animation, LOD, export, or runtime integration is claimed."
+  ]
+}

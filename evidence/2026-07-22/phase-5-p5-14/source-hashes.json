@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T15:12:51.684Z",
+  "algorithm": "sha256",
+  "files": {
+    "src/authority/inkfallMapIdentity.ts": {
+      "sha256": "415995903bd58e44409228f838c83fc100f03faca726aff2ba0c7f9ed7a8618f",
+      "bytes": 1324
+    },
+    "src/authority/room.ts": {
+      "sha256": "f2a95d3e08362948d5376c28ac6281bf3a4216bfb854352e912219facab09f1a",
+      "bytes": 119824
+    },
+    "src/net/protocol.ts": {
+      "sha256": "7e2ab11e17135777b885997e87595767f34dcb58efc35d8d31ee87d343dbe729",
+      "bytes": 17548
+    },
+    "worker/combatRuntime.ts": {
+      "sha256": "5527ffcf846bb6ca37f3f967f4a84b69481669755e24f09050a7d7ae06e24786",
+      "bytes": 19813
+    },
+    "worker/room.ts": {
+      "sha256": "1b54f901ea3a658653481664af5a09af7ba53d4451fcc123a7f829d876653b20",
+      "bytes": 102919
+    },
+    "tests/worker/inkfallPopulation.test.ts": {
+      "sha256": "d6f7168427a4924cbbd81a23eadd31342b750cd28c439028b62d215eadf410b0",
+      "bytes": 36957
+    }
+  }
+}

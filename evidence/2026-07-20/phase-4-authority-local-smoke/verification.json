@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "verifiedOn": "2026-07-20",
+  "status": "LOCAL_VERIFICATION_PASS",
+  "scope": "same-session implementation verification summary",
+  "rawCommandLogsIncluded": false,
+  "checks": [
+    { "name": "application TypeScript", "result": "PASS" },
+    { "name": "Worker TypeScript", "result": "PASS" },
+    { "name": "simulation TypeScript", "result": "PASS" },
+    { "name": "full lint", "result": "PASS" },
+    { "name": "protocol tests", "result": "PASS", "passed": 86, "total": 86 },
+    { "name": "client netcode tests", "result": "PASS", "passed": 17, "total": 17 },
+    { "name": "authority and security tests", "result": "PASS", "passed": 20, "total": 20 },
+    { "name": "unit tests", "result": "PASS", "passed": 282, "total": 282 },
+    { "name": "contract tests", "result": "PASS", "passed": 66, "total": 66 },
+    { "name": "Worker isolate tests", "result": "PASS", "passed": 4, "total": 4 },
+    { "name": "production build", "result": "PASS" },
+    { "name": "Wrangler dry run", "result": "PASS" },
+    { "name": "diff integrity check", "result": "PASS" }
+  ],
+  "phase3Compatibility": {
+    "expectedCanonicalMovementHash": "66fcaf19c3fd94ad",
+    "observedHashes": [
+      "66fcaf19c3fd94ad",
+      "66fcaf19c3fd94ad"
+    ],
+    "stable": true
+  },
+  "gateDecision": "NONE",
+  "notes": [
+    "These checks support the local implementation smoke only.",
+    "Raw logs and exact invocations must be captured by the future reproducible G3 evidence harness.",
+    "No staging or production deployment was performed or authorized."
+  ]
+}

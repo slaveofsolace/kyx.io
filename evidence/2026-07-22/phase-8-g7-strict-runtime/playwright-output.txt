@@ -1,0 +1,8 @@
+Running 4 tests using 1 worker
+
+[1/4] chromium-desktop - records an observational desktop shell contract without claiming G7
+[2/4] chromium-desktop - enforces keyboard focus only after Phase 8 opts into strict mode
+[3/4] chromium-desktop - enforces reduced-mode, scale, and caption hooks only in strict mode
+[4/4] chromium-desktop - records the pointer-lock/Escape lifecycle only when explicitly requested
+
+4 passed (1.1m)

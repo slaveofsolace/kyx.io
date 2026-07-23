@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T08:41:51.418653+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV8",
+  "input": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev8\\kyx_vanguard_v6c_visual_benchmark_rev8.blend",
+    "sha256Before": "9f4c21b756c54f93710c5c0435326aaa321faeccd79d2524a0c5a61ed651d886",
+    "sha256After": "9f4c21b756c54f93710c5c0435326aaa321faeccd79d2524a0c5a61ed651d886",
+    "unchanged": true
+  },
+  "sourceReference": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+    "sha256Before": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+    "sha256After": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+    "pinnedSha256": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+    "unchanged": true,
+    "usage": "armor helmet material boot and rifle construction language only; not anatomy bulk"
+  },
+  "renderExposure": -0.72,
+  "characterBounds": {
+    "minimum": [
+      -0.416575,
+      -0.209,
+      -5.8e-05
+    ],
+    "maximum": [
+      0.416437,
+      0.144,
+      1.805
+    ]
+  },
+  "fullViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev8-front",
+      "fileName": "kyx-v6c-benchmark-rev8-front.png",
+      "bytes": 1198517,
+      "sha256": "e9c0a92ef297e56ec166c6535cd5ef55b312bf6a0a40bda578e2f3b432a4e67f",
+      "cameraLocation": [
+        -6.9e-05,
+        -4.6325,
+        0.969547
+      ],
+      "target": [
+        -6.9e-05,
+        -0.0325,
+        0.929547
+      ],
+      "orthographicScale": 2.039716,
+      "resolution": [
+        960,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-side",
+      "fileName": "kyx-v6c-benchmark-rev8-side.png",
+      "bytes": 1203110,
+      "sha256": "607abb937374d1d29eb0884dd08c1e09d62708c90f70030529e285a8f603d287",
+      "cameraLocation": [
+        4.599931,
+        -0.0325,
+        0.969547
+      ],
+      "target": [
+        -6.9e-05,
+        -0.0325,
+        0.929547
+      ],
+      "orthographicScale": 2.039716,
+      "resolution": [
+        960,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-back",
+      "fileName": "kyx-v6c-benchmark-rev8-back.png",
+      "bytes": 1238584,
+      "sha256": "372595ff435ab5eaf21685ad0d01b03082b21b80dc024780a003e3fa3ba98237",
+      "cameraLocation": [
+        -6.9e-05,
+        4.5675,
+        0.969547
+      ],
+      "target": [
+        -6.9e-05,
+        -0.0325,
+        0.929547
+      ],
+      "orthographicScale": 2.039716,
+      "resolution": [
+        960,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-three-quarter",
+      "fileName": "kyx-v6c-benchmark-rev8-three-quarter.png",
+      "bytes": 1298060,
+      "sha256": "de7e4c5c1ed02a1bccb65612eeb1f68cb8d1986aa15b4e441fce1c688de3c44b",
+      "cameraLocation": [
+        3.249931,
+        -3.4825,
+        1.169547
+      ],
+      "target": [
+        -6.9e-05,
+        -0.0325,
+        0.929547
+      ],
+      "orthographicScale": 2.039716,
+      "resolution": [
+        960,
+        1180
+      ]
+    }
+  ],
+  "componentViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev8-helmet",
+      "fileName": "kyx-v6c-benchmark-rev8-helmet.png",
+      "bytes": 1212566,
+      "sha256": "16575d546ae2b05955f7c286fd42560c1dc3cf327606a424dad2536a003e1bb7",
+      "cameraLocation": [
+        1.02,
+        -3.052,
+        2.02
+      ],
+      "target": [
+        0.0,
+        -0.002,
+        1.66
+      ],
+      "orthographicScale": 0.46,
+      "resolution": [
+        1180,
+        940
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-torso",
+      "fileName": "kyx-v6c-benchmark-rev8-torso.png",
+      "bytes": 1485588,
+      "sha256": "2574e8cf9c4e074ef748d103db6ee4836a4dcb3757c000c67a313126f1ff7dca",
+      "cameraLocation": [
+        1.03,
+        -3.172,
+        1.605
+      ],
+      "target": [
+        0.0,
+        -0.012,
+        1.265
+      ],
+      "orthographicScale": 0.68,
+      "resolution": [
+        1180,
+        1020
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-back-structure",
+      "fileName": "kyx-v6c-benchmark-rev8-back-structure.png",
+      "bytes": 1580844,
+      "sha256": "12c7acece8305fca8dc82ceb80343df92502ff12dd60a490c4bbecb0983c6988",
+      "cameraLocation": [
+        1.08,
+        3.198,
+        1.625
+      ],
+      "target": [
+        0.0,
+        0.018,
+        1.265
+      ],
+      "orthographicScale": 0.68,
+      "resolution": [
+        1180,
+        1020
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-articulation",
+      "fileName": "kyx-v6c-benchmark-rev8-articulation.png",
+      "bytes": 1376724,
+      "sha256": "88b55271251fb4a4ea4561f2dfd926411e7ea04ae337c052e659f8eeca1f5083",
+      "cameraLocation": [
+        1.675,
+        -3.36,
+        1.39
+      ],
+      "target": [
+        0.225,
+        -0.01,
+        0.87
+      ],
+      "orthographicScale": 1.25,
+      "resolution": [
+        980,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-boots",
+      "fileName": "kyx-v6c-benchmark-rev8-boots.png",
+      "bytes": 1227410,
+      "sha256": "8bd6d4e535fcafe390b2b578fa29d38231ce22e3ec37a4f56bdd035a0b732b8b",
+      "cameraLocation": [
+        1.02,
+        -2.845,
+        0.485
+      ],
+      "target": [
+        0.0,
+        -0.025,
+        0.145
+      ],
+      "orthographicScale": 0.52,
+      "resolution": [
+        1240,
+        800
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-rifle",
+      "fileName": "kyx-v6c-benchmark-rev8-rifle.png",
+      "bytes": 1491799,
+      "sha256": "1d9301515bb559fe131fae79c7af6f4e397c9a82ea2b9361d9a2aacad7122b78",
+      "cameraLocation": [
+        1.215,
+        -3.28,
+        1.59
+      ],
+      "target": [
+        0.055,
+        0.0,
+        1.11
+      ],
+      "orthographicScale": 1.72,
+      "resolution": [
+        1700,
+        900
+      ]
+    }
+  ],
+  "distanceViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev8-distance-5m",
+      "fileName": "kyx-v6c-benchmark-rev8-distance-5m.png",
+      "bytes": 1002890,
+      "sha256": "3491bb162e011ae890437398bba8aa14d05ea11feb4f7d843b3e28d64b6340da",
+      "distanceMeters": 5.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-distance-20m",
+      "fileName": "kyx-v6c-benchmark-rev8-distance-20m.png",
+      "bytes": 886478,
+      "sha256": "6d4c8b885b167caeea265042ed2eb82ec42203f02e7330ab9b973de757eb7bb7",
+      "distanceMeters": 20.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev8-distance-40m",
+      "fileName": "kyx-v6c-benchmark-rev8-distance-40m.png",
+      "bytes": 872531,
+      "sha256": "3896774cff159978232a72d4c49848adee7e0d484ba6e25d7d66b8e874cbb486",
+      "distanceMeters": 40.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    }
+  ],
+  "boards": {
+    "direct": {
+      "fileName": "kyx-v6c-benchmark-rev8-direct-review-board.png",
+      "bytes": 4829262,
+      "sha256": "f9e66792c07885b7531a6cb5a945fb60f0e110648ffdc2999c53f5ec495a30ed",
+      "resolution": [
+        1920,
+        2360
+      ]
+    },
+    "components": {
+      "fileName": "kyx-v6c-benchmark-rev8-component-review-board.png",
+      "bytes": 8878412,
+      "sha256": "43a9102e6786479a173fa565a321374bf13fa89e04063d8bc87a7b6a7801dfd6",
+      "resolution": [
+        5100,
+        2360
+      ]
+    },
+    "distance": {
+      "fileName": "kyx-v6c-benchmark-rev8-distance-review-board.png",
+      "bytes": 2680524,
+      "sha256": "235efd6b6c0c814f5d50d37ac6f72dbb98cf6f11a5d0c0d452102e05c04f3065",
+      "resolution": [
+        2700,
+        1100
+      ]
+    },
+    "sourceReference": {
+      "fileName": "kyx-v6c-benchmark-rev8-source-reference-board.png",
+      "bytes": 8033351,
+      "sha256": "0a0cb518126b10e445dc8e8894e064a3b134b8e711f082c9d4c9a4bee1b6ac39",
+      "resolution": [
+        3840,
+        2360
+      ]
+    }
+  },
+  "contactEvidence": {
+    "heldContactBoardOmittedByContract": true,
+    "literalTwoHandOrShoulderContactClaimed": false,
+    "note": "Three witness empties remain in the blend for later rigged work; no contact image is presented as proof."
+  },
+  "visualDecision": "PENDING_DIRECT_INSPECTION",
+  "nonClaims": [
+    "This packet is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "The source-reference board documents visual construction direction and does not assert identity or anatomy matching.",
+    "No final retopology, UV, rig, animation, LOD, GLB, runtime, or performance claim is made."
+  ]
+}

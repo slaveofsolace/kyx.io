@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T13:42:13.393Z",
+  "profile": "p511-inkfall-foundry-revision-2-combat-v1",
+  "storage": {
+    "table": "room_active_checkpoint_v1",
+    "recoveryState": "active_checkpointed",
+    "hashAlgorithm": "fnv1a64-json-v1",
+    "bindings": [
+      "room_code",
+      "room_id",
+      "match_id",
+      "profile_id",
+      "protocol_version",
+      "simulation_identity_json",
+      "map_binding_json",
+      "authority_tick"
+    ]
+  },
+  "twoClientEvictionParity": {
+    "status": "PASS",
+    "test": "reconstitutes two live clients with exact dead-player, projectile, and reliable ordinals",
+    "clients": 2,
+    "samePersistedAuthorityTick": true,
+    "deadPlayerRestored": true,
+    "activeProjectileRestored": true,
+    "tdmScoreAndFeedRestored": true,
+    "reliableNextOrdinalRestored": true,
+    "finalPlayerKilledEventIdRestored": true,
+    "sessionGenerationsRestored": true,
+    "hibernatedSocketOwnershipRestored": true
+  },
+  "failClosed": {
+    "status": "PASS",
+    "test": "fails closed on corrupt or map-mismatched active checkpoints",
+    "corruptSerializedPayload": "503 ROOM_UNAVAILABLE",
+    "mismatchedMapBinding": "503 ROOM_UNAVAILABLE",
+    "partialAuthorityMutation": false
+  },
+  "legacyBehavior": {
+    "defaultProfile": "active_uncheckpointed",
+    "p58dProfile": "active_uncheckpointed",
+    "changed": false
+  },
+  "gateClaims": {
+    "G4": false,
+    "G5": false
+  }
+}

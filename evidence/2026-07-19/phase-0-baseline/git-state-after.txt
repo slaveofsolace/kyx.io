@@ -1,0 +1,23 @@
+Repository: C:/AI Projects/Projects/Games/evio/evio-repo
+Baseline HEAD: 81aa1d02acce8e30ba411bb895901d2d2ac6694e
+Branch: main
+Upstream at capture: origin/main, ahead 0 / behind 0
+
+The Phase-0 checkpoint intentionally leaves reviewable, uncommitted changes:
+
+Modified tracked paths
+  package-lock.json
+  package.json
+  src/main.js
+
+New paths
+  .nvmrc
+  docs/adr/ADR-001-product-foundation-and-authority.md
+  docs/work-log/2026-07-19-phase-0-baseline.md
+  evidence/2026-07-19/phase-0-baseline/
+  tools/assets/audit-assets.mjs
+  tools/evidence/build-manifest.mjs
+  tools/evidence/capture-baseline.mjs
+
+No files were staged or committed. No production deployment or remote mutation
+was performed.

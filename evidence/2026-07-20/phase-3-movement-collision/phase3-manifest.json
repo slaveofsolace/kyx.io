@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T15:01:03.540Z",
+  "root": "phase-3-movement-collision",
+  "files": 27,
+  "bytes": 5948871,
+  "entries": [
+    {
+      "path": "asset-release-gate.log",
+      "bytes": 8765,
+      "sha256": "e2af63a6a981727363dc7968162b260fd5e4f007d48c7bc972ce93ca3713c2ce"
+    },
+    {
+      "path": "browser/phase3-browser-summary.json",
+      "bytes": 215690,
+      "sha256": "326c5d583d731ff78f70bbe8c89e99f0f402cad89f46e24ff719061831dce922"
+    },
+    {
+      "path": "browser/screenshots/phase3-driver-jump.png",
+      "bytes": 499661,
+      "sha256": "e5dc34dbbdf79721f569e369e9fa35f82a5eb148855098cf00429b51903a4561"
+    },
+    {
+      "path": "browser/screenshots/phase3-driver-ready.png",
+      "bytes": 330667,
+      "sha256": "b27c56f0e7f4726710860d9cfbb0163244545d78bb42dc63166c84ed76827021"
+    },
+    {
+      "path": "browser/screenshots/phase3-driver-run.png",
+      "bytes": 527928,
+      "sha256": "eb9368f60296687a9a04ec42fe354605f07987733d6879e2c7d0236ff2ba19ca"
+    },
+    {
+      "path": "browser/screenshots/phase3-driver-slide.png",
+      "bytes": 449701,
+      "sha256": "a9276e1930532cc4418e3a7b49ebecb6c6e298b03355813cd92c56260f4cb596"
+    },
+    {
+      "path": "browser/screenshots/phase3-driver-teleport.png",
+      "bytes": 458398,
+      "sha256": "4eb2203d9aa21ff5c7663269f3e9979fe755e5ebf8e044f30c89d8abd69082ca"
+    },
+    {
+      "path": "browser/screenshots/phase3-fixture-lab.png",
+      "bytes": 308895,
+      "sha256": "68e84003b05ada01ee0b38814137f5660e07896adfb56a24d855c03d2b2b6f5d"
+    },
+    {
+      "path": "browser/videos/page@228ad9880f54c3221b94a60209e77eb8.webm",
+      "bytes": 2614537,
+      "sha256": "0d69c47a8b455c1b8f694e6c9f9f08da7ca27554c9c385bf38eef7da73cc9be8"
+    },
+    {
+      "path": "browser-evidence.log",
+      "bytes": 1571,
+      "sha256": "fccf3650efb48ea53ea10420d1f0332ca61abd3fdf0b43534dfe631eca7e78a8"
+    },
+    {
+      "path": "check-full.log",
+      "bytes": 21669,
+      "sha256": "d4ec3efeeeb73ce96a1d15ef9924235bb75f4e5ee86ee7f34a3c8cc9d1a5f357"
+    },
+    {
+      "path": "commands.txt",
+      "bytes": 3253,
+      "sha256": "ffa3424273463f5e088169baa789f3fc33666e034374bdd2a581edccc49a57fd"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 5058,
+      "sha256": "3c4c8952e7e24f46676a6f0f6b2127527a9dcd7551154196f712ba4c847ce0bc"
+    },
+    {
+      "path": "git-diff-check.log",
+      "bytes": 3278,
+      "sha256": "93fa1856446bc013cb0b78660abf4139db2e90c1ac1a85d3b9d263332d4dec6c"
+    },
+    {
+      "path": "git-head.log",
+      "bytes": 99,
+      "sha256": "8509cdc66f90ae12ac83a41e00b94aad000f7727bc3bdd473768de3dafeb2708"
+    },
+    {
+      "path": "git-status.log",
+      "bytes": 1114,
+      "sha256": "4032bbf5c84d0e43d480f1dfb64cf9ced169b994bbc6caaa54fa2dbb5eaef388"
+    },
+    {
+      "path": "known-issues.md",
+      "bytes": 795,
+      "sha256": "e49e81f56ebafc4d87e11e52c093056a97e5a2aea7ee7c70dd2e4a08f8bf24bb"
+    },
+    {
+      "path": "movement-tapes.json",
+      "bytes": 486042,
+      "sha256": "4225aa1756de2f8136946373d5e1ca9bea70e9c7c53ffcf771a692af7917c87f"
+    },
+    {
+      "path": "movement-tapes.log",
+      "bytes": 654,
+      "sha256": "85d2b9ff33106a85b4d39568ce02a1a0c947c283970d745c175caa4abb6ffbe7"
+    },
+    {
+      "path": "npm-ci.log",
+      "bytes": 360,
+      "sha256": "03121b8a9deb0784f809ac77c5b4c6554da46d237ace5b8aebe067a9244420cf"
+    },
+    {
+      "path": "npm-version.log",
+      "bytes": 272,
+      "sha256": "d58448f969009f74cc6fee0cd0bb9dba781ed85303ca6616dc63c1fc592df18d"
+    },
+    {
+      "path": "phase3-check-summary.json",
+      "bytes": 7968,
+      "sha256": "01203139c39456ceea7cd9931cfe48d7c807ec579692963c3923ceb1705fcb23"
+    },
+    {
+      "path": "production-boundary.json",
+      "bytes": 313,
+      "sha256": "c74e63add5647356900a88582c9c2cf399c6b7bd982dc66fb490dd90be550f80"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1788,
+      "sha256": "c54ce3e722cee53396bff5aca5a0147810bb21ae876f52b595efbab22bb7303a"
+    },
+    {
+      "path": "server-lifecycle.json",
+      "bytes": 235,
+      "sha256": "289ca7434596297e9304f8350c801b1688a10f8130b672930d23c89b488ab291"
+    },
+    {
+      "path": "vite.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "vite.stdout.log",
+      "bytes": 160,
+      "sha256": "e63dd5363336e50e42b4d14f4e27d22359ec62ca5ce7b59e15c610917598ce05"
+    }
+  ]
+}

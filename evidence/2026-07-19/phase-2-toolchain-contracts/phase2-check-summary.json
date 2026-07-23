@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-20T05:06:34.269Z",
+  "node": "v24.14.0",
+  "platform": "win32-x64",
+  "packageManager": "npm@11.18.0 via bundled pnpm dlx",
+  "packageVersions": {
+    "typescript": "5.9.3",
+    "eslint": "10.7.0",
+    "typescriptEslint": "8.64.0",
+    "vitest": "4.1.10",
+    "playwrightTest": "1.61.1",
+    "threeTypes": "0.184.1"
+  },
+  "canonicalReplay": {
+    "rateHz": 20,
+    "tickDurationMs": 50,
+    "finalTick": 6,
+    "finalStateHash": "d7201dfc006e72ee",
+    "entityCount": 2,
+    "eventCount": 6
+  },
+  "results": {
+    "aggregateStages": "10/10",
+    "vitest": "110/110",
+    "relayContainment": "28/28",
+    "phase2ProductionBoundary": "10/10",
+    "phase1Truth": "54/54",
+    "playwright": "6/6",
+    "assetDevelopment": "6 manifests, 0 errors, 33 warnings",
+    "assetRelease": "expected rejection",
+    "browserEvidence": "18/18"
+  },
+  "assertions": {
+    "cleanInstall": true,
+    "aggregateStages": true,
+    "vitest": true,
+    "relay": true,
+    "phase2Boundary": true,
+    "phase1Truth": true,
+    "browser": true,
+    "assetDevelopment": true,
+    "assetReleaseRejected": true,
+    "browserEvidence": true
+  },
+  "failedAssertions": [],
+  "keyFileSha256": {
+    "package-lock.json": "25aa3b9e09fe9f2d112f98e2ce8e324bac7de9161276ef341120c604bf633d10",
+    "src/sim/foundationFixture.ts": "1360e185e7f68f54f6c45b36347f6fc0cbb67b10c52970bae1939f5e83337d5c",
+    "src/content/rulesets/revamped_classic.v1.json": "3ec4d5ae4f87b988c82e71a24e24b26fa4ba948c16e7c2e68b6b3091a28726ac",
+    "src/net/protocol.ts": "03f4571f3a9c04445cf4b0ecef4e71d53e176774250c97d24fb9f8a3cc6b2d6f",
+    "assets/schemas/asset-manifest.schema.json": "3da2eda6a881ea682fe32b5ff316fb5df3f073a609e94314d048308a90bdd239"
+  },
+  "knownOpenGates": [
+    "Production bundle retains the known 932.34 kB chunk warning.",
+    "Legacy assets have unresolved provenance and external glTF validation has not run.",
+    "Ruleset records remain contract_only with unresolved tuning intentionally null.",
+    "Phase 2 does not yet implement collision, authoritative rooms, combat, final art, or production deployment."
+  ],
+  "productionDeploymentPerformed": false,
+  "ok": true
+}

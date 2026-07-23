@@ -1,0 +1,1612 @@
+{
+  "schema": "kyx-v6-contact-first-rig-author-report-v4",
+  "generatedAt": "2026-07-22T12:42:25.217471+00:00",
+  "blenderVersion": "5.1.2",
+  "status": "EARLY_CONTACT_RIG_REV4_AUTHORED_VISUAL_REVIEW_REQUIRED",
+  "scope": "CONTACT_RIG_FOUNDATION_ONLY_CANDIDATE_REV4",
+  "source": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "sha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d"
+  },
+  "working": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev4\\kyx-v6-contact-first-rig-rev4.blend",
+    "initialSha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "finalSha256": "c7d7838afc90b1bde46b9c319c8786bf95cc0c6c377675b76f3258089d6a4329"
+  },
+  "body": {
+    "name": "KYX_V6A_AnatomySculpt_Body",
+    "continuousObjectCount": 1,
+    "sourceTopology": {
+      "vertices": 10582,
+      "edges": 21170,
+      "polygons": 10590
+    },
+    "posedTopology": {
+      "vertices": 10582,
+      "edges": 21170,
+      "polygons": 10590
+    },
+    "topologyPreserved": true,
+    "armatureModifiers": [
+      "V6CF4_ContactFullBodyRig"
+    ]
+  },
+  "rig": {
+    "name": "V6CF4_ContactFullBodyRig",
+    "boneCount": 52,
+    "bones": [
+      {
+        "name": "root",
+        "parent": null,
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          0.0,
+          0.82
+        ],
+        "restTail": [
+          0.0,
+          0.0,
+          0.96
+        ],
+        "posedHead": [
+          0.0,
+          0.0,
+          0.82
+        ],
+        "posedTail": [
+          0.0,
+          0.0,
+          0.96
+        ]
+      },
+      {
+        "name": "spine_01",
+        "parent": "root",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          0.0,
+          0.96
+        ],
+        "restTail": [
+          0.0,
+          -0.002,
+          1.14
+        ],
+        "posedHead": [
+          0.0,
+          0.0,
+          0.96
+        ],
+        "posedTail": [
+          0.0,
+          -0.004499,
+          1.139955
+        ]
+      },
+      {
+        "name": "spine_02",
+        "parent": "spine_01",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.002,
+          1.14
+        ],
+        "restTail": [
+          0.0,
+          -0.008,
+          1.3
+        ],
+        "posedHead": [
+          0.0,
+          -0.004499,
+          1.139955
+        ],
+        "posedTail": [
+          -0.003198,
+          -0.012493,
+          1.299836
+        ]
+      },
+      {
+        "name": "chest",
+        "parent": "spine_02",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.008,
+          1.3
+        ],
+        "restTail": [
+          0.0,
+          -0.01,
+          1.43
+        ],
+        "posedHead": [
+          -0.003198,
+          -0.012493,
+          1.299836
+        ],
+        "posedTail": [
+          -0.007093,
+          -0.017687,
+          1.429689
+        ]
+      },
+      {
+        "name": "neck",
+        "parent": "chest",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.015,
+          1.43
+        ],
+        "restTail": [
+          0.0,
+          -0.025,
+          1.56
+        ],
+        "posedHead": [
+          -0.007093,
+          -0.017687,
+          1.429688
+        ],
+        "posedTail": [
+          -0.004489,
+          -0.024197,
+          1.559884
+        ]
+      },
+      {
+        "name": "head",
+        "parent": "neck",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.025,
+          1.56
+        ],
+        "restTail": [
+          0.0,
+          -0.04,
+          1.73
+        ],
+        "posedHead": [
+          -0.004489,
+          -0.024197,
+          1.559884
+        ],
+        "posedTail": [
+          0.000622,
+          -0.032715,
+          1.730255
+        ]
+      },
+      {
+        "name": "clavicle.R",
+        "parent": "chest",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.01,
+          1.405
+        ],
+        "restTail": [
+          -0.185,
+          -0.012,
+          1.392
+        ],
+        "posedHead": [
+          -0.007093,
+          -0.017687,
+          1.429689
+        ],
+        "posedTail": [
+          -0.191558,
+          -0.036133,
+          1.424155
+        ]
+      },
+      {
+        "name": "upper_arm.R",
+        "parent": "clavicle.R",
+        "useDeform": true,
+        "restHead": [
+          -0.185,
+          -0.012,
+          1.392
+        ],
+        "restTail": [
+          -0.325,
+          -0.025,
+          1.135
+        ],
+        "posedHead": [
+          -0.191558,
+          -0.036133,
+          1.424155
+        ],
+        "posedTail": [
+          -0.389943,
+          -0.177341,
+          1.261299
+        ]
+      },
+      {
+        "name": "forearm.R",
+        "parent": "upper_arm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.325,
+          -0.025,
+          1.135
+        ],
+        "restTail": [
+          -0.392,
+          -0.058,
+          0.9
+        ],
+        "posedHead": [
+          -0.389943,
+          -0.177341,
+          1.261299
+        ],
+        "posedTail": [
+          -0.204107,
+          -0.328134,
+          1.20189
+        ]
+      },
+      {
+        "name": "wrist.R",
+        "parent": "forearm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.392,
+          -0.058,
+          0.9
+        ],
+        "restTail": [
+          -0.405,
+          -0.09,
+          0.845
+        ],
+        "posedHead": [
+          -0.204107,
+          -0.328134,
+          1.20189
+        ],
+        "posedTail": [
+          -0.181879,
+          -0.389136,
+          1.203541
+        ]
+      },
+      {
+        "name": "palm.R",
+        "parent": "wrist.R",
+        "useDeform": true,
+        "restHead": [
+          -0.405,
+          -0.09,
+          0.845
+        ],
+        "restTail": [
+          -0.405,
+          -0.112,
+          0.792
+        ],
+        "posedHead": [
+          -0.181879,
+          -0.389136,
+          1.203541
+        ],
+        "posedTail": [
+          -0.162239,
+          -0.443035,
+          1.205
+        ]
+      },
+      {
+        "name": "index_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.151,
+          0.866
+        ],
+        "restTail": [
+          -0.4055,
+          -0.151,
+          0.833
+        ],
+        "posedHead": [
+          -0.16526,
+          -0.447817,
+          1.252
+        ],
+        "posedTail": [
+          -0.157076,
+          -0.440946,
+          1.283258
+        ]
+      },
+      {
+        "name": "index_02.R",
+        "parent": "index_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.151,
+          0.833
+        ],
+        "restTail": [
+          -0.4065,
+          -0.151,
+          0.803
+        ],
+        "posedHead": [
+          -0.157076,
+          -0.440946,
+          1.283258
+        ],
+        "posedTail": [
+          -0.127995,
+          -0.44733,
+          1.287067
+        ]
+      },
+      {
+        "name": "index_03.R",
+        "parent": "index_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.151,
+          0.803
+        ],
+        "restTail": [
+          -0.407,
+          -0.151,
+          0.778
+        ],
+        "posedHead": [
+          -0.127995,
+          -0.44733,
+          1.287067
+        ],
+        "posedTail": [
+          -0.112084,
+          -0.456321,
+          1.27
+        ]
+      },
+      {
+        "name": "middle_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.126,
+          0.866
+        ],
+        "restTail": [
+          -0.4055,
+          -0.126,
+          0.83
+        ],
+        "posedHead": [
+          -0.167116,
+          -0.444136,
+          1.207
+        ],
+        "posedTail": [
+          -0.133193,
+          -0.45396,
+          1.199863
+        ]
+      },
+      {
+        "name": "middle_02.R",
+        "parent": "middle_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.126,
+          0.83
+        ],
+        "restTail": [
+          -0.4065,
+          -0.126,
+          0.798
+        ],
+        "posedHead": [
+          -0.133193,
+          -0.45396,
+          1.199863
+        ],
+        "posedTail": [
+          -0.115046,
+          -0.437528,
+          1.179231
+        ]
+      },
+      {
+        "name": "middle_03.R",
+        "parent": "middle_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.126,
+          0.798
+        ],
+        "restTail": [
+          -0.407,
+          -0.126,
+          0.771
+        ],
+        "posedHead": [
+          -0.115046,
+          -0.437528,
+          1.179231
+        ],
+        "posedTail": [
+          -0.120763,
+          -0.424443,
+          1.156311
+        ]
+      },
+      {
+        "name": "ring_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.101,
+          0.858
+        ],
+        "restTail": [
+          -0.4055,
+          -0.101,
+          0.824
+        ],
+        "posedHead": [
+          -0.167116,
+          -0.444135,
+          1.173
+        ],
+        "posedTail": [
+          -0.135074,
+          -0.453415,
+          1.166259
+        ]
+      },
+      {
+        "name": "ring_02.R",
+        "parent": "ring_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.101,
+          0.824
+        ],
+        "restTail": [
+          -0.4065,
+          -0.101,
+          0.794
+        ],
+        "posedHead": [
+          -0.135074,
+          -0.453415,
+          1.166259
+        ],
+        "posedTail": [
+          -0.11806,
+          -0.438009,
+          1.146915
+        ]
+      },
+      {
+        "name": "ring_03.R",
+        "parent": "ring_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.101,
+          0.794
+        ],
+        "restTail": [
+          -0.407,
+          -0.101,
+          0.768
+        ],
+        "posedHead": [
+          -0.11806,
+          -0.438009,
+          1.146915
+        ],
+        "posedTail": [
+          -0.123565,
+          -0.425409,
+          1.124843
+        ]
+      },
+      {
+        "name": "pinky_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.404,
+          -0.076,
+          0.858
+        ],
+        "restTail": [
+          -0.4055,
+          -0.076,
+          0.829
+        ],
+        "posedHead": [
+          -0.167116,
+          -0.444135,
+          1.139
+        ],
+        "posedTail": [
+          -0.139776,
+          -0.452053,
+          1.133248
+        ]
+      },
+      {
+        "name": "pinky_02.R",
+        "parent": "pinky_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4055,
+          -0.076,
+          0.829
+        ],
+        "restTail": [
+          -0.4065,
+          -0.076,
+          0.803
+        ],
+        "posedHead": [
+          -0.139776,
+          -0.452053,
+          1.133248
+        ],
+        "posedTail": [
+          -0.125028,
+          -0.438699,
+          1.11648
+        ]
+      },
+      {
+        "name": "pinky_03.R",
+        "parent": "pinky_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.4065,
+          -0.076,
+          0.803
+        ],
+        "restTail": [
+          -0.407,
+          -0.076,
+          0.781
+        ],
+        "posedHead": [
+          -0.125028,
+          -0.438699,
+          1.11648
+        ],
+        "posedTail": [
+          -0.129687,
+          -0.428036,
+          1.097803
+        ]
+      },
+      {
+        "name": "thumb_01.R",
+        "parent": "palm.R",
+        "useDeform": true,
+        "restHead": [
+          -0.382,
+          -0.151,
+          0.9
+        ],
+        "restTail": [
+          -0.364,
+          -0.161,
+          0.875
+        ],
+        "posedHead": [
+          -0.16557,
+          -0.419183,
+          1.225
+        ],
+        "posedTail": [
+          -0.138105,
+          -0.413205,
+          1.208909
+        ]
+      },
+      {
+        "name": "thumb_02.R",
+        "parent": "thumb_01.R",
+        "useDeform": true,
+        "restHead": [
+          -0.364,
+          -0.161,
+          0.875
+        ],
+        "restTail": [
+          -0.349,
+          -0.169,
+          0.851
+        ],
+        "posedHead": [
+          -0.138105,
+          -0.413205,
+          1.208909
+        ],
+        "posedTail": [
+          -0.111913,
+          -0.411983,
+          1.195588
+        ]
+      },
+      {
+        "name": "thumb_03.R",
+        "parent": "thumb_02.R",
+        "useDeform": true,
+        "restHead": [
+          -0.349,
+          -0.169,
+          0.851
+        ],
+        "restTail": [
+          -0.339,
+          -0.169,
+          0.831
+        ],
+        "posedHead": [
+          -0.111913,
+          -0.411983,
+          1.195588
+        ],
+        "posedTail": [
+          -0.091578,
+          -0.413692,
+          1.186446
+        ]
+      },
+      {
+        "name": "clavicle.L",
+        "parent": "chest",
+        "useDeform": true,
+        "restHead": [
+          0.0,
+          -0.01,
+          1.405
+        ],
+        "restTail": [
+          0.185,
+          -0.012,
+          1.392
+        ],
+        "posedHead": [
+          -0.007093,
+          -0.017687,
+          1.429689
+        ],
+        "posedTail": [
+          0.177371,
+          -0.036133,
+          1.424155
+        ]
+      },
+      {
+        "name": "upper_arm.L",
+        "parent": "clavicle.L",
+        "useDeform": true,
+        "restHead": [
+          0.185,
+          -0.012,
+          1.392
+        ],
+        "restTail": [
+          0.325,
+          -0.025,
+          1.135
+        ],
+        "posedHead": [
+          0.177371,
+          -0.036133,
+          1.424155
+        ],
+        "posedTail": [
+          0.092048,
+          -0.300301,
+          1.330595
+        ]
+      },
+      {
+        "name": "forearm.L",
+        "parent": "upper_arm.L",
+        "useDeform": true,
+        "restHead": [
+          0.325,
+          -0.025,
+          1.135
+        ],
+        "restTail": [
+          0.392,
+          -0.058,
+          0.9
+        ],
+        "posedHead": [
+          0.092048,
+          -0.300301,
+          1.330595
+        ],
+        "posedTail": [
+          0.017972,
+          -0.522329,
+          1.253012
+        ]
+      },
+      {
+        "name": "wrist.L",
+        "parent": "forearm.L",
+        "useDeform": true,
+        "restHead": [
+          0.392,
+          -0.058,
+          0.9
+        ],
+        "restTail": [
+          0.405,
+          -0.09,
+          0.845
+        ],
+        "posedHead": [
+          0.017972,
+          -0.522329,
+          1.253012
+        ],
+        "posedTail": [
+          0.009338,
+          -0.585657,
+          1.241476
+        ]
+      },
+      {
+        "name": "palm.L",
+        "parent": "wrist.L",
+        "useDeform": true,
+        "restHead": [
+          0.405,
+          -0.09,
+          0.845
+        ],
+        "restTail": [
+          0.405,
+          -0.112,
+          0.792
+        ],
+        "posedHead": [
+          0.009338,
+          -0.585657,
+          1.241476
+        ],
+        "posedTail": [
+          0.007458,
+          -0.642757,
+          1.236082
+        ]
+      },
+      {
+        "name": "index_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.151,
+          0.866
+        ],
+        "restTail": [
+          0.4055,
+          -0.151,
+          0.833
+        ],
+        "posedHead": [
+          0.00952,
+          -0.727199,
+          1.248
+        ],
+        "posedTail": [
+          -0.014906,
+          -0.748444,
+          1.241422
+        ]
+      },
+      {
+        "name": "index_02.L",
+        "parent": "index_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.151,
+          0.833
+        ],
+        "restTail": [
+          0.4065,
+          -0.151,
+          0.803
+        ],
+        "posedHead": [
+          -0.014906,
+          -0.748444,
+          1.241422
+        ],
+        "posedTail": [
+          -0.036751,
+          -0.74217,
+          1.221815
+        ]
+      },
+      {
+        "name": "index_03.L",
+        "parent": "index_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.151,
+          0.803
+        ],
+        "restTail": [
+          0.407,
+          -0.151,
+          0.778
+        ],
+        "posedHead": [
+          -0.036751,
+          -0.74217,
+          1.221815
+        ],
+        "posedTail": [
+          -0.037064,
+          -0.729421,
+          1.200307
+        ]
+      },
+      {
+        "name": "middle_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.126,
+          0.866
+        ],
+        "restTail": [
+          0.4055,
+          -0.126,
+          0.83
+        ],
+        "posedHead": [
+          0.00952,
+          -0.727198,
+          1.215
+        ],
+        "posedTail": [
+          -0.017122,
+          -0.750371,
+          1.207826
+        ]
+      },
+      {
+        "name": "middle_02.L",
+        "parent": "middle_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.126,
+          0.83
+        ],
+        "restTail": [
+          0.4065,
+          -0.126,
+          0.798
+        ],
+        "posedHead": [
+          -0.017122,
+          -0.750371,
+          1.207826
+        ],
+        "posedTail": [
+          -0.040422,
+          -0.743679,
+          1.186913
+        ]
+      },
+      {
+        "name": "middle_03.L",
+        "parent": "middle_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.126,
+          0.798
+        ],
+        "restTail": [
+          0.407,
+          -0.126,
+          0.771
+        ],
+        "posedHead": [
+          -0.040422,
+          -0.743679,
+          1.186913
+        ],
+        "posedTail": [
+          -0.04076,
+          -0.729911,
+          1.163684
+        ]
+      },
+      {
+        "name": "ring_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.101,
+          0.858
+        ],
+        "restTail": [
+          0.4055,
+          -0.101,
+          0.824
+        ],
+        "posedHead": [
+          0.00952,
+          -0.727198,
+          1.182
+        ],
+        "posedTail": [
+          -0.015645,
+          -0.749086,
+          1.175223
+        ]
+      },
+      {
+        "name": "ring_02.L",
+        "parent": "ring_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.101,
+          0.824
+        ],
+        "restTail": [
+          0.4065,
+          -0.101,
+          0.794
+        ],
+        "posedHead": [
+          -0.015645,
+          -0.749086,
+          1.175223
+        ],
+        "posedTail": [
+          -0.03749,
+          -0.742812,
+          1.155616
+        ]
+      },
+      {
+        "name": "ring_03.L",
+        "parent": "ring_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.101,
+          0.794
+        ],
+        "restTail": [
+          0.407,
+          -0.101,
+          0.768
+        ],
+        "posedHead": [
+          -0.03749,
+          -0.742812,
+          1.155616
+        ],
+        "posedTail": [
+          -0.037815,
+          -0.729553,
+          1.133248
+        ]
+      },
+      {
+        "name": "pinky_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.404,
+          -0.076,
+          0.858
+        ],
+        "restTail": [
+          0.4055,
+          -0.076,
+          0.829
+        ],
+        "posedHead": [
+          0.00952,
+          -0.727198,
+          1.152
+        ],
+        "posedTail": [
+          -0.011952,
+          -0.745874,
+          1.146218
+        ]
+      },
+      {
+        "name": "pinky_02.L",
+        "parent": "pinky_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.4055,
+          -0.076,
+          0.829
+        ],
+        "restTail": [
+          0.4065,
+          -0.076,
+          0.803
+        ],
+        "posedHead": [
+          -0.011952,
+          -0.745874,
+          1.146218
+        ],
+        "posedTail": [
+          -0.030888,
+          -0.740436,
+          1.129222
+        ]
+      },
+      {
+        "name": "pinky_03.L",
+        "parent": "pinky_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.4065,
+          -0.076,
+          0.803
+        ],
+        "restTail": [
+          0.407,
+          -0.076,
+          0.781
+        ],
+        "posedHead": [
+          -0.030888,
+          -0.740436,
+          1.129222
+        ],
+        "posedTail": [
+          -0.031163,
+          -0.729216,
+          1.110294
+        ]
+      },
+      {
+        "name": "thumb_01.L",
+        "parent": "palm.L",
+        "useDeform": true,
+        "restHead": [
+          0.382,
+          -0.151,
+          0.9
+        ],
+        "restTail": [
+          0.364,
+          -0.161,
+          0.875
+        ],
+        "posedHead": [
+          -0.0002,
+          -0.706838,
+          1.255
+        ],
+        "posedTail": [
+          -0.028097,
+          -0.712632,
+          1.239599
+        ]
+      },
+      {
+        "name": "thumb_02.L",
+        "parent": "thumb_01.L",
+        "useDeform": true,
+        "restHead": [
+          0.364,
+          -0.161,
+          0.875
+        ],
+        "restTail": [
+          0.349,
+          -0.169,
+          0.851
+        ],
+        "posedHead": [
+          -0.028097,
+          -0.712632,
+          1.239599
+        ],
+        "posedTail": [
+          -0.052725,
+          -0.722267,
+          1.226729
+        ]
+      },
+      {
+        "name": "thumb_03.L",
+        "parent": "thumb_02.L",
+        "useDeform": true,
+        "restHead": [
+          0.349,
+          -0.169,
+          0.851
+        ],
+        "restTail": [
+          0.339,
+          -0.169,
+          0.831
+        ],
+        "posedHead": [
+          -0.052725,
+          -0.722267,
+          1.226729
+        ],
+        "posedTail": [
+          -0.070674,
+          -0.732184,
+          1.217815
+        ]
+      },
+      {
+        "name": "thigh_anchor.R",
+        "parent": "root",
+        "useDeform": true,
+        "restHead": [
+          -0.085,
+          0.0,
+          0.93
+        ],
+        "restTail": [
+          -0.115,
+          0.0,
+          0.55
+        ],
+        "posedHead": [
+          -0.085,
+          0.0,
+          0.93
+        ],
+        "posedTail": [
+          -0.115,
+          -0.0,
+          0.55
+        ]
+      },
+      {
+        "name": "shin_anchor.R",
+        "parent": "thigh_anchor.R",
+        "useDeform": true,
+        "restHead": [
+          -0.115,
+          0.0,
+          0.55
+        ],
+        "restTail": [
+          -0.105,
+          -0.01,
+          0.13
+        ],
+        "posedHead": [
+          -0.115,
+          -0.0,
+          0.55
+        ],
+        "posedTail": [
+          -0.105,
+          -0.01,
+          0.13
+        ]
+      },
+      {
+        "name": "foot_anchor.R",
+        "parent": "shin_anchor.R",
+        "useDeform": true,
+        "restHead": [
+          -0.105,
+          -0.01,
+          0.13
+        ],
+        "restTail": [
+          -0.105,
+          -0.13,
+          0.035
+        ],
+        "posedHead": [
+          -0.105,
+          -0.01,
+          0.13
+        ],
+        "posedTail": [
+          -0.105,
+          -0.13,
+          0.035
+        ]
+      },
+      {
+        "name": "thigh_anchor.L",
+        "parent": "root",
+        "useDeform": true,
+        "restHead": [
+          0.085,
+          0.0,
+          0.93
+        ],
+        "restTail": [
+          0.115,
+          0.0,
+          0.55
+        ],
+        "posedHead": [
+          0.085,
+          0.0,
+          0.93
+        ],
+        "posedTail": [
+          0.115,
+          -0.0,
+          0.55
+        ]
+      },
+      {
+        "name": "shin_anchor.L",
+        "parent": "thigh_anchor.L",
+        "useDeform": true,
+        "restHead": [
+          0.115,
+          0.0,
+          0.55
+        ],
+        "restTail": [
+          0.105,
+          -0.01,
+          0.13
+        ],
+        "posedHead": [
+          0.115,
+          -0.0,
+          0.55
+        ],
+        "posedTail": [
+          0.105,
+          -0.01,
+          0.13
+        ]
+      },
+      {
+        "name": "foot_anchor.L",
+        "parent": "shin_anchor.L",
+        "useDeform": true,
+        "restHead": [
+          0.105,
+          -0.01,
+          0.13
+        ],
+        "restTail": [
+          0.105,
+          -0.13,
+          0.035
+        ],
+        "posedHead": [
+          0.105,
+          -0.01,
+          0.13
+        ],
+        "posedTail": [
+          0.105,
+          -0.13,
+          0.035
+        ]
+      }
+    ],
+    "action": "V6CF4_ContactPose_Action",
+    "actionFrameRange": [
+      1,
+      20
+    ],
+    "poseMethod": "explicit armature-space bone matrices; keyed frame 1 and frame 20",
+    "weightingOperator": "DETERMINISTIC_REGION_NEAREST_SEGMENT_NO_HEAT",
+    "weights": {
+      "vertexCount": 10582,
+      "groupCount": 52,
+      "deformBoneCount": 52,
+      "zeroWeightVertices": 0,
+      "minimumWeightSum": 1.0,
+      "maximumWeightSum": 1.0,
+      "verticesPerGroup": {
+        "chest": 997,
+        "clavicle.L": 98,
+        "clavicle.R": 98,
+        "foot_anchor.L": 1255,
+        "foot_anchor.R": 1255,
+        "forearm.L": 353,
+        "forearm.R": 353,
+        "head": 3760,
+        "index_01.L": 126,
+        "index_01.R": 126,
+        "index_02.L": 56,
+        "index_02.R": 56,
+        "index_03.L": 8,
+        "index_03.R": 8,
+        "middle_01.L": 145,
+        "middle_01.R": 145,
+        "middle_02.L": 43,
+        "middle_02.R": 43,
+        "middle_03.L": 17,
+        "middle_03.R": 17,
+        "neck": 4250,
+        "palm.L": 88,
+        "palm.R": 87,
+        "pinky_01.L": 195,
+        "pinky_01.R": 196,
+        "pinky_02.L": 60,
+        "pinky_02.R": 60,
+        "pinky_03.L": 31,
+        "pinky_03.R": 31,
+        "ring_01.L": 114,
+        "ring_01.R": 114,
+        "ring_02.L": 39,
+        "ring_02.R": 39,
+        "ring_03.L": 7,
+        "ring_03.R": 8,
+        "root": 225,
+        "shin_anchor.L": 390,
+        "shin_anchor.R": 390,
+        "spine_01": 476,
+        "spine_02": 873,
+        "thigh_anchor.L": 180,
+        "thigh_anchor.R": 180,
+        "thumb_01.L": 240,
+        "thumb_01.R": 239,
+        "thumb_02.L": 0,
+        "thumb_02.R": 0,
+        "thumb_03.L": 0,
+        "thumb_03.R": 0,
+        "upper_arm.L": 390,
+        "upper_arm.R": 390,
+        "wrist.L": 274,
+        "wrist.R": 274
+      },
+      "missingDeformGroups": []
+    }
+  },
+  "weaponContactBlockout": {
+    "objects": [
+      "V6CF4_Rifle_Barrel",
+      "V6CF4_Rifle_ForegripContact",
+      "V6CF4_Rifle_ForegripHandStop",
+      "V6CF4_Rifle_GripContact",
+      "V6CF4_Rifle_Muzzle",
+      "V6CF4_Rifle_ReceiverSectioned",
+      "V6CF4_Rifle_StockBeam",
+      "V6CF4_Rifle_StockPadContact",
+      "V6CF4_Rifle_Trigger",
+      "V6CF4_Rifle_TriggerGuard"
+    ],
+    "requiredNamedSurfaces": [
+      "V6CF4_Rifle_GripContact",
+      "V6CF4_Rifle_Trigger",
+      "V6CF4_Rifle_TriggerGuard",
+      "V6CF4_Rifle_ForegripContact",
+      "V6CF4_Rifle_StockPadContact"
+    ],
+    "landmarks": {
+      "forward": [
+        0.220107,
+        -0.975476,
+        0.0
+      ],
+      "right": [
+        0.975476,
+        0.220107,
+        0.0
+      ],
+      "shoulderPad": [
+        -0.185,
+        -0.115,
+        1.365
+      ],
+      "receiver": [
+        -0.121169,
+        -0.397888,
+        1.31
+      ],
+      "grip": [
+        -0.113465,
+        -0.43203,
+        1.165
+      ],
+      "foregrip": [
+        -0.044131,
+        -0.739304,
+        1.19
+      ],
+      "trigger": [
+        -0.109063,
+        -0.451539,
+        1.27
+      ],
+      "firingPalm": [
+        -0.162239,
+        -0.443035,
+        1.205
+      ],
+      "supportPalm": [
+        0.004642,
+        -0.728299,
+        1.228
+      ]
+    },
+    "receiverPresentation": "sectioned translucent volume; contact surfaces remain opaque"
+  },
+  "prohibitions": {
+    "garmentOrArmorObjects": [],
+    "externalLibraries": [],
+    "runtimeSourceTouched": false,
+    "mapOrOnlineTouched": false,
+    "productionWeaponArtClaim": false,
+    "v6bClaim": false,
+    "g6Claim": false
+  },
+  "reviewContract": {
+    "mustShow": [
+      "continuous full-body firing pose",
+      "firing palm seated on grip with four-digit wrap",
+      "index visibly clear of guard and reaching trigger",
+      "support palm and four digits seated around foregrip",
+      "stock pad tangent to shoulder pocket",
+      "plausible elbows and wrists",
+      "no tearing, collapse, blocky/mannequin silhouette"
+    ],
+    "automaticAcceptance": false,
+    "selfRejectOnInferredContact": true
+  },
+  "rev2Corrections": {
+    "rev1Preserved": true,
+    "poseBoneScale": "forbidden; every posed bone remains unit scale",
+    "restChains": "anatomically sized upper-arm, forearm, wrist, palm, all digit chains",
+    "armSolve": "native-length analytic two-bone solve",
+    "indexSolve": "native-length FABRIK endpoint at trigger surface",
+    "distalWeights": {
+      "allDigitChainsIncluded": true,
+      "supersededBy": "deterministic full-body region/nearest-segment weights"
+    }
+  },
+  "rev3Corrections": {
+    "rev1AndRev2Preserved": true,
+    "orientationMethod": "Vector.to_track_quat local Y, local Z up",
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 2.3849132757886095e-07,
+      "maximumScaleError": 1.0132789611816406e-06,
+      "maximumTailErrorMeters": 2.392611015339406e-07,
+      "targetCount": 45
+    },
+    "distalWeightAudit": {
+      "allDigitChainsIncluded": true,
+      "supersededBy": "deterministic full-body region/nearest-segment weights"
+    },
+    "weightNormalization": "all vertex groups normalized after deterministic distal assignment"
+  },
+  "rev4Corrections": {
+    "rev1ThroughRev3Preserved": true,
+    "heatWeightsUsed": false,
+    "fullBodyWeightAudit": {
+      "allVerticesAssigned": true,
+      "dominantBoneVertexCounts": {
+        "chest": 350,
+        "clavicle.L": 9,
+        "clavicle.R": 9,
+        "foot_anchor.L": 1209,
+        "foot_anchor.R": 1209,
+        "forearm.L": 218,
+        "forearm.R": 218,
+        "head": 3517,
+        "index_01.L": 41,
+        "index_01.R": 41,
+        "index_02.L": 26,
+        "index_02.R": 26,
+        "index_03.L": 2,
+        "index_03.R": 2,
+        "middle_01.L": 51,
+        "middle_01.R": 50,
+        "middle_02.L": 29,
+        "middle_02.R": 29,
+        "middle_03.L": 0,
+        "middle_03.R": 0,
+        "neck": 528,
+        "palm.L": 42,
+        "palm.R": 42,
+        "pinky_01.L": 80,
+        "pinky_01.R": 80,
+        "pinky_02.L": 40,
+        "pinky_02.R": 40,
+        "pinky_03.L": 1,
+        "pinky_03.R": 1,
+        "ring_01.L": 42,
+        "ring_01.R": 43,
+        "ring_02.L": 13,
+        "ring_02.R": 13,
+        "ring_03.L": 0,
+        "ring_03.R": 0,
+        "root": 81,
+        "shin_anchor.L": 306,
+        "shin_anchor.R": 307,
+        "spine_01": 235,
+        "spine_02": 377,
+        "thigh_anchor.L": 141,
+        "thigh_anchor.R": 140,
+        "thumb_01.L": 152,
+        "thumb_01.R": 152,
+        "thumb_02.L": 0,
+        "thumb_02.R": 0,
+        "thumb_03.L": 0,
+        "thumb_03.R": 0,
+        "upper_arm.L": 173,
+        "upper_arm.R": 173,
+        "wrist.L": 172,
+        "wrist.R": 172
+      },
+      "influenceHistogram": {
+        "1": 3021,
+        "2": 7233,
+        "4": 328
+      },
+      "maximumInfluences": 4,
+      "method": "rest-space region mask plus nearest bone segment; no heat weighting",
+      "perVertexWeightSum": 1.0,
+      "regionCounts": {
+        "arm": 610,
+        "axial": 4905,
+        "hand": 1382,
+        "lower": 3393,
+        "shoulderBlend": 292
+      },
+      "vertexCount": 10582
+    },
+    "poseAudit": {
+      "failures": [],
+      "maximumHeadErrorMeters": 2.3849132757886095e-07,
+      "maximumScaleError": 1.0132789611816406e-06,
+      "maximumTailErrorMeters": 2.392611015339406e-07,
+      "targetCount": 45
+    }
+  }
+}

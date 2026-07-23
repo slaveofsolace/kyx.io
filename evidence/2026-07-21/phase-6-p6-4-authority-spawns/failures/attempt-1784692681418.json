@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_4_CAPTURE_ATTEMPT_FAILED",
+  "capturedAtUtc": "2026-07-22T03:58:01.418Z",
+  "error": "Error: P6.4 authority spawn assertions failed.\nError: P6.4 authority spawn assertions failed.\n    at file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase6-p64-spawns.mjs:223:46",
+  "viteOutput": [
+    "\n  \u001b[32m\u001b[1mVITE\u001b[22m v8.0.16\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m161\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m\n\n",
+    "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m4184\u001b[22m/\u001b[39m\n"
+  ]
+}

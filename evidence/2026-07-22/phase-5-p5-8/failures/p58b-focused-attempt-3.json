@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-3",
+  "capturedAt": "2026-07-22T03:21:36-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 0,
+    "testsFailed": 2
+  },
+  "failures": [
+    {
+      "test": "full consequence impairment profiles",
+      "cause": "A missing sequence held the original pressed-edge command during the reorder wait and produced one additional rifle attempt before recovery.",
+      "correction": "The impaired commands are now redundant held-state updates; grenade activation runs after sequence recovery so loss cannot replay a pressed edge."
+    },
+    {
+      "test": "composite reconnect snapshot",
+      "cause": "The scenario was captured during the sealed 40-tick warmup and assumed a contact-started fuse in a clear world.",
+      "correction": "The scenario now starts at active tick 40 and asserts the airborne projectile lifetime boundary before deterministic expiry detonation."
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T13:42:13.393Z",
+  "status": "PASS",
+  "matrix": [
+    {
+      "check": "app TypeScript",
+      "command": "tsc -p tsconfig.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "check": "Worker TypeScript",
+      "command": "tsc -p tsconfig.worker.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "check": "ESLint",
+      "command": "eslint src/**/*.ts worker/**/*.ts tests/**/*.ts tools/**/*.mjs vitest.worker.config.ts --no-error-on-unmatched-pattern",
+      "status": "PASS"
+    },
+    {
+      "check": "Vite production build",
+      "command": "vite build",
+      "status": "PASS",
+      "modulesTransformed": 152
+    },
+    {
+      "check": "Node Vitest",
+      "command": "vitest run",
+      "status": "PASS",
+      "testFiles": 84,
+      "tests": 696
+    },
+    {
+      "check": "Worker Vitest",
+      "command": "vitest run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
+      "status": "PASS",
+      "testFiles": 8,
+      "tests": 31
+    },
+    {
+      "check": "Wrangler dry run",
+      "command": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env=",
+      "status": "PASS",
+      "totalUploadKiB": 2896.84,
+      "gzipKiB": 785.31
+    }
+  ],
+  "focused": {
+    "authorityRoundTripTests": 2,
+    "inputQueueAndReliableEventTests": 16,
+    "inkfallWorkerProfileTests": 5
+  },
+  "knownNonBlockingOutput": [
+    "Existing Rapier initialization deprecation warnings in Node tests",
+    "Existing Vite chunk-size warning"
+  ]
+}

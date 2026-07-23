@@ -1,0 +1,468 @@
+{
+  "artifacts": {
+    "renderGlb": {
+      "bytes": 5457084,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/export/inkfall_foundry_press_hall_final_art_v1.glb",
+      "sha256": "7078294365656fc6a16a5581b8cf5ae7a4477590c2125bbbad69e94d1e509e4e"
+    },
+    "renders": [
+      {
+        "bytes": 2024534,
+        "mode": "color",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-gameplay-color.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "695313c3aed3ebf421e10573b7eb156f613e8e0febc05c316d77189aac6b2f9e",
+        "view": "gameplay"
+      },
+      {
+        "bytes": 1926096,
+        "mode": "color",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-close-color.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "a48084a2742bf3f36057a445df59f69416c20f0b09ba73e6c9c8b9012373ebe0",
+        "view": "close"
+      },
+      {
+        "bytes": 2067744,
+        "mode": "color",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-mid-color.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "a638dd6dc705f1c15b8146fab0891bcbbfd8fe1af048d22ba284745e2ab4c141",
+        "view": "mid"
+      },
+      {
+        "bytes": 1890372,
+        "mode": "color",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-far-color.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "f01af57135c331eb52527c1255cdd73107e53ed7a94c8a653f4e36edc1d4247d",
+        "view": "far"
+      },
+      {
+        "bytes": 2104262,
+        "mode": "color",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-red_fold-color.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "bbbb8da57686c326bce08b26965d28d36abd7241e4b53979b936f55f76ee8936",
+        "view": "red_fold"
+      },
+      {
+        "bytes": 1825580,
+        "mode": "color",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-paper_drop-color.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "e3b71fe19088a0c9177ea9aab5ea6614e1a022f21f832399a215cc38d4e37efd",
+        "view": "paper_drop"
+      },
+      {
+        "bytes": 2010345,
+        "mode": "grayscale",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/renders/inkfall-press-hall-v1-gameplay-grayscale.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "9317d90cb3119928c5aba4f3dcbb65bfd256624533c10ec919a0b271bcb8d95b",
+        "view": "gameplay"
+      }
+    ],
+    "sourceBlend": {
+      "bytes": 487383,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v1/source/inkfall_foundry_press_hall_final_art_v1.blend",
+      "sha256": "e1d186c630bd87ee6c68b58427ba095086bae57bcf4daa147afbd859d7f92495"
+    }
+  },
+  "authoredModuleIds": [
+    "column_500x3000",
+    "floor_4000",
+    "floor_mark_1000",
+    "full_cover",
+    "garden_planter_3000",
+    "half_cover",
+    "paper_drop_frame",
+    "press_baffle",
+    "press_reactor_shell",
+    "red_fold_frame"
+  ],
+  "binding": {
+    "catalogDefaultRevision": 1,
+    "grayboxLockRevision": 1,
+    "grayboxRevision": 2,
+    "mapId": "inkfall_foundry"
+  },
+  "checks": {
+    "allSevenSemanticMaterialSlotsPresent": true,
+    "authorityCollisionObjectsAbsent": true,
+    "catalogDefaultRevisionStill1": true,
+    "immutableP67InputsUnchanged": true,
+    "pressHallAndTwoTransitionsAuthored": true,
+    "replacementEnvelopesContained": true,
+    "requiredReviewViewsRendered": true
+  },
+  "collisionObjects": [],
+  "connectedTransitions": [
+    "red_fold",
+    "paper_drop"
+  ],
+  "counts": {
+    "authoredModuleIds": 10,
+    "materials": 9,
+    "meshObjects": 345,
+    "renderViews": 7,
+    "replacementEnvelopes": 10,
+    "transitionIds": 2
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "id": "inkfall_foundry_press_hall_final_art_v1",
+    "version": 1
+  },
+  "immutableInputsAfter": {
+    "catalog_default": {
+      "assertion": "DEFAULT_MAP_REVISION_EQUALS_1",
+      "path": "src/content/maps/constants.ts",
+      "sha256": "cc9b938ccfa0b9d2d8e7d6ac08baf8fb3fc014868bd630f05928513a25a2186f"
+    },
+    "dimension_contract": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+      "sha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83"
+    },
+    "graybox_lock": {
+      "path": "assets/source/maps/inkfall-foundry/runtime/graybox-lock.p6-7.v1.json",
+      "sha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd"
+    },
+    "revision2_blend": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend",
+      "sha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224"
+    },
+    "revision2_collision": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    "revision2_render": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    }
+  },
+  "immutableInputsBefore": {
+    "catalog_default": {
+      "assertion": "DEFAULT_MAP_REVISION_EQUALS_1",
+      "path": "src/content/maps/constants.ts",
+      "sha256": "cc9b938ccfa0b9d2d8e7d6ac08baf8fb3fc014868bd630f05928513a25a2186f"
+    },
+    "dimension_contract": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+      "sha256": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83"
+    },
+    "graybox_lock": {
+      "path": "assets/source/maps/inkfall-foundry/runtime/graybox-lock.p6-7.v1.json",
+      "sha256": "feb6c299c426eff8fccdb3b9a92e3e0f8fd9d73d6dd32b678b68e5ef09178fdd"
+    },
+    "revision2_blend": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend",
+      "sha256": "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224"
+    },
+    "revision2_collision": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    "revision2_render": {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    }
+  },
+  "kind": "inkfall_foundry_press_hall_final_art_build_report",
+  "materialSlots": [
+    "env_base_ceramic",
+    "env_emissive_signage",
+    "env_functional_marking",
+    "env_garden_fragment",
+    "env_ink_surface",
+    "env_secondary_metal",
+    "env_vermilion_safety"
+  ],
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+    "PERFORMANCE_NOT_MEASURED",
+    "NO_SNAG_RUNTIME_PROOF_NOT_COMPLETE",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+    "DEPLOYMENT_NOT_AUTHORIZED"
+  ],
+  "replacementEnvelopeValidation": [
+    {
+      "authoredLowerMeters": [
+        14.635,
+        7.603,
+        0.035
+      ],
+      "authoredUpperMeters": [
+        16.365,
+        8.396999,
+        2.365
+      ],
+      "lockedCenterMeters": [
+        15.5,
+        8.0,
+        1.2
+      ],
+      "lockedSizeMeters": [
+        1.8,
+        0.8,
+        2.4
+      ],
+      "memberCount": 6,
+      "status": "PASS",
+      "target": "R_MODULE__FULL_COVER_PRESS_E"
+    },
+    {
+      "authoredLowerMeters": [
+        -10.865,
+        -8.396999,
+        0.035
+      ],
+      "authoredUpperMeters": [
+        -9.135,
+        -7.603,
+        2.365
+      ],
+      "lockedCenterMeters": [
+        -10.0,
+        -8.0,
+        1.2
+      ],
+      "lockedSizeMeters": [
+        1.8,
+        0.8,
+        2.4
+      ],
+      "memberCount": 6,
+      "status": "PASS",
+      "target": "R_MODULE__FULL_COVER_PRESS_W"
+    },
+    {
+      "authoredLowerMeters": [
+        5.835,
+        -1.997,
+        0.035
+      ],
+      "authoredUpperMeters": [
+        8.165,
+        -1.403,
+        1.215
+      ],
+      "lockedCenterMeters": [
+        7.0,
+        -1.7,
+        0.625
+      ],
+      "lockedSizeMeters": [
+        2.4,
+        0.6,
+        1.25
+      ],
+      "memberCount": 6,
+      "status": "PASS",
+      "target": "R_MODULE__HALF_COVER_PRESS_E"
+    },
+    {
+      "authoredLowerMeters": [
+        -8.165,
+        5.703,
+        0.035
+      ],
+      "authoredUpperMeters": [
+        -5.835,
+        6.297,
+        1.215
+      ],
+      "lockedCenterMeters": [
+        -7.0,
+        6.0,
+        0.625
+      ],
+      "lockedSizeMeters": [
+        2.4,
+        0.6,
+        1.25
+      ],
+      "memberCount": 6,
+      "status": "PASS",
+      "target": "R_MODULE__HALF_COVER_PRESS_W"
+    },
+    {
+      "authoredLowerMeters": [
+        2.74,
+        -4.939,
+        0.05
+      ],
+      "authoredUpperMeters": [
+        7.66,
+        -4.461,
+        2.95
+      ],
+      "lockedCenterMeters": [
+        5.2,
+        -4.7,
+        1.5
+      ],
+      "lockedSizeMeters": [
+        5.0,
+        0.5,
+        3.0
+      ],
+      "memberCount": 7,
+      "status": "PASS",
+      "target": "R_MODULE__PRESS_BAFFLE_E_INNER"
+    },
+    {
+      "authoredLowerMeters": [
+        8.04,
+        5.361,
+        0.05
+      ],
+      "authoredUpperMeters": [
+        12.96,
+        5.839,
+        2.95
+      ],
+      "lockedCenterMeters": [
+        10.5,
+        5.6,
+        1.5
+      ],
+      "lockedSizeMeters": [
+        5.0,
+        0.5,
+        3.0
+      ],
+      "memberCount": 7,
+      "status": "PASS",
+      "target": "R_MODULE__PRESS_BAFFLE_E_OUTER"
+    },
+    {
+      "authoredLowerMeters": [
+        -7.66,
+        -4.939,
+        0.05
+      ],
+      "authoredUpperMeters": [
+        -2.74,
+        -4.461,
+        2.95
+      ],
+      "lockedCenterMeters": [
+        -5.2,
+        -4.7,
+        1.5
+      ],
+      "lockedSizeMeters": [
+        5.0,
+        0.5,
+        3.0
+      ],
+      "memberCount": 7,
+      "status": "PASS",
+      "target": "R_MODULE__PRESS_BAFFLE_W_INNER"
+    },
+    {
+      "authoredLowerMeters": [
+        -12.96,
+        5.361,
+        0.05
+      ],
+      "authoredUpperMeters": [
+        -8.04,
+        5.839,
+        2.95
+      ],
+      "lockedCenterMeters": [
+        -10.5,
+        5.6,
+        1.5
+      ],
+      "lockedSizeMeters": [
+        5.0,
+        0.5,
+        3.0
+      ],
+      "memberCount": 7,
+      "status": "PASS",
+      "target": "R_MODULE__PRESS_BAFFLE_W_OUTER"
+    },
+    {
+      "authoredLowerMeters": [
+        -1.458744,
+        6.07,
+        0.02
+      ],
+      "authoredUpperMeters": [
+        1.45853,
+        8.959837,
+        5.95
+      ],
+      "lockedCenterMeters": [
+        0.0,
+        7.5,
+        3.0
+      ],
+      "lockedSizeMeters": [
+        3.4,
+        3.0,
+        6.0
+      ],
+      "memberCount": 19,
+      "status": "PASS",
+      "target": "R_MODULE__PRESS_REACTOR_NORTH"
+    },
+    {
+      "authoredLowerMeters": [
+        -1.447829,
+        -8.959837,
+        0.02
+      ],
+      "authoredUpperMeters": [
+        1.45853,
+        -6.07,
+        5.95
+      ],
+      "lockedCenterMeters": [
+        0.0,
+        -7.5,
+        3.0
+      ],
+      "lockedSizeMeters": [
+        3.4,
+        3.0,
+        6.0
+      ],
+      "memberCount": 19,
+      "status": "PASS",
+      "target": "R_MODULE__PRESS_REACTOR_SOUTH"
+    }
+  ],
+  "room": "press_hall",
+  "schemaVersion": 1,
+  "scope": "G5_BOUNDED_PRESS_HALL_ART_PREVIEW_ONLY",
+  "status": "BOUNDED_PRESS_HALL_ART_BUILD_PASS"
+}

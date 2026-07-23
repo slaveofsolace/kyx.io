@@ -1,0 +1,57 @@
+COMMAND git status --short
+EXIT {"code":0,"signal":null}
+
+ M .env.example
+ M .github/workflows/deploy-vps.yml
+ M CLAUDE.md
+ M index.html
+ M login.html
+ M package-lock.json
+ M package.json
+ M register.html
+ M server/README.md
+ M server/index.js
+ M server/package.json
+ M src/core/DeathmatchManager.js
+ M src/core/Game.js
+ M src/core/GameModes.js
+ M src/core/InputManager.js
+ D src/core/NetClient.js
+ D src/core/ServerSim.js
+ M src/core/UserAccount.js
+ M src/entities/Bot.js
+ M src/entities/BotManager.js
+ M src/loginPage.js
+ M src/main.js
+ M src/player/Player.js
+ M src/registerPage.js
+ M src/style.css
+ M src/ui/DamageNumbers.js
+ M src/ui/HUD.js
+ M src/ui/InventoryPanel.js
+ M src/ui/MainMenu.js
+ M src/ui/MobileControls.js
+ M src/ui/Nameplates.js
+ M src/world/World.js
+?? .nvmrc
+?? assets/
+?? docs/
+?? eslint.config.mjs
+?? evidence/
+?? playwright.config.js
+?? pnpm-lock.yaml
+?? src/app/
+?? src/config/
+?? src/content/
+?? src/dev/
+?? src/net/
+?? src/physics/
+?? src/render/
+?? src/sim/
+?? tests/
+?? tools/
+?? tsconfig.base.json
+?? tsconfig.json
+?? tsconfig.sim-source.json
+?? tsconfig.sim.json
+?? vitest.config.js

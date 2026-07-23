@@ -1,0 +1,6 @@
+Command: node node_modules/typescript/bin/tsc -p tsconfig.worker.json --noEmit --pretty false
+Exit code: 1
+
+worker/room.ts(595,7): error TS2739: Type '{ protocolVersion: 2; simulationHz: 20; snapshotHz: number; maxMessageBytes: 16384; maxCommandsPerBatch: 32; }' is missing the following properties from type 'ProtocolConfig': snapshotBaselineVersion, reliableEventStreamVersion
+worker/room.ts(668,38): error TS2345: Argument of type '{ matchId: string; serverTick: number; phase: MatchPhase; phaseEndsAtTick: number; simulationIdentity: SimulationIdentityV1; localReconciliation: LocalReconciliationStateV1; entities: readonly SnapshotEntity[]; resyncRequestId?: string | undefined; protocolVersion: 2; type: "fullSnapshot"; }' is not assignable to parameter of type 'ServerMessage'.
+  Property 'snapshotBaselineVersion' is missing in type '{ matchId: string; serverTick: number; phase: MatchPhase; phaseEndsAtTick: number; simulationIdentity: SimulationIdentityV1; localReconciliation: LocalReconciliationStateV1; entities: readonly SnapshotEntity[]; resyncRequestId?: string | undefined; protocolVersion: 2; type: "fullSnapshot"; }' but required in type 'FullSnapshotMessage'.

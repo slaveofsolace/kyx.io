@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "maxMessagesPerRateWindow": 384,
+  "maxBytesPerRateWindow": 524288,
+  "rateWindowMilliseconds": 10000,
+  "maxSocketBufferedBytes": 262144,
+  "slowConsumerGraceMilliseconds": 1000,
+  "maxSnapshotAckDebtMilliseconds": 3000
+}

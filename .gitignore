@@ -5,3 +5,10 @@ dist
 .env
 .env.local
 .env.*.local
+.wrangler/
+coverage/
+playwright-report/
+test-results/
+*.blend1
+**/__pycache__/
+*.py[cod]

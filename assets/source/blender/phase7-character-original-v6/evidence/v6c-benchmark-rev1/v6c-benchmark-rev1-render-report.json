@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "renderedUtc": "2026-07-22T07:23:37.846318+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV1",
+  "input": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev1.blend",
+    "sha256Before": "3cfea3ad9c17d310dec45a83e40804f7386fb487ad49b7223afc7e3bde9289f8",
+    "sha256After": "3cfea3ad9c17d310dec45a83e40804f7386fb487ad49b7223afc7e3bde9289f8",
+    "unchanged": true
+  },
+  "renderExposure": -0.95,
+  "characterBounds": {
+    "minimum": [
+      -0.419716,
+      -0.228133,
+      -5.8e-05
+    ],
+    "maximum": [
+      0.419715,
+      0.116849,
+      1.800187
+    ]
+  },
+  "fullViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev1-front",
+      "fileName": "kyx-v6c-benchmark-rev1-front.png",
+      "bytes": 1168034,
+      "sha256": "52e615886a53f3f217272c108b715d9e060a11b6772ae49b578dd436c6c6286b",
+      "cameraLocation": [
+        -0.0,
+        -4.655642,
+        0.967068
+      ],
+      "target": [
+        -0.0,
+        -0.055642,
+        0.927068
+      ],
+      "orthographicScale": 2.034277,
+      "resolution": [
+        960,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-side",
+      "fileName": "kyx-v6c-benchmark-rev1-side.png",
+      "bytes": 1126913,
+      "sha256": "ff1125eed8b324c0d1e5ecb9bd28f554fbaf08001957f94a607003078022197b",
+      "cameraLocation": [
+        4.6,
+        -0.055642,
+        0.967068
+      ],
+      "target": [
+        -0.0,
+        -0.055642,
+        0.927068
+      ],
+      "orthographicScale": 2.034277,
+      "resolution": [
+        960,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-back",
+      "fileName": "kyx-v6c-benchmark-rev1-back.png",
+      "bytes": 1188958,
+      "sha256": "bf18ceaf2ec4e75b6cc7e6c2b7e8b0b32389997bbb017c074268b3536bef717c",
+      "cameraLocation": [
+        -0.0,
+        4.544358,
+        0.967068
+      ],
+      "target": [
+        -0.0,
+        -0.055642,
+        0.927068
+      ],
+      "orthographicScale": 2.034277,
+      "resolution": [
+        960,
+        1180
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-three-quarter",
+      "fileName": "kyx-v6c-benchmark-rev1-three-quarter.png",
+      "bytes": 1213488,
+      "sha256": "31171c4e8f67c31cbd82ed74ac39edc2ab4ddc7f72c0e1d5b0421fcddbb19e6e",
+      "cameraLocation": [
+        3.25,
+        -3.505642,
+        1.187068
+      ],
+      "target": [
+        -0.0,
+        -0.055642,
+        0.927068
+      ],
+      "orthographicScale": 2.034277,
+      "resolution": [
+        960,
+        1180
+      ]
+    }
+  ],
+  "componentViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev1-helmet",
+      "fileName": "kyx-v6c-benchmark-rev1-helmet.png",
+      "bytes": 1052182,
+      "sha256": "43d6e7843392fd31ab564aa25f5a5963fce9b0f3672d98a9040c1bf159dc6419",
+      "cameraLocation": [
+        0.98,
+        -3.14,
+        2.05
+      ],
+      "target": [
+        0.0,
+        -0.02,
+        1.65
+      ],
+      "orthographicScale": 0.43,
+      "resolution": [
+        1100,
+        920
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-chest",
+      "fileName": "kyx-v6c-benchmark-rev1-chest.png",
+      "bytes": 1249652,
+      "sha256": "49a61fd4e273a70b541f05fa904a4d6e096411c0cf40441ce4325a8f5e11c1c7",
+      "cameraLocation": [
+        1.16,
+        -3.298,
+        1.802
+      ],
+      "target": [
+        0.0,
+        -0.018,
+        1.322
+      ],
+      "orthographicScale": 0.58,
+      "resolution": [
+        1100,
+        950
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-limbs",
+      "fileName": "kyx-v6c-benchmark-rev1-limbs.png",
+      "bytes": 1220895,
+      "sha256": "f3775575af1ddb7e20adede9abdd68b5ada9c9ca151c30a9733c96f4b38324e9",
+      "cameraLocation": [
+        1.69,
+        -3.49,
+        1.345
+      ],
+      "target": [
+        0.23,
+        -0.01,
+        0.805
+      ],
+      "orthographicScale": 1.18,
+      "resolution": [
+        940,
+        1160
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-boots",
+      "fileName": "kyx-v6c-benchmark-rev1-boots.png",
+      "bytes": 1089995,
+      "sha256": "7605678f167971677bdb0530867947bec98089d06bf7ea744044e508132f903d",
+      "cameraLocation": [
+        1.02,
+        -2.82,
+        0.478
+      ],
+      "target": [
+        0.0,
+        -0.04,
+        0.138
+      ],
+      "orthographicScale": 0.47,
+      "resolution": [
+        1180,
+        780
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-rifle",
+      "fileName": "kyx-v6c-benchmark-rev1-rifle.png",
+      "bytes": 1161654,
+      "sha256": "d8abde2dc1bc80d328bc8a748326a43310bafee4f7452387613c5b2cf8dd46fd",
+      "cameraLocation": [
+        1.38,
+        -3.45,
+        1.705
+      ],
+      "target": [
+        0.14,
+        0.0,
+        1.145
+      ],
+      "orthographicScale": 1.72,
+      "resolution": [
+        1500,
+        850
+      ]
+    }
+  ],
+  "distanceViews": [
+    {
+      "view": "kyx-v6c-benchmark-rev1-distance-5m",
+      "fileName": "kyx-v6c-benchmark-rev1-distance-5m.png",
+      "bytes": 981051,
+      "sha256": "bfd1e68b0c4e74c19a0a7bbf79b055a65d8b3dc6ebf53850e5576399e585e7ac",
+      "distanceMeters": 5.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-distance-20m",
+      "fileName": "kyx-v6c-benchmark-rev1-distance-20m.png",
+      "bytes": 837134,
+      "sha256": "c3bb75403986f8e7203cdd43e75f3bf972a8f49888008f0ff0baa66c8fbd28c4",
+      "distanceMeters": 20.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    },
+    {
+      "view": "kyx-v6c-benchmark-rev1-distance-40m",
+      "fileName": "kyx-v6c-benchmark-rev1-distance-40m.png",
+      "bytes": 821936,
+      "sha256": "f8739fabecfa6aa2a163e3dcf7968d90900ed879f052649e43ef2acd6e4ad2c3",
+      "distanceMeters": 40.0,
+      "lensMm": 50.0,
+      "sensorWidthMm": 36.0,
+      "resolution": [
+        900,
+        1100
+      ]
+    }
+  ],
+  "boards": {
+    "direct": {
+      "fileName": "kyx-v6c-benchmark-rev1-direct-review-board.png",
+      "bytes": 4651222,
+      "sha256": "f0cd2d9a4e49224feb3e6cdaa75be5739f7fd9cdd892967a25d27c241b4cc333",
+      "resolution": [
+        1920,
+        2360
+      ]
+    },
+    "components": {
+      "fileName": "kyx-v6c-benchmark-rev1-component-review-board.png",
+      "bytes": 6243187,
+      "sha256": "62138ad71d0acdd2ac65daae3162c0e3259bdfb69070f03c676c66c3e0fe334c",
+      "resolution": [
+        4500,
+        2320
+      ]
+    },
+    "distance": {
+      "fileName": "kyx-v6c-benchmark-rev1-distance-review-board.png",
+      "bytes": 2637188,
+      "sha256": "59ea00adca306c8fb267da17227382b8619d9d91e0bdb81acc48c62b41278369",
+      "resolution": [
+        2700,
+        1100
+      ]
+    }
+  },
+  "visualDecision": "PENDING_DIRECT_INSPECTION",
+  "nonClaims": [
+    "This packet is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact witnesses establish future intent only; no posed contact is claimed.",
+    "No final retopology, UV, rig, animation, LOD, GLB, runtime, or performance claim is made."
+  ]
+}

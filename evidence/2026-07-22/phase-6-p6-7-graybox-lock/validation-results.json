@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_7_GRAYBOX_LOCK_VALIDATION_COMPLETE",
+  "lockSuite": {
+    "filesPassed": 1,
+    "filesTotal": 1,
+    "testsPassed": 7,
+    "testsTotal": 7
+  },
+  "adjacentInkfallMatrix": {
+    "filesPassed": 8,
+    "filesTotal": 8,
+    "testsPassed": 58,
+    "testsTotal": 58,
+    "coverage": [
+      "map package schema and catalog selection",
+      "native map loading and authority collision",
+      "revision-1 and revision-2 spawn authority",
+      "revision-1 and revision-2 authority telemetry",
+      "revision-2 native staging identity",
+      "revision-1 authority playtest",
+      "revision-2 corrected authority playtest",
+      "P6.7 non-default graybox lock and art-kit contract"
+    ]
+  },
+  "offlinePlayability": {
+    "revision2LockRerun": {
+      "result": "PASS",
+      "assertionsPassed": 15,
+      "assertionsTotal": 15,
+      "physicalLinks": 25,
+      "spawnCandidates": 12,
+      "completedCapsuleSamples": 1646,
+      "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "collisionSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    "revision1Regression": {
+      "result": "PASS",
+      "assertionsPassed": 14,
+      "assertionsTotal": 14,
+      "physicalLinks": 25,
+      "spawnCandidates": 12,
+      "completedCapsuleSamples": 1653,
+      "renderSha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "collisionSha256": "40fc9fa07da89779bb2cb150cc9b642b3598fdf54d041f23d4b6ab203df2d2f0"
+    }
+  },
+  "correctedAuthorityLock": {
+    "scenarioStatuses": ["PASS", "PASS", "PASS"],
+    "issueCount": 0,
+    "suiteHash": "143d09532b9c2b24",
+    "inkTeleportFlankMilliseconds": 3950,
+    "inkTeleportFlankBandMilliseconds": [1800, 4000],
+    "archiveDropFlankMilliseconds": 3300,
+    "archiveDropFlankBandMilliseconds": [2500, 5000]
+  },
+  "catalogSelection": {
+    "defaultRevision": 1,
+    "lockedGrayboxRevision": 2,
+    "explicitRevisionSelectionRequired": true,
+    "productSelectable": false,
+    "shippingDefault": false
+  },
+  "typescript": {
+    "application": "PASS",
+    "worker": "PASS",
+    "simulationSource": "PASS",
+    "simulation": "PASS"
+  },
+  "lint": {
+    "focused": "PASS",
+    "repository": "PASS"
+  },
+  "productionBuild": {
+    "result": "PASS",
+    "modulesTransformed": 61,
+    "warning": "existing chunk larger than 500 kB advisory"
+  },
+  "preservedFailures": [
+    "P6_7_DOOR_FRAME_OUTER_GRID_CONTRACT",
+    "P6_7_FROZEN_SEED_GRID_EXCEPTION_CONTRACT",
+    "P6_2_REVISION2_WRONG_EXPECTED_ARTIFACT_STATUS",
+    "P6_7_VERIFIER_ADJACENT_METADATA_EXACT_COMPARATOR"
+  ],
+  "verifierCorrection": {
+    "preservedFailurePath": "evidence/2026-07-22/phase-6-p6-7-graybox-lock/p6-7-verification.json",
+    "preservedFailureSha256": "4d234c7589f4ccc654c4addf3257d34da36ab30072964f7f0a0496579a137ac1",
+    "failedChecks": 1,
+    "totalChecks": 15,
+    "cause": "The verifier compared the adjacent matrix to an exact four-field object even though the validation record intentionally also contains a coverage array.",
+    "correction": "Validate the four governing counters individually; preserve the extra coverage metadata and write any corrected verification to a new immutable path."
+  },
+  "broadRegressionBasis": {
+    "p6_6bVerificationPath": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json",
+    "p6_6bVerificationSha256": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
+    "reason": "P6.7 changes only version-lock metadata, catalog selection metadata, and the prospective art-kit dimension contract. The 58-test adjacent matrix reruns every Inkfall P6.2-P6.6 runtime boundary; the sealed P6.6B broad regression remains immutable."
+  },
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "HUMAN_FUN_OR_READABILITY_NOT_ACCEPTED",
+    "VISUAL_ACCEPTANCE_NOT_PASSED",
+    "FINAL_ART_NOT_COMPLETE",
+    "PERFORMANCE_NOT_ACCEPTED",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+    "DEPLOYMENT_NOT_AUTHORIZED"
+  ]
+}

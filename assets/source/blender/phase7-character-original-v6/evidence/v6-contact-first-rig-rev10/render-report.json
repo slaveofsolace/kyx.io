@@ -1,0 +1,304 @@
+{
+  "schema": "kyx-v6-contact-first-rig-render-report-v10",
+  "generatedAt": "2026-07-22T13:10:12.360431+00:00",
+  "blenderVersion": "5.1.2",
+  "blend": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6-contact-first-rig-rev10\\kyx-v6-contact-first-rig-rev10.blend",
+    "sha256": "7e623baab4aad44f5fc70b95e6c2c0b836d7b2d8c82a387c6e975b240ffadc3c"
+  },
+  "status": "EARLY_REV10_REACHABLE_CURLED_VISUAL_PROOF_REVIEW_REQUIRED",
+  "panels": [
+    {
+      "name": "full-body-front-three-quarter",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-full-body-front-three-quarter.png",
+      "bytes": 1397643,
+      "sha256": "9676f7b0e994fa34cb7260a6cbcab50730aa174c82f178de0986de2acefccddc",
+      "camera": {
+        "location": [
+          3.2,
+          -4.8,
+          2.35
+        ],
+        "target": [
+          0.0,
+          -0.3,
+          0.94
+        ],
+        "orthographicScale": 2.18
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "CONTINUOUS V6-A BODY \u2022 BOTH ARMS + HANDS \u2022 CONTACT-FIRST EARLY PROOF",
+      "contactScope": {
+        "view": "full-body-front-three-quarter",
+        "keptWeaponObjects": "all"
+      }
+    },
+    {
+      "name": "full-body-rear-side",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-full-body-rear-side.png",
+      "bytes": 1296503,
+      "sha256": "26395ca1b31d73fa36ccb56cd20be981880e980b878a53acf9a5aa456bc158a9",
+      "camera": {
+        "location": [
+          -3.6,
+          3.4,
+          2.05
+        ],
+        "target": [
+          0.0,
+          -0.28,
+          0.98
+        ],
+        "orthographicScale": 2.18
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "REAR-SIDE \u2022 SHOULDER / ELBOW / WRIST CONTINUITY \u2022 EARLY PROOF",
+      "contactScope": {
+        "view": "full-body-rear-side",
+        "keptWeaponObjects": "all"
+      }
+    },
+    {
+      "name": "full-upper-body-rig-witness",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-full-upper-body-rig-witness.png",
+      "bytes": 1572078,
+      "sha256": "6b7218d6f9a523e7a977f2fae4beb4c63df0cb71e7aacb34358c93c3b4c1e238",
+      "camera": {
+        "location": [
+          2.8,
+          -4.1,
+          2.25
+        ],
+        "target": [
+          0.0,
+          -0.38,
+          1.2
+        ],
+        "orthographicScale": 1.45
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "REAL DEFORMATION ARMATURE \u2022 SPINE / CLAVICLES / ARMS / PALMS / ALL DIGIT CHAINS",
+      "contactScope": {
+        "view": "full-upper-body-rig-witness",
+        "keptWeaponObjects": "all"
+      }
+    },
+    {
+      "name": "firing-palm-wrap-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-firing-palm-wrap-ortho.png",
+      "bytes": 1233485,
+      "sha256": "dfbc3ab16334c4d1e00747830717f2deb420355196d292c9c45bb92c7b6286dd",
+      "camera": {
+        "location": [
+          0.725344,
+          -0.878348,
+          1.345
+        ],
+        "target": [
+          -0.113465,
+          -0.43203,
+          1.19
+        ],
+        "orthographicScale": 0.285
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "OBLIQUE ACROSS GRIP \u2022 CONTINUOUS PALM ROOTS + MIDDLE/RING/PINKY WRAP",
+      "contactScope": {
+        "view": "firing-palm-wrap-ortho",
+        "keptWeaponObjects": [
+          "V6CF10_Rifle_GripContact"
+        ]
+      },
+      "cameraContract": "oblique transverse view prevents bore-axis hand overlap"
+    },
+    {
+      "name": "firing-index-trigger-guard-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-firing-index-trigger-guard-ortho.png",
+      "bytes": 1526358,
+      "sha256": "04da6b8e958c53ad95e122318d7a9d1daf39d0f7c5eb869f61c8aa77d1e5ccb7",
+      "camera": {
+        "location": [
+          0.686801,
+          -0.03125,
+          1.307478
+        ],
+        "target": [
+          -0.123194,
+          -0.439549,
+          1.187478
+        ],
+        "orthographicScale": 0.245
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "OBLIQUE RIFLE-RIGHT \u2022 INDEX TIP / TRIGGER / GUARD CLEARANCE",
+      "contactScope": {
+        "view": "firing-index-trigger-guard-ortho",
+        "keptWeaponObjects": [
+          "V6CF10_Rifle_GripContact",
+          "V6CF10_Rifle_Trigger",
+          "V6CF10_Rifle_TriggerGuard"
+        ]
+      },
+      "cameraContract": "oblique transverse view prevents bore-axis hand overlap"
+    },
+    {
+      "name": "support-palm-foregrip-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-support-palm-foregrip-ortho.png",
+      "bytes": 1098799,
+      "sha256": "b7891ebed6e5d26fd809b156ca9dafe6dddb9473d85ce31fcc127410d1a89b35",
+      "camera": {
+        "location": [
+          -0.638622,
+          -1.375764,
+          1.35
+        ],
+        "target": [
+          -0.063941,
+          -0.651511,
+          1.202
+        ],
+        "orthographicScale": 0.285
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "OBLIQUE RIFLE-LEFT \u2022 SUPPORT PALM / FOUR-DIGIT FOREGRIP WRAP",
+      "contactScope": {
+        "view": "support-palm-foregrip-ortho",
+        "keptWeaponObjects": [
+          "V6CF10_Rifle_ForegripContact",
+          "V6CF10_Rifle_ForegripHandStop"
+        ]
+      },
+      "cameraContract": "oblique transverse view prevents bore-axis hand overlap"
+    },
+    {
+      "name": "support-hand-section-side",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-support-hand-section-side.png",
+      "bytes": 1069403,
+      "sha256": "68de3ea066b9da69d733761400fad3e30d61c2beb3af96b4e02c6fb8b8b8d76e",
+      "camera": {
+        "location": [
+          0.69623,
+          -0.931048,
+          1.29
+        ],
+        "target": [
+          -0.063941,
+          -0.651511,
+          1.2
+        ],
+        "orthographicScale": 0.275
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "OPPOSING OBLIQUE \u2022 SUPPORT THUMB / DIGITS / WRIST CONTINUITY",
+      "contactScope": {
+        "view": "support-hand-section-side",
+        "keptWeaponObjects": [
+          "V6CF10_Rifle_ForegripContact",
+          "V6CF10_Rifle_ForegripHandStop"
+        ]
+      },
+      "cameraContract": "oblique transverse view prevents bore-axis hand overlap"
+    },
+    {
+      "name": "stock-shoulder-tangent-ortho",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-stock-shoulder-tangent-ortho.png",
+      "bytes": 1660751,
+      "sha256": "121b6a02d454b2ecc68f0322707fd6614de46a76f9b5fbd471dedb9d7fd3aba8",
+      "camera": {
+        "location": [
+          0.739451,
+          -0.213949,
+          1.485
+        ],
+        "target": [
+          -0.185,
+          -0.115,
+          1.365
+        ],
+        "orthographicScale": 0.39
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "OBLIQUE STOCK PAD \u2022 SHOULDER-POCKET SURFACE TANGENCY",
+      "contactScope": {
+        "view": "stock-shoulder-tangent-ortho",
+        "keptWeaponObjects": [
+          "V6CF10_Rifle_StockBeam",
+          "V6CF10_Rifle_StockPadContact"
+        ]
+      },
+      "cameraContract": "oblique transverse view prevents bore-axis hand overlap"
+    },
+    {
+      "name": "upper-body-contact-context",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-upper-body-contact-context.png",
+      "bytes": 1377182,
+      "sha256": "54df686c730ed820302dd97eb3b5924b4e50be85ce550371c18bbd63478dd380",
+      "camera": {
+        "location": [
+          1.9,
+          -3.2,
+          1.95
+        ],
+        "target": [
+          0.0,
+          -0.43,
+          1.29
+        ],
+        "orthographicScale": 1.2
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "UPPER BODY \u2022 BOTH HANDS ON SAME RIFLE \u2022 PLAUSIBLE ELBOW / WRIST LINES",
+      "contactScope": {
+        "view": "upper-body-contact-context",
+        "keptWeaponObjects": "all"
+      }
+    }
+  ],
+  "board": {
+    "name": "early-proof-board",
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6-contact-first-rig-rev10\\renders\\kyx-v6-contact-first-rig-rev10-early-proof-board.png",
+    "bytes": 6740695,
+    "sha256": "a7d6c65a3aa0866be0da414dbc3c8d02245d85d1f1715b98f606f85102b85b09",
+    "resolution": [
+      3000,
+      3000
+    ]
+  },
+  "renderContract": {
+    "receiver": "translucent/sectioned in authored asset",
+    "cameras": "orthographic for all four literal contact families",
+    "fullBodyContinuity": true,
+    "rearSideContinuity": true,
+    "armatureWitness": true,
+    "automaticAcceptance": false
+  },
+  "rev9Invariant": "digit roots derive from palm deformation; contact cameras are oblique transverse",
+  "rev10Invariant": "support palm target is native-reachable; digit roots are palm-continuous and chains retain curl slack"
+}

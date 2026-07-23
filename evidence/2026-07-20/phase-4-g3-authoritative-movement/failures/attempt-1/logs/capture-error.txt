@@ -1,0 +1,5 @@
+page.waitForFunction: Timeout 30000ms exceeded.
+    at waitForJoined (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-matrix.mjs:120:14)
+    at captureProfile (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-matrix.mjs:351:27)
+    at async main (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-matrix.mjs:566:27)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-matrix.mjs:677:1

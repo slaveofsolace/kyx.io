@@ -3,6 +3,32 @@ export class AudioManager {
   constructor() {
     this.ctx = null;
     this.master = null;
+    this.onCriticalCue = null;
+    this.onSubtitle = null;
+    this._cueTimes = new Map();
+  }
+
+  _emitCriticalCue({ id, text, direction = 'none', priority = 'status', durationMs = 1_600, minIntervalMs = 250 }) {
+    const now = Date.now();
+    const lastEmitted = this._cueTimes.get(id);
+    if (lastEmitted !== undefined && now - lastEmitted < minIntervalMs) return false;
+    this._cueTimes.set(id, now);
+    try {
+      this.onCriticalCue?.({ id, text, direction, priority, durationMs, minIntervalMs });
+    } catch {
+      // An accessibility renderer must never interrupt simulation or audio playback.
+    }
+    return true;
+  }
+
+  emitSubtitle({ speaker = 'SYSTEM', text = '', direction = 'none', durationMs = 3_200 } = {}) {
+    if (typeof text !== 'string' || !text.trim()) return false;
+    try {
+      this.onSubtitle?.({ speaker, text, direction, durationMs });
+    } catch {
+      // Subtitle consumers are presentation-only and cannot break audio playback.
+    }
+    return true;
   }
 
   ensureContext() {
@@ -638,6 +664,14 @@ export class AudioManager {
   }
 
   playExplosion() {
+    this._emitCriticalCue({
+      id: 'explosion',
+      text: 'EXPLOSION',
+      direction: 'nearby',
+      priority: 'danger',
+      durationMs: 1_500,
+      minIntervalMs: 500,
+    });
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
 
@@ -720,6 +754,13 @@ export class AudioManager {
   }
 
   playHurt() {
+    this._emitCriticalCue({
+      id: 'damage-received',
+      text: 'DAMAGE RECEIVED',
+      priority: 'danger',
+      durationMs: 1_000,
+      minIntervalMs: 250,
+    });
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
@@ -733,6 +774,13 @@ export class AudioManager {
   }
 
   playEmptyClick() {
+    this._emitCriticalCue({
+      id: 'weapon-empty',
+      text: 'WEAPON EMPTY',
+      priority: 'status',
+      durationMs: 1_200,
+      minIntervalMs: 500,
+    });
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
@@ -806,6 +854,13 @@ export class AudioManager {
 
   // Sci-fi teleport blink — ascending sweep + resonant pop + shimmer tail.
   playTeleport() {
+    this._emitCriticalCue({
+      id: 'teleport',
+      text: 'BLINK ACTIVATED',
+      priority: 'status',
+      durationMs: 900,
+      minIntervalMs: 300,
+    });
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
 
@@ -912,6 +967,14 @@ export class AudioManager {
 
   // Zombie guttural growl
   playZombieGrowl() {
+    this._emitCriticalCue({
+      id: 'hostile-vocal',
+      text: 'HOSTILE VOCALIZATION',
+      direction: 'nearby',
+      priority: 'threat',
+      durationMs: 1_600,
+      minIntervalMs: 1_200,
+    });
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
     const lfo = this.ctx.createOscillator();
@@ -969,6 +1032,14 @@ export class AudioManager {
 
   // Zombie melee strike impact
   playZombieAttack() {
+    this._emitCriticalCue({
+      id: 'hostile-attack',
+      text: 'HOSTILE ATTACK',
+      direction: 'nearby',
+      priority: 'danger',
+      durationMs: 1_200,
+      minIntervalMs: 400,
+    });
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();

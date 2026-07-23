@@ -1,0 +1,50 @@
+{
+  "schema": "kyxio.g7.browser_matrix.v1",
+  "captured_at": "2026-07-22",
+  "classification": "BOUNDED_G7_VIEWPORT_AND_HUD_SCALE_BROWSER_PASS",
+  "gate_status": "G7_OPEN",
+  "surface": "offline_practice_paused_hud",
+  "browser": "Codex in-app Chromium",
+  "capture_notes": [
+    "Pointer lock was denied by the embedded browser, so every frame is the genuine paused-practice HUD with live bots behind the pause layer.",
+    "The minimum value was selected and saved through the visible HUD Scale control.",
+    "The maximum value was injected into the same sio_settings persistence record through scoped CDP, then the page was reloaded; the app normalized and applied --hud-scale=1.4 before capture.",
+    "This slice does not close zoom, forced-colors, screen-reader, organic combat-state, performance, or human-readability rows."
+  ],
+  "summary": {
+    "cases": 12,
+    "passed": 12,
+    "failed": 0,
+    "visible_semantic_elements_per_case": 13,
+    "document_overflow_cases": 0,
+    "out_of_view_semantic_elements": 0
+  },
+  "cases": [
+    {"profile":"minimum","hud_scale":0.8,"viewport":[1280,720],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"minimum","hud_scale":0.8,"viewport":[1920,1080],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"minimum","hud_scale":0.8,"viewport":[2560,1440],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"minimum","hud_scale":0.8,"viewport":[3440,1440],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"default","hud_scale":1.0,"viewport":[1280,720],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"default","hud_scale":1.0,"viewport":[1920,1080],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"default","hud_scale":1.0,"viewport":[2560,1440],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"default","hud_scale":1.0,"viewport":[3440,1440],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"maximum","hud_scale":1.4,"viewport":[1280,720],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"maximum","hud_scale":1.4,"viewport":[1920,1080],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"maximum","hud_scale":1.4,"viewport":[2560,1440],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13},
+    {"profile":"maximum","hud_scale":1.4,"viewport":[3440,1440],"overflow_x":0,"overflow_y":0,"outside":[],"visible_semantic":13}
+  ],
+  "screenshots": [
+    {"file":"screenshots/default-1280x720.png","bytes":53258,"sha256":"bd06c28b65cdeab11b6fddf840f32e350577506fd3c46cbcf325e6d3d5ab4cce"},
+    {"file":"screenshots/default-1920x1080.png","bytes":65321,"sha256":"cb8e85841fd4e916b9f2f993f8d0095c57a69a050f2a86e997817c8e98de2c52"},
+    {"file":"screenshots/default-2560x1440.png","bytes":93965,"sha256":"bf606c2521bec2fae2258dd9a45a59b1ad058785a7eb206a0cbdc9f9800cabf2"},
+    {"file":"screenshots/default-3440x1440.png","bytes":66580,"sha256":"5979a6eb236da4e820a152f31b7d974df911dbaf733e3f35368dc4ce04dc4721"},
+    {"file":"screenshots/minimum-1280x720.png","bytes":53448,"sha256":"c8da27b24643869d6d56612b36261dd6f365dcafb94169a44c270f2ae4292a0d"},
+    {"file":"screenshots/minimum-1920x1080.png","bytes":67176,"sha256":"881ef24aff00597345a3d8eaa7ec3e6c242c4be893177619ea100e067d2b3d61"},
+    {"file":"screenshots/minimum-2560x1440.png","bytes":97469,"sha256":"0462ab83fb28a6e93b537bac675aa5e38dc3c2735e1b2ee1814ce91ee5814103"},
+    {"file":"screenshots/minimum-3440x1440.png","bytes":69667,"sha256":"c858be9c01fe0b73e884aaca4ee51e29b9591202807a2976ac894b4d34618255"},
+    {"file":"screenshots/maximum-1280x720.png","bytes":64163,"sha256":"f33350ac6ca53a4b3235fcea7f387b1d6c991eeea8618e323aad9d1bdbb39c86"},
+    {"file":"screenshots/maximum-1920x1080.png","bytes":80642,"sha256":"9802957c2f584c05cca5bbd219f4400f0f7e20de35487c018c2d04402e84ad67"},
+    {"file":"screenshots/maximum-2560x1440.png","bytes":105980,"sha256":"71291d21dba7f754cbf2874983610568302dba20bd6b944e705f958d222d8f8a"},
+    {"file":"screenshots/maximum-3440x1440.png","bytes":77256,"sha256":"5ed86601d385927492b92950ef6356ec8277c85071e523f4098e02f857654339"}
+  ]
+}

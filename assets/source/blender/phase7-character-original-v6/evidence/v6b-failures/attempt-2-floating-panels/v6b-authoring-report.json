@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T05:55:07.240848+00:00",
+  "blenderVersion": "5.1.2",
+  "input": {
+    "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "unchanged": true
+  },
+  "output": {
+    "path": "kyx_vanguard_v6b_construction_working.blend",
+    "bytes": 12639199,
+    "sha256": "9b1663e673a0b502bf3add5b8152e5e05d53b0fab5e244f973c4f202931b1181"
+  },
+  "checkpoint": "V6-B_CONSTRUCTION_REVIEW_CANDIDATE",
+  "userDirection": "ACCEPT_V6_A_AND_PROCEED_AUTONOMOUSLY",
+  "posedArmVerticesAtWeightGteHalf": {
+    "right": 0,
+    "left": 0
+  },
+  "construction": {
+    "collections": [
+      "KYX_V6B_Construction",
+      "KYX_V6B_DetailAndAccents",
+      "KYX_V6B_RifleContactPreview"
+    ],
+    "objects": 55,
+    "meshObjects": 42,
+    "curveObjects": 10,
+    "meshVertices": 1969,
+    "meshPolygons": 1571,
+    "materials": [
+      "KYX_CyanReadout",
+      "KYX_DarkMetal",
+      "KYX_IvoryCeramic",
+      "KYX_RedAccent",
+      "KYX_Undersuit_Charcoal",
+      "KYX_Visor"
+    ],
+    "namedObjects": [
+      "KYX_V6B_AbdominalBridge",
+      "KYX_V6B_AsymmetricShoulderSlash",
+      "KYX_V6B_BackPlate",
+      "KYX_V6B_BootAnkleBand_L",
+      "KYX_V6B_BootAnkleBand_R",
+      "KYX_V6B_BootSole_L",
+      "KYX_V6B_BootSole_R",
+      "KYX_V6B_BootToePlate_L",
+      "KYX_V6B_BootToePlate_R",
+      "KYX_V6B_CONTACT_shoulderTarget",
+      "KYX_V6B_CONTACT_supportTarget",
+      "KYX_V6B_CONTACT_triggerTarget",
+      "KYX_V6B_ChestAccent",
+      "KYX_V6B_ChestPlate_L",
+      "KYX_V6B_ChestPlate_R",
+      "KYX_V6B_Cowl",
+      "KYX_V6B_CowlFold",
+      "KYX_V6B_CyanReadout",
+      "KYX_V6B_ForearmGuard_L",
+      "KYX_V6B_ForearmGuard_R",
+      "KYX_V6B_HelmetChin",
+      "KYX_V6B_HelmetCrown",
+      "KYX_V6B_HelmetTemple_L",
+      "KYX_V6B_HelmetTemple_R",
+      "KYX_V6B_KneeShell_L",
+      "KYX_V6B_KneeShell_R",
+      "KYX_V6B_RifleAccent",
+      "KYX_V6B_RifleBarrel",
+      "KYX_V6B_RifleGrip",
+      "KYX_V6B_RifleHandguard",
+      "KYX_V6B_RifleMagazine",
+      "KYX_V6B_RifleMuzzle",
+      "KYX_V6B_RifleReceiver",
+      "KYX_V6B_RifleReceiverShell",
+      "KYX_V6B_RifleStatus",
+      "KYX_V6B_RifleStock",
+      "KYX_V6B_RifleTopRail",
+      "KYX_V6B_RifleVent_0.205",
+      "KYX_V6B_RifleVent_0.285",
+      "KYX_V6B_RifleVent_0.365",
+      "KYX_V6B_RifleVent_0.445",
+      "KYX_V6B_ShinGuard_L",
+      "KYX_V6B_ShinGuard_R",
+      "KYX_V6B_ShoulderShell_L",
+      "KYX_V6B_ShoulderShell_R",
+      "KYX_V6B_ThighSidePlate_L",
+      "KYX_V6B_ThighSidePlate_R",
+      "KYX_V6B_UndersuitSeam_Leg_L",
+      "KYX_V6B_UndersuitSeam_Leg_R",
+      "KYX_V6B_UndersuitSeam_Rib_L",
+      "KYX_V6B_UndersuitSeam_Rib_R",
+      "KYX_V6B_UndersuitSeam_Spine",
+      "KYX_V6B_UndersuitSeam_Sternum",
+      "KYX_V6B_Visor",
+      "KYX_V6B_WaistBelt"
+    ]
+  },
+  "authoredObjectCounts": {
+    "armorAndGarment": 37,
+    "rifleAndContact": 15
+  },
+  "requirementsAddressed": [
+    "sealed helmet/cowl interface",
+    "asymmetric shoulder language",
+    "split ivory chest/back armor with articulation gap",
+    "separate fitted forearm/thigh/knee/shin/boot construction",
+    "continuous rifle stock/receiver/grip/magazine/handguard/barrel/muzzle",
+    "explicit trigger/support/shoulder contact targets for the later rigged checkpoint",
+    "restrained red and cyan identity accents"
+  ],
+  "assertions": {
+    "acceptedV6AWasPinned": true,
+    "acceptedV6ARemainsUnchanged": true,
+    "outputDiffersFromInput": true,
+    "separateConstructionCollectionsExist": true,
+    "rifleContactTargetsExist": true,
+    "noArmatureOrActionClaim": true,
+    "noExternalLibraries": true
+  },
+  "nonClaims": [
+    "V6-B is a construction-review candidate and is not G6 acceptance.",
+    "The rifle is a separate construction display; literal two-hand and shoulder contact remains open for the rigged V6-D checkpoint.",
+    "No final retopology, UV, texture set, runtime skeleton, animation, LOD, GLB, first-person asset, in-engine integration, or performance claim is made."
+  ],
+  "status": "V6B_CONSTRUCTION_CANDIDATE_REQUIRES_VISUAL_AUDIT"
+}

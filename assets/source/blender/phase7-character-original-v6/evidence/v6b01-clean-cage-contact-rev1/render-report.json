@@ -1,0 +1,118 @@
+{
+  "checkpoint": "V6-B0.1 clean-cage/contact proof rev1",
+  "status": "DIRECT HUMAN VISUAL REVIEW REQUIRED / NO ACCEPTANCE CLAIM",
+  "blend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b01-clean-cage-contact-rev1\\kyx_vanguard_v6b01_clean_cage_contact_rev1.blend",
+  "blend_sha256": "7ff54bd11ed38bfd08ca7405d18cd02bdb3ff8b20f99aada8653017a992ee98e",
+  "engine": "BLENDER_EEVEE",
+  "views": [
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev1-garment-front-wire.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev1\\renders\\kyx-v6b01-clean-cage-contact-rev1-garment-front-wire.png",
+      "bytes": 1139467,
+      "sha256": "899088659b66d2457febc2c04e1cb3f0ae8c9a3c203cdc994cf003bb9a38a701",
+      "camera": "V6B01_RENDER_Camera_GarmentFront",
+      "location": [
+        0.0,
+        -2.75,
+        1.245
+      ],
+      "lens_mm": 98.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev1-garment-side-wire.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev1\\renders\\kyx-v6b01-clean-cage-contact-rev1-garment-side-wire.png",
+      "bytes": 877295,
+      "sha256": "90f6411e49f97359e8855a9d5fe415df5ba5873210dafa70c7ee51feb1491969",
+      "camera": "V6B01_RENDER_Camera_GarmentSide",
+      "location": [
+        2.65,
+        -0.16,
+        1.25
+      ],
+      "lens_mm": 98.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev1-armor-close.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev1\\renders\\kyx-v6b01-clean-cage-contact-rev1-armor-close.png",
+      "bytes": 1116432,
+      "sha256": "7cbc1eba7e5a88d0f385bf442c530426705813d8c64a1fca5c0742e2f051bbc8",
+      "camera": "V6B01_RENDER_Camera_ArmorClose",
+      "location": [
+        0.98,
+        -2.2,
+        1.48
+      ],
+      "lens_mm": 105.0,
+      "resolution": [
+        1200,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev1-transparent-contact-close.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev1\\renders\\kyx-v6b01-clean-cage-contact-rev1-transparent-contact-close.png",
+      "bytes": 1525118,
+      "sha256": "8917524db2cd5463416fa83628fb3e69028d95a97a10c128eb4dbe6508019040",
+      "camera": "V6B01_RENDER_Camera_TransparentContact",
+      "location": [
+        1.45,
+        -1.32,
+        1.19
+      ],
+      "lens_mm": 92.0,
+      "resolution": [
+        1400,
+        1200
+      ]
+    },
+    {
+      "filename": "kyx-v6b01-clean-cage-contact-rev1-concept-crop.png",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev1\\renders\\kyx-v6b01-clean-cage-contact-rev1-concept-crop.png",
+      "bytes": 2079256,
+      "sha256": "6c8aac89d7f532a913c6a36d18e422a916d3f97f2fd05fe5a99ad70bfddd7105",
+      "source": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+      "source_sha256": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "crop_uv": [
+        0.015,
+        0.285,
+        0.345,
+        0.995
+      ],
+      "resolution": [
+        1200,
+        1200
+      ]
+    }
+  ],
+  "board": {
+    "filename": "kyx-v6b01-clean-cage-contact-rev1-proof-board.png",
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b01-clean-cage-contact-rev1\\renders\\kyx-v6b01-clean-cage-contact-rev1-proof-board.png",
+    "bytes": 4250061,
+    "sha256": "d1d75a950029a66604e08876674140e0bd7478685dd2b2fa53566296f4b62e2c",
+    "resolution": [
+      2400,
+      1800
+    ],
+    "panels": [
+      "kyx-v6b01-clean-cage-contact-rev1-garment-front-wire.png",
+      "kyx-v6b01-clean-cage-contact-rev1-armor-close.png",
+      "kyx-v6b01-clean-cage-contact-rev1-transparent-contact-close.png",
+      "kyx-v6b01-clean-cage-contact-rev1-concept-crop.png"
+    ]
+  },
+  "framing_contract": [
+    "front and side wire views must show one clean connected garment cage with explicit arm-hole loops",
+    "armor close must show one continuous manufactured perimeter, thickness, bevel, backed attachments and arm clearance",
+    "transparent contact close must independently show palm seating, four wrapped grip digits, index at trigger, guard clearance and stock pad contact",
+    "the sectioned receiver may not occlude the literal hand or shoulder contacts",
+    "no view may be used to claim V6-B, V6-C or G6"
+  ]
+}

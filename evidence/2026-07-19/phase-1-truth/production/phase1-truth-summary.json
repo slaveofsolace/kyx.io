@@ -1,0 +1,1331 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-20T03:55:22.868Z",
+  "baseUrl": "http://127.0.0.1:4174/",
+  "expectedOrigin": "http://127.0.0.1:4174",
+  "viewport": {
+    "width": 1920,
+    "height": 1080,
+    "deviceScaleFactor": 1
+  },
+  "seed": 19072026,
+  "browserVersion": "149.0.7827.55",
+  "requirements": {
+    "routes": [
+      "http://127.0.0.1:4174/",
+      "http://127.0.0.1:4174/login",
+      "http://127.0.0.1:4174/register"
+    ],
+    "network": "Every application request must remain same-origin; no application WebSocket may open. Vite HMR is recorded separately when a development server is used.",
+    "profile": "Fresh, returning, and one-way legacy migration paths use a password-free local guest profile.",
+    "shell": "Offline Practice is primary and visibly identifies one local player and seven bots.",
+    "gameplay": "The HUD and scoreboard identify practice bots and contain no fabricated currency.",
+    "containment": "Mobile and coarse-pointer clients receive the desktop-required boundary."
+  },
+  "checks": [
+    {
+      "id": "preflight.server_available",
+      "passed": true,
+      "details": {
+        "url": "http://127.0.0.1:4174/",
+        "status": 200
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_home.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/",
+        "finalUrl": "http://127.0.0.1:4174/",
+        "status": 200
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_home.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_home.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_profile_absent",
+      "passed": true,
+      "details": {
+        "storedProfile": null
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_home_truthful",
+      "passed": true,
+      "details": {
+        "visibleText": "kyx.io LOCAL BUILD OFFLINE PRACTICE LOADOUT SETTINGS ONLINE MATCH — NOT AVAILABLE LOCAL GUEST PROFILE Recruit SAVED ON THIS DEVICE OFFLINE PRACTICE IRON BASTION MAP PREVIEW 1 LOCAL PLAYER / 7 BOTS START OFFLINE PRACTICE Runs entirely on this device. Nothing shown here represents online players or shared progression."
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-fresh-home-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-fresh-home-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.login_fresh.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/login",
+        "finalUrl": "http://127.0.0.1:4174/login",
+        "status": 200
+      }
+    },
+    {
+      "id": "desktop_flow.login_fresh.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "desktop_flow.login_fresh.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "desktop_flow.login_is_local_guest_profile",
+      "passed": true,
+      "details": {
+        "visibleText": "KYX.IO Offline practice Local profile Local Guest Profile Display name * Stored only in this browser. A display name is not an online account or verified identity. ⇥ Save local profile & play Return to Offline Practice"
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-login-fresh-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-login-fresh-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_save.canonical_profile",
+      "passed": true,
+      "details": {
+        "profile": {
+          "kind": "local_guest",
+          "version": 1,
+          "displayName": "Phase One Guest"
+        },
+        "actualKeys": [
+          "displayName",
+          "kind",
+          "version"
+        ],
+        "expectedKeys": [
+          "displayName",
+          "kind",
+          "version"
+        ]
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_save.legacy_credentials_scrubbed",
+      "passed": true,
+      "details": {
+        "survivingLegacy": []
+      }
+    },
+    {
+      "id": "desktop_flow.fresh_save_displayed",
+      "passed": true,
+      "details": {
+        "navUsername": "Phase One Guest"
+      }
+    },
+    {
+      "id": "desktop_flow.register_returning.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/register",
+        "finalUrl": "http://127.0.0.1:4174/register",
+        "status": 200
+      }
+    },
+    {
+      "id": "desktop_flow.register_returning.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "desktop_flow.register_returning.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "desktop_flow.register_is_same_local_profile_flow",
+      "passed": true,
+      "details": {
+        "registerValue": "Phase One Guest",
+        "visibleText": "KYX.IO Offline practice Local profile Local Guest Profile Display name * Stored only in this browser. A display name is not an online account or verified identity. ⇥ Save local profile & play Return to Offline Practice"
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-register-returning-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-register-returning-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.login_returning.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/login",
+        "finalUrl": "http://127.0.0.1:4174/login",
+        "status": 200
+      }
+    },
+    {
+      "id": "desktop_flow.login_returning.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "desktop_flow.login_returning.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "desktop_flow.returning_profile_prefilled",
+      "passed": true,
+      "details": {
+        "returningValue": "Phase One Guest"
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-login-returning-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-login-returning-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.returning_home.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/",
+        "finalUrl": "http://127.0.0.1:4174/",
+        "status": 200
+      }
+    },
+    {
+      "id": "desktop_flow.returning_home.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "desktop_flow.returning_home.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "desktop_flow.offline_shell",
+      "passed": true,
+      "details": {
+        "shell": {
+          "playText": "START OFFLINE PRACTICE",
+          "offlineNavText": "OFFLINE PRACTICE",
+          "mapPreviewText": "\n          MAP PREVIEW\n        ",
+          "populationText": "1 LOCAL PLAYER / 7 BOTS",
+          "localProfileLabel": "LOCAL GUEST PROFILE",
+          "onlineText": "ONLINE MATCH — NOT AVAILABLE",
+          "onlineDisabled": true,
+          "forbiddenCurrencyNodes": []
+        }
+      }
+    },
+    {
+      "id": "desktop_flow.online_match_disabled",
+      "passed": true,
+      "details": {
+        "onlineText": "ONLINE MATCH — NOT AVAILABLE",
+        "onlineDisabled": true
+      }
+    },
+    {
+      "id": "desktop_flow.menu_has_no_fake_currency",
+      "passed": true,
+      "details": {
+        "menuCurrencyClaims": [],
+        "forbiddenCurrencyNodes": []
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-returning-home-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-returning-home-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.truthful_hud",
+      "passed": true,
+      "details": {
+        "hudText": "♥ 100 E 100 F 2 FRAG S 2 SMOKE AR-9 ASSAULT 30 / 120 OFFLINE PRACTICE OFFLINE PRACTICE · 7 BOTS BOTS DEFEATED 0 SCORE 0 1 2 7:59 Q BLINK PRACTICE BOT 01 PRACTICE BOT 07",
+        "practiceStatus": "OFFLINE PRACTICE · 7 BOTS"
+      }
+    },
+    {
+      "id": "desktop_flow.explicit_bot_nameplates",
+      "passed": true,
+      "details": {
+        "note": "Only bots currently projected into the viewport render nameplates; the scoreboard verifies the full seven-bot roster.",
+        "botNameplates": [
+          "PRACTICE BOT 01",
+          "PRACTICE BOT 07"
+        ]
+      }
+    },
+    {
+      "id": "desktop_flow.gameplay_has_no_fake_currency",
+      "passed": true,
+      "details": {
+        "gameplayCurrencyClaims": []
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-gameplay-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-gameplay-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.scoreboard_truthful_population",
+      "passed": true,
+      "details": {
+        "rowCount": 8,
+        "botNames": [
+          "PRACTICE BOT 01",
+          "PRACTICE BOT 02",
+          "PRACTICE BOT 03",
+          "PRACTICE BOT 04",
+          "PRACTICE BOT 05",
+          "PRACTICE BOT 06",
+          "PRACTICE BOT 07"
+        ],
+        "subheading": "OFFLINE PRACTICE"
+      }
+    },
+    {
+      "id": "desktop_flow.scoreboard_does_not_fabricate_bot_stats",
+      "passed": true,
+      "details": {
+        "botRows": [
+          {
+            "text": "2 PRACTICE BOT 01 — —",
+            "cells": [
+              "2",
+              "PRACTICE BOT 01",
+              "—",
+              "—"
+            ]
+          },
+          {
+            "text": "3 PRACTICE BOT 02 — —",
+            "cells": [
+              "3",
+              "PRACTICE BOT 02",
+              "—",
+              "—"
+            ]
+          },
+          {
+            "text": "4 PRACTICE BOT 03 — —",
+            "cells": [
+              "4",
+              "PRACTICE BOT 03",
+              "—",
+              "—"
+            ]
+          },
+          {
+            "text": "5 PRACTICE BOT 04 — —",
+            "cells": [
+              "5",
+              "PRACTICE BOT 04",
+              "—",
+              "—"
+            ]
+          },
+          {
+            "text": "6 PRACTICE BOT 05 — —",
+            "cells": [
+              "6",
+              "PRACTICE BOT 05",
+              "—",
+              "—"
+            ]
+          },
+          {
+            "text": "7 PRACTICE BOT 06 — —",
+            "cells": [
+              "7",
+              "PRACTICE BOT 06",
+              "—",
+              "—"
+            ]
+          },
+          {
+            "text": "8 PRACTICE BOT 07 — —",
+            "cells": [
+              "8",
+              "PRACTICE BOT 07",
+              "—",
+              "—"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "desktop_flow.scoreboard_has_no_fake_currency",
+      "passed": true,
+      "details": {
+        "scoreboardCurrencyClaims": []
+      }
+    },
+    {
+      "id": "desktop_flow.screenshot.phase1-scoreboard-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-scoreboard-1920x1080.png"
+      }
+    },
+    {
+      "id": "desktop_flow.completed",
+      "passed": true,
+      "details": {
+        "routes": [
+          "http://127.0.0.1:4174/",
+          "http://127.0.0.1:4174/login",
+          "http://127.0.0.1:4174/register",
+          "http://127.0.0.1:4174/login",
+          "http://127.0.0.1:4174/"
+        ]
+      }
+    },
+    {
+      "id": "desktop_flow.same_origin_requests",
+      "passed": true,
+      "details": {
+        "expectedOrigin": "http://127.0.0.1:4174",
+        "origins": [
+          "http://127.0.0.1:4174"
+        ],
+        "externalRequests": []
+      }
+    },
+    {
+      "id": "desktop_flow.no_application_websockets",
+      "passed": true,
+      "details": {
+        "applicationWebSockets": [],
+        "toolingWebSockets": []
+      }
+    },
+    {
+      "id": "desktop_flow.no_page_errors",
+      "passed": true,
+      "details": {
+        "pageErrors": []
+      }
+    },
+    {
+      "id": "desktop_flow.no_console_errors",
+      "passed": true,
+      "details": {
+        "consoleErrors": []
+      }
+    },
+    {
+      "id": "desktop_flow.no_http_errors",
+      "passed": true,
+      "details": {
+        "httpErrors": []
+      }
+    },
+    {
+      "id": "desktop_flow.no_failed_requests",
+      "passed": true,
+      "details": {
+        "failedRequests": []
+      }
+    },
+    {
+      "id": "legacy_migration.login_migration.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/login",
+        "finalUrl": "http://127.0.0.1:4174/login",
+        "status": 200
+      }
+    },
+    {
+      "id": "legacy_migration.login_migration.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "legacy_migration.login_migration.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "legacy_migration.display_name_migrated",
+      "passed": true,
+      "details": {
+        "migratedValue": "Migrated Ranger"
+      }
+    },
+    {
+      "id": "legacy_migration.migration.canonical_profile",
+      "passed": true,
+      "details": {
+        "profile": {
+          "kind": "local_guest",
+          "version": 1,
+          "displayName": "Migrated Ranger"
+        },
+        "actualKeys": [
+          "displayName",
+          "kind",
+          "version"
+        ],
+        "expectedKeys": [
+          "displayName",
+          "kind",
+          "version"
+        ]
+      }
+    },
+    {
+      "id": "legacy_migration.migration.legacy_credentials_scrubbed",
+      "passed": true,
+      "details": {
+        "survivingLegacy": []
+      }
+    },
+    {
+      "id": "legacy_migration.migration.credential_material_not_migrated",
+      "passed": true,
+      "details": {
+        "credentialMarkerPresent": false
+      }
+    },
+    {
+      "id": "legacy_migration.screenshot.phase1-profile-migrated-1920x1080.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-profile-migrated-1920x1080.png"
+      }
+    },
+    {
+      "id": "legacy_migration.completed",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "legacy_migration.same_origin_requests",
+      "passed": true,
+      "details": {
+        "expectedOrigin": "http://127.0.0.1:4174",
+        "origins": [
+          "http://127.0.0.1:4174"
+        ],
+        "externalRequests": []
+      }
+    },
+    {
+      "id": "legacy_migration.no_application_websockets",
+      "passed": true,
+      "details": {
+        "applicationWebSockets": [],
+        "toolingWebSockets": []
+      }
+    },
+    {
+      "id": "legacy_migration.no_page_errors",
+      "passed": true,
+      "details": {
+        "pageErrors": []
+      }
+    },
+    {
+      "id": "legacy_migration.no_console_errors",
+      "passed": true,
+      "details": {
+        "consoleErrors": []
+      }
+    },
+    {
+      "id": "legacy_migration.no_http_errors",
+      "passed": true,
+      "details": {
+        "httpErrors": []
+      }
+    },
+    {
+      "id": "legacy_migration.no_failed_requests",
+      "passed": true,
+      "details": {
+        "failedRequests": []
+      }
+    },
+    {
+      "id": "mobile_containment.mobile_home.document_ok",
+      "passed": true,
+      "details": {
+        "requestedUrl": "http://127.0.0.1:4174/",
+        "finalUrl": "http://127.0.0.1:4174/",
+        "status": 200
+      }
+    },
+    {
+      "id": "mobile_containment.mobile_home.password_free",
+      "passed": true,
+      "details": {
+        "passwordControls": [],
+        "passwordTextPresent": false
+      }
+    },
+    {
+      "id": "mobile_containment.mobile_home.same_origin_markup",
+      "passed": true,
+      "details": {
+        "externalDeclarations": []
+      }
+    },
+    {
+      "id": "mobile_containment.desktop_required_boundary",
+      "passed": true,
+      "details": {
+        "containment": {
+          "launchSupport": "desktop-required",
+          "overlayText": "INPUT REQUIREMENT DESKTOP REQUIRED This prototype currently requires a keyboard and mouse. Touch controls are not part of this build.",
+          "canvasAriaHidden": "true",
+          "devMetricsPresent": false,
+          "hudHidden": true,
+          "playVisible": false
+        },
+        "visibleText": "INPUT REQUIREMENT DESKTOP REQUIRED This prototype currently requires a keyboard and mouse. Touch controls are not part of this build."
+      }
+    },
+    {
+      "id": "mobile_containment.screenshot.phase1-mobile-desktop-required-390x844.png",
+      "passed": true,
+      "details": {
+        "path": "screenshots/phase1-mobile-desktop-required-390x844.png"
+      }
+    },
+    {
+      "id": "mobile_containment.completed",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "mobile_containment.same_origin_requests",
+      "passed": true,
+      "details": {
+        "expectedOrigin": "http://127.0.0.1:4174",
+        "origins": [
+          "http://127.0.0.1:4174"
+        ],
+        "externalRequests": []
+      }
+    },
+    {
+      "id": "mobile_containment.no_application_websockets",
+      "passed": true,
+      "details": {
+        "applicationWebSockets": [],
+        "toolingWebSockets": []
+      }
+    },
+    {
+      "id": "mobile_containment.no_page_errors",
+      "passed": true,
+      "details": {
+        "pageErrors": []
+      }
+    },
+    {
+      "id": "mobile_containment.no_console_errors",
+      "passed": true,
+      "details": {
+        "consoleErrors": []
+      }
+    },
+    {
+      "id": "mobile_containment.no_http_errors",
+      "passed": true,
+      "details": {
+        "httpErrors": []
+      }
+    },
+    {
+      "id": "mobile_containment.no_failed_requests",
+      "passed": true,
+      "details": {
+        "failedRequests": []
+      }
+    },
+    {
+      "id": "harness.completed",
+      "passed": true,
+      "details": {
+        "scenarioCount": 3
+      }
+    }
+  ],
+  "failures": [],
+  "scenarios": {
+    "desktop_flow": {
+      "id": "desktop_flow",
+      "routes": [
+        {
+          "id": "fresh_home",
+          "url": "http://127.0.0.1:4174/",
+          "status": 200
+        },
+        {
+          "id": "login_fresh",
+          "url": "http://127.0.0.1:4174/login",
+          "status": 200
+        },
+        {
+          "id": "register_returning",
+          "url": "http://127.0.0.1:4174/register",
+          "status": 200
+        },
+        {
+          "id": "login_returning",
+          "url": "http://127.0.0.1:4174/login",
+          "status": 200
+        },
+        {
+          "id": "returning_home",
+          "url": "http://127.0.0.1:4174/",
+          "status": 200
+        }
+      ],
+      "observations": {
+        "fresh_home": {
+          "title": "KYX.IO — Offline Practice",
+          "url": "http://127.0.0.1:4174/",
+          "pathname": "/",
+          "visibleText": "kyx.io LOCAL BUILD OFFLINE PRACTICE LOADOUT SETTINGS ONLINE MATCH — NOT AVAILABLE LOCAL GUEST PROFILE Recruit SAVED ON THIS DEVICE OFFLINE PRACTICE IRON BASTION MAP PREVIEW 1 LOCAL PLAYER / 7 BOTS START OFFLINE PRACTICE Runs entirely on this device. Nothing shown here represents online players or shared progression.",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/main-CC1LSgj6.js",
+              "absolute": "http://127.0.0.1:4174/assets/main-CC1LSgj6.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 0,
+          "externalDeclarations": []
+        },
+        "freshStorage": {
+          "local": {},
+          "session": {}
+        },
+        "screenshots": [
+          "screenshots/phase1-fresh-home-1920x1080.png",
+          "screenshots/phase1-login-fresh-1920x1080.png",
+          "screenshots/phase1-register-returning-1920x1080.png",
+          "screenshots/phase1-login-returning-1920x1080.png",
+          "screenshots/phase1-returning-home-1920x1080.png",
+          "screenshots/phase1-gameplay-1920x1080.png",
+          "screenshots/phase1-scoreboard-1920x1080.png"
+        ],
+        "login_fresh": {
+          "title": "KYX.IO — Local Guest Profile",
+          "url": "http://127.0.0.1:4174/login",
+          "pathname": "/login",
+          "visibleText": "KYX.IO Offline practice Local profile Local Guest Profile Display name * Stored only in this browser. A display name is not an online account or verified identity. ⇥ Save local profile & play Return to Offline Practice",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/loginPage-CNW41ar_.js",
+              "absolute": "http://127.0.0.1:4174/assets/loginPage-CNW41ar_.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/login",
+              "absolute": "http://127.0.0.1:4174/login",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 1,
+          "externalDeclarations": []
+        },
+        "savedStorage": {
+          "local": {
+            "kyx_local_profile": "{\"kind\":\"local_guest\",\"version\":1,\"displayName\":\"Phase One Guest\"}"
+          },
+          "session": {}
+        },
+        "register_returning": {
+          "title": "KYX.IO — Local Guest Profile",
+          "url": "http://127.0.0.1:4174/register",
+          "pathname": "/register",
+          "visibleText": "KYX.IO Offline practice Local profile Local Guest Profile Display name * Stored only in this browser. A display name is not an online account or verified identity. ⇥ Save local profile & play Return to Offline Practice",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/loginPage-CNW41ar_.js",
+              "absolute": "http://127.0.0.1:4174/assets/loginPage-CNW41ar_.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/login",
+              "absolute": "http://127.0.0.1:4174/login",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 1,
+          "externalDeclarations": []
+        },
+        "login_returning": {
+          "title": "KYX.IO — Local Guest Profile",
+          "url": "http://127.0.0.1:4174/login",
+          "pathname": "/login",
+          "visibleText": "KYX.IO Offline practice Local profile Local Guest Profile Display name * Stored only in this browser. A display name is not an online account or verified identity. ⇥ Save local profile & play Return to Offline Practice",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/loginPage-CNW41ar_.js",
+              "absolute": "http://127.0.0.1:4174/assets/loginPage-CNW41ar_.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/login",
+              "absolute": "http://127.0.0.1:4174/login",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 1,
+          "externalDeclarations": []
+        },
+        "returning_home": {
+          "title": "KYX.IO — Offline Practice",
+          "url": "http://127.0.0.1:4174/",
+          "pathname": "/",
+          "visibleText": "kyx.io LOCAL BUILD OFFLINE PRACTICE LOADOUT SETTINGS ONLINE MATCH — NOT AVAILABLE LOCAL GUEST PROFILE Phase One Guest SAVED ON THIS DEVICE OFFLINE PRACTICE IRON BASTION MAP PREVIEW 1 LOCAL PLAYER / 7 BOTS START OFFLINE PRACTICE Runs entirely on this device. Nothing shown here represents online players or shared progression.",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/main-CC1LSgj6.js",
+              "absolute": "http://127.0.0.1:4174/assets/main-CC1LSgj6.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 0,
+          "externalDeclarations": []
+        },
+        "shell": {
+          "playText": "START OFFLINE PRACTICE",
+          "offlineNavText": "OFFLINE PRACTICE",
+          "mapPreviewText": "\n          MAP PREVIEW\n        ",
+          "populationText": "1 LOCAL PLAYER / 7 BOTS",
+          "localProfileLabel": "LOCAL GUEST PROFILE",
+          "onlineText": "ONLINE MATCH — NOT AVAILABLE",
+          "onlineDisabled": true,
+          "forbiddenCurrencyNodes": []
+        },
+        "gameplay": {
+          "hudText": "♥ 100 E 100 F 2 FRAG S 2 SMOKE AR-9 ASSAULT 30 / 120 OFFLINE PRACTICE OFFLINE PRACTICE · 7 BOTS BOTS DEFEATED 0 SCORE 0 1 2 7:59 Q BLINK PRACTICE BOT 01 PRACTICE BOT 07",
+          "practiceStatus": "OFFLINE PRACTICE · 7 BOTS",
+          "modeInfo": "",
+          "botNameplates": [
+            "PRACTICE BOT 01",
+            "PRACTICE BOT 07"
+          ],
+          "visibleText": "♥ 100 E 100 F 2 FRAG S 2 SMOKE AR-9 ASSAULT 30 / 120 OFFLINE PRACTICE OFFLINE PRACTICE · 7 BOTS BOTS DEFEATED 0 SCORE 0 1 2 7:59 Q BLINK PRACTICE BOT 01 PRACTICE BOT 07"
+        },
+        "scoreboard": {
+          "heading": "PRACTICE SCOREBOARD",
+          "subheading": "OFFLINE PRACTICE",
+          "visibleText": "PRACTICE SCOREBOARD OFFLINE PRACTICE CURRENT ROUND # COMBATANT DEFEATS SCORE 1 Phase One GuestYOU 0 0 2 PRACTICE BOT 01 — — 3 PRACTICE BOT 02 — — 4 PRACTICE BOT 03 — — 5 PRACTICE BOT 04 — — 6 PRACTICE BOT 05 — — 7 PRACTICE BOT 06 — — 8 PRACTICE BOT 07 — — Hold TAB to view practice scores",
+          "rows": [
+            {
+              "text": "1 Phase One GuestYOU 0 0",
+              "cells": [
+                "1",
+                "Phase One GuestYOU",
+                "0",
+                "0"
+              ]
+            },
+            {
+              "text": "2 PRACTICE BOT 01 — —",
+              "cells": [
+                "2",
+                "PRACTICE BOT 01",
+                "—",
+                "—"
+              ]
+            },
+            {
+              "text": "3 PRACTICE BOT 02 — —",
+              "cells": [
+                "3",
+                "PRACTICE BOT 02",
+                "—",
+                "—"
+              ]
+            },
+            {
+              "text": "4 PRACTICE BOT 03 — —",
+              "cells": [
+                "4",
+                "PRACTICE BOT 03",
+                "—",
+                "—"
+              ]
+            },
+            {
+              "text": "5 PRACTICE BOT 04 — —",
+              "cells": [
+                "5",
+                "PRACTICE BOT 04",
+                "—",
+                "—"
+              ]
+            },
+            {
+              "text": "6 PRACTICE BOT 05 — —",
+              "cells": [
+                "6",
+                "PRACTICE BOT 05",
+                "—",
+                "—"
+              ]
+            },
+            {
+              "text": "7 PRACTICE BOT 06 — —",
+              "cells": [
+                "7",
+                "PRACTICE BOT 06",
+                "—",
+                "—"
+              ]
+            },
+            {
+              "text": "8 PRACTICE BOT 07 — —",
+              "cells": [
+                "8",
+                "PRACTICE BOT 07",
+                "—",
+                "—"
+              ]
+            }
+          ]
+        }
+      },
+      "diagnostics": [],
+      "errors": []
+    },
+    "legacy_migration": {
+      "id": "legacy_migration",
+      "routes": [
+        {
+          "id": "login_migration",
+          "url": "http://127.0.0.1:4174/login",
+          "status": 200
+        }
+      ],
+      "observations": {
+        "login_migration": {
+          "title": "KYX.IO — Local Guest Profile",
+          "url": "http://127.0.0.1:4174/login",
+          "pathname": "/login",
+          "visibleText": "KYX.IO Offline practice Local profile Local Guest Profile Display name * Stored only in this browser. A display name is not an online account or verified identity. ⇥ Save local profile & play Return to Offline Practice",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/loginPage-CNW41ar_.js",
+              "absolute": "http://127.0.0.1:4174/assets/loginPage-CNW41ar_.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/login",
+              "absolute": "http://127.0.0.1:4174/login",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "a",
+              "attribute": "href",
+              "raw": "/",
+              "absolute": "http://127.0.0.1:4174/",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 1,
+          "externalDeclarations": []
+        },
+        "migratedStorage": {
+          "local": {
+            "kyx_local_profile": "{\"kind\":\"local_guest\",\"version\":1,\"displayName\":\"Migrated Ranger\"}"
+          },
+          "session": {}
+        },
+        "screenshots": [
+          "screenshots/phase1-profile-migrated-1920x1080.png"
+        ]
+      },
+      "diagnostics": [],
+      "errors": []
+    },
+    "mobile_containment": {
+      "id": "mobile_containment",
+      "routes": [
+        {
+          "id": "mobile_home",
+          "url": "http://127.0.0.1:4174/",
+          "status": 200
+        }
+      ],
+      "observations": {
+        "mobile_home": {
+          "title": "KYX.IO — Offline Practice",
+          "url": "http://127.0.0.1:4174/",
+          "pathname": "/",
+          "visibleText": "INPUT REQUIREMENT DESKTOP REQUIRED This prototype currently requires a keyboard and mouse. Touch controls are not part of this build.",
+          "passwordControls": [],
+          "declaredUrls": [
+            {
+              "tag": "script",
+              "attribute": "src",
+              "raw": "./assets/main-CC1LSgj6.js",
+              "absolute": "http://127.0.0.1:4174/assets/main-CC1LSgj6.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount-C73Lw6Yj.js",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount-C73Lw6Yj.js",
+              "origin": "http://127.0.0.1:4174"
+            },
+            {
+              "tag": "link",
+              "attribute": "href",
+              "raw": "./assets/UserAccount--Z30gGvP.css",
+              "absolute": "http://127.0.0.1:4174/assets/UserAccount--Z30gGvP.css",
+              "origin": "http://127.0.0.1:4174"
+            }
+          ],
+          "formCount": 0,
+          "externalDeclarations": []
+        },
+        "containment": {
+          "launchSupport": "desktop-required",
+          "overlayText": "INPUT REQUIREMENT DESKTOP REQUIRED This prototype currently requires a keyboard and mouse. Touch controls are not part of this build.",
+          "canvasAriaHidden": "true",
+          "devMetricsPresent": false,
+          "hudHidden": true,
+          "playVisible": false
+        },
+        "screenshots": [
+          "screenshots/phase1-mobile-desktop-required-390x844.png"
+        ]
+      },
+      "diagnostics": [],
+      "errors": []
+    }
+  },
+  "network": {
+    "desktop_flow": {
+      "requestCount": 39,
+      "origins": [
+        "http://127.0.0.1:4174"
+      ],
+      "externalRequests": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "meaningfulFailures": [],
+      "webSockets": [],
+      "toolingWebSockets": [],
+      "applicationWebSockets": [],
+      "consoleEntries": [],
+      "pageErrors": []
+    },
+    "legacy_migration": {
+      "requestCount": 4,
+      "origins": [
+        "http://127.0.0.1:4174"
+      ],
+      "externalRequests": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "meaningfulFailures": [],
+      "webSockets": [],
+      "toolingWebSockets": [],
+      "applicationWebSockets": [],
+      "consoleEntries": [
+        {
+          "type": "info",
+          "text": "Autofocus processing was blocked because a document already has a focused element.",
+          "location": {
+            "url": "http://127.0.0.1:4174/login",
+            "line": 0,
+            "column": 0,
+            "lineNumber": 0,
+            "columnNumber": 0
+          }
+        }
+      ],
+      "pageErrors": []
+    },
+    "mobile_containment": {
+      "requestCount": 4,
+      "origins": [
+        "http://127.0.0.1:4174"
+      ],
+      "externalRequests": [],
+      "httpErrors": [],
+      "failedRequests": [],
+      "meaningfulFailures": [],
+      "webSockets": [],
+      "toolingWebSockets": [],
+      "applicationWebSockets": [],
+      "consoleEntries": [],
+      "pageErrors": []
+    }
+  },
+  "screenshots": [
+    "screenshots/phase1-fresh-home-1920x1080.png",
+    "screenshots/phase1-login-fresh-1920x1080.png",
+    "screenshots/phase1-register-returning-1920x1080.png",
+    "screenshots/phase1-login-returning-1920x1080.png",
+    "screenshots/phase1-returning-home-1920x1080.png",
+    "screenshots/phase1-gameplay-1920x1080.png",
+    "screenshots/phase1-scoreboard-1920x1080.png",
+    "screenshots/phase1-profile-migrated-1920x1080.png",
+    "screenshots/phase1-mobile-desktop-required-390x844.png"
+  ],
+  "errors": [],
+  "completedAt": "2026-07-20T03:56:36.969Z",
+  "durationMs": 74098,
+  "ok": true
+}

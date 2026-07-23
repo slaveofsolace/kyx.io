@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T10:57:53.605Z",
+  "url": "http://127.0.0.1:5173/",
+  "browser": "150.0.7871.129",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "settingsScreenshot": "screenshots/settings-caption-audio-1440x900.png",
+  "runtimeScreenshot": "screenshots/caption-critical-audio-cue-1280x720.png",
+  "settings": {
+    "subtitlesOn": "on",
+    "visualCuesOn": "on",
+    "status": "SETTINGS SAVED ON THIS DEVICE",
+    "stored": {
+      "sensitivity": 1,
+      "volume": 0.5,
+      "fov": 80,
+      "quality": "medium",
+      "invertY": false,
+      "hudScale": 1.25,
+      "crosshairScale": 1,
+      "crosshairColor": "cyan",
+      "highContrast": true,
+      "reducedMotion": false,
+      "reducedFlash": false,
+      "subtitles": true,
+      "visualAudioCues": true
+    },
+    "captionRegion": true,
+    "audioCueRegion": true
+  },
+  "persistenceAfterReload": {
+    "stored": {
+      "sensitivity": 1,
+      "volume": 0.5,
+      "fov": 80,
+      "quality": "medium",
+      "invertY": false,
+      "hudScale": 1.25,
+      "crosshairScale": 1,
+      "crosshairColor": "cyan",
+      "highContrast": true,
+      "reducedMotion": false,
+      "reducedFlash": false,
+      "subtitles": true,
+      "visualAudioCues": true
+    },
+    "highContrast": "true",
+    "hudScale": "1.25"
+  },
+  "cueFixture": {
+    "method": "Public AudioManager events wired to CaptionCueOverlay on the live practice DOM",
+    "disclosure": "Deterministic evidence fixture; not an organic combat event.",
+    "facts": {
+      "subtitleShown": true,
+      "captionText": "ARENA CONTROLFRONTHostile wave inbound. Hold the central lane.",
+      "audioCueText": "HOSTILE ATTACKNEARBY",
+      "captionDirection": "front",
+      "audioCueDirection": "nearby",
+      "audioCuePriority": "danger"
+    }
+  },
+  "consoleErrors": []
+}

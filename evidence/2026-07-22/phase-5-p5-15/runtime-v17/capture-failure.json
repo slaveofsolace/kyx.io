@@ -1,0 +1,2740 @@
+{
+  "capturedAt": "2026-07-22T17:44:54.727Z",
+  "error": {
+    "message": "Failed to face 0",
+    "stack": "Error: Failed to face 0\n    at face (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:452:9)\n    at async moveTo (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:496:5)\n    at async movementInterpolationProof (file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:999:3)\n    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:1367:29"
+  },
+  "wireDiagnostics": {
+    "file": "p515-failure-normalized-wire-log.jsonl",
+    "entries": 11471,
+    "sha256": "605b86bf72ef68be3e5ef7c34c7536e4c8e0aec474f6b379c55618b497de11cc",
+    "receivedSnapshots": 1798,
+    "sentSnapshotAcknowledgements": 1858,
+    "acknowledgementRejections": 0,
+    "socketClosures": [
+      {
+        "sequence": 2,
+        "observedAt": "2026-07-22T17:43:14.412Z",
+        "observedAtMilliseconds": 1784742194412,
+        "clientId": "client-0"
+      },
+      {
+        "sequence": 9490,
+        "observedAt": "2026-07-22T17:44:34.733Z",
+        "observedAtMilliseconds": 1784742274733,
+        "clientId": "client-0"
+      },
+      {
+        "sequence": 10809,
+        "observedAt": "2026-07-22T17:44:43.815Z",
+        "observedAtMilliseconds": 1784742283815,
+        "clientId": "client-1"
+      },
+      {
+        "sequence": 10815,
+        "observedAt": "2026-07-22T17:44:43.818Z",
+        "observedAtMilliseconds": 1784742283818,
+        "clientId": "client-0"
+      },
+      {
+        "sequence": 10821,
+        "observedAt": "2026-07-22T17:44:43.829Z",
+        "observedAtMilliseconds": 1784742283829,
+        "clientId": "client-2"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "client-0",
+      "snapshot": {
+        "schemaVersion": 1,
+        "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+        "roomCode": "KYX-YJES4Y",
+        "connection": "closed",
+        "matchId": "match.71116dfbc16d401bb2bfcfc2cb9460d5",
+        "playerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+        "remotePlayers": 3,
+        "fullSnapshots": 4,
+        "deltaSnapshots": 826,
+        "commandsGenerated": 1767,
+        "inputAcks": 1766,
+        "reconciliations": 828,
+        "resumeSuccesses": 1,
+        "combat": {
+          "enabled": true,
+          "snapshot": {
+            "schemaVersion": 1,
+            "players": [
+              {
+                "playerId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 49,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1707,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 1,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1610,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 1,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 0,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 40,
+                "reserveRounds": 142,
+                "nextShotAtTick": 1454,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 18,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1621,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1621,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              }
+            ],
+            "projectiles": [],
+            "match": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 7888,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 1
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 1,
+              "result": null
+            }
+          },
+          "recentEvents": [
+            {
+              "id": "event.1",
+              "serverTick": 0,
+              "kind": "playerJoined",
+              "subjectId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.2",
+              "serverTick": 0,
+              "kind": "playerJoined",
+              "subjectId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.3",
+              "serverTick": 80,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.1",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.4",
+              "serverTick": 266,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.2",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.5",
+              "serverTick": 268,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.3",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.6",
+              "serverTick": 270,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.4",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.7",
+              "serverTick": 272,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.5",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.8",
+              "serverTick": 274,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.6",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.9",
+              "serverTick": 276,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.7",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.10",
+              "serverTick": 278,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.8",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.11",
+              "serverTick": 1357,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.9",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.12",
+              "serverTick": 1357,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.0",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.0",
+                "eventSequence": 0,
+                "authorityTick": 1357,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.9",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 90
+              }
+            },
+            {
+              "id": "event.13",
+              "serverTick": 1366,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.10",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.14",
+              "serverTick": 1366,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.1",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.1",
+                "eventSequence": 1,
+                "authorityTick": 1366,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.10",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 80
+              }
+            },
+            {
+              "id": "event.15",
+              "serverTick": 1375,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.11",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.16",
+              "serverTick": 1375,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.2",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.2",
+                "eventSequence": 2,
+                "authorityTick": 1375,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.11",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 70
+              }
+            },
+            {
+              "id": "event.17",
+              "serverTick": 1398,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.12",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.18",
+              "serverTick": 1398,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.3",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.3",
+                "eventSequence": 3,
+                "authorityTick": 1398,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.12",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 60
+              }
+            },
+            {
+              "id": "event.19",
+              "serverTick": 1407,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.13",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.20",
+              "serverTick": 1407,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.4",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.4",
+                "eventSequence": 4,
+                "authorityTick": 1407,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.13",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 50
+              }
+            },
+            {
+              "id": "event.21",
+              "serverTick": 1416,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.14",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.22",
+              "serverTick": 1416,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.5",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.5",
+                "eventSequence": 5,
+                "authorityTick": 1416,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.14",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 40
+              }
+            },
+            {
+              "id": "event.23",
+              "serverTick": 1425,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.15",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.24",
+              "serverTick": 1425,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.6",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.6",
+                "eventSequence": 6,
+                "authorityTick": 1425,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.15",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 30
+              }
+            },
+            {
+              "id": "event.25",
+              "serverTick": 1434,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.16",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.26",
+              "serverTick": 1434,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.7",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.7",
+                "eventSequence": 7,
+                "authorityTick": 1434,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.16",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 20
+              }
+            },
+            {
+              "id": "event.27",
+              "serverTick": 1443,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.17",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.28",
+              "serverTick": 1443,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.8",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.8",
+                "eventSequence": 8,
+                "authorityTick": 1443,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.17",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 10
+              }
+            },
+            {
+              "id": "event.29",
+              "serverTick": 1452,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.18",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.30",
+              "serverTick": 1452,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.9",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.9",
+                "eventSequence": 9,
+                "authorityTick": 1452,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.18",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 0
+              }
+            },
+            {
+              "id": "event.31",
+              "serverTick": 1452,
+              "kind": "playerKilled",
+              "subjectId": "combat.death.9",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.32",
+              "serverTick": 1590,
+              "kind": "abilityActivated",
+              "subjectId": "combat.09bbca203d173a9e",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "teleport_resource_confirmed",
+                "eventId": "combat.09bbca203d173a9e",
+                "authorityTick": 1590,
+                "playerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "abilityId": "vertical_teleport_v1",
+                "outcome": "full",
+                "from": {
+                  "x": -1115,
+                  "y": -2827,
+                  "z": -15678
+                },
+                "to": {
+                  "x": -10115,
+                  "y": -2827,
+                  "z": -15678
+                },
+                "cooldownTicksRemaining": 160,
+                "weaponRecoveryTicks": 0,
+                "combatStatePolicy": "preserve_existing_combat_state"
+              }
+            },
+            {
+              "id": "event.33",
+              "serverTick": 1590,
+              "kind": "cooldownStarted",
+              "subjectId": "combat.09bbca203d173a9e",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.34",
+              "serverTick": 1610,
+              "kind": "playerJoined",
+              "subjectId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.35",
+              "serverTick": 1621,
+              "kind": "playerJoined",
+              "subjectId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.36",
+              "serverTick": 1705,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.786128d33b00c937.1",
+              "actorId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "targetId": null,
+              "amountHealthPoints": null
+            }
+          ]
+        },
+        "localPredictedPosition": {
+          "x": -10115,
+          "y": -266077,
+          "z": -15678
+        },
+        "localPredictedYawMilliDegrees": 270000,
+        "remotePositions": [
+          {
+            "x": -33500,
+            "y": 0,
+            "z": 3500
+          },
+          {
+            "x": 33500,
+            "y": 0,
+            "z": 3500
+          },
+          {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          }
+        ],
+        "lastError": "authority socket closed (1013: Snapshot acknowledgement timeout)",
+        "presentation": {
+          "status": "ready",
+          "hydrationCount": 3,
+          "intentCount": 14,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 11
+        },
+        "roomVerification": {
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "simulationIdentity": {
+            "schemaVersion": 1,
+            "mapId": "inkfall_foundry",
+            "rulesetId": "revamped_classic",
+            "rulesetRevision": 3,
+            "rulesetHash": "d5f0418d1d927370",
+            "movementProfileId": "phase3_hypothesis_v1",
+            "movementProfileRevision": 1,
+            "movementProfileHash": "8ab4ed437a4393c0",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "physicsAdapterId": "rapier3d_deterministic_compat",
+            "physicsAdapterVersion": "0.19.3"
+          },
+          "identityChecks": 1666
+        }
+      },
+      "consoleErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-1",
+      "snapshot": {
+        "schemaVersion": 1,
+        "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+        "roomCode": "KYX-YJES4Y",
+        "connection": "closed",
+        "matchId": "match.71116dfbc16d401bb2bfcfc2cb9460d5",
+        "playerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+        "remotePlayers": 3,
+        "fullSnapshots": 3,
+        "deltaSnapshots": 813,
+        "commandsGenerated": 1757,
+        "inputAcks": 1770,
+        "reconciliations": 815,
+        "resumeSuccesses": 0,
+        "combat": {
+          "enabled": true,
+          "snapshot": {
+            "schemaVersion": 1,
+            "players": [
+              {
+                "playerId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 49,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1707,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 1,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1610,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 1,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 0,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 40,
+                "reserveRounds": 142,
+                "nextShotAtTick": 1454,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 18,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1621,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1621,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              }
+            ],
+            "projectiles": [],
+            "match": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 7888,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 1
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 1,
+              "result": null
+            }
+          },
+          "recentEvents": [
+            {
+              "id": "event.2",
+              "serverTick": 0,
+              "kind": "playerJoined",
+              "subjectId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.3",
+              "serverTick": 80,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.1",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.4",
+              "serverTick": 266,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.2",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.5",
+              "serverTick": 268,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.3",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.6",
+              "serverTick": 270,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.4",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.7",
+              "serverTick": 272,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.5",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.8",
+              "serverTick": 274,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.6",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.9",
+              "serverTick": 276,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.7",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.10",
+              "serverTick": 278,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.8",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.11",
+              "serverTick": 1357,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.9",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.12",
+              "serverTick": 1357,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.0",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.0",
+                "eventSequence": 0,
+                "authorityTick": 1357,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.9",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 90
+              }
+            },
+            {
+              "id": "event.13",
+              "serverTick": 1366,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.10",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.14",
+              "serverTick": 1366,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.1",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.1",
+                "eventSequence": 1,
+                "authorityTick": 1366,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.10",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 80
+              }
+            },
+            {
+              "id": "event.15",
+              "serverTick": 1375,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.11",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.16",
+              "serverTick": 1375,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.2",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.2",
+                "eventSequence": 2,
+                "authorityTick": 1375,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.11",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 70
+              }
+            },
+            {
+              "id": "event.17",
+              "serverTick": 1398,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.12",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.18",
+              "serverTick": 1398,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.3",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.3",
+                "eventSequence": 3,
+                "authorityTick": 1398,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.12",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 60
+              }
+            },
+            {
+              "id": "event.19",
+              "serverTick": 1407,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.13",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.20",
+              "serverTick": 1407,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.4",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.4",
+                "eventSequence": 4,
+                "authorityTick": 1407,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.13",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 50
+              }
+            },
+            {
+              "id": "event.21",
+              "serverTick": 1416,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.14",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.22",
+              "serverTick": 1416,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.5",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.5",
+                "eventSequence": 5,
+                "authorityTick": 1416,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.14",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 40
+              }
+            },
+            {
+              "id": "event.23",
+              "serverTick": 1425,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.15",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.24",
+              "serverTick": 1425,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.6",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.6",
+                "eventSequence": 6,
+                "authorityTick": 1425,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.15",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 30
+              }
+            },
+            {
+              "id": "event.25",
+              "serverTick": 1434,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.16",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.26",
+              "serverTick": 1434,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.7",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.7",
+                "eventSequence": 7,
+                "authorityTick": 1434,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.16",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 20
+              }
+            },
+            {
+              "id": "event.27",
+              "serverTick": 1443,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.17",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.28",
+              "serverTick": 1443,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.8",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.8",
+                "eventSequence": 8,
+                "authorityTick": 1443,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.17",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 10
+              }
+            },
+            {
+              "id": "event.29",
+              "serverTick": 1452,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.040b2f85aab5b2b0.18",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.30",
+              "serverTick": 1452,
+              "kind": "damageApplied",
+              "subjectId": "combat.damage.9",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": 10,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "damage_applied",
+                "eventId": "combat.damage.9",
+                "eventSequence": 9,
+                "authorityTick": 1452,
+                "causeId": "combat.auto_rifle.shot.040b2f85aab5b2b0.18",
+                "sourcePlayerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "targetPlayerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "shieldDamagePoints": 0,
+                "healthDamagePoints": 10,
+                "shieldPointsAfter": 0,
+                "healthPointsAfter": 0
+              }
+            },
+            {
+              "id": "event.31",
+              "serverTick": 1452,
+              "kind": "playerKilled",
+              "subjectId": "combat.death.9",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.32",
+              "serverTick": 1590,
+              "kind": "abilityActivated",
+              "subjectId": "combat.09bbca203d173a9e",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null,
+              "presentation": {
+                "schemaVersion": 1,
+                "kind": "teleport_resource_confirmed",
+                "eventId": "combat.09bbca203d173a9e",
+                "authorityTick": 1590,
+                "playerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "abilityId": "vertical_teleport_v1",
+                "outcome": "full",
+                "from": {
+                  "x": -1115,
+                  "y": -2827,
+                  "z": -15678
+                },
+                "to": {
+                  "x": -10115,
+                  "y": -2827,
+                  "z": -15678
+                },
+                "cooldownTicksRemaining": 160,
+                "weaponRecoveryTicks": 0,
+                "combatStatePolicy": "preserve_existing_combat_state"
+              }
+            },
+            {
+              "id": "event.33",
+              "serverTick": 1590,
+              "kind": "cooldownStarted",
+              "subjectId": "combat.09bbca203d173a9e",
+              "actorId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.34",
+              "serverTick": 1610,
+              "kind": "playerJoined",
+              "subjectId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.35",
+              "serverTick": 1621,
+              "kind": "playerJoined",
+              "subjectId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.36",
+              "serverTick": 1705,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.786128d33b00c937.1",
+              "actorId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "targetId": null,
+              "amountHealthPoints": null
+            }
+          ]
+        },
+        "localPredictedPosition": {
+          "x": 33500,
+          "y": 0,
+          "z": 3500
+        },
+        "localPredictedYawMilliDegrees": 180000,
+        "remotePositions": [
+          {
+            "x": -33500,
+            "y": 0,
+            "z": 3500
+          },
+          {
+            "x": -10115,
+            "y": -219577,
+            "z": -15678
+          },
+          {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          }
+        ],
+        "lastError": "authority socket closed (1013: Snapshot acknowledgement timeout)",
+        "presentation": {
+          "status": "ready",
+          "hydrationCount": 3,
+          "intentCount": 14,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 1
+        },
+        "roomVerification": {
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "simulationIdentity": {
+            "schemaVersion": 1,
+            "mapId": "inkfall_foundry",
+            "rulesetId": "revamped_classic",
+            "rulesetRevision": 3,
+            "rulesetHash": "d5f0418d1d927370",
+            "movementProfileId": "phase3_hypothesis_v1",
+            "movementProfileRevision": 1,
+            "movementProfileHash": "8ab4ed437a4393c0",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "physicsAdapterId": "rapier3d_deterministic_compat",
+            "physicsAdapterVersion": "0.19.3"
+          },
+          "identityChecks": 1635
+        }
+      },
+      "consoleErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-2",
+      "snapshot": {
+        "schemaVersion": 1,
+        "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+        "roomCode": "KYX-YJES4Y",
+        "connection": "closed",
+        "matchId": "match.71116dfbc16d401bb2bfcfc2cb9460d5",
+        "playerId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+        "remotePlayers": 3,
+        "fullSnapshots": 3,
+        "deltaSnapshots": 24,
+        "commandsGenerated": 164,
+        "inputAcks": 160,
+        "reconciliations": 26,
+        "resumeSuccesses": 0,
+        "combat": {
+          "enabled": true,
+          "snapshot": {
+            "schemaVersion": 1,
+            "players": [
+              {
+                "playerId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 49,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1707,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 1,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1610,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 1,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 0,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 40,
+                "reserveRounds": 142,
+                "nextShotAtTick": 1454,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 18,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1621,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1621,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              }
+            ],
+            "projectiles": [],
+            "match": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 7888,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 1
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 1,
+              "result": null
+            }
+          },
+          "recentEvents": [
+            {
+              "id": "event.34",
+              "serverTick": 1610,
+              "kind": "playerJoined",
+              "subjectId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.35",
+              "serverTick": 1621,
+              "kind": "playerJoined",
+              "subjectId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.36",
+              "serverTick": 1705,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.786128d33b00c937.1",
+              "actorId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "targetId": null,
+              "amountHealthPoints": null
+            }
+          ]
+        },
+        "localPredictedPosition": {
+          "x": -33500,
+          "y": 0,
+          "z": 3500
+        },
+        "localPredictedYawMilliDegrees": 289500,
+        "remotePositions": [
+          {
+            "x": 33500,
+            "y": 0,
+            "z": 3500
+          },
+          {
+            "x": -10115,
+            "y": -219577,
+            "z": -15678
+          },
+          {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          }
+        ],
+        "lastError": "authority socket closed (1013: Snapshot acknowledgement timeout)",
+        "presentation": {
+          "status": "ready",
+          "hydrationCount": 3,
+          "intentCount": 3,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        "roomVerification": {
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "simulationIdentity": {
+            "schemaVersion": 1,
+            "mapId": "inkfall_foundry",
+            "rulesetId": "revamped_classic",
+            "rulesetRevision": 3,
+            "rulesetHash": "d5f0418d1d927370",
+            "movementProfileId": "phase3_hypothesis_v1",
+            "movementProfileRevision": 1,
+            "movementProfileHash": "8ab4ed437a4393c0",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "physicsAdapterId": "rapier3d_deterministic_compat",
+            "physicsAdapterVersion": "0.19.3"
+          },
+          "identityChecks": 57
+        }
+      },
+      "consoleErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-3",
+      "snapshot": {
+        "schemaVersion": 1,
+        "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+        "roomCode": "KYX-YJES4Y",
+        "connection": "joined",
+        "matchId": "match.71116dfbc16d401bb2bfcfc2cb9460d5",
+        "playerId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+        "remotePlayers": 0,
+        "fullSnapshots": 3,
+        "deltaSnapshots": 123,
+        "commandsGenerated": 371,
+        "inputAcks": 373,
+        "reconciliations": 125,
+        "resumeSuccesses": 0,
+        "combat": {
+          "enabled": true,
+          "snapshot": {
+            "schemaVersion": 1,
+            "players": [
+              {
+                "playerId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 1621,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 1621,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              }
+            ],
+            "projectiles": [],
+            "match": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 7646,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 1
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 1,
+              "result": null
+            }
+          },
+          "recentEvents": [
+            {
+              "id": "event.35",
+              "serverTick": 1621,
+              "kind": "playerJoined",
+              "subjectId": "player.cd291b71-750e-44a5-a4c4-3baf5b4bba6a",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.36",
+              "serverTick": 1705,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.786128d33b00c937.1",
+              "actorId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.37",
+              "serverTick": 1971,
+              "kind": "playerLeft",
+              "subjectId": "player.78e7b4a2-4783-4ecf-8144-6217da34ae38",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.38",
+              "serverTick": 1971,
+              "kind": "playerLeft",
+              "subjectId": "player.7af92a68-152d-4fee-b0ed-289f310ad581",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.39",
+              "serverTick": 1973,
+              "kind": "playerLeft",
+              "subjectId": "player.8bb3a8f8-572d-4f52-9d16-8c3caf422431",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            }
+          ]
+        },
+        "localPredictedPosition": {
+          "x": 33500,
+          "y": 0,
+          "z": -3500
+        },
+        "localPredictedYawMilliDegrees": 180000,
+        "remotePositions": [],
+        "lastError": null,
+        "presentation": {
+          "status": "ready",
+          "hydrationCount": 2,
+          "intentCount": 2,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        "roomVerification": {
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "simulationIdentity": {
+            "schemaVersion": 1,
+            "mapId": "inkfall_foundry",
+            "rulesetId": "revamped_classic",
+            "rulesetRevision": 3,
+            "rulesetHash": "d5f0418d1d927370",
+            "movementProfileId": "phase3_hypothesis_v1",
+            "movementProfileRevision": 1,
+            "movementProfileHash": "8ab4ed437a4393c0",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "physicsAdapterId": "rapier3d_deterministic_compat",
+            "physicsAdapterVersion": "0.19.3"
+          },
+          "identityChecks": 255
+        }
+      },
+      "consoleErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": []
+    }
+  ],
+  "connectionTimeline": [
+    {
+      "observedAt": "2026-07-22T17:43:14.987Z",
+      "observedAtMilliseconds": 1784742194987,
+      "label": "population-2",
+      "clientId": "client-0",
+      "connection": "joined",
+      "lastError": null,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 0,
+      "inputAcks": 0,
+      "snapshotAcksSent": null
+    },
+    {
+      "observedAt": "2026-07-22T17:43:14.987Z",
+      "observedAtMilliseconds": 1784742194987,
+      "label": "population-2",
+      "clientId": "client-1",
+      "connection": "joined",
+      "lastError": null,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 0,
+      "inputAcks": 0,
+      "snapshotAcksSent": null
+    },
+    {
+      "observedAt": "2026-07-22T17:44:36.077Z",
+      "observedAtMilliseconds": 1784742276077,
+      "label": "population-4",
+      "clientId": "client-2",
+      "connection": "joined",
+      "lastError": null,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 5,
+      "inputAcks": 11,
+      "snapshotAcksSent": null
+    },
+    {
+      "observedAt": "2026-07-22T17:44:36.077Z",
+      "observedAtMilliseconds": 1784742276077,
+      "label": "population-4",
+      "clientId": "client-3",
+      "connection": "joined",
+      "lastError": null,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 0,
+      "inputAcks": 0,
+      "snapshotAcksSent": null
+    }
+  ],
+  "roomMetricsTimeline": [
+    {
+      "observedAt": "2026-07-22T17:43:14.994Z",
+      "observedAtMilliseconds": 1784742194994,
+      "label": "population-2",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "metrics": {
+          "serverTick": 0,
+          "lifecycle": "warmup",
+          "players": 2,
+          "connectedPlayers": 2,
+          "ticks": 0,
+          "acceptedInputs": 0,
+          "inputRejections": {
+            "duplicate_sequence": 0,
+            "stale_sequence": 0,
+            "sequence_too_far_ahead": 0,
+            "client_tick_too_far_ahead": 0,
+            "client_tick_too_old": 0,
+            "queue_full": 0
+          },
+          "maximumObservedQueueDepth": 0,
+          "missedSchedulerTicks": 0,
+          "queryMetrics": {
+            "moveCapsuleCalls": 0,
+            "overlapCapsuleCalls": 0,
+            "castCapsuleCalls": 0,
+            "volumeCalls": 0,
+            "shapeCasts": 0,
+            "overlapTests": 0,
+            "contacts": 0
+          },
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "lastTickFailure": null,
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "transport": {
+            "inboundMessagesReceived": 9,
+            "inboundMessagesRateAccepted": 9,
+            "inboundMessagesRateRejected": 0,
+            "fullSnapshotsSent": 2,
+            "deltaSnapshotsSent": 0,
+            "snapshotAcksAccepted": 5,
+            "snapshotAcksRejected": 0,
+            "snapshotAckTimeoutFallbacks": 0,
+            "snapshotAckDebtEpisodes": 2,
+            "snapshotAckDebtSnapshotsCoalesced": 0,
+            "snapshotAckDebtReliableBatchesCoalesced": 0,
+            "snapshotAckDebtRecoveries": 2,
+            "snapshotAckDebtEvictions": 0,
+            "maximumSnapshotAckDebtMilliseconds": 0,
+            "snapshotHistoryFallbacks": 0,
+            "reliableEventsRecorded": 2,
+            "reliableEventBatchesSent": 3,
+            "reliableEventResendBatches": 0,
+            "reliableEventAcksAccepted": 5,
+            "reliableEventAcksRejected": 0,
+            "reliableEventHistoryFallbacks": 0,
+            "backpressureEpisodes": 0,
+            "backpressureMessagesCoalesced": 0,
+            "slowConsumerRecoveries": 2,
+            "slowConsumerEvictions": 0,
+            "maximumObservedSocketBufferedBytes": 0,
+            "lobbyCheckpointRehydrates": 0,
+            "lobbyCheckpointPlayersRestored": 0,
+            "durableAlarmRuns": 0,
+            "expiredResumeSessionsPruned": 0,
+            "loadoutRequestsAccepted": 0,
+            "loadoutRequestsRejected": 0,
+            "loadoutRequestsReplayed": 0,
+            "loadoutRequestIdConflicts": 0
+          }
+        }
+      }
+    },
+    {
+      "observedAt": "2026-07-22T17:44:36.218Z",
+      "observedAtMilliseconds": 1784742276218,
+      "label": "population-4",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "metrics": {
+          "serverTick": 1622,
+          "lifecycle": "active",
+          "players": 4,
+          "connectedPlayers": 4,
+          "ticks": 1622,
+          "acceptedInputs": 3229,
+          "inputRejections": {
+            "duplicate_sequence": 0,
+            "stale_sequence": 0,
+            "sequence_too_far_ahead": 0,
+            "client_tick_too_far_ahead": 0,
+            "client_tick_too_old": 0,
+            "queue_full": 0
+          },
+          "maximumObservedQueueDepth": 2,
+          "missedSchedulerTicks": 0,
+          "queryMetrics": {
+            "moveCapsuleCalls": 3092,
+            "overlapCapsuleCalls": 1,
+            "castCapsuleCalls": 1,
+            "volumeCalls": 3092,
+            "shapeCasts": 1048527,
+            "overlapTests": 1051227,
+            "contacts": 72
+          },
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "lastTickFailure": null,
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "transport": {
+            "inboundMessagesReceived": 4899,
+            "inboundMessagesRateAccepted": 4899,
+            "inboundMessagesRateRejected": 0,
+            "fullSnapshotsSent": 5,
+            "deltaSnapshotsSent": 1610,
+            "snapshotAcksAccepted": 1660,
+            "snapshotAcksRejected": 0,
+            "snapshotAckTimeoutFallbacks": 0,
+            "snapshotAckDebtEpisodes": 48,
+            "snapshotAckDebtSnapshotsCoalesced": 16,
+            "snapshotAckDebtReliableBatchesCoalesced": 5,
+            "snapshotAckDebtRecoveries": 46,
+            "snapshotAckDebtEvictions": 0,
+            "maximumSnapshotAckDebtMilliseconds": 112,
+            "snapshotHistoryFallbacks": 0,
+            "reliableEventsRecorded": 35,
+            "reliableEventBatchesSent": 50,
+            "reliableEventResendBatches": 2,
+            "reliableEventAcksAccepted": 1660,
+            "reliableEventAcksRejected": 0,
+            "reliableEventHistoryFallbacks": 0,
+            "backpressureEpisodes": 0,
+            "backpressureMessagesCoalesced": 0,
+            "slowConsumerRecoveries": 46,
+            "slowConsumerEvictions": 0,
+            "maximumObservedSocketBufferedBytes": 0,
+            "lobbyCheckpointRehydrates": 0,
+            "lobbyCheckpointPlayersRestored": 0,
+            "durableAlarmRuns": 0,
+            "expiredResumeSessionsPruned": 0,
+            "loadoutRequestsAccepted": 0,
+            "loadoutRequestsRejected": 0,
+            "loadoutRequestsReplayed": 0,
+            "loadoutRequestIdConflicts": 0
+          }
+        }
+      }
+    },
+    {
+      "observedAt": "2026-07-22T17:44:54.727Z",
+      "observedAtMilliseconds": 1784742294727,
+      "label": "capture-failure",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "metrics": {
+          "serverTick": 1995,
+          "lifecycle": "active",
+          "players": 1,
+          "connectedPlayers": 1,
+          "ticks": 1995,
+          "acceptedInputs": 4023,
+          "inputRejections": {
+            "duplicate_sequence": 0,
+            "stale_sequence": 0,
+            "sequence_too_far_ahead": 0,
+            "client_tick_too_far_ahead": 0,
+            "client_tick_too_old": 0,
+            "queue_full": 0
+          },
+          "maximumObservedQueueDepth": 7,
+          "missedSchedulerTicks": 0,
+          "queryMetrics": {
+            "moveCapsuleCalls": 3911,
+            "overlapCapsuleCalls": 1,
+            "castCapsuleCalls": 1,
+            "volumeCalls": 3911,
+            "shapeCasts": 1326168,
+            "overlapTests": 1329987,
+            "contacts": 72
+          },
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "lastTickFailure": null,
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "transport": {
+            "inboundMessagesReceived": 5922,
+            "inboundMessagesRateAccepted": 5922,
+            "inboundMessagesRateRejected": 0,
+            "fullSnapshotsSent": 13,
+            "deltaSnapshotsSent": 1786,
+            "snapshotAcksAccepted": 1853,
+            "snapshotAcksRejected": 0,
+            "snapshotAckTimeoutFallbacks": 8,
+            "snapshotAckDebtEpisodes": 110,
+            "snapshotAckDebtSnapshotsCoalesced": 238,
+            "snapshotAckDebtReliableBatchesCoalesced": 49,
+            "snapshotAckDebtRecoveries": 107,
+            "snapshotAckDebtEvictions": 3,
+            "maximumSnapshotAckDebtMilliseconds": 3040,
+            "snapshotHistoryFallbacks": 0,
+            "reliableEventsRecorded": 39,
+            "reliableEventBatchesSent": 60,
+            "reliableEventResendBatches": 6,
+            "reliableEventAcksAccepted": 1853,
+            "reliableEventAcksRejected": 0,
+            "reliableEventHistoryFallbacks": 0,
+            "backpressureEpisodes": 0,
+            "backpressureMessagesCoalesced": 0,
+            "slowConsumerRecoveries": 107,
+            "slowConsumerEvictions": 3,
+            "maximumObservedSocketBufferedBytes": 0,
+            "lobbyCheckpointRehydrates": 0,
+            "lobbyCheckpointPlayersRestored": 0,
+            "durableAlarmRuns": 0,
+            "expiredResumeSessionsPruned": 3,
+            "loadoutRequestsAccepted": 0,
+            "loadoutRequestsRejected": 0,
+            "loadoutRequestsReplayed": 0,
+            "loadoutRequestIdConflicts": 0
+          }
+        }
+      }
+    }
+  ],
+  "vite": [
+    "  \u001b[32m\u001b[1mVITE\u001b[22m v8.0.16\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m158\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m",
+    "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m5173\u001b[22m/\u001b[39m"
+  ],
+  "wrangler": [
+    " ⛅️ wrangler 4.112.0 (update available 4.113.0)",
+    "───────────────────────────────────────────────",
+    "Your Worker has access to the following bindings:",
+    "Binding                                                               Resource                  Mode",
+    "env.KYX_ROOM (KyxRoom)                                                Durable Object            local",
+    "env.ALLOWED_ORIGINS (\"http://127.0.0.1:5173,http://localhos...\")      Environment Variable      local",
+    "env.BUILD_ID (\"phase4-local\")                                         Environment Variable      local",
+    "⎔ Starting local server...",
+    "[wrangler:info] Ready on http://127.0.0.1:8787",
+    "[wrangler:info] GET /health 200 OK (66ms)",
+    "[wrangler:info] OPTIONS /api/rooms/create 204 No Content (1ms)",
+    "[wrangler:info] POST /api/rooms/create 201 Created (50ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/socket 101 Switching Protocols (7ms)",
+    "[wrangler:info] OPTIONS /api/rooms/KYX-YJES4Y 204 No Content (2ms)",
+    "[wrangler:info] POST /api/rooms/KYX-YJES4Y 201 Created (1ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/socket 101 Switching Protocols (2ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/metrics 200 OK (3ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/socket 101 Switching Protocols (2ms)",
+    "[wrangler:info] OPTIONS /api/rooms/KYX-YJES4Y 204 No Content (5ms)",
+    "[wrangler:info] POST /api/rooms/KYX-YJES4Y 201 Created (2ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/socket 101 Switching Protocols (2ms)",
+    "[wrangler:info] OPTIONS /api/rooms/KYX-YJES4Y 204 No Content (6ms)",
+    "[wrangler:info] POST /api/rooms/KYX-YJES4Y 201 Created (11ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/socket 101 Switching Protocols (18ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/metrics 200 OK (36ms)",
+    "[wrangler:info] GET /api/rooms/KYX-YJES4Y/metrics 200 OK (9ms)"
+  ]
+}

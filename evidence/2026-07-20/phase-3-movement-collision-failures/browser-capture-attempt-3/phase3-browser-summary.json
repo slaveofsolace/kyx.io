@@ -1,0 +1,2831 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-20T13:32:08.264Z",
+  "evidenceLabel": "HYPOTHESIS",
+  "productStatus": "NON_PRODUCT_FIXTURE_EVIDENCE",
+  "artifactScope": "PHASE3_BROWSER_CAPTURE_ONLY",
+  "g2Status": "OPEN",
+  "humanReviewStatus": "PENDING_HUMAN_REVIEW",
+  "visualApproval": "NOT_PERFORMED_OR_CLAIMED",
+  "baseUrl": "http://127.0.0.1:5999/",
+  "outputDirectory": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\evidence\\2026-07-20\\phase-3-movement-collision\\browser",
+  "nodeEvidence": {
+    "path": "evidence/2026-07-20/phase-3-movement-collision/movement-tapes.json",
+    "bytes": 486042,
+    "sha256": "0186b16843e806f76b31630282727d157bf6fe8b4b1cbe9671cd4f27d1c78d98",
+    "capturedAt": "2026-07-20T13:22:24.045Z",
+    "completedAt": "2026-07-20T13:22:24.836Z",
+    "artifactScope": "AUTOMATED_NODE_TAPE_CAPTURE",
+    "ok": true,
+    "canonicalTape": {
+      "id": "flat_run_fixed_20hz_v1",
+      "schemaVersion": 1,
+      "simulationRateHz": 20,
+      "frameCount": 48,
+      "movementReplaySchemaVersion": 1,
+      "movementStateSchemaVersion": 1,
+      "fixtureSchemaVersion": 1,
+      "identity": {
+        "rulesetId": "movement_fixture_lab",
+        "rulesetRevision": 1,
+        "movementProfileId": "phase3_hypothesis_v1",
+        "movementProfileRevision": 1,
+        "movementProfileHash": "8ab4ed437a4393c0",
+        "fixtureId": "flat_run",
+        "fixtureHash": "44bfdf2fdced9d9c",
+        "physicsAdapterId": "rapier3d_deterministic_compat",
+        "physicsAdapterVersion": "0.19.3"
+      },
+      "start": {
+        "playerId": "local-player",
+        "feetPosition": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "yawMilliDegrees": 0,
+        "pitchMilliDegrees": 0,
+        "grounded": true,
+        "stance": "standing",
+        "selectedSlot": 0
+      },
+      "frames": [
+        {
+          "authorityTick": 1,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 0,
+              "clientTick": 0,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 2,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 2,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 1,
+              "clientTick": 1,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 3,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 2,
+              "clientTick": 2,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 4,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 3,
+              "clientTick": 3,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 5,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 4,
+              "clientTick": 4,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 6,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 5,
+              "clientTick": 5,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 7,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 6,
+              "clientTick": 6,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 3,
+              "pressedButtons": 1,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 8,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 7,
+              "clientTick": 7,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 1
+            }
+          ]
+        },
+        {
+          "authorityTick": 9,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 8,
+              "clientTick": 8,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 10,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 9,
+              "clientTick": 9,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 11,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 10,
+              "clientTick": 10,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 12,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 11,
+              "clientTick": 11,
+              "moveX": 0,
+              "moveZ": 127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 13,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 12,
+              "clientTick": 12,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 14,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 13,
+              "clientTick": 13,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 15,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 14,
+              "clientTick": 14,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 16,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 15,
+              "clientTick": 15,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 17,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 16,
+              "clientTick": 16,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 18,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 17,
+              "clientTick": 17,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 19,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 18,
+              "clientTick": 18,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 20,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 19,
+              "clientTick": 19,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 21,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 20,
+              "clientTick": 20,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 22,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 21,
+              "clientTick": 21,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 23,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 22,
+              "clientTick": 22,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 24,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 23,
+              "clientTick": 23,
+              "moveX": 127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 2,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 25,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 24,
+              "clientTick": 24,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 2
+            }
+          ]
+        },
+        {
+          "authorityTick": 26,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 25,
+              "clientTick": 25,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 27,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 26,
+              "clientTick": 26,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 28,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 27,
+              "clientTick": 27,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 29,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 28,
+              "clientTick": 28,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 30,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 29,
+              "clientTick": 29,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 31,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 30,
+              "clientTick": 30,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 32,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 31,
+              "clientTick": 31,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 33,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 32,
+              "clientTick": 32,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 34,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 33,
+              "clientTick": 33,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 35,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 34,
+              "clientTick": 34,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 36,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 35,
+              "clientTick": 35,
+              "moveX": 0,
+              "moveZ": -127,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 37,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 36,
+              "clientTick": 36,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 38,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 37,
+              "clientTick": 37,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 39,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 38,
+              "clientTick": 38,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 40,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 39,
+              "clientTick": 39,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 41,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 40,
+              "clientTick": 40,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 42,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 41,
+              "clientTick": 41,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 43,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 42,
+              "clientTick": 42,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 44,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 43,
+              "clientTick": 43,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 45,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 44,
+              "clientTick": 44,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 46,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 45,
+              "clientTick": 45,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 47,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 46,
+              "clientTick": 46,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        },
+        {
+          "authorityTick": 48,
+          "commands": [
+            {
+              "kind": "player_intent",
+              "sequence": 47,
+              "clientTick": 47,
+              "moveX": -127,
+              "moveZ": 0,
+              "lookYawDeltaMilliDegrees": 0,
+              "lookPitchDeltaMilliDegrees": 0,
+              "heldButtons": 0,
+              "pressedButtons": 0,
+              "releasedButtons": 0
+            }
+          ]
+        }
+      ],
+      "canonicalInputSha256": "c5504bdfa737dae5c5d69672d9fd8c96fd0da422f6bb4471b8696b87a592b820",
+      "recordedFinalHash": "66fcaf19c3fd94ad",
+      "firstFinalHash": "66fcaf19c3fd94ad",
+      "secondFinalHash": "66fcaf19c3fd94ad",
+      "firstSummarySha256": "052dc8419cdbfee402e747f9041c6d2a4a68ebbebc1939746ede5e32644f6b52",
+      "secondSummarySha256": "052dc8419cdbfee402e747f9041c6d2a4a68ebbebc1939746ede5e32644f6b52",
+      "repeatConfirmed": true,
+      "recordedMatch": true,
+      "result": {
+        "finalHash": "66fcaf19c3fd94ad",
+        "stateHashes": [
+          "dd12e51dbb65ef53",
+          "bfdf9540b624ca6a",
+          "39171570fa6b24e0",
+          "b5e100c7cda9ac8d",
+          "99f5a7ba4585f10b",
+          "69ef77d706202427",
+          "ffd3b4c7f718c3f7",
+          "f3ee233917b71171",
+          "c517ba7e127da399",
+          "45b217fddcfa5986",
+          "8f14b5951511bc97",
+          "829f6562b4b9c907",
+          "3224a334a3008826",
+          "f49156bf3158aae1",
+          "bd2c869cf3905911",
+          "fd7b1b2b1d7e6e63",
+          "749422b0e86f0185",
+          "60d79679c74ee352",
+          "69072f6515c3621e",
+          "0b9850b1f1687e2d",
+          "5f3266d05ee88a50",
+          "526c4e58a0862432",
+          "b17d92f6a5fc66cc",
+          "708dc5d08ee33c83",
+          "5ad8c4c7d851793a",
+          "40f7584eddaeb75c",
+          "bb6757ec6fa65235",
+          "5510227ab3a1ceea",
+          "cd9f3309327739fa",
+          "9ffcc3af652256a8",
+          "6e27f21b717a2e8e",
+          "47d40a88c2794243",
+          "36bd91bbce47f26b",
+          "75b62389f198e8bf",
+          "9d3b33c45ed15ae1",
+          "d1e145227000942f",
+          "6991f6099a5a78ac",
+          "d7f21140a95baa8b",
+          "f4e993a67baf4327",
+          "8d2f7662e5100be7",
+          "34f01b53802aaec7",
+          "9b79ba8f9d734ca3",
+          "f357c51122877b86",
+          "8c79cd8b9d8cb078",
+          "e18b27fe112b0a4e",
+          "0c28bda858b124bc",
+          "4ff5a19267151eef",
+          "36d2e2a4fde0b770",
+          "66fcaf19c3fd94ad"
+        ],
+        "events": [
+          {
+            "kind": "movement_intent_applied",
+            "tick": 1,
+            "entityId": "local-player",
+            "sequence": 0
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 2,
+            "entityId": "local-player",
+            "sequence": 1
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 3,
+            "entityId": "local-player",
+            "sequence": 2
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 4,
+            "entityId": "local-player",
+            "sequence": 3
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 5,
+            "entityId": "local-player",
+            "sequence": 4
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 6,
+            "entityId": "local-player",
+            "sequence": 5
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 7,
+            "entityId": "local-player",
+            "sequence": 6
+          },
+          {
+            "kind": "jumped",
+            "tick": 7,
+            "entityId": "local-player",
+            "buffered": false
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 8,
+            "entityId": "local-player",
+            "sequence": 7
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 9,
+            "entityId": "local-player",
+            "sequence": 8
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 10,
+            "entityId": "local-player",
+            "sequence": 9
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 11,
+            "entityId": "local-player",
+            "sequence": 10
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 12,
+            "entityId": "local-player",
+            "sequence": 11
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 13,
+            "entityId": "local-player",
+            "sequence": 12
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 14,
+            "entityId": "local-player",
+            "sequence": 13
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 15,
+            "entityId": "local-player",
+            "sequence": 14
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 16,
+            "entityId": "local-player",
+            "sequence": 15
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 17,
+            "entityId": "local-player",
+            "sequence": 16
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 18,
+            "entityId": "local-player",
+            "sequence": 17
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 19,
+            "entityId": "local-player",
+            "sequence": 18
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 20,
+            "entityId": "local-player",
+            "sequence": 19
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 21,
+            "entityId": "local-player",
+            "sequence": 20
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 22,
+            "entityId": "local-player",
+            "sequence": 21
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 23,
+            "entityId": "local-player",
+            "sequence": 22
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 24,
+            "entityId": "local-player",
+            "sequence": 23
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 25,
+            "entityId": "local-player",
+            "sequence": 24
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 26,
+            "entityId": "local-player",
+            "sequence": 25
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 27,
+            "entityId": "local-player",
+            "sequence": 26
+          },
+          {
+            "kind": "landed",
+            "tick": 27,
+            "entityId": "local-player",
+            "impactSpeedMmPerSecond": 10000
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 28,
+            "entityId": "local-player",
+            "sequence": 27
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 29,
+            "entityId": "local-player",
+            "sequence": 28
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 30,
+            "entityId": "local-player",
+            "sequence": 29
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 31,
+            "entityId": "local-player",
+            "sequence": 30
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 32,
+            "entityId": "local-player",
+            "sequence": 31
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 33,
+            "entityId": "local-player",
+            "sequence": 32
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 34,
+            "entityId": "local-player",
+            "sequence": 33
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 35,
+            "entityId": "local-player",
+            "sequence": 34
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 36,
+            "entityId": "local-player",
+            "sequence": 35
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 37,
+            "entityId": "local-player",
+            "sequence": 36
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 38,
+            "entityId": "local-player",
+            "sequence": 37
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 39,
+            "entityId": "local-player",
+            "sequence": 38
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 40,
+            "entityId": "local-player",
+            "sequence": 39
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 41,
+            "entityId": "local-player",
+            "sequence": 40
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 42,
+            "entityId": "local-player",
+            "sequence": 41
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 43,
+            "entityId": "local-player",
+            "sequence": 42
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 44,
+            "entityId": "local-player",
+            "sequence": 43
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 45,
+            "entityId": "local-player",
+            "sequence": 44
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 46,
+            "entityId": "local-player",
+            "sequence": 45
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 47,
+            "entityId": "local-player",
+            "sequence": 46
+          },
+          {
+            "kind": "movement_intent_applied",
+            "tick": 48,
+            "entityId": "local-player",
+            "sequence": 47
+          }
+        ],
+        "samples": [
+          {
+            "authorityTick": 0,
+            "stateHash": "dd12e51dbb65ef53",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 0,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 0,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 0,
+              "shapeCasts": 0,
+              "overlapTests": 0,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 1,
+            "stateHash": "bfdf9540b624ca6a",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 150
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 3000
+            },
+            "planarSpeedMmPerSecond": 3000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 2,
+            "stateHash": "39171570fa6b24e0",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 450
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 6000
+            },
+            "planarSpeedMmPerSecond": 6000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 3,
+            "stateHash": "b5e100c7cda9ac8d",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 900
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 4,
+            "stateHash": "99f5a7ba4585f10b",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 1350
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 5,
+            "stateHash": "69ef77d706202427",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 1800
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 6,
+            "stateHash": "ffd3b4c7f718c3f7",
+            "feetPosition": {
+              "x": 0,
+              "y": 0,
+              "z": 2250
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 7,
+            "stateHash": "f3ee233917b71171",
+            "feetPosition": {
+              "x": 0,
+              "y": 500,
+              "z": 2700
+            },
+            "velocity": {
+              "x": 0,
+              "y": 10000,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 8,
+            "stateHash": "c517ba7e127da399",
+            "feetPosition": {
+              "x": 0,
+              "y": 950,
+              "z": 3150
+            },
+            "velocity": {
+              "x": 0,
+              "y": 9000,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 9,
+            "stateHash": "45b217fddcfa5986",
+            "feetPosition": {
+              "x": 0,
+              "y": 1350,
+              "z": 3600
+            },
+            "velocity": {
+              "x": 0,
+              "y": 8000,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 10,
+            "stateHash": "8f14b5951511bc97",
+            "feetPosition": {
+              "x": 0,
+              "y": 1700,
+              "z": 4050
+            },
+            "velocity": {
+              "x": 0,
+              "y": 7000,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 11,
+            "stateHash": "829f6562b4b9c907",
+            "feetPosition": {
+              "x": 0,
+              "y": 2000,
+              "z": 4500
+            },
+            "velocity": {
+              "x": 0,
+              "y": 6000,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 12,
+            "stateHash": "3224a334a3008826",
+            "feetPosition": {
+              "x": 0,
+              "y": 2250,
+              "z": 4950
+            },
+            "velocity": {
+              "x": 0,
+              "y": 5000,
+              "z": 9000
+            },
+            "planarSpeedMmPerSecond": 9000,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 13,
+            "stateHash": "f49156bf3158aae1",
+            "feetPosition": {
+              "x": 28,
+              "y": 2450,
+              "z": 5371
+            },
+            "velocity": {
+              "x": 566,
+              "y": 4000,
+              "z": 8434
+            },
+            "planarSpeedMmPerSecond": 8452,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 14,
+            "stateHash": "bd2c869cf3905911",
+            "feetPosition": {
+              "x": 83,
+              "y": 2600,
+              "z": 5764
+            },
+            "velocity": {
+              "x": 1112,
+              "y": 3000,
+              "z": 7850
+            },
+            "planarSpeedMmPerSecond": 7928,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 15,
+            "stateHash": "fd7b1b2b1d7e6e63",
+            "feetPosition": {
+              "x": 165,
+              "y": 2700,
+              "z": 6126
+            },
+            "velocity": {
+              "x": 1640,
+              "y": 2000,
+              "z": 7249
+            },
+            "planarSpeedMmPerSecond": 7432,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 16,
+            "stateHash": "749422b0e86f0185",
+            "feetPosition": {
+              "x": 274,
+              "y": 2750,
+              "z": 6459
+            },
+            "velocity": {
+              "x": 2168,
+              "y": 1000,
+              "z": 6648
+            },
+            "planarSpeedMmPerSecond": 6992,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 17,
+            "stateHash": "60d79679c74ee352",
+            "feetPosition": {
+              "x": 409,
+              "y": 2750,
+              "z": 6761
+            },
+            "velocity": {
+              "x": 2696,
+              "y": 0,
+              "z": 6047
+            },
+            "planarSpeedMmPerSecond": 6620,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 18,
+            "stateHash": "69072f6515c3621e",
+            "feetPosition": {
+              "x": 570,
+              "y": 2700,
+              "z": 7033
+            },
+            "velocity": {
+              "x": 3224,
+              "y": -1000,
+              "z": 5446
+            },
+            "planarSpeedMmPerSecond": 6328,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 19,
+            "stateHash": "0b9850b1f1687e2d",
+            "feetPosition": {
+              "x": 757,
+              "y": 2600,
+              "z": 7275
+            },
+            "velocity": {
+              "x": 3752,
+              "y": -2000,
+              "z": 4844
+            },
+            "planarSpeedMmPerSecond": 6127,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 20,
+            "stateHash": "5f3266d05ee88a50",
+            "feetPosition": {
+              "x": 971,
+              "y": 2450,
+              "z": 7488
+            },
+            "velocity": {
+              "x": 4280,
+              "y": -3000,
+              "z": 4242
+            },
+            "planarSpeedMmPerSecond": 6026,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 21,
+            "stateHash": "526c4e58a0862432",
+            "feetPosition": {
+              "x": 1212,
+              "y": 2250,
+              "z": 7670
+            },
+            "velocity": {
+              "x": 4807,
+              "y": -4000,
+              "z": 3641
+            },
+            "planarSpeedMmPerSecond": 6030,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 22,
+            "stateHash": "b17d92f6a5fc66cc",
+            "feetPosition": {
+              "x": 1479,
+              "y": 2000,
+              "z": 7822
+            },
+            "velocity": {
+              "x": 5335,
+              "y": -5000,
+              "z": 3039
+            },
+            "planarSpeedMmPerSecond": 6139,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 23,
+            "stateHash": "708dc5d08ee33c83",
+            "feetPosition": {
+              "x": 1772,
+              "y": 1700,
+              "z": 7943
+            },
+            "velocity": {
+              "x": 5863,
+              "y": -6000,
+              "z": 2437
+            },
+            "planarSpeedMmPerSecond": 6349,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 24,
+            "stateHash": "5ad8c4c7d851793a",
+            "feetPosition": {
+              "x": 2091,
+              "y": 1350,
+              "z": 8035
+            },
+            "velocity": {
+              "x": 6390,
+              "y": -7000,
+              "z": 1835
+            },
+            "planarSpeedMmPerSecond": 6648,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 25,
+            "stateHash": "40f7584eddaeb75c",
+            "feetPosition": {
+              "x": 2389,
+              "y": 950,
+              "z": 8093
+            },
+            "velocity": {
+              "x": 5954,
+              "y": -8000,
+              "z": 1164
+            },
+            "planarSpeedMmPerSecond": 6066,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 26,
+            "stateHash": "bb6757ec6fa65235",
+            "feetPosition": {
+              "x": 2665,
+              "y": 500,
+              "z": 8118
+            },
+            "velocity": {
+              "x": 5518,
+              "y": -9000,
+              "z": 493
+            },
+            "planarSpeedMmPerSecond": 5539,
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 4,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 27,
+            "stateHash": "5510227ab3a1ceea",
+            "feetPosition": {
+              "x": 2919,
+              "y": 20,
+              "z": 8110
+            },
+            "velocity": {
+              "x": 5082,
+              "y": 0,
+              "z": -178
+            },
+            "planarSpeedMmPerSecond": 5085,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 28,
+            "stateHash": "cd9f3309327739fa",
+            "feetPosition": {
+              "x": 3083,
+              "y": 20,
+              "z": 7981
+            },
+            "velocity": {
+              "x": 3290,
+              "y": 0,
+              "z": -2584
+            },
+            "planarSpeedMmPerSecond": 4183,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 29,
+            "stateHash": "9ffcc3af652256a8",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 7731
+            },
+            "velocity": {
+              "x": 1497,
+              "y": 0,
+              "z": -4990
+            },
+            "planarSpeedMmPerSecond": 5209,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 30,
+            "stateHash": "6e27f21b717a2e8e",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 7381
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 31,
+            "stateHash": "47d40a88c2794243",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 7031
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 32,
+            "stateHash": "36bd91bbce47f26b",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 6681
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 33,
+            "stateHash": "75b62389f198e8bf",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 6331
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 34,
+            "stateHash": "9d3b33c45ed15ae1",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 5981
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 35,
+            "stateHash": "d1e145227000942f",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 5631
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 36,
+            "stateHash": "6991f6099a5a78ac",
+            "feetPosition": {
+              "x": 3158,
+              "y": 20,
+              "z": 5281
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": -7000
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 37,
+            "stateHash": "d7f21140a95baa8b",
+            "feetPosition": {
+              "x": 3053,
+              "y": 20,
+              "z": 5037
+            },
+            "velocity": {
+              "x": -2121,
+              "y": 0,
+              "z": -4879
+            },
+            "planarSpeedMmPerSecond": 5320,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 38,
+            "stateHash": "f4e993a67baf4327",
+            "feetPosition": {
+              "x": 2841,
+              "y": 20,
+              "z": 4900
+            },
+            "velocity": {
+              "x": -4243,
+              "y": 0,
+              "z": -2757
+            },
+            "planarSpeedMmPerSecond": 5060,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 39,
+            "stateHash": "8d2f7662e5100be7",
+            "feetPosition": {
+              "x": 2523,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -6365,
+              "y": 0,
+              "z": -635
+            },
+            "planarSpeedMmPerSecond": 6396,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 40,
+            "stateHash": "34f01b53802aaec7",
+            "feetPosition": {
+              "x": 2173,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 41,
+            "stateHash": "9b79ba8f9d734ca3",
+            "feetPosition": {
+              "x": 1823,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 42,
+            "stateHash": "f357c51122877b86",
+            "feetPosition": {
+              "x": 1473,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 43,
+            "stateHash": "8c79cd8b9d8cb078",
+            "feetPosition": {
+              "x": 1123,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 44,
+            "stateHash": "e18b27fe112b0a4e",
+            "feetPosition": {
+              "x": 773,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 45,
+            "stateHash": "0c28bda858b124bc",
+            "feetPosition": {
+              "x": 423,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 1
+            }
+          },
+          {
+            "authorityTick": 46,
+            "stateHash": "4ff5a19267151eef",
+            "feetPosition": {
+              "x": 73,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 47,
+            "stateHash": "36d2e2a4fde0b770",
+            "feetPosition": {
+              "x": -277,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          },
+          {
+            "authorityTick": 48,
+            "stateHash": "66fcaf19c3fd94ad",
+            "feetPosition": {
+              "x": -627,
+              "y": 20,
+              "z": 4868
+            },
+            "velocity": {
+              "x": -7000,
+              "y": 0,
+              "z": 0
+            },
+            "planarSpeedMmPerSecond": 7000,
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "queries": {
+              "moveCapsuleCalls": 1,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 1,
+              "shapeCasts": 1,
+              "overlapTests": 3,
+              "contacts": 0
+            }
+          }
+        ],
+        "envelope": {
+          "schemaVersion": 1,
+          "evidenceLabel": "HYPOTHESIS",
+          "initialTick": 0,
+          "finalTick": 48,
+          "tickCount": 48,
+          "elapsedMilliseconds": 2400,
+          "planarDistanceTravelledMm": 16737,
+          "spatialDistanceTravelledMm": 18873,
+          "displacementMm": {
+            "x": -627,
+            "y": 20,
+            "z": 4868
+          },
+          "minimumPlanarSpeedMmPerSecond": 0,
+          "maximumPlanarSpeedMmPerSecond": 9000,
+          "minimumFeetHeightMm": 0,
+          "maximumFeetHeightMm": 2750,
+          "apexHeightGainMm": 2750,
+          "airborneTicks": 20,
+          "groundedTicks": 28,
+          "jumpCount": 1,
+          "bufferedJumpCount": 0,
+          "landingCount": 1,
+          "maximumLandingImpactSpeedMmPerSecond": 10000,
+          "slideCount": 0,
+          "successfulTeleportCount": 0,
+          "rejectedTeleportCount": 0,
+          "queries": {
+            "moveCapsuleCalls": 48,
+            "overlapCapsuleCalls": 0,
+            "castCapsuleCalls": 0,
+            "volumeCalls": 48,
+            "shapeCasts": 48,
+            "overlapTests": 164,
+            "contacts": 13
+          }
+        },
+        "measurements": {
+          "speed90AttainmentTicks": {
+            "status": "measured",
+            "value": 3
+          },
+          "brakingToStopTicks": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "scenario_not_exercised"
+          },
+          "jumpApexHeightGainMm": {
+            "status": "measured",
+            "value": 2750
+          },
+          "jumpTimeToApexTicks": {
+            "status": "measured",
+            "value": 10
+          },
+          "jumpAirtimeTicks": {
+            "status": "measured",
+            "value": 20
+          },
+          "coyoteJumpWindowTicks": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "scenario_not_exercised"
+          },
+          "bufferedJumpLeadTicks": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "result_not_observed"
+          },
+          "slideDurationTicks": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "scenario_not_exercised"
+          },
+          "slideSpeedCurveMmPerSecond": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "scenario_not_exercised"
+          },
+          "teleportActualDistanceMm": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "scenario_not_exercised"
+          },
+          "teleportBackoffDistanceMm": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "scenario_not_exercised"
+          },
+          "weaponReadyRecoveryMilliseconds": {
+            "status": "not_measured",
+            "value": null,
+            "reason": "weapon_ready_recovery_out_of_scope"
+          }
+        }
+      }
+    }
+  },
+  "runtime": {
+    "node": "v24.14.0",
+    "platform": "win32",
+    "arch": "x64",
+    "playwright": null,
+    "chromium": null,
+    "userAgent": null,
+    "userAgentData": null
+  },
+  "viewport": {
+    "width": 1600,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "requirements": {
+    "fixtureTapeId": "flat_run_fixed_20hz_v1",
+    "fixtureRoute": "http://127.0.0.1:5999/__test__/movement",
+    "exactDevelopmentDriverUrl": "http://127.0.0.1:5999/?movementDriver=flat_run",
+    "evidenceOverlayText": "AUTOMATED EVIDENCE CAPTURE ONLY\nG2 OPEN · PENDING HUMAN REVIEW\nNO VISUAL APPROVAL CLAIMED",
+    "network": "No console/page/request/HTTP failures, no external HTTP requests, and no application WebSockets. Same-origin Vite HMR is the only permitted WebSocket.",
+    "media": "Fresh Chromium video and stage screenshots are automated review inputs, not visual approval."
+  },
+  "checks": [
+    {
+      "id": "node_evidence.ok",
+      "passed": true,
+      "details": {
+        "actual": true,
+        "errors": []
+      }
+    },
+    {
+      "id": "node_evidence.canonical_tape_present",
+      "passed": true,
+      "details": {
+        "tapeId": "flat_run_fixed_20hz_v1",
+        "availableTapeIds": [
+          "flat_run_fixed_20hz_v1",
+          "flat_run_accel_brake_20hz_v1",
+          "flat_run_buffer_accept_20hz_v1",
+          "flat_run_buffer_reject_20hz_v1",
+          "flat_run_coyote_accept_20hz_v1",
+          "flat_run_coyote_reject_20hz_v1",
+          "contact_lab_wall_20hz_v1",
+          "contact_lab_diagonal_glance_20hz_v1",
+          "contact_lab_corner_concave_20hz_v1",
+          "contact_lab_corner_convex_20hz_v1",
+          "contact_lab_doorway_exact_700_reject_20hz_v1",
+          "contact_lab_doorway_800_pass_20hz_v1",
+          "vertical_lab_steps_20hz_v1",
+          "slide_lab_collision_20hz_v1",
+          "slide_lab_uphill_20hz_v1",
+          "slide_lab_downhill_20hz_v1",
+          "teleport_lab_thin_wall_20hz_v1",
+          "teleport_lab_blocked_20hz_v1"
+        ]
+      }
+    },
+    {
+      "id": "node_evidence.canonical_tape_exact",
+      "passed": true,
+      "details": {
+        "repeatConfirmed": true,
+        "recordedMatch": true,
+        "firstFinalHash": "66fcaf19c3fd94ad",
+        "secondFinalHash": "66fcaf19c3fd94ad",
+        "recordedFinalHash": "66fcaf19c3fd94ad"
+      }
+    },
+    {
+      "id": "harness.completed",
+      "passed": false,
+      "details": {
+        "error": {
+          "name": "TypeError",
+          "message": "fetch failed",
+          "stack": "TypeError: fetch failed"
+        }
+      }
+    },
+    {
+      "id": "artifact.video.phase3_driver_session",
+      "passed": false,
+      "details": {
+        "reason": "Playwright did not expose a video handle"
+      }
+    },
+    {
+      "id": "artifact.required_screenshots",
+      "passed": false,
+      "details": {
+        "required": [
+          "fixture_lab",
+          "driver_ready",
+          "driver_run",
+          "driver_jump",
+          "driver_slide",
+          "driver_teleport"
+        ],
+        "captured": []
+      }
+    }
+  ],
+  "failures": [
+    {
+      "id": "harness.completed",
+      "passed": false,
+      "details": {
+        "error": {
+          "name": "TypeError",
+          "message": "fetch failed",
+          "stack": "TypeError: fetch failed"
+        }
+      }
+    },
+    {
+      "id": "artifact.video.phase3_driver_session",
+      "passed": false,
+      "details": {
+        "reason": "Playwright did not expose a video handle"
+      }
+    },
+    {
+      "id": "artifact.required_screenshots",
+      "passed": false,
+      "details": {
+        "required": [
+          "fixture_lab",
+          "driver_ready",
+          "driver_run",
+          "driver_jump",
+          "driver_slide",
+          "driver_teleport"
+        ],
+        "captured": []
+      }
+    }
+  ],
+  "fixtureLab": {
+    "payload": null,
+    "reloadPayloadSha256": null,
+    "immutability": null,
+    "reloadImmutability": null,
+    "overlay": null,
+    "parity": null,
+    "errors": []
+  },
+  "driver": {
+    "exactUrl": "http://127.0.0.1:5999/?movementDriver=flat_run",
+    "marker": "HYPOTHESIS · FLAT_RUN · DEV ONLY",
+    "disclosure": "MOVEMENT FIXTURE · COMBAT / AI / PICKUPS / MODE TIMER PAUSED",
+    "overlay": null,
+    "diagnosticsSnapshots": [],
+    "actions": {},
+    "errors": []
+  },
+  "network": null,
+  "screenshots": [],
+  "videos": [],
+  "errors": [
+    {
+      "name": "TypeError",
+      "message": "fetch failed",
+      "stack": "TypeError: fetch failed"
+    }
+  ],
+  "ok": false,
+  "completedAt": "2026-07-20T13:32:08.273Z",
+  "durationMs": 9
+}

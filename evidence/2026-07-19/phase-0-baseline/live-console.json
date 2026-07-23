@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "consoleEntries": [
+    {
+      "type": "info",
+      "text": "[net] no VITE_WS_URL configured — using local-only match simulation",
+      "location": {
+        "url": "https://mistyrose-boar-758424.hostingersite.com/assets/main-DEa2Vw6v.js",
+        "line": 4361,
+        "column": 29540,
+        "lineNumber": 4361,
+        "columnNumber": 29540
+      }
+    }
+  ],
+  "pageErrors": [
+    {
+      "name": "TagError",
+      "message": "Y",
+      "stack": ""
+    },
+    {
+      "name": "TagError",
+      "message": "Y",
+      "stack": ""
+    }
+  ]
+}

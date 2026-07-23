@@ -1,0 +1,5 @@
+page.evaluate: Error: Timed out waiting for post-forgery full snapshot: welcome,joinAccepted,fullSnapshot,error
+    at poll (eval at evaluate (:303:30), <anonymous>:13:18)
+    at forgedTransformProbe (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-matrix.mjs:259:21)
+    at main (C:\AI Projects\Projects\Games\evio\evio-repo\tools\evidence\capture-phase4-g3-matrix.mjs:569:31)
+    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase4-g3-matrix.mjs:674:1

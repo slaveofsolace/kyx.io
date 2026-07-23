@@ -61,10 +61,7 @@ export class Bot {
     this.maxHealth = 100;
     this.health = this.maxHealth;
     this.alive = true;
-    // Server-roster metadata: every combatant fills one of the 8 server slots.
-    // A "human slot" is a simulated remote player; otherwise it's a bot.
-    this.displayName = `Bot-${this.id}`;
-    this.isHumanSlot = false;
+    this.displayName = `PRACTICE BOT ${String(this.id).padStart(2, '0')}`;
     this.respawnTimer = 0;
     this.attackCooldown = 0;
     this.flashTimer = 0;
@@ -219,7 +216,7 @@ export class Bot {
 
     // Hit probability falls off with distance
     const hitP = this._accuracy * Math.max(0.1, 1 - dist / (this._botGun.range * 1.5));
-    if (Math.random() < hitP) onAttack(this._botGun.damage);
+    if (Math.random() < hitP) onAttack(this._botGun.damage, this.position);
   }
 
   update(dt, player, camera, onAttack, world) {
@@ -312,7 +309,7 @@ export class Bot {
       } else if (this.attackCooldown <= 0) {
         this.attackCooldown = ATTACK_COOLDOWN;
         this.lungeTimer = 0.2;
-        onAttack(ATTACK_DAMAGE);
+        onAttack(ATTACK_DAMAGE, this.position);
       }
     } else {
       this.wanderCooldown -= dt;

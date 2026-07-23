@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "kyx_phase7_tactical_mannequin_benchmark_v1",
+  "status": "benchmark_only",
+  "g6Claimed": false,
+  "scope": [
+    "project-original low-poly tactical mannequin",
+    "project-original compact rifle prop",
+    "single asymmetrical shoulder/device silhouette feature",
+    "ink-paper-oxide-aqua-saffron material masses",
+    "one named in-place pose-shift loop",
+    "semantic timeline markers",
+    "deterministic review camera and three-light setup",
+    "selected-object GLB export"
+  ],
+  "animation": {
+    "action": "BENCH_TacticalShift_Loop",
+    "fps": 24,
+    "frameStart": 1,
+    "frameEnd": 24,
+    "rootMotion": "in_place",
+    "markers": [
+      { "name": "equip_ready", "frame": 1, "role": "presentation" },
+      { "name": "ability_commit", "frame": 12, "role": "both" },
+      { "name": "pose_recover", "frame": 24, "role": "presentation" }
+    ]
+  },
+  "renderPreset": {
+    "engine": "BLENDER_EEVEE",
+    "resolution": [720, 720],
+    "frames": [1, 12, 24],
+    "colorManagement": "AgX",
+    "freestyle": true
+  },
+  "glbExportPreset": {
+    "format": "GLB",
+    "selectionOnly": true,
+    "yUp": true,
+    "animations": true,
+    "forceSampling": true,
+    "frameStep": 1,
+    "leafBones": false,
+    "maximumInfluences": 4,
+    "cameras": false,
+    "lights": false,
+    "extras": true,
+    "compression": "none_benchmark_source"
+  },
+  "excluded": [
+    "runtime or package integration",
+    "hero or release asset",
+    "skin deformation proof",
+    "LOD production",
+    "first-person arms or viewmodel",
+    "complete clip matrix",
+    "runtime outline shader",
+    "texture compression",
+    "G6 acceptance claim"
+  ]
+}

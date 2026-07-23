@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-20T05:06:34.356Z",
+  "root": "phase-2-toolchain-contracts",
+  "files": 12,
+  "bytes": 432659,
+  "entries": [
+    {
+      "path": "asset-release-gate.log",
+      "bytes": 8764,
+      "sha256": "f500258ea03b03e7797399977325a6701620d527c828372fd117da2efec5aa9e"
+    },
+    {
+      "path": "browser/phase2-browser-summary.json",
+      "bytes": 25418,
+      "sha256": "57f2341a69452acbf91d17d2eb812a49e52a8bdd552a1540bc22a9c64ff0e5df"
+    },
+    {
+      "path": "browser/screenshots/phase2-determinism-route-1600x900.png",
+      "bytes": 57340,
+      "sha256": "136bb20a3bd314c041ff0f40d7fc9049dedf1c405c6d0574b1e6c0a01bef73a2"
+    },
+    {
+      "path": "browser/screenshots/phase2-renderer-metrics-menu-1600x900.png",
+      "bytes": 320176,
+      "sha256": "0e5dc95901cc7d9722de84a3bc2d33246cc7b9e36b123954d0b2fa914fc419ce"
+    },
+    {
+      "path": "browser/vite.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "browser/vite.stdout.log",
+      "bytes": 160,
+      "sha256": "1b80daa8fcb5de819fd8738f759a4a7958cf08c1c6f5a540438204e411b3ce78"
+    },
+    {
+      "path": "browser-evidence.log",
+      "bytes": 871,
+      "sha256": "ac86973ef4dd23994263c48945cd58337229466a3e02b999e798a359793dd6d8"
+    },
+    {
+      "path": "check-full.log",
+      "bytes": 12675,
+      "sha256": "896203f3c186dce1e79193751d143dd89d83c2b45a8faaab79432031bba9160c"
+    },
+    {
+      "path": "npm-ci.log",
+      "bytes": 360,
+      "sha256": "32bf419c6de82991199961890a4d09814e472f5ac3c0e0cc5636a9cf6dbbd23c"
+    },
+    {
+      "path": "npm-version.log",
+      "bytes": 271,
+      "sha256": "232388b67ef88905d35dad58ded25da8548fbacd25ca5f67c4bbbfadcef4a116"
+    },
+    {
+      "path": "phase2-check-summary.json",
+      "bytes": 2192,
+      "sha256": "bf4d3eba6b7b428abbd5c9464d136e25f8a5e15a58b151e87f9d2c066b55a8f0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4432,
+      "sha256": "b3d68a481425a0523f81eb3ed92ce62a50090b84be908b29dfa1ece0f44237e1"
+    }
+  ]
+}

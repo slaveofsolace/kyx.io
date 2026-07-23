@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_phase7_character_refinement_v2",
+  "creator": "KYX project scripted visual-refinement lane",
+  "creationMethod": "Original Blender Python geometry using authored body rings, tapered capsules, fitted armor layers, individually modeled fingers, weapon contact points, rig, lighting, and cameras",
+  "createdDate": "2026-07-20",
+  "sourceInputs": [
+    "../phase7-benchmark/VISUAL_REVIEW.md"
+  ],
+  "thirdPartyArt": false,
+  "thirdPartyTextures": false,
+  "generativeImageInputs": false,
+  "referenceGameFiles": false,
+  "preservedNegativeBaseline": "../phase7-benchmark",
+  "license": "Project source; release-license policy review remains required",
+  "notes": [
+    "No legacy GLB, downloaded mesh, asset pack, mocap, texture, logo, font, or reference-game file is imported.",
+    "The product-owner feedback is used as a quality constraint, not as geometry or copied expression.",
+    "Broad human anatomy, tactical product construction, color hierarchy, and studio-render principles are used without imitating a named artist, studio, franchise, or game.",
+    "This provenance record does not claim release readiness or G6 acceptance."
+  ]
+}

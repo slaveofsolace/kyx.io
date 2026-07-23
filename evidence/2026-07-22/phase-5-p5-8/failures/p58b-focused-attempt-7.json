@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-7",
+  "capturedAt": "2026-07-22T03:26:20-05:00",
+  "status": "FAIL_RETAINED_HASH_CALIBRATION",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 1,
+    "testsFailed": 1
+  },
+  "canonicalHashes": {
+    "baseline": "b92bf19392ec7564",
+    "loss": "d17613e2ffe3c6b2",
+    "reorder": "b92bf19392ec7564",
+    "duplicate": "b92bf19392ec7564"
+  },
+  "correction": "The captured values are now literal replay pins; every profile must reproduce its canonical hash and the duplicate/reorder profiles remain identical to baseline."
+}

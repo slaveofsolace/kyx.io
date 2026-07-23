@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T11:15:18.370Z",
+  "url": "http://127.0.0.1:5173/",
+  "browser": "150.0.7871.129",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "runtimeScreenshot": "screenshots/combat-hud-hierarchy-1280x720.png",
+  "abilityDetailScreenshot": "screenshots/ability-rack-state-fixture.png",
+  "fixture": {
+    "method": "HUD public event methods on the live practice DOM",
+    "disclosure": "Deterministic visual-state fixture. The ability rack was cloned before mutation so the active game loop could not overwrite EMPTY/CHARGE/READY states during capture.",
+    "facts": {
+      "states": [
+        {
+          "id": "ability-frag",
+          "state": "empty",
+          "text": "\n          FFRAG0EMPTY\n        ",
+          "aria": "Frag grenade, F, 0 available, empty"
+        },
+        {
+          "id": "ability-q",
+          "state": "charging",
+          "text": "\n          QBLINKCHARGE 42%\n        ",
+          "aria": "Blink, Q, charging 42 percent"
+        },
+        {
+          "id": "ability-smoke",
+          "state": "ready",
+          "text": "\n          ESMOKE2READY\n        ",
+          "aria": "Smoke grenade, E, 2 available"
+        }
+      ],
+      "damage": "DAMAGE LEFT",
+      "reason": "Q // BLINK RECHARGING 2.9S"
+    },
+    "layout": [
+      {
+        "id": "ability-frag",
+        "rect": {
+          "x": 503,
+          "y": 596,
+          "width": 88,
+          "height": 46
+        },
+        "state": "empty",
+        "aria": "Frag grenade, F, 0 available, empty"
+      },
+      {
+        "id": "ability-q",
+        "rect": {
+          "x": 596,
+          "y": 596,
+          "width": 88,
+          "height": 46
+        },
+        "state": "charging",
+        "aria": "Blink, Q, charging 42 percent"
+      },
+      {
+        "id": "ability-smoke",
+        "rect": {
+          "x": 689,
+          "y": 596,
+          "width": 88,
+          "height": 46
+        },
+        "state": "ready",
+        "aria": "Smoke grenade, E, 2 available"
+      }
+    ]
+  },
+  "runtimeBoundaries": {
+    "connectionWarningHiddenInOfflinePractice": true,
+    "interactionPromptHiddenWithoutInteractable": true,
+    "directionalDamageSource": "Game.classifyDamageDirection receives Bot/Zombie world positions; unit tests cover four sectors and null data."
+  },
+  "consoleErrors": []
+}

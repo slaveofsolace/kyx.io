@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "assetId": "kyx_phase7_character_refinement_v4_diagnostic",
+  "status": "DIAGNOSTIC_ONLY_PROVENANCE_BLOCKED_NOT_G6",
+  "releaseEligible": false,
+  "runtimeIntegrationAllowed": false,
+  "humanApproved": false,
+  "provenance": {
+    "derivedFrom": "public/soldier.glb",
+    "governingManifest": "assets/manifests/legacy-soldier.asset.json",
+    "sourceSha256": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
+    "status": "unresolved",
+    "warnings": [
+      "UNRESOLVED_PROVENANCE",
+      "INCOMPLETE_ANIMATION_SET"
+    ],
+    "disposition": "temporary_diagnostic_only_then_replace",
+    "conceptReference": "assets/source/characters/kyx-vanguard/concept/kyx-vanguard-model-sheet-v1.png",
+    "conceptSha256": "067a3eba77f9c9e566fe7aeba9684346bfd9fcd162de8ead14194640c0fb76c3"
+  },
+  "purpose": [
+    "Compare continuous weighted anatomy and real hands against rejected primitive v3.",
+    "Exercise a concept-directed value/material study and unified weapon silhouette.",
+    "Prove two-hand contact solving, armature preservation, action export, and inspection renders.",
+    "Define what the original v5 canonical source must rebuild without using this geometry or rig."
+  ],
+  "blenderVersion": "5.1.2",
+  "scene": {
+    "forwardAxis": "+Y",
+    "upAxis": "+Z",
+    "units": "meters",
+    "frames": [
+      1,
+      32
+    ],
+    "fps": 24,
+    "renderSize": [
+      960,
+      960
+    ]
+  },
+  "source": {
+    "meshObjects": 4,
+    "vertices": 8452,
+    "polygons": 12305,
+    "triangles": 13300,
+    "bones": 49,
+    "inheritedActions": [
+      "Idle",
+      "Run",
+      "TPose",
+      "Walk"
+    ],
+    "diagnosticAction": "KYX_V4_Diagnostic_CombatReady",
+    "materialFaceGroups": {
+      "cloth": 431,
+      "cloth_raised": 15,
+      "armor": 3940,
+      "armor_edge": 0,
+      "oxide": 0,
+      "rubber": 6800
+    }
+  },
+  "contact": {
+    "solutions": [
+      {
+        "side": "Right",
+        "parametersRadians": [
+          1.31058,
+          -0.171688,
+          0.005109,
+          0.21411,
+          0.495649,
+          0.629842
+        ],
+        "handTarget": [
+          0.185,
+          0.305,
+          1.178
+        ],
+        "handPosition": [
+          0.184841,
+          0.305196,
+          1.177719
+        ],
+        "handErrorMeters": 0.000378,
+        "elbowTarget": [
+          0.365,
+          0.085,
+          1.245
+        ],
+        "elbowPosition": [
+          0.265993,
+          0.07881,
+          1.19902
+        ],
+        "objective": 0.030297
+      },
+      {
+        "side": "Left",
+        "parametersRadians": [
+          0.093351,
+          -0.089836,
+          -0.766886,
+          -0.883609,
+          0.103085,
+          -0.256861
+        ],
+        "handTarget": [
+          -0.345,
+          0.315,
+          1.245
+        ],
+        "handPosition": [
+          -0.345204,
+          0.315235,
+          1.245041
+        ],
+        "handErrorMeters": 0.000314,
+        "elbowTarget": [
+          -0.425,
+          0.095,
+          1.255
+        ],
+        "elbowPosition": [
+          -0.415273,
+          0.087174,
+          1.277038
+        ],
+        "objective": 0.012633
+      }
+    ],
+    "stockShoulderContact": [
+      0.535,
+      0.305,
+      1.335
+    ],
+    "triggerGripCenter": [
+      0.185,
+      0.305,
+      1.178
+    ],
+    "supportHandguardCenter": [
+      -0.345,
+      0.315,
+      1.245
+    ],
+    "note": "Numeric arm solve plus articulated diagnostic fingers; rendered plates remain the visual authority."
+  },
+  "glb": {
+    "version": 2,
+    "declaredBytes": 1255388,
+    "generator": "Khronos glTF Blender I/O v5.1.20",
+    "nodes": 54,
+    "meshes": 4,
+    "primitives": 10,
+    "materials": 6,
+    "skins": 1,
+    "animations": 4,
+    "animationNames": [
+      "Idle",
+      "KYX_V4_Diagnostic_CombatReady",
+      "Run",
+      "Walk"
+    ],
+    "animationChannels": 588,
+    "requiredExtensions": [],
+    "path": "output/kyx_phase7_character_refinement_v4_diagnostic.glb",
+    "bytes": 1255388,
+    "sha256": "f27c7ca3eaba89e91fa0ad3f7eafe9e8377665bf078eb5535fa16c4fa9a94930",
+    "exportSeconds": 0.585309
+  },
+  "renders": {
+    "paths": [
+      "output/renders/refinement-v4-diagnostic-close-color.png",
+      "output/renders/refinement-v4-diagnostic-front-ortho-color.png",
+      "output/renders/refinement-v4-diagnostic-side-ortho-color.png",
+      "output/renders/refinement-v4-diagnostic-back-ortho-color.png",
+      "output/renders/refinement-v4-diagnostic-weapon-contact-color.png",
+      "output/renders/refinement-v4-diagnostic-trigger-contact-color.png",
+      "output/renders/refinement-v4-diagnostic-close-grayscale.png",
+      "output/renders/refinement-v4-diagnostic-front-ortho-grayscale.png"
+    ],
+    "timingsSeconds": {
+      "close-color": 0.839846,
+      "front-ortho-color": 0.266229,
+      "side-ortho-color": 0.194719,
+      "back-ortho-color": 0.185457,
+      "weapon-contact-color": 0.236262,
+      "trigger-contact-color": 0.236304,
+      "close-grayscale": 0.243314,
+      "front-ortho-grayscale": 0.23947
+    },
+    "totalSeconds": 2.441601
+  },
+  "verification": {
+    "status": "PASS",
+    "checks": {
+      "legacyManifestBlocksRelease": true,
+      "sourceDigestMatchesLegacyManifest": true,
+      "glbHeaderValid": true,
+      "glbContainsMeshes": true,
+      "glbContainsMaterials": true,
+      "glbContainsSkin": true,
+      "glbContainsDiagnosticAction": true,
+      "contactSolveWithinSixCentimeters": true,
+      "reviewRendersPresent": true
+    },
+    "scope": "structural diagnostic validity only; never release eligibility or G6"
+  },
+  "visualDecisionBoundary": {
+    "expectedImprovement": "Continuous weighted body topology, real digit silhouette, functional boots, less primitive armor integration, clearer value masses, and a cohesive rifle/contact comparison.",
+    "cannotProve": [
+      "original production topology",
+      "release rights",
+      "canonical skeleton or weight quality",
+      "complete benchmark animation matrix",
+      "authored UV texture sets",
+      "LODs or runtime performance",
+      "human visual acceptance"
+    ]
+  },
+  "manifest": [
+    {
+      "path": "output/kyx_phase7_character_refinement_v4_diagnostic.glb",
+      "bytes": 1255388,
+      "sha256": "f27c7ca3eaba89e91fa0ad3f7eafe9e8377665bf078eb5535fa16c4fa9a94930"
+    },
+    {
+      "path": "output/kyx_phase7_character_refinement_v4_diagnostic.blend",
+      "bytes": 1472562,
+      "sha256": "dea7f5db0f8663b0da862bddb4775529678d32c9104d4feea2727bc7297ba073"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-close-color.png",
+      "bytes": 953047,
+      "sha256": "34f419c4d60ed1cd1c4ac32002f7b74ed8d646ee9988e4310ad7318e4e1736ed"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-front-ortho-color.png",
+      "bytes": 891099,
+      "sha256": "2785af3605d58cd6bccec3004202cf967ef78cc04e21144eb4198651e7b50f99"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-side-ortho-color.png",
+      "bytes": 841709,
+      "sha256": "01331fc29c5f9bc86101915ce4aed01a9436042eaa2bf9f2e5434c2c0f9bd302"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-back-ortho-color.png",
+      "bytes": 872531,
+      "sha256": "d145637381771a1d800e2dbf9ea27fc0a1592884171187ff21eacc54b909064c"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-weapon-contact-color.png",
+      "bytes": 962439,
+      "sha256": "db9083d10f33d01d46a89775ef7c9075a8d7d4d89cdecc88c2ce7fa1e68c2fad"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-trigger-contact-color.png",
+      "bytes": 939412,
+      "sha256": "aa0e249ca3d702cac823d9861fcdda4e0ba559398a50f4f638c9a3ecdd46fb35"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-close-grayscale.png",
+      "bytes": 949721,
+      "sha256": "c161f6c39dccf120e46fe0b656b2d55474c27ba63effea2d6fb47d0a390d986c"
+    },
+    {
+      "path": "output/renders/refinement-v4-diagnostic-front-ortho-grayscale.png",
+      "bytes": 887638,
+      "sha256": "fbb9c77c9611a0781c9b97f26e83b7c1306cd6cccf07c356623f98d2aff730f6"
+    }
+  ],
+  "elapsedSeconds": 5.767982
+}

@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T15:12:51.684Z",
+  "status": "PASS",
+  "profile": "p511-inkfall-foundry-revision-2-combat-v1",
+  "mapBinding": {
+    "mapReference": "inkfall_foundry@2",
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "fixtureId": "inkfall_foundry_map_collision",
+    "fixtureHash": "bf85e42731fd088e",
+    "colliderCardinality": 339,
+    "coordinates": "x=east,y=up,z=north; millimeters; milli_degrees"
+  },
+  "lockedSpawns": [
+    { "ordinal": 0, "spawnId": "spawn_w_press_a", "teamId": "team_blue", "feetPosition": { "x": -33500, "y": 0, "z": -3500 }, "yawMilliDegrees": 0 },
+    { "ordinal": 1, "spawnId": "spawn_e_press_a", "teamId": "team_red", "feetPosition": { "x": 33500, "y": 0, "z": 3500 }, "yawMilliDegrees": 180000 },
+    { "ordinal": 2, "spawnId": "spawn_w_press_b", "teamId": "team_blue", "feetPosition": { "x": -33500, "y": 0, "z": 3500 }, "yawMilliDegrees": 0 },
+    { "ordinal": 3, "spawnId": "spawn_e_press_b", "teamId": "team_red", "feetPosition": { "x": 33500, "y": 0, "z": -3500 }, "yawMilliDegrees": 180000 },
+    { "ordinal": 4, "spawnId": "spawn_w_ink", "teamId": "team_blue", "feetPosition": { "x": -30500, "y": 0, "z": -7000 }, "yawMilliDegrees": -25000 },
+    { "ordinal": 5, "spawnId": "spawn_e_ink", "teamId": "team_red", "feetPosition": { "x": 30500, "y": 0, "z": -7000 }, "yawMilliDegrees": -155000 },
+    { "ordinal": 6, "spawnId": "spawn_w_archive", "teamId": "team_blue", "feetPosition": { "x": -30500, "y": 0, "z": 7000 }, "yawMilliDegrees": 25000 },
+    { "ordinal": 7, "spawnId": "spawn_e_archive", "teamId": "team_red", "feetPosition": { "x": 30500, "y": 0, "z": 7000 }, "yawMilliDegrees": 155000 }
+  ],
+  "fourClientScenario": {
+    "status": "PASS",
+    "realWebSocketClients": 4,
+    "uniquePlayerIds": 4,
+    "uniqueLockedSpawns": 4,
+    "movement": {
+      "sequenceZeroAcceptedForEveryClient": true,
+      "serverInputAckForEveryClient": true,
+      "minimumClientsObservedMoving": 2,
+      "latestSnapshotBaselinesAcknowledged": true
+    },
+    "tickAndLatency": {
+      "protocolSimulationHz": 20,
+      "measuredProgressionWindowTicks": 4,
+      "acceptedObservedRateHzRange": [5, 100],
+      "pingPongRttUpperBoundMillisecondsPerClient": 5000,
+      "serverObservedRttHistoryPresentForEveryClient": true
+    },
+    "worldQueries": {
+      "occlusion": { "hit": true, "distanceMillimeters": 2000, "colliderId": "map_collision_spawn_pad_spawn_w_press_a" },
+      "collisionSweep": { "colliderId": "map_collision_spawn_pocket_floor_west", "timeOfImpactPermille": 450 }
+    },
+    "combat": {
+      "authoritativeDamagePoints": 100,
+      "targetLifePhase": "dead",
+      "targetHealthPoints": 0,
+      "blueTeamScore": 1,
+      "feedSequence": 1,
+      "finalReliableKind": "playerKilled",
+      "reliableDeliveryClients": 4
+    },
+    "continuity": {
+      "connectedPlayersAfterDisconnect": 3,
+      "samePlayerIdAfterResume": true,
+      "resumeTokenRotated": true,
+      "scoreAndFeedPreserved": true,
+      "connectedPlayersAfterResume": 4
+    }
+  },
+  "eightClientScenario": {
+    "status": "PASS",
+    "realWebSocketClients": 8,
+    "uniquePlayerIds": 8,
+    "uniqueLockedSpawns": 8,
+    "teamDistribution": { "team_blue": 4, "team_red": 4 },
+    "movementAndDiagnostics": {
+      "sequenceZeroAcceptedForEveryClient": true,
+      "movementQueryCallsGreaterThanZero": true,
+      "collisionContactsGreaterThanZero": true,
+      "serverObservedRttHistoryPresentForEveryClient": true
+    },
+    "combat": {
+      "targetLifePhase": "dead",
+      "blueTeamScore": 1,
+      "feedSequence": 1,
+      "finalReliableKind": "playerKilled",
+      "reliableDeliveryClients": 8
+    },
+    "evictionRecovery": {
+      "recoveryState": "active_checkpointed",
+      "checkpointHashPattern": "^[a-f0-9]{16}$",
+      "hibernatedSockets": 8,
+      "fullSnapshotsAtExactPersistedTick": 8,
+      "connectedPlayersRestored": 8,
+      "deathScoreAndFeedRestored": true
+    }
+  },
+  "failClosed": {
+    "liveP58dProfileAlias": "409 ROOM_PROFILE_MISMATCH",
+    "unknownResumeIdentity": "RESUME_REJECTED",
+    "persistedMapIdentityAlias": "503 ROOM_UNAVAILABLE"
+  },
+  "legacyBehavior": {
+    "productionSourcesChangedByP514": false,
+    "defaultProfileChanged": false,
+    "p58dProfileChanged": false,
+    "p513CheckpointIdentityChanged": false
+  },
+  "gateClaims": {
+    "G4": false,
+    "G5": false,
+    "broadPlaytestAcceptance": false,
+    "humanVisualApproval": false
+  }
+}

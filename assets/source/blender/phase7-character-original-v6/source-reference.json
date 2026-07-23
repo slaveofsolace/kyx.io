@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "canonicalSourceLock": "SOURCE.lock.json",
+  "sourceProduct": "Blender Human Base Meshes 1.4.1",
+  "license": "CC0-1.0",
+  "selectedCollection": "Body Male - Realistic",
+  "sanitizedCheckpoint": "source/kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+  "sanitizedCheckpointSha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+  "assetStage": "cc0_anatomy_sculpt_seed_prework",
+  "nextAuthority": "SCULPT_RETOPO_PLAN.md",
+  "g6Status": "OPEN_NOT_CLAIMED"
+}

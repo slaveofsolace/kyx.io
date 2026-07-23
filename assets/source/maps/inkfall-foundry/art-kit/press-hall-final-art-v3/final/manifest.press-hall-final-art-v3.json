@@ -1,0 +1,210 @@
+{
+  "binding": {
+    "catalogDefaultRevision": 1,
+    "grayboxLockRevision": 1,
+    "grayboxRevision": 2,
+    "mapId": "inkfall_foundry",
+    "parentArtCandidate": "inkfall_foundry_press_hall_hero_checkpoint_v3_1",
+    "productSelectable": false,
+    "runtimeIntegrated": false,
+    "shippingDefault": false
+  },
+  "frozenParentV31": {
+    "board": {
+      "actualSha256": "65db1e4b951fa7ba22c70f8f151efc3e67208294d1ecdc09f295d39b54dc79da",
+      "expectedSha256": "65db1e4b951fa7ba22c70f8f151efc3e67208294d1ecdc09f295d39b54dc79da",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/checkpoint-v3-1/boards/inkfall-press-hall-v3-1-hero-checkpoint-board.png"
+    },
+    "builder": {
+      "actualSha256": "4fd978d2d5564f909df65c990038fd527355ddeb3c1d98c7ca61f27f889e3a61",
+      "expectedSha256": "4fd978d2d5564f909df65c990038fd527355ddeb3c1d98c7ca61f27f889e3a61",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/build_press_hall_hero_checkpoint_v3.py"
+    },
+    "context": {
+      "actualSha256": "813a60b76e570e4c84a953ea6dc59ad3fac5ed3fb519917e4b4589303a142899",
+      "expectedSha256": "813a60b76e570e4c84a953ea6dc59ad3fac5ed3fb519917e4b4589303a142899",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/checkpoint-v3-1/renders/inkfall-press-hall-v3-1-overhead_context.png"
+    },
+    "gameplay": {
+      "actualSha256": "4edc27c3cd4bbe9ee7e206466ac3888ba1e9b9b2041330d48390f6e2ccf85069",
+      "expectedSha256": "4edc27c3cd4bbe9ee7e206466ac3888ba1e9b9b2041330d48390f6e2ccf85069",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/checkpoint-v3-1/renders/inkfall-press-hall-v3-1-gameplay_eye.png"
+    },
+    "north_close": {
+      "actualSha256": "39860fd07d93508a071c2982c8fcd7db26e376236fabc2ccf22be87216f1572e",
+      "expectedSha256": "39860fd07d93508a071c2982c8fcd7db26e376236fabc2ccf22be87216f1572e",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/checkpoint-v3-1/renders/inkfall-press-hall-v3-1-hero_close.png"
+    },
+    "report": {
+      "actualSha256": "6d055cd5c0a5af0b7e160cf09a2ed811a7fc4602edfc2e5324bcbcff5e0c8890",
+      "expectedSha256": "6d055cd5c0a5af0b7e160cf09a2ed811a7fc4602edfc2e5324bcbcff5e0c8890",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/checkpoint-v3-1/validation/press-hall-v3-1-hero-checkpoint-delta-report.json"
+    },
+    "source": {
+      "actualSha256": "ea83bb5c37b31cc53ff5450c46f2437a3c705969043df7d9ac01184c2381d368",
+      "expectedSha256": "ea83bb5c37b31cc53ff5450c46f2437a3c705969043df7d9ac01184c2381d368",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/checkpoint-v3-1/source/inkfall_foundry_press_hall_hero_checkpoint_v3_1.blend"
+    }
+  },
+  "id": "inkfall_foundry_press_hall_final_art_v3",
+  "kind": "inkfall_foundry_staged_final_art_preview_manifest",
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_PLAYTEST_ACCEPTANCE_NOT_PASSED",
+    "PERFORMANCE_NOT_MEASURED",
+    "NO_SNAG_RUNTIME_PROOF_NOT_COMPLETE",
+    "COLOR_VISION_REVIEW_NOT_COMPLETE",
+    "PRODUCT_INTEGRATION_NOT_COMPLETE",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING",
+    "DEPLOYMENT_NOT_AUTHORIZED"
+  ],
+  "reviewBoards": [
+    {
+      "bytes": 2739143,
+      "id": "primary",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/boards/inkfall-press-hall-v3-primary-review-board.png",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "sha256": "51b0809d597be11f4f3bf88cadd3d1ced902cbc2aa3badb56a8fbadfb13046fa"
+    },
+    {
+      "bytes": 3204832,
+      "id": "mechanical",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/boards/inkfall-press-hall-v3-mechanical-review-board.png",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "sha256": "1276ad31c19e73101c08d7c7a4ceff7a1d5e47f03d9cb750a4e5471d911cc02b"
+    }
+  ],
+  "reviewRenders": [
+    {
+      "bytes": 1675977,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-gameplay_lane.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "ec2ba46826f63fa6605a24a27de6299f7ac3cdffe4ad3f194561decc8776b516",
+      "view": "gameplay_lane"
+    },
+    {
+      "bytes": 1576137,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-north_hero.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "7a05c05dd15df962e8451ff45f8e2052f5b8ef473224a69d3d888bc0d625bbec",
+      "view": "north_hero"
+    },
+    {
+      "bytes": 1220120,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-north_force_path.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "adea73468532de046f5575dab2de2dbc5e866b34cd809b566b10e45f4cbe4ae9",
+      "view": "north_force_path"
+    },
+    {
+      "bytes": 1905639,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-south_hero.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "609160139596dac970d3f2dfe1ccbe1aa2f06e1bed256ab1dc0809bf33193913",
+      "view": "south_hero"
+    },
+    {
+      "bytes": 2487333,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-south_tension.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "a3c752302bc41f756540bbf923729d0b599b1cc3dea936bb9076e41e3774c4bd",
+      "view": "south_tension"
+    },
+    {
+      "bytes": 2375171,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-baffle_detail.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "0798c50c7d86c29870c22c72d1b8855c28c8eb4a817c3b16425de4778176c233",
+      "view": "baffle_detail"
+    },
+    {
+      "bytes": 2296395,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-cover_detail.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "985598aeb16bdd503afc8099bc3265bacc82cc0d228c97128b4eea678be74996",
+      "view": "cover_detail"
+    },
+    {
+      "bytes": 2112703,
+      "mode": "color",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/renders/inkfall-press-hall-v3-overhead_context.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "f2fb551b69dd476ea9d723b17499325d5f4358ea6121b4e695f1088e4b2134c6",
+      "view": "overhead_context"
+    }
+  ],
+  "schemaVersion": 1,
+  "scope": "G5_BOUNDED_PRESS_HALL_FINAL_ART_V3_PREVIEW_ONLY",
+  "source": {
+    "blend": {
+      "bytes": 995011,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/source/inkfall_foundry_press_hall_final_art_v3.blend",
+      "sha256": "160ce9e8be88f88149f55732200652d48d608dd26ad404804f794585c5aaf09b"
+    },
+    "builder": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/build_press_hall_final_art_v3.py",
+      "sha256": "63023443ed9047a63f5f20a042ac13640e7b625a2f2a2da749a36599c97ca77a"
+    }
+  },
+  "stagedRenderExport": {
+    "bytes": 11980752,
+    "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/export/inkfall_foundry_press_hall_final_art_v3.glb",
+    "runtimeIntegrated": false,
+    "sha256": "0699bf53860261d4204c3e9b1b5e61cec51324bf195ab5a3dc4852cfcf573e20"
+  },
+  "status": "bounded_art_candidate_pending_parent_final_review_non_default",
+  "validation": {
+    "buildReport": {
+      "bytes": 42009,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/final/validation/press-hall-final-art-v3-build-report.json",
+      "sha256": "573adae86fa96e02a92a2b49e1575e2dfa17aa1e73ba509015446a31be8d9c9d",
+      "status": "BOUNDED_PRESS_HALL_FINAL_ART_V3_BUILD_PASS"
+    },
+    "independentReport": {
+      "path": "evidence/2026-07-22/phase-6-g5-press-hall-final-art-v3/independent-verification.json",
+      "status": "PENDING"
+    },
+    "independentVerifier": {
+      "path": "tools/evidence/verify-inkfall-g5-press-hall-art-v3.py"
+    }
+  },
+  "visualDecision": "PENDING_PARENT_FINAL_REVIEW"
+}

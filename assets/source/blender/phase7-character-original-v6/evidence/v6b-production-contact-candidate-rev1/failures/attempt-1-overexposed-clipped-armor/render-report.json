@@ -1,0 +1,284 @@
+{
+  "schema": "kyx-v6b-production-contact-candidate-render-report-v1",
+  "generatedAt": "2026-07-22T13:51:30.424359+00:00",
+  "blenderVersion": "5.1.2",
+  "blend": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-contact-candidate-rev1\\kyx-v6b-production-contact-candidate-rev1.blend",
+    "bytes": 13010555,
+    "sha256Before": "a9d6835615f0484912bde10e7c95638ced8073878c08efa5c02774f6a3271e7e",
+    "sha256After": "a9d6835615f0484912bde10e7c95638ced8073878c08efa5c02774f6a3271e7e",
+    "unchanged": true
+  },
+  "status": "EARLY_V6B_PRODUCTION_CONTACT_DIRECT_INSPECTION_REQUIRED",
+  "panels": [
+    {
+      "name": "full-body-front-three-quarter",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-full-body-front-three-quarter.png",
+      "bytes": 1675980,
+      "sha256": "8ed9fb468f1fc77c5703f3f87ff8a1634951a8c094f484b6c211a9a946fc791a",
+      "camera": {
+        "location": [
+          3.2,
+          -4.8,
+          2.35
+        ],
+        "target": [
+          0.0,
+          -0.3,
+          0.94
+        ],
+        "orthographicScale": 2.18
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "CONTINUOUS TAILORED HUMAN SILHOUETTE \u2022 FITTED ARMOR \u2022 HELD PRODUCTION RIFLE",
+      "weaponScope": "full",
+      "characterVisible": true,
+      "transparentContactMaterial": null
+    },
+    {
+      "name": "full-body-rear-three-quarter",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-full-body-rear-three-quarter.png",
+      "bytes": 1664959,
+      "sha256": "eb0b2689aaace6b72c6a55b31f0c13da6b6bd9ed555998e97f7533ded4610821",
+      "camera": {
+        "location": [
+          -3.6,
+          3.4,
+          2.05
+        ],
+        "target": [
+          0.0,
+          -0.28,
+          0.98
+        ],
+        "orthographicScale": 2.18
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "REAR GARMENT / SCAPULAR / LUMBAR / BOOT CONTINUITY \u2022 CONTACT POSE PRESERVED",
+      "weaponScope": "full",
+      "characterVisible": true,
+      "transparentContactMaterial": null
+    },
+    {
+      "name": "helmet-torso-construction",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-helmet-torso-construction.png",
+      "bytes": 1854127,
+      "sha256": "12f3ce565b15fb89f8d9a395666a054c40af525a9fe8511e44ade99c68a951c0",
+      "camera": {
+        "location": [
+          1.65,
+          -3.25,
+          1.95
+        ],
+        "target": [
+          0.0,
+          -0.04,
+          1.43
+        ],
+        "orthographicScale": 0.82
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "COMPOUND HELMET \u2022 VISOR SEAL \u2022 CLAVICLE / PECTORAL / RIB / STERNUM LOAD PATH",
+      "weaponScope": "none",
+      "characterVisible": true,
+      "transparentContactMaterial": null
+    },
+    {
+      "name": "firing-grip-trigger-contact",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-firing-grip-trigger-contact.png",
+      "bytes": 2301652,
+      "sha256": "6a3d1b6ae28f1a81ceaa37dbf00e56ac349a0472d0d7c2abb577b188a19b315d",
+      "camera": {
+        "location": [
+          -0.893255,
+          -0.421063,
+          1.213813
+        ],
+        "target": [
+          -0.136781,
+          -0.415591,
+          1.181906
+        ],
+        "orthographicScale": 0.225
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "TRANSLUCENT GRIP \u2022 INDEX ON TRIGGER INSIDE GUARD \u2022 MIDDLE / RING / PINKY WRAP",
+      "weaponScope": "firing",
+      "characterVisible": true,
+      "transparentContactMaterial": "KYX_V6B_CF_R1_ContactRubber"
+    },
+    {
+      "name": "support-hand-foregrip-contact",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-support-hand-foregrip-contact.png",
+      "bytes": 1980819,
+      "sha256": "ca1fd3f953a33d44ec9612abb3d84ac04bc75ad6eafd37357090071935b675d4",
+      "camera": {
+        "location": [
+          -0.631618,
+          -0.861613,
+          1.51
+        ],
+        "target": [
+          -0.048834,
+          -0.627599,
+          1.195
+        ],
+        "orthographicScale": 0.22
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "TRANSLUCENT FOREGRIP \u2022 SUPPORT PALM + FOUR-DIGIT WRAP \u2022 HAND STOP",
+      "weaponScope": "support",
+      "characterVisible": true,
+      "transparentContactMaterial": "KYX_V6B_CF_R1_ContactRubber"
+    },
+    {
+      "name": "stock-shoulder-contact",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-stock-shoulder-contact.png",
+      "bytes": 2326868,
+      "sha256": "4fbd2554b909744f2d3b6fcf77cb4981749541ec9f26e953618c769525314cf6",
+      "camera": {
+        "location": [
+          -1.062928,
+          -0.313096,
+          1.38
+        ],
+        "target": [
+          -0.180157,
+          -0.13646,
+          1.365
+        ],
+        "orthographicScale": 0.245
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "TRANSLUCENT STOCK PAD ON SOFT FIRING-SHOULDER POCKET \u2022 NO ARMOR OCCLUSION",
+      "weaponScope": "stock",
+      "characterVisible": true,
+      "transparentContactMaterial": "KYX_V6B_CF_R1_ContactRubber"
+    },
+    {
+      "name": "production-rifle-profile",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-production-rifle-profile.png",
+      "bytes": 1463230,
+      "sha256": "c180f73649931f7a7c10cacc309ae3a33ca62ad4cf275b4c5ba2730a20d40b0f",
+      "camera": {
+        "location": [
+          2.874593,
+          -0.044842,
+          1.245
+        ],
+        "target": [
+          -0.051835,
+          -0.705163,
+          1.245
+        ],
+        "orthographicScale": 1.15
+      },
+      "resolution": [
+        1500,
+        900
+      ],
+      "stamp": "OPEN STOCK \u2022 LAYERED RECEIVER \u2022 REAL HANDGUARD NEGATIVE SPACE \u2022 MAGAZINE / OPTIC / BARREL",
+      "weaponScope": "full",
+      "characterVisible": false,
+      "transparentContactMaterial": null
+    },
+    {
+      "name": "boots-lower-body-fit",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-boots-lower-body-fit.png",
+      "bytes": 1726278,
+      "sha256": "c0780d5dbb0394c8019f56af7627da5ad432a881da88ddabad54f36bb63e9f26",
+      "camera": {
+        "location": [
+          1.8,
+          -3.2,
+          0.78
+        ],
+        "target": [
+          0.0,
+          -0.04,
+          0.48
+        ],
+        "orthographicScale": 1.02
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "HUMAN LEG SILHOUETTE \u2022 TAPERED CARRIERS \u2022 CONTOURED OUTSOLE / TOE / ANKLE RETENTION",
+      "weaponScope": "none",
+      "characterVisible": true,
+      "transparentContactMaterial": null
+    },
+    {
+      "name": "held-upper-body-context",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-held-upper-body-context.png",
+      "bytes": 1830925,
+      "sha256": "8308d334eab0915c7a1b2b4f6b81367f0d97285df485a0ed064d1720bbb411c5",
+      "camera": {
+        "location": [
+          2.15,
+          -3.55,
+          2.02
+        ],
+        "target": [
+          0.0,
+          -0.42,
+          1.3
+        ],
+        "orthographicScale": 1.28
+      },
+      "resolution": [
+        1200,
+        1200
+      ],
+      "stamp": "BOTH ANATOMICAL HANDS \u2022 SAME PRODUCTION RIFLE \u2022 STOCK SEATED \u2022 FITTED ARMOR CLEARANCES",
+      "weaponScope": "full",
+      "characterVisible": true,
+      "transparentContactMaterial": null
+    }
+  ],
+  "board": {
+    "name": "early-review-board",
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6b-production-contact-candidate-rev1\\renders\\kyx-v6b-production-contact-candidate-rev1-early-review-board.png",
+    "bytes": 8109672,
+    "sha256": "8d3cdd30baa111e6034283801f1ecd58141ba345b5ba1215f96a860947a0e582",
+    "resolution": [
+      3000,
+      3000
+    ]
+  },
+  "renderContract": {
+    "fullBodyFrontAndRear": true,
+    "helmetTorsoUnoccluded": true,
+    "literalContactCloseViews": [
+      "firing",
+      "support",
+      "stock"
+    ],
+    "contactSurfacesTranslucentOnlyInCloseViews": true,
+    "isolatedProductionRifleProfile": true,
+    "automaticAcceptance": false
+  },
+  "nonClaims": [
+    "This is an early bounded V6-B candidate review board, not G6 or final human acceptance.",
+    "Render integrity and contact visibility do not substitute for direct visual inspection."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-8",
+  "capturedAt": "2026-07-22T03:32:51-05:00",
+  "status": "FAIL_RETAINED_HASH_RECALIBRATION",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 1,
+    "testsFailed": 1
+  },
+  "cause": "The fake grenade world was strengthened from lifetime-only detonation to valid opposing contacts, fuse detonation, and one real self-impulse consequence, intentionally changing the canonical traces.",
+  "canonicalHashes": {
+    "baseline": "02bc18767aada74b",
+    "loss": "8895a698a8421aed",
+    "reorder": "02bc18767aada74b",
+    "duplicate": "02bc18767aada74b"
+  },
+  "correction": "The effect-bearing traces are now the literal replay pins."
+}

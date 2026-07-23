@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "evidence": "PHASE4_G3_PRODUCT_ONLINE_PREVIEW",
+  "claim": "PRODUCT_PATH_INTEGRATION_ONLY_G3_NOT_ACCEPTED",
+  "startedAt": "2026-07-22T09:52:56.222Z",
+  "finishedAt": "2026-07-22T09:53:07.283Z",
+  "baseUrl": "http://127.0.0.1:5173",
+  "joinPath": "/online?mode=join&room=KYX-MNLVV9",
+  "roomCode": "KYX-MNLVV9",
+  "menuEntry": {
+    "text": "ONLINE MOVEMENT PREVIEW",
+    "disabled": false,
+    "ariaDisabled": "false"
+  },
+  "movementMillimeters": 7200,
+  "peerDistanceMillimeters": 0,
+  "snapshots": {
+    "beforeMoveA": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_MOVEMENT_PREVIEW",
+      "roomCode": "KYX-MNLVV9",
+      "connection": "joined",
+      "matchId": "match.ead089aeca8c4242b11d1317d30d7c11",
+      "playerId": "player.fdd6575d-bc72-418e-bc47-b354e2bab505",
+      "remotePlayers": 1,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 1,
+      "commandsGenerated": 0,
+      "inputAcks": 2,
+      "reconciliations": 1,
+      "resumeSuccesses": 0,
+      "localPredictedPosition": {
+        "x": -1500,
+        "y": 0,
+        "z": -2000
+      },
+      "remotePositions": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        }
+      ],
+      "lastError": null
+    },
+    "afterMoveA": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_MOVEMENT_PREVIEW",
+      "roomCode": "KYX-MNLVV9",
+      "connection": "joined",
+      "matchId": "match.ead089aeca8c4242b11d1317d30d7c11",
+      "playerId": "player.fdd6575d-bc72-418e-bc47-b354e2bab505",
+      "remotePlayers": 1,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 19,
+      "commandsGenerated": 35,
+      "inputAcks": 38,
+      "reconciliations": 19,
+      "resumeSuccesses": 0,
+      "localPredictedPosition": {
+        "x": 5700,
+        "y": 0,
+        "z": -2000
+      },
+      "remotePositions": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        }
+      ],
+      "lastError": null
+    },
+    "afterMoveB": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_MOVEMENT_PREVIEW",
+      "roomCode": "KYX-MNLVV9",
+      "connection": "joined",
+      "matchId": "match.ead089aeca8c4242b11d1317d30d7c11",
+      "playerId": "player.308b93ce-21b6-48d4-a744-1a303d1b995b",
+      "remotePlayers": 1,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 19,
+      "commandsGenerated": 36,
+      "inputAcks": 38,
+      "reconciliations": 19,
+      "resumeSuccesses": 0,
+      "localPredictedPosition": {
+        "x": 0,
+        "y": 0,
+        "z": -2000
+      },
+      "remotePositions": [
+        {
+          "x": 5700,
+          "y": 0,
+          "z": -2000
+        }
+      ],
+      "lastError": null
+    },
+    "afterResumeA": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_MOVEMENT_PREVIEW",
+      "roomCode": "KYX-MNLVV9",
+      "connection": "joined",
+      "matchId": "match.ead089aeca8c4242b11d1317d30d7c11",
+      "playerId": "player.fdd6575d-bc72-418e-bc47-b354e2bab505",
+      "remotePlayers": 1,
+      "fullSnapshots": 2,
+      "deltaSnapshots": 24,
+      "commandsGenerated": 46,
+      "inputAcks": 48,
+      "reconciliations": 24,
+      "resumeSuccesses": 1,
+      "localPredictedPosition": {
+        "x": 5700,
+        "y": 0,
+        "z": -2000
+      },
+      "remotePositions": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -2000
+        }
+      ],
+      "lastError": null
+    },
+    "finalB": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_MOVEMENT_PREVIEW",
+      "roomCode": "KYX-MNLVV9",
+      "connection": "joined",
+      "matchId": "match.ead089aeca8c4242b11d1317d30d7c11",
+      "playerId": "player.308b93ce-21b6-48d4-a744-1a303d1b995b",
+      "remotePlayers": 1,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 26,
+      "commandsGenerated": 51,
+      "inputAcks": 53,
+      "reconciliations": 26,
+      "resumeSuccesses": 0,
+      "localPredictedPosition": {
+        "x": 0,
+        "y": 0,
+        "z": -2000
+      },
+      "remotePositions": [
+        {
+          "x": 5700,
+          "y": 0,
+          "z": -2000
+        }
+      ],
+      "lastError": null
+    }
+  },
+  "errors": {
+    "clientA": [],
+    "clientB": []
+  },
+  "screenshots": [
+    {
+      "file": "main-menu-online-entry.png",
+      "bytes": 525069,
+      "sha256": "7ceb29a196df28bd7ff66547f3f267d0b4a1e60f803b3b77552134314c54a04e"
+    },
+    {
+      "file": "online-lobby.png",
+      "bytes": 320990,
+      "sha256": "4cd2c52fc07c8744b0213518e0037ce3e6e8b56af3de14691c7a00961fdc1ae1"
+    },
+    {
+      "file": "online-room-a-resumed.png",
+      "bytes": 371017,
+      "sha256": "668f9c70a7bd475b3a2db0b038d452e65c733450e416984efd39c9e40e815cf7"
+    },
+    {
+      "file": "online-room-b-peer.png",
+      "bytes": 371218,
+      "sha256": "37179d9fba630cf4713256d5418c757e83e6bcc9d2566b3ac26c011453af3668"
+    }
+  ],
+  "checks": {
+    "menuEntryEnabled": true,
+    "menuEntryNamesPreview": true,
+    "landingDisclosesMovementOnly": true,
+    "landingDisclosesLocalGuest": true,
+    "authorityCreatedValidRoom": true,
+    "bothClientsJoined": true,
+    "sameMatch": true,
+    "distinctPlayers": true,
+    "eachSeesOneRemote": true,
+    "localMovementAdvanced": true,
+    "peerRenderedMovedPlayer": true,
+    "snapshotsFlowed": true,
+    "inputsAcknowledged": true,
+    "resumeSucceeded": true,
+    "resumeKeptIdentity": true,
+    "peerStayedJoined": true,
+    "noBrowserErrors": true
+  },
+  "verdict": "PASS"
+}

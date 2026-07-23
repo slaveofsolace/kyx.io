@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-focused-attempt-2",
+  "capturedAt": "2026-07-22T03:21:11-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": [
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts"
+  ],
+  "result": {
+    "testFilesPassed": 0,
+    "testFilesFailed": 1,
+    "testsPassed": 0,
+    "testsFailed": 2
+  },
+  "failure": {
+    "error": "RangeError: impulse grenade contact normal must oppose travel",
+    "cause": "The fake world returned one fixed upward contact normal on every sweep, including travel directions for which it was not opposing.",
+    "correction": "The bounded clear-world fixture now returns no contacts; projectile lifetime and fuse detonation remain deterministic without inventing collision geometry."
+  }
+}

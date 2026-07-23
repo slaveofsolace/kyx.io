@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T07:48:56.296704+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV4",
+  "inputs": {
+    "rev3": {
+      "path": "kyx_vanguard_v6c_visual_benchmark_rev3.blend",
+      "sha256Before": "0268b3299ecce743c22f2404af6f0ba0e74dd88f7c24304fd3a21ff3246020a0",
+      "sha256After": "0268b3299ecce743c22f2404af6f0ba0e74dd88f7c24304fd3a21ff3246020a0",
+      "unchanged": true
+    },
+    "acceptedV6A": {
+      "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true
+    }
+  },
+  "output": {
+    "path": "kyx_vanguard_v6c_visual_benchmark_rev4.blend",
+    "bytes": 12829548,
+    "sha256": "46ea58445aa92f2f59ecb5993d008ac4a14164300c5b276993cab28d94c8be2c"
+  },
+  "removedRev3Objects": [
+    "KYX_V6C_BENCH_R4_RibBlade_L",
+    "KYX_V6C_BENCH_R4_RibBlade_R",
+    "KYX_V6C_BENCH_R4_HelmetTightLiner",
+    "KYX_V6C_BENCH_R4_ForearmLeaf_L",
+    "KYX_V6C_BENCH_R4_ThighLeaf_L",
+    "KYX_V6C_BENCH_R4_PatellaLeaf_L",
+    "KYX_V6C_BENCH_R4_TibiaLeaf_L",
+    "KYX_V6C_BENCH_R4_ForearmIntegratedSeam_L",
+    "KYX_V6C_BENCH_R4_ThighIntegratedSeam_L",
+    "KYX_V6C_BENCH_R4_KneeIntegratedSeam_L",
+    "KYX_V6C_BENCH_R4_ShinIntegratedSeam_L",
+    "KYX_V6C_BENCH_R4_ForearmLeaf_R",
+    "KYX_V6C_BENCH_R4_ThighLeaf_R",
+    "KYX_V6C_BENCH_R4_PatellaLeaf_R",
+    "KYX_V6C_BENCH_R4_TibiaLeaf_R",
+    "KYX_V6C_BENCH_R4_ForearmIntegratedSeam_R",
+    "KYX_V6C_BENCH_R4_ThighIntegratedSeam_R",
+    "KYX_V6C_BENCH_R4_KneeIntegratedSeam_R",
+    "KYX_V6C_BENCH_R4_ShinIntegratedSeam_R"
+  ],
+  "replacementBounds": {
+    "KYX_V6C_BENCH_R4_HelmetPlanarLiner": [
+      0.231049,
+      0.22784,
+      0.295857
+    ],
+    "KYX_V6C_BENCH_R4_RibTailoringSeam_L": [
+      0.127939,
+      0.119138,
+      0.063509
+    ],
+    "KYX_V6C_BENCH_R4_RibTailoringSeam_R": [
+      0.1279,
+      0.120002,
+      0.063546
+    ],
+    "KYX_V6C_BENCH_R4_ForearmGraphiteWrap_L": [
+      0.117869,
+      0.083021,
+      0.177179
+    ],
+    "KYX_V6C_BENCH_R4_ForearmCeramicInset_L": [
+      0.073812,
+      0.035926,
+      0.124749
+    ],
+    "KYX_V6C_BENCH_R4_ThighGraphiteWrap_L": [
+      0.12713,
+      0.115233,
+      0.208928
+    ],
+    "KYX_V6C_BENCH_R4_ThighCeramicInset_L": [
+      0.067344,
+      0.053454,
+      0.139031
+    ],
+    "KYX_V6C_BENCH_R4_PatellaGraphiteWrap_L": [
+      0.121466,
+      0.091649,
+      0.114574
+    ],
+    "KYX_V6C_BENCH_R4_PatellaCeramicInset_L": [
+      0.074274,
+      0.034076,
+      0.06662
+    ],
+    "KYX_V6C_BENCH_R4_TibiaGraphiteWrap_L": [
+      0.108259,
+      0.082922,
+      0.239406
+    ],
+    "KYX_V6C_BENCH_R4_TibiaCeramicInset_L": [
+      0.062079,
+      0.033766,
+      0.172268
+    ],
+    "KYX_V6C_BENCH_R4_ForearmInsetRoute_L": [
+      0.040388,
+      0.017534,
+      0.118184
+    ],
+    "KYX_V6C_BENCH_R4_LegContinuousRoute_L": [
+      0.031363,
+      0.04536,
+      0.555469
+    ],
+    "KYX_V6C_BENCH_R4_ForearmGraphiteWrap_R": [
+      0.117869,
+      0.083021,
+      0.177179
+    ],
+    "KYX_V6C_BENCH_R4_ForearmCeramicInset_R": [
+      0.073812,
+      0.035926,
+      0.124749
+    ],
+    "KYX_V6C_BENCH_R4_ThighGraphiteWrap_R": [
+      0.127131,
+      0.115233,
+      0.208928
+    ],
+    "KYX_V6C_BENCH_R4_ThighCeramicInset_R": [
+      0.067344,
+      0.053454,
+      0.139032
+    ],
+    "KYX_V6C_BENCH_R4_PatellaGraphiteWrap_R": [
+      0.121466,
+      0.091649,
+      0.114574
+    ],
+    "KYX_V6C_BENCH_R4_PatellaCeramicInset_R": [
+      0.074274,
+      0.034076,
+      0.066621
+    ],
+    "KYX_V6C_BENCH_R4_TibiaGraphiteWrap_R": [
+      0.108259,
+      0.082922,
+      0.23941
+    ],
+    "KYX_V6C_BENCH_R4_TibiaCeramicInset_R": [
+      0.062079,
+      0.033766,
+      0.172267
+    ],
+    "KYX_V6C_BENCH_R4_ForearmInsetRoute_R": [
+      0.040388,
+      0.017534,
+      0.118184
+    ],
+    "KYX_V6C_BENCH_R4_LegContinuousRoute_R": [
+      0.031363,
+      0.04536,
+      0.555469
+    ],
+    "KYX_V6C_BENCH_R4_BootDorsalSpline_L": [
+      0.022015,
+      0.252663,
+      0.102119
+    ],
+    "KYX_V6C_BENCH_R4_BootDorsalSpline_R": [
+      0.022015,
+      0.252663,
+      0.102119
+    ],
+    "KYX_V6C_BENCH_R4_AutoRifleEjectionFrame": [
+      0.11328,
+      0.0046,
+      0.063896
+    ],
+    "KYX_V6C_BENCH_R4_AutoRiflePowerRoute": [
+      0.417626,
+      0.01486,
+      0.039929
+    ],
+    "KYX_V6C_BENCH_R4_AutoRifleTopSpine": [
+      0.500851,
+      0.0106,
+      0.051574
+    ]
+  },
+  "corrections": [
+    "Removed both cup-like graphite lower-rib patches and replaced them with fitted tailoring seams.",
+    "Rebuilt all forearm, thigh, patella, and tibia armor as nested graphite wraps with narrower ceramic insets.",
+    "Added continuous routed seams across the limb systems so the guards read as one equipment language.",
+    "Replaced the smooth symmetric liner with an asymmetric measured loft and compressed the ivory crown depth.",
+    "Deepened suit/boot values and warmed the ceramic for stronger material separation.",
+    "Added seated boot dorsal splines and continuous rifle ejection, power, and top-spine routing."
+  ],
+  "assertions": {
+    "rev3Preserved": true,
+    "acceptedV6APreserved": true,
+    "noV6BObjects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV4_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 4 is a V6-C visual benchmark candidate, not V6-C or G6 acceptance.",
+    "Contact witnesses establish future intent only; no literal posed contact is claimed.",
+    "No final retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

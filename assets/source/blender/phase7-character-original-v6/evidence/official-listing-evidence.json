@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "retrievedUtc": "2026-07-22T03:33:34.4095791Z",
+  "officialListingUrl": "https://www.blender.org/download/demo-files/",
+  "officialDownloadUrl": "https://download.blender.org/demo/asset-bundles/human-base-meshes/human-base-meshes-bundle-v1.4.1.zip",
+  "listingHtml": {
+    "bytes": 174304,
+    "sha256": "8b86da85ee633dc2df0ae28c535bd65d8f8265b55798c29931d58b86585fd7c7"
+  },
+  "observations": {
+    "product": "Human Base Meshes v1.4.1",
+    "publisherCredit": "Blender Studio and community contributions",
+    "displaySize": "49 MB",
+    "license": "CC0",
+    "updated": "Jan 20, 2025",
+    "minimumCompatibility": "Blender 4.2 LTS or newer"
+  },
+  "compatibilityConclusion": {
+    "localBlender": "5.1.2",
+    "meetsMinimum": true
+  },
+  "downloadResponse": {
+    "checkedUtc": "2026-07-22T03:33:22Z",
+    "status": 200,
+    "contentType": "application/zip",
+    "contentLength": 50643039,
+    "lastModified": "Tue, 20 Jan 2026 14:10:51 GMT",
+    "etag": "\"696f8ceb-304c05f\"",
+    "strictTransportSecurityObserved": true
+  },
+  "status": "OFFICIAL_CC0_LISTING_AND_COMPATIBILITY_CONFIRMED"
+}

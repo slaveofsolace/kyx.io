@@ -1,0 +1,2364 @@
+{
+  "schemaVersion": 1,
+  "id": "inkfall_foundry_graybox_seed_v1",
+  "mapId": "inkfall_foundry",
+  "displayName": "Inkfall Foundry",
+  "workingName": true,
+  "status": "design_seed_only",
+  "evidenceLabel": "HYPOTHESIS",
+  "implementationClaims": {
+    "runtimeIntegrated": false,
+    "renderGrayboxExists": false,
+    "separateCollisionPackageExists": false,
+    "spawnRaycastsRun": false,
+    "routeTapesRun": false,
+    "playtestRun": false,
+    "performanceProfiled": false,
+    "g5Passed": false,
+    "g6Passed": false
+  },
+  "originality": {
+    "authorship": "Original S-fold three-tier topology authored for KYX.IO from abstract route requirements.",
+    "copiedReferenceGeometry": false,
+    "prohibitedReferenceMaps": [
+      "Rook",
+      "Dragon Temple",
+      "Graveyard"
+    ],
+    "constraint": "Do not import, trace, or reconstruct any reference-map geometry, landmark arrangement, or distinctive expression."
+  },
+  "units": {
+    "distance": "millimeters",
+    "time": "milliseconds",
+    "angle": "milli_degrees",
+    "authorityTick": "integer_tick"
+  },
+  "coordinateSystem": {
+    "handedness": "project_map_seed_y_up",
+    "xAxis": "east",
+    "yAxis": "up",
+    "zAxis": "north",
+    "origin": "Press Core floor contact",
+    "playerPositionReference": "capsule_feet"
+  },
+  "sourceContracts": {
+    "mapBrief": {
+      "path": "codex_handoff_pack_20260719_v2/08_MAP_LEVEL_DESIGN.md",
+      "sections": [
+        "First map",
+        "Topology",
+        "Quantitative first-pass targets",
+        "Spatial rules",
+        "Spawn system",
+        "Map QA"
+      ]
+    },
+    "movementProfile": {
+      "id": "phase3_hypothesis_v1",
+      "revision": 1,
+      "hash": "8ab4ed437a4393c0",
+      "evidenceLabel": "HYPOTHESIS",
+      "implementationStatus": "fixture_only",
+      "simulationRateHz": 20,
+      "canonicalMovementHash": "66fcaf19c3fd94ad",
+      "sealedEvidencePath": "evidence/2026-07-20/phase-3-movement-collision/movement-tapes.json"
+    }
+  },
+  "boundsMm": {
+    "minimum": [
+      -36000,
+      -5000,
+      -28000
+    ],
+    "maximum": [
+      36000,
+      10000,
+      28000
+    ]
+  },
+  "grid": {
+    "primaryModuleMm": 1000,
+    "fineAdjustmentMm": 250,
+    "grayboxRule": "All collision dimensions remain integer millimeters; author on the primary grid except documented fine-clearance tests."
+  },
+  "movementSizing": {
+    "standingCapsule": {
+      "heightMm": 1800,
+      "radiusMm": 350,
+      "contactSkinMm": 20
+    },
+    "crouchedCapsule": {
+      "heightMm": 1100,
+      "radiusMm": 350,
+      "contactSkinMm": 20
+    },
+    "sprintSpeedMmPerSecond": 9000,
+    "groundAccelerationMmPerSecondSquared": 60000,
+    "measuredTimeToNinetyPercentSpeedMs": 150,
+    "measuredBrakingToStopMs": 250,
+    "jump": {
+      "measuredApexGainMm": 2750,
+      "measuredTimeToApexMs": 500,
+      "measuredAirtimeMs": 1000,
+      "airSpeedCapMmPerSecond": 8000,
+      "maximumMandatoryGapMm": 4200,
+      "optionalSkillGapMm": 5200,
+      "status": "requires_real_map_tape"
+    },
+    "slide": {
+      "measuredUsefulDurationMs": 600,
+      "minimumEntrySpeedMmPerSecond": 7000,
+      "maximumSpeedMmPerSecond": 10000,
+      "plannedRestrictedSegmentLengthMm": 4800,
+      "plannedRestrictedClearWidthMm": 1400,
+      "plannedRestrictedClearHeightMm": 1350,
+      "crouchFallbackTimeMs": 1371,
+      "status": "requires_real_map_tape"
+    },
+    "teleport": {
+      "maximumRangeMm": 9000,
+      "plannedShortcutDistanceMm": 8124,
+      "remainingRangeMarginMm": 876,
+      "landingClearDiameterMm": 4000,
+      "status": "requires_real_map_tape"
+    },
+    "collisionAllowances": {
+      "maximumAuthoredStepRiseMm": 250,
+      "minimumAuthoredStepRunMm": 500,
+      "maximumOrdinaryRampAngleMilliDegrees": 20000,
+      "minimumMainDoorClearWidthMm": 1400,
+      "minimumPrimaryRouteClearWidthMm": 2200,
+      "minimumStandingClearHeightMm": 2400
+    }
+  },
+  "timingModel": {
+    "id": "phase3_sprint_plus_explicit_penalty_v1",
+    "evidenceLabel": "HYPOTHESIS",
+    "fromRestFormula": "If d <= 675 mm, t=sqrt(2d/60000); otherwise t=150 ms + (d-675 mm)/9000 mm/s.",
+    "rollingFormula": "t=d/9000 mm/s",
+    "accelerationDistanceMm": 675,
+    "rule": "Geometry establishes only a calculation seed. Penalties are explicit per route and must be replaced by authoritative route tapes."
+  },
+  "verticalTiers": [
+    {
+      "id": "ink_channel",
+      "floorYmm": -3000,
+      "role": "close flank and recovery"
+    },
+    {
+      "id": "press_hall",
+      "floorYmm": 0,
+      "role": "fast midrange contest"
+    },
+    {
+      "id": "archive_walk",
+      "floorYmm": 6000,
+      "role": "exposed long-angle route"
+    }
+  ],
+  "zones": [
+    {
+      "id": "west_gallery",
+      "callout": "West Galley",
+      "family": "spawn",
+      "centerMm": [
+        -30000,
+        0,
+        0
+      ],
+      "halfExtentsMm": [
+        6000,
+        4000,
+        9000
+      ],
+      "silhouetteHypothesis": "split ceramic jaws around a low ink gate",
+      "valueFamily": "pale_mass_dark_recess",
+      "landmark": "broken feed roller",
+      "visibleFromApproaches": [
+        "press_hall",
+        "ink_channel_west"
+      ]
+    },
+    {
+      "id": "east_gallery",
+      "callout": "East Galley",
+      "family": "spawn",
+      "centerMm": [
+        30000,
+        0,
+        0
+      ],
+      "halfExtentsMm": [
+        6000,
+        4000,
+        9000
+      ],
+      "silhouetteHypothesis": "stepped kiln fins around a vermilion cut",
+      "valueFamily": "pale_mass_vermilion_cut",
+      "landmark": "tilted drying frame",
+      "visibleFromApproaches": [
+        "press_hall",
+        "archive_walk_east"
+      ]
+    },
+    {
+      "id": "press_hall",
+      "callout": "Press Hall",
+      "family": "press_hall",
+      "centerMm": [
+        0,
+        0,
+        0
+      ],
+      "halfExtentsMm": [
+        22000,
+        4500,
+        10000
+      ],
+      "silhouetteHypothesis": "offset reactor drums and paper baffles form an S-fold",
+      "valueFamily": "pale_ceramic_graphite",
+      "landmark": "split print reactor",
+      "visibleFromApproaches": [
+        "west_gallery",
+        "east_gallery",
+        "paper_drop"
+      ]
+    },
+    {
+      "id": "ink_channel_west",
+      "callout": "Ink Sump",
+      "family": "ink_channel",
+      "centerMm": [
+        -15000,
+        -3000,
+        -18500
+      ],
+      "halfExtentsMm": [
+        11000,
+        3000,
+        7000
+      ],
+      "silhouetteHypothesis": "low conduit ribs over a recessed black channel",
+      "valueFamily": "deep_ink_matte",
+      "landmark": "three-pipe spill",
+      "visibleFromApproaches": [
+        "west_gallery",
+        "press_hall"
+      ]
+    },
+    {
+      "id": "ink_channel_east",
+      "callout": "Cistern Fold",
+      "family": "ink_channel",
+      "centerMm": [
+        15000,
+        -3000,
+        -17500
+      ],
+      "halfExtentsMm": [
+        11000,
+        3000,
+        7000
+      ],
+      "silhouetteHypothesis": "angled sump walls around a dry service island",
+      "valueFamily": "deep_ink_pale_island",
+      "landmark": "folded ceramic sluice",
+      "visibleFromApproaches": [
+        "east_gallery",
+        "press_hall"
+      ]
+    },
+    {
+      "id": "archive_walk_west",
+      "callout": "Paper Archive",
+      "family": "archive_walk",
+      "centerMm": [
+        -15000,
+        6000,
+        18500
+      ],
+      "halfExtentsMm": [
+        11000,
+        3500,
+        7000
+      ],
+      "silhouetteHypothesis": "suspended shelving fins with open undercuts",
+      "valueFamily": "warm_paper_graphite",
+      "landmark": "torn index fan",
+      "visibleFromApproaches": [
+        "west_gallery",
+        "press_hall"
+      ]
+    },
+    {
+      "id": "archive_walk_east",
+      "callout": "Ledger Bridge",
+      "family": "archive_walk",
+      "centerMm": [
+        15000,
+        6000,
+        18000
+      ],
+      "halfExtentsMm": [
+        11000,
+        3500,
+        7000
+      ],
+      "silhouetteHypothesis": "narrow bridge framed by two offset archive towers",
+      "valueFamily": "warm_paper_vermilion",
+      "landmark": "hanging ledger slab",
+      "visibleFromApproaches": [
+        "east_gallery",
+        "press_hall",
+        "paper_drop"
+      ]
+    },
+    {
+      "id": "teleport_fold",
+      "callout": "Red Fold",
+      "family": "crosslink",
+      "centerMm": [
+        -1500,
+        -1000,
+        -7500
+      ],
+      "halfExtentsMm": [
+        6500,
+        4500,
+        6000
+      ],
+      "silhouetteHypothesis": "a diagonal vermilion service cut connects dark and pale tiers",
+      "valueFamily": "vermilion_interaction_cut",
+      "landmark": "paired split-ring pads",
+      "visibleFromApproaches": [
+        "ink_channel_west",
+        "press_hall"
+      ]
+    },
+    {
+      "id": "paper_drop",
+      "callout": "Paper Drop",
+      "family": "crosslink",
+      "centerMm": [
+        -4000,
+        3000,
+        8000
+      ],
+      "halfExtentsMm": [
+        6000,
+        5000,
+        6000
+      ],
+      "silhouetteHypothesis": "torn baffles create a one-way vertical attack seam",
+      "valueFamily": "pale_paper_shadow",
+      "landmark": "folded garden conduit",
+      "visibleFromApproaches": [
+        "archive_walk_west",
+        "press_hall"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "west_spawn",
+      "zoneId": "west_gallery",
+      "kind": "spawn_anchor",
+      "positionMm": [
+        -33000,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "west_choice",
+      "zoneId": "west_gallery",
+      "kind": "route_choice",
+      "positionMm": [
+        -22000,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "press_west",
+      "zoneId": "press_hall",
+      "kind": "junction",
+      "positionMm": [
+        -14000,
+        0,
+        2000
+      ]
+    },
+    {
+      "id": "press_core",
+      "zoneId": "press_hall",
+      "kind": "contest",
+      "positionMm": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "press_east",
+      "zoneId": "press_hall",
+      "kind": "junction",
+      "positionMm": [
+        14000,
+        0,
+        -2000
+      ]
+    },
+    {
+      "id": "east_choice",
+      "zoneId": "east_gallery",
+      "kind": "route_choice",
+      "positionMm": [
+        22000,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "east_spawn",
+      "zoneId": "east_gallery",
+      "kind": "spawn_anchor",
+      "positionMm": [
+        33000,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "ink_west",
+      "zoneId": "ink_channel_west",
+      "kind": "junction",
+      "positionMm": [
+        -22000,
+        -3000,
+        -17000
+      ]
+    },
+    {
+      "id": "ink_mid_w",
+      "zoneId": "ink_channel_west",
+      "kind": "contest",
+      "positionMm": [
+        -8000,
+        -3000,
+        -20000
+      ]
+    },
+    {
+      "id": "ink_mid_e",
+      "zoneId": "ink_channel_east",
+      "kind": "contest",
+      "positionMm": [
+        8000,
+        -3000,
+        -16000
+      ]
+    },
+    {
+      "id": "ink_east",
+      "zoneId": "ink_channel_east",
+      "kind": "junction",
+      "positionMm": [
+        22000,
+        -3000,
+        -17000
+      ]
+    },
+    {
+      "id": "archive_west",
+      "zoneId": "archive_walk_west",
+      "kind": "junction",
+      "positionMm": [
+        -22000,
+        6000,
+        17000
+      ]
+    },
+    {
+      "id": "archive_mid_w",
+      "zoneId": "archive_walk_west",
+      "kind": "contest",
+      "positionMm": [
+        -8000,
+        6000,
+        20000
+      ]
+    },
+    {
+      "id": "archive_mid_e",
+      "zoneId": "archive_walk_east",
+      "kind": "strong_position",
+      "positionMm": [
+        8000,
+        6000,
+        16000
+      ]
+    },
+    {
+      "id": "archive_east",
+      "zoneId": "archive_walk_east",
+      "kind": "junction",
+      "positionMm": [
+        22000,
+        6000,
+        17000
+      ]
+    },
+    {
+      "id": "teleport_entry",
+      "zoneId": "teleport_fold",
+      "kind": "teleport_entry",
+      "positionMm": [
+        -4000,
+        -3000,
+        -10000
+      ]
+    },
+    {
+      "id": "teleport_exit",
+      "zoneId": "teleport_fold",
+      "kind": "teleport_exit",
+      "positionMm": [
+        1000,
+        1000,
+        -5000
+      ]
+    },
+    {
+      "id": "archive_drop",
+      "zoneId": "paper_drop",
+      "kind": "drop_start",
+      "positionMm": [
+        -5000,
+        6000,
+        10000
+      ]
+    },
+    {
+      "id": "press_north",
+      "zoneId": "paper_drop",
+      "kind": "junction",
+      "positionMm": [
+        -3000,
+        0,
+        6000
+      ]
+    }
+  ],
+  "links": [
+    {
+      "id": "west_spawn_choice",
+      "from": "west_spawn",
+      "to": "west_choice",
+      "family": "spawn",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 11180,
+      "minimumClearWidthMm": 3000,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -33000,
+          0,
+          0
+        ],
+        [
+          -27500,
+          0,
+          1000
+        ],
+        [
+          -22000,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "east_choice_spawn",
+      "from": "east_choice",
+      "to": "east_spawn",
+      "family": "spawn",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 11180,
+      "minimumClearWidthMm": 3000,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          22000,
+          0,
+          0
+        ],
+        [
+          27500,
+          0,
+          -1000
+        ],
+        [
+          33000,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "west_choice_press",
+      "from": "west_choice",
+      "to": "press_west",
+      "family": "press_hall",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 9587,
+      "minimumClearWidthMm": 3600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -22000,
+          0,
+          0
+        ],
+        [
+          -18000,
+          0,
+          -1500
+        ],
+        [
+          -14000,
+          0,
+          2000
+        ]
+      ]
+    },
+    {
+      "id": "press_west_core",
+      "from": "press_west",
+      "to": "press_core",
+      "family": "press_hall",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 18909,
+      "minimumClearWidthMm": 3600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -14000,
+          0,
+          2000
+        ],
+        [
+          -9000,
+          0,
+          4500
+        ],
+        [
+          -4000,
+          0,
+          -2500
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "press_core_east",
+      "from": "press_core",
+      "to": "press_east",
+      "family": "press_hall",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 21520,
+      "minimumClearWidthMm": 3600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          4000,
+          0,
+          -2500
+        ],
+        [
+          9000,
+          0,
+          4500
+        ],
+        [
+          14000,
+          0,
+          -2000
+        ]
+      ]
+    },
+    {
+      "id": "press_east_choice",
+      "from": "press_east",
+      "to": "east_choice",
+      "family": "press_hall",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 9587,
+      "minimumClearWidthMm": 3600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          14000,
+          0,
+          -2000
+        ],
+        [
+          18000,
+          0,
+          1500
+        ],
+        [
+          22000,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "west_choice_ink",
+      "from": "west_choice",
+      "to": "ink_west",
+      "family": "ink_channel",
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "lengthMm": 18696,
+      "minimumClearWidthMm": 2400,
+      "minimumClearHeightMm": 2400,
+      "maximumRampAngleMilliDegrees": 20000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -22000,
+          0,
+          0
+        ],
+        [
+          -25000,
+          -1000,
+          -7000
+        ],
+        [
+          -25000,
+          -2000,
+          -12000
+        ],
+        [
+          -22000,
+          -3000,
+          -17000
+        ]
+      ]
+    },
+    {
+      "id": "ink_west_mid_w",
+      "from": "ink_west",
+      "to": "ink_mid_w",
+      "family": "ink_channel",
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "lengthMm": 15133,
+      "minimumClearWidthMm": 2200,
+      "minimumClearHeightMm": 2400,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -22000,
+          -3000,
+          -17000
+        ],
+        [
+          -15000,
+          -3000,
+          -21000
+        ],
+        [
+          -8000,
+          -3000,
+          -20000
+        ]
+      ]
+    },
+    {
+      "id": "ink_mid_w_mid_e",
+      "from": "ink_mid_w",
+      "to": "ink_mid_e",
+      "family": "ink_channel",
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "lengthMm": 18246,
+      "minimumClearWidthMm": 2200,
+      "minimumClearHeightMm": 2400,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -8000,
+          -3000,
+          -20000
+        ],
+        [
+          0,
+          -3000,
+          -14000
+        ],
+        [
+          8000,
+          -3000,
+          -16000
+        ]
+      ]
+    },
+    {
+      "id": "ink_mid_e_east",
+      "from": "ink_mid_e",
+      "to": "ink_east",
+      "family": "ink_channel",
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "lengthMm": 15678,
+      "minimumClearWidthMm": 2200,
+      "minimumClearHeightMm": 2400,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          8000,
+          -3000,
+          -16000
+        ],
+        [
+          15000,
+          -3000,
+          -20000
+        ],
+        [
+          22000,
+          -3000,
+          -17000
+        ]
+      ]
+    },
+    {
+      "id": "ink_east_choice",
+      "from": "ink_east",
+      "to": "east_choice",
+      "family": "ink_channel",
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "lengthMm": 18696,
+      "minimumClearWidthMm": 2400,
+      "minimumClearHeightMm": 2400,
+      "maximumRampAngleMilliDegrees": 20000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          22000,
+          -3000,
+          -17000
+        ],
+        [
+          25000,
+          -2000,
+          -12000
+        ],
+        [
+          25000,
+          -1000,
+          -7000
+        ],
+        [
+          22000,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "west_choice_archive",
+      "from": "west_choice",
+      "to": "archive_west",
+      "family": "archive_walk",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 20059,
+      "minimumClearWidthMm": 2600,
+      "minimumClearHeightMm": 3000,
+      "maximumStairRiseMm": 250,
+      "minimumStairRunMm": 500,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -22000,
+          0,
+          0
+        ],
+        [
+          -25000,
+          2000,
+          7000
+        ],
+        [
+          -26000,
+          4000,
+          12000
+        ],
+        [
+          -22000,
+          6000,
+          17000
+        ]
+      ]
+    },
+    {
+      "id": "archive_west_mid_w",
+      "from": "archive_west",
+      "to": "archive_mid_w",
+      "family": "archive_walk",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 15133,
+      "minimumClearWidthMm": 2600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -22000,
+          6000,
+          17000
+        ],
+        [
+          -15000,
+          6000,
+          21000
+        ],
+        [
+          -8000,
+          6000,
+          20000
+        ]
+      ]
+    },
+    {
+      "id": "archive_mid_w_mid_e",
+      "from": "archive_mid_w",
+      "to": "archive_mid_e",
+      "family": "archive_walk",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 18246,
+      "minimumClearWidthMm": 2600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -8000,
+          6000,
+          20000
+        ],
+        [
+          0,
+          6000,
+          14000
+        ],
+        [
+          8000,
+          6000,
+          16000
+        ]
+      ]
+    },
+    {
+      "id": "archive_mid_e_east",
+      "from": "archive_mid_e",
+      "to": "archive_east",
+      "family": "archive_walk",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 16665,
+      "minimumClearWidthMm": 2600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          8000,
+          6000,
+          16000
+        ],
+        [
+          15000,
+          6000,
+          21000
+        ],
+        [
+          22000,
+          6000,
+          17000
+        ]
+      ]
+    },
+    {
+      "id": "archive_east_choice",
+      "from": "archive_east",
+      "to": "east_choice",
+      "family": "archive_walk",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 20059,
+      "minimumClearWidthMm": 2600,
+      "minimumClearHeightMm": 3000,
+      "maximumStairRiseMm": 250,
+      "minimumStairRunMm": 500,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          22000,
+          6000,
+          17000
+        ],
+        [
+          26000,
+          4000,
+          12000
+        ],
+        [
+          25000,
+          2000,
+          7000
+        ],
+        [
+          22000,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "press_west_ink",
+      "from": "press_west",
+      "to": "ink_west",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "lengthMm": 20913,
+      "minimumClearWidthMm": 2200,
+      "minimumClearHeightMm": 2400,
+      "maximumRampAngleMilliDegrees": 20000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -14000,
+          0,
+          2000
+        ],
+        [
+          -16000,
+          -1000,
+          -5000
+        ],
+        [
+          -19000,
+          -2000,
+          -11000
+        ],
+        [
+          -22000,
+          -3000,
+          -17000
+        ]
+      ]
+    },
+    {
+      "id": "press_east_ink",
+      "from": "press_east",
+      "to": "ink_east",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "slide"
+      ],
+      "lengthMm": 17309,
+      "minimumClearWidthMm": 2200,
+      "minimumClearHeightMm": 2400,
+      "maximumRampAngleMilliDegrees": 20000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          14000,
+          0,
+          -2000
+        ],
+        [
+          16000,
+          -1000,
+          -7000
+        ],
+        [
+          19000,
+          -2000,
+          -12000
+        ],
+        [
+          22000,
+          -3000,
+          -17000
+        ]
+      ]
+    },
+    {
+      "id": "press_west_archive",
+      "from": "press_west",
+      "to": "archive_west",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 18073,
+      "minimumClearWidthMm": 2400,
+      "minimumClearHeightMm": 3000,
+      "maximumStairRiseMm": 250,
+      "minimumStairRunMm": 500,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -14000,
+          0,
+          2000
+        ],
+        [
+          -16000,
+          2000,
+          7000
+        ],
+        [
+          -19000,
+          4000,
+          12000
+        ],
+        [
+          -22000,
+          6000,
+          17000
+        ]
+      ]
+    },
+    {
+      "id": "press_east_archive",
+      "from": "press_east",
+      "to": "archive_east",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 21550,
+      "minimumClearWidthMm": 2400,
+      "minimumClearHeightMm": 3000,
+      "maximumStairRiseMm": 250,
+      "minimumStairRunMm": 500,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          14000,
+          0,
+          -2000
+        ],
+        [
+          16000,
+          2000,
+          5000
+        ],
+        [
+          19000,
+          4000,
+          11000
+        ],
+        [
+          22000,
+          6000,
+          17000
+        ]
+      ]
+    },
+    {
+      "id": "ink_mid_w_teleport_entry",
+      "from": "ink_mid_w",
+      "to": "teleport_entry",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "slide",
+        "crouch"
+      ],
+      "lengthMm": 10930,
+      "minimumClearWidthMm": 2200,
+      "minimumClearHeightMm": 2400,
+      "restrictedSegment": {
+        "type": "crouch_or_slide_bypass",
+        "lengthMm": 4800,
+        "clearWidthMm": 1400,
+        "clearHeightMm": 1350,
+        "runInMm": 8000
+      },
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -8000,
+          -3000,
+          -20000
+        ],
+        [
+          -5000,
+          -3000,
+          -15000
+        ],
+        [
+          -4000,
+          -3000,
+          -10000
+        ]
+      ]
+    },
+    {
+      "id": "teleport_shortcut",
+      "from": "teleport_entry",
+      "to": "teleport_exit",
+      "family": "teleport",
+      "modes": [
+        "teleport"
+      ],
+      "lengthMm": 8124,
+      "landingClearDiameterMm": 4000,
+      "readableDestinationRisk": true,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -4000,
+          -3000,
+          -10000
+        ],
+        [
+          1000,
+          1000,
+          -5000
+        ]
+      ]
+    },
+    {
+      "id": "teleport_exit_press_core",
+      "from": "teleport_exit",
+      "to": "press_core",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 7347,
+      "minimumClearWidthMm": 2400,
+      "minimumClearHeightMm": 2800,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          1000,
+          1000,
+          -5000
+        ],
+        [
+          3000,
+          0,
+          -2000
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "archive_mid_w_drop",
+      "from": "archive_mid_w",
+      "to": "archive_drop",
+      "family": "drop",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "oneWay": true,
+      "lengthMm": 10484,
+      "minimumClearWidthMm": 1800,
+      "minimumClearHeightMm": 3000,
+      "waypointsMm": [
+        [
+          -8000,
+          6000,
+          20000
+        ],
+        [
+          -6000,
+          6000,
+          15000
+        ],
+        [
+          -5000,
+          6000,
+          10000
+        ]
+      ]
+    },
+    {
+      "id": "archive_drop_press_north",
+      "from": "archive_drop",
+      "to": "press_north",
+      "family": "drop",
+      "modes": [
+        "drop"
+      ],
+      "oneWay": true,
+      "lengthMm": 7507,
+      "minimumLandingWidthMm": 4000,
+      "fallRecoveryRequired": true,
+      "waypointsMm": [
+        [
+          -5000,
+          6000,
+          10000
+        ],
+        [
+          -4000,
+          2500,
+          8000
+        ],
+        [
+          -3000,
+          0,
+          6000
+        ]
+      ]
+    },
+    {
+      "id": "press_north_core",
+      "from": "press_north",
+      "to": "press_core",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 6708,
+      "minimumClearWidthMm": 2600,
+      "minimumClearHeightMm": 3000,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          -3000,
+          0,
+          6000
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "id": "press_core_archive_mid_e",
+      "from": "press_core",
+      "to": "archive_mid_e",
+      "family": "crosslink",
+      "modes": [
+        "run",
+        "jump"
+      ],
+      "lengthMm": 19937,
+      "minimumClearWidthMm": 2400,
+      "minimumClearHeightMm": 3000,
+      "maximumStairRiseMm": 250,
+      "minimumStairRunMm": 500,
+      "oneWay": false,
+      "waypointsMm": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          6000,
+          2000,
+          5000
+        ],
+        [
+          8000,
+          6000,
+          16000
+        ]
+      ]
+    }
+  ],
+  "routeMetrics": [
+    {
+      "id": "spawn_to_choice_west",
+      "label": "West spawn to first route choice",
+      "linkIds": [
+        "west_spawn_choice"
+      ],
+      "runLinkIds": [
+        "west_spawn_choice"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 200,
+      "penaltyReason": "one protected spawn bend",
+      "targetBandMs": [
+        1000,
+        2500
+      ],
+      "metricClass": "spawn_to_choice",
+      "geometryDistanceMm": 11180,
+      "locomotionDistanceMm": 11180,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 1317,
+      "estimatedTraversalTimeMs": 1517,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_choice_east",
+      "label": "East spawn to first route choice",
+      "linkIds": [
+        "east_choice_spawn"
+      ],
+      "runLinkIds": [
+        "east_choice_spawn"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 200,
+      "penaltyReason": "one protected spawn bend",
+      "targetBandMs": [
+        1000,
+        2500
+      ],
+      "metricClass": "spawn_to_choice",
+      "geometryDistanceMm": 11180,
+      "locomotionDistanceMm": 11180,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 1317,
+      "estimatedTraversalTimeMs": 1517,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_press_contact_west",
+      "label": "West spawn to Press Core probable contact",
+      "linkIds": [
+        "west_spawn_choice",
+        "west_choice_press",
+        "press_west_core"
+      ],
+      "runLinkIds": [
+        "west_spawn_choice",
+        "west_choice_press",
+        "press_west_core"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 450,
+      "penaltyReason": "three baffle turns and one shoulder check",
+      "targetBandMs": [
+        4000,
+        9000
+      ],
+      "metricClass": "spawn_to_probable_contact",
+      "geometryDistanceMm": 39676,
+      "locomotionDistanceMm": 39676,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 4483,
+      "estimatedTraversalTimeMs": 4933,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_press_contact_east",
+      "label": "East spawn to Press Core probable contact",
+      "linkIds": [
+        "east_choice_spawn",
+        "press_east_choice",
+        "press_core_east"
+      ],
+      "runLinkIds": [
+        "east_choice_spawn",
+        "press_east_choice",
+        "press_core_east"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 450,
+      "penaltyReason": "three baffle turns and one shoulder check",
+      "targetBandMs": [
+        4000,
+        9000
+      ],
+      "metricClass": "spawn_to_probable_contact",
+      "geometryDistanceMm": 42287,
+      "locomotionDistanceMm": 42287,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 4774,
+      "estimatedTraversalTimeMs": 5224,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_ink_contact_west",
+      "label": "West spawn to west Ink Fold probable contact",
+      "linkIds": [
+        "west_spawn_choice",
+        "west_choice_ink",
+        "ink_west_mid_w"
+      ],
+      "runLinkIds": [
+        "west_spawn_choice",
+        "west_choice_ink",
+        "ink_west_mid_w"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 900,
+      "penaltyReason": "descent switchback, close cover, and stance-choice allowance",
+      "targetBandMs": [
+        4000,
+        9000
+      ],
+      "metricClass": "spawn_to_probable_contact",
+      "geometryDistanceMm": 45009,
+      "locomotionDistanceMm": 45009,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 5076,
+      "estimatedTraversalTimeMs": 5976,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_ink_contact_east",
+      "label": "East spawn to east Ink Fold probable contact",
+      "linkIds": [
+        "east_choice_spawn",
+        "ink_east_choice",
+        "ink_mid_e_east"
+      ],
+      "runLinkIds": [
+        "east_choice_spawn",
+        "ink_east_choice",
+        "ink_mid_e_east"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 900,
+      "penaltyReason": "descent switchback, close cover, and stance-choice allowance",
+      "targetBandMs": [
+        4000,
+        9000
+      ],
+      "metricClass": "spawn_to_probable_contact",
+      "geometryDistanceMm": 45554,
+      "locomotionDistanceMm": 45554,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 5137,
+      "estimatedTraversalTimeMs": 6037,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_archive_contact_west",
+      "label": "West spawn to west Archive Fold probable contact",
+      "linkIds": [
+        "west_spawn_choice",
+        "west_choice_archive",
+        "archive_west_mid_w"
+      ],
+      "runLinkIds": [
+        "west_spawn_choice",
+        "west_choice_archive",
+        "archive_west_mid_w"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 1350,
+      "penaltyReason": "six-meter switchback rise, exposure checks, and two direction changes",
+      "targetBandMs": [
+        4000,
+        9000
+      ],
+      "metricClass": "spawn_to_probable_contact",
+      "geometryDistanceMm": 46372,
+      "locomotionDistanceMm": 46372,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 5227,
+      "estimatedTraversalTimeMs": 6577,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "spawn_to_archive_contact_east",
+      "label": "East spawn to east Archive Fold probable contact",
+      "linkIds": [
+        "east_choice_spawn",
+        "archive_east_choice",
+        "archive_mid_e_east"
+      ],
+      "runLinkIds": [
+        "east_choice_spawn",
+        "archive_east_choice",
+        "archive_mid_e_east"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 1350,
+      "penaltyReason": "six-meter switchback rise, exposure checks, and two direction changes",
+      "targetBandMs": [
+        4000,
+        9000
+      ],
+      "metricClass": "spawn_to_probable_contact",
+      "geometryDistanceMm": 47904,
+      "locomotionDistanceMm": 47904,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 5398,
+      "estimatedTraversalTimeMs": 6748,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "press_fast_central_crossing",
+      "label": "Fast Press Hall crossing",
+      "linkIds": [
+        "press_west_core",
+        "press_core_east"
+      ],
+      "runLinkIds": [
+        "press_west_core",
+        "press_core_east"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 650,
+      "penaltyReason": "offset baffles prevent one uninterrupted lethal line",
+      "targetBandMs": [
+        4000,
+        7000
+      ],
+      "metricClass": "fast_central_crossing",
+      "geometryDistanceMm": 40429,
+      "locomotionDistanceMm": 40429,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 4567,
+      "estimatedTraversalTimeMs": 5217,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "full_outer_loop",
+      "label": "Archive-to-Ink full outer loop",
+      "linkIds": [
+        "west_choice_archive",
+        "archive_west_mid_w",
+        "archive_mid_w_mid_e",
+        "archive_mid_e_east",
+        "archive_east_choice",
+        "ink_east_choice",
+        "ink_mid_e_east",
+        "ink_mid_w_mid_e",
+        "ink_west_mid_w",
+        "west_choice_ink"
+      ],
+      "runLinkIds": [
+        "west_choice_archive",
+        "archive_west_mid_w",
+        "archive_mid_w_mid_e",
+        "archive_mid_e_east",
+        "archive_east_choice",
+        "ink_east_choice",
+        "ink_mid_e_east",
+        "ink_mid_w_mid_e",
+        "ink_west_mid_w",
+        "west_choice_ink"
+      ],
+      "timingMode": "rolling_start",
+      "penaltyMs": 3100,
+      "penaltyReason": "two six-meter tier changes, eight major bends, cover checks, and stance choices",
+      "targetBandMs": [
+        15000,
+        28000
+      ],
+      "metricClass": "full_outer_loop",
+      "geometryDistanceMm": 176611,
+      "locomotionDistanceMm": 176611,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 19623,
+      "estimatedTraversalTimeMs": 22723,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "ink_teleport_flank",
+      "label": "Ink Fold teleport flank to Press Core",
+      "linkIds": [
+        "ink_mid_w_teleport_entry",
+        "teleport_shortcut",
+        "teleport_exit_press_core"
+      ],
+      "runLinkIds": [
+        "ink_mid_w_teleport_entry",
+        "teleport_exit_press_core"
+      ],
+      "teleportLinkIds": [
+        "teleport_shortcut"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 400,
+      "interactionMs": 50,
+      "penaltyReason": "slide/crouch choice, destination read, and one authority tick for activation hypothesis",
+      "targetBandMs": [
+        1800,
+        4000
+      ],
+      "metricClass": "movement_tool_shortcut",
+      "geometryDistanceMm": 26401,
+      "locomotionDistanceMm": 18277,
+      "teleportDistanceMm": 8124,
+      "idealSprintTimeMs": 2106,
+      "estimatedTraversalTimeMs": 2556,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    },
+    {
+      "id": "archive_drop_flank",
+      "label": "Archive Fold drop flank to Press Core",
+      "linkIds": [
+        "archive_mid_w_drop",
+        "archive_drop_press_north",
+        "press_north_core"
+      ],
+      "runLinkIds": [
+        "archive_mid_w_drop",
+        "archive_drop_press_north",
+        "press_north_core"
+      ],
+      "timingMode": "from_rest",
+      "penaltyMs": 800,
+      "penaltyReason": "one-way drop commitment, landing recovery, and angle check",
+      "targetBandMs": [
+        2500,
+        5000
+      ],
+      "metricClass": "movement_tool_shortcut",
+      "geometryDistanceMm": 24699,
+      "locomotionDistanceMm": 24699,
+      "teleportDistanceMm": 0,
+      "idealSprintTimeMs": 2819,
+      "estimatedTraversalTimeMs": 3619,
+      "insideTargetBand": true,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "calculation_only"
+    }
+  ],
+  "spawnPolicy": {
+    "targetDirectEnemyLosCountAtSelection": 0,
+    "minimumEscapeRouteCount": 2,
+    "serverRescoreRequired": true,
+    "scoreInputs": [
+      "enemy_distance",
+      "enemy_line_of_sight",
+      "recent_enemy_aim",
+      "nearby_enemy_travel_time",
+      "recent_death",
+      "team_proximity",
+      "objective_pressure",
+      "occupancy",
+      "escape_route_count",
+      "recent_spawn_use",
+      "mode_territory"
+    ],
+    "status": "candidate_seed_only"
+  },
+  "spawnCandidates": [
+    {
+      "id": "spawn_w_press_a",
+      "set": "west_team",
+      "positionMm": [
+        -33500,
+        0,
+        -3500
+      ],
+      "facingMilliDegrees": 0,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_w_press_b",
+      "set": "west_team",
+      "positionMm": [
+        -33500,
+        0,
+        3500
+      ],
+      "facingMilliDegrees": 0,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_w_ink",
+      "set": "west_team",
+      "positionMm": [
+        -30500,
+        0,
+        -7000
+      ],
+      "facingMilliDegrees": -25000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "press_hall"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_w_archive",
+      "set": "west_team",
+      "positionMm": [
+        -30500,
+        0,
+        7000
+      ],
+      "facingMilliDegrees": 25000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "press_hall"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_e_press_a",
+      "set": "east_team",
+      "positionMm": [
+        33500,
+        0,
+        3500
+      ],
+      "facingMilliDegrees": 180000,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_e_press_b",
+      "set": "east_team",
+      "positionMm": [
+        33500,
+        0,
+        -3500
+      ],
+      "facingMilliDegrees": 180000,
+      "escapeRouteFamilies": [
+        "press_hall",
+        "ink_channel",
+        "archive_walk"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_e_ink",
+      "set": "east_team",
+      "positionMm": [
+        30500,
+        0,
+        -7000
+      ],
+      "facingMilliDegrees": -155000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "press_hall"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_e_archive",
+      "set": "east_team",
+      "positionMm": [
+        30500,
+        0,
+        7000
+      ],
+      "facingMilliDegrees": 155000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "press_hall"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_dm_ink_w",
+      "set": "deathmatch_candidate",
+      "positionMm": [
+        -27000,
+        -3000,
+        -22000
+      ],
+      "facingMilliDegrees": 45000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "crosslink"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_dm_ink_e",
+      "set": "deathmatch_candidate",
+      "positionMm": [
+        27000,
+        -3000,
+        -21000
+      ],
+      "facingMilliDegrees": 135000,
+      "escapeRouteFamilies": [
+        "ink_channel",
+        "crosslink"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_dm_archive_w",
+      "set": "deathmatch_candidate",
+      "positionMm": [
+        -27000,
+        6000,
+        22000
+      ],
+      "facingMilliDegrees": -45000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "crosslink"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "spawn_dm_archive_e",
+      "set": "deathmatch_candidate",
+      "positionMm": [
+        27000,
+        6000,
+        21000
+      ],
+      "facingMilliDegrees": -135000,
+      "escapeRouteFamilies": [
+        "archive_walk",
+        "crosslink"
+      ],
+      "targetDirectEnemyLosAtSelection": false,
+      "validationStatus": "raycast_pending"
+    }
+  ],
+  "sightlinePolicy": {
+    "generalUninterruptedBandMm": [
+      25000,
+      40000
+    ],
+    "maximumNonExceptionMm": 40000,
+    "longExceptionRule": "A longer line is allowed only when the shooter is exposed to at least two named counter-routes.",
+    "eyeHeightHypothesisMm": 1600,
+    "status": "raycast_pending"
+  },
+  "sightlineProbes": [
+    {
+      "id": "press_diagonal_risk",
+      "from": [
+        -18000,
+        1600,
+        6000
+      ],
+      "to": [
+        18000,
+        1600,
+        -6000
+      ],
+      "plannedClearSegmentMaxMm": 18000,
+      "targetClass": "broken_midrange",
+      "probeLengthMm": 37947,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "archive_long_exception",
+      "from": [
+        -22000,
+        7200,
+        17000
+      ],
+      "to": [
+        22000,
+        7200,
+        17000
+      ],
+      "plannedClearSegmentMaxMm": 44000,
+      "targetClass": "exposed_long_exception",
+      "probeLengthMm": 44000,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "ink_channel_bend",
+      "from": [
+        -15000,
+        -1600,
+        -21000
+      ],
+      "to": [
+        15000,
+        -1600,
+        -19000
+      ],
+      "plannedClearSegmentMaxMm": 16000,
+      "targetClass": "close_broken",
+      "probeLengthMm": 30067,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "raycast_pending"
+    },
+    {
+      "id": "west_spawn_exit_probe",
+      "from": [
+        -33000,
+        1600,
+        0
+      ],
+      "to": [
+        -14000,
+        1600,
+        2000
+      ],
+      "plannedClearSegmentMaxMm": 0,
+      "targetClass": "spawn_occluded",
+      "probeLengthMm": 19105,
+      "evidenceLabel": "HYPOTHESIS",
+      "validationStatus": "raycast_pending"
+    }
+  ],
+  "strongPositions": [
+    {
+      "id": "ledger_bridge",
+      "nodeId": "archive_mid_e",
+      "accessRouteIds": [
+        "archive_mid_w_mid_e",
+        "archive_mid_e_east",
+        "press_core_archive_mid_e"
+      ],
+      "counterRouteIds": [
+        "archive_mid_w_drop",
+        "teleport_shortcut"
+      ],
+      "minimumAccessRoutes": 3,
+      "validationStatus": "topology_only"
+    },
+    {
+      "id": "press_core",
+      "nodeId": "press_core",
+      "accessRouteIds": [
+        "press_west_core",
+        "press_core_east",
+        "teleport_exit_press_core",
+        "press_north_core"
+      ],
+      "counterRouteIds": [
+        "press_west_ink",
+        "press_east_archive"
+      ],
+      "minimumAccessRoutes": 3,
+      "validationStatus": "topology_only"
+    },
+    {
+      "id": "ink_fold",
+      "nodeId": "ink_mid_w",
+      "accessRouteIds": [
+        "ink_west_mid_w",
+        "ink_mid_w_mid_e",
+        "ink_mid_w_teleport_entry"
+      ],
+      "counterRouteIds": [
+        "press_west_ink",
+        "teleport_shortcut"
+      ],
+      "minimumAccessRoutes": 3,
+      "validationStatus": "topology_only"
+    }
+  ],
+  "coverAndClearance": {
+    "exposureTarget": {
+      "ordinaryMaximumUncoveredRunMm": 12000,
+      "exceptionRequiresNamedCounterRoute": true,
+      "status": "raycast_pending"
+    },
+    "modules": [
+      {
+        "id": "half_cover",
+        "dimensionsMm": [
+          2400,
+          1250,
+          600
+        ],
+        "intent": "standing exposure with crouched protection; validate weapon/head rules later"
+      },
+      {
+        "id": "full_cover",
+        "dimensionsMm": [
+          1800,
+          2400,
+          800
+        ],
+        "intent": "hard line break with two-sided flank space"
+      },
+      {
+        "id": "press_baffle",
+        "dimensionsMm": [
+          5000,
+          3000,
+          500
+        ],
+        "intent": "break Press Hall sightline without creating identical box rooms"
+      },
+      {
+        "id": "slide_gate",
+        "dimensionsMm": [
+          4800,
+          1350,
+          1400
+        ],
+        "intent": "slide-efficient, crouch-valid bypass with no mandatory ability lock"
+      },
+      {
+        "id": "main_door",
+        "dimensionsMm": [
+          2400,
+          3000,
+          400
+        ],
+        "intent": "primary circulation and combat readability"
+      },
+      {
+        "id": "flank_door",
+        "dimensionsMm": [
+          1400,
+          2400,
+          400
+        ],
+        "intent": "exceeds the sealed 800 mm pass fixture with deliberate production margin"
+      }
+    ],
+    "mixHypothesis": {
+      "fullCoverPercent": 35,
+      "halfCoverPercent": 40,
+      "lowOrPermeablePercent": 25,
+      "status": "layout_review_pending"
+    }
+  },
+  "movementFeatures": [
+    {
+      "id": "ink_slide_gate",
+      "type": "slide_or_crouch",
+      "linkId": "ink_mid_w_teleport_entry",
+      "mandatoryAbility": false,
+      "alternateMode": "crouch",
+      "status": "tape_pending"
+    },
+    {
+      "id": "red_fold_shortcut",
+      "type": "teleport",
+      "linkId": "teleport_shortcut",
+      "mandatoryAbility": false,
+      "alternateRouteIds": [
+        "press_west_ink",
+        "press_west_core"
+      ],
+      "status": "cast_and_destination_tape_pending"
+    },
+    {
+      "id": "archive_drop",
+      "type": "one_way_drop",
+      "linkId": "archive_drop_press_north",
+      "mandatoryAbility": false,
+      "fallRecoveryRequired": true,
+      "status": "landing_tape_pending"
+    },
+    {
+      "id": "press_gap_west",
+      "type": "jump",
+      "gapMm": 4200,
+      "mandatoryAbility": false,
+      "walkAroundAvailable": true,
+      "status": "jump_tape_pending"
+    },
+    {
+      "id": "archive_gap_east",
+      "type": "jump",
+      "gapMm": 5200,
+      "mandatoryAbility": false,
+      "walkAroundAvailable": true,
+      "status": "skill_route_tape_pending"
+    }
+  ],
+  "performanceTargets": {
+    "status": "budget_seed_only",
+    "namedTierMeasurementsRequired": true,
+    "grayboxCellPlan": {
+      "columns": 3,
+      "rows": 3,
+      "cellSizeMm": [
+        24000,
+        19000
+      ],
+      "loadAdjacentCells": true
+    },
+    "verticalSliceBudgets": {
+      "baselineDrawCallsMaximum": 499,
+      "baselineDrawCallsStrive": 349,
+      "lowDrawCallsMaximum": 299,
+      "baselineVisibleTrianglesMaximum": 1500000,
+      "lowVisibleTrianglesMaximum": 700000,
+      "baselineFrameP95MaximumMs": 16.67,
+      "lowFrameP95MaximumMs": 16.67,
+      "mainThreadP95BaselineMaximumMs": 10,
+      "gpuP95BaselineMaximumMs": 12,
+      "recurringLongTaskMaximumMs": 50
+    },
+    "requiredCaptures": [
+      "empty_map_overview",
+      "two_player_duel",
+      "eight_visible_characters",
+      "rapid_cell_traversal",
+      "respawn_churn",
+      "thirty_minute_soak",
+      "low_high_quality_switch"
+    ],
+    "rule": "No budget is passed until measured on named hardware/browser tiers with renderer counters and profiles."
+  },
+  "plannedMapPackage": {
+    "root": "assets/source/maps/inkfall-foundry",
+    "sourceBlend": "source/inkfall_foundry.blend",
+    "renderExport": "export/render.glb",
+    "collisionExport": "export/collision.glb-or-bin",
+    "mapData": "map.json",
+    "spawnsData": "spawns.json",
+    "pickupsData": "pickups.json",
+    "zonesData": "zones.json",
+    "navigationData": "nav.json",
+    "lightingData": "lighting.json",
+    "manifest": "manifest.json",
+    "status": "paths_only_no_artifacts_created"
+  },
+  "validationContract": {
+    "requiredAssertions": [
+      "unique_ids",
+      "node_positions_within_bounds",
+      "link_endpoints_match_nodes",
+      "link_lengths_recompute_exactly_after_rounding",
+      "all_link_references_exist",
+      "graph_connected_ignoring_one_way",
+      "teleport_distance_within_profile_maximum",
+      "route_metrics_recompute",
+      "all_seed_route_estimates_inside_hypothesis_bands",
+      "spawn_candidates_inside_bounds",
+      "spawn_candidates_have_at_least_two_escape_families",
+      "strong_positions_have_at_least_two_access_routes",
+      "clearances_exceed_capsule_and_fixture_minima"
+    ],
+    "futureEvidence": [
+      "Blender meter-grid graybox",
+      "separate authoritative collider package",
+      "strict map schema and loader",
+      "spawn score fixtures and all-enemy LOS sweep",
+      "authoritative run jump slide teleport route tapes",
+      "2/4/8-player playtest report",
+      "zone/death/damage/sightline telemetry",
+      "low/high renderer profiles and 30-minute soak",
+      "one representative final-art room in Phase 7"
+    ]
+  }
+}
+

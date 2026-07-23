@@ -1,0 +1,1798 @@
+{
+  "schema": "kyx-v6c-lod0-retopo-rev14-audit-v1",
+  "generatedAt": "2026-07-23T01:16:48.222944+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6C_LOD0_SEMANTIC_RETOPO_CANDIDATE_REV14",
+  "status": "FAIL_BOUNDED_V6C_LOD0_RETOPO_CANDIDATE",
+  "method": {
+    "name": "semantic_per_island_retopology_and_three_role_consolidation",
+    "blindWholeCharacterDecimation": false,
+    "description": "Each source island receives an explicit semantic subgroup budget. Reduction runs before the live armature, six contact islands are not reduced, and only soft, hard, and rifle roles are joined."
+  },
+  "sourceRev13": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-gameplay-rev13\\export\\kyx-v6c-gameplay-rev13.runtime-candidate.glb",
+    "bytes": 9278844,
+    "sha256Before": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
+    "sha256After": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
+    "triangles": 298076,
+    "sourceGlbTriangles": 297996,
+    "roleTriangles": {
+      "hard": 95728,
+      "soft": 189636,
+      "rifle": 12712
+    },
+    "contactTrianglesPreserved": 2732,
+    "contactVerticesPreserved": 1388
+  },
+  "targets": {
+    "authorTriangleTarget": 42000,
+    "hardTriangleLimit": 45000,
+    "roleTargets": {
+      "soft": 20000,
+      "hard": 15000,
+      "rifle": 7000
+    },
+    "subgroupTargets": {
+      "soft_body": 10000,
+      "soft_main_undersuit": 8000,
+      "soft_secondary": 2000,
+      "hard_helmet": 6500,
+      "hard_boots": 3000,
+      "hard_torso": 5500
+    },
+    "primitiveTarget": 3
+  },
+  "reductionRecords": [
+    {
+      "object": "Icosphere",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 80,
+      "allocatedTarget": 10,
+      "resultTriangles": 8,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6A_AnatomySculpt_Body_Mesh.001",
+      "role": "soft",
+      "subgroup": "soft_body",
+      "sourceTriangles": 84680,
+      "allocatedTarget": 10000,
+      "resultTriangles": 9950,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Abdomen_FlexLamella_1",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 1920,
+      "allocatedTarget": 260,
+      "resultTriangles": 258,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Abdomen_FlexLamella_2",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 1920,
+      "allocatedTarget": 260,
+      "resultTriangles": 258,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Abdomen_FlexLamella_3",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 2184,
+      "allocatedTarget": 296,
+      "resultTriangles": 294,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Back_ContinuousScapularCarrier",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 14256,
+      "allocatedTarget": 1939,
+      "resultTriangles": 1928,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_L_AnatomicalUpper",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 2112,
+      "allocatedTarget": 388,
+      "resultTriangles": 386,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_L_ContouredOutsole",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 3024,
+      "allocatedTarget": 558,
+      "resultTriangles": 554,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_L_RetentionBridge_1",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 188,
+      "allocatedTarget": 34,
+      "resultTriangles": 32,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_L_RetentionBridge_2",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 188,
+      "allocatedTarget": 34,
+      "resultTriangles": 32,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_L_ToeCap",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 2648,
+      "allocatedTarget": 486,
+      "resultTriangles": 482,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_R_AnatomicalUpper",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 2112,
+      "allocatedTarget": 388,
+      "resultTriangles": 386,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_R_ContouredOutsole",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 3024,
+      "allocatedTarget": 558,
+      "resultTriangles": 554,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_R_RetentionBridge_1",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 188,
+      "allocatedTarget": 34,
+      "resultTriangles": 32,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_R_RetentionBridge_2",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 188,
+      "allocatedTarget": 34,
+      "resultTriangles": 32,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Boot_R_ToeCap",
+      "role": "hard",
+      "subgroup": "hard_boots",
+      "sourceTriangles": 2648,
+      "allocatedTarget": 486,
+      "resultTriangles": 482,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Chest_ContinuousCeramic",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 5976,
+      "allocatedTarget": 810,
+      "resultTriangles": 804,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Chest_L_SideLoadCarrier",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 2944,
+      "allocatedTarget": 399,
+      "resultTriangles": 396,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Chest_LowerRibCarrier",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 6236,
+      "allocatedTarget": 846,
+      "resultTriangles": 840,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Chest_SternumKeel",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 2024,
+      "allocatedTarget": 274,
+      "resultTriangles": 272,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Chest_Telemetry",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 60,
+      "allocatedTarget": 8,
+      "resultTriangles": 7,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_FiringForearm_FittedGuard",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 30,
+      "allocatedTarget": 4,
+      "resultTriangles": 3,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_BrowBridge",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 2144,
+      "allocatedTarget": 358,
+      "resultTriangles": 356,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_Cheek_L",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 2032,
+      "allocatedTarget": 339,
+      "resultTriangles": 336,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_Cheek_R",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 2032,
+      "allocatedTarget": 339,
+      "resultTriangles": 336,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_ChinBridge",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 2672,
+      "allocatedTarget": 446,
+      "resultTriangles": 442,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_CrownCenter",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 4864,
+      "allocatedTarget": 813,
+      "resultTriangles": 808,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_CrownKeel",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 180,
+      "allocatedTarget": 30,
+      "resultTriangles": 28,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_CrownLeft",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 4864,
+      "allocatedTarget": 813,
+      "resultTriangles": 808,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_CrownRight",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 4864,
+      "allocatedTarget": 813,
+      "resultTriangles": 808,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_LeftTelemetry",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 60,
+      "allocatedTarget": 10,
+      "resultTriangles": 9,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_OccipitalArmor",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 4864,
+      "allocatedTarget": 813,
+      "resultTriangles": 808,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_TailoredUnderShell",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 6058,
+      "allocatedTarget": 1019,
+      "resultTriangles": 1012,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_TemplePivot_L",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 380,
+      "allocatedTarget": 63,
+      "resultTriangles": 62,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_TemplePivot_R",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 380,
+      "allocatedTarget": 63,
+      "resultTriangles": 62,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_Visor",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 3000,
+      "allocatedTarget": 501,
+      "resultTriangles": 498,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Helmet_VisorGasket",
+      "role": "hard",
+      "subgroup": "hard_helmet",
+      "sourceTriangles": 480,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_EjectionPort",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_FreeFloatBarrel",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 508,
+      "allocatedTarget": 225,
+      "resultTriangles": 222,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_GasBlock",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardBody",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardLowerRail",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardTopRail",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardVent_1",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardVent_2",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardVent_3",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardVent_4",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_HandguardVent_5",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_Magazine",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 220,
+      "allocatedTarget": 94,
+      "resultTriangles": 92,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_MagazineRib_1",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_MagazineRib_2",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_MagazineRib_3",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_Magwell",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_MuzzleBrake",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 508,
+      "allocatedTarget": 225,
+      "resultTriangles": 222,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_Optic",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_OpticLens",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_1",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_10",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_2",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_3",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_4",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_5",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_6",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_7",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_8",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_RailTooth_9",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_Receiver",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 300,
+      "allocatedTarget": 128,
+      "resultTriangles": 126,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_ReceiverLowerRail",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 204,
+      "allocatedTarget": 87,
+      "resultTriangles": 86,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_ReceiverUpperShell",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 284,
+      "allocatedTarget": 121,
+      "resultTriangles": 120,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_SideFastener_1",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 316,
+      "allocatedTarget": 135,
+      "resultTriangles": 134,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_SideFastener_2",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 316,
+      "allocatedTarget": 135,
+      "resultTriangles": 134,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_SideFastener_3",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 316,
+      "allocatedTarget": 135,
+      "resultTriangles": 134,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_SideFastener_4",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 316,
+      "allocatedTarget": 135,
+      "resultTriangles": 134,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_SideFastener_5",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 316,
+      "allocatedTarget": 135,
+      "resultTriangles": 134,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_StatusLight",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 60,
+      "allocatedTarget": 25,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_StockCheekInset",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 188,
+      "allocatedTarget": 80,
+      "resultTriangles": 78,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_StockLowerRail",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 236,
+      "allocatedTarget": 100,
+      "resultTriangles": 98,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Rifle_StockSpine",
+      "role": "rifle",
+      "subgroup": "rifle_other",
+      "sourceTriangles": 236,
+      "allocatedTarget": 100,
+      "resultTriangles": 98,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_RuntimeContact_ForegripContact_Mesh",
+      "role": "rifle",
+      "subgroup": "rifle_contact",
+      "sourceTriangles": 636,
+      "allocatedTarget": 636,
+      "resultTriangles": 636,
+      "passes": 0,
+      "method": "exact_contact_island_preserved_no_reduction"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_RuntimeContact_ForegripHandStop_Mesh",
+      "role": "rifle",
+      "subgroup": "rifle_contact",
+      "sourceTriangles": 188,
+      "allocatedTarget": 188,
+      "resultTriangles": 188,
+      "passes": 0,
+      "method": "exact_contact_island_preserved_no_reduction"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_RuntimeContact_GripContact_Mesh",
+      "role": "rifle",
+      "subgroup": "rifle_contact",
+      "sourceTriangles": 188,
+      "allocatedTarget": 188,
+      "resultTriangles": 188,
+      "passes": 0,
+      "method": "exact_contact_island_preserved_no_reduction"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_RuntimeContact_StockPadContact_Mesh",
+      "role": "rifle",
+      "subgroup": "rifle_contact",
+      "sourceTriangles": 188,
+      "allocatedTarget": 188,
+      "resultTriangles": 188,
+      "passes": 0,
+      "method": "exact_contact_island_preserved_no_reduction"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_RuntimeContact_TriggerGuard_Mesh",
+      "role": "rifle",
+      "subgroup": "rifle_contact",
+      "sourceTriangles": 1152,
+      "allocatedTarget": 1152,
+      "resultTriangles": 1152,
+      "passes": 0,
+      "method": "exact_contact_island_preserved_no_reduction"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_RuntimeContact_Trigger_Mesh",
+      "role": "rifle",
+      "subgroup": "rifle_contact",
+      "sourceTriangles": 380,
+      "allocatedTarget": 380,
+      "resultTriangles": 380,
+      "passes": 0,
+      "method": "exact_contact_island_preserved_no_reduction"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_SupportForearm_FittedGuard",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 24,
+      "allocatedTarget": 4,
+      "resultTriangles": 3,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_TailoredOnePieceUndersuit_Mesh.001",
+      "role": "soft",
+      "subgroup": "soft_main_undersuit",
+      "sourceTriangles": 90880,
+      "allocatedTarget": 8000,
+      "resultTriangles": 7960,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Torso_GorgetLoadRing",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 1152,
+      "allocatedTarget": 156,
+      "resultTriangles": 154,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Torso_TechnicalGorget",
+      "role": "hard",
+      "subgroup": "hard_torso",
+      "sourceTriangles": 1728,
+      "allocatedTarget": 234,
+      "resultTriangles": 232,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ContinuousWaistBridge",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 1440,
+      "allocatedTarget": 204,
+      "resultTriangles": 202,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_KneeReinforcement_L",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 2912,
+      "allocatedTarget": 413,
+      "resultTriangles": 410,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_KneeReinforcement_R",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 2988,
+      "allocatedTarget": 437,
+      "resultTriangles": 434,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ShoulderSeam_L_1",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ShoulderSeam_L_2",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ShoulderSeam_L_3",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ShoulderSeam_R_1",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ShoulderSeam_R_2",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ShoulderSeam_R_3",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_L_1",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_L_2",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 316,
+      "allocatedTarget": 44,
+      "resultTriangles": 42,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_L_3",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_L_4",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_R_1",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_R_2",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 316,
+      "allocatedTarget": 44,
+      "resultTriangles": 42,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_R_3",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_SideSeam_R_4",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 188,
+      "allocatedTarget": 26,
+      "resultTriangles": 24,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ThighUtilityPanel_L",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 1824,
+      "allocatedTarget": 259,
+      "resultTriangles": 256,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    },
+    {
+      "object": "KYX_V6B_CF_R1_Undersuit_ThighUtilityPanel_R",
+      "role": "soft",
+      "subgroup": "soft_secondary",
+      "sourceTriangles": 2024,
+      "allocatedTarget": 287,
+      "resultTriangles": 284,
+      "passes": 1,
+      "method": "per_island_semantic_quadric_collapse_before_armature"
+    }
+  ],
+  "candidateRoles": {
+    "soft": {
+      "role": "soft",
+      "object": "KYX_V6C_LOD0_SOFT_REV14",
+      "triangles": 19868,
+      "vertices": 10558,
+      "polygons": 19868,
+      "materials": 1,
+      "uvLayers": [
+        "UV0"
+      ],
+      "colorAttributes": [
+        "COLOR_0"
+      ],
+      "weights": {
+        "vertices": 10558,
+        "zeroWeightVertices": 0,
+        "maximumInfluences": 4,
+        "weightedGroups": [
+          "chest",
+          "clavicle.L",
+          "clavicle.R",
+          "foot_anchor.L",
+          "foot_anchor.R",
+          "forearm.L",
+          "forearm.R",
+          "head",
+          "index_01.L",
+          "index_01.R",
+          "index_02.L",
+          "index_02.R",
+          "index_03.L",
+          "index_03.R",
+          "middle_01.L",
+          "middle_01.R",
+          "middle_02.L",
+          "middle_02.R",
+          "middle_03.L",
+          "middle_03.R",
+          "neck",
+          "palm.L",
+          "palm.R",
+          "pinky_01.L",
+          "pinky_01.R",
+          "pinky_02.L",
+          "pinky_02.R",
+          "pinky_03.L",
+          "pinky_03.R",
+          "ring_01.L",
+          "ring_01.R",
+          "ring_02.L",
+          "ring_02.R",
+          "ring_03.L",
+          "ring_03.R",
+          "root",
+          "shin_anchor.L",
+          "shin_anchor.R",
+          "spine_01",
+          "spine_02",
+          "thigh_anchor.L",
+          "thigh_anchor.R",
+          "thumb_01.L",
+          "thumb_01.R",
+          "thumb_02.L",
+          "thumb_02.R",
+          "thumb_03.L",
+          "thumb_03.R",
+          "upper_arm.L",
+          "upper_arm.R",
+          "wrist.L",
+          "wrist.R"
+        ]
+      }
+    },
+    "hard": {
+      "role": "hard",
+      "object": "KYX_V6C_LOD0_HARD_REV14",
+      "triangles": 14880,
+      "vertices": 7567,
+      "polygons": 14880,
+      "materials": 1,
+      "uvLayers": [
+        "UV0"
+      ],
+      "colorAttributes": [
+        "COLOR_0"
+      ],
+      "weights": {
+        "vertices": 7567,
+        "zeroWeightVertices": 6,
+        "maximumInfluences": 1,
+        "weightedGroups": [
+          "chest",
+          "foot_anchor.L",
+          "foot_anchor.R",
+          "forearm.L",
+          "forearm.R",
+          "head",
+          "neck",
+          "root",
+          "spine_02"
+        ]
+      }
+    },
+    "rifle": {
+      "role": "rifle",
+      "object": "KYX_V6C_LOD0_RIFLE_REV14",
+      "triangles": 6932,
+      "vertices": 3578,
+      "polygons": 6932,
+      "materials": 1,
+      "uvLayers": [
+        "UV0"
+      ],
+      "colorAttributes": [
+        "COLOR_0"
+      ],
+      "weights": {
+        "vertices": 3578,
+        "zeroWeightVertices": 0,
+        "maximumInfluences": 1,
+        "weightedGroups": [
+          "palm.R"
+        ]
+      }
+    }
+  },
+  "candidateTriangleTotal": 41680,
+  "roleTriangleDeltaFromTarget": {
+    "soft": -132,
+    "hard": -120,
+    "rifle": -68
+  },
+  "candidateContactMaxWorldCoordinateDelta": 0.0,
+  "candidateBlend": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\kyx-v6c-lod0-retopo-rev14.blend",
+    "bytes": 3451915,
+    "sha256": "6a66c67c690fbc32e3fef5f9c44dc1c39d8cac6ff910ad39dc3d70d8cb653e14"
+  },
+  "export": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\export\\kyx-v6c-lod0-retopo-rev14.runtime-candidate.glb",
+    "operator": "bpy.ops.export_scene.gltf",
+    "operatorKwargs": {
+      "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\export\\kyx-v6c-lod0-retopo-rev14.runtime-candidate.glb",
+      "check_existing": false,
+      "export_format": "GLB",
+      "use_selection": true,
+      "export_copyright": "Includes CC0-derived Blender Human Base Meshes anatomy; KYX-authored design, rig, materials, semantic LOD0 retopology, rifle, and gameplay-animation candidate. Non-default, non-release, not G6.",
+      "export_texcoords": true,
+      "export_normals": true,
+      "export_tangents": false,
+      "export_materials": "EXPORT",
+      "export_vertex_color": "ACTIVE",
+      "export_all_vertex_colors": false,
+      "export_attributes": true,
+      "export_cameras": false,
+      "export_extras": true,
+      "export_yup": true,
+      "export_apply": false,
+      "export_animations": true,
+      "export_frame_range": true,
+      "export_frame_step": 1,
+      "export_force_sampling": false,
+      "export_optimize_animation_size": false,
+      "export_animation_mode": "NLA_TRACKS",
+      "export_merge_animation": "NLA_TRACK",
+      "export_skins": true,
+      "export_influence_nb": 4,
+      "export_all_influences": false,
+      "export_def_bones": true,
+      "export_leaf_bone": false,
+      "export_lights": false
+    },
+    "asset": {
+      "copyright": "Includes CC0-derived Blender Human Base Meshes anatomy; KYX-authored design, rig, materials, semantic LOD0 retopology, rifle, and gameplay-animation candidate. Non-default, non-release, not G6.",
+      "generator": "Khronos glTF Blender I/O v5.1.20",
+      "version": "2.0"
+    },
+    "bytes": 2452848,
+    "sha256": "b1707de9eb47a937bd7e16f6e8a6b63fa3f989a2adf696c0948c3903f52fcb63",
+    "counts": {
+      "nodes": 55,
+      "meshes": 2,
+      "primitives": 2,
+      "triangles": 26800,
+      "materials": 2,
+      "skins": 1,
+      "animations": 10,
+      "images": 0,
+      "textures": 0
+    },
+    "skinJointCounts": [
+      52
+    ],
+    "externalUris": [],
+    "primitives": [
+      {
+        "meshIndex": 0,
+        "meshName": "KYX_V6C_LOD0_RIFLE_REV14_MESH",
+        "primitiveIndex": 0,
+        "triangles": 6932,
+        "attributes": [
+          "COLOR_0",
+          "JOINTS_0",
+          "NORMAL",
+          "POSITION",
+          "TEXCOORD_0",
+          "WEIGHTS_0",
+          "_KYX_CONTACT_MASK"
+        ],
+        "material": "KYX_V6C_LOD0_RIFLE_ATLAS_ROLE"
+      },
+      {
+        "meshIndex": 1,
+        "meshName": "KYX_V6C_LOD0_SOFT_REV14_MESH",
+        "primitiveIndex": 0,
+        "triangles": 19868,
+        "attributes": [
+          "COLOR_0",
+          "JOINTS_0",
+          "NORMAL",
+          "POSITION",
+          "TEXCOORD_0",
+          "WEIGHTS_0"
+        ],
+        "material": "KYX_V6C_LOD0_SOFT_ATLAS_ROLE"
+      }
+    ],
+    "animations": [
+      {
+        "name": "KYX_V6C_TP_IDLE",
+        "durationSeconds": 2.0416666666666665,
+        "channels": 156,
+        "keyCountMinimum": 49,
+        "keyCountMaximum": 49,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_WALK",
+        "durationSeconds": 1.0416666666666667,
+        "channels": 156,
+        "keyCountMinimum": 25,
+        "keyCountMaximum": 25,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_RUN",
+        "durationSeconds": 0.7916666666666666,
+        "channels": 156,
+        "keyCountMinimum": 19,
+        "keyCountMaximum": 19,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_JUMP_START",
+        "durationSeconds": 0.5833333333333334,
+        "channels": 156,
+        "keyCountMinimum": 14,
+        "keyCountMaximum": 14,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "durationSeconds": 1.0416666666666667,
+        "channels": 156,
+        "keyCountMinimum": 25,
+        "keyCountMaximum": 25,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_LAND",
+        "durationSeconds": 0.6666666666666666,
+        "channels": 156,
+        "keyCountMinimum": 16,
+        "keyCountMaximum": 16,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_PRIMARY_FIRE",
+        "durationSeconds": 0.5,
+        "channels": 156,
+        "keyCountMinimum": 12,
+        "keyCountMaximum": 12,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_RELOAD",
+        "durationSeconds": 2.0416666666666665,
+        "channels": 156,
+        "keyCountMinimum": 49,
+        "keyCountMaximum": 49,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_HIT_REACTION_FRONT",
+        "durationSeconds": 0.8333333333333334,
+        "channels": 156,
+        "keyCountMinimum": 20,
+        "keyCountMaximum": 20,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      },
+      {
+        "name": "KYX_V6C_TP_DEATH_FRONT",
+        "durationSeconds": 2.5,
+        "channels": 156,
+        "keyCountMinimum": 60,
+        "keyCountMaximum": 60,
+        "targetPaths": {
+          "rotation": 52,
+          "scale": 52,
+          "translation": 52
+        },
+        "extras": null
+      }
+    ]
+  },
+  "reimport": {
+    "proofBlend": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\reimport\\kyx-v6c-lod0-retopo-rev14.reimport-proof.blend",
+      "bytes": 3036587,
+      "sha256": "6879652bb00bec9671b286f3c7cceb9dec441156d67392c29241995386a85811"
+    },
+    "armatures": 1,
+    "bones": 52,
+    "meshes": 3,
+    "materials": 2,
+    "actionNames": [
+      "KYX_V6C_TP_AIRBORNE_LOOP",
+      "KYX_V6C_TP_DEATH_FRONT",
+      "KYX_V6C_TP_HIT_REACTION_FRONT",
+      "KYX_V6C_TP_IDLE",
+      "KYX_V6C_TP_JUMP_START",
+      "KYX_V6C_TP_LAND",
+      "KYX_V6C_TP_PRIMARY_FIRE",
+      "KYX_V6C_TP_RELOAD",
+      "KYX_V6C_TP_RUN",
+      "KYX_V6C_TP_WALK"
+    ],
+    "shapeKeyMeshes": 0,
+    "roles": {
+      "soft": {
+        "present": true,
+        "object": "KYX_V6C_LOD0_SOFT_REV14",
+        "triangles": 19868,
+        "materials": [
+          "KYX_V6C_LOD0_SOFT_ATLAS_ROLE"
+        ],
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "meshAttributes": [
+          ".select_vert",
+          "position",
+          ".corner_vert",
+          ".corner_edge",
+          ".select_poly",
+          "UVMap",
+          "Color",
+          "material_index",
+          "sharp_face",
+          ".edge_verts",
+          ".select_edge",
+          "custom_normal",
+          "sharp_edge"
+        ],
+        "weights": {
+          "vertices": 15619,
+          "zeroWeightVertices": 0,
+          "maximumInfluences": 4,
+          "weightedGroups": [
+            "chest",
+            "clavicle.L",
+            "clavicle.R",
+            "foot_anchor.L",
+            "foot_anchor.R",
+            "forearm.L",
+            "forearm.R",
+            "head",
+            "index_01.L",
+            "index_01.R",
+            "index_02.L",
+            "index_02.R",
+            "index_03.L",
+            "index_03.R",
+            "middle_01.L",
+            "middle_01.R",
+            "middle_02.L",
+            "middle_02.R",
+            "middle_03.L",
+            "middle_03.R",
+            "neck",
+            "palm.L",
+            "palm.R",
+            "pinky_01.L",
+            "pinky_01.R",
+            "pinky_02.L",
+            "pinky_02.R",
+            "pinky_03.L",
+            "pinky_03.R",
+            "ring_01.L",
+            "ring_01.R",
+            "ring_02.L",
+            "ring_02.R",
+            "ring_03.L",
+            "ring_03.R",
+            "root",
+            "shin_anchor.L",
+            "shin_anchor.R",
+            "spine_01",
+            "spine_02",
+            "thigh_anchor.L",
+            "thigh_anchor.R",
+            "thumb_01.L",
+            "thumb_01.R",
+            "thumb_02.L",
+            "thumb_02.R",
+            "thumb_03.L",
+            "thumb_03.R",
+            "upper_arm.L",
+            "upper_arm.R",
+            "wrist.L",
+            "wrist.R"
+          ]
+        }
+      },
+      "hard": {
+        "present": false
+      },
+      "rifle": {
+        "present": true,
+        "object": "KYX_V6C_LOD0_RIFLE_REV14",
+        "triangles": 6932,
+        "materials": [
+          "KYX_V6C_LOD0_RIFLE_ATLAS_ROLE"
+        ],
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "meshAttributes": [
+          ".select_vert",
+          "position",
+          ".corner_vert",
+          ".corner_edge",
+          ".select_poly",
+          "UVMap",
+          "Color",
+          "material_index",
+          "_KYX_CONTACT_MASK",
+          "sharp_face",
+          ".edge_verts",
+          ".select_edge",
+          "custom_normal",
+          "sharp_edge"
+        ],
+        "weights": {
+          "vertices": 6104,
+          "zeroWeightVertices": 0,
+          "maximumInfluences": 1,
+          "weightedGroups": [
+            "palm.R"
+          ]
+        }
+      }
+    },
+    "clips": [
+      {
+        "name": "KYX_V6C_TP_IDLE",
+        "frameRange": [
+          1.0,
+          49.0
+        ],
+        "durationSecondsAt24Fps": 2.0,
+        "maxPoseMatrixDelta": 0.025686293840408325,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.0132789611816406e-06,
+        "endPalmRelationDelta": 0.0
+      },
+      {
+        "name": "KYX_V6C_TP_WALK",
+        "frameRange": [
+          1.0,
+          25.0
+        ],
+        "durationSecondsAt24Fps": 1.0,
+        "maxPoseMatrixDelta": 0.8414600789546967,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.564621925354004e-06,
+        "endPalmRelationDelta": 9.5367431640625e-07
+      },
+      {
+        "name": "KYX_V6C_TP_RUN",
+        "frameRange": [
+          1.0,
+          19.0
+        ],
+        "durationSecondsAt24Fps": 0.75,
+        "maxPoseMatrixDelta": 1.2245131731033325,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.5497207641601562e-06,
+        "endPalmRelationDelta": 1.5497207641601562e-06
+      },
+      {
+        "name": "KYX_V6C_TP_JUMP_START",
+        "frameRange": [
+          1.0,
+          14.0
+        ],
+        "durationSecondsAt24Fps": 0.5416666666666666,
+        "maxPoseMatrixDelta": 0.3604925996297297,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 9.5367431640625e-07,
+        "endPalmRelationDelta": 9.5367431640625e-07
+      },
+      {
+        "name": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "frameRange": [
+          1.0,
+          25.0
+        ],
+        "durationSecondsAt24Fps": 1.0,
+        "maxPoseMatrixDelta": 0.4467996209859848,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": 0.0,
+        "maxPalmRelationDelta": 1.043081283569336e-06,
+        "endPalmRelationDelta": 1.043081283569336e-06
+      },
+      {
+        "name": "KYX_V6C_TP_LAND",
+        "frameRange": [
+          1.0,
+          16.0
+        ],
+        "durationSecondsAt24Fps": 0.625,
+        "maxPoseMatrixDelta": 0.2837056517601013,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 1.0728836059570312e-06,
+        "endPalmRelationDelta": 0.0
+      },
+      {
+        "name": "KYX_V6C_TP_PRIMARY_FIRE",
+        "frameRange": [
+          1.0,
+          12.0
+        ],
+        "durationSecondsAt24Fps": 0.4583333333333333,
+        "maxPoseMatrixDelta": 0.5921763181686401,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 8.642673492431641e-07,
+        "endPalmRelationDelta": 0.0
+      },
+      {
+        "name": "KYX_V6C_TP_RELOAD",
+        "frameRange": [
+          1.0,
+          49.0
+        ],
+        "durationSecondsAt24Fps": 2.0,
+        "maxPoseMatrixDelta": 0.7851538062095642,
+        "variedBones": 23,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 0.7212766297161579,
+        "endPalmRelationDelta": 0.0
+      },
+      {
+        "name": "KYX_V6C_TP_HIT_REACTION_FRONT",
+        "frameRange": [
+          1.0,
+          20.0
+        ],
+        "durationSecondsAt24Fps": 0.7916666666666666,
+        "maxPoseMatrixDelta": 0.20222359895706177,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 9.5367431640625e-07,
+        "endPalmRelationDelta": 0.0
+      },
+      {
+        "name": "KYX_V6C_TP_DEATH_FRONT",
+        "frameRange": [
+          1.0,
+          60.0
+        ],
+        "durationSecondsAt24Fps": 2.4583333333333335,
+        "maxPoseMatrixDelta": 1.5611820816993713,
+        "variedBones": 52,
+        "loopSeamMaxMatrixDelta": null,
+        "maxPalmRelationDelta": 1.2218952178955078e-06,
+        "endPalmRelationDelta": 9.834766387939453e-07
+      }
+    ],
+    "contact": {
+      "expectedVertices": 1388,
+      "reimportVertices": 1948,
+      "roundTripMaxWorldCoordinateDelta": Infinity
+    }
+  },
+  "assertions": {
+    "rev13SourceHashPinnedAndUnchanged": true,
+    "candidateSavedInNewRev14Lane": true,
+    "semanticRoleTargetsWithinAuthoringContract": true,
+    "glbMeetsHardTriangleAndPrimitiveContract": false,
+    "allThreePrimitivesCarrySkinNormalsUvColor": true,
+    "glbIsSelfContainedAndHasOne52JointSkin": true,
+    "glbContainsExactTenClipContract": true,
+    "freshReimportContainsThreeRoleMeshesAnd52BoneRig": false,
+    "freshReimportWeightsAreNonzeroAndMaximumFour": false,
+    "rifleIsPalmRightOnly": true,
+    "contactVerticesPreservedBeforeAndAfterGlbRoundTrip": false,
+    "everyImportedClipHasPoseDiversity": true,
+    "loopClipsRemainSeamClosed": true,
+    "supportAndGripRelationStableOutsideReload": true,
+    "reloadSupportHandDepartsAndReturns": true,
+    "noRuntimeMorphTargetsRemain": true
+  },
+  "firstPersonArms": {
+    "status": "BLOCKED_NOT_AUTHORED",
+    "reason": "Rev13 still has no clean separable viewmodel arm topology or reviewed shoulder cutoff."
+  },
+  "nonClaims": [
+    "This is an isolated, non-default, non-release Rev14 LOD0 candidate.",
+    "No public/ or assets/runtime/ asset is changed.",
+    "Blender metrics and contact proofs do not constitute human visual acceptance.",
+    "LOD1, LOD2, final texture atlases, first-person arms, markers, product integration, 2/4/8 performance, release eligibility, and G6 remain open."
+  ]
+}

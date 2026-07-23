@@ -1,0 +1,1973 @@
+{
+  "assertions": [
+    {
+      "id": "seed_sha_matches_approved_p6_1",
+      "passed": true
+    },
+    {
+      "id": "seed_identity_supported",
+      "passed": true
+    },
+    {
+      "id": "seed_topology_counts_preserved",
+      "passed": true
+    },
+    {
+      "id": "render_collision_pair_sets_equal",
+      "passed": true
+    },
+    {
+      "id": "collision_boxes_only",
+      "passed": true
+    },
+    {
+      "id": "collision_roles_authoritative_only",
+      "passed": true
+    },
+    {
+      "id": "render_roles_graybox_only",
+      "passed": true
+    },
+    {
+      "id": "separate_exports_exist_and_differ",
+      "passed": true
+    },
+    {
+      "id": "no_runtime_or_gate_claim",
+      "passed": true
+    }
+  ],
+  "collections": {
+    "collision": "P6_2_AUTHORITATIVE_COLLISION",
+    "guides": "P6_2_EDITOR_GUIDES",
+    "previewStage": "P6_2_PREVIEW_STAGE",
+    "render": "P6_2_RENDER_GRAYBOX"
+  },
+  "coordinateTransform": {
+    "blender": "X east, Y north, Z up; meters",
+    "formula": "[x,y,z]mm => [x/1000,z/1000,y/1000]m",
+    "seed": "right-handed project map seed; X east, Y up, Z north; millimeters"
+  },
+  "exports": {
+    "artifacts": {
+      "collisionGlb": {
+        "bytes": 626136,
+        "path": "export/collision.authority.glb",
+        "sha256": "4ee03cd90ff817f52a6f27d5df010fe49fce980249d53eb8267b029c639b3c84"
+      },
+      "preview:inkfall-collision-overview.png": {
+        "bytes": 1721715,
+        "path": "preview/inkfall-collision-overview.png",
+        "sha256": "3cbf715cdbede9fb3856552705a55a10d801794ab2b62ab2ee3e01b6cb71b207"
+      },
+      "preview:inkfall-graybox-overview.png": {
+        "bytes": 1850483,
+        "path": "preview/inkfall-graybox-overview.png",
+        "sha256": "8d603656823d9636ef0a6ed35ec5eeb99397c5f561641236ee0c70f264bf5f19"
+      },
+      "preview:inkfall-graybox-plan.png": {
+        "bytes": 1865629,
+        "path": "preview/inkfall-graybox-plan.png",
+        "sha256": "c211f51a5b8f5a12c6821c32d79b3a7f6cbd7303a957de8040f9dbe2b96df03f"
+      },
+      "preview:inkfall-movement-features.png": {
+        "bytes": 1922056,
+        "path": "preview/inkfall-movement-features.png",
+        "sha256": "76c6ae29839f5085f4224cdec54dcc37dfccfdbc28ab5bc0cec83c5ca71c3f8e"
+      },
+      "preview:inkfall-spawn-pocket-west.png": {
+        "bytes": 1651158,
+        "path": "preview/inkfall-spawn-pocket-west.png",
+        "sha256": "4ec38072a43c69ddc62964d7f1e4854c6e1330dbf25f9eef64ae90110df81a40"
+      },
+      "preview:inkfall-tier-elevation.png": {
+        "bytes": 1527571,
+        "path": "preview/inkfall-tier-elevation.png",
+        "sha256": "dd668ef74be9cf3eafef62a8410d377c771220d1f9a285688812fd0616e75da7"
+      },
+      "renderGlb": {
+        "bytes": 625100,
+        "path": "export/render.graybox.glb",
+        "sha256": "32378f048015a4a44cca764bc8ffda4cd703c69b1e3f1ec407038cd2cff2362b"
+      },
+      "sourceBlend": {
+        "bytes": 537217,
+        "path": "source/inkfall_foundry.blend",
+        "sha256": "73f81ae1693facf1aa3b3e5fcbd8d56af615dbd76e34ed21da73237adb594499"
+      }
+    },
+    "collision": {
+      "operatorArguments": {
+        "export_animations": false,
+        "export_apply": true,
+        "export_cameras": false,
+        "export_extras": true,
+        "export_format": "GLB",
+        "export_lights": false,
+        "export_materials": "EXPORT",
+        "export_yup": true,
+        "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\export\\collision.authority.glb",
+        "use_selection": true
+      },
+      "result": [
+        "FINISHED"
+      ]
+    },
+    "render": {
+      "operatorArguments": {
+        "export_animations": false,
+        "export_apply": true,
+        "export_cameras": false,
+        "export_extras": true,
+        "export_format": "GLB",
+        "export_lights": false,
+        "export_materials": "EXPORT",
+        "export_yup": true,
+        "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\export\\render.graybox.glb",
+        "use_selection": true
+      },
+      "result": [
+        "FINISHED"
+      ]
+    }
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "id": "inkfall_foundry_p6_2_graybox",
+    "script": "build_inkfall_foundry_graybox.py",
+    "scriptSha256": "ff236c0a0592f9f6806ddbff2adb49bc53b9af7629de77ba522a1f8a9730938f",
+    "version": 2
+  },
+  "geometry": {
+    "authoredModuleCount": 21,
+    "authoredModules": [
+      {
+        "centerSeedMm": [
+          0,
+          3000,
+          4250
+        ],
+        "class": "landmark_mass",
+        "dimensionsLocalMm": [
+          3400,
+          3000,
+          6000
+        ],
+        "id": "press_reactor_north",
+        "intent": "split-reactor north jaw; preserve centerline opening",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0
+      },
+      {
+        "centerSeedMm": [
+          0,
+          3000,
+          -4250
+        ],
+        "class": "landmark_mass",
+        "dimensionsLocalMm": [
+          3400,
+          3000,
+          6000
+        ],
+        "id": "press_reactor_south",
+        "intent": "split-reactor south jaw; preserve centerline opening",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0
+      },
+      {
+        "centerSeedMm": [
+          -10500,
+          1500,
+          5600
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_w_outer",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 18.0
+      },
+      {
+        "centerSeedMm": [
+          -5200,
+          1500,
+          -4700
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_w_inner",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -22.0
+      },
+      {
+        "centerSeedMm": [
+          5200,
+          1500,
+          -4700
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_e_inner",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 22.0
+      },
+      {
+        "centerSeedMm": [
+          10500,
+          1500,
+          5600
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_e_outer",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -18.0
+      },
+      {
+        "centerSeedMm": [
+          -15500,
+          1200,
+          -3500
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_press_w",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 28.0
+      },
+      {
+        "centerSeedMm": [
+          15500,
+          1200,
+          3500
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_press_e",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -28.0
+      },
+      {
+        "centerSeedMm": [
+          -12500,
+          7200,
+          17200
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_archive_w",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 12.0
+      },
+      {
+        "centerSeedMm": [
+          12500,
+          7200,
+          17200
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_archive_e",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -12.0
+      },
+      {
+        "centerSeedMm": [
+          -7000,
+          625,
+          1700
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_press_w",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -18.0
+      },
+      {
+        "centerSeedMm": [
+          7000,
+          625,
+          -1700
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_press_e",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 18.0
+      },
+      {
+        "centerSeedMm": [
+          -13000,
+          -2375,
+          -19800
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_ink_w",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 15.0
+      },
+      {
+        "centerSeedMm": [
+          13000,
+          -2375,
+          -18100
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_ink_e",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -15.0
+      },
+      {
+        "centerSeedMm": [
+          -5736,
+          -2200,
+          -17976
+        ],
+        "class": "slide_gate_wall",
+        "dimensionsLocalMm": [
+          4800,
+          400,
+          1600
+        ],
+        "id": "ink_slide_gate_left",
+        "intent": "bound the optional slide/crouch bypass",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 59.03624346792648
+      },
+      {
+        "centerSeedMm": [
+          -7280,
+          -2200,
+          -17050
+        ],
+        "class": "slide_gate_wall",
+        "dimensionsLocalMm": [
+          4800,
+          400,
+          1600
+        ],
+        "id": "ink_slide_gate_right",
+        "intent": "bound the optional slide/crouch bypass",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 59.03624346792648
+      },
+      {
+        "centerSeedMm": [
+          -6508,
+          -1525,
+          -17513
+        ],
+        "class": "slide_gate_roof",
+        "dimensionsLocalMm": [
+          4800,
+          2200,
+          250
+        ],
+        "id": "ink_slide_gate_roof",
+        "intent": "provide exact 1.35 m clear height over the optional bypass",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 59.03624346792648
+      },
+      {
+        "centerSeedMm": [
+          -6300,
+          -1750,
+          -10000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_entry_west",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      },
+      {
+        "centerSeedMm": [
+          -1700,
+          -1750,
+          -10000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_entry_east",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      },
+      {
+        "centerSeedMm": [
+          -1300,
+          2250,
+          -5000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_exit_west",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      },
+      {
+        "centerSeedMm": [
+          3300,
+          2250,
+          -5000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_exit_east",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      }
+    ],
+    "collisionPolicy": {
+      "acceptedCapsuleRadiusWithSkinMm": 370,
+      "decorativeBevelsInAuthority": false,
+      "guardRailEndClearanceMm": 1200,
+      "guardRailHeightMm": 900,
+      "guardRailThicknessMm": 160,
+      "oneWayDropRampInCollision": false,
+      "primitive": "oriented convex boxes only",
+      "routeEndOverlapMm": 120,
+      "routeThicknessMm": 250,
+      "teleportConnectorInCollision": false,
+      "waypointPadOverlapMm": 200
+    },
+    "collisionStats": {
+      "materials": 1,
+      "meshes": 353,
+      "objects": 353,
+      "polygons": 2118,
+      "triangles": 4236,
+      "vertices": 2824
+    },
+    "collisionWorldAabb": {
+      "maximumBlenderMeters": [
+        36.0,
+        28.0,
+        8.4
+      ],
+      "minimumBlenderMeters": [
+        -36.0,
+        -28.0,
+        -3.256622
+      ]
+    },
+    "guardRails": 118,
+    "guides": {
+      "cellGuideLines": 8,
+      "spawnMarkers": 12,
+      "zones": 9
+    },
+    "nodePlatforms": 19,
+    "playabilityGeometry": {
+      "counts": {
+        "doorFrameParts": 18,
+        "dropBoundaryParts": 2,
+        "jumpGapSideGuards": 8,
+        "jumpPads": 4,
+        "killBoundaryGuards": 4,
+        "spawnEgressFloors": 4,
+        "spawnPads": 12,
+        "spawnPocketFloors": 2,
+        "spawnPocketWalls": 6,
+        "spawnSightBlockers": 4,
+        "teleportBoundaryMarkers": 8
+      },
+      "edgePolicy": {
+        "jumpGapEdges": "intentional_fall_with_guarded_sides",
+        "outerBounds": "hard_guard_now_trigger_volume_in_P6.3",
+        "paperDrop": "intentional_one_way_fall_with_guarded_shoulders",
+        "physicalRouteEdges": "guarded_except_junction_aprons",
+        "teleport": "nonphysical_connector_with_clear_landing_markers"
+      },
+      "jumpGaps": [
+        {
+          "actualGapMm": 4200.658438,
+          "edgePolicy": "intentional_jump_gap",
+          "featureId": "press_gap_west",
+          "padLengthMm": 992,
+          "padWidthMm": 2200,
+          "targetGapMm": 4200,
+          "walkaroundAvailable": true
+        },
+        {
+          "actualGapMm": 5200.422502,
+          "edgePolicy": "intentional_jump_gap",
+          "featureId": "archive_gap_east",
+          "padLengthMm": 5646,
+          "padWidthMm": 2400,
+          "targetGapMm": 5200,
+          "walkaroundAvailable": true
+        }
+      ],
+      "records": [
+        {
+          "centerSeedMm": [
+            -32000,
+            -125,
+            0
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            8000,
+            18000,
+            250
+          ],
+          "id": "spawn_pocket_floor__west",
+          "intent": "continuous protected floor for all team spawn candidates and the spawn anchor",
+          "sourceKind": "spawn_pocket_floor",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -35750,
+            1500,
+            0
+          ],
+          "class": "spawn_pocket_wall",
+          "dimensionsLocalMm": [
+            500,
+            18000,
+            3000
+          ],
+          "id": "kill_boundary_guard__west_back",
+          "intent": "hard seed-bounded backstop before the future P6.3 kill volume",
+          "sourceKind": "kill_boundary_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -32000,
+            1500,
+            -8750
+          ],
+          "class": "spawn_pocket_wall",
+          "dimensionsLocalMm": [
+            8000,
+            500,
+            3000
+          ],
+          "id": "spawn_pocket_wall__west__south",
+          "intent": "protect the pocket flank while leaving the inward route-choice face open",
+          "sourceKind": "spawn_pocket_wall",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -32000,
+            1500,
+            8750
+          ],
+          "class": "spawn_pocket_wall",
+          "dimensionsLocalMm": [
+            8000,
+            500,
+            3000
+          ],
+          "id": "spawn_pocket_wall__west__north",
+          "intent": "protect the pocket flank while leaving the inward route-choice face open",
+          "sourceKind": "spawn_pocket_wall",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -28750,
+            1200,
+            -4500
+          ],
+          "class": "full_cover",
+          "dimensionsLocalMm": [
+            500,
+            2500,
+            2400
+          ],
+          "id": "spawn_sight_blocker__west__ink",
+          "intent": "break direct exterior sight into the spawn while preserving a central escape",
+          "sourceKind": "spawn_sight_blocker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -28750,
+            1200,
+            4500
+          ],
+          "class": "full_cover",
+          "dimensionsLocalMm": [
+            500,
+            2500,
+            2400
+          ],
+          "id": "spawn_sight_blocker__west__archive",
+          "intent": "break direct exterior sight into the spawn while preserving a central escape",
+          "sourceKind": "spawn_sight_blocker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            32000,
+            -125,
+            0
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            8000,
+            18000,
+            250
+          ],
+          "id": "spawn_pocket_floor__east",
+          "intent": "continuous protected floor for all team spawn candidates and the spawn anchor",
+          "sourceKind": "spawn_pocket_floor",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            35750,
+            1500,
+            0
+          ],
+          "class": "spawn_pocket_wall",
+          "dimensionsLocalMm": [
+            500,
+            18000,
+            3000
+          ],
+          "id": "kill_boundary_guard__east_back",
+          "intent": "hard seed-bounded backstop before the future P6.3 kill volume",
+          "sourceKind": "kill_boundary_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            32000,
+            1500,
+            -8750
+          ],
+          "class": "spawn_pocket_wall",
+          "dimensionsLocalMm": [
+            8000,
+            500,
+            3000
+          ],
+          "id": "spawn_pocket_wall__east__south",
+          "intent": "protect the pocket flank while leaving the inward route-choice face open",
+          "sourceKind": "spawn_pocket_wall",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            32000,
+            1500,
+            8750
+          ],
+          "class": "spawn_pocket_wall",
+          "dimensionsLocalMm": [
+            8000,
+            500,
+            3000
+          ],
+          "id": "spawn_pocket_wall__east__north",
+          "intent": "protect the pocket flank while leaving the inward route-choice face open",
+          "sourceKind": "spawn_pocket_wall",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            28750,
+            1200,
+            -4500
+          ],
+          "class": "full_cover",
+          "dimensionsLocalMm": [
+            500,
+            2500,
+            2400
+          ],
+          "id": "spawn_sight_blocker__east__ink",
+          "intent": "break direct exterior sight into the spawn while preserving a central escape",
+          "sourceKind": "spawn_sight_blocker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            28750,
+            1200,
+            4500
+          ],
+          "class": "full_cover",
+          "dimensionsLocalMm": [
+            500,
+            2500,
+            2400
+          ],
+          "id": "spawn_sight_blocker__east__archive",
+          "intent": "break direct exterior sight into the spawn while preserving a central escape",
+          "sourceKind": "spawn_sight_blocker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -33500,
+            -125,
+            -3500
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_w_press_a",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -33500,
+            -125,
+            3500
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_w_press_b",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -30500,
+            -125,
+            -7000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_w_ink",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -30500,
+            -125,
+            7000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_w_archive",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            33500,
+            -125,
+            3500
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_e_press_a",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            33500,
+            -125,
+            -3500
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_e_press_b",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            30500,
+            -125,
+            -7000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_e_ink",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            30500,
+            -125,
+            7000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_e_archive",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -27000,
+            -3125,
+            -22000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_dm_ink_w",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            27000,
+            -3125,
+            -21000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_dm_ink_e",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -27000,
+            5875,
+            22000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_dm_archive_w",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            27000,
+            5875,
+            21000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            1800,
+            1800,
+            250
+          ],
+          "id": "spawn_pad__spawn_dm_archive_e",
+          "intent": "explicit capsule-sized occupancy support at the immutable seed candidate",
+          "sourceKind": "spawn_candidate_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -24500,
+            -3125,
+            -19500
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            7192,
+            2200,
+            250
+          ],
+          "id": "playable_floor__dm_ink_w",
+          "intent": "continuous authored support from a spawn candidate to the seed graph",
+          "sourceKind": "spawn_egress_floor",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -23666,
+            -2550,
+            -20334
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4671,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_ink_w__left",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -25334,
+            -2550,
+            -18666
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4671,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_ink_w__right",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            24500,
+            -3125,
+            -19000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            6524,
+            2200,
+            250
+          ],
+          "id": "playable_floor__dm_ink_e",
+          "intent": "continuous authored support from a spawn candidate to the seed graph",
+          "sourceKind": "spawn_egress_floor",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            25237,
+            -2550,
+            -18079
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4003,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_ink_e__left",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            23763,
+            -2550,
+            -19921
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4003,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_ink_e__right",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -24500,
+            5875,
+            19500
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            7192,
+            2600,
+            250
+          ],
+          "id": "playable_floor__dm_archive_w",
+          "intent": "continuous authored support from a spawn candidate to the seed graph",
+          "sourceKind": "spawn_egress_floor",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -25476,
+            6450,
+            18524
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4671,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_archive_w__left",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -23524,
+            6450,
+            20476
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4671,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_archive_w__right",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            24500,
+            5875,
+            19000
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            6524,
+            2600,
+            250
+          ],
+          "id": "playable_floor__dm_archive_e",
+          "intent": "continuous authored support from a spawn candidate to the seed graph",
+          "sourceKind": "spawn_egress_floor",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            23638,
+            6450,
+            20078
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4003,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_archive_e__left",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            25362,
+            6450,
+            17922
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4003,
+            160,
+            900
+          ],
+          "id": "playable_guard__dm_archive_e__right",
+          "intent": "guard the deathmatch-candidate egress without narrowing capsule clearance",
+          "sourceKind": "spawn_egress_guard_rail",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -28734,
+            1710,
+            -962
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__west_spawn_main__left",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -29346,
+            1710,
+            2402
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__west_spawn_main__right",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -29040,
+            3210,
+            720
+          ],
+          "class": "door_frame_lintel",
+          "dimensionsLocalMm": [
+            420,
+            3840,
+            420
+          ],
+          "id": "door_frame__west_spawn_main__lintel",
+          "intent": "legible transition frame with explicit standing clearance",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            28734,
+            1710,
+            962
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__east_spawn_main__left",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            29346,
+            1710,
+            -2402
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__east_spawn_main__right",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            29040,
+            3210,
+            -720
+          ],
+          "class": "door_frame_lintel",
+          "dimensionsLocalMm": [
+            420,
+            3840,
+            420
+          ],
+          "id": "door_frame__east_spawn_main__lintel",
+          "intent": "legible transition frame with explicit standing clearance",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -24136,
+            1130,
+            -1405
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            2820
+          ],
+          "id": "door_frame__west_ink_entry__left",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -21544,
+            1130,
+            -2515
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            2820
+          ],
+          "id": "door_frame__west_ink_entry__right",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -22840,
+            2330,
+            -1960
+          ],
+          "class": "door_frame_lintel",
+          "dimensionsLocalMm": [
+            420,
+            3240,
+            420
+          ],
+          "id": "door_frame__west_ink_entry__lintel",
+          "intent": "legible transition frame with explicit standing clearance",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            21544,
+            1130,
+            -2515
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            2820
+          ],
+          "id": "door_frame__east_ink_entry__left",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            24136,
+            1130,
+            -1405
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            2820
+          ],
+          "id": "door_frame__east_ink_entry__right",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            22840,
+            2330,
+            -1960
+          ],
+          "class": "door_frame_lintel",
+          "dimensionsLocalMm": [
+            420,
+            3240,
+            420
+          ],
+          "id": "door_frame__east_ink_entry__lintel",
+          "intent": "legible transition frame with explicit standing clearance",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -21452,
+            2270,
+            2555
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__west_archive_entry__left",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -24228,
+            2270,
+            1365
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__west_archive_entry__right",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -22840,
+            3770,
+            1960
+          ],
+          "class": "door_frame_lintel",
+          "dimensionsLocalMm": [
+            420,
+            3440,
+            420
+          ],
+          "id": "door_frame__west_archive_entry__lintel",
+          "intent": "legible transition frame with explicit standing clearance",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            24228,
+            2270,
+            1365
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__east_archive_entry__left",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            21452,
+            2270,
+            2555
+          ],
+          "class": "door_frame_post",
+          "dimensionsLocalMm": [
+            420,
+            420,
+            3420
+          ],
+          "id": "door_frame__east_archive_entry__right",
+          "intent": "legible transition frame outside the seed minimum-clear-width envelope",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            22840,
+            3770,
+            1960
+          ],
+          "class": "door_frame_lintel",
+          "dimensionsLocalMm": [
+            420,
+            3440,
+            420
+          ],
+          "id": "door_frame__east_archive_entry__lintel",
+          "intent": "legible transition frame with explicit standing clearance",
+          "sourceKind": "authored_door_frame",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            0,
+            -1750,
+            -27750
+          ],
+          "class": "outer_boundary_wall",
+          "dimensionsLocalMm": [
+            72000,
+            500,
+            2500
+          ],
+          "id": "kill_boundary_guard__ink_south",
+          "intent": "legible collision backstop at the seed bound before P6.3 trigger volumes",
+          "sourceKind": "kill_boundary_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            0,
+            7100,
+            27750
+          ],
+          "class": "outer_boundary_wall",
+          "dimensionsLocalMm": [
+            72000,
+            500,
+            2200
+          ],
+          "id": "kill_boundary_guard__archive_north",
+          "intent": "legible collision backstop at the seed bound before P6.3 trigger volumes",
+          "sourceKind": "kill_boundary_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -5800,
+            -2550,
+            -8200
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_entry__nw",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -2200,
+            -2550,
+            -8200
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_entry__ne",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -5800,
+            -2550,
+            -11800
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_entry__sw",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -2200,
+            -2550,
+            -11800
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_entry__se",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -800,
+            1450,
+            -3200
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_exit__nw",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            2800,
+            1450,
+            -3200
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_exit__ne",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -800,
+            1450,
+            -6800
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_exit__sw",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            2800,
+            1450,
+            -6800
+          ],
+          "class": "interaction_boundary_marker",
+          "dimensionsLocalMm": [
+            300,
+            300,
+            900
+          ],
+          "id": "teleport_boundary__teleport_exit__se",
+          "intent": "readable landing boundary outside the required clear circle",
+          "sourceKind": "teleport_boundary_marker",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -5765,
+            6550,
+            9115
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            1400,
+            160,
+            1100
+          ],
+          "id": "drop_boundary__paper_drop__left",
+          "intent": "guard the drop shoulders while leaving the center fall seam open",
+          "sourceKind": "intentional_drop_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -3833,
+            6550,
+            10080
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            1400,
+            160,
+            1100
+          ],
+          "id": "drop_boundary__paper_drop__right",
+          "intent": "guard the drop shoulders while leaving the center fall seam open",
+          "sourceKind": "intentional_drop_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -8519,
+            -125,
+            4620
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            992,
+            2200,
+            250
+          ],
+          "id": "jump_pad__press_gap_west__takeoff",
+          "intent": "optional movement-tool shortcut with an explicit non-bridged fall gap",
+          "sourceKind": "jump_takeoff_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -8427,
+            450,
+            3427
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            400,
+            160,
+            900
+          ],
+          "id": "jump_guard__press_gap_west__takeoff__left",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -8999,
+            450,
+            5717
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            400,
+            160,
+            900
+          ],
+          "id": "jump_guard__press_gap_west__takeoff__right",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -3481,
+            -125,
+            5880
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            992,
+            2200,
+            250
+          ],
+          "id": "jump_pad__press_gap_west__landing",
+          "intent": "optional movement-tool shortcut with an explicit non-bridged fall gap",
+          "sourceKind": "jump_landing_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -3389,
+            450,
+            4686
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            400,
+            160,
+            900
+          ],
+          "id": "jump_guard__press_gap_west__landing__left",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -3961,
+            450,
+            6976
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            400,
+            160,
+            900
+          ],
+          "id": "jump_guard__press_gap_west__landing__right",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -5261,
+            5875,
+            19315
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            5646,
+            2400,
+            250
+          ],
+          "id": "jump_pad__archive_gap_east__takeoff",
+          "intent": "optional movement-tool shortcut with an explicit non-bridged fall gap",
+          "sourceKind": "jump_takeoff_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -5766,
+            6450,
+            18122
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4846,
+            160,
+            900
+          ],
+          "id": "jump_guard__archive_gap_east__takeoff__left",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            -5145,
+            6450,
+            20606
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4846,
+            160,
+            900
+          ],
+          "id": "jump_guard__archive_gap_east__takeoff__right",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            5261,
+            5875,
+            16685
+          ],
+          "class": "capsule_support_surface",
+          "dimensionsLocalMm": [
+            5646,
+            2400,
+            250
+          ],
+          "id": "jump_pad__archive_gap_east__landing",
+          "intent": "optional movement-tool shortcut with an explicit non-bridged fall gap",
+          "sourceKind": "jump_landing_pad",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            4757,
+            6450,
+            15491
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4846,
+            160,
+            900
+          ],
+          "id": "jump_guard__archive_gap_east__landing__left",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        },
+        {
+          "centerSeedMm": [
+            5378,
+            6450,
+            17975
+          ],
+          "class": "guard_rail",
+          "dimensionsLocalMm": [
+            4846,
+            160,
+            900
+          ],
+          "id": "jump_guard__archive_gap_east__landing__right",
+          "intent": "guard the jump approach sides without bridging the fall edge",
+          "sourceKind": "jump_gap_side_guard",
+          "status": "HYPOTHESIS_PENDING_RUNTIME_TAPES"
+        }
+      ]
+    },
+    "renderStats": {
+      "materials": 10,
+      "meshes": 353,
+      "objects": 353,
+      "polygons": 2118,
+      "triangles": 4236,
+      "vertices": 2824
+    },
+    "routeSegments": 59,
+    "skippedDropSegments": 2,
+    "skippedTeleportSegments": 1,
+    "stairSteps": 24,
+    "waypointSeamPads": 34
+  },
+  "remainingP6Blockers": [
+    "P6.3 strict runtime map schema and loader",
+    "P6.3 authoritative spawns, pickups, zones, kill and recovery volumes",
+    "P6.4 spawn scoring, LOS fixtures, and debug visualization",
+    "P6.5 route, death, damage, sightline, and occupancy telemetry",
+    "P6.6 authoritative run/jump/slide/teleport tapes and 2/4/8-player playtests",
+    "P6.7 topology/spawn revision, graybox lock, and art-kit dimensions",
+    "G5 final-art room and complete independent runtime package"
+  ],
+  "result": "PASS",
+  "schemaVersion": 1,
+  "scope": {
+    "artStatus": "graybox_only",
+    "conceptUse": "material_landmark_and_camera_guidance_only",
+    "g5Passed": false,
+    "g6Passed": false,
+    "phase": "P6.2",
+    "runtimeIntegrated": false,
+    "status": "PLAYABLE_GRAYBOX_CANDIDATE_PENDING_INDEPENDENT_CAPSULE_VALIDATION"
+  },
+  "seed": {
+    "boundsMm": {
+      "maximum": [
+        36000,
+        10000,
+        28000
+      ],
+      "minimum": [
+        -36000,
+        -5000,
+        -28000
+      ]
+    },
+    "bytes": 52549,
+    "counts": {
+      "links": 27,
+      "nodes": 19,
+      "routeMetrics": 12,
+      "spawnCandidates": 12,
+      "zones": 9
+    },
+    "expectedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "mapId": "inkfall_foundry",
+    "path": "inkfall-foundry.layout-seed.v1.json",
+    "schemaVersion": 1,
+    "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+  }
+}

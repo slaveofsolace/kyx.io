@@ -1,0 +1,587 @@
+{
+  "assertions": [
+    {
+      "id": "seed_sha_matches_approved_p6_1",
+      "passed": true
+    },
+    {
+      "id": "seed_identity_supported",
+      "passed": true
+    },
+    {
+      "id": "seed_topology_counts_preserved",
+      "passed": true
+    },
+    {
+      "id": "render_collision_pair_sets_equal",
+      "passed": true
+    },
+    {
+      "id": "collision_boxes_only",
+      "passed": true
+    },
+    {
+      "id": "collision_roles_authoritative_only",
+      "passed": true
+    },
+    {
+      "id": "render_roles_graybox_only",
+      "passed": true
+    },
+    {
+      "id": "separate_exports_exist_and_differ",
+      "passed": true
+    },
+    {
+      "id": "no_runtime_or_gate_claim",
+      "passed": true
+    }
+  ],
+  "collections": {
+    "collision": "P6_2_AUTHORITATIVE_COLLISION",
+    "guides": "P6_2_EDITOR_GUIDES",
+    "previewStage": "P6_2_PREVIEW_STAGE",
+    "render": "P6_2_RENDER_GRAYBOX"
+  },
+  "coordinateTransform": {
+    "blender": "X east, Y north, Z up; meters",
+    "formula": "[x,y,z]mm => [x/1000,z/1000,y/1000]m",
+    "seed": "right-handed project map seed; X east, Y up, Z north; millimeters"
+  },
+  "exports": {
+    "artifacts": {
+      "collisionGlb": {
+        "bytes": 226648,
+        "path": "export/collision.authority.glb",
+        "sha256": "dda96677b114d26720dc23ba903ca028609697da2bd7cfaa5e7062bca392b0db"
+      },
+      "preview:inkfall-collision-overview.png": {
+        "bytes": 1574563,
+        "path": "preview/inkfall-collision-overview.png",
+        "sha256": "ce911d6772b364406714faf940e96643bc46a3ec68a760752f441e8038600ca0"
+      },
+      "preview:inkfall-graybox-overview.png": {
+        "bytes": 1729171,
+        "path": "preview/inkfall-graybox-overview.png",
+        "sha256": "1c485d4a3274b1794c52437cfb3f7305b5d42013b30a5c48ead7887f22bd658c"
+      },
+      "preview:inkfall-graybox-plan.png": {
+        "bytes": 1707735,
+        "path": "preview/inkfall-graybox-plan.png",
+        "sha256": "a828b805af9c3a3ba70d646c7792259f8349fa9d427c1c61320098996c502232"
+      },
+      "preview:inkfall-tier-elevation.png": {
+        "bytes": 1488651,
+        "path": "preview/inkfall-tier-elevation.png",
+        "sha256": "61159b12de717189ce3242bdca24e466e92440d941b68b8a4f750db21508f5d1"
+      },
+      "renderGlb": {
+        "bytes": 227372,
+        "path": "export/render.graybox.glb",
+        "sha256": "45d5cee5cb674841c37cc8a11942ff58df9573dcb3cefb7749db9eb5e82b675a"
+      },
+      "sourceBlend": {
+        "bytes": 280308,
+        "path": "source/inkfall_foundry.blend",
+        "sha256": "4c8823a7d592cedee9d1d28a026c70bd533cd925b791021277ac0953f7fe15fe"
+      }
+    },
+    "collision": {
+      "operatorArguments": {
+        "export_animations": false,
+        "export_apply": true,
+        "export_cameras": false,
+        "export_extras": true,
+        "export_format": "GLB",
+        "export_lights": false,
+        "export_materials": "EXPORT",
+        "export_yup": true,
+        "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\export\\collision.authority.glb",
+        "use_selection": true
+      },
+      "result": [
+        "FINISHED"
+      ]
+    },
+    "render": {
+      "operatorArguments": {
+        "export_animations": false,
+        "export_apply": true,
+        "export_cameras": false,
+        "export_extras": true,
+        "export_format": "GLB",
+        "export_lights": false,
+        "export_materials": "EXPORT",
+        "export_yup": true,
+        "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\export\\render.graybox.glb",
+        "use_selection": true
+      },
+      "result": [
+        "FINISHED"
+      ]
+    }
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "id": "inkfall_foundry_p6_2_graybox",
+    "script": "build_inkfall_foundry_graybox.py",
+    "scriptSha256": "3040f27043296e1de37261dd9fbca677b42255ed5fe6e83a75f9010270bfb843",
+    "version": 1
+  },
+  "geometry": {
+    "authoredModuleCount": 21,
+    "authoredModules": [
+      {
+        "centerSeedMm": [
+          0,
+          3000,
+          4250
+        ],
+        "class": "landmark_mass",
+        "dimensionsLocalMm": [
+          3400,
+          3000,
+          6000
+        ],
+        "id": "press_reactor_north",
+        "intent": "split-reactor north jaw; preserve centerline opening",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0
+      },
+      {
+        "centerSeedMm": [
+          0,
+          3000,
+          -4250
+        ],
+        "class": "landmark_mass",
+        "dimensionsLocalMm": [
+          3400,
+          3000,
+          6000
+        ],
+        "id": "press_reactor_south",
+        "intent": "split-reactor south jaw; preserve centerline opening",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0
+      },
+      {
+        "centerSeedMm": [
+          -10500,
+          1500,
+          5600
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_w_outer",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 18.0
+      },
+      {
+        "centerSeedMm": [
+          -5200,
+          1500,
+          -4700
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_w_inner",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -22.0
+      },
+      {
+        "centerSeedMm": [
+          5200,
+          1500,
+          -4700
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_e_inner",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 22.0
+      },
+      {
+        "centerSeedMm": [
+          10500,
+          1500,
+          5600
+        ],
+        "class": "press_baffle",
+        "dimensionsLocalMm": [
+          5000,
+          500,
+          3000
+        ],
+        "id": "press_baffle_e_outer",
+        "intent": "break central diagonal sightlines without changing route centerlines",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -18.0
+      },
+      {
+        "centerSeedMm": [
+          -15500,
+          1200,
+          -3500
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_press_w",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 28.0
+      },
+      {
+        "centerSeedMm": [
+          15500,
+          1200,
+          3500
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_press_e",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -28.0
+      },
+      {
+        "centerSeedMm": [
+          -12500,
+          7200,
+          17200
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_archive_w",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 12.0
+      },
+      {
+        "centerSeedMm": [
+          12500,
+          7200,
+          17200
+        ],
+        "class": "full_cover",
+        "dimensionsLocalMm": [
+          1800,
+          800,
+          2400
+        ],
+        "id": "full_cover_archive_e",
+        "intent": "hard line break with two-sided flank space",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -12.0
+      },
+      {
+        "centerSeedMm": [
+          -7000,
+          625,
+          1700
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_press_w",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -18.0
+      },
+      {
+        "centerSeedMm": [
+          7000,
+          625,
+          -1700
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_press_e",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 18.0
+      },
+      {
+        "centerSeedMm": [
+          -13000,
+          -2375,
+          -19800
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_ink_w",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 15.0
+      },
+      {
+        "centerSeedMm": [
+          13000,
+          -2375,
+          -18100
+        ],
+        "class": "half_cover",
+        "dimensionsLocalMm": [
+          2400,
+          600,
+          1250
+        ],
+        "id": "half_cover_ink_e",
+        "intent": "standing exposure with crouched protection",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": -15.0
+      },
+      {
+        "centerSeedMm": [
+          -7280,
+          -2200,
+          -17050
+        ],
+        "class": "slide_gate_wall",
+        "dimensionsLocalMm": [
+          4800,
+          400,
+          1600
+        ],
+        "id": "ink_slide_gate_left",
+        "intent": "bound the optional slide/crouch bypass",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 59.03624346792648
+      },
+      {
+        "centerSeedMm": [
+          -7280,
+          -2200,
+          -17050
+        ],
+        "class": "slide_gate_wall",
+        "dimensionsLocalMm": [
+          4800,
+          400,
+          1600
+        ],
+        "id": "ink_slide_gate_right",
+        "intent": "bound the optional slide/crouch bypass",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 59.03624346792648
+      },
+      {
+        "centerSeedMm": [
+          -6508,
+          -1525,
+          -17513
+        ],
+        "class": "slide_gate_roof",
+        "dimensionsLocalMm": [
+          4800,
+          2200,
+          250
+        ],
+        "id": "ink_slide_gate_roof",
+        "intent": "provide exact 1.35 m clear height over the optional bypass",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 59.03624346792648
+      },
+      {
+        "centerSeedMm": [
+          -6300,
+          -1750,
+          -10000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_entry_west",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      },
+      {
+        "centerSeedMm": [
+          -1700,
+          -1750,
+          -10000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_entry_east",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      },
+      {
+        "centerSeedMm": [
+          -1300,
+          2250,
+          -5000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_exit_west",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      },
+      {
+        "centerSeedMm": [
+          3300,
+          2250,
+          -5000
+        ],
+        "class": "teleport_guard",
+        "dimensionsLocalMm": [
+          350,
+          800,
+          2500
+        ],
+        "id": "red_fold_exit_east",
+        "intent": "frame the optional teleport without entering its 4 m landing diameter",
+        "status": "HYPOTHESIS_PENDING_PLAYTEST",
+        "yawDegrees": 0.0
+      }
+    ],
+    "collisionPolicy": {
+      "decorativeBevelsInAuthority": false,
+      "oneWayDropRampInCollision": false,
+      "primitive": "oriented convex boxes only",
+      "routeEndOverlapMm": 120,
+      "routeThicknessMm": 250,
+      "teleportConnectorInCollision": false,
+      "waypointPadOverlapMm": 200
+    },
+    "collisionStats": {
+      "materials": 1,
+      "meshes": 133,
+      "objects": 133,
+      "polygons": 798,
+      "triangles": 1596,
+      "vertices": 1064
+    },
+    "collisionWorldAabb": {
+      "maximumBlenderMeters": [
+        37.0,
+        23.0,
+        8.4
+      ],
+      "minimumBlenderMeters": [
+        -37.0,
+        -23.0,
+        -3.256622
+      ]
+    },
+    "guides": {
+      "cellGuideLines": 8,
+      "spawnMarkers": 12,
+      "zones": 9
+    },
+    "nodePlatforms": 19,
+    "renderStats": {
+      "materials": 10,
+      "meshes": 133,
+      "objects": 133,
+      "polygons": 798,
+      "triangles": 1596,
+      "vertices": 1064
+    },
+    "routeSegments": 59,
+    "skippedDropSegments": 2,
+    "skippedTeleportSegments": 1,
+    "waypointSeamPads": 34
+  },
+  "remainingP6Blockers": [
+    "P6.3 strict runtime map schema and loader",
+    "P6.3 authoritative spawns, pickups, zones, kill and recovery volumes",
+    "P6.4 spawn scoring, LOS fixtures, and debug visualization",
+    "P6.5 route, death, damage, sightline, and occupancy telemetry",
+    "P6.6 authoritative run/jump/slide/teleport tapes and 2/4/8-player playtests",
+    "P6.7 topology/spawn revision, graybox lock, and art-kit dimensions",
+    "G5 final-art room and complete independent runtime package"
+  ],
+  "result": "PASS",
+  "schemaVersion": 1,
+  "scope": {
+    "artStatus": "graybox_only",
+    "conceptUse": "material_landmark_and_camera_guidance_only",
+    "g5Passed": false,
+    "g6Passed": false,
+    "phase": "P6.2",
+    "runtimeIntegrated": false,
+    "status": "GRAYBOX_AND_COLLIDER_PREPRODUCTION_BUILT"
+  },
+  "seed": {
+    "boundsMm": {
+      "maximum": [
+        36000,
+        10000,
+        28000
+      ],
+      "minimum": [
+        -36000,
+        -5000,
+        -28000
+      ]
+    },
+    "bytes": 52549,
+    "counts": {
+      "links": 27,
+      "nodes": 19,
+      "routeMetrics": 12,
+      "spawnCandidates": 12,
+      "zones": 9
+    },
+    "expectedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "mapId": "inkfall_foundry",
+    "path": "inkfall-foundry.layout-seed.v1.json",
+    "schemaVersion": 1,
+    "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+  }
+}

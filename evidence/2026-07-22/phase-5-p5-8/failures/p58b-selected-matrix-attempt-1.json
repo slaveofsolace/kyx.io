@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-5-p5-8b-selected-matrix-attempt-1",
+  "capturedAt": "2026-07-22T03:27:51-05:00",
+  "status": "FAIL_RETAINED",
+  "gateClaim": "P5.8_NOT_COMPLETE",
+  "command": {
+    "runner": "node_modules/vitest/vitest.mjs run",
+    "scope": "all 13 authority combat tests plus protocol-v2, reliableEvents, and presentationAdapter"
+  },
+  "result": {
+    "testFilesPassed": 15,
+    "testFilesFailed": 1,
+    "testsPassed": 145,
+    "testsFailed": 1
+  },
+  "failure": {
+    "error": "Test timed out in 5000ms",
+    "cause": "The eight deterministic 400-tick trace executions completed in 4.8 seconds alone but crossed the default five-second limit under the concurrent 16-file matrix.",
+    "correction": "The bounded trace test now declares a 15-second test timeout; authority ticks, assertions, and replay pins are unchanged."
+  },
+  "concurrentStaticGates": {
+    "applicationTypeScript": "PASS",
+    "focusedEslint": "PASS"
+  }
+}

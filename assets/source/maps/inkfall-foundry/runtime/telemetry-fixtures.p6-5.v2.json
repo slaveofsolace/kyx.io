@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "mapId": "inkfall_foundry",
+  "mapRevision": 2,
+  "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+  "fixtureHash": "bf85e42731fd088e",
+  "authorityRateHz": 20,
+  "producer": "authority_runtime",
+  "privacy": {
+    "actorIdentity": "ephemeral_match_slot_0_through_63",
+    "exactPositionsRetained": false,
+    "clientOutcomeAuthorityAccepted": false
+  },
+  "events": [
+    {
+      "eventSequence": 8,
+      "authorityTick": 135,
+      "kind": "sightline_exposure",
+      "payload": {
+        "observerActorSlot": 0,
+        "subjectActorSlot": 2,
+        "observerZoneId": "west_gallery",
+        "subjectZoneId": "archive_walk_east",
+        "observerFeetPositionMm": {
+          "x": -33500,
+          "y": 0,
+          "z": -3500
+        },
+        "subjectFeetPositionMm": {
+          "x": 26000,
+          "y": 6000,
+          "z": 21000
+        },
+        "observerStance": "standing",
+        "subjectStance": "standing",
+        "exposureTicks": 5
+      }
+    },
+    {
+      "eventSequence": 1,
+      "authorityTick": 110,
+      "kind": "route_traversal",
+      "payload": {
+        "actorSlot": 0,
+        "routeId": "west_choice_press",
+        "direction": "forward",
+        "enteredAtTick": 100,
+        "exitedAtTick": 110,
+        "outcome": "completed",
+        "movementMode": "run"
+      }
+    },
+    {
+      "eventSequence": 14,
+      "authorityTick": 141,
+      "kind": "authority_volume",
+      "payload": {
+        "actorSlot": 3,
+        "volumeId": "lower_void_recovery",
+        "positionMm": {
+          "x": 0,
+          "y": -3750,
+          "z": 0
+        },
+        "outcome": "recovery_completed"
+      }
+    },
+    {
+      "eventSequence": 4,
+      "authorityTick": 131,
+      "kind": "no_safe_spawn",
+      "payload": {
+        "actorSlot": 7,
+        "evaluatedCandidateCount": 12,
+        "directLosRejectedCount": 7,
+        "occupancyRejectedCount": 2,
+        "territoryRejectedCount": 3,
+        "retryAfterTicks": 10
+      }
+    },
+    {
+      "eventSequence": 11,
+      "authorityTick": 138,
+      "kind": "occupancy_sample",
+      "payload": {
+        "occupants": [
+          {
+            "actorSlot": 0,
+            "zoneId": "west_gallery",
+            "feetPositionMm": {
+              "x": -30000,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 1,
+            "zoneId": "east_gallery",
+            "feetPositionMm": {
+              "x": 30000,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 2,
+            "zoneId": "press_hall",
+            "feetPositionMm": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 3,
+            "zoneId": "ink_channel_west",
+            "feetPositionMm": {
+              "x": -15000,
+              "y": -3000,
+              "z": -18500
+            }
+          },
+          {
+            "actorSlot": 4,
+            "zoneId": "ink_channel_east",
+            "feetPositionMm": {
+              "x": 15000,
+              "y": -3000,
+              "z": -17500
+            }
+          },
+          {
+            "actorSlot": 5,
+            "zoneId": "archive_walk_west",
+            "feetPositionMm": {
+              "x": -15000,
+              "y": 6000,
+              "z": 18500
+            }
+          },
+          {
+            "actorSlot": 6,
+            "zoneId": "archive_walk_east",
+            "feetPositionMm": {
+              "x": 15000,
+              "y": 6000,
+              "z": 18000
+            }
+          },
+          {
+            "actorSlot": 7,
+            "zoneId": "teleport_fold",
+            "feetPositionMm": {
+              "x": -1500,
+              "y": -1000,
+              "z": -7500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "eventSequence": 2,
+      "authorityTick": 111,
+      "kind": "spawn_choice",
+      "payload": {
+        "actorSlot": 0,
+        "spawnId": "spawn_w_press_a",
+        "decisionHash": "0123456789abcdef",
+        "selectedScore": 420,
+        "evaluatedCandidateCount": 12,
+        "eligibleCandidateCount": 5
+      }
+    },
+    {
+      "eventSequence": 18,
+      "authorityTick": 152,
+      "kind": "route_traversal",
+      "payload": {
+        "actorSlot": 5,
+        "routeId": "archive_mid_w_drop",
+        "direction": "forward",
+        "enteredAtTick": 150,
+        "exitedAtTick": 152,
+        "outcome": "completed",
+        "movementMode": "drop"
+      }
+    },
+    {
+      "eventSequence": 6,
+      "authorityTick": 133,
+      "kind": "death_location",
+      "payload": {
+        "victimActorSlot": 1,
+        "killerActorSlot": 0,
+        "zoneId": "press_hall",
+        "positionMm": {
+          "x": 550,
+          "y": 0,
+          "z": 550
+        },
+        "causeClass": "weapon_direct",
+        "assistCount": 1,
+        "respawnEligibleAtTick": 193
+      }
+    },
+    {
+      "eventSequence": 12,
+      "authorityTick": 139,
+      "kind": "objective_pressure",
+      "payload": {
+        "objectiveSlot": 0,
+        "zoneId": "press_hall",
+        "positionMm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "pressurePermille": 625,
+        "nearbyFriendlyCount": 3,
+        "nearbyEnemyCount": 4,
+        "controllingTeamSlot": 1
+      }
+    },
+    {
+      "eventSequence": 9,
+      "authorityTick": 136,
+      "kind": "occupancy_sample",
+      "payload": {
+        "occupants": [
+          {
+            "actorSlot": 0,
+            "zoneId": "west_gallery",
+            "feetPositionMm": {
+              "x": -30000,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 1,
+            "zoneId": "east_gallery",
+            "feetPositionMm": {
+              "x": 30000,
+              "y": 0,
+              "z": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "eventSequence": 16,
+      "authorityTick": 143,
+      "kind": "authority_volume",
+      "payload": {
+        "actorSlot": 4,
+        "volumeId": "lower_void_kill",
+        "positionMm": {
+          "x": 0,
+          "y": -4750,
+          "z": 0
+        },
+        "outcome": "killed"
+      }
+    },
+    {
+      "eventSequence": 3,
+      "authorityTick": 130,
+      "kind": "spawn_result",
+      "payload": {
+        "actorSlot": 0,
+        "spawnId": "spawn_w_press_a",
+        "spawnedAtTick": 111,
+        "observedUntilTick": 130,
+        "outcome": "alive_window",
+        "firstRouteChoiceAtTick": 115,
+        "firstContactAtTick": 120,
+        "damageTakenPoints": 35
+      }
+    },
+    {
+      "eventSequence": 10,
+      "authorityTick": 137,
+      "kind": "occupancy_sample",
+      "payload": {
+        "occupants": [
+          {
+            "actorSlot": 0,
+            "zoneId": "west_gallery",
+            "feetPositionMm": {
+              "x": -30000,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 1,
+            "zoneId": "east_gallery",
+            "feetPositionMm": {
+              "x": 30000,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 2,
+            "zoneId": "press_hall",
+            "feetPositionMm": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          {
+            "actorSlot": 3,
+            "zoneId": "ink_channel_west",
+            "feetPositionMm": {
+              "x": -15000,
+              "y": -3000,
+              "z": -18500
+            }
+          }
+        ]
+      }
+    },
+    {
+      "eventSequence": 7,
+      "authorityTick": 134,
+      "kind": "sightline_exposure",
+      "payload": {
+        "observerActorSlot": 0,
+        "subjectActorSlot": 1,
+        "observerZoneId": "west_gallery",
+        "subjectZoneId": "archive_walk_west",
+        "observerFeetPositionMm": {
+          "x": -33500,
+          "y": 0,
+          "z": -3500
+        },
+        "subjectFeetPositionMm": {
+          "x": -26000,
+          "y": 6000,
+          "z": 22000
+        },
+        "observerStance": "standing",
+        "subjectStance": "standing",
+        "exposureTicks": 7
+      }
+    },
+    {
+      "eventSequence": 15,
+      "authorityTick": 142,
+      "kind": "authority_volume",
+      "payload": {
+        "actorSlot": 4,
+        "volumeId": "lower_void_kill",
+        "positionMm": {
+          "x": 0,
+          "y": -4750,
+          "z": 0
+        },
+        "outcome": "kill_entered"
+      }
+    },
+    {
+      "eventSequence": 5,
+      "authorityTick": 132,
+      "kind": "damage_location",
+      "payload": {
+        "sourceActorSlot": 0,
+        "targetActorSlot": 1,
+        "zoneId": "press_hall",
+        "positionMm": {
+          "x": 500,
+          "y": 0,
+          "z": 500
+        },
+        "damagePoints": 75,
+        "causeClass": "weapon_direct"
+      }
+    },
+    {
+      "eventSequence": 17,
+      "authorityTick": 150,
+      "kind": "route_traversal",
+      "payload": {
+        "actorSlot": 2,
+        "routeId": "teleport_shortcut",
+        "direction": "forward",
+        "enteredAtTick": 149,
+        "exitedAtTick": 150,
+        "outcome": "completed",
+        "movementMode": "teleport"
+      }
+    },
+    {
+      "eventSequence": 13,
+      "authorityTick": 140,
+      "kind": "authority_volume",
+      "payload": {
+        "actorSlot": 3,
+        "volumeId": "lower_void_recovery",
+        "positionMm": {
+          "x": 0,
+          "y": -3750,
+          "z": 0
+        },
+        "outcome": "recovery_entered"
+      }
+    }
+  ],
+  "expected": {
+    "eventCount": 18,
+    "snapshotHash": "b1fe23e2b3ba0570",
+    "arrangementSamples": {
+      "twoPlayers": 1,
+      "fourPlayers": 1,
+      "eightPlayers": 1,
+      "other": 0
+    },
+    "totalsByKind": {
+      "route_traversal": 3,
+      "spawn_choice": 1,
+      "spawn_result": 1,
+      "no_safe_spawn": 1,
+      "damage_location": 1,
+      "death_location": 1,
+      "sightline_exposure": 2,
+      "occupancy_sample": 3,
+      "objective_pressure": 1,
+      "authority_volume": 4
+    }
+  }
+}

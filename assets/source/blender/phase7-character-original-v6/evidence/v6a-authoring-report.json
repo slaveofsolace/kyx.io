@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T04:02:41.073840+00:00",
+  "blenderVersion": "5.1.2",
+  "invocationSafety": [
+    "--background",
+    "--factory-startup",
+    "--disable-autoexec",
+    "--python-exit-code 1"
+  ],
+  "immutableSource": {
+    "path": "kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+    "bytes": 12582373,
+    "sha256Before": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+    "sha256After": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+    "unchanged": true
+  },
+  "workingCheckpoint": {
+    "path": "kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+    "initialBytes": 12582373,
+    "initialSha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+    "finalBytes": 12580228,
+    "finalSha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+    "initialAndFinalDiffer": true
+  },
+  "conceptSha256": "067a3eba77f9c9e566fe7aeba9684346bfd9fcd162de8ead14194640c0fb76c3",
+  "authorship": {
+    "method": "Project-authored deterministic base-cage sculpt-equivalent deformation",
+    "profile": "KYX_V6A_LEAN_LONG_LIMBED_PROFILE_V2",
+    "sourceTopologyReplaced": false,
+    "thirdPartyAddonsOrGeneratorsUsed": false,
+    "primitivesUsedAsReplacementAnatomy": false,
+    "armorOrCostumeAdded": false
+  },
+  "deformation": {
+    "targetHeightMeters": 1.775,
+    "verticalControlPoints": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.085,
+        0.09
+      ],
+      [
+        0.31,
+        0.33
+      ],
+      [
+        0.48,
+        0.525
+      ],
+      [
+        0.61,
+        0.64
+      ],
+      [
+        0.69,
+        0.715
+      ],
+      [
+        0.82,
+        0.83
+      ],
+      [
+        0.88,
+        0.9
+      ],
+      [
+        1.0,
+        1.0
+      ]
+    ],
+    "movedVertices": 10582,
+    "totalVertices": 10582,
+    "movedVertexRatio": 1.0,
+    "meanBaseCageDisplacementMeters": 0.077728,
+    "medianBaseCageDisplacementMeters": 0.097718,
+    "p95BaseCageDisplacementMeters": 0.114743,
+    "maxBaseCageDisplacementMeters": 0.1272,
+    "regionVertexCountsAtWeightGteHalf": {
+      "arm": 2228,
+      "leg": 3398,
+      "torso": 1368,
+      "headNeck": 3573,
+      "distalArm": 2108
+    },
+    "intent": [
+      "longer leg and distal-arm read",
+      "narrower waist and less rounded torso-pelvis transition",
+      "reduced thigh, calf, upper-arm, and forearm bulk",
+      "controlled shoulder spread",
+      "cleaner neck-jaw transition for later sealed helmet and cowl construction",
+      "source hand, foot, facial landmarks, UV, topology, and Multires detail retained"
+    ]
+  },
+  "before": {
+    "name": "KYX_V6_CC0_AnatomySeed_Body",
+    "data": "KYX_V6_CC0_AnatomySeed_Body_Mesh",
+    "vertices": 10582,
+    "edges": 21170,
+    "polygons": 10590,
+    "geometrySha256": "604a5a036b984b375fae5901427bcf1b260106ed97fe4a8cfa0d9684a3f5e38c",
+    "bounds": {
+      "min": [
+        -0.440431,
+        -0.179455,
+        -0.005548
+      ],
+      "max": [
+        0.44027,
+        0.110994,
+        1.684413
+      ],
+      "height": 1.689961,
+      "width": 0.880701,
+      "depth": 0.290449
+    },
+    "multires": [
+      {
+        "name": "Multires",
+        "levels": 3,
+        "sculptLevels": 3,
+        "renderLevels": 3,
+        "totalLevels": 3
+      }
+    ]
+  },
+  "after": {
+    "name": "KYX_V6A_AnatomySculpt_Body",
+    "data": "KYX_V6A_AnatomySculpt_Body_Mesh",
+    "vertices": 10582,
+    "edges": 21170,
+    "polygons": 10590,
+    "geometrySha256": "55b474807a21f7f7ff4c12fc2c46f3b5a85d67a7aa560f9f9228825b552e455a",
+    "bounds": {
+      "min": [
+        -0.415344,
+        -0.169871,
+        0.0
+      ],
+      "max": [
+        0.415194,
+        0.10361,
+        1.775
+      ],
+      "height": 1.775,
+      "width": 0.830538,
+      "depth": 0.273481
+    },
+    "multires": [
+      {
+        "name": "Multires",
+        "levels": 3,
+        "sculptLevels": 3,
+        "renderLevels": 3,
+        "totalLevels": 3
+      }
+    ]
+  },
+  "multiresBefore": [
+    [
+      "Multires",
+      3,
+      3,
+      3,
+      3
+    ]
+  ],
+  "multiresAfter": [
+    [
+      "Multires",
+      3,
+      3,
+      3,
+      3
+    ]
+  ],
+  "contentInventoryBefore": {
+    "texts": 0,
+    "actions": 0,
+    "armatures": 0,
+    "drivers": [],
+    "libraries": 0,
+    "externalPaths": [],
+    "materials": 0,
+    "images": 0,
+    "nodeGroups": 0
+  },
+  "contentInventoryAfter": {
+    "texts": 0,
+    "actions": 0,
+    "armatures": 0,
+    "drivers": [],
+    "libraries": 0,
+    "externalPaths": [],
+    "materials": 0,
+    "images": 0,
+    "nodeGroups": 0
+  },
+  "assertions": {
+    "sourcePinnedAndImmutable": true,
+    "workingStartedByteIdenticalToSource": true,
+    "workingFinalDiffersFromInitial": true,
+    "geometryCoordinatesChanged": true,
+    "topologyCountsPreserved": true,
+    "multiresPreserved": true,
+    "authoredHeightInTargetBand": true,
+    "rootNormalizedAndGrounded": true,
+    "noExecutableOrExternalContent": true,
+    "noMaterials": true
+  },
+  "status": "V6A_AUTHORED_ANATOMY_CANDIDATE_REQUIRES_HUMAN_REVIEW",
+  "nonClaims": [
+    "V6-A is a candidate checkpoint and is not self-approved.",
+    "No garment, armor, helmet, cowl, glove, boot, rifle, material, rig, animation, retopology, LOD, runtime export, or integration is claimed.",
+    "This checkpoint does not satisfy G6 or human visual acceptance."
+  ]
+}

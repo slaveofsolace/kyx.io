@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kyx.invalid/schemas/asset-manifest.v1.schema.json",
+  "title": "KYX Runtime Asset Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "assetId",
+    "kind",
+    "releaseEligible",
+    "sourceHash",
+    "sourceHashKind",
+    "runtime",
+    "budgets",
+    "validation",
+    "provenance",
+    "disposition"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "assetId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+    },
+    "kind": {
+      "enum": [
+        "character",
+        "first_person_arms",
+        "weapon_world",
+        "weapon_viewmodel",
+        "map",
+        "prop",
+        "vfx",
+        "audio",
+        "ui"
+      ]
+    },
+    "releaseEligible": { "type": "boolean" },
+    "sourceHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sourceHashKind": { "enum": ["canonical_source", "runtime_snapshot"] },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uri", "hash", "bytes"],
+      "properties": {
+        "uri": { "type": "string", "pattern": "^public/" },
+        "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "triangles",
+        "primitives",
+        "materials",
+        "nodes",
+        "bones",
+        "clips",
+        "textures",
+        "estimatedTextureBytes",
+        "waiverId"
+      ],
+      "properties": {
+        "triangles": { "type": "integer", "minimum": 0 },
+        "primitives": { "type": "integer", "minimum": 0 },
+        "materials": { "type": "integer", "minimum": 0 },
+        "nodes": { "type": "integer", "minimum": 0 },
+        "bones": { "type": "integer", "minimum": 0 },
+        "clips": { "type": "integer", "minimum": 0 },
+        "textures": { "type": "integer", "minimum": 0 },
+        "estimatedTextureBytes": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "Null when texture residency has not been measured."
+        },
+        "waiverId": {
+          "type": ["string", "null"],
+          "pattern": "^waiver-[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structuralInspector",
+        "structuralStatus",
+        "externalGltfValidator",
+        "externalGltfReport",
+        "errors",
+        "warnings"
+      ],
+      "properties": {
+        "structuralInspector": { "const": "kyx_binary_inspector_v1" },
+        "structuralStatus": { "enum": ["passed", "failed"] },
+        "externalGltfValidator": {
+          "enum": ["not_run", "passed", "failed", "not_applicable"]
+        },
+        "externalGltfReport": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["uri", "hash", "bytes", "assetHash"],
+              "properties": {
+                "uri": { "type": "string", "pattern": "^evidence/" },
+                "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+                "bytes": { "type": "integer", "minimum": 1 },
+                "assetHash": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+              }
+            }
+          ]
+        },
+        "errors": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+          "uniqueItems": true
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+          "uniqueItems": true
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "creator",
+        "source",
+        "acquiredAt",
+        "license",
+        "licenseSnapshot",
+        "attribution",
+        "reviewer",
+        "notes"
+      ],
+      "properties": {
+        "status": { "enum": ["unresolved", "verified"] },
+        "creator": { "type": ["string", "null"] },
+        "source": { "type": ["string", "null"] },
+        "acquiredAt": {
+          "type": ["string", "null"],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "license": { "type": ["string", "null"] },
+        "licenseSnapshot": { "type": ["string", "null"] },
+        "attribution": { "type": ["string", "null"] },
+        "reviewer": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "disposition": {
+      "enum": [
+        "legacy_proxy_replace",
+        "temporary_diagnostic_only_then_replace",
+        "audit_then_replace",
+        "candidate",
+        "approved"
+      ]
+    }
+  }
+}

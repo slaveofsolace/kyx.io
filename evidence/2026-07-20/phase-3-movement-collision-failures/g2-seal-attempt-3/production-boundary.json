@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-07-20T14:20:38.155Z",
+  "root": "dist",
+  "textFilesChecked": 10,
+  "forbiddenSignatures": [
+    "developmentFlatRunMovementDriver",
+    "/__test__/movement",
+    "HYPOTHESIS · FLAT_RUN · DEV ONLY",
+    "movementDriver=flat_run"
+  ],
+  "matches": [],
+  "ok": true
+}

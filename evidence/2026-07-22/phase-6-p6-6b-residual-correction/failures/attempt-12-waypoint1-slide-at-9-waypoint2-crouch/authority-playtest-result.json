@@ -1,0 +1,1673 @@
+{
+  "schemaVersion": 2,
+  "status": "P6_6_REVISION_2_AUTOMATED_AUTHORITY_PLAYTEST_RESULT_G5_NOT_PASSED",
+  "binding": {
+    "mapId": "inkfall_foundry",
+    "mapRevision": 2,
+    "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+    "fixtureHash": "bf85e42731fd088e",
+    "topologySeedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "movementProfileId": "phase3_hypothesis_v1",
+    "movementProfileRevision": 1,
+    "physicsAdapterVersion": "0.19.3"
+  },
+  "units": {
+    "authorityRateHz": 20,
+    "tickMilliseconds": 50,
+    "distance": "integer_millimeters",
+    "time": "authority_ticks_and_integer_milliseconds"
+  },
+  "resourceBounds": {
+    "maximumScenarios": 3,
+    "maximumAgentsPerScenario": 8,
+    "maximumTicksPerScenario": 900,
+    "maximumRouteStepsPerAgent": 16,
+    "sampledFrameStrideTicks": 10,
+    "telemetryRetainedEventCapacity": 4096,
+    "maximumAuthorityQueryCallsPerAgentTick": 128
+  },
+  "scenarios": [
+    {
+      "id": "synthetic_2_player_press_cross",
+      "playerCount": 2,
+      "classification": "automated_synthetic_authority_playtest_not_human",
+      "status": "PASS",
+      "elapsedTicks": 163,
+      "elapsedMilliseconds": 8150,
+      "spawnProbe": {
+        "fixtureScenarioId": "ffa_2_player_occluded",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "ce3bd1acc10ee6b0",
+        "directLosSelected": false,
+        "passed": true
+      },
+      "agents": [
+        {
+          "slot": 0,
+          "id": "p6_6_agent_0",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_press_a",
+          "startDelayTicks": 0,
+          "completed": true,
+          "completionTick": 159,
+          "finalFeetPositionMm": {
+            "x": 14484,
+            "y": 172,
+            "z": -2355
+          },
+          "finalStateHash": "0fa890bc4e0c3bd7",
+          "replayHash": "292eb39dfe276df8",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 0,
+              "exitedAtTick": 32,
+              "traversalTicks": 32,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_press",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 31,
+              "exitedAtTick": 54,
+              "traversalTicks": 23,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "forward",
+              "movementMode": "jump",
+              "enteredAtTick": 53,
+              "exitedAtTick": 109,
+              "traversalTicks": 56,
+              "completed": true
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 108,
+              "exitedAtTick": 159,
+              "traversalTicks": 51,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_choice_west",
+              "targetBandMilliseconds": [
+                1000,
+                2500
+              ],
+              "measuredTicks": 32,
+              "measuredMilliseconds": 1600,
+              "insideTargetBand": true
+            },
+            {
+              "metricId": "spawn_to_press_contact_west",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 109,
+              "measuredMilliseconds": 5450,
+              "insideTargetBand": true
+            },
+            {
+              "metricId": "press_fast_central_crossing",
+              "targetBandMilliseconds": [
+                4000,
+                7000
+              ],
+              "measuredTicks": 106,
+              "measuredMilliseconds": 5300,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 163,
+            "jumped": 1,
+            "landed": 3
+          },
+          "horizontalCollisionContacts": 3,
+          "blockingColliderIds": [
+            "map_collision_module_half_cover_press_w",
+            "map_collision_route_west_choice_archive_s00",
+            "map_collision_stair_press_west_archive_s00_t00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 16
+        },
+        {
+          "slot": 1,
+          "id": "p6_6_agent_1",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_e_press_a",
+          "startDelayTicks": 12,
+          "completed": true,
+          "completionTick": 163,
+          "finalFeetPositionMm": {
+            "x": -13527,
+            "y": 623,
+            "z": 2229
+          },
+          "finalStateHash": "6ad8e43e03ebd566",
+          "replayHash": "67d0daccbe527bb2",
+          "routeTapes": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 12,
+              "exitedAtTick": 44,
+              "traversalTicks": 32,
+              "completed": true
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 43,
+              "exitedAtTick": 66,
+              "traversalTicks": 23,
+              "completed": true
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 65,
+              "exitedAtTick": 116,
+              "traversalTicks": 51,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 115,
+              "exitedAtTick": 163,
+              "traversalTicks": 48,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_choice_east",
+              "targetBandMilliseconds": [
+                1000,
+                2500
+              ],
+              "measuredTicks": 32,
+              "measuredMilliseconds": 1600,
+              "insideTargetBand": true
+            },
+            {
+              "metricId": "spawn_to_press_contact_east",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 104,
+              "measuredMilliseconds": 5200,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 163,
+            "landed": 4
+          },
+          "horizontalCollisionContacts": 4,
+          "blockingColliderIds": [
+            "map_collision_guard_rail_press_west_core_s02_right",
+            "map_collision_route_press_east_archive_s00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 16
+        }
+      ],
+      "occupancy": {
+        "sampledTicks": 18,
+        "peakPlayersByZone": {
+          "west_gallery": 1,
+          "east_gallery": 1,
+          "press_hall": 2
+        },
+        "minimumPairDistanceMm": 3335,
+        "closeContactSamples": 0,
+        "bodyOverlapSamples": 0
+      },
+      "collision": {
+        "horizontalContacts": 7,
+        "uniqueBlockingColliderIds": [
+          "map_collision_guard_rail_press_west_core_s02_right",
+          "map_collision_module_half_cover_press_w",
+          "map_collision_route_press_east_archive_s00",
+          "map_collision_route_west_choice_archive_s00",
+          "map_collision_stair_press_west_archive_s00_t00"
+        ],
+        "embedSamples": 0,
+        "snagEvents": 0
+      },
+      "volumes": {
+        "recoveryEntries": 0,
+        "killEntries": 0,
+        "recoveryProbePassed": true,
+        "killPriorityProbePassed": true,
+        "postRecoveryEscapePassed": true
+      },
+      "telemetry": {
+        "eventCount": 27,
+        "routeEvents": 8,
+        "occupancyEvents": 10,
+        "sightlineEvents": 1,
+        "damageEvents": 1,
+        "deathEvents": 1,
+        "zoneCount": 3,
+        "snapshotHash": "5d37b370751328b4",
+        "privacy": {
+          "actorIdentity": "ephemeral_match_slot_0_through_63",
+          "exactPositionsRetained": false,
+          "accountIdentifiersRetained": false,
+          "networkIdentifiersRetained": false,
+          "clientOutcomeAuthorityAccepted": false
+        }
+      },
+      "queryMetrics": {
+        "moveCapsuleCalls": 326,
+        "overlapCapsuleCalls": 329,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 329,
+        "shapeCasts": 110514,
+        "overlapTests": 111127,
+        "contacts": 98,
+        "explicitEmbedChecks": 329,
+        "maximumCallsPerAgentTick": 3
+      },
+      "replayHash": "92aa8378d2e0d27e",
+      "issues": []
+    },
+    {
+      "id": "synthetic_4_player_press_and_ink",
+      "playerCount": 4,
+      "classification": "automated_synthetic_authority_playtest_not_human",
+      "status": "PASS",
+      "elapsedTicks": 193,
+      "elapsedMilliseconds": 9650,
+      "spawnProbe": {
+        "fixtureScenarioId": "ffa_4_player_all_enemy_aggregate",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_e",
+        "decisionHash": "2f490c09ee239e75",
+        "directLosSelected": false,
+        "passed": true
+      },
+      "agents": [
+        {
+          "slot": 0,
+          "id": "p6_6_agent_0",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_press_b",
+          "startDelayTicks": 0,
+          "completed": true,
+          "completionTick": 96,
+          "finalFeetPositionMm": {
+            "x": 251,
+            "y": 269,
+            "z": 158
+          },
+          "finalStateHash": "3d1e62158568d75b",
+          "replayHash": "ccd83585ab089dd0",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 0,
+              "exitedAtTick": 33,
+              "traversalTicks": 33,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_press",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 32,
+              "exitedAtTick": 54,
+              "traversalTicks": 22,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 53,
+              "exitedAtTick": 96,
+              "traversalTicks": 43,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_press_contact_west",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 96,
+              "measuredMilliseconds": 4800,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 193,
+            "landed": 2
+          },
+          "horizontalCollisionContacts": 1,
+          "blockingColliderIds": [
+            "map_collision_route_west_choice_archive_s00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 19
+        },
+        {
+          "slot": 1,
+          "id": "p6_6_agent_1",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_e_press_b",
+          "startDelayTicks": 10,
+          "completed": true,
+          "completionTick": 158,
+          "finalFeetPositionMm": {
+            "x": -13492,
+            "y": 256,
+            "z": 2208
+          },
+          "finalStateHash": "3285978bfedecf98",
+          "replayHash": "80257934d0f11109",
+          "routeTapes": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 10,
+              "exitedAtTick": 42,
+              "traversalTicks": 32,
+              "completed": true
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 41,
+              "exitedAtTick": 64,
+              "traversalTicks": 23,
+              "completed": true
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 63,
+              "exitedAtTick": 116,
+              "traversalTicks": 53,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 115,
+              "exitedAtTick": 158,
+              "traversalTicks": 43,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_press_contact_east",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 106,
+              "measuredMilliseconds": 5300,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 193,
+            "landed": 2
+          },
+          "horizontalCollisionContacts": 1,
+          "blockingColliderIds": [
+            "map_collision_route_press_east_archive_s00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 19
+        },
+        {
+          "slot": 2,
+          "id": "p6_6_agent_2",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_ink",
+          "startDelayTicks": 6,
+          "completed": true,
+          "completionTick": 175,
+          "finalFeetPositionMm": {
+            "x": -7941,
+            "y": -2830,
+            "z": -19988
+          },
+          "finalStateHash": "21f3b1167954ce5d",
+          "replayHash": "f46e8715cec1eeca",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 6,
+              "exitedAtTick": 47,
+              "traversalTicks": 41,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "forward",
+              "movementMode": "slide",
+              "enteredAtTick": 46,
+              "exitedAtTick": 139,
+              "traversalTicks": 93,
+              "completed": true
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 138,
+              "exitedAtTick": 175,
+              "traversalTicks": 37,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_ink_contact_west",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 169,
+              "measuredMilliseconds": 8450,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 193,
+            "stance_changed": 2,
+            "slide_started": 1,
+            "slide_ended": 1,
+            "landed": 13
+          },
+          "horizontalCollisionContacts": 4,
+          "blockingColliderIds": [
+            "map_collision_module_half_cover_ink_w",
+            "map_collision_route_west_choice_archive_s00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 19
+        },
+        {
+          "slot": 3,
+          "id": "p6_6_agent_3",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_e_ink",
+          "startDelayTicks": 18,
+          "completed": true,
+          "completionTick": 193,
+          "finalFeetPositionMm": {
+            "x": 8590,
+            "y": -2814,
+            "z": -16306
+          },
+          "finalStateHash": "25d6b2e6d1909fa7",
+          "replayHash": "b91c0b1496f416ab",
+          "routeTapes": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 18,
+              "exitedAtTick": 60,
+              "traversalTicks": 42,
+              "completed": true
+            },
+            {
+              "linkId": "ink_east_choice",
+              "direction": "reverse",
+              "movementMode": "slide",
+              "enteredAtTick": 59,
+              "exitedAtTick": 158,
+              "traversalTicks": 99,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 157,
+              "exitedAtTick": 193,
+              "traversalTicks": 36,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_ink_contact_east",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 175,
+              "measuredMilliseconds": 8750,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 193,
+            "stance_changed": 2,
+            "landed": 21
+          },
+          "horizontalCollisionContacts": 5,
+          "blockingColliderIds": [
+            "map_collision_door_frame_east_ink_entry_left"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 19
+        }
+      ],
+      "occupancy": {
+        "sampledTicks": 21,
+        "peakPlayersByZone": {
+          "west_gallery": 2,
+          "east_gallery": 2,
+          "press_hall": 3,
+          "ink_channel_west": 1,
+          "ink_channel_east": 1
+        },
+        "minimumPairDistanceMm": 1623,
+        "closeContactSamples": 1,
+        "bodyOverlapSamples": 0
+      },
+      "collision": {
+        "horizontalContacts": 11,
+        "uniqueBlockingColliderIds": [
+          "map_collision_door_frame_east_ink_entry_left",
+          "map_collision_module_half_cover_ink_w",
+          "map_collision_route_press_east_archive_s00",
+          "map_collision_route_west_choice_archive_s00"
+        ],
+        "embedSamples": 0,
+        "snagEvents": 0
+      },
+      "volumes": {
+        "recoveryEntries": 0,
+        "killEntries": 0,
+        "recoveryProbePassed": true,
+        "killPriorityProbePassed": true,
+        "postRecoveryEscapePassed": true
+      },
+      "telemetry": {
+        "eventCount": 30,
+        "routeEvents": 13,
+        "occupancyEvents": 8,
+        "sightlineEvents": 1,
+        "damageEvents": 1,
+        "deathEvents": 1,
+        "zoneCount": 5,
+        "snapshotHash": "5712b51ece736e9e",
+        "privacy": {
+          "actorIdentity": "ephemeral_match_slot_0_through_63",
+          "exactPositionsRetained": false,
+          "accountIdentifiersRetained": false,
+          "networkIdentifiersRetained": false,
+          "clientOutcomeAuthorityAccepted": false
+        }
+      },
+      "queryMetrics": {
+        "moveCapsuleCalls": 772,
+        "overlapCapsuleCalls": 779,
+        "castCapsuleCalls": 0,
+        "volumeCalls": 775,
+        "shapeCasts": 261708,
+        "overlapTests": 263473,
+        "contacts": 70,
+        "explicitEmbedChecks": 777,
+        "maximumCallsPerAgentTick": 4
+      },
+      "replayHash": "2010f3a3d1897f31",
+      "issues": []
+    },
+    {
+      "id": "synthetic_8_player_full_route_occupancy",
+      "playerCount": 8,
+      "classification": "automated_synthetic_authority_playtest_not_human",
+      "status": "FAIL",
+      "elapsedTicks": 650,
+      "elapsedMilliseconds": 32500,
+      "spawnProbe": {
+        "fixtureScenarioId": "ffa_8_player_safe_pockets",
+        "status": "selected",
+        "selectedSpawnId": "spawn_dm_ink_w",
+        "decisionHash": "4882737c21f26463",
+        "directLosSelected": false,
+        "passed": true
+      },
+      "agents": [
+        {
+          "slot": 0,
+          "id": "p6_6_agent_0",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_press_a",
+          "startDelayTicks": 0,
+          "completed": true,
+          "completionTick": 193,
+          "finalFeetPositionMm": {
+            "x": 33287,
+            "y": 185,
+            "z": 39
+          },
+          "finalStateHash": "fbd9e0a6b72d719c",
+          "replayHash": "f03c431059c3218f",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 0,
+              "exitedAtTick": 32,
+              "traversalTicks": 32,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_press",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 31,
+              "exitedAtTick": 54,
+              "traversalTicks": 23,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 53,
+              "exitedAtTick": 96,
+              "traversalTicks": 43,
+              "completed": true
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 95,
+              "exitedAtTick": 145,
+              "traversalTicks": 50,
+              "completed": true
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 144,
+              "exitedAtTick": 168,
+              "traversalTicks": 24,
+              "completed": true
+            },
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 167,
+              "exitedAtTick": 193,
+              "traversalTicks": 26,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_press_contact_west",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 96,
+              "measuredMilliseconds": 4800,
+              "insideTargetBand": true
+            },
+            {
+              "metricId": "press_fast_central_crossing",
+              "targetBandMilliseconds": [
+                4000,
+                7000
+              ],
+              "measuredTicks": 92,
+              "measuredMilliseconds": 4600,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "landed": 4
+          },
+          "horizontalCollisionContacts": 4,
+          "blockingColliderIds": [
+            "map_collision_route_press_east_archive_s00",
+            "map_collision_route_west_choice_archive_s00",
+            "map_collision_stair_press_west_archive_s00_t00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 1,
+          "id": "p6_6_agent_1",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_e_press_a",
+          "startDelayTicks": 10,
+          "completed": true,
+          "completionTick": 161,
+          "finalFeetPositionMm": {
+            "x": -17165,
+            "y": 159,
+            "z": 442
+          },
+          "finalStateHash": "927f6faf5c0e9183",
+          "replayHash": "c6a4cc962913ba91",
+          "routeTapes": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 10,
+              "exitedAtTick": 42,
+              "traversalTicks": 32,
+              "completed": true
+            },
+            {
+              "linkId": "press_east_choice",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 41,
+              "exitedAtTick": 64,
+              "traversalTicks": 23,
+              "completed": true
+            },
+            {
+              "linkId": "press_core_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 63,
+              "exitedAtTick": 114,
+              "traversalTicks": 51,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 113,
+              "exitedAtTick": 161,
+              "traversalTicks": 48,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_press_contact_east",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 104,
+              "measuredMilliseconds": 5200,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "landed": 5
+          },
+          "horizontalCollisionContacts": 4,
+          "blockingColliderIds": [
+            "map_collision_guard_rail_press_west_core_s02_right",
+            "map_collision_route_press_east_archive_s00"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 2,
+          "id": "p6_6_agent_2",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_ink",
+          "startDelayTicks": 40,
+          "completed": true,
+          "completionTick": 315,
+          "finalFeetPositionMm": {
+            "x": -33095,
+            "y": 28,
+            "z": -19
+          },
+          "finalStateHash": "4c41a557f8cd4720",
+          "replayHash": "3b99724d4772545c",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 40,
+              "exitedAtTick": 81,
+              "traversalTicks": 41,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "forward",
+              "movementMode": "slide",
+              "enteredAtTick": 80,
+              "exitedAtTick": 173,
+              "traversalTicks": 93,
+              "completed": true
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 172,
+              "exitedAtTick": 209,
+              "traversalTicks": 37,
+              "completed": true
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 208,
+              "exitedAtTick": 244,
+              "traversalTicks": 36,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 243,
+              "exitedAtTick": 290,
+              "traversalTicks": 47,
+              "completed": true
+            },
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 289,
+              "exitedAtTick": 315,
+              "traversalTicks": 26,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_ink_contact_west",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 169,
+              "measuredMilliseconds": 8450,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "stance_changed": 2,
+            "slide_started": 1,
+            "slide_ended": 1,
+            "landed": 17
+          },
+          "horizontalCollisionContacts": 11,
+          "blockingColliderIds": [
+            "map_collision_module_half_cover_ink_w",
+            "map_collision_node_west_choice",
+            "map_collision_route_west_choice_archive_s00",
+            "map_collision_waypoint_west_choice_ink_w01",
+            "map_collision_waypoint_west_choice_ink_w02"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 3,
+          "id": "p6_6_agent_3",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_e_ink",
+          "startDelayTicks": 50,
+          "completed": true,
+          "completionTick": 324,
+          "finalFeetPositionMm": {
+            "x": -4164,
+            "y": -2814,
+            "z": -10667
+          },
+          "finalStateHash": "788f3c6f693290a9",
+          "replayHash": "75d0c5bfb90837b3",
+          "routeTapes": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 50,
+              "exitedAtTick": 92,
+              "traversalTicks": 42,
+              "completed": true
+            },
+            {
+              "linkId": "ink_east_choice",
+              "direction": "reverse",
+              "movementMode": "slide",
+              "enteredAtTick": 91,
+              "exitedAtTick": 190,
+              "traversalTicks": 99,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 189,
+              "exitedAtTick": 225,
+              "traversalTicks": 36,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_w_mid_e",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 224,
+              "exitedAtTick": 265,
+              "traversalTicks": 41,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_w_teleport_entry",
+              "direction": "forward",
+              "movementMode": "crouch",
+              "enteredAtTick": 264,
+              "exitedAtTick": 324,
+              "traversalTicks": 60,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_ink_contact_east",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 175,
+              "measuredMilliseconds": 8750,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "stance_changed": 3,
+            "landed": 21,
+            "stand_blocked": 1
+          },
+          "horizontalCollisionContacts": 5,
+          "blockingColliderIds": [
+            "map_collision_door_frame_east_ink_entry_left"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 4,
+          "id": "p6_6_agent_4",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_archive",
+          "startDelayTicks": 20,
+          "completed": true,
+          "completionTick": 155,
+          "finalFeetPositionMm": {
+            "x": -7682,
+            "y": 6140,
+            "z": 19969
+          },
+          "finalStateHash": "73726f1b13060f21",
+          "replayHash": "bc7c9661aaa539a5",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 20,
+              "exitedAtTick": 63,
+              "traversalTicks": 43,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_archive",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 62,
+              "exitedAtTick": 121,
+              "traversalTicks": 59,
+              "completed": true
+            },
+            {
+              "linkId": "archive_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 120,
+              "exitedAtTick": 155,
+              "traversalTicks": 35,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_archive_contact_west",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 135,
+              "measuredMilliseconds": 6750,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "landed": 6
+          },
+          "horizontalCollisionContacts": 18,
+          "blockingColliderIds": [
+            "map_collision_node_archive_west",
+            "map_collision_rev2_archive_west_terminal_support_lower",
+            "map_collision_rev2_archive_west_terminal_support_upper",
+            "map_collision_route_west_choice_archive_s00",
+            "map_collision_waypoint_west_choice_archive_w01",
+            "map_collision_waypoint_west_choice_archive_w02"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 5,
+          "id": "p6_6_agent_5",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_e_archive",
+          "startDelayTicks": 30,
+          "completed": true,
+          "completionTick": 163,
+          "finalFeetPositionMm": {
+            "x": 7896,
+            "y": 6141,
+            "z": 15926
+          },
+          "finalStateHash": "4b24c41731569b60",
+          "replayHash": "61df2d8664d30f51",
+          "routeTapes": [
+            {
+              "linkId": "east_choice_spawn",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 30,
+              "exitedAtTick": 71,
+              "traversalTicks": 41,
+              "completed": true
+            },
+            {
+              "linkId": "archive_east_choice",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 70,
+              "exitedAtTick": 126,
+              "traversalTicks": 56,
+              "completed": true
+            },
+            {
+              "linkId": "archive_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 125,
+              "exitedAtTick": 163,
+              "traversalTicks": 38,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_archive_contact_east",
+              "targetBandMilliseconds": [
+                4000,
+                9000
+              ],
+              "measuredTicks": 133,
+              "measuredMilliseconds": 6650,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "landed": 5
+          },
+          "horizontalCollisionContacts": 15,
+          "blockingColliderIds": [
+            "map_collision_node_archive_east",
+            "map_collision_rev2_archive_east_terminal_support_lower",
+            "map_collision_rev2_archive_east_terminal_support_upper",
+            "map_collision_waypoint_archive_east_choice_w01",
+            "map_collision_waypoint_archive_east_choice_w02"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 6,
+          "id": "p6_6_agent_6",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_w_press_b",
+          "startDelayTicks": 60,
+          "completed": true,
+          "completionTick": 600,
+          "finalFeetPositionMm": {
+            "x": -21958,
+            "y": 108,
+            "z": 203
+          },
+          "finalStateHash": "e25f2cfdf3e49f3c",
+          "replayHash": "119eeacfe5e88d1d",
+          "routeTapes": [
+            {
+              "linkId": "west_spawn_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 60,
+              "exitedAtTick": 93,
+              "traversalTicks": 33,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_archive",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 92,
+              "exitedAtTick": 152,
+              "traversalTicks": 60,
+              "completed": true
+            },
+            {
+              "linkId": "archive_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 151,
+              "exitedAtTick": 185,
+              "traversalTicks": 34,
+              "completed": true
+            },
+            {
+              "linkId": "archive_mid_w_mid_e",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 184,
+              "exitedAtTick": 225,
+              "traversalTicks": 41,
+              "completed": true
+            },
+            {
+              "linkId": "archive_mid_e_east",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 224,
+              "exitedAtTick": 263,
+              "traversalTicks": 39,
+              "completed": true
+            },
+            {
+              "linkId": "archive_east_choice",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 262,
+              "exitedAtTick": 306,
+              "traversalTicks": 44,
+              "completed": true
+            },
+            {
+              "linkId": "ink_east_choice",
+              "direction": "reverse",
+              "movementMode": "slide",
+              "enteredAtTick": 305,
+              "exitedAtTick": 394,
+              "traversalTicks": 89,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_e_east",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 393,
+              "exitedAtTick": 429,
+              "traversalTicks": 36,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_w_mid_e",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 428,
+              "exitedAtTick": 470,
+              "traversalTicks": 42,
+              "completed": true
+            },
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "reverse",
+              "movementMode": "crouch",
+              "enteredAtTick": 469,
+              "exitedAtTick": 554,
+              "traversalTicks": 85,
+              "completed": true
+            },
+            {
+              "linkId": "west_choice_ink",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 553,
+              "exitedAtTick": 600,
+              "traversalTicks": 47,
+              "completed": true
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "spawn_to_choice_west",
+              "targetBandMilliseconds": [
+                1000,
+                2500
+              ],
+              "measuredTicks": 33,
+              "measuredMilliseconds": 1650,
+              "insideTargetBand": true
+            },
+            {
+              "metricId": "full_outer_loop",
+              "targetBandMilliseconds": [
+                15000,
+                28000
+              ],
+              "measuredTicks": 508,
+              "measuredMilliseconds": 25400,
+              "insideTargetBand": true
+            }
+          ],
+          "movementToolEvents": [],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "landed": 29,
+            "hit_ceiling": 1,
+            "stance_changed": 4
+          },
+          "horizontalCollisionContacts": 32,
+          "blockingColliderIds": [
+            "map_collision_guard_rail_west_choice_archive_s02_left",
+            "map_collision_node_archive_west",
+            "map_collision_node_west_choice",
+            "map_collision_rev2_archive_west_terminal_support_lower",
+            "map_collision_rev2_archive_west_terminal_support_upper",
+            "map_collision_route_west_choice_archive_s00",
+            "map_collision_waypoint_west_choice_archive_w01",
+            "map_collision_waypoint_west_choice_archive_w02",
+            "map_collision_waypoint_west_choice_ink_w01",
+            "map_collision_waypoint_west_choice_ink_w02"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 0,
+          "recoveryVolumeEntries": 0,
+          "killVolumeEntries": 0,
+          "sampledFrameCount": 65
+        },
+        {
+          "slot": 7,
+          "id": "p6_6_agent_7",
+          "classification": "synthetic_non_human_agent",
+          "spawnId": "spawn_dm_ink_w",
+          "startDelayTicks": 30,
+          "completed": false,
+          "completionTick": null,
+          "finalFeetPositionMm": {
+            "x": -15910,
+            "y": -627784,
+            "z": 7194
+          },
+          "finalStateHash": "26850c16cf7cb1ee",
+          "replayHash": "ad8c335c54108f9b",
+          "routeTapes": [
+            {
+              "linkId": "ink_west_mid_w",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 30,
+              "exitedAtTick": 79,
+              "traversalTicks": 49,
+              "completed": true
+            },
+            {
+              "linkId": "ink_mid_w_teleport_entry",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 78,
+              "exitedAtTick": 118,
+              "traversalTicks": 40,
+              "completed": true
+            },
+            {
+              "linkId": "teleport_shortcut",
+              "direction": "forward",
+              "movementMode": "teleport",
+              "enteredAtTick": 117,
+              "exitedAtTick": 123,
+              "traversalTicks": 6,
+              "completed": true
+            },
+            {
+              "linkId": "teleport_exit_press_core",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 122,
+              "exitedAtTick": 158,
+              "traversalTicks": 36,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_core",
+              "direction": "reverse",
+              "movementMode": "run",
+              "enteredAtTick": 157,
+              "exitedAtTick": 200,
+              "traversalTicks": 43,
+              "completed": true
+            },
+            {
+              "linkId": "press_west_archive",
+              "direction": "forward",
+              "movementMode": "run",
+              "enteredAtTick": 199,
+              "exitedAtTick": null,
+              "traversalTicks": null,
+              "completed": false
+            }
+          ],
+          "routeMetrics": [
+            {
+              "metricId": "ink_teleport_flank",
+              "targetBandMilliseconds": [
+                1800,
+                4000
+              ],
+              "measuredTicks": 80,
+              "measuredMilliseconds": 4000,
+              "insideTargetBand": true
+            },
+            {
+              "metricId": "archive_drop_flank",
+              "targetBandMilliseconds": [
+                2500,
+                5000
+              ],
+              "measuredTicks": null,
+              "measuredMilliseconds": null,
+              "insideTargetBand": false
+            }
+          ],
+          "movementToolEvents": [
+            {
+              "kind": "teleport_succeeded",
+              "tick": 123,
+              "outcome": "full",
+              "reason": null,
+              "fromFeetPositionMm": {
+                "x": -4010,
+                "y": -2940,
+                "z": -10056
+              },
+              "toFeetPositionMm": {
+                "x": 1531,
+                "y": 1419,
+                "z": -4462
+              },
+              "blockerColliderIds": []
+            }
+          ],
+          "semanticEvents": {
+            "movement_intent_applied": 650,
+            "stance_changed": 2,
+            "slide_started": 1,
+            "slide_ended": 1,
+            "stand_blocked": 1,
+            "teleport_succeeded": 1,
+            "landed": 4,
+            "movement_volume_entered": 2,
+            "movement_volume_exited": 2
+          },
+          "horizontalCollisionContacts": 19,
+          "blockingColliderIds": [
+            "map_collision_guard_rail_press_west_archive_s00_right",
+            "map_collision_module_half_cover_ink_w",
+            "map_collision_stair_press_west_archive_s00_t02",
+            "map_collision_stair_press_west_archive_s00_t05",
+            "map_collision_stair_press_west_archive_s00_t06",
+            "map_collision_stair_press_west_archive_s00_t07"
+          ],
+          "embedSamples": 0,
+          "snagEvents": 10,
+          "recoveryVolumeEntries": 1,
+          "killVolumeEntries": 1,
+          "sampledFrameCount": 65
+        }
+      ],
+      "occupancy": {
+        "sampledTicks": 66,
+        "peakPlayersByZone": {
+          "press_hall": 3,
+          "ink_channel_west": 1,
+          "ink_channel_east": 1,
+          "archive_walk_west": 2,
+          "archive_walk_east": 2,
+          "east_gallery": 1
+        },
+        "minimumPairDistanceMm": 1337,
+        "closeContactSamples": 3,
+        "bodyOverlapSamples": 0
+      },
+      "collision": {
+        "horizontalContacts": 108,
+        "uniqueBlockingColliderIds": [
+          "map_collision_door_frame_east_ink_entry_left",
+          "map_collision_guard_rail_press_west_archive_s00_right",
+          "map_collision_guard_rail_press_west_core_s02_right",
+          "map_collision_guard_rail_west_choice_archive_s02_left",
+          "map_collision_module_half_cover_ink_w",
+          "map_collision_node_archive_east",
+          "map_collision_node_archive_west",
+          "map_collision_node_west_choice",
+          "map_collision_rev2_archive_east_terminal_support_lower",
+          "map_collision_rev2_archive_east_terminal_support_upper",
+          "map_collision_rev2_archive_west_terminal_support_lower",
+          "map_collision_rev2_archive_west_terminal_support_upper",
+          "map_collision_route_press_east_archive_s00",
+          "map_collision_route_west_choice_archive_s00",
+          "map_collision_stair_press_west_archive_s00_t00",
+          "map_collision_stair_press_west_archive_s00_t02",
+          "map_collision_stair_press_west_archive_s00_t05",
+          "map_collision_stair_press_west_archive_s00_t06",
+          "map_collision_stair_press_west_archive_s00_t07",
+          "map_collision_waypoint_archive_east_choice_w01",
+          "map_collision_waypoint_archive_east_choice_w02",
+          "map_collision_waypoint_west_choice_archive_w01",
+          "map_collision_waypoint_west_choice_archive_w02",
+          "map_collision_waypoint_west_choice_ink_w01",
+          "map_collision_waypoint_west_choice_ink_w02"
+        ],
+        "embedSamples": 0,
+        "snagEvents": 10
+      },
+      "volumes": {
+        "recoveryEntries": 1,
+        "killEntries": 1,
+        "recoveryProbePassed": true,
+        "killPriorityProbePassed": true,
+        "postRecoveryEscapePassed": true
+      },
+      "telemetry": {
+        "eventCount": 56,
+        "routeEvents": 44,
+        "occupancyEvents": 3,
+        "sightlineEvents": 1,
+        "damageEvents": 1,
+        "deathEvents": 1,
+        "zoneCount": 7,
+        "snapshotHash": "f15de31464ef2f1d",
+        "privacy": {
+          "actorIdentity": "ephemeral_match_slot_0_through_63",
+          "exactPositionsRetained": false,
+          "accountIdentifiersRetained": false,
+          "networkIdentifiersRetained": false,
+          "clientOutcomeAuthorityAccepted": false
+        }
+      },
+      "queryMetrics": {
+        "moveCapsuleCalls": 5200,
+        "overlapCapsuleCalls": 5546,
+        "castCapsuleCalls": 1,
+        "volumeCalls": 5203,
+        "shapeCasts": 1763139,
+        "overlapTests": 1772125,
+        "contacts": 407,
+        "explicitEmbedChecks": 5209,
+        "maximumCallsPerAgentTick": 6
+      },
+      "replayHash": "571bf0faf484aad7",
+      "issues": [
+        {
+          "code": "AUTHORED_ROUTE_ENTERED_UNSAFE_VOLUME",
+          "scenarioId": "synthetic_8_player_full_route_occupancy",
+          "agentSlot": 7,
+          "tick": 229,
+          "detail": "Synthetic route entered recovery volume map_volume_lower_void_recovery at (-17456,-3934,7240).",
+          "topologyMutationAuthorized": false
+        },
+        {
+          "code": "AUTHORED_ROUTE_ENTERED_UNSAFE_VOLUME",
+          "scenarioId": "synthetic_8_player_full_route_occupancy",
+          "agentSlot": 7,
+          "tick": 230,
+          "detail": "Synthetic route entered kill volume map_volume_lower_void_kill at (-17371,-4584,7403).",
+          "topologyMutationAuthorized": false
+        },
+        {
+          "code": "ROUTE_SNAG_WINDOW_EXCEEDED",
+          "scenarioId": "synthetic_8_player_full_route_occupancy",
+          "agentSlot": 7,
+          "tick": 260,
+          "detail": "No 250 mm progress toward press_west_archive waypoint 1 for 40 ticks; position=(-15983,-42784,7278); target=(-16000,2000,7000); distance=44785 mm; velocity=(596,-30000,-2016); support=none; tickContacts=none.",
+          "topologyMutationAuthorized": false
+        },
+        {
+          "code": "ROUTE_TAPE_INCOMPLETE",
+          "scenarioId": "synthetic_8_player_full_route_occupancy",
+          "agentSlot": 7,
+          "tick": 650,
+          "detail": "Completed 5 of 11 authored route steps.",
+          "topologyMutationAuthorized": false
+        },
+        {
+          "code": "GOVERNING_TIMING_BAND_MISS",
+          "scenarioId": "synthetic_8_player_full_route_occupancy",
+          "agentSlot": 7,
+          "tick": null,
+          "detail": "archive_drop_flank measured incomplete ms; target is 2500-5000 ms.",
+          "topologyMutationAuthorized": false
+        }
+      ]
+    }
+  ],
+  "allAutomatedThresholdsPassed": false,
+  "issueCount": 5,
+  "topologyRecommendation": "REPORT_REQUIRED_BEFORE_PACKAGE_CHANGE",
+  "nonClaims": [
+    "SYNTHETIC_AGENTS_NOT_HUMAN_PLAYTESTERS",
+    "HUMAN_FUN_AND_READABILITY_NOT_CLAIMED",
+    "P6_7_TOPOLOGY_LOCK_NOT_CLAIMED",
+    "FINAL_ART_NOT_CLAIMED",
+    "G5_NOT_PASSED"
+  ],
+  "suiteHash": "e320b52042ff7619"
+}

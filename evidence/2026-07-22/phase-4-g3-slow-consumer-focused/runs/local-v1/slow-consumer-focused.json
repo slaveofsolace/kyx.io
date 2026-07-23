@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-4-g3-slow-consumer-focused-local-v1-2026-07-22",
+  "capturedAt": "2026-07-22T06:19:43.975Z",
+  "status": "FOCUSED_SLOW_CONSUMER_ISOLATE_EVIDENCE_PASS",
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "deploymentPerformed": false,
+  "runtime": {
+    "node": "v24.14.0",
+    "platform": "win32-x64"
+  },
+  "exactInvocation": [
+    "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\tools\\evidence\\capture-phase4-g3-slow-consumer-focused.mjs"
+  ],
+  "probes": {
+    "deterministicPolicy": {
+      "command": [
+        "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/unit/worker/security.test.ts",
+        "--reporter=json"
+      ],
+      "startedAt": "2026-07-22T06:19:39.786Z",
+      "completedAt": "2026-07-22T06:19:40.446Z",
+      "durationMilliseconds": 659,
+      "exitCode": 0,
+      "signal": null,
+      "report": {
+        "numTotalTestSuites": 2,
+        "numPassedTestSuites": 2,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 5,
+        "numPassedTests": 5,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "snapshot": {
+          "added": 0,
+          "failure": false,
+          "filesAdded": 0,
+          "filesRemoved": 0,
+          "filesRemovedList": [],
+          "filesUnmatched": 0,
+          "filesUpdated": 0,
+          "matched": 0,
+          "total": 0,
+          "unchecked": 0,
+          "uncheckedKeysByFile": [],
+          "unmatched": 0,
+          "updated": 0,
+          "didUpdate": false
+        },
+        "startTime": 1784701180109,
+        "success": true,
+        "testResults": [
+          {
+            "assertionResults": [
+              {
+                "ancestorTitles": [
+                  "Worker socket security bounds"
+                ],
+                "fullName": "Worker socket security bounds validates only complete version-4 bounded attachments",
+                "status": "passed",
+                "title": "validates only complete version-4 bounded attachments",
+                "duration": 1.2027000000000214,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "Worker socket security bounds"
+                ],
+                "fullName": "Worker socket security bounds enforces both message and aggregate-byte windows and resets deterministically",
+                "status": "passed",
+                "title": "enforces both message and aggregate-byte windows and resets deterministically",
+                "duration": 0.6632000000000176,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "Worker socket security bounds"
+                ],
+                "fullName": "Worker socket security bounds admits legal 20 Hz input plus 10 Hz snapshot ACKs with bounded control headroom",
+                "status": "passed",
+                "title": "admits legal 20 Hz input plus 10 Hz snapshot ACKs with bounded control headroom",
+                "duration": 2.7642000000000166,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "Worker socket security bounds"
+                ],
+                "fullName": "Worker socket security bounds marks a socket stale at the explicit heartbeat threshold",
+                "status": "passed",
+                "title": "marks a socket stale at the explicit heartbeat threshold",
+                "duration": 0.15799999999998704,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "Worker socket security bounds"
+                ],
+                "fullName": "Worker socket security bounds coalesces above 256 KiB, resets on drain, and evicts at the exact grace boundary",
+                "status": "passed",
+                "title": "coalesces above 256 KiB, resets on drain, and evicts at the exact grace boundary",
+                "duration": 0.27530000000001564,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              }
+            ],
+            "startTime": 1784701180380,
+            "endTime": 1784701180384.2754,
+            "status": "passed",
+            "message": "",
+            "name": "C:/AI Projects/Projects/Games/evio/evio-repo/tests/unit/worker/security.test.ts"
+          }
+        ]
+      }
+    },
+    "workerIsolate": {
+      "command": [
+        "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "tests/worker/slowConsumerBackpressure.test.ts",
+        "--config",
+        "vitest.worker.config.ts",
+        "--maxWorkers=1",
+        "--no-isolate",
+        "--reporter=json"
+      ],
+      "startedAt": "2026-07-22T06:19:40.446Z",
+      "completedAt": "2026-07-22T06:19:43.974Z",
+      "durationMilliseconds": 3528,
+      "exitCode": 0,
+      "signal": null,
+      "report": {
+        "numTotalTestSuites": 2,
+        "numPassedTestSuites": 2,
+        "numFailedTestSuites": 0,
+        "numPendingTestSuites": 0,
+        "numTotalTests": 3,
+        "numPassedTests": 3,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "snapshot": {
+          "added": 0,
+          "failure": false,
+          "filesAdded": 0,
+          "filesRemoved": 0,
+          "filesRemovedList": [],
+          "filesUnmatched": 0,
+          "filesUpdated": 0,
+          "matched": 0,
+          "total": 0,
+          "unchecked": 0,
+          "uncheckedKeysByFile": [],
+          "unmatched": 0,
+          "updated": 0,
+          "didUpdate": false
+        },
+        "startTime": 1784701181291,
+        "success": true,
+        "testResults": [
+          {
+            "assertionResults": [
+              {
+                "ancestorTitles": [
+                  "Worker slow-consumer backpressure"
+                ],
+                "fullName": "Worker slow-consumer backpressure coalesces supersedable traffic and resumes after the socket drains",
+                "status": "passed",
+                "title": "coalesces supersedable traffic and resumes after the socket drains",
+                "duration": 3,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "Worker slow-consumer backpressure"
+                ],
+                "fullName": "Worker slow-consumer backpressure preserves default healthy-client input ACK behavior at the exact byte ceiling",
+                "status": "passed",
+                "title": "preserves default healthy-client input ACK behavior at the exact byte ceiling",
+                "duration": 0,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              },
+              {
+                "ancestorTitles": [
+                  "Worker slow-consumer backpressure"
+                ],
+                "fullName": "Worker slow-consumer backpressure evicts a continuously saturated client with stable code 1013 after 1,000 ms",
+                "status": "passed",
+                "title": "evicts a continuously saturated client with stable code 1013 after 1,000 ms",
+                "duration": 0,
+                "failureMessages": [],
+                "meta": {},
+                "tags": []
+              }
+            ],
+            "startTime": 1784701183893,
+            "endTime": 1784701183896,
+            "status": "passed",
+            "message": "",
+            "name": "C:/AI Projects/Projects/Games/evio/evio-repo/tests/worker/slowConsumerBackpressure.test.ts"
+          }
+        ]
+      }
+    }
+  },
+  "sourceInventory": [
+    {
+      "path": "worker/transport-limits.json",
+      "bytes": 207,
+      "sha256": "7fc752092ac1b00fc712a5a84f85690656d25831faa4b3a4ca2e82108e80b956"
+    },
+    {
+      "path": "worker/security.ts",
+      "bytes": 8668,
+      "sha256": "9e2e3803af8fe7f29bd65ab8d6a701473469853fdfa9e555540156850a875abb"
+    },
+    {
+      "path": "worker/room.ts",
+      "bytes": 50153,
+      "sha256": "1fa5c818261fe8b642910f6e7791e05ffd8be237913c4ebff7549dc4294c7015"
+    },
+    {
+      "path": "tests/unit/worker/security.test.ts",
+      "bytes": 5886,
+      "sha256": "283e4b6abe7a5960fe3271714a530136c94a3291686ded4f117b1a5c2027f4a7"
+    },
+    {
+      "path": "tests/worker/slowConsumerBackpressure.test.ts",
+      "bytes": 7315,
+      "sha256": "00960827ea89d108b55248f65f40299ab7834c7b1dc57ecaa2adf8708db85a44"
+    },
+    {
+      "path": "vitest.worker.config.ts",
+      "bytes": 441,
+      "sha256": "06cfa71aab3875d991158ef6f63409dc040ef144246f99f8b55fe4aef0735a8b"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 141862,
+      "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+    }
+  ],
+  "checks": {
+    "deterministicPolicyProcessPassed": true,
+    "deterministicPolicyExactTestsPassed": true,
+    "workerIsolateProcessPassed": true,
+    "workerIsolateExactTestsPassed": true
+  },
+  "scopeBoundary": [
+    "This record covers deterministic policy tests and Cloudflare Worker-isolate tests only.",
+    "It does not simulate a real slow network socket or prove runtime socket-buffer saturation.",
+    "Multiple slow clients, staging WSS, eviction under real transport pressure, load, and resource behavior require separate operational evidence.",
+    "No deployment or G3 acceptance decision is performed by this focused evidence tool."
+  ],
+  "artifactInventory": [
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-slow-consumer-focused/runs/local-v1/logs/unit-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-slow-consumer-focused/runs/local-v1/logs/unit-vitest.json",
+      "bytes": 2357,
+      "sha256": "06f1f0f7131a035521e89b537402ca2687fa17d84187a43641e3c3db7581ab69"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-slow-consumer-focused/runs/local-v1/logs/worker-isolate-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-07-22/phase-4-g3-slow-consumer-focused/runs/local-v1/logs/worker-isolate-vitest.json",
+      "bytes": 1686,
+      "sha256": "a226375b19c21c6be4c22c2596d347eacac00f03dcdc331522501747fa7b9f9f"
+    }
+  ]
+}

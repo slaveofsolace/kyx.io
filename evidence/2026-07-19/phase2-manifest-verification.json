@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-07-20T05:06:34.431Z",
+  "manifest": "evidence/2026-07-19/phase-2-toolchain-contracts/phase2-manifest.json",
+  "manifestSha256": "b45a998cc41016247edcd6ba1cce3c45784e9a05a651cf9401e548adcf12d622",
+  "filesChecked": 12,
+  "bytesChecked": 432659,
+  "failures": [],
+  "ok": true
+}

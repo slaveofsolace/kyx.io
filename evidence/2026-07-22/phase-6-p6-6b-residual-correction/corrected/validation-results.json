@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_6B_CORRECTED_VALIDATION_COMPLETE_WITH_PRESERVED_OUT_OF_SLICE_TIMEOUT",
+  "correctedNativeSuite": {
+    "filesPassed": 1,
+    "filesTotal": 1,
+    "testsPassed": 7,
+    "testsTotal": 7,
+    "suiteHash": "143d09532b9c2b24",
+    "scenarioStatuses": ["PASS", "PASS", "PASS"],
+    "issueCount": 0
+  },
+  "focusedRevisionMatrix": {
+    "filesPassed": 6,
+    "filesTotal": 6,
+    "testsPassed": 46,
+    "testsTotal": 46
+  },
+  "offlinePlayability": {
+    "revision2": {
+      "result": "PASS",
+      "assertionsPassed": 15,
+      "assertionsTotal": 15,
+      "physicalLinks": 25,
+      "spawnCandidates": 12,
+      "completedCapsuleSamples": 1646
+    },
+    "revision1Regression": {
+      "result": "PASS",
+      "assertionsPassed": 14,
+      "assertionsTotal": 14,
+      "physicalLinks": 25,
+      "spawnCandidates": 12,
+      "completedCapsuleSamples": 1653
+    }
+  },
+  "fullAuthority": {
+    "filesPassed": 20,
+    "filesFailed": 1,
+    "filesTotal": 21,
+    "testsPassed": 170,
+    "testsFailed": 1,
+    "testsTotal": 171,
+    "outOfSliceFailure": {
+      "test": "tests/unit/authority/combat/p58ConsequenceReconnect.test.ts :: keeps full combat consequences bounded under loss, reorder, and duplicate input delivery",
+      "result": "5000_MS_TEST_TIMEOUT_DURING_COMBINED_RUN",
+      "p6_6Related": false,
+      "isolatedRerun": {
+        "filesPassed": 1,
+        "filesTotal": 1,
+        "testsPassed": 2,
+        "testsTotal": 2,
+        "durationMilliseconds": 6480
+      }
+    }
+  },
+  "typescript": {
+    "application": "PASS",
+    "worker": "PASS",
+    "simulationSource": "PASS",
+    "simulation": "PASS"
+  },
+  "lint": {
+    "focused": "PASS",
+    "repository": "PASS"
+  },
+  "productionBuild": {
+    "result": "PASS",
+    "warning": "existing chunk larger than 500 kB advisory"
+  },
+  "nonClaims": [
+    "OUT_OF_SLICE_TIMEOUT_NOT_CONVERTED_TO_PASS",
+    "P6_7_TOPOLOGY_LOCK_NOT_PASSED",
+    "G5_NOT_PASSED",
+    "REVISION_2_NOT_DEFAULT_OR_SHIPPING"
+  ]
+}

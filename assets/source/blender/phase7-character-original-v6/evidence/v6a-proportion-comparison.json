@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "sourceMeasurement": "v6a-source-measurements.json",
+  "candidateMeasurement": "v6a-final-measurements.json",
+  "sourceSha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+  "candidateSha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+  "method": {
+    "basis": "Base-cage object-local coordinates from independent Blender 5.1.2 reopens",
+    "widthAndDepthStatistic": "P98 span, using 1st and 99th percentiles",
+    "bandDefinition": "Fixed fractions of each checkpoint's measured standing height",
+    "interpretationBoundary": "Normalized height bands contain different vertex counts after the deliberate long-limb remap; use the numbers as objective directional evidence together with the source-vs-candidate plate, not as anatomical landmark certification."
+  },
+  "global": [
+    {
+      "metric": "standingHeightMeters",
+      "source": 1.689961,
+      "candidate": 1.775,
+      "changePercent": 5.03
+    },
+    {
+      "metric": "overallWidthMeters",
+      "source": 0.880701,
+      "candidate": 0.830538,
+      "changePercent": -5.70
+    },
+    {
+      "metric": "overallDepthMeters",
+      "source": 0.290449,
+      "candidate": 0.273481,
+      "changePercent": -5.84
+    },
+    {
+      "metric": "heightToOverallWidth",
+      "source": 1.9189,
+      "candidate": 2.1372,
+      "changePercent": 11.38
+    },
+    {
+      "metric": "heightToOverallDepth",
+      "source": 5.8184,
+      "candidate": 6.4904,
+      "changePercent": 11.55
+    }
+  ],
+  "normalizedBands": [
+    {
+      "band": "foot",
+      "widthChangePercent": -1.44,
+      "depthChangePercent": -1.00
+    },
+    {
+      "band": "lowerLeg",
+      "widthChangePercent": -3.29,
+      "depthChangePercent": -15.12
+    },
+    {
+      "band": "knee",
+      "widthChangePercent": -1.25,
+      "depthChangePercent": -14.66
+    },
+    {
+      "band": "thigh",
+      "widthChangePercent": -5.61,
+      "depthChangePercent": -15.37
+    },
+    {
+      "band": "pelvis",
+      "widthChangePercent": -2.77,
+      "depthChangePercent": -11.48
+    },
+    {
+      "band": "waist",
+      "widthChangePercent": -4.62,
+      "depthChangePercent": -24.74
+    },
+    {
+      "band": "chest",
+      "widthChangePercent": -3.02,
+      "depthChangePercent": -12.09
+    },
+    {
+      "band": "head",
+      "widthChangePercent": -6.97,
+      "depthChangePercent": -5.76
+    }
+  ],
+  "centralDepthSpans": [
+    {
+      "metric": "pelvisCoreDepthP98Meters",
+      "source": 0.239857,
+      "candidate": 0.207668,
+      "changePercent": -13.42
+    },
+    {
+      "metric": "waistCoreDepthP98Meters",
+      "source": 0.224474,
+      "candidate": 0.169431,
+      "changePercent": -24.52
+    },
+    {
+      "metric": "chestCoreDepthP98Meters",
+      "source": 0.249395,
+      "candidate": 0.221627,
+      "changePercent": -11.13
+    }
+  ],
+  "distanceProjection": [
+    {
+      "distanceMeters": 5,
+      "projectedWidthPixels": 167.686,
+      "projectedHeightPixels": 357.339,
+      "renderResolution": [700, 850],
+      "lensMillimeters": 50,
+      "sensorWidthMillimeters": 36,
+      "pass": true
+    },
+    {
+      "distanceMeters": 20,
+      "projectedWidthPixels": 40.841,
+      "projectedHeightPixels": 87.033,
+      "renderResolution": [700, 850],
+      "lensMillimeters": 50,
+      "sensorWidthMillimeters": 36,
+      "pass": true
+    },
+    {
+      "distanceMeters": 40,
+      "projectedWidthPixels": 20.333,
+      "projectedHeightPixels": 43.33,
+      "renderResolution": [700, 850],
+      "lensMillimeters": 50,
+      "sensorWidthMillimeters": 36,
+      "pass": true
+    }
+  ],
+  "status": "OBJECTIVE_DIRECTIONAL_EVIDENCE_PASS_HUMAN_VISUAL_DECISION_REQUIRED",
+  "nonClaims": [
+    "These measurements do not certify anatomy quality or visual acceptance.",
+    "No deformation pose test, retopology, costume, armor, rig, animation, runtime export, G6, or release claim is made."
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "name": "Blender Human Base Meshes",
+    "version": "1.4.1",
+    "publisher": "Blender Studio / Blender Foundation with community contributions",
+    "officialListingUrl": "https://www.blender.org/download/demo-files/",
+    "officialDownloadUrl": "https://download.blender.org/demo/asset-bundles/human-base-meshes/human-base-meshes-bundle-v1.4.1.zip",
+    "license": "CC0-1.0",
+    "minimumBlenderVersion": "4.2 LTS",
+    "listingDisplaySize": "49 MB",
+    "listingUpdated": "2025-01-20"
+  },
+  "officialListingEvidence": {
+    "retrievedUtc": "2026-07-22T03:33:34.4095791Z",
+    "htmlBytes": 174304,
+    "htmlSha256": "8b86da85ee633dc2df0ae28c535bd65d8f8265b55798c29931d58b86585fd7c7",
+    "observedText": "Human Base Meshes v1.4.1; by Blender Studio and community contributions; 49 MB - CC0; Updated: Jan 20, 2025; Requires Blender 4.2 LTS or newer",
+    "downloadHeadersCheckedUtc": "2026-07-22T03:33:22Z",
+    "downloadContentType": "application/zip",
+    "downloadContentLength": 50643039,
+    "downloadLastModified": "2026-01-20T14:10:51Z",
+    "downloadEtag": "\"696f8ceb-304c05f\""
+  },
+  "acquisition": {
+    "operator": "Codex project asset pipeline",
+    "acquiredUtc": "2026-07-22T03:19:26.8080149Z",
+    "transport": "HTTPS from download.blender.org only",
+    "archiveFileName": "human-base-meshes-bundle-v1.4.1.zip",
+    "archiveBytes": 50643039,
+    "archiveSha256": "811f43accbb31a88266d932f8f5563b2d13586fca0ba2693aad1f5fe582b3515",
+    "publisherChecksumAvailableBesideListing": false,
+    "pinMeaning": "First reviewed acquisition hash; a changed payload at the same versioned URL requires review",
+    "archiveRetainedInRepository": false,
+    "archiveRetainedOutsideRepository": false,
+    "temporaryQuarantineRemovedUtc": "2026-07-22T03:37:58.2452683Z"
+  },
+  "archiveValidation": {
+    "status": "PASS",
+    "inventory": "evidence/vendor-archive-inventory.json",
+    "entryCount": 29,
+    "fileCount": 27,
+    "directoryCount": 2,
+    "uncompressedBytes": 50805476,
+    "blendEntryCount": 1,
+    "pathTraversal": false,
+    "duplicatePaths": false,
+    "symbolicLinks": false,
+    "executableOrScriptEntries": false,
+    "unexpectedExtensions": false
+  },
+  "vendorBlend": {
+    "archiveEntry": "human-base-meshes-bundle-v1.4.1/human_base_meshes_bundle.blend",
+    "bytes": 49420489,
+    "sha256": "3c121505651140ceb4d69fd1d8923f7788ffadd81672f5be14845a5f2c75c137",
+    "inventory": "evidence/vendor-blend-inventory.json",
+    "collectionCount": 19,
+    "objectCount": 407,
+    "embeddedTextCount": 2,
+    "driverDataBlockCount": 13,
+    "externalPathObserved": "C:\\tmp\\copybuffer.blend",
+    "thirdPartyTextOrCodeExecuted": false
+  },
+  "selectionBoundary": {
+    "collection": "Body Male - Realistic",
+    "objects": [
+      "GEO-body_male_realistic",
+      "GEO-body_male_realistic.eye.L",
+      "GEO-body_male_realistic.eye.R"
+    ],
+    "otherBundleCollectionsEnteredSanitizedSource": false
+  },
+  "sanitizedSource": {
+    "path": "source/kyx_vanguard_v6_cc0_anatomy_seed_sanitized.blend",
+    "bytes": 12582373,
+    "sha256": "e2d5b41ce10364cfc570fb0efe961c6548fe6fb90ab87850b453728372669e0d",
+    "blenderVersion": "5.1.2",
+    "invocationSafety": [
+      "--background",
+      "--factory-startup",
+      "--disable-autoexec",
+      "--python-exit-code 1"
+    ],
+    "collection": "KYX_V6_CC0_AnatomySeed_MaleRealistic",
+    "objects": [
+      "KYX_V6_CC0_AnatomySeed_Body",
+      "KYX_V6_CC0_AnatomySeed_Eye.L",
+      "KYX_V6_CC0_AnatomySeed_Eye.R"
+    ],
+    "bodyBaseVertices": 10582,
+    "bodyBaseEdges": 21170,
+    "bodyBasePolygons": 10590,
+    "multiresTotalLevels": 3,
+    "sanitizationReport": "evidence/sanitization-report.json",
+    "postSanitizationInventory": "evidence/sanitized-blend-inventory.json",
+    "texts": 0,
+    "drivers": 0,
+    "actions": 0,
+    "materials": 0,
+    "images": 0,
+    "libraries": 0,
+    "externalPaths": 0
+  },
+  "conceptTarget": {
+    "path": "../../characters/kyx-vanguard/concept/kyx-vanguard-model-sheet-v1.png",
+    "bytes": 2454416,
+    "sha256": "067a3eba77f9c9e566fe7aeba9684346bfd9fcd162de8ead14194640c0fb76c3"
+  },
+  "projectAuthoredScripts": [
+    {
+      "path": "scripts/validate_vendor_archive.ps1",
+      "sha256": "946435dac6d25c5bf506966d612a63a3ddbdf72a3bc695d2cf25708aebe12ae3"
+    },
+    {
+      "path": "scripts/inventory_vendor_blend.py",
+      "sha256": "0a86f73144bfda9a20c165d1ef340acc63af163881080b8b6aef3af08dad5aec"
+    },
+    {
+      "path": "scripts/sanitize_anatomy_seed.py",
+      "sha256": "37387b1fdd9286313700b110575db808a3233badae33e697e135fa8392788f06"
+    },
+    {
+      "path": "scripts/render_anatomy_baseline.py",
+      "sha256": "dd4b310089ecd9b40d7cee422ae868a5622391202504304c00acc09690d8f42c"
+    }
+  ],
+  "nonClaims": [
+    "The selected anatomy is CC0 third-party sculpt-seed scaffolding and is not claimed as original KYX anatomy.",
+    "No final KYX sculpt, retopology, UV, material, rig, LOD, rifle, animation, first-person asset, runtime export, or integration is claimed.",
+    "This source checkpoint and its renders do not satisfy G6 or human visual acceptance."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_4_CAPTURE_ATTEMPT_FAILED_PRESERVED",
+  "attempt": 1,
+  "failedAtUtc": "2026-07-22T03:58:01.299Z",
+  "failedAssertion": "directAndOccludedLosMeasured",
+  "otherAssertionsPassed": 11,
+  "cause": "The first visual fixture placed enemy_visual at spawn_w_archive. All four FFA candidates were correctly occluded from that authority position, so the visualization did not contain both an open and a blocked FFA ray.",
+  "productDefect": false,
+  "correction": "The saved visualization fixture moved enemy_visual to spawn_w_press_a and recomputed its normalized Q15 aim, selected spawn, and deterministic decision hash. This produces one directly exposed FFA candidate and three authority-occluded candidates without changing the scoring implementation.",
+  "supersededBy": {
+    "capture": "evidence/2026-07-21/phase-6-p6-4-authority-spawns/authority-spawn-capture.json",
+    "captureStatus": "P6_4_AUTHORITY_SPAWN_EVIDENCE_PASS",
+    "verification": "evidence/2026-07-21/phase-6-p6-4-authority-spawns/independent-verification.json",
+    "verificationStatus": "INDEPENDENT_P6_4_AUTHORITY_SPAWN_VERIFICATION_PASS",
+    "visualDecisionHash": "81286ef1c04ce7e4"
+  },
+  "originalFailureRecord": "evidence/2026-07-21/phase-6-p6-4-authority-spawns/failures/attempt-1784692681418.json"
+}

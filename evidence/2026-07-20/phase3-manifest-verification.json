@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-07-20T15:01:03.608Z",
+  "manifest": "evidence/2026-07-20/phase-3-movement-collision/phase3-manifest.json",
+  "manifestSha256": "ffd175395ae65bd32d57edc66cbe105f611cf7f612f9f563356de8853a0a4d76",
+  "filesChecked": 27,
+  "bytesChecked": 5948871,
+  "failures": [],
+  "ok": true
+}

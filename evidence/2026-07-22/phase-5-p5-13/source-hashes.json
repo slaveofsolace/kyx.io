@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-22T13:42:13.393Z",
+  "algorithm": "sha256",
+  "files": {
+    "src/authority/inputQueue.ts": {
+      "sha256": "570d0fce358a25a633c1c24c1137fd57c0dc4ce9d508ff3e9e4a1c2fea44cb94",
+      "bytes": 14263
+    },
+    "src/authority/room.ts": {
+      "sha256": "f2a95d3e08362948d5376c28ac6281bf3a4216bfb854352e912219facab09f1a",
+      "bytes": 119824
+    },
+    "worker/reliableEvents.ts": {
+      "sha256": "1f5b3449645f65fd191e1d7239e69fe4b9d6f2f23b825fa6ca4a737677d33d01",
+      "bytes": 8576
+    },
+    "worker/room.ts": {
+      "sha256": "1b54f901ea3a658653481664af5a09af7ba53d4451fcc123a7f829d876653b20",
+      "bytes": 102919
+    },
+    "tests/unit/authority/inputQueue.test.ts": {
+      "sha256": "3585a6f41d88ed42d9ebf5bea3848590ea4f2cdf0a58a874946306f8f31ce039",
+      "bytes": 6989
+    },
+    "tests/unit/authority/activeMatchCheckpoint.test.ts": {
+      "sha256": "b799cc6f70984f91db8e31231d65f9f439d0fc5769fa450ce5ad712a6d078401",
+      "bytes": 5906
+    },
+    "tests/unit/worker/reliableEvents.test.ts": {
+      "sha256": "19d712eb856d7e64fd4f6908ca922e1cd77ea9c5346c7f3f390d8e78df02ad1c",
+      "bytes": 2882
+    },
+    "tests/worker/inkfallRev2CombatProfile.test.ts": {
+      "sha256": "7e9891847baa7469f799292df7aec764b15ee0ab7a7a00b714038bf7f341b96b",
+      "bytes": 29016
+    }
+  }
+}

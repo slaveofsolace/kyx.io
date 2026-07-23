@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "evidenceId": "phase-4-authority-local-smoke-2026-07-20",
+  "capturedOn": "2026-07-20",
+  "status": "LOCAL_IMPLEMENTATION_SMOKE_PASS",
+  "gate": "G3_NOT_PASSED",
+  "environment": {
+    "authorityRuntime": "local workerd through Wrangler dev",
+    "browserContexts": 2,
+    "deploymentPerformed": false
+  },
+  "room": {
+    "code": "KYX-PC4N5C",
+    "protocolVersion": 2,
+    "sameMatchAcrossJoinAndResume": true,
+    "simulationIdentity": {
+      "rulesetHash": "039ae95bed7ee716",
+      "consistentAcross": [
+        "welcome",
+        "joinAccepted",
+        "fullSnapshot",
+        "resumedJoinAccepted",
+        "resumedFullSnapshot"
+      ]
+    }
+  },
+  "joinAndResume": {
+    "connectionModes": [
+      "joined",
+      "joined",
+      "resumed"
+    ],
+    "samePlayerAfterResume": true,
+    "initialResumeTokenLength": 43,
+    "rotatedResumeTokenLength": 43,
+    "resumeTokenRotated": true,
+    "initialProcessedInputSequence": -1,
+    "resumedProcessedInputSequence": 0,
+    "oldTokenReplay": {
+      "accepted": false,
+      "errorCode": "RESUME_REJECTED"
+    },
+    "currentTokenWhileSessionLive": {
+      "accepted": false,
+      "errorCode": "DUPLICATE_SESSION"
+    }
+  },
+  "authorityMovement": {
+    "acknowledgedSequences": [
+      0,
+      1
+    ],
+    "firstObservedSpan": {
+      "playerAFromFeetPositionMm": [-1500, 0, -2000],
+      "playerAToFeetPositionMm": [-1500, 0, -1850],
+      "observedByPlayerB": true
+    },
+    "postResumeContinuationObservedSpan": {
+      "playerAFromFeetPositionMm": [-1500, 0, -1250],
+      "playerAToFeetPositionMm": [-1500, 0, -800],
+      "observedByPlayerB": true
+    }
+  },
+  "forgedCommand": {
+    "commandType": "SetPosition",
+    "accepted": false,
+    "errorCode": "PROTOCOL_FORBIDDEN_COMMAND"
+  },
+  "metrics": {
+    "httpStatus": 200,
+    "authorityTick": 20,
+    "matchPhase": "warmup",
+    "players": 2,
+    "connectedPlayers": 2,
+    "acceptedInputs": 2,
+    "listedAuthorityRejections": 0,
+    "queueDepth": 1,
+    "missedTicks": 0
+  },
+  "limits": [
+    "This was a local nominal smoke, not G3 evidence.",
+    "No latency, jitter, loss, duplication, or reorder matrix was run.",
+    "No staging or production deployment was performed.",
+    "The client netcode core is not wired into the complete visible game UI.",
+    "The Worker currently emits full snapshots only; delta baselines are not implemented end to end.",
+    "Dirty active-room restart fails closed; simulation checkpoint rehydration is not implemented.",
+    "The current maintenance timer keeps lobby rooms awake, so lobby hibernation is not claimed."
+  ]
+}

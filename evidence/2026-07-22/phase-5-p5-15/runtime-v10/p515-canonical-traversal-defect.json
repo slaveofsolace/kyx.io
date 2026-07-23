@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "phase": "P5.15",
+  "capturedAt": "2026-07-22T16:17:47.341Z",
+  "status": "CANONICAL_TRAVERSAL_COLLISION_DEFECT_CONFIRMED",
+  "gateImpact": "CANNOT_SUPPORT_G5_NO_SNAG_ACCEPTANCE",
+  "sourceRuntime": "evidence/2026-07-22/phase-5-p5-15/runtime-v10",
+  "authority": {
+    "profile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "mapReference": "inkfall_foundry@2",
+    "fixtureId": "inkfall_foundry_map_collision",
+    "fixtureHash": "bf85e42731fd088e",
+    "physicsAdapterId": "rapier3d_deterministic_compat",
+    "physicsAdapterVersion": "0.19.3"
+  },
+  "route": {
+    "family": "press_hall",
+    "linkId": "west_choice_press",
+    "legLabel": "west press-cross leg 4",
+    "targetNodeId": "press_west",
+    "targetFeetPositionMillimeters": {
+      "x": -14000,
+      "y": 0,
+      "z": 2000
+    }
+  },
+  "defect": {
+    "lastObservedFeetPositionMillimeters": {
+      "x": -16497,
+      "y": 182,
+      "z": -637
+    },
+    "bestRemainingDistanceMillimeters": 3631.6357196172635,
+    "boundedRecoveryCount": 15,
+    "positionDeltaAcrossRecoveriesMillimeters": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "recoveries": [
+      { "attempt": 4, "key": "a" },
+      { "attempt": 7, "key": "d" },
+      { "attempt": 10, "key": "a" },
+      { "attempt": 13, "key": "d" },
+      { "attempt": 16, "key": "a" },
+      { "attempt": 19, "key": "d" },
+      { "attempt": 22, "key": "a" },
+      { "attempt": 25, "key": "d" },
+      { "attempt": 28, "key": "a" },
+      { "attempt": 31, "key": "d" },
+      { "attempt": 34, "key": "a" },
+      { "attempt": 37, "key": "d" },
+      { "attempt": 40, "key": "a" },
+      { "attempt": 43, "key": "d" },
+      { "attempt": 46, "key": "a" }
+    ],
+    "recoveryPolicy": "Each recovery used a 110 ms backstep followed by a 260 ms alternating strafe and a 140 ms settle.",
+    "outcome": "All 15 bounded recoveries produced zero observed displacement. The target was not reached."
+  },
+  "transportExcerpt": {
+    "roomCode": "KYX-P7AU4N",
+    "workerReady": "Ready on http://127.0.0.1:8787",
+    "health": "GET /health 200 OK",
+    "roomCreated": "POST /api/rooms/create 201 Created",
+    "socketUpgrades": [
+      "GET /api/rooms/KYX-P7AU4N/socket 101 Switching Protocols",
+      "GET /api/rooms/KYX-P7AU4N/socket 101 Switching Protocols"
+    ],
+    "normalizedFrameExcerptAvailable": false,
+    "normalizedFrameExcerptReason": "The capture aborted before the success-only normalized wire-log flush. No frame excerpt is fabricated."
+  },
+  "artifacts": {
+    "capture-failure.json": {
+      "sha256": "fff709d076b6a590e07b120b4d58f458fe3e0fa1dacdb64403d930aeb0af0b1b",
+      "bytes": 9028
+    },
+    "screenshots/p515-01-client-0-two-rendered.png": {
+      "sha256": "5b72b788b24c27d1ab1b82ce86ef595eddec81936adf3604f6a2629ec8344dce",
+      "bytes": 346672
+    },
+    "screenshots/p515-02-client-1-two-rendered.png": {
+      "sha256": "e4b448a6a6216b5aeee92bdb73073a24eee7f2ae1dd45c8744fc0cf923d6c54e",
+      "bytes": 348399
+    }
+  },
+  "nonClaims": [
+    "G3_NOT_CLAIMED",
+    "G4_NOT_CLAIMED",
+    "G5_NOT_CLAIMED",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_CLAIMED"
+  ]
+}

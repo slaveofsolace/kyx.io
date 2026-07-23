@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "verificationKind": "g3-external-worker-independent-verification",
+  "status": "INDEPENDENT_VERIFICATION_PASS",
+  "gateDecision": "NONE",
+  "gateClaim": "G3_NOT_ACCEPTED",
+  "deploymentPerformed": false,
+  "verifiedAt": "2026-07-22T09:17:13.686Z",
+  "expectedTarget": {
+    "workerOrigin": "https://kyx-io-authority.heliotrope-contraption.workers.dev",
+    "expectedBuildId": "g3tmp-93ae5c5c1604",
+    "targetKind": "ephemeral-preview"
+  },
+  "runtimeArtifact": {
+    "path": "evidence/2026-07-22/phase-4-g3-external-worker/runs/preview-g3tmp-93ae5c5c1604-burst-v2-r04/external-worker-runtime.json",
+    "bytes": 9411,
+    "sha256": "58a8673085b330590fae7b76fecdc7194a61f50f0bc06b7073165f69057f8708"
+  },
+  "sourceHashesCurrent": {
+    "package-lock.json": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3",
+    "src/net/protocol.ts": "0a9f65a571bef66dad4507a969b69c5c762848219b6f32e4c8bcb254403c037c",
+    "src/net/schemas.ts": "3f1654d1ca380b77a605439a11262afd05a54250255b852196d3256f3ac9ce9d",
+    "worker/reliableEvents.ts": "bf142bb8435fdd3f4b96e7e6620a577e70a591471dc1dd3206b2ee22e00594bb",
+    "worker/resumeSessions.ts": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3",
+    "worker/resumeToken.ts": "1059e269a02b57e64241df1565404ca3985ce0aee5cb598624e7814d2390bf36",
+    "worker/room.ts": "918d1ab69d69e66b70719a493a31f6d4e53906a95b83e37059df2240ae77d05f",
+    "worker/security.ts": "bfcd7713263ec6601e00fa125597056933ef3d5f83f3f436e96e6452cec5f403",
+    "worker/snapshotBaselines.ts": "5809f54ed59f653af85ea4e82dc0d882ddd7454c4e23f6462f4c91c3e78cbd4c",
+    "worker/worker.ts": "7f9a078294db6b5c49f8a0a4374f19080b2e3412cbc47e5ab528c4857cbb572f",
+    "tools/evidence/capture-phase4-g3-external-worker.mjs": "ec4609a232cb8b4c908de9f9bd706a6a471ece8d8a880f34627f889dc0b0e35a",
+    "tools/evidence/verify-phase4-g3-external-worker.mjs": "dd7f382cba5c7c0b775ae546024919c67e69c2ec7fc3b789f30c7043396daff8"
+  },
+  "credentialAudit": {
+    "forbiddenFieldCount": 0,
+    "opaqueCredentialLikeValueCount": 0,
+    "sensitiveValuesSerialized": false
+  },
+  "checks": {
+    "runtimeSchemaVersion": true,
+    "capturePassed": true,
+    "gateRemainsUnaccepted": true,
+    "noDeploymentPerformed": true,
+    "targetPinnedIndependently": true,
+    "strictExternalTlsRecorded": true,
+    "exactScopeBoundaries": true,
+    "credentialFieldsAbsent": true,
+    "opaqueCredentialValuesAbsent": true,
+    "noRawPayloadSerialization": true,
+    "exactAssertionContract": true,
+    "everyCaptureAssertionPassed": true,
+    "exactFrozenSourceSet": true,
+    "captureSourceStartEndMatch": true,
+    "currentSourceMatchesCapture": true,
+    "httpsHttpContract": true,
+    "twoProtocolV2Clients": true,
+    "protocolClientsHealthy": true,
+    "tickAndInputAuthorityProved": true,
+    "forgedTransformRejectedWithoutMutation": true,
+    "authenticatedResumeProved": true,
+    "healthyMetrics": true,
+    "latencyTimingsComplete": true,
+    "immutableRunArtifactPath": true
+  },
+  "boundaries": {
+    "localhostOriginTransportOnly": true,
+    "productionOriginAuthenticationOrProductFlowProved": false,
+    "durableStagingProved": false,
+    "ephemeralPreviewOnly": true,
+    "g3Accepted": false
+  }
+}

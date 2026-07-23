@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "authoredUtc": "2026-07-22T10:05:43.089864+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6-C_VISUAL_BENCHMARK_REV11",
+  "sources": {
+    "acceptedV6A": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256Before": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "sha256After": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "unchanged": true,
+      "bodyGeometrySha256Before": "83af5095af6866b186bed5f2caa5903f45c630a0958c74dff15cad5c1fa71856",
+      "bodyGeometrySha256After": "83af5095af6866b186bed5f2caa5903f45c630a0958c74dff15cad5c1fa71856",
+      "bodyGeometryUnchangedInOutput": true
+    },
+    "productionTarget": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\concept\\kyx-vanguard-v6c-production-target-v1.png",
+      "sha256Before": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "sha256After": "9c188fa32daaeec2d284727a5d9e600f94b8b57fee6f0568c7ebac9d462abdd2",
+      "unchanged": true,
+      "usage": "sole visual construction reference; no prior revision Blend was opened appended or used as geometry"
+    }
+  },
+  "output": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-benchmark-rev11\\kyx_vanguard_v6c_visual_benchmark_rev11.blend",
+    "bytes": 12891084,
+    "sha256": "7d6fbd8f1494240519d58f3dda0acbb98f8bab3fe8e6a1ac3b446f98c5992e53"
+  },
+  "constructionMethod": {
+    "loadPaths": "Connected clavicle sternum oblique rear scapular waist hip and ankle rails organize the entire armor system.",
+    "helmet": "Single enclosed compound shell with a narrow recessed visor, continuous gasket, slim temple frames, occipital plate, and neck seal.",
+    "body": "Continuous thoracic and pelvic carriers with fitted curved shell overlays and deep overlapping limb carriers.",
+    "lowerBody": "Waist-to-ankle rails, overlapping hip saddles, deep thigh and shin carriers, knee housings, calf counters, and integrated boot collars.",
+    "materials": "Layered technical weave, gasket, metallic load-frame, titanium ceramic, visor, and restrained telemetry materials with procedural micro-roughness.",
+    "rifle": "New multi-depth receiver, framed handguard negative spaces, open stock, rooted barrel, optic, controls, rail, magazine, grip, and hardware."
+  },
+  "contactWitnesses": {
+    "primary_grip": [
+      -0.145,
+      -0.058,
+      0.855
+    ],
+    "support_grip": [
+      0.43,
+      -0.062,
+      0.925
+    ],
+    "shoulder": [
+      -0.727,
+      0.0,
+      1.03
+    ]
+  },
+  "inventory": {
+    "collections": [
+      "KYX_V6C_BENCH_R11_ContinuousTechnicalUndersuit",
+      "KYX_V6C_BENCH_R11_ConnectedArmorSystem",
+      "KYX_V6C_BENCH_R11_MicroDetailHierarchy",
+      "KYX_V6C_BENCH_R11_ProductionGradeAutoRifle"
+    ],
+    "objects": 215,
+    "meshes": 178,
+    "curves": 34,
+    "empties": 3,
+    "meshVertices": 28465,
+    "meshPolygons": 26210,
+    "materials": [
+      "KYX_V6C_BENCH_R11_BlackJointKnit",
+      "KYX_V6C_BENCH_R11_BlueBlackLoadFrame",
+      "KYX_V6C_BENCH_R11_GraphiteTechnicalWeave",
+      "KYX_V6C_BENCH_R11_GraphiteTitanium",
+      "KYX_V6C_BENCH_R11_RecessedPetrolVisor",
+      "KYX_V6C_BENCH_R11_RestrainedCyanTelemetry",
+      "KYX_V6C_BENCH_R11_SafetyCoral",
+      "KYX_V6C_BENCH_R11_SmokedTitaniumCeramic",
+      "KYX_V6C_BENCH_R11_SourceFootConceal",
+      "KYX_V6C_BENCH_R11_TreadRubber",
+      "KYX_V6C_BENCH_R11_VisorAndPanelGasket",
+      "KYX_V6C_BENCH_R11_WarmTitaniumCeramic"
+    ]
+  },
+  "objectCounts": {
+    "character": 147,
+    "rifleAndWitnesses": 68,
+    "contactWitnesses": 3
+  },
+  "assertions": {
+    "builtFromAcceptedV6AOnly": true,
+    "priorRevisionBlendOpenedOrAppended": false,
+    "acceptedV6AFilePreserved": true,
+    "acceptedV6ABodyGeometryPreservedInOutput": true,
+    "productionTargetPinnedAndPreserved": true,
+    "noV6BObjects": true,
+    "noRev9OrRev10Objects": true,
+    "noArmatures": true,
+    "noActions": true,
+    "noExternalLibraries": true,
+    "contactWitnessCount": true,
+    "noLiteralHeldContactClaim": true
+  },
+  "status": "V6C_VISUAL_BENCHMARK_REV11_REQUIRES_DIRECT_VISUAL_AUDIT",
+  "nonClaims": [
+    "Revision 11 is a visual benchmark candidate; it is not V6-C or G6 acceptance.",
+    "Contact empties record future intent only; no held, two-hand, or shoulder contact is claimed.",
+    "No retopology, authored UVs, texture bake, rig, animation, LOD, GLB, runtime integration, or performance claim is made."
+  ]
+}

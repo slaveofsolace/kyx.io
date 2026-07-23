@@ -1,0 +1,15 @@
+Status: FAIL (preserved development attempt)
+Date: 2026-07-21
+
+Command path: MCP Node REPL -> Vitest startVitest with vitest.worker.config.ts
+Test: tests/worker/protocolV2Socket.test.ts
+
+After aligning the reliable future-ACK detail to `event_unknown_event`, the test
+later selected that already-recorded ACK_REJECTED response while checking the
+separate future snapshot ACK. The assertion expected `snapshot_tick_future`.
+
+Cause: the shared wait helper searches the full message history, and the second
+predicate matched only the error code. The test was corrected to select both the
+ACK_REJECTED code and the exact `snapshot_tick_future` detail.
+
+No G3 gate or live successor-evidence claim was made from this failed attempt.

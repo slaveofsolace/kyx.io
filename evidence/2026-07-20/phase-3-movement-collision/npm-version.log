@@ -1,0 +1,4 @@
+COMMAND C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe C:/Users/suhai/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/pnpm/dist/pnpm.mjs dlx npm@11.18.0 --version
+EXIT {"code":0,"signal":null}
+
+11.18.0

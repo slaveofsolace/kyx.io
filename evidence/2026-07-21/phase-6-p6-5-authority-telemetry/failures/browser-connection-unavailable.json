@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "status": "P6_5_BROWSER_CAPTURE_FAILURES_PRESERVED_RECOVERED",
+  "route": "/__test__/map",
+  "attempts": [
+    {
+      "id": "browser_plugin_selection",
+      "localServerStarted": true,
+      "localServerClosed": true,
+      "result": "NO_BROWSER_AVAILABLE",
+      "attachableBrowsers": 0,
+      "screenshotCreated": false
+    },
+    {
+      "id": "playwright_default_executable",
+      "localServerStarted": true,
+      "localServerClosed": true,
+      "result": "EXPECTED_BROWSER_REVISION_NOT_INSTALLED",
+      "expectedExecutable": "chromium_headless_shell-1200/chrome-headless-shell.exe",
+      "screenshotCreated": false
+    },
+    {
+      "id": "direct_capture_harness_binding",
+      "localServerStarted": true,
+      "localServerClosed": true,
+      "result": "HARNESS_REFERENCE_ERROR_BEFORE_NAVIGATION",
+      "error": "directPageP65 is not defined",
+      "screenshotCreated": false
+    }
+  ],
+  "recovery": {
+    "environmentMutation": false,
+    "browserDownload": false,
+    "existingExecutable": "chromium_headless_shell-1228/chrome-headless-shell.exe",
+    "browserVersion": "149.0.7827.55",
+    "result": "P6_5_AUTHORITY_TELEMETRY_BROWSER_PASS",
+    "screenshot": "../inkfall-authority-telemetry.png"
+  },
+  "visualPassClaimed": true,
+  "humanAcceptanceClaimed": false,
+  "remainingAction": "Human playtest and G5 acceptance remain separate; no browser recapture is required for the P6.5 automated slice."
+}
