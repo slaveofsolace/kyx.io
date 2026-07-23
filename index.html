@@ -9,7 +9,7 @@
   <title>KYX.IO &mdash; Offline Practice</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body>
+<body data-interface="foundry-command-v2">
   <div id="app">
     <canvas
       id="game-canvas"
@@ -27,8 +27,10 @@
 
     <!-- Truthful desktop navigation: only working local paths are actionable. -->
     <header id="top-nav" class="hidden">
-      <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
-      <span class="local-build-chip">LOCAL BUILD</span>
+      <div class="nav-brand-lockup">
+        <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
+        <span class="local-build-chip">LOCAL BUILD</span>
+      </div>
       <nav class="nav-items" aria-label="Practice menu">
         <button
           type="button"
@@ -57,25 +59,56 @@
     <!-- Primary mode card and explicit local population disclosure. -->
     <main id="center-play" class="hidden">
       <section class="practice-launch-card" aria-labelledby="practice-title">
-        <p class="practice-eyebrow">OFFLINE PRACTICE</p>
-        <h2 id="practice-title">IRON BASTION</h2>
-        <div class="map-preview-window" aria-label="Live map preview">
-          <span>MAP PREVIEW</span>
+        <header class="practice-card-head">
+          <div>
+            <p class="practice-eyebrow">LOCAL COMBAT SIMULATION // 01</p>
+            <h2 id="practice-title">IRON BASTION</h2>
+          </div>
+          <div class="practice-ready-state" aria-label="Simulation ready">
+            <span class="practice-ready-pulse" aria-hidden="true"></span>
+            SIM READY
+          </div>
+        </header>
+
+        <div class="practice-command-grid">
+          <div class="map-preview-window" aria-label="Live map preview">
+            <span class="map-preview-kicker">TRAINING GROUND</span>
+            <strong>BASTION SECTOR</strong>
+            <span class="map-preview-coordinates">GRID 07-C // LOCAL</span>
+          </div>
+
+          <div class="practice-launch-rail">
+            <div class="practice-stat-grid" aria-label="Offline practice details">
+              <span><small>MODE</small>DEATHMATCH</span>
+              <span><small>ROSTER</small>1 + 7 BOTS</span>
+              <span><small>AUTHORITY</small>THIS DEVICE</span>
+            </div>
+            <p class="practice-population">1 LOCAL PLAYER / 7 BOTS</p>
+            <button id="play-btn" type="button" class="click-to-play"><span>START OFFLINE PRACTICE</span><b aria-hidden="true">ENTER</b></button>
+          </div>
         </div>
-        <p class="practice-population">1 LOCAL PLAYER / 7 BOTS</p>
-        <button id="play-btn" type="button" class="click-to-play">START OFFLINE PRACTICE</button>
-        <a
-          id="locked-graybox-preview-link"
-          class="locked-graybox-preview-link"
-          href="?mapPackage=inkfall_foundry%402"
-        >INSPECT LOCKED INKFALL FOUNDRY @2</a>
-        <p class="locked-graybox-preview-note">Graybox package inspection only. It does not change or launch the Offline Practice map.</p>
-        <a
-          id="press-hall-inspection-link"
-          class="locked-graybox-preview-link"
-          href="?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined"
-        >INSPECT PRESS HALL V3.3 MATERIAL RUNTIME</a>
-        <p class="locked-graybox-preview-note">Hash-pinned non-default presentation inspection with explicit materials and separate revision-2 authority overlay. G5 and G8 remain open.</p>
+
+        <div class="practice-inspection-rail">
+          <p class="practice-inspection-label">DEVELOPMENT INSPECTION // NON-DEFAULT</p>
+          <div class="practice-inspection-grid">
+            <div>
+              <a
+                id="locked-graybox-preview-link"
+                class="locked-graybox-preview-link"
+                href="?mapPackage=inkfall_foundry%402"
+              >INKFALL FOUNDRY @2 <span aria-hidden="true">↗</span></a>
+              <p class="locked-graybox-preview-note">Locked graybox package. Does not replace the Offline Practice map.</p>
+            </div>
+            <div>
+              <a
+                id="press-hall-inspection-link"
+                class="locked-graybox-preview-link"
+                href="?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined"
+              >PRESS HALL V3.3 <span aria-hidden="true">↗</span></a>
+              <p class="locked-graybox-preview-note">Hash-pinned material runtime. G5 and G8 remain open.</p>
+            </div>
+          </div>
+        </div>
         <p class="practice-footnote">Runs entirely on this device. Nothing shown here represents online players or shared progression.</p>
       </section>
     </main>
@@ -103,6 +136,13 @@
 
     <!-- Local settings are the only other active shell panel. -->
     <section id="panel-settings" class="nav-panel hidden" aria-label="Local settings">
+      <header class="settings-command-head">
+        <div>
+          <p>LOCAL SYSTEM PROFILE // 01</p>
+          <h2>FIELD CALIBRATION</h2>
+        </div>
+        <span>DEVICE-SAVED</span>
+      </header>
       <p class="settings-brief">DISPLAY / INPUT PROFILE <span>Saved only on this device</span></p>
       <div class="settings-section">CONTROLS</div>
 
@@ -234,7 +274,7 @@
     </div>
 
     <!-- In-practice HUD: every population label identifies bots explicitly. -->
-    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="g7-foundation-v1" data-kyx-a11y="text-and-pattern-critical-states">
+    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="g7-foundation-v1" data-ui-revision="foundry-command-v2" data-kyx-a11y="text-and-pattern-critical-states">
       <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div id="hitmarker" aria-hidden="true"></div>
       <div id="damage-flash" aria-hidden="true"></div>
@@ -242,6 +282,7 @@
 
       <div id="hud-vitals" class="hud-vitals-cluster" role="group" aria-label="Player vital status">
         <div id="health-wrap" class="hud-panel" aria-label="Health 100 of 100">
+          <span class="hud-panel-code" aria-hidden="true">VTL-01</span>
           <span class="hud-readout-label">HP</span>
           <div class="bar-bg"><div id="health-bar" class="bar-fill"></div></div>
           <span id="health-text">100</span>
@@ -249,12 +290,14 @@
         </div>
 
         <div id="shield-wrap" class="hud-panel hidden" aria-label="Shield 0">
+          <span class="hud-panel-code" aria-hidden="true">VTL-02</span>
           <span class="hud-readout-label">SHD</span>
           <div class="bar-bg"><div id="shield-bar" class="bar-fill shield-fill"></div></div>
           <span id="shield-text">0</span>
         </div>
 
         <div id="stamina-wrap" class="hud-panel" aria-label="Energy 100 of 100">
+          <span class="hud-panel-code" aria-hidden="true">VTL-03</span>
           <span class="hud-readout-label">NRG</span>
           <div class="bar-bg"><div id="stamina-bar" class="bar-fill stamina-fill"></div></div>
           <span id="stamina-text">100</span>
@@ -264,16 +307,19 @@
       </div>
 
       <div id="weapon-wrap" class="hud-panel">
+        <div class="hud-weapon-head"><span>ACTIVE WEAPON</span><i aria-hidden="true">WPN-01</i></div>
         <div id="weapon-name">SIDEARM</div>
-        <div id="ammo-text">12 / 60</div>
+        <div class="hud-ammo-row"><div id="ammo-text">12 / 60</div><span>MAG / RES</span></div>
         <div id="reload-text" class="hidden">RELOADING...</div>
       </div>
 
       <div id="score-wrap" class="hud-panel">
-        <div class="hud-practice-label">OFFLINE PRACTICE</div>
+        <div class="hud-match-head"><div class="hud-practice-label">OFFLINE PRACTICE</div><span>LOCAL</span></div>
         <div id="server-pop">1 LOCAL PLAYER / 7 BOTS<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
-        <div>BOTS DEFEATED <span id="kill-count">0</span></div>
-        <div>SCORE <span id="score-count">0</span></div>
+        <div class="hud-score-metrics">
+          <div><small>BOTS DEFEATED</small><span id="kill-count">0</span></div>
+          <div><small>SCORE</small><span id="score-count">0</span></div>
+        </div>
       </div>
 
       <div id="weapon-slots"></div>

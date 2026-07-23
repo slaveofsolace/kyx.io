@@ -5603,3 +5603,1185 @@ body[data-reduced-motion="true"] #app *::after {
   .caption-region { bottom: 205px; }
   .audio-cue-region { top: 40%; }
 }
+
+/* ========================================================================== */
+/* KYX.IO FOUNDRY COMMAND V2                                                   */
+/* Industrial tactical shell + HUD. Existing IDs and runtime hooks stay intact. */
+/* ========================================================================== */
+
+body[data-interface="foundry-command-v2"] {
+  --fc-void: #030709;
+  --fc-panel: rgba(5, 12, 16, 0.94);
+  --fc-panel-soft: rgba(8, 18, 23, 0.88);
+  --fc-surface: #0a151a;
+  --fc-surface-2: #101f24;
+  --fc-line: rgba(148, 196, 201, 0.28);
+  --fc-line-hot: rgba(101, 230, 235, 0.68);
+  --fc-cyan: #76edf1;
+  --fc-cyan-strong: #31cfd6;
+  --fc-amber: #f2b85b;
+  --fc-amber-soft: #ffd58e;
+  --fc-green: #64e894;
+  --fc-critical: #ff675d;
+  --fc-ink: #edf8f7;
+  --fc-muted: #8fa7aa;
+  --fc-faint: #5d7478;
+  --fc-display: Bahnschrift, "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+  --fc-mono: "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+  --g7-cyan: var(--fc-cyan);
+  --g7-hazard: var(--fc-amber);
+  --g7-critical: var(--fc-critical);
+  color: var(--fc-ink);
+  font-family: var(--fc-display);
+}
+
+body[data-interface="foundry-command-v2"] #app {
+  isolation: isolate;
+}
+
+body[data-interface="foundry-command-v2"] #center-play {
+  padding: 82px 28px 24px;
+}
+
+body[data-interface="foundry-command-v2"] #center-play::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(2, 7, 10, 0.38), transparent 24%, transparent 76%, rgba(2, 7, 10, 0.38)),
+    linear-gradient(180deg, rgba(1, 5, 8, 0.18), transparent 32%, rgba(1, 5, 8, 0.22));
+}
+
+body[data-interface="foundry-command-v2"] #top-nav {
+  height: 70px !important;
+  padding: 0 26px !important;
+  gap: 20px !important;
+  border-bottom: 1px solid var(--fc-line) !important;
+  background:
+    linear-gradient(90deg, rgba(7, 16, 20, 0.97), rgba(3, 9, 13, 0.88) 58%, rgba(3, 8, 12, 0.76)) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28), inset 0 -1px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px) saturate(1.1) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.1) !important;
+}
+
+body[data-interface="foundry-command-v2"] #top-nav::before,
+body[data-interface="foundry-command-v2"] #top-nav::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+body[data-interface="foundry-command-v2"] #top-nav::before {
+  left: 26px;
+  width: 170px;
+  background: var(--fc-cyan);
+  box-shadow: 0 0 12px rgba(118, 237, 241, 0.45);
+}
+
+body[data-interface="foundry-command-v2"] #top-nav::after {
+  right: 26px;
+  width: 74px;
+  background: var(--fc-amber);
+}
+
+.nav-brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 252px;
+  height: 40px;
+  padding-right: 22px;
+  border-right: 1px solid var(--fc-line);
+}
+
+body[data-interface="foundry-command-v2"] .nav-brand {
+  margin: 0 !important;
+  color: var(--fc-ink) !important;
+  font: 900 25px/1 var(--fc-display) !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 18px rgba(118, 237, 241, 0.18) !important;
+}
+
+body[data-interface="foundry-command-v2"] .nav-brand span {
+  color: var(--fc-cyan) !important;
+}
+
+body[data-interface="foundry-command-v2"] .local-build-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 7px;
+  border: 1px solid rgba(242, 184, 91, 0.54);
+  border-radius: 1px;
+  background: repeating-linear-gradient(135deg, rgba(242, 184, 91, 0.08) 0 3px, transparent 3px 8px);
+  color: var(--fc-amber-soft);
+  font: 800 8px/1 var(--fc-mono);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+body[data-interface="foundry-command-v2"] .nav-items {
+  justify-content: flex-end;
+  gap: 4px !important;
+  margin-left: 0 !important;
+}
+
+body[data-interface="foundry-command-v2"] .nav-item,
+body[data-interface="foundry-command-v2"] .nav-dd-btn {
+  position: relative;
+  min-height: 38px;
+  padding: 0 14px !important;
+  border: 1px solid transparent !important;
+  border-radius: 1px !important;
+  color: #bdcbcd !important;
+  font: 760 11px/1 var(--fc-display) !important;
+  letter-spacing: 1.25px !important;
+  opacity: 1 !important;
+}
+
+body[data-interface="foundry-command-v2"] .nav-item:hover,
+body[data-interface="foundry-command-v2"] .nav-dd-btn:hover {
+  border-color: var(--fc-line) !important;
+  background: rgba(118, 237, 241, 0.055) !important;
+  color: var(--fc-ink) !important;
+  text-shadow: none !important;
+}
+
+body[data-interface="foundry-command-v2"] .nav-item.active,
+body[data-interface="foundry-command-v2"] .nav-dd-btn.open,
+body[data-interface="foundry-command-v2"] .nav-dd-btn.nav-dd-active {
+  border-color: rgba(118, 237, 241, 0.38) !important;
+  background: linear-gradient(180deg, rgba(118, 237, 241, 0.12), rgba(118, 237, 241, 0.025)) !important;
+  color: var(--fc-cyan) !important;
+  box-shadow: inset 0 -2px 0 var(--fc-cyan) !important;
+}
+
+body[data-interface="foundry-command-v2"] .online-unavailable {
+  border-left-color: rgba(255, 255, 255, 0.09) !important;
+  color: #66777b !important;
+  opacity: 0.7 !important;
+}
+
+body[data-interface="foundry-command-v2"] #nav-side.local-profile-card {
+  top: 88px;
+  right: 26px;
+  min-width: 202px;
+  gap: 3px;
+  padding: 11px 14px 10px 18px;
+  border: 1px solid var(--fc-line);
+  border-right: 3px solid var(--fc-cyan);
+  border-radius: 1px;
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.04), transparent),
+    rgba(4, 11, 15, 0.88);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+}
+
+body[data-interface="foundry-command-v2"] .local-profile-kicker,
+body[data-interface="foundry-command-v2"] .local-profile-storage {
+  color: var(--fc-faint);
+  font: 800 7px/1.4 var(--fc-mono);
+  letter-spacing: 1.2px;
+}
+
+body[data-interface="foundry-command-v2"] #nav-side .side-user {
+  color: var(--fc-ink);
+  font: 850 16px/1.1 var(--fc-display);
+  letter-spacing: 0.4px;
+}
+
+/* Command card ------------------------------------------------------------ */
+
+body[data-interface="foundry-command-v2"] .practice-launch-card {
+  position: relative;
+  z-index: 1;
+  width: min(900px, calc(100vw - 64px));
+  max-height: calc(100vh - 112px);
+  overflow: auto;
+  padding: 0;
+  border: 1px solid var(--fc-line-hot);
+  border-radius: 2px;
+  background:
+    linear-gradient(135deg, rgba(118, 237, 241, 0.025), transparent 30%),
+    var(--fc-panel);
+  box-shadow:
+    0 34px 90px rgba(0, 0, 0, 0.66),
+    0 0 0 1px rgba(0, 0, 0, 0.86) inset,
+    0 0 42px rgba(49, 207, 214, 0.08);
+  text-align: left;
+  backdrop-filter: blur(14px) saturate(0.9);
+  -webkit-backdrop-filter: blur(14px) saturate(0.9);
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card::before,
+body[data-interface="foundry-command-v2"] .practice-launch-card::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  width: 38px;
+  height: 14px;
+  pointer-events: none;
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 3px solid var(--fc-cyan);
+  border-left: 3px solid var(--fc-cyan);
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 3px solid var(--fc-amber);
+  border-bottom: 3px solid var(--fc-amber);
+}
+
+.practice-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 94px;
+  padding: 19px 26px 17px;
+  border-bottom: 1px solid var(--fc-line);
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.075), transparent 44%),
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(255, 255, 255, 0.018) 38px 39px);
+}
+
+body[data-interface="foundry-command-v2"] .practice-eyebrow {
+  margin: 0;
+  color: var(--fc-cyan);
+  font: 800 9px/1.2 var(--fc-mono);
+  letter-spacing: 1.7px;
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card h2 {
+  margin: 7px 0 0;
+  color: var(--fc-ink);
+  font: 900 clamp(31px, 4vw, 43px)/0.95 var(--fc-display);
+  letter-spacing: 2.8px;
+}
+
+.practice-ready-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(100, 232, 148, 0.38);
+  color: #9bf4ba;
+  font: 800 9px/1 var(--fc-mono);
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+}
+
+.practice-ready-pulse {
+  width: 7px;
+  height: 7px;
+  background: var(--fc-green);
+  box-shadow: 0 0 10px rgba(100, 232, 148, 0.72);
+  animation: fcReadyPulse 1.8s steps(2, end) infinite;
+}
+
+@keyframes fcReadyPulse {
+  50% { opacity: 0.4; }
+}
+
+.practice-command-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(272px, 0.82fr);
+  gap: 0;
+  padding: 22px 26px;
+}
+
+body[data-interface="foundry-command-v2"] .map-preview-window {
+  position: relative;
+  isolation: isolate;
+  height: 218px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 6px;
+  overflow: hidden;
+  padding: 22px;
+  border: 1px solid rgba(118, 237, 241, 0.38);
+  border-radius: 1px;
+  background:
+    radial-gradient(circle at 68% 38%, rgba(118, 237, 241, 0.18) 0 2px, transparent 3px),
+    radial-gradient(circle at 39% 61%, rgba(242, 184, 91, 0.28) 0 2px, transparent 3px),
+    linear-gradient(128deg, transparent 0 42%, rgba(118, 237, 241, 0.16) 42.5% 43%, transparent 43.5%),
+    repeating-linear-gradient(0deg, rgba(118, 237, 241, 0.045) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(118, 237, 241, 0.045) 0 1px, transparent 1px 28px),
+    linear-gradient(145deg, #0b1a20, #050c10 68%);
+  color: var(--fc-ink);
+}
+
+body[data-interface="foundry-command-v2"] .map-preview-window::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -35% 0 auto;
+  height: 42%;
+  background: linear-gradient(180deg, transparent, rgba(118, 237, 241, 0.18), transparent);
+  animation: fcScanner 5.5s linear infinite;
+}
+
+body[data-interface="foundry-command-v2"] .map-preview-window::after {
+  content: "07-C";
+  position: absolute;
+  top: 13px;
+  right: 14px;
+  padding: 4px 6px;
+  border: 1px solid rgba(118, 237, 241, 0.3);
+  color: rgba(118, 237, 241, 0.72);
+  font: 800 8px/1 var(--fc-mono);
+  letter-spacing: 1px;
+}
+
+@keyframes fcScanner {
+  to { transform: translateY(430%); }
+}
+
+.map-preview-kicker,
+.map-preview-coordinates {
+  color: var(--fc-muted);
+  font: 800 8px/1.2 var(--fc-mono);
+  letter-spacing: 1.4px;
+}
+
+.map-preview-window strong {
+  color: var(--fc-ink);
+  font: 900 25px/1 var(--fc-display);
+  letter-spacing: 1.6px;
+}
+
+.map-preview-coordinates { color: var(--fc-cyan); }
+
+.practice-launch-rail {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: 4px 0 0 24px;
+  border-left: 1px solid var(--fc-line);
+}
+
+.practice-stat-grid {
+  display: grid;
+  gap: 1px;
+  margin-bottom: auto;
+  background: var(--fc-line);
+  border: 1px solid var(--fc-line);
+}
+
+.practice-stat-grid > span {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 11px;
+  background: rgba(6, 14, 18, 0.98);
+  color: #d8e7e7;
+  font: 800 10px/1 var(--fc-mono);
+  letter-spacing: 0.6px;
+}
+
+.practice-stat-grid small {
+  color: var(--fc-faint);
+  font: 800 7px/1 var(--fc-mono);
+  letter-spacing: 1.2px;
+}
+
+body[data-interface="foundry-command-v2"] .practice-population {
+  margin: 14px 0 8px;
+  color: var(--fc-muted);
+  font: 800 8px/1.2 var(--fc-mono);
+  letter-spacing: 1.5px;
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card .click-to-play {
+  width: 100%;
+  min-height: 54px;
+  margin: 0;
+  padding: 0 14px 0 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid var(--fc-cyan) !important;
+  border-radius: 1px !important;
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.96), rgba(49, 207, 214, 0.88)) !important;
+  box-shadow: 0 10px 28px rgba(35, 176, 183, 0.22), inset 0 1px rgba(255, 255, 255, 0.38) !important;
+  clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%);
+  color: #031014 !important;
+  font: 900 13px/1 var(--fc-display) !important;
+  letter-spacing: 1.5px !important;
+  text-align: left;
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card .click-to-play b {
+  padding: 5px 7px;
+  border: 1px solid rgba(3, 16, 20, 0.5);
+  font: 850 7px/1 var(--fc-mono);
+  letter-spacing: 1px;
+}
+
+body[data-interface="foundry-command-v2"] .practice-launch-card .click-to-play:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  letter-spacing: 1.5px !important;
+  box-shadow: 0 14px 34px rgba(35, 176, 183, 0.32), inset 0 1px rgba(255, 255, 255, 0.42) !important;
+}
+
+.practice-inspection-rail {
+  padding: 16px 26px 15px;
+  border-top: 1px solid var(--fc-line);
+  background:
+    repeating-linear-gradient(135deg, rgba(242, 184, 91, 0.018) 0 2px, transparent 2px 9px),
+    rgba(15, 13, 8, 0.42);
+}
+
+.practice-inspection-label {
+  margin-bottom: 10px;
+  color: var(--fc-amber);
+  font: 800 8px/1 var(--fc-mono);
+  letter-spacing: 1.4px;
+}
+
+.practice-inspection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.practice-inspection-grid > div {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(242, 184, 91, 0.24);
+  border-left: 2px solid var(--fc-amber);
+  background: rgba(18, 15, 9, 0.72);
+}
+
+body[data-interface="foundry-command-v2"] .locked-graybox-preview-link {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fc-amber-soft);
+  font: 850 9px/1.2 var(--fc-mono);
+  letter-spacing: 0.8px;
+}
+
+body[data-interface="foundry-command-v2"] .locked-graybox-preview-link:hover,
+body[data-interface="foundry-command-v2"] .locked-graybox-preview-link:focus-visible {
+  background: transparent;
+  color: #fff0ce;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+body[data-interface="foundry-command-v2"] .locked-graybox-preview-note {
+  max-width: none;
+  margin: 6px 0 0;
+  color: #8e7b5f;
+  font: 650 8px/1.45 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] .practice-footnote {
+  max-width: none;
+  margin: 0;
+  padding: 10px 26px 12px;
+  border-top: 1px solid rgba(148, 196, 201, 0.12);
+  color: var(--fc-faint);
+  font: 650 8px/1.4 var(--fc-mono);
+  letter-spacing: 0.45px;
+  text-align: left;
+}
+
+/* Panels / settings / loadout -------------------------------------------- */
+
+body[data-interface="foundry-command-v2"] .nav-panel,
+body[data-interface="foundry-command-v2"] .nav-panel-inv,
+body[data-interface="foundry-command-v2"] #panel-profile {
+  top: 69px;
+  border: 1px solid var(--fc-line-hot) !important;
+  border-top: 1px solid var(--fc-line-hot) !important;
+  border-radius: 1px !important;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 47px, rgba(255, 255, 255, 0.012) 47px 48px),
+    var(--fc-panel) !important;
+  box-shadow: 0 30px 88px rgba(0, 0, 0, 0.72), inset 0 0 0 1px rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(16px) saturate(0.9) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(0.9) !important;
+}
+
+body[data-interface="foundry-command-v2"] .nav-panel::before {
+  height: 2px;
+  background: linear-gradient(90deg, var(--fc-cyan), transparent 68%, var(--fc-amber));
+  opacity: 1;
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings {
+  width: min(760px, calc(100vw - 48px)) !important;
+  max-height: calc(100vh - 96px) !important;
+  padding: 0 28px 24px !important;
+}
+
+.settings-command-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  min-height: 78px;
+  margin: 0 -28px 14px;
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--fc-line);
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.075), transparent 48%),
+    #071116;
+}
+
+.settings-command-head p {
+  color: var(--fc-cyan);
+  font: 800 8px/1 var(--fc-mono);
+  letter-spacing: 1.4px;
+}
+
+.settings-command-head h2 {
+  margin-top: 6px;
+  color: var(--fc-ink);
+  font: 900 24px/1 var(--fc-display);
+  letter-spacing: 1.5px;
+}
+
+.settings-command-head > span {
+  padding: 6px 8px;
+  border: 1px solid var(--fc-line);
+  color: var(--fc-muted);
+  font: 800 7px/1 var(--fc-mono);
+  letter-spacing: 1px;
+}
+
+body[data-interface="foundry-command-v2"] .settings-brief {
+  margin: 0 0 14px;
+  padding: 9px 11px;
+  border-left: 2px solid var(--fc-cyan);
+  background: rgba(118, 237, 241, 0.035);
+  color: #b8cbcc;
+  font: 800 8px/1.2 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .settings-section,
+body[data-interface="foundry-command-v2"] .inv-section-label,
+body[data-interface="foundry-command-v2"] .panel-label {
+  margin: 18px 0 10px !important;
+  padding: 8px 10px !important;
+  border: 1px solid var(--fc-line) !important;
+  border-left: 3px solid var(--fc-cyan) !important;
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.07), transparent 48%),
+    rgba(8, 18, 22, 0.86) !important;
+  color: var(--fc-cyan) !important;
+  font: 850 9px/1 var(--fc-mono) !important;
+  letter-spacing: 1.5px !important;
+  text-shadow: none !important;
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .settings-section::before,
+body[data-interface="foundry-command-v2"] .inv-section-label::before,
+body[data-interface="foundry-command-v2"] .panel-label::before {
+  content: none !important;
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .field-label {
+  color: #d9e8e8;
+  font: 780 10px/1.3 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .setting-slider {
+  border-color: var(--fc-line);
+  background: repeating-linear-gradient(90deg, #23363a 0 6px, #0c171a 6px 9px) !important;
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .setting-slider::-webkit-slider-thumb {
+  border-color: #061013 !important;
+  background: var(--fc-amber) !important;
+  box-shadow: 0 0 0 1px rgba(242, 184, 91, 0.76), 0 0 12px rgba(242, 184, 91, 0.16) !important;
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .quality-btn,
+body[data-interface="foundry-command-v2"] .local-loadout-option {
+  border: 1px solid var(--fc-line) !important;
+  border-radius: 1px !important;
+  background: #071116 !important;
+  color: #aabdc0 !important;
+  font-family: var(--fc-mono) !important;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .quality-btn:hover,
+body[data-interface="foundry-command-v2"] .local-loadout-option:hover {
+  border-color: var(--fc-line-hot) !important;
+  background: rgba(118, 237, 241, 0.06) !important;
+  color: var(--fc-ink) !important;
+}
+
+body[data-interface="foundry-command-v2"] #panel-settings .quality-btn.active,
+body[data-interface="foundry-command-v2"] #panel-settings .quality-btn[aria-pressed="true"],
+body[data-interface="foundry-command-v2"] .local-loadout-option.equipped {
+  border-color: var(--fc-amber) !important;
+  background:
+    repeating-linear-gradient(135deg, rgba(242, 184, 91, 0.07) 0 3px, transparent 3px 9px),
+    #12150f !important;
+  color: var(--fc-amber-soft) !important;
+  box-shadow: inset 0 -2px 0 rgba(242, 184, 91, 0.36) !important;
+}
+
+body[data-interface="foundry-command-v2"] #settings-save-btn,
+body[data-interface="foundry-command-v2"] .play-btn {
+  border: 1px solid var(--fc-cyan) !important;
+  border-radius: 1px !important;
+  background: linear-gradient(90deg, var(--fc-cyan), var(--fc-cyan-strong)) !important;
+  color: #031014 !important;
+  box-shadow: 0 9px 24px rgba(49, 207, 214, 0.22) !important;
+  clip-path: polygon(0 0, calc(100% - 11px) 0, 100% 11px, 100% 100%, 0 100%);
+  font-family: var(--fc-display) !important;
+}
+
+body[data-interface="foundry-command-v2"] #panel-loadout {
+  max-height: calc(100vh - 88px);
+  padding-top: 26px !important;
+}
+
+body[data-interface="foundry-command-v2"] .inv-header,
+body[data-interface="foundry-command-v2"] .inv-card,
+body[data-interface="foundry-command-v2"] .local-loadout-chip {
+  border-radius: 1px !important;
+  border-color: var(--fc-line) !important;
+  background: var(--fc-surface) !important;
+}
+
+/* In-game HUD ------------------------------------------------------------- */
+
+body[data-interface="foundry-command-v2"] #hud {
+  color: var(--fc-ink);
+  font-family: var(--fc-display);
+  background:
+    linear-gradient(var(--fc-cyan), var(--fc-cyan)) left 14px top 14px / 34px 1px no-repeat,
+    linear-gradient(var(--fc-cyan), var(--fc-cyan)) left 14px top 14px / 1px 22px no-repeat,
+    linear-gradient(var(--fc-cyan), var(--fc-cyan)) right 14px top 14px / 34px 1px no-repeat,
+    linear-gradient(var(--fc-cyan), var(--fc-cyan)) right 14px top 14px / 1px 22px no-repeat,
+    linear-gradient(var(--fc-amber), var(--fc-amber)) left 14px bottom 14px / 34px 1px no-repeat,
+    linear-gradient(var(--fc-amber), var(--fc-amber)) left 14px bottom 14px / 1px 22px no-repeat,
+    linear-gradient(var(--fc-amber), var(--fc-amber)) right 14px bottom 14px / 34px 1px no-repeat,
+    linear-gradient(var(--fc-amber), var(--fc-amber)) right 14px bottom 14px / 1px 22px no-repeat;
+}
+
+body[data-interface="foundry-command-v2"] #hud .hud-panel {
+  z-index: 12;
+  border: 1px solid var(--fc-line) !important;
+  border-radius: 1px !important;
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.045), transparent 54%),
+    rgba(4, 11, 15, 0.91) !important;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.36), inset 0 0 0 1px rgba(0, 0, 0, 0.48) !important;
+  backdrop-filter: blur(5px) saturate(0.9) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(0.9) !important;
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+body[data-interface="foundry-command-v2"] :is(
+  #crosshair,
+  #dm-timer,
+  #mode-info,
+  #hud-vitals,
+  #weapon-slots,
+  #ability-rack,
+  #killfeed
+) {
+  z-index: 12;
+}
+
+body[data-interface="foundry-command-v2"] .hud-vitals-cluster {
+  left: 24px;
+  bottom: 24px;
+  width: 292px;
+  gap: 4px;
+}
+
+body[data-interface="foundry-command-v2"] .hud-vitals-cluster > .hud-panel {
+  position: relative !important;
+  width: 292px;
+  min-height: 43px;
+  display: grid !important;
+  grid-template-columns: 30px minmax(112px, 1fr) 39px auto;
+  align-items: center;
+  gap: 8px !important;
+  padding: 8px 11px 7px 13px !important;
+}
+
+body[data-interface="foundry-command-v2"] .hud-vitals-cluster > .hud-panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: var(--fc-cyan);
+}
+
+body[data-interface="foundry-command-v2"] #health-wrap::before { background: var(--fc-green); }
+body[data-interface="foundry-command-v2"] #stamina-wrap::before { background: var(--fc-amber); }
+
+.hud-panel-code {
+  position: absolute;
+  top: 3px;
+  right: 12px;
+  color: rgba(143, 167, 170, 0.44);
+  font: 800 5px/1 var(--fc-mono);
+  letter-spacing: 0.8px;
+}
+
+body[data-interface="foundry-command-v2"] .hud-readout-label {
+  min-width: 0;
+  color: #b7cbcc;
+  font: 850 9px/1 var(--fc-mono);
+  letter-spacing: 1px;
+}
+
+body[data-interface="foundry-command-v2"] .hud-vitals-cluster .bar-bg {
+  width: auto !important;
+  height: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0 !important;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 5px, rgba(255, 255, 255, 0.025) 5px 7px) !important;
+}
+
+body[data-interface="foundry-command-v2"] .hud-vitals-cluster .bar-fill {
+  border-radius: 0 !important;
+}
+
+body[data-interface="foundry-command-v2"] :is(#health-text, #shield-text, #stamina-text) {
+  width: auto;
+  color: var(--fc-ink) !important;
+  font: 900 15px/1 var(--fc-mono);
+  text-align: right;
+  text-shadow: none !important;
+}
+
+body[data-interface="foundry-command-v2"] .hud-state-label {
+  min-width: 44px;
+  padding: 3px 4px;
+  border-radius: 0;
+  font: 900 7px/1 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #weapon-wrap {
+  right: 24px;
+  bottom: 24px;
+  width: 214px;
+  min-height: 96px;
+  padding: 11px 14px 10px !important;
+  display: grid !important;
+  grid-template-columns: 1fr;
+  align-items: stretch !important;
+  gap: 3px !important;
+}
+
+.hud-weapon-head,
+.hud-match-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(148, 196, 201, 0.18);
+}
+
+.hud-weapon-head span,
+.hud-weapon-head i,
+.hud-match-head > span {
+  color: var(--fc-faint);
+  font: 800 6px/1 var(--fc-mono);
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+body[data-interface="foundry-command-v2"] #weapon-name {
+  color: var(--fc-cyan) !important;
+  font: 900 13px/1.1 var(--fc-display) !important;
+  letter-spacing: 1.6px !important;
+  text-align: right;
+  text-shadow: none !important;
+}
+
+.hud-ammo-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+body[data-interface="foundry-command-v2"] #ammo-text {
+  flex: 0 0 auto;
+  color: var(--fc-ink) !important;
+  font: 900 29px/0.92 var(--fc-mono) !important;
+  letter-spacing: -1.6px;
+  white-space: nowrap;
+  text-shadow: none !important;
+}
+
+.hud-ammo-row > span {
+  padding-bottom: 2px;
+  color: var(--fc-faint);
+  font: 800 6px/1 var(--fc-mono);
+  letter-spacing: 0.8px;
+}
+
+body[data-interface="foundry-command-v2"] #reload-text {
+  color: var(--fc-amber);
+  font: 900 8px/1 var(--fc-mono);
+  letter-spacing: 1.2px;
+  text-align: right;
+}
+
+body[data-interface="foundry-command-v2"] #score-wrap {
+  top: 24px;
+  right: 24px;
+  width: 246px;
+  min-height: 116px;
+  padding: 11px 13px !important;
+  display: block !important;
+  color: var(--fc-muted);
+}
+
+body[data-interface="foundry-command-v2"] .hud-practice-label {
+  color: var(--fc-cyan);
+  font: 900 9px/1 var(--fc-mono);
+  letter-spacing: 1.2px;
+}
+
+body[data-interface="foundry-command-v2"] #server-pop {
+  margin: 8px 0 7px;
+  color: #b4c7c9 !important;
+  font: 800 8px/1.2 var(--fc-mono);
+  letter-spacing: 0.7px;
+  text-align: left;
+  text-shadow: none;
+}
+
+.hud-score-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  border: 1px solid rgba(148, 196, 201, 0.16);
+  background: rgba(148, 196, 201, 0.16);
+}
+
+.hud-score-metrics > div {
+  min-height: 45px;
+  padding: 6px 8px 5px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(5, 13, 17, 0.96);
+}
+
+.hud-score-metrics small {
+  color: var(--fc-faint);
+  font: 800 6px/1.2 var(--fc-mono);
+  letter-spacing: 0.7px;
+}
+
+body[data-interface="foundry-command-v2"] .hud-score-metrics span {
+  color: var(--fc-ink) !important;
+  font: 900 20px/1 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #dm-timer {
+  top: 17px;
+  min-width: 172px;
+  min-height: 61px;
+  padding: 10px 18px 8px !important;
+  border: 1px solid var(--fc-line) !important;
+  border-top: 2px solid var(--fc-cyan) !important;
+  border-radius: 1px !important;
+  background: rgba(4, 11, 15, 0.91) !important;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.34) !important;
+  clip-path: polygon(9px 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%, 0 9px);
+  color: var(--fc-ink) !important;
+  font: 900 34px/1 var(--fc-mono) !important;
+  letter-spacing: 2px !important;
+  text-shadow: 0 0 12px rgba(118, 237, 241, 0.18) !important;
+}
+
+body[data-interface="foundry-command-v2"] #dm-timer::before {
+  color: var(--fc-cyan);
+  font-size: 13px;
+}
+
+body[data-interface="foundry-command-v2"] #weapon-slots {
+  left: auto !important;
+  right: 24px;
+  bottom: 126px;
+  width: 214px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  transform: none !important;
+  transform-origin: right bottom;
+}
+
+body[data-interface="foundry-command-v2"] .weapon-slot {
+  position: relative;
+  width: auto;
+  height: 40px;
+  border: 1px solid rgba(148, 196, 201, 0.23);
+  border-radius: 1px;
+  background: rgba(4, 11, 15, 0.76);
+  color: #718589;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+}
+
+body[data-interface="foundry-command-v2"] .weapon-slot.active {
+  border-color: var(--fc-cyan);
+  background: linear-gradient(90deg, rgba(118, 237, 241, 0.15), rgba(4, 11, 15, 0.9));
+  color: var(--fc-ink);
+  box-shadow: inset 0 -2px 0 rgba(118, 237, 241, 0.4);
+}
+
+body[data-interface="foundry-command-v2"] .ws-key {
+  color: inherit;
+  font-family: var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack {
+  bottom: 28px;
+  grid-template-columns: repeat(3, minmax(92px, 108px));
+  gap: 4px;
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack .ability-indicator {
+  height: 52px;
+  padding: 6px 8px;
+  border: 1px solid var(--fc-line);
+  border-radius: 1px;
+  background: rgba(4, 11, 15, 0.91);
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack .ability-indicator.ready {
+  border-top: 2px solid var(--fc-cyan);
+  background:
+    linear-gradient(180deg, rgba(118, 237, 241, 0.06), transparent 55%),
+    rgba(4, 11, 15, 0.93);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack .ability-key {
+  width: 24px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(118, 237, 241, 0.35);
+  color: var(--fc-cyan);
+  font: 900 17px/1 var(--fc-display);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack .ability-name {
+  color: var(--fc-ink);
+  font: 900 8px/1 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack .ability-state {
+  color: var(--fc-muted);
+  font: 800 6px/1.2 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack .ability-count {
+  color: var(--fc-ink);
+  font: 900 16px/1 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #ability-rack #ability-q {
+  background:
+    linear-gradient(90deg, rgba(118, 237, 241, 0.16) calc(var(--ratio, 1) * 100%), transparent 0),
+    rgba(4, 11, 15, 0.93);
+}
+
+body[data-interface="foundry-command-v2"] #killfeed {
+  top: 86px;
+  left: 24px;
+  right: auto;
+  align-items: flex-start;
+}
+
+body[data-interface="foundry-command-v2"] .kill-entry {
+  border: 1px solid var(--fc-line);
+  border-left: 3px solid var(--fc-cyan);
+  border-radius: 1px;
+  background: rgba(4, 11, 15, 0.9);
+  color: #cfdddd;
+  font: 800 9px/1.2 var(--fc-mono);
+}
+
+body[data-interface="foundry-command-v2"] #crosshair::after {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--crosshair-color) !important;
+}
+
+body[data-interface="foundry-command-v2"] #crosshair span {
+  border-radius: 0;
+}
+
+body[data-interface="foundry-command-v2"] .damage-direction-card,
+body[data-interface="foundry-command-v2"] .ability-reason,
+body[data-interface="foundry-command-v2"] .interaction-prompt,
+body[data-interface="foundry-command-v2"] .connection-warning,
+body[data-interface="foundry-command-v2"] .caption-card,
+body[data-interface="foundry-command-v2"] .audio-cue-card {
+  border-radius: 1px;
+  font-family: var(--fc-mono);
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+}
+
+body[data-interface="foundry-command-v2"] .caption-card,
+body[data-interface="foundry-command-v2"] .audio-cue-card,
+body[data-interface="foundry-command-v2"] .interaction-prompt {
+  background: rgba(4, 11, 15, 0.95);
+  border-color: var(--fc-line-hot);
+}
+
+body[data-interface="foundry-command-v2"] .damage-direction-card,
+body[data-interface="foundry-command-v2"] .connection-warning,
+body[data-interface="foundry-command-v2"] .ability-reason {
+  background:
+    repeating-linear-gradient(135deg, rgba(242, 184, 91, 0.08) 0 3px, transparent 3px 9px),
+    rgba(17, 12, 5, 0.95);
+}
+
+body[data-interface="foundry-command-v2"] .sb-panel,
+body[data-interface="foundry-command-v2"] .lb-panel,
+body[data-interface="foundry-command-v2"] .menu-panel {
+  border: 1px solid var(--fc-line-hot);
+  border-radius: 1px;
+  background:
+    linear-gradient(130deg, rgba(118, 237, 241, 0.035), transparent 34%),
+    rgba(4, 11, 15, 0.96);
+  box-shadow: 0 28px 78px rgba(0, 0, 0, 0.7);
+}
+
+body[data-interface="foundry-command-v2"] :is(.sb-head, .lb-winner) {
+  border-bottom-color: var(--fc-line);
+}
+
+body[data-interface="foundry-command-v2"] :is(.sb-title, .lb-won) {
+  color: var(--fc-cyan);
+}
+
+/* Focus, contrast, and responsive density -------------------------------- */
+
+body[data-interface="foundry-command-v2"] :is(button, a, input):focus-visible {
+  outline: 2px solid var(--fc-amber) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 1px #05090b, 0 0 0 4px rgba(242, 184, 91, 0.26) !important;
+}
+
+body[data-high-contrast="true"][data-interface="foundry-command-v2"] :is(
+  .practice-launch-card,
+  .practice-inspection-grid > div,
+  .practice-stat-grid > span,
+  .map-preview-window,
+  #top-nav,
+  #nav-side,
+  .settings-command-head,
+  .hud-score-metrics > div,
+  .hud-weapon-head
+) {
+  color: #fff !important;
+  border-color: #fff !important;
+  background: #020609 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 1180px) {
+  .nav-brand-lockup { min-width: 205px; padding-right: 14px; }
+  body[data-interface="foundry-command-v2"] .nav-item,
+  body[data-interface="foundry-command-v2"] .nav-dd-btn { padding: 0 9px !important; font-size: 10px !important; }
+  body[data-interface="foundry-command-v2"] #nav-side.local-profile-card { min-width: 178px; }
+}
+
+@media (max-width: 980px) {
+  body[data-interface="foundry-command-v2"] #top-nav { padding: 0 16px !important; gap: 10px !important; }
+  .nav-brand-lockup { min-width: auto; border-right: 0; }
+  body[data-interface="foundry-command-v2"] .local-build-chip { display: none; }
+  body[data-interface="foundry-command-v2"] #online-match-button { display: none; }
+  body[data-interface="foundry-command-v2"] .practice-launch-card { width: min(700px, calc(100vw - 36px)); }
+  .practice-command-grid { grid-template-columns: 1fr; }
+  body[data-interface="foundry-command-v2"] .map-preview-window { height: 156px; }
+  .practice-launch-rail { padding: 16px 0 0; border-top: 1px solid var(--fc-line); border-left: 0; }
+  .practice-stat-grid { grid-template-columns: repeat(3, 1fr); }
+  .practice-stat-grid > span { grid-template-columns: 1fr; gap: 4px; }
+}
+
+@media (max-width: 720px) {
+  body[data-interface="foundry-command-v2"] .nav-brand { font-size: 21px !important; }
+  body[data-interface="foundry-command-v2"] .nav-item { padding: 0 7px !important; font-size: 9px !important; }
+  body[data-interface="foundry-command-v2"] .practice-launch-card { width: calc(100vw - 24px); }
+  .practice-card-head { padding: 16px 18px; }
+  .practice-ready-state { display: none; }
+  .practice-command-grid { padding: 16px 18px; }
+  .practice-inspection-rail { padding: 14px 18px; }
+  .practice-inspection-grid { grid-template-columns: 1fr; }
+  body[data-interface="foundry-command-v2"] .practice-footnote { padding-inline: 18px; }
+}
+
+@media (max-height: 780px) and (min-width: 981px) {
+  body[data-interface="foundry-command-v2"] #center-play { padding-top: 76px; padding-bottom: 12px; }
+  .practice-card-head { min-height: 76px; padding-block: 13px; }
+  body[data-interface="foundry-command-v2"] .practice-launch-card h2 { font-size: 32px; }
+  .practice-command-grid { padding-block: 14px; }
+  body[data-interface="foundry-command-v2"] .map-preview-window { height: 166px; }
+  .practice-stat-grid > span { min-height: 31px; }
+  body[data-interface="foundry-command-v2"] .practice-launch-card .click-to-play { min-height: 47px; }
+  .practice-inspection-rail { padding-block: 10px; }
+  body[data-interface="foundry-command-v2"] .locked-graybox-preview-note { font-size: 8px; }
+  body[data-interface="foundry-command-v2"] .practice-footnote { padding-block: 7px; }
+}
+
+@media (max-width: 1100px), (max-height: 720px) {
+  body[data-interface="foundry-command-v2"] .hud-vitals-cluster { left: 16px; bottom: 16px; width: 250px; }
+  body[data-interface="foundry-command-v2"] .hud-vitals-cluster > .hud-panel {
+    width: 250px;
+    min-height: 39px;
+    grid-template-columns: 27px minmax(92px, 1fr) 34px auto;
+    padding-inline: 10px !important;
+  }
+  body[data-interface="foundry-command-v2"] #weapon-wrap { right: 16px; bottom: 16px; width: 188px; min-height: 86px; }
+  body[data-interface="foundry-command-v2"] #weapon-slots { right: 16px; bottom: 106px; width: 188px; }
+  body[data-interface="foundry-command-v2"] #score-wrap { top: 16px; right: 16px; width: 218px; }
+  body[data-interface="foundry-command-v2"] #ability-rack { bottom: 20px; grid-template-columns: repeat(3, 86px); }
+  body[data-interface="foundry-command-v2"] #ability-rack .ability-indicator { height: 48px; }
+  body[data-interface="foundry-command-v2"] #killfeed { top: 76px; left: 16px; }
+}
