@@ -27,6 +27,12 @@ const browserLaunchArguments = Object.freeze([
   '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
 ]);
 const SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS = 90;
+const ACCEPTABLE_REMOTE_INTERPOLATION_MODES = new Set([
+  'authoritative',
+  'interpolated',
+  'extrapolated',
+  'held',
+]);
 
 const expectedBinding = Object.freeze({
   mapReference: 'inkfall_foundry@2',
@@ -1321,15 +1327,19 @@ async function waitForRemoteEntityMovement(
     if (snapshot !== null && remote !== null) {
       const peerDistanceMillimeters = distanceXZ(authorityPosition, remote.position);
       const remoteTransformMovementMillimeters = distanceXZ(remoteBefore, remote.position);
+      const interpolationModeAccepted =
+        ACCEPTABLE_REMOTE_INTERPOLATION_MODES.has(remote.interpolationMode);
       last = Object.freeze({
         snapshot,
         remote,
         peerDistanceMillimeters,
         remoteTransformMovementMillimeters,
+        interpolationModeAccepted,
       });
       if (
         peerDistanceMillimeters <= maximumPeerDistanceMillimeters
         && remoteTransformMovementMillimeters >= minimumRemoteMovementMillimeters
+        && interpolationModeAccepted
       ) {
         return Object.freeze({
           ...last,

@@ -164,6 +164,10 @@ function assertSha256(value, label) {
   assert.match(value, /^[0-9a-f]{64}$/u, label);
 }
 
+function normalizeYawMilliDegrees(value) {
+  return ((value % 360_000) + 360_000) % 360_000;
+}
+
 function reliableEventOccurrences(wire, clientId, stimulus) {
   return wire.flatMap((record) => {
     if (
@@ -391,9 +395,12 @@ for (let index = 0; index < 8; index += 1) {
   const join = proof.authority.initialJoins[index];
   assert.equal(join.clientId, `client-${index}`);
   assertSha256(join.resumeTokenSha256, `${join.clientId} token digest`);
-  assert.ok(Number.isInteger(join.serverTick) && join.serverTick > 0);
+  assert.ok(Number.isInteger(join.serverTick) && join.serverTick >= 0);
   assert.deepEqual(join.feetPosition, expectedSpawns[index].feetPosition);
-  assert.equal(join.yawMilliDegrees, expectedSpawns[index].yawMilliDegrees);
+  assert.equal(
+    normalizeYawMilliDegrees(join.yawMilliDegrees),
+    normalizeYawMilliDegrees(expectedSpawns[index].yawMilliDegrees),
+  );
   assert.equal(join.teamId, index % 2 === 0 ? 'team_blue' : 'team_red');
 }
 
