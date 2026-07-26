@@ -1,0 +1,731 @@
+{
+  "schema": "kyx-v6c-character-rev16-direct-glb-render-report-v1",
+  "generatedAt": "2026-07-26T04:26:20.416399+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "V6C_CHARACTER_CORRECTIVE_CONTACT_SILHOUETTE_CANDIDATE_REV16",
+  "status": "BOUNDED_DIRECT_REV16_EXACT_CURRENT_GLB_REVIEW_REQUIRED_NOT_G6",
+  "scope": "Eight direct views of a fresh import of the exact current Rev16 runtime-candidate GLB. Cameras, lights, and floor are render-only.",
+  "expectedSha256Argument": "13a3f3761960b0aad80653dce5c7f3439f29458f8979b8f10537e9be40b9c0eb",
+  "sourceGlb": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev16\\export\\kyx-v6c-character-rev16.runtime-candidate.glb",
+    "bytesBefore": 3073000,
+    "bytesAfter": 3073000,
+    "sha256Before": "13a3f3761960b0aad80653dce5c7f3439f29458f8979b8f10537e9be40b9c0eb",
+    "sha256After": "13a3f3761960b0aad80653dce5c7f3439f29458f8979b8f10537e9be40b9c0eb"
+  },
+  "freshImport": {
+    "operatorResult": [
+      "FINISHED"
+    ],
+    "runtimeMeshes": [
+      "KYX_V6C_LOD0_HARD_REV16",
+      "KYX_V6C_LOD0_RIFLE_REV16",
+      "KYX_V6C_LOD0_SOFT_REV16"
+    ],
+    "excludedImporterHelperMeshes": [
+      "Icosphere"
+    ],
+    "armature": "V6CF16_CorrectiveContactSilhouetteRig",
+    "boneCount": 52,
+    "actions": [
+      "KYX_V6C_TP_AIRBORNE_LOOP",
+      "KYX_V6C_TP_DEATH_FRONT",
+      "KYX_V6C_TP_HIT_REACTION_FRONT",
+      "KYX_V6C_TP_IDLE",
+      "KYX_V6C_TP_JUMP_START",
+      "KYX_V6C_TP_LAND",
+      "KYX_V6C_TP_PRIMARY_FIRE",
+      "KYX_V6C_TP_RELOAD",
+      "KYX_V6C_TP_RUN",
+      "KYX_V6C_TP_WALK"
+    ],
+    "topologyBefore": {
+      "KYX_V6C_LOD0_HARD_REV16": {
+        "meshData": "KYX_V6C_LOD0_HARD_REV16_MESH",
+        "vertices": 8743,
+        "edges": 18898,
+        "polygons": 10649,
+        "triangles": 10649,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_REV16_HARD_SURFACE_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_RIFLE_REV16": {
+        "meshData": "KYX_V6C_LOD0_RIFLE_REV16_MESH",
+        "vertices": 6417,
+        "edges": 13473,
+        "polygons": 7356,
+        "triangles": 7356,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_REV16_RIFLE_SURFACE_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_SOFT_REV16": {
+        "meshData": "KYX_V6C_LOD0_SOFT_REV16_MESH",
+        "vertices": 13944,
+        "edges": 31390,
+        "polygons": 18077,
+        "triangles": 18077,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_REV16_SOFT_SURFACE_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "topologyAfter": {
+      "KYX_V6C_LOD0_HARD_REV16": {
+        "meshData": "KYX_V6C_LOD0_HARD_REV16_MESH",
+        "vertices": 8743,
+        "edges": 18898,
+        "polygons": 10649,
+        "triangles": 10649,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_REV16_HARD_SURFACE_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_RIFLE_REV16": {
+        "meshData": "KYX_V6C_LOD0_RIFLE_REV16_MESH",
+        "vertices": 6417,
+        "edges": 13473,
+        "polygons": 7356,
+        "triangles": 7356,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_REV16_RIFLE_SURFACE_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_SOFT_REV16": {
+        "meshData": "KYX_V6C_LOD0_SOFT_REV16_MESH",
+        "vertices": 13944,
+        "edges": 31390,
+        "polygons": 18077,
+        "triangles": 18077,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_REV16_SOFT_SURFACE_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    }
+  },
+  "renderConfiguration": {
+    "engine": "BLENDER_EEVEE",
+    "look": "AgX - Medium High Contrast",
+    "exposure": -0.25,
+    "worldColor": [
+      0.0035,
+      0.008,
+      0.014,
+      1.0
+    ],
+    "worldStrength": 0.16,
+    "renderHelpers": {
+      "cameraCountCreatedPerView": 1,
+      "lights": [
+        "KYX_REV16_GLB_EVIDENCE_Key",
+        "KYX_REV16_GLB_EVIDENCE_WarmFill",
+        "KYX_REV16_GLB_EVIDENCE_CyanRim",
+        "KYX_REV16_GLB_EVIDENCE_ContactFill"
+      ],
+      "floor": "KYX_REV16_GLB_EVIDENCE_Floor",
+      "floorZ": 0.004147
+    }
+  },
+  "views": [
+    {
+      "name": "front-three-quarter-idle",
+      "label": "FRONT THREE-QUARTER / IDLE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-front-three-quarter-idle.png",
+      "bytes": 2540909,
+      "sha256": "6fa33a28b469d9551b7ffb26a4ec1e251e426dfd82cf7c38618bd83d2baa2a2a",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "sampledFrame": 13,
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          3.159872,
+          -5.48529,
+          2.348949
+        ],
+        "target": [
+          -0.040128,
+          -0.685289,
+          0.928949
+        ],
+        "orthographicScale": 2.091884
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415432,
+          -1.514597,
+          0.015966
+        ],
+        "maximum": [
+          0.335175,
+          0.194019,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.040128,
+          -0.685289,
+          0.928949
+        ]
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2540909,
+        "sha256": "6fa33a28b469d9551b7ffb26a4ec1e251e426dfd82cf7c38618bd83d2baa2a2a",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "rear-side-idle",
+      "label": "REAR-SIDE THREE-QUARTER / IDLE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-rear-side-idle.png",
+      "bytes": 2420180,
+      "sha256": "52f070800375a64974ef4da0cb4dd01db32b20b0cf4aa469c78c7d88cb9c4ce7",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "sampledFrame": 13,
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          -3.790128,
+          3.014711,
+          2.228949
+        ],
+        "target": [
+          -0.040128,
+          -0.685289,
+          0.928949
+        ],
+        "orthographicScale": 2.091884
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415432,
+          -1.514597,
+          0.015966
+        ],
+        "maximum": [
+          0.335175,
+          0.194019,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.040128,
+          -0.685289,
+          0.928949
+        ]
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2420180,
+        "sha256": "52f070800375a64974ef4da0cb4dd01db32b20b0cf4aa469c78c7d88cb9c4ce7",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "waist-pelvis-transition",
+      "label": "CONTINUOUS TORSO / WAIST / HIP",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-waist-pelvis-transition.png",
+      "bytes": 2146961,
+      "sha256": "3fdeb247c3b7d777d94cd443bf131a166061ab73973ce0333aea80fdd332b5e7",
+      "resolution": [
+        1500,
+        1100
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "sampledFrame": 13,
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          2.25,
+          -3.421,
+          1.68
+        ],
+        "target": [
+          0.0,
+          -0.021,
+          1.06
+        ],
+        "orthographicScale": 0.86
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415432,
+          -1.514597,
+          0.015966
+        ],
+        "maximum": [
+          0.335175,
+          0.194019,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          0.0,
+          -0.021,
+          1.06
+        ],
+        "purpose": "continuous_torso_waist_hip_shell_and_seams"
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2146961,
+        "sha256": "3fdeb247c3b7d777d94cd443bf131a166061ab73973ce0333aea80fdd332b5e7",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "pants-boots-surface",
+      "label": "BOOTS / FITTED ANKLE GAITERS / TOE SUPPRESSION",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-pants-boots-surface.png",
+      "bytes": 1887303,
+      "sha256": "90fca79573363c64759b5891b1c610f69766e21f82f854e2a0942c19b7de3ff7",
+      "resolution": [
+        1500,
+        1100
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "sampledFrame": 13,
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          2.2,
+          -3.321,
+          0.645001
+        ],
+        "target": [
+          0.0,
+          -0.071,
+          0.165001
+        ],
+        "orthographicScale": 0.72
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415432,
+          -1.514597,
+          0.015966
+        ],
+        "maximum": [
+          0.335175,
+          0.194019,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          0.0,
+          -0.071,
+          0.165001
+        ],
+        "purpose": "toe_suppression_boots_and_fitted_ankle_gaiters"
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 1887303,
+        "sha256": "90fca79573363c64759b5891b1c610f69766e21f82f854e2a0942c19b7de3ff7",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "weapon-contact-firing-side",
+      "label": "FIRING HAND GRIP / PRIMARY FIRE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-weapon-contact-firing-side.png",
+      "bytes": 2215999,
+      "sha256": "bdae9bba671a55bfb3888861bede77a8e9c9f01e341f51f63d531abc5c861e1e",
+      "resolution": [
+        1600,
+        1100
+      ],
+      "action": "KYX_V6C_TP_PRIMARY_FIRE",
+      "sampledFrame": 3,
+      "actionFrameRange": [
+        1.0,
+        12.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          2.053276,
+          -4.002568,
+          2.115309
+        ],
+        "target": [
+          -0.096724,
+          -0.552568,
+          1.295309
+        ],
+        "orthographicScale": 0.78
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.417186,
+          -1.483835,
+          0.024347
+        ],
+        "maximum": [
+          0.335001,
+          0.20069,
+          1.794757
+        ]
+      },
+      "targetDetails": {
+        "handBoneNamesAvailable": [
+          "palm.L",
+          "palm.R",
+          "wrist.L",
+          "wrist.R"
+        ],
+        "handsCenter": [
+          -0.118946,
+          -0.461456,
+          1.290942
+        ],
+        "rifleBounds": {
+          "minimum": [
+            -0.232506,
+            -1.483835,
+            1.047776
+          ],
+          "maximum": [
+            0.153343,
+            -0.089878,
+            1.5653
+          ]
+        },
+        "target": [
+          -0.096724,
+          -0.552568,
+          1.295309
+        ]
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2215999,
+        "sha256": "bdae9bba671a55bfb3888861bede77a8e9c9f01e341f51f63d531abc5c861e1e",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "weapon-contact-support-side",
+      "label": "SUPPORT HAND FOREGRIP / IDLE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-weapon-contact-support-side.png",
+      "bytes": 2275629,
+      "sha256": "f87b39bf3452323608b1aa32cc86dacd25cfe3af7431780fd350e809689ddaa8",
+      "resolution": [
+        1600,
+        1100
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "sampledFrame": 13,
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          -2.240323,
+          -4.021499,
+          2.03605
+        ],
+        "target": [
+          -0.090323,
+          -0.571499,
+          1.21605
+        ],
+        "orthographicScale": 0.78
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415432,
+          -1.514597,
+          0.015966
+        ],
+        "maximum": [
+          0.335175,
+          0.194019,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "handBoneNamesAvailable": [
+          "palm.L",
+          "palm.R",
+          "wrist.L",
+          "wrist.R"
+        ],
+        "handsCenter": [
+          -0.113981,
+          -0.474053,
+          1.217356
+        ],
+        "rifleBounds": {
+          "minimum": [
+            -0.230596,
+            -1.514597,
+            0.972203
+          ],
+          "maximum": [
+            0.171626,
+            -0.129551,
+            1.453184
+          ]
+        },
+        "target": [
+          -0.090323,
+          -0.571499,
+          1.21605
+        ]
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2275629,
+        "sha256": "f87b39bf3452323608b1aa32cc86dacd25cfe3af7431780fd350e809689ddaa8",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "action-run-stride-left-lead",
+      "label": "PLANTED RUN STRIDE / LEFT LEAD",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-action-run-stride-left-lead.png",
+      "bytes": 2561079,
+      "sha256": "7184326d94031b5b59388d60b15cf1ee75664fee2b976e5e84ac5d5682d1c806",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_RUN",
+      "sampledFrame": 1,
+      "actionFrameRange": [
+        1.0,
+        19.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          3.070418,
+          -5.300992,
+          2.124808
+        ],
+        "target": [
+          -0.029582,
+          -0.600992,
+          0.784808
+        ],
+        "orthographicScale": 2.05
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.423988,
+          -1.560363,
+          0.0118
+        ],
+        "maximum": [
+          0.364823,
+          0.408379,
+          1.512786
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.029582,
+          -0.600992,
+          0.784808
+        ]
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2561079,
+        "sha256": "7184326d94031b5b59388d60b15cf1ee75664fee2b976e5e84ac5d5682d1c806",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "action-run-stride-right-lead",
+      "label": "PLANTED RUN STRIDE / RIGHT LEAD",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-character-rev16\\renders\\kyx-v6c-character-rev16-action-run-stride-right-lead.png",
+      "bytes": 2516369,
+      "sha256": "2a1c25be9bcd5f22d541864a4cada23f01c5d78828e18aaf505540260d05a7e4",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_RUN",
+      "sampledFrame": 10,
+      "actionFrameRange": [
+        1.0,
+        19.0
+      ],
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          3.067832,
+          -5.298647,
+          2.124759
+        ],
+        "target": [
+          -0.032168,
+          -0.598647,
+          0.784759
+        ],
+        "orthographicScale": 2.05
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.409241,
+          -1.555829,
+          0.011621
+        ],
+        "maximum": [
+          0.344905,
+          0.408534,
+          1.51286
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.032168,
+          -0.598647,
+          0.784759
+        ]
+      },
+      "determinismRepeat": {
+        "warmupRenderedAndRemoved": true,
+        "bytes": 2516369,
+        "sha256": "2a1c25be9bcd5f22d541864a4cada23f01c5d78828e18aaf505540260d05a7e4",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    }
+  ],
+  "assertions": {
+    "expectedShaMatchesExactCurrentGlbBeforeAndAfter": true,
+    "freshImportHasThreeRuntimeMeshes": true,
+    "freshImportHasSingle52BoneRig": true,
+    "preservedTenClipSubsetPresent": true,
+    "allEightReviewViewsRendered": true,
+    "everyViewRepeatHashMatches": true,
+    "runtimeTopologyUnchangedAcrossCapture": true,
+    "noBlendSavedAndNoGeometryExported": true
+  },
+  "visualDecision": "PENDING_DIRECT_HUMAN_REVIEW_NOT_G6",
+  "boundedObservations": [
+    "Contact and run poses come from embedded Rev16 actions in the exact GLB.",
+    "The waist and boot views directly expose the corrective shells and removed toe islands.",
+    "Every captured image is byte-identical to its immediate repeat render."
+  ],
+  "nonClaims": [
+    "This packet does not grant visual acceptance or close G6.",
+    "Static contact views do not by themselves prove all-frame clipping freedom.",
+    "The ten preserved clips are not the complete handoff animation matrix.",
+    "LOD1, LOD2, first-person arms, final atlases, integration, performance, and release eligibility remain open.",
+    "No public runtime asset or non-character subsystem is modified by this renderer."
+  ]
+}
