@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "capturedAtLocal": "2026-07-25",
+  "timezone": "America/Chicago",
+  "status": "BOUNDED_STAGING_PASS_GATES_OPEN",
+  "deployment": {
+    "url": "https://kyx-io-authority.suhaibabdeljaber.workers.dev",
+    "gitCommit": "03e99dca613ac6c0cdbaf7330d41a5a3bb5e39a9",
+    "workerVersionId": "cf1af235-494c-4d1c-86dd-d25987d74524",
+    "buildId": "foundry-command-v2-g7-online-20260725"
+  },
+  "build": {
+    "command": "pnpm run build",
+    "result": "PASS",
+    "modulesTransformed": 155,
+    "chunkSizeWarningPresent": true
+  },
+  "http": {
+    "health": {
+      "status": 200,
+      "ok": true,
+      "service": "kyx-authority",
+      "roomBinding": true
+    },
+    "allowedOriginRoomCreate": {
+      "status": 201,
+      "sampleRoomCode": "KYX-PYW275"
+    },
+    "allowedOriginMetrics": {
+      "status": 200
+    },
+    "forbiddenOriginRoomCreate": {
+      "status": 403
+    },
+    "rootContentSecurityPolicy": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' wss:; worker-src 'self' blob:; manifest-src 'self'"
+  },
+  "browser": {
+    "name": "Google Chrome",
+    "version": "150.0.7871.186",
+    "headless": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "menu": {
+      "playVisible": true,
+      "onlineButtonEnabled": true,
+      "documentWidth": 1280,
+      "documentHeight": 720,
+      "pageErrors": 0
+    },
+    "offlinePractice": {
+      "pointerLockAcquired": true,
+      "botsDeclared": 7,
+      "escapeReleasedPointer": true,
+      "pauseFocusElement": "resume-btn",
+      "quitReturnedToMenu": true,
+      "quitFocusElement": "play-btn"
+    },
+    "onlineAuthority": {
+      "roomCode": "KYX-VZHBLY",
+      "connection": "joined",
+      "remotePlayers": 0,
+      "matchPhase": "lobby",
+      "serverTick": 0,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 0,
+      "presentationStatus": "ready",
+      "lastError": null,
+      "pageErrors": 0
+    },
+    "warnings": [
+      "Permissions-Policy token ambient-light-sensor is unrecognized by Chrome 150",
+      "Rapier compatibility initialization reports its upstream deprecated-parameter warning",
+      "Offline practice emitted a non-fatal THREE WebGL shader precision warning"
+    ],
+    "excludedObservation": "Two-page visual follow-up is not multiplayer proof because the backgrounded first page reached heartbeat timeout while the second page joined."
+  },
+  "screenshots": [
+    {
+      "file": "cloudflare-menu-live.png",
+      "bytes": 473936,
+      "sha256": "063be3aaec689d12c78312291c8d1a3d6d27fdcebd91792b53aafe1df9b46611"
+    },
+    {
+      "file": "cloudflare-offline-practice-gameplay-1280x720-live.png",
+      "bytes": 392531,
+      "sha256": "78b4ce3ebff74cb58be4a0397f59487bf2b057d3b5dc0ad522da637aa2d9b893"
+    },
+    {
+      "file": "cloudflare-offline-practice-paused-live.png",
+      "bytes": 190736,
+      "sha256": "a3090a92677dbaf702e7af396afbfd7d27f63ede0dcb9cb48a63c3b76a1477e2"
+    },
+    {
+      "file": "cloudflare-online-authority-joined-1280x720-live.png",
+      "bytes": 261019,
+      "sha256": "926602814b08dcc0642db17a31ac58fcaeb31893cc7743d89b4f76fde7023f5d"
+    }
+  ],
+  "claimBoundary": [
+    "NOT_G3",
+    "NOT_G5",
+    "NOT_G6",
+    "NOT_G7",
+    "NOT_G8",
+    "NOT_G9"
+  ],
+  "workStatus": "Currently being worked on."
+}
