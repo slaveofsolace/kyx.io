@@ -81,9 +81,12 @@ const LOCAL_MAP_ID = 'phase4_flat_run';
 const ROOM_RUNTIME_SCHEMA_VERSION = 2;
 const ROOM_PROFILE_SCHEMA_VERSION = 1;
 const LOBBY_CHECKPOINT_SCHEMA_VERSION = 1;
+const LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION = 1;
+const LOBBY_RELIABILITY_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
 const LOADOUT_REQUEST_LEDGER_SCHEMA_VERSION = 1;
 const ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION = 1;
 const ACTIVE_MATCH_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
+const MAXIMUM_LOBBY_RELIABILITY_CHECKPOINT_BYTES = 1_000_000;
 const MAXIMUM_ACTIVE_MATCH_CHECKPOINT_BYTES = 4_000_000;
 const MAXIMUM_RETAINED_LOADOUT_REQUESTS = 512;
 const LOADOUT_ACCEPTED_OUTCOME = 'accepted';
@@ -116,6 +119,18 @@ interface LobbyResumeSessionRow {
   readonly player_id: string;
   readonly generation: number;
   readonly expires_at: number;
+}
+
+interface LobbyReliabilityCheckpointRow {
+  readonly [column: string]: string | number | ArrayBuffer | null;
+  readonly schema_version: number;
+  readonly room_code: string;
+  readonly room_id: string;
+  readonly match_id: string;
+  readonly protocol_version: number;
+  readonly checkpoint_json: string;
+  readonly checkpoint_hash_algorithm: string;
+  readonly checkpoint_hash: string;
 }
 
 interface LoadoutRequestLedgerRow {
@@ -156,6 +171,19 @@ interface ActiveMatchCheckpointEnvelopeV1 {
   readonly sessionGenerations: readonly {
     readonly playerId: string;
     readonly generation: number;
+  }[];
+}
+
+interface LobbyReliabilityCheckpointEnvelopeV1 {
+  readonly schemaVersion: typeof LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION;
+  readonly roomCode: string;
+  readonly roomId: string;
+  readonly matchId: string;
+  readonly protocolVersion: typeof PROTOCOL_VERSION;
+  readonly reliableEvents: ReliableEventCheckpointV1;
+  readonly playerEventAcknowledgements: readonly {
+    readonly playerId: string;
+    readonly lastAcknowledgedEventId: string | null;
   }[];
 }
 
@@ -877,6 +905,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           rate.attachment.playerId,
           clientMessage.lastEventId,
         );
+        if (authority.lifecycle === 'lobby') this.persistLobbyReliabilityCheckpoint();
         this.markActiveMatchCheckpointDirty();
         this.transportMetrics.snapshotAcksAccepted += 1;
         this.transportMetrics.reliableEventAcksAccepted += 1;
@@ -1003,6 +1032,21 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             schema_version INTEGER NOT NULL,
             join_ordinal INTEGER NOT NULL UNIQUE CHECK (join_ordinal >= 0 AND join_ordinal < 64),
             created_at INTEGER NOT NULL
+          )
+        `);
+        this.ctx.storage.sql.exec(`
+          CREATE TABLE IF NOT EXISTS room_lobby_reliability_v1 (
+            singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
+            schema_version INTEGER NOT NULL,
+            room_code TEXT NOT NULL,
+            room_id TEXT NOT NULL,
+            match_id TEXT NOT NULL,
+            protocol_version INTEGER NOT NULL,
+            checkpoint_json TEXT NOT NULL,
+            checkpoint_hash_algorithm TEXT NOT NULL,
+            checkpoint_hash TEXT NOT NULL,
+            created_at INTEGER NOT NULL,
+            updated_at INTEGER NOT NULL
           )
         `);
         this.ctx.storage.sql.exec(`
@@ -1457,6 +1501,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         now,
       );
       this.ctx.storage.sql.exec('DELETE FROM room_lobby_players_v1');
+      this.ctx.storage.sql.exec('DELETE FROM room_lobby_reliability_v1');
       this.ctx.storage.sql.exec(
         `UPDATE room_runtime_v2
          SET recovery_state = 'active_checkpointed', updated_at = ?
@@ -1468,6 +1513,160 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     this.lastActiveMatchCheckpointPersistedTick = authority.serverTick;
     this.transportMetrics.activeMatchCheckpointWrites += 1;
     this.restoredSpawnOrdinals.clear();
+  }
+
+  private persistLobbyReliabilityCheckpoint(): void {
+    const authority = this.requireAuthority();
+    if (authority.lifecycle !== 'lobby' && authority.lifecycle !== 'idle') return;
+    const playerIds = [...this.ctx.storage.sql.exec<{ player_id: string }>(
+      `SELECT player_id
+       FROM room_lobby_players_v1
+       WHERE schema_version = ?
+       ORDER BY player_id`,
+      LOBBY_CHECKPOINT_SCHEMA_VERSION,
+    )].map(({ player_id: playerId }) => playerId);
+    if (playerIds.length === 0) {
+      this.ctx.storage.sql.exec('DELETE FROM room_lobby_reliability_v1');
+      return;
+    }
+    const playerEventAcknowledgements = playerIds.map((playerId) => {
+      if (!this.playerEventAcknowledgements.has(playerId)) {
+        throw new Error(`AUTHORITY_LOBBY_CHECKPOINT_ACK_MISSING:${playerId}`);
+      }
+      return Object.freeze({
+        playerId,
+        lastAcknowledgedEventId: this.playerEventAcknowledgements.get(playerId) ?? null,
+      });
+    });
+    const envelope: LobbyReliabilityCheckpointEnvelopeV1 = Object.freeze({
+      schemaVersion: LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION,
+      roomCode: this.roomCode as string,
+      roomId: authority.identity.roomId,
+      matchId: authority.identity.matchId,
+      protocolVersion: PROTOCOL_VERSION,
+      reliableEvents: this.reliableEvents.exportCheckpoint(),
+      playerEventAcknowledgements: Object.freeze(playerEventAcknowledgements),
+    });
+    const checkpointJson = JSON.stringify(envelope);
+    if (
+      new TextEncoder().encode(checkpointJson).byteLength
+      > MAXIMUM_LOBBY_RELIABILITY_CHECKPOINT_BYTES
+    ) {
+      throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_TOO_LARGE');
+    }
+    const checkpointHash = fnv1a64Json(checkpointJson);
+    const now = Date.now();
+    this.ctx.storage.transactionSync(() => {
+      this.ctx.storage.sql.exec(
+        `INSERT INTO room_lobby_reliability_v1
+          (singleton, schema_version, room_code, room_id, match_id,
+           protocol_version, checkpoint_json, checkpoint_hash_algorithm,
+           checkpoint_hash, created_at, updated_at)
+         VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+         ON CONFLICT(singleton) DO UPDATE SET
+           schema_version = excluded.schema_version,
+           room_code = excluded.room_code,
+           room_id = excluded.room_id,
+           match_id = excluded.match_id,
+           protocol_version = excluded.protocol_version,
+           checkpoint_json = excluded.checkpoint_json,
+           checkpoint_hash_algorithm = excluded.checkpoint_hash_algorithm,
+           checkpoint_hash = excluded.checkpoint_hash,
+           updated_at = excluded.updated_at`,
+        LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION,
+        envelope.roomCode,
+        envelope.roomId,
+        envelope.matchId,
+        PROTOCOL_VERSION,
+        checkpointJson,
+        LOBBY_RELIABILITY_CHECKPOINT_HASH_ALGORITHM,
+        checkpointHash,
+        now,
+        now,
+      );
+      this.ctx.storage.sql.exec(
+        `UPDATE room_runtime_v2
+         SET recovery_state = 'lobby_checkpointed', updated_at = ?
+         WHERE singleton = 1`,
+        now,
+      );
+    });
+  }
+
+  private restoreLobbyReliabilityCheckpoint(expectedPlayerIds: readonly string[]): void {
+    const authority = this.requireAuthority();
+    const row = [...this.ctx.storage.sql.exec<LobbyReliabilityCheckpointRow>(
+      `SELECT schema_version, room_code, room_id, match_id, protocol_version,
+              checkpoint_json, checkpoint_hash_algorithm, checkpoint_hash
+       FROM room_lobby_reliability_v1 WHERE singleton = 1`,
+    )][0];
+    if (row === undefined) throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_ROW_MISSING');
+    if (
+      row.schema_version !== LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION
+      || row.room_code !== this.roomCode
+      || row.room_id !== authority.identity.roomId
+      || row.match_id !== authority.identity.matchId
+      || row.protocol_version !== PROTOCOL_VERSION
+      || row.checkpoint_hash_algorithm !== LOBBY_RELIABILITY_CHECKPOINT_HASH_ALGORITHM
+      || !/^[a-f0-9]{16}$/u.test(row.checkpoint_hash)
+      || fnv1a64Json(row.checkpoint_json) !== row.checkpoint_hash
+      || new TextEncoder().encode(row.checkpoint_json).byteLength
+        > MAXIMUM_LOBBY_RELIABILITY_CHECKPOINT_BYTES
+    ) {
+      throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_BINDING_MISMATCH');
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(row.checkpoint_json) as unknown;
+    } catch {
+      throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_JSON_INVALID');
+    }
+    const envelope = exactCheckpointRecord(parsed, [
+      'schemaVersion', 'roomCode', 'roomId', 'matchId', 'protocolVersion',
+      'reliableEvents', 'playerEventAcknowledgements',
+    ], 'lobby reliability checkpoint envelope');
+    if (
+      envelope.schemaVersion !== LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION
+      || envelope.roomCode !== this.roomCode
+      || envelope.roomId !== authority.identity.roomId
+      || envelope.matchId !== authority.identity.matchId
+      || envelope.protocolVersion !== PROTOCOL_VERSION
+    ) {
+      throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_ENVELOPE_MISMATCH');
+    }
+    this.reliableEvents.restoreCheckpoint(envelope.reliableEvents);
+    const acknowledgements = exactCheckpointArray(
+      envelope.playerEventAcknowledgements,
+      expectedPlayerIds.length,
+      expectedPlayerIds.length,
+      'lobby checkpoint player acknowledgements',
+    );
+    this.playerEventAcknowledgements.clear();
+    for (let index = 0; index < acknowledgements.length; index += 1) {
+      const item = exactCheckpointRecord(
+        acknowledgements[index],
+        ['playerId', 'lastAcknowledgedEventId'],
+        'lobby checkpoint player acknowledgement',
+      );
+      const playerId = exactCheckpointStableId(
+        item.playerId,
+        'lobby checkpoint acknowledgement player',
+      );
+      if (playerId !== expectedPlayerIds[index] || this.playerEventAcknowledgements.has(playerId)) {
+        throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_ACK_ORDER_MISMATCH');
+      }
+      const lastAcknowledgedEventId = exactCheckpointEventId(
+        item.lastAcknowledgedEventId,
+        'lobby checkpoint acknowledged event',
+      );
+      if (lastAcknowledgedEventId !== null) {
+        const sequence = Number(lastAcknowledgedEventId.slice('event.'.length));
+        if (sequence >= (envelope.reliableEvents as ReliableEventCheckpointV1).nextSequence) {
+          throw new Error('AUTHORITY_LOBBY_RELIABILITY_CHECKPOINT_ACK_UNKNOWN');
+        }
+      }
+      this.playerEventAcknowledgements.set(playerId, lastAcknowledgedEventId);
+    }
   }
 
   private async restoreActiveMatchCheckpoint(): Promise<void> {
@@ -1670,7 +1869,22 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private async restoreLobbyCheckpoint(): Promise<void> {
     const authority = this.requireAuthority();
     const now = Date.now();
-    this.pruneExpiredSessionsAndLobbyCheckpoints(now);
+    const persistedRows = [...this.ctx.storage.sql.exec<LobbyCheckpointPlayerRow>(
+      `SELECT player_id, join_ordinal
+       FROM room_lobby_players_v1
+       WHERE schema_version = ?
+       ORDER BY join_ordinal, player_id`,
+      LOBBY_CHECKPOINT_SCHEMA_VERSION,
+    )];
+    if (persistedRows.length === 0) {
+      this.resetPristineLobbyCheckpoint();
+      return;
+    }
+    this.restoreLobbyReliabilityCheckpoint(
+      persistedRows.map(({ player_id: playerId }) => playerId).sort(),
+    );
+    const expiredPlayerIds = this.pruneExpiredSessionsAndLobbyCheckpoints(now);
+    for (const playerId of expiredPlayerIds) this.recordPlayerLeft(playerId);
     const rows = [...this.ctx.storage.sql.exec<LobbyCheckpointPlayerRow>(
       `SELECT player_id, join_ordinal
        FROM room_lobby_players_v1
@@ -1737,10 +1951,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.markRecoveryState('expired');
         throw new Error(`AUTHORITY_LOBBY_CHECKPOINT_PLAYER_REJECTED:${row.player_id}`);
       }
-      this.playerEventAcknowledgements.set(
-        row.player_id,
-        live?.attachment.lastAcknowledgedEventId ?? null,
+      if (!this.playerEventAcknowledgements.has(row.player_id)) {
+        this.markRecoveryState('expired');
+        throw new Error(`AUTHORITY_LOBBY_CHECKPOINT_ACK_MISSING:${row.player_id}`);
+      }
+      const restoredEventAcknowledgement = this.retainedEventBaseline(
+        this.playerEventAcknowledgements.get(row.player_id) ?? null,
       );
+      this.playerEventAcknowledgements.set(row.player_id, restoredEventAcknowledgement);
       if (live === undefined) {
         authority.disconnectConnection(connectionId);
         continue;
@@ -1754,8 +1972,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         sentSnapshotHistory: Object.freeze([]),
         lastSnapshotSentAt: null,
         snapshotAckDebtStartedAt: null,
-        lastAcknowledgedEventId: null,
-        lastSentReliableEventId: null,
+        lastAcknowledgedEventId: restoredEventAcknowledgement,
+        lastSentReliableEventId: restoredEventAcknowledgement,
         backpressureStartedAt: null,
       });
       this.writeSocketAttachment(live.socket, resetAttachment);
@@ -1767,10 +1985,17 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       this.markRecoveryState('expired');
       throw new Error('AUTHORITY_LOBBY_CHECKPOINT_START_RACE');
     }
+    const sentAttachments = new Map<string, SocketAttachment>();
     for (const { socket, attachment } of resynchronized) {
       const sent = this.sendFullSnapshot(socket, attachment);
-      if (sent === null) this.disconnectSocket(socket, attachment, 1013, 'Backpressure');
+      if (sent === null) {
+        this.disconnectSocket(socket, attachment, 1013, 'Backpressure');
+      } else {
+        sentAttachments.set(sent.connectionId, sent);
+      }
     }
+    if (sentAttachments.size > 0) this.broadcastReliableEvents(sentAttachments);
+    this.persistLobbyReliabilityCheckpoint();
     this.transportMetrics.lobbyCheckpointRehydrates += 1;
     this.transportMetrics.lobbyCheckpointPlayersRestored += rows.length;
     await this.scheduleMaintenanceAlarm();
@@ -1805,6 +2030,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         now,
       );
     });
+    this.persistLobbyReliabilityCheckpoint();
   }
 
   private hasPersistedLobbyAuthorityState(): boolean {
@@ -1814,11 +2040,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const checkpoint = [...this.ctx.storage.sql.exec<Record<string, number>>(
       'SELECT 1 AS present FROM room_lobby_players_v1 LIMIT 1',
     )].length > 0;
+    const reliabilityCheckpoint = [...this.ctx.storage.sql.exec<Record<string, number>>(
+      'SELECT 1 AS present FROM room_lobby_reliability_v1 LIMIT 1',
+    )].length > 0;
     const attachedPlayer = this.ctx.getWebSockets().some((socket) => {
       const attachment = this.readSocketAttachment(socket);
       return attachment !== null && attachment.playerId !== null;
     });
-    return session || checkpoint || attachedPlayer;
+    return session || checkpoint || reliabilityCheckpoint || attachedPlayer;
   }
 
   private removeLobbyCheckpointPlayer(playerId: string): void {
@@ -1853,6 +2082,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const now = Date.now();
     this.ctx.storage.transactionSync(() => {
       this.ctx.storage.sql.exec('DELETE FROM room_lobby_players_v1');
+      this.ctx.storage.sql.exec('DELETE FROM room_lobby_reliability_v1');
       this.ctx.storage.sql.exec(
         `UPDATE room_runtime_v2
          SET recovery_state = 'active_uncheckpointed', updated_at = ?
@@ -1867,6 +2097,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const now = Date.now();
     this.ctx.storage.transactionSync(() => {
       this.ctx.storage.sql.exec('DELETE FROM room_lobby_players_v1');
+      this.ctx.storage.sql.exec('DELETE FROM room_lobby_reliability_v1');
       this.ctx.storage.sql.exec(
         `UPDATE room_runtime_v2
          SET recovery_state = 'pristine', updated_at = ?
@@ -1991,6 +2222,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     this.writeSocketAttachment(webSocket, nextAttachment);
     if (nextAttachment.playerId !== null) {
       this.playerEventAcknowledgements.set(nextAttachment.playerId, eventBaselineId);
+      if (this.requireAuthority().lifecycle === 'lobby') {
+        this.persistLobbyReliabilityCheckpoint();
+      }
     }
     this.transportMetrics.fullSnapshotsSent += 1;
     return nextAttachment;
@@ -2279,7 +2513,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       amountHealthPoints: null,
     });
     this.transportMetrics.reliableEventsRecorded += 1;
-    this.persistActiveMatchCheckpoint();
+    if (authority.lifecycle === 'lobby') {
+      this.persistLobbyReliabilityCheckpoint();
+    } else {
+      this.persistActiveMatchCheckpoint();
+    }
     this.sendLoadoutAcceptedNotice(webSocket, request.requestId);
     this.broadcastReliableEvents();
   }
@@ -2294,6 +2532,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       amountHealthPoints: null,
     });
     this.transportMetrics.reliableEventsRecorded += 1;
+    this.persistLobbyReliabilityCheckpoint();
   }
 
   private recordPlayerLeft(playerId: string): void {

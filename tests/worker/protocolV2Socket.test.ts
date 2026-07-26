@@ -1105,7 +1105,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     expect(finalMetrics.lifecycle).toMatch(/^(?:warmup|active)$/u);
   });
 
-  it('rehydrates one connected lobby player across a real hibernatable-object eviction', async () => {
+  it('rehydrates one lobby player and preserves cumulative reliable delivery across evictions', async () => {
     const room = await createRoom();
     const first = await connectSocket(room.socketPath);
     await waitForType(first, 'welcome');
@@ -1120,7 +1120,23 @@ describe('protocol-v2 WebSocket Worker integration', () => {
       'fullSnapshot',
       ({ localReconciliation }) => localReconciliation.player.id === joined.playerId,
     );
+    const joinedEventBatch = await waitForType(
+      first,
+      'reliableEventBatch',
+      ({ events }) => events.some((event) => (
+        event.kind === 'playerJoined' && event.subjectId === joined.playerId
+      )),
+    );
+    const joinedEvent = joinedEventBatch.events.find((event) => (
+      event.kind === 'playerJoined' && event.subjectId === joined.playerId
+    ));
+    expect(joinedEvent).toBeDefined();
+    const joinedEventId = joinedEvent?.id ?? null;
+    expect(joinedEventId).toBe('event.1');
     const fullSnapshotCount = first.messages.filter(({ type }) => type === 'fullSnapshot').length;
+    const reliableBatchCount = first.messages.filter(
+      ({ type }) => type === 'reliableEventBatch',
+    ).length;
     const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
     const checkpointBeforeEviction = await runInDurableObject(
       stub,
@@ -1131,12 +1147,36 @@ describe('protocol-v2 WebSocket Worker integration', () => {
         checkpointPlayers: [...state.storage.sql.exec<Record<string, number>>(
           'SELECT COUNT(*) AS count FROM room_lobby_players_v1',
         )][0]?.count,
+        reliabilityCheckpoint: JSON.parse(
+          [...state.storage.sql.exec<Record<string, string>>(
+            'SELECT checkpoint_json FROM room_lobby_reliability_v1 WHERE singleton = 1',
+          )][0]?.checkpoint_json ?? 'null',
+        ) as {
+          readonly reliableEvents: {
+            readonly nextSequence: number;
+            readonly events: readonly { readonly id: string }[];
+          };
+          readonly playerEventAcknowledgements: readonly {
+            readonly playerId: string;
+            readonly lastAcknowledgedEventId: string | null;
+          }[];
+        } | null,
         alarm: await state.storage.getAlarm(),
       }),
     );
     expect(checkpointBeforeEviction).toMatchObject({
       recoveryState: 'lobby_checkpointed',
       checkpointPlayers: 1,
+      reliabilityCheckpoint: {
+        reliableEvents: {
+          nextSequence: 2,
+          events: [{ id: joinedEventId }],
+        },
+        playerEventAcknowledgements: [{
+          playerId: joined.playerId,
+          lastAcknowledgedEventId: null,
+        }],
+      },
       alarm: expect.any(Number),
     });
 
@@ -1160,10 +1200,25 @@ describe('protocol-v2 WebSocket Worker integration', () => {
         > fullSnapshotCount,
       'post-hibernation full snapshot',
     );
+    await waitForProbe(
+      first,
+      () => first.messages.filter(({ type }) => type === 'reliableEventBatch').length
+        > reliableBatchCount,
+      'post-hibernation reliable event replay',
+    );
     const rehydrated = first.messages.filter(
       (message): message is FullSnapshotMessage => message.type === 'fullSnapshot',
     ).at(-1);
+    const replayedEvent = first.messages.filter(
+      (
+        message,
+      ): message is ServerMessageOfType<'reliableEventBatch'> => (
+        message.type === 'reliableEventBatch'
+      ),
+    ).slice(reliableBatchCount).flatMap(({ events }) => events)
+      .find(({ id }) => id === joinedEventId);
     expect(rehydrated).toBeDefined();
+    expect(replayedEvent).toEqual(joinedEvent);
     expect(rehydrated?.matchId).toBe(joined.matchId);
     expect(rehydrated?.localReconciliation.player.id).toBe(joined.playerId);
     expect(rehydrated?.localReconciliation.player.feetPosition).toEqual(
@@ -1197,6 +1252,66 @@ describe('protocol-v2 WebSocket Worker integration', () => {
         lobbyCheckpointPlayersRestored: 1,
       },
     });
+    if (rehydrated === undefined) throw new Error('Missing post-hibernation snapshot');
+    sendClient(first, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'ack',
+      snapshotBaselineVersion: SNAPSHOT_BASELINE_VERSION,
+      reliableEventStreamVersion: RELIABLE_EVENT_STREAM_VERSION,
+      snapshotBaselineId: rehydrated.snapshotBaselineId,
+      serverTick: rehydrated.serverTick,
+      lastEventId: joinedEventId,
+    });
+    let persistedAcknowledgement: string | null | undefined;
+    for (let attempt = 0; attempt < 200; attempt += 1) {
+      persistedAcknowledgement = await runInDurableObject(stub, async (_instance, state) => {
+        const checkpointJson = [...state.storage.sql.exec<Record<string, string>>(
+          'SELECT checkpoint_json FROM room_lobby_reliability_v1 WHERE singleton = 1',
+        )][0]?.checkpoint_json;
+        if (checkpointJson === undefined) return undefined;
+        const checkpoint = JSON.parse(checkpointJson) as {
+          readonly playerEventAcknowledgements: readonly {
+            readonly playerId: string;
+            readonly lastAcknowledgedEventId: string | null;
+          }[];
+        };
+        return checkpoint.playerEventAcknowledgements.find(
+          ({ playerId }) => playerId === joined.playerId,
+        )?.lastAcknowledgedEventId;
+      });
+      if (persistedAcknowledgement === joinedEventId) break;
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
+    expect(persistedAcknowledgement).toBe(joinedEventId);
+
+    const secondEvictionFullSnapshotCount = first.messages.filter(
+      ({ type }) => type === 'fullSnapshot',
+    ).length;
+    const acknowledgedReliableBatchCount = first.messages.filter(
+      ({ type }) => type === 'reliableEventBatch',
+    ).length;
+    await evictDurableObject(stub);
+    expect(first.socket.readyState).toBe(WebSocket.OPEN);
+    sendClient(first, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'ping',
+      nonce: 9_002,
+      clientTick: 0,
+    });
+    await waitForType(first, 'pong', ({ nonce }) => nonce === 9_002);
+    await waitForProbe(
+      first,
+      () => first.messages.filter(({ type }) => type === 'fullSnapshot').length
+        > secondEvictionFullSnapshotCount,
+      'acknowledged post-hibernation full snapshot',
+    );
+    const acknowledgedRehydrated = first.messages.filter(
+      (message): message is FullSnapshotMessage => message.type === 'fullSnapshot',
+    ).at(-1);
+    expect(acknowledgedRehydrated?.reliableEventBaselineId).toBe(joinedEventId);
+    expect(first.messages.filter(
+      ({ type }) => type === 'reliableEventBatch',
+    )).toHaveLength(acknowledgedReliableBatchCount);
 
     const second = await connectSocket(room.socketPath);
     await waitForType(second, 'welcome');
@@ -1348,6 +1463,9 @@ describe('protocol-v2 WebSocket Worker integration', () => {
       checkpointPlayers: [...state.storage.sql.exec<Record<string, number>>(
         'SELECT COUNT(*) AS count FROM room_lobby_players_v1',
       )][0]?.count,
+      reliabilityCheckpoints: [...state.storage.sql.exec<Record<string, number>>(
+        'SELECT COUNT(*) AS count FROM room_lobby_reliability_v1',
+      )][0]?.count,
       resumeSessions: [...state.storage.sql.exec<Record<string, number>>(
         'SELECT COUNT(*) AS count FROM resume_sessions',
       )][0]?.count,
@@ -1356,6 +1474,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     expect(expired).toEqual({
       recoveryState: 'pristine',
       checkpointPlayers: 0,
+      reliabilityCheckpoints: 0,
       resumeSessions: 0,
       alarm: null,
     });
