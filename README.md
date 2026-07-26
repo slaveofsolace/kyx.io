@@ -8,17 +8,18 @@ authority layer.
 > This repository is a transparent development snapshot, not a release
 > candidate. Formal acceptance is currently G0-G2 complete; G3-G9 remain open.
 > Offline Practice is the safest playable path. Online authority is implemented
-> and under test, but a known Inkfall Foundry collision seam still blocks the
-> clean multiplayer release run.
+> and under test. The known Inkfall Foundry west-archive rounding defect is
+> repaired, but authenticated staging and the clean 2/4/8-player release run
+> remain open.
 
 See [WORK_IN_PROGRESS.md](./WORK_IN_PROGRESS.md) for the exact files and systems
 being changed now.
 
 ## Current visual direction
 
-### Character runtime candidate
+### Character LOD0 audit candidate
 
-![KYX Vanguard Rev13 runtime playback](./assets/source/blender/phase7-character-original-v6/evidence/v6c-gameplay-rev13/runtime-proof/v6c-rev13-three-runtime-proof-accepted.png)
+![KYX Vanguard Rev14 direct GLB audit](./assets/source/blender/phase7-character-original-v6/evidence/v6c-lod0-retopo-rev14/renders/kyx-v6c-lod0-retopo-rev14-front-three-quarter-idle.png)
 
 ### Inkfall Foundry / Press Hall
 
@@ -75,15 +76,21 @@ npm run test
 
 - Offline Practice can be loaded and played locally.
 - The authoritative Worker can create and join rooms and has passed bounded
-  movement, combat, score, reconnect, and multi-client demonstrations.
-- A deterministic collision/depenetration failure at the west archive seam is
-  being repaired before the clean 2/4/8-client manifest is sealed.
-- The Rev13 character candidate has passed its isolated Blender/reimport/runtime
-  playback audit. Rev14 LOD0 optimization is still fail-closed until its fresh
-  audit is complete.
+  movement, combat, score, reconnect, reliable-event recovery, hibernation, and
+  multi-client demonstrations.
+- The deterministic west-archive collision/depenetration failure is repaired
+  and covered by an exact-pose regression. The clean 2/4/8-client manifest and
+  human map acceptance are still open.
+- Rev14 passes its isolated Blender export/reimport and official glTF parser
+  checks, but direct visual review remains failed-open for weapon contact,
+  animation readability, and unfinished materials. It is not runtime
+  integrated; the default match still loads the legacy `public/soldier.glb`.
 - The Inkfall Foundry graybox and Press Hall art package are present, but map,
   character, HUD, audio/VFX, accessibility, performance, and final human review
   gates are not yet complete.
+- The Cloudflare Worker + Static Assets package passes local smoke and dry-run
+  checks. A durable public deployment is not live because this workstation is
+  not authenticated to Cloudflare.
 
 ## Artifact and contribution notes
 

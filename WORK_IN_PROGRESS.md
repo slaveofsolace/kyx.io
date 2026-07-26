@@ -5,26 +5,22 @@ appending prose to executable source files or binary assets.
 
 ## Active now
 
-- `assets/source/maps/inkfall-foundry/` and
-  `tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts` — isolate
-  and repair the deterministic west archive collision/depenetration defect,
-  publish a new immutable collision revision, and prove zero recovery.
-  *Currently being worked on.*
-
-- `assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_lod0_retopo_rev14.py`,
+- `assets/source/blender/phase7-character-original-v6/`,
   `assets/source/blender/phase7-character-original-v6/model/v6c-lod0-retopo-rev14/`,
-  and its evidence folder — finish the fresh export/reimport/runtime audit for
-  the 42k-triangle, three-primitive Rev14 character LOD0 candidate.
+  and its evidence folder — correct the visually failed-open Rev14 weapon
+  contact, animation readability, and unfinished materials; then build LOD1/2,
+  first-person arms, runtime integration, and occupancy performance evidence.
   *Currently being worked on.*
-
-- `src/ui/HUD.js`, `src/ui/MainMenu.js`, `src/style.css`, and supporting UI
-  modules — consolidate the in-game HUD and menus into the current KYX.IO
-  industrial tactical visual language, including responsive and accessibility
-  behavior. *Currently being worked on.*
 
 - `src/dev/authorityEvidenceClient.ts`, `worker/`, and the P5.15 multiplayer
-  evidence harness — seal one clean 2/4/8-client authoritative run after the map
-  correction. *Currently being worked on.*
+  evidence harness — seal authenticated staging plus one clean, source-frozen
+  2/4/8-client authoritative run after the collision correction and lobby
+  reliable-event checkpoint work. *Currently being worked on.*
+
+- `assets/source/maps/inkfall-foundry/` and the product map route — complete
+  authoritative traversal, no-snag/embed/escape proof, counterplay telemetry,
+  and human 2/4/8-player play review. The exact west-archive rounding regression
+  is repaired and green. *Currently being worked on.*
 
 - `public/_headers`, `wrangler.jsonc`, and
   `evidence/2026-07-25/cloudflare-release-readiness-v1/` — complete the
@@ -34,8 +30,9 @@ appending prose to executable source files or binary assets.
 
 ## Open release work
 
-- G3 lobby reliable-event durability, external capacity/slow-consumer evidence,
-  the full regression matrix, and manual acceptance. *Currently being worked on.*
+- G3 authenticated staging, external capacity/resource evidence, the final
+  source-frozen regression matrix, and manual acceptance.
+  *Currently being worked on.*
 
 - G4-G7 integrated gameplay, full map traversal, production character LODs and
   first-person arms, HUD/UX, audio/VFX, and accessibility acceptance.
@@ -49,11 +46,12 @@ appending prose to executable source files or binary assets.
 
 - Vite production build: PASS.
 - Cloudflare Worker TypeScript check: PASS.
+- Main and simulation TypeScript checks: PASS.
 - ESLint across client, Worker, tests, and tools: PASS.
-- Main TypeScript check: NOT CLEAN — 12 diagnostics are localized to the
-  unfinished exact-pose collision probe in
-  `tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts`. The probe
-  is intentionally committed for continuity and must be made type-clean when
-  the immutable repair candidate is locked. *Currently being worked on.*
+- Exact west-archive collision regression: PASS, 5/5.
+- Adjacent physics/movement/Inkfall matrix: PASS, 109/109.
+- Cloudflare Worker suite after lobby reliability persistence: PASS, 41/41.
+- Rev14 official Khronos glTF validation: 0 errors, with three non-root skinned
+  mesh warnings retained for product-integration review.
 
 Last refreshed: 2026-07-25.
