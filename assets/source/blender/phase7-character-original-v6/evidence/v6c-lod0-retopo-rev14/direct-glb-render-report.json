@@ -1,0 +1,627 @@
+{
+  "schema": "kyx-v6c-lod0-retopo-rev14-direct-glb-render-report-v1",
+  "generatedAt": "2026-07-26T02:44:56.955036+00:00",
+  "status": "BOUNDED_DIRECT_GLB_VISUAL_EVIDENCE_REVIEW_REQUIRED_NOT_G6",
+  "checkpoint": "V6C_LOD0_SEMANTIC_RETOPO_CANDIDATE_REV14",
+  "blenderVersion": "5.1.2",
+  "scope": "Fresh-imported direct visual evidence for the exact current Rev14 runtime-candidate GLB. Cameras, lights, and a separate floor are render-only helpers; imported runtime geometry is unchanged.",
+  "sourceGlb": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\export\\kyx-v6c-lod0-retopo-rev14.runtime-candidate.glb",
+    "bytesBefore": 3314572,
+    "bytesAfter": 3314572,
+    "sha256Before": "4a42ab81a4df17f40572a0fb276ab7a5310cae71edfe8ac5f65868d3e77e9dbb",
+    "sha256After": "4a42ab81a4df17f40572a0fb276ab7a5310cae71edfe8ac5f65868d3e77e9dbb",
+    "unchanged": true
+  },
+  "freshImport": {
+    "operatorResult": [
+      "FINISHED"
+    ],
+    "runtimeMeshes": [
+      "KYX_V6C_LOD0_HARD_REV14",
+      "KYX_V6C_LOD0_RIFLE_REV14",
+      "KYX_V6C_LOD0_SOFT_REV14"
+    ],
+    "excludedImporterHelperMeshes": [
+      "Icosphere"
+    ],
+    "armature": "V6CF11B_ContactFullBodyRig",
+    "boneCount": 52,
+    "actions": [
+      {
+        "name": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "frameRange": [
+          1.0,
+          25.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_DEATH_FRONT",
+        "frameRange": [
+          1.0,
+          60.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_HIT_REACTION_FRONT",
+        "frameRange": [
+          1.0,
+          20.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_IDLE",
+        "frameRange": [
+          1.0,
+          49.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_JUMP_START",
+        "frameRange": [
+          1.0,
+          14.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_LAND",
+        "frameRange": [
+          1.0,
+          16.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_PRIMARY_FIRE",
+        "frameRange": [
+          1.0,
+          12.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_RELOAD",
+        "frameRange": [
+          1.0,
+          49.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_RUN",
+        "frameRange": [
+          1.0,
+          19.0
+        ]
+      },
+      {
+        "name": "KYX_V6C_TP_WALK",
+        "frameRange": [
+          1.0,
+          25.0
+        ]
+      }
+    ],
+    "topologyBefore": {
+      "KYX_V6C_LOD0_HARD_REV14": {
+        "meshData": "KYX_V6C_LOD0_HARD_REV14_MESH",
+        "vertices": 12841,
+        "edges": 26931,
+        "polygons": 14882,
+        "triangles": 14882,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_LOD0_HARD_ATLAS_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_RIFLE_REV14": {
+        "meshData": "KYX_V6C_LOD0_RIFLE_REV14_MESH",
+        "vertices": 6104,
+        "edges": 12747,
+        "polygons": 6932,
+        "triangles": 6932,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_LOD0_RIFLE_ATLAS_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_SOFT_REV14": {
+        "meshData": "KYX_V6C_LOD0_SOFT_REV14_MESH",
+        "vertices": 15619,
+        "edges": 34733,
+        "polygons": 19868,
+        "triangles": 19868,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_LOD0_SOFT_ATLAS_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "topologyAfter": {
+      "KYX_V6C_LOD0_HARD_REV14": {
+        "meshData": "KYX_V6C_LOD0_HARD_REV14_MESH",
+        "vertices": 12841,
+        "edges": 26931,
+        "polygons": 14882,
+        "triangles": 14882,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_LOD0_HARD_ATLAS_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_RIFLE_REV14": {
+        "meshData": "KYX_V6C_LOD0_RIFLE_REV14_MESH",
+        "vertices": 6104,
+        "edges": 12747,
+        "polygons": 6932,
+        "triangles": 6932,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_LOD0_RIFLE_ATLAS_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_V6C_LOD0_SOFT_REV14": {
+        "meshData": "KYX_V6C_LOD0_SOFT_REV14_MESH",
+        "vertices": 15619,
+        "edges": 34733,
+        "polygons": 19868,
+        "triangles": 19868,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_V6C_LOD0_SOFT_ATLAS_ROLE"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    }
+  },
+  "renderConfiguration": {
+    "engine": "BLENDER_EEVEE",
+    "look": "AgX - Medium High Contrast",
+    "exposure": -0.25,
+    "worldColor": [
+      0.0035,
+      0.008,
+      0.014,
+      1.0
+    ],
+    "worldStrength": 0.16,
+    "renderHelpers": {
+      "cameraCountCreatedPerView": 1,
+      "lights": [
+        "KYX_REV14_GLB_EVIDENCE_Key",
+        "KYX_REV14_GLB_EVIDENCE_WarmFill",
+        "KYX_REV14_GLB_EVIDENCE_CyanRim",
+        "KYX_REV14_GLB_EVIDENCE_ContactFill"
+      ],
+      "floor": "KYX_REV14_GLB_EVIDENCE_Floor",
+      "floorZ": -0.012156
+    }
+  },
+  "views": [
+    {
+      "name": "front-three-quarter-idle",
+      "label": "FRONT THREE-QUARTER / IDLE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\renders\\kyx-v6c-lod0-retopo-rev14-front-three-quarter-idle.png",
+      "bytes": 2513923,
+      "sha256": "ef41c4645cefaac98da65f4125fde090937ad37c8539f1142ccda6cb58b4a36d",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "sampledFrame": 13,
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          3.130448,
+          -5.52004,
+          2.341094
+        ],
+        "target": [
+          -0.069552,
+          -0.72004,
+          0.921095
+        ],
+        "orthographicScale": 2.110995
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415431,
+          -1.514595,
+          -0.000229
+        ],
+        "maximum": [
+          0.276326,
+          0.124515,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.069552,
+          -0.72004,
+          0.921095
+        ]
+      },
+      "determinismRepeat": {
+        "bytes": 2513923,
+        "sha256": "ef41c4645cefaac98da65f4125fde090937ad37c8539f1142ccda6cb58b4a36d",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "rear-side-idle",
+      "label": "REAR-SIDE THREE-QUARTER / IDLE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\renders\\kyx-v6c-lod0-retopo-rev14-rear-side-idle.png",
+      "bytes": 2402255,
+      "sha256": "0e504c7732688778b8dabedb1eef3c9e534645532e9f0bcee193c037e02eff2d",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "sampledFrame": 13,
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          -3.819552,
+          2.97996,
+          2.221095
+        ],
+        "target": [
+          -0.069552,
+          -0.72004,
+          0.921095
+        ],
+        "orthographicScale": 2.110995
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415431,
+          -1.514595,
+          -0.000229
+        ],
+        "maximum": [
+          0.276326,
+          0.124515,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.069552,
+          -0.72004,
+          0.921095
+        ]
+      },
+      "determinismRepeat": {
+        "bytes": 2402255,
+        "sha256": "0e504c7732688778b8dabedb1eef3c9e534645532e9f0bcee193c037e02eff2d",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "weapon-contact-firing-side",
+      "label": "WEAPON CONTACT CLOSE / FIRING SIDE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\renders\\kyx-v6c-lod0-retopo-rev14-weapon-contact-firing-side.png",
+      "bytes": 2287405,
+      "sha256": "9b9aebf91fb0630fe7854d6d2198d86fe9dccfce6df161022672d355da5a4dad",
+      "resolution": [
+        1600,
+        1100
+      ],
+      "action": "KYX_V6C_TP_PRIMARY_FIRE",
+      "actionFrameRange": [
+        1.0,
+        12.0
+      ],
+      "sampledFrame": 6,
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          2.062881,
+          -4.000488,
+          2.021408
+        ],
+        "target": [
+          -0.087119,
+          -0.550488,
+          1.201408
+        ],
+        "orthographicScale": 0.86
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.417186,
+          -1.521669,
+          -0.003274
+        ],
+        "maximum": [
+          0.276326,
+          0.122534,
+          1.78569
+        ]
+      },
+      "targetDetails": {
+        "handBoneNamesAvailable": [
+          "palm.L",
+          "palm.R",
+          "wrist.L",
+          "wrist.R"
+        ],
+        "handsCenter": [
+          -0.105606,
+          -0.441925,
+          1.204116
+        ],
+        "rifleBounds": {
+          "minimum": [
+            -0.232506,
+            -1.521669,
+            0.947447
+          ],
+          "maximum": [
+            0.153339,
+            -0.137627,
+            1.441441
+          ]
+        },
+        "target": [
+          -0.087119,
+          -0.550488,
+          1.201408
+        ]
+      },
+      "determinismRepeat": {
+        "bytes": 2287405,
+        "sha256": "9b9aebf91fb0630fe7854d6d2198d86fe9dccfce6df161022672d355da5a4dad",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "weapon-contact-support-side",
+      "label": "WEAPON CONTACT CLOSE / SUPPORT SIDE",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\renders\\kyx-v6c-lod0-retopo-rev14-weapon-contact-support-side.png",
+      "bytes": 2211895,
+      "sha256": "3262266f21ba0453e15314f7a11c063ce4bf7d8c2a1b20183311c87e82df5b12",
+      "resolution": [
+        1600,
+        1100
+      ],
+      "action": "KYX_V6C_TP_IDLE",
+      "actionFrameRange": [
+        1.0,
+        49.0
+      ],
+      "sampledFrame": 13,
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          -2.230948,
+          -3.997187,
+          2.043576
+        ],
+        "target": [
+          -0.080948,
+          -0.547187,
+          1.223576
+        ],
+        "orthographicScale": 0.86
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415431,
+          -1.514595,
+          -0.000229
+        ],
+        "maximum": [
+          0.276326,
+          0.124515,
+          1.788749
+        ]
+      },
+      "targetDetails": {
+        "handBoneNamesAvailable": [
+          "palm.L",
+          "palm.R",
+          "wrist.L",
+          "wrist.R"
+        ],
+        "handsCenter": [
+          -0.100961,
+          -0.440287,
+          1.227808
+        ],
+        "rifleBounds": {
+          "minimum": [
+            -0.230596,
+            -1.514595,
+            0.972203
+          ],
+          "maximum": [
+            0.171625,
+            -0.129551,
+            1.453184
+          ]
+        },
+        "target": [
+          -0.080948,
+          -0.547187,
+          1.223576
+        ]
+      },
+      "determinismRepeat": {
+        "bytes": 2211895,
+        "sha256": "3262266f21ba0453e15314f7a11c063ce4bf7d8c2a1b20183311c87e82df5b12",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    },
+    {
+      "name": "action-run-stride",
+      "label": "RUN CLIP SAMPLE / MOTION UNPROVEN",
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\renders\\kyx-v6c-lod0-retopo-rev14-action-run-stride.png",
+      "bytes": 2524469,
+      "sha256": "fb44143ccb670638e024073d4cda7926063a855f3ef52d39bd32c1892cf1d3aa",
+      "resolution": [
+        1440,
+        1600
+      ],
+      "action": "KYX_V6C_TP_RUN",
+      "actionFrameRange": [
+        1.0,
+        19.0
+      ],
+      "sampledFrame": 7,
+      "camera": {
+        "type": "ORTHOGRAPHIC",
+        "location": [
+          3.022365,
+          -5.372524,
+          2.260598
+        ],
+        "target": [
+          -0.077635,
+          -0.672524,
+          0.920598
+        ],
+        "orthographicScale": 2.10134
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.414301,
+          -1.527072,
+          0.003488
+        ],
+        "maximum": [
+          0.259032,
+          0.232024,
+          1.784284
+        ]
+      },
+      "targetDetails": {
+        "target": [
+          -0.077635,
+          -0.672524,
+          0.920598
+        ]
+      },
+      "determinismRepeat": {
+        "bytes": 2524469,
+        "sha256": "fb44143ccb670638e024073d4cda7926063a855f3ef52d39bd32c1892cf1d3aa",
+        "matchesFirstRender": true,
+        "repeatFileRemoved": true
+      }
+    }
+  ],
+  "assertions": {
+    "sourceGlbHashAndBytesUnchanged": true,
+    "freshImportFinished": true,
+    "threeRuntimeMeshesAfterImporterHelperExclusion": true,
+    "single52BoneRuntimeRig": true,
+    "exactTenClipContractPresent": true,
+    "allFiveRequiredViewsRendered": true,
+    "everyViewRepeatHashMatches": true,
+    "importedRuntimeTopologyUnchangedAcrossCapture": true,
+    "noBlendSavedAndNoGeometryExported": true
+  },
+  "visualDecision": "FAIL_OPEN_VISUAL_BLOCKERS_NOT_HUMAN_ACCEPTED_NOT_G6",
+  "agentVisualInspection": {
+    "status": "FAIL_BOUNDED_VISUAL_REVIEW_NOT_G6",
+    "correctedDefect": "The earlier giant lower-body pyramid was an importer-only Icosphere helper accidentally consolidated into the hard role. The rebuilt GLB excludes it before allocation and role joining; the five current renders show the full body without that artifact.",
+    "openBlockers": [
+      "The firing hand is open and offset rather than convincingly gripping the trigger and handle.",
+      "The support hand has loose open fingers, sits below the foregrip, and may clip the underside.",
+      "Torso-to-hip material transitions remain patchy.",
+      "Pants and boots lack final production surface detail.",
+      "The sampled run frame reads nearly static; convincing run-stride readability is not visually proven."
+    ]
+  },
+  "boundedObservations": [
+    "The exact current GLB fresh-imports and renders as three skinned runtime role meshes with its embedded 52-bone rig.",
+    "Front/rear silhouette, two weapon-contact angles, and one sampled run pose are directly visible in the generated PNGs.",
+    "The run and primary-fire images use the embedded GLB actions rather than an authored render-only pose.",
+    "Repeat renders are byte-identical for every captured view in this run.",
+    "The repaired packet removes the accidental importer-helper pyramid and exposes the remaining contact, material, and animation-readability blockers."
+  ],
+  "nonClaims": [
+    "This packet does not grant human visual acceptance or close G6.",
+    "This packet does not claim final textures, texture atlases, LOD1, LOD2, first-person arms, markers, product integration, performance, or release eligibility.",
+    "Visible proximity in contact renders is not a substitute for the separate numeric contact audit.",
+    "The floor, cameras, and lights are render-only helpers and are not part of the source GLB.",
+    "The source GLB, its imported mesh topology, physics, UI, deployment configuration, and runtime product assets are not modified by this renderer."
+  ]
+}

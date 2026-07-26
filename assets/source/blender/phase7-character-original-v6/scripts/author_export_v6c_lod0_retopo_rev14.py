@@ -22,6 +22,8 @@ EXPECTED_BONES = 52
 FPS = 24
 CONTACT_TOLERANCE = 1.0e-4
 CONTACT_ATTRIBUTE = "_KYX_CONTACT_MASK"
+CONTACT_POINT_MERGE_TOLERANCE = 1.0e-6
+EXPORT_COLLECTION = "KYX_V6C_LOD0_EXPORT"
 EXPECTED_CLIPS = (
     "KYX_V6C_TP_IDLE",
     "KYX_V6C_TP_WALK",
@@ -80,6 +82,23 @@ def triangle_count_mesh(mesh: bpy.types.Mesh) -> int:
 
 def triangle_count_object(obj: bpy.types.Object) -> int:
     return triangle_count_mesh(obj.data)
+
+
+def is_importer_helper_mesh(obj: bpy.types.Object) -> bool:
+    """Return true for Blender glTF importer-only mesh controls.
+
+    The importer creates an Icosphere custom shape in its reserved
+    ``glTF_not_exported`` collection.  It is not part of the source GLB mesh
+    payload and must never enter semantic allocation or role consolidation.
+    """
+    return (
+        obj.type == "MESH"
+        and bool(obj.users_collection)
+        and all(
+            collection.name == "glTF_not_exported"
+            for collection in obj.users_collection
+        )
+    )
 
 
 def flatten_matrix(matrix: Matrix) -> list[float]:
@@ -260,7 +279,18 @@ def contact_points_from_objects(objects: list[bpy.types.Object]) -> list[tuple[f
             if float(datum.value) > 0.5:
                 point = world @ obj.data.vertices[index].co
                 result.append((float(point.x), float(point.y), float(point.z)))
-    return sorted(result)
+    # glTF is allowed to split a Blender vertex at UV, normal, or attribute
+    # boundaries. Those duplicate vertices still describe the exact same
+    # contact surface, so compare unique world-space positions rather than raw
+    # importer vertex cardinality.
+    unique: dict[tuple[int, int, int], tuple[float, float, float]] = {}
+    for point in result:
+        key = tuple(
+            round(component / CONTACT_POINT_MERGE_TOLERANCE)
+            for component in point
+        )
+        unique.setdefault(key, point)
+    return sorted(unique.values())
 
 
 def point_cloud_delta(
@@ -269,10 +299,25 @@ def point_cloud_delta(
 ) -> float:
     if len(left) != len(right):
         return math.inf
-    return max(
-        (max(abs(a - b) for a, b in zip(lp, rp)) for lp, rp in zip(left, right)),
-        default=0.0,
-    )
+    if not left:
+        return 0.0
+
+    # Sorting alone is not robust when float round-tripping moves nearby
+    # coordinates across a quantization boundary. A symmetric nearest-point
+    # comparison proves both coverage directions.
+    def directed_delta(
+        source: list[tuple[float, float, float]],
+        target: list[tuple[float, float, float]],
+    ) -> float:
+        return max(
+            min(
+                max(abs(a - b) for a, b in zip(source_point, target_point))
+                for target_point in target
+            )
+            for source_point in source
+        )
+
+    return max(directed_delta(left, right), directed_delta(right, left))
 
 
 def make_role_material(role: str) -> bpy.types.Material:
@@ -353,7 +398,7 @@ def normalize_and_limit_weights(
             "weightedGroups": ["palm.R"],
         }
 
-    zero = 0
+    repaired_zero = 0
     maximum = 0
     for vertex in obj.data.vertices:
         assignments = [
@@ -370,7 +415,7 @@ def normalize_and_limit_weights(
             obj.vertex_groups[group_index].remove([vertex.index])
         total = sum(weight for _, weight in keep)
         if total <= 1.0e-8:
-            zero += 1
+            repaired_zero += 1
             root = obj.vertex_groups.get("root") or obj.vertex_groups.new(name="root")
             root.add([vertex.index], 1.0, "REPLACE")
             maximum = max(maximum, 1)
@@ -392,10 +437,24 @@ def normalize_and_limit_weights(
     )
     return {
         "vertices": len(obj.data.vertices),
-        "zeroWeightVertices": zero,
+        "zeroWeightVertices": 0,
+        "repairedZeroWeightVertices": repaired_zero,
         "maximumInfluences": maximum,
         "weightedGroups": weighted_groups,
     }
+
+
+def move_to_export_collection(obj: bpy.types.Object) -> None:
+    export_collection = bpy.data.collections.get(EXPORT_COLLECTION)
+    if export_collection is None:
+        export_collection = bpy.data.collections.new(EXPORT_COLLECTION)
+    if bpy.context.scene.collection.children.get(EXPORT_COLLECTION) is None:
+        bpy.context.scene.collection.children.link(export_collection)
+    if export_collection.objects.get(obj.name) is None:
+        export_collection.objects.link(obj)
+    for collection in list(obj.users_collection):
+        if collection != export_collection:
+            collection.objects.unlink(obj)
 
 
 def join_role(
@@ -431,6 +490,12 @@ def join_role(
     joined = bpy.context.object
     joined.name = f"KYX_V6C_LOD0_{role.upper()}_REV14"
     joined.data.name = f"{joined.name}_MESH"
+    # Imported helper islands may live in Blender's reserved
+    # `glTF_not_exported` collection. Joining preserves the active object's
+    # collection, which previously caused the complete hard-surface role to be
+    # silently omitted. Relink every consolidated role into one export-safe
+    # collection before parenting or selection.
+    move_to_export_collection(joined)
     # The glTF exporter only treats a selected mesh as part of the selected skin
     # when the armature is its object parent.  Source islands are inconsistently
     # parented, so joining can leave the hard role unparented depending on which
@@ -664,7 +729,16 @@ def audit_reimport(
     if rig is None:
         raise RuntimeError("Fresh Rev14 GLB contains no armature")
     bone_names = {bone.name for bone in rig.data.bones}
-    meshes = [obj for obj in bpy.data.objects if obj.type == "MESH"]
+    all_meshes = [obj for obj in bpy.data.objects if obj.type == "MESH"]
+    # Blender's glTF importer creates an Icosphere used only as the imported
+    # armature's custom bone shape. It lives in the reserved
+    # `glTF_not_exported` collection and is not a GLB runtime primitive.
+    # Exclude any mesh confined to that collection from runtime cardinality and
+    # mesh-quality assertions while recording it explicitly in the audit.
+    importer_helper_meshes = [
+        obj for obj in all_meshes if is_importer_helper_mesh(obj)
+    ]
+    meshes = [obj for obj in all_meshes if obj not in importer_helper_meshes]
     roles = {}
     for role in ROLE_TARGETS:
         roles[role] = next(
@@ -768,6 +842,7 @@ def audit_reimport(
         "armatures": len(rigs),
         "bones": len(rig.data.bones),
         "meshes": len(meshes),
+        "excludedImporterHelperMeshes": sorted(obj.name for obj in importer_helper_meshes),
         "materials": len(bpy.data.materials),
         "actionNames": sorted(actions),
         "shapeKeyMeshes": sum(obj.data.shape_keys is not None for obj in meshes),
@@ -809,23 +884,49 @@ def main() -> None:
     if rig is None or len(rig.data.bones) != EXPECTED_BONES:
         raise RuntimeError("Expected one 52-bone Rev13 rig")
     bone_names = {bone.name for bone in rig.data.bones}
-    meshes = [obj for obj in bpy.data.objects if obj.type == "MESH"]
+    all_meshes = [obj for obj in bpy.data.objects if obj.type == "MESH"]
     # GLB contains 106 mesh definitions / 109 primitives; Blender may materialize
     # a multi-primitive definition as an additional object on import.  Pin the
     # actual triangle payload below rather than relying on importer object count.
-    if len(meshes) < 100 or len(meshes) > 109:
-        raise RuntimeError(f"Unexpected Rev13 source mesh-object count: {len(meshes)}")
+    if len(all_meshes) < 100 or len(all_meshes) > 109:
+        raise RuntimeError(
+            f"Unexpected Rev13 source mesh-object count: {len(all_meshes)}"
+        )
+    source_importer_helper_meshes = [
+        obj for obj in all_meshes if is_importer_helper_mesh(obj)
+    ]
+    source_importer_helper_records = [
+        {
+            "name": obj.name,
+            "triangles": triangle_count_object(obj),
+            "collections": sorted(
+                collection.name for collection in obj.users_collection
+            ),
+        }
+        for obj in source_importer_helper_meshes
+    ]
+    meshes = [
+        obj for obj in all_meshes if obj not in source_importer_helper_meshes
+    ]
     actions = {action.name: action for action in bpy.data.actions}
     if set(actions) != set(EXPECTED_CLIPS):
         raise RuntimeError(
             f"Rev13 action contract mismatch: {sorted(actions)} != {sorted(EXPECTED_CLIPS)}"
         )
 
-    source_triangles = sum(triangle_count_object(obj) for obj in meshes)
-    if source_triangles != SOURCE_REV13_BLENDER_TRIANGLES:
+    source_imported_triangles = sum(
+        triangle_count_object(obj) for obj in all_meshes
+    )
+    if source_imported_triangles != SOURCE_REV13_BLENDER_TRIANGLES:
         raise RuntimeError(
             "Rev13 imported triangle payload mismatch: "
-            f"{source_triangles} != {SOURCE_REV13_BLENDER_TRIANGLES}"
+            f"{source_imported_triangles} != {SOURCE_REV13_BLENDER_TRIANGLES}"
+        )
+    source_triangles = sum(triangle_count_object(obj) for obj in meshes)
+    if source_triangles != SOURCE_REV13_GLTF_TRIANGLES:
+        raise RuntimeError(
+            "Rev13 runtime triangle payload mismatch after importer-helper "
+            f"exclusion: {source_triangles} != {SOURCE_REV13_GLTF_TRIANGLES}"
         )
     source_role_triangles = Counter()
     for obj in meshes:
@@ -947,6 +1048,15 @@ def main() -> None:
         "rev13SourceHashPinnedAndUnchanged": (
             source_hash_before == source_hash_after == SOURCE_REV13_SHA256
         ),
+        "sourceImporterHelpersExcludedBeforeRuntimeJoin": (
+            bool(source_importer_helper_records)
+            and all(
+                helper["name"]
+                not in {record["object"] for record in reduction_records}
+                for helper in source_importer_helper_records
+            )
+            and source_triangles == SOURCE_REV13_GLTF_TRIANGLES
+        ),
         "candidateSavedInNewRev14Lane": (
             "v6c-lod0-retopo-rev14" in str(candidate_path).lower()
             and "v6c-gameplay-rev13" not in str(candidate_path).lower()
@@ -1048,7 +1158,9 @@ def main() -> None:
             "sha256Before": source_hash_before,
             "sha256After": source_hash_after,
             "triangles": source_triangles,
+            "importedTrianglesIncludingHelpers": source_imported_triangles,
             "sourceGlbTriangles": SOURCE_REV13_GLTF_TRIANGLES,
+            "excludedImporterHelperMeshes": source_importer_helper_records,
             "roleTriangles": dict(source_role_triangles),
             "contactTrianglesPreserved": source_contact_triangles,
             "contactVerticesPreserved": len(source_contact_points),

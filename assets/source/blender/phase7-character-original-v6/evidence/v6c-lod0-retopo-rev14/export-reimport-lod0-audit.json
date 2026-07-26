@@ -1,9 +1,9 @@
 {
   "schema": "kyx-v6c-lod0-retopo-rev14-audit-v1",
-  "generatedAt": "2026-07-23T01:16:48.222944+00:00",
+  "generatedAt": "2026-07-26T02:40:09.857397+00:00",
   "blenderVersion": "5.1.2",
   "checkpoint": "V6C_LOD0_SEMANTIC_RETOPO_CANDIDATE_REV14",
-  "status": "FAIL_BOUNDED_V6C_LOD0_RETOPO_CANDIDATE",
+  "status": "PASS_BOUNDED_V6C_LOD0_RETOPO_CANDIDATE_NOT_G6",
   "method": {
     "name": "semantic_per_island_retopology_and_three_role_consolidation",
     "blindWholeCharacterDecimation": false,
@@ -14,11 +14,21 @@
     "bytes": 9278844,
     "sha256Before": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
     "sha256After": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
-    "triangles": 298076,
+    "triangles": 297996,
+    "importedTrianglesIncludingHelpers": 298076,
     "sourceGlbTriangles": 297996,
+    "excludedImporterHelperMeshes": [
+      {
+        "name": "Icosphere",
+        "triangles": 80,
+        "collections": [
+          "glTF_not_exported"
+        ]
+      }
+    ],
     "roleTriangles": {
-      "hard": 95728,
       "soft": 189636,
+      "hard": 95648,
       "rifle": 12712
     },
     "contactTrianglesPreserved": 2732,
@@ -44,16 +54,6 @@
   },
   "reductionRecords": [
     {
-      "object": "Icosphere",
-      "role": "hard",
-      "subgroup": "hard_torso",
-      "sourceTriangles": 80,
-      "allocatedTarget": 10,
-      "resultTriangles": 8,
-      "passes": 1,
-      "method": "per_island_semantic_quadric_collapse_before_armature"
-    },
-    {
       "object": "KYX_V6A_AnatomySculpt_Body_Mesh.001",
       "role": "soft",
       "subgroup": "soft_body",
@@ -68,7 +68,7 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 1920,
-      "allocatedTarget": 260,
+      "allocatedTarget": 261,
       "resultTriangles": 258,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
@@ -78,7 +78,7 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 1920,
-      "allocatedTarget": 260,
+      "allocatedTarget": 261,
       "resultTriangles": 258,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
@@ -98,8 +98,8 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 14256,
-      "allocatedTarget": 1939,
-      "resultTriangles": 1928,
+      "allocatedTarget": 1942,
+      "resultTriangles": 1932,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
     },
@@ -208,8 +208,8 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 5976,
-      "allocatedTarget": 810,
-      "resultTriangles": 804,
+      "allocatedTarget": 812,
+      "resultTriangles": 806,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
     },
@@ -218,8 +218,8 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 2944,
-      "allocatedTarget": 399,
-      "resultTriangles": 396,
+      "allocatedTarget": 400,
+      "resultTriangles": 398,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
     },
@@ -228,8 +228,8 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 6236,
-      "allocatedTarget": 846,
-      "resultTriangles": 840,
+      "allocatedTarget": 847,
+      "resultTriangles": 842,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
     },
@@ -238,7 +238,7 @@
       "role": "hard",
       "subgroup": "hard_torso",
       "sourceTriangles": 2024,
-      "allocatedTarget": 274,
+      "allocatedTarget": 275,
       "resultTriangles": 272,
       "passes": 1,
       "method": "per_island_semantic_quadric_collapse_before_armature"
@@ -1131,6 +1131,7 @@
       "weights": {
         "vertices": 10558,
         "zeroWeightVertices": 0,
+        "repairedZeroWeightVertices": 0,
         "maximumInfluences": 4,
         "weightedGroups": [
           "chest",
@@ -1191,9 +1192,9 @@
     "hard": {
       "role": "hard",
       "object": "KYX_V6C_LOD0_HARD_REV14",
-      "triangles": 14880,
-      "vertices": 7567,
-      "polygons": 14880,
+      "triangles": 14882,
+      "vertices": 7566,
+      "polygons": 14882,
       "materials": 1,
       "uvLayers": [
         "UV0"
@@ -1202,8 +1203,9 @@
         "COLOR_0"
       ],
       "weights": {
-        "vertices": 7567,
-        "zeroWeightVertices": 6,
+        "vertices": 7566,
+        "zeroWeightVertices": 0,
+        "repairedZeroWeightVertices": 0,
         "maximumInfluences": 1,
         "weightedGroups": [
           "chest",
@@ -1213,7 +1215,6 @@
           "forearm.R",
           "head",
           "neck",
-          "root",
           "spine_02"
         ]
       }
@@ -1241,17 +1242,17 @@
       }
     }
   },
-  "candidateTriangleTotal": 41680,
+  "candidateTriangleTotal": 41682,
   "roleTriangleDeltaFromTarget": {
     "soft": -132,
-    "hard": -120,
+    "hard": -118,
     "rifle": -68
   },
   "candidateContactMaxWorldCoordinateDelta": 0.0,
   "candidateBlend": {
     "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\kyx-v6c-lod0-retopo-rev14.blend",
-    "bytes": 3451915,
-    "sha256": "6a66c67c690fbc32e3fef5f9c44dc1c39d8cac6ff910ad39dc3d70d8cb653e14"
+    "bytes": 3459125,
+    "sha256": "b4adcc29def7633c5c1c5756d2d419b636a5ff5161fe04bbded9709575e56315"
   },
   "export": {
     "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\export\\kyx-v6c-lod0-retopo-rev14.runtime-candidate.glb",
@@ -1292,14 +1293,14 @@
       "generator": "Khronos glTF Blender I/O v5.1.20",
       "version": "2.0"
     },
-    "bytes": 2452848,
-    "sha256": "b1707de9eb47a937bd7e16f6e8a6b63fa3f989a2adf696c0948c3903f52fcb63",
+    "bytes": 3314572,
+    "sha256": "4a42ab81a4df17f40572a0fb276ab7a5310cae71edfe8ac5f65868d3e77e9dbb",
     "counts": {
-      "nodes": 55,
-      "meshes": 2,
-      "primitives": 2,
-      "triangles": 26800,
-      "materials": 2,
+      "nodes": 56,
+      "meshes": 3,
+      "primitives": 3,
+      "triangles": 41682,
+      "materials": 3,
       "skins": 1,
       "animations": 10,
       "images": 0,
@@ -1312,6 +1313,21 @@
     "primitives": [
       {
         "meshIndex": 0,
+        "meshName": "KYX_V6C_LOD0_HARD_REV14_MESH",
+        "primitiveIndex": 0,
+        "triangles": 14882,
+        "attributes": [
+          "COLOR_0",
+          "JOINTS_0",
+          "NORMAL",
+          "POSITION",
+          "TEXCOORD_0",
+          "WEIGHTS_0"
+        ],
+        "material": "KYX_V6C_LOD0_HARD_ATLAS_ROLE"
+      },
+      {
+        "meshIndex": 1,
         "meshName": "KYX_V6C_LOD0_RIFLE_REV14_MESH",
         "primitiveIndex": 0,
         "triangles": 6932,
@@ -1327,7 +1343,7 @@
         "material": "KYX_V6C_LOD0_RIFLE_ATLAS_ROLE"
       },
       {
-        "meshIndex": 1,
+        "meshIndex": 2,
         "meshName": "KYX_V6C_LOD0_SOFT_REV14_MESH",
         "primitiveIndex": 0,
         "triangles": 19868,
@@ -1478,13 +1494,16 @@
   "reimport": {
     "proofBlend": {
       "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\blender\\phase7-character-original-v6\\evidence\\v6c-lod0-retopo-rev14\\reimport\\kyx-v6c-lod0-retopo-rev14.reimport-proof.blend",
-      "bytes": 3036587,
-      "sha256": "6879652bb00bec9671b286f3c7cceb9dec441156d67392c29241995386a85811"
+      "bytes": 3704863,
+      "sha256": "1ea73a4d4590fda7535841d6f384aca4b146be59176f0186736c66116c0a4c66"
     },
     "armatures": 1,
     "bones": 52,
     "meshes": 3,
-    "materials": 2,
+    "excludedImporterHelperMeshes": [
+      "Icosphere"
+    ],
+    "materials": 3,
     "actionNames": [
       "KYX_V6C_TP_AIRBORNE_LOOP",
       "KYX_V6C_TP_DEATH_FRONT",
@@ -1588,7 +1607,48 @@
         }
       },
       "hard": {
-        "present": false
+        "present": true,
+        "object": "KYX_V6C_LOD0_HARD_REV14",
+        "triangles": 14882,
+        "materials": [
+          "KYX_V6C_LOD0_HARD_ATLAS_ROLE"
+        ],
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "meshAttributes": [
+          ".select_vert",
+          "position",
+          ".corner_vert",
+          ".corner_edge",
+          ".select_poly",
+          "UVMap",
+          "Color",
+          "material_index",
+          "sharp_face",
+          ".edge_verts",
+          ".select_edge",
+          "custom_normal",
+          "sharp_edge"
+        ],
+        "weights": {
+          "vertices": 12841,
+          "zeroWeightVertices": 0,
+          "maximumInfluences": 1,
+          "weightedGroups": [
+            "chest",
+            "foot_anchor.L",
+            "foot_anchor.R",
+            "forearm.L",
+            "forearm.R",
+            "head",
+            "neck",
+            "spine_02"
+          ]
+        }
       },
       "rifle": {
         "present": true,
@@ -1763,22 +1823,23 @@
     ],
     "contact": {
       "expectedVertices": 1388,
-      "reimportVertices": 1948,
-      "roundTripMaxWorldCoordinateDelta": Infinity
+      "reimportVertices": 1388,
+      "roundTripMaxWorldCoordinateDelta": 1.7881393432617188e-07
     }
   },
   "assertions": {
     "rev13SourceHashPinnedAndUnchanged": true,
+    "sourceImporterHelpersExcludedBeforeRuntimeJoin": true,
     "candidateSavedInNewRev14Lane": true,
     "semanticRoleTargetsWithinAuthoringContract": true,
-    "glbMeetsHardTriangleAndPrimitiveContract": false,
+    "glbMeetsHardTriangleAndPrimitiveContract": true,
     "allThreePrimitivesCarrySkinNormalsUvColor": true,
     "glbIsSelfContainedAndHasOne52JointSkin": true,
     "glbContainsExactTenClipContract": true,
-    "freshReimportContainsThreeRoleMeshesAnd52BoneRig": false,
-    "freshReimportWeightsAreNonzeroAndMaximumFour": false,
+    "freshReimportContainsThreeRoleMeshesAnd52BoneRig": true,
+    "freshReimportWeightsAreNonzeroAndMaximumFour": true,
     "rifleIsPalmRightOnly": true,
-    "contactVerticesPreservedBeforeAndAfterGlbRoundTrip": false,
+    "contactVerticesPreservedBeforeAndAfterGlbRoundTrip": true,
     "everyImportedClipHasPoseDiversity": true,
     "loopClipsRemainSeamClosed": true,
     "supportAndGripRelationStableOutsideReload": true,
