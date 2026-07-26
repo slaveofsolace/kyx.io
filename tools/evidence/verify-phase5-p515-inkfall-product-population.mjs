@@ -82,26 +82,77 @@ const expectedSourceFiles = [
   'src/app/onlineAuthorityInkfallWorld.ts',
   'src/app/onlineAuthorityRoute.ts',
   'src/dev/authorityEvidenceClient.ts',
+  'src/dev/authorityEvidenceModel.ts',
+  'src/dev/authorityEvidenceTransport.ts',
   'src/client/combat/presentationAdapter.ts',
+  'src/client/netcode/localPrediction.ts',
+  'src/client/netcode/remoteInterpolation.ts',
   'src/authority/room.ts',
   'src/authority/fixedTickScheduler.ts',
+  'src/physics/collisionLayers.ts',
+  'src/physics/fixtureSchema.ts',
+  'src/physics/fixtures/catalog.ts',
+  'src/physics/fixtures/flatRun.ts',
+  'src/physics/rapier/contracts.ts',
+  'src/physics/rapier/runtime.ts',
+  'src/physics/rapier/world.ts',
   'src/net/protocol.ts',
   'src/net/schemas.ts',
+  'src/sim/index.ts',
+  'src/sim/canonical.ts',
+  'src/sim/commands.ts',
+  'src/sim/rng.ts',
+  'src/sim/state.ts',
+  'src/sim/step.ts',
+  'src/sim/tickClock.ts',
+  'src/sim/units.ts',
+  'src/sim/movement/canonical.ts',
+  'src/sim/movement/controller.ts',
+  'src/sim/movement/events.ts',
+  'src/sim/movement/fixedMath.ts',
+  'src/sim/movement/hash.ts',
+  'src/sim/movement/index.ts',
+  'src/sim/movement/profile.ts',
+  'src/sim/movement/profileIdentity.ts',
+  'src/sim/movement/queryPort.ts',
+  'src/sim/movement/replay.ts',
+  'src/sim/movement/state.ts',
+  'assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json',
   'worker/combatRuntime.ts',
+  'worker/env.ts',
+  'worker/rapierRuntime.ts',
+  'worker/reliableEvents.ts',
+  'worker/resumeSessions.ts',
   'worker/room.ts',
+  'worker/routes.ts',
   'worker/security.ts',
+  'worker/snapshotBaselines.ts',
+  'worker/worker.ts',
   'tests/worker/protocolV2Socket.test.ts',
   'tests/worker/socketAttachmentCache.test.ts',
   'tests/worker/slowConsumerBackpressure.test.ts',
   'tests/worker/inkfallPopulation.test.ts',
+  'tests/integration/authority/inkfallAuthorityPlaytest.test.ts',
+  'tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts',
   'tests/unit/authority/fixedTickScheduler.test.ts',
   'tests/unit/authority/combat/roomCombatIntegration.test.ts',
   'tests/unit/dev/authorityEvidence.test.ts',
   'tests/unit/net/protocol-v2.test.ts',
+  'tests/unit/worker/reliableEvents.test.ts',
   'tests/unit/worker/security.test.ts',
   'assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json',
   'evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json',
+  '.env.production',
+  'package.json',
+  'package-lock.json',
+  'pnpm-lock.yaml',
+  'public/_headers',
+  'tsconfig.json',
+  'tsconfig.worker.json',
+  'vite.config.js',
+  'wrangler.jsonc',
   'tools/evidence/capture-phase5-p515-inkfall-product-population.mjs',
+  'tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs',
   'tools/evidence/verify-phase5-p515-inkfall-product-population.mjs',
 ];
 
@@ -136,6 +187,7 @@ function assertSharedAuthorityStimulus(stimulus, count, driverClientId) {
   assert.equal(stimulus.serverOwned, true);
   assert.equal(stimulus.roomWide, true);
   assert.equal(stimulus.driverClientId, driverClientId);
+  assert.equal(stimulus.firePulseMilliseconds, 90);
   assert.match(stimulus.reliableEventId, /^event\.(0|[1-9][0-9]*)$/u);
   assert.match(stimulus.subjectId, /^combat\.auto_rifle\.shot\./u);
   assert.equal(typeof stimulus.actorId, 'string');
@@ -362,7 +414,9 @@ assert.ok(proof.movementAndWorld.driverRecoveries.length <= 40);
 for (const recovery of proof.movementAndWorld.driverRecoveries) {
   assert.equal(typeof recovery.label, 'string');
   assert.ok(recovery.recoveryKey === 'a' || recovery.recoveryKey === 'd');
+  assert.equal(recovery.recoveryPolicy, 'strafe_toward_negative_map_z_or_centerline');
   assert.ok(recovery.distanceBeforeMillimeters > 0);
+  assert.ok(Number.isInteger(recovery.yawBeforeMilliDegrees));
 }
 assert.ok(proof.movementAndWorld.crossAcceptedShotsAfter > proof.movementAndWorld.crossAcceptedShotsBefore);
 assert.equal(proof.movementAndWorld.crossVictimHealthAfter, proof.movementAndWorld.crossVictimHealthBefore);
@@ -372,8 +426,31 @@ for (const interpolation of [
   proof.movementAndWorld.eightInterpolation,
 ]) {
   assert.ok(interpolation.movementMillimeters >= 500);
-  assert.ok(interpolation.peerDistanceMillimeters <= 1_500);
+  assert.ok(interpolation.peerDistanceMillimeters <= 750);
   assert.ok(interpolation.remoteTransformMovementMillimeters >= 500);
+  assert.ok(interpolation.requestedArrivalToleranceMillimeters > 0);
+  assert.ok(interpolation.targetDistanceAfterSettlementMillimeters >= 0);
+  assert.ok(interpolation.predictionToAuthorityDistanceAfterSettlementMillimeters <= 750);
+  assert.ok(interpolation.predictionSettlementSamples >= 3);
+  assert.ok(interpolation.predictionStableSamples >= 3);
+  assert.ok(
+    interpolation.predictionMaximumObservedErrorMillimeters
+      >= interpolation.predictionToAuthorityDistanceAfterSettlementMillimeters,
+  );
+  assert.ok(interpolation.predictionSettledAfterMilliseconds <= 10_000);
+  assert.ok(interpolation.observerConvergedAfterMilliseconds <= 10_000);
+  assert.equal(
+    interpolation.observerEntityId,
+    proof.authority.initialJoins[
+      Number.parseInt(interpolation.moverClientId.replace('client-', ''), 10)
+    ].playerId,
+  );
+  assert.ok([
+    'authoritative',
+    'interpolated',
+    'extrapolated',
+    'held',
+  ].includes(interpolation.observerInterpolationMode));
   assert.ok(Number.isInteger(interpolation.commonAuthorityTickAfterMovement));
   assert.equal(
     interpolation.commonAuthorityTickAfterMovement,
@@ -712,6 +789,27 @@ for (const [relative, expectedHash] of Object.entries(proof.sourceSha256)) {
   assertSha256(expectedHash, `${relative} source digest`);
   assert.equal(await sha256(path.join(repo, relative)), expectedHash, `${relative} source hash`);
 }
+assert.equal(proof.repositoryState.unchangedDuringCapture, true);
+assert.deepEqual(proof.repositoryState.end, proof.repositoryState.start);
+assert.match(proof.repositoryState.start.head, /^[0-9a-f]{40}$/u);
+assertSha256(
+  proof.repositoryState.start.statusSha256,
+  'repository dirty-tree status digest',
+);
+assert.equal(typeof proof.repositoryState.start.status, 'string');
+assert.equal(
+  proof.repositoryState.start.excludedGeneratedOutput,
+  path.relative(repo, output).replaceAll('\\', '/'),
+);
+assert.equal(typeof proof.runtimeEnvironment.nodeVersion, 'string');
+assert.ok(proof.runtimeEnvironment.nodeVersion.startsWith('v'));
+assert.equal(typeof proof.runtimeEnvironment.platform, 'string');
+assert.equal(typeof proof.runtimeEnvironment.architecture, 'string');
+assert.equal(typeof proof.runtimeEnvironment.nodeExecutable, 'string');
+assert.deepEqual(
+  proof.runtimeEnvironment.browserLaunchArguments,
+  expectedBrowserLaunchArguments,
+);
 
 const verification = {
   schemaVersion: 1,
@@ -755,6 +853,9 @@ const verification = {
     wireEntries: wire.length,
     artifactHashes: Object.keys(manifest.files).length,
     sourceHashes: Object.keys(proof.sourceSha256).length,
+    repositoryHeadAndDirtyTreeStableDuringCapture:
+      proof.repositoryState.unchangedDuringCapture,
+    repositoryStatusSha256: proof.repositoryState.start.statusSha256,
     g3Claimed: false,
     g4Claimed: false,
     g5Claimed: false,

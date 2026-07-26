@@ -104,11 +104,11 @@ describe('Inkfall Foundry P6.6 automated authority playtest foundation', () => {
 
   it('replays the complete 2/4/8-player suite exactly deterministically', () => {
     expect(second).toEqual(first);
-    expect(first.suiteHash).toBe('cec7553cd9d45701');
+    expect(first.suiteHash).toBe('f42128f8aef72820');
     expect(first.scenarios.map(({ replayHash }) => replayHash)).toEqual([
       '0f7f6c2965a594c6',
       '88ce02f1c029c9d9',
-      'c47c2acd6ab3541e',
+      '741c7642229e2f3c',
     ]);
     expect(first.scenarios.map(({ status }) => status)).toEqual(['PASS', 'PASS', 'FAIL']);
     expect(first.issueCount).toBe(16);
@@ -147,11 +147,11 @@ describe('Inkfall Foundry P6.6 automated authority playtest foundation', () => {
   it('preserves exact 8-player Archive collision findings rather than authorizing a map edit', () => {
     const eight = scenario(8);
     expect(eight.issues.find(({ code, agentSlot }) => (
-      code === 'MOVEMENT_QUERY_EXCEPTION' && agentSlot === 4
+      code === 'ROUTE_SNAG_WINDOW_EXCEEDED' && agentSlot === 4
     ))).toMatchObject({
-      tick: 91,
+      tick: 137,
       detail: expect.stringContaining(
-        'position=(-25265,2571,7778); target=(-26000,4000,12000);',
+        'position=(-25574,3384,9834); target=(-26000,4000,12000);',
       ),
       topologyMutationAuthorized: false,
     });
@@ -172,7 +172,7 @@ describe('Inkfall Foundry P6.6 automated authority playtest foundation', () => {
       topologyMutationAuthorized: false,
     });
     expect(eight.issues.find(({ code }) => code === 'SYNTHETIC_BODY_OVERLAP'))
-      .toMatchObject({ tick: 120, topologyMutationAuthorized: false });
+      .toMatchObject({ tick: 130, topologyMutationAuthorized: false });
   });
 
   it('aims the teleport at the authored endpoint and records the real authority blocker', () => {

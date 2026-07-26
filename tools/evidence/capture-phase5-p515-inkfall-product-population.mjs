@@ -26,6 +26,7 @@ const browserLaunchArguments = Object.freeze([
   '--disable-renderer-backgrounding',
   '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
 ]);
+const SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS = 90;
 
 const expectedBinding = Object.freeze({
   mapReference: 'inkfall_foundry@2',
@@ -100,26 +101,77 @@ const sourceFiles = Object.freeze([
   'src/app/onlineAuthorityInkfallWorld.ts',
   'src/app/onlineAuthorityRoute.ts',
   'src/dev/authorityEvidenceClient.ts',
+  'src/dev/authorityEvidenceModel.ts',
+  'src/dev/authorityEvidenceTransport.ts',
   'src/client/combat/presentationAdapter.ts',
+  'src/client/netcode/localPrediction.ts',
+  'src/client/netcode/remoteInterpolation.ts',
   'src/authority/room.ts',
   'src/authority/fixedTickScheduler.ts',
+  'src/physics/collisionLayers.ts',
+  'src/physics/fixtureSchema.ts',
+  'src/physics/fixtures/catalog.ts',
+  'src/physics/fixtures/flatRun.ts',
+  'src/physics/rapier/contracts.ts',
+  'src/physics/rapier/runtime.ts',
+  'src/physics/rapier/world.ts',
   'src/net/protocol.ts',
   'src/net/schemas.ts',
+  'src/sim/index.ts',
+  'src/sim/canonical.ts',
+  'src/sim/commands.ts',
+  'src/sim/rng.ts',
+  'src/sim/state.ts',
+  'src/sim/step.ts',
+  'src/sim/tickClock.ts',
+  'src/sim/units.ts',
+  'src/sim/movement/canonical.ts',
+  'src/sim/movement/controller.ts',
+  'src/sim/movement/events.ts',
+  'src/sim/movement/fixedMath.ts',
+  'src/sim/movement/hash.ts',
+  'src/sim/movement/index.ts',
+  'src/sim/movement/profile.ts',
+  'src/sim/movement/profileIdentity.ts',
+  'src/sim/movement/queryPort.ts',
+  'src/sim/movement/replay.ts',
+  'src/sim/movement/state.ts',
+  'assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json',
   'worker/combatRuntime.ts',
+  'worker/env.ts',
+  'worker/rapierRuntime.ts',
+  'worker/reliableEvents.ts',
+  'worker/resumeSessions.ts',
   'worker/room.ts',
+  'worker/routes.ts',
   'worker/security.ts',
+  'worker/snapshotBaselines.ts',
+  'worker/worker.ts',
   'tests/worker/protocolV2Socket.test.ts',
   'tests/worker/socketAttachmentCache.test.ts',
   'tests/worker/slowConsumerBackpressure.test.ts',
   'tests/worker/inkfallPopulation.test.ts',
+  'tests/integration/authority/inkfallAuthorityPlaytest.test.ts',
+  'tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts',
   'tests/unit/authority/fixedTickScheduler.test.ts',
   'tests/unit/authority/combat/roomCombatIntegration.test.ts',
   'tests/unit/dev/authorityEvidence.test.ts',
   'tests/unit/net/protocol-v2.test.ts',
+  'tests/unit/worker/reliableEvents.test.ts',
   'tests/unit/worker/security.test.ts',
   'assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json',
   'evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json',
+  '.env.production',
+  'package.json',
+  'package-lock.json',
+  'pnpm-lock.yaml',
+  'public/_headers',
+  'tsconfig.json',
+  'tsconfig.worker.json',
+  'vite.config.js',
+  'wrangler.jsonc',
   'tools/evidence/capture-phase5-p515-inkfall-product-population.mjs',
+  'tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs',
   'tools/evidence/verify-phase5-p515-inkfall-product-population.mjs',
 ]);
 
@@ -138,6 +190,59 @@ function digestText(value) {
 
 async function sha256(file) {
   return createHash('sha256').update(await fs.readFile(file)).digest('hex');
+}
+
+function commandOutput(command, args) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd: repo,
+      stdio: ['ignore', 'pipe', 'pipe'],
+      windowsHide: true,
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', (chunk) => {
+      stdout += chunk.toString();
+    });
+    child.stderr.on('data', (chunk) => {
+      stderr += chunk.toString();
+    });
+    child.once('error', reject);
+    child.once('exit', (code, signal) => {
+      if (code === 0) {
+        resolve(stdout.trim());
+        return;
+      }
+      reject(new Error(`${command} ${args.join(' ')} failed: ${JSON.stringify({
+        code,
+        signal,
+        stderr: stderr.trim(),
+      })}`));
+    });
+  });
+}
+
+async function repositoryState() {
+  const [head, rawStatus] = await Promise.all([
+    commandOutput('git', ['rev-parse', 'HEAD']),
+    commandOutput('git', ['status', '--short', '--untracked-files=normal']),
+  ]);
+  const outputRelative = path.relative(repo, output).split(path.sep).join('/');
+  const statusLines = rawStatus
+    .split(/\r?\n/u)
+    .filter(Boolean)
+    .filter((line) => {
+      if (outputRelative.startsWith('../') || path.isAbsolute(outputRelative)) return true;
+      const statusPath = line.slice(3).replaceAll('\\', '/');
+      return statusPath !== outputRelative && !statusPath.startsWith(`${outputRelative}/`);
+    });
+  const status = statusLines.join('\n');
+  return Object.freeze({
+    head,
+    status,
+    statusSha256: digestText(status),
+    excludedGeneratedOutput: outputRelative,
+  });
 }
 
 function service(command, args, environment = process.env) {
@@ -467,7 +572,12 @@ async function face(page, targetYawMilliDegrees, toleranceMilliDegrees = 2_200) 
     const delta = normalizedYawDelta(current.localPredictedYawMilliDegrees, targetYawMilliDegrees);
     if (Math.abs(delta) <= toleranceMilliDegrees) return current;
     const key = delta > 0 ? 'e' : 'q';
-    const duration = Math.max(70, Math.min(700, Math.abs(delta) / 30_000 * 1_000));
+    // Below three discrete 1.5-degree input steps, use a sub-sample pulse and
+    // bounded retries so tight combat alignment can land one step instead of
+    // oscillating by two steps around an otherwise unreachable target angle.
+    const duration = Math.abs(delta) <= 4_500
+      ? 35
+      : Math.max(70, Math.min(700, Math.abs(delta) / 30_000 * 1_000));
     await page.keyboard.down(key);
     await delay(duration);
     await page.keyboard.up(key);
@@ -480,7 +590,14 @@ async function face(page, targetYawMilliDegrees, toleranceMilliDegrees = 2_200) 
   if (Math.abs(normalizedYawDelta(final.localPredictedYawMilliDegrees, targetYawMilliDegrees)) <= toleranceMilliDegrees) {
     return final;
   }
-  throw new Error(`Failed to face ${targetYawMilliDegrees}`);
+  throw new Error(`Failed to face ${targetYawMilliDegrees}: ${JSON.stringify({
+    finalYawMilliDegrees: final.localPredictedYawMilliDegrees,
+    finalDeltaMilliDegrees: normalizedYawDelta(
+      final.localPredictedYawMilliDegrees,
+      targetYawMilliDegrees,
+    ),
+    toleranceMilliDegrees,
+  })}`);
 }
 
 async function moveTo(
@@ -510,13 +627,25 @@ async function moveTo(
       stalledAttempts += 1;
     }
     if (stalledAttempts >= 3) {
-      const recoveryKey = movementDriverRecoveries.length % 2 === 0 ? 'a' : 'd';
+      // This alternate route deliberately enters the negative-Z Ink channel.
+      // Prefer the lateral key that moves south when yaw makes lateral input
+      // materially affect Z. Near due north/south, lateral input is almost
+      // pure X instead, so move toward the map centerline to route around the
+      // blocker rather than repeating the same ineffective west/east pulse.
+      const yawRadians = current.localPredictedYawMilliDegrees * Math.PI / 180_000;
+      const sine = Math.sin(yawRadians);
+      const cosine = Math.cos(yawRadians);
+      const recoveryKey = Math.abs(sine) >= 0.25
+        ? (sine >= 0 ? 'd' : 'a')
+        : (cosine * -Math.sign(position.x || 1) > 0 ? 'd' : 'a');
       movementDriverRecoveries.push(Object.freeze({
         label,
         attempt,
         recoveryKey,
+        recoveryPolicy: 'strafe_toward_negative_map_z_or_centerline',
         distanceBeforeMillimeters: distance,
         positionBefore: { ...position },
+        yawBeforeMilliDegrees: current.localPredictedYawMilliDegrees,
         target: { ...target },
       }));
       await page.keyboard.down('s');
@@ -554,18 +683,24 @@ async function routePair(westPage, eastPage) {
   const checkpoints = [];
   for (let index = 0; index < westRoute.length; index += 1) {
     const arrivalToleranceMillimeters = index === westRoute.length - 1 ? 350 : 850;
+    // The final 350 mm target cannot converge with the general 80 ms pulse,
+    // which travels about 520 mm at full run speed. Preserve the tighter
+    // acceptance radius and reduce only the final real-input pulse.
+    const minimumPulseMilliseconds = index === westRoute.length - 1 ? 35 : 80;
     const [west, east] = await Promise.all([
       moveTo(
         westPage,
         westRoute[index],
         `west alternate-ink leg ${index}`,
         arrivalToleranceMillimeters,
+        minimumPulseMilliseconds,
       ),
       moveTo(
         eastPage,
         eastRoute[index],
         `east alternate-ink leg ${index}`,
         arrivalToleranceMillimeters,
+        minimumPulseMilliseconds,
       ),
     ]);
     checkpoints.push(Object.freeze({ index, west: west.localPredictedPosition, east: east.localPredictedPosition }));
@@ -910,10 +1045,10 @@ async function establishSharedAuthorityTick(clients, driver, label) {
   for (let attempt = 0; attempt < 4; attempt += 1) {
     await driver.page.keyboard.down(' ');
     try {
-      // Stay below the client's 50 ms fixed-input period. One attempt can then
-      // emit at most one held-fire command; attempts that fall wholly between
-      // ticks are safely retried by the surrounding bounded loop.
-      await delay(40);
+      // Span the client's 50 ms fixed-input period while staying below the
+      // rifle's 100 ms authority cadence. This remains a real keyboard-driven
+      // product command and can produce at most one accepted authority shot.
+      await delay(SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS);
     } finally {
       await driver.page.keyboard.up(' ');
     }
@@ -1046,6 +1181,7 @@ async function establishSharedAuthorityTick(clients, driver, label) {
       serverOwned: true,
       roomWide: true,
       driverClientId: driver.clientId,
+      firePulseMilliseconds: SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS,
       reliableEventId: authorityEvent.id,
       subjectId: authorityEvent.subjectId,
       actorId: authorityEvent.actorId,
@@ -1089,12 +1225,129 @@ async function establishSharedAuthorityTick(clients, driver, label) {
   });
 }
 
-function closestRemotePosition(snapshot, target) {
-  return snapshot.remotePositions.reduce((closest, position) => (
-    closest === null || distanceXZ(target, position) < distanceXZ(target, closest)
-      ? position
-      : closest
-  ), null);
+function remoteEntity(snapshot, entityId) {
+  return snapshot.remoteEntities?.find((remote) => remote.entityId === entityId) ?? null;
+}
+
+async function waitForLocalAuthoritySettlement(
+  page,
+  label,
+  {
+    timeoutMilliseconds = 10_000,
+    maximumPredictionErrorMillimeters = 750,
+    maximumSampleDriftMillimeters = 80,
+    requiredStableSamples = 3,
+  } = {},
+) {
+  const startedAtMilliseconds = Date.now();
+  let previous = null;
+  let stableSamples = 0;
+  let samples = 0;
+  let maximumObservedPredictionErrorMillimeters = 0;
+  let last = null;
+  while (Date.now() - startedAtMilliseconds <= timeoutMilliseconds) {
+    const snapshot = await productSnapshot(page);
+    const predicted = snapshot?.localPredictedPosition ?? null;
+    const authoritative = snapshot?.localAuthoritativePosition ?? null;
+    if (snapshot !== null && predicted !== null && authoritative !== null) {
+      const predictionErrorMillimeters = distanceXZ(predicted, authoritative);
+      maximumObservedPredictionErrorMillimeters = Math.max(
+        maximumObservedPredictionErrorMillimeters,
+        predictionErrorMillimeters,
+      );
+      const predictedDriftMillimeters = previous === null
+        ? Number.POSITIVE_INFINITY
+        : distanceXZ(previous.predicted, predicted);
+      const authoritativeDriftMillimeters = previous === null
+        ? Number.POSITIVE_INFINITY
+        : distanceXZ(previous.authoritative, authoritative);
+      const stable = predictionErrorMillimeters <= maximumPredictionErrorMillimeters
+        && predictedDriftMillimeters <= maximumSampleDriftMillimeters
+        && authoritativeDriftMillimeters <= maximumSampleDriftMillimeters;
+      stableSamples = stable ? stableSamples + 1 : 0;
+      samples += 1;
+      last = Object.freeze({
+        snapshot,
+        predicted: Object.freeze({ ...predicted }),
+        authoritative: Object.freeze({ ...authoritative }),
+        predictionErrorMillimeters,
+        predictedDriftMillimeters,
+        authoritativeDriftMillimeters,
+      });
+      if (stableSamples >= requiredStableSamples) {
+        return Object.freeze({
+          ...last,
+          samples,
+          stableSamples,
+          maximumObservedPredictionErrorMillimeters,
+          settledAfterMilliseconds: Date.now() - startedAtMilliseconds,
+        });
+      }
+      previous = Object.freeze({
+        predicted: Object.freeze({ ...predicted }),
+        authoritative: Object.freeze({ ...authoritative }),
+      });
+    }
+    await delay(100);
+  }
+  throw new Error(`${label} local authority did not settle: ${JSON.stringify({
+    timeoutMilliseconds,
+    maximumPredictionErrorMillimeters,
+    maximumSampleDriftMillimeters,
+    requiredStableSamples,
+    samples,
+    maximumObservedPredictionErrorMillimeters,
+    last,
+  })}`);
+}
+
+async function waitForRemoteEntityMovement(
+  page,
+  {
+    entityId,
+    authorityPosition,
+    remoteBefore,
+    label,
+    timeoutMilliseconds = 10_000,
+    maximumPeerDistanceMillimeters = 750,
+    minimumRemoteMovementMillimeters = 500,
+  },
+) {
+  const startedAtMilliseconds = Date.now();
+  let last = null;
+  while (Date.now() - startedAtMilliseconds <= timeoutMilliseconds) {
+    const snapshot = await productSnapshot(page);
+    const remote = snapshot === null ? null : remoteEntity(snapshot, entityId);
+    if (snapshot !== null && remote !== null) {
+      const peerDistanceMillimeters = distanceXZ(authorityPosition, remote.position);
+      const remoteTransformMovementMillimeters = distanceXZ(remoteBefore, remote.position);
+      last = Object.freeze({
+        snapshot,
+        remote,
+        peerDistanceMillimeters,
+        remoteTransformMovementMillimeters,
+      });
+      if (
+        peerDistanceMillimeters <= maximumPeerDistanceMillimeters
+        && remoteTransformMovementMillimeters >= minimumRemoteMovementMillimeters
+      ) {
+        return Object.freeze({
+          ...last,
+          observedAfterMilliseconds: Date.now() - startedAtMilliseconds,
+        });
+      }
+    }
+    await delay(100);
+  }
+  throw new Error(`${label} exact remote entity did not converge: ${JSON.stringify({
+    entityId,
+    authorityPosition,
+    remoteBefore,
+    timeoutMilliseconds,
+    maximumPeerDistanceMillimeters,
+    minimumRemoteMovementMillimeters,
+    last,
+  })}`);
 }
 
 async function movementInterpolationProof(
@@ -1111,33 +1364,27 @@ async function movementInterpolationProof(
   )));
   const before = populationBeforeMovement[populationClients.indexOf(mover)];
   const observerBefore = populationBeforeMovement[populationClients.indexOf(observer)];
-  const observedMoverBefore = closestRemotePosition(observerBefore, before.localPredictedPosition);
-  assert.notEqual(observedMoverBefore, null);
+  const moverPositionBefore = before.localAuthoritativePosition ?? before.localPredictedPosition;
+  assert.notEqual(moverPositionBefore, null);
+  const observedMoverEntityBefore = remoteEntity(observerBefore, before.playerId);
+  assert.notEqual(observedMoverEntityBefore, null);
+  const observedMoverBefore = observedMoverEntityBefore.position;
   await moveTo(mover.page, target, label, arrivalToleranceMillimeters);
-  const after = await productSnapshot(mover.page);
+  const settlement = await waitForLocalAuthoritySettlement(mover.page, label);
+  const after = settlement.snapshot;
+  const moverAuthorityAfter = settlement.authoritative;
   const movementMillimeters = distanceXZ(before.localPredictedPosition, after.localPredictedPosition);
   assert.ok(movementMillimeters >= 500, `${label} local prediction did not advance`);
-  await observer.page.waitForFunction(
-    ({ playerId, position, remoteBefore }) => {
-      const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
-      if (!value || value.playerId === playerId) return false;
-      return value.remotePositions.some((remote) => (
-        Math.hypot(remote.x - position.x, remote.z - position.z) <= 750
-        && Math.hypot(remote.x - remoteBefore.x, remote.z - remoteBefore.z) >= 500
-      ));
-    },
-    {
-      playerId: after.playerId,
-      position: after.localPredictedPosition,
-      remoteBefore: observedMoverBefore,
-    },
-    { timeout: 10_000 },
-  );
-  const observed = await productSnapshot(observer.page);
-  const observedMoverAfter = closestRemotePosition(observed, after.localPredictedPosition);
-  assert.notEqual(observedMoverAfter, null);
-  const peerDistanceMillimeters = distanceXZ(after.localPredictedPosition, observedMoverAfter);
-  const remoteTransformMovementMillimeters = distanceXZ(observedMoverBefore, observedMoverAfter);
+  const remoteObservation = await waitForRemoteEntityMovement(observer.page, {
+    entityId: after.playerId,
+    authorityPosition: moverAuthorityAfter,
+    remoteBefore: observedMoverBefore,
+    label,
+  });
+  const observed = remoteObservation.snapshot;
+  const peerDistanceMillimeters = remoteObservation.peerDistanceMillimeters;
+  const remoteTransformMovementMillimeters =
+    remoteObservation.remoteTransformMovementMillimeters;
   assert.ok(remoteTransformMovementMillimeters >= 500, `${label} remote transform did not progress`);
   const populationAfterMovement = await Promise.all(populationClients.map(({ page }) => (
     productSnapshot(page)
@@ -1161,9 +1408,24 @@ async function movementInterpolationProof(
     observerClientId: observer.clientId,
     before: before.localPredictedPosition,
     after: after.localPredictedPosition,
+    authorityBefore: moverPositionBefore,
+    authorityAfter: moverAuthorityAfter,
+    target,
+    requestedArrivalToleranceMillimeters: arrivalToleranceMillimeters,
+    targetDistanceAfterSettlementMillimeters: distanceXZ(target, moverAuthorityAfter),
+    predictionToAuthorityDistanceAfterSettlementMillimeters:
+      settlement.predictionErrorMillimeters,
+    predictionSettlementSamples: settlement.samples,
+    predictionStableSamples: settlement.stableSamples,
+    predictionMaximumObservedErrorMillimeters:
+      settlement.maximumObservedPredictionErrorMillimeters,
+    predictionSettledAfterMilliseconds: settlement.settledAfterMilliseconds,
     movementMillimeters,
     peerDistanceMillimeters,
     remoteTransformMovementMillimeters,
+    observerEntityId: remoteObservation.remote.entityId,
+    observerInterpolationMode: remoteObservation.remote.interpolationMode,
+    observerConvergedAfterMilliseconds: remoteObservation.observedAfterMilliseconds,
     commonAuthorityTickAfterMovement: postMovementAuthority.commonAuthorityTick,
     tickStimulusAfterMovement: postMovementAuthority.stimulus,
     populationDeltaSnapshotsAfterMovement: populationAfterMovement.map(({ deltaSnapshots }) => deltaSnapshots),
@@ -1282,6 +1544,14 @@ const sourceSha256AtStart = Object.fromEntries(await Promise.all(sourceFiles.map
   relative,
   await sha256(path.join(repo, relative)),
 ])));
+const repositoryStateAtStart = await repositoryState();
+const runtimeEnvironment = Object.freeze({
+  nodeVersion: process.version,
+  platform: process.platform,
+  architecture: process.arch,
+  nodeExecutable,
+  browserLaunchArguments,
+});
 
 try {
   wrangler = service(nodeExecutable, ['node_modules/wrangler/bin/wrangler.js', 'dev', '--local', '--port', '8787']);
@@ -1896,6 +2166,12 @@ try {
     await sha256(path.join(repo, relative)),
   ])));
   assert.deepEqual(sourceSha256, sourceSha256AtStart, 'source changed during capture');
+  const repositoryStateAtEnd = await repositoryState();
+  assert.deepEqual(
+    repositoryStateAtEnd,
+    repositoryStateAtStart,
+    'repository HEAD or dirty-tree state changed during capture',
+  );
   const proof = Object.freeze({
     ...proofCore,
     wire: {
@@ -1906,6 +2182,12 @@ try {
       sha256: await sha256(wireLogPath),
     },
     sourceSha256,
+    repositoryState: {
+      unchangedDuringCapture: true,
+      start: repositoryStateAtStart,
+      end: repositoryStateAtEnd,
+    },
+    runtimeEnvironment,
   });
   const proofPath = path.join(output, 'p515-product-population-proof.json');
   await fs.writeFile(proofPath, `${JSON.stringify(proof, null, 2)}\n`, 'utf8');
@@ -1939,6 +2221,15 @@ try {
     wireEntries: proof.wire.entries,
   }, null, 2)}\n`);
 } catch (error) {
+  const sourceSha256AtFailure = Object.fromEntries(await Promise.all(sourceFiles.map(async (relative) => [
+    relative,
+    await sha256(path.join(repo, relative)),
+  ])));
+  const sourceUnchanged = JSON.stringify(sourceSha256AtFailure)
+    === JSON.stringify(sourceSha256AtStart);
+  const repositoryStateAtFailure = await repositoryState();
+  const repositoryStateUnchanged = JSON.stringify(repositoryStateAtFailure)
+    === JSON.stringify(repositoryStateAtStart);
   const failureWire = wireRecords.flat().sort((left, right) => left.sequence - right.sequence);
   const failureWireRelative = 'p515-failure-normalized-wire-log.jsonl';
   const failureWirePath = path.join(output, failureWireRelative);
@@ -1964,6 +2255,18 @@ try {
   await fs.writeFile(path.join(output, 'capture-failure.json'), `${JSON.stringify({
     capturedAt: new Date().toISOString(),
     error: error instanceof Error ? { message: error.message, stack: error.stack } : String(error),
+    sourceFreeze: {
+      status: sourceUnchanged ? 'UNCHANGED' : 'CHANGED_DURING_CAPTURE',
+      files: sourceFiles.length,
+      sourceSha256AtStart,
+      sourceSha256AtFailure,
+    },
+    repositoryState: {
+      unchangedDuringCapture: repositoryStateUnchanged,
+      start: repositoryStateAtStart,
+      failure: repositoryStateAtFailure,
+    },
+    runtimeEnvironment,
     wireDiagnostics: {
       file: failureWireRelative,
       entries: failureWire.length,
@@ -1990,6 +2293,7 @@ try {
       })),
     },
     clients: failureClientStates,
+    movementDriverRecoveries,
     connectionTimeline,
     roomMetricsTimeline,
     vite: vite?.lines ?? [],

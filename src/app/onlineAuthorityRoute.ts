@@ -68,7 +68,15 @@ interface OnlinePreviewSnapshot {
   readonly resumeSuccesses: number;
   readonly combat: AuthorityEvidenceDiagnostics['combat'];
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
+  readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localPredictedYawMilliDegrees: number | null;
+  readonly localPredictionErrorMillimeters: number | null;
+  readonly localPredictionHistoryCommands: number;
+  readonly remoteEntities: readonly Readonly<{
+    entityId: string;
+    interpolationMode: AuthorityEvidencePresentation['remotes'][number]['mode'];
+    position: Readonly<{ x: number; y: number; z: number }>;
+  }>[];
   readonly remotePositions: readonly Readonly<{ x: number; y: number; z: number }>[];
   readonly lastError: string | null;
   readonly presentation: Readonly<{
@@ -1050,6 +1058,15 @@ async function mountSession(
   const onlineSnapshot = (): OnlinePreviewSnapshot => {
     const diagnostics = client.diagnostics();
     const presentation = client.samplePresentation();
+    const remoteEntities = Object.freeze(presentation.remotes.map((remote) => Object.freeze({
+      entityId: remote.entityId,
+      interpolationMode: remote.mode,
+      position: Object.freeze({
+        x: remote.state.feetPosition.x,
+        y: remote.state.feetPosition.y,
+        z: remote.state.feetPosition.z,
+      }),
+    })));
     return Object.freeze({
       schemaVersion: 1,
       productStatus: 'PRE_RELEASE_COMBAT_PREVIEW',
@@ -1066,12 +1083,12 @@ async function mountSession(
       resumeSuccesses: diagnostics.counters.resumeSuccesses,
       combat: diagnostics.combat,
       localPredictedPosition: diagnostics.local.predictedPosition,
+      localAuthoritativePosition: diagnostics.local.authoritativePosition,
       localPredictedYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
-      remotePositions: Object.freeze(presentation.remotes.map((remote) => Object.freeze({
-        x: remote.state.feetPosition.x,
-        y: remote.state.feetPosition.y,
-        z: remote.state.feetPosition.z,
-      }))),
+      localPredictionErrorMillimeters: diagnostics.local.lastPositionErrorMillimeters,
+      localPredictionHistoryCommands: diagnostics.local.predictionHistoryCommands,
+      remoteEntities,
+      remotePositions: Object.freeze(remoteEntities.map(({ position }) => position)),
       lastError: diagnostics.lastError,
       presentation: Object.freeze({
         status: presentationStatus,
