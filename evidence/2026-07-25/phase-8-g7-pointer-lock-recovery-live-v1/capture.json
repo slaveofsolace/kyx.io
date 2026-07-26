@@ -1,0 +1,112 @@
+{
+  "schema": "kyx.phase8.g7.pointer-lock-recovery.v1",
+  "capturedAt": "2026-07-25T22:22:23.696-05:00",
+  "gate": "G7_NOT_ACCEPTED",
+  "source": {
+    "baseCommit": "19272e1f3216695479617479dcecfea7aca74e5a",
+    "workingTree": "dirty because this bounded CSS fix and concurrent G3, G5, and Rev15 lanes were in progress",
+    "boundedChange": [
+      "practice-launch-card now hides horizontal overflow",
+      "desktop viewports at least 981x640 hide only rounding-generated scrollbars while retaining vertical scrolling"
+    ]
+  },
+  "runtime": {
+    "url": "http://127.0.0.1:4176/",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "browser": "Codex in-app Chromium browser",
+    "pointerLockCapability": {
+      "hasPointerLockElementProperty": false,
+      "pointerLockElementType": "undefined",
+      "requestPointerLockType": "undefined",
+      "interpretation": "The browser cannot grant pointer lock; this is a denial/recovery path, not a successful-lock proof."
+    },
+    "denialRecovery": {
+      "pauseDialogVisible": true,
+      "guidanceVisible": "POINTER LOCK DENIED — CHECK BROWSER PERMISSIONS, THEN ACTIVATE RESUME TO RETRY",
+      "focusedControl": "resume-btn",
+      "quitToMenuSucceeded": true,
+      "pauseDialogHiddenAfterQuit": true,
+      "focusedControlAfterQuit": "play-btn"
+    },
+    "menuCardAt1280x720": {
+      "rect": {
+        "x": 190,
+        "y": 192.1999969482422,
+        "width": 900,
+        "height": 399.6000061035156
+      },
+      "clientWidth": 898,
+      "scrollWidth": 899,
+      "clientHeight": 398,
+      "scrollHeight": 399,
+      "overflowX": "hidden",
+      "overflowY": "auto",
+      "scrollbarWidth": "none",
+      "visibleRoundingScrollbar": false
+    },
+    "diagnostics": {
+      "fullReloadAndActionCycle": {
+        "events": 2,
+        "warningErrorOrExceptionCount": 0,
+        "truncated": false,
+        "hasMore": false
+      },
+      "finalPostScopeActionCycle": {
+        "events": 0,
+        "warningErrorOrExceptionCount": 0,
+        "truncated": false,
+        "hasMore": false
+      }
+    }
+  },
+  "verification": {
+    "unit": {
+      "filesPassed": 4,
+      "testsPassed": 36,
+      "command": "vitest run tests/unit/app/movement/pointerLock.test.ts tests/unit/app/movement/developmentFlatRunMovementDriver.test.ts tests/unit/app/settings/inputManagerAccessibility.test.ts tests/unit/app/settings/keyboardFocus.test.ts"
+    },
+    "playwright": {
+      "file": "tests/accessibility/phase8-runtime.spec.ts",
+      "project": "chromium-desktop",
+      "pointerLockProbe": true,
+      "passed": 2,
+      "skipped": 2,
+      "strictAccessibilityAssertions": "not enabled",
+      "knownOutput": "The Vite server emitted one Rapier deprecated-initialization console warning."
+    },
+    "build": {
+      "status": "PASS",
+      "modulesTransformed": 155
+    }
+  },
+  "screenshots": [
+    {
+      "file": "paused-pointer-lock-denied-fixed-1280x720.png",
+      "bytes": 58803,
+      "sha256": "906a4fc3226a451752e6eb33988c19c4ce8cf21189e9d1d1d87a9fa62ed0e380",
+      "meaning": "Final source state: unsupported pointer-lock path presents focused recovery guidance over the live HUD."
+    },
+    {
+      "file": "returned-menu-focus-fixed-1280x720.png",
+      "bytes": 70798,
+      "sha256": "28636b9906658743f7a93baf30b817f88ad5e193ce28352e16f0b619e1becfca",
+      "meaning": "Final source state: Quit returns to the menu, restores play-button focus, and shows no rounding scrollbars."
+    },
+    {
+      "file": "returned-menu-focus-stable-1280x720.png",
+      "bytes": 77075,
+      "sha256": "532d980a6df312de122956390b37a807e6c9e26527cf6ad42ed2435f3c50798b",
+      "meaning": "Pre-fix defect evidence: the 1px rounding overflow produced visible horizontal and vertical scrollbars."
+    }
+  ],
+  "openRequirements": [
+    "Successful pointer-lock, Escape release, resume, and focus restoration in a browser that grants pointer lock",
+    "Literal browser zoom at 125% and 200%; the existing CSS zoom proxy is not equivalent",
+    "Strict Phase 8 keyboard, reduced-motion, scale, captions, and forced-colors assertions",
+    "Human visual and accessibility review across required desktop viewports"
+  ],
+  "verdict": "The bounded denial/recovery and 1280x720 rounding-scrollbar defect are directly verified, but this does not close G7."
+}
