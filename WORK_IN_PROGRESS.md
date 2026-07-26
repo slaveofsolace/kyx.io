@@ -26,6 +26,12 @@ appending prose to executable source files or binary assets.
   evidence harness — seal one clean 2/4/8-client authoritative run after the map
   correction. *Currently being worked on.*
 
+- `public/_headers`, `wrangler.jsonc`, and
+  `evidence/2026-07-25/cloudflare-release-readiness-v1/` — complete the
+  authenticated full-asset Cloudflare deployment, bind the assigned HTTPS
+  origin into the browser build and CORS allowlist, then capture production
+  HTTP/WebSocket and rollback evidence. *Currently being worked on.*
+
 ## Open release work
 
 - G3 lobby reliable-event durability, external capacity/slow-consumer evidence,
@@ -50,4 +56,4 @@ appending prose to executable source files or binary assets.
   is intentionally committed for continuity and must be made type-clean when
   the immutable repair candidate is locked. *Currently being worked on.*
 
-Last refreshed: 2026-07-22.
+Last refreshed: 2026-07-25.

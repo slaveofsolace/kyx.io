@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-07-25",
+  "commitUnderTest": "a3a679aafdcd9748b711ccfa3e7491fc27981db6",
+  "wranglerVersion": "4.112.0",
+  "build": {
+    "passed": true,
+    "modulesTransformed": 155,
+    "headersCopiedToDist": true
+  },
+  "dryRun": {
+    "passed": true,
+    "assetFilesRead": 33,
+    "workerUploadKiB": 2911.72,
+    "workerGzipKiB": 787.75,
+    "bindings": [
+      "KYX_ROOM",
+      "ALLOWED_ORIGINS",
+      "BUILD_ID"
+    ]
+  },
+  "localRuntime": {
+    "headerRulesParsed": 2,
+    "health": {
+      "status": 200,
+      "ok": true,
+      "service": "kyx-authority",
+      "buildId": "foundry-command-v2-a87e9a5",
+      "roomBinding": true,
+      "contentSecurityPolicy": "default-src 'none'; connect-src 'self'; frame-ancestors 'none'",
+      "xContentTypeOptions": "nosniff"
+    },
+    "root": {
+      "status": 200,
+      "contentSecurityPolicy": "default-src 'self'; base-uri 'none'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' wss:; worker-src 'self' blob:; manifest-src 'self'",
+      "xFrameOptions": "DENY",
+      "referrerPolicy": "no-referrer",
+      "permissionsPolicy": "accelerometer=(), ambient-light-sensor=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
+      "crossOriginOpenerPolicy": "same-origin",
+      "crossOriginResourcePolicy": "same-origin"
+    },
+    "hashedAsset": {
+      "path": "/assets/main-P5aFze2N.js",
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "xContentTypeOptions": "nosniff"
+    }
+  },
+  "browser": {
+    "url": "http://127.0.0.1:8791/",
+    "title": "KYX.IO — Offline Practice",
+    "canvasPresent": true,
+    "connectScreenHidden": true,
+    "onlineButtonText": "ONLINE MATCH — NOT AVAILABLE",
+    "onlineButtonDisabled": true,
+    "contentSecurityPolicyErrors": 0,
+    "warnings": [
+      "Non-fatal Three.js WebGL shader precision warning"
+    ]
+  },
+  "cloudflareAuthentication": {
+    "loggedIn": false,
+    "liveDeploymentCompleted": false
+  },
+  "status": "RELEASE_READINESS_CHECKPOINT_LIVE_DEPLOY_PENDING_AUTHENTICATION",
+  "workInProgressMarker": "*Currently being worked on.*"
+}

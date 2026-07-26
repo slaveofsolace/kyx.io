@@ -1,0 +1,8 @@
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe node_modules\vite\bin\vite.js build
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe node_modules\wrangler\bin\wrangler.js deploy --dry-run --outdir .wrangler/dry-run --env=
+C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe node_modules\wrangler\bin\wrangler.js dev --local --port 8791 --env=
+GET http://127.0.0.1:8791/health
+GET http://127.0.0.1:8791/
+GET http://127.0.0.1:8791/assets/main-P5aFze2N.js
+
+*Currently being worked on.*
