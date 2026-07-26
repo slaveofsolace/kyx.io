@@ -11,13 +11,21 @@ import {
   loadRuntimeMapPackageManifest,
   type RuntimeMapPackageManifestV1,
 } from '../../../src/content/maps';
-import { asMillimeters } from '../../../src/sim';
 import {
+  asEntityId,
+  asMilliDegrees,
+  asMillimeters,
+  asMillimetersPerSecond,
+  asQuantizedAxis,
+  asSimulationTick,
   stepMovementSimulation,
   type MovementSimulationState,
   type PlayerIntentCommand,
 } from '../../../src/sim';
-import { PHASE3_HYPOTHESIS_MOVEMENT_PROFILE } from '../../../src/sim/movement';
+import {
+  PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+  type Vector3Millimeters,
+} from '../../../src/sim/movement';
 
 interface InkfallCombatFixtureSnapshot {
   readonly fixture: PhysicsFixtureV1;
@@ -56,9 +64,17 @@ const STUCK_FEET_POSITION = Object.freeze({
 const TARGET_FEET_POSITION = Object.freeze({ x: -14_000, y: 0, z: 2_000 });
 const OFFENDING_RAIL_ID = 'map_collision_guard_rail_press_west_ink_s00_left';
 const RUNTIME_V45_OFFENDING_ROUTE_ID = 'map_collision_route_west_choice_archive_s00';
-const RUNTIME_V45_FEET_POSITION = Object.freeze({ x: -24_024, y: 37, z: 424 });
-const RUNTIME_V45_FORWARD_TRANSLATION = Object.freeze({ x: 318, y: 0, z: -67 });
-const RUNTIME_V45_AUTHORITY_STATE = {
+const RUNTIME_V45_FEET_POSITION = Object.freeze({
+  x: asMillimeters(-24_024),
+  y: asMillimeters(37),
+  z: asMillimeters(424),
+});
+const RUNTIME_V45_AUTHORITY_TRANSLATION = Object.freeze({
+  x: asMillimeters(145),
+  y: asMillimeters(0),
+  z: asMillimeters(-39),
+});
+const RUNTIME_V45_AUTHORITY_STATE: MovementSimulationState = {
   schemaVersion: 1,
   identity: {
     rulesetId: 'revamped_classic',
@@ -73,11 +89,15 @@ const RUNTIME_V45_AUTHORITY_STATE = {
     physicsAdapterVersion: '0.19.3',
   },
   simulationRateHz: 20,
-  tick: 492,
+  tick: asSimulationTick(492),
   player: {
-    id: 'player.runtime-v45',
-    feetPosition: { x: -24_024, y: 37, z: 424 },
-    velocity: { x: 4_830, y: 0, z: -1_294 },
+    id: asEntityId('player.runtime-v45'),
+    feetPosition: RUNTIME_V45_FEET_POSITION,
+    velocity: {
+      x: asMillimetersPerSecond(4_830),
+      y: asMillimetersPerSecond(0),
+      z: asMillimetersPerSecond(-1_294),
+    },
     integrationRemainders: {
       positionX: 3,
       positionY: 0,
@@ -85,13 +105,13 @@ const RUNTIME_V45_AUTHORITY_STATE = {
       planarAcceleration: 0,
       gravity: 0,
     },
-    yawMilliDegrees: 105_000,
-    pitchMilliDegrees: 0,
+    yawMilliDegrees: asMilliDegrees(105_000),
+    pitchMilliDegrees: asMilliDegrees(0),
     lastProcessedSequence: 490,
     ticksSinceAcceptedCommand: 0,
     intent: {
-      moveX: 0,
-      moveZ: 0,
+      moveX: asQuantizedAxis(0),
+      moveZ: asQuantizedAxis(0),
       heldButtons: 0,
       pressedButtons: 0,
       releasedButtons: 0,
@@ -104,7 +124,11 @@ const RUNTIME_V45_AUTHORITY_STATE = {
       colliderId: 'map_collision_route_west_spawn_choice_s01',
       layer: 'world_static',
       normalQ15: { x: 0, y: 32_767, z: 0 },
-      velocity: { x: 0, y: 0, z: 0 },
+      velocity: {
+        x: asMillimetersPerSecond(0),
+        y: asMillimetersPerSecond(0),
+        z: asMillimetersPerSecond(0),
+      },
     },
     coyoteTicksRemaining: 2,
     jumpBufferTicksRemaining: 0,
@@ -114,20 +138,20 @@ const RUNTIME_V45_AUTHORITY_STATE = {
     standBlocked: false,
     activeVolumes: [],
   },
-} as unknown as MovementSimulationState;
-const RUNTIME_V45_NEXT_COMMAND = {
+};
+const RUNTIME_V45_NEXT_COMMAND: PlayerIntentCommand = {
   kind: 'player_intent',
   sequence: 491,
-  clientTick: 491,
-  moveX: 0,
-  moveZ: 0,
+  clientTick: asSimulationTick(491),
+  moveX: asQuantizedAxis(0),
+  moveZ: asQuantizedAxis(0),
   lookYawDeltaMilliDegrees: -1_500,
   lookPitchDeltaMilliDegrees: 0,
   heldButtons: 0,
   pressedButtons: 0,
   releasedButtons: 0,
   selectedSlot: 0,
-} as unknown as PlayerIntentCommand;
+};
 
 async function loadRevision3Fixture() {
   const manifest = await loadRuntimeMapPackageManifest(
@@ -142,8 +166,8 @@ async function loadRevision3Fixture() {
 
 async function probeCapsuleMove(
   fixture: PhysicsFixtureV1,
-  feetPosition = RUNTIME_V45_FEET_POSITION,
-  translation = RUNTIME_V45_FORWARD_TRANSLATION,
+  feetPosition: Vector3Millimeters = RUNTIME_V45_FEET_POSITION,
+  translation: Vector3Millimeters = RUNTIME_V45_AUTHORITY_TRANSLATION,
 ) {
   const world = await createRapierMovementWorld(fixture);
   try {
@@ -159,23 +183,24 @@ async function probeCapsuleMove(
       contactSkin: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE.query.contactSkin,
       solidLayers: SOLID_LAYERS,
     });
-    try {
-      const move = world.moveCapsule({
-        feetPosition,
-        shape: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE.standingShape,
-        desiredTranslation: translation,
-        settings: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE.query,
-        solidLayers: SOLID_LAYERS,
-      });
-      return { startingOverlap, forwardCast, outcome: 'PASS' as const, move };
-    } catch (error) {
-      return {
-        startingOverlap,
-        forwardCast,
-        outcome: 'ERROR' as const,
-        error: error instanceof Error ? error.message : String(error),
-      };
-    }
+    const move = world.moveCapsule({
+      feetPosition,
+      shape: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE.standingShape,
+      desiredTranslation: translation,
+      settings: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE.query,
+      solidLayers: SOLID_LAYERS,
+    });
+    const finalFeet = {
+      x: asMillimeters(feetPosition.x + move.appliedTranslation.x),
+      y: asMillimeters(feetPosition.y + move.appliedTranslation.y),
+      z: asMillimeters(feetPosition.z + move.appliedTranslation.z),
+    };
+    const finalOverlap = world.overlapCapsule({
+      feetPosition: finalFeet,
+      shape: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE.standingShape,
+      solidLayers: SOLID_LAYERS,
+    });
+    return { startingOverlap, forwardCast, move, finalFeet, finalOverlap };
   } finally {
     world.dispose();
   }
@@ -184,20 +209,12 @@ async function probeCapsuleMove(
 async function probeRuntimeV45SimulationStep(fixture: PhysicsFixtureV1) {
   const world = await createRapierMovementWorld(fixture);
   try {
-    try {
-      const result = stepMovementSimulation(
-        RUNTIME_V45_AUTHORITY_STATE,
-        [RUNTIME_V45_NEXT_COMMAND],
-        PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
-        world,
-      );
-      return { outcome: 'PASS' as const, state: result.state, queries: result.queries };
-    } catch (error) {
-      return {
-        outcome: 'ERROR' as const,
-        error: error instanceof Error ? error.message : String(error),
-      };
-    }
+    return stepMovementSimulation(
+      RUNTIME_V45_AUTHORITY_STATE,
+      [RUNTIME_V45_NEXT_COMMAND],
+      PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      world,
+    );
   } finally {
     world.dispose();
   }
@@ -452,105 +469,77 @@ describe('Inkfall canonical west press traversal snag', () => {
     ]);
   });
 
-  it('probes the runtime-v45 reachable press-core pose in revisions 2 and 3', async () => {
+  it('reconciles the exact runtime-v45 west-archive face rounding and advances authority', async () => {
     const revision2 = JSON.parse(
       await readFile(fixtureUrl, 'utf8'),
     ) as InkfallCombatFixtureSnapshot;
     const revision3 = JSON.parse(await readFile(revision3FixtureUrl, 'utf8')) as {
       readonly fixture: PhysicsFixtureV1;
     };
-    const translations = [
-      { x: 0, y: 0, z: 0 },
-      { x: 0, y: -50, z: 0 },
-      { x: 0, y: -100, z: 0 },
-      { x: 145, y: 0, z: -39 },
-      { x: 145, y: -50, z: -39 },
-      RUNTIME_V45_FORWARD_TRANSLATION,
-      { x: 318, y: -50, z: -67 },
-      { x: 338, y: 0, z: -91 },
-      { x: 338, y: -50, z: -91 },
-      { x: 338, y: -100, z: -91 },
-    ];
-    const probes = {
-      revision2: await Promise.all(translations.map((translation) => (
-        probeCapsuleMove(revision2.fixture, RUNTIME_V45_FEET_POSITION, translation)
-      ))),
-      revision3: await Promise.all(translations.map((translation) => (
-        probeCapsuleMove(revision3.fixture, RUNTIME_V45_FEET_POSITION, translation)
-      ))),
-      simulationStep: {
-        revision2: await probeRuntimeV45SimulationStep(revision2.fixture),
-        revision3: await probeRuntimeV45SimulationStep(revision3.fixture),
+    const directRevision2 = await probeCapsuleMove(revision2.fixture);
+    const directRevision3 = await probeCapsuleMove(revision3.fixture);
+
+    expect(directRevision3.startingOverlap.blockingColliderIds).toEqual([]);
+    expect(directRevision3.forwardCast).toMatchObject({
+      allowedTranslation: { x: 39, y: 0, z: -10 },
+      hit: {
+        colliderId: RUNTIME_V45_OFFENDING_ROUTE_ID,
+        layer: 'world_static',
+        normalQ15: { x: -12_484, y: 8_323, z: 29_130 },
+        timeOfImpactPermille: 266,
       },
-    };
-    const isolationIds = [
-      'map_collision_node_west_choice',
-      'map_collision_route_west_spawn_choice_s01',
-      'map_collision_route_west_choice_archive_s00',
-    ];
-    const isolation = Object.fromEntries(await Promise.all(isolationIds.map(async (removedId) => {
-      const fixture = {
-        ...revision3.fixture,
-        solids: revision3.fixture.solids.filter(({ id }) => id !== removedId),
-      };
-      return [removedId, {
-        direct: await probeCapsuleMove(
-          fixture,
-          RUNTIME_V45_FEET_POSITION,
-          { x: 145, y: 0, z: -39 },
-        ),
-        simulation: await probeRuntimeV45SimulationStep(fixture),
-      }];
-    })));
-    const routeDirectionLength = Math.hypot(-3_000, 2_000, 7_000);
-    const trims = [
-      1_000, 1_100, 1_200, 1_300, 1_400, 1_500, 1_600, 1_700, 1_800,
-      1_900, 2_000, 2_100, 2_200, 2_400, 2_600, 2_800, 3_000,
-    ];
-    const trimTrials = Object.fromEntries(await Promise.all(trims.map(async (trimmedStartMm) => {
-      const fixture = {
-        ...revision3.fixture,
-        solids: revision3.fixture.solids.map((solid) => {
-          if (solid.id !== RUNTIME_V45_OFFENDING_ROUTE_ID || solid.shape.type !== 'box') {
-            return solid;
-          }
-          return {
-            ...solid,
-            centerMm: {
-              x: asMillimeters(Math.round(solid.centerMm.x
-                + (-3_000 / routeDirectionLength) * trimmedStartMm / 2)),
-              y: asMillimeters(Math.round(solid.centerMm.y
-                + (2_000 / routeDirectionLength) * trimmedStartMm / 2)),
-              z: asMillimeters(Math.round(solid.centerMm.z
-                + (7_000 / routeDirectionLength) * trimmedStartMm / 2)),
-            },
-            shape: {
-              ...solid.shape,
-              halfExtentsMm: {
-                ...solid.shape.halfExtentsMm,
-                x: asMillimeters(solid.shape.halfExtentsMm.x - trimmedStartMm / 2),
-              },
-            },
-          };
-        }),
-      };
-      return [trimmedStartMm, {
-        direct: await probeCapsuleMove(
-          fixture,
-          RUNTIME_V45_FEET_POSITION,
-          { x: 145, y: 0, z: -39 },
-        ),
-        simulation: await probeRuntimeV45SimulationStep(fixture),
-      }];
-    })));
-    console.log(`RUNTIME_V45_COLLISION_PROBE=${JSON.stringify(probes)}`);
-    console.log(`RUNTIME_V45_COLLIDER_ISOLATION=${JSON.stringify(isolation)}`);
-    console.log(`RUNTIME_V45_ROUTE_TRIM_TRIALS=${JSON.stringify(trimTrials)}`);
-    expect(probes.revision2.every(({ outcome }) => outcome !== undefined)).toBe(true);
-    expect(probes.revision3.every(({ outcome }) => outcome !== undefined)).toBe(true);
-    expect(probes.simulationStep.revision2.outcome).toBeDefined();
-    expect(probes.simulationStep.revision3.outcome).toBeDefined();
-    expect(Object.keys(isolation)).toEqual(isolationIds);
-    expect(Object.keys(trimTrials)).toHaveLength(trims.length);
+    });
+    expect(directRevision3.move).toMatchObject({
+      appliedTranslation: { x: 66, y: 0, z: -22 },
+      grounded: true,
+      hitCeiling: false,
+      support: {
+        colliderId: 'map_collision_node_west_choice',
+        layer: 'world_static',
+        normalQ15: { x: 0, y: 32_767, z: 0 },
+      },
+      contacts: [
+        {
+          colliderId: RUNTIME_V45_OFFENDING_ROUTE_ID,
+          normalQ15: { x: -30_118, y: 0, z: -12_908 },
+          timeOfImpactPermille: 266,
+        },
+        {
+          colliderId: RUNTIME_V45_OFFENDING_ROUTE_ID,
+          normalQ15: { x: -26_461, y: 0, z: -19_326 },
+          timeOfImpactPermille: 499,
+        },
+      ],
+    });
+    expect(directRevision3.finalFeet).toEqual({
+      x: -23_958,
+      y: 37,
+      z: 402,
+    });
+    expect(directRevision3.finalOverlap.blockingColliderIds).toEqual([]);
+    expect(directRevision2).toEqual(directRevision3);
+
+    const simulationRevision2 = await probeRuntimeV45SimulationStep(revision2.fixture);
+    const simulationRevision3 = await probeRuntimeV45SimulationStep(revision3.fixture);
+    expect(simulationRevision3.state).toMatchObject({
+      tick: 493,
+      player: {
+        feetPosition: { x: -23_958, y: 37, z: 402 },
+        velocity: { x: 731, y: 0, z: -1_705 },
+        yawMilliDegrees: 103_500,
+        lastProcessedSequence: 491,
+        grounded: true,
+        support: {
+          colliderId: 'map_collision_node_west_choice',
+          normalQ15: { x: 0, y: 32_767, z: 0 },
+        },
+      },
+    });
+    expect(simulationRevision3.metrics).toMatchObject({
+      moveCapsuleCalls: 1,
+      volumeCalls: 1,
+    });
+    expect(simulationRevision3.metrics.overlapTests).toBeGreaterThan(1);
+    expect(simulationRevision2).toEqual(simulationRevision3);
   });
 });

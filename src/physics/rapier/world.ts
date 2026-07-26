@@ -600,20 +600,6 @@ export class RapierMovementWorld implements MovementQueryPort {
     throw new Error('PHYSICS_DEPENETRATION_FAILED');
   }
 
-  private assertCapsuleClear(
-    feetPosition: Vector3Millimeters,
-    shape: CapsuleShapeMillimeters,
-    layers: readonly MovementCollisionLayer[],
-  ): void {
-    const center = capsuleCenter(feetPosition, shape);
-    const strictShape = this.capsuleShape(shape, STRICT_OVERLAP_INSET_MM);
-    if (this.orderedSolidColliders(layers).some(({ collider }) => (
-      collider.intersectsShape(strictShape, center, IDENTITY_ROTATION)
-    ))) {
-      throw new Error('PHYSICS_DEPENETRATION_FAILED');
-    }
-  }
-
   moveCapsule(request: CapsuleMoveRequest): CapsuleMoveResult {
     this.assertActive();
     assertVector(request.feetPosition, 'feetPosition');
@@ -773,7 +759,7 @@ export class RapierMovementWorld implements MovementQueryPort {
       ));
     }
 
-    const appliedTranslation = Object.freeze({
+    let appliedTranslation = Object.freeze({
       x: asMillimeters(recovery.correction.x + kccTranslation.x),
       y: asMillimeters(recovery.correction.y + kccTranslation.y),
       z: asMillimeters(recovery.correction.z + kccTranslation.z),
@@ -796,12 +782,49 @@ export class RapierMovementWorld implements MovementQueryPort {
       hitCeiling = true;
     }
 
-    const finalFeet = Object.freeze({
+    let finalFeet = Object.freeze({
       x: asMillimeters(request.feetPosition.x + appliedTranslation.x),
       y: asMillimeters(request.feetPosition.y + appliedTranslation.y),
       z: asMillimeters(request.feetPosition.z + appliedTranslation.z),
     });
-    this.assertCapsuleClear(finalFeet, request.shape, request.solidLayers);
+    const postMovementRecovery = this.depenetrateCapsule(
+      finalFeet,
+      request.shape,
+      request.solidLayers,
+    );
+    const postMovementCorrectionDistance = Math.hypot(
+      postMovementRecovery.correction.x,
+      postMovementRecovery.correction.y,
+      postMovementRecovery.correction.z,
+    );
+    if (postMovementCorrectionDistance > 0) {
+      const movementColliderIds = new Set(
+        movementContacts.map((contact) => contact.colliderId),
+      );
+      const correctsOnlyReportedContacts = postMovementRecovery.contacts.every((contact) => (
+        movementColliderIds.has(contact.colliderId)
+      ));
+      // Rapier computes in floating-point units and the authority adapter returns
+      // integer millimeters. At rotated box faces, rounding the KCC result can
+      // place the strict 0.5 mm query capsule a few millimeters back inside the
+      // same collider the KCC reported. Reconcile only that shallow, known
+      // contact inside the configured skin; larger or novel overlaps still fail
+      // closed as genuine controller/map defects.
+      if (!correctsOnlyReportedContacts
+        || postMovementCorrectionDistance > Math.max(1, settings.contactSkin)) {
+        throw new Error('PHYSICS_DEPENETRATION_FAILED');
+      }
+      appliedTranslation = Object.freeze({
+        x: asMillimeters(appliedTranslation.x + postMovementRecovery.correction.x),
+        y: asMillimeters(appliedTranslation.y + postMovementRecovery.correction.y),
+        z: asMillimeters(appliedTranslation.z + postMovementRecovery.correction.z),
+      });
+      finalFeet = Object.freeze({
+        x: asMillimeters(request.feetPosition.x + appliedTranslation.x),
+        y: asMillimeters(request.feetPosition.y + appliedTranslation.y),
+        z: asMillimeters(request.feetPosition.z + appliedTranslation.z),
+      });
+    }
     const supportDistance = Math.max(
       1,
       settings.contactSkin + settings.snapToGroundDistance,
@@ -863,7 +886,9 @@ export class RapierMovementWorld implements MovementQueryPort {
       // Counts one deterministic support cast per selected fixture collider.
       // Rapier does not expose the KCC's own internal cast count.
       shapeCasts: supportColliders.length,
-      overlapTests: recovery.overlapTests + 1 + supportContactTests,
+      overlapTests: recovery.overlapTests
+        + postMovementRecovery.overlapTests
+        + supportContactTests,
     });
   }
 
