@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 2,
+  "phase": "P5.15",
+  "verifiedAt": "2026-07-26T04:12:25.386Z",
+  "status": "FAILURE_CONFIRMED",
+  "failureKind": "EIGHT_CLIENT_INTERPOLATION_ENDPOINT_TIMEOUT",
+  "gateClaim": "G3_REMAINS_OPEN",
+  "runtime": "evidence/2026-07-25/phase-4-g3-source-frozen-2-4-8/runs/local-v7",
+  "checks": {
+    "recordedSourceFreeze": {
+      "status": "RECORDED_UNCHANGED_WITH_POST_CAPTURE_DRIFT_DISCLOSED",
+      "recordedFiles": 31,
+      "currentMatches": 27,
+      "disclosedPostCaptureVerifierRepair": {
+        "path": "tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs",
+        "capturedSha256": "c0dade1113645c21fe9c343aa55becd8c7f0d32ecf421ebe83ec0fb854eff9a6",
+        "currentSha256": "631fe346c7d9c31be6159c141359662d59bcd047e53a709a7f111b569cd452fe",
+        "reason": "This verifier was repaired after local-v7 to verify the preserved interpolation failure."
+      },
+      "disclosedPostCaptureWorkspaceDrift": [
+        {
+          "path": "src/app/onlineAuthorityRoute.ts",
+          "capturedSha256": "945d6edf1a49d0af527ea6f97e72b01ad27544cab52f19992e3c5a7d418f9542",
+          "currentSha256": "6e9a06a91807e3b201181fad80339cee47dd3ce40aaff260505f6a18fa78bfbf",
+          "reason": "The workspace changed after the preserved local-v7 capture."
+        },
+        {
+          "path": "tools/evidence/capture-phase5-p515-inkfall-product-population.mjs",
+          "capturedSha256": "713b3fbc1241e655be7585de87294dba1b6a3887920b19e4be5e2fa71740099b",
+          "currentSha256": "6034658361cfc4437defdfdea54502c21430464b6f2576b018cac7a1493bc943",
+          "reason": "The workspace changed after the preserved local-v7 capture."
+        },
+        {
+          "path": "tools/evidence/verify-phase5-p515-inkfall-product-population.mjs",
+          "capturedSha256": "e03437a01c76ffc4f29170975076a60c850df66de465dca13b52a430afc2590d",
+          "currentSha256": "fa7c4fb4b9bac638884feed8e76e83555c179a471129c32f91de15a8c7c88e66",
+          "reason": "The workspace changed after the preserved local-v7 capture."
+        }
+      ]
+    },
+    "productClientsAttempted": 8,
+    "wireEntries": 20564,
+    "receivedSnapshots": 3155,
+    "snapshotAcknowledgements": 3261,
+    "acknowledgementRejections": 0,
+    "decodeErrors": 0,
+    "rawResumeTokenFields": 0,
+    "completedTwoClientCombatAndResumeStage": true,
+    "completedFourClientStage": true,
+    "completedEightClientAcceptance": false,
+    "g3Claimed": false
+  },
+  "diagnosis": {
+    "moverClientId": "client-6",
+    "observerClientId": "client-7",
+    "moverPlayerId": "player.0c9452bd-4def-45d4-a69d-c6616c1eaa66",
+    "target": {
+      "x": -30500,
+      "z": 4500
+    },
+    "arrivalToleranceMillimeters": 350,
+    "observerEndpointProximityRequirementMillimeters": 750,
+    "observerTimeoutMilliseconds": 10000,
+    "initialAuthoritativeRemotePosition": {
+      "x": -30500,
+      "y": 0,
+      "z": 7000
+    },
+    "finalAuthoritativeRemotePosition": {
+      "x": -30522,
+      "y": 0,
+      "z": 5751
+    },
+    "finalAuthoritativeRemoteTick": 2122,
+    "authoritativeRemoteMovementMillimeters": 1249.1937399779106,
+    "remoteDistanceFromTargetMillimeters": 1251.1934302896575,
+    "minimumEndpointDiscrepancyMillimeters": 901.1934302896575,
+    "missedSchedulerTicks": 186,
+    "totalSchedulerTicks": 2229,
+    "missedSchedulerTickRate": 0.08344549125168237,
+    "inference": "moveTo returned only after local prediction entered the 350 mm target radius; the observer then timed out while the authoritative endpoint remained at least 901 mm outside that radius."
+  },
+  "screenshotSha256": {
+    "p515-01-client-0-two-rendered.png": "34b553f861f4334eb363e000622e351f52ec97c14b619d5f2d0e1e9492cf54e1",
+    "p515-02-client-1-two-rendered.png": "0541a77c0a74f18bca3c1d1e81ce6d40cb189b269806f347f171131bf64a5425",
+    "p515-03-real-occlusion.png": "0d94e0c4c9f2feaf5d322eeef732b3f8892493cd8f7ea4cfa9bb7f17223160fb",
+    "p515-04-confirmed-body-hit.png": "1a2d9447010bd6b69f2c8284de46e72a4406f778d23337936f1300b1df13ded5",
+    "p515-05-authoritative-death-score.png": "2abc3c575964ba82a81eb6b0271ad312553123a761435dd3795e1f2eb57cf158",
+    "p515-06-confirmed-teleport.png": "05b7007d46363cf7d8c95e3fc059050f43132915f62e0aa0fa08d2f79f4f8532",
+    "p515-07-resume-preserved-state.png": "2675e51041873d9619bdc26a1d0126cbfa81417595dc76561815b4827bb9f3cc",
+    "p515-08-four-product-clients.png": "2f26f28ff588f4ac10aa82be699ada8b3c1214f2d22aee116a0b4839b7e3ce98"
+  },
+  "captureFailureSha256": "4074955092d84b37d5b65479062b997266b218782bb160fd16b2f8e86f8d54c5",
+  "wireSha256": "6bf58278ed712a56c0b086078d4904926a4f3420a8ad19d855ec9f0fdc61ba94",
+  "verifierSha256": "631fe346c7d9c31be6159c141359662d59bcd047e53a709a7f111b569cd452fe",
+  "limitations": [
+    "This confirms a preserved failed capture; it is not a successful P5.15 proof.",
+    "The source freeze covers only the files enumerated by the capture, not the complete repository or runtime environment.",
+    "The minimum endpoint discrepancy is an inference from the audited local-v7 capture contract pinned by SHA-256 and the independently parsed authoritative wire endpoint because the predicted endpoint and the capture-source bytes were not archived inside the failed run.",
+    "No G3, G4, G5, performance, human-playtest, staging, or deployment acceptance is claimed."
+  ]
+}

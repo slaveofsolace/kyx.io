@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 2,
+  "phase": "P5.15",
+  "verifiedAt": "2026-07-26T04:12:25.261Z",
+  "status": "FAILURE_CONFIRMED",
+  "failureKind": "EIGHT_CLIENT_SNAPSHOT_ACK_DEBT_EVICTION",
+  "gateClaim": "G3_REMAINS_OPEN",
+  "runtime": "evidence/2026-07-25/phase-4-g3-source-frozen-2-4-8/runs/local-v6",
+  "checks": {
+    "recordedSourceFreeze": {
+      "status": "NOT_CAPTURED",
+      "recordedFiles": 0,
+      "currentMatches": 0,
+      "disclosedPostCaptureVerifierRepair": null
+    },
+    "productClientsAttempted": 8,
+    "wireEntries": 23552,
+    "receivedSnapshots": 3418,
+    "snapshotAcknowledgements": 3509,
+    "acknowledgementRejections": 0,
+    "decodeErrors": 0,
+    "rawResumeTokenFields": 0,
+    "completedTwoClientCombatAndResumeStage": true,
+    "completedFourClientStage": true,
+    "completedEightClientAcceptance": false,
+    "g3Claimed": false
+  },
+  "diagnosis": {
+    "acknowledgementTimeoutClients": [
+      "client-0",
+      "client-1",
+      "client-2",
+      "client-3",
+      "client-4",
+      "client-5",
+      "client-6"
+    ],
+    "clientsRemainingJoined": [
+      "client-7"
+    ],
+    "snapshotAckDebtEvictions": 7,
+    "slowConsumerEvictions": 7,
+    "maximumSnapshotAckDebtMilliseconds": 5870,
+    "missedSchedulerTicks": 338
+  },
+  "screenshotSha256": {
+    "p515-01-client-0-two-rendered.png": "9e1fcc8045c8b3b439da3b4105fcad13c0d73543d28925bc1a5e0bfd7032bb14",
+    "p515-02-client-1-two-rendered.png": "76d96a7b10ad070150c4d9b49d85ab315f1598c5bdbebfe527b4396e757584a7",
+    "p515-03-real-occlusion.png": "a2a6886a2402fd0a126ab3f5f0ce98086b6d37f956732ef7d2f83d9c0f664ae3",
+    "p515-04-confirmed-body-hit.png": "5218e261ac71529059605afc8a01fc65e8b4fe701f1dee153b638e0d4c3617a6",
+    "p515-05-authoritative-death-score.png": "80522003be9a5659592db9a11a1418bb69b2362ab755c657ae6038abf84f4f0c",
+    "p515-06-confirmed-teleport.png": "5c969a1ee3c6acc18e0c6110f0b29b2be0f0a21caa02ced432d904dd8b02ca4c",
+    "p515-07-resume-preserved-state.png": "83fd25a3409c9df5a7e506c8f8b1c76df8c44c9e2e9be475449095e6e5851f62",
+    "p515-08-four-product-clients.png": "d870bc682a451390b65e33634c1cdb402b4e2d6b1450a31ddd8c85113f0dcc7f"
+  },
+  "captureFailureSha256": "e5256fb0a44ce8c0fe1015a1f6cae848acb8fab9361586b17e3cfb9d5a137eb8",
+  "wireSha256": "5c477eac479111e89a2e0e85a848f258923bc35a9563c7d9611801cb332bf89c",
+  "verifierSha256": "631fe346c7d9c31be6159c141359662d59bcd047e53a709a7f111b569cd452fe",
+  "limitations": [
+    "This confirms a preserved failed capture; it is not a successful P5.15 proof.",
+    "This older capture did not record a source freeze, so it cannot establish a current-source or capture-adjacent source identity.",
+    "No G3, G4, G5, performance, human-playtest, staging, or deployment acceptance is claimed."
+  ]
+}
