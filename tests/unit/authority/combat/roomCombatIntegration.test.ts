@@ -187,6 +187,56 @@ describe('P5.1/P5.2 authoritative room combat integration', () => {
     });
   });
 
+  it('preserves one quick fire tap when catch-up drains its press and release together', () => {
+    const authority = combatRoom();
+    join(authority, 'A');
+    join(authority, 'B');
+    expect(authority.startMatch()).toBe(true);
+    advanceTo(authority, 4);
+
+    const press = batch(
+      0,
+      INTENT_BUTTON.primaryFire,
+      INTENT_BUTTON.primaryFire,
+    ).commands[0];
+    const release = {
+      ...batch(1).commands[0],
+      releasedButtons: INTENT_BUTTON.primaryFire,
+    };
+    expect(authority.enqueueInputBatch('connection_A', {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'inputBatch',
+      commands: [press, release],
+    }).rejections).toEqual([]);
+
+    const tick = authority.advanceOneTick();
+    expect(tick.combatEvents).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        kind: 'auto_rifle_shot_accepted',
+        authorityTick: 5,
+        playerId: 'player_A',
+      }),
+    ]));
+    expect(authority.fullSnapshot().players[0]).toMatchObject({
+      movement: {
+        player: {
+          lastProcessedSequence: 1,
+          intent: {
+            heldButtons: 0,
+            pressedButtons: INTENT_BUTTON.primaryFire,
+            releasedButtons: INTENT_BUTTON.primaryFire,
+          },
+        },
+      },
+      combat: {
+        autoRifle: {
+          magazineRounds: 49,
+          acceptedShotCount: 1,
+        },
+      },
+    });
+  });
+
   it('retains the join-time spawn ordinal across death, late joins, and respawn', () => {
     const authority = combatRoom();
     join(authority, 'A');

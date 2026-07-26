@@ -171,11 +171,11 @@ describe('Inkfall Foundry P6.6B native revision-2 tapes', () => {
     expect(first.scenarios.map(({ status }) => status)).toEqual(['PASS', 'PASS', 'PASS']);
     expect(first.scenarios.map(({ spawnProbe }) => spawnProbe.passed)).toEqual([true, true, true]);
     expect(first.scenarios.map(({ replayHash }) => replayHash)).toEqual([
-      '92aa8378d2e0d27e',
-      '2010f3a3d1897f31',
-      '909814a9d725d187',
+      'b989fdfdec907c2a',
+      '776fe698501b4994',
+      '3be932c85d177021',
     ]);
-    expect(first.suiteHash).toBe('143d09532b9c2b24');
+    expect(first.suiteHash).toBe('1b5ccfdc5a9afb55');
     expect(first.issueCount).toBe(0);
     expect(first.allAutomatedThresholdsPassed).toBe(true);
   });

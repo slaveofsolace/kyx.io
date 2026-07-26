@@ -86,6 +86,7 @@ const LOBBY_RELIABILITY_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
 const LOADOUT_REQUEST_LEDGER_SCHEMA_VERSION = 1;
 const ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION = 1;
 const ACTIVE_MATCH_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
+const ACTIVE_MATCH_CHECKPOINT_INTERVAL_TICKS = 10;
 const MAXIMUM_LOBBY_RELIABILITY_CHECKPOINT_BYTES = 1_000_000;
 const MAXIMUM_ACTIVE_MATCH_CHECKPOINT_BYTES = 4_000_000;
 const MAXIMUM_RETAINED_LOADOUT_REQUESTS = 512;
@@ -1410,6 +1411,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     if (!this.activeMatchCheckpointDirty) return;
     const authority = this.requireAuthority();
     if (this.lastActiveMatchCheckpointPersistedTick === authority.serverTick) return;
+    if (
+      this.lastActiveMatchCheckpointPersistedTick !== null
+      && authority.serverTick - this.lastActiveMatchCheckpointPersistedTick
+        < ACTIVE_MATCH_CHECKPOINT_INTERVAL_TICKS
+    ) return;
     this.persistActiveMatchCheckpoint();
   }
 
@@ -2687,7 +2693,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         }
         for (const playerId of tickResult.prunedPlayerIds) this.recordPlayerLeft(playerId);
         this.markActiveMatchCheckpointDirty();
-        this.flushActiveMatchCheckpoint();
+        if (combatEvents.length > 0 || tickResult.prunedPlayerIds.length > 0) {
+          // Reliable combat and roster boundaries remain immediately durable.
+          // Ordinary movement/checkpoint dirtiness is coalesced to a bounded
+          // 500 ms cadence so a room does not serialize and transact at 20 Hz.
+          this.persistActiveMatchCheckpoint();
+        } else {
+          this.flushActiveMatchCheckpoint();
+        }
         this.broadcastInputAcks();
         if (authority.serverTick % SNAPSHOT_INTERVAL_TICKS === 0) {
           const snapshotAttachments = this.broadcastSnapshots();

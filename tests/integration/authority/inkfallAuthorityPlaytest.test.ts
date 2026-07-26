@@ -104,11 +104,11 @@ describe('Inkfall Foundry P6.6 automated authority playtest foundation', () => {
 
   it('replays the complete 2/4/8-player suite exactly deterministically', () => {
     expect(second).toEqual(first);
-    expect(first.suiteHash).toBe('f42128f8aef72820');
+    expect(first.suiteHash).toBe('a0019d1c5700ec17');
     expect(first.scenarios.map(({ replayHash }) => replayHash)).toEqual([
-      '0f7f6c2965a594c6',
-      '88ce02f1c029c9d9',
-      '741c7642229e2f3c',
+      '33f9fdff076768af',
+      '7da6151eb083bd40',
+      '283f17c4da27bb68',
     ]);
     expect(first.scenarios.map(({ status }) => status)).toEqual(['PASS', 'PASS', 'FAIL']);
     expect(first.issueCount).toBe(16);
@@ -248,6 +248,12 @@ describe('Inkfall Foundry P6.6 automated authority playtest foundation', () => {
     expect(Math.max(...first.scenarios.map(({ queryMetrics }) => (
       queryMetrics.maximumCallsPerAgentTick
     )))).toBe(6);
+    for (const { queryMetrics } of first.scenarios) {
+      expect(queryMetrics.shapeCasts).toBeLessThanOrEqual(
+        queryMetrics.moveCapsuleCalls * 4,
+      );
+    }
+    expect(scenario(8).queryMetrics.shapeCasts).toBeLessThan(20_000);
     expect(first.resourceBounds.maximumAuthorityQueryCallsPerAgentTick).toBe(128);
     expect(first.allAutomatedThresholdsPassed).toBe(false);
     expect(first.topologyRecommendation).toBe('REPORT_REQUIRED_BEFORE_PACKAGE_CHANGE');

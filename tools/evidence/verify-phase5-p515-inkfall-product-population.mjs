@@ -191,7 +191,25 @@ function assertSharedAuthorityStimulus(stimulus, count, driverClientId) {
   assert.equal(stimulus.serverOwned, true);
   assert.equal(stimulus.roomWide, true);
   assert.equal(stimulus.driverClientId, driverClientId);
-  assert.equal(stimulus.firePulseMilliseconds, 90);
+  assert.equal(stimulus.firePulseMilliseconds, 0);
+  assert.equal(stimulus.inputEdgeMode, 'latched_press_release');
+  assert.ok(Number.isInteger(stimulus.inputEdgeProof.preStimulusInputSequence));
+  assert.equal(stimulus.inputEdgeProof.uniquePrimaryFirePressedCommands, 1);
+  assert.equal(stimulus.inputEdgeProof.uniquePrimaryFireReleasedCommands, 1);
+  assert.equal(stimulus.inputEdgeProof.pressCommand.held, true);
+  assert.equal(stimulus.inputEdgeProof.pressCommand.pressed, true);
+  assert.equal(stimulus.inputEdgeProof.pressCommand.released, false);
+  assert.equal(stimulus.inputEdgeProof.releaseCommand.held, false);
+  assert.equal(stimulus.inputEdgeProof.releaseCommand.pressed, false);
+  assert.equal(stimulus.inputEdgeProof.releaseCommand.released, true);
+  assert.ok(
+    stimulus.inputEdgeProof.pressCommand.sequence
+      > stimulus.inputEdgeProof.preStimulusInputSequence,
+  );
+  assert.ok(
+    stimulus.inputEdgeProof.releaseCommand.sequence
+      > stimulus.inputEdgeProof.pressCommand.sequence,
+  );
   assert.match(stimulus.reliableEventId, /^event\.(0|[1-9][0-9]*)$/u);
   assert.match(stimulus.subjectId, /^combat\.auto_rifle\.shot\./u);
   assert.equal(typeof stimulus.actorId, 'string');
@@ -427,7 +445,9 @@ assert.ok(proof.movementAndWorld.driverRecoveries.length <= 40);
 for (const recovery of proof.movementAndWorld.driverRecoveries) {
   assert.equal(typeof recovery.label, 'string');
   assert.ok(recovery.recoveryKey === 'a' || recovery.recoveryKey === 'd');
-  assert.equal(recovery.recoveryPolicy, 'strafe_toward_negative_map_z_or_centerline');
+  assert.equal(recovery.recoveryPolicy, 'strafe_toward_map_centerline_with_target_bias');
+  assert.equal(Number.isFinite(recovery.recoveryScores.a), true);
+  assert.equal(Number.isFinite(recovery.recoveryScores.d), true);
   assert.ok(recovery.distanceBeforeMillimeters > 0);
   assert.ok(Number.isInteger(recovery.yawBeforeMilliDegrees));
 }
@@ -664,13 +684,29 @@ assert.ok(proof.transportDiagnostics.connectionTimeline.length >= 8);
 assert.ok(proof.transportDiagnostics.roomMetricsTimeline.length >= 4);
 assert.equal(proof.transportDiagnostics.finalRoomMetrics.label, 'capture-complete');
 assert.equal(proof.transportDiagnostics.finalRoomMetrics.status, 200);
-const finalTransport = proof.transportDiagnostics.finalRoomMetrics.body.metrics.transport;
+const finalMetrics = proof.transportDiagnostics.finalRoomMetrics.body.metrics;
+const finalTransport = finalMetrics.transport;
+assert.ok(finalMetrics.missedSchedulerTicks <= 60);
+assert.ok(finalMetrics.maximumObservedQueueDepth <= 16);
+assert.ok(
+  finalMetrics.queryMetrics.shapeCasts
+    <= finalMetrics.queryMetrics.moveCapsuleCalls * 4,
+);
 assert.equal(finalTransport.snapshotAcksRejected, 0);
 assert.equal(finalTransport.snapshotAckDebtEvictions, 0);
 assert.equal(finalTransport.reliableEventAcksRejected, 0);
 assert.equal(finalTransport.snapshotHistoryFallbacks, 0);
 assert.ok(finalTransport.snapshotAckDebtRecoveries >= 1);
-assert.ok(finalTransport.maximumSnapshotAckDebtMilliseconds >= 0);
+assert.ok(
+  finalTransport.maximumSnapshotAckDebtMilliseconds >= 0
+    && finalTransport.maximumSnapshotAckDebtMilliseconds <= 1_000,
+);
+assert.ok(
+  finalTransport.activeMatchCheckpointWrites
+    <= Math.ceil(finalMetrics.serverTick / 10)
+      + finalTransport.reliableEventsRecorded
+      + 8,
+);
 assert.equal(proof.knownLimits.includes('This capture is bounded product/browser evidence, not broad playtest acceptance.'), true);
 assert.equal(proof.knownLimits.includes('This capture does not close G3, G4, or G5.'), true);
 assert.equal(proof.knownLimits.includes('Inkfall revision-2 players begin with zero shield; no synthetic shield cue is manufactured.'), true);
@@ -857,6 +893,15 @@ const verification = {
     snapshotAckDebtEvictions: finalTransport.snapshotAckDebtEvictions,
     snapshotAckDebtRecoveries: finalTransport.snapshotAckDebtRecoveries,
     maximumSnapshotAckDebtMilliseconds: finalTransport.maximumSnapshotAckDebtMilliseconds,
+    missedSchedulerTicks: finalMetrics.missedSchedulerTicks,
+    maximumObservedQueueDepth: finalMetrics.maximumObservedQueueDepth,
+    movementSupportShapeCasts: finalMetrics.queryMetrics.shapeCasts,
+    movementCalls: finalMetrics.queryMetrics.moveCapsuleCalls,
+    activeMatchCheckpointWrites: finalTransport.activeMatchCheckpointWrites,
+    activeMatchCheckpointWriteBound:
+      Math.ceil(finalMetrics.serverTick / 10)
+      + finalTransport.reliableEventsRecorded
+      + 8,
     localPredictionAndPeerInterpolation: true,
     realCollisionOcclusion: true,
     canonicalTraversalRecoveries: proof.movementAndWorld.driverRecoveries.length,

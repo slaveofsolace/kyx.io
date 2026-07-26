@@ -26,7 +26,8 @@ const browserLaunchArguments = Object.freeze([
   '--disable-renderer-backgrounding',
   '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
 ]);
-const SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS = 90;
+const SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS = 0;
+const PRIMARY_FIRE_BUTTON_MASK = 1 << 3;
 const ACCEPTABLE_REMOTE_INTERPOLATION_MODES = new Set([
   'authoritative',
   'interpolated',
@@ -423,7 +424,29 @@ function normalizeWireMessage(message, direction) {
     case 'inputBatch': {
       const first = message.commands?.[0];
       const last = message.commands?.at(-1);
-      return { ...base, commands: message.commands?.length ?? 0, firstSequence: first?.sequence ?? null, lastSequence: last?.sequence ?? null, firstClientTick: first?.clientTick ?? null, lastClientTick: last?.clientTick ?? null };
+      const primaryFireCommands = (message.commands ?? []).flatMap((command) => {
+        const held = (command.heldButtons & PRIMARY_FIRE_BUTTON_MASK) !== 0;
+        const pressed = (command.pressedButtons & PRIMARY_FIRE_BUTTON_MASK) !== 0;
+        const released = (command.releasedButtons & PRIMARY_FIRE_BUTTON_MASK) !== 0;
+        return held || pressed || released
+          ? [{
+              sequence: command.sequence,
+              clientTick: command.clientTick,
+              held,
+              pressed,
+              released,
+            }]
+          : [];
+      });
+      return {
+        ...base,
+        commands: message.commands?.length ?? 0,
+        firstSequence: first?.sequence ?? null,
+        lastSequence: last?.sequence ?? null,
+        firstClientTick: first?.clientTick ?? null,
+        lastClientTick: last?.clientTick ?? null,
+        primaryFireCommands,
+      };
     }
     case 'inputAck':
       return { ...base, serverTick: message.serverTick, lastProcessedInputSequence: message.lastProcessedInputSequence };
@@ -571,6 +594,87 @@ function normalizedYawDelta(from, to) {
   return ((to - from + 540_000) % 360_000) - 180_000;
 }
 
+async function pulseKey(page, key, durationMilliseconds) {
+  await page.keyboard.down(key);
+  try {
+    await delay(durationMilliseconds);
+  } finally {
+    await page.keyboard.up(key);
+  }
+}
+
+async function tapKey(page, key) {
+  await page.keyboard.down(key);
+  try {
+    // Intentionally do not yield to a timer here. The product input latch
+    // preserves both edges until fixed-input generation observes them.
+  } finally {
+    await page.keyboard.up(key);
+  }
+}
+
+function routeAuthorityPosition(snapshot) {
+  return snapshot.localAuthoritativePosition ?? snapshot.localPredictedPosition;
+}
+
+async function waitForRouteAuthorityPacing(
+  page,
+  label,
+  inputAcksBefore,
+  timeoutMilliseconds = 2_500,
+) {
+  const startedAtMilliseconds = Date.now();
+  const minimumPacingMilliseconds = 350;
+  let previousAuthoritative = null;
+  let stableAuthoritySamples = 0;
+  let last = null;
+  while (Date.now() - startedAtMilliseconds <= timeoutMilliseconds) {
+    const elapsedMilliseconds = Date.now() - startedAtMilliseconds;
+    const snapshot = await productSnapshot(page);
+    const predicted = snapshot?.localPredictedPosition ?? null;
+    const authoritative = snapshot?.localAuthoritativePosition ?? null;
+    const predictionErrorMillimeters = predicted === null || authoritative === null
+      ? Number.POSITIVE_INFINITY
+      : distanceXZ(predicted, authoritative);
+    const authorityDriftMillimeters = authoritative === null || previousAuthoritative === null
+      ? Number.POSITIVE_INFINITY
+      : distanceXZ(authoritative, previousAuthoritative);
+    stableAuthoritySamples = elapsedMilliseconds >= minimumPacingMilliseconds - 100
+      && authorityDriftMillimeters <= 80
+      ? stableAuthoritySamples + 1
+      : 0;
+    last = snapshot === null ? null : Object.freeze({
+      inputAcks: snapshot.inputAcks,
+      localPredictionHistoryCommands: snapshot.localPredictionHistoryCommands,
+      elapsedMilliseconds,
+      predictionErrorMillimeters,
+      authorityDriftMillimeters,
+      stableAuthoritySamples,
+      predicted,
+      authoritative,
+    });
+    if (
+      snapshot !== null
+      && authoritative !== null
+      && predicted !== null
+      && elapsedMilliseconds >= minimumPacingMilliseconds
+      && snapshot.inputAcks > inputAcksBefore
+      && snapshot.localPredictionHistoryCommands <= 1
+      && predictionErrorMillimeters <= 750
+      && stableAuthoritySamples >= 2
+    ) return snapshot;
+    previousAuthoritative = authoritative === null
+      ? null
+      : Object.freeze({ ...authoritative });
+    await delay(50);
+  }
+  throw new Error(`${label} authority pacing did not settle: ${JSON.stringify({
+    inputAcksBefore,
+    timeoutMilliseconds,
+    last,
+  })}`);
+}
+
 async function face(page, targetYawMilliDegrees, toleranceMilliDegrees = 2_200) {
   for (let attempt = 0; attempt < 14; attempt += 1) {
     const current = await productSnapshot(page);
@@ -584,9 +688,7 @@ async function face(page, targetYawMilliDegrees, toleranceMilliDegrees = 2_200) 
     const duration = Math.abs(delta) <= 4_500
       ? 35
       : Math.max(70, Math.min(700, Math.abs(delta) / 30_000 * 1_000));
-    await page.keyboard.down(key);
-    await delay(duration);
-    await page.keyboard.up(key);
+    await pulseKey(page, key, duration);
     await delay(110);
   }
   // The final input pulse can be the one that enters tolerance. Observe its
@@ -619,48 +721,73 @@ async function moveTo(
   for (let attempt = 0; attempt < 48; attempt += 1) {
     const current = await productSnapshot(page);
     assert.notEqual(current, null);
-    const position = current.localPredictedPosition;
+    const position = routeAuthorityPosition(current);
     assert.notEqual(position, null);
-    if (position.y < -10_000) throw new Error(`${label} fell through at ${JSON.stringify(position)}`);
+    if (position.y < -10_000) {
+      throw new Error(`${label} authority fell through at ${JSON.stringify({
+        authoritative: position,
+        predicted: current.localPredictedPosition,
+      })}`);
+    }
+    if (Math.abs(position.x) > 35_250 || Math.abs(position.z) > 23_500) {
+      throw new Error(`${label} left the bounded route envelope at ${JSON.stringify({
+        authoritative: position,
+        predicted: current.localPredictedPosition,
+      })}`);
+    }
     const deltaX = target.x - position.x;
     const deltaZ = target.z - position.z;
     const distance = Math.hypot(deltaX, deltaZ);
     if (distance <= arrivalToleranceMillimeters) return current;
-    if (distance <= bestDistance - 120) {
+    const nearTargetConvergenceBandMillimeters = arrivalToleranceMillimeters + 500;
+    if (
+      distance <= nearTargetConvergenceBandMillimeters
+      || distance <= bestDistance - 120
+    ) {
       bestDistance = distance;
       stalledAttempts = 0;
     } else {
       stalledAttempts += 1;
     }
     if (stalledAttempts >= 3) {
-      // This alternate route deliberately enters the negative-Z Ink channel.
-      // Prefer the lateral key that moves south when yaw makes lateral input
-      // materially affect Z. Near due north/south, lateral input is almost
-      // pure X instead, so move toward the map centerline to route around the
-      // blocker rather than repeating the same ineffective west/east pulse.
+      // Choose a bounded lateral escape that strongly favors the map
+      // centerline and secondarily favors the current target. The former
+      // negative-Z policy could send an east-side runner south off the ramp
+      // after a small waypoint overshoot.
       const yawRadians = current.localPredictedYawMilliDegrees * Math.PI / 180_000;
       const sine = Math.sin(yawRadians);
       const cosine = Math.cos(yawRadians);
-      const recoveryKey = Math.abs(sine) >= 0.25
-        ? (sine >= 0 ? 'd' : 'a')
-        : (cosine * -Math.sign(position.x || 1) > 0 ? 'd' : 'a');
+      const targetUnitX = deltaX / distance;
+      const targetUnitZ = deltaZ / distance;
+      const centerlineUnitX = -Math.sign(position.x || 1);
+      const scoreRecoveryDirection = (worldX, worldZ) => (
+        centerlineUnitX * worldX * 2
+        + targetUnitX * worldX
+        + targetUnitZ * worldZ
+      );
+      const recoveryScores = Object.freeze({
+        d: scoreRecoveryDirection(cosine, -sine),
+        a: scoreRecoveryDirection(-cosine, sine),
+      });
+      const recoveryKey = recoveryScores.d >= recoveryScores.a ? 'd' : 'a';
       movementDriverRecoveries.push(Object.freeze({
         label,
         attempt,
         recoveryKey,
-        recoveryPolicy: 'strafe_toward_negative_map_z_or_centerline',
+        recoveryPolicy: 'strafe_toward_map_centerline_with_target_bias',
+        recoveryScores,
         distanceBeforeMillimeters: distance,
         positionBefore: { ...position },
         yawBeforeMilliDegrees: current.localPredictedYawMilliDegrees,
         target: { ...target },
       }));
-      await page.keyboard.down('s');
-      await delay(110);
-      await page.keyboard.up('s');
-      await page.keyboard.down(recoveryKey);
-      await delay(260);
-      await page.keyboard.up(recoveryKey);
-      await delay(140);
+      const inputAcksBeforeRecovery = current.inputAcks;
+      await pulseKey(page, recoveryKey, 180);
+      await waitForRouteAuthorityPacing(
+        page,
+        `${label} recovery`,
+        inputAcksBeforeRecovery,
+      );
       stalledAttempts = 0;
       lastPosition = position;
       continue;
@@ -668,14 +795,19 @@ async function moveTo(
     await face(page, Math.round(Math.atan2(deltaX, deltaZ) * 180_000 / Math.PI));
     // Keep automation pulses below one body radius of travel so prediction
     // cannot overshoot a waypoint into a nearby collider before reconciliation.
+    const convergencePulseMilliseconds = distance <= nearTargetConvergenceBandMillimeters
+      ? Math.min(minimumPulseMilliseconds, 35)
+      : minimumPulseMilliseconds;
+    const maximumPulseMilliseconds = distance <= nearTargetConvergenceBandMillimeters
+      ? 35
+      : 140;
     const duration = Math.max(
-      minimumPulseMilliseconds,
-      Math.min(180, distance / 6_500 * 1_000),
+      convergencePulseMilliseconds,
+      Math.min(maximumPulseMilliseconds, distance / 6_500 * 1_000),
     );
-    await page.keyboard.down('w');
-    await delay(duration);
-    await page.keyboard.up('w');
-    await delay(120);
+    const inputAcksBeforePulse = current.inputAcks;
+    await pulseKey(page, 'w', duration);
+    await waitForRouteAuthorityPacing(page, label, inputAcksBeforePulse);
     lastPosition = position;
   }
   throw new Error(`${label} did not reach ${JSON.stringify(target)}: ${JSON.stringify({
@@ -709,7 +841,13 @@ async function routePair(westPage, eastPage) {
         minimumPulseMilliseconds,
       ),
     ]);
-    checkpoints.push(Object.freeze({ index, west: west.localPredictedPosition, east: east.localPredictedPosition }));
+    checkpoints.push(Object.freeze({
+      index,
+      west: routeAuthorityPosition(west),
+      east: routeAuthorityPosition(east),
+      westPredicted: west.localPredictedPosition,
+      eastPredicted: east.localPredictedPosition,
+    }));
   }
   return Object.freeze(checkpoints);
 }
@@ -1014,6 +1152,36 @@ function reliableEventOccurrences(client, minimumSequence, expectedEvent) {
   });
 }
 
+function uniquePrimaryFireEdgeCommands(
+  client,
+  minimumWireSequence,
+  minimumInputSequence,
+) {
+  const unique = new Map();
+  for (const record of client.wire) {
+    if (
+      record.sequence < minimumWireSequence
+      || record.direction !== 'sent'
+      || record.message.type !== 'inputBatch'
+    ) continue;
+    for (const command of record.message.primaryFireCommands ?? []) {
+      if (command.sequence <= minimumInputSequence) continue;
+      unique.set(
+        `${command.sequence}:${command.clientTick}`,
+        Object.freeze({ ...command }),
+      );
+    }
+  }
+  const commands = [...unique.values()].sort((left, right) => (
+    left.sequence - right.sequence || left.clientTick - right.clientTick
+  ));
+  return Object.freeze({
+    commands,
+    pressed: commands.filter(({ pressed }) => pressed),
+    released: commands.filter(({ released }) => released),
+  });
+}
+
 async function establishSharedAuthorityTick(clients, driver, label) {
   await face(driver.page, -90_000);
   const participantsBefore = await Promise.all(clients.map(async (client) => {
@@ -1045,28 +1213,61 @@ async function establishSharedAuthorityTick(clients, driver, label) {
       : latest
   ), -1);
   assert.ok(preStimulusSnapshotTick >= 0, `${label} pre-stimulus snapshot cursor`);
+  const preStimulusInputSequence = driver.wire.reduce((latest, record) => (
+    record.direction === 'sent'
+      && record.message.type === 'inputBatch'
+      && Number.isInteger(record.message.lastSequence)
+      ? Math.max(latest, record.message.lastSequence)
+      : latest
+  ), -1);
+  assert.ok(preStimulusInputSequence >= 0, `${label} pre-stimulus input cursor`);
   const minimumSequence = wireSequence;
   const requestedAtMilliseconds = Date.now();
   let after = before;
-  for (let attempt = 0; attempt < 4; attempt += 1) {
-    await driver.page.keyboard.down(' ');
-    try {
-      // Span the client's 50 ms fixed-input period while staying below the
-      // rifle's 100 ms authority cadence. This remains a real keyboard-driven
-      // product command and can produce at most one accepted authority shot.
-      await delay(SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS);
-    } finally {
-      await driver.page.keyboard.up(' ');
-    }
-    const acceptedDeadline = Date.now() + 1_000;
-    while (Date.now() < acceptedDeadline) {
-      after = await productSnapshot(driver.page);
-      if (localCombatPlayer(after).acceptedShotCount > driverBefore.acceptedShotCount) break;
-      await delay(50);
-    }
-    if (localCombatPlayer(after).acceptedShotCount > driverBefore.acceptedShotCount) break;
-    await delay(150);
+  // The product client latches this immediate real keyboard tap into exactly
+  // one held authority command, whether the fixed tick lands before, during,
+  // or after the browser events. A wall-clock hold can stretch beyond the
+  // rifle cadence under eight-browser contention and enqueue duplicate shots.
+  await tapKey(driver.page, ' ');
+  const inputEdgeDeadline = Date.now() + 5_000;
+  let inputEdges = uniquePrimaryFireEdgeCommands(
+    driver,
+    minimumSequence,
+    preStimulusInputSequence,
+  );
+  while (
+    Date.now() < inputEdgeDeadline
+    && (inputEdges.pressed.length < 1 || inputEdges.released.length < 1)
+  ) {
+    await delay(25);
+    inputEdges = uniquePrimaryFireEdgeCommands(
+      driver,
+      minimumSequence,
+      preStimulusInputSequence,
+    );
   }
+  assert.equal(
+    inputEdges.pressed.length,
+    1,
+    `${label} must generate exactly one unique primary-fire press command`,
+  );
+  assert.equal(
+    inputEdges.released.length,
+    1,
+    `${label} must generate exactly one unique primary-fire release command`,
+  );
+  assert.ok(
+    inputEdges.released[0].sequence > inputEdges.pressed[0].sequence,
+    `${label} primary-fire release must follow its press`,
+  );
+  const acceptedDeadline = Date.now() + 5_000;
+  while (Date.now() < acceptedDeadline) {
+    after = await productSnapshot(driver.page);
+    if (localCombatPlayer(after).acceptedShotCount > driverBefore.acceptedShotCount) break;
+    await delay(50);
+  }
+  await delay(250);
+  after = await productSnapshot(driver.page);
   const driverAfter = localCombatPlayer(after);
   const acceptedStateObservedAtMilliseconds = Date.now();
   assert.equal(
@@ -1188,6 +1389,14 @@ async function establishSharedAuthorityTick(clients, driver, label) {
       roomWide: true,
       driverClientId: driver.clientId,
       firePulseMilliseconds: SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS,
+      inputEdgeMode: 'latched_press_release',
+      inputEdgeProof: Object.freeze({
+        preStimulusInputSequence,
+        uniquePrimaryFirePressedCommands: inputEdges.pressed.length,
+        uniquePrimaryFireReleasedCommands: inputEdges.released.length,
+        pressCommand: inputEdges.pressed[0],
+        releaseCommand: inputEdges.released[0],
+      }),
       reliableEventId: authorityEvent.id,
       subjectId: authorityEvent.subjectId,
       actorId: authorityEvent.actorId,

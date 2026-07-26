@@ -380,6 +380,14 @@ export class RapierMovementWorld implements MovementQueryPort {
   private readonly controller: KinematicCharacterController;
   private readonly characterCollider: Collider;
   private readonly metadata = new Map<number, ColliderMetadata>();
+  private readonly orderedSolidColliderCache = new Map<
+    string,
+    readonly FixtureCollider[]
+  >();
+  private readonly orderedSlopedSupportColliderCache = new Map<
+    string,
+    readonly FixtureCollider[]
+  >();
   private isDisposed = false;
 
   private constructor(runtime: RapierRuntime, fixture: PhysicsFixtureV1) {
@@ -511,6 +519,9 @@ export class RapierMovementWorld implements MovementQueryPort {
   }
 
   private orderedSolidColliders(layers: readonly MovementCollisionLayer[]): readonly FixtureCollider[] {
+    const cacheKey = [...layers].sort(compareCodeUnits).join('\u001f');
+    const cached = this.orderedSolidColliderCache.get(cacheKey);
+    if (cached) return cached;
     const predicate = this.solidPredicate(layers);
     const colliders: FixtureCollider[] = [];
     this.world.forEachCollider((collider) => {
@@ -519,7 +530,41 @@ export class RapierMovementWorld implements MovementQueryPort {
       if (metadata) colliders.push({ collider, metadata });
     });
     colliders.sort((left, right) => compareCodeUnits(left.metadata.id, right.metadata.id));
-    return colliders;
+    const ordered = Object.freeze(colliders);
+    this.orderedSolidColliderCache.set(cacheKey, ordered);
+    return ordered;
+  }
+
+  private orderedSlopedSupportColliders(
+    layers: readonly MovementCollisionLayer[],
+  ): readonly FixtureCollider[] {
+    const cacheKey = [...layers].sort(compareCodeUnits).join('\u001f');
+    const cached = this.orderedSlopedSupportColliderCache.get(cacheKey);
+    if (cached) return cached;
+    const ordered = Object.freeze(this.orderedSolidColliders(layers).filter((candidate) => {
+      const authoredNormal = candidate.metadata.supportNormalQ15;
+      return authoredNormal !== null && (authoredNormal.x !== 0 || authoredNormal.z !== 0);
+    }));
+    this.orderedSlopedSupportColliderCache.set(cacheKey, ordered);
+    return ordered;
+  }
+
+  private orderedSolidCollidersIntersectingAabb(
+    layers: readonly MovementCollisionLayer[],
+    center: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>,
+    halfExtents: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>,
+  ): readonly FixtureCollider[] {
+    const allowed = new Set(layers);
+    const candidates: FixtureCollider[] = [];
+    this.world.collidersWithAabbIntersectingAabb(center, halfExtents, (collider) => {
+      const metadata = this.metadataFor(collider);
+      if (metadata && !metadata.sensor && allowed.has(metadata.layer)) {
+        candidates.push({ collider, metadata });
+      }
+      return true;
+    });
+    candidates.sort((left, right) => compareCodeUnits(left.metadata.id, right.metadata.id));
+    return candidates;
   }
 
   private depenetrateCapsule(
@@ -645,12 +690,7 @@ export class RapierMovementWorld implements MovementQueryPort {
       0,
       maximumWalkableNormalY - SLOPE_NORMAL_TOLERANCE_Q15,
     );
-    const startingSupportNormals = this.orderedSolidColliders(request.solidLayers)
-      .filter((candidate) => {
-        const authoredNormal = candidate.metadata.supportNormalQ15;
-        return authoredNormal !== null
-          && (authoredNormal.x !== 0 || authoredNormal.z !== 0);
-      })
+    const startingSupportNormals = this.orderedSlopedSupportColliders(request.solidLayers)
       .flatMap<ContactNormalQ15>((candidate) => {
         const contact = candidate.collider.contactShape(
           shape,
@@ -829,11 +869,30 @@ export class RapierMovementWorld implements MovementQueryPort {
       1,
       settings.contactSkin + settings.snapToGroundDistance,
     );
-    const supportColliders = this.orderedSolidColliders(request.solidLayers);
+    const finalCenter = capsuleCenter(finalFeet, request.shape);
+    // The previous implementation cast against every authored collider on
+    // every movement tick. Inkfall contains hundreds of fixtures, so eight
+    // players spent most of the authority budget on impossible distant
+    // support tests. Rapier's broad phase selects a conservative swept-capsule
+    // AABB; exact deterministic per-collider casts and ID tie-breaking remain
+    // unchanged for every candidate that could geometrically provide support.
+    const supportSweepMillimeters = supportDistance + settings.contactSkin + 1;
+    const supportColliders = this.orderedSolidCollidersIntersectingAabb(
+      request.solidLayers,
+      {
+        x: finalCenter.x,
+        y: finalCenter.y - mmToRapier(supportSweepMillimeters) / 2,
+        z: finalCenter.z,
+      },
+      {
+        x: mmToRapier(request.shape.radius + settings.contactSkin + 1),
+        y: mmToRapier(request.shape.height / 2 + supportSweepMillimeters / 2),
+        z: mmToRapier(request.shape.radius + settings.contactSkin + 1),
+      },
+    );
     let support: MovementSupport | null = null;
     let supportTime = Infinity;
     let supportContactTests = 0;
-    const finalCenter = capsuleCenter(finalFeet, request.shape);
     for (const candidate of supportColliders) {
       const hit = candidate.collider.castShape(
         { x: 0, y: 0, z: 0 },

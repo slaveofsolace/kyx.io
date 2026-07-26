@@ -428,6 +428,8 @@ export class AuthorityEvidenceClient {
   private axes: AuthorityEvidenceAxes = Object.freeze({ moveX: 0, moveY: 0 });
   private combatHeldButtons = 0;
   private lastSentCombatHeldButtons = 0;
+  private pendingCombatPressedButtons = 0;
+  private pendingCombatReleasedButtons = 0;
   private lookYawDeltaMilliDegrees = 0;
   private lookPitchDeltaMilliDegrees = 0;
   private combatSnapshot: CombatSnapshotV1 | null = null;
@@ -484,7 +486,10 @@ export class AuthorityEvidenceClient {
   setCombatButtons(heldButtons: number): boolean {
     if (!this.combatInputEnabled) return false;
     assertIntentButtonMask(heldButtons, 'authority evidence combat buttons');
-    this.combatHeldButtons = heldButtons >>> 0;
+    const nextHeldButtons = heldButtons >>> 0;
+    this.pendingCombatPressedButtons |= nextHeldButtons & ~this.combatHeldButtons;
+    this.pendingCombatReleasedButtons |= this.combatHeldButtons & ~nextHeldButtons;
+    this.combatHeldButtons = nextHeldButtons;
     this.emitChange();
     return true;
   }
@@ -1176,9 +1181,17 @@ export class AuthorityEvidenceClient {
       this.fail('development input sequence or client tick exhausted');
       return;
     }
-    const heldButtons = this.combatInputEnabled ? this.combatHeldButtons : 0;
-    const pressedButtons = (heldButtons & ~this.lastSentCombatHeldButtons) >>> 0;
-    const releasedButtons = (this.lastSentCombatHeldButtons & ~heldButtons) >>> 0;
+    const heldButtons = this.combatInputEnabled
+      ? (this.combatHeldButtons | this.pendingCombatPressedButtons) >>> 0
+      : 0;
+    const pressedButtons = (
+      (heldButtons & ~this.lastSentCombatHeldButtons)
+      | this.pendingCombatPressedButtons
+    ) >>> 0;
+    const releasedButtons = ((
+      (this.lastSentCombatHeldButtons & ~heldButtons)
+      | this.pendingCombatReleasedButtons
+    ) & ~heldButtons) >>> 0;
     const wireCommand = createEvidenceInputCommand(
       this.nextSequence,
       this.nextClientTick,
@@ -1208,6 +1221,8 @@ export class AuthorityEvidenceClient {
       });
       this.prediction = result.prediction;
       this.lastSentCombatHeldButtons = heldButtons;
+      this.pendingCombatPressedButtons = 0;
+      this.pendingCombatReleasedButtons &= ~releasedButtons;
       this.nextSequence += 1;
       this.nextClientTick += 1;
       this.counters.commandsGenerated += 1;

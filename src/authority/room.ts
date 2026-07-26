@@ -1864,7 +1864,12 @@ export class AuthoritativeRoom {
           lifePhase: player.life.phase,
           weaponSelected: intent.selectedSlot === 0,
           sprintHeld: player.connected && (intent.heldButtons & INTENT_BUTTON.sprint) !== 0,
-          fireHeld: player.connected && (intent.heldButtons & INTENT_BUTTON.primaryFire) !== 0,
+          fireHeld: player.connected && (
+            (
+              intent.heldButtons
+              | intent.pressedButtons
+            ) & INTENT_BUTTON.primaryFire
+          ) !== 0,
           reloadPressed: player.connected && (intent.pressedButtons & INTENT_BUTTON.reload) !== 0,
         }, G4_AUTO_RIFLE_RULES);
         if (!rifle.accepted) throw new Error(`AUTHORITY_AUTO_RIFLE_TICK_REJECTED:${rifle.reason}`);

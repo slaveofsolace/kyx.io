@@ -9,6 +9,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SOURCE_HTML = ['index.html', 'login.html', 'register.html'];
 const SOURCE_ENTRIES = ['src/main.js', 'src/loginPage.js', 'src/registerPage.js'];
 const DIST_HTML = SOURCE_HTML.map((file) => `dist/${file}`);
+const PRODUCTION_ENV = '.env.production';
 
 const results = [];
 const infrastructureFailures = [];
@@ -443,6 +444,26 @@ const distGraph = await collectDistGraph(distHtmlDocuments);
 const distJsDocuments = distGraph.filter((document) => extname(document.file).toLowerCase() === '.js');
 const distCssDocuments = distGraph.filter((document) => extname(document.file).toLowerCase() === '.css');
 const distRuntimeDocuments = [...distHtmlDocuments, ...distJsDocuments];
+let productionEnvDocument = null;
+let productionAuthorityOrigin = null;
+const productionEnvPath = resolve(ROOT, PRODUCTION_ENV);
+if (!existsSync(productionEnvPath)) {
+  failInfrastructure(`Missing production build environment: ${PRODUCTION_ENV}`);
+} else {
+  productionEnvDocument = await loadDocument(productionEnvPath);
+  const authorityOriginMatches = [
+    ...productionEnvDocument.text.matchAll(
+      /^VITE_KYX_AUTHORITY_ORIGIN=(\S+)\s*$/gmu,
+    ),
+  ];
+  if (authorityOriginMatches.length !== 1) {
+    failInfrastructure(
+      `${PRODUCTION_ENV} must define VITE_KYX_AUTHORITY_ORIGIN exactly once`,
+    );
+  } else {
+    productionAuthorityOrigin = authorityOriginMatches[0][1];
+  }
+}
 
 if (distHtmlDocuments.length === DIST_HTML.length) {
   const builtIndex = distHtmlDocuments.find((document) => document.name === 'dist/index.html');
@@ -475,13 +496,115 @@ if (distHtmlDocuments.length === DIST_HTML.length) {
   assertNoRules('built entry surfaces have no credential collection/auth runtime', distRuntimeDocuments, credentialRules);
   assertNoRules('built entry surfaces have no advertising runtime/provider', [...distRuntimeDocuments, ...distCssDocuments], advertisingRules);
   assertNoRules('built entry surfaces have no Web3/wallet/NFT runtime or claims', distRuntimeDocuments, web3Rules);
-  assertNoRules('built entry surfaces have no relay/WebSocket endpoint signature', distRuntimeDocuments, networkRuntimeRules.filter((rule) => ['WebSocket transport', 'runtime endpoint literal', 'legacy relay configuration'].includes(rule.name)));
+  const authorityTransportIssues = [];
+  const authorityRouteDocuments = distJsDocuments.filter(({ name }) => (
+    /^dist\/assets\/onlineAuthorityRoute-[^/]+\.js$/u.test(name)
+  ));
+  if (authorityRouteDocuments.length !== 1) {
+    authorityTransportIssues.push(
+      `expected one onlineAuthorityRoute asset, found ${authorityRouteDocuments.length}`,
+    );
+  }
+  if (productionAuthorityOrigin === null) {
+    authorityTransportIssues.push('production authority origin is unavailable');
+  } else {
+    try {
+      const parsedAuthorityOrigin = new URL(productionAuthorityOrigin);
+      if (
+        parsedAuthorityOrigin.protocol !== 'https:'
+        || parsedAuthorityOrigin.username !== ''
+        || parsedAuthorityOrigin.password !== ''
+        || parsedAuthorityOrigin.pathname !== '/'
+        || parsedAuthorityOrigin.search !== ''
+        || parsedAuthorityOrigin.hash !== ''
+      ) {
+        authorityTransportIssues.push(
+          'VITE_KYX_AUTHORITY_ORIGIN must be a credential-free HTTPS origin',
+        );
+      }
+    } catch {
+      authorityTransportIssues.push('VITE_KYX_AUTHORITY_ORIGIN is not a valid URL');
+    }
+    const authorityOriginOccurrences = distRuntimeDocuments.reduce(
+      (total, document) => (
+        total + document.scanText.split(productionAuthorityOrigin).length - 1
+      ),
+      0,
+    );
+    if (authorityOriginOccurrences !== 1) {
+      authorityTransportIssues.push(
+        `configured authority origin occurs ${authorityOriginOccurrences} times; expected 1`,
+      );
+    }
+  }
+  const websocketRule = networkRuntimeRules.find(({ name }) => name === 'WebSocket transport');
+  const endpointRule = networkRuntimeRules.find(({ name }) => name === 'runtime endpoint literal');
+  const legacyRelayRule = networkRuntimeRules.find(
+    ({ name }) => name === 'legacy relay configuration',
+  );
+  for (const document of distRuntimeDocuments) {
+    if (
+      legacyRelayRule !== undefined
+      && legacyRelayRule.pattern.test(document.scanText)
+    ) {
+      authorityTransportIssues.push(
+        `legacy relay signature: ${matchLocation(document, legacyRelayRule.pattern)}`,
+      );
+    }
+    if (
+      websocketRule !== undefined
+      && !authorityRouteDocuments.includes(document)
+      && websocketRule.pattern.test(document.scanText)
+    ) {
+      authorityTransportIssues.push(
+        `WebSocket outside authority route: ${matchLocation(document, websocketRule.pattern)}`,
+      );
+    }
+    const endpointScanDocument = productionAuthorityOrigin === null
+      ? document
+      : {
+          ...document,
+          scanText: document.scanText.replaceAll(productionAuthorityOrigin, ''),
+        };
+    if (
+      endpointRule !== undefined
+      && endpointRule.pattern.test(endpointScanDocument.scanText)
+    ) {
+      authorityTransportIssues.push(
+        `unexpected runtime endpoint: ${matchLocation(
+          endpointScanDocument,
+          endpointRule.pattern,
+        )}`,
+      );
+    }
+  }
+  if (authorityRouteDocuments.length === 1) {
+    const constructorCount = [
+      ...authorityRouteDocuments[0].scanText.matchAll(/\bnew\s+WebSocket\s*\(/gu),
+    ].length;
+    if (constructorCount !== 1) {
+      authorityTransportIssues.push(
+        `authority route has ${constructorCount} WebSocket constructors; expected 1`,
+      );
+    }
+  }
+  record(
+    'built entry surfaces expose only the configured authoritative WebSocket path',
+    authorityTransportIssues.length === 0,
+    authorityTransportIssues.slice(0, 8).join('; '),
+  );
   assertNoRules('built entry surfaces have no fabricated-human/lobby claims', distRuntimeDocuments, fakeHumanRules);
   assertNoRules('built entry surfaces have no economy/progression runtime', distRuntimeDocuments, economyRules);
   assertNoRules('built entry surfaces have no mobile-controls runtime or markup', distRuntimeDocuments, mobileRuntimeRules);
   assertNoRules('built CSS has no external imports/resources or ad provider code', distCssDocuments, sourceCssNetworkRules);
 
-  const newestInput = Math.max(...[...sourceHtmlDocuments, ...sourceGraph].map((document) => document.mtimeMs));
+  const newestInput = Math.max(
+    ...[
+      ...sourceHtmlDocuments,
+      ...sourceGraph,
+      ...(productionEnvDocument === null ? [] : [productionEnvDocument]),
+    ].map((document) => document.mtimeMs),
+  );
   const oldestBuiltEntry = Math.min(...distHtmlDocuments.map((document) => document.mtimeMs));
   record(
     'dist entry pages are not older than active source inputs',

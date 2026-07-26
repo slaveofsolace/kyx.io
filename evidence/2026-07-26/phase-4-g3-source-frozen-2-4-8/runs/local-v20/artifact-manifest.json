@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "files": {
+    "screenshots/p515-01-client-0-two-rendered.png": {
+      "sha256": "e61baeedb023d5cb8898cd1d3d0da942c3115d67c14bca12251df1fcb5e960fe",
+      "bytes": 353495
+    },
+    "screenshots/p515-02-client-1-two-rendered.png": {
+      "sha256": "1e74253829769ee1a06b6d4c9b7b67c055ce810287e902d2341d16af30060318",
+      "bytes": 354730
+    },
+    "screenshots/p515-03-real-occlusion.png": {
+      "sha256": "d5c939c0bc41ffc58db2357e4f2791c49e17effc67da4d62c2aeb9c2077865fd",
+      "bytes": 168483
+    },
+    "screenshots/p515-04-confirmed-body-hit.png": {
+      "sha256": "c1ca8470538e10d90548a2b211b71f4ee86795eaadc7df9fddd20987a75dbb2e",
+      "bytes": 295738
+    },
+    "screenshots/p515-05-authoritative-death-score.png": {
+      "sha256": "e1cbdad47683001eaa0e746fb684736f6fda476b279d4ca3a4e48d780c275952",
+      "bytes": 297838
+    },
+    "screenshots/p515-06-confirmed-teleport.png": {
+      "sha256": "cd96f92ccdef1a93727b2a8dbe253b691817237d46eea9c10fb148ddb33002c4",
+      "bytes": 285882
+    },
+    "screenshots/p515-07-resume-preserved-state.png": {
+      "sha256": "63423ece413cc3ce4721c77aa7f216462b34a2a7b5025d05b9a5df1fb8457371",
+      "bytes": 287826
+    },
+    "screenshots/p515-08-four-product-clients.png": {
+      "sha256": "20015a0a4da2f354bf1603ad484f3bf63d511e75c586324cff8b92bda55f8ba3",
+      "bytes": 299622
+    },
+    "screenshots/p515-09-eight-product-clients.png": {
+      "sha256": "f0a3c450be8caba994085ad5894c2d4dfb00c568f65d5e2a0ee525007477dbfb",
+      "bytes": 314110
+    },
+    "screenshots/p515-10-profile-mismatch-fails-closed.png": {
+      "sha256": "8bd21bd94c6371a0db2dcaf5e97a25e2d27f185e6de009d299ac029943a75870",
+      "bytes": 196038
+    },
+    "screenshots/p515-11-runtime-evidence-board.png": {
+      "sha256": "c1f51a452bb1aee4487dd8765ba4743b9e23fdaa852b5929bd53f8a78a256b7c",
+      "bytes": 207843
+    },
+    "p515-normalized-wire-log.jsonl": {
+      "sha256": "7a7c008c2e73ddeca6fd3ad350c4eaccd09f0131be77ba8562e5f19d2eda88dd",
+      "bytes": 13003915
+    },
+    "p515-product-population-proof.json": {
+      "sha256": "2ae703f604bf9e6a3fad63f1766899d8178c7b431f04217915ea9aa28545b4c3",
+      "bytes": 173048
+    }
+  }
+}

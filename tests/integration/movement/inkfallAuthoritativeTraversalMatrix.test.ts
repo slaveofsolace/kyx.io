@@ -38,7 +38,7 @@ describe('Inkfall current authoritative traversal matrix', () => {
   it('replays the complete native 2/4/8-player authority tapes without defects', () => {
     expect(proof.revision2AuthorityPlaytest).toMatchObject({
       status: 'P6_6_REVISION_2_AUTOMATED_AUTHORITY_PLAYTEST_RESULT_G5_NOT_PASSED',
-      suiteHash: '143d09532b9c2b24',
+      suiteHash: '1b5ccfdc5a9afb55',
       repeatedReplayByteIdentical: true,
       issueCount: 0,
       allAutomatedThresholdsPassed: true,
@@ -74,7 +74,7 @@ describe('Inkfall current authoritative traversal matrix', () => {
         recoveryProbePassed: true,
         killPriorityProbePassed: true,
         postRecoveryEscapePassed: true,
-        replayHash: '92aa8378d2e0d27e',
+        replayHash: 'b989fdfdec907c2a',
       },
       {
         players: 4,
@@ -82,7 +82,7 @@ describe('Inkfall current authoritative traversal matrix', () => {
         recoveryProbePassed: true,
         killPriorityProbePassed: true,
         postRecoveryEscapePassed: true,
-        replayHash: '2010f3a3d1897f31',
+        replayHash: '776fe698501b4994',
       },
       {
         players: 8,
@@ -90,7 +90,7 @@ describe('Inkfall current authoritative traversal matrix', () => {
         recoveryProbePassed: true,
         killPriorityProbePassed: true,
         postRecoveryEscapePassed: true,
-        replayHash: '909814a9d725d187',
+        replayHash: '3be932c85d177021',
       },
     ]);
   });
@@ -196,7 +196,7 @@ describe('Inkfall current authoritative traversal matrix', () => {
 
   it('pins the deterministic core and retains the truthful G5 boundary', () => {
     expect(proof.deterministicCoreSha256).toBe(
-      '2b3242adab53827d2f3e47f95209b37957db40232c678db8d66a5d40fa7c0f13',
+      'a338b10f1798add58db72c5d87b8623e9608aa6a96068d3affc3ddbad0ad0ae7',
     );
     expect(proof.status).toBe('BOUNDED_DETERMINISTIC_PASS_G5_OPEN');
     expect(proof.nonClaims).toContain('G5_NOT_PASSED');

@@ -1,0 +1,5198 @@
+{
+  "schemaVersion": 1,
+  "phase": "P5.15",
+  "capturedAt": "2026-07-26T18:44:17.850Z",
+  "status": "BOUNDED_PASS",
+  "gateClaim": "G3_NOT_CLAIMED_G4_NOT_CLAIMED_G5_NOT_CLAIMED",
+  "topology": {
+    "route": "/online",
+    "frontendOrigin": "http://127.0.0.1:5173",
+    "authorityOrigin": "http://127.0.0.1:8787",
+    "exactProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "productClients": 8,
+    "isolatedBrowserContexts": 8,
+    "browserLaunches": 8,
+    "browserProcesses": 8,
+    "browserProcessIds": [
+      37792,
+      53032,
+      2160,
+      32016,
+      50132,
+      49428,
+      34632,
+      47512
+    ],
+    "oneBrowserProcessPerProductClient": true,
+    "independentlyScheduledActiveBrowserClients": 8,
+    "browserProcessesPrelaunchedBeforeRoomCreation": 8,
+    "browserContextsPrecreatedBeforeRoomCreation": 8,
+    "productPagesPrewarmedBeforeRoomCreation": 8,
+    "prewarmRoute": "/online",
+    "prewarmStatus": "lobby",
+    "browserPrewarmStartedAt": "2026-07-26T18:41:42.528Z",
+    "browserPrewarmCompletedAt": "2026-07-26T18:41:59.791Z",
+    "roomCreationRequestedAt": "2026-07-26T18:41:59.817Z",
+    "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "headless": true,
+    "browserLaunchArguments": [
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+      "--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion"
+    ],
+    "activeClientHarnessAssumption": "Each isolated context and dedicated Chrome process models an actively played client on a separate player machine.",
+    "backgroundedOrSuspendedTabRobustnessClaimed": false,
+    "syntheticProductClient": false
+  },
+  "authority": {
+    "roomCode": "KYX-J6JWS3",
+    "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+    "mapBinding": {
+      "mapReference": "inkfall_foundry@2",
+      "mapId": "inkfall_foundry",
+      "mapRevision": 2,
+      "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+      "fixtureId": "inkfall_foundry_map_collision",
+      "fixtureHash": "bf85e42731fd088e",
+      "xAxis": "east",
+      "yAxis": "up",
+      "zAxis": "north",
+      "origin": "press_core_floor_contact",
+      "gltfToMap": "x_y_negative_z",
+      "distanceUnit": "millimeters",
+      "angleUnit": "milli_degrees",
+      "colliderCardinality": 339,
+      "spawns": [
+        {
+          "spawnId": "spawn_w_press_a",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -33500,
+            "y": 0,
+            "z": -3500
+          },
+          "yawMilliDegrees": 0
+        },
+        {
+          "spawnId": "spawn_e_press_a",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 33500,
+            "y": 0,
+            "z": 3500
+          },
+          "yawMilliDegrees": 180000
+        },
+        {
+          "spawnId": "spawn_w_press_b",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -33500,
+            "y": 0,
+            "z": 3500
+          },
+          "yawMilliDegrees": 0
+        },
+        {
+          "spawnId": "spawn_e_press_b",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          },
+          "yawMilliDegrees": 180000
+        },
+        {
+          "spawnId": "spawn_w_ink",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -30500,
+            "y": 0,
+            "z": -7000
+          },
+          "yawMilliDegrees": -25000
+        },
+        {
+          "spawnId": "spawn_e_ink",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 30500,
+            "y": 0,
+            "z": -7000
+          },
+          "yawMilliDegrees": -155000
+        },
+        {
+          "spawnId": "spawn_w_archive",
+          "set": "west_team",
+          "feetPosition": {
+            "x": -30500,
+            "y": 0,
+            "z": 7000
+          },
+          "yawMilliDegrees": 25000
+        },
+        {
+          "spawnId": "spawn_e_archive",
+          "set": "east_team",
+          "feetPosition": {
+            "x": 30500,
+            "y": 0,
+            "z": 7000
+          },
+          "yawMilliDegrees": 155000
+        }
+      ]
+    },
+    "simulationIdentity": {
+      "schemaVersion": 1,
+      "mapId": "inkfall_foundry",
+      "rulesetId": "revamped_classic",
+      "rulesetRevision": 3,
+      "rulesetHash": "d5f0418d1d927370",
+      "movementProfileId": "phase3_hypothesis_v1",
+      "movementProfileRevision": 1,
+      "movementProfileHash": "8ab4ed437a4393c0",
+      "fixtureId": "inkfall_foundry_map_collision",
+      "fixtureHash": "bf85e42731fd088e",
+      "physicsAdapterId": "rapier3d_deterministic_compat",
+      "physicsAdapterVersion": "0.19.3"
+    },
+    "initialJoins": [
+      {
+        "clientId": "client-0",
+        "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 0,
+        "resumeTokenSha256": "4edb79a850b36bce734c413e75d1b3c3775a6fa8cb04d91300944febbf4a6f40",
+        "feetPosition": {
+          "x": -33500,
+          "y": 0,
+          "z": -3500
+        },
+        "yawMilliDegrees": 0,
+        "teamId": "team_blue"
+      },
+      {
+        "clientId": "client-1",
+        "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 0,
+        "resumeTokenSha256": "d57cdad5ddc4af45c06a5cf4a48cfa931a7fe1505e536e957278a4c011e732bd",
+        "feetPosition": {
+          "x": 33500,
+          "y": 0,
+          "z": 3500
+        },
+        "yawMilliDegrees": 180000,
+        "teamId": "team_red"
+      },
+      {
+        "clientId": "client-2",
+        "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 2022,
+        "resumeTokenSha256": "17e1061b4f0e7543e46ed1aa28bbf49a05feec4b1ba728578a1ba46487bca2f6",
+        "feetPosition": {
+          "x": -33500,
+          "y": 0,
+          "z": 3500
+        },
+        "yawMilliDegrees": 0,
+        "teamId": "team_blue"
+      },
+      {
+        "clientId": "client-3",
+        "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 2031,
+        "resumeTokenSha256": "5e00036db5442613c7c7a6a38a9637cfa614196aa93f51485603fdcba01d92b0",
+        "feetPosition": {
+          "x": 33500,
+          "y": 0,
+          "z": -3500
+        },
+        "yawMilliDegrees": 180000,
+        "teamId": "team_red"
+      },
+      {
+        "clientId": "client-4",
+        "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 2334,
+        "resumeTokenSha256": "0fa3c69fd173a72572d2724fcbf11ec19dc8009932767fa0c8bcc937932d21de",
+        "feetPosition": {
+          "x": -30500,
+          "y": 0,
+          "z": -7000
+        },
+        "yawMilliDegrees": 335000,
+        "teamId": "team_blue"
+      },
+      {
+        "clientId": "client-5",
+        "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 2342,
+        "resumeTokenSha256": "83deb9ba4bfa72d6fc9cd4f268699869fad8a834d7ced21f3bf151058d3550f2",
+        "feetPosition": {
+          "x": 30500,
+          "y": 0,
+          "z": -7000
+        },
+        "yawMilliDegrees": 205000,
+        "teamId": "team_red"
+      },
+      {
+        "clientId": "client-6",
+        "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 2356,
+        "resumeTokenSha256": "e4568ddf4fc53d680cff18c1e3f9da93a56e1b56ab75ce0eb595571bf50235c3",
+        "feetPosition": {
+          "x": -30500,
+          "y": 0,
+          "z": 7000
+        },
+        "yawMilliDegrees": 25000,
+        "teamId": "team_blue"
+      },
+      {
+        "clientId": "client-7",
+        "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+        "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+        "serverTick": 2365,
+        "resumeTokenSha256": "dbf3db260e8306bfc81f25ce98082becb08c924d17df699ceda88276348b8d98",
+        "feetPosition": {
+          "x": 30500,
+          "y": 0,
+          "z": 7000
+        },
+        "yawMilliDegrees": 155000,
+        "teamId": "team_red"
+      }
+    ],
+    "synchronizationContract": {
+      "source": "server_owned_room_wide_reliable_event",
+      "eventKind": "shotAccepted",
+      "rationale": "Snapshot cadence and baselines are per connection; cross-client snapshot-tick equality is not the protocol contract.",
+      "snapshotReplicationStillRequired": true
+    }
+  },
+  "populations": {
+    "two": {
+      "count": 2,
+      "roomCode": "KYX-J6JWS3",
+      "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+      "commonAuthorityTick": 79,
+      "uniquePlayerIds": 2,
+      "remotePlayersPerClient": [
+        1,
+        1
+      ],
+      "fullSnapshotsPerClient": [
+        1,
+        1
+      ],
+      "deltaSnapshotsPerClient": [
+        2,
+        2
+      ],
+      "inputAcksPerClient": [
+        5,
+        5
+      ],
+      "identityChecksPerClient": [
+        9,
+        9
+      ],
+      "presentationPerClient": [
+        {
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        }
+      ],
+      "players": [
+        {
+          "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+          "teamId": "team_red",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        }
+      ],
+      "teamDistribution": {
+        "team_blue": 1,
+        "team_red": 1
+      },
+      "tickStimulus": {
+        "kind": "real_product_shot_accepted_reliable_tick",
+        "directStateMutation": false,
+        "serverOwned": true,
+        "roomWide": true,
+        "driverClientId": "client-0",
+        "firePulseMilliseconds": 0,
+        "inputEdgeMode": "latched_press_release",
+        "inputEdgeProof": {
+          "preStimulusInputSequence": 76,
+          "uniquePrimaryFirePressedCommands": 1,
+          "uniquePrimaryFireReleasedCommands": 1,
+          "pressCommand": {
+            "sequence": 77,
+            "clientTick": 77,
+            "held": true,
+            "pressed": true,
+            "released": false
+          },
+          "releaseCommand": {
+            "sequence": 78,
+            "clientTick": 78,
+            "held": false,
+            "pressed": false,
+            "released": true
+          }
+        },
+        "reliableEventId": "event.3",
+        "subjectId": "combat.auto_rifle.shot.67af1c8e97ee15e0.1",
+        "actorId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+        "serverTick": 79,
+        "requestedAtMilliseconds": 1785091324819,
+        "acceptedShotCountBefore": 0,
+        "acceptedShotCountAfter": 1,
+        "preStimulusSnapshotTick": 76,
+        "preStimulusShotEventIds": [],
+        "newAuthorityEventIdentityRequired": true,
+        "acceptedStateObservedAtMilliseconds": 1785091325416,
+        "driverEventObservedAtMilliseconds": 1785091324885,
+        "diagnosticToEventObservationMilliseconds": -531,
+        "driverEventWaitMilliseconds": 426,
+        "healthBefore": [
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          }
+        ],
+        "healthAfter": [
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          }
+        ],
+        "healthTransitions": [
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          }
+        ],
+        "healthNeverDecreased": true,
+        "healthUnchanged": true,
+        "scoreFeedBefore": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 0
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 0
+        },
+        "scoreFeedAfter": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 0
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 0
+        },
+        "scoreFeedUnchanged": true,
+        "transportDeliverySemantics": "at_least_once_with_client_deduplication",
+        "deliveryClients": 2,
+        "deliveries": [
+          {
+            "clientId": "client-0",
+            "observedAt": "2026-07-26T18:42:04.885Z",
+            "observedAtMilliseconds": 1785091324885,
+            "latencyMilliseconds": 66,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-1",
+            "observedAt": "2026-07-26T18:42:04.885Z",
+            "observedAtMilliseconds": 1785091324885,
+            "latencyMilliseconds": 66,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          }
+        ],
+        "totalRawDeliveries": 2,
+        "totalLogicalApplications": 2,
+        "presentationConsequencesUnchanged": true,
+        "maximumDeliveryLatencyMilliseconds": 66
+      }
+    },
+    "four": {
+      "count": 4,
+      "roomCode": "KYX-J6JWS3",
+      "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+      "commonAuthorityTick": 2110,
+      "uniquePlayerIds": 4,
+      "remotePlayersPerClient": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "fullSnapshotsPerClient": [
+        2,
+        1,
+        1,
+        1
+      ],
+      "deltaSnapshotsPerClient": [
+        1009,
+        1013,
+        5,
+        0
+      ],
+      "inputAcksPerClient": [
+        2028,
+        2033,
+        11,
+        2
+      ],
+      "identityChecksPerClient": [
+        2028,
+        2031,
+        15,
+        5
+      ],
+      "presentationPerClient": [
+        {
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "status": "ready",
+          "hydrationCount": 2,
+          "intentCount": 13,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 11
+        },
+        {
+          "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 12,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "teleport",
+          "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+          "audioCueAttempts": 1
+        },
+        {
+          "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        }
+      ],
+      "players": [
+        {
+          "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+          "teamId": "team_red",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+          "teamId": "team_red",
+          "lifePhase": "dead",
+          "healthPoints": 0,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        }
+      ],
+      "teamDistribution": {
+        "team_blue": 2,
+        "team_red": 2
+      },
+      "tickStimulus": {
+        "kind": "real_product_shot_accepted_reliable_tick",
+        "directStateMutation": false,
+        "serverOwned": true,
+        "roomWide": true,
+        "driverClientId": "client-2",
+        "firePulseMilliseconds": 0,
+        "inputEdgeMode": "latched_press_release",
+        "inputEdgeProof": {
+          "preStimulusInputSequence": 85,
+          "uniquePrimaryFirePressedCommands": 1,
+          "uniquePrimaryFireReleasedCommands": 1,
+          "pressCommand": {
+            "sequence": 86,
+            "clientTick": 2108,
+            "held": true,
+            "pressed": true,
+            "released": false
+          },
+          "releaseCommand": {
+            "sequence": 87,
+            "clientTick": 2109,
+            "held": false,
+            "pressed": false,
+            "released": true
+          }
+        },
+        "reliableEventId": "event.36",
+        "subjectId": "combat.auto_rifle.shot.c47de6e1330e8c8e.1",
+        "actorId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+        "serverTick": 2110,
+        "requestedAtMilliseconds": 1785091428483,
+        "acceptedShotCountBefore": 0,
+        "acceptedShotCountAfter": 1,
+        "preStimulusSnapshotTick": 2106,
+        "preStimulusShotEventIds": [],
+        "newAuthorityEventIdentityRequired": true,
+        "acceptedStateObservedAtMilliseconds": 1785091428939,
+        "driverEventObservedAtMilliseconds": 1785091428659,
+        "diagnosticToEventObservationMilliseconds": -280,
+        "driverEventWaitMilliseconds": 512,
+        "healthBefore": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthAfter": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthTransitions": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "beforeHealthPoints": 0,
+            "afterHealthPoints": 0,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          }
+        ],
+        "healthNeverDecreased": true,
+        "healthUnchanged": true,
+        "scoreFeedBefore": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedAfter": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedUnchanged": true,
+        "transportDeliverySemantics": "at_least_once_with_client_deduplication",
+        "deliveryClients": 4,
+        "deliveries": [
+          {
+            "clientId": "client-0",
+            "observedAt": "2026-07-26T18:43:48.658Z",
+            "observedAtMilliseconds": 1785091428658,
+            "latencyMilliseconds": 175,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-1",
+            "observedAt": "2026-07-26T18:43:48.754Z",
+            "observedAtMilliseconds": 1785091428754,
+            "latencyMilliseconds": 271,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-2",
+            "observedAt": "2026-07-26T18:43:48.659Z",
+            "observedAtMilliseconds": 1785091428659,
+            "latencyMilliseconds": 176,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-3",
+            "observedAt": "2026-07-26T18:43:48.658Z",
+            "observedAtMilliseconds": 1785091428658,
+            "latencyMilliseconds": 175,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          }
+        ],
+        "totalRawDeliveries": 4,
+        "totalLogicalApplications": 4,
+        "presentationConsequencesUnchanged": true,
+        "maximumDeliveryLatencyMilliseconds": 271
+      }
+    },
+    "eight": {
+      "count": 8,
+      "roomCode": "KYX-J6JWS3",
+      "matchId": "match.0deaa16e5ce5420f8b6f857dc9fbee54",
+      "commonAuthorityTick": 2461,
+      "uniquePlayerIds": 8,
+      "remotePlayersPerClient": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ],
+      "fullSnapshotsPerClient": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "deltaSnapshotsPerClient": [
+        1176,
+        1165,
+        172,
+        167,
+        16,
+        12,
+        5,
+        0
+      ],
+      "inputAcksPerClient": [
+        2362,
+        2367,
+        345,
+        336,
+        33,
+        25,
+        11,
+        2
+      ],
+      "identityChecksPerClient": [
+        2362,
+        2335,
+        349,
+        339,
+        37,
+        29,
+        15,
+        5
+      ],
+      "presentationPerClient": [
+        {
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "status": "ready",
+          "hydrationCount": 2,
+          "intentCount": 13,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 11
+        },
+        {
+          "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 12,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "teleport",
+          "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+          "audioCueAttempts": 1
+        },
+        {
+          "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        },
+        {
+          "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0
+        }
+      ],
+      "players": [
+        {
+          "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+          "teamId": "team_red",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+          "teamId": "team_red",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+          "teamId": "team_red",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+          "teamId": "team_red",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        },
+        {
+          "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+          "teamId": "team_blue",
+          "lifePhase": "alive",
+          "healthPoints": 100,
+          "shieldPoints": 0
+        }
+      ],
+      "teamDistribution": {
+        "team_blue": 4,
+        "team_red": 4
+      },
+      "tickStimulus": {
+        "kind": "real_product_shot_accepted_reliable_tick",
+        "directStateMutation": false,
+        "serverOwned": true,
+        "roomWide": true,
+        "driverClientId": "client-6",
+        "firePulseMilliseconds": 0,
+        "inputEdgeMode": "latched_press_release",
+        "inputEdgeProof": {
+          "preStimulusInputSequence": 103,
+          "uniquePrimaryFirePressedCommands": 1,
+          "uniquePrimaryFireReleasedCommands": 1,
+          "pressCommand": {
+            "sequence": 105,
+            "clientTick": 2461,
+            "held": true,
+            "pressed": true,
+            "released": false
+          },
+          "releaseCommand": {
+            "sequence": 106,
+            "clientTick": 2462,
+            "held": false,
+            "pressed": false,
+            "released": true
+          }
+        },
+        "reliableEventId": "event.42",
+        "subjectId": "combat.auto_rifle.shot.e83d954ab4f17538.1",
+        "actorId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+        "serverTick": 2461,
+        "requestedAtMilliseconds": 1785091446231,
+        "acceptedShotCountBefore": 0,
+        "acceptedShotCountAfter": 1,
+        "preStimulusSnapshotTick": 2458,
+        "preStimulusShotEventIds": [],
+        "newAuthorityEventIdentityRequired": true,
+        "acceptedStateObservedAtMilliseconds": 1785091446820,
+        "driverEventObservedAtMilliseconds": 1785091446471,
+        "diagnosticToEventObservationMilliseconds": -349,
+        "driverEventWaitMilliseconds": 463,
+        "healthBefore": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthAfter": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthTransitions": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          }
+        ],
+        "healthNeverDecreased": true,
+        "healthUnchanged": true,
+        "scoreFeedBefore": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedAfter": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedUnchanged": true,
+        "transportDeliverySemantics": "at_least_once_with_client_deduplication",
+        "deliveryClients": 8,
+        "deliveries": [
+          {
+            "clientId": "client-0",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-1",
+            "observedAt": "2026-07-26T18:44:06.477Z",
+            "observedAtMilliseconds": 1785091446477,
+            "latencyMilliseconds": 246,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-2",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-3",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-4",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-5",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-6",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-7",
+            "observedAt": "2026-07-26T18:44:06.471Z",
+            "observedAtMilliseconds": 1785091446471,
+            "latencyMilliseconds": 240,
+            "rawOccurrenceCount": 2,
+            "duplicateWireDeliveries": 1,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          }
+        ],
+        "totalRawDeliveries": 15,
+        "totalLogicalApplications": 8,
+        "presentationConsequencesUnchanged": true,
+        "maximumDeliveryLatencyMilliseconds": 246
+      }
+    }
+  },
+  "movementAndWorld": {
+    "routeId": "alternate_ink_channel_after_press_cross_snag",
+    "routeCheckpoints": [
+      {
+        "index": 0,
+        "west": {
+          "x": -28139,
+          "y": 22,
+          "z": 610
+        },
+        "east": {
+          "x": 27783,
+          "y": 21,
+          "z": -888
+        },
+        "westPredicted": {
+          "x": -28139,
+          "y": 22,
+          "z": 610
+        },
+        "eastPredicted": {
+          "x": 27783,
+          "y": 21,
+          "z": -888
+        }
+      },
+      {
+        "index": 1,
+        "west": {
+          "x": -22833,
+          "y": 267,
+          "z": 28
+        },
+        "east": {
+          "x": 22792,
+          "y": 34,
+          "z": -308
+        },
+        "westPredicted": {
+          "x": -22833,
+          "y": 267,
+          "z": 28
+        },
+        "eastPredicted": {
+          "x": 22792,
+          "y": 34,
+          "z": -308
+        }
+      },
+      {
+        "index": 2,
+        "west": {
+          "x": -25050,
+          "y": -833,
+          "z": -7272
+        },
+        "east": {
+          "x": 25065,
+          "y": -830,
+          "z": -6960
+        },
+        "westPredicted": {
+          "x": -25050,
+          "y": -833,
+          "z": -7272
+        },
+        "eastPredicted": {
+          "x": 25065,
+          "y": -830,
+          "z": -6960
+        }
+      },
+      {
+        "index": 3,
+        "west": {
+          "x": -25050,
+          "y": -1883,
+          "z": -12482
+        },
+        "east": {
+          "x": 24977,
+          "y": -1780,
+          "z": -11628
+        },
+        "westPredicted": {
+          "x": -25050,
+          "y": -1883,
+          "z": -12482
+        },
+        "eastPredicted": {
+          "x": 24977,
+          "y": -1780,
+          "z": -11628
+        }
+      },
+      {
+        "index": 4,
+        "west": {
+          "x": -21867,
+          "y": -2833,
+          "z": -17114
+        },
+        "east": {
+          "x": 21910,
+          "y": -2830,
+          "z": -17280
+        },
+        "westPredicted": {
+          "x": -21867,
+          "y": -2833,
+          "z": -17114
+        },
+        "eastPredicted": {
+          "x": 21910,
+          "y": -2830,
+          "z": -17280
+        }
+      },
+      {
+        "index": 5,
+        "west": {
+          "x": -15574,
+          "y": -2833,
+          "z": -20609
+        },
+        "east": {
+          "x": 15706,
+          "y": -2830,
+          "z": -19672
+        },
+        "westPredicted": {
+          "x": -15574,
+          "y": -2833,
+          "z": -20609
+        },
+        "eastPredicted": {
+          "x": 15706,
+          "y": -2830,
+          "z": -19672
+        }
+      },
+      {
+        "index": 6,
+        "west": {
+          "x": -8679,
+          "y": -2833,
+          "z": -20144
+        },
+        "east": {
+          "x": 8690,
+          "y": -2830,
+          "z": -16384
+        },
+        "westPredicted": {
+          "x": -8679,
+          "y": -2833,
+          "z": -20144
+        },
+        "eastPredicted": {
+          "x": 8690,
+          "y": -2830,
+          "z": -16384
+        }
+      },
+      {
+        "index": 7,
+        "west": {
+          "x": -5455,
+          "y": -2833,
+          "z": -15566
+        },
+        "east": {
+          "x": 5634,
+          "y": -2830,
+          "z": -15279
+        },
+        "westPredicted": {
+          "x": -5455,
+          "y": -2833,
+          "z": -15566
+        },
+        "eastPredicted": {
+          "x": 5634,
+          "y": -2830,
+          "z": -15279
+        }
+      },
+      {
+        "index": 8,
+        "west": {
+          "x": -2997,
+          "y": -2833,
+          "z": -16021
+        },
+        "east": {
+          "x": 3147,
+          "y": -2830,
+          "z": -15018
+        },
+        "westPredicted": {
+          "x": -2997,
+          "y": -2833,
+          "z": -16021
+        },
+        "eastPredicted": {
+          "x": 3147,
+          "y": -2830,
+          "z": -15018
+        }
+      }
+    ],
+    "crossAim": {
+      "westYaw": 84036,
+      "eastYaw": -95964
+    },
+    "crossAcceptedShotsBefore": 1,
+    "crossAcceptedShotsAfter": 8,
+    "crossVictimHealthBefore": 100,
+    "crossVictimHealthAfter": 100,
+    "spawnProtectionExpiryWaitMilliseconds": 1500,
+    "realOcclusionBlockedCrossMapDamage": true,
+    "driverRecoveries": [],
+    "traversalCollisionWarning": false,
+    "fourInterpolation": {
+      "moverClientId": "client-2",
+      "observerClientId": "client-3",
+      "before": {
+        "x": -33500,
+        "y": 0,
+        "z": 3500
+      },
+      "after": {
+        "x": -33532,
+        "y": 0,
+        "z": 5999
+      },
+      "authorityBefore": {
+        "x": -33500,
+        "y": 0,
+        "z": 3500
+      },
+      "authorityAfter": {
+        "x": -33532,
+        "y": 0,
+        "z": 5999
+      },
+      "target": {
+        "x": -33500,
+        "z": 6500
+      },
+      "requestedArrivalToleranceMillimeters": 850,
+      "targetDistanceAfterSettlementMillimeters": 502.0209158989294,
+      "predictionToAuthorityDistanceAfterSettlementMillimeters": 0,
+      "predictionSettlementSamples": 4,
+      "predictionStableSamples": 3,
+      "predictionMaximumObservedErrorMillimeters": 0,
+      "predictionSettledAfterMilliseconds": 331,
+      "movementMillimeters": 2499.2048735547874,
+      "peerDistanceMillimeters": 0,
+      "remoteTransformMovementMillimeters": 2499.2048735547874,
+      "observerEntityId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+      "observerInterpolationMode": "interpolated",
+      "observerActiveMovementMillimeters": 754.6428644000941,
+      "observerActiveModeObservedAfterMilliseconds": 3747,
+      "observerFinalInterpolationMode": "stale",
+      "observerConvergedAfterMilliseconds": 4,
+      "commonAuthorityTickAfterMovement": 2310,
+      "tickStimulusAfterMovement": {
+        "kind": "real_product_shot_accepted_reliable_tick",
+        "directStateMutation": false,
+        "serverOwned": true,
+        "roomWide": true,
+        "driverClientId": "client-2",
+        "firePulseMilliseconds": 0,
+        "inputEdgeMode": "latched_press_release",
+        "inputEdgeProof": {
+          "preStimulusInputSequence": 285,
+          "uniquePrimaryFirePressedCommands": 1,
+          "uniquePrimaryFireReleasedCommands": 1,
+          "pressCommand": {
+            "sequence": 286,
+            "clientTick": 2308,
+            "held": true,
+            "pressed": true,
+            "released": false
+          },
+          "releaseCommand": {
+            "sequence": 287,
+            "clientTick": 2309,
+            "held": false,
+            "pressed": false,
+            "released": true
+          }
+        },
+        "reliableEventId": "event.37",
+        "subjectId": "combat.auto_rifle.shot.c47de6e1330e8c8e.2",
+        "actorId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+        "serverTick": 2310,
+        "requestedAtMilliseconds": 1785091438506,
+        "acceptedShotCountBefore": 1,
+        "acceptedShotCountAfter": 2,
+        "preStimulusSnapshotTick": 2308,
+        "preStimulusShotEventIds": [
+          "event.36"
+        ],
+        "newAuthorityEventIdentityRequired": true,
+        "acceptedStateObservedAtMilliseconds": 1785091438864,
+        "driverEventObservedAtMilliseconds": 1785091438606,
+        "diagnosticToEventObservationMilliseconds": -258,
+        "driverEventWaitMilliseconds": 432,
+        "healthBefore": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthAfter": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthTransitions": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          }
+        ],
+        "healthNeverDecreased": true,
+        "healthUnchanged": true,
+        "scoreFeedBefore": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedAfter": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedUnchanged": true,
+        "transportDeliverySemantics": "at_least_once_with_client_deduplication",
+        "deliveryClients": 4,
+        "deliveries": [
+          {
+            "clientId": "client-0",
+            "observedAt": "2026-07-26T18:43:58.607Z",
+            "observedAtMilliseconds": 1785091438607,
+            "latencyMilliseconds": 101,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-1",
+            "observedAt": "2026-07-26T18:43:58.607Z",
+            "observedAtMilliseconds": 1785091438607,
+            "latencyMilliseconds": 101,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-2",
+            "observedAt": "2026-07-26T18:43:58.606Z",
+            "observedAtMilliseconds": 1785091438606,
+            "latencyMilliseconds": 100,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-3",
+            "observedAt": "2026-07-26T18:43:58.607Z",
+            "observedAtMilliseconds": 1785091438607,
+            "latencyMilliseconds": 101,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          }
+        ],
+        "totalRawDeliveries": 4,
+        "totalLogicalApplications": 4,
+        "presentationConsequencesUnchanged": true,
+        "maximumDeliveryLatencyMilliseconds": 101
+      },
+      "populationDeltaSnapshotsAfterMovement": [
+        1110,
+        1099,
+        106,
+        101
+      ],
+      "populationInputAcksAfterMovement": [
+        2230,
+        2235,
+        213,
+        204
+      ],
+      "populationDeltaSnapshotDeltasAfterMovement": [
+        54,
+        51,
+        54,
+        54
+      ],
+      "populationInputAckDeltasAfterMovement": [
+        108,
+        109,
+        108,
+        108
+      ],
+      "moverReconciliations": 106,
+      "observerRemotePlayers": 3
+    },
+    "eightInterpolation": {
+      "moverClientId": "client-6",
+      "observerClientId": "client-7",
+      "before": {
+        "x": -30500,
+        "y": 0,
+        "z": 7000
+      },
+      "after": {
+        "x": -30479,
+        "y": 0,
+        "z": 4500
+      },
+      "authorityBefore": {
+        "x": -30500,
+        "y": 0,
+        "z": 7000
+      },
+      "authorityAfter": {
+        "x": -30479,
+        "y": 0,
+        "z": 4500
+      },
+      "target": {
+        "x": -30500,
+        "z": 4500
+      },
+      "requestedArrivalToleranceMillimeters": 350,
+      "targetDistanceAfterSettlementMillimeters": 21,
+      "predictionToAuthorityDistanceAfterSettlementMillimeters": 0,
+      "predictionSettlementSamples": 4,
+      "predictionStableSamples": 3,
+      "predictionMaximumObservedErrorMillimeters": 0,
+      "predictionSettledAfterMilliseconds": 328,
+      "movementMillimeters": 2500.088198444207,
+      "peerDistanceMillimeters": 0,
+      "remoteTransformMovementMillimeters": 2500.088198444207,
+      "observerEntityId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+      "observerInterpolationMode": "interpolated",
+      "observerActiveMovementMillimeters": 644.6679071235404,
+      "observerActiveModeObservedAfterMilliseconds": 3972,
+      "observerFinalInterpolationMode": "stale",
+      "observerConvergedAfterMilliseconds": 5,
+      "commonAuthorityTickAfterMovement": 2652,
+      "tickStimulusAfterMovement": {
+        "kind": "real_product_shot_accepted_reliable_tick",
+        "directStateMutation": false,
+        "serverOwned": true,
+        "roomWide": true,
+        "driverClientId": "client-6",
+        "firePulseMilliseconds": 0,
+        "inputEdgeMode": "latched_press_release",
+        "inputEdgeProof": {
+          "preStimulusInputSequence": 302,
+          "uniquePrimaryFirePressedCommands": 1,
+          "uniquePrimaryFireReleasedCommands": 1,
+          "pressCommand": {
+            "sequence": 303,
+            "clientTick": 2659,
+            "held": true,
+            "pressed": true,
+            "released": false
+          },
+          "releaseCommand": {
+            "sequence": 304,
+            "clientTick": 2660,
+            "held": false,
+            "pressed": false,
+            "released": true
+          }
+        },
+        "reliableEventId": "event.43",
+        "subjectId": "combat.auto_rifle.shot.e83d954ab4f17538.2",
+        "actorId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+        "serverTick": 2652,
+        "requestedAtMilliseconds": 1785091456150,
+        "acceptedShotCountBefore": 1,
+        "acceptedShotCountAfter": 2,
+        "preStimulusSnapshotTick": 2650,
+        "preStimulusShotEventIds": [
+          "event.42"
+        ],
+        "newAuthorityEventIdentityRequired": true,
+        "acceptedStateObservedAtMilliseconds": 1785091456578,
+        "driverEventObservedAtMilliseconds": 1785091456252,
+        "diagnosticToEventObservationMilliseconds": -326,
+        "driverEventWaitMilliseconds": 449,
+        "healthBefore": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthAfter": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+            "healthPoints": 100
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "healthPoints": 100
+          }
+        ],
+        "healthTransitions": [
+          {
+            "playerId": "player.1ffd031c-03b9-476b-a5dc-64654126e93c",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.52e9c126-b1a4-4401-9cda-30e61180da97",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.6b7f8b5f-40a7-4ae2-a54a-525d3910fc8a",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.74c296b6-1969-4702-9bea-18a71104094f",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.8e309086-cb79-45a4-9ea2-c00725291e63",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.de460125-d290-4ce0-a6d3-38bcb10d95e5",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          },
+          {
+            "playerId": "player.ebec6d8b-7bd1-4d21-aa01-372e78854218",
+            "beforeHealthPoints": 100,
+            "afterHealthPoints": 100,
+            "deltaHealthPoints": 0
+          }
+        ],
+        "healthNeverDecreased": true,
+        "healthUnchanged": true,
+        "scoreFeedBefore": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedAfter": {
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1
+        },
+        "scoreFeedUnchanged": true,
+        "transportDeliverySemantics": "at_least_once_with_client_deduplication",
+        "deliveryClients": 8,
+        "deliveries": [
+          {
+            "clientId": "client-0",
+            "observedAt": "2026-07-26T18:44:16.255Z",
+            "observedAtMilliseconds": 1785091456255,
+            "latencyMilliseconds": 105,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 11
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-1",
+            "observedAt": "2026-07-26T18:44:16.252Z",
+            "observedAtMilliseconds": 1785091456252,
+            "latencyMilliseconds": 102,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 11,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "teleport",
+                "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+                "audioCueAttempts": 1
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "teleport",
+                "confirmedIntents": "11"
+              },
+              "hud": {
+                "text": "TELEPORT · CONFIRMED",
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "audio": "played"
+              },
+              "vfx": {
+                "cue": "teleport",
+                "authorityEventId": "combat.01a79fcd8409d39e",
+                "active": "false",
+                "reducedMotion": "false"
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-2",
+            "observedAt": "2026-07-26T18:44:16.252Z",
+            "observedAtMilliseconds": 1785091456252,
+            "latencyMilliseconds": 102,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-3",
+            "observedAt": "2026-07-26T18:44:16.255Z",
+            "observedAtMilliseconds": 1785091456255,
+            "latencyMilliseconds": 105,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-4",
+            "observedAt": "2026-07-26T18:44:16.254Z",
+            "observedAtMilliseconds": 1785091456254,
+            "latencyMilliseconds": 104,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-5",
+            "observedAt": "2026-07-26T18:44:16.252Z",
+            "observedAtMilliseconds": 1785091456252,
+            "latencyMilliseconds": 102,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-6",
+            "observedAt": "2026-07-26T18:44:16.252Z",
+            "observedAtMilliseconds": 1785091456252,
+            "latencyMilliseconds": 102,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          },
+          {
+            "clientId": "client-7",
+            "observedAt": "2026-07-26T18:44:16.252Z",
+            "observedAtMilliseconds": 1785091456252,
+            "latencyMilliseconds": 102,
+            "rawOccurrenceCount": 1,
+            "duplicateWireDeliveries": 0,
+            "logicalApplicationCount": 1,
+            "presentationBefore": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationAfter": {
+              "diagnostics": {
+                "confirmedIntentCount": 0,
+                "duplicateAuthorityEvents": 0,
+                "staleAuthorityEvents": 0,
+                "lastCue": "snapshot",
+                "lastAuthorityEventId": null,
+                "audioCueAttempts": 0
+              },
+              "body": {
+                "status": "ready",
+                "lastCue": "snapshot",
+                "confirmedIntents": "0"
+              },
+              "hud": {
+                "text": "AUTHORITY STATE SYNCHRONIZED",
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "audio": "not_played"
+              },
+              "vfx": {
+                "cue": "snapshot",
+                "authorityEventId": "",
+                "active": "false",
+                "reducedMotion": null
+              }
+            },
+            "presentationConsequenceUnchanged": true
+          }
+        ],
+        "totalRawDeliveries": 8,
+        "totalLogicalApplications": 8,
+        "presentationConsequencesUnchanged": true,
+        "maximumDeliveryLatencyMilliseconds": 105
+      },
+      "populationDeltaSnapshotsAfterMovement": [
+        1281,
+        1270,
+        277,
+        272,
+        121,
+        116,
+        110,
+        105
+      ],
+      "populationInputAcksAfterMovement": [
+        2571,
+        2576,
+        554,
+        545,
+        242,
+        234,
+        220,
+        211
+      ],
+      "populationDeltaSnapshotDeltasAfterMovement": [
+        49,
+        49,
+        49,
+        49,
+        49,
+        49,
+        49,
+        49
+      ],
+      "populationInputAckDeltasAfterMovement": [
+        98,
+        98,
+        98,
+        98,
+        98,
+        98,
+        98,
+        98
+      ],
+      "moverReconciliations": 110,
+      "observerRemotePlayers": 7
+    }
+  },
+  "combat": {
+    "closeAim": {
+      "westYaw": 79073,
+      "eastYaw": -100927
+    },
+    "setupContract": {
+      "west": {
+        "x": 400,
+        "z": -15550
+      },
+      "east": {
+        "x": 2323,
+        "z": -15175
+      },
+      "arrivalToleranceMillimeters": 100,
+      "minimumPulseMilliseconds": 40,
+      "settleMilliseconds": 750,
+      "maximumSeparationMillimeters": 2200,
+      "minimumVerticalMarginMillimeters": 90
+    },
+    "bodyHitConvergence": {
+      "beforeSeparationMillimeters": 6225.330914899224,
+      "afterSeparationMillimeters": 1878.0500525811337,
+      "westTarget": {
+        "x": 400,
+        "z": -15550
+      },
+      "eastTarget": {
+        "x": 2323,
+        "z": -15175
+      },
+      "westPosition": {
+        "x": 469,
+        "y": -2983,
+        "z": -15541
+      },
+      "eastPosition": {
+        "x": 2313,
+        "y": -2830,
+        "z": -15185
+      }
+    },
+    "bodyHitShooterPosition": {
+      "x": 469,
+      "y": -2983,
+      "z": -15541
+    },
+    "bodyHitVictimPosition": {
+      "x": 2313,
+      "y": -2830,
+      "z": -15185
+    },
+    "bodyHitVerticalMarginMillimeters": 253,
+    "lethalConvergence": {
+      "beforeSeparationMillimeters": 1878.0500525811337,
+      "afterSeparationMillimeters": 1878.0500525811337,
+      "westTarget": {
+        "x": 400,
+        "z": -15550
+      },
+      "eastTarget": {
+        "x": 2323,
+        "z": -15175
+      },
+      "westPosition": {
+        "x": 469,
+        "y": -2983,
+        "z": -15541
+      },
+      "eastPosition": {
+        "x": 2313,
+        "y": -2830,
+        "z": -15185
+      }
+    },
+    "damageEventObserved": true,
+    "bodyDamageDrive": [
+      {
+        "index": 0,
+        "acceptedShotDelta": 2,
+        "healthDamagePoints": 20,
+        "victimHealthBefore": 100,
+        "victimHealthAfter": 80,
+        "shooterRiflePhaseAfter": "recovering",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 1,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 80,
+        "victimHealthAfter": 70,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      }
+    ],
+    "lethalDamageDrive": [
+      {
+        "index": 0,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 70,
+        "victimHealthAfter": 60,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 1,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 60,
+        "victimHealthAfter": 50,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 2,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 50,
+        "victimHealthAfter": 40,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 3,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 40,
+        "victimHealthAfter": 30,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 4,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 30,
+        "victimHealthAfter": 20,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 5,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 20,
+        "victimHealthAfter": 10,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      },
+      {
+        "index": 6,
+        "acceptedShotDelta": 1,
+        "healthDamagePoints": 10,
+        "victimHealthBefore": 10,
+        "victimHealthAfter": 0,
+        "shooterRiflePhaseAfter": "ready",
+        "outcome": "authority_damage"
+      }
+    ],
+    "death": {
+      "lifePhase": "dead",
+      "healthPoints": 0,
+      "deathOrdinal": 1
+    },
+    "match": {
+      "phase": "active",
+      "phaseEndsAtTick": 9640,
+      "activeTicksRemaining": 7662,
+      "teamScores": [
+        {
+          "teamId": "team_blue",
+          "score": 1
+        },
+        {
+          "teamId": "team_red",
+          "score": 0
+        }
+      ],
+      "feedSequence": 1,
+      "result": null
+    },
+    "playerKilledReliableDeliveryClientsAtEvent": 2,
+    "confirmedPresentationAtDamage": {
+      "diagnostics": {
+        "status": "ready",
+        "hydrationCount": 1,
+        "intentCount": 4,
+        "confirmedIntentCount": 3,
+        "rejectedIntentCount": 0,
+        "duplicateAuthorityEvents": 0,
+        "staleAuthorityEvents": 0,
+        "lastCue": "body",
+        "lastAuthorityEventId": "combat.damage.2",
+        "audioCueAttempts": 3
+      },
+      "body": {
+        "status": "ready",
+        "lastCue": "body",
+        "confirmedIntents": "3"
+      },
+      "proof": {
+        "text": "READY · 3 CONFIRMED · BODY",
+        "lastCue": "body",
+        "confirmedIntents": "3",
+        "duplicateEvents": "0"
+      },
+      "hud": {
+        "text": "BODY HIT · CONFIRMED",
+        "cue": "body",
+        "authorityEventId": "combat.damage.2",
+        "active": "true",
+        "audio": "played"
+      },
+      "vfx": {
+        "cue": "body",
+        "authorityEventId": "combat.damage.2",
+        "active": "true",
+        "reducedMotion": "false"
+      }
+    },
+    "confirmedPresentationAtDeath": {
+      "diagnostics": {
+        "status": "ready",
+        "hydrationCount": 1,
+        "intentCount": 11,
+        "confirmedIntentCount": 10,
+        "rejectedIntentCount": 0,
+        "duplicateAuthorityEvents": 0,
+        "staleAuthorityEvents": 0,
+        "lastCue": "kill",
+        "lastAuthorityEventId": "combat.damage.9",
+        "audioCueAttempts": 10
+      },
+      "body": {
+        "status": "ready",
+        "lastCue": "kill",
+        "confirmedIntents": "10"
+      },
+      "proof": {
+        "text": "READY · 10 CONFIRMED · KILL",
+        "lastCue": "kill",
+        "confirmedIntents": "10",
+        "duplicateEvents": "0"
+      },
+      "hud": {
+        "text": "ELIMINATION · CONFIRMED",
+        "cue": "kill",
+        "authorityEventId": "combat.damage.9",
+        "active": "true",
+        "audio": "played"
+      },
+      "vfx": {
+        "cue": "kill",
+        "authorityEventId": "combat.damage.9",
+        "active": "true",
+        "reducedMotion": "false"
+      }
+    },
+    "teleport": {
+      "beforePosition": {
+        "x": 469,
+        "y": -2983,
+        "z": -15541
+      },
+      "afterPosition": {
+        "x": 2336,
+        "y": -2983,
+        "z": -15590
+      },
+      "distanceMillimeters": 1867.6428994858732,
+      "reliableEvent": {
+        "id": "event.32",
+        "serverTick": 1992,
+        "kind": "abilityActivated",
+        "subjectId": "combat.01a79fcd8409d39e",
+        "actorId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+        "targetId": null,
+        "amountHealthPoints": null,
+        "presentation": {
+          "schemaVersion": 1,
+          "kind": "teleport_resource_confirmed",
+          "eventId": "combat.01a79fcd8409d39e",
+          "authorityTick": 1992,
+          "playerId": "player.9db020cb-991e-4386-8390-b8b8b9957419",
+          "abilityId": "vertical_teleport_v1",
+          "outcome": "partial",
+          "from": {
+            "x": 469,
+            "y": -2983,
+            "z": -15541
+          },
+          "to": {
+            "x": 2336,
+            "y": -2983,
+            "z": -15590
+          },
+          "cooldownTicksRemaining": 160,
+          "weaponRecoveryTicks": 0,
+          "combatStatePolicy": "preserve_existing_combat_state"
+        }
+      },
+      "reliableDeliveryClients": 2,
+      "requestedAtMilliseconds": 1785091422629,
+      "deliveries": [
+        {
+          "clientId": "client-0",
+          "observedAt": "2026-07-26T18:43:42.681Z",
+          "observedAtMilliseconds": 1785091422681,
+          "latencyMilliseconds": 52,
+          "occurrenceCount": 1
+        },
+        {
+          "clientId": "client-1",
+          "observedAt": "2026-07-26T18:43:42.697Z",
+          "observedAtMilliseconds": 1785091422697,
+          "latencyMilliseconds": 68,
+          "occurrenceCount": 1
+        }
+      ],
+      "maximumDeliveryLatencyMilliseconds": 68,
+      "confirmedPresentation": {
+        "diagnostics": {
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 12,
+          "confirmedIntentCount": 11,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "teleport",
+          "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+          "audioCueAttempts": 11
+        },
+        "body": {
+          "status": "ready",
+          "lastCue": "teleport",
+          "confirmedIntents": "11"
+        },
+        "proof": {
+          "text": "READY · 11 CONFIRMED · TELEPORT",
+          "lastCue": "teleport",
+          "confirmedIntents": "11",
+          "duplicateEvents": "0"
+        },
+        "hud": {
+          "text": "TELEPORT · CONFIRMED",
+          "cue": "teleport",
+          "authorityEventId": "combat.01a79fcd8409d39e",
+          "active": "true",
+          "audio": "played"
+        },
+        "vfx": {
+          "cue": "teleport",
+          "authorityEventId": "combat.01a79fcd8409d39e",
+          "active": "true",
+          "reducedMotion": "false"
+        }
+      }
+    }
+  },
+  "resume": {
+    "samePlayerId": true,
+    "sameMatchId": true,
+    "resumeTokenRotated": true,
+    "scorePreserved": true,
+    "feedSequencePreserved": true,
+    "originalResumeTokenSha256": "4edb79a850b36bce734c413e75d1b3c3775a6fa8cb04d91300944febbf4a6f40",
+    "rotatedResumeTokenSha256": "52b0f13296dff4286f80a1a74887a3c0e2c741d61c0b4f2f95a58e6f6f6ad95a",
+    "resumeSuccesses": 1,
+    "presentationBeforeResume": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 12,
+      "confirmedIntentCount": 11,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "teleport",
+      "lastAuthorityEventId": "combat.01a79fcd8409d39e",
+      "audioCueAttempts": 11
+    },
+    "presentationAfterResume": {
+      "status": "ready",
+      "hydrationCount": 2,
+      "intentCount": 13,
+      "confirmedIntentCount": 11,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "snapshot",
+      "lastAuthorityEventId": null,
+      "audioCueAttempts": 11
+    },
+    "noConfirmedPresentationReplay": true,
+    "noDuplicatePresentationReplay": true
+  },
+  "failClosed": {
+    "requestedProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "actualRoomProfile": "p58d-rev3-combat-v1",
+    "httpStatus": 409,
+    "copy": "Inkfall room verification failed.\n\nAuthority Inkfall room join verification failed (HTTP 409).\n\nBACK TO ONLINE LOBBY",
+    "productClientCreated": false,
+    "websocketScope": "room_authority_only_dev_hmr_excluded",
+    "wireSequenceStart": 23643,
+    "websocketOpenedAfterMismatch": false,
+    "authorityWebsocketUrlsAfterMismatch": [],
+    "developmentWebsocketUrlsAfterMismatch": [
+      "ws://127.0.0.1:5173/?token=xi4PRXCuuvII"
+    ],
+    "expectedConsoleError": "Failed to load resource: the server responded with a status of 409 (Conflict)"
+  },
+  "clientDiagnostics": [
+    {
+      "clientId": "client-0",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-1",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-2",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-3",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-4",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-5",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-6",
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    },
+    {
+      "clientId": "client-7",
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 409 (Conflict)"
+      ],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead"
+      ],
+      "pageErrors": [],
+      "wireDecodeErrors": 0
+    }
+  ],
+  "transportDiagnostics": {
+    "connectionTimeline": [
+      {
+        "observedAt": "2026-07-26T18:42:00.691Z",
+        "observedAtMilliseconds": 1785091320691,
+        "label": "population-2",
+        "clientId": "client-0",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 0,
+        "inputAcks": 0,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:42:00.691Z",
+        "observedAtMilliseconds": 1785091320691,
+        "label": "population-2",
+        "clientId": "client-1",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 0,
+        "inputAcks": 0,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:43:44.741Z",
+        "observedAtMilliseconds": 1785091424741,
+        "label": "population-4",
+        "clientId": "client-2",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 5,
+        "inputAcks": 10,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:43:44.741Z",
+        "observedAtMilliseconds": 1785091424741,
+        "label": "population-4",
+        "clientId": "client-3",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 0,
+        "inputAcks": 1,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:44:01.626Z",
+        "observedAtMilliseconds": 1785091441626,
+        "label": "population-8",
+        "clientId": "client-4",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 16,
+        "inputAcks": 32,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:44:01.626Z",
+        "observedAtMilliseconds": 1785091441626,
+        "label": "population-8",
+        "clientId": "client-5",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 12,
+        "inputAcks": 24,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:44:01.626Z",
+        "observedAtMilliseconds": 1785091441626,
+        "label": "population-8",
+        "clientId": "client-6",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 5,
+        "inputAcks": 10,
+        "snapshotAcksSent": null
+      },
+      {
+        "observedAt": "2026-07-26T18:44:01.626Z",
+        "observedAtMilliseconds": 1785091441626,
+        "label": "population-8",
+        "clientId": "client-7",
+        "connection": "joined",
+        "lastError": null,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 0,
+        "inputAcks": 1,
+        "snapshotAcksSent": null
+      }
+    ],
+    "roomMetricsTimeline": [
+      {
+        "observedAt": "2026-07-26T18:42:00.701Z",
+        "observedAtMilliseconds": 1785091320701,
+        "label": "population-2",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "metrics": {
+            "serverTick": 0,
+            "lifecycle": "warmup",
+            "players": 2,
+            "connectedPlayers": 2,
+            "ticks": 0,
+            "acceptedInputs": 0,
+            "inputRejections": {
+              "duplicate_sequence": 0,
+              "stale_sequence": 0,
+              "sequence_too_far_ahead": 0,
+              "client_tick_too_far_ahead": 0,
+              "client_tick_too_old": 0,
+              "queue_full": 0
+            },
+            "maximumObservedQueueDepth": 0,
+            "missedSchedulerTicks": 0,
+            "queryMetrics": {
+              "moveCapsuleCalls": 0,
+              "overlapCapsuleCalls": 0,
+              "castCapsuleCalls": 0,
+              "volumeCalls": 0,
+              "shapeCasts": 0,
+              "overlapTests": 0,
+              "contacts": 0
+            },
+            "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+            "lastTickFailure": null,
+            "mapBinding": {
+              "mapReference": "inkfall_foundry@2",
+              "mapId": "inkfall_foundry",
+              "mapRevision": 2,
+              "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+              "fixtureId": "inkfall_foundry_map_collision",
+              "fixtureHash": "bf85e42731fd088e",
+              "xAxis": "east",
+              "yAxis": "up",
+              "zAxis": "north",
+              "origin": "press_core_floor_contact",
+              "gltfToMap": "x_y_negative_z",
+              "distanceUnit": "millimeters",
+              "angleUnit": "milli_degrees",
+              "colliderCardinality": 339,
+              "spawns": [
+                {
+                  "spawnId": "spawn_w_press_a",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_a",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_press_b",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_b",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_ink",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -25000
+                },
+                {
+                  "spawnId": "spawn_e_ink",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -155000
+                },
+                {
+                  "spawnId": "spawn_w_archive",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 25000
+                },
+                {
+                  "spawnId": "spawn_e_archive",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 155000
+                }
+              ]
+            },
+            "transport": {
+              "inboundMessagesReceived": 9,
+              "inboundMessagesRateAccepted": 9,
+              "inboundMessagesRateRejected": 0,
+              "fullSnapshotsSent": 2,
+              "deltaSnapshotsSent": 0,
+              "snapshotAcksAccepted": 5,
+              "snapshotAcksRejected": 0,
+              "snapshotAckTimeoutFallbacks": 0,
+              "snapshotAckDebtEpisodes": 2,
+              "snapshotAckDebtSnapshotsCoalesced": 0,
+              "snapshotAckDebtReliableBatchesCoalesced": 0,
+              "snapshotAckDebtRecoveries": 2,
+              "snapshotAckDebtEvictions": 0,
+              "maximumSnapshotAckDebtMilliseconds": 1,
+              "snapshotHistoryFallbacks": 0,
+              "reliableEventsRecorded": 2,
+              "reliableEventBatchesSent": 3,
+              "reliableEventResendBatches": 0,
+              "reliableEventAcksAccepted": 5,
+              "reliableEventAcksRejected": 0,
+              "reliableEventHistoryFallbacks": 0,
+              "backpressureEpisodes": 0,
+              "backpressureMessagesCoalesced": 0,
+              "slowConsumerRecoveries": 2,
+              "slowConsumerEvictions": 0,
+              "maximumObservedSocketBufferedBytes": 0,
+              "lobbyCheckpointRehydrates": 0,
+              "lobbyCheckpointPlayersRestored": 0,
+              "durableAlarmRuns": 0,
+              "expiredResumeSessionsPruned": 0,
+              "loadoutRequestsAccepted": 0,
+              "loadoutRequestsRejected": 0,
+              "loadoutRequestsReplayed": 0,
+              "loadoutRequestIdConflicts": 0,
+              "activeMatchCheckpointDirtyMarks": 3,
+              "activeMatchCheckpointCoalescedMarks": 3,
+              "activeMatchCheckpointWrites": 1
+            }
+          }
+        }
+      },
+      {
+        "observedAt": "2026-07-26T18:43:44.749Z",
+        "observedAtMilliseconds": 1785091424749,
+        "label": "population-4",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "metrics": {
+            "serverTick": 2033,
+            "lifecycle": "active",
+            "players": 4,
+            "connectedPlayers": 4,
+            "ticks": 2033,
+            "acceptedInputs": 4134,
+            "inputRejections": {
+              "duplicate_sequence": 0,
+              "stale_sequence": 0,
+              "sequence_too_far_ahead": 0,
+              "client_tick_too_far_ahead": 0,
+              "client_tick_too_old": 0,
+              "queue_full": 0
+            },
+            "maximumObservedQueueDepth": 15,
+            "missedSchedulerTicks": 48,
+            "queryMetrics": {
+              "moveCapsuleCalls": 4016,
+              "overlapCapsuleCalls": 1,
+              "castCapsuleCalls": 1,
+              "volumeCalls": 4016,
+              "shapeCasts": 9893,
+              "overlapTests": 14752,
+              "contacts": 234
+            },
+            "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+            "lastTickFailure": null,
+            "mapBinding": {
+              "mapReference": "inkfall_foundry@2",
+              "mapId": "inkfall_foundry",
+              "mapRevision": 2,
+              "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+              "fixtureId": "inkfall_foundry_map_collision",
+              "fixtureHash": "bf85e42731fd088e",
+              "xAxis": "east",
+              "yAxis": "up",
+              "zAxis": "north",
+              "origin": "press_core_floor_contact",
+              "gltfToMap": "x_y_negative_z",
+              "distanceUnit": "millimeters",
+              "angleUnit": "milli_degrees",
+              "colliderCardinality": 339,
+              "spawns": [
+                {
+                  "spawnId": "spawn_w_press_a",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_a",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_press_b",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_b",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_ink",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -25000
+                },
+                {
+                  "spawnId": "spawn_e_ink",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -155000
+                },
+                {
+                  "spawnId": "spawn_w_archive",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 25000
+                },
+                {
+                  "spawnId": "spawn_e_archive",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 155000
+                }
+              ]
+            },
+            "transport": {
+              "inboundMessagesReceived": 6227,
+              "inboundMessagesRateAccepted": 6227,
+              "inboundMessagesRateRejected": 0,
+              "fullSnapshotsSent": 5,
+              "deltaSnapshotsSent": 2027,
+              "snapshotAcksAccepted": 2083,
+              "snapshotAcksRejected": 0,
+              "snapshotAckTimeoutFallbacks": 0,
+              "snapshotAckDebtEpisodes": 41,
+              "snapshotAckDebtSnapshotsCoalesced": 8,
+              "snapshotAckDebtReliableBatchesCoalesced": 3,
+              "snapshotAckDebtRecoveries": 41,
+              "snapshotAckDebtEvictions": 0,
+              "maximumSnapshotAckDebtMilliseconds": 740,
+              "snapshotHistoryFallbacks": 0,
+              "reliableEventsRecorded": 35,
+              "reliableEventBatchesSent": 51,
+              "reliableEventResendBatches": 3,
+              "reliableEventAcksAccepted": 2083,
+              "reliableEventAcksRejected": 0,
+              "reliableEventHistoryFallbacks": 0,
+              "backpressureEpisodes": 0,
+              "backpressureMessagesCoalesced": 0,
+              "slowConsumerRecoveries": 41,
+              "slowConsumerEvictions": 0,
+              "maximumObservedSocketBufferedBytes": 0,
+              "lobbyCheckpointRehydrates": 0,
+              "lobbyCheckpointPlayersRestored": 0,
+              "durableAlarmRuns": 0,
+              "expiredResumeSessionsPruned": 0,
+              "loadoutRequestsAccepted": 0,
+              "loadoutRequestsRejected": 0,
+              "loadoutRequestsReplayed": 0,
+              "loadoutRequestIdConflicts": 0,
+              "activeMatchCheckpointDirtyMarks": 8248,
+              "activeMatchCheckpointCoalescedMarks": 8243,
+              "activeMatchCheckpointWrites": 215
+            }
+          }
+        }
+      },
+      {
+        "observedAt": "2026-07-26T18:44:01.648Z",
+        "observedAtMilliseconds": 1785091441648,
+        "label": "population-8",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "metrics": {
+            "serverTick": 2367,
+            "lifecycle": "active",
+            "players": 8,
+            "connectedPlayers": 8,
+            "ticks": 2367,
+            "acceptedInputs": 5538,
+            "inputRejections": {
+              "duplicate_sequence": 0,
+              "stale_sequence": 0,
+              "sequence_too_far_ahead": 0,
+              "client_tick_too_far_ahead": 0,
+              "client_tick_too_old": 0,
+              "queue_full": 0
+            },
+            "maximumObservedQueueDepth": 15,
+            "missedSchedulerTicks": 51,
+            "queryMetrics": {
+              "moveCapsuleCalls": 5321,
+              "overlapCapsuleCalls": 1,
+              "castCapsuleCalls": 1,
+              "volumeCalls": 5321,
+              "shapeCasts": 12353,
+              "overlapTests": 19015,
+              "contacts": 239
+            },
+            "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+            "lastTickFailure": null,
+            "mapBinding": {
+              "mapReference": "inkfall_foundry@2",
+              "mapId": "inkfall_foundry",
+              "mapRevision": 2,
+              "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+              "fixtureId": "inkfall_foundry_map_collision",
+              "fixtureHash": "bf85e42731fd088e",
+              "xAxis": "east",
+              "yAxis": "up",
+              "zAxis": "north",
+              "origin": "press_core_floor_contact",
+              "gltfToMap": "x_y_negative_z",
+              "distanceUnit": "millimeters",
+              "angleUnit": "milli_degrees",
+              "colliderCardinality": 339,
+              "spawns": [
+                {
+                  "spawnId": "spawn_w_press_a",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_a",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_press_b",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_b",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_ink",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -25000
+                },
+                {
+                  "spawnId": "spawn_e_ink",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -155000
+                },
+                {
+                  "spawnId": "spawn_w_archive",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 25000
+                },
+                {
+                  "spawnId": "spawn_e_archive",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 155000
+                }
+              ]
+            },
+            "transport": {
+              "inboundMessagesReceived": 8370,
+              "inboundMessagesRateAccepted": 8370,
+              "inboundMessagesRateRejected": 0,
+              "fullSnapshotsSent": 9,
+              "deltaSnapshotsSent": 2713,
+              "snapshotAcksAccepted": 2814,
+              "snapshotAcksRejected": 0,
+              "snapshotAckTimeoutFallbacks": 0,
+              "snapshotAckDebtEpisodes": 85,
+              "snapshotAckDebtSnapshotsCoalesced": 24,
+              "snapshotAckDebtReliableBatchesCoalesced": 5,
+              "snapshotAckDebtRecoveries": 85,
+              "snapshotAckDebtEvictions": 0,
+              "maximumSnapshotAckDebtMilliseconds": 740,
+              "snapshotHistoryFallbacks": 0,
+              "reliableEventsRecorded": 41,
+              "reliableEventBatchesSent": 92,
+              "reliableEventResendBatches": 10,
+              "reliableEventAcksAccepted": 2814,
+              "reliableEventAcksRejected": 0,
+              "reliableEventHistoryFallbacks": 0,
+              "backpressureEpisodes": 0,
+              "backpressureMessagesCoalesced": 0,
+              "slowConsumerRecoveries": 85,
+              "slowConsumerEvictions": 0,
+              "maximumObservedSocketBufferedBytes": 0,
+              "lobbyCheckpointRehydrates": 0,
+              "lobbyCheckpointPlayersRestored": 0,
+              "durableAlarmRuns": 0,
+              "expiredResumeSessionsPruned": 0,
+              "loadoutRequestsAccepted": 0,
+              "loadoutRequestsRejected": 0,
+              "loadoutRequestsReplayed": 0,
+              "loadoutRequestIdConflicts": 0,
+              "activeMatchCheckpointDirtyMarks": 10717,
+              "activeMatchCheckpointCoalescedMarks": 10711,
+              "activeMatchCheckpointWrites": 250
+            }
+          }
+        }
+      },
+      {
+        "observedAt": "2026-07-26T18:44:17.850Z",
+        "observedAtMilliseconds": 1785091457850,
+        "label": "capture-complete",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "metrics": {
+            "serverTick": 2684,
+            "lifecycle": "active",
+            "players": 8,
+            "connectedPlayers": 7,
+            "ticks": 2684,
+            "acceptedInputs": 8121,
+            "inputRejections": {
+              "duplicate_sequence": 0,
+              "stale_sequence": 0,
+              "sequence_too_far_ahead": 0,
+              "client_tick_too_far_ahead": 0,
+              "client_tick_too_old": 0,
+              "queue_full": 0
+            },
+            "maximumObservedQueueDepth": 15,
+            "missedSchedulerTicks": 59,
+            "queryMetrics": {
+              "moveCapsuleCalls": 7850,
+              "overlapCapsuleCalls": 1,
+              "castCapsuleCalls": 1,
+              "volumeCalls": 7850,
+              "shapeCasts": 16969,
+              "overlapTests": 26924,
+              "contacts": 242
+            },
+            "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+            "lastTickFailure": null,
+            "mapBinding": {
+              "mapReference": "inkfall_foundry@2",
+              "mapId": "inkfall_foundry",
+              "mapRevision": 2,
+              "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+              "fixtureId": "inkfall_foundry_map_collision",
+              "fixtureHash": "bf85e42731fd088e",
+              "xAxis": "east",
+              "yAxis": "up",
+              "zAxis": "north",
+              "origin": "press_core_floor_contact",
+              "gltfToMap": "x_y_negative_z",
+              "distanceUnit": "millimeters",
+              "angleUnit": "milli_degrees",
+              "colliderCardinality": 339,
+              "spawns": [
+                {
+                  "spawnId": "spawn_w_press_a",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_a",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_press_b",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -33500,
+                    "y": 0,
+                    "z": 3500
+                  },
+                  "yawMilliDegrees": 0
+                },
+                {
+                  "spawnId": "spawn_e_press_b",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 33500,
+                    "y": 0,
+                    "z": -3500
+                  },
+                  "yawMilliDegrees": 180000
+                },
+                {
+                  "spawnId": "spawn_w_ink",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -25000
+                },
+                {
+                  "spawnId": "spawn_e_ink",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": -7000
+                  },
+                  "yawMilliDegrees": -155000
+                },
+                {
+                  "spawnId": "spawn_w_archive",
+                  "set": "west_team",
+                  "feetPosition": {
+                    "x": -30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 25000
+                },
+                {
+                  "spawnId": "spawn_e_archive",
+                  "set": "east_team",
+                  "feetPosition": {
+                    "x": 30500,
+                    "y": 0,
+                    "z": 7000
+                  },
+                  "yawMilliDegrees": 155000
+                }
+              ]
+            },
+            "transport": {
+              "inboundMessagesReceived": 12231,
+              "inboundMessagesRateAccepted": 12231,
+              "inboundMessagesRateRejected": 0,
+              "fullSnapshotsSent": 9,
+              "deltaSnapshotsSent": 3975,
+              "snapshotAcksAccepted": 4092,
+              "snapshotAcksRejected": 0,
+              "snapshotAckTimeoutFallbacks": 0,
+              "snapshotAckDebtEpisodes": 113,
+              "snapshotAckDebtSnapshotsCoalesced": 30,
+              "snapshotAckDebtReliableBatchesCoalesced": 6,
+              "snapshotAckDebtRecoveries": 113,
+              "snapshotAckDebtEvictions": 0,
+              "maximumSnapshotAckDebtMilliseconds": 740,
+              "snapshotHistoryFallbacks": 0,
+              "reliableEventsRecorded": 43,
+              "reliableEventBatchesSent": 115,
+              "reliableEventResendBatches": 17,
+              "reliableEventAcksAccepted": 4092,
+              "reliableEventAcksRejected": 0,
+              "reliableEventHistoryFallbacks": 0,
+              "backpressureEpisodes": 0,
+              "backpressureMessagesCoalesced": 0,
+              "slowConsumerRecoveries": 113,
+              "slowConsumerEvictions": 0,
+              "maximumObservedSocketBufferedBytes": 0,
+              "lobbyCheckpointRehydrates": 0,
+              "lobbyCheckpointPlayersRestored": 0,
+              "durableAlarmRuns": 0,
+              "expiredResumeSessionsPruned": 0,
+              "loadoutRequestsAccepted": 0,
+              "loadoutRequestsRejected": 0,
+              "loadoutRequestsReplayed": 0,
+              "loadoutRequestIdConflicts": 0,
+              "activeMatchCheckpointDirtyMarks": 14895,
+              "activeMatchCheckpointCoalescedMarks": 14886,
+              "activeMatchCheckpointWrites": 283
+            }
+          }
+        }
+      }
+    ],
+    "finalRoomMetrics": {
+      "observedAt": "2026-07-26T18:44:17.850Z",
+      "observedAtMilliseconds": 1785091457850,
+      "label": "capture-complete",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "metrics": {
+          "serverTick": 2684,
+          "lifecycle": "active",
+          "players": 8,
+          "connectedPlayers": 7,
+          "ticks": 2684,
+          "acceptedInputs": 8121,
+          "inputRejections": {
+            "duplicate_sequence": 0,
+            "stale_sequence": 0,
+            "sequence_too_far_ahead": 0,
+            "client_tick_too_far_ahead": 0,
+            "client_tick_too_old": 0,
+            "queue_full": 0
+          },
+          "maximumObservedQueueDepth": 15,
+          "missedSchedulerTicks": 59,
+          "queryMetrics": {
+            "moveCapsuleCalls": 7850,
+            "overlapCapsuleCalls": 1,
+            "castCapsuleCalls": 1,
+            "volumeCalls": 7850,
+            "shapeCasts": 16969,
+            "overlapTests": 26924,
+            "contacts": 242
+          },
+          "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+          "lastTickFailure": null,
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@2",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 2,
+            "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "bf85e42731fd088e",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000
+              }
+            ]
+          },
+          "transport": {
+            "inboundMessagesReceived": 12231,
+            "inboundMessagesRateAccepted": 12231,
+            "inboundMessagesRateRejected": 0,
+            "fullSnapshotsSent": 9,
+            "deltaSnapshotsSent": 3975,
+            "snapshotAcksAccepted": 4092,
+            "snapshotAcksRejected": 0,
+            "snapshotAckTimeoutFallbacks": 0,
+            "snapshotAckDebtEpisodes": 113,
+            "snapshotAckDebtSnapshotsCoalesced": 30,
+            "snapshotAckDebtReliableBatchesCoalesced": 6,
+            "snapshotAckDebtRecoveries": 113,
+            "snapshotAckDebtEvictions": 0,
+            "maximumSnapshotAckDebtMilliseconds": 740,
+            "snapshotHistoryFallbacks": 0,
+            "reliableEventsRecorded": 43,
+            "reliableEventBatchesSent": 115,
+            "reliableEventResendBatches": 17,
+            "reliableEventAcksAccepted": 4092,
+            "reliableEventAcksRejected": 0,
+            "reliableEventHistoryFallbacks": 0,
+            "backpressureEpisodes": 0,
+            "backpressureMessagesCoalesced": 0,
+            "slowConsumerRecoveries": 113,
+            "slowConsumerEvictions": 0,
+            "maximumObservedSocketBufferedBytes": 0,
+            "lobbyCheckpointRehydrates": 0,
+            "lobbyCheckpointPlayersRestored": 0,
+            "durableAlarmRuns": 0,
+            "expiredResumeSessionsPruned": 0,
+            "loadoutRequestsAccepted": 0,
+            "loadoutRequestsRejected": 0,
+            "loadoutRequestsReplayed": 0,
+            "loadoutRequestIdConflicts": 0,
+            "activeMatchCheckpointDirtyMarks": 14895,
+            "activeMatchCheckpointCoalescedMarks": 14886,
+            "activeMatchCheckpointWrites": 283
+          }
+        }
+      }
+    }
+  },
+  "knownLimits": [
+    "This capture is bounded product/browser evidence, not broad playtest acceptance.",
+    "This capture does not close G3, G4, or G5.",
+    "Inkfall revision-2 players begin with zero shield; no synthetic shield cue is manufactured.",
+    "Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.",
+    "Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.",
+    "Alternate Ink-channel automation completed with zero additional collision recoveries.",
+    "Human visual approval remains separate."
+  ],
+  "wire": {
+    "entries": 23955,
+    "receivedSnapshots": 3997,
+    "receivedReliableBatches": 115,
+    "decodeErrors": 0,
+    "sha256": "7a7c008c2e73ddeca6fd3ad350c4eaccd09f0131be77ba8562e5f19d2eda88dd"
+  },
+  "sourceSha256": {
+    "src/app/onlineAuthorityProfiles.ts": "8fb685061cc5ff643b62f68e6a1b07edf7aee233da4dc6b8b08cf56d04e5cb34",
+    "src/app/onlineAuthorityGateway.ts": "2ae8e9264494926e0027adbba246e65ac3c6cb9c69ea6339020e1066b63fb4b4",
+    "src/app/onlineAuthorityInkfallWorld.ts": "eae8d15688f635a73532b4b49fab0b7bbb8a33e7a00eb22b24801a863edb207d",
+    "src/app/onlineAuthorityRoute.ts": "6e9a06a91807e3b201181fad80339cee47dd3ce40aaff260505f6a18fa78bfbf",
+    "src/dev/authorityEvidenceClient.ts": "28f843832f3cfeac95fb663e6f5092739895e7cb4cfb2b4f74d05a898e923e35",
+    "src/dev/authorityEvidenceModel.ts": "4287d64a0c28bd9f964d7c77b82a52d74f211c2ad6008e466f5bb8c6750fbe59",
+    "src/dev/authorityEvidenceTransport.ts": "018f283b2d0e99de8e6aa1aac5465b642258d22b44fdd914fe5a68923b93878d",
+    "src/client/combat/presentationAdapter.ts": "2f42df8997c048f030d8f77159382b7d0f7522785c3ee3730f5ad7dfce5c1789",
+    "src/client/netcode/localPrediction.ts": "c4c94a51cd25e04e0bd64312b3a87ae345cb4e02bee8564ffc7c955400c9754a",
+    "src/client/netcode/remoteInterpolation.ts": "946e51ddfe578c6bc37a0d8abe1e12f9f3d3ec36eefa9fed10ce1c12264d6a6a",
+    "src/authority/room.ts": "06398776de677d30fec450cef33d81d7cad4f2e4d3663ef03b2636cf8c71ea9e",
+    "src/authority/fixedTickScheduler.ts": "658bde5ddd9b32d8f6f084f876d72f7a70436e125806cf09a7485c9ffbc99b09",
+    "src/physics/collisionLayers.ts": "ba5ebdf1daceb014f35b5a9b42f957758fd291491e972d0691308ebcbfc3536b",
+    "src/physics/fixtureSchema.ts": "7616b0521db7fe8ad9588c7320212bb3a0fa8515d1f75e177c52a69a56612cf6",
+    "src/physics/fixtures/catalog.ts": "6806358d3e16521c6eefe6cb9800ac4c2fd060ba09224fbcd51a2fff1cb63596",
+    "src/physics/fixtures/flatRun.ts": "ce84e218243c7aa4628f133e6f7a257e42aaa957afe6cf1b68cbb0f347884c02",
+    "src/physics/rapier/contracts.ts": "272be1858a826c16cb0243d669df5832f76a334e44699298d6e4c80d74f3c0a0",
+    "src/physics/rapier/runtime.ts": "e7874adfc21f2c83338491a6b4c9b335f0872b2bbc5eb5fd7eb3f2c58dd628a7",
+    "src/physics/rapier/world.ts": "440c138f2130d04cf034f52a3981d6b1b5c8863b7a361cea60b5ea85b5f9d045",
+    "src/net/protocol.ts": "78eb2f6d197d3b15536169eb5ec91e485f2882301c157d4ae712bd1b64e80d67",
+    "src/net/schemas.ts": "e5407413532da80597a42dc693df124c5db332800475484d91dcca3597469b99",
+    "src/sim/index.ts": "fdb0fd4cc1ddd61f28ff00b4c2b93a39d6d5b6d736068a047e2862e2078b2cbc",
+    "src/sim/canonical.ts": "59bdd53d0376cb72828f00923c16c610c082a40d9886b3a276cd5b6638adb6ec",
+    "src/sim/commands.ts": "e7a5f75615cd7e3153ae846e7a0c671c3793aa2695eda7a00b32d62b3a1983ae",
+    "src/sim/rng.ts": "e79ff9732c38f89a67bd1943e7843723ce6359a149427efe54e422004f222284",
+    "src/sim/state.ts": "77a01adc8eb840d8d8dce9bc94034cec59f30ff50cd7598a743b4169a0fff9dc",
+    "src/sim/step.ts": "298e1b53db86e9386237fca4dcd4e35400c2a7bc3d695ea4846244ce4c906517",
+    "src/sim/tickClock.ts": "97c6d37f577c9649c2b216397cacc3674fe5405ef50ebb38f1fa9c818efb1ed0",
+    "src/sim/units.ts": "2f03a84a2ce5818bb25d87337a85103f3810ef919da59192f25ea198b4e01c4a",
+    "src/sim/movement/canonical.ts": "8ce1716ebb640d2f616663ff80c20b4d8eeacf4b89162b6d37c08588fc03d57e",
+    "src/sim/movement/controller.ts": "358e44d3671eefaf58f1ad64496b861b181e253e777e445db5f13e6662fb6679",
+    "src/sim/movement/events.ts": "8cc1beaf77f4a56906035a70efd078890c2a791c9894a4c4f0425af5f894fae9",
+    "src/sim/movement/fixedMath.ts": "f289c6a269b2e62241bfbd9619b514e56df86455eb4de892dff011e83a50d039",
+    "src/sim/movement/hash.ts": "23f9fd3b2f2f3e3e641cc62e2c94dcc1660e3d430a2e69a513573ee9776afef0",
+    "src/sim/movement/index.ts": "5eb3107f918556e4d2eb87b49268cee9253ca44a549b883d96a6acf24aadc2c2",
+    "src/sim/movement/profile.ts": "43187e16f51985c024ed5cff90349e8e2a233d9632da90308006faaa44c8c41f",
+    "src/sim/movement/profileIdentity.ts": "6cffd0f76524bf7e733aad8c0eb1504d2c3ca0bcddc2c26c427be91550695728",
+    "src/sim/movement/queryPort.ts": "a0cf9f87a8f66a581c704e9f7d03923a47d62b0fac5718d97c91fdae9f5546ee",
+    "src/sim/movement/replay.ts": "8781d88db5ba23327dac212d4125f494d96ca769a393dcf16a4eb6029c088175",
+    "src/sim/movement/state.ts": "ee0f90e02a304786ea5faae37439e71e07f3d7eafa767c0e5d394da1b1de523b",
+    "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json": "d04669cc6efbc3970d21572e6d06b009416558a4475ea1744d862b70b1cd9a83",
+    "worker/combatRuntime.ts": "c7c25b27f5008312fc9649060b1902fa4fa3f543ec934fd5a685f00ecabaa454",
+    "worker/env.ts": "e59ab5ed4d5b71b863da5e0871665abaec9a6933d0402a71d764e52a3a2fc246",
+    "worker/rapierRuntime.ts": "68aa21b90af788f62dd0b0cdb5b2687ba0794ca01f5e3e5688880e1e288c8334",
+    "worker/reliableEvents.ts": "b85df280af26cb01f6705720ab8bc0787cf7be4557fc391d455e04ba71664303",
+    "worker/resumeSessions.ts": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3",
+    "worker/room.ts": "cc0be905a7bad1ba8112276f87679a295b19d2f13bcfc07251cd5532f347ede6",
+    "worker/routes.ts": "c97f037617435f8541e4b8beb45c4668208b82f6de815bea194ea6e7b808194b",
+    "worker/security.ts": "f9ea4fda33eb1614cb8a1541cde27db54b05560e956997dea24fc340f20de982",
+    "worker/snapshotBaselines.ts": "5809f54ed59f653af85ea4e82dc0d882ddd7454c4e23f6462f4c91c3e78cbd4c",
+    "worker/worker.ts": "26098ba6290692bd008354c01a6d1ee09499a324887def743e746fe34024ca01",
+    "tests/worker/protocolV2Socket.test.ts": "2b0d9ae83cdcaf5e2a6df22512d4fe37b315858fd705730485b064c2097f2fe2",
+    "tests/worker/socketAttachmentCache.test.ts": "8c42bfa52253a256a888083bd07f55ed6de76553a3ffb0b5d4938490204ed852",
+    "tests/worker/slowConsumerBackpressure.test.ts": "af269291673bb1caa7b674b0294daffef88b032f90fd483b7787f989010ead98",
+    "tests/worker/inkfallPopulation.test.ts": "9489e2b0249dcb6bb91fc545fd55ce550ee44b16a206dabbb2220e714464f1db",
+    "tests/integration/authority/inkfallAuthorityPlaytest.test.ts": "9e546d42bf47ab67041c9eff1663bb91957793cfb60272f1e186227c5c3f1171",
+    "tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts": "c845f1ef393aa97e88a4bea7c7b93215f0a87c1d1e099b72efaf3ac1fac5559b",
+    "tests/unit/authority/fixedTickScheduler.test.ts": "943e3ad586cf247335c0f2f132aa654e24de38f00061a650407ed88b94d90b42",
+    "tests/unit/authority/combat/roomCombatIntegration.test.ts": "8c9dad5b39423bacf09eed2d92ce282b14f3da29bb0bf9d9b921b0fc441091d7",
+    "tests/unit/dev/authorityEvidence.test.ts": "7681e0c66a9b161d944f2bb754de90cefc401b10ef8d44284ea0e6399137cccb",
+    "tests/unit/net/protocol-v2.test.ts": "dd0a4dac3bce85315ef53526e1c8c8e47aa21f6f2e0dc48dcd6e5c336997ab23",
+    "tests/unit/worker/reliableEvents.test.ts": "19d712eb856d7e64fd4f6908ca922e1cd77ea9c5346c7f3f390d8e78df02ad1c",
+    "tests/unit/worker/security.test.ts": "3763d6f68ae77b5b03a239dee5a36fdd09469eb73db30cadf4b9212eef182b78",
+    "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+    "evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json": "0c15b72e9161f6a7c12064e01bcca62059b6fe28f173eb81f69e8db0434e952e",
+    ".env.production": "a346ec1cebcbc58395603e0f14c5dbb155036278c6c3b7fa96d2e1df084af008",
+    "package.json": "71a69a7e70e89c33e27bfeb4607eb18ec9834c267044b4a2499f5e3ab40442d8",
+    "package-lock.json": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3",
+    "pnpm-lock.yaml": "ae656b39990d6b0b9a65f09a60b6766ca94731424bbe95d0699c5f2490bb6e27",
+    "public/_headers": "ba77869536c6210071d095d15ba3b1eb3d3959c733796610a35c1356c4463a9f",
+    "tsconfig.json": "b73a181df0544588797689f66da92b43279c8e5f8b052dea30f13fde911a0399",
+    "tsconfig.worker.json": "f8fff93d8ebc29324e22dd842c7f235f318791c0b119e0562dc6df43bc40c78c",
+    "vite.config.js": "e6e53135376143542dd375243f50a3493483a0f347db80f9cd251beeaed74b83",
+    "wrangler.jsonc": "78cd2de7044e4e6192620bd74762fb59477b08409c2524a5a31a8dbe62cd20c0",
+    "tools/evidence/capture-phase5-p515-inkfall-product-population.mjs": "69b50736d5d5b431b6304bbab704634484cc4fb45e42f7279dde8317491c7f13",
+    "tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs": "631fe346c7d9c31be6159c141359662d59bcd047e53a709a7f111b569cd452fe",
+    "tools/evidence/verify-phase5-p515-inkfall-product-population.mjs": "eeb549350660a72c642b3eeab61d459eec4b76e8a34526e57f734eba6e141fce"
+  },
+  "repositoryState": {
+    "unchangedDuringCapture": true,
+    "start": {
+      "head": "d324ee304ec70411c33e66ea8267410e76398c0f",
+      "status": "M src/authority/room.ts\n M src/dev/authorityEvidenceClient.ts\n M src/physics/rapier/world.ts\n M tests/integration/authority/inkfallAuthorityPlaytest.test.ts\n M tests/integration/authority/inkfallAuthorityPlaytestRevision2.test.ts\n M tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts\n M tests/unit/authority/combat/roomCombatIntegration.test.ts\n M tests/unit/dev/authorityEvidence.test.ts\n M tests/worker/inkfallPopulation.test.ts\n M tools/evidence/capture-phase5-p515-inkfall-product-population.mjs\n M tools/evidence/verify-phase5-p515-inkfall-product-population.mjs\n M worker/room.ts\n?? evidence/2026-07-26/",
+      "statusSha256": "59454b78e481e568b0fc541146e45a06f6987750b17f8c9cfacf956fcc7a6652",
+      "excludedGeneratedOutput": "evidence/2026-07-26/phase-4-g3-source-frozen-2-4-8/runs/local-v20"
+    },
+    "end": {
+      "head": "d324ee304ec70411c33e66ea8267410e76398c0f",
+      "status": "M src/authority/room.ts\n M src/dev/authorityEvidenceClient.ts\n M src/physics/rapier/world.ts\n M tests/integration/authority/inkfallAuthorityPlaytest.test.ts\n M tests/integration/authority/inkfallAuthorityPlaytestRevision2.test.ts\n M tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts\n M tests/unit/authority/combat/roomCombatIntegration.test.ts\n M tests/unit/dev/authorityEvidence.test.ts\n M tests/worker/inkfallPopulation.test.ts\n M tools/evidence/capture-phase5-p515-inkfall-product-population.mjs\n M tools/evidence/verify-phase5-p515-inkfall-product-population.mjs\n M worker/room.ts\n?? evidence/2026-07-26/",
+      "statusSha256": "59454b78e481e568b0fc541146e45a06f6987750b17f8c9cfacf956fcc7a6652",
+      "excludedGeneratedOutput": "evidence/2026-07-26/phase-4-g3-source-frozen-2-4-8/runs/local-v20"
+    }
+  },
+  "runtimeEnvironment": {
+    "nodeVersion": "v24.14.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "nodeExecutable": "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "browserLaunchArguments": [
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+      "--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion"
+    ]
+  }
+}

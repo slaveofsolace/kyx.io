@@ -584,8 +584,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -611,8 +611,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -638,8 +638,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -665,8 +665,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -692,8 +692,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -719,8 +719,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -746,8 +746,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -773,8 +773,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -800,8 +800,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -827,8 +827,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -854,8 +854,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -881,8 +881,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -908,8 +908,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -935,8 +935,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -962,8 +962,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -989,8 +989,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -1016,8 +1016,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -1043,8 +1043,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -1070,8 +1070,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -1097,8 +1097,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -1730,8 +1730,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 48,
-          "shapeCasts": 48,
-          "overlapTests": 164,
+          "shapeCasts": 28,
+          "overlapTests": 144,
           "contacts": 13
         }
       },
@@ -2612,8 +2612,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2639,8 +2639,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2666,8 +2666,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2693,8 +2693,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2747,8 +2747,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2774,8 +2774,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2801,8 +2801,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2828,8 +2828,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -2855,8 +2855,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -2894,8 +2894,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 10,
-          "shapeCasts": 10,
-          "overlapTests": 39,
+          "shapeCasts": 1,
+          "overlapTests": 30,
           "contacts": 0
         }
       },
@@ -3094,8 +3094,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3121,8 +3121,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3148,8 +3148,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3175,8 +3175,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3376,8 +3376,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 10,
-          "shapeCasts": 10,
-          "overlapTests": 34,
+          "shapeCasts": 6,
+          "overlapTests": 30,
           "contacts": 0
         }
       },
@@ -3713,8 +3713,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3740,8 +3740,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3767,8 +3767,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3794,8 +3794,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3821,8 +3821,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3848,8 +3848,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3875,8 +3875,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3902,8 +3902,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3929,8 +3929,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -3956,8 +3956,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -3995,8 +3995,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 14,
-          "shapeCasts": 14,
-          "overlapTests": 53,
+          "shapeCasts": 4,
+          "overlapTests": 43,
           "contacts": 4
         }
       },
@@ -4324,8 +4324,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4351,8 +4351,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4378,8 +4378,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4405,8 +4405,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4432,8 +4432,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4459,8 +4459,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4486,8 +4486,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4513,8 +4513,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4540,8 +4540,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4567,8 +4567,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 1,
-            "overlapTests": 4,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -4606,8 +4606,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 14,
-          "shapeCasts": 14,
-          "overlapTests": 53,
+          "shapeCasts": 4,
+          "overlapTests": 43,
           "contacts": 4
         }
       },
@@ -4926,8 +4926,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4953,8 +4953,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -4980,8 +4980,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -5007,8 +5007,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -5034,8 +5034,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -5061,8 +5061,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -5088,8 +5088,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -5115,8 +5115,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -5142,8 +5142,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -5169,8 +5169,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -5196,8 +5196,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -5223,8 +5223,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5250,8 +5250,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5277,8 +5277,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5304,8 +5304,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5331,8 +5331,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5358,8 +5358,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5385,8 +5385,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5412,8 +5412,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5439,8 +5439,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5466,8 +5466,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5493,8 +5493,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5520,8 +5520,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5547,8 +5547,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5574,8 +5574,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5601,8 +5601,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5628,8 +5628,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -5655,8 +5655,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         }
@@ -5694,8 +5694,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 28,
-          "shapeCasts": 308,
-          "overlapTests": 364,
+          "shapeCasts": 45,
+          "overlapTests": 101,
           "contacts": 37
         }
       },
@@ -5957,8 +5957,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 0
           }
         },
@@ -5984,8 +5984,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 0
           }
         },
@@ -6011,8 +6011,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 0
           }
         },
@@ -6038,8 +6038,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6065,8 +6065,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6092,8 +6092,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6119,8 +6119,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 0
           }
         },
@@ -6146,8 +6146,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6173,8 +6173,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -6200,8 +6200,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6227,8 +6227,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -6254,8 +6254,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -6281,8 +6281,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6308,8 +6308,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 3
           }
         },
@@ -6335,8 +6335,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6362,8 +6362,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 3
           }
         },
@@ -6389,8 +6389,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 3
           }
         },
@@ -6416,8 +6416,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 2
           }
         },
@@ -6443,8 +6443,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -6470,8 +6470,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -6509,8 +6509,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 20,
-          "shapeCasts": 220,
-          "overlapTests": 260,
+          "shapeCasts": 37,
+          "overlapTests": 77,
           "contacts": 25
         }
       },
@@ -6773,8 +6773,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -6800,8 +6800,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -6827,8 +6827,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 2
           }
         },
@@ -6854,8 +6854,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 2,
+            "overlapTests": 4,
             "contacts": 1
           }
         },
@@ -6881,8 +6881,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -6908,8 +6908,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -6935,8 +6935,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -6962,8 +6962,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -6989,8 +6989,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7016,8 +7016,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7043,8 +7043,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7070,8 +7070,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7097,8 +7097,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7124,8 +7124,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7151,8 +7151,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7178,8 +7178,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7205,8 +7205,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7232,8 +7232,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7259,8 +7259,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7286,8 +7286,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         }
@@ -7325,8 +7325,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 20,
-          "shapeCasts": 220,
-          "overlapTests": 260,
+          "shapeCasts": 54,
+          "overlapTests": 94,
           "contacts": 35
         }
       },
@@ -7590,8 +7590,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7617,8 +7617,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7644,8 +7644,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7671,8 +7671,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7698,8 +7698,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 1
           }
         },
@@ -7725,8 +7725,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7752,8 +7752,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 3
           }
         },
@@ -7779,8 +7779,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 2
           }
         },
@@ -7806,8 +7806,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7833,8 +7833,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -7860,8 +7860,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7887,8 +7887,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7914,8 +7914,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -7941,8 +7941,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -7968,8 +7968,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -7995,8 +7995,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -8022,8 +8022,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -8049,8 +8049,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -8076,8 +8076,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -8103,8 +8103,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -8142,8 +8142,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 20,
-          "shapeCasts": 220,
-          "overlapTests": 260,
+          "shapeCasts": 26,
+          "overlapTests": 66,
           "contacts": 11
         }
       },
@@ -8406,8 +8406,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -8433,8 +8433,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -8460,8 +8460,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -8487,8 +8487,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 1
           }
         },
@@ -8514,8 +8514,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8541,8 +8541,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8568,8 +8568,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8595,8 +8595,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8622,8 +8622,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8649,8 +8649,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8676,8 +8676,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8703,8 +8703,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8730,8 +8730,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 8
           }
         },
@@ -8757,8 +8757,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         },
@@ -8784,8 +8784,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         },
@@ -8811,8 +8811,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         },
@@ -8838,8 +8838,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         },
@@ -8865,8 +8865,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         },
@@ -8892,8 +8892,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         },
@@ -8919,8 +8919,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 3,
+            "overlapTests": 5,
             "contacts": 0
           }
         }
@@ -8958,8 +8958,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 20,
-          "shapeCasts": 220,
-          "overlapTests": 260,
+          "shapeCasts": 54,
+          "overlapTests": 94,
           "contacts": 76
         }
       },
@@ -9137,8 +9137,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9164,8 +9164,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9191,8 +9191,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -9218,8 +9218,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9245,8 +9245,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -9272,8 +9272,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9299,8 +9299,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9326,8 +9326,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 11,
-            "overlapTests": 13,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -9365,8 +9365,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 8,
-          "shapeCasts": 88,
-          "overlapTests": 104,
+          "shapeCasts": 8,
+          "overlapTests": 24,
           "contacts": 2
         }
       },
@@ -9579,8 +9579,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 9,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -9606,8 +9606,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 9,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9633,8 +9633,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 1,
+            "overlapTests": 4,
             "contacts": 3
           }
         },
@@ -9660,8 +9660,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 9,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9687,8 +9687,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9714,8 +9714,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9741,8 +9741,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9768,8 +9768,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9795,8 +9795,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9822,8 +9822,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 10,
+            "shapeCasts": 0,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9849,8 +9849,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 9,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -9876,8 +9876,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 7,
-            "overlapTests": 9,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -9915,8 +9915,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 12,
-          "shapeCasts": 84,
-          "overlapTests": 115,
+          "shapeCasts": 6,
+          "overlapTests": 37,
           "contacts": 4
         }
       },
@@ -10140,8 +10140,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10167,8 +10167,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10194,8 +10194,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 2
           }
         },
@@ -10221,8 +10221,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10248,8 +10248,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10275,8 +10275,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10302,8 +10302,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10329,8 +10329,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10356,8 +10356,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10383,8 +10383,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10410,8 +10410,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10437,8 +10437,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -10476,8 +10476,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 12,
-          "shapeCasts": 60,
-          "overlapTests": 84,
+          "shapeCasts": 12,
+          "overlapTests": 36,
           "contacts": 2
         }
       },
@@ -10665,8 +10665,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -10692,8 +10692,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10719,8 +10719,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10746,8 +10746,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10773,8 +10773,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         },
@@ -10800,8 +10800,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 0
           }
         }
@@ -10839,8 +10839,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 6,
-          "shapeCasts": 30,
-          "overlapTests": 42,
+          "shapeCasts": 6,
+          "overlapTests": 18,
           "contacts": 1
         }
       },
@@ -11017,8 +11017,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -11044,8 +11044,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -11071,8 +11071,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -11098,8 +11098,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -11125,8 +11125,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         },
@@ -11152,8 +11152,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 0,
             "volumeCalls": 1,
-            "shapeCasts": 5,
-            "overlapTests": 7,
+            "shapeCasts": 1,
+            "overlapTests": 3,
             "contacts": 1
           }
         }
@@ -11191,8 +11191,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 0,
           "volumeCalls": 6,
-          "shapeCasts": 30,
-          "overlapTests": 42,
+          "shapeCasts": 6,
+          "overlapTests": 18,
           "contacts": 6
         }
       },
@@ -11339,8 +11339,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 1,
             "castCapsuleCalls": 1,
             "volumeCalls": 1,
-            "shapeCasts": 16,
-            "overlapTests": 11,
+            "shapeCasts": 10,
+            "overlapTests": 5,
             "contacts": 0
           }
         }
@@ -11378,8 +11378,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 1,
           "castCapsuleCalls": 1,
           "volumeCalls": 1,
-          "shapeCasts": 16,
-          "overlapTests": 11,
+          "shapeCasts": 10,
+          "overlapTests": 5,
           "contacts": 0
         }
       },
@@ -11514,8 +11514,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
             "overlapCapsuleCalls": 0,
             "castCapsuleCalls": 1,
             "volumeCalls": 1,
-            "shapeCasts": 16,
-            "overlapTests": 10,
+            "shapeCasts": 10,
+            "overlapTests": 4,
             "contacts": 0
           }
         }
@@ -11553,8 +11553,8 @@ export const RECORDED_PHYSICS_FIXTURE_TAPE_RESULTS = deepFreezeRecorded(
           "overlapCapsuleCalls": 0,
           "castCapsuleCalls": 1,
           "volumeCalls": 1,
-          "shapeCasts": 16,
-          "overlapTests": 10,
+          "shapeCasts": 10,
+          "overlapTests": 4,
           "contacts": 0
         }
       },

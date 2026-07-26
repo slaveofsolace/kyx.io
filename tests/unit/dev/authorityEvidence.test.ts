@@ -465,6 +465,27 @@ describe('authority evidence transport state', () => {
         releasedButtons: INTENT_BUTTON.reload,
       }],
     });
+    client.setCombatButtons(0);
+    client.setCombatButtons(INTENT_BUTTON.primaryFire);
+    client.setCombatButtons(0);
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{
+        heldButtons: INTENT_BUTTON.primaryFire,
+        pressedButtons: INTENT_BUTTON.primaryFire,
+        releasedButtons: 0,
+      }],
+    });
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: INTENT_BUTTON.primaryFire,
+      }],
+    });
     connection.receive({
       protocolVersion: PROTOCOL_VERSION,
       type: 'reliableEventBatch',

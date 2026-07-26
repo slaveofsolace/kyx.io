@@ -1005,7 +1005,7 @@ describe('P5.14 exact-profile real-client population proof', () => {
     expect(driver.probe.socket.readyState).toBe(WebSocket.OPEN);
   }, 30_000);
 
-  it('coalesces same-tick checkpoint dirtiness and preserves forced boundary durability', async () => {
+  it('coalesces checkpoint dirtiness to 500 ms and preserves forced boundary durability', async () => {
     const room = await createInkfallRoom();
     await joinPopulation(room, 4);
     await waitForMetrics(
@@ -1045,6 +1045,12 @@ describe('P5.14 exact-profile real-client population proof', () => {
       const nextTick = runtime.authority.serverTick;
       const nextTickWrites = runtime.transportMetrics.activeMatchCheckpointWrites;
 
+      for (let tick = 1; tick < 10; tick += 1) runtime.authority.advanceOneTick();
+      runtime.markActiveMatchCheckpointDirty();
+      runtime.flushActiveMatchCheckpoint();
+      const intervalTick = runtime.authority.serverTick;
+      const intervalWrites = runtime.transportMetrics.activeMatchCheckpointWrites;
+
       runtime.markActiveMatchCheckpointDirty();
       runtime.flushActiveMatchCheckpoint();
       const coalescedSameTickWrites = runtime.transportMetrics.activeMatchCheckpointWrites;
@@ -1056,9 +1062,11 @@ describe('P5.14 exact-profile real-client population proof', () => {
       return {
         initialTick,
         nextTick,
+        intervalTick,
         initialWrites,
         sameTickWrites,
         nextTickWrites,
+        intervalWrites,
         coalescedSameTickWrites,
         forcedSameTickWrites,
         coalescedMarks: runtime.transportMetrics.activeMatchCheckpointCoalescedMarks
@@ -1068,12 +1076,14 @@ describe('P5.14 exact-profile real-client population proof', () => {
     });
 
     expect(result.nextTick).toBe(result.initialTick + 1);
+    expect(result.intervalTick).toBe(result.initialTick + 10);
     expect(result.sameTickWrites).toBe(result.initialWrites);
-    expect(result.nextTickWrites).toBe(result.initialWrites + 1);
-    expect(result.coalescedSameTickWrites).toBe(result.nextTickWrites);
-    expect(result.forcedSameTickWrites).toBe(result.nextTickWrites + 1);
+    expect(result.nextTickWrites).toBe(result.initialWrites);
+    expect(result.intervalWrites).toBe(result.initialWrites + 1);
+    expect(result.coalescedSameTickWrites).toBe(result.intervalWrites);
+    expect(result.forcedSameTickWrites).toBe(result.intervalWrites + 1);
     expect(result.coalescedMarks).toBeGreaterThanOrEqual(3);
-    expect(result.stored).toEqual({ authority_tick: result.nextTick });
+    expect(result.stored).toEqual({ authority_tick: result.intervalTick });
   }, 30_000);
 
   it('recovers safely when marked input and event acknowledgement are evicted before the next tick', async () => {
@@ -1088,6 +1098,8 @@ describe('P5.14 exact-profile real-client population proof', () => {
     const actorId = clients[0]?.join.playerId;
     const targetId = clients[1]?.join.playerId;
     if (actorId === undefined || targetId === undefined) throw new Error('Missing dirty recovery clients');
+    await synchronizeSnapshotAcks(room, clients);
+    const reliableEventMessageStart = (clients[0]?.probe as SocketProbe).messages.length;
     const seeded = await runInDurableObject(stub, async (instance) => {
       const runtime = instance as unknown as {
         authority: { readonly serverTick: number };
@@ -1132,7 +1144,7 @@ describe('P5.14 exact-profile real-client population proof', () => {
 
     await waitForMessageAfter(
       clients[0]?.probe as SocketProbe,
-      0,
+      reliableEventMessageStart,
       (message) => message.type === 'reliableEventBatch'
         && message.events.some(({ id }) => id === seeded.eventId),
       'seeded reliable event before dirty eviction',
@@ -1337,7 +1349,9 @@ describe('P5.14 exact-profile real-client population proof', () => {
       Number(beforeTransport.snapshotAckDebtEvictions),
     );
     expect(checkpointWriteDelta).toBeGreaterThan(0);
-    expect(checkpointWriteDelta).toBeLessThanOrEqual(authorityTickDelta);
+    expect(checkpointWriteDelta).toBeLessThanOrEqual(
+      Math.ceil(authorityTickDelta / 10) + 1,
+    );
     expect(dirtyMarkDelta).toBeGreaterThanOrEqual(rounds * clients.length);
     expect(coalescedMarkDelta).toBeGreaterThanOrEqual(rounds * clients.length);
     for (let index = 0; index < clients.length; index += 1) {
