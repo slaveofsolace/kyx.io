@@ -1307,7 +1307,53 @@ async function waitForLocalAuthoritySettlement(
   })}`);
 }
 
-async function waitForRemoteEntityMovement(
+async function waitForActiveRemoteEntityMovement(
+  page,
+  {
+    entityId,
+    remoteBefore,
+    label,
+    timeoutMilliseconds = 10_000,
+    minimumRemoteMovementMillimeters = 500,
+  },
+) {
+  const startedAtMilliseconds = Date.now();
+  let last = null;
+  while (Date.now() - startedAtMilliseconds <= timeoutMilliseconds) {
+    const snapshot = await productSnapshot(page);
+    const remote = snapshot === null ? null : remoteEntity(snapshot, entityId);
+    if (snapshot !== null && remote !== null) {
+      const remoteTransformMovementMillimeters = distanceXZ(remoteBefore, remote.position);
+      const interpolationModeAccepted =
+        ACCEPTABLE_REMOTE_INTERPOLATION_MODES.has(remote.interpolationMode);
+      last = Object.freeze({
+        snapshot,
+        remote,
+        remoteTransformMovementMillimeters,
+        interpolationModeAccepted,
+      });
+      if (
+        remoteTransformMovementMillimeters >= minimumRemoteMovementMillimeters
+        && interpolationModeAccepted
+      ) {
+        return Object.freeze({
+          ...last,
+          observedAfterMilliseconds: Date.now() - startedAtMilliseconds,
+        });
+      }
+    }
+    await delay(50);
+  }
+  throw new Error(`${label} exact remote entity was not observed moving in a live interpolation mode: ${JSON.stringify({
+    entityId,
+    remoteBefore,
+    timeoutMilliseconds,
+    minimumRemoteMovementMillimeters,
+    last,
+  })}`);
+}
+
+async function waitForRemoteEntityConvergence(
   page,
   {
     entityId,
@@ -1327,19 +1373,15 @@ async function waitForRemoteEntityMovement(
     if (snapshot !== null && remote !== null) {
       const peerDistanceMillimeters = distanceXZ(authorityPosition, remote.position);
       const remoteTransformMovementMillimeters = distanceXZ(remoteBefore, remote.position);
-      const interpolationModeAccepted =
-        ACCEPTABLE_REMOTE_INTERPOLATION_MODES.has(remote.interpolationMode);
       last = Object.freeze({
         snapshot,
         remote,
         peerDistanceMillimeters,
         remoteTransformMovementMillimeters,
-        interpolationModeAccepted,
       });
       if (
         peerDistanceMillimeters <= maximumPeerDistanceMillimeters
         && remoteTransformMovementMillimeters >= minimumRemoteMovementMillimeters
-        && interpolationModeAccepted
       ) {
         return Object.freeze({
           ...last,
@@ -1349,7 +1391,7 @@ async function waitForRemoteEntityMovement(
     }
     await delay(100);
   }
-  throw new Error(`${label} exact remote entity did not converge: ${JSON.stringify({
+  throw new Error(`${label} exact remote entity did not converge to settled authority: ${JSON.stringify({
     entityId,
     authorityPosition,
     remoteBefore,
@@ -1379,13 +1421,20 @@ async function movementInterpolationProof(
   const observedMoverEntityBefore = remoteEntity(observerBefore, before.playerId);
   assert.notEqual(observedMoverEntityBefore, null);
   const observedMoverBefore = observedMoverEntityBefore.position;
-  await moveTo(mover.page, target, label, arrivalToleranceMillimeters);
+  const [activeRemoteObservation] = await Promise.all([
+    waitForActiveRemoteEntityMovement(observer.page, {
+      entityId: before.playerId,
+      remoteBefore: observedMoverBefore,
+      label,
+    }),
+    moveTo(mover.page, target, label, arrivalToleranceMillimeters),
+  ]);
   const settlement = await waitForLocalAuthoritySettlement(mover.page, label);
   const after = settlement.snapshot;
   const moverAuthorityAfter = settlement.authoritative;
   const movementMillimeters = distanceXZ(before.localPredictedPosition, after.localPredictedPosition);
   assert.ok(movementMillimeters >= 500, `${label} local prediction did not advance`);
-  const remoteObservation = await waitForRemoteEntityMovement(observer.page, {
+  const remoteObservation = await waitForRemoteEntityConvergence(observer.page, {
     entityId: after.playerId,
     authorityPosition: moverAuthorityAfter,
     remoteBefore: observedMoverBefore,
@@ -1433,8 +1482,13 @@ async function movementInterpolationProof(
     movementMillimeters,
     peerDistanceMillimeters,
     remoteTransformMovementMillimeters,
-    observerEntityId: remoteObservation.remote.entityId,
-    observerInterpolationMode: remoteObservation.remote.interpolationMode,
+    observerEntityId: activeRemoteObservation.remote.entityId,
+    observerInterpolationMode: activeRemoteObservation.remote.interpolationMode,
+    observerActiveMovementMillimeters:
+      activeRemoteObservation.remoteTransformMovementMillimeters,
+    observerActiveModeObservedAfterMilliseconds:
+      activeRemoteObservation.observedAfterMilliseconds,
+    observerFinalInterpolationMode: remoteObservation.remote.interpolationMode,
     observerConvergedAfterMilliseconds: remoteObservation.observedAfterMilliseconds,
     commonAuthorityTickAfterMovement: postMovementAuthority.commonAuthorityTick,
     tickStimulusAfterMovement: postMovementAuthority.stimulus,

@@ -435,6 +435,8 @@ for (const interpolation of [
   assert.ok(interpolation.movementMillimeters >= 500);
   assert.ok(interpolation.peerDistanceMillimeters <= 750);
   assert.ok(interpolation.remoteTransformMovementMillimeters >= 500);
+  assert.ok(interpolation.observerActiveMovementMillimeters >= 500);
+  assert.ok(interpolation.observerActiveModeObservedAfterMilliseconds <= 10_000);
   assert.ok(interpolation.requestedArrivalToleranceMillimeters > 0);
   assert.ok(interpolation.targetDistanceAfterSettlementMillimeters >= 0);
   assert.ok(interpolation.predictionToAuthorityDistanceAfterSettlementMillimeters <= 750);
@@ -458,6 +460,13 @@ for (const interpolation of [
     'extrapolated',
     'held',
   ].includes(interpolation.observerInterpolationMode));
+  assert.ok([
+    'authoritative',
+    'interpolated',
+    'extrapolated',
+    'held',
+    'stale',
+  ].includes(interpolation.observerFinalInterpolationMode));
   assert.ok(Number.isInteger(interpolation.commonAuthorityTickAfterMovement));
   assert.equal(
     interpolation.commonAuthorityTickAfterMovement,
