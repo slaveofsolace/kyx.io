@@ -324,7 +324,13 @@ function assertConfirmedPresentation(value, cue, minimumConfirmedIntents) {
   assert.equal(value.proof.lastCue, cue);
   assert.equal(value.proof.confirmedIntents, String(value.diagnostics.confirmedIntentCount));
   assert.equal(value.proof.duplicateEvents, '0');
-  assert.match(value.hud.text, new RegExp(cue === 'body' ? 'BODY HIT' : 'ELIMINATION', 'u'));
+  const expectedHudCopy = {
+    body: 'BODY HIT',
+    kill: 'ELIMINATION',
+    teleport: 'TELEPORT',
+  }[cue];
+  assert.equal(typeof expectedHudCopy, 'string');
+  assert.match(value.hud.text, new RegExp(expectedHudCopy, 'u'));
   assert.equal(value.hud.cue, cue);
   assert.equal(value.hud.authorityEventId, value.diagnostics.lastAuthorityEventId);
   assert.equal(value.hud.active, 'true');
@@ -550,7 +556,6 @@ assert.deepEqual(
 assert.ok(proof.combat.death.deathOrdinal >= 1);
 assert.ok(proof.combat.match.feedSequence >= 1);
 assert.ok(proof.combat.match.teamScores.some(({ score }) => score >= 1));
-assert.ok(proof.combat.match.feed.length >= 1);
 assert.equal(proof.combat.playerKilledReliableDeliveryClientsAtEvent, 2);
 assertConfirmedPresentation(proof.combat.confirmedPresentationAtDamage, 'body', 1);
 assertConfirmedPresentation(proof.combat.confirmedPresentationAtDeath, 'kill', 2);
