@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "kind": "g5_authoritative_traversal_provenance_evidence_baseline",
+  "status": "BOUNDED_EVIDENCE_BASELINE_NOT_G5",
+  "generatedAt": "2026-07-26T04:21:48.801Z",
+  "root": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1",
+  "files": 6,
+  "bytes": 112942,
+  "entries": [
+    {
+      "path": "authoritative-traversal-matrix.provenance-v2.json",
+      "repositoryPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/authoritative-traversal-matrix.provenance-v2.json",
+      "bytes": 50967,
+      "sha256": "0bc25606eed47b9e141da1dedc53257398ef8173fb010d53d60280670d9af11f"
+    },
+    {
+      "path": "source-closure.provenance-v2.json",
+      "repositoryPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/source-closure.provenance-v2.json",
+      "bytes": 25907,
+      "sha256": "bf9f256b135ee7164b03a8aeebe480bbca710b1d17e52801716c9b95f85ab6e6"
+    },
+    {
+      "path": "verification.provenance-v2.json",
+      "repositoryPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/verification.provenance-v2.json",
+      "bytes": 6291,
+      "sha256": "1d863744377722be9d5e090bad23cd56bb3ab5ef16dd6006ffda40aab50e0a2c"
+    },
+    {
+      "path": "command-results.provenance-v2.json",
+      "repositoryPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/command-results.provenance-v2.json",
+      "bytes": 21798,
+      "sha256": "9bfdc32a3b437dab6890e499ab07945c5a046163ae3ce4ff184c74b1455a8051"
+    },
+    {
+      "path": "commands.provenance-v2.txt",
+      "repositoryPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/commands.provenance-v2.txt",
+      "bytes": 1541,
+      "sha256": "64e8783e8c09fe332579f666da00ec80615b75527cac3aa6e99d7543c9d016d7"
+    },
+    {
+      "path": "README.md",
+      "repositoryPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/README.md",
+      "bytes": 6438,
+      "sha256": "3b2375544bf309a127772632080848c975ee9d6e37c0faeeb13d7e23e469fc5d"
+    }
+  ],
+  "selfExclusion": "this baseline manifest does not hash itself; its path is stable and every substantive evidence artifact is closed above",
+  "nonClaims": [
+    "EVIDENCE_BASELINE_IS_NOT_PRODUCT_BROWSER_PROOF",
+    "EVIDENCE_BASELINE_IS_NOT_HUMAN_PLAYTEST_PROOF",
+    "G5_NOT_PASSED"
+  ]
+}

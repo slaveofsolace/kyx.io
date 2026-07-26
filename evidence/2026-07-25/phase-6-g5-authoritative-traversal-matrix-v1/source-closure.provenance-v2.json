@@ -1,0 +1,448 @@
+{
+  "schemaVersion": 1,
+  "kind": "g5_authoritative_traversal_source_closure",
+  "status": "BOUNDED_SOURCE_CLOSURE_NOT_G5",
+  "repositoryRoot": ".",
+  "criticalSources": [
+    {
+      "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.mjs",
+      "role": "capture_runner",
+      "bytes": 3609,
+      "sha256": "6024031db7a2d26440276b47f7dbecf37ed31bcc54ff7028760c6e7151a004b3"
+    },
+    {
+      "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.module.ts",
+      "role": "capture_runtime_matrix",
+      "bytes": 23372,
+      "sha256": "a958deeb623ba6198c216297ad58c1867c6a8f65de409ea698e1aa1f47d3b839"
+    },
+    {
+      "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.provenance.mjs",
+      "role": "source_closure_builder",
+      "bytes": 12636,
+      "sha256": "183032cbfa70b832ddd7a2f04230d210de0623bcd62f60b817bc4c33b8283594"
+    },
+    {
+      "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix-command-results.mjs",
+      "role": "raw_command_result_recorder",
+      "bytes": 9667,
+      "sha256": "48369897cfe78d6d73826398e21cd489fea7f1b7a405786557d0ac29f717ed0d"
+    },
+    {
+      "path": "tools/evidence/verify-phase6-g5-authoritative-traversal-matrix.mjs",
+      "role": "independent_consistency_verifier",
+      "bytes": 14491,
+      "sha256": "feea770fe0278e6dd3aeee0aaf0a3435cb213746e0f5251b7b6c1cd059439c7f"
+    },
+    {
+      "path": "tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts",
+      "role": "focused_matrix_regression",
+      "bytes": 7597,
+      "sha256": "8df63be95a514ac219f0c46fc13229d197cb575a8094924fd9d292918abffa28"
+    },
+    {
+      "path": "tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts",
+      "role": "collision_glb_fixture_rebuild_regression",
+      "bytes": 18935,
+      "sha256": "c845f1ef393aa97e88a4bea7c7b93215f0a87c1d1e099b72efaf3ac1fac5559b"
+    },
+    {
+      "path": "tools/evidence/capture-phase6-g5-revision3-snag-repair.module.ts",
+      "role": "canonical_revision3_probe_dependency",
+      "bytes": 13626,
+      "sha256": "14b570812485e7593c1bf3cc6b58456725c725295239ac2efe6812bb45748db1"
+    },
+    {
+      "path": "src/authority/playtest/inkfallAuthorityPlaytest.ts",
+      "role": "authority_playtest_runtime",
+      "bytes": 66448,
+      "sha256": "1701c4d5720094eb44fa6e74f591c3f32293e94a767015a815a744152299c10d"
+    },
+    {
+      "path": "src/physics/mapColliderLoader.ts",
+      "role": "collision_fixture_converter",
+      "bytes": 28046,
+      "sha256": "cfd5f17cac2c3f33a2f046aea896536444e33ce4444ab76da7cbb1deaf8ded16"
+    },
+    {
+      "path": "src/physics/rapier/world.ts",
+      "role": "authoritative_movement_adapter",
+      "bytes": 42802,
+      "sha256": "e52ca783c0fa34d7c1812160cae279846c97fb8fe339225bdefe8ec02d86a0f7"
+    },
+    {
+      "path": "src/sim/movement/profile.ts",
+      "role": "accepted_movement_profile",
+      "bytes": 4949,
+      "sha256": "43187e16f51985c024ed5cff90349e8e2a233d9632da90308006faaa44c8c41f"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "role": "revision2_authority_collision",
+      "bytes": 604228,
+      "sha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/render.graybox.glb",
+      "role": "revision2_render_package_input",
+      "bytes": 613564,
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json",
+      "role": "revision2_canonical_probe_fixture",
+      "bytes": 204357,
+      "sha256": "d04669cc6efbc3970d21572e6d06b009416558a4475ea1744d862b70b1cd9a83"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json",
+      "role": "revision2_runtime_manifest",
+      "bytes": 9651,
+      "sha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/runtime/map.package.v2.json",
+      "role": "revision2_revision_manifest_copy",
+      "bytes": 9651,
+      "sha256": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb",
+      "role": "revision3_authority_collision",
+      "bytes": 604508,
+      "sha256": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/render.graybox.glb",
+      "role": "revision3_render_package_input",
+      "bytes": 613564,
+      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json",
+      "role": "revision3_fixture_snapshot",
+      "bytes": 204593,
+      "sha256": "aaeb18b4a4223606405072f08bc2b56603dfc61444328a8094a01b3c783ffa8a"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v3.json",
+      "role": "revision3_runtime_manifest",
+      "bytes": 9650,
+      "sha256": "e8f0588b706fc84e6f6d962d989ff3c7aff0db97cd2ceaf795c5d08956c9659e"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json",
+      "role": "revision3_revision_manifest_copy",
+      "bytes": 9650,
+      "sha256": "e8f0588b706fc84e6f6d962d989ff3c7aff0db97cd2ceaf795c5d08956c9659e"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+      "role": "revision2_authority_route_tapes",
+      "bytes": 15600,
+      "sha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+      "role": "revision2_spawn_fixture_input",
+      "bytes": 13314,
+      "sha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210"
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+      "role": "topology_seed_input",
+      "bytes": 52549,
+      "sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+    },
+    {
+      "path": "package.json",
+      "role": "package_manifest",
+      "bytes": 3474,
+      "sha256": "71a69a7e70e89c33e27bfeb4607eb18ec9834c267044b4a2499f5e3ab40442d8"
+    },
+    {
+      "path": "package-lock.json",
+      "role": "dependency_lock",
+      "bytes": 141862,
+      "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+    },
+    {
+      "path": "tsconfig.json",
+      "role": "application_typecheck_config",
+      "bytes": 425,
+      "sha256": "b73a181df0544588797689f66da92b43279c8e5f8b052dea30f13fde911a0399"
+    },
+    {
+      "path": "tsconfig.sim-source.json",
+      "role": "simulation_source_typecheck_config",
+      "bytes": 373,
+      "sha256": "28793b8b0abeefb22c950ce92d0d6c71dbb4f1700135f28c7aab204e5c12d453"
+    },
+    {
+      "path": "tsconfig.sim.json",
+      "role": "simulation_typecheck_config",
+      "bytes": 380,
+      "sha256": "ed7d523d3884e4c7a1256042f8ce0fff7b4f88bef12bfc1b901978e69512aaa0"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "role": "lint_config",
+      "bytes": 3647,
+      "sha256": "3617f6db24fe26f1a9f96f6ab131a3ca089df78531918c3f633de19fd33e46d5"
+    }
+  ],
+  "criticalSourcesDigestSha256": "bf8a33f8d3915135e91feaee6ddb6a015ad2b5fc4c65177823c959d709991ae2",
+  "repository": {
+    "head": "71bdf0c648062ebcb966d0a78c14d876e1c82b79",
+    "branch": "main",
+    "scope": {
+      "includes": "complete_repository_worktree_and_index",
+      "excludes": [
+        "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/**"
+      ],
+      "exclusionReason": "generated evidence is excluded to avoid a circular manifest; artifacts are closed by the evidence baseline manifest"
+    },
+    "statusPorcelainV1ZSha256": "af2015863ae5b0acbf5899114f2fdb4a231d6bf79e332280297818fd41f11e6e",
+    "statusPorcelainV1ZBytes": 3298,
+    "trackedDiffSha256": "a0f467e4d822f760b52311674e47c4c806b04f6397d284d5ed571e9d83fd9d31",
+    "trackedDiffBytes": 30282,
+    "stagedDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stagedDiffBytes": 0,
+    "workingTreeFiles": [
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/direct-glb-render-report.json",
+        "kind": "file",
+        "bytes": 20082,
+        "sha256": "747f4bbe70a110d3d78e468c173b23ae6cab5ef014b5fd92697f6435a37ea055"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/export-reimport-audit.json",
+        "kind": "file",
+        "bytes": 26251,
+        "sha256": "b0bf3368f2140467a8810bb16e274e9ab8843ff7617dc7c7fa076a3779ebeafa"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/reimport/kyx-v6c-character-rev15.reimport-proof.blend",
+        "kind": "file",
+        "bytes": 3764693,
+        "sha256": "9231cd61d73c15b5a64a2b5edb82a5ba3bf8ca0afa296cded2e03255302b5c53"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-action-run-stride-left-lead.png",
+        "kind": "file",
+        "bytes": 2538476,
+        "sha256": "dcfa37aa56cfd79880e230acc9cd618c741175fa7890d369528444dc1ba55447"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-action-run-stride-right-lead.png",
+        "kind": "file",
+        "bytes": 2519001,
+        "sha256": "9398588754604f442993198a6a904bd326cd3e88e67034163e820eba1add8aea"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-front-three-quarter-idle.png",
+        "kind": "file",
+        "bytes": 2533670,
+        "sha256": "b8c95a829c8c9835ea77dd91c11a16e0819fb1c6a895fbe6974248cefb41a885"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-pants-boots-surface.png",
+        "kind": "file",
+        "bytes": 1925653,
+        "sha256": "71f0922cf8262c8d1ab8d21118bf567ab1e80366cdbf0db3061097cab41cef73"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-rear-side-idle.png",
+        "kind": "file",
+        "bytes": 2427987,
+        "sha256": "6f2566c85999a0d0dd61690719338f455214254aafbb4b59b84fa134ecbc333c"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-waist-pelvis-transition.png",
+        "kind": "file",
+        "bytes": 2023499,
+        "sha256": "109b5b3168a710bd8c736855a9dfcb0f8a5d942467d7c3c5bf377188c183841b"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-weapon-contact-firing-side.png",
+        "kind": "file",
+        "bytes": 2211815,
+        "sha256": "58220de69a8179f8c9ffd9efe8e8f0ad3f56c3fd8b24ebd6617e7071b055fcf4"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-weapon-contact-support-side.png",
+        "kind": "file",
+        "bytes": 2246782,
+        "sha256": "b99b2235a79c481d0f18b9ea8e201121a69db3e5986bfb9c0f4e7893ac9b0ee2"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev16/export-reimport-audit.json",
+        "kind": "file",
+        "bytes": 176100,
+        "sha256": "16ba97a7120fdae5dd1cdeba95e33655f914cbb94cbf5ccde20d63d7fb62685a"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev16/reimport/kyx-v6c-character-rev16.reimport-proof.blend",
+        "kind": "file",
+        "bytes": 3476268,
+        "sha256": "78b2ea28fbf7d3312df14a5f8805f59b4afc880ffdef8a96bce8155d872be47d"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev15/export/kyx-v6c-character-rev15.runtime-candidate.glb",
+        "kind": "file",
+        "bytes": 3479568,
+        "sha256": "668549acba50ca3f0f096e28c3001be0f13f80ce27713a18f92de6d724964c9c"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev15/kyx-v6c-character-rev15.blend",
+        "kind": "file",
+        "bytes": 3773011,
+        "sha256": "607018018b9e3d62db9ad7b359ab08dff551b129fffb03bf444a1f835fe81536"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev16/export/kyx-v6c-character-rev16.runtime-candidate.glb",
+        "kind": "file",
+        "bytes": 3073000,
+        "sha256": "e58625296c8ba574f9483c514b3310d3264318b941921d48ea97c18184a26ff6"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev16/kyx-v6c-character-rev16.blend",
+        "kind": "file",
+        "bytes": 3424421,
+        "sha256": "65be01cb3f9b823c5263334a4573d3a259d55f13354e0c5817ccbe11291162fc"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_character_rev15.py",
+        "kind": "file",
+        "bytes": 46449,
+        "sha256": "15f1937019d488c44a7cbac54e3d4e87e00fb07aceb78956f4eb7e96a982d8ab"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_character_rev16.py",
+        "kind": "file",
+        "bytes": 41265,
+        "sha256": "603c45b3e3fbcdc2fab9a9207f914c6242d3a983bf517604baaa43fb5a8ece54"
+      },
+      {
+        "path": "assets/source/blender/phase7-character-original-v6/scripts/render_v6c_character_rev15.py",
+        "kind": "file",
+        "bytes": 16425,
+        "sha256": "5d6f11b5d692624f19c7426bbe711333c72e6f88a22210e362076e2e9b7d2c4b"
+      },
+      {
+        "path": "docs/work-log/2026-07-25-inkfall-authoritative-traversal-matrix.md",
+        "kind": "file",
+        "bytes": 4460,
+        "sha256": "728276b069cdd1786adcf6051697838e63e35aeafd6683adf3112d9c30a3f3c5"
+      },
+      {
+        "path": "src/app/onlineAuthorityRoute.ts",
+        "kind": "file",
+        "bytes": 77918,
+        "sha256": "6e9a06a91807e3b201181fad80339cee47dd3ce40aaff260505f6a18fa78bfbf"
+      },
+      {
+        "path": "tests/integration/authority/inkfallAuthorityPlaytest.test.ts",
+        "kind": "file",
+        "bytes": 10611,
+        "sha256": "e91811385f57ff9df87c9c49ad9dbf57be2d80787e8b7f1374ddb0c7646a4465"
+      },
+      {
+        "path": "tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts",
+        "kind": "file",
+        "bytes": 7597,
+        "sha256": "8df63be95a514ac219f0c46fc13229d197cb575a8094924fd9d292918abffa28"
+      },
+      {
+        "path": "tools/evidence/capture-phase5-p515-inkfall-product-population.mjs",
+        "kind": "file",
+        "bytes": 97817,
+        "sha256": "94d2af74a8c07d06c5dd57dd98ef788f9fd9b9d017ef33b87d711b386cc60f11"
+      },
+      {
+        "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix-command-results.mjs",
+        "kind": "file",
+        "bytes": 9667,
+        "sha256": "48369897cfe78d6d73826398e21cd489fea7f1b7a405786557d0ac29f717ed0d"
+      },
+      {
+        "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.mjs",
+        "kind": "file",
+        "bytes": 3609,
+        "sha256": "6024031db7a2d26440276b47f7dbecf37ed31bcc54ff7028760c6e7151a004b3"
+      },
+      {
+        "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.module.ts",
+        "kind": "file",
+        "bytes": 23372,
+        "sha256": "a958deeb623ba6198c216297ad58c1867c6a8f65de409ea698e1aa1f47d3b839"
+      },
+      {
+        "path": "tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.provenance.mjs",
+        "kind": "file",
+        "bytes": 12636,
+        "sha256": "183032cbfa70b832ddd7a2f04230d210de0623bcd62f60b817bc4c33b8283594"
+      },
+      {
+        "path": "tools/evidence/verify-phase5-p515-inkfall-product-population.mjs",
+        "kind": "file",
+        "bytes": 41405,
+        "sha256": "fa7c4fb4b9bac638884feed8e76e83555c179a471129c32f91de15a8c7c88e66"
+      },
+      {
+        "path": "tools/evidence/verify-phase6-g5-authoritative-traversal-matrix.mjs",
+        "kind": "file",
+        "bytes": 14491,
+        "sha256": "feea770fe0278e6dd3aeee0aaf0a3435cb213746e0f5251b7b6c1cd059439c7f"
+      }
+    ],
+    "statusShort": [
+      "M src/app/onlineAuthorityRoute.ts",
+      " M tests/integration/authority/inkfallAuthorityPlaytest.test.ts",
+      " M tools/evidence/capture-phase5-p515-inkfall-product-population.mjs",
+      " M tools/evidence/verify-phase5-p515-inkfall-product-population.mjs",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/direct-glb-render-report.json",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/export-reimport-audit.json",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/reimport/kyx-v6c-character-rev15.reimport-proof.blend",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-action-run-stride-left-lead.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-action-run-stride-right-lead.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-front-three-quarter-idle.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-pants-boots-surface.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-rear-side-idle.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-waist-pelvis-transition.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-weapon-contact-firing-side.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-weapon-contact-support-side.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev16/export-reimport-audit.json",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev16/reimport/kyx-v6c-character-rev16.reimport-proof.blend",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev15/export/kyx-v6c-character-rev15.runtime-candidate.glb",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev15/kyx-v6c-character-rev15.blend",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev16/export/kyx-v6c-character-rev16.runtime-candidate.glb",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev16/kyx-v6c-character-rev16.blend",
+      "?? assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_character_rev15.py",
+      "?? assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_character_rev16.py",
+      "?? assets/source/blender/phase7-character-original-v6/scripts/render_v6c_character_rev15.py",
+      "?? docs/work-log/2026-07-25-inkfall-authoritative-traversal-matrix.md",
+      "?? tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix-command-results.mjs",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.mjs",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.module.ts",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.provenance.mjs",
+      "?? tools/evidence/verify-phase6-g5-authoritative-traversal-matrix.mjs"
+    ],
+    "statusPorcelainV1ZBase64": "IE0gc3JjL2FwcC9vbmxpbmVBdXRob3JpdHlSb3V0ZS50cwAgTSB0ZXN0cy9pbnRlZ3JhdGlvbi9hdXRob3JpdHkvaW5rZmFsbEF1dGhvcml0eVBsYXl0ZXN0LnRlc3QudHMAIE0gdG9vbHMvZXZpZGVuY2UvY2FwdHVyZS1waGFzZTUtcDUxNS1pbmtmYWxsLXByb2R1Y3QtcG9wdWxhdGlvbi5tanMAIE0gdG9vbHMvZXZpZGVuY2UvdmVyaWZ5LXBoYXNlNS1wNTE1LWlua2ZhbGwtcHJvZHVjdC1wb3B1bGF0aW9uLm1qcwA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9ldmlkZW5jZS92NmMtY2hhcmFjdGVyLXJldjE1L2RpcmVjdC1nbGItcmVuZGVyLXJlcG9ydC5qc29uAD8/IGFzc2V0cy9zb3VyY2UvYmxlbmRlci9waGFzZTctY2hhcmFjdGVyLW9yaWdpbmFsLXY2L2V2aWRlbmNlL3Y2Yy1jaGFyYWN0ZXItcmV2MTUvZXhwb3J0LXJlaW1wb3J0LWF1ZGl0Lmpzb24APz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvZXZpZGVuY2UvdjZjLWNoYXJhY3Rlci1yZXYxNS9yZWltcG9ydC9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNS5yZWltcG9ydC1wcm9vZi5ibGVuZAA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9ldmlkZW5jZS92NmMtY2hhcmFjdGVyLXJldjE1L3JlbmRlcnMva3l4LXY2Yy1jaGFyYWN0ZXItcmV2MTUtYWN0aW9uLXJ1bi1zdHJpZGUtbGVmdC1sZWFkLnBuZwA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9ldmlkZW5jZS92NmMtY2hhcmFjdGVyLXJldjE1L3JlbmRlcnMva3l4LXY2Yy1jaGFyYWN0ZXItcmV2MTUtYWN0aW9uLXJ1bi1zdHJpZGUtcmlnaHQtbGVhZC5wbmcAPz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvZXZpZGVuY2UvdjZjLWNoYXJhY3Rlci1yZXYxNS9yZW5kZXJzL2t5eC12NmMtY2hhcmFjdGVyLXJldjE1LWZyb250LXRocmVlLXF1YXJ0ZXItaWRsZS5wbmcAPz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvZXZpZGVuY2UvdjZjLWNoYXJhY3Rlci1yZXYxNS9yZW5kZXJzL2t5eC12NmMtY2hhcmFjdGVyLXJldjE1LXBhbnRzLWJvb3RzLXN1cmZhY2UucG5nAD8/IGFzc2V0cy9zb3VyY2UvYmxlbmRlci9waGFzZTctY2hhcmFjdGVyLW9yaWdpbmFsLXY2L2V2aWRlbmNlL3Y2Yy1jaGFyYWN0ZXItcmV2MTUvcmVuZGVycy9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNS1yZWFyLXNpZGUtaWRsZS5wbmcAPz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvZXZpZGVuY2UvdjZjLWNoYXJhY3Rlci1yZXYxNS9yZW5kZXJzL2t5eC12NmMtY2hhcmFjdGVyLXJldjE1LXdhaXN0LXBlbHZpcy10cmFuc2l0aW9uLnBuZwA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9ldmlkZW5jZS92NmMtY2hhcmFjdGVyLXJldjE1L3JlbmRlcnMva3l4LXY2Yy1jaGFyYWN0ZXItcmV2MTUtd2VhcG9uLWNvbnRhY3QtZmlyaW5nLXNpZGUucG5nAD8/IGFzc2V0cy9zb3VyY2UvYmxlbmRlci9waGFzZTctY2hhcmFjdGVyLW9yaWdpbmFsLXY2L2V2aWRlbmNlL3Y2Yy1jaGFyYWN0ZXItcmV2MTUvcmVuZGVycy9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNS13ZWFwb24tY29udGFjdC1zdXBwb3J0LXNpZGUucG5nAD8/IGFzc2V0cy9zb3VyY2UvYmxlbmRlci9waGFzZTctY2hhcmFjdGVyLW9yaWdpbmFsLXY2L2V2aWRlbmNlL3Y2Yy1jaGFyYWN0ZXItcmV2MTYvZXhwb3J0LXJlaW1wb3J0LWF1ZGl0Lmpzb24APz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvZXZpZGVuY2UvdjZjLWNoYXJhY3Rlci1yZXYxNi9yZWltcG9ydC9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNi5yZWltcG9ydC1wcm9vZi5ibGVuZAA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9tb2RlbC92NmMtY2hhcmFjdGVyLXJldjE1L2V4cG9ydC9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNS5ydW50aW1lLWNhbmRpZGF0ZS5nbGIAPz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvbW9kZWwvdjZjLWNoYXJhY3Rlci1yZXYxNS9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNS5ibGVuZAA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9tb2RlbC92NmMtY2hhcmFjdGVyLXJldjE2L2V4cG9ydC9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNi5ydW50aW1lLWNhbmRpZGF0ZS5nbGIAPz8gYXNzZXRzL3NvdXJjZS9ibGVuZGVyL3BoYXNlNy1jaGFyYWN0ZXItb3JpZ2luYWwtdjYvbW9kZWwvdjZjLWNoYXJhY3Rlci1yZXYxNi9reXgtdjZjLWNoYXJhY3Rlci1yZXYxNi5ibGVuZAA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9zY3JpcHRzL2F1dGhvcl9leHBvcnRfdjZjX2NoYXJhY3Rlcl9yZXYxNS5weQA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9zY3JpcHRzL2F1dGhvcl9leHBvcnRfdjZjX2NoYXJhY3Rlcl9yZXYxNi5weQA/PyBhc3NldHMvc291cmNlL2JsZW5kZXIvcGhhc2U3LWNoYXJhY3Rlci1vcmlnaW5hbC12Ni9zY3JpcHRzL3JlbmRlcl92NmNfY2hhcmFjdGVyX3JldjE1LnB5AD8/IGRvY3Mvd29yay1sb2cvMjAyNi0wNy0yNS1pbmtmYWxsLWF1dGhvcml0YXRpdmUtdHJhdmVyc2FsLW1hdHJpeC5tZAA/PyB0ZXN0cy9pbnRlZ3JhdGlvbi9tb3ZlbWVudC9pbmtmYWxsQXV0aG9yaXRhdGl2ZVRyYXZlcnNhbE1hdHJpeC50ZXN0LnRzAD8/IHRvb2xzL2V2aWRlbmNlL2NhcHR1cmUtcGhhc2U2LWc1LWF1dGhvcml0YXRpdmUtdHJhdmVyc2FsLW1hdHJpeC1jb21tYW5kLXJlc3VsdHMubWpzAD8/IHRvb2xzL2V2aWRlbmNlL2NhcHR1cmUtcGhhc2U2LWc1LWF1dGhvcml0YXRpdmUtdHJhdmVyc2FsLW1hdHJpeC5tanMAPz8gdG9vbHMvZXZpZGVuY2UvY2FwdHVyZS1waGFzZTYtZzUtYXV0aG9yaXRhdGl2ZS10cmF2ZXJzYWwtbWF0cml4Lm1vZHVsZS50cwA/PyB0b29scy9ldmlkZW5jZS9jYXB0dXJlLXBoYXNlNi1nNS1hdXRob3JpdGF0aXZlLXRyYXZlcnNhbC1tYXRyaXgucHJvdmVuYW5jZS5tanMAPz8gdG9vbHMvZXZpZGVuY2UvdmVyaWZ5LXBoYXNlNi1nNS1hdXRob3JpdGF0aXZlLXRyYXZlcnNhbC1tYXRyaXgubWpzAA==",
+    "repositoryStateDigestSha256": "0a07e03bcfdbb54de4cc6629a4405c6643dd2a45577c65a7b5dcf1f758f396eb"
+  },
+  "provenanceSemantics": {
+    "criticalSources": "byte hashes close the capture, verifier, focused tests, governing runtime sources, map inputs, manifests, and toolchain locks",
+    "repository": "HEAD plus full dirty index/worktree content is closed except for the generated evidence directory",
+    "generatedEvidence": "proof, verification, raw command results, README, and commands are closed separately by the evidence baseline manifest"
+  },
+  "nonClaims": [
+    "SOURCE_CLOSURE_IS_NOT_PRODUCT_BROWSER_PROOF",
+    "SOURCE_CLOSURE_IS_NOT_HUMAN_PLAYTEST_PROOF",
+    "SOURCE_CLOSURE_DOES_NOT_PROMOTE_REVISION_3",
+    "G5_NOT_PASSED"
+  ],
+  "capturedAt": "2026-07-26T04:18:32.025Z",
+  "closureCoreSha256": "42bb74437d5cd6fe0fc05317ee6cb41de341bf1ec9c05a99e51f489fda258932"
+}

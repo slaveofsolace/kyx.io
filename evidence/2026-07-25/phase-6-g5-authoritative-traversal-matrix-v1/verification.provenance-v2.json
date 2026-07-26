@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 2,
+  "status": "G5_PROVENANCE_CLOSED_TRAVERSAL_MATRIX_VERIFIED_G5_OPEN",
+  "proofPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/authoritative-traversal-matrix.provenance-v2.json",
+  "proofSha256": "0bc25606eed47b9e141da1dedc53257398ef8173fb010d53d60280670d9af11f",
+  "sourceClosurePath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/source-closure.provenance-v2.json",
+  "sourceClosureSha256": "bf9f256b135ee7164b03a8aeebe480bbca710b1d17e52801716c9b95f85ab6e6",
+  "sourceClosureCoreSha256": "42bb74437d5cd6fe0fc05317ee6cb41de341bf1ec9c05a99e51f489fda258932",
+  "reconstructedCoreSha256": "2b3242adab53827d2f3e47f95209b37957db40232c678db8d66a5d40fa7c0f13",
+  "requireCurrentRepositoryState": true,
+  "sourceClosureAudit": {
+    "closureCoreDigestMatches": true,
+    "criticalSourcePathClosureExact": true,
+    "criticalSourcesDigestMatches": true,
+    "criticalSourcesMatch": true,
+    "repositoryStateMatches": true,
+    "recordedRepositoryStateDigestSha256": "0a07e03bcfdbb54de4cc6629a4405c6643dd2a45577c65a7b5dcf1f758f396eb",
+    "currentRepositoryStateDigestSha256": "0a07e03bcfdbb54de4cc6629a4405c6643dd2a45577c65a7b5dcf1f758f396eb"
+  },
+  "sourceHashChecks": [
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "expected": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "actual": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb",
+      "expected": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca",
+      "actual": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json",
+      "expected": "aaeb18b4a4223606405072f08bc2b56603dfc61444328a8094a01b3c783ffa8a",
+      "actual": "aaeb18b4a4223606405072f08bc2b56603dfc61444328a8094a01b3c783ffa8a",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+      "expected": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "actual": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+      "expected": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "actual": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+      "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "actual": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json",
+      "expected": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+      "actual": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v3.json",
+      "expected": "e8f0588b706fc84e6f6d962d989ff3c7aff0db97cd2ceaf795c5d08956c9659e",
+      "actual": "e8f0588b706fc84e6f6d962d989ff3c7aff0db97cd2ceaf795c5d08956c9659e",
+      "matches": true
+    },
+    {
+      "path": "package.json",
+      "expected": "71a69a7e70e89c33e27bfeb4607eb18ec9834c267044b4a2499f5e3ab40442d8",
+      "actual": "71a69a7e70e89c33e27bfeb4607eb18ec9834c267044b4a2499f5e3ab40442d8",
+      "matches": true
+    },
+    {
+      "path": "package-lock.json",
+      "expected": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3",
+      "actual": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3",
+      "matches": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "bounded status explicitly leaves G5 open",
+      "passed": true
+    },
+    {
+      "name": "proof binds the exact standalone source closure",
+      "passed": true
+    },
+    {
+      "name": "source-closure core and required path set are internally exact",
+      "passed": true
+    },
+    {
+      "name": "all critical source bytes still match the captured closure",
+      "passed": true
+    },
+    {
+      "name": "current HEAD and dirty tree match when strict current-state audit is requested",
+      "passed": true
+    },
+    {
+      "name": "movement and authority bindings are exact",
+      "passed": true
+    },
+    {
+      "name": "revision identities are separated and exact",
+      "passed": true
+    },
+    {
+      "name": "all bound collision, fixture, manifest, and lock hashes recompute",
+      "passed": true
+    },
+    {
+      "name": "deterministic core hash recomputes",
+      "passed": true
+    },
+    {
+      "name": "revision-2 authority suite repeated byte-identically",
+      "passed": true
+    },
+    {
+      "name": "2/4/8 routes and metrics all complete without deterministic defects",
+      "passed": true
+    },
+    {
+      "name": "recovery-volume, priority, and post-recovery escape probes all pass",
+      "passed": true
+    },
+    {
+      "name": "old P5.15 revision-2 embed still fails closed",
+      "passed": true
+    },
+    {
+      "name": "revision-3 canonical junction and seven adjacent lanes are clear",
+      "passed": true
+    },
+    {
+      "name": "west-archive approach and inferred depenetration totals are exact",
+      "passed": true
+    },
+    {
+      "name": "exact runtime-v45 face reconciles to the pinned clear position",
+      "passed": true
+    },
+    {
+      "name": "four west-archive escape vectors remain clear",
+      "passed": true
+    },
+    {
+      "name": "required product, human, and recovery-telemetry nonclaims remain explicit",
+      "passed": true
+    }
+  ],
+  "passedChecks": 18,
+  "totalChecks": 18,
+  "nonClaims": [
+    "CONSISTENCY_VERIFIER_DOES_NOT_REPLACE_LIVE_SIMULATION_RERUN",
+    "PRODUCT_BROWSER_REVISION_3_REPLAY_NOT_RUN",
+    "HUMAN_2_4_8_PLAYTEST_NOT_RUN",
+    "G5_NOT_PASSED"
+  ]
+}

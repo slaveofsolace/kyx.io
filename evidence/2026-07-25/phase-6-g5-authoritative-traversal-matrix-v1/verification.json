@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "status": "G5_CURRENT_TRAVERSAL_MATRIX_VERIFIED_G5_OPEN",
+  "proofPath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/authoritative-traversal-matrix.json",
+  "proofSha256": "45b140c5f4eef585857b3f732986283bf5f615bd7003906a4eeef568bb7ace43",
+  "reconstructedCoreSha256": "f6b604b63fd058c6a211e0177e3bbf685506b79af86d18d8c135a7f9ecf2ad1a",
+  "sourceHashChecks": [
+    {
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/export/collision.authority.glb",
+      "expected": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "actual": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json",
+      "expected": "aaeb18b4a4223606405072f08bc2b56603dfc61444328a8094a01b3c783ffa8a",
+      "actual": "aaeb18b4a4223606405072f08bc2b56603dfc61444328a8094a01b3c783ffa8a",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+      "expected": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "actual": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+      "expected": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "actual": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "matches": true
+    },
+    {
+      "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+      "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "actual": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "matches": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "bounded status explicitly leaves G5 open",
+      "passed": true
+    },
+    {
+      "name": "movement and authority bindings are exact",
+      "passed": true
+    },
+    {
+      "name": "revision identities are separated and exact",
+      "passed": true
+    },
+    {
+      "name": "all bound source hashes recompute",
+      "passed": true
+    },
+    {
+      "name": "deterministic core hash recomputes",
+      "passed": true
+    },
+    {
+      "name": "revision-2 authority suite repeated byte-identically",
+      "passed": true
+    },
+    {
+      "name": "2/4/8 routes and metrics all complete without defects",
+      "passed": true
+    },
+    {
+      "name": "recovery, priority, and post-recovery escape probes all pass",
+      "passed": true
+    },
+    {
+      "name": "old P5.15 revision-2 embed still fails closed",
+      "passed": true
+    },
+    {
+      "name": "revision-3 canonical junction and seven adjacent lanes are clear",
+      "passed": true
+    },
+    {
+      "name": "west-archive approach and seeded-recovery totals are exact",
+      "passed": true
+    },
+    {
+      "name": "exact runtime-v45 face reconciles to the pinned clear position",
+      "passed": true
+    },
+    {
+      "name": "four west-archive escape vectors remain clear",
+      "passed": true
+    },
+    {
+      "name": "required product and human nonclaims remain explicit",
+      "passed": true
+    }
+  ],
+  "passedChecks": 14,
+  "totalChecks": 14
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-26T03:17:10.632Z",
+  "root": "phase-6-g5-authoritative-traversal-matrix-v1",
+  "files": 4,
+  "bytes": 53479,
+  "entries": [
+    {
+      "path": "authoritative-traversal-matrix.json",
+      "bytes": 43983,
+      "sha256": "45b140c5f4eef585857b3f732986283bf5f615bd7003906a4eeef568bb7ace43"
+    },
+    {
+      "path": "commands.txt",
+      "bytes": 2086,
+      "sha256": "5e5a5e852fbaadf67dd2696fbba4c16ab2975021bb810e071f68c4b9710e5aac"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4026,
+      "sha256": "196caab0fa91055b90c4402c07961cbe4adc791f76912b1b788065a4b9657ba5"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 3384,
+      "sha256": "ea365008ff3e82cc22d8b9074098b7c5a0f3e7c0e938a374b2b9759714a948b6"
+    }
+  ]
+}

@@ -1,0 +1,1682 @@
+{
+  "schemaVersion": 1,
+  "phase": "G5_CURRENT_AUTHORITATIVE_TRAVERSAL_MATRIX",
+  "status": "BOUNDED_DETERMINISTIC_PASS_G5_OPEN",
+  "capturedAt": "2026-07-26T04:18:31.230Z",
+  "bindings": {
+    "movementProfileId": "phase3_hypothesis_v1",
+    "movementProfileRevision": 1,
+    "physicsAdapterVersion": "0.19.3",
+    "authorityRateHz": 20,
+    "revision2": {
+      "mapRevision": 2,
+      "packageDigest": "77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520",
+      "fixtureHash": "bf85e42731fd088e",
+      "collisionSha256": "cd661c12534dd7d2362c862f4ff9f9177cb9f8ef0cea85d14a3b18e3dfb1380e",
+      "playtestTapesSha256": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+      "spawnFixturesSha256": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+      "topologySeedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63"
+    },
+    "revision3": {
+      "mapRevision": 3,
+      "packageDigest": "c769eba175a7d1bcef92167b9f997a6b72d0e50c29f3d171bd66ce911a9ea161",
+      "fixtureHash": "31fea7ee73a12b91",
+      "collisionSha256": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca",
+      "collisionMeshNodeCount": 339,
+      "fixtureSnapshotSha256": "aaeb18b4a4223606405072f08bc2b56603dfc61444328a8094a01b3c783ffa8a"
+    }
+  },
+  "revision2AuthorityPlaytest": {
+    "status": "P6_6_REVISION_2_AUTOMATED_AUTHORITY_PLAYTEST_RESULT_G5_NOT_PASSED",
+    "suiteHash": "143d09532b9c2b24",
+    "repeatedReplayByteIdentical": true,
+    "issueCount": 0,
+    "allAutomatedThresholdsPassed": true,
+    "scenarios": [
+      {
+        "id": "synthetic_2_player_press_cross",
+        "playerCount": 2,
+        "status": "PASS",
+        "elapsedTicks": 163,
+        "elapsedMilliseconds": 8150,
+        "agentCount": 2,
+        "completedAgentCount": 2,
+        "routeTapeCount": 8,
+        "completedRouteTapeCount": 8,
+        "routeMetricCount": 5,
+        "routeMetricPassCount": 5,
+        "horizontalContacts": 7,
+        "uniqueBlockingColliderIds": [
+          "map_collision_guard_rail_press_west_core_s02_right",
+          "map_collision_module_half_cover_press_w",
+          "map_collision_route_press_east_archive_s00",
+          "map_collision_route_west_choice_archive_s00",
+          "map_collision_stair_press_west_archive_s00_t00"
+        ],
+        "embedSamples": 0,
+        "snagEvents": 0,
+        "retainedBodyOverlapSamples": 0,
+        "recoveryEntries": 0,
+        "killEntries": 0,
+        "recoveryProbePassed": true,
+        "killPriorityProbePassed": true,
+        "postRecoveryEscapePassed": true,
+        "queryMetrics": {
+          "moveCapsuleCalls": 326,
+          "overlapCapsuleCalls": 329,
+          "castCapsuleCalls": 0,
+          "volumeCalls": 329,
+          "shapeCasts": 110514,
+          "overlapTests": 111127,
+          "contacts": 98,
+          "explicitEmbedChecks": 329,
+          "maximumCallsPerAgentTick": 3
+        },
+        "replayHash": "92aa8378d2e0d27e",
+        "issueCount": 0
+      },
+      {
+        "id": "synthetic_4_player_press_and_ink",
+        "playerCount": 4,
+        "status": "PASS",
+        "elapsedTicks": 193,
+        "elapsedMilliseconds": 9650,
+        "agentCount": 4,
+        "completedAgentCount": 4,
+        "routeTapeCount": 13,
+        "completedRouteTapeCount": 13,
+        "routeMetricCount": 4,
+        "routeMetricPassCount": 4,
+        "horizontalContacts": 11,
+        "uniqueBlockingColliderIds": [
+          "map_collision_door_frame_east_ink_entry_left",
+          "map_collision_module_half_cover_ink_w",
+          "map_collision_route_press_east_archive_s00",
+          "map_collision_route_west_choice_archive_s00"
+        ],
+        "embedSamples": 0,
+        "snagEvents": 0,
+        "retainedBodyOverlapSamples": 0,
+        "recoveryEntries": 0,
+        "killEntries": 0,
+        "recoveryProbePassed": true,
+        "killPriorityProbePassed": true,
+        "postRecoveryEscapePassed": true,
+        "queryMetrics": {
+          "moveCapsuleCalls": 772,
+          "overlapCapsuleCalls": 779,
+          "castCapsuleCalls": 0,
+          "volumeCalls": 775,
+          "shapeCasts": 261708,
+          "overlapTests": 263473,
+          "contacts": 70,
+          "explicitEmbedChecks": 777,
+          "maximumCallsPerAgentTick": 4
+        },
+        "replayHash": "2010f3a3d1897f31",
+        "issueCount": 0
+      },
+      {
+        "id": "synthetic_8_player_full_route_occupancy",
+        "playerCount": 8,
+        "status": "PASS",
+        "elapsedTicks": 600,
+        "elapsedMilliseconds": 30000,
+        "agentCount": 8,
+        "completedAgentCount": 8,
+        "routeTapeCount": 49,
+        "completedRouteTapeCount": 49,
+        "routeMetricCount": 11,
+        "routeMetricPassCount": 11,
+        "horizontalContacts": 113,
+        "uniqueBlockingColliderIds": [
+          "map_collision_door_frame_east_ink_entry_left",
+          "map_collision_guard_rail_press_west_core_s02_right",
+          "map_collision_guard_rail_west_choice_archive_s02_left",
+          "map_collision_module_half_cover_ink_w",
+          "map_collision_node_archive_east",
+          "map_collision_node_archive_west",
+          "map_collision_node_west_choice",
+          "map_collision_rev2_archive_east_terminal_support_lower",
+          "map_collision_rev2_archive_east_terminal_support_upper",
+          "map_collision_rev2_archive_west_terminal_support_lower",
+          "map_collision_rev2_archive_west_terminal_support_upper",
+          "map_collision_route_press_east_archive_s00",
+          "map_collision_route_west_choice_archive_s00",
+          "map_collision_stair_press_west_archive_s00_t00",
+          "map_collision_stair_press_west_archive_s00_t03",
+          "map_collision_waypoint_archive_east_choice_w01",
+          "map_collision_waypoint_archive_east_choice_w02",
+          "map_collision_waypoint_press_west_archive_w02",
+          "map_collision_waypoint_west_choice_archive_w01",
+          "map_collision_waypoint_west_choice_archive_w02",
+          "map_collision_waypoint_west_choice_ink_w01",
+          "map_collision_waypoint_west_choice_ink_w02"
+        ],
+        "embedSamples": 0,
+        "snagEvents": 0,
+        "retainedBodyOverlapSamples": 0,
+        "recoveryEntries": 0,
+        "killEntries": 0,
+        "recoveryProbePassed": true,
+        "killPriorityProbePassed": true,
+        "postRecoveryEscapePassed": true,
+        "queryMetrics": {
+          "moveCapsuleCalls": 4800,
+          "overlapCapsuleCalls": 5096,
+          "castCapsuleCalls": 1,
+          "volumeCalls": 4803,
+          "shapeCasts": 1627539,
+          "overlapTests": 1635354,
+          "contacts": 431,
+          "explicitEmbedChecks": 4809,
+          "maximumCallsPerAgentTick": 6
+        },
+        "replayHash": "909814a9d725d187",
+        "issueCount": 0
+      }
+    ],
+    "totals": {
+      "scenarioCount": 3,
+      "playerArrangements": [
+        2,
+        4,
+        8
+      ],
+      "agentCount": 14,
+      "completedAgentCount": 14,
+      "routeTapeCount": 70,
+      "completedRouteTapeCount": 70,
+      "routeMetricCount": 20,
+      "routeMetricPassCount": 20,
+      "embedSamples": 0,
+      "snagEvents": 0,
+      "retainedBodyOverlapSamples": 0,
+      "recoveryEntries": 0,
+      "killEntries": 0
+    }
+  },
+  "revision3CanonicalPressJunction": {
+    "sourceEvidence": {
+      "path": "evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json",
+      "sha256": "0c15b72e9161f6a7c12064e01bcca62059b6fe28f173eb81f69e8db0434e952e",
+      "exactStuckFeetPositionMm": {
+        "x": -16497,
+        "y": 182,
+        "z": -637
+      },
+      "targetFeetPositionMm": {
+        "x": -14000,
+        "y": 0,
+        "z": 2000
+      }
+    },
+    "exactRevision2": {
+      "startingOverlap": {
+        "blockingColliderIds": [],
+        "overlapTests": 1
+      },
+      "forwardCast": {
+        "allowedTranslation": {
+          "x": 75,
+          "y": 0,
+          "z": 80
+        },
+        "hit": {
+          "colliderId": "map_collision_guard_rail_press_west_ink_s00_left",
+          "layer": "world_static",
+          "normalQ15": {
+            "x": -8918,
+            "y": -4459,
+            "z": -31213
+          },
+          "timeOfImpactPermille": 303
+        },
+        "shapeCasts": 339
+      },
+      "moveOutcome": "ERROR",
+      "error": "PHYSICS_DEPENETRATION_FAILED"
+    },
+    "exactRevision3": {
+      "startingOverlap": {
+        "blockingColliderIds": [],
+        "overlapTests": 1
+      },
+      "forwardCast": {
+        "allowedTranslation": {
+          "x": 249,
+          "y": 0,
+          "z": 263
+        },
+        "hit": null,
+        "shapeCasts": 339
+      },
+      "moveOutcome": "PASS",
+      "move": {
+        "appliedTranslation": {
+          "x": 249,
+          "y": 0,
+          "z": 263
+        },
+        "grounded": true,
+        "hitCeiling": false,
+        "support": {
+          "colliderId": "map_collision_waypoint_west_choice_press_w01",
+          "layer": "world_static",
+          "normalQ15": {
+            "x": 0,
+            "y": 32767,
+            "z": 0
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "contacts": [],
+        "shapeCasts": 339,
+        "overlapTests": 339
+      },
+      "finalFeet": {
+        "x": -16248,
+        "y": 182,
+        "z": -374
+      },
+      "finalOverlap": {
+        "blockingColliderIds": [],
+        "overlapTests": 1
+      }
+    },
+    "adjacentLanes": [
+      {
+        "laneOffsetMm": -150,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 2,
+        "overlapCount": 0,
+        "minimumDistanceMm": 98.43271813782245,
+        "finalFeet": {
+          "x": -14035,
+          "y": 286,
+          "z": 1908
+        }
+      },
+      {
+        "laneOffsetMm": -100,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 2,
+        "overlapCount": 0,
+        "minimumDistanceMm": 79.05694150420949,
+        "finalFeet": {
+          "x": -14025,
+          "y": 288,
+          "z": 1925
+        }
+      },
+      {
+        "laneOffsetMm": -50,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 1,
+        "overlapCount": 0,
+        "minimumDistanceMm": 74.33034373659252,
+        "finalFeet": {
+          "x": -14025,
+          "y": 288,
+          "z": 1930
+        }
+      },
+      {
+        "laneOffsetMm": 0,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 0,
+        "overlapCount": 0,
+        "minimumDistanceMm": 68.62215385719105,
+        "finalFeet": {
+          "x": -14022,
+          "y": 291,
+          "z": 1935
+        }
+      },
+      {
+        "laneOffsetMm": 50,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 0,
+        "overlapCount": 0,
+        "minimumDistanceMm": 68.70953354520753,
+        "finalFeet": {
+          "x": -14025,
+          "y": 287,
+          "z": 1936
+        }
+      },
+      {
+        "laneOffsetMm": 100,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 0,
+        "overlapCount": 0,
+        "minimumDistanceMm": 69.46221994724903,
+        "finalFeet": {
+          "x": -14027,
+          "y": 288,
+          "z": 1936
+        }
+      },
+      {
+        "laneOffsetMm": 150,
+        "completedSteps": 12,
+        "recoveryCount": 0,
+        "recoveryError": null,
+        "railContactCount": 0,
+        "overlapCount": 0,
+        "minimumDistanceMm": 69.85699678629192,
+        "finalFeet": {
+          "x": -14028,
+          "y": 288,
+          "z": 1936
+        }
+      }
+    ],
+    "result": {
+      "exactRevision2DefectReproduced": true,
+      "exactRevision3CastClear": true,
+      "exactRevision3KccMoveApplied": true,
+      "exactRevision3FinalOverlapCount": 0,
+      "adjacentLaneCount": 7,
+      "adjacentLaneRecoveryCount": 0,
+      "adjacentLaneOverlapCount": 0,
+      "deterministicCandidatePass": true
+    }
+  },
+  "revision3WestArchive": {
+    "recoveryCountSemantics": "BOUNDED_INFERRED_OBSERVATION_FROM_STARTING_OVERLAP_AND_FINAL_CLEAR_NOT_PRODUCTION_TELEMETRY",
+    "sourcePose": {
+      "feetPositionMm": {
+        "x": -24024,
+        "y": 37,
+        "z": 424
+      },
+      "desiredTranslationMm": {
+        "x": 145,
+        "y": 0,
+        "z": -39
+      },
+      "contactColliderId": "map_collision_route_west_choice_archive_s00"
+    },
+    "repeatedReplayByteIdentical": true,
+    "approach": [
+      {
+        "id": "approach_two_ticks_before",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24314,
+          "y": 37,
+          "z": 502
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 145,
+            "y": 0,
+            "z": -39
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 145,
+            "y": 0,
+            "z": -39
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_node_west_choice",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -24169,
+          "y": 37,
+          "z": 463
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 150.15325504297266,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "approach_one_tick_before",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24169,
+          "y": 37,
+          "z": 463
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 145,
+            "y": 0,
+            "z": -39
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 145,
+            "y": 0,
+            "z": -39
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_spawn_choice_s01",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -24024,
+          "y": 37,
+          "z": 424
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 150.15325504297266,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "exact_runtime_v45_face",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24024,
+          "y": 37,
+          "z": 424
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 39,
+            "y": 0,
+            "z": -10
+          },
+          "hit": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": -12484,
+              "y": 8323,
+              "z": 29130
+            },
+            "timeOfImpactPermille": 266
+          },
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 66,
+            "y": 0,
+            "z": -22
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_node_west_choice",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 266
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -26461,
+                "y": 0,
+                "z": -19326
+              },
+              "timeOfImpactPermille": 499
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 340
+        },
+        "finalFeet": {
+          "x": -23958,
+          "y": 37,
+          "z": 402
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 69.57010852370435,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "face_tangent_minus_160",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24066,
+          "y": 37,
+          "z": 269
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 145,
+            "y": 0,
+            "z": -39
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 145,
+            "y": 0,
+            "z": -39
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_spawn_choice_s01",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -23921,
+          "y": 37,
+          "z": 230
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 150.15325504297266,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "face_tangent_minus_80",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24045,
+          "y": 37,
+          "z": 347
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 108,
+            "y": 0,
+            "z": -29
+          },
+          "hit": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": -12484,
+              "y": 8323,
+              "z": 29130
+            },
+            "timeOfImpactPermille": 745
+          },
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 121,
+            "y": 15,
+            "z": -53
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_node_west_choice",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 747
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 903
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -23924,
+          "y": 52,
+          "z": 294
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 132.9473580030833,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "seeded_face_overlap_plus_80_recovery",
+        "expectedStartingState": "seeded_overlap_recovery",
+        "feetPosition": {
+          "x": -24003,
+          "y": 37,
+          "z": 501
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [
+            "map_collision_route_west_choice_archive_s00"
+          ],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "hit": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": -12484,
+              "y": 8323,
+              "z": 29130
+            },
+            "timeOfImpactPermille": 0
+          },
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 61,
+            "y": 126,
+            "z": -111
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 3278,
+              "y": 31692,
+              "z": -7650
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 0
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 0
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -15970,
+                "y": 24965,
+                "z": -13977
+              },
+              "timeOfImpactPermille": 255
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 340
+        },
+        "finalFeet": {
+          "x": -23942,
+          "y": 163,
+          "z": 390
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 178.65609421455514,
+        "successfulRecoveryCount": 1,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "BOUNDED_INFERRED_START_OVERLAP_TO_FINAL_CLEAR",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "seeded_face_overlap_plus_160_recovery",
+        "expectedStartingState": "seeded_overlap_recovery",
+        "feetPosition": {
+          "x": -23982,
+          "y": 37,
+          "z": 579
+        },
+        "desiredTranslation": {
+          "x": 145,
+          "y": 0,
+          "z": -39
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [
+            "map_collision_route_west_choice_archive_s00"
+          ],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "hit": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": -12484,
+              "y": 8323,
+              "z": 29130
+            },
+            "timeOfImpactPermille": 0
+          },
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 6,
+            "y": 132,
+            "z": -136
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 3278,
+              "y": 31692,
+              "z": -7650
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 0
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 0
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -16420,
+                "y": 24762,
+                "z": -13818
+              },
+              "timeOfImpactPermille": 16
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -16338,
+                "y": 24682,
+                "z": -14054
+              },
+              "timeOfImpactPermille": 21
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -16435,
+                "y": 24606,
+                "z": -14074
+              },
+              "timeOfImpactPermille": 261
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 340
+        },
+        "finalFeet": {
+          "x": -23976,
+          "y": 169,
+          "z": 443
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 150.15325504297266,
+        "appliedDistanceMm": 189.62067397834022,
+        "successfulRecoveryCount": 1,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "BOUNDED_INFERRED_START_OVERLAP_TO_FINAL_CLEAR",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "exact_face_half_translation",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24024,
+          "y": 37,
+          "z": 424
+        },
+        "desiredTranslation": {
+          "x": 72,
+          "y": 0,
+          "z": -20
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 39,
+            "y": 0,
+            "z": -11
+          },
+          "hit": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": -12484,
+              "y": 8323,
+              "z": 29130
+            },
+            "timeOfImpactPermille": 539
+          },
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 47,
+            "y": 13,
+            "z": -34
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_node_west_choice",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 539
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 1000
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -23977,
+          "y": 50,
+          "z": 390
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 74.72616676907762,
+        "appliedDistanceMm": 59.4474557908074,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "exact_face_extended_translation",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -24024,
+          "y": 37,
+          "z": 424
+        },
+        "desiredTranslation": {
+          "x": 218,
+          "y": 0,
+          "z": -59
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 39,
+            "y": 0,
+            "z": -10
+          },
+          "hit": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": -12484,
+              "y": 8323,
+              "z": 29130
+            },
+            "timeOfImpactPermille": 177
+          },
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 146,
+            "y": 124,
+            "z": -125
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_choice_archive_s00",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 3278,
+              "y": 31692,
+              "z": -7650
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -15132,
+                "y": 25926,
+                "z": -13137
+              },
+              "timeOfImpactPermille": 1
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -14929,
+                "y": 25725,
+                "z": -13748
+              },
+              "timeOfImpactPermille": 142
+            },
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 177
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -23878,
+          "y": 161,
+          "z": 299
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 225.8428657274788,
+        "appliedDistanceMm": 228.7290974056427,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      }
+    ],
+    "escape": [
+      {
+        "id": "escape_reverse_approach",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -23958,
+          "y": 37,
+          "z": 402
+        },
+        "desiredTranslation": {
+          "x": -290,
+          "y": 0,
+          "z": 78
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": -290,
+            "y": 0,
+            "z": 78
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": -290,
+            "y": 0,
+            "z": 78
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_node_west_choice",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -24248,
+          "y": 37,
+          "z": 480
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 300.3065100859453,
+        "appliedDistanceMm": 300.3065100859453,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "escape_outward_normal",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -23958,
+          "y": 37,
+          "z": 402
+        },
+        "desiredTranslation": {
+          "x": -230,
+          "y": 0,
+          "z": -99
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": -230,
+            "y": 0,
+            "z": -99
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": -230,
+            "y": 0,
+            "z": -99
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_node_west_choice",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -24188,
+          "y": 37,
+          "z": 303
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 250.40167731067618,
+        "appliedDistanceMm": 250.40167731067618,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "escape_tangent_forward",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -23958,
+          "y": 37,
+          "z": 402
+        },
+        "desiredTranslation": {
+          "x": 99,
+          "y": 0,
+          "z": -230
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": 99,
+            "y": 0,
+            "z": -230
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": 99,
+            "y": 0,
+            "z": -230
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_spawn_choice_s01",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -23859,
+          "y": 37,
+          "z": 172
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 250.40167731067618,
+        "appliedDistanceMm": 250.40167731067618,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      },
+      {
+        "id": "escape_tangent_reverse",
+        "expectedStartingState": "clear",
+        "feetPosition": {
+          "x": -23958,
+          "y": 37,
+          "z": 402
+        },
+        "desiredTranslation": {
+          "x": -99,
+          "y": 0,
+          "z": 230
+        },
+        "startingOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "cast": {
+          "allowedTranslation": {
+            "x": -99,
+            "y": 0,
+            "z": 230
+          },
+          "hit": null,
+          "shapeCasts": 339
+        },
+        "outcome": "PASS",
+        "move": {
+          "appliedTranslation": {
+            "x": -112,
+            "y": 0,
+            "z": 223
+          },
+          "grounded": true,
+          "hitCeiling": false,
+          "support": {
+            "colliderId": "map_collision_route_west_spawn_choice_s01",
+            "layer": "world_static",
+            "normalQ15": {
+              "x": 0,
+              "y": 32767,
+              "z": 0
+            },
+            "velocity": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "contacts": [
+            {
+              "colliderId": "map_collision_route_west_choice_archive_s00",
+              "layer": "world_static",
+              "normalQ15": {
+                "x": -30118,
+                "y": 0,
+                "z": -12908
+              },
+              "timeOfImpactPermille": 0
+            }
+          ],
+          "shapeCasts": 339,
+          "overlapTests": 339
+        },
+        "finalFeet": {
+          "x": -24070,
+          "y": 37,
+          "z": 625
+        },
+        "finalOverlap": {
+          "blockingColliderIds": [],
+          "overlapTests": 1
+        },
+        "desiredDistanceMm": 250.40167731067618,
+        "appliedDistanceMm": 249.545587017683,
+        "successfulRecoveryCount": 0,
+        "failedRecoveryCount": 0,
+        "recoveryError": null,
+        "recoveryObservation": "NO_STARTING_OVERLAP",
+        "recoveryObservationSource": "direct deterministic overlap-before/move/overlap-after probe",
+        "productionRecoveryTelemetryObserved": false
+      }
+    ],
+    "totals": {
+      "approachProbeCount": 9,
+      "approachPassCount": 9,
+      "approachSeededOverlapCount": 2,
+      "approachSuccessfulRecoveryCount": 2,
+      "approachFailedRecoveryCount": 0,
+      "approachStartingOverlapCount": 2,
+      "approachFinalOverlapCount": 0,
+      "escapeProbeCount": 4,
+      "escapePassCount": 4,
+      "escapeSuccessfulRecoveryCount": 0,
+      "escapeFailedRecoveryCount": 0,
+      "escapeFinalOverlapCount": 0
+    }
+  },
+  "deterministicCoreSha256": "2b3242adab53827d2f3e47f95209b37957db40232c678db8d66a5d40fa7c0f13",
+  "result": {
+    "revision2SyntheticAuthorityArrangementsPass": true,
+    "revision2RepeatedReplayByteIdentical": true,
+    "revision2AllRoutesComplete": true,
+    "revision2ZeroEmbeds": true,
+    "revision2ZeroSnags": true,
+    "revision2ZeroRetainedBodyOverlaps": true,
+    "revision2RecoveryAndEscapeProbesPass": true,
+    "revision3CanonicalPressJunctionPass": true,
+    "revision3CanonicalAdjacentLaneCount": 7,
+    "revision3CanonicalAdjacentLaneRecoveryCount": 0,
+    "revision3CanonicalAdjacentLaneOverlapCount": 0,
+    "revision3WestArchiveApproachPass": true,
+    "revision3WestArchiveEscapePass": true,
+    "preservesExpectedRevision2P515FailClosedEmbed": true
+  },
+  "nonClaims": [
+    "SYNTHETIC_AUTOMATED_MATRIX_ONLY",
+    "REVISION_2_AND_REVISION_3_EVIDENCE_ARE_EXPLICITLY_SEPARATED",
+    "REVISION_3_NOT_DEFAULT_OR_PROMOTED",
+    "EXACT_PRODUCT_BROWSER_ROUTE_NOT_REPLAYED",
+    "HUMAN_2_4_8_PLAYTEST_NOT_RUN",
+    "HUMAN_FUN_COUNTERPLAY_AND_READABILITY_NOT_ACCEPTED",
+    "FINAL_ART_AND_PERFORMANCE_NOT_ACCEPTED",
+    "RECOVERY_COUNTS_ARE_BOUNDED_INFERENCES_NOT_PRODUCTION_TELEMETRY",
+    "G5_NOT_PASSED"
+  ],
+  "repository": {
+    "head": "71bdf0c648062ebcb966d0a78c14d876e1c82b79",
+    "branch": "main",
+    "repositoryStateDigestSha256": "0a07e03bcfdbb54de4cc6629a4405c6643dd2a45577c65a7b5dcf1f758f396eb",
+    "statusShort": [
+      "M src/app/onlineAuthorityRoute.ts",
+      " M tests/integration/authority/inkfallAuthorityPlaytest.test.ts",
+      " M tools/evidence/capture-phase5-p515-inkfall-product-population.mjs",
+      " M tools/evidence/verify-phase5-p515-inkfall-product-population.mjs",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/direct-glb-render-report.json",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/export-reimport-audit.json",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/reimport/kyx-v6c-character-rev15.reimport-proof.blend",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-action-run-stride-left-lead.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-action-run-stride-right-lead.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-front-three-quarter-idle.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-pants-boots-surface.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-rear-side-idle.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-waist-pelvis-transition.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-weapon-contact-firing-side.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev15/renders/kyx-v6c-character-rev15-weapon-contact-support-side.png",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev16/export-reimport-audit.json",
+      "?? assets/source/blender/phase7-character-original-v6/evidence/v6c-character-rev16/reimport/kyx-v6c-character-rev16.reimport-proof.blend",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev15/export/kyx-v6c-character-rev15.runtime-candidate.glb",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev15/kyx-v6c-character-rev15.blend",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev16/export/kyx-v6c-character-rev16.runtime-candidate.glb",
+      "?? assets/source/blender/phase7-character-original-v6/model/v6c-character-rev16/kyx-v6c-character-rev16.blend",
+      "?? assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_character_rev15.py",
+      "?? assets/source/blender/phase7-character-original-v6/scripts/author_export_v6c_character_rev16.py",
+      "?? assets/source/blender/phase7-character-original-v6/scripts/render_v6c_character_rev15.py",
+      "?? docs/work-log/2026-07-25-inkfall-authoritative-traversal-matrix.md",
+      "?? tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix-command-results.mjs",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.mjs",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.module.ts",
+      "?? tools/evidence/capture-phase6-g5-authoritative-traversal-matrix.provenance.mjs",
+      "?? tools/evidence/verify-phase6-g5-authoritative-traversal-matrix.mjs"
+    ],
+    "generatedEvidenceExclusion": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/**"
+  },
+  "provenance": {
+    "schemaVersion": 1,
+    "sourceClosurePath": "evidence/2026-07-25/phase-6-g5-authoritative-traversal-matrix-v1/source-closure.provenance-v2.json",
+    "sourceClosureSha256": "bf9f256b135ee7164b03a8aeebe480bbca710b1d17e52801716c9b95f85ab6e6",
+    "sourceClosureCoreSha256": "42bb74437d5cd6fe0fc05317ee6cb41de341bf1ec9c05a99e51f489fda258932",
+    "criticalSourcesDigestSha256": "bf8a33f8d3915135e91feaee6ddb6a015ad2b5fc4c65177823c959d709991ae2",
+    "criticalSourceCount": 31,
+    "repositoryStateDigestSha256": "0a07e03bcfdbb54de4cc6629a4405c6643dd2a45577c65a7b5dcf1f758f396eb",
+    "sourceClosureSemantics": "critical source bytes and the complete non-evidence dirty tree are closed independently of generated proof artifacts"
+  }
+}
