@@ -509,9 +509,7 @@ export class Game {
       }
       this._modeTimer = PRACTICE_DURATION_SECONDS;
       this.hud.showPracticeStatus(true, PRACTICE_BOTS);
-      // (re)create pickup system for fresh match
-      this.pickupSystem?.dispose();
-      this.pickupSystem = new PickupSystem(this.world.scene);
+      this._preparePickupSystem(sameModeRestart);
       const _mm = Math.floor(this._modeTimer / 60), _ss = Math.floor(this._modeTimer % 60);
       this.hud.showDMTimer(`${_mm}:${String(_ss).padStart(2, '0')}`);
     } else if (this._isSurvival) {
@@ -538,9 +536,7 @@ export class Game {
       if (!sameModeRestart || !this.botManager.resetAll(botCount, this._mode.noRespawn, 1)) {
         this.botManager.spawnAll(botCount, this._mode.noRespawn, 1);
       }
-      // (re)create pickup system for fresh match
-      this.pickupSystem?.dispose();
-      this.pickupSystem = new PickupSystem(this.world.scene);
+      this._preparePickupSystem(sameModeRestart);
       this._refreshModeHUD();
     }
 
@@ -588,6 +584,15 @@ export class Game {
         this.world.scene.add(this._playerBody);
       }
     }
+  }
+
+  _preparePickupSystem(sameModeRestart) {
+    if (sameModeRestart && this.pickupSystem) {
+      this.pickupSystem.reset();
+      return;
+    }
+    this.pickupSystem?.dispose();
+    this.pickupSystem = new PickupSystem(this.world.scene);
   }
 
   _respawnPlayer(position) {
