@@ -70,6 +70,7 @@ interface OnlinePreviewSnapshot {
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localPredictedYawMilliDegrees: number | null;
+  readonly localPredictedPitchMilliDegrees: number | null;
   readonly localPredictionErrorMillimeters: number | null;
   readonly localPredictionHistoryCommands: number;
   readonly remoteEntities: readonly Readonly<{
@@ -87,9 +88,32 @@ interface OnlinePreviewSnapshot {
     rejectedIntentCount: number;
     duplicateAuthorityEvents: number;
     staleAuthorityEvents: number;
-    lastCue: 'snapshot' | 'body' | 'shield' | 'kill' | 'teleport' | 'teleport_rejected' | null;
+    lastCue:
+      | 'snapshot'
+      | 'body'
+      | 'shield'
+      | 'kill'
+      | 'grenade_throw'
+      | 'grenade_collision'
+      | 'grenade_detonation'
+      | 'grenade_impulse'
+      | 'teleport'
+      | 'teleport_rejected'
+      | null;
     lastAuthorityEventId: string | null;
     audioCueAttempts: number;
+    recentCues: readonly Readonly<{
+      cue: Exclude<OnlinePreviewSnapshot['presentation']['lastCue'], null>;
+      source: CombatPresentationIntentV1['source'];
+      authorityEventId: string | null;
+      authorityTick: number | null;
+      hudMarker: string | null;
+      vfxMarker: string | null;
+      audioMarker: string | null;
+      renderedHud: true;
+      renderedVfx: boolean;
+      audioAttempted: boolean;
+    }>[];
   }>;
   readonly roomVerification?: Readonly<{
     roomProfile: typeof ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
@@ -233,6 +257,10 @@ function onlineStyles(): HTMLStyleElement {
     .online-session__feedback-glyph[data-cue='shield'] { --feedback-color: #63e9ff; border: 4px solid currentColor; transform: rotate(45deg) scale(.58); }
     .online-session__feedback-glyph[data-cue='shield']::before, .online-session__feedback-glyph[data-cue='shield']::after { display: none; }
     .online-session__feedback-glyph[data-cue='kill'] { --feedback-color: #ff5268; width: 104px; height: 104px; }
+    .online-session__feedback-glyph[data-cue='grenade_throw'] { --feedback-color: #c889ff; border: 3px solid currentColor; border-radius: 50%; }
+    .online-session__feedback-glyph[data-cue='grenade_collision'] { --feedback-color: #ffe08a; transform: scale(.52) rotate(45deg); }
+    .online-session__feedback-glyph[data-cue='grenade_detonation'] { --feedback-color: #ff8d5c; width: 112px; height: 112px; border: 5px double currentColor; border-radius: 50%; }
+    .online-session__feedback-glyph[data-cue='grenade_impulse'] { --feedback-color: #63e9ff; border: 4px solid currentColor; border-radius: 50%; }
     .online-session__feedback-glyph[data-cue='teleport'], .online-session__feedback-glyph[data-cue='teleport_rejected'] { --feedback-color: #c889ff; border: 5px solid currentColor; border-radius: 50%; }
     .online-session__feedback-glyph[data-cue='teleport']::before { inset: 10px 32px; width: 5px; height: 48px; transform: none; }
     .online-session__feedback-glyph[data-cue='teleport']::after { display: none; }
@@ -703,8 +731,8 @@ async function mountSession(
       'p',
       '',
       inkfallRevision2
-        ? 'Use W, A, S, and D to move, Q and E to turn, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
-        : 'Use W, A, S, and D to move, Q and E to turn, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. Health, ammo, score, feed, death, respawn, teleport, and resume state come from the authority.',
+        ? 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
+        : 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. Health, ammo, score, feed, death, respawn, teleport, and resume state come from the authority.',
     ),
   );
   const room = element('div', 'online-session__room');
@@ -754,7 +782,7 @@ async function mountSession(
     'online-session__panel-head',
     inkfallRevision2 ? 'Live Inkfall Foundry @2 authority plane' : 'Live authority combat plane',
   );
-  arenaHead.append(element('span', '', 'WASD · Q/E turn · SPACE fire · R reload · G grenade · T teleport'));
+  arenaHead.append(element('span', '', 'WASD · C crouch · Q/E turn · SPACE fire · R reload · G grenade · T teleport'));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
   canvas.width = 960;
@@ -954,6 +982,9 @@ async function mountSession(
   let presentationLastCue: FeedbackCue = null;
   let presentationLastAuthorityEventId: string | null = null;
   let presentationAudioCueAttempts = 0;
+  const presentationRecentCues: Array<
+    OnlinePreviewSnapshot['presentation']['recentCues'][number]
+  > = [];
   let presentationFailureDetail: string | null = null;
   let feedbackTimeout = 0;
   let audioContext: AudioContext | null = null;
@@ -966,6 +997,10 @@ async function mountSession(
     if (marker.includes('.hit.body.confirmed.')) return 'body';
     if (marker.includes('.hit.shield.confirmed.')) return 'shield';
     if (marker.includes('.hit.kill.confirmed.')) return 'kill';
+    if (marker.includes('.grenade.throw.accepted.')) return 'grenade_throw';
+    if (marker.includes('.grenade.projectile.collision.')) return 'grenade_collision';
+    if (marker.includes('.grenade.projectile.detonation.')) return 'grenade_detonation';
+    if (marker.includes('.grenade.impulse.applied.')) return 'grenade_impulse';
     if (marker.includes('.teleport.confirmed.')) return 'teleport';
     if (marker.includes('.teleport.rejected.')) return 'teleport_rejected';
     return null;
@@ -975,6 +1010,10 @@ async function mountSession(
     if (cue === 'body') return 'BODY HIT · CONFIRMED';
     if (cue === 'shield') return 'SHIELD HIT · CONFIRMED';
     if (cue === 'kill') return 'ELIMINATION · CONFIRMED';
+    if (cue === 'grenade_throw') return 'IMPULSE GRENADE · ACCEPTED';
+    if (cue === 'grenade_collision') return 'GRENADE CONTACT · CONFIRMED';
+    if (cue === 'grenade_detonation') return 'GRENADE DETONATION · CONFIRMED';
+    if (cue === 'grenade_impulse') return 'DISPLACEMENT · CONFIRMED';
     if (cue === 'teleport') return 'TELEPORT · CONFIRMED';
     return 'TELEPORT · REJECTED';
   };
@@ -984,6 +1023,10 @@ async function mountSession(
       body: 640,
       shield: 920,
       kill: 420,
+      grenade_throw: 520,
+      grenade_collision: 260,
+      grenade_detonation: 140,
+      grenade_impulse: 360,
       teleport: 780,
       teleport_rejected: 180,
     };
@@ -1016,6 +1059,19 @@ async function mountSession(
       if (cue === null) continue;
       presentationLastCue = cue;
       presentationLastAuthorityEventId = intent.authorityEventId;
+      presentationRecentCues.push(Object.freeze({
+        cue,
+        source: intent.source,
+        authorityEventId: intent.authorityEventId,
+        authorityTick: intent.authorityTick,
+        hudMarker: intent.markers.hud,
+        vfxMarker: intent.markers.vfx,
+        audioMarker: intent.markers.audio,
+        renderedHud: true as const,
+        renderedVfx: cue !== 'snapshot',
+        audioAttempted: cue !== 'snapshot',
+      }));
+      if (presentationRecentCues.length > 32) presentationRecentCues.shift();
       feedbackHud.textContent = feedbackCopy(cue);
       feedbackHud.dataset.cue = cue;
       feedbackHud.dataset.authorityEventId = intent.authorityEventId ?? '';
@@ -1042,7 +1098,7 @@ async function mountSession(
       feedbackTimeout = window.setTimeout(() => {
         feedbackHud.dataset.active = 'false';
         feedbackGlyph.dataset.active = 'false';
-      }, cue === 'kill' || cue === 'teleport' ? 900 : 620);
+      }, cue === 'kill' || cue === 'grenade_detonation' || cue === 'teleport' ? 900 : 620);
     }
     const metrics = combatPresentationAdapter?.metrics;
     feedbackProofValue.textContent = presentationStatus === 'failed'
@@ -1085,6 +1141,7 @@ async function mountSession(
       localPredictedPosition: diagnostics.local.predictedPosition,
       localAuthoritativePosition: diagnostics.local.authoritativePosition,
       localPredictedYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
+      localPredictedPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
       localPredictionErrorMillimeters: diagnostics.local.lastPositionErrorMillimeters,
       localPredictionHistoryCommands: diagnostics.local.predictionHistoryCommands,
       remoteEntities,
@@ -1102,6 +1159,7 @@ async function mountSession(
         lastCue: presentationLastCue,
         lastAuthorityEventId: presentationLastAuthorityEventId,
         audioCueAttempts: presentationAudioCueAttempts,
+        recentCues: Object.freeze(presentationRecentCues.map((cue) => Object.freeze({ ...cue }))),
       }),
       ...(inkfallProof === null
         ? {}
@@ -1125,6 +1183,7 @@ async function mountSession(
   const pressedKeys = new Set<string>();
   let heldCombatButtons = 0;
   const combatButton = (code: string): number => {
+    if (code === 'KeyC') return INTENT_BUTTON.crouch;
     if (code === 'Space') return INTENT_BUTTON.primaryFire;
     if (code === 'KeyR') return INTENT_BUTTON.reload;
     if (code === 'KeyG') return INTENT_BUTTON.abilityOne;
@@ -1134,8 +1193,10 @@ async function mountSession(
   const updateInput = (): void => {
     client.setAxes(axesFromPressedKeys(pressedKeys));
     client.setCombatButtons(heldCombatButtons);
-    const lookDirection = Number(pressedKeys.has('KeyE')) - Number(pressedKeys.has('KeyQ'));
-    client.setLookDeltas(lookDirection * 1_500);
+    const lookYawDirection = Number(pressedKeys.has('KeyE')) - Number(pressedKeys.has('KeyQ'));
+    const lookPitchDirection = Number(pressedKeys.has('ArrowUp'))
+      - Number(pressedKeys.has('ArrowDown'));
+    client.setLookDeltas(lookYawDirection * 1_500, lookPitchDirection * 1_500);
     fireButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.primaryFire) !== 0);
     reloadButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.reload) !== 0);
     grenadeButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.abilityOne) !== 0);
@@ -1143,7 +1204,7 @@ async function mountSession(
   };
   const keyboardHandler = (event: KeyboardEvent): void => {
     const movementKey = ['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(event.code);
-    const lookKey = event.code === 'KeyQ' || event.code === 'KeyE';
+    const lookKey = ['KeyQ', 'KeyE', 'ArrowUp', 'ArrowDown'].includes(event.code);
     const combatMask = combatButton(event.code);
     if (!movementKey && !lookKey && combatMask === 0) return;
     event.preventDefault();
@@ -1366,6 +1427,12 @@ async function mountSession(
               ? `${actor} fired an accepted rifle shot`
               : event.kind === 'projectileSpawned'
                 ? `${actor} deployed an Impulse Grenade`
+                : event.kind === 'projectileCollided'
+                  ? `${actor}'s Impulse Grenade made contact`
+                  : event.kind === 'projectileDetonated'
+                    ? `${actor}'s Impulse Grenade detonated`
+                    : event.kind === 'impulseApplied'
+                      ? `${actor}'s Impulse Grenade displaced ${target}`
                 : event.kind === 'abilityActivated'
                   ? `${actor} ability confirmed`
                   : `${actor} · ${event.kind}`;

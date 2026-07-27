@@ -27,7 +27,9 @@ const browserLaunchArguments = Object.freeze([
   '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
 ]);
 const SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS = 0;
+const CROUCH_BUTTON_MASK = 1 << 2;
 const PRIMARY_FIRE_BUTTON_MASK = 1 << 3;
+const IMPULSE_GRENADE_BUTTON_MASK = 1 << 5;
 const ACCEPTABLE_REMOTE_INTERPOLATION_MODES = new Set([
   'authoritative',
   'interpolated',
@@ -102,6 +104,15 @@ const verifiedInkChannelCombatPair = Object.freeze({
   maximumSeparationMillimeters: 2_200,
   minimumVerticalMarginMillimeters: 90,
 });
+const verifiedInkChannelGrenadePair = Object.freeze({
+  west: Object.freeze({ x: 4_000, z: -15_000 }),
+  east: Object.freeze({ x: 5_500, z: -15_000 }),
+  arrivalToleranceMillimeters: 100,
+  minimumPulseMilliseconds: 40,
+  settleMilliseconds: 750,
+  maximumSeparationMillimeters: 2_000,
+  rationale: 'Both players remain on the supported south Ink bridge centerline while the shooter holds the authority crouch stance and throws at -7.5 degrees on the bridge-aligned 14 degree yaw, trapping the projectile between the opposing guard rails so it detonates inside the 11 m radial impulse.',
+});
 const sourceFiles = Object.freeze([
   'src/app/onlineAuthorityProfiles.ts',
   'src/app/onlineAuthorityGateway.ts',
@@ -115,6 +126,17 @@ const sourceFiles = Object.freeze([
   'src/client/netcode/remoteInterpolation.ts',
   'src/authority/room.ts',
   'src/authority/fixedTickScheduler.ts',
+  'src/authority/combat/abilityResources.ts',
+  'src/authority/combat/autoRifle.ts',
+  'src/authority/combat/impulseGrenade.ts',
+  'src/authority/combat/index.ts',
+  'src/authority/combat/inkfallRapierCombatWorld.ts',
+  'src/authority/combat/life.ts',
+  'src/authority/combat/loadoutRequest.ts',
+  'src/authority/combat/poseHistory.ts',
+  'src/authority/combat/rewindHitscan.ts',
+  'src/authority/combat/strictCombatData.ts',
+  'src/authority/combat/tdmMatch.ts',
   'src/physics/collisionLayers.ts',
   'src/physics/fixtureSchema.ts',
   'src/physics/fixtures/catalog.ts',
@@ -158,11 +180,18 @@ const sourceFiles = Object.freeze([
   'tests/worker/socketAttachmentCache.test.ts',
   'tests/worker/slowConsumerBackpressure.test.ts',
   'tests/worker/inkfallPopulation.test.ts',
+  'tests/worker/combatPresentationProjection.test.ts',
+  'tests/worker/combatRev3.test.ts',
+  'tests/worker/inkfallRev2CombatProfile.test.ts',
   'tests/integration/authority/inkfallAuthorityPlaytest.test.ts',
   'tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts',
+  'tests/unit/authority/combat/impulseGrenade.test.ts',
+  'tests/unit/authority/combat/roomImpulseGrenadeIntegration.test.ts',
   'tests/unit/authority/fixedTickScheduler.test.ts',
   'tests/unit/authority/combat/roomCombatIntegration.test.ts',
+  'tests/unit/client/combat/presentationWireBridge.test.ts',
   'tests/unit/dev/authorityEvidence.test.ts',
+  'tests/unit/net/combatPresentationReliableEvent.test.ts',
   'tests/unit/net/protocol-v2.test.ts',
   'tests/unit/worker/reliableEvents.test.ts',
   'tests/unit/worker/security.test.ts',
@@ -232,7 +261,7 @@ function commandOutput(command, args) {
 async function repositoryState() {
   const [head, rawStatus] = await Promise.all([
     commandOutput('git', ['rev-parse', 'HEAD']),
-    commandOutput('git', ['status', '--short', '--untracked-files=normal']),
+    commandOutput('git', ['status', '--short', '--untracked-files=all']),
   ]);
   const outputRelative = path.relative(repo, output).split(path.sep).join('/');
   const statusLines = rawStatus
@@ -438,6 +467,44 @@ function normalizeWireMessage(message, direction) {
             }]
           : [];
       });
+      const impulseGrenadeCommands = (message.commands ?? []).flatMap((command) => {
+        const held = (command.heldButtons & IMPULSE_GRENADE_BUTTON_MASK) !== 0;
+        const pressed = (command.pressedButtons & IMPULSE_GRENADE_BUTTON_MASK) !== 0;
+        const released = (command.releasedButtons & IMPULSE_GRENADE_BUTTON_MASK) !== 0;
+        return held || pressed || released
+          ? [{
+              sequence: command.sequence,
+              clientTick: command.clientTick,
+              held,
+              pressed,
+              released,
+            }]
+          : [];
+      });
+      const crouchCommands = (message.commands ?? []).flatMap((command) => {
+        const held = (command.heldButtons & CROUCH_BUTTON_MASK) !== 0;
+        const pressed = (command.pressedButtons & CROUCH_BUTTON_MASK) !== 0;
+        const released = (command.releasedButtons & CROUCH_BUTTON_MASK) !== 0;
+        return held || pressed || released
+          ? [{
+              sequence: command.sequence,
+              clientTick: command.clientTick,
+              held,
+              pressed,
+              released,
+            }]
+          : [];
+      });
+      const lookCommands = (message.commands ?? []).flatMap((command) => (
+        command.lookYawDeltaMilliDegrees !== 0 || command.lookPitchDeltaMilliDegrees !== 0
+          ? [{
+              sequence: command.sequence,
+              clientTick: command.clientTick,
+              yawMilliDegrees: command.lookYawDeltaMilliDegrees,
+              pitchMilliDegrees: command.lookPitchDeltaMilliDegrees,
+            }]
+          : []
+      ));
       return {
         ...base,
         commands: message.commands?.length ?? 0,
@@ -446,6 +513,9 @@ function normalizeWireMessage(message, direction) {
         firstClientTick: first?.clientTick ?? null,
         lastClientTick: last?.clientTick ?? null,
         primaryFireCommands,
+        impulseGrenadeCommands,
+        crouchCommands,
+        lookCommands,
       };
     }
     case 'inputAck':
@@ -708,6 +778,33 @@ async function face(page, targetYawMilliDegrees, toleranceMilliDegrees = 2_200) 
   })}`);
 }
 
+async function aimPitch(page, targetPitchMilliDegrees, toleranceMilliDegrees = 2_200) {
+  for (let attempt = 0; attempt < 20; attempt += 1) {
+    const current = await productSnapshot(page);
+    assert.notEqual(current, null);
+    const delta = targetPitchMilliDegrees - current.localPredictedPitchMilliDegrees;
+    if (Math.abs(delta) <= toleranceMilliDegrees) return current;
+    const key = delta > 0 ? 'ArrowUp' : 'ArrowDown';
+    const duration = Math.abs(delta) <= 4_500
+      ? 35
+      : Math.max(70, Math.min(700, Math.abs(delta) / 30_000 * 1_000));
+    await pulseKey(page, key, duration);
+    await delay(110);
+  }
+  const final = await productSnapshot(page);
+  assert.notEqual(final, null);
+  if (
+    Math.abs(targetPitchMilliDegrees - final.localPredictedPitchMilliDegrees)
+      <= toleranceMilliDegrees
+  ) return final;
+  throw new Error(`Failed to aim pitch ${targetPitchMilliDegrees}: ${JSON.stringify({
+    finalPitchMilliDegrees: final.localPredictedPitchMilliDegrees,
+    finalDeltaMilliDegrees:
+      targetPitchMilliDegrees - final.localPredictedPitchMilliDegrees,
+    toleranceMilliDegrees,
+  })}`);
+}
+
 async function moveTo(
   page,
   target,
@@ -868,7 +965,12 @@ async function faceEachOther(westPage, eastPage) {
   return Object.freeze({ westYaw, eastYaw });
 }
 
-async function stageVerifiedInkChannelCombatPair(westPage, eastPage, label) {
+async function stageVerifiedInkChannelCombatPair(
+  westPage,
+  eastPage,
+  label,
+  pair = verifiedInkChannelCombatPair,
+) {
   const [westBefore, eastBefore] = await Promise.all([
     productSnapshot(westPage),
     productSnapshot(eastPage),
@@ -876,20 +978,20 @@ async function stageVerifiedInkChannelCombatPair(westPage, eastPage, label) {
   await Promise.all([
     moveTo(
       westPage,
-      verifiedInkChannelCombatPair.west,
+      pair.west,
       `${label} west`,
-      verifiedInkChannelCombatPair.arrivalToleranceMillimeters,
-      verifiedInkChannelCombatPair.minimumPulseMilliseconds,
+      pair.arrivalToleranceMillimeters,
+      pair.minimumPulseMilliseconds,
     ),
     moveTo(
       eastPage,
-      verifiedInkChannelCombatPair.east,
+      pair.east,
       `${label} east`,
-      verifiedInkChannelCombatPair.arrivalToleranceMillimeters,
-      verifiedInkChannelCombatPair.minimumPulseMilliseconds,
+      pair.arrivalToleranceMillimeters,
+      pair.minimumPulseMilliseconds,
     ),
   ]);
-  await delay(verifiedInkChannelCombatPair.settleMilliseconds);
+  await delay(pair.settleMilliseconds);
   const [westAfter, eastAfter] = await Promise.all([
     productSnapshot(westPage),
     productSnapshot(eastPage),
@@ -903,8 +1005,8 @@ async function stageVerifiedInkChannelCombatPair(westPage, eastPage, label) {
       westAfter.localPredictedPosition,
       eastAfter.localPredictedPosition,
     ),
-    westTarget: verifiedInkChannelCombatPair.west,
-    eastTarget: verifiedInkChannelCombatPair.east,
+    westTarget: pair.west,
+    eastTarget: pair.east,
     westPosition: westAfter.localPredictedPosition,
     eastPosition: eastAfter.localPredictedPosition,
   });
@@ -1986,6 +2088,267 @@ try {
   const presentationAtDamage = await presentationMarkerProof(first.page);
   assertPresentationMarker(presentationAtDamage, 'body', 1);
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-04-confirmed-body-hit.png'), fullPage: true });
+
+  const grenadeConvergence = await stageVerifiedInkChannelCombatPair(
+    first.page,
+    second.page,
+    'pre-grenade verified Ink Channel setup',
+    verifiedInkChannelGrenadePair,
+  );
+  assert.ok(
+    grenadeConvergence.afterSeparationMillimeters
+      <= verifiedInkChannelGrenadePair.maximumSeparationMillimeters,
+  );
+  const grenadeStanceWireSequence = wireSequence;
+  await first.page.keyboard.down('KeyC');
+  await delay(250);
+  const grenadeAimWireSequence = wireSequence;
+  const grenadeYaw = await face(first.page, 14_000, 800);
+  const grenadePitch = await aimPitch(first.page, -7_500, 800);
+  await face(second.page, -90_000, 2_200);
+  await delay(180);
+  const [grenadeShooterBefore, grenadeVictimBefore] = await Promise.all([
+    productSnapshot(first.page),
+    productSnapshot(second.page),
+  ]);
+  const grenadeAimInputCommands = first.wire.flatMap(({ sequence, direction, message }) => (
+    sequence >= grenadeAimWireSequence
+      && direction === 'sent'
+      && message.type === 'inputBatch'
+      ? message.lookCommands
+      : []
+  ));
+  assert.ok(grenadeAimInputCommands.some(({ pitchMilliDegrees }) => pitchMilliDegrees < 0));
+  assert.ok(Math.abs(grenadeShooterBefore.localPredictedYawMilliDegrees - 14_000) <= 800);
+  assert.ok(
+    Math.abs(grenadeShooterBefore.localPredictedPitchMilliDegrees - (-7_500)) <= 800,
+  );
+  const grenadeThrowCountBefore = localCombatPlayer(grenadeShooterBefore).acceptedThrowCount;
+  const grenadeWireSequence = wireSequence;
+  const grenadeRequestedAtMilliseconds = Date.now();
+  await first.page.getByTestId('online-grenade').click();
+  await first.page.waitForFunction((acceptedThrowCount) => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    const local = value?.combat.snapshot?.players.find(({ playerId }) => (
+      playerId === value.playerId
+    ));
+    return (local?.acceptedThrowCount ?? 0) > acceptedThrowCount
+      && (value?.combat.snapshot?.projectiles.length ?? 0) > 0;
+  }, grenadeThrowCountBefore, { timeout: 8_000 });
+  const grenadeThrowSnapshot = await productSnapshot(first.page);
+  const grenadeThrowProjectile = grenadeThrowSnapshot.combat.snapshot.projectiles.find((projectile) => (
+    projectile.ownerPlayerId === grenadeThrowSnapshot.playerId
+  ));
+  assert.notEqual(grenadeThrowProjectile, undefined);
+
+  const grenadeWireEvents = (client) => client.wire.flatMap((record) => (
+    record.sequence >= grenadeWireSequence
+      && record.direction === 'received'
+      && record.message.type === 'reliableEventBatch'
+      ? record.message.events
+        .filter(({ presentation }) => presentation?.kind?.startsWith('impulse_grenade_'))
+        .map((event) => Object.freeze({ record, event }))
+      : []
+  ));
+  const grenadeEventOfKind = (client, kind) => (
+    grenadeWireEvents(client).find(({ event }) => event.presentation.kind === kind) ?? null
+  );
+  const throwDeliveryDeadline = Date.now() + 5_000;
+  while (
+    Date.now() < throwDeliveryDeadline
+    && (
+      grenadeEventOfKind(first, 'impulse_grenade_throw_accepted') === null
+      || grenadeEventOfKind(second, 'impulse_grenade_throw_accepted') === null
+    )
+  ) await delay(25);
+  const grenadeThrowReliableEvent = grenadeEventOfKind(
+    first,
+    'impulse_grenade_throw_accepted',
+  )?.event ?? null;
+  assert.notEqual(grenadeThrowReliableEvent, null);
+  assert.equal(grenadeThrowReliableEvent.kind, 'projectileSpawned');
+  assert.equal(grenadeThrowReliableEvent.actorId, grenadeThrowSnapshot.playerId);
+  assert.equal(
+    grenadeThrowReliableEvent.presentation.projectileId,
+    grenadeThrowProjectile.projectileId,
+  );
+  await first.page.waitForFunction((eventId) => (
+    globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot().presentation.recentCues
+      .some((cue) => cue.cue === 'grenade_throw' && cue.authorityEventId === eventId)
+  ), grenadeThrowReliableEvent.presentation.eventId, { timeout: 5_000 });
+  await first.page.screenshot({
+    path: path.join(screenshotDirectory, 'p515-04a-grenade-throw-accepted.png'),
+    fullPage: true,
+  });
+
+  await first.page.waitForFunction((projectileId) => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    const projectile = value?.combat.snapshot?.projectiles.find((candidate) => (
+      candidate.projectileId === projectileId
+    ));
+    return projectile !== undefined && projectile.fuseStartedAtTick !== null;
+  }, grenadeThrowProjectile.projectileId, { timeout: 5_000 });
+  const grenadeCollisionSnapshot = await productSnapshot(first.page);
+  const grenadeCollisionReliableEvent = grenadeEventOfKind(
+    first,
+    'impulse_grenade_collision',
+  )?.event ?? null;
+  assert.notEqual(grenadeCollisionReliableEvent, null);
+  assert.equal(grenadeCollisionReliableEvent.kind, 'projectileCollided');
+  assert.equal(grenadeCollisionReliableEvent.presentation.damageHealthPoints, undefined);
+  assert.equal(
+    grenadeCollisionReliableEvent.presentation.projectileId,
+    grenadeThrowProjectile.projectileId,
+  );
+  await first.page.waitForFunction((eventId) => (
+    globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot().presentation.recentCues
+      .some((cue) => cue.cue === 'grenade_collision' && cue.authorityEventId === eventId)
+  ), grenadeCollisionReliableEvent.presentation.eventId, { timeout: 5_000 });
+  await first.page.screenshot({
+    path: path.join(screenshotDirectory, 'p515-04b-grenade-collision-fuse.png'),
+    fullPage: true,
+  });
+
+  await first.page.waitForFunction((projectileId) => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    const recentKinds = new Set(value?.combat.recentEvents.flatMap(({ presentation }) => (
+      presentation === undefined ? [] : [presentation.kind]
+    )));
+    return !value?.combat.snapshot?.projectiles.some((projectile) => (
+      projectile.projectileId === projectileId
+    ))
+      && recentKinds.has('impulse_grenade_detonated')
+      && recentKinds.has('impulse_grenade_impulse_applied')
+      && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_detonation')
+      && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_impulse');
+  }, grenadeThrowProjectile.projectileId, { timeout: 10_000 });
+  const grenadeDeliveryDeadline = Date.now() + 5_000;
+  while (
+    Date.now() < grenadeDeliveryDeadline
+    && clients.slice(0, 2).some((client) => (
+      grenadeEventOfKind(client, 'impulse_grenade_detonated') === null
+      || grenadeEventOfKind(client, 'impulse_grenade_impulse_applied') === null
+    ))
+  ) await delay(25);
+  const grenadeFirstEvents = grenadeWireEvents(first).map(({ event }) => event);
+  const grenadeUniqueEvents = [
+    ...new Map(grenadeFirstEvents.map((event) => [event.presentation.eventId, event])).values(),
+  ];
+  const grenadeEventsByKind = Object.groupBy(
+    grenadeUniqueEvents,
+    ({ presentation }) => presentation.kind,
+  );
+  assert.equal(grenadeEventsByKind.impulse_grenade_throw_accepted?.length, 1);
+  assert.ok((grenadeEventsByKind.impulse_grenade_collision?.length ?? 0) >= 1);
+  assert.equal(grenadeEventsByKind.impulse_grenade_detonated?.length, 1);
+  assert.ok((grenadeEventsByKind.impulse_grenade_impulse_applied?.length ?? 0) >= 1);
+  const grenadeDetonationReliableEvent = grenadeEventsByKind.impulse_grenade_detonated[0];
+  const grenadeImpulseReliableEvents = grenadeEventsByKind.impulse_grenade_impulse_applied;
+  assert.equal(grenadeDetonationReliableEvent.kind, 'projectileDetonated');
+  assert.equal(grenadeDetonationReliableEvent.presentation.damageHealthPoints, 0);
+  assert.equal(grenadeDetonationReliableEvent.presentation.areaRadiusMillimeters, 11_000);
+  assert.ok(grenadeImpulseReliableEvents.every((event) => (
+    event.kind === 'impulseApplied'
+    && event.presentation.damageHealthPoints === 0
+    && Math.hypot(
+      event.presentation.appliedImpulseMillimetersPerSecond.x,
+      event.presentation.appliedImpulseMillimetersPerSecond.y,
+      event.presentation.appliedImpulseMillimetersPerSecond.z,
+    ) <= Math.hypot(
+      event.presentation.requestedImpulseMillimetersPerSecond.x,
+      event.presentation.requestedImpulseMillimetersPerSecond.y,
+      event.presentation.requestedImpulseMillimetersPerSecond.z,
+    )
+  )));
+  const grenadeVictimImpulse = grenadeImpulseReliableEvents.find(({ targetId, presentation }) => (
+    targetId === grenadeVictimBefore.playerId && presentation.relation === 'enemy'
+  ));
+  assert.notEqual(grenadeVictimImpulse, undefined);
+  assert.ok(Math.hypot(
+    grenadeVictimImpulse.presentation.appliedImpulseMillimetersPerSecond.x,
+    grenadeVictimImpulse.presentation.appliedImpulseMillimetersPerSecond.y,
+    grenadeVictimImpulse.presentation.appliedImpulseMillimetersPerSecond.z,
+  ) > 0);
+
+  await delay(300);
+  const [grenadeShooterAfter, grenadeVictimAfter] = await Promise.all([
+    productSnapshot(first.page),
+    productSnapshot(second.page),
+  ]);
+  assert.equal(
+    localCombatPlayer(grenadeShooterAfter).healthPoints,
+    localCombatPlayer(grenadeShooterBefore).healthPoints,
+  );
+  assert.equal(
+    localCombatPlayer(grenadeVictimAfter).healthPoints,
+    localCombatPlayer(grenadeVictimBefore).healthPoints,
+  );
+  assert.equal(
+    grenadeShooterAfter.combat.snapshot.projectiles
+      .some(({ projectileId }) => projectileId === grenadeThrowProjectile.projectileId),
+    false,
+  );
+  const grenadeVictimDisplacementMillimeters = Math.hypot(
+    grenadeVictimAfter.localPredictedPosition.x - grenadeVictimBefore.localPredictedPosition.x,
+    grenadeVictimAfter.localPredictedPosition.y - grenadeVictimBefore.localPredictedPosition.y,
+    grenadeVictimAfter.localPredictedPosition.z - grenadeVictimBefore.localPredictedPosition.z,
+  );
+  assert.ok(grenadeVictimDisplacementMillimeters >= 100);
+
+  const grenadeInputCommands = first.wire.flatMap(({ sequence, direction, message }) => (
+    sequence >= grenadeWireSequence
+      && direction === 'sent'
+      && message.type === 'inputBatch'
+      ? message.impulseGrenadeCommands
+      : []
+  ));
+  assert.ok(grenadeInputCommands.some(({ pressed }) => pressed));
+  assert.ok(grenadeInputCommands.some(({ released }) => released));
+
+  const grenadeLogicalDeliveries = await Promise.all(clients.slice(0, 2).map(async (client) => {
+    const snapshot = await productSnapshot(client.page);
+    const deliveries = grenadeUniqueEvents.map((event) => {
+      const wireOccurrences = grenadeWireEvents(client).filter((candidate) => (
+        candidate.event.presentation.eventId === event.presentation.eventId
+      )).length;
+      const logicalCueOccurrences = snapshot.presentation.recentCues.filter((cue) => (
+        cue.authorityEventId === event.presentation.eventId
+      )).length;
+      assert.ok(wireOccurrences >= 1);
+      assert.equal(logicalCueOccurrences, 1);
+      return Object.freeze({
+        eventId: event.presentation.eventId,
+        semanticKind: event.presentation.kind,
+        wireOccurrences,
+        logicalCueOccurrences,
+      });
+    });
+    assert.equal(snapshot.presentation.duplicateAuthorityEvents, 0);
+    assert.equal(snapshot.presentation.staleAuthorityEvents, 0);
+    return Object.freeze({ clientId: client.clientId, deliveries });
+  }));
+  const grenadePresentation = await presentationMarkerProof(first.page);
+  assertPresentationMarker(grenadePresentation, 'grenade_impulse', 4);
+  await first.page.screenshot({
+    path: path.join(screenshotDirectory, 'p515-04c-grenade-impulse-confirmed.png'),
+    fullPage: true,
+  });
+  await first.page.keyboard.up('KeyC');
+  await delay(180);
+  const grenadeStanceWireSequenceEnd = wireSequence;
+  const grenadeStanceInputCommands = first.wire.flatMap(({ sequence, direction, message }) => (
+    sequence >= grenadeStanceWireSequence
+      && sequence < grenadeStanceWireSequenceEnd
+      && direction === 'sent'
+      && message.type === 'inputBatch'
+      ? message.crouchCommands
+      : []
+  ));
+  assert.ok(grenadeStanceInputCommands.some(({ pressed, held }) => pressed && held));
+  assert.ok(grenadeStanceInputCommands.some(({ released, held }) => released && !held));
+  const grenadePitchReset = await aimPitch(first.page, 0, 2_200);
+  assert.ok(Math.abs(grenadePitchReset.localPredictedPitchMilliDegrees) <= 2_200);
+
   const lethalConvergence = await stageVerifiedInkChannelCombatPair(
     first.page,
     second.page,
@@ -2241,7 +2604,7 @@ try {
     phase: 'P5.15',
     capturedAt: new Date().toISOString(),
     status: 'BOUNDED_PASS',
-    gateClaim: 'G3_NOT_CLAIMED_G4_NOT_CLAIMED_G5_NOT_CLAIMED',
+    gateClaim: 'G3_G4_ACCEPTANCE_CANDIDATE_G5_NOT_CLAIMED',
     topology: {
       route: '/online',
       frontendOrigin: FRONTEND_ORIGIN,
@@ -2322,6 +2685,55 @@ try {
       playerKilledReliableDeliveryClientsAtEvent: reliableKillClients,
       confirmedPresentationAtDamage: presentationAtDamage,
       confirmedPresentationAtDeath: presentationAtDeath,
+      impulseGrenade: {
+        setupContract: verifiedInkChannelGrenadePair,
+        setupConvergence: grenadeConvergence,
+        aim: {
+          targetYawMilliDegrees: 14_000,
+          targetPitchMilliDegrees: -7_500,
+          finalYawMilliDegrees: grenadeYaw.localPredictedYawMilliDegrees,
+          finalPitchMilliDegrees: grenadePitch.localPredictedPitchMilliDegrees,
+          wireSequenceStart: grenadeAimWireSequence,
+          inputCommands: grenadeAimInputCommands,
+          resetPitchMilliDegrees: grenadePitchReset.localPredictedPitchMilliDegrees,
+        },
+        stance: {
+          key: 'KeyC',
+          buttonMask: CROUCH_BUTTON_MASK,
+          wireSequenceStart: grenadeStanceWireSequence,
+          wireSequenceEnd: grenadeStanceWireSequenceEnd,
+          inputCommands: grenadeStanceInputCommands,
+        },
+        wireSequenceStart: grenadeWireSequence,
+        requestedAtMilliseconds: grenadeRequestedAtMilliseconds,
+        inputCommands: grenadeInputCommands,
+        throwCountBefore: grenadeThrowCountBefore,
+        throwCountAfter: localCombatPlayer(grenadeThrowSnapshot).acceptedThrowCount,
+        projectileAtThrow: grenadeThrowProjectile,
+        projectileAtCollision: grenadeCollisionSnapshot.combat.snapshot.projectiles.find(
+          ({ projectileId }) => projectileId === grenadeThrowProjectile.projectileId,
+        ),
+        projectileRemovedAfterDetonation: true,
+        shooterHealthBefore: localCombatPlayer(grenadeShooterBefore).healthPoints,
+        shooterHealthAfter: localCombatPlayer(grenadeShooterAfter).healthPoints,
+        victimHealthBefore: localCombatPlayer(grenadeVictimBefore).healthPoints,
+        victimHealthAfter: localCombatPlayer(grenadeVictimAfter).healthPoints,
+        victimPositionBefore: grenadeVictimBefore.localPredictedPosition,
+        victimPositionAfter: grenadeVictimAfter.localPredictedPosition,
+        victimDisplacementMillimeters: grenadeVictimDisplacementMillimeters,
+        throwReliableEvent: grenadeThrowReliableEvent,
+        collisionReliableEvent: grenadeCollisionReliableEvent,
+        detonationReliableEvent: grenadeDetonationReliableEvent,
+        impulseReliableEvents: grenadeImpulseReliableEvents,
+        semanticEvents: grenadeUniqueEvents,
+        logicalDeliveries: grenadeLogicalDeliveries,
+        confirmedPresentation: grenadePresentation,
+        presentationHistory: grenadeShooterAfter.presentation.recentCues.filter((cue) => (
+          grenadeUniqueEvents.some((event) => (
+            event.presentation.eventId === cue.authorityEventId
+          ))
+        )),
+      },
       teleport: {
         beforePosition: teleportBefore.localPredictedPosition,
         afterPosition: teleportAfter.localPredictedPosition,
@@ -2377,7 +2789,7 @@ try {
     },
     knownLimits: [
       'This capture is bounded product/browser evidence, not broad playtest acceptance.',
-      'This capture does not close G3, G4, or G5.',
+      'This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.',
       'Inkfall revision-2 players begin with zero shield; no synthetic shield cue is manufactured.',
       'Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.',
       'Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.',
@@ -2406,7 +2818,7 @@ try {
     death: `${victimAtDeath.lifePhase} / ${victimAtDeath.healthPoints} HP`,
     score: deathShooter.combat.snapshot.match.teamScores.map(({ teamId, score }) => `${teamId} ${score}`).join(' · '),
     feedSequence: deathShooter.combat.snapshot.match.feedSequence,
-    presentationCues: `${presentationAtDamage.diagnostics.lastCue} → ${presentationAtDeath.diagnostics.lastCue} → ${teleportPresentation.diagnostics.lastCue}`,
+    presentationCues: `${presentationAtDamage.diagnostics.lastCue} → ${grenadePresentation.diagnostics.lastCue} → ${presentationAtDeath.diagnostics.lastCue} → ${teleportPresentation.diagnostics.lastCue}`,
     samePlayer: proofCore.resume.samePlayerId,
     tokenRotated: proofCore.resume.resumeTokenRotated,
     statePreserved: proofCore.resume.scorePreserved && proofCore.resume.feedSequencePreserved,

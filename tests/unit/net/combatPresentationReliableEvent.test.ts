@@ -76,6 +76,105 @@ describe('versioned reliable combat presentation payload', () => {
     }))).toMatchObject({ ok: true });
   });
 
+  it('accepts exact Impulse Grenade lifecycle semantics with truthful projections', () => {
+    const grenadeEvents = [
+      {
+        id: 'event.3',
+        serverTick: 50,
+        kind: 'projectileSpawned',
+        subjectId: 'grenade.spawn.1',
+        actorId: 'player_A',
+        targetId: null,
+        amountHealthPoints: null,
+        presentation: {
+          schemaVersion: 1,
+          kind: 'impulse_grenade_throw_accepted',
+          eventId: 'grenade.spawn.1',
+          authorityTick: 50,
+          playerId: 'player_A',
+          abilityId: 'vertical_impulse_grenade_v1',
+          throwOrdinal: 1,
+          projectileId: 'grenade.projectile.1',
+          cooldownEndsAtTick: 290,
+        },
+      },
+      {
+        id: 'event.4',
+        serverTick: 51,
+        kind: 'projectileCollided',
+        subjectId: 'grenade.collision.1',
+        actorId: 'player_A',
+        targetId: 'player_B',
+        amountHealthPoints: null,
+        presentation: {
+          schemaVersion: 1,
+          kind: 'impulse_grenade_collision',
+          eventId: 'grenade.collision.1',
+          authorityTick: 51,
+          projectileId: 'grenade.projectile.1',
+          ownerPlayerId: 'player_A',
+          colliderId: 'player.collider.B',
+          layer: 'player_body',
+          playerId: 'player_B',
+          timeOfImpactPermille: 500,
+          bounceCount: 1,
+          fuseStartedAtTick: 51,
+          detonatesAtTick: 81,
+          settled: false,
+        },
+      },
+      {
+        id: 'event.5',
+        serverTick: 81,
+        kind: 'projectileDetonated',
+        subjectId: 'grenade.detonation.1',
+        actorId: 'player_A',
+        targetId: null,
+        amountHealthPoints: null,
+        presentation: {
+          schemaVersion: 1,
+          kind: 'impulse_grenade_detonated',
+          eventId: 'grenade.detonation.1',
+          authorityTick: 81,
+          projectileId: 'grenade.projectile.1',
+          ownerPlayerId: 'player_A',
+          ownerTeamId: 'team_blue',
+          reason: 'fuse',
+          positionMillimeters: { x: 0, y: 1_000, z: 3_000 },
+          areaRadiusMillimeters: 11_000,
+          damageHealthPoints: 0,
+        },
+      },
+      {
+        id: 'event.6',
+        serverTick: 81,
+        kind: 'impulseApplied',
+        subjectId: 'grenade.impulse.1',
+        actorId: 'player_A',
+        targetId: 'player_B',
+        amountHealthPoints: null,
+        presentation: {
+          schemaVersion: 1,
+          kind: 'impulse_grenade_impulse_applied',
+          eventId: 'grenade.impulse.1',
+          authorityTick: 81,
+          projectileId: 'grenade.projectile.1',
+          ownerPlayerId: 'player_A',
+          targetPlayerId: 'player_B',
+          relation: 'enemy',
+          distanceMillimeters: 3_000,
+          falloffPermille: 727,
+          requestedImpulseMillimetersPerSecond: { x: 0, y: 2_000, z: 4_500 },
+          appliedImpulseMillimetersPerSecond: { x: 0, y: 2_000, z: 4_500 },
+          damageHealthPoints: 0,
+        },
+      },
+    ];
+    for (const event of grenadeEvents) {
+      expect(validateServerMessage(batch(event))).toMatchObject({ ok: true });
+    }
+  });
+
   it.each([
     ['unknown nested field', {
       ...explicitDamage,
@@ -97,6 +196,26 @@ describe('versioned reliable combat presentation payload', () => {
     ['unknown semantic kind', {
       ...explicitDamage,
       presentation: { ...explicitDamage.presentation, kind: 'kill_claimed_by_client' },
+    }],
+    ['wrong grenade projection kind', {
+      id: 'event.7',
+      serverTick: 50,
+      kind: 'abilityActivated',
+      subjectId: 'grenade.spawn.2',
+      actorId: 'player_A',
+      targetId: null,
+      amountHealthPoints: null,
+      presentation: {
+        schemaVersion: 1,
+        kind: 'impulse_grenade_throw_accepted',
+        eventId: 'grenade.spawn.2',
+        authorityTick: 50,
+        playerId: 'player_A',
+        abilityId: 'vertical_impulse_grenade_v1',
+        throwOrdinal: 2,
+        projectileId: 'grenade.projectile.2',
+        cooldownEndsAtTick: 290,
+      },
     }],
   ])('rejects %s fail closed', (_label, event) => {
     expect(validateServerMessage(batch(event))).toMatchObject({ ok: false });

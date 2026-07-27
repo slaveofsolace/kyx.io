@@ -129,6 +129,102 @@ function teleportEvent(sequence: number): ReliableEvent {
   };
 }
 
+function grenadeEvent(
+  sequence: number,
+  kind: 'throw' | 'collision' | 'detonation' | 'impulse',
+): ReliableEvent {
+  const serverTick = 10 + sequence;
+  const eventId = `grenade.${kind}.${sequence}`;
+  const base = {
+    id: `event.${sequence}`,
+    serverTick,
+    subjectId: eventId,
+    actorId: 'player_A',
+    amountHealthPoints: null,
+  } as const;
+  if (kind === 'throw') {
+    return {
+      ...base,
+      kind: 'projectileSpawned',
+      targetId: null,
+      presentation: {
+        schemaVersion: 1,
+        kind: 'impulse_grenade_throw_accepted',
+        eventId,
+        authorityTick: serverTick,
+        playerId: 'player_A',
+        abilityId: 'vertical_impulse_grenade_v1',
+        throwOrdinal: 1,
+        projectileId: 'grenade.projectile.1',
+        cooldownEndsAtTick: serverTick + 240,
+      },
+    };
+  }
+  if (kind === 'collision') {
+    return {
+      ...base,
+      kind: 'projectileCollided',
+      targetId: 'player_B',
+      presentation: {
+        schemaVersion: 1,
+        kind: 'impulse_grenade_collision',
+        eventId,
+        authorityTick: serverTick,
+        projectileId: 'grenade.projectile.1',
+        ownerPlayerId: 'player_A',
+        colliderId: 'player.collider.B',
+        layer: 'player_body',
+        playerId: 'player_B',
+        timeOfImpactPermille: 500,
+        bounceCount: 1,
+        fuseStartedAtTick: serverTick,
+        detonatesAtTick: serverTick + 30,
+        settled: false,
+      },
+    };
+  }
+  if (kind === 'detonation') {
+    return {
+      ...base,
+      kind: 'projectileDetonated',
+      targetId: null,
+      presentation: {
+        schemaVersion: 1,
+        kind: 'impulse_grenade_detonated',
+        eventId,
+        authorityTick: serverTick,
+        projectileId: 'grenade.projectile.1',
+        ownerPlayerId: 'player_A',
+        ownerTeamId: 'team_blue',
+        reason: 'fuse',
+        positionMillimeters: { x: 0, y: 1_000, z: 3_000 },
+        areaRadiusMillimeters: 11_000,
+        damageHealthPoints: 0,
+      },
+    };
+  }
+  return {
+    ...base,
+    kind: 'impulseApplied',
+    targetId: 'player_B',
+    presentation: {
+      schemaVersion: 1,
+      kind: 'impulse_grenade_impulse_applied',
+      eventId,
+      authorityTick: serverTick,
+      projectileId: 'grenade.projectile.1',
+      ownerPlayerId: 'player_A',
+      targetPlayerId: 'player_B',
+      relation: 'enemy',
+      distanceMillimeters: 3_000,
+      falloffPermille: 727,
+      requestedImpulseMillimetersPerSecond: { x: 0, y: 2_000, z: 4_500 },
+      appliedImpulseMillimetersPerSecond: { x: 0, y: 2_000, z: 4_500 },
+      damageHealthPoints: 0,
+    },
+  };
+}
+
 describe('reliable-wire combat presentation bridge', () => {
   it.each([
     {
@@ -169,6 +265,63 @@ describe('reliable-wire combat presentation bridge', () => {
     expect(applied.intents[0]?.markers.hud).not.toBeNull();
     expect(applied.intents[0]?.markers.audio).not.toBeNull();
     expect(applied.intents[0]?.markers.vfx).not.toBeNull();
+  });
+
+  it.each([
+    {
+      label: 'throw',
+      event: grenadeEvent(7, 'throw'),
+      markers: COMBAT_PRESENTATION_MARKERS_V1.grenadeThrowAccepted,
+      hasHud: true,
+      source: 'accepted',
+    },
+    {
+      label: 'collision',
+      event: grenadeEvent(8, 'collision'),
+      markers: COMBAT_PRESENTATION_MARKERS_V1.grenadeCollision,
+      hasHud: false,
+      source: 'confirmed',
+    },
+    {
+      label: 'detonation',
+      event: grenadeEvent(9, 'detonation'),
+      markers: COMBAT_PRESENTATION_MARKERS_V1.grenadeDetonation,
+      hasHud: false,
+      source: 'confirmed',
+    },
+    {
+      label: 'impulse',
+      event: grenadeEvent(10, 'impulse'),
+      markers: COMBAT_PRESENTATION_MARKERS_V1.grenadeImpulse,
+      hasHud: true,
+      source: 'confirmed',
+    },
+  ])('emits exact authoritative grenade $label presentation intents', ({
+    event,
+    markers,
+    hasHud,
+    source,
+  }) => {
+    const applied = applyCombatPresentationReliableEvent(adapter(), event);
+    expect(applied.status).toBe('applied');
+    expect(applied.intents).toHaveLength(1);
+    expect(applied.intents[0]).toMatchObject({
+      source,
+      authorityEventId: event.presentation?.eventId,
+      markers,
+    });
+    expect(applied.intents[0]?.markers.audio).not.toBeNull();
+    expect(applied.intents[0]?.markers.vfx).not.toBeNull();
+    expect(applied.intents[0]?.markers.hud === null).toBe(!hasHud);
+  });
+
+  it('deduplicates a resent grenade consequence without replaying presentation', () => {
+    const event = grenadeEvent(11, 'impulse');
+    const first = applyCombatPresentationReliableEvent(adapter(), event);
+    const duplicate = applyCombatPresentationReliableEvent(first.adapter, event);
+    expect(first.intents).toHaveLength(1);
+    expect(duplicate.intents).toEqual([]);
+    expect(duplicate.adapter.metrics.duplicateAuthorityEvents).toBe(1);
   });
 
   it('fails closed on unknown fields, unknown semantics, and conflicting projections', () => {

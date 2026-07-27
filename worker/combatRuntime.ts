@@ -483,39 +483,112 @@ export function reliableCombatEvents(
   }
   for (const event of tick.impulseGrenadeEvents ?? []) {
     if (event.kind === 'impulse_grenade_throw_accepted') {
+      const wireEventId = combatWireId(event.eventId);
+      const wireProjectileId = combatWireId(event.projectileId);
       events.push(Object.freeze({
         serverTick: event.authorityTick,
         kind: 'projectileSpawned',
-        subjectId: combatWireId(event.projectileId),
+        subjectId: wireEventId,
         actorId: event.playerId,
         targetId: null,
         amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: event.kind,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          playerId: event.playerId,
+          abilityId: event.abilityId,
+          throwOrdinal: event.throwOrdinal,
+          projectileId: wireProjectileId,
+          cooldownEndsAtTick: event.cooldownEndsAtTick,
+        }),
       }));
       events.push(Object.freeze({
         serverTick: event.authorityTick,
         kind: 'cooldownStarted',
-        subjectId: combatWireId(event.eventId),
+        subjectId: wireEventId,
         actorId: event.playerId,
         targetId: null,
         amountHealthPoints: null,
       }));
-    } else if (event.kind === 'impulse_grenade_detonated') {
+    } else if (event.kind === 'impulse_grenade_collision') {
+      const wireEventId = combatWireId(event.eventId);
       events.push(Object.freeze({
         serverTick: event.authorityTick,
-        kind: 'abilityActivated',
-        subjectId: combatWireId(event.eventId),
+        kind: 'projectileCollided',
+        subjectId: wireEventId,
+        actorId: event.ownerPlayerId,
+        targetId: event.playerId,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: event.kind,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          projectileId: combatWireId(event.projectileId),
+          ownerPlayerId: event.ownerPlayerId,
+          colliderId: combatWireId(event.colliderId),
+          layer: event.layer,
+          playerId: event.playerId,
+          timeOfImpactPermille: event.timeOfImpactPermille,
+          bounceCount: event.bounceCount,
+          fuseStartedAtTick: event.fuseStartedAtTick,
+          detonatesAtTick: event.detonatesAtTick,
+          settled: event.settled,
+        }),
+      }));
+    } else if (event.kind === 'impulse_grenade_detonated') {
+      const wireEventId = combatWireId(event.eventId);
+      events.push(Object.freeze({
+        serverTick: event.authorityTick,
+        kind: 'projectileDetonated',
+        subjectId: wireEventId,
         actorId: event.ownerPlayerId,
         targetId: null,
         amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: event.kind,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          projectileId: combatWireId(event.projectileId),
+          ownerPlayerId: event.ownerPlayerId,
+          ownerTeamId: event.ownerTeamId,
+          reason: event.reason,
+          positionMillimeters: Object.freeze({ ...event.positionMillimeters }),
+          areaRadiusMillimeters: event.areaRadiusMillimeters,
+          damageHealthPoints: event.damageHealthPoints,
+        }),
       }));
     } else if (event.kind === 'impulse_grenade_impulse_applied') {
+      const wireEventId = combatWireId(event.eventId);
       events.push(Object.freeze({
         serverTick: event.authorityTick,
-        kind: 'abilityActivated',
-        subjectId: combatWireId(event.eventId),
+        kind: 'impulseApplied',
+        subjectId: wireEventId,
         actorId: event.ownerPlayerId,
         targetId: event.targetPlayerId,
         amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: event.kind,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          projectileId: combatWireId(event.projectileId),
+          ownerPlayerId: event.ownerPlayerId,
+          targetPlayerId: event.targetPlayerId,
+          relation: event.relation,
+          distanceMillimeters: event.distanceMillimeters,
+          falloffPermille: event.falloffPermille,
+          requestedImpulseMillimetersPerSecond: Object.freeze({
+            ...event.requestedImpulseMillimetersPerSecond,
+          }),
+          appliedImpulseMillimetersPerSecond: Object.freeze({
+            ...event.appliedImpulseMillimetersPerSecond,
+          }),
+          damageHealthPoints: event.damageHealthPoints,
+        }),
       }));
     }
   }

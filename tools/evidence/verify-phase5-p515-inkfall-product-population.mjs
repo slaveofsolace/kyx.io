@@ -68,6 +68,9 @@ const expectedScreenshots = [
   'screenshots/p515-02-client-1-two-rendered.png',
   'screenshots/p515-03-real-occlusion.png',
   'screenshots/p515-04-confirmed-body-hit.png',
+  'screenshots/p515-04a-grenade-throw-accepted.png',
+  'screenshots/p515-04b-grenade-collision-fuse.png',
+  'screenshots/p515-04c-grenade-impulse-confirmed.png',
   'screenshots/p515-05-authoritative-death-score.png',
   'screenshots/p515-06-confirmed-teleport.png',
   'screenshots/p515-07-resume-preserved-state.png',
@@ -89,6 +92,17 @@ const expectedSourceFiles = [
   'src/client/netcode/remoteInterpolation.ts',
   'src/authority/room.ts',
   'src/authority/fixedTickScheduler.ts',
+  'src/authority/combat/abilityResources.ts',
+  'src/authority/combat/autoRifle.ts',
+  'src/authority/combat/impulseGrenade.ts',
+  'src/authority/combat/index.ts',
+  'src/authority/combat/inkfallRapierCombatWorld.ts',
+  'src/authority/combat/life.ts',
+  'src/authority/combat/loadoutRequest.ts',
+  'src/authority/combat/poseHistory.ts',
+  'src/authority/combat/rewindHitscan.ts',
+  'src/authority/combat/strictCombatData.ts',
+  'src/authority/combat/tdmMatch.ts',
   'src/physics/collisionLayers.ts',
   'src/physics/fixtureSchema.ts',
   'src/physics/fixtures/catalog.ts',
@@ -132,11 +146,18 @@ const expectedSourceFiles = [
   'tests/worker/socketAttachmentCache.test.ts',
   'tests/worker/slowConsumerBackpressure.test.ts',
   'tests/worker/inkfallPopulation.test.ts',
+  'tests/worker/combatPresentationProjection.test.ts',
+  'tests/worker/combatRev3.test.ts',
+  'tests/worker/inkfallRev2CombatProfile.test.ts',
   'tests/integration/authority/inkfallAuthorityPlaytest.test.ts',
   'tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts',
+  'tests/unit/authority/combat/impulseGrenade.test.ts',
+  'tests/unit/authority/combat/roomImpulseGrenadeIntegration.test.ts',
   'tests/unit/authority/fixedTickScheduler.test.ts',
   'tests/unit/authority/combat/roomCombatIntegration.test.ts',
+  'tests/unit/client/combat/presentationWireBridge.test.ts',
   'tests/unit/dev/authorityEvidence.test.ts',
+  'tests/unit/net/combatPresentationReliableEvent.test.ts',
   'tests/unit/net/protocol-v2.test.ts',
   'tests/unit/worker/reliableEvents.test.ts',
   'tests/unit/worker/security.test.ts',
@@ -345,6 +366,7 @@ function assertConfirmedPresentation(value, cue, minimumConfirmedIntents) {
   const expectedHudCopy = {
     body: 'BODY HIT',
     kill: 'ELIMINATION',
+    grenade_impulse: 'DISPLACEMENT',
     teleport: 'TELEPORT',
   }[cue];
   assert.equal(typeof expectedHudCopy, 'string');
@@ -370,7 +392,7 @@ const wire = wireLines.map((line) => JSON.parse(line));
 assert.equal(proof.schemaVersion, 1);
 assert.equal(proof.phase, 'P5.15');
 assert.equal(proof.status, 'BOUNDED_PASS');
-assert.equal(proof.gateClaim, 'G3_NOT_CLAIMED_G4_NOT_CLAIMED_G5_NOT_CLAIMED');
+assert.equal(proof.gateClaim, 'G3_G4_ACCEPTANCE_CANDIDATE_G5_NOT_CLAIMED');
 
 assert.equal(proof.topology.route, '/online');
 assert.equal(proof.topology.exactProfile, PROFILE);
@@ -578,6 +600,203 @@ assert.ok(proof.combat.match.feedSequence >= 1);
 assert.ok(proof.combat.match.teamScores.some(({ score }) => score >= 1));
 assert.equal(proof.combat.playerKilledReliableDeliveryClientsAtEvent, 2);
 assertConfirmedPresentation(proof.combat.confirmedPresentationAtDamage, 'body', 1);
+const grenade = proof.combat.impulseGrenade;
+assert.deepEqual(grenade.setupContract, {
+  west: { x: 4_000, z: -15_000 },
+  east: { x: 5_500, z: -15_000 },
+  arrivalToleranceMillimeters: 100,
+  minimumPulseMilliseconds: 40,
+  settleMilliseconds: 750,
+  maximumSeparationMillimeters: 2_000,
+  rationale: 'Both players remain on the supported south Ink bridge centerline while the shooter holds the authority crouch stance and throws at -7.5 degrees on the bridge-aligned 14 degree yaw, trapping the projectile between the opposing guard rails so it detonates inside the 11 m radial impulse.',
+});
+assert.ok(grenade.setupConvergence.afterSeparationMillimeters <= 2_000);
+assert.deepEqual(
+  {
+    targetYawMilliDegrees: grenade.aim.targetYawMilliDegrees,
+    targetPitchMilliDegrees: grenade.aim.targetPitchMilliDegrees,
+  },
+  { targetYawMilliDegrees: 14_000, targetPitchMilliDegrees: -7_500 },
+);
+assert.ok(Math.abs(grenade.aim.finalYawMilliDegrees - 14_000) <= 800);
+assert.ok(Math.abs(grenade.aim.finalPitchMilliDegrees - (-7_500)) <= 800);
+assert.ok(Math.abs(grenade.aim.resetPitchMilliDegrees) <= 2_200);
+assert.ok(grenade.aim.inputCommands.some(({ pitchMilliDegrees }) => pitchMilliDegrees < 0));
+const grenadeAimWireCommands = wire.flatMap(({ clientId, sequence, direction, message }) => (
+  clientId === 'client-0'
+    && sequence >= grenade.aim.wireSequenceStart
+    && sequence < grenade.wireSequenceStart
+    && direction === 'sent'
+    && message.type === 'inputBatch'
+    ? message.lookCommands
+    : []
+));
+assert.deepEqual(grenade.aim.inputCommands, grenadeAimWireCommands);
+assert.deepEqual(
+  {
+    key: grenade.stance.key,
+    buttonMask: grenade.stance.buttonMask,
+  },
+  { key: 'KeyC', buttonMask: 1 << 2 },
+);
+assert.ok(Number.isInteger(grenade.stance.wireSequenceStart));
+assert.ok(Number.isInteger(grenade.stance.wireSequenceEnd));
+assert.ok(grenade.stance.wireSequenceEnd > grenade.stance.wireSequenceStart);
+assert.ok(grenade.stance.inputCommands.some(({ pressed, held }) => pressed && held));
+assert.ok(grenade.stance.inputCommands.some(({ released, held }) => released && !held));
+const grenadeStanceWireCommands = wire.flatMap(({ clientId, sequence, direction, message }) => (
+  clientId === 'client-0'
+    && sequence >= grenade.stance.wireSequenceStart
+    && sequence < grenade.stance.wireSequenceEnd
+    && direction === 'sent'
+    && message.type === 'inputBatch'
+    ? message.crouchCommands
+    : []
+));
+assert.deepEqual(grenade.stance.inputCommands, grenadeStanceWireCommands);
+assert.ok(Number.isInteger(grenade.wireSequenceStart) && grenade.wireSequenceStart >= 0);
+assert.ok(Number.isFinite(grenade.requestedAtMilliseconds));
+assert.equal(grenade.throwCountAfter - grenade.throwCountBefore, 1);
+assert.ok(grenade.inputCommands.some(({ pressed }) => pressed));
+assert.ok(grenade.inputCommands.some(({ released }) => released));
+const grenadeWireInputCommands = wire.flatMap(({ clientId, sequence, direction, message }) => (
+  clientId === 'client-0'
+    && sequence >= grenade.wireSequenceStart
+    && direction === 'sent'
+    && message.type === 'inputBatch'
+    ? message.impulseGrenadeCommands
+    : []
+));
+assert.deepEqual(grenade.inputCommands, grenadeWireInputCommands);
+assert.equal(grenade.projectileAtThrow.phase, 'active');
+assert.equal(grenade.projectileAtThrow.ownerPlayerId, proof.authority.initialJoins[0].playerId);
+assert.equal(grenade.projectileAtCollision.projectileId, grenade.projectileAtThrow.projectileId);
+assert.ok(Number.isInteger(grenade.projectileAtCollision.fuseStartedAtTick));
+assert.ok(Number.isInteger(grenade.projectileAtCollision.detonatesAtTick));
+assert.equal(grenade.projectileRemovedAfterDetonation, true);
+assert.equal(grenade.shooterHealthAfter, grenade.shooterHealthBefore);
+assert.equal(grenade.victimHealthAfter, grenade.victimHealthBefore);
+assert.ok(grenade.victimDisplacementMillimeters >= 100);
+assert.notDeepEqual(grenade.victimPositionAfter, grenade.victimPositionBefore);
+
+const grenadeExpectedKinds = [
+  'impulse_grenade_throw_accepted',
+  'impulse_grenade_collision',
+  'impulse_grenade_detonated',
+  'impulse_grenade_impulse_applied',
+];
+const grenadeSemanticKinds = grenade.semanticEvents.map(({ presentation }) => presentation.kind);
+assert.ok(grenadeExpectedKinds.every((kind) => grenadeSemanticKinds.includes(kind)));
+assert.equal(
+  new Set(grenade.semanticEvents.map(({ presentation }) => presentation.eventId)).size,
+  grenade.semanticEvents.length,
+);
+const grenadeProjectionKinds = {
+  impulse_grenade_throw_accepted: 'projectileSpawned',
+  impulse_grenade_collision: 'projectileCollided',
+  impulse_grenade_detonated: 'projectileDetonated',
+  impulse_grenade_impulse_applied: 'impulseApplied',
+};
+for (const event of grenade.semanticEvents) {
+  const presentation = event.presentation;
+  assert.equal(event.kind, grenadeProjectionKinds[presentation.kind]);
+  assert.equal(event.subjectId, presentation.eventId);
+  assert.equal(event.amountHealthPoints, null);
+  if (presentation.kind === 'impulse_grenade_throw_accepted') {
+    assert.equal(event.actorId, presentation.playerId);
+    assert.equal(event.targetId, null);
+    assert.equal(presentation.abilityId, 'vertical_impulse_grenade_v1');
+    assert.equal(presentation.projectileId, grenade.projectileAtThrow.projectileId);
+  } else if (presentation.kind === 'impulse_grenade_collision') {
+    assert.equal(event.actorId, presentation.ownerPlayerId);
+    assert.equal(event.targetId, presentation.playerId);
+    assert.equal(presentation.projectileId, grenade.projectileAtThrow.projectileId);
+    assert.ok(presentation.timeOfImpactPermille >= 0 && presentation.timeOfImpactPermille <= 1_000);
+    assert.ok(presentation.detonatesAtTick >= presentation.fuseStartedAtTick);
+  } else if (presentation.kind === 'impulse_grenade_detonated') {
+    assert.equal(event.actorId, presentation.ownerPlayerId);
+    assert.equal(event.targetId, null);
+    assert.equal(presentation.areaRadiusMillimeters, 11_000);
+    assert.equal(presentation.damageHealthPoints, 0);
+  } else {
+    assert.equal(event.actorId, presentation.ownerPlayerId);
+    assert.equal(event.targetId, presentation.targetPlayerId);
+    assert.equal(presentation.damageHealthPoints, 0);
+    assert.ok(presentation.falloffPermille > 0 && presentation.falloffPermille <= 1_000);
+    const appliedMagnitude = Math.hypot(
+      presentation.appliedImpulseMillimetersPerSecond.x,
+      presentation.appliedImpulseMillimetersPerSecond.y,
+      presentation.appliedImpulseMillimetersPerSecond.z,
+    );
+    const requestedMagnitude = Math.hypot(
+      presentation.requestedImpulseMillimetersPerSecond.x,
+      presentation.requestedImpulseMillimetersPerSecond.y,
+      presentation.requestedImpulseMillimetersPerSecond.z,
+    );
+    assert.ok(requestedMagnitude > 0);
+    assert.ok(appliedMagnitude <= requestedMagnitude);
+  }
+}
+assert.equal(grenade.throwReliableEvent.presentation.kind, 'impulse_grenade_throw_accepted');
+assert.equal(grenade.collisionReliableEvent.presentation.kind, 'impulse_grenade_collision');
+assert.equal(grenade.detonationReliableEvent.presentation.kind, 'impulse_grenade_detonated');
+assert.ok(grenade.impulseReliableEvents.some(({ presentation }) => (
+  presentation.targetPlayerId === proof.authority.initialJoins[1].playerId
+  && presentation.relation === 'enemy'
+  && Math.hypot(
+    presentation.appliedImpulseMillimetersPerSecond.x,
+    presentation.appliedImpulseMillimetersPerSecond.y,
+    presentation.appliedImpulseMillimetersPerSecond.z,
+  ) > 0
+)));
+assert.equal(grenade.logicalDeliveries.length, 2);
+assert.deepEqual(grenade.logicalDeliveries.map(({ clientId }) => clientId), [
+  'client-0',
+  'client-1',
+]);
+for (const clientDelivery of grenade.logicalDeliveries) {
+  assert.equal(clientDelivery.deliveries.length, grenade.semanticEvents.length);
+  const clientWireEvents = wire.flatMap((record) => (
+    record.clientId === clientDelivery.clientId
+      && record.sequence >= grenade.wireSequenceStart
+      && record.direction === 'received'
+      && record.message.type === 'reliableEventBatch'
+      ? record.message.events.filter(({ presentation }) => (
+          presentation?.kind?.startsWith('impulse_grenade_')
+        ))
+      : []
+  ));
+  for (const delivery of clientDelivery.deliveries) {
+    assert.ok(grenadeExpectedKinds.includes(delivery.semanticKind));
+    assert.ok(delivery.wireOccurrences >= 1);
+    assert.equal(delivery.logicalCueOccurrences, 1);
+    assert.equal(
+      delivery.wireOccurrences,
+      clientWireEvents.filter(({ presentation }) => (
+        presentation.eventId === delivery.eventId
+      )).length,
+    );
+  }
+}
+assert.equal(grenade.presentationHistory.length, grenade.semanticEvents.length);
+for (const cue of grenade.presentationHistory) {
+  const semantic = grenade.semanticEvents.find(({ presentation }) => (
+    presentation.eventId === cue.authorityEventId
+  ));
+  assert.notEqual(semantic, undefined);
+  assert.equal(cue.renderedHud, true);
+  assert.equal(cue.renderedVfx, true);
+  assert.equal(cue.audioAttempted, true);
+  assert.equal(typeof cue.vfxMarker, 'string');
+  assert.equal(typeof cue.audioMarker, 'string');
+  assert.equal(
+    cue.source,
+    semantic.presentation.kind === 'impulse_grenade_throw_accepted'
+      ? 'accepted'
+      : 'confirmed',
+  );
+}
+assertConfirmedPresentation(grenade.confirmedPresentation, 'grenade_impulse', 4);
 assertConfirmedPresentation(proof.combat.confirmedPresentationAtDeath, 'kill', 2);
 assert.ok(proof.combat.teleport.distanceMillimeters >= 500);
 assert.ok(proof.combat.teleport.afterPosition.y > -10_000);
@@ -708,7 +927,7 @@ assert.ok(
       + 8,
 );
 assert.equal(proof.knownLimits.includes('This capture is bounded product/browser evidence, not broad playtest acceptance.'), true);
-assert.equal(proof.knownLimits.includes('This capture does not close G3, G4, or G5.'), true);
+assert.equal(proof.knownLimits.includes('This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.'), true);
 assert.equal(proof.knownLimits.includes('Inkfall revision-2 players begin with zero shield; no synthetic shield cue is manufactured.'), true);
 assert.equal(proof.knownLimits.includes('Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.'), true);
 assert.equal(proof.knownLimits.includes('Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.'), true);

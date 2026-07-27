@@ -1983,7 +1983,9 @@ function parseWirePresentationEvent(value: unknown): {
   delete payload.schemaVersion;
   const event = payload.kind === 'damage_applied'
     ? parseMatchEvent(payload)
-    : parseTeleportEvent(payload);
+    : typeof payload.kind === 'string' && payload.kind.startsWith('impulse_grenade_')
+      ? parseGrenadeEvent(payload)
+      : parseTeleportEvent(payload);
   if (event.authorityTick !== serverTick) {
     throw new Error('COMBAT_PRESENTATION_WIRE_TICK_MISMATCH');
   }
@@ -1997,6 +1999,36 @@ function parseWirePresentationEvent(value: unknown): {
       || targetId !== event.targetPlayerId
       || amountHealthPoints !== event.healthDamagePoints
     ) throw new Error('COMBAT_PRESENTATION_WIRE_DAMAGE_PROJECTION_MISMATCH');
+  } else if (event.kind.startsWith('impulse_grenade_')) {
+    const expectedProjection = event.kind === 'impulse_grenade_throw_accepted'
+      ? {
+          kind: 'projectileSpawned',
+          actorId: event.playerId,
+          targetId: null,
+        }
+      : event.kind === 'impulse_grenade_collision'
+        ? {
+            kind: 'projectileCollided',
+            actorId: event.ownerPlayerId,
+            targetId: event.playerId,
+          }
+        : event.kind === 'impulse_grenade_detonated'
+          ? {
+              kind: 'projectileDetonated',
+              actorId: event.ownerPlayerId,
+              targetId: null,
+            }
+          : {
+              kind: 'impulseApplied',
+              actorId: event.ownerPlayerId,
+              targetId: event.targetPlayerId,
+            };
+    if (
+      reliableKind !== expectedProjection.kind
+      || actorId !== expectedProjection.actorId
+      || targetId !== expectedProjection.targetId
+      || amountHealthPoints !== null
+    ) throw new Error('COMBAT_PRESENTATION_WIRE_GRENADE_PROJECTION_MISMATCH');
   } else {
     const expectedKind = event.kind === 'teleport_resource_confirmed'
       ? 'abilityActivated'
@@ -2081,6 +2113,24 @@ export function applyCombatPresentationReliableEvent(
   } else if (event.kind === 'teleport_resource_confirmed') {
     intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.teleportConfirmed, {
       subjectPlayerId: event.playerId as string,
+    }));
+  } else if (event.kind === 'impulse_grenade_throw_accepted') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.grenadeThrowAccepted, {
+      subjectPlayerId: event.playerId as string,
+    }));
+  } else if (event.kind === 'impulse_grenade_collision') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.grenadeCollision, {
+      subjectPlayerId: event.ownerPlayerId as string,
+      targetPlayerId: event.playerId as string | null,
+    }));
+  } else if (event.kind === 'impulse_grenade_detonated') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.grenadeDetonation, {
+      subjectPlayerId: event.ownerPlayerId as string,
+    }));
+  } else if (event.kind === 'impulse_grenade_impulse_applied') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.grenadeImpulse, {
+      subjectPlayerId: event.ownerPlayerId as string,
+      targetPlayerId: event.targetPlayerId as string,
     }));
   } else {
     intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.teleportRejected, {

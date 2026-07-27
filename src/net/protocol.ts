@@ -433,6 +433,9 @@ export interface DeltaSnapshotMessage extends ProtocolEnvelope {
 export type ReliableEventKind =
   | 'shotAccepted'
   | 'projectileSpawned'
+  | 'projectileCollided'
+  | 'projectileDetonated'
+  | 'impulseApplied'
   | 'damageApplied'
   | 'playerKilled'
   | 'abilityActivated'
@@ -485,6 +488,75 @@ export interface CombatPresentationTeleportRejectedEventV1 {
   readonly cooldownConsumedByFailure: false;
 }
 
+export interface CombatPresentationGrenadeThrowEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'impulse_grenade_throw_accepted';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly playerId: string;
+  readonly abilityId: 'vertical_impulse_grenade_v1';
+  readonly throwOrdinal: number;
+  readonly projectileId: string;
+  readonly cooldownEndsAtTick: number;
+}
+
+export type CombatPresentationGrenadeCollisionLayerV1 =
+  | 'world_static'
+  | 'dynamic_platform'
+  | 'player_body'
+  | 'door'
+  | 'spawn_barrier'
+  | 'deployable'
+  | 'projectile'
+  | 'trigger';
+
+export interface CombatPresentationGrenadeCollisionEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'impulse_grenade_collision';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly colliderId: string;
+  readonly layer: CombatPresentationGrenadeCollisionLayerV1;
+  readonly playerId: string | null;
+  readonly timeOfImpactPermille: number;
+  readonly bounceCount: number;
+  readonly fuseStartedAtTick: number;
+  readonly detonatesAtTick: number;
+  readonly settled: boolean;
+}
+
+export interface CombatPresentationGrenadeDetonationEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'impulse_grenade_detonated';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly ownerTeamId: string | null;
+  readonly reason: 'fuse' | 'lifetime';
+  readonly positionMillimeters: ReconciliationVector3;
+  readonly areaRadiusMillimeters: 11_000;
+  readonly damageHealthPoints: 0;
+}
+
+export interface CombatPresentationGrenadeImpulseEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'impulse_grenade_impulse_applied';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly targetPlayerId: string;
+  readonly relation: 'self' | 'enemy';
+  readonly distanceMillimeters: number;
+  readonly falloffPermille: number;
+  readonly requestedImpulseMillimetersPerSecond: ReconciliationVector3;
+  readonly appliedImpulseMillimetersPerSecond: ReconciliationVector3;
+  readonly damageHealthPoints: 0;
+}
+
 /**
  * Optional, versioned semantic payload retained alongside the legacy reliable
  * event projection. Legacy events without this field remain valid. When the
@@ -493,6 +565,10 @@ export interface CombatPresentationTeleportRejectedEventV1 {
  */
 export type CombatPresentationReliableEventV1 =
   | CombatPresentationDamageEventV1
+  | CombatPresentationGrenadeThrowEventV1
+  | CombatPresentationGrenadeCollisionEventV1
+  | CombatPresentationGrenadeDetonationEventV1
+  | CombatPresentationGrenadeImpulseEventV1
   | CombatPresentationTeleportConfirmedEventV1
   | CombatPresentationTeleportRejectedEventV1;
 

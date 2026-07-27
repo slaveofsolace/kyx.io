@@ -240,6 +240,7 @@ export interface AuthorityEvidenceDiagnostics {
     readonly predictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
     readonly authoritativeYawMilliDegrees: number | null;
     readonly predictedYawMilliDegrees: number | null;
+    readonly predictedPitchMilliDegrees: number | null;
     readonly predictionHistoryCommands: number;
     readonly lastReconciliationMode: LocalReconciliationMode | null;
     readonly lastPositionErrorMillimeters: number | null;
@@ -616,6 +617,7 @@ export class AuthorityEvidenceClient {
         predictedPosition,
         authoritativeYawMilliDegrees: this.authoritativeYawMilliDegrees,
         predictedYawMilliDegrees: this.prediction?.predictedState.player.yawMilliDegrees ?? null,
+        predictedPitchMilliDegrees: this.prediction?.predictedState.player.pitchMilliDegrees ?? null,
         predictionHistoryCommands: this.prediction?.historyCommandCount ?? 0,
         lastReconciliationMode: this.lastReconciliationMode,
         lastPositionErrorMillimeters: this.lastPositionErrorMillimeters,

@@ -39,6 +39,9 @@ const STABLE_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_.:-]*$/u;
 const RELIABLE_EVENT_KINDS: ReadonlySet<ReliableEventKind> = new Set([
   'shotAccepted',
   'projectileSpawned',
+  'projectileCollided',
+  'projectileDetonated',
+  'impulseApplied',
   'damageApplied',
   'playerKilled',
   'abilityActivated',

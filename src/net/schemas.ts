@@ -1303,6 +1303,18 @@ function validatePresentationVector(value: unknown, path: string): void {
   }
 }
 
+function validatePresentationVelocity(value: unknown, path: string): void {
+  const record = recordAt(value, path);
+  exactKeys(record, path, ['x', 'y', 'z']);
+  for (const axis of ['x', 'y', 'z'] as const) {
+    numberAt(required(record, axis, path), `${path}.${axis}`, {
+      integer: true,
+      min: -PROTOCOL_LIMITS.maxVelocityMillimetersPerSecond,
+      max: PROTOCOL_LIMITS.maxVelocityMillimetersPerSecond,
+    });
+  }
+}
+
 function validateCombatPresentationReliableEvent(
   value: unknown,
   path: string,
@@ -1311,6 +1323,10 @@ function validateCombatPresentationReliableEvent(
   const kind = stringAt(required(record, 'kind', path), `${path}.kind`, {
     allowed: [
       'damage_applied',
+      'impulse_grenade_throw_accepted',
+      'impulse_grenade_collision',
+      'impulse_grenade_detonated',
+      'impulse_grenade_impulse_applied',
       'teleport_resource_confirmed',
       'teleport_resource_rejected',
     ],
@@ -1338,6 +1354,137 @@ function validateCombatPresentationReliableEvent(
       numberAt(required(record, field, path), `${path}.${field}`, {
         integer: true, min: 0, max: PROTOCOL_LIMITS.maxHealthValue,
       });
+    }
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'impulse_grenade_throw_accepted') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'playerId', 'abilityId',
+      'throwOrdinal', 'projectileId', 'cooldownEndsAtTick',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'playerId', path), `${path}.playerId`);
+    stringAt(required(record, 'abilityId', path), `${path}.abilityId`, {
+      allowed: ['vertical_impulse_grenade_v1'],
+    });
+    numberAt(required(record, 'throwOrdinal', path), `${path}.throwOrdinal`, {
+      integer: true, min: 1, max: PROTOCOL_LIMITS.maxSequence,
+    });
+    idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    tickAt(required(record, 'cooldownEndsAtTick', path), `${path}.cooldownEndsAtTick`);
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'impulse_grenade_collision') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'projectileId',
+      'ownerPlayerId', 'colliderId', 'layer', 'playerId', 'timeOfImpactPermille',
+      'bounceCount', 'fuseStartedAtTick', 'detonatesAtTick', 'settled',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+    idAt(required(record, 'colliderId', path), `${path}.colliderId`);
+    stringAt(required(record, 'layer', path), `${path}.layer`, {
+      allowed: [
+        'world_static', 'dynamic_platform', 'player_body', 'door', 'spawn_barrier',
+        'deployable', 'projectile', 'trigger',
+      ],
+    });
+    nullableIdAt(required(record, 'playerId', path), `${path}.playerId`);
+    numberAt(required(record, 'timeOfImpactPermille', path), `${path}.timeOfImpactPermille`, {
+      integer: true, min: 0, max: 1_000,
+    });
+    numberAt(required(record, 'bounceCount', path), `${path}.bounceCount`, {
+      integer: true, min: 0, max: PROTOCOL_LIMITS.maxSequence,
+    });
+    tickAt(required(record, 'fuseStartedAtTick', path), `${path}.fuseStartedAtTick`);
+    tickAt(required(record, 'detonatesAtTick', path), `${path}.detonatesAtTick`);
+    booleanAt(required(record, 'settled', path), `${path}.settled`);
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'impulse_grenade_detonated') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'projectileId',
+      'ownerPlayerId', 'ownerTeamId', 'reason', 'positionMillimeters',
+      'areaRadiusMillimeters', 'damageHealthPoints',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+    nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
+    stringAt(required(record, 'reason', path), `${path}.reason`, {
+      allowed: ['fuse', 'lifetime'],
+    });
+    validatePresentationVector(
+      required(record, 'positionMillimeters', path),
+      `${path}.positionMillimeters`,
+    );
+    if (required(record, 'areaRadiusMillimeters', path) !== 11_000) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.areaRadiusMillimeters`,
+        'The accepted Impulse Grenade profile requires an 11,000 mm radius.',
+      );
+    }
+    if (required(record, 'damageHealthPoints', path) !== 0) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.damageHealthPoints`,
+        'The Impulse Grenade is displacement-only and cannot carry damage.',
+      );
+    }
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'impulse_grenade_impulse_applied') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'projectileId',
+      'ownerPlayerId', 'targetPlayerId', 'relation', 'distanceMillimeters',
+      'falloffPermille', 'requestedImpulseMillimetersPerSecond',
+      'appliedImpulseMillimetersPerSecond', 'damageHealthPoints',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+    idAt(required(record, 'targetPlayerId', path), `${path}.targetPlayerId`);
+    stringAt(required(record, 'relation', path), `${path}.relation`, {
+      allowed: ['self', 'enemy'],
+    });
+    numberAt(required(record, 'distanceMillimeters', path), `${path}.distanceMillimeters`, {
+      integer: true, min: 0, max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+    });
+    numberAt(required(record, 'falloffPermille', path), `${path}.falloffPermille`, {
+      integer: true, min: 0, max: 1_000,
+    });
+    validatePresentationVelocity(
+      required(record, 'requestedImpulseMillimetersPerSecond', path),
+      `${path}.requestedImpulseMillimetersPerSecond`,
+    );
+    validatePresentationVelocity(
+      required(record, 'appliedImpulseMillimetersPerSecond', path),
+      `${path}.appliedImpulseMillimetersPerSecond`,
+    );
+    if (required(record, 'damageHealthPoints', path) !== 0) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.damageHealthPoints`,
+        'The Impulse Grenade is displacement-only and cannot carry damage.',
+      );
     }
     return record as unknown as CombatPresentationReliableEventV1;
   }
@@ -1408,7 +1555,7 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
   reliableEventIdAt(required(record, 'id', path), `${path}.id`);
   tickAt(required(record, 'serverTick', path), `${path}.serverTick`);
   const kind = stringAt(required(record, 'kind', path), `${path}.kind`, {
-    allowed: ['shotAccepted', 'projectileSpawned', 'damageApplied', 'playerKilled', 'abilityActivated', 'abilityRejected', 'cooldownStarted', 'deployableSpawned', 'loadoutAccepted', 'playerJoined', 'playerLeft'],
+    allowed: ['shotAccepted', 'projectileSpawned', 'projectileCollided', 'projectileDetonated', 'impulseApplied', 'damageApplied', 'playerKilled', 'abilityActivated', 'abilityRejected', 'cooldownStarted', 'deployableSpawned', 'loadoutAccepted', 'playerJoined', 'playerLeft'],
   });
   idAt(required(record, 'subjectId', path), `${path}.subjectId`);
   nullableIdAt(required(record, 'actorId', path), `${path}.actorId`);
@@ -1437,6 +1584,22 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
         'PROTOCOL_INVALID_FIELD_VALUE',
         `${path}.presentation.kind`,
         'Damage presentation requires a damageApplied reliable event.',
+      );
+    }
+    const grenadeProjection = {
+      impulse_grenade_throw_accepted: 'projectileSpawned',
+      impulse_grenade_collision: 'projectileCollided',
+      impulse_grenade_detonated: 'projectileDetonated',
+      impulse_grenade_impulse_applied: 'impulseApplied',
+    } as const;
+    if (
+      presentation.kind in grenadeProjection
+      && kind !== grenadeProjection[presentation.kind as keyof typeof grenadeProjection]
+    ) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.presentation.kind`,
+        'Impulse Grenade presentation requires its exact reliable projection kind.',
       );
     }
     if (

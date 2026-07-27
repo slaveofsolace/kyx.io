@@ -102,4 +102,102 @@ describe('Worker explicit combat presentation projection', () => {
       },
     });
   });
+
+  it('retains the complete Impulse Grenade lifecycle through the reliable store', () => {
+    const inputs = reliableCombatEvents(tick({
+      combatEvents: [],
+      hitscanResults: [],
+      impulseGrenadeEvents: [
+        {
+          kind: 'impulse_grenade_throw_accepted',
+          eventId: 'grenade.spawn.1',
+          authorityTick: 90,
+          playerId: 'player_A',
+          abilityId: 'vertical_impulse_grenade_v1',
+          throwOrdinal: 1,
+          projectileId: 'grenade.projectile.1',
+          cooldownEndsAtTick: 330,
+        },
+        {
+          kind: 'impulse_grenade_collision',
+          eventId: 'grenade.collision.1',
+          authorityTick: 91,
+          projectileId: 'grenade.projectile.1',
+          ownerPlayerId: 'player_A',
+          colliderId: 'player.collider.B',
+          layer: 'player_body',
+          playerId: 'player_B',
+          timeOfImpactPermille: 500,
+          bounceCount: 1,
+          fuseStartedAtTick: 91,
+          detonatesAtTick: 121,
+          settled: false,
+        },
+        {
+          kind: 'impulse_grenade_detonated',
+          eventId: 'grenade.detonation.1',
+          authorityTick: 121,
+          projectileId: 'grenade.projectile.1',
+          ownerPlayerId: 'player_A',
+          ownerTeamId: 'team_blue',
+          reason: 'fuse',
+          positionMillimeters: { x: 0, y: 1_000, z: 3_000 },
+          areaRadiusMillimeters: 11_000,
+          damageHealthPoints: 0,
+        },
+        {
+          kind: 'impulse_grenade_impulse_applied',
+          eventId: 'grenade.impulse.1',
+          authorityTick: 121,
+          projectileId: 'grenade.projectile.1',
+          ownerPlayerId: 'player_A',
+          targetPlayerId: 'player_B',
+          relation: 'enemy',
+          distanceMillimeters: 3_000,
+          falloffPermille: 727,
+          requestedImpulseMillimetersPerSecond: { x: 0, y: 2_000, z: 4_500 },
+          appliedImpulseMillimetersPerSecond: { x: 0, y: 2_000, z: 4_500 },
+          damageHealthPoints: 0,
+        },
+      ],
+      abilityResourceEvents: [],
+    }));
+    const store = new ReliableEventStore();
+    const events = inputs.map((input) => store.append(input));
+    expect(events.map(({ kind }) => kind)).toEqual([
+      'projectileSpawned',
+      'cooldownStarted',
+      'projectileCollided',
+      'projectileDetonated',
+      'impulseApplied',
+    ]);
+    expect(events.filter(({ presentation }) => presentation !== undefined).map((event) => ({
+      reliableKind: event.kind,
+      semanticKind: event.presentation?.kind,
+    }))).toEqual([
+      {
+        reliableKind: 'projectileSpawned',
+        semanticKind: 'impulse_grenade_throw_accepted',
+      },
+      {
+        reliableKind: 'projectileCollided',
+        semanticKind: 'impulse_grenade_collision',
+      },
+      {
+        reliableKind: 'projectileDetonated',
+        semanticKind: 'impulse_grenade_detonated',
+      },
+      {
+        reliableKind: 'impulseApplied',
+        semanticKind: 'impulse_grenade_impulse_applied',
+      },
+    ]);
+    expect(validateServerMessage({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'reliableEventBatch',
+      reliableEventStreamVersion: RELIABLE_EVENT_STREAM_VERSION,
+      matchId: 'match_worker_grenade_projection',
+      events,
+    })).toMatchObject({ ok: true });
+  });
 });
