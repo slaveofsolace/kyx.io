@@ -1,0 +1,105 @@
+
+ RUN  v4.1.10 C:/AI Projects/Projects/Games/evio/evio-g9-security-readiness-20260726
+
+ ✓ tests/integration/content/inkfallGrayboxLock.test.ts (7 tests) 12ms
+ ✓ tests/unit/sim/rng.test.ts (4 tests) 64ms
+ ✓ tests/unit/app/movement/developmentLocalMovementBridge.test.ts (20 tests) 61ms
+ ✓ tests/integration/authority/inkfallAuthorityTelemetry.test.ts (9 tests) 93ms
+ ✓ tests/unit/physics/rapierWorld.test.ts (23 tests) 156ms
+ ✓ tests/integration/app/onlineAuthorityInkfallWorld.test.ts (2 tests) 129ms
+ ✓ tests/integration/authority/inkfallRevision2Staging.test.ts (3 tests) 205ms
+ ✓ tests/unit/physics/fixtureTapes.test.ts (6 tests) 138ms
+ ✓ tests/integration/physics/inkfallMapRuntime.test.ts (6 tests) 231ms
+ ✓ tests/unit/authority/combat/tdmMatch.test.ts (9 tests) 53ms
+ ✓ tests/integration/movement/rapierController.test.ts (15 tests) 378ms
+ ✓ tests/integration/authority/inkfallSpawnAuthority.test.ts (12 tests) 475ms
+ ✓ tests/unit/dev/authorityEvidence.test.ts (11 tests) 235ms
+ ✓ tests/integration/movement/inkfallRev3ReviewAudit.test.ts (5 tests) 543ms
+ ✓ tests/unit/authority/combat/rewindHitscan.test.ts (16 tests) 78ms
+ ✓ tests/unit/authority/combat/p58AbuseBoundaries.test.ts (19 tests) 75ms
+ ✓ tests/integration/movement/fixtureTapeCatalog.test.ts (24 tests) 687ms
+ ✓ tests/integration/authority/inkfallRapierCombatWorld.test.ts (5 tests) 272ms
+ ✓ tests/unit/authority/combat/p58dReplayParity.test.ts (1 test) 302ms
+     ✓ pins the Node authority consequence to the real Worker/WSS digest  300ms
+ ✓ tests/unit/authority/activeMatchCheckpoint.test.ts (2 tests) 328ms
+ ✓ tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts (5 tests) 880ms
+     ✓ traverses the exact remaining leg and adjacent lanes with zero recovery  423ms
+ ✓ tests/unit/client/combat/presentationAdapter.test.ts (13 tests) 134ms
+ ✓ tests/unit/sim/purity.test.ts (3 tests) 63ms
+ ✓ tests/unit/authority/combat/roomAbilityResourcesIntegration.test.ts (6 tests) 187ms
+ ✓ tests/unit/authority/combat/roomCombatIntegration.test.ts (6 tests) 213ms
+ ✓ tests/unit/authority/combat/roomImpulseGrenadeIntegration.test.ts (5 tests) 223ms
+ ✓ tests/unit/authority/combat/roomTdmMatchIntegration.test.ts (7 tests) 801ms
+     ✓ ends the room on the exact fortieth score and rejects client-authored score claims  501ms
+ ✓ tests/unit/authority/room.test.ts (7 tests) 35ms
+ ✓ tests/unit/physics/fixtureSchema.test.ts (11 tests) 43ms
+ ✓ tests/unit/authority/combat/roomHitscanIntegration.test.ts (8 tests) 1130ms
+     ✓ resets target pose history on resume and respawn, failing closed until refill  520ms
+ ✓ tests/unit/content/mapPackage.test.ts (5 tests) 23ms
+ ✓ tests/unit/authority/combat/autoRifle.test.ts (11 tests) 29ms
+ ✓ tests/unit/app/movement/developmentFlatRunMovementDriver.test.ts (26 tests) 284ms
+ ✓ tests/unit/content/ruleset.test.ts (23 tests) 33ms
+ ✓ tests/unit/sim/movement/stanceTeleport.test.ts (11 tests) 24ms
+ ✓ tests/contracts/protocol/protocol.test.ts (69 tests) 23ms
+ ✓ tests/unit/client/netcode/localPrediction.test.ts (8 tests) 27ms
+ ✓ tests/unit/sim/movement/replay.test.ts (9 tests) 23ms
+ ✓ tests/unit/client/netcode/networkImpairment.test.ts (7 tests) 21ms
+ ✓ tests/unit/content/rulesetIdentity.test.ts (3 tests) 22ms
+ ✓ tests/unit/content/combatProfile.test.ts (6 tests) 21ms
+ ✓ tests/unit/sim/movement/queryBoundary.test.ts (15 tests) 23ms
+ ✓ tests/unit/sim/movement/locomotion.test.ts (11 tests) 25ms
+ ✓ tests/unit/net/protocol-v2.test.ts (22 tests) 15ms
+ ✓ tests/unit/authority/combat/life.test.ts (9 tests) 16ms
+ ✓ tests/unit/client/combat/presentationWireBridge.test.ts (13 tests) 17ms
+ ✓ tests/unit/worker/snapshotBaselines.test.ts (4 tests) 12ms
+ ✓ tests/unit/sim/replay.test.ts (5 tests) 17ms
+ ✓ tests/unit/worker/security.test.ts (10 tests) 14ms
+ ✓ tests/unit/sim/movement/fixedMathState.test.ts (14 tests) 17ms
+ ✓ tests/integration/movement/presentationIsolation.test.ts (2 tests) 15ms
+ ✓ tests/unit/physics/fixtures.test.ts (8 tests) 12ms
+ ✓ tests/unit/authority/combat/abilityResources.test.ts (6 tests) 10ms
+ ✓ tests/unit/dev/authorityEvidenceImpairment.test.ts (4 tests) 12ms
+ ✓ tests/unit/evidence/g3ExpandedTransportContract.test.ts (2 tests) 11ms
+ ✓ tests/unit/authority/combat/impulseGrenade.test.ts (9 tests) 13ms
+ ✓ tests/unit/worker/reliableEvents.test.ts (4 tests) 7ms
+ ✓ tests/unit/authority/inputQueue.test.ts (12 tests) 10ms
+ ✓ tests/unit/app/settings/captionCueOverlay.test.ts (2 tests) 7ms
+ ✓ tests/unit/app/onlineAuthorityGateway.test.ts (6 tests) 9ms
+ ✓ tests/unit/app/movement/inputLatch.test.ts (9 tests) 9ms
+ ✓ tests/unit/worker/resumeToken.test.ts (3 tests) 10ms
+ ✓ tests/unit/app/settings/audioAccessibilityCues.test.ts (2 tests) 10ms
+ ✓ tests/unit/net/combatPresentationReliableEvent.test.ts (9 tests) 13ms
+ ✓ tests/unit/sim/simulation.test.ts (7 tests) 10ms
+ ✓ tests/unit/app/settings/inputManagerAccessibility.test.ts (3 tests) 7ms
+ ✓ tests/unit/client/netcode/remoteInterpolation.test.ts (9 tests) 9ms
+ ✓ tests/unit/app/movement/cameraSettings.test.ts (5 tests) 7ms
+ ✓ tests/unit/app/settings/hudEventSemantics.test.ts (2 tests) 7ms
+ ✓ tests/unit/app/settings/gameSettings.test.ts (4 tests) 8ms
+ ✓ tests/unit/sim/units-clock.test.ts (4 tests) 6ms
+ ✓ tests/unit/authority/combat/loadoutRequest.test.ts (4 tests) 11ms
+ ✓ tests/unit/app/onlineAuthoritySelection.test.ts (9 tests) 8ms
+ ✓ tests/unit/app/settings/controllerNavigation.test.ts (2 tests) 4ms
+ ✓ tests/unit/app/inkfallRev3ReviewSelection.test.ts (3 tests) 4ms
+ ✓ tests/unit/app/movement/pointerLock.test.ts (4 tests) 7ms
+ ✓ tests/unit/authority/fixedTickScheduler.test.ts (4 tests) 5ms
+ ✓ tests/unit/app/settings/reducedMotionCss.test.ts (2 tests) 3ms
+ ✓ tests/unit/app/pressHallInspectionSelection.test.ts (11 tests) 6ms
+ ✓ tests/unit/app/settings/hudStateSemantics.test.ts (1 test) 4ms
+ ✓ tests/unit/app/settings/keyboardFocus.test.ts (3 tests) 5ms
+ ✓ tests/unit/render/debugMetrics.test.ts (6 tests) 3ms
+ ✓ tests/unit/app/settings/accessibilityPreferences.test.ts (2 tests) 4ms
+ ✓ tests/unit/physics/collisionLayers.test.ts (2 tests) 3ms
+ ✓ tests/unit/app/settings/desktopZoomCss.test.ts (1 test) 3ms
+ ✓ tests/unit/app/settings/damageDirection.test.ts (5 tests) 3ms
+ ✓ tests/unit/app/lockedGrayboxSelection.test.ts (2 tests) 3ms
+ ✓ tests/unit/authority/combat/p58ConsequenceReconnect.test.ts (2 tests) 9590ms
+     ✓ keeps full combat consequences bounded under loss, reorder, and duplicate input delivery  8925ms
+     ✓ resumes one snapshot containing active reload/projectile, dead countdown, and active match  662ms
+ ✓ tests/integration/authority/inkfallAuthorityPlaytestRevision2.test.ts (7 tests) 22758ms
+ ✓ tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts (5 tests) 23877ms
+ ✓ tests/integration/authority/inkfallAuthorityPlaytest.test.ts (9 tests) 24234ms
+
+ Test Files  91 passed (91)
+      Tests  747 passed (747)
+   Start at  10:58:41
+   Duration  27.81s (transform 45.03s, setup 0ms, import 73.17s, tests 89.65s, environment 8ms)

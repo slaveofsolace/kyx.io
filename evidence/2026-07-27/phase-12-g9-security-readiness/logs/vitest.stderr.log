@@ -1,0 +1,32 @@
+stderr | tests/unit/physics/rapierWorld.test.ts > Rapier runtime boundary > pins the exact direct deterministic compatibility package version
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts > Inkfall canonical west press traversal snag > reproduces the revision-2 shared-junction guard-rail embed at the exact P5.15 pose
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/rapierController.test.ts > pure movement controller with the real Rapier query port > repeats the flat-run trajectory, hashes, and query metrics exactly
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/fixtureTapeCatalog.test.ts > canonical real-Rapier fixture tapes > flat_run_fixed_20hz_v1 has literal two-world trace, event, sample, metric, and collider-order parity
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/app/onlineAuthorityInkfallWorld.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/physics/inkfallMapRuntime.test.ts > Inkfall Foundry P6.3 runtime map loading > creates the current deterministic Rapier world from only the converted authority fixture
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/inkfallRev3ReviewAudit.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/authority/inkfallAuthorityPlaytestRevision2.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/authority/inkfallAuthorityPlaytest.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/authority/inkfallRapierCombatWorld.test.ts
+using deprecated parameters for the initialization function; pass a single object instead

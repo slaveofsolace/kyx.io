@@ -40,7 +40,8 @@
     "evidence:phase3:tapes": "node tools/evidence/capture-phase3-tapes.mjs",
     "evidence:phase3:browser": "node tools/evidence/capture-phase3-browser.mjs",
     "evidence:phase3:check": "node tools/evidence/capture-phase3-check.mjs",
-    "evidence:g7-ui": "node tools/evidence/capture-g7-human-ui.mjs --base-url http://127.0.0.1:6197"
+    "evidence:g7-ui": "node tools/evidence/capture-g7-human-ui.mjs --base-url http://127.0.0.1:6197",
+    "audit:g9": "node tools/security/audit-g9-readiness.mjs"
   },
   "repository": {
     "type": "git",

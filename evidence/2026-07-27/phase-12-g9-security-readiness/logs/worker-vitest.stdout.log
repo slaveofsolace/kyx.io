@@ -1,0 +1,40 @@
+
+ RUN  v4.1.10 C:/AI Projects/Projects/Games/evio/evio-g9-security-readiness-20260726
+
+ ✓ tests/worker/inkfallPopulation.test.ts (7 tests) 16010ms
+     ✓ serves four real clients through movement, world queries, combat, and reconnect continuity  2375ms
+     ✓ restores eight hibernated real clients at one exact populated authority tick  2414ms
+     ✓ keeps an eight-player socket open when one authority tick consumes a complete fire pulse  398ms
+     ✓ coalesces checkpoint dirtiness to 500 ms and preserves forced boundary durability  2242ms
+     ✓ recovers safely when marked input and event acknowledgement are evicted before the next tick  2465ms
+     ✓ sustains four raw clients while bounding regular checkpoint writes to authority ticks  5589ms
+     ✓ fails closed when a populated exact-profile room is aliased or persisted with another map identity  526ms
+ ✓ tests/worker/combatRev3.test.ts (3 tests) 15107ms
+     ✓ applies duplicate/loss/reorder intent once and resumes composite combat state  11149ms
+     ✓ keeps normalized consequences identical across four real WSS delivery profiles  3788ms
+ ✓ tests/worker/protocolV2Socket.test.ts (8 tests) 9418ms
+     ✓ reports exact received, accepted, and rejected rate-window counter deltas  1863ms
+     ✓ sends deltas only from acknowledged baselines and resends reliable events until cumulative ACK  392ms
+     ✓ evicts a real non-acknowledging socket while an acknowledging peer keeps advancing  3665ms
+     ✓ advances a retained older snapshot ACK overtaken by a full-snapshot fallback  1775ms
+     ✓ runs two authoritative sockets and securely resumes one immutable player session  700ms
+     ✓ rehydrates one lobby player and preserves cumulative reliable delivery across evictions  368ms
+     ✓ rehydrates a disconnected lobby player and rotates its resume token after eviction  323ms
+     ✓ expires an evicted reconnect-wait lobby idempotently through its durable alarm  332ms
+ ✓ tests/worker/inkfallRev2CombatProfile.test.ts (5 tests) 4444ms
+     ✓ reconstitutes the locked world and serves two real clients in map presentation coordinates  369ms
+     ✓ rejects profile mismatch, cross-profile resume, and persisted flat-run aliasing  581ms
+     ✓ reconstitutes two live clients with exact dead-player, projectile, and reliable ordinals  2487ms
+     ✓ fails closed on corrupt or map-mismatched active checkpoints  779ms
+ ✓ tests/worker/cors.test.ts (3 tests) 789ms
+     ✓ fails closed for forbidden origins, methods, headers, and paths  405ms
+ ✓ tests/worker/loadoutRequest.test.ts (3 tests) 552ms
+ ✓ tests/worker/runtime.test.ts (5 tests) 791ms
+ ✓ tests/worker/combatPresentationProjection.test.ts (3 tests) 2ms
+ ✓ tests/worker/slowConsumerBackpressure.test.ts (3 tests) 2ms
+ ✓ tests/worker/socketAttachmentCache.test.ts (3 tests) 1ms
+
+ Test Files  10 passed (10)
+      Tests  43 passed (43)
+   Start at  10:53:04
+   Duration  54.94s (transform 4.35s, setup 0ms, import 5.97s, tests 47.12s, environment 1ms)
