@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "gate": "G4/G8 local full-occupancy authority runtime soak",
+  "capturedAt": "2026-07-27T16:10:32.405Z",
+  "durationMilliseconds": 12894,
+  "source": {
+    "commit": "cf6087dd15f55443a36ee30fff982b6554c0c287",
+    "branch": "codex/g4-authority-soak-20260727",
+    "statusBeforeEvidenceCommit": "?? evidence/2026-07-27/"
+  },
+  "command": [
+    "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "vitest.worker.config.ts",
+    "tests/worker/authorityFullOccupancySoak.test.ts",
+    "--reporter=verbose"
+  ],
+  "testExitCode": 0,
+  "runtimeResult": {
+    "schemaVersion": 1,
+    "runtime": "@cloudflare/vitest-pool-workers",
+    "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "clients": 8,
+    "soakRounds": 60,
+    "soakDurationMilliseconds": 6694,
+    "startTick": 41,
+    "endTick": 175,
+    "observedTickRateHertz": 20.018,
+    "authorityTickExecution": {
+      "sampleCapacity": 4096,
+      "samples": 180,
+      "p50Milliseconds": 17,
+      "p95Milliseconds": 26,
+      "p99Milliseconds": 30,
+      "maximumMilliseconds": 32
+    },
+    "network": {
+      "clientToServerBytes": 197799,
+      "serverToClientBytes": 3593877,
+      "clientToServerMessages": 912,
+      "serverToClientMessages": 1963,
+      "totalObservedBytes": 3791676,
+      "observedBytesPerClientSecond": 70804
+    },
+    "resume": {
+      "preservedPlayerId": true,
+      "connectionMode": "resumed",
+      "rotatedCredential": true,
+      "fullSnapshotPlayerId": "player.5eed6617-5ff4-42ae-adf5-cc7096dacdc3"
+    },
+    "combat": {
+      "authorityTick": 175,
+      "finalEventId": "event.10",
+      "targetPlayerId": "player.14322856-d622-48ff-834b-80ed1d543d9e",
+      "targetDeadInCheckpoint": true,
+      "convergedClientCount": 8,
+      "feedSequence": 1,
+      "teamScores": [
+        {
+          "teamId": "team_blue",
+          "score": 1
+        },
+        {
+          "teamId": "team_red",
+          "score": 0
+        }
+      ],
+      "injectionSurface": "KyxRoom authoritative applyCombatDamage port inside real Durable Object"
+    },
+    "transport": {
+      "inboundMessagesReceived": 912,
+      "inboundMessagesRateAccepted": 912,
+      "inboundMessagesRateRejected": 0,
+      "fullSnapshotsSent": 17,
+      "deltaSnapshotsSent": 423,
+      "snapshotAcksAccepted": 423,
+      "snapshotAcksRejected": 0,
+      "snapshotAckTimeoutFallbacks": 8,
+      "snapshotAckDebtEpisodes": 160,
+      "snapshotAckDebtSnapshotsCoalesced": 289,
+      "snapshotAckDebtReliableBatchesCoalesced": 207,
+      "snapshotAckDebtRecoveries": 151,
+      "snapshotAckDebtEvictions": 0,
+      "maximumSnapshotAckDebtMilliseconds": 2007,
+      "snapshotHistoryFallbacks": 0,
+      "reliableEventsRecorded": 10,
+      "reliableEventBatchesSent": 69,
+      "reliableEventResendBatches": 52,
+      "reliableEventAcksAccepted": 423,
+      "reliableEventAcksRejected": 0,
+      "reliableEventHistoryFallbacks": 0,
+      "backpressureEpisodes": 0,
+      "backpressureMessagesCoalesced": 0,
+      "slowConsumerRecoveries": 151,
+      "slowConsumerEvictions": 0,
+      "maximumObservedSocketBufferedBytes": 0,
+      "lobbyCheckpointRehydrates": 0,
+      "lobbyCheckpointPlayersRestored": 0,
+      "durableAlarmRuns": 0,
+      "expiredResumeSessionsPruned": 0,
+      "loadoutRequestsAccepted": 0,
+      "loadoutRequestsRejected": 0,
+      "loadoutRequestsReplayed": 0,
+      "loadoutRequestIdConflicts": 0,
+      "activeMatchCheckpointDirtyMarks": 1082,
+      "activeMatchCheckpointCoalescedMarks": 1074,
+      "activeMatchCheckpointWrites": 27
+    },
+    "lastTickFailure": null,
+    "decodeErrors": []
+  },
+  "interpretation": {
+    "qualifyingSurface": [
+      "Eight accepted WebSockets connected through SELF.fetch to the actual Worker entrypoint.",
+      "KyxRoom ran its real setTimeout-based FixedTickScheduler and Durable Object storage.",
+      "Wire cost is the exact UTF-8 byte count observed at the WebSocket client boundary.",
+      "Resume exercised the opaque credential, identity preservation, token rotation, and full snapshot.",
+      "Combat state changed inside the live KyxRoom authority and converged to all eight clients."
+    ],
+    "limitations": [
+      "This is a short deterministic local Workers-runtime soak, not a 30-minute production-network soak.",
+      "Tick execution duration is runtime work inside each authority tick; scheduler delay is reported separately by observed tick rate.",
+      "Combat uses KyxRoom applyCombatDamage inside the live Durable Object, not an end-to-end weapon ray/input shot.",
+      "Local Vitest-pool timing and bandwidth are not Cloudflare production latency or billing measurements.",
+      "The bounded in-memory timing window resets if the Durable Object isolate is evicted."
+    ]
+  }
+}
