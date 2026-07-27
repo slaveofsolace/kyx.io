@@ -14,6 +14,7 @@ import {
 } from '../physics';
 import type { SimulationIdentityV1 } from '../net';
 import type { CombatSnapshotV1, ReliableEvent } from '../net';
+import { deriveRev17AuthorityAction } from '../player/rev17ActionContract.js';
 import {
   INTENT_BUTTON,
   PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
@@ -609,6 +610,11 @@ function renderArena(
       if (position === undefined) continue;
       const [x, y] = project(position);
       const local = player.playerId === combat.localPlayerId;
+      const semanticAction = deriveRev17AuthorityAction(
+        player,
+        combat.recentEvents,
+        presentation.estimatedServerTick,
+      );
       const color = player.teamId === 'team_blue' ? '#14e0ff' : '#ff6570';
       context.strokeStyle = color;
       context.fillStyle = color;
@@ -633,6 +639,35 @@ function renderArena(
         context.lineTo(x + 5, y + forward * 10);
         context.closePath();
         context.fill();
+
+        // Action glyphs are derived only from validated authority snapshot and
+        // reliable-event data. They do not predict or create gameplay state.
+        context.save();
+        context.strokeStyle = '#eefbff';
+        context.fillStyle = '#eefbff';
+        context.lineWidth = 2;
+        context.shadowBlur = 0;
+        if (semanticAction.kind === 'fire') {
+          context.beginPath();
+          context.moveTo(x, y + forward * 13);
+          context.lineTo(x, y + forward * 28);
+          context.stroke();
+        } else if (semanticAction.kind === 'reload') {
+          context.beginPath();
+          context.arc(x, y, local ? 17 : 15, -Math.PI * 0.8, Math.PI * 0.8);
+          context.stroke();
+        } else if (semanticAction.kind === 'ability') {
+          context.beginPath();
+          context.moveTo(x, y - 20);
+          context.lineTo(x + 6, y - 14);
+          context.lineTo(x, y - 8);
+          context.lineTo(x - 6, y - 14);
+          context.closePath();
+          context.stroke();
+        } else if (semanticAction.kind === 'equip') {
+          context.strokeRect(x - 15, y - 15, 30, 30);
+        }
+        context.restore();
       }
       context.shadowBlur = 0;
       context.fillStyle = '#071013';
@@ -644,7 +679,7 @@ function renderArena(
       const label = local ? 'YOU' : 'PEER';
       const state = player.lifePhase === 'dead'
         ? `DOWN · ${Math.max(0, (player.respawnEligibleAtTick ?? 0) - Math.floor(presentation.estimatedServerTick))}T`
-        : `${player.healthPoints} HP · ${player.magazineRounds}`;
+        : `${semanticAction.kind.toUpperCase()} · ${player.healthPoints} HP · ${player.magazineRounds}`;
       context.fillText(`${label} · ${state}`, x + 17, y - 11);
     }
   } else {

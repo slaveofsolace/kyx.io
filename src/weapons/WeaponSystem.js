@@ -8,6 +8,10 @@ import {
   buildRev17FirstPerson,
   preloadRev17FirstPerson,
 } from '../player/Rev17Character.js';
+import {
+  advanceRev17SemanticAction,
+  startRev17SemanticAction,
+} from '../player/rev17ActionContract.js';
 
 const TRACER_LIFE = 0.07;
 const FLASH_LIFE = 0.05;
@@ -63,6 +67,7 @@ export class WeaponSystem {
     this.swingPhase = 1;
     this.scopeT = 0; // 0..1 zoom blend
     this._sprintT = 0; // 0..1 sprint carry blend
+    this._reloadPresentationAction = null;
 
     this.tracers = [];
     this.rockets = [];
@@ -111,7 +116,33 @@ export class WeaponSystem {
     this.onHitWorld = null; // (point) => void
     this.onEmpty = null; // () => void
     this.onReloadStart = null;
+    this.onPresentationAction = null;
     this.applyRecoilToPlayer = null; // (amount) => void
+  }
+
+  _emitPresentationAction(event) {
+    this.onPresentationAction?.(Object.freeze(event));
+  }
+
+  _advanceReloadPresentation(deltaSeconds) {
+    if (!this._reloadPresentationAction) return;
+    const advanced = advanceRev17SemanticAction(
+      this._reloadPresentationAction,
+      deltaSeconds,
+    );
+    this._reloadPresentationAction = advanced.action;
+    for (const marker of advanced.markers) {
+      // These are presentation-only subscribers to the deterministic reload
+      // clock. Ammo transfer remains owned by _completeReload().
+      if (marker.id === 'mag_detach') this.audio.playReloadMag();
+      if (marker.id === 'bolt') this.audio.playReloadRack();
+      this._emitPresentationAction({
+        kind: 'reload',
+        phase: 'marker',
+        marker: marker.id,
+        normalizedTime: marker.normalizedTime,
+      });
+    }
   }
 
   _buildViewmodels() {
@@ -395,11 +426,31 @@ export class WeaponSystem {
     const st = this.currentState;
     if (st.isReloading) {
       st.isReloading = false;
+      this._reloadPresentationAction = null;
     }
     this.currentIndex = index;
     this.fireTimer = Math.max(this.fireTimer, 0.12);
     this._setActiveModel(index);
     this.audio.playWeaponSwitch();
+    this._rev17Viewmodel?.userData?.triggerAction?.({ kind: 'equip' });
+    this._emitPresentationAction({
+      kind: 'equip',
+      phase: 'started',
+      weaponId: this.currentDef.id,
+      weaponKind: this.currentDef.kind,
+    });
+  }
+
+  presentAbility(durationSeconds) {
+    this._rev17Viewmodel?.userData?.triggerAction?.({
+      kind: 'ability',
+      durationSeconds,
+    });
+    this._emitPresentationAction({
+      kind: 'ability',
+      phase: 'started',
+      durationSeconds,
+    });
   }
 
   resetState(baseFov) {
@@ -419,6 +470,7 @@ export class WeaponSystem {
     this.scopeT = 0;
     this._knifeCooldown = 0;
     this._prevRightMouse = false;
+    this._reloadPresentationAction = null;
     this.camera.fov = baseFov;
     this.camera.updateProjectionMatrix();
 
@@ -455,10 +507,18 @@ export class WeaponSystem {
     if (st.magAmmo >= def.magSize || st.reserveAmmo <= 0) return;
     st.isReloading = true;
     st.reloadTimer = def.reloadTime;
-    this._rev17Viewmodel?.userData?.triggerReload?.();
-    // Two-phase reload: mag drop immediately, rack/bolt halfway through
-    this.audio.playReloadMag();
-    setTimeout(() => { if (st.isReloading) this.audio.playReloadRack(); }, (def.reloadTime * 0.55) * 1000);
+    this._reloadPresentationAction = startRev17SemanticAction(
+      'reload',
+      def.reloadTime,
+    );
+    this._rev17Viewmodel?.userData?.triggerReload?.(def.reloadTime);
+    this._emitPresentationAction({
+      kind: 'reload',
+      phase: 'started',
+      durationSeconds: def.reloadTime,
+      weaponId: def.id,
+    });
+    this._advanceReloadPresentation(0);
     if (this.onReloadStart) this.onReloadStart();
   }
 
@@ -470,6 +530,13 @@ export class WeaponSystem {
     st.magAmmo += transfer;
     st.reserveAmmo -= transfer;
     st.isReloading = false;
+    this._reloadPresentationAction = null;
+    this._emitPresentationAction({
+      kind: 'reload',
+      phase: 'completed',
+      weaponId: def.id,
+      roundsTransferred: transfer,
+    });
   }
 
   _spawnTracer(from, to) {
@@ -941,6 +1008,12 @@ export class WeaponSystem {
     const st = this.currentState;
 
     if (def.kind === 'melee') {
+      this._emitPresentationAction({
+        kind: 'melee',
+        phase: 'started',
+        durationSeconds: def.fireRate,
+        weaponId: def.id,
+      });
       this.audio.playSwing();
       this._doMeleeSwing(player, world, botManager);
       this.swingPhase = 0;
@@ -959,6 +1032,11 @@ export class WeaponSystem {
 
     st.magAmmo -= 1;
     this.fireTimer = def.fireRate;
+    this._emitPresentationAction({
+      kind: 'fire',
+      phase: 'started',
+      weaponId: def.id,
+    });
     this._rev17Viewmodel?.userData?.triggerFire?.();
     // A themed skin can override the fire SFX (anime pew, laser, fire whoosh).
     const activeSkin = this._activeSkinFor(def.id);
@@ -1011,6 +1089,7 @@ export class WeaponSystem {
 
     const st = this.currentState;
     if (st.isReloading) {
+      this._advanceReloadPresentation(dt);
       st.reloadTimer -= dt;
       if (st.reloadTimer <= 0) this._completeReload();
     }
@@ -1075,6 +1154,7 @@ export class WeaponSystem {
         : 'air';
       this._rev17Viewmodel.userData.setState?.(state);
       this._rev17Viewmodel.userData.mixer?.update(dt);
+      this._rev17Viewmodel.userData.actionTick?.(dt);
       this._rev17FpGrounded = grounded;
     }
 
