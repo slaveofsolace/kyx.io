@@ -10,7 +10,7 @@ const MAP_ROOT = new URL(
   import.meta.url,
 );
 const INKFALL_REVISION_3_COLLISION_SHA256 =
-  '5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca';
+  '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8';
 
 export async function buildInkfallRevision3CombatFixtureSnapshot() {
   const manifest = await requireBundledMapPackageManifest('inkfall_foundry', 3);

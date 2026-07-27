@@ -7,7 +7,7 @@
   "implementationStatus": "runtime_fixture_only",
   "identity": {
     "algorithm": "sha256-canonical-json-zeroed-digest-v1",
-    "digest": "c769eba175a7d1bcef92167b9f997a6b72d0e50c29f3d171bd66ce911a9ea161"
+    "digest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a"
   },
   "sourceSeed": {
     "path": "inkfall-foundry.layout-seed.v1.json",
@@ -48,16 +48,16 @@
       "role": "render_only",
       "path": "revisions/revision-3/export/render.graybox.glb",
       "format": "glb",
-      "bytes": 613564,
-      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634",
+      "bytes": 614340,
+      "sha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
       "expectedMeshNodeCount": 346
     },
     "collision": {
       "role": "authority_collision",
       "path": "revisions/revision-3/export/collision.authority.glb",
       "format": "glb",
-      "bytes": 604508,
-      "sha256": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca",
+      "bytes": 605112,
+      "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
       "expectedMeshNodeCount": 339
     }
   },

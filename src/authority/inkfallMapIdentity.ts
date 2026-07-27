@@ -27,8 +27,8 @@ export const INKFALL_AUTHORITY_MAP_IDENTITY_V2 = Object.freeze({
 export const INKFALL_AUTHORITY_MAP_IDENTITY_V3 = Object.freeze({
   mapId: INKFALL_AUTHORITY_MAP_ID,
   mapRevision: 3,
-  packageDigest: 'c769eba175a7d1bcef92167b9f997a6b72d0e50c29f3d171bd66ce911a9ea161',
-  fixtureHash: '31fea7ee73a12b91',
+  packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+  fixtureHash: '6cf785c5171f2ff5',
   colliderCardinality: 339,
 } as const satisfies InkfallAuthorityMapIdentity);
 

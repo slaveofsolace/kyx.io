@@ -63,6 +63,10 @@ const STUCK_FEET_POSITION = Object.freeze({
 });
 const TARGET_FEET_POSITION = Object.freeze({ x: -14_000, y: 0, z: 2_000 });
 const OFFENDING_RAIL_ID = 'map_collision_guard_rail_press_west_ink_s00_left';
+const OPEN_MID_BAFFLE_IDS = Object.freeze([
+  'map_collision_module_press_baffle_e_inner',
+  'map_collision_module_press_baffle_w_inner',
+] as const);
 const RUNTIME_V45_OFFENDING_ROUTE_ID = 'map_collision_route_west_choice_archive_s00';
 const RUNTIME_V45_FEET_POSITION = Object.freeze({
   x: asMillimeters(-24_024),
@@ -271,7 +275,7 @@ describe('Inkfall canonical west press traversal snag', () => {
     }
   });
 
-  it('clears the exact P5.15 cast and KCC move in the one-rail revision-3 candidate', async () => {
+  it('clears the exact P5.15 cast and KCC move in the open-mid revision-3 candidate', async () => {
     const { converted } = await loadRevision3Fixture();
     const snapshot = JSON.parse(await readFile(revision3FixtureUrl, 'utf8')) as {
       readonly mapRevision: number;
@@ -283,16 +287,16 @@ describe('Inkfall canonical west press traversal snag', () => {
     };
     expect(snapshot).toMatchObject({
       mapRevision: 3,
-      packageDigest: 'c769eba175a7d1bcef92167b9f997a6b72d0e50c29f3d171bd66ce911a9ea161',
-      collisionSha256: '5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca',
-      fixtureHash: '31fea7ee73a12b91',
+      packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+      collisionSha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
+      fixtureHash: '6cf785c5171f2ff5',
       collisionMeshNodeCount: 339,
     });
     expect(snapshot.fixture).toEqual(converted.fixture);
     const rail = converted.fixture.solids.find((solid) => (
       solid.id === OFFENDING_RAIL_ID
     ));
-    expect(converted.fixtureHash).toBe('31fea7ee73a12b91');
+    expect(converted.fixtureHash).toBe('6cf785c5171f2ff5');
     expect(converted.collisionMeshNodeCount).toBe(339);
     expect(rail).toMatchObject({
       centerMm: { x: -16_179, y: -68, z: -1_330 },
@@ -342,22 +346,23 @@ describe('Inkfall canonical west press traversal snag', () => {
     }
   });
 
-  it('changes only the intended rail while preserving revision-2 authority cardinality', async () => {
+  it('changes only the rail repair and paired open-mid baffles while preserving cardinality', async () => {
     const revision2 = JSON.parse(
       await readFile(fixtureUrl, 'utf8'),
     ) as InkfallCombatFixtureSnapshot;
     const { manifest, converted } = await loadRevision3Fixture();
+    const changedColliderIds = new Set([OFFENDING_RAIL_ID, ...OPEN_MID_BAFFLE_IDS]);
     const revision2Untouched = revision2.fixture.solids.filter((solid) => (
-      solid.id !== OFFENDING_RAIL_ID
+      !changedColliderIds.has(solid.id)
     ));
     const revision3Untouched = converted.fixture.solids.filter((solid) => (
-      solid.id !== OFFENDING_RAIL_ID
+      !changedColliderIds.has(solid.id)
     ));
     const revision2Rail = revision2.fixture.solids.find((solid) => solid.id === OFFENDING_RAIL_ID);
     const revision3Rail = converted.fixture.solids.find((solid) => solid.id === OFFENDING_RAIL_ID);
 
     expect(manifest.identity.digest).toBe(
-      'c769eba175a7d1bcef92167b9f997a6b72d0e50c29f3d171bd66ce911a9ea161',
+      '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
     );
     expect(converted.fixtureHash).not.toBe('bf85e42731fd088e');
     expect(converted.fixture.solids).toHaveLength(revision2.fixture.solids.length);
@@ -372,6 +377,30 @@ describe('Inkfall canonical west press traversal snag', () => {
       centerMm: { x: -16_179, y: -68, z: -1_330 },
       shape: { halfExtentsMm: { x: 574, y: 450, z: 80 } },
     });
+    expect(OPEN_MID_BAFFLE_IDS.map((id) => (
+      revision2.fixture.solids.find((solid) => solid.id === id)
+    ))).toMatchObject([
+      {
+        centerMm: { x: 5_200, y: 1_500, z: -4_700 },
+        shape: { halfExtentsMm: { x: 2_500, y: 1_500, z: 250 } },
+      },
+      {
+        centerMm: { x: -5_200, y: 1_500, z: -4_700 },
+        shape: { halfExtentsMm: { x: 2_500, y: 1_500, z: 250 } },
+      },
+    ]);
+    expect(OPEN_MID_BAFFLE_IDS.map((id) => (
+      converted.fixture.solids.find((solid) => solid.id === id)
+    ))).toMatchObject([
+      {
+        centerMm: { x: 6_400, y: 1_500, z: -4_700 },
+        shape: { halfExtentsMm: { x: 1_600, y: 1_500, z: 250 } },
+      },
+      {
+        centerMm: { x: -6_400, y: 1_500, z: -4_700 },
+        shape: { halfExtentsMm: { x: 1_600, y: 1_500, z: 250 } },
+      },
+    ]);
   });
 
   it('traverses the exact remaining leg and adjacent lanes with zero recovery', async () => {

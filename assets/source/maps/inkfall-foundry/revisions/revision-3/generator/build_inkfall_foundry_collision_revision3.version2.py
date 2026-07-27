@@ -1,8 +1,10 @@
-"""Build the bounded G5 Inkfall Foundry authority-collision revision 3.
+"""Build the bounded G5 Inkfall Foundry revision-3 open-mid candidate.
 
-The locked revision-2 source is immutable input. This script trims only the
-shared-junction start of the left press_west_ink guard rail, copies the locked
-render GLB byte-for-byte, and emits a separate non-default revision-3 candidate.
+The locked revision-2 source is immutable input. This script preserves the
+canonical west-junction rail repair, then shortens and shifts only the paired
+inner Press Hall baffles to create a wider sniper lane with two retained
+close-cover breach endpoints. It emits paired render/collision artifacts as a
+separate non-default revision-3 candidate.
 """
 
 from __future__ import annotations
@@ -10,7 +12,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
 import sys
 from pathlib import Path
 from typing import Any
@@ -19,15 +20,26 @@ import bpy
 from mathutils import Vector
 
 
-GENERATOR_ID = "inkfall_foundry_g5_bounded_canonical_traversal_collision_revision"
-GENERATOR_VERSION = 1
+GENERATOR_ID = "inkfall_foundry_g5_open_mid_sniper_shotgun_revision"
+GENERATOR_VERSION = 2
 COLLISION_REVISION = 3
-SCOPE = "G5_BOUNDED_CANONICAL_TRAVERSAL_COLLISION_REVISION_3"
+SCOPE = "G5_REVISION_3_OPEN_MID_SNIPER_SHOTGUN_HYPOTHESIS"
 COLLECTION_RENDER = "P6_2_RENDER_GRAYBOX"
 COLLECTION_COLLISION = "P6_2_AUTHORITATIVE_COLLISION"
 TARGET_RAIL_NAME = "C_GUARD_RAIL__PRESS_WEST_INK__S00__LEFT"
 TARGET_RAIL_SOURCE_ID = "press_west_ink"
 TRIMMED_START_MM = 200
+INNER_BAFFLE_RENDER_NAMES = (
+    "R_MODULE__PRESS_BAFFLE_W_INNER",
+    "R_MODULE__PRESS_BAFFLE_E_INNER",
+)
+INNER_BAFFLE_COLLISION_NAMES = (
+    "C_MODULE__PRESS_BAFFLE_W_INNER",
+    "C_MODULE__PRESS_BAFFLE_E_INNER",
+)
+EXPECTED_INNER_BAFFLE_DIMENSIONS_MM = [5_000, 500, 3_000]
+OPEN_MID_INNER_BAFFLE_LENGTH_MM = 3_200
+OPEN_MID_INNER_BAFFLE_OUTWARD_SHIFT_MM = 1_200
 EXPECTED_SOURCE_BLEND_SHA256 = (
     "6dfb09a9c6c92dd830a21e61689ee9b363ef81928a0f8663339e6b868230f224"
 )
@@ -100,6 +112,50 @@ def collection_fingerprint(
     return hashlib.sha256(encoded).hexdigest()
 
 
+def reshape_inner_baffle(obj: bpy.types.Object, *, expected_role: str) -> None:
+    if obj.get("kyx_role") != expected_role:
+        raise RuntimeError(f"Inner baffle role drifted: {obj.name}")
+    if obj.get("kyx_source_kind") != "authored_graybox_module":
+        raise RuntimeError(f"Inner baffle source kind drifted: {obj.name}")
+    if obj.get("kyx_module_class") != "press_baffle":
+        raise RuntimeError(f"Inner baffle module class drifted: {obj.name}")
+    if json.loads(obj["kyx_dimensions_mm"]) != EXPECTED_INNER_BAFFLE_DIMENSIONS_MM:
+        raise RuntimeError(f"Inner baffle dimensions drifted: {obj.name}")
+
+    center_seed_mm = json.loads(obj["kyx_center_seed_mm"])
+    if center_seed_mm[1:] != [1_500, -4_700] or abs(center_seed_mm[0]) != 5_200:
+        raise RuntimeError(f"Inner baffle center drifted: {obj.name}")
+    side = 1 if center_seed_mm[0] > 0 else -1
+    obj.location.x += side * OPEN_MID_INNER_BAFFLE_OUTWARD_SHIFT_MM / 1_000.0
+    half_length_m = OPEN_MID_INNER_BAFFLE_LENGTH_MM / 2_000.0
+    for vertex in obj.data.vertices:
+        vertex.co.x = half_length_m if vertex.co.x >= 0 else -half_length_m
+    obj.data.update()
+
+    revised_center_mm = [
+        center_seed_mm[0] + side * OPEN_MID_INNER_BAFFLE_OUTWARD_SHIFT_MM,
+        center_seed_mm[1],
+        center_seed_mm[2],
+    ]
+    obj["kyx_center_seed_mm"] = json.dumps(revised_center_mm, separators=(",", ":"))
+    obj["kyx_dimensions_mm"] = json.dumps(
+        [
+            OPEN_MID_INNER_BAFFLE_LENGTH_MM,
+            EXPECTED_INNER_BAFFLE_DIMENSIONS_MM[1],
+            EXPECTED_INNER_BAFFLE_DIMENSIONS_MM[2],
+        ],
+        separators=(",", ":"),
+    )
+    obj["kyx_layout_status"] = "G5_REVISION_3_OPEN_MID_HYPOTHESIS_PENDING_HUMAN_PLAYTEST"
+    obj["kyx_intent"] = (
+        "widen central sniper diagonal while retaining close-cover shotgun breach endpoints"
+    )
+    obj["kyx_collision_revision"] = COLLISION_REVISION
+    obj["kyx_revision_reason"] = "open_mid_sniper_lane_with_retained_shotgun_breach_cover"
+    obj["kyx_open_mid_outward_shift_mm"] = OPEN_MID_INNER_BAFFLE_OUTWARD_SHIFT_MM
+    obj["kyx_open_mid_length_mm"] = OPEN_MID_INNER_BAFFLE_LENGTH_MM
+
+
 def export_selected_glb(path: Path, objects: list[bpy.types.Object]) -> dict[str, Any]:
     bpy.ops.object.select_all(action="DESELECT")
     for obj in objects:
@@ -168,6 +224,10 @@ def build() -> None:
         [obj for obj in collision_collection.objects if obj.type == "MESH"],
         key=lambda candidate: candidate.name,
     )
+    render_objects = sorted(
+        [obj for obj in render_collection.objects if obj.type == "MESH"],
+        key=lambda candidate: candidate.name,
+    )
     if len(collision_objects) != 339:
         raise RuntimeError(f"Expected 339 locked authority solids; found {len(collision_objects)}")
     rail = bpy.data.objects.get(TARGET_RAIL_NAME)
@@ -186,12 +246,36 @@ def build() -> None:
     if rail.get("kyx_junction_apron_mm") != EXPECTED_RAIL_JUNCTION_APRON_MM:
         raise RuntimeError("Target rail junction apron drifted")
 
-    render_fingerprint_before = collection_fingerprint(render_collection)
+    inner_render = [
+        bpy.data.objects.get(name)
+        for name in INNER_BAFFLE_RENDER_NAMES
+    ]
+    inner_collision = [
+        bpy.data.objects.get(name)
+        for name in INNER_BAFFLE_COLLISION_NAMES
+    ]
+    if any(obj is None or obj.name not in render_collection.objects for obj in inner_render):
+        raise RuntimeError("A target inner render baffle is missing")
+    if any(obj is None or obj.name not in collision_collection.objects for obj in inner_collision):
+        raise RuntimeError("A target inner collision baffle is missing")
+
+    untouched_render_fingerprint_before = collection_fingerprint(
+        render_collection,
+        exclude_names=frozenset(INNER_BAFFLE_RENDER_NAMES),
+    )
     untouched_collision_fingerprint_before = collection_fingerprint(
         collision_collection,
-        exclude_names=frozenset((TARGET_RAIL_NAME,)),
+        exclude_names=frozenset((TARGET_RAIL_NAME, *INNER_BAFFLE_COLLISION_NAMES)),
     )
     target_before = mesh_record(rail)
+    open_mid_render_before = {
+        obj.name: mesh_record(obj)
+        for obj in inner_render
+    }
+    open_mid_collision_before = {
+        obj.name: mesh_record(obj)
+        for obj in inner_collision
+    }
 
     old_length_mm = EXPECTED_RAIL_DIMENSIONS_MM[0]
     new_length_mm = old_length_mm - TRIMMED_START_MM
@@ -216,38 +300,56 @@ def build() -> None:
     rail["kyx_render_geometry_changed"] = False
     target_after = mesh_record(rail)
 
+    for obj in inner_render:
+        reshape_inner_baffle(obj, expected_role="render_graybox")
+    for obj in inner_collision:
+        reshape_inner_baffle(obj, expected_role="authoritative_collider")
+    open_mid_render_after = {
+        obj.name: mesh_record(obj)
+        for obj in inner_render
+    }
+    open_mid_collision_after = {
+        obj.name: mesh_record(obj)
+        for obj in inner_collision
+    }
+
     scene["kyx_collision_revision"] = COLLISION_REVISION
     scene["kyx_collision_revision_scope"] = SCOPE
-    scene["kyx_render_geometry_changed"] = False
+    scene["kyx_render_geometry_changed"] = True
+    scene["kyx_open_mid_revision"] = GENERATOR_VERSION
+    scene["kyx_open_mid_hypothesis"] = (
+        "wider sniper diagonal with retained shotgun breach endpoints"
+    )
     scene["kyx_g5_passed"] = False
 
-    render_fingerprint_after = collection_fingerprint(render_collection)
+    untouched_render_fingerprint_after = collection_fingerprint(
+        render_collection,
+        exclude_names=frozenset(INNER_BAFFLE_RENDER_NAMES),
+    )
     untouched_collision_fingerprint_after = collection_fingerprint(
         collision_collection,
-        exclude_names=frozenset((TARGET_RAIL_NAME,)),
+        exclude_names=frozenset((TARGET_RAIL_NAME, *INNER_BAFFLE_COLLISION_NAMES)),
     )
-    if render_fingerprint_after != render_fingerprint_before:
-        raise RuntimeError("Visible render collection changed during collision-only correction")
+    if untouched_render_fingerprint_after != untouched_render_fingerprint_before:
+        raise RuntimeError("A non-target render mesh changed")
     if untouched_collision_fingerprint_after != untouched_collision_fingerprint_before:
         raise RuntimeError("A non-target authority collider changed")
 
     render_output = export_dir / "render.graybox.glb"
     collision_output = export_dir / "collision.authority.glb"
     source_output = source_dir / "inkfall_foundry.blend"
-    shutil.copyfile(source_render, render_output)
-    if sha256_file(render_output) != EXPECTED_SOURCE_RENDER_SHA256:
-        raise RuntimeError("Revision-3 render copy is not byte-identical to locked revision 2")
 
     if any(len(obj.data.vertices) != 8 or len(obj.data.polygons) != 6 for obj in collision_objects):
         raise RuntimeError("Revision-3 authority collision contains a non-box mesh")
     if any(obj.get("kyx_role") != "authoritative_collider" for obj in collision_objects):
         raise RuntimeError("Revision-3 collision contains a non-authority role")
     bpy.ops.wm.save_as_mainfile(filepath=str(source_output), compress=True)
+    render_export = export_selected_glb(render_output, render_objects)
     collision_export = export_selected_glb(collision_output, collision_objects)
 
     report = {
         "schemaVersion": 1,
-        "status": "G5_BOUNDED_COLLISION_REVISION_3_CANDIDATE",
+        "status": "G5_OPEN_MID_REVISION_3_CANDIDATE",
         "generator": {
             "id": GENERATOR_ID,
             "version": GENERATOR_VERSION,
@@ -270,7 +372,9 @@ def build() -> None:
                 "path": str(render_output.relative_to(output_root)).replace("\\", "/"),
                 "bytes": render_output.stat().st_size,
                 "sha256": sha256_file(render_output),
-                "byteIdenticalToRevision2": True,
+                "byteIdenticalToRevision2": False,
+                "meshNodeCount": len(render_objects),
+                "export": render_export,
             },
             "collision": {
                 "path": str(collision_output.relative_to(output_root)).replace("\\", "/"),
@@ -295,10 +399,34 @@ def build() -> None:
             "before": target_before,
             "after": target_after,
         },
+        "openMidRevision": {
+            "designIntent": (
+                "widen central sniper diagonal while retaining close-cover shotgun breach endpoints"
+            ),
+            "changedRenderMeshCount": len(inner_render),
+            "changedColliderCount": len(inner_collision),
+            "renderMeshes": list(INNER_BAFFLE_RENDER_NAMES),
+            "collisionMeshes": list(INNER_BAFFLE_COLLISION_NAMES),
+            "originalBaffleLengthMm": EXPECTED_INNER_BAFFLE_DIMENSIONS_MM[0],
+            "candidateBaffleLengthMm": OPEN_MID_INNER_BAFFLE_LENGTH_MM,
+            "outwardShiftMm": OPEN_MID_INNER_BAFFLE_OUTWARD_SHIFT_MM,
+            "centralClearanceGainMm": (
+                OPEN_MID_INNER_BAFFLE_OUTWARD_SHIFT_MM * 2
+                + EXPECTED_INNER_BAFFLE_DIMENSIONS_MM[0]
+                - OPEN_MID_INNER_BAFFLE_LENGTH_MM
+            ),
+            "renderBefore": open_mid_render_before,
+            "renderAfter": open_mid_render_after,
+            "collisionBefore": open_mid_collision_before,
+            "collisionAfter": open_mid_collision_after,
+            "humanPlaytestRequired": True,
+        },
         "preservation": {
-            "renderFingerprintBefore": render_fingerprint_before,
-            "renderFingerprintAfter": render_fingerprint_after,
-            "renderUnchanged": render_fingerprint_after == render_fingerprint_before,
+            "untouchedRenderFingerprintBefore": untouched_render_fingerprint_before,
+            "untouchedRenderFingerprintAfter": untouched_render_fingerprint_after,
+            "allNonTargetRenderMeshesUnchanged": (
+                untouched_render_fingerprint_after == untouched_render_fingerprint_before
+            ),
             "untouchedCollisionFingerprintBefore": untouched_collision_fingerprint_before,
             "untouchedCollisionFingerprintAfter": untouched_collision_fingerprint_after,
             "allNonTargetCollidersUnchanged": (
@@ -310,7 +438,7 @@ def build() -> None:
             "spawnsChanged": False,
             "timingBandsChanged": False,
             "movementProfileChanged": False,
-            "renderChanged": False,
+            "renderChanged": True,
             "revision2ArtifactsChanged": False,
         },
         "nonClaims": [
@@ -326,10 +454,14 @@ def build() -> None:
         json.dumps(
             {
                 "result": "REVISION_3_CANDIDATE_BUILT",
-                "changedColliderCount": 1,
+                "changedColliderCount": 3,
+                "changedRenderMeshCount": 2,
                 "collisionMeshNodeCount": len(collision_objects),
                 "collisionSha256": report["candidateRevision"]["collision"]["sha256"],
-                "renderUnchanged": report["preservation"]["renderUnchanged"],
+                "renderSha256": report["candidateRevision"]["render"]["sha256"],
+                "allNonTargetRenderMeshesUnchanged": report["preservation"][
+                    "allNonTargetRenderMeshesUnchanged"
+                ],
                 "allNonTargetCollidersUnchanged": report["preservation"][
                     "allNonTargetCollidersUnchanged"
                 ],

@@ -226,7 +226,7 @@ export async function capturePhase6G5Revision3SnagRepair() {
   const buildReport = JSON.parse(revision3BuildReportBytes.toString('utf8')) as {
     readonly status: string;
     readonly preservation: {
-      readonly renderUnchanged: boolean;
+      readonly allNonTargetRenderMeshesUnchanged: boolean;
       readonly allNonTargetCollidersUnchanged: boolean;
       readonly colliderCardinalityUnchanged: boolean;
     };
@@ -244,11 +244,15 @@ export async function capturePhase6G5Revision3SnagRepair() {
   requireCondition(revision2.mapRevision === 2, 'REVISION_2_FIXTURE_IDENTITY_DRIFT');
   requireCondition(revision3.mapRevision === 3, 'REVISION_3_FIXTURE_IDENTITY_DRIFT');
   requireCondition(revision2.fixtureHash === 'bf85e42731fd088e', 'REVISION_2_HASH_DRIFT');
-  requireCondition(revision3.fixtureHash === '31fea7ee73a12b91', 'REVISION_3_HASH_DRIFT');
+  requireCondition(revision3.fixtureHash === '6cf785c5171f2ff5', 'REVISION_3_HASH_DRIFT');
   requireCondition(revision2.fixture.solids.length === 339, 'REVISION_2_CARDINALITY_DRIFT');
   requireCondition(revision3.fixture.solids.length === 339, 'REVISION_3_CARDINALITY_DRIFT');
   requireCondition(
-    JSON.stringify(changedColliderIds) === JSON.stringify([OFFENDING_RAIL_ID]),
+    JSON.stringify(changedColliderIds) === JSON.stringify([
+      OFFENDING_RAIL_ID,
+      'map_collision_module_press_baffle_e_inner',
+      'map_collision_module_press_baffle_w_inner',
+    ]),
     'REVISION_3_COLLIDER_DIFF_SCOPE_DRIFT',
   );
   requireCondition(revision2Exact.moveOutcome === 'ERROR', 'REVISION_2_DEFECT_NOT_REPRODUCED');
@@ -272,10 +276,13 @@ export async function capturePhase6G5Revision3SnagRepair() {
     'REVISION_3_ADJACENT_LANE_REGRESSION',
   );
   requireCondition(
-    revision2RenderBytes.equals(revision3RenderBytes),
-    'REVISION_3_RENDER_BYTES_CHANGED',
+    !revision2RenderBytes.equals(revision3RenderBytes),
+    'REVISION_3_OPEN_MID_RENDER_NOT_CHANGED',
   );
-  requireCondition(buildReport.preservation.renderUnchanged, 'BUILD_REPORT_RENDER_DRIFT');
+  requireCondition(
+    buildReport.preservation.allNonTargetRenderMeshesUnchanged,
+    'BUILD_REPORT_NON_TARGET_RENDER_DRIFT',
+  );
   requireCondition(
     buildReport.preservation.allNonTargetCollidersUnchanged,
     'BUILD_REPORT_NON_TARGET_COLLIDER_DRIFT',
@@ -287,8 +294,8 @@ export async function capturePhase6G5Revision3SnagRepair() {
 
   return Object.freeze({
     schemaVersion: 1,
-    phase: 'G5_BOUNDED_CANONICAL_TRAVERSAL_SNAG_REPAIR',
-    status: 'REVISION_3_COLLISION_CANDIDATE_DETERMINISTIC_PASS',
+    phase: 'G5_REVISION_3_OPEN_MID_AND_CANONICAL_SNAG_REPAIR',
+    status: 'REVISION_3_OPEN_MID_COLLISION_CANDIDATE_DETERMINISTIC_PASS',
     capturedAt: new Date().toISOString(),
     sourceDefect: {
       path: 'evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json',
@@ -320,9 +327,12 @@ export async function capturePhase6G5Revision3SnagRepair() {
       adjacentLanes,
     },
     preservation: {
-      renderByteIdentical: revision2RenderBytes.equals(revision3RenderBytes),
-      renderSha256Identical: sha256(revision2RenderBytes) === sha256(revision3RenderBytes),
-      nonTargetCollidersByteEquivalent: changedColliderIds.length === 1,
+      renderByteIdentical: false,
+      renderSha256Identical: false,
+      nonTargetRenderMeshesByteEquivalent: (
+        buildReport.preservation.allNonTargetRenderMeshesUnchanged
+      ),
+      nonTargetCollidersByteEquivalent: changedColliderIds.length === 3,
       colliderCardinalityUnchanged: revision2.fixture.solids.length === revision3.fixture.solids.length,
       authorityVolumesUnchanged: JSON.stringify(revision2.fixture.volumes)
         === JSON.stringify(revision3.fixture.volumes),
