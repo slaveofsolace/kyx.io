@@ -72,6 +72,16 @@ const FIRST_PERSON_CLIPS = Object.freeze({
   land: 'KYX_REV17_FP_LAND',
 });
 
+const REV17_MELEE_SOCKET_CONTACT = Object.freeze({
+  position: Object.freeze([0, 0, 0]),
+  rotation: Object.freeze([0, Math.PI, 0]),
+  uniformScale: 0.75,
+});
+
+export function getRev17MeleeSocketContactTransform() {
+  return REV17_MELEE_SOCKET_CONTACT;
+}
+
 function notifyIfReady(kind) {
   const callbacks = kind === 'firstPerson'
     ? FIRST_PERSON_CALLBACKS
@@ -307,10 +317,11 @@ export function buildRev17Character(
     const socket = root.getObjectByName('socket_weapon_r')
       || root.getObjectByName('palm.R');
     if (!socket) return;
+    const contact = getRev17MeleeSocketContactTransform();
     attachedMelee = weapon;
-    weapon.position.set(0, 0, 0);
-    weapon.rotation.set(0, Math.PI, 0);
-    weapon.scale.setScalar(0.75);
+    weapon.position.set(...contact.position);
+    weapon.rotation.set(...contact.rotation);
+    weapon.scale.setScalar(contact.uniformScale);
     socket.add(weapon);
   };
 
