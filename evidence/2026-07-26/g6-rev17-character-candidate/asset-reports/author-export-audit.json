@@ -1,0 +1,2086 @@
+{
+  "schema": "kyx-g6-rev17-character-author-export-audit-v1",
+  "generatedAt": "2026-07-26T20:01:33.620177+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "G6_REV17_HUMAN_PROPORTIONED_CHARACTER_CANDIDATE",
+  "status": "REV17_CANDIDATE_STRUCTURAL_PIPELINE_COMPLETE_VISUAL_REVIEW_REQUIRED",
+  "candidateDisposition": {
+    "default": false,
+    "releaseEligible": false,
+    "g6Accepted": false,
+    "humanVisualReviewRequired": true,
+    "rev15AndRev16RemainRejectedAndNonDefault": true
+  },
+  "sources": {
+    "rev16RejectedGlb": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev16\\export\\kyx-v6c-character-rev16.runtime-candidate.glb",
+      "sha256": "13a3f3761960b0aad80653dce5c7f3439f29458f8979b8f10537e9be40b9c0eb",
+      "bytes": 3073000,
+      "use": "rig, embedded contact/action sampling, rifle topology only"
+    },
+    "v6aCc0Anatomy": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+      "sha256": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "use": "preserved clean CC0 anatomy reference; not mutated"
+    },
+    "rev14WeightedBody": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-lod0-retopo-rev14\\kyx-v6c-lod0-retopo-rev14.blend",
+      "sha256": "b4adcc29def7633c5c1c5756d2d419b636a5ff5161fe04bbded9709575e56315",
+      "use": "preserved prior weighted retopology reference; not used as Rev17 visible surface because joined soft islands tore visually"
+    },
+    "rev13WeightedAnatomy": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-gameplay-rev13\\export\\kyx-v6c-gameplay-rev13.runtime-candidate.glb",
+      "sha256": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
+      "bytes": 9278844,
+      "use": "separately weighted clean CC0 anatomy island, reduced before armature and used as the continuous visible Rev17 body"
+    },
+    "rev13AuthoredArmor": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-rev13\\kyx_vanguard_v6b_production_sculpt_rev13.blend",
+      "sha256": "4c6d1b386c90895a15b3d0713c916ba7270dbe81b74d265975db0109e152d1bb",
+      "use": "evaluated fitted helmet, boots, torso and limb armor components, rigidly assigned by declared bone role"
+    },
+    "hashesBefore": {
+      "rev16Glb": "13a3f3761960b0aad80653dce5c7f3439f29458f8979b8f10537e9be40b9c0eb",
+      "v6aBlend": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "rev14Blend": "b4adcc29def7633c5c1c5756d2d419b636a5ff5161fe04bbded9709575e56315",
+      "rev13GameplayGlb": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
+      "rev13ArmorBlend": "4c6d1b386c90895a15b3d0713c916ba7270dbe81b74d265975db0109e152d1bb"
+    },
+    "hashesAfter": {
+      "rev16Glb": "13a3f3761960b0aad80653dce5c7f3439f29458f8979b8f10537e9be40b9c0eb",
+      "v6aBlend": "074c17b819c9bc564f042d2dbc24bb5e359e428fce61f6cc8502a351307afa2d",
+      "rev14Blend": "b4adcc29def7633c5c1c5756d2d419b636a5ff5161fe04bbded9709575e56315",
+      "rev13GameplayGlb": "0688a781def693ebf0f4aa49eb76c32c458b83e786fbbdebadafb76022f39fee",
+      "rev13ArmorBlend": "4c6d1b386c90895a15b3d0713c916ba7270dbe81b74d265975db0109e152d1bb"
+    }
+  },
+  "authoring": {
+    "masterBlend": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\kyx-v6c-character-rev17-master.blend",
+      "sha256": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+      "bytes": 6031917
+    },
+    "weightTransfer": {
+      "source": "KYX_V6A_AnatomySculpt_Body",
+      "method": "preserve_entire_continuous_v6a_surface_with_fresh_spatially_separated_heat_weights; no_masking_no_open_garment_boundaries",
+      "verticesBeforeMask": 10582,
+      "verticesAfterMask": 10582,
+      "trianglesBeforeMask": 21160,
+      "trianglesAfterMask": 21160,
+      "maskedRestZones": [],
+      "surfaceDeletionPerformed": false,
+      "destinationGroups": 52,
+      "unweightedOrUnderweightedVertices": 0,
+      "maximumInfluences": 4,
+      "minimumWeightTotal": 0.9999,
+      "maximumWeightTotal": 1.0,
+      "cleanAnatomyImport": {
+        "source": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\kyx_vanguard_v6a_anatomy_sculpt_working.blend",
+        "sourceObject": "KYX_V6A_AnatomySculpt_Body",
+        "sourceModifiersRemoved": [
+          {
+            "name": "Multires",
+            "type": "MULTIRES",
+            "levels": 3,
+            "renderLevels": 3
+          }
+        ],
+        "vertices": 10582,
+        "sourceTriangles": 21160,
+        "trianglesAfterModifierRemoval": 21160,
+        "method": "append_preserved_continuous_v6a_cc0_base_cage; remove_multires_modifier_without_applying; no_surface_deletion_or_projection"
+      },
+      "athleticSuitProportionRefinement": {
+        "method": "bounded_base_cage_athletic_waist_broadening_and_upper_hip_taper_before_destination_weight_authoring",
+        "changedVertices": 452,
+        "regionVertexCounts": {
+          "athletic_waist_broadening": 236,
+          "bounded_upper_hip_taper": 216
+        },
+        "maximumDisplacementMeters": 0.03221822,
+        "meanDisplacementMeters": 0.00030127,
+        "topologyChanged": false,
+        "surfaceDeleted": false
+      },
+      "spatiallySeparatedHeatSolve": {
+        "method": "temporary_spatial_separation_of_named_limb_regions_and_matching_bones_then_automatic_heat_weights_then_exact_rest_coordinate_restore",
+        "temporaryOffsetsMeters": {
+          "arm_L": [
+            0.72,
+            0.0,
+            0.0
+          ],
+          "arm_R": [
+            -0.72,
+            0.0,
+            0.0
+          ],
+          "leg_L": [
+            0.3,
+            0.0,
+            0.0
+          ],
+          "leg_R": [
+            -0.3,
+            0.0,
+            0.0
+          ],
+          "torso": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "classificationVertexCounts": {
+          "arm_L": 1246,
+          "arm_R": 1245,
+          "leg_L": 1648,
+          "leg_R": 1650,
+          "torso": 4793
+        },
+        "classificationMethods": {
+          "nearest_named_bone_segment": 10582
+        },
+        "unweightedOrUnderweightedVertices": 0,
+        "maximumInfluences": 4,
+        "minimumWeightTotal": 0.9999,
+        "maximumWeightTotal": 1.0,
+        "temporarySolveRigRemoved": true,
+        "authoredRestCoordinatesRestoredExactly": true
+      },
+      "pelvisStabilization": {
+        "method": "bounded_closed_pelvis_root_spine_thigh_blend_by_rest_height_and_lateral_distance",
+        "restHeightBandMeters": [
+          0.76,
+          1.075
+        ],
+        "editedVertices": 330,
+        "editedVerticesBySide": {
+          "L": 166,
+          "R": 164
+        },
+        "minimumAuthoredWeightTotal": 1.0,
+        "maximumAuthoredWeightTotal": 1.0,
+        "maximumInfluencesAuthored": 3
+      }
+    },
+    "bodyColorBands": {
+      "boot_liner": 10464,
+      "continuous_undersuit": 6600,
+      "occluded_face": 14472,
+      "sealed_glove": 4726,
+      "technical_trouser": 4036,
+      "thoracic_underlayer": 2042
+    },
+    "fittedArmorRegions": {
+      "source": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-production-rev13\\kyx_vanguard_v6b_production_sculpt_rev13.blend",
+      "pieceCount": 18,
+      "rolePieceCounts": {
+        "boot": 10,
+        "helmet_pearl": 6,
+        "visor": 2
+      },
+      "sourcePieceTriangles": {
+        "KYX_V6B_PROD_R13_BootHeelCup_L": 108,
+        "KYX_V6B_PROD_R13_BootHeelCup_R": 108,
+        "KYX_V6B_PROD_R13_BootLast_L": 1736,
+        "KYX_V6B_PROD_R13_BootLast_R": 1736,
+        "KYX_V6B_PROD_R13_BootOutsole_L": 204,
+        "KYX_V6B_PROD_R13_BootOutsole_R": 204,
+        "KYX_V6B_PROD_R13_BootShaft_L": 4224,
+        "KYX_V6B_PROD_R13_BootShaft_R": 4224,
+        "KYX_V6B_PROD_R13_BootToeBridge_L": 256,
+        "KYX_V6B_PROD_R13_BootToeBridge_R": 256,
+        "KYX_V6B_PROD_R13_HelmetBrowIndex": 288,
+        "KYX_V6B_PROD_R13_HelmetCheekRail_L": 192,
+        "KYX_V6B_PROD_R13_HelmetCheekRail_R": 192,
+        "KYX_V6B_PROD_R13_HelmetCrownRear": 3560,
+        "KYX_V6B_PROD_R13_HelmetInner": 8640,
+        "KYX_V6B_PROD_R13_HelmetPivot_L": 108,
+        "KYX_V6B_PROD_R13_HelmetPivot_R": 108,
+        "KYX_V6B_PROD_R13_Visor": 2424
+      },
+      "joinedTrianglesBeforeBudget": 28568,
+      "joinedTriangles": 12500,
+      "method": "single_subdivision_evaluated_authored_components_rigidly_skinned_by_declared_role_then_bounded_to_12500_triangles",
+      "triangleBudget": 12500,
+      "cleanAuthoredProfilePanels": {
+        "method": "closed_beveled_authored_profile_plates_with_clean_manifold_edges_and_single_bone_hard_surface_skinning",
+        "pieceCount": 18,
+        "pieces": [
+          {
+            "name": "KYX_REV17_CHEST_PECTORAL_L",
+            "bone": "chest",
+            "role": "chest",
+            "triangles": 192
+          },
+          {
+            "name": "KYX_REV17_CHEST_PECTORAL_R",
+            "bone": "chest",
+            "role": "chest",
+            "triangles": 192
+          },
+          {
+            "name": "KYX_REV17_CHEST_INDEX",
+            "bone": "chest",
+            "role": "chest_index",
+            "triangles": 132
+          },
+          {
+            "name": "KYX_REV17_BACK_CARAPACE",
+            "bone": "chest",
+            "role": "chest",
+            "triangles": 220
+          },
+          {
+            "name": "KYX_REV17_ABDOMEN_FLEX_01",
+            "bone": "spine_02",
+            "role": "abdomen",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_ABDOMEN_FLEX_02",
+            "bone": "spine_01",
+            "role": "abdomen",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_ABDOMEN_FLEX_03",
+            "bone": "spine_01",
+            "role": "abdomen",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_PELVIS_CENTER",
+            "bone": "root",
+            "role": "pelvis",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_SHOULDER_CAP_L",
+            "bone": "upper_arm.L",
+            "role": "shoulder",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_SHOULDER_CAP_R",
+            "bone": "upper_arm.R",
+            "role": "shoulder_accent",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_FOREARM_GUARD_L",
+            "bone": "forearm.L",
+            "role": "forearm",
+            "triangles": 136
+          },
+          {
+            "name": "KYX_REV17_THIGH_GUARD_L",
+            "bone": "thigh_anchor.L",
+            "role": "thigh",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_KNEE_GUARD_L",
+            "bone": "shin_anchor.L",
+            "role": "knee",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_SHIN_GUARD_L",
+            "bone": "shin_anchor.L",
+            "role": "shin",
+            "triangles": 132
+          },
+          {
+            "name": "KYX_REV17_FOREARM_GUARD_R",
+            "bone": "forearm.R",
+            "role": "forearm",
+            "triangles": 136
+          },
+          {
+            "name": "KYX_REV17_THIGH_GUARD_R",
+            "bone": "thigh_anchor.R",
+            "role": "thigh",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_KNEE_GUARD_R",
+            "bone": "shin_anchor.R",
+            "role": "knee",
+            "triangles": 164
+          },
+          {
+            "name": "KYX_REV17_SHIN_GUARD_R",
+            "bone": "shin_anchor.R",
+            "role": "shin",
+            "triangles": 132
+          }
+        ],
+        "joinedTriangles": 2912,
+        "copiedBodySurfaceFaces": 0,
+        "openSawtoothSelectionBorders": 0
+      },
+      "combinedArmor": {
+        "inputTriangles": {
+          "KYX_REV17_LOD0_AUTHORED_FITTED_ARMOR": 12500,
+          "KYX_REV17_LOD0_CLEAN_PROFILE_ARMOR": 2912
+        },
+        "joinedTrianglesBeforeBudget": 15412,
+        "joinedTriangles": 15412,
+        "budgetTriangles": 16000,
+        "method": "authored_rigid_helmet_and_boot_components_plus_closed_beveled_clean_profile_plates_joined_to_one_runtime_primitive"
+      }
+    },
+    "compactRifleProfile": {
+      "method": "support_safe_piecewise_forward_compression_below_rest_z_0.50; all contact-mask vertices preserved exactly",
+      "supportSafePivotZ": 0.5,
+      "forwardScale": 0.56,
+      "changedVertices": 2132,
+      "contactVertices": 1948,
+      "maximumContactVertexDelta": 0.0,
+      "boundsBefore": {
+        "minimum": [
+          -0.5479963421821594,
+          -0.5169901251792908,
+          -0.2563731074333191
+        ],
+        "maximum": [
+          -0.2902364730834961,
+          0.22558119893074036,
+          1.0251545906066895
+        ],
+        "dimensions": [
+          0.25775986909866333,
+          0.7425713241100311,
+          1.2815276980400085
+        ]
+      },
+      "boundsAfter": {
+        "minimum": [
+          -0.5479963421821594,
+          -0.5169901251792908,
+          0.07643105834722519
+        ],
+        "maximum": [
+          -0.2902364730834961,
+          0.22558119893074036,
+          1.0251545906066895
+        ],
+        "dimensions": [
+          0.25775986909866333,
+          0.7425713241100311,
+          0.9487235322594643
+        ]
+      }
+    },
+    "rifleColorBands": {
+      "muzzle": 900,
+      "oxide_index": 7464,
+      "rifle_body": 4050,
+      "upper_receiver": 9654
+    },
+    "socketBones": [
+      {
+        "name": "socket_head",
+        "parent": "head",
+        "head": [
+          0.0,
+          -0.035,
+          1.68
+        ]
+      },
+      {
+        "name": "socket_chest",
+        "parent": "chest",
+        "head": [
+          0.0,
+          -0.15,
+          1.31
+        ]
+      },
+      {
+        "name": "socket_back",
+        "parent": "chest",
+        "head": [
+          0.0,
+          0.13,
+          1.28
+        ]
+      },
+      {
+        "name": "socket_hips",
+        "parent": "root",
+        "head": [
+          0.0,
+          0.0,
+          0.91
+        ]
+      },
+      {
+        "name": "socket_hand_r",
+        "parent": "palm.R",
+        "head": [
+          -0.405,
+          -0.09,
+          0.845
+        ]
+      },
+      {
+        "name": "socket_hand_l",
+        "parent": "palm.L",
+        "head": [
+          0.405001,
+          -0.090001,
+          0.845
+        ]
+      },
+      {
+        "name": "socket_weapon_r",
+        "parent": "palm.R",
+        "head": [
+          -0.405,
+          -0.09,
+          0.845
+        ]
+      },
+      {
+        "name": "socket_support_l",
+        "parent": "palm.L",
+        "head": [
+          0.405001,
+          -0.090001,
+          0.845
+        ]
+      },
+      {
+        "name": "socket_muzzle",
+        "parent": "socket_weapon_r",
+        "head": [
+          -0.31821,
+          -0.481485,
+          0.078331
+        ]
+      },
+      {
+        "name": "socket_nozzle",
+        "parent": "socket_muzzle",
+        "head": [
+          -0.31821,
+          -0.481485,
+          0.060331
+        ]
+      },
+      {
+        "name": "socket_casing",
+        "parent": "socket_weapon_r",
+        "head": [
+          -0.5,
+          -0.06,
+          0.69
+        ]
+      },
+      {
+        "name": "socket_foot_l",
+        "parent": "foot_anchor.L",
+        "head": [
+          0.105004,
+          -0.339485,
+          -0.130842
+        ]
+      },
+      {
+        "name": "socket_foot_r",
+        "parent": "foot_anchor.R",
+        "head": [
+          -0.105004,
+          -0.339486,
+          -0.130842
+        ]
+      },
+      {
+        "name": "socket_ability",
+        "parent": "chest",
+        "head": [
+          -0.17,
+          -0.12,
+          1.24
+        ]
+      }
+    ],
+    "armatureBoneCount": 66,
+    "actions": [
+      {
+        "name": "KYX_REV17_TP_IDLE",
+        "sourceClip": "KYX_V6C_TP_IDLE",
+        "frameRange": [
+          1,
+          49
+        ],
+        "durationSeconds": 2.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_WALK",
+        "sourceClip": "KYX_V6C_TP_WALK",
+        "frameRange": [
+          1,
+          25
+        ],
+        "durationSeconds": 1.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_RUN",
+        "sourceClip": "KYX_V6C_TP_RUN",
+        "frameRange": [
+          1,
+          19
+        ],
+        "durationSeconds": 0.75,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_JUMP_START",
+        "sourceClip": "KYX_V6C_TP_JUMP_START",
+        "frameRange": [
+          1,
+          14
+        ],
+        "durationSeconds": 0.541667,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_AIRBORNE_LOOP",
+        "sourceClip": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "frameRange": [
+          1,
+          25
+        ],
+        "durationSeconds": 1.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_LAND",
+        "sourceClip": "KYX_V6C_TP_LAND",
+        "frameRange": [
+          1,
+          16
+        ],
+        "durationSeconds": 0.625,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_PRIMARY_FIRE",
+        "sourceClip": "KYX_V6C_TP_PRIMARY_FIRE",
+        "frameRange": [
+          1,
+          12
+        ],
+        "durationSeconds": 0.458333,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "LINEAR",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_RELOAD",
+        "sourceClip": "KYX_V6C_TP_RELOAD",
+        "frameRange": [
+          1,
+          49
+        ],
+        "durationSeconds": 2.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "sourceClip": "KYX_V6C_TP_HIT_REACTION_FRONT",
+        "frameRange": [
+          1,
+          20
+        ],
+        "durationSeconds": 0.791667,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_TP_DEATH_FRONT",
+        "sourceClip": "KYX_V6C_TP_DEATH_FRONT",
+        "frameRange": [
+          1,
+          60
+        ],
+        "durationSeconds": 2.458333,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_FP_IDLE",
+        "sourceClip": "KYX_V6C_TP_IDLE",
+        "frameRange": [
+          1,
+          49
+        ],
+        "durationSeconds": 2.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_FP_FIRE",
+        "sourceClip": "KYX_V6C_TP_PRIMARY_FIRE",
+        "frameRange": [
+          1,
+          12
+        ],
+        "durationSeconds": 0.458333,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "LINEAR",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_FP_RELOAD",
+        "sourceClip": "KYX_V6C_TP_RELOAD",
+        "frameRange": [
+          1,
+          49
+        ],
+        "durationSeconds": 2.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_FP_SPRINT",
+        "sourceClip": "KYX_V6C_TP_RUN",
+        "frameRange": [
+          1,
+          19
+        ],
+        "durationSeconds": 0.75,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_FP_AIRBORNE",
+        "sourceClip": "KYX_V6C_TP_AIRBORNE_LOOP",
+        "frameRange": [
+          1,
+          25
+        ],
+        "durationSeconds": 1.0,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": true,
+        "fcurves": 660
+      },
+      {
+        "name": "KYX_REV17_FP_LAND",
+        "sourceClip": "KYX_V6C_TP_LAND",
+        "frameRange": [
+          1,
+          16
+        ],
+        "durationSeconds": 0.625,
+        "sampledEveryIntegerFrame": true,
+        "interpolation": "BEZIER",
+        "loop": false,
+        "fcurves": 660
+      }
+    ],
+    "firstPersonPlan": {
+      "dedicatedGeometry": true,
+      "geometry": [
+        "KYX_REV17_FP_ARMS_GLOVES",
+        "KYX_REV17_FP_ARMOR_SLEEVES",
+        "KYX_REV17_FP_COMPACT_RIFLE"
+      ],
+      "clips": [
+        "KYX_REV17_FP_AIRBORNE",
+        "KYX_REV17_FP_FIRE",
+        "KYX_REV17_FP_IDLE",
+        "KYX_REV17_FP_LAND",
+        "KYX_REV17_FP_RELOAD",
+        "KYX_REV17_FP_SPRINT"
+      ],
+      "runtimeIntent": "Opt-in M4 viewmodel replacement under ?g6Candidate=rev17; no default/public asset replacement."
+    }
+  },
+  "exports": {
+    "lod0": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-lod0.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+      "bytes": 3584252,
+      "counts": {
+        "nodes": 70,
+        "meshes": 3,
+        "primitives": 3,
+        "triangles": 43928,
+        "materials": 3,
+        "skins": 1,
+        "animations": 16,
+        "images": 0,
+        "textures": 0
+      },
+      "primitives": [
+        {
+          "meshIndex": 0,
+          "meshName": "KYX_REV17_LOD0_AUTHORED_FITTED_ARMOR_MESH",
+          "primitiveIndex": 0,
+          "triangles": 15412,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_FITTED_ARMOR_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 1,
+          "meshName": "KYX_REV17_LOD0_COMPACT_RIFLE_MESH",
+          "primitiveIndex": 0,
+          "triangles": 7356,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0",
+            "_KYX_CONTACT_MASK"
+          ],
+          "material": "KYX_REV17_RIFLE_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 2,
+          "meshName": "KYX_REV17_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+          "primitiveIndex": 0,
+          "triangles": 21160,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_UNDERSUIT_VERTEX_COLOR"
+        }
+      ],
+      "animations": [
+        {
+          "name": "KYX_REV17_TP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_WALK",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RUN",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_JUMP_START",
+          "durationSeconds": 0.5833333333333334,
+          "channels": 198,
+          "keyCountMinimum": 14,
+          "keyCountMaximum": 14,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_AIRBORNE_LOOP",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_PRIMARY_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "durationSeconds": 0.8333333333333334,
+          "channels": 198,
+          "keyCountMinimum": 20,
+          "keyCountMaximum": 20,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_DEATH_FRONT",
+          "durationSeconds": 2.5,
+          "channels": 198,
+          "keyCountMinimum": 60,
+          "keyCountMaximum": 60,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_SPRINT",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_AIRBORNE",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        }
+      ],
+      "externalUris": []
+    },
+    "lod1": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-lod1.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+      "bytes": 2558944,
+      "counts": {
+        "nodes": 70,
+        "meshes": 3,
+        "primitives": 3,
+        "triangles": 18614,
+        "materials": 3,
+        "skins": 1,
+        "animations": 16,
+        "images": 0,
+        "textures": 0
+      },
+      "primitives": [
+        {
+          "meshIndex": 0,
+          "meshName": "KYX_REV17_LOD1_COMPACT_RIFLE_MESH",
+          "primitiveIndex": 0,
+          "triangles": 3678,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0",
+            "_KYX_CONTACT_MASK"
+          ],
+          "material": "KYX_REV17_RIFLE_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 1,
+          "meshName": "KYX_REV17_LOD1_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+          "primitiveIndex": 0,
+          "triangles": 8464,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_UNDERSUIT_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 2,
+          "meshName": "KYX_REV17_LOD1_FITTED_ARMOR_MESH",
+          "primitiveIndex": 0,
+          "triangles": 6472,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_FITTED_ARMOR_VERTEX_COLOR"
+        }
+      ],
+      "animations": [
+        {
+          "name": "KYX_REV17_TP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_WALK",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RUN",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_JUMP_START",
+          "durationSeconds": 0.5833333333333334,
+          "channels": 198,
+          "keyCountMinimum": 14,
+          "keyCountMaximum": 14,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_AIRBORNE_LOOP",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_PRIMARY_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "durationSeconds": 0.8333333333333334,
+          "channels": 198,
+          "keyCountMinimum": 20,
+          "keyCountMaximum": 20,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_DEATH_FRONT",
+          "durationSeconds": 2.5,
+          "channels": 198,
+          "keyCountMinimum": 60,
+          "keyCountMaximum": 60,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_SPRINT",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_AIRBORNE",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        }
+      ],
+      "externalUris": []
+    },
+    "lod2": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-lod2.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+      "bytes": 1817156,
+      "counts": {
+        "nodes": 70,
+        "meshes": 3,
+        "primitives": 3,
+        "triangles": 7109,
+        "materials": 3,
+        "skins": 1,
+        "animations": 16,
+        "images": 0,
+        "textures": 0
+      },
+      "primitives": [
+        {
+          "meshIndex": 0,
+          "meshName": "KYX_REV17_LOD2_COMPACT_RIFLE_MESH",
+          "primitiveIndex": 0,
+          "triangles": 1471,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0",
+            "_KYX_CONTACT_MASK"
+          ],
+          "material": "KYX_REV17_RIFLE_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 1,
+          "meshName": "KYX_REV17_LOD2_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+          "primitiveIndex": 0,
+          "triangles": 3174,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_UNDERSUIT_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 2,
+          "meshName": "KYX_REV17_LOD2_FITTED_ARMOR_MESH",
+          "primitiveIndex": 0,
+          "triangles": 2464,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_FITTED_ARMOR_VERTEX_COLOR"
+        }
+      ],
+      "animations": [
+        {
+          "name": "KYX_REV17_TP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_WALK",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RUN",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_JUMP_START",
+          "durationSeconds": 0.5833333333333334,
+          "channels": 198,
+          "keyCountMinimum": 14,
+          "keyCountMaximum": 14,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_AIRBORNE_LOOP",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_PRIMARY_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "durationSeconds": 0.8333333333333334,
+          "channels": 198,
+          "keyCountMinimum": 20,
+          "keyCountMaximum": 20,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_DEATH_FRONT",
+          "durationSeconds": 2.5,
+          "channels": 198,
+          "keyCountMinimum": 60,
+          "keyCountMaximum": 60,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_SPRINT",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_AIRBORNE",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        }
+      ],
+      "externalUris": []
+    },
+    "firstPerson": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-first-person.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+      "bytes": 2495708,
+      "counts": {
+        "nodes": 70,
+        "meshes": 3,
+        "primitives": 3,
+        "triangles": 27026,
+        "materials": 3,
+        "skins": 1,
+        "animations": 16,
+        "images": 0,
+        "textures": 0
+      },
+      "primitives": [
+        {
+          "meshIndex": 0,
+          "meshName": "KYX_REV17_FP_ARMOR_SLEEVES_MESH",
+          "primitiveIndex": 0,
+          "triangles": 1828,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_FITTED_ARMOR_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 1,
+          "meshName": "KYX_REV17_FP_ARMS_GLOVES_MESH",
+          "primitiveIndex": 0,
+          "triangles": 17842,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "WEIGHTS_0"
+          ],
+          "material": "KYX_REV17_UNDERSUIT_VERTEX_COLOR"
+        },
+        {
+          "meshIndex": 2,
+          "meshName": "KYX_REV17_FP_COMPACT_RIFLE_MESH",
+          "primitiveIndex": 0,
+          "triangles": 7356,
+          "attributes": [
+            "COLOR_0",
+            "JOINTS_0",
+            "NORMAL",
+            "POSITION",
+            "TEXCOORD_0",
+            "WEIGHTS_0",
+            "_KYX_CONTACT_MASK"
+          ],
+          "material": "KYX_REV17_RIFLE_VERTEX_COLOR"
+        }
+      ],
+      "animations": [
+        {
+          "name": "KYX_REV17_TP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_WALK",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RUN",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_JUMP_START",
+          "durationSeconds": 0.5833333333333334,
+          "channels": 198,
+          "keyCountMinimum": 14,
+          "keyCountMaximum": 14,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_AIRBORNE_LOOP",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_PRIMARY_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "durationSeconds": 0.8333333333333334,
+          "channels": 198,
+          "keyCountMinimum": 20,
+          "keyCountMaximum": 20,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_TP_DEATH_FRONT",
+          "durationSeconds": 2.5,
+          "channels": 198,
+          "keyCountMinimum": 60,
+          "keyCountMaximum": 60,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_IDLE",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_FIRE",
+          "durationSeconds": 0.5,
+          "channels": 198,
+          "keyCountMinimum": 12,
+          "keyCountMaximum": 12,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_RELOAD",
+          "durationSeconds": 2.0416666666666665,
+          "channels": 198,
+          "keyCountMinimum": 49,
+          "keyCountMaximum": 49,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_SPRINT",
+          "durationSeconds": 0.7916666666666666,
+          "channels": 198,
+          "keyCountMinimum": 19,
+          "keyCountMaximum": 19,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_AIRBORNE",
+          "durationSeconds": 1.0416666666666667,
+          "channels": 198,
+          "keyCountMinimum": 25,
+          "keyCountMaximum": 25,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        },
+        {
+          "name": "KYX_REV17_FP_LAND",
+          "durationSeconds": 0.6666666666666666,
+          "channels": 198,
+          "keyCountMinimum": 16,
+          "keyCountMaximum": 16,
+          "targetPaths": {
+            "rotation": 66,
+            "scale": 66,
+            "translation": 66
+          }
+        }
+      ],
+      "externalUris": []
+    }
+  },
+  "freshReimports": {
+    "lod0": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-lod0.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sourceUnchangedDuringReimport": true,
+      "runtimeMeshes": [
+        "KYX_REV17_LOD0_AUTHORED_FITTED_ARMOR",
+        "KYX_REV17_LOD0_COMPACT_RIFLE",
+        "KYX_REV17_LOD0_CONTINUOUS_HUMAN_UNDERSUIT"
+      ],
+      "excludedImporterHelpers": [
+        "Icosphere"
+      ],
+      "armature": "KYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+      "boneCount": 66,
+      "socketBones": [
+        "socket_ability",
+        "socket_back",
+        "socket_casing",
+        "socket_chest",
+        "socket_foot_l",
+        "socket_foot_r",
+        "socket_hand_l",
+        "socket_hand_r",
+        "socket_head",
+        "socket_hips",
+        "socket_muzzle",
+        "socket_nozzle",
+        "socket_support_l",
+        "socket_weapon_r"
+      ],
+      "actions": [
+        "KYX_REV17_FP_AIRBORNE",
+        "KYX_REV17_FP_FIRE",
+        "KYX_REV17_FP_IDLE",
+        "KYX_REV17_FP_LAND",
+        "KYX_REV17_FP_RELOAD",
+        "KYX_REV17_FP_SPRINT",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_WALK"
+      ],
+      "bounds": {
+        "minimum": [
+          -0.428504,
+          -1.23747,
+          1e-06
+        ],
+        "maximum": [
+          0.271866,
+          0.190414,
+          1.776078
+        ],
+        "dimensions": [
+          0.70037,
+          1.427884,
+          1.776076
+        ]
+      }
+    },
+    "lod1": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-lod1.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sourceUnchangedDuringReimport": true,
+      "runtimeMeshes": [
+        "KYX_REV17_LOD1_COMPACT_RIFLE",
+        "KYX_REV17_LOD1_CONTINUOUS_HUMAN_UNDERSUIT",
+        "KYX_REV17_LOD1_FITTED_ARMOR"
+      ],
+      "excludedImporterHelpers": [
+        "Icosphere"
+      ],
+      "armature": "KYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+      "boneCount": 66,
+      "socketBones": [
+        "socket_ability",
+        "socket_back",
+        "socket_casing",
+        "socket_chest",
+        "socket_foot_l",
+        "socket_foot_r",
+        "socket_hand_l",
+        "socket_hand_r",
+        "socket_head",
+        "socket_hips",
+        "socket_muzzle",
+        "socket_nozzle",
+        "socket_support_l",
+        "socket_weapon_r"
+      ],
+      "actions": [
+        "KYX_REV17_FP_AIRBORNE",
+        "KYX_REV17_FP_FIRE",
+        "KYX_REV17_FP_IDLE",
+        "KYX_REV17_FP_LAND",
+        "KYX_REV17_FP_RELOAD",
+        "KYX_REV17_FP_SPRINT",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_WALK"
+      ],
+      "bounds": {
+        "minimum": [
+          -0.426975,
+          -1.237515,
+          -0.000252
+        ],
+        "maximum": [
+          0.271866,
+          0.190414,
+          1.776314
+        ],
+        "dimensions": [
+          0.698841,
+          1.427929,
+          1.776566
+        ]
+      }
+    },
+    "lod2": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-lod2.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sourceUnchangedDuringReimport": true,
+      "runtimeMeshes": [
+        "KYX_REV17_LOD2_COMPACT_RIFLE",
+        "KYX_REV17_LOD2_CONTINUOUS_HUMAN_UNDERSUIT",
+        "KYX_REV17_LOD2_FITTED_ARMOR"
+      ],
+      "excludedImporterHelpers": [
+        "Icosphere"
+      ],
+      "armature": "KYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+      "boneCount": 66,
+      "socketBones": [
+        "socket_ability",
+        "socket_back",
+        "socket_casing",
+        "socket_chest",
+        "socket_foot_l",
+        "socket_foot_r",
+        "socket_hand_l",
+        "socket_hand_r",
+        "socket_head",
+        "socket_hips",
+        "socket_muzzle",
+        "socket_nozzle",
+        "socket_support_l",
+        "socket_weapon_r"
+      ],
+      "actions": [
+        "KYX_REV17_FP_AIRBORNE",
+        "KYX_REV17_FP_FIRE",
+        "KYX_REV17_FP_IDLE",
+        "KYX_REV17_FP_LAND",
+        "KYX_REV17_FP_RELOAD",
+        "KYX_REV17_FP_SPRINT",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_WALK"
+      ],
+      "bounds": {
+        "minimum": [
+          -0.427947,
+          -1.237445,
+          -0.000458
+        ],
+        "maximum": [
+          0.27058,
+          0.188546,
+          1.775663
+        ],
+        "dimensions": [
+          0.698526,
+          1.425992,
+          1.776121
+        ]
+      }
+    },
+    "firstPerson": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\export\\kyx-v6c-character-rev17-first-person.runtime-candidate.glb",
+      "operatorResult": [
+        "FINISHED"
+      ],
+      "sourceUnchangedDuringReimport": true,
+      "runtimeMeshes": [
+        "KYX_REV17_FP_ARMOR_SLEEVES",
+        "KYX_REV17_FP_ARMS_GLOVES",
+        "KYX_REV17_FP_COMPACT_RIFLE"
+      ],
+      "excludedImporterHelpers": [
+        "Icosphere"
+      ],
+      "armature": "KYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+      "boneCount": 66,
+      "socketBones": [
+        "socket_ability",
+        "socket_back",
+        "socket_casing",
+        "socket_chest",
+        "socket_foot_l",
+        "socket_foot_r",
+        "socket_hand_l",
+        "socket_hand_r",
+        "socket_head",
+        "socket_hips",
+        "socket_muzzle",
+        "socket_nozzle",
+        "socket_support_l",
+        "socket_weapon_r"
+      ],
+      "actions": [
+        "KYX_REV17_FP_AIRBORNE",
+        "KYX_REV17_FP_FIRE",
+        "KYX_REV17_FP_IDLE",
+        "KYX_REV17_FP_LAND",
+        "KYX_REV17_FP_RELOAD",
+        "KYX_REV17_FP_SPRINT",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_WALK"
+      ],
+      "bounds": {
+        "minimum": [
+          -0.428557,
+          -1.23747,
+          0.961063
+        ],
+        "maximum": [
+          0.216456,
+          0.190414,
+          1.510328
+        ],
+        "dimensions": [
+          0.645013,
+          1.427884,
+          0.549265
+        ]
+      }
+    }
+  },
+  "assertions": {
+    "pinnedInputsUnchanged": true,
+    "sourceBlendPreserved": true,
+    "fourGlbsExported": true,
+    "allGlbsSelfContained": true,
+    "allGlbsHaveThreePrimitives": true,
+    "allGlbsHaveOneSkin": true,
+    "allGlbsHaveRequiredClips": true,
+    "allGlbsHaveRequiredSockets": true,
+    "allFreshReimportsPreserveSource": true,
+    "humanScaleWithinContract": true,
+    "lodTriangleOrdering": true,
+    "lod0TriangleBudget": true,
+    "lod1TriangleBudget": true,
+    "lod2TriangleBudget": true,
+    "firstPersonTriangleBudget": true
+  },
+  "nonClaims": [
+    "Structural success does not grant G6 or human visual acceptance.",
+    "Static and sampled render evidence cannot prove every-frame clipping freedom.",
+    "Rev17 is candidate-only and is not promoted to public/soldier.glb.",
+    "Enemy tinting and runtime population require separate opt-in integration evidence.",
+    "Rev15 and Rev16 remain rejected evidence and are not modified by this script."
+  ]
+}

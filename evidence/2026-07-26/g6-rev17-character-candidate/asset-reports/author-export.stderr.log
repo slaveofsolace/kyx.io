@@ -1,0 +1,2 @@
+C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\assets\source\blender\phase7-character-original-v6\scripts\author_export_v6c_character_rev17.py:267: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True

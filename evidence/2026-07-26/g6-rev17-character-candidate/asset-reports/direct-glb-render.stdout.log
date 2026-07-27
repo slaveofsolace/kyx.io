@@ -1,0 +1,65 @@
+15:02:33 | INFO: Data are loaded, start creating Blender stuff
+15:02:33 | INFO: Blender create Mesh node KYX_REV17_LOD0_AUTHORED_FITTED_ARMOR_MESH
+15:02:33 | INFO: Blender create Mesh node KYX_REV17_LOD0_COMPACT_RIFLE_MESH
+15:02:33 | INFO: Blender create Mesh node KYX_REV17_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:02:34 | INFO: glTF import finished in 0.35s
+00:02.844  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front.determinism-warmup.png'
+00:03.188  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front.png'
+00:03.547  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front.determinism-repeat.png'
+00:04.750  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front-right.determinism-warmup.png'
+00:05.063  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front-right.png'
+00:05.406  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front-right.determinism-repeat.png'
+00:06.391  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-right.determinism-warmup.png'
+00:06.703  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-right.png'
+00:07.047  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-right.determinism-repeat.png'
+00:08.000  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear-right.determinism-warmup.png'
+00:08.344  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear-right.png'
+00:08.688  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear-right.determinism-repeat.png'
+00:09.641  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear.determinism-warmup.png'
+00:09.969  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear.png'
+00:10.297  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear.determinism-repeat.png'
+00:11.250  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear-left.determinism-warmup.png'
+00:11.578  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear-left.png'
+00:11.922  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-rear-left.determinism-repeat.png'
+00:12.859  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-left.determinism-warmup.png'
+00:13.203  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-left.png'
+00:13.547  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-left.determinism-repeat.png'
+00:14.547  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front-left.determinism-warmup.png'
+00:14.859  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front-left.png'
+00:15.203  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\eight-view\kyx-v6c-character-rev17-eight-view-front-left.determinism-repeat.png'
+00:16.172  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-run-left-lead.determinism-warmup.png'
+00:16.516  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-run-left-lead.png'
+00:16.875  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-run-left-lead.determinism-repeat.png'
+00:17.922  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-run-right-lead.determinism-warmup.png'
+00:18.266  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-run-right-lead.png'
+00:18.625  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-run-right-lead.determinism-repeat.png'
+00:19.625  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-fire-contact-right.determinism-warmup.png'
+00:19.969  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-fire-contact-right.png'
+00:20.344  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-fire-contact-right.determinism-repeat.png'
+00:21.391  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-support-contact-left.determinism-warmup.png'
+00:21.719  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-support-contact-left.png'
+00:22.078  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-support-contact-left.determinism-repeat.png'
+00:23.047  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-reload-midpoint.determinism-warmup.png'
+00:23.359  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-reload-midpoint.png'
+00:23.656  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-reload-midpoint.determinism-repeat.png'
+00:24.688  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-airborne.determinism-warmup.png'
+00:25.031  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-airborne.png'
+00:25.391  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-airborne.determinism-repeat.png'
+00:26.438  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-death-settle.determinism-warmup.png'
+00:26.750  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-death-settle.png'
+00:27.078  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-action-death-settle.determinism-repeat.png'
+00:28.063  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-detail-boots-floor-contact.determinism-warmup.png'
+00:28.453  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-detail-boots-floor-contact.png'
+00:28.828  render           | Saved: 'C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\evidence\2026-07-26\g6-rev17-character-candidate\renders\actions\kyx-v6c-character-rev17-detail-boots-floor-contact.determinism-repeat.png'
+{
+  "status": "REV17_DIRECT_GLB_EVIDENCE_COMPLETE_HUMAN_REVIEW_REQUIRED_NOT_G6",
+  "sourceSha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+  "eightViewCount": 8,
+  "actionViewCount": 8,
+  "allRepeatsWithinBoundedEeveeVariance": true,
+  "topologyUnchanged": true,
+  "report": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\evidence\\2026-07-26\\g6-rev17-character-candidate\\asset-reports\\direct-glb-render-report.json"
+}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:37:34)
+
+Blender quit

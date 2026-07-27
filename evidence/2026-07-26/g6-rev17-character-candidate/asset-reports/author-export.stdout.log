@@ -1,0 +1,112 @@
+15:01:20 | INFO: Data are loaded, start creating Blender stuff
+15:01:20 | INFO: Blender create Mesh node KYX_V6C_LOD0_HARD_REV16_MESH
+15:01:20 | INFO: Blender create Mesh node KYX_V6C_LOD0_RIFLE_REV16_MESH
+15:01:20 | INFO: Blender create Mesh node KYX_V6C_LOD0_SOFT_REV16_MESH
+15:01:20 | INFO: glTF import finished in 0.22s
+Info: 347 vertex weights limited
+Info: Applied modifier was not first, result may not be as expected
+Info: 23 vertex weights limited
+Info: 58 vertex weights limited
+Info: Saved as "kyx-v6c-character-rev17-master.blend"
+INFO Draco mesh compression is available, use library at C:\Program Files\Blender Foundation\Blender 5.1\5.1\scripts\addons_core\io_scene_gltf2\extern_draco.dll
+15:01:25 | INFO: Starting glTF 2.0 export
+15:01:25 | INFO: Extracting primitive: KYX_REV17_LOD0_AUTHORED_FITTED_ARMOR_MESH
+15:01:25 | INFO: Primitives created: 1
+15:01:25 | INFO: Extracting primitive: KYX_REV17_LOD0_COMPACT_RIFLE_MESH
+15:01:25 | INFO: Primitives created: 1
+15:01:25 | INFO: Extracting primitive: KYX_REV17_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:01:25 | INFO: Primitives created: 1
+15:01:26 | INFO: Finished glTF 2.0 export in 1.5784754753112793 s
+
+15:01:26 | INFO: Starting glTF 2.0 export
+15:01:26 | INFO: Extracting primitive: KYX_REV17_LOD1_COMPACT_RIFLE_MESH
+15:01:26 | INFO: Primitives created: 1
+15:01:26 | INFO: Extracting primitive: KYX_REV17_LOD1_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:01:26 | INFO: Primitives created: 1
+15:01:26 | INFO: Extracting primitive: KYX_REV17_LOD1_FITTED_ARMOR_MESH
+15:01:26 | INFO: Primitives created: 1
+15:01:28 | INFO: Finished glTF 2.0 export in 1.4689445495605469 s
+
+15:01:28 | INFO: Starting glTF 2.0 export
+15:01:28 | INFO: Extracting primitive: KYX_REV17_LOD2_COMPACT_RIFLE_MESH
+15:01:28 | INFO: Primitives created: 1
+15:01:28 | INFO: Extracting primitive: KYX_REV17_LOD2_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:01:28 | INFO: Primitives created: 1
+15:01:28 | INFO: Extracting primitive: KYX_REV17_LOD2_FITTED_ARMOR_MESH
+15:01:28 | INFO: Primitives created: 1
+15:01:29 | INFO: Finished glTF 2.0 export in 1.4611599445343018 s
+
+15:01:29 | INFO: Starting glTF 2.0 export
+15:01:29 | INFO: Extracting primitive: KYX_REV17_FP_ARMOR_SLEEVES_MESH
+15:01:29 | INFO: Primitives created: 1
+15:01:29 | INFO: Extracting primitive: KYX_REV17_FP_ARMS_GLOVES_MESH
+15:01:29 | INFO: Primitives created: 1
+15:01:29 | WARNING: There are more than 4 joint vertex influences.The 4 with highest weight will be used (and normalized).
+15:01:29 | INFO: Extracting primitive: KYX_REV17_FP_COMPACT_RIFLE_MESH
+15:01:30 | INFO: Primitives created: 1
+15:01:31 | INFO: Finished glTF 2.0 export in 1.5217933654785156 s
+
+15:01:31 | INFO: Data are loaded, start creating Blender stuff
+15:01:31 | INFO: Blender create Mesh node KYX_REV17_LOD0_AUTHORED_FITTED_ARMOR_MESH
+15:01:31 | INFO: Blender create Mesh node KYX_REV17_LOD0_COMPACT_RIFLE_MESH
+15:01:31 | INFO: Blender create Mesh node KYX_REV17_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:01:32 | INFO: glTF import finished in 0.36s
+Info: Saved as "kyx-v6c-character-rev17-lod0-fresh-reimport.blend"
+15:01:32 | INFO: Data are loaded, start creating Blender stuff
+15:01:32 | INFO: Blender create Mesh node KYX_REV17_LOD1_COMPACT_RIFLE_MESH
+15:01:32 | INFO: Blender create Mesh node KYX_REV17_LOD1_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:01:32 | INFO: Blender create Mesh node KYX_REV17_LOD1_FITTED_ARMOR_MESH
+15:01:32 | INFO: glTF import finished in 0.33s
+15:01:32 | INFO: Data are loaded, start creating Blender stuff
+15:01:32 | INFO: Blender create Mesh node KYX_REV17_LOD2_COMPACT_RIFLE_MESH
+15:01:32 | INFO: Blender create Mesh node KYX_REV17_LOD2_CONTINUOUS_HUMAN_UNDERSUIT_MESH
+15:01:32 | INFO: Blender create Mesh node KYX_REV17_LOD2_FITTED_ARMOR_MESH
+15:01:33 | INFO: glTF import finished in 0.29s
+15:01:33 | INFO: Data are loaded, start creating Blender stuff
+15:01:33 | INFO: Blender create Mesh node KYX_REV17_FP_ARMOR_SLEEVES_MESH
+15:01:33 | INFO: Blender create Mesh node KYX_REV17_FP_ARMS_GLOVES_MESH
+15:01:33 | INFO: Blender create Mesh node KYX_REV17_FP_COMPACT_RIFLE_MESH
+15:01:33 | INFO: glTF import finished in 0.32s
+{
+  "status": "REV17_CANDIDATE_STRUCTURAL_PIPELINE_COMPLETE_VISUAL_REVIEW_REQUIRED",
+  "masterBlend": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\kyx-v6c-character-rev17-master.blend",
+  "exports": {
+    "lod0": {
+      "triangles": 43928,
+      "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1"
+    },
+    "lod1": {
+      "triangles": 18614,
+      "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc"
+    },
+    "lod2": {
+      "triangles": 7109,
+      "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086"
+    },
+    "firstPerson": {
+      "triangles": 27026,
+      "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6"
+    }
+  },
+  "assertions": {
+    "pinnedInputsUnchanged": true,
+    "sourceBlendPreserved": true,
+    "fourGlbsExported": true,
+    "allGlbsSelfContained": true,
+    "allGlbsHaveThreePrimitives": true,
+    "allGlbsHaveOneSkin": true,
+    "allGlbsHaveRequiredClips": true,
+    "allGlbsHaveRequiredSockets": true,
+    "allFreshReimportsPreserveSource": true,
+    "humanScaleWithinContract": true,
+    "lodTriangleOrdering": true,
+    "lod0TriangleBudget": true,
+    "lod1TriangleBudget": true,
+    "lod2TriangleBudget": true,
+    "firstPersonTriangleBudget": true
+  },
+  "audit": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev17-20260726\\evidence\\2026-07-26\\g6-rev17-character-candidate\\asset-reports\\author-export-audit.json"
+}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:37:34)
+
+Blender quit
