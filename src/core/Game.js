@@ -34,10 +34,14 @@ import { preloadHumanSoldier } from '../player/HumanSoldier.js';
 import { buildWeaponModel } from '../weapons/WeaponModels.js';
 import { PickupSystem } from '../world/PickupSystem.js';
 import { PRODUCT_CONFIG } from '../config/productConfig.js';
+import { G6_CHARACTER_CANDIDATE } from '../config/g6CharacterCandidate.js';
 
 const SPAWN_POINT = new THREE.Vector3(0, 0, 8);
 
-const PRACTICE_BOTS = PRODUCT_CONFIG.practice.bots;
+const PRACTICE_BOTS = G6_CHARACTER_CANDIDATE.enabled
+  && G6_CHARACTER_CANDIDATE.population
+  ? G6_CHARACTER_CANDIDATE.population - 1
+  : PRODUCT_CONFIG.practice.bots;
 const PRACTICE_DURATION_SECONDS = PRODUCT_CONFIG.practice.durationSeconds;
 const DEVELOPMENT_MOVEMENT_VISUALIZATION_BOUNDARY =
   'development_flat_run_visualization_only_v1';
@@ -62,6 +66,10 @@ export function updatePlayerMovementFrame(movementDriver, context) {
 export class Game {
   constructor(canvas, options = undefined) {
     this.canvas = canvas;
+    if (G6_CHARACTER_CANDIDATE.enabled) {
+      document.body.dataset.g6Candidate = G6_CHARACTER_CANDIDATE.revision;
+      document.body.dataset.g6Population = String(PRACTICE_BOTS + 1);
+    }
     this._movementDriver = options?.movementDriver ?? null;
     this._onMovementDriverFault = options?.onMovementDriverFault ?? null;
     this._movementDriverFaulted = false;
@@ -542,7 +550,10 @@ export class Game {
     // then rig its limbs so it can walk/run in third person.
     if (this._playerBody) this.world.scene.remove(this._playerBody);
     this._playerBody = buildPreviewCharacter(
-      this.selectedSkin, armorTypeId || this.selectedArmorType || 'assault', this.selectedArmorSkin
+      this.selectedSkin,
+      armorTypeId || this.selectedArmorType || 'assault',
+      this.selectedArmorSkin,
+      { runtimeRole: 'player' },
     );
     // The human soldier animates via its own skeleton; only the procedural
     // block character needs the limb-pivot rig.

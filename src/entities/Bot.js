@@ -98,7 +98,10 @@ export class Bot {
     const skin = BOT_SKINS[_skinIdx++ % BOT_SKINS.length];
     // Bots use the SAME rigged human model as the player (falls back to the
     // procedural body only if the GLB hasn't loaded yet).
-    this.mesh = buildPreviewCharacter(skin, armorTypeId, null, { allowHuman: true });
+    this.mesh = buildPreviewCharacter(skin, armorTypeId, null, {
+      allowHuman: true,
+      runtimeRole: 'enemy',
+    });
     this._isHuman = !!this.mesh.userData?.isHuman;
     this.bodyMat = this.mesh.userData.primaryMat;
 

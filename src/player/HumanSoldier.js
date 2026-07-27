@@ -1,6 +1,13 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+import { isG6Rev17CharacterCandidateEnabled } from '../config/g6CharacterCandidate.js';
+import {
+  buildRev17Character,
+  isRev17CharacterReady,
+  preloadRev17Character,
+  tintRev17Character,
+} from './Rev17Character.js';
 
 // ───────────────────────────────────────────────────────────────────────────
 // Real rigged human soldier (Mixamo "Vanguard"), with Idle / Walk / Run clips.
@@ -12,6 +19,10 @@ let _loading    = false;
 const _callbacks = [];
 
 export function preloadHumanSoldier(onLoad) {
+  if (isG6Rev17CharacterCandidateEnabled()) {
+    preloadRev17Character(onLoad);
+    return;
+  }
   if (onLoad) _callbacks.push(onLoad);
   if (_template) { onLoad?.(); return; }
   if (_loading) return;
@@ -34,7 +45,11 @@ export function preloadHumanSoldier(onLoad) {
   );
 }
 
-export function isHumanSoldierReady() { return !!_template; }
+export function isHumanSoldierReady() {
+  return isG6Rev17CharacterCandidateEnabled()
+    ? isRev17CharacterReady()
+    : !!_template;
+}
 
 // The Vanguard model is authored ~1.8 world units tall already, but the game's
 // character pedestal / capsule assumes ~1.8m standing at y=0. Tune to taste.
@@ -87,7 +102,10 @@ function findBone(root, name) {
  * `armorTypeId` selects one of the ARMOR_LOOKS variants so each loadout armor
  * type previews as a distinct super-soldier.
  */
-export function buildHumanSoldier(skin = null, armorTypeId = 'assault') {
+export function buildHumanSoldier(skin = null, armorTypeId = 'assault', opts = {}) {
+  if (isG6Rev17CharacterCandidateEnabled()) {
+    return buildRev17Character(skin, armorTypeId, opts);
+  }
   if (!_template) return null;
 
   const look = _lookFor(armorTypeId);
@@ -853,6 +871,10 @@ function _buildArmorPieces(root, armorTypeId, look) {
 // while keeping the variant's glowing visor. Blends toward the variant base
 // colour so equipped skins read as armour shades rather than flat solid blobs.
 export function tintHumanSoldier(group, skin, armorSkin = null) {
+  if (group?.userData?.isRev17Candidate) {
+    tintRev17Character(group, skin, armorSkin);
+    return;
+  }
   const mats = group.userData?.bodyMats;
   if (!mats || !mats.length) return;
   const hex = armorSkin ? armorSkin.primary : skin?.primary;

@@ -1,0 +1,384 @@
+{
+  "schema": "kyx-g6-rev17-runtime-performance-v1",
+  "generatedAt": "2026-07-26T22:07:24.539Z",
+  "status": "PASS_BOUNDED_RUNTIME_EVIDENCE_NOT_VISUAL_ACCEPTANCE",
+  "candidateRevision": "rev17",
+  "default": false,
+  "visualAcceptance": false,
+  "sourceState": {
+    "worktree": "C:/AI Projects/Projects/Games/evio/evio-g6-rev17-20260726",
+    "branch": "codex/g6-rev17-character-animation",
+    "requiredMainIntegrated": "145264d7d72e2dc1be63eddc355edf4e5d5e2cac",
+    "baseMergeCommit": "52647d4fb890878d94b5895afb19f3b62aefc9eb",
+    "runtimeChangesAtCapture": "working tree; bound to a later bounded commit in the final handoff"
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 6099,
+    "canonicalPortsAvoided": [
+      5173,
+      8787
+    ]
+  },
+  "environment": {
+    "browser": "Google Chrome 150.0.7871.186",
+    "headless": true,
+    "viewport": {
+      "width": 1280,
+      "height": 720,
+      "deviceScaleFactor": 1
+    },
+    "gpu": {
+      "vendor": "Google Inc. (NVIDIA)",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+    }
+  },
+  "method": {
+    "warmupMs": 1800,
+    "frameSamplesPerPopulation": 180,
+    "sampling": "consecutive requestAnimationFrame timestamp deltas after live offline-practice start",
+    "populations": [
+      2,
+      4,
+      8
+    ],
+    "populationDefinition": "one local player plus population minus one live practice enemies",
+    "limitations": [
+      "Hardware-specific headless-browser timing; not a release-performance guarantee.",
+      "Frame timing and screenshots do not grant human visual acceptance."
+    ]
+  },
+  "results": [
+    {
+      "population": 2,
+      "url": "http://127.0.0.1:6099/?g6Candidate=rev17&g6Population=2",
+      "screenshot": "rev17-runtime-population-2.png",
+      "frameSampleCount": 180,
+      "meanMs": 2.818,
+      "p50Ms": 2,
+      "p95Ms": 3.8,
+      "p99Ms": 5.6,
+      "minMs": 1.7,
+      "maxMs": 5.7,
+      "framesOver20ms": 0,
+      "connectedByRole": {
+        "preview": 1,
+        "firstPerson": 1,
+        "enemy": 1,
+        "player": 1
+      },
+      "connectedInstances": [
+        {
+          "id": "rev17-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false
+        },
+        {
+          "id": "rev17-8",
+          "kind": "firstPerson",
+          "runtimeRole": "firstPerson",
+          "lod": null,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-9",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-10",
+          "kind": "thirdPerson",
+          "runtimeRole": "player",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false
+        }
+      ],
+      "dataset": {
+        "interface": "foundry-command-v2",
+        "g6Candidate": "rev17",
+        "g6Population": "2",
+        "highContrast": "false",
+        "reducedMotion": "false",
+        "reducedFlash": "false",
+        "crosshairColor": "cyan"
+      },
+      "gpu": {
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "assetResponses": [
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/character-lod0.glb",
+          "status": 200
+        },
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/character-lod1.glb",
+          "status": 200
+        },
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/first-person.glb",
+          "status": 200
+        }
+      ],
+      "errors": [],
+      "bodyPopulationLabel": "1 LOCAL PLAYER · 1 BOTS",
+      "screenshotSha256": "d2e7f7bd1fb0beb7e80b8515b6ab8f99649d7b1c7c258aa0eba284a5d63963f1"
+    },
+    {
+      "population": 4,
+      "url": "http://127.0.0.1:6099/?g6Candidate=rev17&g6Population=4",
+      "screenshot": "rev17-runtime-population-4.png",
+      "frameSampleCount": 180,
+      "meanMs": 1.974,
+      "p50Ms": 1.9,
+      "p95Ms": 3.6,
+      "p99Ms": 3.7,
+      "minMs": 1.7,
+      "maxMs": 3.9,
+      "framesOver20ms": 0,
+      "connectedByRole": {
+        "preview": 1,
+        "firstPerson": 1,
+        "enemy": 3,
+        "player": 1
+      },
+      "connectedInstances": [
+        {
+          "id": "rev17-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false
+        },
+        {
+          "id": "rev17-8",
+          "kind": "firstPerson",
+          "runtimeRole": "firstPerson",
+          "lod": null,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-9",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-10",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-11",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-12",
+          "kind": "thirdPerson",
+          "runtimeRole": "player",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false
+        }
+      ],
+      "dataset": {
+        "interface": "foundry-command-v2",
+        "g6Candidate": "rev17",
+        "g6Population": "4",
+        "highContrast": "false",
+        "reducedMotion": "false",
+        "reducedFlash": "false",
+        "crosshairColor": "cyan"
+      },
+      "gpu": {
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "assetResponses": [
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/character-lod0.glb",
+          "status": 200
+        },
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/character-lod1.glb",
+          "status": 200
+        },
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/first-person.glb",
+          "status": 200
+        }
+      ],
+      "errors": [],
+      "bodyPopulationLabel": "1 LOCAL PLAYER · 3 BOTS",
+      "screenshotSha256": "f0bd7e6c79b6bb0e6f0477c00fe4afcf6bb0fcc5a5233ff689ac8dd7d25644aa"
+    },
+    {
+      "population": 8,
+      "url": "http://127.0.0.1:6099/?g6Candidate=rev17&g6Population=8",
+      "screenshot": "rev17-runtime-population-8.png",
+      "frameSampleCount": 180,
+      "meanMs": 2.561,
+      "p50Ms": 1.9,
+      "p95Ms": 3.8,
+      "p99Ms": 5.5,
+      "minMs": 1.7,
+      "maxMs": 5.5,
+      "framesOver20ms": 0,
+      "connectedByRole": {
+        "preview": 1,
+        "firstPerson": 1,
+        "enemy": 7,
+        "player": 1
+      },
+      "connectedInstances": [
+        {
+          "id": "rev17-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false
+        },
+        {
+          "id": "rev17-8",
+          "kind": "firstPerson",
+          "runtimeRole": "firstPerson",
+          "lod": null,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-9",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-10",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-11",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-12",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-13",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-14",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-15",
+          "kind": "thirdPerson",
+          "runtimeRole": "enemy",
+          "lod": 1,
+          "connectedToScene": true,
+          "visible": true
+        },
+        {
+          "id": "rev17-16",
+          "kind": "thirdPerson",
+          "runtimeRole": "player",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false
+        }
+      ],
+      "dataset": {
+        "interface": "foundry-command-v2",
+        "g6Candidate": "rev17",
+        "g6Population": "8",
+        "highContrast": "false",
+        "reducedMotion": "false",
+        "reducedFlash": "false",
+        "crosshairColor": "cyan"
+      },
+      "gpu": {
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      },
+      "assetResponses": [
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/character-lod0.glb",
+          "status": 200
+        },
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/character-lod1.glb",
+          "status": 200
+        },
+        {
+          "url": "http://127.0.0.1:6099/candidates/g6-rev17/first-person.glb",
+          "status": 200
+        }
+      ],
+      "errors": [],
+      "bodyPopulationLabel": "1 LOCAL PLAYER · 7 BOTS",
+      "screenshotSha256": "cf7b128a510b444dbe55ccea612e1bda0e23a3fa78c517142c023ea9f8878e85"
+    }
+  ],
+  "assertions": {
+    "portIsNonCanonical": true,
+    "candidateQueryAndDataset": true,
+    "actualRoleCountsMatch": true,
+    "candidateAssetsHttp200": true,
+    "zeroPageErrors": true,
+    "zeroSampledFramesOver20Ms": true,
+    "humanVisualAcceptance": false
+  },
+  "nonClaims": [
+    "These measurements are hardware-specific and do not establish a release budget.",
+    "The candidate is not default and is not G6-accepted.",
+    "Screenshots and frame deltas do not prove every-frame clipping freedom."
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "schema": "kyx-g6-rev17-runtime-capture-report-v1",
+  "generatedAt": "2026-07-26T22:07:24.539Z",
+  "status": "CAPTURED_PENDING_HUMAN_VISUAL_REVIEW",
+  "candidateRevision": "rev17",
+  "default": false,
+  "server": {
+    "host": "127.0.0.1",
+    "port": 6099,
+    "canonicalPortsAvoided": [
+      5173,
+      8787
+    ]
+  },
+  "captures": [
+    {
+      "path": "screenshots/rev17-runtime-first-person-fire.png",
+      "sha256": "41f7f7ec99034bf63dd4a939e4fe101460243d0cb28a3d6ed53df8f779e9aeb9",
+      "bytes": 491279,
+      "width": 1440,
+      "height": 900,
+      "observations": [
+        "Live fire shows a bounded compact muzzle burst/tracer after candidate socket-scale normalization.",
+        "This single frame does not validate every fire frame."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-first-person-player.png",
+      "sha256": "5031fec2c291f553a991f5778f2039573ae42def80f07067983103c1978536b5",
+      "bytes": 480691,
+      "width": 1440,
+      "height": 900,
+      "observations": [
+        "Dedicated first-person arms and rifle are readable and remain inside the camera.",
+        "The support arm forms a pronounced arc and some hand/contact detail is occluded; human review is required."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-first-person-reload.png",
+      "sha256": "174039320642bf3527f787e60dbae9c71f080845d6102dafd60a06e0722e54b8",
+      "bytes": 407923,
+      "width": 1440,
+      "height": 900,
+      "observations": [
+        "Live reload uses a bounded camera-space dip/roll and avoids the rejected near-plane collapse.",
+        "This is not a full magazine-hand retarget; the embedded FP_RELOAD clip is not promoted to the live camera."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-population-2.png",
+      "sha256": "d2e7f7bd1fb0beb7e80b8515b6ab8f99649d7b1c7c258aa0eba284a5d63963f1",
+      "bytes": 389113,
+      "width": 1280,
+      "height": 720,
+      "observations": [
+        "One player plus one live enemy represented."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-population-4.png",
+      "sha256": "f0bd7e6c79b6bb0e6f0477c00fe4afcf6bb0fcc5a5233ff689ac8dd7d25644aa",
+      "bytes": 436635,
+      "width": 1280,
+      "height": 720,
+      "observations": [
+        "One player plus three live enemies represented."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-population-8.png",
+      "sha256": "cf7b128a510b444dbe55ccea612e1bda0e23a3fa78c517142c023ea9f8878e85",
+      "bytes": 404001,
+      "width": 1280,
+      "height": 720,
+      "observations": [
+        "One player plus seven live enemies represented."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-third-person-player-run.png",
+      "sha256": "54cc71890af85ee74460bb0ef83782d19130ae3513a537e3999022f1bd9eb2da",
+      "bytes": 438972,
+      "width": 1440,
+      "height": 900,
+      "observations": [
+        "Run capture shows a readable weighted stride and carried rifle.",
+        "One sampled frame cannot prove every-frame arm/torso and hand/weapon clearance."
+      ]
+    },
+    {
+      "path": "screenshots/rev17-runtime-third-person-player.png",
+      "sha256": "8cac871a8d245ec264a61dfc3e5076179a58949a94b428385b51d7e341a07394",
+      "bytes": 522741,
+      "width": 1440,
+      "height": 900,
+      "observations": [
+        "Third-person player presents a continuous human-proportioned rear silhouette with rifle contact.",
+        "The rifle/upper armor read broad against a narrow waist and remain pending human review."
+      ]
+    }
+  ],
+  "visualAssessment": {
+    "humanProportionedCandidate": true,
+    "primitiveStackedShapeFailureNotObservedInSampledFrames": true,
+    "twoHandContactReadableInSampledFrames": true,
+    "cameraSafeLiveReload": true,
+    "everyFrameClippingFreedomProven": false,
+    "fullMagazineHandRetargetProven": false,
+    "deathFullySettledGroundPoseProven": false,
+    "humanVisualAcceptance": false
+  },
+  "nonClaims": [
+    "Runtime captures do not grant G6 acceptance.",
+    "The raw embedded FP_RELOAD animation is structurally present and directly rendered in authored evidence but is intentionally not played in the live viewmodel.",
+    "The live reload is a bounded camera-safe presentation, not a finished magazine/hand retarget.",
+    "Rev17 remains opt-in and does not replace public/soldier.glb.",
+    "Rev15 and Rev16 remain rejected and non-default."
+  ]
+}

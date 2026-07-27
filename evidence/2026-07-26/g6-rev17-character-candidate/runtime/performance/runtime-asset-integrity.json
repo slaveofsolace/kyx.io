@@ -1,0 +1,99 @@
+{
+  "schema": "kyx-g6-rev17-runtime-asset-integrity-v1",
+  "generatedAt": "2026-07-26T22:07:24.539Z",
+  "status": "PASS_EXACT_PUBLIC_COPIES_CANDIDATE_ONLY",
+  "candidateRevision": "rev17",
+  "default": false,
+  "sourceManifest": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/REV17_CANDIDATE_MANIFEST.json",
+  "publicManifest": "public/candidates/g6-rev17/manifest.json",
+  "assets": {
+    "lod0": {
+      "sourcePath": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/export/kyx-v6c-character-rev17-lod0.runtime-candidate.glb",
+      "publicPath": "public/candidates/g6-rev17/character-lod0.glb",
+      "sourceSha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+      "publicSha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+      "expectedSha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+      "sourceBytes": 3584252,
+      "publicBytes": 3584252,
+      "expectedBytes": 3584252,
+      "exactCopy": true,
+      "manifestMatch": true
+    },
+    "lod1": {
+      "sourcePath": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/export/kyx-v6c-character-rev17-lod1.runtime-candidate.glb",
+      "publicPath": "public/candidates/g6-rev17/character-lod1.glb",
+      "sourceSha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+      "publicSha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+      "expectedSha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+      "sourceBytes": 2558944,
+      "publicBytes": 2558944,
+      "expectedBytes": 2558944,
+      "exactCopy": true,
+      "manifestMatch": true
+    },
+    "lod2": {
+      "sourcePath": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/export/kyx-v6c-character-rev17-lod2.runtime-candidate.glb",
+      "publicPath": "public/candidates/g6-rev17/character-lod2.glb",
+      "sourceSha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+      "publicSha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+      "expectedSha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+      "sourceBytes": 1817156,
+      "publicBytes": 1817156,
+      "expectedBytes": 1817156,
+      "exactCopy": true,
+      "manifestMatch": true
+    },
+    "firstPerson": {
+      "sourcePath": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/export/kyx-v6c-character-rev17-first-person.runtime-candidate.glb",
+      "publicPath": "public/candidates/g6-rev17/first-person.glb",
+      "sourceSha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+      "publicSha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+      "expectedSha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+      "sourceBytes": 2495708,
+      "publicBytes": 2495708,
+      "expectedBytes": 2495708,
+      "exactCopy": true,
+      "manifestMatch": true
+    }
+  },
+  "http": [
+    {
+      "path": "character-lod0.glb",
+      "status": 200,
+      "bytes": 3584252,
+      "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1"
+    },
+    {
+      "path": "character-lod1.glb",
+      "status": 200,
+      "bytes": 2558944,
+      "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc"
+    },
+    {
+      "path": "character-lod2.glb",
+      "status": 200,
+      "bytes": 1817156,
+      "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086"
+    },
+    {
+      "path": "first-person.glb",
+      "status": 200,
+      "bytes": 2495708,
+      "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6"
+    },
+    {
+      "path": "manifest.json",
+      "status": 200,
+      "bytes": 1186,
+      "sha256": "1f3d7e6f12984077f0382762541e79dddf237814df7d8608be565cdbda4f5614"
+    }
+  ],
+  "assertions": {
+    "allSourcePublicCopiesExact": true,
+    "allManifestsMatch": true,
+    "allServedAssetsHttp200": true,
+    "servedGlbHashesMatchManifest": true,
+    "defaultSoldierOutsideCandidatePath": true,
+    "humanVisualAcceptance": false
+  }
+}

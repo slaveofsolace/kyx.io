@@ -1,0 +1,76 @@
+{
+  "schema": "kyx-g6-rev17-character-candidate-manifest-v1",
+  "revision": "rev17",
+  "status": "CANDIDATE_ONLY_HUMAN_VISUAL_REVIEW_REQUIRED_NOT_G6",
+  "default": false,
+  "releaseEligible": false,
+  "g6Accepted": false,
+  "humanVisualReviewRequired": true,
+  "runtimeOptIn": "?g6Candidate=rev17",
+  "source": {
+    "blend": "kyx-v6c-character-rev17-master.blend",
+    "sha256": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+    "bytes": 6031917
+  },
+  "provenance": {
+    "record": "PROVENANCE.md",
+    "authoringMethod": "Deterministic Blender Python authoring in this repository",
+    "authoringScript": "../../scripts/author_export_v6c_character_rev17.py",
+    "thirdPartyMeshes": false,
+    "thirdPartyRigs": false,
+    "thirdPartyMotion": false,
+    "downloadedRuntimeContent": false,
+    "legalAndHumanReview": "PENDING"
+  },
+  "assets": {
+    "lod0": {
+      "path": "export/kyx-v6c-character-rev17-lod0.runtime-candidate.glb",
+      "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+      "bytes": 3584252,
+      "triangles": 43928
+    },
+    "lod1": {
+      "path": "export/kyx-v6c-character-rev17-lod1.runtime-candidate.glb",
+      "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+      "bytes": 2558944,
+      "triangles": 18614
+    },
+    "lod2": {
+      "path": "export/kyx-v6c-character-rev17-lod2.runtime-candidate.glb",
+      "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+      "bytes": 1817156,
+      "triangles": 7109
+    },
+    "firstPerson": {
+      "path": "export/kyx-v6c-character-rev17-first-person.runtime-candidate.glb",
+      "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+      "bytes": 2495708,
+      "triangles": 27026
+    }
+  },
+  "sharedContract": {
+    "heightMeters": 1.776076,
+    "joints": 66,
+    "sockets": 14,
+    "clips": 16,
+    "meshes": 3,
+    "primitives": 3,
+    "materials": 3,
+    "skins": 1,
+    "embeddedTextures": 0
+  },
+  "validation": {
+    "blenderExportReimportAssertions": "PASS",
+    "directGlbEightViewAndActionCapture": "PASS_WITH_BOUNDED_EEVEE_REPEAT_VARIANCE",
+    "khronosValidator": "PASS_ZERO_ERRORS_WITH_DISCLOSED_WARNINGS",
+    "visualAcceptance": "PENDING_HUMAN_REVIEW"
+  },
+  "nonClaims": [
+    "Rev17 does not replace public/soldier.glb.",
+    "Rev15 and Rev16 remain rejected and non-default.",
+    "Sampled renders do not prove every-frame clipping freedom.",
+    "The sampled death frame is a dramatic crumple and is not claimed as a fully settled ground pose.",
+    "First-person framing and materials remain review-candidate quality, not release acceptance.",
+    "No G6 acceptance or release promotion is claimed."
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "kyx-g6-rev17-default-path-regression-v1",
+  "generatedAt": "2026-07-26T22:07:24.539Z",
+  "status": "PASS_DEFAULT_PATH_UNCHANGED",
+  "candidateRevision": "rev17",
+  "url": "http://127.0.0.1:6099/",
+  "server": {
+    "host": "127.0.0.1",
+    "port": 6099,
+    "canonicalPortsAvoided": [
+      5173,
+      8787
+    ]
+  },
+  "browserState": {
+    "href": "http://127.0.0.1:6099/",
+    "dataset": {
+      "interface": "foundry-command-v2",
+      "highContrast": "false",
+      "reducedMotion": "false",
+      "reducedFlash": "false",
+      "crosshairColor": "cyan"
+    },
+    "candidateGlobalType": "undefined",
+    "candidateGlobalPresent": false
+  },
+  "network": {
+    "candidateResponses": [],
+    "soldierResponses": [
+      {
+        "url": "http://127.0.0.1:6099/soldier.glb",
+        "status": 200
+      }
+    ]
+  },
+  "consoleErrors": [],
+  "soldier": {
+    "path": "public/soldier.glb",
+    "workingSha256": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
+    "headLfsOidSha256": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
+    "headLfsSize": 2159764,
+    "workingBytes": 2159764,
+    "workingGitBlob": "a37df2ec617ae7e5fc7d267c852347ecfa4072db",
+    "headGitBlob": "a37df2ec617ae7e5fc7d267c852347ecfa4072db",
+    "gitBlobUnchanged": true,
+    "lfsContentMatchesHeadPointer": true,
+    "unchanged": true
+  },
+  "assertions": {
+    "noCandidateQuery": true,
+    "noCandidateDataset": true,
+    "noCandidateEvidenceGlobal": true,
+    "noCandidateAssetRequests": true,
+    "defaultSoldierHttp200": true,
+    "defaultSoldierLfsContentMatchesHead": true,
+    "defaultSoldierGitBlobUnchanged": true,
+    "zeroPageErrors": true
+  },
+  "nonClaims": [
+    "Default-path regression does not promote Rev17.",
+    "Rev15 and Rev16 remain rejected and non-default."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "kyx-g6-rev17-runtime-candidate-manifest-v1",
+  "revision": "rev17",
+  "enabledOnlyBy": "?g6Candidate=rev17",
+  "default": false,
+  "defaultAssetUnchanged": "/soldier.glb",
+  "humanVisualReviewRequired": true,
+  "assets": {
+    "lod0": {
+      "path": "character-lod0.glb",
+      "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+      "bytes": 3584252,
+      "triangles": 43928
+    },
+    "lod1": {
+      "path": "character-lod1.glb",
+      "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+      "bytes": 2558944,
+      "triangles": 18614
+    },
+    "lod2": {
+      "path": "character-lod2.glb",
+      "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+      "bytes": 1817156,
+      "triangles": 7109
+    },
+    "firstPerson": {
+      "path": "first-person.glb",
+      "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+      "bytes": 2495708,
+      "triangles": 27026
+    }
+  },
+  "nonClaims": [
+    "Candidate runtime integration is not a default promotion.",
+    "Runtime screenshots do not grant G6.",
+    "Human visual acceptance remains required."
+  ]
+}

@@ -3,6 +3,11 @@ import { WEAPONS } from './weaponDefs.js';
 import { buildWeaponModel, onWeaponModelsReady } from './WeaponModels.js';
 import { applyWeaponSkin, animateWeaponSkin } from './WeaponSkins.js';
 import { applySwordSkin, animateSwordSkin } from './SwordSkins.js';
+import { isG6Rev17CharacterCandidateEnabled } from '../config/g6CharacterCandidate.js';
+import {
+  buildRev17FirstPerson,
+  preloadRev17FirstPerson,
+} from '../player/Rev17Character.js';
 
 const TRACER_LIFE = 0.07;
 const FLASH_LIFE = 0.05;
@@ -89,6 +94,7 @@ export class WeaponSystem {
     this._upVec       = new THREE.Vector3();
     this._fwdVec      = new THREE.Vector3();
     this._muzzleWorld = new THREE.Vector3();
+    this._muzzleScale = new THREE.Vector3();
     this._pelletDir   = new THREE.Vector3();
     this._farVec      = new THREE.Vector3();
     this._raycaster   = new THREE.Raycaster();
@@ -138,10 +144,44 @@ export class WeaponSystem {
     }
     this._setActiveModel(0);
     this._buildArm();
+    this._rev17Viewmodel = null;
+    this._rev17FpGrounded = true;
+    if (isG6Rev17CharacterCandidateEnabled()) {
+      preloadRev17FirstPerson(() => this._installRev17FirstPerson());
+    }
 
     // The viewmodels above are procedural (the GLB loads async and is rarely
     // ready this early). Swap in the detailed Blender models once it arrives.
     onWeaponModelsReady(() => this._refreshModels());
+  }
+
+  _installRev17FirstPerson() {
+    if (this._rev17Viewmodel) return;
+    const viewmodel = buildRev17FirstPerson();
+    if (!viewmodel) return;
+    this.kickGroup.add(viewmodel);
+    this._rev17Viewmodel = viewmodel;
+    this._syncRev17ViewmodelVisibility();
+  }
+
+  _syncRev17ViewmodelVisibility() {
+    if (!this._rev17Viewmodel) return;
+    const candidateVisible = this.currentDef?.kind !== 'melee';
+    this._rev17Viewmodel.visible = candidateVisible;
+    if (this.armGroup) this.armGroup.visible = !candidateVisible;
+    if (!candidateVisible) return;
+    for (const weapon of this.allWeapons) {
+      if (weapon.kind === 'melee') continue;
+      const model = this.models.get(weapon.id);
+      if (model) model.group.visible = false;
+    }
+  }
+
+  _getActiveMuzzle(def = this.currentDef) {
+    if (this._rev17Viewmodel?.visible && this._rev17Viewmodel.userData.muzzle) {
+      return this._rev17Viewmodel.userData.muzzle;
+    }
+    return this.models.get(def.id).muzzle;
   }
 
   // Rebuild every viewmodel (e.g. after the weapon GLB finishes loading),
@@ -158,6 +198,7 @@ export class WeaponSystem {
     if (this._armoryMap) this.applyArmoryMap(this._armoryMap);
     if (this.weaponSkin) this.setWeaponSkin(this.weaponSkin);
     if (this.swordSkin) this.setSwordSkin(this.swordSkin);
+    this._syncRev17ViewmodelVisibility();
   }
 
   _buildArm() {
@@ -338,6 +379,7 @@ export class WeaponSystem {
     }
     const cur = this.loadout[index];
     if (cur) this.models.get(cur.id).group.visible = true;
+    this._syncRev17ViewmodelVisibility();
   }
 
   get currentDef() {
@@ -413,6 +455,7 @@ export class WeaponSystem {
     if (st.magAmmo >= def.magSize || st.reserveAmmo <= 0) return;
     st.isReloading = true;
     st.reloadTimer = def.reloadTime;
+    this._rev17Viewmodel?.userData?.triggerReload?.();
     // Two-phase reload: mag drop immediately, rack/bolt halfway through
     this.audio.playReloadMag();
     setTimeout(() => { if (st.isReloading) this.audio.playReloadRack(); }, (def.reloadTime * 0.55) * 1000);
@@ -447,16 +490,32 @@ export class WeaponSystem {
     const flashHex    = animeActive ? 0xff9de0 : fireActive ? 0xff6600 : 0xfff0a0;
     this.flashLight.color.setHex(flashColor);
     this.flashLight.intensity = animeActive ? 12 : fireActive ? 14 : 8;
-    this.models.get(this.currentDef.id).muzzle.getWorldPosition(this._muzzleWorld);
+    this._getActiveMuzzle().getWorldPosition(this._muzzleWorld);
     this.camera.worldToLocal(this._muzzleWorld);
     const muzzleWorld = this._muzzleWorld;
     this.flashLight.position.copy(muzzleWorld);
     this._flashTimer = FLASH_LIFE;
 
     // Show sprite meshes at muzzle
-    const muzzleObj = this.models.get(this.currentDef.id).muzzle;
+    const muzzleObj = this._getActiveMuzzle();
+    const rev17Muzzle = this._rev17Viewmodel?.visible
+      && muzzleObj === this._rev17Viewmodel.userData.muzzle;
     this._flashMeshes.forEach((m) => {
       muzzleObj.add(m);
+      m.scale.setScalar(1);
+      if (rev17Muzzle) {
+        m.getWorldScale(this._muzzleScale);
+        const inheritedScale = Math.max(
+          this._muzzleScale.x,
+          this._muzzleScale.y,
+          this._muzzleScale.z,
+        );
+        if (inheritedScale > 0) {
+          // The authored nozzle sits very close to the view camera; keep the
+          // shared 18 cm flash quad to a compact viewmodel-scale burst.
+          m.scale.setScalar(0.12 / inheritedScale);
+        }
+      }
       m.material.color.setHex(flashHex);
       m.material.opacity = 0.92;
       m.rotation.z += Math.random() * Math.PI;
@@ -465,7 +524,7 @@ export class WeaponSystem {
 
   _spawnShell() {
     const mesh = new THREE.Mesh(this._shellGeo, this._shellMat);
-    this.models.get(this.currentDef.id).muzzle.getWorldPosition(this._muzzleWorld);
+    this._getActiveMuzzle().getWorldPosition(this._muzzleWorld);
     this._rightVec.setFromMatrixColumn(this.camera.matrixWorld, 0);
     this._upVec.setFromMatrixColumn(this.camera.matrixWorld, 1);
     mesh.position.copy(this._muzzleWorld)
@@ -482,7 +541,7 @@ export class WeaponSystem {
   _spawnAnimeSparkles() {
     if (!this._animeSparkles) this._animeSparkles = [];
     const colors = [0xff69b4, 0xff1493, 0xffa0d0, 0xffd700, 0xffffff];
-    this.models.get(this.currentDef.id).muzzle.getWorldPosition(this._muzzleWorld);
+    this._getActiveMuzzle().getWorldPosition(this._muzzleWorld);
     const muzzleWorld = this._muzzleWorld;
     this._upVec.setFromMatrixColumn(this.camera.matrixWorld, 1);
     this._rightVec.setFromMatrixColumn(this.camera.matrixWorld, 0);
@@ -528,7 +587,7 @@ export class WeaponSystem {
   _spawnFireEmbers() {
     if (!this._fireEmbers) this._fireEmbers = [];
     const colors = [0xff2200, 0xff6600, 0xff9900, 0xffcc00, 0xff4400];
-    this.models.get(this.currentDef.id).muzzle.getWorldPosition(this._muzzleWorld);
+    this._getActiveMuzzle().getWorldPosition(this._muzzleWorld);
     const muzzleWorld = this._muzzleWorld;
     this._fwdVec.setFromMatrixColumn(this.camera.matrixWorld, 2).negate();
     this._upVec.setFromMatrixColumn(this.camera.matrixWorld, 1);
@@ -597,7 +656,7 @@ export class WeaponSystem {
     this.camera.getWorldDirection(this._camDir);
     this._rightVec.setFromMatrixColumn(this.camera.matrixWorld, 0);
     this._upVec.setFromMatrixColumn(this.camera.matrixWorld, 1);
-    this.models.get(def.id).muzzle.getWorldPosition(this._muzzleWorld);
+    this._getActiveMuzzle(def).getWorldPosition(this._muzzleWorld);
 
     this._raycaster.far = def.range;
     const targets = [...botMeshes, ...world.colliders.map((c) => c.mesh)];
@@ -688,7 +747,7 @@ export class WeaponSystem {
 
   _throwKnife(def) {
     const muzzleWorld = new THREE.Vector3();
-    this.models.get(def.id).muzzle.getWorldPosition(muzzleWorld);
+    this._getActiveMuzzle(def).getWorldPosition(muzzleWorld);
     const dir = new THREE.Vector3();
     this.camera.getWorldDirection(dir).normalize();
 
@@ -752,7 +811,7 @@ export class WeaponSystem {
 
   _spawnRocket(def) {
     const muzzleWorld = new THREE.Vector3();
-    this.models.get(def.id).muzzle.getWorldPosition(muzzleWorld);
+    this._getActiveMuzzle(def).getWorldPosition(muzzleWorld);
     const dir = new THREE.Vector3();
     this.camera.getWorldDirection(dir);
     dir.normalize();
@@ -903,6 +962,7 @@ export class WeaponSystem {
 
     st.magAmmo -= 1;
     this.fireTimer = def.fireRate;
+    this._rev17Viewmodel?.userData?.triggerFire?.();
     // A themed skin can override the fire SFX (anime pew, laser, fire whoosh).
     const activeSkin = this._activeSkinFor(def.id);
     const skinSound  = activeSkin?.shootSound;
@@ -985,6 +1045,41 @@ export class WeaponSystem {
     // Sprint blend for COD carry animation (blocks ADS)
     this._sprintT += ((player.isSprinting ? 1 : 0) - this._sprintT) * Math.min(1, dt * 9);
     const presentationMotionScale = player.reducedMotion ? 0.12 : 1;
+    if (this._rev17Viewmodel?.visible) {
+      const grounded = !!player.onGround;
+      // Keep the candidate reload inside a camera-safe envelope. The GLB still
+      // carries the reviewed FP_RELOAD clip, but its full reach is not promoted
+      // to the live viewmodel until a dedicated retarget passes visual review.
+      const reloadProgress = st.isReloading
+        ? THREE.MathUtils.clamp(1 - st.reloadTimer / def.reloadTime, 0, 1)
+        : 0;
+      const reloadEnvelope = Math.sin(reloadProgress * Math.PI);
+      const reloadRetreat = -0.08 * reloadEnvelope;
+      const reloadLowering = -0.03 * reloadEnvelope;
+      const reloadRoll = 0.28 * reloadEnvelope;
+      const reloadPitch = -0.06 * reloadEnvelope;
+      this._rev17Viewmodel.position.z += (
+        reloadRetreat - this._rev17Viewmodel.position.z
+      ) * Math.min(1, dt * 12);
+      this._rev17Viewmodel.position.y += (
+        reloadLowering - this._rev17Viewmodel.position.y
+      ) * Math.min(1, dt * 12);
+      this._rev17Viewmodel.rotation.z += (
+        reloadRoll - this._rev17Viewmodel.rotation.z
+      ) * Math.min(1, dt * 12);
+      this._rev17Viewmodel.rotation.x += (
+        reloadPitch - this._rev17Viewmodel.rotation.x
+      ) * Math.min(1, dt * 12);
+      if (grounded && !this._rev17FpGrounded) {
+        this._rev17Viewmodel.userData.triggerLand?.();
+      }
+      const state = grounded
+        ? player.isSprinting ? 'sprint' : 'idle'
+        : 'air';
+      this._rev17Viewmodel.userData.setState?.(state);
+      this._rev17Viewmodel.userData.mixer?.update(dt);
+      this._rev17FpGrounded = grounded;
+    }
 
     // scope zoom — disabled while sprinting
     const wantScope = !!def.scoped && input.rightMouseDown && !player.isSprinting;
