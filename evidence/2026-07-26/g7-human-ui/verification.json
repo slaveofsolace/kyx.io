@@ -1,0 +1,79 @@
+{
+  "status": "implemented_not_human_accepted",
+  "worktree": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g7-human-ui-20260726",
+  "branch": "codex/g7-human-ui-20260726",
+  "integratedBaseCommit": "145264d7d72e2dc1be63eddc355edf4e5d5e2cac",
+  "sourceCommit": "cadeb2b0e6773db7009499dc56231c12c98817ac",
+  "capture": {
+    "capturedAt": "2026-07-26T19:14:42.137Z",
+    "baseUrl": "http://127.0.0.1:6197",
+    "views": 16,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestFailures": 0,
+    "reservedPortsUntouched": [
+      5173,
+      8787
+    ],
+    "manifest": "after/runtime-capture.json"
+  },
+  "checks": [
+    {
+      "name": "main typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+      "result": "pass"
+    },
+    {
+      "name": "worker typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.worker.json --noEmit",
+      "result": "pass"
+    },
+    {
+      "name": "lint",
+      "command": "node node_modules/eslint/bin/eslint.js src/**/*.ts worker/**/*.ts tests/**/*.ts tools/**/*.mjs vitest.worker.config.ts --no-error-on-unmatched-pattern",
+      "result": "pass"
+    },
+    {
+      "name": "unit tests",
+      "command": "node node_modules/vitest/vitest.mjs run tests/unit",
+      "result": "pass",
+      "testFiles": 74,
+      "tests": 552,
+      "notes": "Upstream Rapier initialization deprecation warning remains non-failing."
+    },
+    {
+      "name": "production build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "result": "pass",
+      "notes": "Existing large-chunk advisory remains non-failing."
+    },
+    {
+      "name": "G7 browser smoke",
+      "command": "node node_modules/@playwright/test/cli.js test --config playwright.g7.config.js",
+      "result": "pass",
+      "tests": 3,
+      "port": 6196
+    },
+    {
+      "name": "G7 runtime evidence",
+      "command": "node tools/evidence/capture-g7-human-ui.mjs --base-url http://127.0.0.1:6197",
+      "result": "pass",
+      "views": 16,
+      "port": 6197
+    }
+  ],
+  "scope": {
+    "presentationOnly": true,
+    "authorityBehaviorModified": false,
+    "mapsModified": false,
+    "characterAssetsModified": false,
+    "deploymentPerformed": false
+  },
+  "nonClaims": [
+    "G7 visual acceptance requires explicit human review.",
+    "Visual fixtures do not claim gameplay outcomes.",
+    "The online capture does not claim multiplayer authority acceptance.",
+    "No physical controller, formal WCAG, screen-reader, or assistive-technology acceptance session is claimed.",
+    "No Cloudflare or GitHub deployment was performed."
+  ]
+}
