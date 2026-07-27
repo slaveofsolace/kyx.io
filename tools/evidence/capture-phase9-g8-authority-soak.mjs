@@ -43,7 +43,7 @@ const test = spawnSync(process.execPath, testArguments, {
   cwd: projectRoot,
   encoding: 'utf8',
   maxBuffer: 20 * 1024 * 1024,
-  timeout: 60_000,
+  timeout: 150_000,
   windowsHide: true,
 });
 const stdout = stripAnsi(test.stdout ?? '');
@@ -80,12 +80,12 @@ const evidence = Object.freeze({
       'KyxRoom ran its real setTimeout-based FixedTickScheduler and Durable Object storage.',
       'Wire cost is the exact UTF-8 byte count observed at the WebSocket client boundary.',
       'Resume exercised the opaque credential, identity preservation, token rotation, and full snapshot.',
-      'Combat state changed inside the live KyxRoom authority and converged to all eight clients.',
+      'Two clients traversed the verified Ink Channel route with protocol-v2 movement, faced within the locked tolerance, and authored one live auto-rifle kill while all eight clients remained connected.',
     ],
     limitations: [
       'This is a short deterministic local Workers-runtime soak, not a 30-minute production-network soak.',
       'Tick execution duration is runtime work inside each authority tick; scheduler delay is reported separately by observed tick rate.',
-      'Combat uses KyxRoom applyCombatDamage inside the live Durable Object, not an end-to-end weapon ray/input shot.',
+      'Combat proves one live auto-rifle kill at the separately verified Ink Channel pair. It is not exhaustive weapon, projectile, multi-kill, route, or arbitrary sightline coverage.',
       'Local Vitest-pool timing and bandwidth are not Cloudflare production latency or billing measurements.',
       'The bounded in-memory timing window resets if the Durable Object isolate is evicted.',
     ],

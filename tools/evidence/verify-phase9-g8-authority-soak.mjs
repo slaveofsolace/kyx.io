@@ -13,6 +13,7 @@ const evidence = JSON.parse(await readFile(
   'utf8',
 ));
 const result = evidence.runtimeResult;
+const combatSetup = result.combat?.setup ?? {};
 const checks = [];
 
 function check(id, passed, detail) {
@@ -81,9 +82,20 @@ check(
 );
 check('resume.credential_rotated', result.resume.rotatedCredential === true, result.resume);
 check(
-  'combat.authority_checkpoint_dead',
-  result.combat.targetDeadInCheckpoint === true,
-  result.combat.targetDeadInCheckpoint,
+  'combat.authority_snapshot_dead',
+  result.combat.targetDeadInAuthoritySnapshot === true,
+  result.combat.targetDeadInAuthoritySnapshot,
+);
+check(
+  'combat.verified_ink_channel_pair',
+  Number.isFinite(combatSetup.separationMillimeters)
+    && combatSetup.separationMillimeters <= 2_200
+    && Number.isFinite(combatSetup.verticalMarginMillimeters)
+    && combatSetup.verticalMarginMillimeters >= 90,
+  {
+    separationMillimeters: combatSetup.separationMillimeters,
+    verticalMarginMillimeters: combatSetup.verticalMarginMillimeters,
+  },
 );
 check(
   'combat.all_clients_converged',

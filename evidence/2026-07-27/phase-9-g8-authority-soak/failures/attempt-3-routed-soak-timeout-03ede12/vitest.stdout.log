@@ -1,0 +1,10 @@
+RUN v4.1.10 C:/AI Projects/Projects/Games/evio/evio-g4-authority-soak-20260727
+
+x tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker
+  full-occupancy authority soak > measures a live 8-client room and preserves
+  resume plus combat convergence 60026ms
+  -> Test timed out in 60000ms.
+
+Test Files  1 failed (1)
+Tests       1 failed (1)
+Duration    62.34s (tests 60.03s)

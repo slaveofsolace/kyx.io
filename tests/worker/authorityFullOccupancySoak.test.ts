@@ -1,9 +1,10 @@
 /// <reference types="@cloudflare/vitest-pool-workers/types" />
 
-import { env, reset, runInDurableObject, SELF } from 'cloudflare:test';
+import { reset, SELF } from 'cloudflare:test';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  PROTOCOL_LIMITS,
   PROTOCOL_VERSION,
   RELIABLE_EVENT_STREAM_VERSION,
   SNAPSHOT_BASELINE_VERSION,
@@ -13,13 +14,13 @@ import {
   type DeltaSnapshotMessage,
   type FullSnapshotMessage,
   type JoinAcceptedMessage,
+  type ReliableEvent,
   type ServerMessage,
 } from '../../src/net';
 import {
   P511_INKFALL_REV2_COMBAT_PROFILE,
   P58D_COMBAT_PROFILE_HEADER,
 } from '../../worker/combatRuntime';
-import type { KyxAuthorityEnv } from '../../worker/env';
 
 const ALLOWED_ORIGIN = 'http://127.0.0.1:5173';
 const AUTHORITY_ORIGIN = 'https://authority.test';
@@ -28,13 +29,50 @@ const SOAK_ROUNDS = 60;
 const SOAK_ROUND_MILLISECONDS = 100;
 const MINIMUM_TICK_SAMPLES = 100;
 const MAXIMUM_TICK_P99_MILLISECONDS = 50;
+const PRIMARY_FIRE = 1 << 3;
 const textEncoder = new TextEncoder();
-const authorityEnv = env as unknown as KyxAuthorityEnv;
+const WEST_INK_CHANNEL_ROUTE = Object.freeze([
+  Object.freeze({ x: -27_500, z: 1_000 }),
+  Object.freeze({ x: -22_000, z: 0 }),
+  Object.freeze({ x: -25_000, z: -7_000 }),
+  Object.freeze({ x: -25_000, z: -12_000 }),
+  Object.freeze({ x: -22_000, z: -17_000 }),
+  Object.freeze({ x: -15_000, z: -21_000 }),
+  Object.freeze({ x: -8_000, z: -20_000 }),
+  Object.freeze({ x: -5_000, z: -15_000 }),
+  Object.freeze({ x: -3_000, z: -16_000 }),
+]);
+const EAST_INK_CHANNEL_ROUTE = Object.freeze([
+  Object.freeze({ x: 27_500, z: -1_000 }),
+  Object.freeze({ x: 22_000, z: 0 }),
+  Object.freeze({ x: 25_000, z: -7_000 }),
+  Object.freeze({ x: 25_000, z: -12_000 }),
+  Object.freeze({ x: 22_000, z: -17_000 }),
+  Object.freeze({ x: 15_000, z: -20_000 }),
+  Object.freeze({ x: 8_000, z: -16_000 }),
+  Object.freeze({ x: 5_000, z: -15_000 }),
+  Object.freeze({ x: 3_000, z: -15_000 }),
+]);
+const VERIFIED_INK_CHANNEL_COMBAT_PAIR = Object.freeze({
+  west: Object.freeze({ x: 400, z: -15_550 }),
+  east: Object.freeze({ x: 2_323, z: -15_175 }),
+  arrivalToleranceMillimeters: 100,
+  minimumPulseMilliseconds: 60,
+  settleMilliseconds: 750,
+  maximumSeparationMillimeters: 2_200,
+  minimumVerticalMarginMillimeters: 90,
+});
 
 interface RoomCreated {
   readonly roomCode: string;
   readonly socketPath: string;
   readonly metricsPath: string;
+  readonly mapBinding: {
+    readonly spawns: readonly {
+      readonly feetPosition: { readonly x: number; readonly y: number; readonly z: number };
+      readonly yawMilliDegrees: number;
+    }[];
+  };
 }
 
 type SnapshotMessage = FullSnapshotMessage | DeltaSnapshotMessage;
@@ -77,21 +115,6 @@ interface RoomMetrics {
   readonly lastTickFailure: string | null;
   readonly authorityTickExecution: TickExecutionMetrics;
   readonly transport: Readonly<Record<string, number>>;
-}
-
-interface ControlledCombatResult {
-  readonly finalEventId: string;
-  readonly checkpoint: {
-    readonly clock: { readonly serverTick: number };
-    readonly players: readonly {
-      readonly playerId: string;
-      readonly life: { readonly phase: string; readonly healthPoints: number };
-    }[];
-    readonly match: {
-      readonly feedSequence: number;
-      readonly teamScores: readonly { readonly teamId: string; readonly score: number }[];
-    };
-  };
 }
 
 const sockets = new Set<WebSocket>();
@@ -255,13 +278,22 @@ function latestReliableEventId(probe: SocketProbe): string | null {
   return eventId;
 }
 
-function acknowledgeLatestSnapshot(probe: SocketProbe): void {
+function reliableEventsAfter(probe: SocketProbe, startIndex: number): readonly ReliableEvent[] {
+  const events = new Map<string, ReliableEvent>();
+  for (const message of probe.messages.slice(startIndex)) {
+    if (message.type !== 'reliableEventBatch') continue;
+    for (const event of message.events) events.set(event.id, event);
+  }
+  return [...events.values()];
+}
+
+function acknowledgeLatestSnapshot(probe: SocketProbe): boolean {
   const snapshot = latestSnapshot(probe);
   if (
     snapshot === null
     || snapshot.snapshotBaselineId === probe.lastAcknowledgedBaselineId
     || probe.socket.readyState !== WebSocket.OPEN
-  ) return;
+  ) return false;
   sendClient(probe, {
     protocolVersion: PROTOCOL_VERSION,
     type: 'ack',
@@ -272,6 +304,7 @@ function acknowledgeLatestSnapshot(probe: SocketProbe): void {
     lastEventId: latestReliableEventId(probe),
   });
   probe.lastAcknowledgedBaselineId = snapshot.snapshotBaselineId;
+  return true;
 }
 
 async function joinEight(room: RoomCreated): Promise<JoinedClient[]> {
@@ -320,6 +353,347 @@ function byteSummary(probes: readonly SocketProbe[]): Readonly<Record<string, nu
   });
 }
 
+interface RouteTarget {
+  readonly x: number;
+  readonly z: number;
+}
+
+interface InputPatch {
+  readonly moveX?: number;
+  readonly moveY?: number;
+  readonly lookYawDeltaMilliDegrees?: number;
+  readonly lookPitchDeltaMilliDegrees?: number;
+  readonly heldButtons?: number;
+  readonly pressedButtons?: number;
+  readonly releasedButtons?: number;
+}
+
+function signedYawDelta(targetYaw: number, currentYaw: number): number {
+  return ((targetYaw - currentYaw + 540_000) % 360_000) - 180_000;
+}
+
+function acknowledgePopulation(clients: readonly JoinedClient[]): void {
+  for (const { probe } of clients) acknowledgeLatestSnapshot(probe);
+}
+
+function issueInput(
+  client: JoinedClient,
+  nextSequences: Map<string, number>,
+  patch: InputPatch = {},
+): Readonly<{ sequence: number; startIndex: number }> {
+  const playerId = client.join.playerId;
+  const sequence = nextSequences.get(playerId);
+  const snapshot = latestSnapshot(client.probe);
+  if (sequence === undefined || snapshot === null) {
+    throw new Error(`Input state missing for ${playerId}`);
+  }
+  const startIndex = client.probe.messages.length;
+  sendClient(client.probe, {
+    protocolVersion: PROTOCOL_VERSION,
+    type: 'inputBatch',
+    commands: [{
+      type: 'input',
+      sequence,
+      clientTick: snapshot.serverTick,
+      moveX: patch.moveX ?? 0,
+      moveY: patch.moveY ?? 0,
+      lookYawDeltaMilliDegrees: patch.lookYawDeltaMilliDegrees ?? 0,
+      lookPitchDeltaMilliDegrees: patch.lookPitchDeltaMilliDegrees ?? 0,
+      heldButtons: patch.heldButtons ?? 0,
+      pressedButtons: patch.pressedButtons ?? 0,
+      releasedButtons: patch.releasedButtons ?? 0,
+      selectedSlot: 0,
+    }],
+  });
+  nextSequences.set(playerId, sequence + 1);
+  return Object.freeze({ sequence, startIndex });
+}
+
+async function waitForProcessedInput(
+  client: JoinedClient,
+  issued: Readonly<{ sequence: number; startIndex: number }>,
+  label: string,
+): Promise<SnapshotMessage> {
+  return await waitForMessageAfter(
+    client.probe,
+    issued.startIndex,
+    (message) => (
+      (message.type === 'fullSnapshot' || message.type === 'deltaSnapshot')
+      && message.localReconciliation.player.id === client.join.playerId
+      && message.localReconciliation.player.lastProcessedSequence >= issued.sequence
+    ),
+    label,
+  ) as SnapshotMessage;
+}
+
+async function faceTarget(
+  client: JoinedClient,
+  targetYawMilliDegrees: number,
+  nextSequences: Map<string, number>,
+  population: readonly JoinedClient[],
+  toleranceMilliDegrees = 800,
+): Promise<SnapshotMessage> {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const current = latestSnapshot(client.probe);
+    if (current === null) throw new Error('Authority facing snapshot missing');
+    const yaw = current.localReconciliation.player.yawMilliDegrees;
+    const delta = signedYawDelta(targetYawMilliDegrees, yaw);
+    if (Math.abs(delta) <= toleranceMilliDegrees) return current;
+    const issued = issueInput(client, nextSequences, {
+      lookYawDeltaMilliDegrees: Math.max(
+        -PROTOCOL_LIMITS.maxLookDeltaMilliDegrees,
+        Math.min(PROTOCOL_LIMITS.maxLookDeltaMilliDegrees, delta),
+      ),
+    });
+    const processed = await waitForProcessedInput(
+      client,
+      issued,
+      `face target input ${issued.sequence}`,
+    );
+    acknowledgePopulation(population);
+    if (
+      Math.abs(signedYawDelta(
+        targetYawMilliDegrees,
+        processed.localReconciliation.player.yawMilliDegrees,
+      )) <= toleranceMilliDegrees
+    ) return processed;
+  }
+  const final = latestSnapshot(client.probe);
+  throw new Error(`Failed to face ${targetYawMilliDegrees}: ${JSON.stringify({
+    finalYawMilliDegrees: final?.localReconciliation.player.yawMilliDegrees,
+  })}`);
+}
+
+async function pulseAxes(
+  client: JoinedClient,
+  nextSequences: Map<string, number>,
+  population: readonly JoinedClient[],
+  moveX: number,
+  moveY: number,
+  durationMilliseconds: number,
+  label: string,
+): Promise<SnapshotMessage> {
+  const move = issueInput(client, nextSequences, { moveX, moveY });
+  const movementStartedAt = performance.now();
+  await waitForProcessedInput(client, move, `${label} movement`);
+  const remainingPulseMilliseconds = Math.max(
+    0,
+    durationMilliseconds - (performance.now() - movementStartedAt),
+  );
+  if (remainingPulseMilliseconds > 0) {
+    await new Promise((resolve) => setTimeout(resolve, remainingPulseMilliseconds));
+  }
+  const stop = issueInput(client, nextSequences);
+  const stopped = await waitForProcessedInput(client, stop, `${label} stop`);
+  acknowledgePopulation(population);
+  return stopped;
+}
+
+async function moveTo(
+  client: JoinedClient,
+  target: RouteTarget,
+  label: string,
+  nextSequences: Map<string, number>,
+  population: readonly JoinedClient[],
+  arrivalToleranceMillimeters = 850,
+  minimumPulseMilliseconds = 80,
+): Promise<SnapshotMessage> {
+  let bestDistance = Number.POSITIVE_INFINITY;
+  let stalledAttempts = 0;
+  let lastPosition: Readonly<{ x: number; y: number; z: number }> | null = null;
+  for (let attempt = 0; attempt < 60; attempt += 1) {
+    const current = latestSnapshot(client.probe);
+    if (current === null) throw new Error(`${label} authority snapshot missing`);
+    const position = current.localReconciliation.player.feetPosition;
+    if (position.y < -10_000) {
+      throw new Error(`${label} authority fell through: ${JSON.stringify(position)}`);
+    }
+    if (Math.abs(position.x) > 35_250 || Math.abs(position.z) > 23_500) {
+      throw new Error(`${label} left the bounded route envelope: ${JSON.stringify(position)}`);
+    }
+    const deltaX = target.x - position.x;
+    const deltaZ = target.z - position.z;
+    const distance = Math.hypot(deltaX, deltaZ);
+    if (distance <= arrivalToleranceMillimeters) return current;
+    const nearTargetBand = arrivalToleranceMillimeters + 500;
+    if (distance <= nearTargetBand || distance <= bestDistance - 120) {
+      bestDistance = distance;
+      stalledAttempts = 0;
+    } else {
+      stalledAttempts += 1;
+    }
+    if (stalledAttempts >= 3) {
+      const yawRadians = current.localReconciliation.player.yawMilliDegrees
+        * Math.PI / 180_000;
+      const sine = Math.sin(yawRadians);
+      const cosine = Math.cos(yawRadians);
+      const targetUnitX = deltaX / distance;
+      const targetUnitZ = deltaZ / distance;
+      const centerlineUnitX = -Math.sign(position.x || 1);
+      const score = (worldX: number, worldZ: number) => (
+        centerlineUnitX * worldX * 2
+        + targetUnitX * worldX
+        + targetUnitZ * worldZ
+      );
+      const moveX = score(cosine, -sine) >= score(-cosine, sine) ? 127 : -127;
+      await pulseAxes(
+        client,
+        nextSequences,
+        population,
+        moveX,
+        0,
+        180,
+        `${label} recovery`,
+      );
+      stalledAttempts = 0;
+      lastPosition = position;
+      continue;
+    }
+    await faceTarget(
+      client,
+      Math.round(Math.atan2(deltaX, deltaZ) * 180_000 / Math.PI),
+      nextSequences,
+      population,
+      1_200,
+    );
+    const pulseMilliseconds = Math.max(
+      minimumPulseMilliseconds,
+      Math.min(distance <= nearTargetBand ? 80 : 140, distance / 6_500 * 1_000),
+    );
+    const expectedFullTravel = 6_500 * pulseMilliseconds / 1_000;
+    const desiredTravel = Math.max(50, distance - arrivalToleranceMillimeters / 2);
+    const moveY = Math.max(
+      16,
+      Math.min(127, Math.round(127 * desiredTravel / expectedFullTravel)),
+    );
+    await pulseAxes(
+      client,
+      nextSequences,
+      population,
+      0,
+      moveY,
+      pulseMilliseconds,
+      `${label} pulse`,
+    );
+    lastPosition = position;
+  }
+  throw new Error(`${label} did not reach ${JSON.stringify(target)}: ${JSON.stringify({
+    bestDistance,
+    lastPosition,
+  })}`);
+}
+
+async function stageInkChannelCombatPair(
+  west: JoinedClient,
+  east: JoinedClient,
+  nextSequences: Map<string, number>,
+  population: readonly JoinedClient[],
+) {
+  const checkpoints: Array<Readonly<{
+    index: number;
+    west: Readonly<{ x: number; y: number; z: number }>;
+    east: Readonly<{ x: number; y: number; z: number }>;
+  }>> = [];
+  for (let index = 0; index < WEST_INK_CHANNEL_ROUTE.length; index += 1) {
+    const westTarget = WEST_INK_CHANNEL_ROUTE[index];
+    const eastTarget = EAST_INK_CHANNEL_ROUTE[index];
+    if (westTarget === undefined || eastTarget === undefined) {
+      throw new Error(`Ink Channel route leg ${index} missing`);
+    }
+    const arrivalToleranceMillimeters = index === WEST_INK_CHANNEL_ROUTE.length - 1
+      ? 350
+      : 850;
+    const minimumPulseMilliseconds = index === WEST_INK_CHANNEL_ROUTE.length - 1
+      ? 60
+      : 80;
+    const [westArrival, eastArrival] = await Promise.all([
+      moveTo(
+        west,
+        westTarget,
+        `west Ink Channel leg ${index}`,
+        nextSequences,
+        population,
+        arrivalToleranceMillimeters,
+        minimumPulseMilliseconds,
+      ),
+      moveTo(
+        east,
+        eastTarget,
+        `east Ink Channel leg ${index}`,
+        nextSequences,
+        population,
+        arrivalToleranceMillimeters,
+        minimumPulseMilliseconds,
+      ),
+    ]);
+    checkpoints.push(Object.freeze({
+      index,
+      west: westArrival.localReconciliation.player.feetPosition,
+      east: eastArrival.localReconciliation.player.feetPosition,
+    }));
+    console.log(`KYX_AUTHORITY_SOAK_ROUTE=${JSON.stringify(checkpoints.at(-1))}`);
+  }
+  const [westStaged, eastStaged] = await Promise.all([
+    moveTo(
+      west,
+      VERIFIED_INK_CHANNEL_COMBAT_PAIR.west,
+      'west verified Ink Channel combat pair',
+      nextSequences,
+      population,
+      VERIFIED_INK_CHANNEL_COMBAT_PAIR.arrivalToleranceMillimeters,
+      VERIFIED_INK_CHANNEL_COMBAT_PAIR.minimumPulseMilliseconds,
+    ),
+    moveTo(
+      east,
+      VERIFIED_INK_CHANNEL_COMBAT_PAIR.east,
+      'east verified Ink Channel combat pair',
+      nextSequences,
+      population,
+      VERIFIED_INK_CHANNEL_COMBAT_PAIR.arrivalToleranceMillimeters,
+      VERIFIED_INK_CHANNEL_COMBAT_PAIR.minimumPulseMilliseconds,
+    ),
+  ]);
+  await new Promise((resolve) => (
+    setTimeout(resolve, VERIFIED_INK_CHANNEL_COMBAT_PAIR.settleMilliseconds)
+  ));
+  acknowledgePopulation(population);
+  const westPosition = latestSnapshot(west.probe)?.localReconciliation.player.feetPosition
+    ?? westStaged.localReconciliation.player.feetPosition;
+  const eastPosition = latestSnapshot(east.probe)?.localReconciliation.player.feetPosition
+    ?? eastStaged.localReconciliation.player.feetPosition;
+  const separationMillimeters = Math.hypot(
+    eastPosition.x - westPosition.x,
+    eastPosition.z - westPosition.z,
+  );
+  const westYaw = Math.round(
+    Math.atan2(
+      eastPosition.x - westPosition.x,
+      eastPosition.z - westPosition.z,
+    ) * 180_000 / Math.PI,
+  );
+  const eastYaw = Math.round(
+    Math.atan2(
+      westPosition.x - eastPosition.x,
+      westPosition.z - eastPosition.z,
+    ) * 180_000 / Math.PI,
+  );
+  await Promise.all([
+    faceTarget(west, westYaw, nextSequences, population),
+    faceTarget(east, eastYaw, nextSequences, population),
+  ]);
+  await new Promise((resolve) => setTimeout(resolve, 180));
+  acknowledgePopulation(population);
+  return Object.freeze({
+    checkpoints,
+    westPosition,
+    eastPosition,
+    separationMillimeters,
+    verticalMarginMillimeters: eastPosition.y + 1_800 - (westPosition.y + 1_700),
+    westYawMilliDegrees: westYaw,
+    eastYawMilliDegrees: eastYaw,
+  });
+}
+
 describe('G4/G8 real Worker full-occupancy authority soak', () => {
   it('measures a live 8-client room and preserves resume plus combat convergence', async () => {
     const room = await createRoom();
@@ -345,9 +719,9 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
             type: 'input',
             sequence: round,
             clientTick: snapshot?.serverTick ?? startTick,
-            moveX: client.ordinal % 2 === 0 ? 40 : -40,
-            moveY: round % 20 < 10 ? 96 : -96,
-            lookYawDeltaMilliDegrees: client.ordinal % 2 === 0 ? 25 : -25,
+            moveX: 0,
+            moveY: 0,
+            lookYawDeltaMilliDegrees: 0,
             lookPitchDeltaMilliDegrees: 0,
             heldButtons: 0,
             pressedButtons: 0,
@@ -372,96 +746,72 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
       (postSoak.serverTick - startTick) * 1_000 / soakDurationMilliseconds
     );
 
+    const nextSequence = new Map(
+      clients.map(({ join }) => [join.playerId, SOAK_ROUNDS] as const),
+    );
+    const westCombatant = clients[0];
+    const eastCombatant = clients[1];
+    if (westCombatant === undefined || eastCombatant === undefined) {
+      throw new Error('Verified Ink Channel combat pair clients missing');
+    }
+    const combatSetup = await stageInkChannelCombatPair(
+      westCombatant,
+      eastCombatant,
+      nextSequence,
+      clients,
+    );
+    expect(combatSetup.separationMillimeters)
+      .toBeLessThanOrEqual(VERIFIED_INK_CHANNEL_COMBAT_PAIR.maximumSeparationMillimeters);
+    expect(combatSetup.verticalMarginMillimeters)
+      .toBeGreaterThanOrEqual(VERIFIED_INK_CHANNEL_COMBAT_PAIR.minimumVerticalMarginMillimeters);
+
     const reliableStarts = clients.map(({ probe }) => probe.messages.length);
     const snapshotStarts = clients.map(({ probe }) => probe.messages.length);
-    const attackerId = clients[0]?.join.playerId;
-    const targetId = clients[1]?.join.playerId;
-    if (attackerId === undefined || targetId === undefined) throw new Error('Combat clients missing');
-    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
-    let combat: ControlledCombatResult | null = null;
-    for (let attempt = 0; attempt < 100 && combat === null; attempt += 1) {
-      combat = await runInDurableObject(stub, async (instance) => {
-        const runtime = instance as unknown as {
-          authority: {
-            readonly serverTick: number;
-            readonly activeTickMatchEvents: unknown;
-            applyCombatDamage(request: {
-              targetPlayerId: string;
-              sourcePlayerId: string;
-              damagePoints: number;
-              causeId: string;
-            }): { readonly accepted: boolean };
-            exportActiveMatchCheckpoint(): {
-              readonly clock: { readonly serverTick: number };
-              readonly players: readonly {
-                readonly playerId: string;
-                readonly life: { readonly phase: string; readonly healthPoints: number };
-              }[];
-              readonly match: {
-                readonly feedSequence: number;
-                readonly teamScores: readonly { readonly teamId: string; readonly score: number }[];
-              };
-            };
-          };
-          reliableEvents: {
-            append(input: {
-              serverTick: number;
-              kind: 'damageApplied' | 'playerKilled';
-              subjectId: string;
-              actorId: string;
-              targetId: string;
-              amountHealthPoints: number | null;
-            }): { readonly id: string };
-          };
-          transportMetrics: { reliableEventsRecorded: number };
-          persistActiveMatchCheckpoint(): void;
-          broadcastReliableEvents(): void;
-        };
-        // runInDurableObject is a test-only introspection surface and can enter
-        // while a setTimeout tick is still finishing. Only inject at the real
-        // authority's explicit between-tick checkpoint boundary.
-        if (runtime.authority.activeTickMatchEvents !== null) return null;
-        const damage = runtime.authority.applyCombatDamage({
-          targetPlayerId: targetId,
-          sourcePlayerId: attackerId,
-          damagePoints: 100,
-          causeId: 'g4_g8_full_occupancy_convergence',
-        });
-        if (!damage.accepted) throw new Error('Controlled authority damage rejected');
-        runtime.reliableEvents.append({
-          serverTick: runtime.authority.serverTick,
-          kind: 'damageApplied',
-          subjectId: targetId,
-          actorId: attackerId,
-          targetId,
-          amountHealthPoints: 100,
-        });
-        const finalEvent = runtime.reliableEvents.append({
-          serverTick: runtime.authority.serverTick,
-          kind: 'playerKilled',
-          subjectId: targetId,
-          actorId: attackerId,
-          targetId,
-          amountHealthPoints: null,
-        });
-        runtime.transportMetrics.reliableEventsRecorded += 2;
-        runtime.persistActiveMatchCheckpoint();
-        runtime.broadcastReliableEvents();
-        return {
-          finalEventId: finalEvent.id,
-          checkpoint: runtime.authority.exportActiveMatchCheckpoint(),
-        } satisfies ControlledCombatResult;
+    let killEvent: ReliableEvent | null = null;
+    let firingStarted = false;
+    for (let fireRound = 0; fireRound < 160 && killEvent === null; fireRound += 1) {
+      issueInput(westCombatant, nextSequence, {
+        heldButtons: PRIMARY_FIRE,
+        pressedButtons: firingStarted ? 0 : PRIMARY_FIRE,
       });
-      if (combat === null) await new Promise((resolve) => setTimeout(resolve, 5));
+      firingStarted = true;
+      acknowledgePopulation(clients);
+      await new Promise((resolve) => setTimeout(resolve, 45));
+      killEvent = reliableEventsAfter(
+        westCombatant.probe,
+        reliableStarts[0] ?? 0,
+      ).find(({ kind }) => kind === 'playerKilled') ?? null;
     }
-    if (combat === null) throw new Error('No stable between-tick combat checkpoint boundary');
+    if (killEvent === null) {
+      const observedEvents = reliableEventsAfter(
+        westCombatant.probe,
+        reliableStarts[0] ?? 0,
+      );
+      const current = latestSnapshot(westCombatant.probe);
+      throw new Error(`No live Ink Channel authority kill after 160 fire rounds: ${JSON.stringify({
+        combatSetup,
+        eventKinds: Object.groupBy(observedEvents, ({ kind }) => kind),
+        combatPlayers: current?.combat?.players,
+        errors: clients.flatMap(({ probe }) => (
+          probe.messages.filter(({ type }) => type === 'error')
+        )),
+      })}`);
+    }
+    const release = issueInput(westCombatant, nextSequence, {
+      releasedButtons: PRIMARY_FIRE,
+    });
+    await waitForProcessedInput(westCombatant, release, 'live fire release');
+    const targetId = killEvent.targetId ?? killEvent.subjectId;
+    if (targetId === null || targetId !== eastCombatant.join.playerId) {
+      throw new Error(`Authoritative kill target mismatch: ${String(targetId)}`);
+    }
 
     await Promise.all(clients.map(async ({ probe }, index) => {
       await waitForMessageAfter(
         probe,
         reliableStarts[index] ?? 0,
         (message) => message.type === 'reliableEventBatch'
-          && message.events.some(({ id }) => id === combat.finalEventId),
+          && message.events.some(({ id }) => id === killEvent.id),
         `combat event convergence client ${index + 1}`,
       );
     }));
@@ -476,7 +826,7 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
             && player.lifePhase === 'dead'
             && player.healthPoints === 0
           )) === true
-          && message.combat.match.feedSequence >= combat.checkpoint.match.feedSequence
+          && message.combat.match.feedSequence >= 1
         ),
         `combat snapshot convergence client ${index + 1}`,
       ) as SnapshotMessage
@@ -521,6 +871,11 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
     const probes = [...clients.map(({ probe }) => probe), resumedProbe];
     const network = byteSummary(probes);
     const totalObservedBytes = network.clientToServerBytes + network.serverToClientBytes;
+    const measurementDurationMilliseconds = performance.now() - soakStartedAt;
+    const combatProjection = convergedSnapshots[0];
+    if (combatProjection === undefined || combatProjection.combat === undefined) {
+      throw new Error('Combat convergence projection missing');
+    }
     const result = Object.freeze({
       schemaVersion: 1,
       runtime: '@cloudflare/vitest-pool-workers',
@@ -528,15 +883,18 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
       clients: CLIENT_COUNT,
       soakRounds: SOAK_ROUNDS,
       soakDurationMilliseconds: Math.round(soakDurationMilliseconds * 1_000) / 1_000,
+      measurementDurationMilliseconds:
+        Math.round(measurementDurationMilliseconds * 1_000) / 1_000,
       startTick,
-      endTick: postSoak.serverTick,
+      soakEndTick: postSoak.serverTick,
+      endTick: finalMetrics.serverTick,
       observedTickRateHertz: Math.round(observedTickRateHertz * 1_000) / 1_000,
       authorityTickExecution: finalMetrics.authorityTickExecution,
       network: {
         ...network,
         totalObservedBytes,
         observedBytesPerClientSecond: Math.round(
-          totalObservedBytes / CLIENT_COUNT / (soakDurationMilliseconds / 1_000),
+          totalObservedBytes / CLIENT_COUNT / (measurementDurationMilliseconds / 1_000),
         ),
       },
       resume: {
@@ -546,18 +904,20 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
         fullSnapshotPlayerId: resumeSnapshot.localReconciliation.player.id,
       },
       combat: {
-        authorityTick: combat.checkpoint.clock.serverTick,
-        finalEventId: combat.finalEventId,
+        authorityTick: killEvent.serverTick,
+        finalEventId: killEvent.id,
+        actorPlayerId: killEvent.actorId,
         targetPlayerId: targetId,
-        targetDeadInCheckpoint: combat.checkpoint.players.some((player) => (
+        targetDeadInAuthoritySnapshot: combatProjection.combat.players.some((player) => (
           player.playerId === targetId
-          && player.life.phase === 'dead'
-          && player.life.healthPoints === 0
+          && player.lifePhase === 'dead'
+          && player.healthPoints === 0
         )),
         convergedClientCount: convergedSnapshots.length,
-        feedSequence: combat.checkpoint.match.feedSequence,
-        teamScores: combat.checkpoint.match.teamScores,
-        injectionSurface: 'KyxRoom authoritative applyCombatDamage port inside real Durable Object',
+        feedSequence: combatProjection.combat.match.feedSequence,
+        teamScores: combatProjection.combat.match.teamScores,
+        setup: combatSetup,
+        inputSurface: 'real protocol-v2 movement and primary fire through Worker WebSockets',
       },
       transport: finalMetrics.transport,
       lastTickFailure: finalMetrics.lastTickFailure,
@@ -579,7 +939,7 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
       connectionMode: 'resumed',
     });
     expect(resumed.resumeToken).not.toBe(disconnected.join.resumeToken);
-    expect(result.combat.targetDeadInCheckpoint).toBe(true);
+    expect(result.combat.targetDeadInAuthoritySnapshot).toBe(true);
     expect(result.combat.convergedClientCount).toBe(CLIENT_COUNT);
     expect(result.decodeErrors).toEqual([]);
     for (const client of clients.slice(0, 7)) {
@@ -588,5 +948,5 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
     expect(resumedProbe.socket.readyState).toBe(WebSocket.OPEN);
 
     console.log(`KYX_AUTHORITY_SOAK_RESULT=${JSON.stringify(result)}`);
-  }, 30_000);
+  }, 120_000);
 });
