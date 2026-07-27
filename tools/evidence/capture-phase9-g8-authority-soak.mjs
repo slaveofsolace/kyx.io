@@ -33,6 +33,11 @@ function gitText(arguments_) {
   return result.status === 0 ? result.stdout.trim() : null;
 }
 
+const sourceAtStart = Object.freeze({
+  commit: gitText(['rev-parse', 'HEAD']),
+  branch: gitText(['branch', '--show-current']),
+  status: gitText(['status', '--short']),
+});
 await mkdir(evidenceDirectory, { recursive: true });
 const test = spawnSync(process.execPath, testArguments, {
   cwd: projectRoot,
@@ -65,11 +70,7 @@ const evidence = Object.freeze({
   gate: 'G4/G8 local full-occupancy authority runtime soak',
   capturedAt: finishedAt.toISOString(),
   durationMilliseconds: finishedAt.getTime() - startedAt.getTime(),
-  source: {
-    commit: gitText(['rev-parse', 'HEAD']),
-    branch: gitText(['branch', '--show-current']),
-    statusBeforeEvidenceCommit: gitText(['status', '--short']),
-  },
+  source: sourceAtStart,
   command: [process.execPath, ...testArguments],
   testExitCode: test.status,
   runtimeResult,
