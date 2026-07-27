@@ -284,9 +284,35 @@ async function readCaptureWindowAggregate(targetPage, resetAfterRead) {
         maxMs: at(1),
       };
     };
+    const summarizeHistogram = () => {
+      const count = capture.frameCount;
+      const percentile = (quantile) => {
+        if (count === 0) return 0;
+        const target = Math.max(1, Math.ceil(count * quantile));
+        let observed = 0;
+        for (let index = 0; index < capture.frameHistogram.length; index += 1) {
+          observed += capture.frameHistogram[index];
+          if (observed >= target) {
+            return Math.min(
+              capture.frameMaxMs,
+              (index + 1) * capture.frameBucketWidthMs,
+            );
+          }
+        }
+        return capture.frameMaxMs;
+      };
+      return {
+        count,
+        p50Ms: percentile(0.5),
+        p95Ms: percentile(0.95),
+        p99Ms: percentile(0.99),
+        maxMs: capture.frameMaxMs,
+        quantileResolutionMs: capture.frameBucketWidthMs,
+      };
+    };
     const result = {
       durationMs: performance.now() - capture.startedAtMs,
-      frameTimes: summarize(capture.frameTimes),
+      frameTimes: summarizeHistogram(),
       droppedFrameSamples: capture.droppedFrameSamples,
       longTasks: {
         ...summarize(capture.longTasks.map((entry) => entry.durationMs)),
@@ -298,7 +324,9 @@ async function readCaptureWindowAggregate(targetPage, resetAfterRead) {
       },
     };
     if (shouldReset) {
-      capture.frameTimes.length = 0;
+      capture.frameHistogram.fill(0);
+      capture.frameCount = 0;
+      capture.frameMaxMs = 0;
       capture.longTasks.length = 0;
       capture.droppedFrameSamples = 0;
       capture.startedAtMs = performance.now();
@@ -349,8 +377,15 @@ try {
   });
   await context.addInitScript(({ serializedSettings }) => {
     localStorage.setItem('sio_settings', serializedSettings);
+    const frameBucketWidthMs = 0.25;
+    const maximumBucketedFrameMs = 2_000;
     const capture = {
-      frameTimes: [],
+      frameBucketWidthMs,
+      frameHistogram: new Uint32Array(
+        Math.ceil(maximumBucketedFrameMs / frameBucketWidthMs) + 1,
+      ),
+      frameCount: 0,
+      frameMaxMs: 0,
       longTasks: [],
       droppedFrameSamples: 0,
       startedAtMs: performance.now(),
@@ -364,8 +399,14 @@ try {
     let previousFrame;
     const sampleFrame = (now) => {
       if (previousFrame !== undefined) {
-        if (capture.frameTimes.length < 250_000) capture.frameTimes.push(now - previousFrame);
-        else capture.droppedFrameSamples += 1;
+        const durationMs = now - previousFrame;
+        const bucket = Math.min(
+          capture.frameHistogram.length - 1,
+          Math.floor(durationMs / capture.frameBucketWidthMs),
+        );
+        capture.frameHistogram[bucket] += 1;
+        capture.frameCount += 1;
+        capture.frameMaxMs = Math.max(capture.frameMaxMs, durationMs);
       }
       previousFrame = now;
       requestAnimationFrame(sampleFrame);
@@ -408,8 +449,14 @@ try {
   }, undefined, { timeout: 15_000 });
 
   const menuMetrics = JSON.parse(await canvas.getAttribute('data-kyx-dev-metrics'));
-  const startButton = page.getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true });
-  await startButton.click();
+  // The visible copy is presentation-owned and has changed across the G7
+  // integration. The stable product contract is the start control's id.
+  // Trigger the real DOM click directly because WebGL/pointer-lock overlays can
+  // make Playwright's actionability check hang even while the control is
+  // visible and enabled.
+  const startButton = page.locator('#play-btn');
+  await startButton.waitFor({ state: 'visible', timeout: 15_000 });
+  await startButton.evaluate((button) => button.click());
   await page.waitForFunction(() => {
     const serialized = document.querySelector('#game-canvas')?.dataset.kyxDevMetrics;
     if (!serialized) return false;
@@ -686,6 +733,10 @@ try {
     sampleCount: summary.samples.length,
   });
   check('runtime.frame_distribution_present', captureAggregate.frameTimes.count > 0, captureAggregate.frameTimes);
+  check('runtime.no_frame_samples_dropped', captureAggregate.droppedFrameSamples === 0, {
+    droppedFrameSamples: captureAggregate.droppedFrameSamples,
+    frameTimes: captureAggregate.frameTimes,
+  });
   check('runtime.warmup_completed', summary.product.warmup.actualDurationMs >= warmupMs, {
     warmup: summary.product.warmup,
   });
