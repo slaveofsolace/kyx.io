@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "gate": "G4/G8 local full-occupancy authority runtime soak",
+  "capturedAt": "2026-07-27T16:46:48.823Z",
+  "durationMilliseconds": 99962,
+  "source": {
+    "commit": "9bc0724d74b15dfcc5c482648e4dc55beabf8e1c",
+    "branch": "codex/g4-authority-soak-20260727",
+    "status": ""
+  },
+  "command": [
+    "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--config",
+    "vitest.worker.config.ts",
+    "tests/worker/authorityFullOccupancySoak.test.ts",
+    "--reporter=verbose"
+  ],
+  "testExitCode": 0,
+  "runtimeResult": {
+    "schemaVersion": 1,
+    "runtime": "@cloudflare/vitest-pool-workers",
+    "roomProfile": "p511-inkfall-foundry-revision-2-combat-v1",
+    "clients": 8,
+    "soakRounds": 60,
+    "soakDurationMilliseconds": 6579,
+    "measurementDurationMilliseconds": 91069,
+    "startTick": 41,
+    "soakEndTick": 173,
+    "endTick": 1863,
+    "observedTickRateHertz": 20.064,
+    "authorityTickExecution": {
+      "sampleCapacity": 4096,
+      "samples": 1863,
+      "p50Milliseconds": 11,
+      "p95Milliseconds": 21,
+      "p99Milliseconds": 27,
+      "maximumMilliseconds": 33
+    },
+    "network": {
+      "clientToServerBytes": 479202,
+      "serverToClientBytes": 14359540,
+      "clientToServerMessages": 2378,
+      "serverToClientMessages": 17120,
+      "totalObservedBytes": 14838742,
+      "observedBytesPerClientSecond": 20367
+    },
+    "resume": {
+      "preservedPlayerId": true,
+      "connectionMode": "resumed",
+      "rotatedCredential": true,
+      "fullSnapshotPlayerId": "player.253be2d7-559b-41d2-a4f9-91ddbaa1018e"
+    },
+    "combat": {
+      "authorityTick": 1859,
+      "finalEventId": "event.29",
+      "actorPlayerId": "player.e389ab63-849f-4d1c-b42e-5762978680e8",
+      "targetPlayerId": "player.45914abc-cce0-432c-94fe-77e6d3bb30c5",
+      "targetDeadInAuthoritySnapshot": true,
+      "convergedClientCount": 8,
+      "feedSequence": 1,
+      "teamScores": [
+        {
+          "teamId": "team_blue",
+          "score": 1
+        },
+        {
+          "teamId": "team_red",
+          "score": 0
+        }
+      ],
+      "setup": {
+        "checkpoints": [
+          {
+            "index": 0,
+            "west": {
+              "x": -27989,
+              "y": 29,
+              "z": 741
+            },
+            "east": {
+              "x": 28001,
+              "y": 28,
+              "z": -736
+            }
+          },
+          {
+            "index": 1,
+            "west": {
+              "x": -22602,
+              "y": 143,
+              "z": -150
+            },
+            "east": {
+              "x": 22312,
+              "y": 121,
+              "z": -131
+            }
+          },
+          {
+            "index": 2,
+            "west": {
+              "x": -24916,
+              "y": -939,
+              "z": -6720
+            },
+            "east": {
+              "x": 24793,
+              "y": -744,
+              "z": -6466
+            }
+          },
+          {
+            "index": 3,
+            "west": {
+              "x": -24997,
+              "y": -1709,
+              "z": -11356
+            },
+            "east": {
+              "x": 25001,
+              "y": -1844,
+              "z": -12022
+            }
+          },
+          {
+            "index": 4,
+            "west": {
+              "x": -22090,
+              "y": -2809,
+              "z": -16832
+            },
+            "east": {
+              "x": 21773,
+              "y": -2844,
+              "z": -17361
+            }
+          },
+          {
+            "index": 5,
+            "west": {
+              "x": -15667,
+              "y": -2859,
+              "z": -20607
+            },
+            "east": {
+              "x": 15715,
+              "y": -2844,
+              "z": -19720
+            }
+          },
+          {
+            "index": 6,
+            "west": {
+              "x": -8631,
+              "y": -2859,
+              "z": -20091
+            },
+            "east": {
+              "x": 8735,
+              "y": -2844,
+              "z": -16356
+            }
+          },
+          {
+            "index": 7,
+            "west": {
+              "x": -5215,
+              "y": -2859,
+              "z": -15335
+            },
+            "east": {
+              "x": 5633,
+              "y": -2844,
+              "z": -15230
+            }
+          },
+          {
+            "index": 8,
+            "west": {
+              "x": -3300,
+              "y": -2859,
+              "z": -15910
+            },
+            "east": {
+              "x": 3093,
+              "y": -2844,
+              "z": -15008
+            }
+          }
+        ],
+        "westPosition": {
+          "x": 436,
+          "y": -2959,
+          "z": -15548
+        },
+        "eastPosition": {
+          "x": 2359,
+          "y": -2844,
+          "z": -15166
+        },
+        "separationMillimeters": 1960.5746606543705,
+        "verticalMarginMillimeters": 215,
+        "westYawMilliDegrees": 78765,
+        "eastYawMilliDegrees": -101235
+      },
+      "inputSurface": "real protocol-v2 movement and primary fire through Worker WebSockets"
+    },
+    "transport": {
+      "inboundMessagesReceived": 2378,
+      "inboundMessagesRateAccepted": 2378,
+      "inboundMessagesRateRejected": 0,
+      "fullSnapshotsSent": 522,
+      "deltaSnapshotsSent": 1516,
+      "snapshotAcksAccepted": 1562,
+      "snapshotAcksRejected": 0,
+      "snapshotAckTimeoutFallbacks": 513,
+      "snapshotAckDebtEpisodes": 755,
+      "snapshotAckDebtSnapshotsCoalesced": 5419,
+      "snapshotAckDebtReliableBatchesCoalesced": 255,
+      "snapshotAckDebtRecoveries": 792,
+      "snapshotAckDebtEvictions": 0,
+      "maximumSnapshotAckDebtMilliseconds": 1986,
+      "snapshotHistoryFallbacks": 0,
+      "reliableEventsRecorded": 30,
+      "reliableEventBatchesSent": 165,
+      "reliableEventResendBatches": 78,
+      "reliableEventAcksAccepted": 1562,
+      "reliableEventAcksRejected": 0,
+      "reliableEventHistoryFallbacks": 0,
+      "backpressureEpisodes": 0,
+      "backpressureMessagesCoalesced": 0,
+      "slowConsumerRecoveries": 792,
+      "slowConsumerEvictions": 0,
+      "maximumObservedSocketBufferedBytes": 0,
+      "lobbyCheckpointRehydrates": 0,
+      "lobbyCheckpointPlayersRestored": 0,
+      "durableAlarmRuns": 0,
+      "expiredResumeSessionsPruned": 0,
+      "loadoutRequestsAccepted": 0,
+      "loadoutRequestsRejected": 0,
+      "loadoutRequestsReplayed": 0,
+      "loadoutRequestIdConflicts": 0,
+      "activeMatchCheckpointDirtyMarks": 4231,
+      "activeMatchCheckpointCoalescedMarks": 4076,
+      "activeMatchCheckpointWrites": 203
+    },
+    "lastTickFailure": null,
+    "decodeErrors": []
+  },
+  "interpretation": {
+    "qualifyingSurface": [
+      "Eight accepted WebSockets connected through SELF.fetch to the actual Worker entrypoint.",
+      "KyxRoom ran its real setTimeout-based FixedTickScheduler and Durable Object storage.",
+      "Wire cost is the exact UTF-8 byte count observed at the WebSocket client boundary.",
+      "Resume exercised the opaque credential, identity preservation, token rotation, and full snapshot.",
+      "Two clients traversed the verified Ink Channel route with protocol-v2 movement, faced within the locked tolerance, and authored one live auto-rifle kill while all eight clients remained connected."
+    ],
+    "limitations": [
+      "This is a short deterministic local Workers-runtime soak, not a 30-minute production-network soak.",
+      "Tick execution duration is runtime work inside each authority tick; scheduler delay is reported separately by observed tick rate.",
+      "Combat proves one live auto-rifle kill at the separately verified Ink Channel pair. It is not exhaustive weapon, projectile, multi-kill, route, or arbitrary sightline coverage.",
+      "Local Vitest-pool timing and bandwidth are not Cloudflare production latency or billing measurements.",
+      "The bounded in-memory timing window resets if the Durable Object isolate is evicted."
+    ]
+  }
+}

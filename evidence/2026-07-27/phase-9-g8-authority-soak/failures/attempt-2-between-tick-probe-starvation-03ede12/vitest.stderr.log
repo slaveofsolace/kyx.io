@@ -1,0 +1,14 @@
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+Error: No stable between-tick combat checkpoint boundary
+ ❯ tests/worker/authorityFullOccupancySoak.test.ts:457:32
+    455|       if (combat === null) await new Promise((resolve) => setTimeout(r…
+    456|     }
+    457|     if (combat === null) throw new Error('No stable between-tick comba…
+       |                                ^
+    458|
+    459|     await Promise.all(clients.map(async ({ probe }, index) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯

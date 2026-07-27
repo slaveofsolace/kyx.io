@@ -1,0 +1,18 @@
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+Error: AUTHORITY_ACTIVE_CHECKPOINT_TICK_IN_PROGRESS
+ ❯ AuthoritativeRoom.exportActiveMatchCheckpoint src/authority/room.ts:2360:13
+    2358|     }
+    2359|     if (this.activeTickMatchEvents !== null || this.deferTdmLifecycleS…
+    2360|       throw new Error('AUTHORITY_ACTIVE_CHECKPOINT_TICK_IN_PROGRESS');
+       |             ^
+    2361|     }
+    2362|     const players = [...this.players.values()]
+ ❯ KyxRoom.persistActiveMatchCheckpoint worker/room.ts:1463:43
+ ❯ tests/worker/authorityFullOccupancySoak.test.ts:426:15
+ ❯ maybeHandleRunRequest ../evio-repo/node_modules/.pnpm/@cloudflare+vitest-pool-wor_ac2c8aae34d0b7c2c1e802155ac19e3b/node_modules/@cloudflare/vitest-pool-workers/src/worker/durable-objects.ts:226:23
+ ❯ DurableObject.Wrapper.fetch ../evio-repo/node_modules/.pnpm/@cloudflare+vitest-pool-wor_ac2c8aae34d0b7c2c1e802155ac19e3b/node_modules/@cloudflare/vitest-pool-workers/src/worker/entrypoints.ts:530:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯

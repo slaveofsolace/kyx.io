@@ -1,0 +1,39 @@
+
+ RUN  v4.1.10 C:/AI Projects/Projects/Games/evio/evio-g4-authority-soak-20260727
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":0,"west":{"x":-27989,"y":29,"z":741},"east":{"x":28001,"y":28,"z":-736}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":1,"west":{"x":-22602,"y":143,"z":-150},"east":{"x":22312,"y":121,"z":-131}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":2,"west":{"x":-24916,"y":-939,"z":-6720},"east":{"x":24793,"y":-744,"z":-6466}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":3,"west":{"x":-24997,"y":-1709,"z":-11356},"east":{"x":25001,"y":-1844,"z":-12022}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":4,"west":{"x":-22090,"y":-2809,"z":-16832},"east":{"x":21773,"y":-2844,"z":-17361}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":5,"west":{"x":-15667,"y":-2859,"z":-20607},"east":{"x":15715,"y":-2844,"z":-19720}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":6,"west":{"x":-8631,"y":-2859,"z":-20091},"east":{"x":8735,"y":-2844,"z":-16356}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":7,"west":{"x":-5215,"y":-2859,"z":-15335},"east":{"x":5633,"y":-2844,"z":-15230}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_ROUTE={"index":8,"west":{"x":-3300,"y":-2859,"z":-15910},"east":{"x":3093,"y":-2844,"z":-15008}}
+
+stdout | tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence
+KYX_AUTHORITY_SOAK_RESULT={"schemaVersion":1,"runtime":"@cloudflare/vitest-pool-workers","roomProfile":"p511-inkfall-foundry-revision-2-combat-v1","clients":8,"soakRounds":60,"soakDurationMilliseconds":6579,"measurementDurationMilliseconds":91069,"startTick":41,"soakEndTick":173,"endTick":1863,"observedTickRateHertz":20.064,"authorityTickExecution":{"sampleCapacity":4096,"samples":1863,"p50Milliseconds":11,"p95Milliseconds":21,"p99Milliseconds":27,"maximumMilliseconds":33},"network":{"clientToServerBytes":479202,"serverToClientBytes":14359540,"clientToServerMessages":2378,"serverToClientMessages":17120,"totalObservedBytes":14838742,"observedBytesPerClientSecond":20367},"resume":{"preservedPlayerId":true,"connectionMode":"resumed","rotatedCredential":true,"fullSnapshotPlayerId":"player.253be2d7-559b-41d2-a4f9-91ddbaa1018e"},"combat":{"authorityTick":1859,"finalEventId":"event.29","actorPlayerId":"player.e389ab63-849f-4d1c-b42e-5762978680e8","targetPlayerId":"player.45914abc-cce0-432c-94fe-77e6d3bb30c5","targetDeadInAuthoritySnapshot":true,"convergedClientCount":8,"feedSequence":1,"teamScores":[{"teamId":"team_blue","score":1},{"teamId":"team_red","score":0}],"setup":{"checkpoints":[{"index":0,"west":{"x":-27989,"y":29,"z":741},"east":{"x":28001,"y":28,"z":-736}},{"index":1,"west":{"x":-22602,"y":143,"z":-150},"east":{"x":22312,"y":121,"z":-131}},{"index":2,"west":{"x":-24916,"y":-939,"z":-6720},"east":{"x":24793,"y":-744,"z":-6466}},{"index":3,"west":{"x":-24997,"y":-1709,"z":-11356},"east":{"x":25001,"y":-1844,"z":-12022}},{"index":4,"west":{"x":-22090,"y":-2809,"z":-16832},"east":{"x":21773,"y":-2844,"z":-17361}},{"index":5,"west":{"x":-15667,"y":-2859,"z":-20607},"east":{"x":15715,"y":-2844,"z":-19720}},{"index":6,"west":{"x":-8631,"y":-2859,"z":-20091},"east":{"x":8735,"y":-2844,"z":-16356}},{"index":7,"west":{"x":-5215,"y":-2859,"z":-15335},"east":{"x":5633,"y":-2844,"z":-15230}},{"index":8,"west":{"x":-3300,"y":-2859,"z":-15910},"east":{"x":3093,"y":-2844,"z":-15008}}],"westPosition":{"x":436,"y":-2959,"z":-15548},"eastPosition":{"x":2359,"y":-2844,"z":-15166},"separationMillimeters":1960.5746606543705,"verticalMarginMillimeters":215,"westYawMilliDegrees":78765,"eastYawMilliDegrees":-101235},"inputSurface":"real protocol-v2 movement and primary fire through Worker WebSockets"},"transport":{"inboundMessagesReceived":2378,"inboundMessagesRateAccepted":2378,"inboundMessagesRateRejected":0,"fullSnapshotsSent":522,"deltaSnapshotsSent":1516,"snapshotAcksAccepted":1562,"snapshotAcksRejected":0,"snapshotAckTimeoutFallbacks":513,"snapshotAckDebtEpisodes":755,"snapshotAckDebtSnapshotsCoalesced":5419,"snapshotAckDebtReliableBatchesCoalesced":255,"snapshotAckDebtRecoveries":792,"snapshotAckDebtEvictions":0,"maximumSnapshotAckDebtMilliseconds":1986,"snapshotHistoryFallbacks":0,"reliableEventsRecorded":30,"reliableEventBatchesSent":165,"reliableEventResendBatches":78,"reliableEventAcksAccepted":1562,"reliableEventAcksRejected":0,"reliableEventHistoryFallbacks":0,"backpressureEpisodes":0,"backpressureMessagesCoalesced":0,"slowConsumerRecoveries":792,"slowConsumerEvictions":0,"maximumObservedSocketBufferedBytes":0,"lobbyCheckpointRehydrates":0,"lobbyCheckpointPlayersRestored":0,"durableAlarmRuns":0,"expiredResumeSessionsPruned":0,"loadoutRequestsAccepted":0,"loadoutRequestsRejected":0,"loadoutRequestsReplayed":0,"loadoutRequestIdConflicts":0,"activeMatchCheckpointDirtyMarks":4231,"activeMatchCheckpointCoalescedMarks":4076,"activeMatchCheckpointWrites":203},"lastTickFailure":null,"decodeErrors":[]}
+
+ ✓ tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence 93323ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  11:45:11
+   Duration  97.59s (transform 1.38s, setup 0ms, import 2.33s, tests 93.32s, environment 0ms)

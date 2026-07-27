@@ -1,0 +1,10 @@
+
+ RUN  v4.1.10 C:/AI Projects/Projects/Games/evio/evio-g4-authority-soak-20260727
+
+ × tests/worker/authorityFullOccupancySoak.test.ts > G4/G8 real Worker full-occupancy authority soak > measures a live 8-client room and preserves resume plus combat convergence 10449ms
+   → No stable between-tick combat checkpoint boundary
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  11:12:15
+   Duration  13.12s (transform 1.06s, setup 0ms, import 1.77s, tests 10.45s, environment 0ms)

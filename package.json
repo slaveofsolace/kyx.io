@@ -21,6 +21,7 @@
     "test:browser:install": "playwright install chromium",
     "test:multiplayer": "playwright test tests/multiplayer --pass-with-no-tests",
     "test:authority": "vitest run tests/unit/authority tests/integration/authority --passWithNoTests",
+    "test:authority-soak": "vitest run --config vitest.worker.config.ts tests/worker/authorityFullOccupancySoak.test.ts --reporter=verbose",
     "test:worker": "vitest run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
     "dev:authority": "wrangler dev --local --port 8787",
     "check:worker": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env=\"\"",
@@ -41,7 +42,8 @@
     "evidence:phase3:browser": "node tools/evidence/capture-phase3-browser.mjs",
     "evidence:phase3:check": "node tools/evidence/capture-phase3-check.mjs",
     "evidence:g7-ui": "node tools/evidence/capture-g7-human-ui.mjs --base-url http://127.0.0.1:6197",
-    "audit:g9": "node tools/security/audit-g9-readiness.mjs"
+    "audit:g9": "node tools/security/audit-g9-readiness.mjs",
+    "evidence:authority-soak": "node tools/evidence/capture-phase9-g8-authority-soak.mjs"
   },
   "repository": {
     "type": "git",
