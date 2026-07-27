@@ -17,9 +17,15 @@ being changed now.
 
 ## Current visual direction
 
-### Character LOD0 audit candidate
+### Character visual gate — open
 
-![KYX Vanguard Rev14 direct GLB audit](./assets/source/blender/phase7-character-original-v6/evidence/v6c-lod0-retopo-rev14/renders/kyx-v6c-lod0-retopo-rev14-front-three-quarter-idle.png)
+The Rev14 image previously shown here was historical audit evidence, not the
+current target, and has been removed from the project overview. Rev17 is the
+newer feature-gated runtime candidate, but direct review still finds its
+anatomy, armor construction, materials, and weapon contact below the intended
+production bar. A new correction pass is in progress; no character image will
+be presented here as the current direction until it clears direct runtime and
+human visual review.
 
 ### Inkfall Foundry / Press Hall
 
@@ -81,10 +87,10 @@ npm run test
 - The deterministic west-archive collision/depenetration failure is repaired
   and covered by an exact-pose regression. The clean 2/4/8-client manifest and
   human map acceptance are still open.
-- Rev14 passes its isolated Blender export/reimport and official glTF parser
-  checks, but direct visual review remains failed-open for weapon contact,
-  animation readability, and unfinished materials. It is not runtime
-  integrated; the default match still loads the legacy `public/soldier.glb`.
+- Rev17 passes bounded Blender export/reimport, glTF parser, and feature-gated
+  runtime checks, but direct visual review remains failed-open for anatomy,
+  armor construction, materials, weapon contact, and animation readability.
+  It is not approved for default promotion.
 - The Inkfall Foundry graybox and Press Hall art package are present, but map,
   character, HUD, audio/VFX, accessibility, performance, and final human review
   gates are not yet complete.
