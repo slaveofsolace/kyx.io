@@ -77,6 +77,7 @@ import { SnapshotBaselineStore } from './snapshotBaselines';
 const SNAPSHOT_INTERVAL_TICKS = 2;
 const ROOM_TIMER_MAXIMUM_CATCH_UP_TICKS = 1;
 const ROOM_TIMER_EVENT_YIELD_MILLISECONDS = 4;
+const ROOM_TICK_EXECUTION_SAMPLE_CAPACITY = 4_096;
 const LOCAL_MAP_ID = 'phase4_flat_run';
 const ROOM_RUNTIME_SCHEMA_VERSION = 2;
 const ROOM_PROFILE_SCHEMA_VERSION = 1;
@@ -228,6 +229,15 @@ interface TransportMetrics {
   activeMatchCheckpointWrites: number;
 }
 
+interface AuthorityTickExecutionMetrics {
+  readonly sampleCapacity: number;
+  readonly samples: number;
+  readonly p50Milliseconds: number | null;
+  readonly p95Milliseconds: number | null;
+  readonly p99Milliseconds: number | null;
+  readonly maximumMilliseconds: number | null;
+}
+
 interface GameplaySendPermit {
   readonly kind: 'send' | 'coalesce' | 'evict' | 'closed';
   readonly attachment: SocketAttachment;
@@ -255,6 +265,23 @@ function lifecyclePhase(lifecycle: AuthorityFullSnapshot['lifecycle']): MatchPha
 function socketBufferedAmount(webSocket: WebSocket): number {
   const value = (webSocket as WebSocket & { readonly bufferedAmount?: number }).bufferedAmount ?? 0;
   return Number.isSafeInteger(value) && value >= 0 ? value : MAX_SOCKET_BUFFERED_BYTES + 1;
+}
+
+function roundedMilliseconds(value: number): number {
+  return Math.round(value * 1_000) / 1_000;
+}
+
+function percentileMilliseconds(
+  sortedSamples: readonly number[],
+  percentile: number,
+): number | null {
+  if (sortedSamples.length === 0) return null;
+  const index = Math.min(
+    sortedSamples.length - 1,
+    Math.max(0, Math.ceil(sortedSamples.length * percentile) - 1),
+  );
+  const sample = sortedSamples[index];
+  return sample === undefined ? null : roundedMilliseconds(sample);
 }
 
 function safeSocketSend(webSocket: WebSocket, message: ServerMessage): boolean {
@@ -401,6 +428,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     activeMatchCheckpointCoalescedMarks: 0,
     activeMatchCheckpointWrites: 0,
   };
+  private readonly authorityTickExecutionSamples: number[] = [];
+  private authorityTickExecutionSampleCursor = 0;
   private compatibilityIdentity: SimulationIdentityV1 | null = null;
   private timerActive = false;
   private expiredMaintenanceTimerActive = false;
@@ -453,6 +482,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           ...(this.roomProfile === P511_INKFALL_REV2_COMBAT_PROFILE
             ? { mapBinding: INKFALL_REVISION_2_WORKER_MAP_BINDING }
             : {}),
+          authorityTickExecution: this.authorityTickExecutionMetrics(),
           transport: Object.freeze({ ...this.transportMetrics }),
         },
       }, {
@@ -2684,6 +2714,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       const poll = this.scheduler.poll(performance.now());
       authority.recordMissedSchedulerTicks(poll.missedTicks);
       for (let index = 0; index < poll.ticksToRun; index += 1) {
+        const tickStartedAt = performance.now();
         const tickResult = authority.advanceOneTick();
         this.respawnEligibleCombatPlayers();
         const combatEvents = reliableCombatEvents(tickResult);
@@ -2709,6 +2740,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.broadcastReliableEvents();
         }
         if (authority.serverTick % 20 === 0) this.disconnectStaleSockets();
+        this.recordAuthorityTickExecution(performance.now() - tickStartedAt);
       }
       const lifecycle = authority.lifecycle;
       if (lifecycle === 'warmup' || lifecycle === 'active' || lifecycle === 'postmatch') {
@@ -2734,6 +2766,31 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           : null,
       ));
     }
+  }
+
+  private recordAuthorityTickExecution(durationMilliseconds: number): void {
+    if (!Number.isFinite(durationMilliseconds) || durationMilliseconds < 0) return;
+    if (this.authorityTickExecutionSamples.length < ROOM_TICK_EXECUTION_SAMPLE_CAPACITY) {
+      this.authorityTickExecutionSamples.push(durationMilliseconds);
+      return;
+    }
+    this.authorityTickExecutionSamples[this.authorityTickExecutionSampleCursor] = durationMilliseconds;
+    this.authorityTickExecutionSampleCursor = (
+      this.authorityTickExecutionSampleCursor + 1
+    ) % ROOM_TICK_EXECUTION_SAMPLE_CAPACITY;
+  }
+
+  private authorityTickExecutionMetrics(): AuthorityTickExecutionMetrics {
+    const sortedSamples = [...this.authorityTickExecutionSamples].sort((left, right) => left - right);
+    const maximum = sortedSamples.at(-1);
+    return Object.freeze({
+      sampleCapacity: ROOM_TICK_EXECUTION_SAMPLE_CAPACITY,
+      samples: sortedSamples.length,
+      p50Milliseconds: percentileMilliseconds(sortedSamples, 0.5),
+      p95Milliseconds: percentileMilliseconds(sortedSamples, 0.95),
+      p99Milliseconds: percentileMilliseconds(sortedSamples, 0.99),
+      maximumMilliseconds: maximum === undefined ? null : roundedMilliseconds(maximum),
+    });
   }
 
   private respawnEligibleCombatPlayers(): void {
