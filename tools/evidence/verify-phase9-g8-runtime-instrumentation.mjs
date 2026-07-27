@@ -3,6 +3,8 @@ import { readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { scheduledSampleCount } from './g8-runtime-schedule.mjs';
+
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 function option(name, fallback) {
@@ -30,6 +32,10 @@ const evidenceDirectory = path.resolve(
 const summaryPath = path.join(evidenceDirectory, 'runtime-instrumentation.json');
 const outputPath = path.join(evidenceDirectory, 'independent-verification.json');
 const capture = JSON.parse(await readFile(summaryPath, 'utf8'));
+const expectedSampleCount = scheduledSampleCount(
+  capture.requested.durationMs,
+  capture.requested.sampleIntervalMs,
+);
 const report = {
   schemaVersion: 1,
   verifiedAt: new Date().toISOString(),
@@ -63,11 +69,32 @@ check('capture.self_checks_pass', capture.ok === true && capture.failures.length
 });
 check('capture.samples_present', (
   Array.isArray(capture.samples)
-  && capture.samples.length >= 2
+  && capture.samples.length >= expectedSampleCount
   && capture.aggregate?.sampleCount === capture.samples.length
 ), {
+  expectedSampleCount,
   sampleCount: capture.samples?.length ?? null,
   aggregateSampleCount: capture.aggregate?.sampleCount ?? null,
+});
+check('capture.absolute_sample_schedule', (
+  capture.requested.expectedCaptureSampleCount === expectedSampleCount
+  && capture.aggregate?.scheduledSampleCount === expectedSampleCount
+  && capture.aggregate?.sampling?.schedule === 'absolute_deadlines'
+  && capture.aggregate?.sampling?.expectedSampleCount === expectedSampleCount
+  && capture.aggregate?.sampling?.actualSampleCount === capture.samples.length
+), {
+  requested: capture.requested,
+  sampling: capture.aggregate?.sampling ?? null,
+});
+check('capture.active_input_contract', (
+  capture.product?.activeStartState?.active === true
+  && capture.product?.warmup?.finalInteractionState?.active === true
+  && capture.samples.every(
+    (sample) => sample.interaction?.state !== 'playing' || sample.interaction.active === true
+  )
+), {
+  activeStartState: capture.product?.activeStartState ?? null,
+  warmupFinalInteractionState: capture.product?.warmup?.finalInteractionState ?? null,
 });
 check('capture.frame_distribution_present', capture.aggregate?.frameTimes?.count > 0, {
   frameTimes: capture.aggregate?.frameTimes ?? null,
@@ -149,6 +176,7 @@ for (const artifact of capture.artifacts ?? []) {
 
 const sourcePaths = {
   captureScript: path.join(repositoryRoot, 'tools', 'evidence', 'capture-phase9-g8-runtime-instrumentation.mjs'),
+  runtimeSchedule: path.join(repositoryRoot, 'tools', 'evidence', 'g8-runtime-schedule.mjs'),
   debugMetrics: path.join(repositoryRoot, 'src', 'render', 'debugMetrics.ts'),
   world: path.join(repositoryRoot, 'src', 'world', 'World.js'),
   game: path.join(repositoryRoot, 'src', 'core', 'Game.js'),

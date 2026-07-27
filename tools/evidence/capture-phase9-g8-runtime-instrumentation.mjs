@@ -5,6 +5,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { chromium } from 'playwright';
+import {
+  absoluteDeadline,
+  advancePeriodicDeadline,
+  scheduledSampleCount,
+} from './g8-runtime-schedule.mjs';
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const minimumQualifyingSoakMs = 30 * 60 * 1_000;
@@ -127,6 +132,8 @@ async function exists(targetPath) {
 const baseUrl = normalizeBaseUrl(option('base-url', 'http://127.0.0.1:5173/'));
 const durationMs = positiveInteger('duration-ms', 15_000);
 const sampleIntervalMs = positiveInteger('sample-interval-ms', 1_000);
+const activityIntervalMs = positiveInteger('activity-interval-ms', 500);
+const expectedCaptureSampleCount = scheduledSampleCount(durationMs, sampleIntervalMs);
 const qualifyingCandidate = flag('qualifying-candidate');
 const warmupMs = positiveInteger('warmup-ms', qualifyingCandidate ? 60_000 : 2_000);
 const width = positiveInteger('width', 1_920);
@@ -135,6 +142,7 @@ const tier = option('tier', 'baseline');
 const quality = option('quality', tier === 'low' ? 'low' : 'high');
 const headed = flag('headed');
 const softwareRenderer = flag('software-renderer');
+const browserExecutable = optionalText('browser-executable');
 const finalIntegratedBuild = flag('final-integrated-build');
 const machineId = optionalText('machine-id');
 const gpuDriver = optionalText('gpu-driver');
@@ -163,6 +171,9 @@ if (!['low', 'medium', 'high'].includes(quality)) {
   throw new Error('--quality must be low, medium, or high');
 }
 if (scenario.length === 0) throw new Error('--scenario must not be empty');
+if (expectedCaptureSampleCount < 2) {
+  throw new Error('--duration-ms must schedule at least two samples at --sample-interval-ms');
+}
 if (qualifyingCandidate && durationMs < minimumQualifyingSoakMs) {
   throw new Error('--qualifying-candidate requires at least 30 minutes of active capture');
 }
@@ -217,11 +228,14 @@ const summary = {
     viewport: { width, height, deviceScaleFactor: 1 },
     durationMs,
     sampleIntervalMs,
+    activityIntervalMs,
+    expectedCaptureSampleCount,
     warmupMs,
     minimumQualifyingSoakMs,
     qualifyingCandidate,
     headed,
     softwareRenderer,
+    browserExecutable,
     finalIntegratedBuild,
     scenario,
     matchSeed,
@@ -335,7 +349,67 @@ async function readCaptureWindowAggregate(targetPage, resetAfterRead) {
   }, resetAfterRead);
 }
 
+async function readInteractionState(targetPage) {
+  return targetPage.evaluate(() => {
+    const canvas = document.querySelector('#game-canvas');
+    const serialized = canvas?.dataset.kyxDevMetrics;
+    let state = null;
+    if (serialized) {
+      try {
+        state = JSON.parse(serialized).state ?? null;
+      } catch {
+        state = null;
+      }
+    }
+    const pointerLocked = document.pointerLockElement === canvas;
+    const pauseHidden = document.querySelector('#pause-menu')?.classList.contains('hidden') === true;
+    return {
+      state,
+      pointerLocked,
+      pauseHidden,
+      active: state === 'playing' && pointerLocked && pauseHidden,
+    };
+  });
+}
+
+async function ensureActiveMatchInput(targetPage) {
+  const initial = await readInteractionState(targetPage);
+  if (initial.active || initial.state !== 'playing') {
+    return { ...initial, recovered: false };
+  }
+
+  if (!initial.pauseHidden) {
+    await targetPage.locator('#resume-btn').click({ force: true, timeout: 5_000 });
+  } else {
+    await targetPage.locator('#game-canvas').click({
+      force: true,
+      position: { x: Math.floor(width / 2), y: Math.floor(height / 2) },
+      timeout: 5_000,
+    });
+  }
+  await targetPage.waitForFunction(() => {
+    const canvas = document.querySelector('#game-canvas');
+    const serialized = canvas?.dataset.kyxDevMetrics;
+    return document.pointerLockElement === canvas
+      && serialized
+      && JSON.parse(serialized).state === 'playing'
+      && document.querySelector('#pause-menu')?.classList.contains('hidden') === true;
+  }, undefined, { timeout: 5_000 });
+  return { ...await readInteractionState(targetPage), recovered: true };
+}
+
 async function applyActivityStep(targetPage, step, heldKey) {
+  const interaction = await ensureActiveMatchInput(targetPage);
+  if (!interaction.active) {
+    if (heldKey !== null) await targetPage.keyboard.up(heldKey).catch(() => {});
+    return {
+      heldKey: null,
+      applied: false,
+      recovered: interaction.recovered,
+      interaction,
+    };
+  }
+
   const movementKeys = ['w', 'd', 's', 'a'];
   const nextKey = movementKeys[step % movementKeys.length];
   if (heldKey !== nextKey) {
@@ -345,7 +419,12 @@ async function applyActivityStep(targetPage, step, heldKey) {
   if (step % 2 === 0) await targetPage.mouse.click(width / 2, height / 2).catch(() => {});
   if (step % 5 === 0) await targetPage.keyboard.press('Space').catch(() => {});
   if (step % 11 === 0) await targetPage.keyboard.press('q').catch(() => {});
-  return nextKey;
+  return {
+    heldKey: nextKey,
+    applied: true,
+    recovered: interaction.recovered,
+    interaction,
+  };
 }
 
 const requests = [];
@@ -369,6 +448,7 @@ try {
   browser = await chromium.launch({
     headless: !headed,
     args: browserArgs,
+    ...(browserExecutable ? { executablePath: browserExecutable } : {}),
   });
   context = await browser.newContext({
     viewport: { width, height },
@@ -451,18 +531,20 @@ try {
   const menuMetrics = JSON.parse(await canvas.getAttribute('data-kyx-dev-metrics'));
   // The visible copy is presentation-owned and has changed across the G7
   // integration. The stable product contract is the start control's id.
-  // Trigger the real DOM click directly because WebGL/pointer-lock overlays can
-  // make Playwright's actionability check hang even while the control is
-  // visible and enabled.
+  // A trusted Playwright click is required: a programmatic element.click()
+  // cannot grant pointer lock and can silently leave the capture paused.
   const startButton = page.locator('#play-btn');
   await startButton.waitFor({ state: 'visible', timeout: 15_000 });
-  await startButton.evaluate((button) => button.click());
+  await startButton.click({ force: true, timeout: 15_000 });
   await page.waitForFunction(() => {
-    const serialized = document.querySelector('#game-canvas')?.dataset.kyxDevMetrics;
-    if (!serialized) return false;
-    return JSON.parse(serialized).state !== 'menu';
+    const canvasElement = document.querySelector('#game-canvas');
+    const serialized = canvasElement?.dataset.kyxDevMetrics;
+    return document.pointerLockElement === canvasElement
+      && serialized
+      && JSON.parse(serialized).state === 'playing'
+      && document.querySelector('#pause-menu')?.classList.contains('hidden') === true;
   }, undefined, { timeout: 15_000 });
-  await canvas.click({ position: { x: Math.floor(width / 2), y: Math.floor(height / 2) } }).catch(() => {});
+  const activeStartState = await readInteractionState(page);
 
   const browserIdentity = await page.evaluate(() => {
     const probe = document.createElement('canvas');
@@ -489,40 +571,102 @@ try {
     title: await page.title(),
     url: page.url(),
     menuMetrics,
+    activeStartState,
     startupAndTransitionAggregate: await readCaptureWindowAggregate(page, true),
     warmup: null,
   };
 
   const warmupStartedAt = Date.now();
+  const warmupEndsAt = warmupStartedAt + warmupMs;
   let warmupHeldKey = null;
-  let warmupStep = 0;
+  let warmupScheduledSteps = 0;
+  let warmupActiveSteps = 0;
+  let warmupInputRecoveries = 0;
+  let nextWarmupActivityAt = warmupStartedAt;
   try {
-    while (Date.now() - warmupStartedAt < warmupMs) {
-      warmupHeldKey = await applyActivityStep(page, warmupStep, warmupHeldKey);
-      warmupStep += 1;
-      const remainingWarmupMs = warmupMs - (Date.now() - warmupStartedAt);
-      await page.waitForTimeout(Math.min(500, Math.max(1, remainingWarmupMs)));
+    while (Date.now() < warmupEndsAt) {
+      const waitMs = Math.min(
+        Math.max(0, nextWarmupActivityAt - Date.now()),
+        Math.max(0, warmupEndsAt - Date.now()),
+      );
+      if (waitMs > 0) await page.waitForTimeout(waitMs);
+      if (Date.now() >= warmupEndsAt) break;
+      const activity = await applyActivityStep(
+        page,
+        warmupScheduledSteps,
+        warmupHeldKey,
+      );
+      warmupHeldKey = activity.heldKey;
+      warmupScheduledSteps += 1;
+      if (activity.applied) warmupActiveSteps += 1;
+      if (activity.recovered) warmupInputRecoveries += 1;
+      nextWarmupActivityAt = advancePeriodicDeadline(
+        nextWarmupActivityAt,
+        activityIntervalMs,
+        Date.now(),
+      );
     }
   } finally {
     if (warmupHeldKey !== null) await page.keyboard.up(warmupHeldKey).catch(() => {});
   }
+  const warmupFinalState = await ensureActiveMatchInput(page);
+  if (!warmupFinalState.active) {
+    throw new Error(`G8_WARMUP_ENDED_INACTIVE: ${JSON.stringify(warmupFinalState)}`);
+  }
   summary.product.warmup = {
     requestedDurationMs: warmupMs,
     actualDurationMs: Date.now() - warmupStartedAt,
-    activitySteps: warmupStep,
+    activityIntervalMs,
+    activitySteps: warmupScheduledSteps,
+    activeActivitySteps: warmupActiveSteps,
+    inputRecoveries: warmupInputRecoveries,
+    finalInteractionState: warmupFinalState,
     aggregate: await readCaptureWindowAggregate(page, true),
   };
 
   const captureStartedAt = Date.now();
   let captureHeldKey = null;
   let captureActivityStep = 0;
+  let captureActiveActivitySteps = 0;
+  let captureInputRecoveries = 0;
+  let nextCaptureActivityAt = captureStartedAt;
   let previousPerformanceCounters = null;
   try {
-    while (Date.now() - captureStartedAt < durationMs) {
-      captureHeldKey = await applyActivityStep(page, captureActivityStep, captureHeldKey);
-      captureActivityStep += 1;
-      const remainingMs = durationMs - (Date.now() - captureStartedAt);
-      await page.waitForTimeout(Math.min(sampleIntervalMs, Math.max(1, remainingMs)));
+    for (let sampleOrdinal = 1; sampleOrdinal <= expectedCaptureSampleCount;) {
+      const sampleDeadline = absoluteDeadline(
+        captureStartedAt,
+        sampleIntervalMs,
+        sampleOrdinal,
+      );
+      if (nextCaptureActivityAt < sampleDeadline && Date.now() < sampleDeadline) {
+        const waitForActivityMs = Math.min(
+          Math.max(0, nextCaptureActivityAt - Date.now()),
+          Math.max(0, sampleDeadline - Date.now()),
+        );
+        if (waitForActivityMs > 0) await page.waitForTimeout(waitForActivityMs);
+        if (Date.now() < sampleDeadline) {
+          const activity = await applyActivityStep(
+            page,
+            captureActivityStep,
+            captureHeldKey,
+          );
+          captureHeldKey = activity.heldKey;
+          captureActivityStep += 1;
+          if (activity.applied) captureActiveActivitySteps += 1;
+          if (activity.recovered) captureInputRecoveries += 1;
+          nextCaptureActivityAt = advancePeriodicDeadline(
+            nextCaptureActivityAt,
+            activityIntervalMs,
+            Date.now(),
+          );
+          continue;
+        }
+      }
+
+      const waitForSampleMs = sampleDeadline - Date.now();
+      if (waitForSampleMs > 0) await page.waitForTimeout(waitForSampleMs);
+      const interaction = await ensureActiveMatchInput(page);
+      if (interaction.recovered) captureInputRecoveries += 1;
       const [serializedMetrics, performanceMetrics, domCounters, hostFreeMemoryBytes] = await Promise.all([
         canvas.getAttribute('data-kyx-dev-metrics'),
         cdp.send('Performance.getMetrics'),
@@ -531,6 +675,7 @@ try {
       ]);
       const metrics = metricMap(performanceMetrics.metrics);
       const elapsedMs = Date.now() - captureStartedAt;
+      const scheduledElapsedMs = sampleOrdinal * sampleIntervalMs;
       const currentPerformanceCounters = {
         elapsedMs,
         taskDurationSeconds: metrics.TaskDuration ?? null,
@@ -554,6 +699,9 @@ try {
       };
       summary.samples.push({
         elapsedMs,
+        scheduledElapsedMs,
+        scheduleDriftMs: elapsedMs - scheduledElapsedMs,
+        interaction,
         renderer: serializedMetrics ? JSON.parse(serializedMetrics) : null,
         chromium: {
           jsHeapUsedBytes: metrics.JSHeapUsedSize ?? null,
@@ -569,6 +717,7 @@ try {
         hostFreeMemoryBytes,
       });
       previousPerformanceCounters = currentPerformanceCounters;
+      sampleOrdinal += 1;
     }
   } finally {
     if (captureHeldKey !== null) await page.keyboard.up(captureHeldKey).catch(() => {});
@@ -584,6 +733,7 @@ try {
   const sceneObjects = summary.samples.map((sample) => sample.renderer?.sceneObjects ?? null);
   const geometries = summary.samples.map((sample) => sample.renderer?.memory?.geometries ?? null);
   const textures = summary.samples.map((sample) => sample.renderer?.memory?.textures ?? null);
+  const scheduleDrift = summary.samples.map((sample) => sample.scheduleDriftMs);
   const taskDurationIntervals = summary.samples.map(
     (sample) => sample.chromium.interval?.taskDurationMs ?? null,
   );
@@ -598,7 +748,19 @@ try {
     qualifyingSoakDuration: durationMs >= minimumQualifyingSoakMs,
     qualifyingSoakInput: qualifyingCandidate && durationMs >= minimumQualifyingSoakMs,
     sampleCount: summary.samples.length,
+    scheduledSampleCount: expectedCaptureSampleCount,
+    sampling: {
+      schedule: 'absolute_deadlines',
+      requestedDurationMs: durationMs,
+      actualDurationMs: Date.now() - captureStartedAt,
+      intervalMs: sampleIntervalMs,
+      expectedSampleCount: expectedCaptureSampleCount,
+      actualSampleCount: summary.samples.length,
+      scheduleDriftMs: finiteSeriesSummary(scheduleDrift),
+    },
     activitySteps: captureActivityStep,
+    activeActivitySteps: captureActiveActivitySteps,
+    inputRecoveries: captureInputRecoveries,
     jsHeapGrowthBytes: firstSample && lastSample
       ? finiteGrowth(firstSample.chromium.jsHeapUsedBytes, lastSample.chromium.jsHeapUsedBytes)
       : null,
@@ -726,11 +888,24 @@ try {
     ],
   };
 
+  check('runtime.capture_started_active', summary.product.activeStartState?.active === true, {
+    activeStartState: summary.product.activeStartState,
+  });
+  check('runtime.warmup_ended_active', summary.product.warmup.finalInteractionState?.active === true, {
+    finalInteractionState: summary.product.warmup.finalInteractionState,
+  });
   check('runtime.active_state_sampled', summary.samples.some(
-    (sample) => sample.renderer && sample.renderer.state !== 'menu'
+    (sample) => sample.renderer?.state === 'playing' && sample.interaction?.active === true
   ));
-  check('runtime.minimum_sample_count', summary.samples.length >= Math.max(2, Math.floor(durationMs / sampleIntervalMs) - 1), {
+  check('runtime.playing_samples_pointer_locked', summary.samples.every(
+    (sample) => sample.interaction?.state !== 'playing' || sample.interaction.active === true
+  ));
+  check('runtime.minimum_sample_count', summary.samples.length >= expectedCaptureSampleCount, {
     sampleCount: summary.samples.length,
+    expectedSampleCount: expectedCaptureSampleCount,
+    requestedDurationMs: durationMs,
+    sampleIntervalMs,
+    schedule: summary.aggregate.sampling,
   });
   check('runtime.frame_distribution_present', captureAggregate.frameTimes.count > 0, captureAggregate.frameTimes);
   check('runtime.no_frame_samples_dropped', captureAggregate.droppedFrameSamples === 0, {
@@ -777,6 +952,12 @@ try {
 
 summary.sources = {
   captureScript: await fingerprint(fileURLToPath(import.meta.url)),
+  runtimeSchedule: await fingerprint(path.join(
+    repositoryRoot,
+    'tools',
+    'evidence',
+    'g8-runtime-schedule.mjs',
+  )),
   debugMetrics: await fingerprint(path.join(repositoryRoot, 'src', 'render', 'debugMetrics.ts')),
   world: await fingerprint(path.join(repositoryRoot, 'src', 'world', 'World.js')),
   game: await fingerprint(path.join(repositoryRoot, 'src', 'core', 'Game.js')),
