@@ -1,0 +1,14 @@
+KYX Phase 2 development/production boundary verifier
+Root: C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726
+Built text artifacts: 20
+PASS source gates the deterministic route on Vite development mode
+PASS source loads the deterministic route through a development branch
+PASS deterministic route calls the pure replay and has no game/runtime authority dependency
+PASS renderer diagnostics publish counters and percentile frame timing
+PASS production text excludes the deterministic route path
+PASS production text excludes the deterministic replay seed
+PASS production text excludes the deterministic replay hash
+PASS production text excludes the deterministic route presentation
+PASS production text excludes the renderer diagnostic data hook
+PASS production text excludes the local-development badge payload
+Summary: 10 passed, 0 failed.

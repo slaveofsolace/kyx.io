@@ -1,0 +1,40 @@
+KYX asset manifest validator (development mode)
+Root: C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.player] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.player] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.player] disposition is legacy_proxy_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.player] 209 > 3
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.player] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.player] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.sakura-wrap] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_NOT_APPROVED [legacy.sakura-wrap] disposition is audit_then_replace
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.sakura-wrap] creator/source/license review is unresolved
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.soldier] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.soldier] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.soldier] disposition is temporary_diagnostic_only_then_replace
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.soldier] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.soldier] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.spartan] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.spartan] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.spartan] disposition is audit_then_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.spartan] 5 > 3
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.spartan] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.spartan] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.weapons] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.weapons] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.weapons] disposition is legacy_proxy_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.weapons] 386 > 2
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.weapons] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.weapons] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_TRIANGLE_BUDGET_EXCEEDED [legacy.weapons] 28920 > 12000
+WARNING ASSET_CANONICAL_SOURCE_MISSING [legacy.zombie] hash anchors runtime bytes, not a canonical source asset
+WARNING ASSET_EXTERNAL_GLTF_VALIDATOR_NOT_RUN [legacy.zombie] external glTF validation has not been run
+WARNING ASSET_NOT_APPROVED [legacy.zombie] disposition is legacy_proxy_replace
+WARNING ASSET_PRIMITIVE_BUDGET_EXCEEDED [legacy.zombie] 122 > 3
+WARNING ASSET_PROVENANCE_UNRESOLVED [legacy.zombie] creator/source/license review is unresolved
+WARNING ASSET_TEXTURE_MEMORY_UNMEASURED [legacy.zombie] GLB texture residency is unknown until a texture-memory measurement is attached
+WARNING ASSET_PUBLIC_RUNTIME_UNMANIFESTED [public/candidates/g6-rev17/character-lod0.glb] supported public runtime asset has no manifest, provenance, or budget record
+WARNING ASSET_PUBLIC_RUNTIME_UNMANIFESTED [public/candidates/g6-rev17/character-lod1.glb] supported public runtime asset has no manifest, provenance, or budget record
+WARNING ASSET_PUBLIC_RUNTIME_UNMANIFESTED [public/candidates/g6-rev17/character-lod2.glb] supported public runtime asset has no manifest, provenance, or budget record
+WARNING ASSET_PUBLIC_RUNTIME_UNMANIFESTED [public/candidates/g6-rev17/first-person.glb] supported public runtime asset has no manifest, provenance, or budget record
+Summary: 6 manifests, 0 errors, 37 warnings.

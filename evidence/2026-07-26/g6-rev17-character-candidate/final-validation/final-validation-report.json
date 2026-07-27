@@ -1,0 +1,493 @@
+{
+  "schema": "kyx-g6-rev17-final-validation-v1",
+  "generatedAt": "2026-07-26T22:32:20.047Z",
+  "status": "REVIEW_READY_CANDIDATE_WITH_DISCLOSED_OUT_OF_SCOPE_BASELINE_FAILURES_NOT_G6",
+  "handoffStatus": "Review-ready candidate; human visual acceptance required.",
+  "candidateRevision": "rev17",
+  "default": false,
+  "g6Accepted": false,
+  "humanVisualAcceptanceRequired": true,
+  "repository": {
+    "worktree": "C:/AI Projects/Projects/Games/evio/evio-g6-rev17-20260726",
+    "branch": "codex/g6-rev17-character-animation",
+    "assetCommit": "b5df358ce9a786bfc7a1846cd0c03d4ef7b0be2a",
+    "requiredMainCommit": "145264d7d72e2dc1be63eddc355edf4e5d5e2cac",
+    "integrationMergeCommit": "52647d4fb890878d94b5895afb19f3b62aefc9eb",
+    "runtimeCommit": "8dc4548eecd28b70f712fb40b2f0bd7281099d0a",
+    "requiredMainIsAncestor": true,
+    "primaryCheckoutEditedByThisLane": false
+  },
+  "scope": {
+    "changedPathsFromIntegrationMerge": [
+      "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/PROVENANCE.md",
+      "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/REV17_CANDIDATE_MANIFEST.json",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/performance/default-path-regression.json",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/performance/runtime-asset-integrity.json",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/performance/runtime-capture-report.json",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/performance/runtime-performance-2-4-8.json",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-first-person-fire.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-first-person-player.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-first-person-reload.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-population-2.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-population-4.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-population-8.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-third-person-player-run.png",
+      "evidence/2026-07-26/g6-rev17-character-candidate/runtime/screenshots/rev17-runtime-third-person-player.png",
+      "public/candidates/g6-rev17/character-lod0.glb",
+      "public/candidates/g6-rev17/character-lod1.glb",
+      "public/candidates/g6-rev17/character-lod2.glb",
+      "public/candidates/g6-rev17/first-person.glb",
+      "public/candidates/g6-rev17/manifest.json",
+      "src/config/g6CharacterCandidate.js",
+      "src/core/Game.js",
+      "src/entities/Bot.js",
+      "src/player/HumanSoldier.js",
+      "src/player/PreviewCharacter.js",
+      "src/player/Rev17Character.js",
+      "src/weapons/WeaponSystem.js"
+    ],
+    "forbiddenAreasChanged": {
+      "multiplayerAuthority": false,
+      "mapWork": false,
+      "uiHud": false,
+      "cloudflare": false,
+      "githubDeployment": false
+    },
+    "primaryCheckoutObservation": "Primary checkout contains separate active G3 changes and was not edited by this lane."
+  },
+  "assetPipeline": {
+    "authorAudit": {
+      "path": "../asset-reports/author-export-audit.json",
+      "status": "REV17_CANDIDATE_STRUCTURAL_PIPELINE_COMPLETE_VISUAL_REVIEW_REQUIRED",
+      "assertions": {
+        "pinnedInputsUnchanged": true,
+        "sourceBlendPreserved": true,
+        "fourGlbsExported": true,
+        "allGlbsSelfContained": true,
+        "allGlbsHaveThreePrimitives": true,
+        "allGlbsHaveOneSkin": true,
+        "allGlbsHaveRequiredClips": true,
+        "allGlbsHaveRequiredSockets": true,
+        "allFreshReimportsPreserveSource": true,
+        "humanScaleWithinContract": true,
+        "lodTriangleOrdering": true,
+        "lod0TriangleBudget": true,
+        "lod1TriangleBudget": true,
+        "lod2TriangleBudget": true,
+        "firstPersonTriangleBudget": true
+      }
+    },
+    "directRenderAudit": {
+      "path": "../asset-reports/direct-glb-render-report.json",
+      "status": "REV17_DIRECT_GLB_EVIDENCE_COMPLETE_HUMAN_REVIEW_REQUIRED_NOT_G6",
+      "assertions": {
+        "exactGlbHashAndBytesUnchanged": true,
+        "freshImportHasThreeRuntimeMeshes": true,
+        "freshImportHasSingle66JointRig": true,
+        "allSixteenClipsPresent": true,
+        "allEightCompassViewsRendered": true,
+        "allRepresentativeActionViewsRendered": true,
+        "everyMeasuredRepeatWithinBoundedEeveeVariance": true,
+        "runtimeTopologyUnchangedAcrossCapture": true
+      }
+    },
+    "postMergeKhronos": {
+      "path": "khronos/khronos-validator-index.json",
+      "status": "PASS_ALL_REV17_GLBS_KHRONOS_NOT_G6",
+      "reports": [
+        {
+          "source": "kyx-v6c-character-rev17-lod0.runtime-candidate.glb",
+          "report": "kyx-v6c-character-rev17-lod0.runtime-candidate-khronos-report.json",
+          "status": "PASS_KHRONOS_WITH_DISCLOSED_WARNINGS_NOT_G6",
+          "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
+          "bytes": 3584252,
+          "errors": 0,
+          "warnings": 3,
+          "infos": 3,
+          "assertions": {
+            "exactGlbUnchangedDuringValidation": true,
+            "validatorCompletedWithoutErrors": true,
+            "issueListNotTruncated": true
+          }
+        },
+        {
+          "source": "kyx-v6c-character-rev17-lod1.runtime-candidate.glb",
+          "report": "kyx-v6c-character-rev17-lod1.runtime-candidate-khronos-report.json",
+          "status": "PASS_KHRONOS_WITH_DISCLOSED_WARNINGS_NOT_G6",
+          "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
+          "bytes": 2558944,
+          "errors": 0,
+          "warnings": 3,
+          "infos": 3,
+          "assertions": {
+            "exactGlbUnchangedDuringValidation": true,
+            "validatorCompletedWithoutErrors": true,
+            "issueListNotTruncated": true
+          }
+        },
+        {
+          "source": "kyx-v6c-character-rev17-lod2.runtime-candidate.glb",
+          "report": "kyx-v6c-character-rev17-lod2.runtime-candidate-khronos-report.json",
+          "status": "PASS_KHRONOS_WITH_DISCLOSED_WARNINGS_NOT_G6",
+          "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+          "bytes": 1817156,
+          "errors": 0,
+          "warnings": 3,
+          "infos": 3,
+          "assertions": {
+            "exactGlbUnchangedDuringValidation": true,
+            "validatorCompletedWithoutErrors": true,
+            "issueListNotTruncated": true
+          }
+        },
+        {
+          "source": "kyx-v6c-character-rev17-first-person.runtime-candidate.glb",
+          "report": "kyx-v6c-character-rev17-first-person.runtime-candidate-khronos-report.json",
+          "status": "PASS_KHRONOS_WITH_DISCLOSED_WARNINGS_NOT_G6",
+          "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+          "bytes": 2495708,
+          "errors": 0,
+          "warnings": 3,
+          "infos": 1,
+          "assertions": {
+            "exactGlbUnchangedDuringValidation": true,
+            "validatorCompletedWithoutErrors": true,
+            "issueListNotTruncated": true
+          }
+        }
+      ]
+    },
+    "issueCodes": [
+      {
+        "source": "kyx-v6c-character-rev17-lod0.runtime-candidate.glb",
+        "errors": 0,
+        "warnings": 3,
+        "infos": 3,
+        "codes": [
+          "UNUSED_OBJECT",
+          "NODE_SKINNED_MESH_NON_ROOT"
+        ]
+      },
+      {
+        "source": "kyx-v6c-character-rev17-lod1.runtime-candidate.glb",
+        "errors": 0,
+        "warnings": 3,
+        "infos": 3,
+        "codes": [
+          "UNUSED_OBJECT",
+          "NODE_SKINNED_MESH_NON_ROOT"
+        ]
+      },
+      {
+        "source": "kyx-v6c-character-rev17-lod2.runtime-candidate.glb",
+        "errors": 0,
+        "warnings": 3,
+        "infos": 3,
+        "codes": [
+          "UNUSED_OBJECT",
+          "NODE_SKINNED_MESH_NON_ROOT"
+        ]
+      },
+      {
+        "source": "kyx-v6c-character-rev17-first-person.runtime-candidate.glb",
+        "errors": 0,
+        "warnings": 3,
+        "infos": 1,
+        "codes": [
+          "UNUSED_OBJECT",
+          "NODE_SKINNED_MESH_NON_ROOT"
+        ]
+      }
+    ],
+    "sourceManifest": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/REV17_CANDIDATE_MANIFEST.json",
+    "provenance": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/PROVENANCE.md"
+  },
+  "runtime": {
+    "server": {
+      "host": "127.0.0.1",
+      "port": 6099,
+      "canonicalPortsAvoided": [
+        5173,
+        8787
+      ]
+    },
+    "performance": {
+      "path": "../runtime/performance/runtime-performance-2-4-8.json",
+      "status": "PASS_BOUNDED_RUNTIME_EVIDENCE_NOT_VISUAL_ACCEPTANCE",
+      "assertions": {
+        "portIsNonCanonical": true,
+        "candidateQueryAndDataset": true,
+        "actualRoleCountsMatch": true,
+        "candidateAssetsHttp200": true,
+        "zeroPageErrors": true,
+        "zeroSampledFramesOver20Ms": true,
+        "humanVisualAcceptance": false
+      },
+      "summary": [
+        {
+          "population": 2,
+          "meanMs": 2.818,
+          "p95Ms": 3.8,
+          "p99Ms": 5.6,
+          "maxMs": 5.7,
+          "framesOver20ms": 0,
+          "connectedByRole": {
+            "preview": 1,
+            "firstPerson": 1,
+            "enemy": 1,
+            "player": 1
+          }
+        },
+        {
+          "population": 4,
+          "meanMs": 1.974,
+          "p95Ms": 3.6,
+          "p99Ms": 3.7,
+          "maxMs": 3.9,
+          "framesOver20ms": 0,
+          "connectedByRole": {
+            "preview": 1,
+            "firstPerson": 1,
+            "enemy": 3,
+            "player": 1
+          }
+        },
+        {
+          "population": 8,
+          "meanMs": 2.561,
+          "p95Ms": 3.8,
+          "p99Ms": 5.5,
+          "maxMs": 5.5,
+          "framesOver20ms": 0,
+          "connectedByRole": {
+            "preview": 1,
+            "firstPerson": 1,
+            "enemy": 7,
+            "player": 1
+          }
+        }
+      ]
+    },
+    "defaultRegression": {
+      "path": "../runtime/performance/default-path-regression.json",
+      "status": "PASS_DEFAULT_PATH_UNCHANGED",
+      "assertions": {
+        "noCandidateQuery": true,
+        "noCandidateDataset": true,
+        "noCandidateEvidenceGlobal": true,
+        "noCandidateAssetRequests": true,
+        "defaultSoldierHttp200": true,
+        "defaultSoldierLfsContentMatchesHead": true,
+        "defaultSoldierGitBlobUnchanged": true,
+        "zeroPageErrors": true
+      }
+    },
+    "assetIntegrity": {
+      "path": "../runtime/performance/runtime-asset-integrity.json",
+      "status": "PASS_EXACT_PUBLIC_COPIES_CANDIDATE_ONLY",
+      "assertions": {
+        "allSourcePublicCopiesExact": true,
+        "allManifestsMatch": true,
+        "allServedAssetsHttp200": true,
+        "servedGlbHashesMatchManifest": true,
+        "defaultSoldierOutsideCandidatePath": true,
+        "humanVisualAcceptance": false
+      }
+    },
+    "captureReport": {
+      "path": "../runtime/performance/runtime-capture-report.json",
+      "status": "CAPTURED_PENDING_HUMAN_VISUAL_REVIEW",
+      "visualAssessment": {
+        "humanProportionedCandidate": true,
+        "primitiveStackedShapeFailureNotObservedInSampledFrames": true,
+        "twoHandContactReadableInSampledFrames": true,
+        "cameraSafeLiveReload": true,
+        "everyFrameClippingFreedomProven": false,
+        "fullMagazineHandRetargetProven": false,
+        "deathFullySettledGroundPoseProven": false,
+        "humanVisualAcceptance": false
+      }
+    }
+  },
+  "automatedChecks": {
+    "productionBuild": {
+      "status": "PASS",
+      "code": 0,
+      "modulesTransformed": 157,
+      "disclosedWarning": "Existing build chunk-size warning; build completed."
+    },
+    "typechecks": {
+      "app": true,
+      "worker": true,
+      "simSource": true,
+      "sim": true
+    },
+    "eslint": {
+      "newAndUnaffectedModifiedFiles": "PASS",
+      "changedFileSet": "FAIL_WITH_5_PRE_EXISTING_UNUSED_VARIABLE_FINDINGS",
+      "findings": [
+        {
+          "file": "src/player/PreviewCharacter.js",
+          "line": 98,
+          "symbol": "_visorCyan",
+          "blame": "ee14f048 (Claude 2026-06-17 13:34:35 +0000 98) const _visorCyan = new THREE.MeshStandardMaterial({"
+        },
+        {
+          "file": "src/player/PreviewCharacter.js",
+          "line": 103,
+          "symbol": "_visorGreen",
+          "blame": "ee14f048 (Claude 2026-06-17 13:34:35 +0000 103) const _visorGreen = new THREE.MeshStandardMaterial({"
+        },
+        {
+          "file": "src/player/PreviewCharacter.js",
+          "line": 117,
+          "symbol": "_gloveMat",
+          "blame": "0d5249da (Claude 2026-06-24 14:46:31 +0000 117) const _gloveMat = new THREE.MeshStandardMaterial({ color: 0x2a2218, roughness: 0.92, metalness: 0.04 });"
+        },
+        {
+          "file": "src/weapons/WeaponSystem.js",
+          "line": 654,
+          "symbol": "st",
+          "blame": "660474e2 (Claude 2026-06-16 12:49:58 +0000 654)     const st = this.currentState;"
+        },
+        {
+          "file": "src/weapons/WeaponSystem.js",
+          "line": 679,
+          "symbol": "lastImpact",
+          "blame": "660474e2 (Claude 2026-06-16 12:49:58 +0000 679)         lastImpact = hit.point;"
+        }
+      ],
+      "scopeDisposition": "Not changed because findings predate this G6 lane and are outside its diff."
+    },
+    "tests": {
+      "status": "729_PASS_1_OUT_OF_SCOPE_BASELINE_FAILURE",
+      "files": {
+        "passed": 87,
+        "failed": 1,
+        "total": 88
+      },
+      "tests": {
+        "passed": 729,
+        "failed": 1,
+        "total": 730
+      },
+      "failure": {
+        "file": "tests/integration/content/inkfallGrayboxLock.test.ts",
+        "test": "recomputes every frozen source hash exactly",
+        "mismatchedFrozenSources": [
+          {
+            "role": "topology_seed",
+            "path": "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json",
+            "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+            "actual": "5fbd676c6a86710fdb97028fb8495fa5b9254061ca931bcc61d49b28b0bafad2",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "runtime_map_package",
+            "path": "assets/source/maps/inkfall-foundry/runtime/map.package.v2.json",
+            "expected": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
+            "actual": "cda9679b490836acaf19b3b7d6180cec21e53975485a34d402924668ae6e6b86",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "spawn_fixture",
+            "path": "assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json",
+            "expected": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
+            "actual": "f711a45baa9ed554827bdb356bcf4cce50fa6b302bfb12c0efd2acd808ba19d2",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "telemetry_fixture",
+            "path": "assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json",
+            "expected": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
+            "actual": "819008425108a7df94deb862f5993ee382bdb4e2444e0ebd5162429140afcfba",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "authority_playtest_tape",
+            "path": "assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json",
+            "expected": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
+            "actual": "d40ef77aa100422479ea1a3916f4d512bc5b60e4e7f4da9bee6928f3c0020675",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "collision_build_report",
+            "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/collision-revision2-build-report.json",
+            "expected": "6efd11f41046974613ebf022b3bf01cb804983bb1d6de17bc4131c404e95ecc3",
+            "actual": "16d45f529667d58fab7901b52c1ab0af906230db52d0d2d714570236484b4967",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "playable_surface_validation",
+            "path": "assets/source/maps/inkfall-foundry/revisions/revision-2/validation/playable-surface-validation.revision2.json",
+            "expected": "00679d36481862d037c9313b6cf06eefb7cf9988ce03c10652ee843b673c5520",
+            "actual": "4e5a23f7263430c3d9fe3249a11d5d85bb43a37dc06b3d63e23ae641840b837a",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "p6_6b_independent_verification",
+            "path": "evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json",
+            "expected": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
+            "actual": "634f47f3882f1e1551fe8efb7dbebec47d537c6b29550ce3c88d3d0874799ada",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          },
+          {
+            "role": "art_kit_dimension_contract",
+            "path": "assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json",
+            "expected": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
+            "actual": "a0388c7f7228681a9372a73594552806ca5647873791ca03daa23fe5f66207f9",
+            "matches": false,
+            "modifiedByG6WorkingTree": false
+          }
+        ],
+        "allMismatchedSourcesUnmodifiedByG6": true,
+        "scopeDisposition": "Not changed: map and authority evidence are explicitly outside G6 ownership."
+      }
+    },
+    "assetManifestValidator": {
+      "status": "PASS_WITH_WARNINGS",
+      "errors": 0,
+      "warnings": 37,
+      "candidateSpecificWarning": "Four candidate GLBs are reported as public-runtime-unmanifested because the repository validator does not consume the candidate-local manifest; exact source/public hashes and custom manifests are separately recorded."
+    },
+    "phase2Boundaries": {
+      "status": "PASS",
+      "passed": 10,
+      "failed": 0
+    },
+    "gitDiffCheck": {
+      "status": "PASS",
+      "code": 0
+    }
+  },
+  "visualNonClaims": [
+    "Rev17 is a visual candidate, not human-approved and not G6-accepted.",
+    "Rev15 and Rev16 remain rejected and non-default.",
+    "The live first-person reload is a bounded camera-space dip/roll, not a completed hand/magazine retarget.",
+    "The authored raw FP_RELOAD clip remains embedded and directly rendered but is not promoted to the live viewmodel.",
+    "The first-person support arm forms a pronounced arc and hand/contact detail is partially occluded.",
+    "Sampled poses and runtime frames do not prove every-frame hand/weapon, arm/torso, boot/floor, wall, outline, or camera clipping freedom.",
+    "The sampled death pose is a dramatic crumple and is not claimed as a fully settled ground pose.",
+    "LOD0/LOD1 are role-selected in the candidate runtime; LOD2 exists and validates but distance hysteresis/crossfade is not implemented or accepted.",
+    "Close/mid/far grayscale, low/high quality, and color-vision review matrices are not complete.",
+    "Performance data is hardware-specific headless Chrome evidence, not a release budget guarantee.",
+    "No default asset, multiplayer authority, map, UI/HUD, deployment, Cloudflare, or GitHub promotion is claimed."
+  ],
+  "remainingAcceptanceBlockers": [
+    "Explicit human visual review and acceptance.",
+    "Dedicated live first-person magazine/hand reload retarget and contact review.",
+    "Every-frame close-camera clip/contact/outline review across the required action matrix.",
+    "Close/mid/far, grayscale, low/high, color-vision, and reduced-effects capture matrix.",
+    "Distance-based LOD policy with hysteresis/crossfade and measured popping review.",
+    "Repository-level manifest/provenance gate integration if Rev17 advances beyond candidate status.",
+    "Resolution of the unrelated frozen-map-hash test failure by the owning G3/G5 lane."
+  ]
+}

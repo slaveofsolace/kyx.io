@@ -1,0 +1,10 @@
+C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\src\player\PreviewCharacter.js
+   98:7  error  '_visorCyan' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  103:7  error  '_visorGreen' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  117:7  error  '_gloveMat' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+C:\AI Projects\Projects\Games\evio\evio-g6-rev17-20260726\src\weapons\WeaponSystem.js
+  654:11  error  'st' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  679:9   error  'lastImpact' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 5 problems (5 errors, 0 warnings)

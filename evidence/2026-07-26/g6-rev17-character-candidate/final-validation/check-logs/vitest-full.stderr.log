@@ -1,0 +1,97 @@
+stderr | tests/unit/physics/rapierWorld.test.ts > Rapier runtime boundary > pins the exact direct deterministic compatibility package version
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/rapierController.test.ts > pure movement controller with the real Rapier query port > repeats the flat-run trajectory, hashes, and query metrics exactly
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/fixtureTapeCatalog.test.ts > canonical real-Rapier fixture tapes > flat_run_fixed_20hz_v1 has literal two-world trace, event, sample, metric, and collider-order parity
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts > Inkfall canonical west press traversal snag > reproduces the revision-2 shared-junction guard-rail embed at the exact P5.15 pose
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/authority/inkfallAuthorityPlaytest.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/authority/inkfallRapierCombatWorld.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/authority/inkfallAuthorityPlaytestRevision2.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/movement/inkfallAuthoritativeTraversalMatrix.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/physics/inkfallMapRuntime.test.ts > Inkfall Foundry P6.3 runtime map loading > creates the current deterministic Rapier world from only the converted authority fixture
+using deprecated parameters for the initialization function; pass a single object instead
+
+stderr | tests/integration/app/onlineAuthorityInkfallWorld.test.ts
+using deprecated parameters for the initialization function; pass a single object instead
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/integration/content/inkfallGrayboxLock.test.ts > Inkfall Foundry P6.7 non-default graybox lock > recomputes every frozen source hash exactly
+AssertionError: expected [ …(9) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "actual": "5fbd676c6a86710fdb97028fb8495fa5b9254061ca931bcc61d49b28b0bafad2",
++     "expected": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
++     "role": "topology_seed",
++   },
++   {
++     "actual": "cda9679b490836acaf19b3b7d6180cec21e53975485a34d402924668ae6e6b86",
++     "expected": "15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb",
++     "role": "runtime_map_package",
++   },
++   {
++     "actual": "f711a45baa9ed554827bdb356bcf4cce50fa6b302bfb12c0efd2acd808ba19d2",
++     "expected": "4629b156c9b0f7dd01fa716f7f7fecf07d1590c4c5de174f463a58bc5b644210",
++     "role": "spawn_fixture",
++   },
++   {
++     "actual": "819008425108a7df94deb862f5993ee382bdb4e2444e0ebd5162429140afcfba",
++     "expected": "1021798d67e59380cfcc389fc08a1df5770a2fcf916e27db7ad9aaad931e3719",
++     "role": "telemetry_fixture",
++   },
++   {
++     "actual": "d40ef77aa100422479ea1a3916f4d512bc5b60e4e7f4da9bee6928f3c0020675",
++     "expected": "020f87d9f3d3ab1e96ef8991cd6310c2d6ad6ef44fb75e66725af2702c79b9e5",
++     "role": "authority_playtest_tape",
++   },
++   {
++     "actual": "16d45f529667d58fab7901b52c1ab0af906230db52d0d2d714570236484b4967",
++     "expected": "6efd11f41046974613ebf022b3bf01cb804983bb1d6de17bc4131c404e95ecc3",
++     "role": "collision_build_report",
++   },
++   {
++     "actual": "4e5a23f7263430c3d9fe3249a11d5d85bb43a37dc06b3d63e23ae641840b837a",
++     "expected": "00679d36481862d037c9313b6cf06eefb7cf9988ce03c10652ee843b673c5520",
++     "role": "playable_surface_validation",
++   },
++   {
++     "actual": "634f47f3882f1e1551fe8efb7dbebec47d537c6b29550ce3c88d3d0874799ada",
++     "expected": "7567b847fba9517fd8b70f018dfb7e9a74e88d582d347cdd0a78bcbe6afbebd4",
++     "role": "p6_6b_independent_verification",
++   },
++   {
++     "actual": "a0388c7f7228681a9372a73594552806ca5647873791ca03daa23fe5f66207f9",
++     "expected": "66b84c1d23a948b474a4cbc602a3e9b8a170a7f4be67d7d3c4356778825e3d83",
++     "role": "art_kit_dimension_contract",
++   },
++ ]
+
+ ❯ tests/integration/content/inkfallGrayboxLock.test.ts:88:75
+     86|       actual: await fileSha256(source.path),
+     87|     })));
+     88|     expect(results.filter((result) => result.actual !== result.expecte…
+       |                                                                           ^
+     89|     expect(new Set(results.map((result) => result.role)).size).toBe(re…
+     90|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
