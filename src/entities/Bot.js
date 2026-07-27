@@ -417,6 +417,7 @@ export class Bot {
         }
       }
       ud.mixer.update(dt);
+      ud.actionTick?.(dt);
       ud.armorTick?.(dt);
     }
 

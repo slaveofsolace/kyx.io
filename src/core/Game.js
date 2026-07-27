@@ -365,8 +365,17 @@ export class Game {
   _wireCallbacks() {
     this.weaponSystem.applyRecoilToPlayer = (amt) => {
       this.player.applyRecoil(amt);
-      // Fire recoil kick on the third-person body model.
-      this._playerBody?.userData?.triggerFire?.(Math.min(2, amt * 20));
+    };
+    this.weaponSystem.onPresentationAction = (event) => {
+      if (event.phase !== 'started') return;
+      const body = this._playerBody?.userData;
+      if (body?.triggerAction) {
+        body.triggerAction(event);
+      } else if (event.kind === 'fire') {
+        // Preserve the legacy procedural soldier recoil while Rev17 remains
+        // an opt-in candidate.
+        body?.triggerFire?.(1);
+      }
     };
 
     this.grenadeSystem.onExplode = (point, radius, damage) => {
@@ -1046,11 +1055,13 @@ export class Game {
     if (!menuOpen && this.input.consumeJustPressed('KeyF')) {
       const thrown = this.grenadeSystem.throwFrag(this.player.camera);
       if (!thrown) this.hud.showAbilityUnavailable('F', 'NO FRAG GRENADES');
+      else this.weaponSystem.presentAbility();
       this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
     }
     if (!menuOpen && this.input.consumeJustPressed('KeyE')) {
       const thrown = this.grenadeSystem.throwSmoke(this.player.camera);
       if (!thrown) this.hud.showAbilityUnavailable('E', 'NO SMOKE GRENADES');
+      else this.weaponSystem.presentAbility();
       this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
     }
     this.grenadeSystem.update(dt, this.player);
@@ -1124,6 +1135,7 @@ export class Game {
       // face the aim direction, so we only need pitch here).
       if (ud.setAim) ud.setAim(p.pitch, 0);
       ud.mixer.update(dt);
+      ud.actionTick?.(dt);
       ud.armorTick?.(dt);
       return;
     }

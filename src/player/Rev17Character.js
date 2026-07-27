@@ -2,6 +2,12 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import { G6_CHARACTER_CANDIDATE } from '../config/g6CharacterCandidate.js';
+import {
+  advanceRev17SemanticAction,
+  getRev17SemanticActionProfile,
+  rev17SemanticActionProgress,
+  startRev17SemanticAction,
+} from './rev17ActionContract.js';
 
 const TEMPLATES = {
   lod0: null,
@@ -12,6 +18,7 @@ const LOADING = new Set();
 const CHARACTER_CALLBACKS = [];
 const FIRST_PERSON_CALLBACKS = [];
 const RUNTIME_INSTANCES = new Map();
+const FALLBACK_WARNINGS = new Set();
 let runtimeInstanceSerial = 0;
 
 function registerRuntimeInstance(group, record) {
@@ -33,6 +40,7 @@ if (G6_CHARACTER_CANDIDATE.enabled && typeof window !== 'undefined') {
         lod: entry.lod,
         connectedToScene: !!entry.group.parent,
         visible: entry.group.visible,
+        action: entry.group.userData.getActionState?.() ?? null,
       }));
       return {
         revision: 'rev17',
@@ -212,12 +220,18 @@ function createActionController(root, clips, clipNames) {
   let activeKey = null;
   let playingOnce = false;
 
-  const play = (key, { once = false, fade = 0.14 } = {}) => {
+  const play = (
+    key,
+    { once = false, fade = 0.14, durationSeconds = null } = {},
+  ) => {
     const next = actions[key];
     if (!next || (next === active && !once)) return;
     next.enabled = true;
     next.reset();
     next.setEffectiveTimeScale(1);
+    if (Number.isFinite(durationSeconds) && durationSeconds > 0) {
+      next.setDuration(durationSeconds);
+    }
     next.setEffectiveWeight(1);
     if (once) {
       next.setLoop(THREE.LoopOnce, 1);
@@ -239,9 +253,15 @@ function createActionController(root, clips, clipNames) {
     if (!playingOnce) play(key);
   };
 
-  const playOnce = (key, fade = 0.08) => {
+  const playOnce = (key, fade = 0.08, durationSeconds = null) => {
     if (!actions[key]) return;
-    play(key, { once: true, fade });
+    play(key, { once: true, fade, durationSeconds });
+  };
+
+  const cancelOnce = (fade = 0.08) => {
+    if (!playingOnce) return;
+    playingOnce = false;
+    play(desired, { fade });
   };
 
   mixer.addEventListener('finished', ({ action }) => {
@@ -256,9 +276,139 @@ function createActionController(root, clips, clipNames) {
     actions,
     play,
     playOnce,
+    cancelOnce,
     setDesired,
     get activeKey() { return activeKey; },
   };
+}
+
+function warnFallbackOnce(runtimeRole, kind, fallback) {
+  if (!import.meta.env?.DEV) return;
+  const key = `${runtimeRole}:${kind}:${fallback}`;
+  if (FALLBACK_WARNINGS.has(key)) return;
+  FALLBACK_WARNINGS.add(key);
+  console.warn(
+    `[Rev17Character] ${runtimeRole} ${kind} uses named fallback `
+    + `"${fallback}"; no authored Rev17 ${kind} clip is claimed.`,
+  );
+}
+
+function createSemanticActionDriver(
+  controller,
+  root,
+  runtimeRole,
+  {
+    authoredClipOverrides = {},
+    fallbackOverrides = {},
+  } = {},
+) {
+  let action = null;
+  let activeAuthoredClipKey = null;
+  let activeFallback = null;
+  let actionSequence = 0;
+  let lastStarted = null;
+  let lastMarkers = Object.freeze([]);
+  const bones = {
+    chest: root.getObjectByName('chest'),
+    upperArmLeft: root.getObjectByName('upper_arm.L'),
+    upperArmRight: root.getObjectByName('upper_arm.R'),
+    forearmRight: root.getObjectByName('forearm.R'),
+  };
+  const offset = new THREE.Quaternion();
+  const euler = new THREE.Euler();
+
+  const applyOffset = (bone, x = 0, y = 0, z = 0) => {
+    if (!bone) return;
+    offset.setFromEuler(euler.set(x, y, z));
+    bone.quaternion.multiply(offset);
+  };
+
+  const trigger = (request) => {
+    const data = typeof request === 'string' ? { kind: request } : request;
+    const profile = getRev17SemanticActionProfile(data?.kind);
+    if (!profile) return false;
+    action = startRev17SemanticAction(data.kind, data.durationSeconds);
+    const initial = advanceRev17SemanticAction(action, 0);
+    action = initial.action;
+    lastMarkers = initial.markers;
+
+    const authoredClipKey = Object.hasOwn(authoredClipOverrides, data.kind)
+      ? authoredClipOverrides[data.kind]
+      : profile.authoredClipKey;
+    const fallback = Object.hasOwn(fallbackOverrides, data.kind)
+      ? fallbackOverrides[data.kind]
+      : profile.fallback;
+    activeAuthoredClipKey = authoredClipKey;
+    activeFallback = fallback;
+    actionSequence += 1;
+    lastStarted = Object.freeze({
+      sequence: actionSequence,
+      kind: data.kind,
+      durationSeconds: action.durationSeconds,
+      authoredClipKey,
+      fallback,
+    });
+    if (authoredClipKey) {
+      controller.playOnce(
+        authoredClipKey,
+        data.kind === 'fire' ? 0.04 : 0.08,
+        action.durationSeconds,
+      );
+    } else if (fallback) {
+      if (data.kind === 'equip') controller.cancelOnce();
+      warnFallbackOnce(runtimeRole, data.kind, fallback);
+    }
+    return true;
+  };
+
+  const tick = (deltaSeconds) => {
+    if (!action) {
+      lastMarkers = Object.freeze([]);
+      return;
+    }
+    const advanced = advanceRev17SemanticAction(action, deltaSeconds);
+    action = advanced.action;
+    lastMarkers = advanced.markers;
+    const progress = rev17SemanticActionProgress(action);
+    const pulse = Math.sin(progress * Math.PI);
+
+    // These bounded post-mixer accents make currently unsupported semantic
+    // actions visible without pretending they are authored clips. Socketed
+    // weapons remain children of the hand bones and retain their contact.
+    if (action.kind === 'equip') {
+      applyOffset(bones.chest, 0.04 * pulse, 0, 0);
+      applyOffset(bones.upperArmLeft, -0.18 * pulse, 0, -0.12 * pulse);
+      applyOffset(bones.upperArmRight, -0.22 * pulse, 0, 0.16 * pulse);
+    } else if (action.kind === 'melee') {
+      applyOffset(bones.chest, 0, -0.2 * pulse, 0.04 * pulse);
+      applyOffset(bones.upperArmRight, -0.82 * pulse, 0, -0.52 * pulse);
+      applyOffset(bones.forearmRight, -0.42 * pulse, 0, 0.24 * pulse);
+    } else if (action.kind === 'ability') {
+      applyOffset(bones.chest, -0.04 * pulse, 0.18 * pulse, 0);
+      applyOffset(bones.upperArmRight, -1.02 * pulse, 0.12 * pulse, 0.26 * pulse);
+      applyOffset(bones.forearmRight, -0.3 * pulse, 0, -0.16 * pulse);
+    }
+    if (action.completed) {
+      action = null;
+      activeAuthoredClipKey = null;
+      activeFallback = null;
+    }
+  };
+
+  return Object.freeze({
+    trigger,
+    tick,
+    snapshot: () => Object.freeze({
+      kind: action?.kind ?? 'idle',
+      sequence: actionSequence,
+      lastStarted,
+      elapsedSeconds: action?.elapsedSeconds ?? 0,
+      durationSeconds: action?.durationSeconds ?? null,
+      markers: lastMarkers,
+      authoredClipKey: action ? activeAuthoredClipKey : null,
+      fallback: action ? activeFallback : null,
+    }),
+  });
 }
 
 export function buildRev17Character(
@@ -281,6 +431,11 @@ export function buildRev17Character(
     root,
     template.animations,
     THIRD_PERSON_CLIPS,
+  );
+  const semanticActions = createSemanticActionDriver(
+    controller,
+    root,
+    opts.runtimeRole ?? 'preview',
   );
   let grounded = true;
   let attachedMelee = null;
@@ -339,8 +494,22 @@ export function buildRev17Character(
     setLocomotion,
     setAim: () => {},
     armorTick: () => {},
-    triggerFire: () => controller.playOnce('fire'),
-    triggerReload: () => controller.playOnce('reload'),
+    triggerAction: (request) => semanticActions.trigger(request),
+    getActionState: () => semanticActions.snapshot(),
+    actionTick: (dt) => semanticActions.tick(dt),
+    triggerFire: () => semanticActions.trigger('fire'),
+    triggerReload: (durationSeconds) => semanticActions.trigger({
+      kind: 'reload',
+      durationSeconds,
+    }),
+    triggerMelee: (durationSeconds) => semanticActions.trigger({
+      kind: 'melee',
+      durationSeconds,
+    }),
+    triggerAbility: (durationSeconds) => semanticActions.trigger({
+      kind: 'ability',
+      durationSeconds,
+    }),
     triggerHit: () => controller.playOnce('hit'),
     triggerJump: () => {
       grounded = false;
@@ -384,6 +553,15 @@ export function buildRev17FirstPerson() {
     template.animations,
     FIRST_PERSON_CLIPS,
   );
+  const semanticActions = createSemanticActionDriver(
+    controller,
+    root,
+    'firstPerson',
+    {
+      authoredClipOverrides: { reload: null },
+      fallbackOverrides: { reload: 'bounded_viewmodel_reload_envelope' },
+    },
+  );
   group.userData = {
     ...group.userData,
     isRev17FirstPersonCandidate: true,
@@ -392,11 +570,17 @@ export function buildRev17FirstPerson() {
     mixer: controller.mixer,
     muzzle: root.getObjectByName('socket_muzzle'),
     setState: (state) => controller.setDesired(state),
-    triggerFire: () => controller.playOnce('fire', 0.04),
+    triggerAction: (request) => semanticActions.trigger(request),
+    getActionState: () => semanticActions.snapshot(),
+    actionTick: (dt) => semanticActions.tick(dt),
+    triggerFire: () => semanticActions.trigger('fire'),
     // The authored FP_RELOAD clip remains embedded and structurally validated,
     // but the runtime uses a bounded camera-space dip until a dedicated
     // viewmodel retarget receives human visual approval.
-    triggerReload: () => controller.setDesired('idle'),
+    triggerReload: (durationSeconds) => {
+      controller.setDesired('idle');
+      semanticActions.trigger({ kind: 'reload', durationSeconds });
+    },
     triggerLand: () => controller.playOnce('land', 0.06),
   };
   registerRuntimeInstance(group, {

@@ -1,0 +1,107 @@
+{
+  "schema": "kyx-g6-semantic-action-runtime-smoke-v1",
+  "capturedAt": "2026-07-27T16:49:10.632Z",
+  "baseCommit": "5ddbbc9",
+  "route": "http://127.0.0.1:6206/?g6Candidate=rev17",
+  "result": "PASS_WITH_EXPLICIT_VISUAL_NON_CLAIMS",
+  "validation": {
+    "focusedTests": {
+      "filesPassed": 3,
+      "testsPassed": 12
+    },
+    "fullUnitRegression": {
+      "filesPassed": 78,
+      "testsPassed": 574
+    },
+    "typecheck": "PASS",
+    "focusedLint": "PASS",
+    "productionBuild": "PASS"
+  },
+  "browser": {
+    "name": "installed Google Chrome via Playwright",
+    "headless": true,
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererQualification": "software-rendered browser smoke only; not performance evidence",
+    "pointerLockAcquired": true
+  },
+  "runtimePopulation": {
+    "connectedByRole": {
+      "preview": 1,
+      "firstPerson": 1,
+      "enemy": 7,
+      "player": 1
+    }
+  },
+  "observedActions": [
+    {
+      "runtimeRole": "firstPerson",
+      "kind": "fire",
+      "sequence": 6,
+      "durationSeconds": 0.458333,
+      "authoredClipKey": "fire",
+      "fallback": null
+    },
+    {
+      "runtimeRole": "firstPerson",
+      "kind": "reload",
+      "sequence": 7,
+      "durationSeconds": 1.8,
+      "authoredClipKey": null,
+      "fallback": "bounded_viewmodel_reload_envelope"
+    },
+    {
+      "runtimeRole": "player",
+      "kind": "reload",
+      "sequence": 7,
+      "durationSeconds": 1.8,
+      "authoredClipKey": "reload",
+      "fallback": null,
+      "observedMarker": "mag_detach"
+    },
+    {
+      "runtimeRole": "firstPerson",
+      "kind": "ability",
+      "sequence": 8,
+      "durationSeconds": 0.65,
+      "authoredClipKey": null,
+      "fallback": "procedural_ability_throw_accent"
+    },
+    {
+      "runtimeRole": "player",
+      "kind": "equip",
+      "sequence": 9,
+      "durationSeconds": 0.34,
+      "authoredClipKey": null,
+      "fallback": "procedural_equip_accent"
+    },
+    {
+      "runtimeRole": "player",
+      "kind": "melee",
+      "sequence": 11,
+      "durationSeconds": 0.45,
+      "elapsedSecondsAtCapture": 0.1022,
+      "authoredClipKey": null,
+      "fallback": "procedural_melee_accent"
+    }
+  ],
+  "artifacts": {
+    "thirdPersonMeleeFallbackScreenshot": "runtime-tps-melee-fallback.png"
+  },
+  "console": {
+    "applicationErrors": 0,
+    "applicationWarnings": 0,
+    "rendererWarnings": [
+      "SwiftShader emitted a shader double-precision representation warning."
+    ]
+  },
+  "nonClaims": [
+    "This smoke does not grant G6 or human visual acceptance.",
+    "Equip, melee, and ability are named procedural fallbacks, not authored Rev17 clips.",
+    "The first-person reload remains the bounded viewmodel envelope, not the embedded authored reload clip.",
+    "The online product view remains a canvas representation rather than a 3D Rev17 multiplayer renderer.",
+    "The software-rendered browser run is not performance evidence."
+  ]
+}
