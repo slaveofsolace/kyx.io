@@ -1,0 +1,713 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-26T18:30:21.167Z",
+  "status": "REV3_PRODUCT_BROWSER_REVIEW_READY_G5_OPEN",
+  "environment": {
+    "worktree": "C:/AI Projects/Projects/Games/evio/evio-g5-inkfall-rev3",
+    "branch": "codex/g5-inkfall-rev3",
+    "baseCommit": "d324ee304ec70411c33e66ea8267410e76398c0f",
+    "server": "Vite development server",
+    "host": "127.0.0.1",
+    "port": 4365,
+    "canonicalPortsAvoided": [
+      5173,
+      8787
+    ]
+  },
+  "reviewRoute": {
+    "url": "http://127.0.0.1:4365/?mapPackage=inkfall_foundry%403",
+    "snapshot": {
+      "schemaVersion": 1,
+      "status": "REV3_PRODUCT_BROWSER_REVIEW_READY_G5_OPEN",
+      "selection": {
+        "source": "explicit_query",
+        "explicit": true,
+        "reference": "inkfall_foundry@3"
+      },
+      "catalogDefault": {
+        "mapId": "inkfall_foundry",
+        "mapRevision": 1,
+        "unchanged": true
+      },
+      "identity": {
+        "mapId": "inkfall_foundry",
+        "mapRevision": 3,
+        "packageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+        "fixtureHash": "6cf785c5171f2ff5",
+        "renderSha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
+        "collisionSha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8"
+      },
+      "currentView": "spawns",
+      "collisionOverlayVisible": false,
+      "audit": {
+        "schemaVersion": 1,
+        "status": "REV3_PRODUCT_BROWSER_AUTOMATED_AUDIT_PASS_G5_OPEN",
+        "identity": {
+          "mapId": "inkfall_foundry",
+          "mapRevision": 3,
+          "packageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+          "fixtureHash": "6cf785c5171f2ff5",
+          "collisionSha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+          "renderSha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
+          "colliderCount": 339
+        },
+        "routes": [
+          {
+            "id": "west_shotgun_breach",
+            "label": "West shotgun breach",
+            "intent": "close_entry",
+            "startFeetMm": {
+              "x": -9000,
+              "y": 0,
+              "z": -3000
+            },
+            "targetFeetMm": {
+              "x": -3000,
+              "y": 0,
+              "z": -3000
+            },
+            "finalFeetMm": {
+              "x": -3003,
+              "y": 24,
+              "z": -3000
+            },
+            "stepCount": 30,
+            "snagCount": 0,
+            "overlapSampleCount": 0,
+            "remainingDistanceMm": 3,
+            "contactIds": [
+              "map_collision_jump_guard_press_gap_west_landing_left",
+              "map_collision_jump_pad_press_gap_west_landing"
+            ],
+            "error": null,
+            "passed": true
+          },
+          {
+            "id": "east_shotgun_breach",
+            "label": "East shotgun breach",
+            "intent": "close_entry",
+            "startFeetMm": {
+              "x": 9000,
+              "y": 0,
+              "z": -3000
+            },
+            "targetFeetMm": {
+              "x": 3000,
+              "y": 0,
+              "z": -3000
+            },
+            "finalFeetMm": {
+              "x": 3115,
+              "y": 237,
+              "z": -2958
+            },
+            "stepCount": 30,
+            "snagCount": 0,
+            "overlapSampleCount": 0,
+            "remainingDistanceMm": 122,
+            "contactIds": [
+              "map_collision_route_teleport_exit_press_core_s00",
+              "map_collision_waypoint_press_core_east_w01"
+            ],
+            "error": null,
+            "passed": true
+          },
+          {
+            "id": "press_core_south_north",
+            "label": "Press Core south–north",
+            "intent": "mid_traversal",
+            "startFeetMm": {
+              "x": 0,
+              "y": 0,
+              "z": -2800
+            },
+            "targetFeetMm": {
+              "x": 0,
+              "y": 0,
+              "z": 2800
+            },
+            "finalFeetMm": {
+              "x": -13,
+              "y": 256,
+              "z": 2689
+            },
+            "stepCount": 28,
+            "snagCount": 0,
+            "overlapSampleCount": 0,
+            "remainingDistanceMm": 112,
+            "contactIds": [
+              "map_collision_node_press_core",
+              "map_collision_rev2_node_teleport_exit_sloped_landing",
+              "map_collision_route_press_core_archive_mid_e_s00",
+              "map_collision_route_press_core_east_s00",
+              "map_collision_route_press_west_core_s02",
+              "map_collision_route_teleport_exit_press_core_s01"
+            ],
+            "error": null,
+            "passed": true
+          }
+        ],
+        "sightlines": [
+          {
+            "id": "sniper_lane_west_to_east",
+            "label": "West-to-east sniper lane",
+            "intent": "sniper_lane",
+            "start": {
+              "x": -14000,
+              "z": -4000
+            },
+            "end": {
+              "x": 14000,
+              "z": -3000
+            },
+            "expectedBlockerIds": [],
+            "eyeHeightMm": 1600,
+            "distanceMm": 28018,
+            "blockingColliderIds": [],
+            "passed": true
+          },
+          {
+            "id": "sniper_lane_east_to_west",
+            "label": "East-to-west sniper lane",
+            "intent": "sniper_lane",
+            "start": {
+              "x": 14000,
+              "z": -4000
+            },
+            "end": {
+              "x": -14000,
+              "z": -3000
+            },
+            "expectedBlockerIds": [],
+            "eyeHeightMm": 1600,
+            "distanceMm": 28018,
+            "blockingColliderIds": [],
+            "passed": true
+          },
+          {
+            "id": "west_baffle_counter_cover",
+            "label": "West breach hard cover",
+            "intent": "shotgun_counter_cover",
+            "start": {
+              "x": -9000,
+              "z": -4000
+            },
+            "end": {
+              "x": -3000,
+              "z": -4000
+            },
+            "expectedBlockerIds": [
+              "map_collision_module_press_baffle_w_inner"
+            ],
+            "eyeHeightMm": 1600,
+            "distanceMm": 6000,
+            "blockingColliderIds": [
+              "map_collision_module_press_baffle_w_inner"
+            ],
+            "passed": true
+          },
+          {
+            "id": "east_baffle_counter_cover",
+            "label": "East breach hard cover",
+            "intent": "shotgun_counter_cover",
+            "start": {
+              "x": 9000,
+              "z": -4000
+            },
+            "end": {
+              "x": 3000,
+              "z": -4000
+            },
+            "expectedBlockerIds": [
+              "map_collision_module_press_baffle_e_inner"
+            ],
+            "eyeHeightMm": 1600,
+            "distanceMm": 6000,
+            "blockingColliderIds": [
+              "map_collision_module_press_baffle_e_inner"
+            ],
+            "passed": true
+          },
+          {
+            "id": "north_reactor_counter",
+            "label": "North reactor power-position counter",
+            "intent": "power_position_counter",
+            "start": {
+              "x": 0,
+              "z": -4000
+            },
+            "end": {
+              "x": 0,
+              "z": 14000
+            },
+            "expectedBlockerIds": [
+              "map_collision_module_press_reactor_north"
+            ],
+            "eyeHeightMm": 1600,
+            "distanceMm": 18000,
+            "blockingColliderIds": [
+              "map_collision_module_press_reactor_north"
+            ],
+            "passed": true
+          }
+        ],
+        "canonicalRegression": {
+          "pressJunction": {
+            "castClear": true,
+            "appliedTranslationMm": {
+              "x": 249,
+              "y": 0,
+              "z": 263
+            },
+            "finalFeetMm": {
+              "x": -16248,
+              "y": 182,
+              "z": -374
+            },
+            "finalBlockingColliderIds": [],
+            "passed": true
+          },
+          "westArchive": {
+            "appliedTranslationMm": {
+              "x": 66,
+              "y": 0,
+              "z": -22
+            },
+            "finalFeetMm": {
+              "x": -23958,
+              "y": 37,
+              "z": 402
+            },
+            "finalBlockingColliderIds": [],
+            "passed": true
+          }
+        },
+        "spawnAndVolumes": {
+          "spawns": [
+            {
+              "id": "spawn_w_press_a",
+              "set": "west_team",
+              "feetPositionMm": {
+                "x": -33500,
+                "y": 0,
+                "z": -3500
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_w_press_b",
+              "set": "west_team",
+              "feetPositionMm": {
+                "x": -33500,
+                "y": 0,
+                "z": 3500
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_w_ink",
+              "set": "west_team",
+              "feetPositionMm": {
+                "x": -30500,
+                "y": 0,
+                "z": -7000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "press_hall"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_w_archive",
+              "set": "west_team",
+              "feetPositionMm": {
+                "x": -30500,
+                "y": 0,
+                "z": 7000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "press_hall"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_e_press_a",
+              "set": "east_team",
+              "feetPositionMm": {
+                "x": 33500,
+                "y": 0,
+                "z": 3500
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_e_press_b",
+              "set": "east_team",
+              "feetPositionMm": {
+                "x": 33500,
+                "y": 0,
+                "z": -3500
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_e_ink",
+              "set": "east_team",
+              "feetPositionMm": {
+                "x": 30500,
+                "y": 0,
+                "z": -7000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "press_hall"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_e_archive",
+              "set": "east_team",
+              "feetPositionMm": {
+                "x": 30500,
+                "y": 0,
+                "z": 7000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "press_hall"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_dm_ink_w",
+              "set": "deathmatch_candidate",
+              "feetPositionMm": {
+                "x": -27000,
+                "y": -3000,
+                "z": -22000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "crosslink"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_dm_ink_e",
+              "set": "deathmatch_candidate",
+              "feetPositionMm": {
+                "x": 27000,
+                "y": -3000,
+                "z": -21000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "crosslink"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_dm_archive_w",
+              "set": "deathmatch_candidate",
+              "feetPositionMm": {
+                "x": -27000,
+                "y": 6000,
+                "z": 22000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "crosslink"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            },
+            {
+              "id": "spawn_dm_archive_e",
+              "set": "deathmatch_candidate",
+              "feetPositionMm": {
+                "x": 27000,
+                "y": 6000,
+                "z": 21000
+              },
+              "blockingColliderIds": [],
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "crosslink"
+              ],
+              "knownEscapeFamilies": true,
+              "passed": true
+            }
+          ],
+          "allSpawnsClear": true,
+          "volumes": {
+            "recoveryProbe": {
+              "volumes": [
+                {
+                  "colliderId": "map_volume_lower_void_recovery",
+                  "kind": "recovery"
+                }
+              ],
+              "overlapTests": 1
+            },
+            "killProbe": {
+              "volumes": [
+                {
+                  "colliderId": "map_volume_lower_void_kill",
+                  "kind": "kill"
+                },
+                {
+                  "colliderId": "map_volume_lower_void_recovery",
+                  "kind": "recovery"
+                }
+              ],
+              "overlapTests": 1
+            },
+            "passed": true
+          }
+        },
+        "zonesAndObjectives": {
+          "zoneCount": 9,
+          "zoneFamilies": [
+            "archive_walk",
+            "crosslink",
+            "ink_channel",
+            "press_hall",
+            "spawn"
+          ],
+          "supportedModes": [
+            "deathmatch",
+            "team_deathmatch"
+          ],
+          "objectiveContract": "FRAG_MODES_NO_STATIC_OBJECTIVE_REQUIRED",
+          "pickupCount": 0,
+          "teleportContracts": [
+            {
+              "id": "red_fold_teleport_entry",
+              "implementationStatus": "contract_only"
+            }
+          ],
+          "passed": true
+        },
+        "navigationAndVerticality": {
+          "spawnHeightLevelsMm": [
+            -3000,
+            0,
+            6000
+          ],
+          "verticalRangeMm": 9000,
+          "routeFamilies": [
+            "archive_walk",
+            "crosslink",
+            "ink_channel",
+            "press_hall",
+            "spawn"
+          ],
+          "routeCount": 3,
+          "routePassCount": 3,
+          "canonicalRegressionPassCount": 2,
+          "passed": true
+        },
+        "allChecksPassed": true,
+        "nonClaims": [
+          "AUTOMATED_PRODUCT_BROWSER_AUDIT_NOT_HUMAN_PLAYTEST",
+          "TELEPORT_TRIGGER_REMAINS_CONTRACT_ONLY",
+          "SPAWN_SCORING_NOT_COMPLETE",
+          "REVISION_3_NOT_DEFAULT",
+          "REVISION_3_NOT_PROMOTED",
+          "G5_NOT_PASSED"
+        ]
+      },
+      "performance": {
+        "loadTiming": {
+          "fetchMs": 43.1000000089407,
+          "authorityValidationMs": 15,
+          "parseMs": 11.200000002980232,
+          "totalMs": 69.30000001192093
+        },
+        "frameProfile": {
+          "count": 120,
+          "minimumMs": 1.7000000000000455,
+          "p50Ms": 1.8000000000000682,
+          "p95Ms": 2,
+          "p99Ms": 2,
+          "maximumMs": 2,
+          "meanMs": 1.851666666666667
+        },
+        "renderer": {
+          "calls": 347,
+          "triangles": 4248,
+          "lines": 0,
+          "points": 0,
+          "geometries": 355,
+          "textures": 1,
+          "programs": 3
+        },
+        "host": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+          "platform": "Win32",
+          "hardwareConcurrency": 32,
+          "viewport": {
+            "width": 1280,
+            "height": 720,
+            "devicePixelRatio": 1.25
+          },
+          "webgl": {
+            "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+            "vendor": "Google Inc. (NVIDIA)",
+            "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+          }
+        }
+      },
+      "runtimeErrors": [],
+      "productBoundary": {
+        "explicitReviewRouteOnly": true,
+        "loadedIntoOfflinePractice": false,
+        "shippingDefaultChanged": false,
+        "humanPlaytestAccepted": false,
+        "performanceAccepted": false,
+        "g5Passed": false
+      },
+      "nonClaims": [
+        "AUTOMATED_PRODUCT_BROWSER_AUDIT_NOT_HUMAN_PLAYTEST",
+        "REPRESENTATIVE_FINAL_ART_ROOM_SEPARATE_REVIEW_ROUTE",
+        "REVISION_3_NOT_DEFAULT",
+        "REVISION_3_NOT_PROMOTED",
+        "G5_NOT_PASSED"
+      ]
+    },
+    "interactionEvidence": {
+      "viewsCaptured": [
+        "overview",
+        "mid",
+        "sniper_west",
+        "sniper_east",
+        "shotgun_west",
+        "shotgun_east",
+        "spawns",
+        "verticality"
+      ],
+      "collisionOverlayToggled": true,
+      "auditRerun": {
+        "audit": "pass",
+        "status": "ready",
+        "summary": "Automated pass / G5 open · 3/3 routes · 5/5 sightlines · 12/12 spawns"
+      }
+    }
+  },
+  "defaultRouteCheck": {
+    "bodyDataset": {
+      "crosshairColor": "cyan",
+      "highContrast": "false",
+      "interface": "foundry-command-v2",
+      "reducedFlash": "false",
+      "reducedMotion": "false"
+    },
+    "heading": "KYX.IO",
+    "href": "http://127.0.0.1:4365/",
+    "rev3Review": false,
+    "title": "KYX.IO — Offline Practice"
+  },
+  "representativeFinalArtRoom": {
+    "bodyDataset": {
+      "catalogDefault": "inkfall_foundry@1",
+      "interface": "foundry-command-v2",
+      "launchSupport": "press-hall-v3-3-inspection",
+      "pressHallReference": "inkfall_foundry@2/press_hall/v3.3/spatial-material-joined",
+      "pressHallStatus": "ready"
+    },
+    "facts": [
+      {
+        "label": "art calls",
+        "value": "27"
+      },
+      {
+        "label": "triangles",
+        "value": "188,576"
+      },
+      {
+        "label": "frame p95",
+        "value": "2.00 ms"
+      },
+      {
+        "label": "primitives",
+        "value": "29"
+      },
+      {
+        "label": "colliders",
+        "value": "339"
+      },
+      {
+        "label": "payload",
+        "value": "13.30 MB"
+      }
+    ],
+    "href": "http://127.0.0.1:4365/?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined",
+    "status": [
+      "VERIFIED + PARSED · ART 27 CALLS / 188,387 TRIANGLES\nWITH AUTHORITY OVERLAY · 30 CALLS / 339 LOCKED SOLIDS\nFRAME 180 SAMPLES AFTER 60 WARMUP · P50 1.90 · P95 2.00 · P99 2.00 MS\nRUNTIME MATERIAL VERIFIED · 9/9 EXPLICIT BASE COLORS · 0 WHITE FALLBACKS · MAX COLOR DELTA 0\nAuthority boxes are inspection overlays only; render geometry is never authority.",
+      "Camera sweep is visual-only · no collision/no-snag claim · not final art · no human acceptance · not shipping default · G5 and G8 remain open"
+    ],
+    "title": "Press Hall v3.3 — Runtime Inspection"
+  },
+  "console": {
+    "warnings": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-07-26T18:28:00.138Z",
+        "url": "http://127.0.0.1:4365/node_modules/.vite/deps/@dimforge_rapier3d-deterministic-compat.js?v=954335f5"
+      }
+    ],
+    "errors": [],
+    "classification": "Single pre-existing Rapier deprecated-init warning; no route/runtime errors."
+  },
+  "nonClaims": [
+    "AUTOMATED_PRODUCT_BROWSER_AUDIT_NOT_HUMAN_PLAYTEST",
+    "REVISION_3_NOT_DEFAULT",
+    "REVISION_3_NOT_PROMOTED",
+    "PERFORMANCE_NOT_HUMAN_ACCEPTED",
+    "G5_NOT_PASSED"
+  ]
+}
