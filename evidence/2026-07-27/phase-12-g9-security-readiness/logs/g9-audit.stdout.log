@@ -1,0 +1,140 @@
+{
+  "schema": "kyx-g9-security-legal-deployment-readiness-audit-v1",
+  "generatedAt": "2026-07-27T16:03:57.110Z",
+  "baseCommit": "ee7b0472c32f0b1becf2bc66b15eafc76432be4e",
+  "sourceState": "current working tree and index over baseCommit",
+  "controlStatus": "PASS",
+  "releaseStatus": "BLOCKED",
+  "knownReleaseBlockers": [
+    {
+      "code": "PROJECT_LICENSE_SELECTION_REQUIRED",
+      "affectedAssetCount": 10
+    },
+    {
+      "code": "OWNER_ATTESTATION_OR_LICENSE_REQUIRED",
+      "affectedAssetCount": 6,
+      "affectedAssetIds": [
+        "legacy.player",
+        "legacy.soldier",
+        "legacy.spartan",
+        "legacy.sakura-wrap",
+        "legacy.weapons",
+        "legacy.zombie"
+      ]
+    },
+    {
+      "code": "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED",
+      "affectedAssetCount": 4,
+      "affectedAssetIds": [
+        "g6.rev17.character-lod0",
+        "g6.rev17.character-lod1",
+        "g6.rev17.character-lod2",
+        "g6.rev17.first-person"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "asset_ledger_exact_path_coverage",
+      "status": "PASS",
+      "details": {
+        "actualCount": 10,
+        "ledgerCount": 10,
+        "missingFromLedger": [],
+        "missingFromPublic": []
+      }
+    },
+    {
+      "name": "asset_ledger_hash_and_size_integrity",
+      "status": "PASS",
+      "details": {
+        "checkedCount": 10,
+        "failures": []
+      }
+    },
+    {
+      "name": "asset_clearance_classification",
+      "status": "PASS",
+      "details": {
+        "clearedProjectOriginals": 4,
+        "blockedLegacyAssets": 6,
+        "publicReleaseEligibleAssets": 0
+      }
+    },
+    {
+      "name": "asset_provenance_evidence_is_tracked",
+      "status": "PASS",
+      "details": {
+        "missingEvidence": []
+      }
+    },
+    {
+      "name": "dependency_license_metadata_present",
+      "status": "PASS",
+      "details": {
+        "dependencyPackageCount": 260,
+        "missingCount": 0,
+        "missingPackages": [],
+        "licenseCounts": {
+          "0BSD": 1,
+          "Apache-2.0": 38,
+          "Apache-2.0 AND LGPL-3.0-or-later": 3,
+          "Apache-2.0 AND LGPL-3.0-or-later AND MIT": 1,
+          "BlueOak-1.0.0": 1,
+          "BSD-2-Clause": 6,
+          "BSD-3-Clause": 2,
+          "CC0-1.0": 1,
+          "ISC": 7,
+          "LGPL-3.0-or-later": 10,
+          "MIT": 174,
+          "MIT OR Apache-2.0": 4,
+          "MPL-2.0": 12
+        },
+        "limitation": "Metadata presence is not a legal compatibility opinion."
+      }
+    },
+    {
+      "name": "project_unlicensed_metadata_consistency",
+      "status": "PASS",
+      "details": {
+        "packageLicense": "UNLICENSED",
+        "packageLockRootLicense": "UNLICENSED",
+        "rootLicenseFiles": []
+      }
+    },
+    {
+      "name": "static_asset_csp_uses_exact_worker_origins",
+      "status": "PASS",
+      "details": {
+        "bareWebSocketScheme": false,
+        "requiredOriginsPresent": {
+          "https://kyx-io-authority.suhaibabdeljaber.workers.dev": true,
+          "wss://kyx-io-authority.suhaibabdeljaber.workers.dev": true,
+          "https://kyx-io-authority-staging.suhaibabdeljaber.workers.dev": true,
+          "wss://kyx-io-authority-staging.suhaibabdeljaber.workers.dev": true
+        }
+      }
+    },
+    {
+      "name": "cloudflare_staging_environment_isolated",
+      "status": "PASS",
+      "details": {
+        "productionWorkerName": "kyx-io-authority",
+        "stagingWorkerName": "kyx-io-authority-staging",
+        "stagingDurableObjectBindingCount": 1,
+        "stagingOriginPresent": true,
+        "productionOriginExcludedFromStagingAllowlist": true
+      }
+    },
+    {
+      "name": "tracked_source_probable_secret_scan",
+      "status": "PASS",
+      "details": {
+        "scannedTrackedPathCount": 4012,
+        "findingCount": 0,
+        "findings": [],
+        "privacy": "Potential values are never included in this report."
+      }
+    }
+  ]
+}

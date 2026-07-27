@@ -1,0 +1,36 @@
+vite v8.1.5 building client environment for production...
+transforming...✓ 164 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/login.html                                                                                        2.15 kB │ gzip:   0.86 kB
+dist/register.html                                                                                     2.15 kB │ gzip:   0.86 kB
+dist/index.html                                                                                       25.94 kB │ gzip:   6.07 kB
+dist/assets/collision.authority-eB0wql0w.glb                                                         604.22 kB
+dist/assets/collision.authority-DxZDDksn.glb                                                         605.11 kB
+dist/assets/render.graybox-C5ghKDva.glb                                                              613.56 kB
+dist/assets/render.graybox-C3XbMWVM.glb                                                              614.34 kB
+dist/assets/inkfall_foundry_press_hall_readability_v3_2.spatial-material-joined-C-wALj1R.glb      13,300.67 kB
+dist/assets/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined-BooJt_uY.glb  13,301.75 kB
+dist/assets/main-BbcKf_q7.css                                                                         62.60 kB │ gzip:   9.83 kB
+dist/assets/style-Yy4NCgXb.css                                                                       151.99 kB │ gzip:  29.15 kB
+dist/assets/constants-u5ZJ8Hgu.js                                                                      0.03 kB │ gzip:   0.05 kB
+dist/assets/collision.authority-BTmOUQzI.js                                                            0.15 kB │ gzip:   0.13 kB
+dist/assets/loginPage-Bryw9vaY.js                                                                      0.56 kB │ gzip:   0.35 kB
+dist/assets/productConfig-DS6QL_Gx.js                                                                  0.59 kB │ gzip:   0.38 kB
+dist/assets/style-DIluTOB_.js                                                                          0.69 kB │ gzip:   0.39 kB
+dist/assets/pressHallInspectionSelection-Ds9z0bhj.js                                                   0.75 kB │ gzip:   0.42 kB
+dist/assets/UserAccount-CIDHoBEI.js                                                                    2.42 kB │ gzip:   1.03 kB
+dist/assets/main-BmUomFGd.js                                                                           6.73 kB │ gzip:   2.24 kB
+dist/assets/lockedGrayboxPreviewRoute-CSMnMG5G.js                                                     15.27 kB │ gzip:   5.37 kB
+dist/assets/catalog-BPcSota6.js                                                                       16.77 kB │ gzip:   2.25 kB
+dist/assets/inkfallMapIdentity-CFYhOC8v.js                                                            20.25 kB │ gzip:   4.73 kB
+dist/assets/pressHallInspectionRoute-DdWNxQQr.js                                                      26.92 kB │ gzip:   9.76 kB
+dist/assets/inkfallRev3ReviewRoute-B3n9a5TV.js                                                        32.15 kB │ gzip:  10.48 kB
+dist/assets/sim-BS5zYYGl.js                                                                           43.10 kB │ gzip:  11.62 kB
+dist/assets/onlineAuthoritySelection-BTGm8tRQ.js                                                      66.19 kB │ gzip:  15.83 kB
+dist/assets/onlineAuthorityRoute-CPR_G_EZ.js                                                         270.14 kB │ gzip:  48.84 kB
+dist/assets/Game-DY22VE2V.js                                                                         352.84 kB │ gzip:  97.62 kB
+dist/assets/GLTFLoader-Bvlrk0y_.js                                                                   618.00 kB │ gzip: 157.31 kB
+dist/assets/physics-k0dxBoeO.js                                                                    2,505.71 kB │ gzip: 889.65 kB
+
+✓ built in 312ms

@@ -1,0 +1,106 @@
+{
+  "schema": "kyx-g9-validation-summary-v1",
+  "generatedAt": "2026-07-27T16:01:31.642Z",
+  "branch": "codex/g9-security-readiness-20260726",
+  "baseCommit": "ee7b0472c32f0b1becf2bc66b15eafc76432be4e",
+  "sourceState": "current working tree and index over baseCommit",
+  "nodeVersion": "v24.14.0",
+  "wranglerVersion": "4.112.0",
+  "platform": {
+    "type": "Windows_NT",
+    "release": "10.0.26200",
+    "arch": "x64"
+  },
+  "dryRunOnly": true,
+  "cloudflareMutations": [],
+  "commands": [
+    {
+      "id": "vite-build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/vite-build.stdout.log",
+      "stderrLog": "logs/vite-build.stderr.log"
+    },
+    {
+      "id": "app-typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/app-typecheck.stdout.log",
+      "stderrLog": "logs/app-typecheck.stderr.log"
+    },
+    {
+      "id": "worker-typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.worker.json --noEmit",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/worker-typecheck.stdout.log",
+      "stderrLog": "logs/worker-typecheck.stderr.log"
+    },
+    {
+      "id": "full-eslint",
+      "command": "node node_modules/eslint/bin/eslint.js src/**/*.ts worker/**/*.ts tests/**/*.ts tools/**/*.mjs vitest.worker.config.ts --no-error-on-unmatched-pattern",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/full-eslint.stdout.log",
+      "stderrLog": "logs/full-eslint.stderr.log"
+    },
+    {
+      "id": "vitest",
+      "command": "node node_modules/vitest/vitest.mjs run",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/vitest.stdout.log",
+      "stderrLog": "logs/vitest.stderr.log"
+    },
+    {
+      "id": "worker-vitest",
+      "command": "node node_modules/vitest/vitest.mjs run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/worker-vitest.stdout.log",
+      "stderrLog": "logs/worker-vitest.stderr.log"
+    },
+    {
+      "id": "wrangler-production-dry-run",
+      "command": "node node_modules/wrangler/bin/wrangler.js deploy --env=\"\" --dry-run --outdir .wrangler/g9-production-dry-run-explicit",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/wrangler-production-dry-run.stdout.log",
+      "stderrLog": "logs/wrangler-production-dry-run.stderr.log"
+    },
+    {
+      "id": "wrangler-staging-dry-run",
+      "command": "node node_modules/wrangler/bin/wrangler.js deploy --env staging --dry-run --outdir .wrangler/g9-staging-dry-run",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/wrangler-staging-dry-run.stdout.log",
+      "stderrLog": "logs/wrangler-staging-dry-run.stderr.log"
+    },
+    {
+      "id": "g9-audit",
+      "command": "node tools/security/audit-g9-readiness.mjs --output=evidence/2026-07-27/phase-12-g9-security-readiness/g9-readiness-audit.json",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/g9-audit.stdout.log",
+      "stderrLog": "logs/g9-audit.stderr.log"
+    },
+    {
+      "id": "git-diff-check",
+      "command": "git diff --check",
+      "status": "PASS",
+      "exitCode": 0,
+      "stdoutLog": "logs/git-diff-check.stdout.log",
+      "stderrLog": "logs/git-diff-check.stderr.log"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "failed": 0,
+    "applicationTests": "747 passed",
+    "workerTests": "43 passed",
+    "auditControlStatus": "PASS",
+    "releaseStatus": "BLOCKED"
+  }
+}

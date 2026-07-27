@@ -1,0 +1,56 @@
+{
+  "schema": "kyx-g9-wrangler-dry-run-artifacts-v1",
+  "generatedAt": "2026-07-27T16:01:31.639Z",
+  "dryRunOnly": true,
+  "noCloudflareMutation": true,
+  "production": {
+    "workerName": "kyx-io-authority",
+    "files": [
+      {
+        "path": "30a031a6ee11327a42ae2d301de9b2f1bb2bde2e-rapier_wasm3d_bg.wasm",
+        "bytes": 1601515,
+        "sha256": "f27e91563c97bc402e1e8bb0531d6238f7ecf3a7f6a193b2e44278b5d9670470"
+      },
+      {
+        "path": "README.md",
+        "bytes": 117,
+        "sha256": "c90ba2171631a25061bc8e7c5f0835f115b78776a60f5472ac1a21d40613536a"
+      },
+      {
+        "path": "worker.js",
+        "bytes": 1406607,
+        "sha256": "38bebe695b05e80967ee583808beb7631ad4be233b1207a5a0beb8a03073d270"
+      },
+      {
+        "path": "worker.js.map",
+        "bytes": 2695486,
+        "sha256": "c29cd2164f2bd1333201d6bb8bb5d0fbfbd092102894f9650660ca1686edaef9"
+      }
+    ]
+  },
+  "staging": {
+    "workerName": "kyx-io-authority-staging",
+    "files": [
+      {
+        "path": "30a031a6ee11327a42ae2d301de9b2f1bb2bde2e-rapier_wasm3d_bg.wasm",
+        "bytes": 1601515,
+        "sha256": "f27e91563c97bc402e1e8bb0531d6238f7ecf3a7f6a193b2e44278b5d9670470"
+      },
+      {
+        "path": "README.md",
+        "bytes": 125,
+        "sha256": "27b64cb83542438a1ff964bac7865a8e1bc3bccff203ec2316a9b9dd37383c48"
+      },
+      {
+        "path": "worker.js",
+        "bytes": 1406607,
+        "sha256": "38bebe695b05e80967ee583808beb7631ad4be233b1207a5a0beb8a03073d270"
+      },
+      {
+        "path": "worker.js.map",
+        "bytes": 2695474,
+        "sha256": "bcdc8024697573f94f67b9cb7598aca2a6e00f40ddc34220c219f73e3157f7d6"
+      }
+    ]
+  }
+}
