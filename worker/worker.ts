@@ -18,15 +18,26 @@ const CORS_ALLOWED_HEADERS = Object.freeze([
   'content-type',
   P58D_COMBAT_PROFILE_HEADER,
 ] as const);
+const API_CONTENT_SECURITY_POLICY =
+  "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'";
+const API_PERMISSIONS_POLICY =
+  'accelerometer=(), ambient-light-sensor=(), camera=(), geolocation=(), ' +
+  'gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()';
+
+function applyApiSecurityHeaders(headers: Headers): Headers {
+  headers.set('cache-control', 'no-store');
+  headers.set('content-security-policy', API_CONTENT_SECURITY_POLICY);
+  headers.set('cross-origin-opener-policy', 'same-origin');
+  headers.set('cross-origin-resource-policy', 'same-origin');
+  headers.set('permissions-policy', API_PERMISSIONS_POLICY);
+  headers.set('referrer-policy', 'no-referrer');
+  headers.set('x-content-type-options', 'nosniff');
+  headers.set('x-frame-options', 'DENY');
+  return headers;
+}
 
 function json(data: unknown, status = 200, extraHeaders?: HeadersInit): Response {
-  const headers = new Headers(extraHeaders);
-  headers.set('cache-control', 'no-store');
-  headers.set(
-    'content-security-policy',
-    "default-src 'none'; connect-src 'self'; frame-ancestors 'none'",
-  );
-  headers.set('x-content-type-options', 'nosniff');
+  const headers = applyApiSecurityHeaders(new Headers(extraHeaders));
   return Response.json(data, {
     status,
     headers,
@@ -67,7 +78,7 @@ function allowedPreflight(request: Request, pathname: string): boolean {
 
 function withCors(response: Response, origin: string): Response {
   if (response.status === 101) return response;
-  const headers = new Headers(response.headers);
+  const headers = applyApiSecurityHeaders(new Headers(response.headers));
   headers.set('access-control-allow-origin', origin);
   const vary = new Set((headers.get('vary') ?? '')
     .split(',')
@@ -116,7 +127,7 @@ export default {
       }
       return new Response(null, {
         status: 204,
-        headers: corsHeaders(requestOrigin, true),
+        headers: applyApiSecurityHeaders(corsHeaders(requestOrigin, true)),
       });
     }
 

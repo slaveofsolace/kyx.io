@@ -14,6 +14,25 @@ import { ResumeSessionRegistry } from '../../worker/resumeSessions';
 
 const authorityEnv = env as unknown as KyxAuthorityEnv;
 const ALLOWED_ORIGIN = 'http://127.0.0.1:5173';
+const EXPECTED_API_SECURITY_HEADERS = Object.freeze({
+  'cache-control': 'no-store',
+  'content-security-policy':
+    "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+  'cross-origin-opener-policy': 'same-origin',
+  'cross-origin-resource-policy': 'same-origin',
+  'permissions-policy':
+    'accelerometer=(), ambient-light-sensor=(), camera=(), geolocation=(), ' +
+    'gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()',
+  'referrer-policy': 'no-referrer',
+  'x-content-type-options': 'nosniff',
+  'x-frame-options': 'DENY',
+});
+
+function expectApiSecurityHeaders(response: Response): void {
+  for (const [header, expected] of Object.entries(EXPECTED_API_SECURITY_HEADERS)) {
+    expect(response.headers.get(header), header).toBe(expected);
+  }
+}
 
 afterEach(async () => {
   await reset();
@@ -23,6 +42,7 @@ describe('authority Worker runtime', () => {
   it('serves health while failing closed on disallowed room origins', async () => {
     const health = await SELF.fetch('https://authority.test/health');
     expect(health.status).toBe(200);
+    expectApiSecurityHeaders(health);
     await expect(health.json()).resolves.toMatchObject({
       ok: true,
       service: 'kyx-authority',
@@ -34,7 +54,35 @@ describe('authority Worker runtime', () => {
       headers: { Origin: 'https://evil.example' },
     });
     expect(rejected.status).toBe(403);
+    expectApiSecurityHeaders(rejected);
     await expect(rejected.json()).resolves.toEqual({ ok: false, code: 'ORIGIN_NOT_ALLOWED' });
+  });
+
+  it('hardens successful preflight and Durable Object responses consistently', async () => {
+    const preflight = await SELF.fetch('https://authority.test/api/rooms/create', {
+      method: 'OPTIONS',
+      headers: {
+        Origin: ALLOWED_ORIGIN,
+        'Access-Control-Request-Method': 'POST',
+        'Access-Control-Request-Headers': 'content-type',
+      },
+    });
+    expect(preflight.status).toBe(204);
+    expect(preflight.headers.get('access-control-allow-origin')).toBe(ALLOWED_ORIGIN);
+    expectApiSecurityHeaders(preflight);
+
+    const created = await SELF.fetch('https://authority.test/api/rooms/create', {
+      method: 'POST',
+      headers: { Origin: ALLOWED_ORIGIN },
+    });
+    const body = await created.json() as { readonly roomPath: string };
+    const proxied = await SELF.fetch(`https://authority.test${body.roomPath}`, {
+      method: 'POST',
+      headers: { Origin: ALLOWED_ORIGIN },
+    });
+    expect(proxied.status).toBe(201);
+    expect(proxied.headers.get('access-control-allow-origin')).toBe(ALLOWED_ORIGIN);
+    expectApiSecurityHeaders(proxied);
   });
 
   it('creates a normalized room through the configured Durable Object binding', async () => {

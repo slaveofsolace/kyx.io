@@ -44,11 +44,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SabbleDabble/Ev.io-Legacy-Build.git"
+    "url": "https://github.com/slaveofsolace/Ev.io-Legacy-Build.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "packageManager": "npm@11.18.0",
   "engines": {
     "node": ">=20.19.0 <25",
