@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-27T14:45:32.620Z",
+  "artifactScope": "PHASE_9_G8_RUNTIME_INSTRUMENTATION",
+  "evidenceLabel": "NON_QUALIFYING_INSTRUMENTATION_SMOKE",
+  "g8Status": "OPEN",
+  "visualApproval": "NOT_PERFORMED_OR_CLAIMED",
+  "nonClaims": [
+    "This capture does not prove final-map, final-character, eight-player, GPU-timer, or named-hardware performance.",
+    "A duration below 30 minutes is a harness smoke, not a soak result.",
+    "A 30-minute run without --qualifying-candidate and complete named-machine metadata remains non-qualifying.",
+    "Passing structural checks does not close G8."
+  ],
+  "baseUrl": "http://127.0.0.1:5173/",
+  "requested": {
+    "tier": "baseline",
+    "quality": "high",
+    "viewport": {
+      "width": 1920,
+      "height": 1080,
+      "deviceScaleFactor": 1
+    },
+    "durationMs": 10000,
+    "sampleIntervalMs": 1000,
+    "warmupMs": 3000,
+    "minimumQualifyingSoakMs": 1800000,
+    "qualifyingCandidate": false,
+    "headed": false,
+    "softwareRenderer": true,
+    "finalIntegratedBuild": false,
+    "scenario": "integrated-default-eight-character-smoke",
+    "matchSeed": "offline-practice-default",
+    "playerCount": 1,
+    "botCount": 7
+  },
+  "host": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "logicalCpuCount": 32,
+    "cpuModel": "Intel(R) Core(TM) i9-14900K",
+    "totalMemoryBytes": 68388204544,
+    "freeMemoryBytesAtStart": 45004267520,
+    "machineId": null,
+    "gpuDriver": null,
+    "powerMode": null,
+    "thermalState": null,
+    "displayRefreshHz": null,
+    "missingMachineMetadata": [
+      "machineId",
+      "gpuDriver",
+      "powerMode",
+      "thermalState",
+      "displayRefreshHz"
+    ]
+  },
+  "browser": null,
+  "product": null,
+  "samples": [],
+  "aggregate": null,
+  "network": null,
+  "assessment": null,
+  "artifacts": [],
+  "sources": {
+    "captureScript": {
+      "bytes": 30430,
+      "sha256": "d390acc9027f8a1879d640b769603a1df460e1184f379687822a8152c705b9b9"
+    },
+    "debugMetrics": {
+      "bytes": 9342,
+      "sha256": "01e54a850bef46de3c4f26b13cb5dfda24415a64ca5cd973e3242682883f66c2"
+    },
+    "world": {
+      "bytes": 131864,
+      "sha256": "b59284fa58724474203b5cedaac083c30655a04443203317aa2fd8838d1d855e"
+    },
+    "game": {
+      "bytes": 54573,
+      "sha256": "78f61b0fc12b588a6cc0d95113ac78866a9c81c77e71383bfcbccf385527fd89"
+    },
+    "main": {
+      "bytes": 12845,
+      "sha256": "b662a171b630079e2089184ff625d70f9042b5b8f15d40a7fd8bba656cfa6576"
+    },
+    "packageLock": {
+      "bytes": 141862,
+      "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+    }
+  },
+  "checks": [
+    {
+      "id": "preflight.server_available",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "finalUrl": "http://127.0.0.1:5173/"
+      }
+    },
+    {
+      "id": "product.document_ok",
+      "passed": true,
+      "details": {
+        "status": 200,
+        "finalUrl": "http://127.0.0.1:5173/"
+      }
+    },
+    {
+      "id": "capture.completed",
+      "passed": false,
+      "details": {
+        "error": {
+          "name": "TimeoutError",
+          "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true })\u001b[22m\n",
+          "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true })\u001b[22m\n\n    at C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\tools\\evidence\\capture-phase9-g8-runtime-instrumentation.mjs:412:21"
+        }
+      }
+    }
+  ],
+  "failures": [
+    {
+      "id": "capture.completed",
+      "passed": false,
+      "details": {
+        "error": {
+          "name": "TimeoutError",
+          "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true })\u001b[22m\n",
+          "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true })\u001b[22m\n\n    at C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\tools\\evidence\\capture-phase9-g8-runtime-instrumentation.mjs:412:21"
+        }
+      }
+    }
+  ],
+  "errors": [
+    {
+      "name": "TimeoutError",
+      "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true })\u001b[22m\n",
+      "stack": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'START OFFLINE PRACTICE', exact: true })\u001b[22m\n\n    at C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\tools\\evidence\\capture-phase9-g8-runtime-instrumentation.mjs:412:21"
+    }
+  ],
+  "ok": false,
+  "completedAt": "2026-07-27T14:46:11.546Z"
+}

@@ -460,7 +460,9 @@ export class Game {
     this.world.scene.add(this.previewCharacter);
   }
 
-  _startGame(name, skinId, modeId = 'deathmatch', armorTypeId) {
+  _startGame(name, skinId, modeId = 'deathmatch', armorTypeId, options = undefined) {
+    const sameModeRestart = options?.reuseRuntimeActors === true
+      && this._mode?.id === modeId;
     this._clearMenuBots();
     this.audio.resume();
     this.selectedSkin      = getSkin(skinId);
@@ -502,12 +504,12 @@ export class Game {
       this._activeManager = this.botManager;
       this.zombieManager.clear();
       this.dmManager.reset();
-      this.botManager.spawnAll(PRACTICE_BOTS, false, 1);
+      if (!sameModeRestart || !this.botManager.resetAll(PRACTICE_BOTS, false, 1)) {
+        this.botManager.spawnAll(PRACTICE_BOTS, false, 1);
+      }
       this._modeTimer = PRACTICE_DURATION_SECONDS;
       this.hud.showPracticeStatus(true, PRACTICE_BOTS);
-      // (re)create pickup system for fresh match
-      this.pickupSystem?.dispose();
-      this.pickupSystem = new PickupSystem(this.world.scene);
+      this._preparePickupSystem(sameModeRestart);
       const _mm = Math.floor(this._modeTimer / 60), _ss = Math.floor(this._modeTimer % 60);
       this.hud.showDMTimer(`${_mm}:${String(_ss).padStart(2, '0')}`);
     } else if (this._isSurvival) {
@@ -530,13 +532,11 @@ export class Game {
       this._modeTimer = this._mode.timeLimit || 0;
       this._lives     = this._mode.lives === Infinity ? Infinity : this._mode.lives;
       this._wave      = 1;
-      this.botManager.spawnAll(
-        this._mode.waves ? 3 : this._mode.botCount,
-        this._mode.noRespawn, 1
-      );
-      // (re)create pickup system for fresh match
-      this.pickupSystem?.dispose();
-      this.pickupSystem = new PickupSystem(this.world.scene);
+      const botCount = this._mode.waves ? 3 : this._mode.botCount;
+      if (!sameModeRestart || !this.botManager.resetAll(botCount, this._mode.noRespawn, 1)) {
+        this.botManager.spawnAll(botCount, this._mode.noRespawn, 1);
+      }
+      this._preparePickupSystem(sameModeRestart);
       this._refreshModeHUD();
     }
 
@@ -548,25 +548,51 @@ export class Game {
 
     // Build a third-person body mesh matching the player's current loadout,
     // then rig its limbs so it can walk/run in third person.
-    if (this._playerBody) this.world.scene.remove(this._playerBody);
-    this._playerBody = buildPreviewCharacter(
-      this.selectedSkin,
-      armorTypeId || this.selectedArmorType || 'assault',
-      this.selectedArmorSkin,
-      { runtimeRole: 'player' },
-    );
-    // The human soldier animates via its own skeleton; only the procedural
-    // block character needs the limb-pivot rig.
-    if (!this._playerBody.userData?.isHuman) rigCharacterLimbs(this._playerBody);
+    this._preparePlayerBody(sameModeRestart, armorTypeId);
     this._playerBody.visible = false;
-    this._tpsWeaponId = null; // force TPS weapon (re)attach on next TPS frame
-    this.world.scene.add(this._playerBody);
 
     this.state = 'playing';
     this.player._camDist = 0;  // always start in FPS on new game
     this.canvas.focus({ preventScroll: true });
     this.input.requestPointerLock();
     this.audio.startAmbientCity();
+  }
+
+  _preparePlayerBody(sameModeRestart, armorTypeId) {
+    if (!sameModeRestart || !this._playerBody) {
+      if (this._playerBody) this.world.scene.remove(this._playerBody);
+      this._playerBody = buildPreviewCharacter(
+        this.selectedSkin,
+        armorTypeId || this.selectedArmorType || 'assault',
+        this.selectedArmorSkin,
+        { runtimeRole: 'player' },
+      );
+      // The human soldier animates via its own skeleton; only the procedural
+      // block character needs the limb-pivot rig.
+      if (!this._playerBody.userData?.isHuman) rigCharacterLimbs(this._playerBody);
+      this._tpsWeaponId = null; // force TPS weapon attach for a new body
+      this.world.scene.add(this._playerBody);
+    } else {
+      this._playerBody.position.copy(this.player.position);
+      this._playerBody.rotation.set(0, this.player.yaw, 0);
+      this._playerBody.scale.setScalar(1);
+      const runtime = this._playerBody.userData;
+      runtime?.setLocomotion?.(0, true, false, 0);
+      runtime?.setAim?.(0, 0);
+      runtime?.setMotion?.('idle');
+      if (this._playerBody.parent !== this.world.scene) {
+        this.world.scene.add(this._playerBody);
+      }
+    }
+  }
+
+  _preparePickupSystem(sameModeRestart) {
+    if (sameModeRestart && this.pickupSystem) {
+      this.pickupSystem.reset();
+      return;
+    }
+    this.pickupSystem?.dispose();
+    this.pickupSystem = new PickupSystem(this.world.scene);
   }
 
   _respawnPlayer(position) {
@@ -801,7 +827,9 @@ export class Game {
     this._startGame(
       this.player.name,
       this.selectedSkin.id,
-      this._mode?.id || 'deathmatch'
+      this._mode?.id || 'deathmatch',
+      this.selectedArmorType,
+      { reuseRuntimeActors: true },
     );
   }
 

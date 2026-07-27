@@ -159,6 +159,19 @@ export class PickupSystem {
     }
   }
 
+  reset() {
+    for (let index = 0; index < this._pickups.length; index++) {
+      const pickup = this._pickups[index];
+      pickup.active = true;
+      pickup.respawnTimer = 0;
+      pickup._animT = index * 1.37;
+      pickup.mesh.visible = true;
+      pickup.mesh.position.y = pickup.baseY;
+      pickup.mesh.rotation.set(0, 0, 0);
+      if (pickup.mesh.parent !== this.scene) this.scene.add(pickup.mesh);
+    }
+  }
+
   dispose() {
     for (const p of this._pickups) this.scene.remove(p.mesh);
     this._pickups = [];
