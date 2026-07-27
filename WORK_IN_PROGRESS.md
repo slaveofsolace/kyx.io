@@ -6,52 +6,79 @@ appending prose to executable source files or binary assets.
 ## Active now
 
 - `assets/source/blender/phase7-character-original-v6/`,
-  `assets/source/blender/phase7-character-original-v6/model/v6c-lod0-retopo-rev14/`,
-  and its evidence folder — correct the visually failed-open Rev14 weapon
-  contact, animation readability, and unfinished materials; then build LOD1/2,
-  first-person arms, runtime integration, and occupancy performance evidence.
+  `assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/`,
+  `src/player/Rev17Character.js`, and the corresponding G6 evidence — replace
+  the still-failed-open Rev17 anatomy, armor, materials, hands, and weapon
+  contact with a substantive Rev18 correction pass. Rev17 is feature-gated and
+  must not be promoted as the final player model.
   *Currently being worked on.*
 
-- `src/dev/authorityEvidenceClient.ts`, `worker/`, and the P5.15 multiplayer
-  evidence harness — seal authenticated staging plus one clean, source-frozen
-  2/4/8-client authoritative run after the collision correction and lobby
-  reliable-event checkpoint work. *Currently being worked on.*
+- `src/weapons/WeaponSystem.js`, `src/player/Rev17Character.js`, and the
+  first-person melee viewmodel — reproduce and remove the extra legacy mesh
+  shown over the sword without regressing the rifle viewmodel or third-person
+  hand socket. *Currently being worked on.*
+
+- `worker/`, `tests/worker/authorityFullOccupancySoak.test.ts`, and the
+  multiplayer evidence harness — the local eight-client movement/combat/resume
+  run is green on the integrated tree; authenticated production staging,
+  external capacity evidence, and full 3D online presentation remain open.
+  *Currently being worked on.*
 
 - `assets/source/maps/inkfall-foundry/` and the product map route — complete
   authoritative traversal, no-snag/embed/escape proof, counterplay telemetry,
-  and human 2/4/8-player play review. The exact west-archive rounding regression
-  is repaired and green. *Currently being worked on.*
+  and human 2/4/8-player play review. The Rev3 review candidate and exact
+  west-archive rounding regression are present, but the human product gate is
+  still open. *Currently being worked on.*
 
-- `public/_headers`, `wrangler.jsonc`, and
-  `evidence/2026-07-25/cloudflare-release-readiness-v1/` — complete the
-  authenticated full-asset Cloudflare deployment, bind the assigned HTTPS
-  origin into the browser build and CORS allowlist, then capture production
-  HTTP/WebSocket and rollback evidence. *Currently being worked on.*
+- `README.md`, public project navigation, and the fetch-only
+  `NotHereButAfk/Ev.io` upstream audit — keep public status truthful and adopt
+  only compatible ideas with direct proof. Upstream push remains disabled.
+  *Currently being worked on.*
 
 ## Open release work
 
-- G3 authenticated staging, external capacity/resource evidence, the final
+- G3: authenticated staging, external capacity/resource evidence, the final
   source-frozen regression matrix, and manual acceptance.
   *Currently being worked on.*
 
-- G4-G7 integrated gameplay, full map traversal, production character LODs and
-  first-person arms, HUD/UX, audio/VFX, and accessibility acceptance.
+- G4: the bounded local eight-client authority soak is integrated and green;
+  production staging and the complete 3D online product path remain open.
   *Currently being worked on.*
 
-- G8 performance/soak/package validation and G9 final release audit, repository
-  provenance, public licensing, and release documentation.
+- G5: Inkfall Rev3 is a review candidate, not a human-accepted final map.
+  *Currently being worked on.*
+
+- G6: movement/socket and semantic-action contracts are integrated; final
+  model quality, authored equip/melee/ability clips, close-contact review,
+  hidden-view action clocks, and online 3D avatar integration remain open.
+  *Currently being worked on.*
+
+- G7: the current HUD/UI has been rejected and will not be deployed. A
+  replacement visual direction and full UX/accessibility acceptance remain
+  open. *Currently being worked on.*
+
+- G8: restart resources remain stable in the bounded five-restart proof and the
+  capture cadence is repaired; a fresh qualifying 30-minute soak on the final
+  integrated visual build is still required. *Currently being worked on.*
+
+- G9: security/readiness controls are integrated; public license selection and
+  missing provenance evidence for six legacy assets still block release.
   *Currently being worked on.*
 
 ## Snapshot validation
 
 - Vite production build: PASS.
-- Cloudflare Worker TypeScript check: PASS.
-- Main and simulation TypeScript checks: PASS.
+- Main and Cloudflare Worker TypeScript checks: PASS.
 - ESLint across client, Worker, tests, and tools: PASS.
-- Exact west-archive collision regression: PASS, 5/5.
-- Adjacent physics/movement/Inkfall matrix: PASS, 109/109.
-- Cloudflare Worker suite after lobby reliability persistence: PASS, 41/41.
-- Rev14 official Khronos glTF validation: 0 errors, with three non-root skinned
-  mesh warnings retained for product-integration review.
+- Application Vitest regression on integrated `f3b89d7`: PASS, 768/768.
+- Cloudflare Worker regression excluding the dedicated soak: PASS, 43/43.
+- Integrated eight-client authority soak: PASS, 1/1; 20.009 Hz, authority tick
+  p99 25 ms / max 36 ms, 8/8 combat convergence, resume preserved, and zero
+  rate rejects, backpressure episodes, evictions, tick failures, or decode
+  errors.
+- Rev17 Blender/export/Khronos and bounded runtime checks: technically green;
+  direct character visual review: FAILED/OPEN.
+- Cloudflare deployment: PAUSED. The rejected G7 presentation and incomplete
+  product gates must not be published as the replacement build.
 
-Last refreshed: 2026-07-25.
+Last refreshed: 2026-07-27.
