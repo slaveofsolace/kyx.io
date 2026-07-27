@@ -157,6 +157,47 @@ export class Bot {
     }
   }
 
+  resetForMatch(spawnPoint, noRespawn = false, healthMult = 1, displayIndex = 0) {
+    this.noRespawn = noRespawn;
+    this.maxHealth = Math.round(100 * healthMult);
+    this.displayName = `PRACTICE BOT ${String(displayIndex + 1).padStart(2, '0')}`;
+    this.respawnTimer = 0;
+    this.attackCooldown = 0;
+    this.flashTimer = 0;
+    this.wanderTarget.copy(spawnPoint);
+    this.wanderCooldown = 0;
+    this.lungeTimer = 0;
+    this._gunTimer = Math.random() * 0.8;
+    this._alertBlend = 0;
+    this._weaponT = Math.random() * Math.PI * 2;
+    this._walkT = Math.random() * Math.PI * 2;
+    this._provoked = false;
+    this._provokeTimer = 0;
+    this._dying = false;
+    this._deathT = 0;
+    this._deathSide = 1;
+    this._deathBaseY = spawnPoint.y;
+
+    this.respawnAt(spawnPoint);
+    this.mesh.traverse((object) => {
+      if (!object.isMesh || !object.material) return;
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      for (const material of materials) {
+        material.transparent = false;
+        material.opacity = 1;
+      }
+    });
+    if (this.bodyMat) this.bodyMat.emissiveIntensity = 0;
+
+    const runtime = this.mesh.userData;
+    runtime?.setLocomotion?.(0, true, false, 0);
+    runtime?.setAim?.(0, 0);
+    runtime?.setMotion?.('idle');
+    if (this._rig) {
+      for (const limb of Object.values(this._rig)) limb.rotation.set(0, 0, 0);
+    }
+  }
+
   takeDamage(amount) {
     if (!this.alive) return false;
     // Being hit is the only thing that makes a bot fight back.

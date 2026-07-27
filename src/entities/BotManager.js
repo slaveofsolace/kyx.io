@@ -30,6 +30,20 @@ export class BotManager {
     return bot;
   }
 
+  // Same-population restarts retain the existing character meshes, skeletons,
+  // materials, and held weapons. Rebuilding cloned GLTF actors on every match
+  // restart leaves their renderer resources cached even after scene removal.
+  resetAll(count = 7, noRespawn = false, healthMult = 1) {
+    if (this.bots.length !== count) return false;
+    for (let index = 0; index < this.bots.length; index++) {
+      const bot = this.bots[index];
+      const point = this.world.spawnPoints[index % this.world.spawnPoints.length].clone();
+      bot.resetForMatch(point, noRespawn, healthMult, index);
+      if (bot.mesh.parent !== this.scene) this.scene.add(bot.mesh);
+    }
+    return true;
+  }
+
   get count() { return this.bots.length; }
 
   // True when every bot in the current set is dead (useful for wave / elimination checks).
