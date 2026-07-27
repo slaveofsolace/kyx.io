@@ -314,7 +314,12 @@ if (config) {
 if (indexHtml) {
   assertPattern('source shell identifies Offline Practice', indexHtml, /OFFLINE PRACTICE/iu, 'Expected visible OFFLINE PRACTICE copy.');
   assertPattern('source shell discloses one local player and seven bots', indexHtml, /1\s+LOCAL\s+PLAYER\s*\/\s*7\s+BOTS/iu, 'Expected 1 LOCAL PLAYER / 7 BOTS.');
-  assertPattern('source shell disables unavailable online play', indexHtml, /<button\b(?=[^>]*\bdisabled\b)[^>]*>[^]*?ONLINE\s+MATCH[^]*?NOT\s+AVAILABLE[^]*?<\/button>/iu, 'Expected a disabled ONLINE MATCH - NOT AVAILABLE button.');
+  assertPattern(
+    'source shell disables the unconfigured online fallback',
+    indexHtml,
+    /<button\b(?=[^>]*\bid=["']online-match-button["'])(?=[^>]*\bdisabled\b)(?=[^>]*\baria-disabled=["']true["'])[^>]*>[^]*?ONLINE\s+UNAVAILABLE[^]*?<\/button>/iu,
+    'Expected the online match control to remain disabled and visibly unavailable until an authoritative endpoint is configured.',
+  );
   assertPattern('source shell includes the desktop-required overlay', indexHtml, /id\s*=\s*['"]desktop-required-overlay['"]/iu, 'Expected the desktop-required overlay.');
 }
 
@@ -470,7 +475,12 @@ if (distHtmlDocuments.length === DIST_HTML.length) {
   if (builtIndex) {
     assertPattern('built shell identifies Offline Practice', builtIndex, /OFFLINE PRACTICE/iu, 'Built index is missing OFFLINE PRACTICE copy.');
     assertPattern('built shell discloses one local player and seven bots', builtIndex, /1\s+LOCAL\s+PLAYER\s*\/\s*7\s+BOTS/iu, 'Built index is missing 1 LOCAL PLAYER / 7 BOTS.');
-    assertPattern('built shell disables unavailable online play', builtIndex, /<button\b(?=[^>]*\bdisabled\b)[^>]*>[^]*?ONLINE\s+MATCH[^]*?NOT\s+AVAILABLE[^]*?<\/button>/iu, 'Built index must disable ONLINE MATCH - NOT AVAILABLE.');
+    assertPattern(
+      'built shell disables the unconfigured online fallback',
+      builtIndex,
+      /<button\b(?=[^>]*\bid=["']online-match-button["'])(?=[^>]*\bdisabled\b)(?=[^>]*\baria-disabled=["']true["'])[^>]*>[^]*?ONLINE\s+UNAVAILABLE[^]*?<\/button>/iu,
+      'Built index must keep the online match control disabled and visibly unavailable until an authoritative endpoint is configured.',
+    );
   }
 
   for (const name of ['dist/login.html', 'dist/register.html']) {

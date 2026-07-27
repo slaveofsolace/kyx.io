@@ -651,7 +651,6 @@ export class WeaponSystem {
 
   _doHitscanShot(world, botMeshes) {
     const def = this.currentDef;
-    const st = this.currentState;
     this.camera.getWorldPosition(this._camPos);
     this.camera.getWorldDirection(this._camDir);
     this._rightVec.setFromMatrixColumn(this.camera.matrixWorld, 0);
@@ -663,7 +662,6 @@ export class WeaponSystem {
 
     const pelletCount = def.pellets || 1;
     let anyHitBot = false;
-    let lastImpact = null;
 
     for (let i = 0; i < pelletCount; i++) {
       this._pelletDir.copy(this._camDir);
@@ -676,7 +674,6 @@ export class WeaponSystem {
       const hits = this._raycaster.intersectObjects(targets, true);
       const hit = hits.find((h) => !h.object.userData.noHit);
       if (hit) {
-        lastImpact = hit.point;
         const bot = hit.object.userData.bot;
         if (bot) {
           anyHitBot = true;

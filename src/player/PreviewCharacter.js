@@ -95,16 +95,6 @@ function _buildFromGLB(skin, armorTypeId, armorSkin) {
 // ---------------------------------------------------------------------------
 // Shared fixed materials (not recolored by skins)
 // ---------------------------------------------------------------------------
-const _visorCyan = new THREE.MeshStandardMaterial({
-  color: 0x00cfff, roughness: 0.06, metalness: 0.05,
-  emissive: 0x00cfff, emissiveIntensity: 1.1,
-  transparent: true, opacity: 0.84
-});
-const _visorGreen = new THREE.MeshStandardMaterial({
-  color: 0x00ff88, roughness: 0.06, metalness: 0.05,
-  emissive: 0x00ff88, emissiveIntensity: 0.9,
-  transparent: true, opacity: 0.78
-});
 const _trimMat = new THREE.MeshStandardMaterial({
   color: 0x9aaab4, roughness: 0.22, metalness: 0.88
 });
@@ -114,7 +104,6 @@ const _darkJoint = new THREE.MeshStandardMaterial({
 const _skinMat  = new THREE.MeshStandardMaterial({ color: 0xc8a882, roughness: 0.82, metalness: 0.0 });
 const _bootMat  = new THREE.MeshStandardMaterial({ color: 0x1c1a14, roughness: 0.88, metalness: 0.06 });
 const _odMat    = new THREE.MeshStandardMaterial({ color: 0x3e4a2e, roughness: 0.90, metalness: 0.04 });
-const _gloveMat = new THREE.MeshStandardMaterial({ color: 0x2a2218, roughness: 0.92, metalness: 0.04 });
 
 // ---------------------------------------------------------------------------
 // Primitive factories
