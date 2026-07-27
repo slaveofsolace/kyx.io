@@ -9,7 +9,7 @@
   <title>KYX.IO &mdash; Offline Practice</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body data-interface="foundry-command-v2">
+<body data-interface="kyx-field-ui-v3">
   <div id="app">
     <canvas
       id="game-canvas"
@@ -29,74 +29,74 @@
     <header id="top-nav" class="hidden">
       <div class="nav-brand-lockup">
         <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
-        <span class="local-build-chip">LOCAL BUILD</span>
+        <span class="local-build-chip">Local build</span>
       </div>
       <nav class="nav-items" aria-label="Practice menu">
         <button
           type="button"
           class="nav-item mode-option practice-nav-mode"
           data-mode="deathmatch"
-        >OFFLINE PRACTICE</button>
-        <button type="button" class="nav-item" data-panel="loadout" aria-controls="panel-loadout" aria-expanded="false">LOADOUT</button>
-        <button type="button" class="nav-item" data-panel="settings" aria-controls="panel-settings" aria-expanded="false">SETTINGS</button>
+        >Practice</button>
+        <button type="button" class="nav-item" data-panel="loadout" aria-controls="panel-loadout" aria-expanded="false">Loadout</button>
+        <button type="button" class="nav-item" data-panel="settings" aria-controls="panel-settings" aria-expanded="false">Settings</button>
         <button
           id="online-match-button"
           type="button"
           class="nav-item online-unavailable"
           disabled
           aria-disabled="true"
+          aria-label="Online match — not available"
           title="No authoritative online endpoint is configured in this build"
-        >ONLINE MATCH &mdash; NOT AVAILABLE</button>
+        >Online unavailable</button>
       </nav>
+      <aside id="nav-side" class="hidden local-profile-card" aria-label="Local profile">
+        <span id="nav-username" class="side-user">Recruit</span>
+        <span class="local-profile-storage">Local guest</span>
+      </aside>
     </header>
-
-    <aside id="nav-side" class="hidden local-profile-card" aria-label="Local profile">
-      <span class="local-profile-kicker">LOCAL GUEST PROFILE</span>
-      <span id="nav-username" class="side-user">Recruit</span>
-      <span class="local-profile-storage">SAVED ON THIS DEVICE</span>
-    </aside>
 
     <!-- Primary mode card and explicit local population disclosure. -->
     <main id="center-play" class="hidden">
       <section class="practice-launch-card" aria-labelledby="practice-title">
         <header class="practice-card-head">
           <div>
-            <p class="practice-eyebrow">LOCAL COMBAT SIMULATION // 01</p>
-            <h2 id="practice-title">IRON BASTION</h2>
+            <p class="practice-eyebrow">Offline practice</p>
+            <h1 id="practice-title">Iron Bastion</h1>
+            <p class="practice-summary">A solo deathmatch drill against seven clearly labeled bots.</p>
           </div>
           <div class="practice-ready-state" aria-label="Simulation ready">
             <span class="practice-ready-pulse" aria-hidden="true"></span>
-            SIM READY
+            Ready
           </div>
         </header>
 
         <div class="practice-command-grid">
           <div class="map-preview-window" aria-label="Live map preview">
-            <span class="map-preview-kicker">TRAINING GROUND</span>
-            <strong>BASTION SECTOR</strong>
-            <span class="map-preview-coordinates">GRID 07-C // LOCAL</span>
+            <span class="map-preview-kicker">Training ground</span>
+            <strong>Bastion Sector</strong>
+            <span class="map-preview-coordinates">Local simulation</span>
           </div>
 
           <div class="practice-launch-rail">
             <div class="practice-stat-grid" aria-label="Offline practice details">
-              <span><small>MODE</small>DEATHMATCH</span>
-              <span><small>ROSTER</small>1 + 7 BOTS</span>
-              <span><small>AUTHORITY</small>THIS DEVICE</span>
+              <span><small>Mode</small>Deathmatch</span>
+              <span><small>Roster</small>1 player + 7 bots</span>
+              <span><small>Authority</small>This device</span>
             </div>
-            <p class="practice-population">1 LOCAL PLAYER / 7 BOTS</p>
-            <button id="play-btn" type="button" class="click-to-play"><span>START OFFLINE PRACTICE</span><b aria-hidden="true">ENTER</b></button>
+            <button id="play-btn" type="button" class="click-to-play" aria-label="Start offline practice"><span>Start practice</span><b aria-hidden="true">Enter</b></button>
+            <p class="practice-footnote">Runs only on this device. Bots are never presented as online players.</p>
           </div>
         </div>
 
-        <div class="practice-inspection-rail">
-          <p class="practice-inspection-label">DEVELOPMENT INSPECTION // NON-DEFAULT</p>
+        <details class="practice-inspection-rail">
+          <summary>Development inspections</summary>
           <div class="practice-inspection-grid">
             <div>
               <a
                 id="locked-graybox-preview-link"
                 class="locked-graybox-preview-link"
                 href="?mapPackage=inkfall_foundry%402"
-              >INKFALL FOUNDRY @2 <span aria-hidden="true">↗</span></a>
+              >Inkfall Foundry @2</a>
               <p class="locked-graybox-preview-note">Locked graybox package. Does not replace the Offline Practice map.</p>
             </div>
             <div>
@@ -104,136 +104,165 @@
                 id="press-hall-inspection-link"
                 class="locked-graybox-preview-link"
                 href="?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined"
-              >PRESS HALL V3.3 <span aria-hidden="true">↗</span></a>
+              >Press Hall v3.3</a>
               <p class="locked-graybox-preview-note">Hash-pinned material runtime. G5 and G8 remain open.</p>
             </div>
           </div>
-        </div>
-        <p class="practice-footnote">Runs entirely on this device. Nothing shown here represents online players or shared progression.</p>
+        </details>
       </section>
     </main>
 
     <!-- Local loadout. Cosmetic ownership and currency claims are intentionally absent. -->
     <section id="panel-loadout" class="nav-panel nav-panel-inv hidden" aria-label="Local loadout">
-      <button id="inv-close-btn" type="button" class="inv-close-btn" title="Close loadout">[X]</button>
+      <button id="inv-close-btn" type="button" class="panel-close-btn" aria-label="Close loadout">Close</button>
       <div class="inv-header">
         <div class="inv-avatar-big">
           <canvas id="armor-preview-canvas" width="200" height="200" aria-label="Armor preview"></canvas>
         </div>
         <div class="inv-id">
-          <div class="local-panel-kicker">LOCAL LOADOUT</div>
+          <div class="local-panel-kicker">Local loadout</div>
           <div class="inv-username" id="inv-username">Recruit</div>
           <input id="player-name" type="hidden" value="Recruit" />
           <div class="inv-meta local-only-note">Changes are stored on this device.</div>
         </div>
       </div>
-      <div class="inv-section-label">EQUIPPED</div>
+      <div class="inv-section-label">Equipped</div>
       <div id="inv-equipped" class="inv-card-row"></div>
-      <div class="inv-section-label">AVAILABLE LOCALLY</div>
+      <div class="inv-section-label">Available locally</div>
       <div id="inv-tabs" class="inv-tabs"></div>
       <div id="inv-grid" class="inv-grid"></div>
     </section>
 
     <!-- Local settings are the only other active shell panel. -->
-    <section id="panel-settings" class="nav-panel hidden" aria-label="Local settings">
+    <section id="panel-settings" class="nav-panel hidden" aria-labelledby="settings-title">
       <header class="settings-command-head">
         <div>
-          <p>LOCAL SYSTEM PROFILE // 01</p>
-          <h2>FIELD CALIBRATION</h2>
+          <p>Saved on this device</p>
+          <h2 id="settings-title">Settings</h2>
         </div>
-        <span>DEVICE-SAVED</span>
+        <button id="settings-close-btn" type="button" class="panel-close-btn" aria-label="Close settings">Close</button>
       </header>
-      <p class="settings-brief">DISPLAY / INPUT PROFILE <span>Saved only on this device</span></p>
-      <div class="settings-section">CONTROLS</div>
+      <p class="settings-brief">Tune input, clarity, and comfort without changing match authority.</p>
 
-      <label class="field-label" for="set-sens">Mouse Sensitivity</label>
-      <div class="setting-row">
-        <input type="range" id="set-sens" min="30" max="300" step="5" value="100" class="setting-slider" />
-        <output id="set-sens-val" class="setting-val" for="set-sens">1.0&times;</output>
+      <div class="settings-layout">
+        <fieldset class="settings-group">
+          <legend class="settings-section">Controls</legend>
+
+          <label class="field-label" for="set-sens">Mouse sensitivity</label>
+          <div class="setting-row">
+            <input type="range" id="set-sens" min="30" max="300" step="5" value="100" class="setting-slider" />
+            <output id="set-sens-val" class="setting-val" for="set-sens">1.0&times;</output>
+          </div>
+
+          <label class="field-label" for="set-fov">Field of view</label>
+          <div class="setting-row">
+            <input type="range" id="set-fov" min="60" max="110" step="5" value="78" class="setting-slider" />
+            <output id="set-fov-val" class="setting-val" for="set-fov">78&deg;</output>
+          </div>
+
+          <span class="field-label" id="invert-look-label">Vertical look</span>
+          <div class="quality-btns" id="invert-btns" role="group" aria-labelledby="invert-look-label">
+            <button type="button" class="quality-btn invert-btn active" data-inv="off" aria-pressed="true">Normal</button>
+            <button type="button" class="quality-btn invert-btn" data-inv="on" aria-pressed="false">Inverted</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="settings-group">
+          <legend class="settings-section">Audio</legend>
+
+          <label class="field-label" for="set-vol">Master volume</label>
+          <div class="setting-row">
+            <input type="range" id="set-vol" min="0" max="100" step="5" value="50" class="setting-slider" />
+            <output id="set-vol-val" class="setting-val" for="set-vol">50%</output>
+          </div>
+
+          <span class="field-label" id="subtitles-label">Subtitles</span>
+          <div class="quality-btns binary-choice" id="subtitles-btns" role="group" aria-labelledby="subtitles-label">
+            <button type="button" class="quality-btn" data-subtitles="off" aria-pressed="false">Off</button>
+            <button type="button" class="quality-btn active" data-subtitles="on" aria-pressed="true">On</button>
+          </div>
+
+          <span class="field-label" id="visual-audio-cues-label">Critical sound indicators</span>
+          <div class="quality-btns binary-choice" id="visual-audio-cues-btns" role="group" aria-labelledby="visual-audio-cues-label" aria-describedby="visual-audio-cues-note">
+            <button type="button" class="quality-btn active" data-visual-audio-cues="off" aria-pressed="true">Off</button>
+            <button type="button" class="quality-btn" data-visual-audio-cues="on" aria-pressed="false">On</button>
+          </div>
+          <p id="visual-audio-cues-note" class="settings-note">Shows bounded threat and status labels without revealing exact enemy positions.</p>
+        </fieldset>
+
+        <fieldset class="settings-group">
+          <legend class="settings-section">Graphics</legend>
+
+          <span class="field-label" id="quality-label">Render quality</span>
+          <div class="quality-btns" id="quality-btns" role="group" aria-labelledby="quality-label">
+            <button type="button" class="quality-btn" data-q="low" aria-pressed="false">Low</button>
+            <button type="button" class="quality-btn active" data-q="medium" aria-pressed="true">Medium</button>
+            <button type="button" class="quality-btn" data-q="high" aria-pressed="false">High</button>
+          </div>
+
+          <p class="settings-note settings-note--quiet">Motion blur remains off in this build. Quality changes affect presentation only.</p>
+        </fieldset>
+
+        <fieldset class="settings-group settings-group--accessibility">
+          <legend class="settings-section">HUD &amp; accessibility</legend>
+          <p class="settings-note">Critical health, ammo, reload, and timer states always retain text or numeric cues.</p>
+
+          <div class="settings-pair">
+            <div>
+              <label class="field-label" for="set-hud-scale">HUD scale</label>
+              <div class="setting-row">
+                <input type="range" id="set-hud-scale" min="80" max="140" step="5" value="100" class="setting-slider" />
+                <output id="set-hud-scale-val" class="setting-val" for="set-hud-scale">100%</output>
+              </div>
+            </div>
+            <div>
+              <label class="field-label" for="set-crosshair-scale">Crosshair size</label>
+              <div class="setting-row">
+                <input type="range" id="set-crosshair-scale" min="75" max="175" step="5" value="100" class="setting-slider" />
+                <output id="set-crosshair-scale-val" class="setting-val" for="set-crosshair-scale">100%</output>
+              </div>
+            </div>
+          </div>
+
+          <span class="field-label" id="crosshair-color-label">Crosshair color</span>
+          <div class="quality-btns accessibility-choice-grid" id="crosshair-color-btns" role="group" aria-labelledby="crosshair-color-label">
+            <button type="button" class="quality-btn crosshair-choice active" data-crosshair-color="cyan" aria-pressed="true"><span class="choice-swatch swatch-cyan" aria-hidden="true"></span>Aqua</button>
+            <button type="button" class="quality-btn crosshair-choice" data-crosshair-color="white" aria-pressed="false"><span class="choice-swatch swatch-white" aria-hidden="true"></span>White</button>
+            <button type="button" class="quality-btn crosshair-choice" data-crosshair-color="amber" aria-pressed="false"><span class="choice-swatch swatch-amber" aria-hidden="true"></span>Amber</button>
+          </div>
+
+          <div class="settings-toggle-grid">
+            <div>
+              <span class="field-label" id="high-contrast-label">High contrast</span>
+              <div class="quality-btns binary-choice" id="high-contrast-btns" role="group" aria-labelledby="high-contrast-label">
+                <button type="button" class="quality-btn active" data-high-contrast="off" aria-pressed="true">Standard</button>
+                <button type="button" class="quality-btn" data-high-contrast="on" aria-pressed="false">High</button>
+              </div>
+            </div>
+
+            <div>
+              <span class="field-label" id="reduced-motion-label">Camera / HUD motion</span>
+              <div class="quality-btns binary-choice" id="reduced-motion-btns" role="group" aria-labelledby="reduced-motion-label">
+                <button type="button" class="quality-btn active" data-reduced-motion="off" aria-pressed="true">Full</button>
+                <button type="button" class="quality-btn" data-reduced-motion="on" aria-pressed="false">Reduced</button>
+              </div>
+            </div>
+
+            <div>
+              <span class="field-label" id="reduced-flash-label">Full-screen flash</span>
+              <div class="quality-btns binary-choice" id="reduced-flash-btns" role="group" aria-labelledby="reduced-flash-label">
+                <button type="button" class="quality-btn active" data-reduced-flash="off" aria-pressed="true">Full</button>
+                <button type="button" class="quality-btn" data-reduced-flash="on" aria-pressed="false">Reduced</button>
+              </div>
+            </div>
+          </div>
+        </fieldset>
       </div>
 
-      <label class="field-label" for="set-fov">Field of View</label>
-      <div class="setting-row">
-        <input type="range" id="set-fov" min="60" max="110" step="5" value="78" class="setting-slider" />
-        <output id="set-fov-val" class="setting-val" for="set-fov">78&deg;</output>
-      </div>
-
-      <span class="field-label" id="invert-look-label">Invert Look (Vertical)</span>
-      <div class="quality-btns" id="invert-btns" role="group" aria-labelledby="invert-look-label">
-        <button type="button" class="quality-btn invert-btn active" data-inv="off" aria-pressed="true">NORMAL</button>
-        <button type="button" class="quality-btn invert-btn" data-inv="on" aria-pressed="false">INVERTED</button>
-      </div>
-
-      <div class="settings-section">AUDIO</div>
-      <label class="field-label" for="set-vol">Master Volume</label>
-      <div class="setting-row">
-        <input type="range" id="set-vol" min="0" max="100" step="5" value="50" class="setting-slider" />
-        <output id="set-vol-val" class="setting-val" for="set-vol">50%</output>
-      </div>
-
-      <span class="field-label" id="subtitles-label">Subtitles</span>
-      <div class="quality-btns binary-choice" id="subtitles-btns" role="group" aria-labelledby="subtitles-label">
-        <button type="button" class="quality-btn" data-subtitles="off" aria-pressed="false">OFF</button>
-        <button type="button" class="quality-btn active" data-subtitles="on" aria-pressed="true">ON</button>
-      </div>
-
-      <span class="field-label" id="visual-audio-cues-label">Critical Sound Indicators</span>
-      <div class="quality-btns binary-choice" id="visual-audio-cues-btns" role="group" aria-labelledby="visual-audio-cues-label" aria-describedby="visual-audio-cues-note">
-        <button type="button" class="quality-btn active" data-visual-audio-cues="off" aria-pressed="true">OFF</button>
-        <button type="button" class="quality-btn" data-visual-audio-cues="on" aria-pressed="false">ON</button>
-      </div>
-      <p id="visual-audio-cues-note" class="settings-note">Shows bounded threat and status labels for critical sounds without revealing exact enemy positions.</p>
-
-      <div class="settings-section">GRAPHICS</div>
-      <span class="field-label" id="quality-label">Render Quality</span>
-      <div class="quality-btns" id="quality-btns" role="group" aria-labelledby="quality-label">
-        <button type="button" class="quality-btn" data-q="low" aria-pressed="false">LOW</button>
-        <button type="button" class="quality-btn active" data-q="medium" aria-pressed="true">MEDIUM</button>
-        <button type="button" class="quality-btn" data-q="high" aria-pressed="false">HIGH</button>
-      </div>
-
-      <div class="settings-section">HUD / ACCESSIBILITY</div>
-      <p class="settings-note">Vital, ammo, reload, and timer warnings always retain text or numeric cues.</p>
-
-      <label class="field-label" for="set-hud-scale">HUD Scale</label>
-      <div class="setting-row">
-        <input type="range" id="set-hud-scale" min="80" max="140" step="5" value="100" class="setting-slider" />
-        <output id="set-hud-scale-val" class="setting-val" for="set-hud-scale">100%</output>
-      </div>
-
-      <label class="field-label" for="set-crosshair-scale">Crosshair Size</label>
-      <div class="setting-row">
-        <input type="range" id="set-crosshair-scale" min="75" max="175" step="5" value="100" class="setting-slider" />
-        <output id="set-crosshair-scale-val" class="setting-val" for="set-crosshair-scale">100%</output>
-      </div>
-
-      <span class="field-label" id="crosshair-color-label">Crosshair Color</span>
-      <div class="quality-btns accessibility-choice-grid" id="crosshair-color-btns" role="group" aria-labelledby="crosshair-color-label">
-        <button type="button" class="quality-btn crosshair-choice active" data-crosshair-color="cyan" aria-pressed="true"><span class="choice-swatch swatch-cyan" aria-hidden="true"></span>CYAN</button>
-        <button type="button" class="quality-btn crosshair-choice" data-crosshair-color="white" aria-pressed="false"><span class="choice-swatch swatch-white" aria-hidden="true"></span>WHITE</button>
-        <button type="button" class="quality-btn crosshair-choice" data-crosshair-color="amber" aria-pressed="false"><span class="choice-swatch swatch-amber" aria-hidden="true"></span>AMBER</button>
-      </div>
-
-      <span class="field-label" id="high-contrast-label">High Contrast</span>
-      <div class="quality-btns binary-choice" id="high-contrast-btns" role="group" aria-labelledby="high-contrast-label">
-        <button type="button" class="quality-btn active" data-high-contrast="off" aria-pressed="true">STANDARD</button>
-        <button type="button" class="quality-btn" data-high-contrast="on" aria-pressed="false">HIGH</button>
-      </div>
-
-      <span class="field-label" id="reduced-motion-label">Camera / HUD Motion</span>
-      <div class="quality-btns binary-choice" id="reduced-motion-btns" role="group" aria-labelledby="reduced-motion-label">
-        <button type="button" class="quality-btn active" data-reduced-motion="off" aria-pressed="true">FULL</button>
-        <button type="button" class="quality-btn" data-reduced-motion="on" aria-pressed="false">REDUCED</button>
-      </div>
-
-      <span class="field-label" id="reduced-flash-label">Full-Screen Flash</span>
-      <div class="quality-btns binary-choice" id="reduced-flash-btns" role="group" aria-labelledby="reduced-flash-label">
-        <button type="button" class="quality-btn active" data-reduced-flash="off" aria-pressed="true">FULL</button>
-        <button type="button" class="quality-btn" data-reduced-flash="on" aria-pressed="false">REDUCED</button>
-      </div>
-
-      <button id="settings-save-btn" type="button" class="play-btn">SAVE LOCAL SETTINGS</button>
-      <p id="settings-save-status" class="settings-save-status" role="status" aria-live="polite"></p>
+      <footer class="settings-actions">
+        <button id="settings-save-btn" type="button" class="play-btn">Save settings</button>
+        <p id="settings-save-status" class="settings-save-status" role="status" aria-live="polite"></p>
+      </footer>
     </section>
 
     <!-- Required initialization hooks, kept inaccessible and free of product claims. -->
@@ -246,35 +275,37 @@
     <!-- Local map transition. -->
     <div id="map-loading" class="hidden" role="status" aria-live="polite">
       <div class="ml-panel">
-        <div class="ml-name">IRON-<br />BASTION</div>
+        <div class="ml-name">Iron<br />Bastion</div>
         <div class="ml-region" id="ml-region">Local device</div>
         <div class="ml-mode" id="ml-mode">Offline Practice</div>
         <div class="ml-players" id="ml-players">1 local player / 7 bots</div>
-        <div class="ml-tip" id="ml-tip">TIP: press Q to blink forward</div>
+        <div class="ml-tip" id="ml-tip">Tip: press Q to blink forward</div>
       </div>
     </div>
 
     <div id="pause-menu" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pause-title" inert>
       <div class="menu-panel small">
-        <h2 id="pause-title">PRACTICE PAUSED</h2>
-        <p class="pause-recovery-note">POINTER RELEASED // TAB TO SELECT // ENTER TO CONFIRM</p>
+        <p class="dialog-kicker">Offline practice</p>
+        <h2 id="pause-title">Paused</h2>
+        <p class="pause-recovery-note">Pointer released. Use Tab to select and Enter to confirm.</p>
         <p id="pause-lock-status" class="pause-lock-status hidden" role="alert"></p>
-        <button id="resume-btn" type="button" class="play-btn">RESUME PRACTICE</button>
-        <button id="quit-btn" type="button" class="ghost-btn">QUIT TO PRACTICE MENU</button>
+        <button id="resume-btn" type="button" class="play-btn">Resume practice</button>
+        <button id="quit-btn" type="button" class="ghost-btn">Quit to practice menu</button>
       </div>
     </div>
 
     <div id="gameover-menu" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameover-title" inert>
       <div class="menu-panel small">
-        <h2 id="gameover-title">YOU DIED</h2>
+        <p class="dialog-kicker">Combat report</p>
+        <h2 id="gameover-title">Eliminated</h2>
         <div class="stats" id="gameover-stats"></div>
-        <button id="restart-btn" type="button" class="play-btn">RESPAWN OFFLINE</button>
-        <button id="menu-btn" type="button" class="ghost-btn">PRACTICE MENU</button>
+        <button id="restart-btn" type="button" class="play-btn">Respawn offline</button>
+        <button id="menu-btn" type="button" class="ghost-btn">Practice menu</button>
       </div>
     </div>
 
     <!-- In-practice HUD: every population label identifies bots explicitly. -->
-    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="g7-foundation-v1" data-ui-revision="foundry-command-v2" data-kyx-a11y="text-and-pattern-critical-states">
+    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="g7-foundation-v1" data-ui-revision="kyx-field-ui-v3" data-kyx-a11y="text-and-pattern-critical-states">
       <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div id="hitmarker" aria-hidden="true"></div>
       <div id="damage-flash" aria-hidden="true"></div>
@@ -282,43 +313,40 @@
 
       <div id="hud-vitals" class="hud-vitals-cluster" role="group" aria-label="Player vital status">
         <div id="health-wrap" class="hud-panel" aria-label="Health 100 of 100">
-          <span class="hud-panel-code" aria-hidden="true">VTL-01</span>
-          <span class="hud-readout-label">HP</span>
+          <span class="hud-readout-label">Health</span>
           <div class="bar-bg"><div id="health-bar" class="bar-fill"></div></div>
           <span id="health-text">100</span>
-          <span id="health-state" class="hud-state-label hidden">LOW</span>
+          <span id="health-state" class="hud-state-label hidden">Low</span>
         </div>
 
         <div id="shield-wrap" class="hud-panel hidden" aria-label="Shield 0">
-          <span class="hud-panel-code" aria-hidden="true">VTL-02</span>
-          <span class="hud-readout-label">SHD</span>
+          <span class="hud-readout-label">Shield</span>
           <div class="bar-bg"><div id="shield-bar" class="bar-fill shield-fill"></div></div>
           <span id="shield-text">0</span>
         </div>
 
         <div id="stamina-wrap" class="hud-panel" aria-label="Energy 100 of 100">
-          <span class="hud-panel-code" aria-hidden="true">VTL-03</span>
-          <span class="hud-readout-label">NRG</span>
+          <span class="hud-readout-label">Energy</span>
           <div class="bar-bg"><div id="stamina-bar" class="bar-fill stamina-fill"></div></div>
           <span id="stamina-text">100</span>
-          <span id="stamina-state" class="hud-state-label hidden">LOW</span>
+          <span id="stamina-state" class="hud-state-label hidden">Low</span>
         </div>
 
       </div>
 
       <div id="weapon-wrap" class="hud-panel">
-        <div class="hud-weapon-head"><span>ACTIVE WEAPON</span><i aria-hidden="true">WPN-01</i></div>
+        <div class="hud-weapon-head"><span>Active weapon</span></div>
         <div id="weapon-name">SIDEARM</div>
-        <div class="hud-ammo-row"><div id="ammo-text">12 / 60</div><span>MAG / RES</span></div>
-        <div id="reload-text" class="hidden">RELOADING...</div>
+        <div class="hud-ammo-row"><div id="ammo-text">12 / 60</div><span>mag / reserve</span></div>
+        <div id="reload-text" class="hidden">Reloading</div>
       </div>
 
       <div id="score-wrap" class="hud-panel">
-        <div class="hud-match-head"><div class="hud-practice-label">OFFLINE PRACTICE</div><span>LOCAL</span></div>
-        <div id="server-pop">1 LOCAL PLAYER / 7 BOTS<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
+        <div class="hud-match-head"><div class="hud-practice-label">Offline practice</div><span>Local</span></div>
+        <div id="server-pop">1 player / 7 bots<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
         <div class="hud-score-metrics">
-          <div><small>BOTS DEFEATED</small><span id="kill-count">0</span></div>
-          <div><small>SCORE</small><span id="score-count">0</span></div>
+          <div><small>Bots defeated</small><span id="kill-count">0</span></div>
+          <div><small>Score</small><span id="score-count">0</span></div>
         </div>
       </div>
 
@@ -327,21 +355,21 @@
       <div id="caption-region" class="caption-region hidden" aria-live="polite" aria-atomic="true" aria-label="Subtitles" data-caption-contract="speaker-text-direction"></div>
       <div id="audio-cue-region" class="audio-cue-region hidden" aria-live="polite" aria-atomic="true" aria-label="Critical sound indicators" data-audio-cue-contract="bounded-non-positional"></div>
       <div id="damage-direction" class="damage-direction hidden" data-direction="front" aria-live="polite" aria-atomic="true">
-        <div class="damage-direction-card"><span class="damage-direction-marker" aria-hidden="true"></span><span id="damage-direction-text">DAMAGE FRONT</span></div>
+        <div class="damage-direction-card"><span class="damage-direction-marker" aria-hidden="true"></span><span id="damage-direction-text">Damage ahead</span></div>
       </div>
       <div id="ability-reason" class="ability-reason hidden" role="status" aria-live="polite" aria-atomic="true"></div>
       <div id="interaction-prompt" class="interaction-prompt hidden" role="status" aria-live="polite" aria-atomic="true">
-        <span id="interaction-key" class="interaction-key">E</span><span id="interaction-text">INTERACT</span>
+        <span id="interaction-key" class="interaction-key">E</span><span id="interaction-text">Interact</span>
       </div>
       <div id="connection-warning" class="connection-warning hidden" role="status" aria-live="polite" aria-atomic="true" data-condition="online-session-only">
-        <span class="connection-warning-label">CONNECTION DEGRADED</span><span id="connection-warning-detail"></span>
+        <span class="connection-warning-label">Connection degraded</span><span id="connection-warning-detail"></span>
       </div>
       <div id="dm-timer" class="hidden"></div>
       <div id="streak-badge" class="hidden"></div>
 
       <div id="downed-overlay" class="hidden">
-        <div class="downed-text">DOWNED</div>
-        <div class="downed-sub">AUTO-REVIVE IN PROGRESS</div>
+        <div class="downed-text">Downed</div>
+        <div class="downed-sub">Auto-revive in progress</div>
         <div class="downed-bar-wrap"><div id="downed-bar"></div></div>
         <div id="downed-countdown" class="downed-countdown"></div>
       </div>
@@ -349,13 +377,13 @@
       <div id="teleport-flash"></div>
       <div id="ability-rack" role="group" aria-label="Selected abilities" data-ability-count="3">
         <div id="ability-frag" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Frag grenade, F, 2 available">
-          <span class="ability-key">F</span><span class="ability-name">FRAG</span><span id="frag-count" class="ability-count">2</span><span id="ability-frag-state" class="ability-state">READY</span>
+          <span class="ability-key">F</span><span class="ability-name">Frag</span><span id="frag-count" class="ability-count">2</span><span id="ability-frag-state" class="ability-state">Ready</span>
         </div>
         <div id="ability-q" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Blink, Q, ready">
-          <span class="ability-key">Q</span><span class="ability-name">BLINK</span><span id="ability-q-state" class="ability-state">READY</span>
+          <span class="ability-key">Q</span><span class="ability-name">Blink</span><span id="ability-q-state" class="ability-state">Ready</span>
         </div>
         <div id="ability-smoke" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Smoke grenade, E, 2 available">
-          <span class="ability-key">E</span><span class="ability-name">SMOKE</span><span id="smoke-count" class="ability-count">2</span><span id="ability-smoke-state" class="ability-state">READY</span>
+          <span class="ability-key">E</span><span class="ability-name">Smoke</span><span id="smoke-count" class="ability-count">2</span><span id="ability-smoke-state" class="ability-state">Ready</span>
         </div>
       </div>
 
@@ -372,14 +400,15 @@
     <!-- Local post-practice results. No currency or remote-population claims. -->
     <div id="leaderboard-overlay" class="hidden">
       <div class="lb-panel">
-        <div class="lb-winner"><span id="lb-winner-name">RECRUIT</span> <span class="lb-won">PRACTICE COMPLETE</span></div>
-        <div class="lb-match-over-sub">OFFLINE PRACTICE &bull; IRON BASTION &bull; 7 BOTS</div>
+        <div class="lb-kicker">Round report</div>
+        <div class="lb-winner"><span id="lb-winner-name">RECRUIT</span> <span class="lb-won">leads the field</span></div>
+        <div class="lb-match-over-sub">Offline practice &bull; Iron Bastion &bull; 7 bots</div>
         <table class="lb-table">
-          <thead><tr><th class="lb-th-rank">#</th><th class="lb-th-name">COMBATANT</th><th>SCORE</th><th>ASSISTS</th><th>DEFEATS</th><th>DEATHS</th><th>K/D</th></tr></thead>
+          <thead><tr><th class="lb-th-rank">#</th><th class="lb-th-name">Combatant</th><th>Score</th><th>Assists</th><th>Defeats</th><th>Deaths</th><th>K/D</th></tr></thead>
           <tbody id="lb-rows"></tbody>
         </table>
         <div class="lb-footer">
-          <div class="lb-new-match">NEXT OFFLINE ROUND IN <span id="lb-countdown">10</span>s</div>
+          <div class="lb-new-match">Next offline round in <span id="lb-countdown">10</span>s</div>
           <div class="lb-bar-wrap"><div id="lb-bar"></div></div>
         </div>
       </div>
@@ -387,10 +416,10 @@
 
     <div id="scoreboard-overlay" class="hidden">
       <div class="sb-panel">
-        <div class="sb-head"><div class="sb-title">PRACTICE SCOREBOARD</div><div class="sb-sub" id="sb-sub">OFFLINE PRACTICE &bull; 7 BOTS</div></div>
-        <div class="sb-tabs"><span class="sb-tab active">CURRENT ROUND</span></div>
+        <div class="sb-head"><div class="sb-title">Practice scoreboard</div><div class="sb-sub" id="sb-sub">Offline practice &bull; 7 bots</div></div>
+        <div class="sb-tabs"><span class="sb-tab active">Current round</span></div>
         <table class="sb-table">
-          <thead><tr><th class="sb-th-rank">#</th><th class="sb-th-name">COMBATANT</th><th>DEFEATS</th><th>SCORE</th></tr></thead>
+          <thead><tr><th class="sb-th-rank">#</th><th class="sb-th-name">Combatant</th><th>Defeats</th><th>Score</th></tr></thead>
           <tbody id="sb-rows"></tbody>
         </table>
         <div class="sb-hint">Hold <span class="sb-key">TAB</span> to view practice scores</div>
@@ -400,8 +429,8 @@
     <!-- CSS reveals this only on coarse-pointer or narrow devices. -->
     <div id="desktop-required-overlay" class="overlay desktop-required hidden" role="dialog" aria-modal="true" aria-labelledby="desktop-required-title">
       <div class="desktop-required-card">
-        <p class="practice-eyebrow">INPUT REQUIREMENT</p>
-        <h2 id="desktop-required-title">DESKTOP REQUIRED</h2>
+        <p class="practice-eyebrow">Input requirement</p>
+        <h2 id="desktop-required-title">Desktop required</h2>
         <p>This prototype currently requires a keyboard and mouse. Touch controls are not part of this build.</p>
       </div>
     </div>

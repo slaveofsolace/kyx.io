@@ -1,4 +1,5 @@
 import './style.css';
+import './ui/g7-ui.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import {
   LOCKED_GRAYBOX_PREVIEW_SEARCH,

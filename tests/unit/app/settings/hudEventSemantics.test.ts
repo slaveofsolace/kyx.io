@@ -53,13 +53,13 @@ describe('HUD event and ability semantics', () => {
     hud.updateGrenades(0, 2);
     hud.updateTeleport(0.42);
     expect(elements.get('ability-frag')?.dataset.state).toBe('empty');
-    expect(elements.get('ability-frag-state')?.textContent).toBe('EMPTY');
-    expect(elements.get('ability-smoke-state')?.textContent).toBe('READY');
+    expect(elements.get('ability-frag-state')?.textContent).toBe('Empty');
+    expect(elements.get('ability-smoke-state')?.textContent).toBe('Ready');
     expect(elements.get('ability-q')?.dataset.state).toBe('charging');
-    expect(elements.get('ability-q-state')?.textContent).toBe('CHARGE 42%');
+    expect(elements.get('ability-q-state')?.textContent).toBe('Charging 42%');
 
     expect(hud.showAbilityUnavailable('Q', 'blink recharging 2.9s')).toBe(true);
-    expect(elements.get('ability-reason')?.textContent).toBe('Q // BLINK RECHARGING 2.9S');
+    expect(elements.get('ability-reason')?.textContent).toBe('Q: Blink recharging 2.9s');
     expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(false);
     vi.advanceTimersByTime(1_400);
     expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(true);
@@ -71,16 +71,16 @@ describe('HUD event and ability semantics', () => {
 
     expect(hud.showDamageDirection('left')).toBe(true);
     expect(elements.get('damage-direction')?.dataset.direction).toBe('left');
-    expect(elements.get('damage-direction-text')?.textContent).toBe('DAMAGE LEFT');
+    expect(elements.get('damage-direction-text')?.textContent).toBe('Damage left');
     expect(hud.showDamageDirection('unknown')).toBe(false);
 
     expect(hud.showInteractionPrompt('E', 'open terminal')).toBe(true);
     expect(elements.get('interaction-key')?.textContent).toBe('E');
-    expect(elements.get('interaction-text')?.textContent).toBe('OPEN TERMINAL');
+    expect(elements.get('interaction-text')?.textContent).toBe('Open terminal');
 
     expect(hud.setConnectionWarning(true, 'packet loss 8%')).toBe(true);
     expect(elements.get('connection-warning')?.classList.contains('hidden')).toBe(false);
-    expect(elements.get('connection-warning-detail')?.textContent).toBe('PACKET LOSS 8%');
+    expect(elements.get('connection-warning-detail')?.textContent).toBe('Packet loss 8%');
 
     hud.clearTransientEvents();
     expect(elements.get('damage-direction')?.classList.contains('hidden')).toBe(true);

@@ -1,6 +1,15 @@
 import { getWeaponThumb } from './WeaponThumbnails.js';
 import { isDamageDirection } from './DamageDirection.js';
 
+function sentenceCaseHudText(value) {
+  const normalized = String(value ?? '').replace(/\s+/gu, ' ').trim();
+  if (!normalized) return '';
+  const prepared = normalized === normalized.toUpperCase()
+    ? normalized.toLocaleLowerCase()
+    : normalized;
+  return prepared.charAt(0).toLocaleUpperCase() + prepared.slice(1);
+}
+
 export class HUD {
   constructor() {
     this.root        = document.getElementById('hud');
@@ -71,18 +80,18 @@ export class HUD {
     this.modeInfo.textContent = '';
     const p = document.createElement('span');
     p.className = 'mode-primary';
-    p.textContent = primary;
+    p.textContent = sentenceCaseHudText(primary);
     this.modeInfo.appendChild(p);
     if (secondary) {
       const s = document.createElement('span');
       s.className = 'mode-secondary';
-      s.textContent = secondary;
+      s.textContent = sentenceCaseHudText(secondary);
       this.modeInfo.appendChild(s);
     }
     if (tertiary) {
       const t = document.createElement('span');
       t.className = 'mode-tertiary';
-      t.textContent = tertiary;
+      t.textContent = sentenceCaseHudText(tertiary);
       this.modeInfo.appendChild(t);
     }
   }
@@ -101,7 +110,7 @@ export class HUD {
     el.textContent = '';
     const label = document.createElement('span');
     label.className = 'wb-label';
-    label.textContent = 'WAVE SCORE';
+    label.textContent = 'Wave score';
     const value = document.createElement('span');
     value.className = 'wb-mult';
     value.textContent = `${mult}x`;
@@ -121,7 +130,7 @@ export class HUD {
   // Kill streak badge (shown briefly above the DM timer)
   showStreak(streak) {
     if (streak < 2) return;
-    this.streakBadge.textContent = `STREAK // x${streak} PRACTICE TARGETS`;
+    this.streakBadge.textContent = `${streak} target streak`;
     this.streakBadge.classList.remove('hidden');
     clearTimeout(this._streakTimeout);
     this._streakTimeout = setTimeout(() => this.streakBadge.classList.add('hidden'), 2500);
@@ -138,7 +147,7 @@ export class HUD {
 
   // Survival: wave banner (auto-removes after animation)
   showWaveBanner(text) {
-    this.waveBanner.textContent = text;
+    this.waveBanner.textContent = sentenceCaseHudText(text);
     this.waveBanner.classList.remove('hidden');
     clearTimeout(this._waveBannerTimer);
     this._waveBannerTimer = setTimeout(() => this.waveBanner.classList.add('hidden'), 3000);
@@ -186,7 +195,7 @@ export class HUD {
       'aria-label',
       `Health ${healthValue} of ${Math.ceil(player.maxHealth)}${healthState === 'stable' ? '' : `, ${healthState}`}`,
     );
-    this.healthState.textContent = healthState === 'critical' ? 'CRITICAL' : 'LOW';
+    this.healthState.textContent = healthState === 'critical' ? 'Critical' : 'Low';
     this.healthState.classList.toggle('hidden', healthState === 'stable');
 
     if (player.maxShield > 0) {
@@ -206,14 +215,14 @@ export class HUD {
     this.staminaBar.style.width  = `${spct}%`;
     this.staminaText.textContent = Math.ceil(player.stamina);
     this.staminaBar.classList.toggle('stamina-low', player.stamina < 25);
-    this.staminaState.textContent = 'LOW';
+    this.staminaState.textContent = 'Low';
     this.staminaState.classList.toggle('hidden', player.stamina >= 25);
     this.staminaWrap?.setAttribute(
       'aria-label',
       `Energy ${Math.ceil(player.stamina)} of ${Math.ceil(player.maxStamina)}${player.stamina < 25 ? ', low' : ''}`,
     );
 
-    this.weaponName.textContent = weaponInfo.name.toUpperCase();
+    this.weaponName.textContent = weaponInfo.name;
     this.ammoText.textContent = weaponInfo.isMelee
       ? '∞'
       : `${weaponInfo.magAmmo} / ${weaponInfo.reserveAmmo}`;
@@ -244,7 +253,7 @@ export class HUD {
       const ready = count > 0;
       slot?.classList.toggle('ready', ready);
       if (slot) slot.dataset.state = ready ? 'ready' : 'empty';
-      if (state) state.textContent = ready ? 'READY' : 'EMPTY';
+      if (state) state.textContent = ready ? 'Ready' : 'Empty';
       slot?.setAttribute('aria-label', `${name}, ${key}, ${count} available${ready ? '' : ', empty'}`);
     }
   }
@@ -261,7 +270,7 @@ export class HUD {
   showHeadshotFlair() {
     const el = document.createElement('div');
     el.className = 'hs-flair';
-    el.textContent = 'HEADSHOT // CONFIRMED';
+    el.textContent = 'Headshot confirmed';
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 1200);
   }
@@ -282,15 +291,15 @@ export class HUD {
     this._abilityQ.style.setProperty('--ratio', safeRatio);
     this._abilityQ.classList.toggle('ready', ready);
     this._abilityQ.dataset.state = ready ? 'ready' : 'charging';
-    if (this._abilityQState) this._abilityQState.textContent = ready ? 'READY' : `CHARGE ${Math.round(safeRatio * 100)}%`;
+    if (this._abilityQState) this._abilityQState.textContent = ready ? 'Ready' : `Charging ${Math.round(safeRatio * 100)}%`;
     this._abilityQ.setAttribute('aria-label', ready ? 'Blink, Q, ready' : `Blink, Q, charging ${Math.round(safeRatio * 100)} percent`);
   }
 
   showAbilityUnavailable(key, reason, durationMs = 1_400) {
     if (!this.abilityReason || typeof reason !== 'string' || !reason.trim()) return false;
     const safeKey = String(key ?? '').replace(/[^A-Z0-9]/giu, '').slice(0, 6) || 'ABILITY';
-    const safeReason = reason.replace(/\s+/gu, ' ').trim().slice(0, 80).toUpperCase();
-    this.abilityReason.textContent = `${safeKey.toUpperCase()} // ${safeReason}`;
+    const safeReason = sentenceCaseHudText(reason.replace(/\s+/gu, ' ').trim().slice(0, 80));
+    this.abilityReason.textContent = `${safeKey.toUpperCase()}: ${safeReason}`;
     this.abilityReason.classList.remove('hidden');
     clearTimeout(this._abilityReasonTimeout);
     const safeDuration = Number.isFinite(durationMs) ? Math.min(5_000, Math.max(500, durationMs)) : 1_400;
@@ -301,7 +310,13 @@ export class HUD {
   showDamageDirection(direction, durationMs = 750) {
     if (!this.damageDirection || !this.damageDirectionText || !isDamageDirection(direction)) return false;
     this.damageDirection.dataset.direction = direction;
-    this.damageDirectionText.textContent = `DAMAGE ${direction.toUpperCase()}`;
+    const directionLabel = {
+      front: 'ahead',
+      rear: 'behind',
+      left: 'left',
+      right: 'right',
+    }[direction];
+    this.damageDirectionText.textContent = `Damage ${directionLabel}`;
     this.damageDirection.classList.remove('hidden');
     clearTimeout(this._damageDirectionTimeout);
     const safeDuration = Number.isFinite(durationMs) ? Math.min(3_000, Math.max(300, durationMs)) : 750;
@@ -312,7 +327,7 @@ export class HUD {
   showInteractionPrompt(key, text) {
     if (!this.interactionPrompt || typeof text !== 'string' || !text.trim()) return false;
     if (this.interactionKey) this.interactionKey.textContent = String(key ?? 'E').replace(/\s+/gu, '').slice(0, 8).toUpperCase();
-    if (this.interactionText) this.interactionText.textContent = text.replace(/\s+/gu, ' ').trim().slice(0, 80).toUpperCase();
+    if (this.interactionText) this.interactionText.textContent = sentenceCaseHudText(text.replace(/\s+/gu, ' ').trim().slice(0, 80));
     this.interactionPrompt.classList.remove('hidden');
     return true;
   }
@@ -326,7 +341,7 @@ export class HUD {
     this.connectionWarning.classList.toggle('hidden', visible !== true);
     if (this.connectionWarningDetail) {
       this.connectionWarningDetail.textContent = visible
-        ? String(detail).replace(/\s+/gu, ' ').trim().slice(0, 80).toUpperCase()
+        ? sentenceCaseHudText(String(detail).replace(/\s+/gu, ' ').trim().slice(0, 80))
         : '';
     }
     return true;
@@ -351,13 +366,13 @@ export class HUD {
     this._damageTimeout = setTimeout(() => this.damageFlash.classList.remove('show'), 600);
   }
 
-  showPracticeStatus(show, botCount = 7, label = 'OFFLINE PRACTICE') {
+  showPracticeStatus(show, botCount = 7, label = 'Offline practice') {
     if (!this.practiceStatus) return;
     this.practiceStatus.classList.toggle('hidden', !show);
     if (show) {
       this.practiceStatus.textContent = botCount > 0
-        ? `${label} · ${botCount} BOTS`
-        : label;
+        ? `${sentenceCaseHudText(label)} · ${botCount} bots`
+        : sentenceCaseHudText(label);
     }
   }
 
@@ -425,7 +440,7 @@ export class HUD {
     const tb = document.getElementById('sb-rows');
     if (!ov || !tb) return;
     const subEl = document.getElementById('sb-sub');
-    if (subEl && sub) subEl.textContent = sub;
+    if (subEl && sub) subEl.textContent = sentenceCaseHudText(sub);
     tb.replaceChildren();
     rows.forEach((r, i) => {
       const rank = i + 1;

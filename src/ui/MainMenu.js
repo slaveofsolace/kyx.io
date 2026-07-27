@@ -3,7 +3,8 @@ import { loadArmorType } from '../player/ArmorTypes.js';
 import { GameSettings } from '../core/GameSettings.js';
 import { GAME_MODES } from '../core/GameModes.js';
 import { GUNS, MELEE, Loadout } from '../core/Loadout.js';
-import { focusFirst, trapTabWithin } from './KeyboardFocus.js';
+import { ControllerMenuNavigator } from './ControllerNavigation.js';
+import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
 
 const SAFE_PANELS = new Set(['loadout', 'modes', 'settings']);
 
@@ -37,6 +38,15 @@ function formatDuration(seconds) {
   return `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, '0')}`;
 }
 
+function sentenceCaseLabel(value) {
+  const normalized = String(value ?? '').replace(/\s+/gu, ' ').trim();
+  if (!normalized) return '';
+  const prepared = normalized === normalized.toUpperCase()
+    ? normalized.toLocaleLowerCase()
+    : normalized;
+  return prepared.charAt(0).toLocaleUpperCase() + prepared.slice(1);
+}
+
 function createStatRow(label, value) {
   const row = document.createElement('div');
   const labelNode = document.createTextNode(label);
@@ -56,6 +66,7 @@ export class MenuUI {
     this.pauseLockStatus = document.getElementById('pause-lock-status');
     this.gameoverMenu = document.getElementById('gameover-menu');
     this.gameoverStats = document.getElementById('gameover-stats');
+    this.gameCanvas = document.getElementById('game-canvas');
 
     this.selectedSkinId = getSkin().id;
     this.selectedArmorId = loadArmorType();
@@ -77,6 +88,11 @@ export class MenuUI {
     this._buildModeCards();
     this._buildSettings();
     this._wireNav();
+    this._controllerNavigation = new ControllerMenuNavigator({
+      getScope: () => this._activeFocusScope(),
+      onBack: () => this._handleBackNavigation(),
+    });
+    this._controllerNavigation.start();
   }
 
   _wireNav() {
@@ -144,13 +160,73 @@ export class MenuUI {
     document.getElementById('restart-btn')?.addEventListener('click', () => this.onRestart?.());
     document.getElementById('menu-btn')?.addEventListener('click', () => this.onBackToMenu?.());
     document.getElementById('inv-close-btn')?.addEventListener('click', () => this._closeAllPanels(true));
+    document.getElementById('settings-close-btn')?.addEventListener('click', () => this._closeAllPanels(true));
 
     document.addEventListener('keydown', (event) => {
       const activeDialog = [this.pauseMenu, this.gameoverMenu].find(
         (dialog) => dialog && !dialog.classList.contains('hidden'),
       );
-      if (activeDialog) trapTabWithin(activeDialog, event);
+      const activePanel = this._activePanel
+        ? document.getElementById(`panel-${this._activePanel}`)
+        : null;
+      const scope = activeDialog ?? activePanel ?? this._activeFocusScope();
+      if (scope) document.body.dataset.inputMode = 'keyboard';
+      if ((activeDialog || activePanel) && event.key === 'Tab') {
+        trapTabWithin(activeDialog ?? activePanel, event);
+        return;
+      }
+      if (event.key === 'Escape' && this._handleBackNavigation()) {
+        event.preventDefault();
+        return;
+      }
+
+      if (!scope || !event.key.startsWith('Arrow')) return;
+      const choiceGroup = event.target?.closest?.('[role="group"]');
+      if (choiceGroup && event.target?.matches?.('button')) {
+        const buttons = Array.from(choiceGroup.querySelectorAll('button:not([disabled])'));
+        const currentIndex = buttons.indexOf(event.target);
+        if (currentIndex >= 0) {
+          const delta = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
+          const next = buttons[(currentIndex + delta + buttons.length) % buttons.length];
+          event.preventDefault();
+          next?.focus();
+          next?.click();
+          return;
+        }
+      }
+
+      if (event.target?.matches?.('input[type="range"], textarea, select')) return;
+      event.preventDefault();
+      moveFocusSpatial(scope, event.key, event.target);
     });
+  }
+
+  _activeFocusScope() {
+    const activeDialog = [this.pauseMenu, this.gameoverMenu].find(
+      (dialog) => dialog && !dialog.classList.contains('hidden'),
+    );
+    if (activeDialog) return activeDialog;
+    if (this._activePanel) return document.getElementById(`panel-${this._activePanel}`);
+    if (this.centerPlay && !this.centerPlay.classList.contains('hidden')) {
+      return document.getElementById('app');
+    }
+    return null;
+  }
+
+  _handleBackNavigation() {
+    if (this._activePanel) {
+      this._closeAllPanels(true);
+      return true;
+    }
+    if (this.pauseMenu && !this.pauseMenu.classList.contains('hidden')) {
+      this.onResume?.();
+      return true;
+    }
+    if (this.gameoverMenu && !this.gameoverMenu.classList.contains('hidden')) {
+      this.onBackToMenu?.();
+      return true;
+    }
+    return false;
   }
 
   _closeAllDropdowns() {
@@ -257,8 +333,8 @@ export class MenuUI {
       const status = document.getElementById('settings-save-status');
       if (status) {
         status.textContent = persisted
-          ? 'SETTINGS SAVED ON THIS DEVICE'
-          : 'STORAGE UNAVAILABLE — SETTINGS ACTIVE FOR THIS SESSION';
+          ? 'Settings saved on this device.'
+          : 'Storage unavailable. Settings remain active for this session.';
         clearTimeout(this._settingsStatusTimer);
         this._settingsStatusTimer = setTimeout(() => { status.textContent = ''; }, 3_000);
       }
@@ -296,7 +372,7 @@ export class MenuUI {
     const grid = document.getElementById('inv-grid');
     const tabs = document.getElementById('inv-tabs');
     const title = document.getElementById('inv-username');
-    if (title) title.textContent = `${this._displayName} · LOCAL PRACTICE`;
+    if (title) title.textContent = `${this._displayName} · Local practice`;
     tabs?.replaceChildren();
     equipped?.replaceChildren();
     grid?.replaceChildren();
@@ -307,10 +383,10 @@ export class MenuUI {
     if (equipped) {
       const gun = GUNS.find((weapon) => weapon.id === currentGun);
       const melee = MELEE.find((weapon) => weapon.id === currentMelee);
-      for (const [label, weapon] of [['PRIMARY', gun], ['MELEE', melee]]) {
+      for (const [label, weapon] of [['Primary', gun], ['Melee', melee]]) {
         const chip = document.createElement('div');
         chip.className = 'local-loadout-chip';
-        chip.textContent = `${label} · ${weapon?.name ?? 'DEFAULT'}`;
+        chip.textContent = `${label} · ${weapon?.name ?? 'Default'}`;
         equipped.appendChild(chip);
       }
     }
@@ -323,7 +399,7 @@ export class MenuUI {
       for (const weapon of weapons) {
         const button = document.createElement('button');
         button.className = `local-loadout-option${weapon.id === selectedId ? ' equipped' : ''}`;
-        button.textContent = `${weapon.name}${weapon.id === selectedId ? ' · EQUIPPED' : ''}`;
+        button.textContent = `${weapon.name}${weapon.id === selectedId ? ' · Equipped' : ''}`;
         button.addEventListener('click', () => {
           select(weapon.id);
           this._renderLocalLoadout();
@@ -331,8 +407,8 @@ export class MenuUI {
         grid.appendChild(button);
       }
     };
-    renderGroup('PRIMARY WEAPON', GUNS, currentGun, (id) => Loadout.setGun(id));
-    renderGroup('MELEE WEAPON', MELEE, currentMelee, (id) => Loadout.setMelee(id));
+    renderGroup('Primary weapon', GUNS, currentGun, (id) => Loadout.setGun(id));
+    renderGroup('Melee weapon', MELEE, currentMelee, (id) => Loadout.setMelee(id));
   }
 
   setUsername(displayName) {
@@ -352,6 +428,7 @@ export class MenuUI {
     this.topNav?.classList.remove('hidden');
     this.centerPlay?.classList.remove('hidden');
     this.pauseMenu?.classList.add('hidden');
+    if (this.gameCanvas) this.gameCanvas.tabIndex = -1;
     this._chrome(true);
     queueMicrotask(() => this.playBtn?.focus());
   }
@@ -359,6 +436,7 @@ export class MenuUI {
   hideMain() {
     this.topNav?.classList.add('hidden');
     this.centerPlay?.classList.add('hidden');
+    if (this.gameCanvas) this.gameCanvas.tabIndex = 0;
     this._chrome(false);
     this._closeAllPanels();
   }
@@ -376,7 +454,7 @@ export class MenuUI {
 
   showPointerLockError() {
     if (this.pauseLockStatus) {
-      this.pauseLockStatus.textContent = 'POINTER LOCK DENIED — CHECK BROWSER PERMISSIONS, THEN ACTIVATE RESUME TO RETRY';
+      this.pauseLockStatus.textContent = 'Pointer lock was denied. Check browser permissions, then activate Resume to retry.';
       this.pauseLockStatus.classList.remove('hidden');
     }
     queueMicrotask(() => focusFirst(this.pauseMenu));
@@ -390,14 +468,14 @@ export class MenuUI {
     this._closeAllPanels();
   }
 
-  showGameOver(stats, title = 'PRACTICE RUN COMPLETE') {
+  showGameOver(stats, title = 'Practice run complete') {
     const heading = document.getElementById('gameover-title');
-    if (heading) heading.textContent = title;
+    if (heading) heading.textContent = sentenceCaseLabel(title);
     if (this.gameoverStats) {
       this.gameoverStats.replaceChildren(
-        createStatRow('KILLS', stats.kills),
-        createStatRow('SCORE', stats.score),
-        createStatRow('TIME', formatDuration(stats.time)),
+        createStatRow('Bots defeated', stats.kills),
+        createStatRow('Score', stats.score),
+        createStatRow('Time', formatDuration(stats.time)),
       );
     }
     if (this.gameoverMenu) {
