@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "verifiedAt": "2026-07-27T14:51:58.241Z",
+  "artifactScope": "PHASE_9_G8_RUNTIME_INSTRUMENTATION_VERIFICATION",
+  "g8Status": "OPEN",
+  "summaryPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\evidence\\2026-07-27\\phase-9-g8-runtime-instrumentation\\smoke-histogram-v2\\runtime-instrumentation.json",
+  "summaryFingerprint": {
+    "bytes": 49154,
+    "sha256": "b0a0c275cd9a01a67d47318a123f368e73f6991d7e202d516e55ea2769986b13"
+  },
+  "checks": [
+    {
+      "id": "contract.schema",
+      "passed": true,
+      "details": {
+        "schemaVersion": 1
+      }
+    },
+    {
+      "id": "contract.scope",
+      "passed": true,
+      "details": {
+        "artifactScope": "PHASE_9_G8_RUNTIME_INSTRUMENTATION"
+      }
+    },
+    {
+      "id": "contract.g8_remains_open",
+      "passed": true,
+      "details": {
+        "g8Status": "OPEN"
+      }
+    },
+    {
+      "id": "contract.no_visual_claim",
+      "passed": true,
+      "details": {
+        "visualApproval": "NOT_PERFORMED_OR_CLAIMED"
+      }
+    },
+    {
+      "id": "contract.non_claims_present",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "id": "capture.self_checks_pass",
+      "passed": true,
+      "details": {
+        "ok": true,
+        "failures": []
+      }
+    },
+    {
+      "id": "capture.samples_present",
+      "passed": true,
+      "details": {
+        "sampleCount": 5,
+        "aggregateSampleCount": 5
+      }
+    },
+    {
+      "id": "capture.frame_distribution_present",
+      "passed": true,
+      "details": {
+        "frameTimes": {
+          "count": 41,
+          "p50Ms": 100.25,
+          "p95Ms": 216.75,
+          "p99Ms": 966.6000000000004,
+          "maxMs": 966.6000000000004,
+          "quantileResolutionMs": 0.25
+        }
+      }
+    },
+    {
+      "id": "capture.long_task_distribution_present",
+      "passed": true,
+      "details": {
+        "longTasks": {
+          "count": 0,
+          "p50Ms": 0,
+          "p95Ms": 0,
+          "p99Ms": 0,
+          "maxMs": 0,
+          "totalDurationMs": 0,
+          "over50MsCount": 0
+        }
+      }
+    },
+    {
+      "id": "capture.label_matches_candidate_contract",
+      "passed": true,
+      "details": {
+        "qualifyingCandidate": false,
+        "durationMs": 5000,
+        "minimumQualifyingSoakMs": 1800000,
+        "evidenceLabel": "NON_QUALIFYING_INSTRUMENTATION_SMOKE",
+        "qualifyingSoakDuration": false,
+        "qualifyingSoakInput": false
+      }
+    },
+    {
+      "id": "capture.warmup_recorded",
+      "passed": true,
+      "details": {
+        "warmup": {
+          "requestedDurationMs": 2000,
+          "actualDurationMs": 2525,
+          "activitySteps": 4,
+          "aggregate": {
+            "durationMs": 3072.300000011921,
+            "frameTimes": {
+              "count": 16,
+              "p50Ms": 16.75,
+              "p95Ms": 1016.6999999999998,
+              "p99Ms": 1016.6999999999998,
+              "maxMs": 1016.6999999999998,
+              "quantileResolutionMs": 0.25
+            },
+            "droppedFrameSamples": 0,
+            "longTasks": {
+              "count": 4,
+              "p50Ms": 360,
+              "p95Ms": 546,
+              "p99Ms": 546,
+              "maxMs": 546,
+              "totalDurationMs": 1725,
+              "over50MsCount": 4
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "capture.resource_ranges_present",
+      "passed": true,
+      "details": {
+        "resourceRanges": {
+          "renderCalls": {
+            "count": 5,
+            "min": 637,
+            "p50": 637,
+            "p95": 637,
+            "p99": 637,
+            "max": 637
+          },
+          "renderTriangles": {
+            "count": 5,
+            "min": 127544,
+            "p50": 127544,
+            "p95": 127544,
+            "p99": 127544,
+            "max": 127544
+          },
+          "sceneObjects": {
+            "count": 5,
+            "min": 1865,
+            "p50": 1865,
+            "p95": 1865,
+            "p99": 1865,
+            "max": 1865
+          },
+          "geometries": {
+            "count": 5,
+            "min": 1285,
+            "p50": 1285,
+            "p95": 1285,
+            "p99": 1285,
+            "max": 1285
+          },
+          "textures": {
+            "count": 5,
+            "min": 53,
+            "p50": 53,
+            "p95": 53,
+            "p99": 53,
+            "max": 53
+          }
+        }
+      }
+    },
+    {
+      "id": "capture.memory_trends_present",
+      "passed": true,
+      "details": {
+        "trendsPerMinute": {
+          "jsHeapUsedBytes": -108982127.41166373,
+          "nodes": 8312.900988510553,
+          "jsEventListeners": 0,
+          "hostFreeMemoryBytes": 93225469.40514767
+        }
+      }
+    },
+    {
+      "id": "capture.interval_work_is_labeled",
+      "passed": true,
+      "details": {
+        "chromiumIntervals": {
+          "taskDurationMs": {
+            "count": 4,
+            "min": 8.36300000000012,
+            "p50": 36.285999999999596,
+            "p95": 47.36299999999982,
+            "p99": 47.36299999999982,
+            "max": 47.36299999999982
+          },
+          "scriptDurationMs": {
+            "count": 4,
+            "min": 6.130000000000635,
+            "p50": 25.892999999999944,
+            "p95": 34.567000000000014,
+            "p99": 34.567000000000014,
+            "max": 34.567000000000014
+          },
+          "layoutDurationMs": {
+            "count": 4,
+            "min": 0.32099999999998796,
+            "p50": 2.1980000000000057,
+            "p95": 2.7610000000000134,
+            "p99": 2.7610000000000134,
+            "max": 2.7610000000000134
+          },
+          "note": "Each value is accumulated Chromium work during one sampling interval, not per-frame main-thread timing."
+        }
+      }
+    },
+    {
+      "id": "capture.assessment_remains_nonclaiming",
+      "passed": true,
+      "details": {
+        "assessment": {
+          "gateDecision": "G8_OPEN_REQUIRES_FINAL_INTEGRATED_REVIEW",
+          "eligibleSoakInput": false,
+          "eligibilityDisqualifiers": [
+            "qualifying_candidate_not_requested",
+            "active_duration_below_30_minutes",
+            "browser_not_headed",
+            "software_renderer_detected",
+            "final_integrated_build_not_declared",
+            "named_machine_metadata_incomplete"
+          ],
+          "detectedSoftwareRenderer": true,
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "budgetSignals": {
+            "frameP95": {
+              "targetMs": 16.67,
+              "observedMs": 216.75,
+              "passed": false
+            },
+            "frameP99": {
+              "target": "tracked; no broad pass threshold is specified by the governing budget",
+              "observedMs": 966.6000000000004,
+              "passed": null
+            },
+            "recurringLongTasks": {
+              "target": "zero recurring active-match tasks over 50 ms",
+              "observedOver50MsCount": 0,
+              "passed": true
+            },
+            "drawCalls": {
+              "targetMaximum": 500,
+              "observedMaximum": 637,
+              "passed": false
+            },
+            "visibleTriangles": {
+              "targetMaximum": 1500000,
+              "observedMaximum": 127544,
+              "passed": true
+            },
+            "firstPlayableTransfer": {
+              "targetMaximumBytes": 25000000,
+              "observedBytes": 14611213,
+              "passed": true,
+              "limitation": "Request body sizes are a browser-observed transfer signal; cold/warm cache proof remains separate."
+            }
+          },
+          "unavailableOrSeparateEvidence": [
+            "GPU p95 timer-query evidence is not produced by this browser harness.",
+            "Authoritative room tick p99 and network cost require a separate full-occupancy Worker capture.",
+            "Eight-character visibility, final VFX caps, and visual readability require direct scene review.",
+            "A flat first-to-last memory delta is not a leak verdict; trend and retained-object review remain required."
+          ]
+        }
+      }
+    },
+    {
+      "id": "artifact.active_match.fingerprint",
+      "passed": true,
+      "details": {
+        "recorded": {
+          "id": "active_match",
+          "path": "active-match.png",
+          "bytes": 367751,
+          "sha256": "9f410778a05d84ed68ec11ebd99efd3207618323627e084a21232397efff1574"
+        },
+        "current": {
+          "bytes": 367751,
+          "sha256": "9f410778a05d84ed68ec11ebd99efd3207618323627e084a21232397efff1574"
+        }
+      }
+    },
+    {
+      "id": "source.captureScript.fingerprint",
+      "passed": true,
+      "details": {
+        "targetPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\tools\\evidence\\capture-phase9-g8-runtime-instrumentation.mjs",
+        "recorded": {
+          "bytes": 32328,
+          "sha256": "f0e3aaa2ccca49cf0f1751ba2dd3ec40e814a1d63df6e2609540b22625d558ec"
+        },
+        "current": {
+          "bytes": 32328,
+          "sha256": "f0e3aaa2ccca49cf0f1751ba2dd3ec40e814a1d63df6e2609540b22625d558ec"
+        }
+      }
+    },
+    {
+      "id": "source.debugMetrics.fingerprint",
+      "passed": true,
+      "details": {
+        "targetPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\src\\render\\debugMetrics.ts",
+        "recorded": {
+          "bytes": 9342,
+          "sha256": "01e54a850bef46de3c4f26b13cb5dfda24415a64ca5cd973e3242682883f66c2"
+        },
+        "current": {
+          "bytes": 9342,
+          "sha256": "01e54a850bef46de3c4f26b13cb5dfda24415a64ca5cd973e3242682883f66c2"
+        }
+      }
+    },
+    {
+      "id": "source.world.fingerprint",
+      "passed": true,
+      "details": {
+        "targetPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\src\\world\\World.js",
+        "recorded": {
+          "bytes": 131864,
+          "sha256": "b59284fa58724474203b5cedaac083c30655a04443203317aa2fd8838d1d855e"
+        },
+        "current": {
+          "bytes": 131864,
+          "sha256": "b59284fa58724474203b5cedaac083c30655a04443203317aa2fd8838d1d855e"
+        }
+      }
+    },
+    {
+      "id": "source.game.fingerprint",
+      "passed": true,
+      "details": {
+        "targetPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\src\\core\\Game.js",
+        "recorded": {
+          "bytes": 54573,
+          "sha256": "78f61b0fc12b588a6cc0d95113ac78866a9c81c77e71383bfcbccf385527fd89"
+        },
+        "current": {
+          "bytes": 54573,
+          "sha256": "78f61b0fc12b588a6cc0d95113ac78866a9c81c77e71383bfcbccf385527fd89"
+        }
+      }
+    },
+    {
+      "id": "source.main.fingerprint",
+      "passed": true,
+      "details": {
+        "targetPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\src\\main.js",
+        "recorded": {
+          "bytes": 12845,
+          "sha256": "b662a171b630079e2089184ff625d70f9042b5b8f15d40a7fd8bba656cfa6576"
+        },
+        "current": {
+          "bytes": 12845,
+          "sha256": "b662a171b630079e2089184ff625d70f9042b5b8f15d40a7fd8bba656cfa6576"
+        }
+      }
+    },
+    {
+      "id": "source.packageLock.fingerprint",
+      "passed": true,
+      "details": {
+        "targetPath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\package-lock.json",
+        "recorded": {
+          "bytes": 141862,
+          "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+        },
+        "current": {
+          "bytes": 141862,
+          "sha256": "02f16f890eb0eb2088aa366d909ca3fde9e0243db9fd5c67f20ece211a49f1a3"
+        }
+      }
+    },
+    {
+      "id": "output.directory_exists",
+      "passed": true,
+      "details": {
+        "evidenceDirectory": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g8-performance-soak-20260726\\evidence\\2026-07-27\\phase-9-g8-runtime-instrumentation\\smoke-histogram-v2"
+      }
+    }
+  ],
+  "failures": [],
+  "ok": true
+}
