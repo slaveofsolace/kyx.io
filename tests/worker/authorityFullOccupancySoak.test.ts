@@ -79,6 +79,21 @@ interface RoomMetrics {
   readonly transport: Readonly<Record<string, number>>;
 }
 
+interface ControlledCombatResult {
+  readonly finalEventId: string;
+  readonly checkpoint: {
+    readonly clock: { readonly serverTick: number };
+    readonly players: readonly {
+      readonly playerId: string;
+      readonly life: { readonly phase: string; readonly healthPoints: number };
+    }[];
+    readonly match: {
+      readonly feedSequence: number;
+      readonly teamScores: readonly { readonly teamId: string; readonly score: number }[];
+    };
+  };
+}
+
 const sockets = new Set<WebSocket>();
 
 afterEach(async () => {
@@ -363,73 +378,83 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
     const targetId = clients[1]?.join.playerId;
     if (attackerId === undefined || targetId === undefined) throw new Error('Combat clients missing');
     const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
-    const combat = await runInDurableObject(stub, async (instance) => {
-      const runtime = instance as unknown as {
-        authority: {
-          readonly serverTick: number;
-          applyCombatDamage(request: {
-            targetPlayerId: string;
-            sourcePlayerId: string;
-            damagePoints: number;
-            causeId: string;
-          }): { readonly accepted: boolean };
-          exportActiveMatchCheckpoint(): {
-            readonly clock: { readonly serverTick: number };
-            readonly players: readonly {
-              readonly playerId: string;
-              readonly life: { readonly phase: string; readonly healthPoints: number };
-            }[];
-            readonly match: {
-              readonly feedSequence: number;
-              readonly teamScores: readonly { readonly teamId: string; readonly score: number }[];
+    let combat: ControlledCombatResult | null = null;
+    for (let attempt = 0; attempt < 100 && combat === null; attempt += 1) {
+      combat = await runInDurableObject(stub, async (instance) => {
+        const runtime = instance as unknown as {
+          authority: {
+            readonly serverTick: number;
+            readonly activeTickMatchEvents: unknown;
+            applyCombatDamage(request: {
+              targetPlayerId: string;
+              sourcePlayerId: string;
+              damagePoints: number;
+              causeId: string;
+            }): { readonly accepted: boolean };
+            exportActiveMatchCheckpoint(): {
+              readonly clock: { readonly serverTick: number };
+              readonly players: readonly {
+                readonly playerId: string;
+                readonly life: { readonly phase: string; readonly healthPoints: number };
+              }[];
+              readonly match: {
+                readonly feedSequence: number;
+                readonly teamScores: readonly { readonly teamId: string; readonly score: number }[];
+              };
             };
           };
+          reliableEvents: {
+            append(input: {
+              serverTick: number;
+              kind: 'damageApplied' | 'playerKilled';
+              subjectId: string;
+              actorId: string;
+              targetId: string;
+              amountHealthPoints: number | null;
+            }): { readonly id: string };
+          };
+          transportMetrics: { reliableEventsRecorded: number };
+          persistActiveMatchCheckpoint(): void;
+          broadcastReliableEvents(): void;
         };
-        reliableEvents: {
-          append(input: {
-            serverTick: number;
-            kind: 'damageApplied' | 'playerKilled';
-            subjectId: string;
-            actorId: string;
-            targetId: string;
-            amountHealthPoints: number | null;
-          }): { readonly id: string };
-        };
-        transportMetrics: { reliableEventsRecorded: number };
-        persistActiveMatchCheckpoint(): void;
-        broadcastReliableEvents(): void;
-      };
-      const damage = runtime.authority.applyCombatDamage({
-        targetPlayerId: targetId,
-        sourcePlayerId: attackerId,
-        damagePoints: 100,
-        causeId: 'g4_g8_full_occupancy_convergence',
+        // runInDurableObject is a test-only introspection surface and can enter
+        // while a setTimeout tick is still finishing. Only inject at the real
+        // authority's explicit between-tick checkpoint boundary.
+        if (runtime.authority.activeTickMatchEvents !== null) return null;
+        const damage = runtime.authority.applyCombatDamage({
+          targetPlayerId: targetId,
+          sourcePlayerId: attackerId,
+          damagePoints: 100,
+          causeId: 'g4_g8_full_occupancy_convergence',
+        });
+        if (!damage.accepted) throw new Error('Controlled authority damage rejected');
+        runtime.reliableEvents.append({
+          serverTick: runtime.authority.serverTick,
+          kind: 'damageApplied',
+          subjectId: targetId,
+          actorId: attackerId,
+          targetId,
+          amountHealthPoints: 100,
+        });
+        const finalEvent = runtime.reliableEvents.append({
+          serverTick: runtime.authority.serverTick,
+          kind: 'playerKilled',
+          subjectId: targetId,
+          actorId: attackerId,
+          targetId,
+          amountHealthPoints: null,
+        });
+        runtime.transportMetrics.reliableEventsRecorded += 2;
+        runtime.persistActiveMatchCheckpoint();
+        runtime.broadcastReliableEvents();
+        return {
+          finalEventId: finalEvent.id,
+          checkpoint: runtime.authority.exportActiveMatchCheckpoint(),
+        } satisfies ControlledCombatResult;
       });
-      if (!damage.accepted) throw new Error('Controlled authority damage rejected');
-      runtime.reliableEvents.append({
-        serverTick: runtime.authority.serverTick,
-        kind: 'damageApplied',
-        subjectId: targetId,
-        actorId: attackerId,
-        targetId,
-        amountHealthPoints: 100,
-      });
-      const finalEvent = runtime.reliableEvents.append({
-        serverTick: runtime.authority.serverTick,
-        kind: 'playerKilled',
-        subjectId: targetId,
-        actorId: attackerId,
-        targetId,
-        amountHealthPoints: null,
-      });
-      runtime.transportMetrics.reliableEventsRecorded += 2;
-      runtime.persistActiveMatchCheckpoint();
-      runtime.broadcastReliableEvents();
-      return {
-        finalEventId: finalEvent.id,
-        checkpoint: runtime.authority.exportActiveMatchCheckpoint(),
-      };
-    });
+      if (combat === null) await new Promise((resolve) => setTimeout(resolve, 5));
+    }
+    if (combat === null) throw new Error('No stable between-tick combat checkpoint boundary');
 
     await Promise.all(clients.map(async ({ probe }, index) => {
       await waitForMessageAfter(
