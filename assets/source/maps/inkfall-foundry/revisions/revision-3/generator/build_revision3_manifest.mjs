@@ -6,7 +6,9 @@ import { fileURLToPath } from 'node:url';
 const EXPECTED_REVISION_2_MANIFEST_SHA256 =
   '15f80522274712fb5dd3bfb97dc0aa1a60d48d27269d42aa07c039898de93deb';
 const EXPECTED_RENDER_SHA256 =
-  '90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634';
+  '19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6';
+const EXPECTED_COLLISION_SHA256 =
+  '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8';
 const EXPECTED_COLLIDER_COUNT = 339;
 const ZERO_DIGEST = '0'.repeat(64);
 
@@ -32,7 +34,10 @@ const revision3LocalManifestPath = path.join(revision3Root, 'runtime', 'map.pack
 const revision3CatalogManifestPath = path.join(mapRoot, 'runtime', 'map.package.v3.json');
 
 const revision2ManifestBytes = await readFile(revision2ManifestPath);
-if (sha256(revision2ManifestBytes) !== EXPECTED_REVISION_2_MANIFEST_SHA256) {
+const canonicalRevision2ManifestBytes = Buffer.from(
+  revision2ManifestBytes.toString('utf8').replace(/\r\n/gu, '\n'),
+);
+if (sha256(canonicalRevision2ManifestBytes) !== EXPECTED_REVISION_2_MANIFEST_SHA256) {
   throw new Error('REVISION_2_MANIFEST_DRIFT');
 }
 const revision2Manifest = JSON.parse(revision2ManifestBytes.toString('utf8'));
@@ -50,6 +55,7 @@ const [renderBytes, collisionBytes, renderStat, collisionStat] = await Promise.a
 const renderSha256 = sha256(renderBytes);
 const collisionSha256 = sha256(collisionBytes);
 if (renderSha256 !== EXPECTED_RENDER_SHA256) throw new Error('REVISION_3_RENDER_DRIFT');
+if (collisionSha256 !== EXPECTED_COLLISION_SHA256) throw new Error('REVISION_3_COLLISION_DRIFT');
 
 const manifest = structuredClone(revision2Manifest);
 manifest.revision = 3;

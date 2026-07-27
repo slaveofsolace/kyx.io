@@ -1,7 +1,7 @@
 {
   "candidateRevision": {
     "collision": {
-      "bytes": 604508,
+      "bytes": 605112,
       "export": {
         "operatorArguments": {
           "export_animations": false,
@@ -12,7 +12,7 @@
           "export_lights": false,
           "export_materials": "EXPORT",
           "export_yup": true,
-          "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\revisions\\revision-3\\export\\collision.authority.glb",
+          "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g5-inkfall-rev3\\assets\\source\\maps\\inkfall-foundry\\revisions\\revision-3\\export\\collision.authority.glb",
           "use_selection": true
         },
         "result": [
@@ -21,19 +21,37 @@
       },
       "meshNodeCount": 339,
       "path": "export/collision.authority.glb",
-      "sha256": "5fc4f934676c96b9c06638640977fbff12c57585e56746d8129a75e59fd9a4ca"
+      "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8"
     },
     "render": {
-      "byteIdenticalToRevision2": true,
-      "bytes": 613564,
+      "byteIdenticalToRevision2": false,
+      "bytes": 614340,
+      "export": {
+        "operatorArguments": {
+          "export_animations": false,
+          "export_apply": true,
+          "export_cameras": false,
+          "export_extras": true,
+          "export_format": "GLB",
+          "export_lights": false,
+          "export_materials": "EXPORT",
+          "export_yup": true,
+          "filepath": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g5-inkfall-rev3\\assets\\source\\maps\\inkfall-foundry\\revisions\\revision-3\\export\\render.graybox.glb",
+          "use_selection": true
+        },
+        "result": [
+          "FINISHED"
+        ]
+      },
+      "meshNodeCount": 346,
       "path": "export/render.graybox.glb",
-      "sha256": "90a9450491355ac6fe007a8ac337c7838df107d775c269366aaf7fc01ce4c634"
+      "sha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6"
     },
     "revision": 3,
     "sourceBlend": {
-      "bytes": 528114,
+      "bytes": 528904,
       "path": "source/inkfall_foundry.blend",
-      "sha256": "1be08bd0897e1ca6d13349149f2c9d7b1f8c65d29814867c476d171bbf0b2902"
+      "sha256": "5e0d2549b1e642f3763f2df27213862375cad90ba9ada8353f89bfcba2864fa3"
     }
   },
   "collisionCorrection": {
@@ -192,10 +210,10 @@
   },
   "generator": {
     "blenderVersion": "5.1.2",
-    "id": "inkfall_foundry_g5_bounded_canonical_traversal_collision_revision",
-    "script": "build_inkfall_foundry_collision_revision3.version1.py",
-    "scriptSha256": "cd85c69ae95b970101a6fbb712e3c4b337e555079ac45e02b062c00e61125b69",
-    "version": 1
+    "id": "inkfall_foundry_g5_open_mid_sniper_shotgun_revision",
+    "script": "build_inkfall_foundry_collision_revision3.version2.py",
+    "scriptSha256": "ef6c40c7fb93c459f5b73b791cbe2b81af310bd4bd441fb42c03b00c20a2fa52",
+    "version": 2
   },
   "nonClaims": [
     "REVISION_3_NOT_DEFAULT",
@@ -204,21 +222,631 @@
     "HUMAN_ACCEPTANCE_NOT_RUN",
     "G5_NOT_PASSED"
   ],
+  "openMidRevision": {
+    "candidateBaffleLengthMm": 3200,
+    "centralClearanceGainMm": 4200,
+    "changedColliderCount": 2,
+    "changedRenderMeshCount": 2,
+    "collisionAfter": {
+      "C_MODULE__PRESS_BAFFLE_E_INNER": {
+        "location": [
+          6.399999619,
+          -4.699999809,
+          1.5
+        ],
+        "name": "C_MODULE__PRESS_BAFFLE_E_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[6400,1500,-4700]",
+          "kyx_collision_revision": 3,
+          "kyx_dimensions_mm": "[3200,500,3000]",
+          "kyx_intent": "widen central sniper diagonal while retaining close-cover shotgun breach endpoints",
+          "kyx_layout_status": "G5_REVISION_3_OPEN_MID_HYPOTHESIS_PENDING_HUMAN_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_open_mid_length_mm": 3200,
+          "kyx_open_mid_outward_shift_mm": 1200,
+          "kyx_revision_reason": "open_mid_sniper_lane_with_retained_shotgun_breach_cover",
+          "kyx_role": "authoritative_collider",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_e_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": 22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          0.190808997
+        ],
+        "vertices": [
+          [
+            -1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            1.5
+          ]
+        ]
+      },
+      "C_MODULE__PRESS_BAFFLE_W_INNER": {
+        "location": [
+          -6.399999619,
+          -4.699999809,
+          1.5
+        ],
+        "name": "C_MODULE__PRESS_BAFFLE_W_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[-6400,1500,-4700]",
+          "kyx_collision_revision": 3,
+          "kyx_dimensions_mm": "[3200,500,3000]",
+          "kyx_intent": "widen central sniper diagonal while retaining close-cover shotgun breach endpoints",
+          "kyx_layout_status": "G5_REVISION_3_OPEN_MID_HYPOTHESIS_PENDING_HUMAN_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_open_mid_length_mm": 3200,
+          "kyx_open_mid_outward_shift_mm": 1200,
+          "kyx_revision_reason": "open_mid_sniper_lane_with_retained_shotgun_breach_cover",
+          "kyx_role": "authoritative_collider",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_w_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": -22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          -0.190808997
+        ],
+        "vertices": [
+          [
+            -1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            1.5
+          ]
+        ]
+      }
+    },
+    "collisionBefore": {
+      "C_MODULE__PRESS_BAFFLE_E_INNER": {
+        "location": [
+          5.199999809,
+          -4.699999809,
+          1.5
+        ],
+        "name": "C_MODULE__PRESS_BAFFLE_E_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[5200,1500,-4700]",
+          "kyx_dimensions_mm": "[5000,500,3000]",
+          "kyx_intent": "break central diagonal sightlines without changing route centerlines",
+          "kyx_layout_status": "HYPOTHESIS_PENDING_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_role": "authoritative_collider",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_e_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": 22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          0.190808997
+        ],
+        "vertices": [
+          [
+            -2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            0.25,
+            1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            1.5
+          ]
+        ]
+      },
+      "C_MODULE__PRESS_BAFFLE_W_INNER": {
+        "location": [
+          -5.199999809,
+          -4.699999809,
+          1.5
+        ],
+        "name": "C_MODULE__PRESS_BAFFLE_W_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[-5200,1500,-4700]",
+          "kyx_dimensions_mm": "[5000,500,3000]",
+          "kyx_intent": "break central diagonal sightlines without changing route centerlines",
+          "kyx_layout_status": "HYPOTHESIS_PENDING_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_role": "authoritative_collider",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_w_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": -22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          -0.190808997
+        ],
+        "vertices": [
+          [
+            -2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            0.25,
+            1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            1.5
+          ]
+        ]
+      }
+    },
+    "collisionMeshes": [
+      "C_MODULE__PRESS_BAFFLE_W_INNER",
+      "C_MODULE__PRESS_BAFFLE_E_INNER"
+    ],
+    "designIntent": "widen central sniper diagonal while retaining close-cover shotgun breach endpoints",
+    "humanPlaytestRequired": true,
+    "originalBaffleLengthMm": 5000,
+    "outwardShiftMm": 1200,
+    "renderAfter": {
+      "R_MODULE__PRESS_BAFFLE_E_INNER": {
+        "location": [
+          6.399999619,
+          -4.699999809,
+          1.5
+        ],
+        "name": "R_MODULE__PRESS_BAFFLE_E_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[6400,1500,-4700]",
+          "kyx_collision_revision": 3,
+          "kyx_dimensions_mm": "[3200,500,3000]",
+          "kyx_intent": "widen central sniper diagonal while retaining close-cover shotgun breach endpoints",
+          "kyx_layout_status": "G5_REVISION_3_OPEN_MID_HYPOTHESIS_PENDING_HUMAN_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_open_mid_length_mm": 3200,
+          "kyx_open_mid_outward_shift_mm": 1200,
+          "kyx_revision_reason": "open_mid_sniper_lane_with_retained_shotgun_breach_cover",
+          "kyx_role": "render_graybox",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_e_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": 22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          0.190808997
+        ],
+        "vertices": [
+          [
+            -1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            1.5
+          ]
+        ]
+      },
+      "R_MODULE__PRESS_BAFFLE_W_INNER": {
+        "location": [
+          -6.399999619,
+          -4.699999809,
+          1.5
+        ],
+        "name": "R_MODULE__PRESS_BAFFLE_W_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[-6400,1500,-4700]",
+          "kyx_collision_revision": 3,
+          "kyx_dimensions_mm": "[3200,500,3000]",
+          "kyx_intent": "widen central sniper diagonal while retaining close-cover shotgun breach endpoints",
+          "kyx_layout_status": "G5_REVISION_3_OPEN_MID_HYPOTHESIS_PENDING_HUMAN_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_open_mid_length_mm": 3200,
+          "kyx_open_mid_outward_shift_mm": 1200,
+          "kyx_revision_reason": "open_mid_sniper_lane_with_retained_shotgun_breach_cover",
+          "kyx_role": "render_graybox",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_w_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": -22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          -0.190808997
+        ],
+        "vertices": [
+          [
+            -1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            -1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            -1.5
+          ],
+          [
+            -1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            -0.25,
+            1.5
+          ],
+          [
+            1.600000024,
+            0.25,
+            1.5
+          ],
+          [
+            -1.600000024,
+            0.25,
+            1.5
+          ]
+        ]
+      }
+    },
+    "renderBefore": {
+      "R_MODULE__PRESS_BAFFLE_E_INNER": {
+        "location": [
+          5.199999809,
+          -4.699999809,
+          1.5
+        ],
+        "name": "R_MODULE__PRESS_BAFFLE_E_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[5200,1500,-4700]",
+          "kyx_dimensions_mm": "[5000,500,3000]",
+          "kyx_intent": "break central diagonal sightlines without changing route centerlines",
+          "kyx_layout_status": "HYPOTHESIS_PENDING_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_role": "render_graybox",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_e_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": 22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          0.190808997
+        ],
+        "vertices": [
+          [
+            -2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            0.25,
+            1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            1.5
+          ]
+        ]
+      },
+      "R_MODULE__PRESS_BAFFLE_W_INNER": {
+        "location": [
+          -5.199999809,
+          -4.699999809,
+          1.5
+        ],
+        "name": "R_MODULE__PRESS_BAFFLE_W_INNER",
+        "properties": {
+          "kyx_center_seed_mm": "[-5200,1500,-4700]",
+          "kyx_dimensions_mm": "[5000,500,3000]",
+          "kyx_intent": "break central diagonal sightlines without changing route centerlines",
+          "kyx_layout_status": "HYPOTHESIS_PENDING_PLAYTEST",
+          "kyx_module_class": "press_baffle",
+          "kyx_role": "render_graybox",
+          "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+          "kyx_seed_module_dimensions_order": "[5000,3000,500]",
+          "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+          "kyx_shape": "box",
+          "kyx_source_id": "press_baffle_w_inner",
+          "kyx_source_kind": "authored_graybox_module",
+          "kyx_yaw_degrees": -22.0
+        },
+        "rotation": [
+          0.981627166,
+          0.0,
+          0.0,
+          -0.190808997
+        ],
+        "vertices": [
+          [
+            -2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            -1.5
+          ],
+          [
+            2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            -1.5
+          ],
+          [
+            -2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            -0.25,
+            1.5
+          ],
+          [
+            2.5,
+            0.25,
+            1.5
+          ],
+          [
+            -2.5,
+            0.25,
+            1.5
+          ]
+        ]
+      }
+    },
+    "renderMeshes": [
+      "R_MODULE__PRESS_BAFFLE_W_INNER",
+      "R_MODULE__PRESS_BAFFLE_E_INNER"
+    ]
+  },
   "preservation": {
     "allNonTargetCollidersUnchanged": true,
+    "allNonTargetRenderMeshesUnchanged": true,
     "colliderCardinalityUnchanged": true,
     "movementProfileChanged": false,
-    "renderChanged": false,
-    "renderFingerprintAfter": "0c37f15ebd9ca73cf6a2cf753caeec3129c7b24985e3d0af4f02420767a4c73f",
-    "renderFingerprintBefore": "0c37f15ebd9ca73cf6a2cf753caeec3129c7b24985e3d0af4f02420767a4c73f",
-    "renderUnchanged": true,
+    "renderChanged": true,
     "revision2ArtifactsChanged": false,
     "seedSha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
     "spawnsChanged": false,
     "timingBandsChanged": false,
     "topologyChanged": false,
-    "untouchedCollisionFingerprintAfter": "b09d718ef68809c5ecc75a9f3b32d3a57d839bc9bea24c8a08f6392cdcf8265f",
-    "untouchedCollisionFingerprintBefore": "b09d718ef68809c5ecc75a9f3b32d3a57d839bc9bea24c8a08f6392cdcf8265f"
+    "untouchedCollisionFingerprintAfter": "aa6ad313217a212181d162962c9c6b06e82b22828afd3d7ec82a911093b84bc2",
+    "untouchedCollisionFingerprintBefore": "aa6ad313217a212181d162962c9c6b06e82b22828afd3d7ec82a911093b84bc2",
+    "untouchedRenderFingerprintAfter": "537f618303f4f5c2381c2d8901a9c3ff8f2c2e884fb36584162b1cadab992907",
+    "untouchedRenderFingerprintBefore": "537f618303f4f5c2381c2d8901a9c3ff8f2c2e884fb36584162b1cadab992907"
   },
   "schemaVersion": 1,
   "sourceRevision": {
@@ -236,5 +864,5 @@
     },
     "revision": 2
   },
-  "status": "G5_BOUNDED_COLLISION_REVISION_3_CANDIDATE"
+  "status": "G5_OPEN_MID_REVISION_3_CANDIDATE"
 }

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-26T18:30:21.167Z",
+  "reviewRoute": {
+    "url": "http://127.0.0.1:4365/?mapPackage=inkfall_foundry%403",
+    "port": 4365,
+    "profile": {
+      "loadTiming": {
+        "fetchMs": 43.1000000089407,
+        "authorityValidationMs": 15,
+        "parseMs": 11.200000002980232,
+        "totalMs": 69.30000001192093
+      },
+      "frameProfile": {
+        "count": 120,
+        "minimumMs": 1.7000000000000455,
+        "p50Ms": 1.8000000000000682,
+        "p95Ms": 2,
+        "p99Ms": 2,
+        "maximumMs": 2,
+        "meanMs": 1.851666666666667
+      },
+      "renderer": {
+        "calls": 347,
+        "triangles": 4248,
+        "lines": 0,
+        "points": 0,
+        "geometries": 355,
+        "textures": 1,
+        "programs": 3
+      },
+      "host": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+        "platform": "Win32",
+        "hardwareConcurrency": 32,
+        "viewport": {
+          "width": 1280,
+          "height": 720,
+          "devicePixelRatio": 1.25
+        },
+        "webgl": {
+          "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+          "vendor": "Google Inc. (NVIDIA)",
+          "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        }
+      }
+    },
+    "interpretation": "Measured on the named browser host only; automated data does not constitute performance or G5 acceptance."
+  },
+  "representativeFinalArtRoom": {
+    "bodyDataset": {
+      "catalogDefault": "inkfall_foundry@1",
+      "interface": "foundry-command-v2",
+      "launchSupport": "press-hall-v3-3-inspection",
+      "pressHallReference": "inkfall_foundry@2/press_hall/v3.3/spatial-material-joined",
+      "pressHallStatus": "ready"
+    },
+    "facts": [
+      {
+        "label": "art calls",
+        "value": "27"
+      },
+      {
+        "label": "triangles",
+        "value": "188,576"
+      },
+      {
+        "label": "frame p95",
+        "value": "2.00 ms"
+      },
+      {
+        "label": "primitives",
+        "value": "29"
+      },
+      {
+        "label": "colliders",
+        "value": "339"
+      },
+      {
+        "label": "payload",
+        "value": "13.30 MB"
+      }
+    ],
+    "href": "http://127.0.0.1:4365/?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined",
+    "status": [
+      "VERIFIED + PARSED · ART 27 CALLS / 188,387 TRIANGLES\nWITH AUTHORITY OVERLAY · 30 CALLS / 339 LOCKED SOLIDS\nFRAME 180 SAMPLES AFTER 60 WARMUP · P50 1.90 · P95 2.00 · P99 2.00 MS\nRUNTIME MATERIAL VERIFIED · 9/9 EXPLICIT BASE COLORS · 0 WHITE FALLBACKS · MAX COLOR DELTA 0\nAuthority boxes are inspection overlays only; render geometry is never authority.",
+      "Camera sweep is visual-only · no collision/no-snag claim · not final art · no human acceptance · not shipping default · G5 and G8 remain open"
+    ],
+    "title": "Press Hall v3.3 — Runtime Inspection"
+  },
+  "requiredHumanFollowup": [
+    "Repeat performance sampling during 2/4/8-player sessions on named target hardware.",
+    "Record p50/p95/p99 frame time, hitch count, render calls, triangles, GPU/CPU model, resolution, and settings."
+  ],
+  "accepted": false
+}

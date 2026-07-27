@@ -13,6 +13,9 @@ import {
   PRESS_HALL_INSPECTION_SEARCH,
   resolvePressHallInspectionRequest,
 } from './app/pressHallInspectionSelection.ts';
+import {
+  resolveInkfallRev3ReviewRequest,
+} from './app/inkfallRev3ReviewSelection.ts';
 
 const canvas = document.getElementById('game-canvas');
 const desktopSupported = supportsDesktopLaunch();
@@ -29,6 +32,8 @@ const lockedGrayboxPreviewRequest = resolveLockedGrayboxPreviewRequest(window.lo
 const lockedGrayboxPreviewRoute = lockedGrayboxPreviewRequest.kind !== 'none';
 const pressHallInspectionRequest = resolvePressHallInspectionRequest(window.location.search);
 const pressHallInspectionRoute = pressHallInspectionRequest.kind !== 'none';
+const inkfallRev3ReviewRequest = resolveInkfallRev3ReviewRequest(window.location.search);
+const inkfallRev3ReviewRoute = inkfallRev3ReviewRequest.kind !== 'none';
 const onlineAuthorityRoute = window.location.pathname === ONLINE_AUTHORITY_PATH;
 const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
   import.meta.env.VITE_KYX_AUTHORITY_ORIGIN,
@@ -37,6 +42,7 @@ const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
 const launchOverrideRoute = developmentTestRoute
   || lockedGrayboxPreviewRoute
   || pressHallInspectionRoute
+  || inkfallRev3ReviewRoute
   || onlineAuthorityRoute;
 const developmentFlatRunRequested = import.meta.env.DEV
   && !launchOverrideRoute
@@ -144,6 +150,21 @@ if (pressHallInspectionRoute) {
       failure.setAttribute('role', 'alert');
       failure.textContent = error instanceof Error ? error.message : String(error);
       document.body.dataset.pressHallStatus = 'error';
+      document.body.replaceChildren(failure);
+    });
+} else if (inkfallRev3ReviewRoute) {
+  document.body.dataset.launchSupport = 'inkfall-rev3-explicit-review';
+  document.body.dataset.inkfallRev3Status = 'loading';
+  import('./app/inkfallRev3ReviewRoute.ts')
+    .then(({ mountInkfallRev3ReviewRoute }) => (
+      mountInkfallRev3ReviewRoute(document.body, inkfallRev3ReviewRequest)
+    ))
+    .catch((error) => {
+      const failure = document.createElement('pre');
+      failure.id = 'inkfall-rev3-review-result';
+      failure.setAttribute('role', 'alert');
+      failure.textContent = error instanceof Error ? error.message : String(error);
+      document.body.dataset.inkfallRev3Status = 'error';
       document.body.replaceChildren(failure);
     });
 } else if (onlineAuthorityRoute) {

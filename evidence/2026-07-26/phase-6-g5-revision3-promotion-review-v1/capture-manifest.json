@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-07-26T18:30:21.167Z",
+  "route": "http://127.0.0.1:4365/?mapPackage=inkfall_foundry%403",
+  "viewport": {
+    "width": 1280,
+    "height": 720,
+    "devicePixelRatio": 1.25
+  },
+  "entries": [
+    {
+      "file": "captures/01-rev3-overview.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "b69cd86e9c707516581933da1c6944740c91c41cba69d6e9b2272908c83053d4",
+      "bytes": 103413,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/02-rev3-open-mid.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "7fe9ed243e6652d62ea0c5b9cc9f41c4b268c9ecaac24eb6c10eddc4c6d83b65",
+      "bytes": 110630,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/03-rev3-sniper-west-to-east.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "17683c3eb16b9f392284e90f29cf8a77d2ee38496d5537bd8884f1c3b75347c2",
+      "bytes": 84704,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/04-rev3-sniper-east-to-west.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "a76241d54389e19d4d703786564ff5caa5a1d34d4038b4258ed6f48f13aaa632",
+      "bytes": 88394,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/05-rev3-shotgun-west-breach.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "56dd009c3eeaebf936b67f1df7d0064d969c618d94ee9caec0d015fd8dc8aacb",
+      "bytes": 83575,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/06-rev3-shotgun-east-breach.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "37d33ea7705f59473299ff97e3caadb9bcc11700f11fa8dea7c2549bdb6e7a44",
+      "bytes": 88878,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/07-rev3-spawn-audit.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "a16613d76fd86d11f2dd75f19bfdfb05dfd6198e1b054df205efe6085fd826c6",
+      "bytes": 98551,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/08-rev3-verticality.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "5482e91118c6e667b029479bfcd1b29b310826dc5b58921f80de2bd85b9c8694",
+      "bytes": 102653,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/09-rev3-collision-overlay.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "4d70f9cf7d6536c0903bad624ce435d6d49ee60d44658867a7a7266acd74f140",
+      "bytes": 109242,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "file": "captures/10-press-hall-v3-3-final-art-room.jpg",
+      "mediaType": "image/jpeg",
+      "sha256": "bf68b4f640577d52c6c3879265378eb39d714a854544e795a7d499a40398b146",
+      "bytes": 114359,
+      "width": 1280,
+      "height": 720
+    }
+  ],
+  "nonClaims": [
+    "SCREENSHOTS_ARE_AUTOMATED_REVIEW_EVIDENCE_NOT_HUMAN_ACCEPTANCE",
+    "REVISION_3_NOT_DEFAULT",
+    "G5_NOT_PASSED"
+  ]
+}
