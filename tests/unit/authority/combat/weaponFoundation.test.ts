@@ -323,8 +323,9 @@ describe('KYX authoritative multi-weapon foundation', () => {
     }, clearWorld);
     expect(pistol.damageTotals).toEqual([{
       targetPlayerId: 'player_target',
-      damagePoints: 27,
+      damagePoints: 32,
       pelletHits: 1,
+      hitRegion: 'head',
     }]);
 
     const shotgunAttack = acceptedAttack(KYX_WEAPON_ID.shotgun, 6);
@@ -347,6 +348,7 @@ describe('KYX authoritative multi-weapon foundation', () => {
       targetPlayerId: 'player_target',
       damagePoints: 72,
       pelletHits: 8,
+      hitRegion: 'torso',
     }]);
     expect(kyxAuthoritativeHitscanProfile(kyxWeaponProfile(KYX_WEAPON_ID.sniper)))
       .toMatchObject({ referenceDamagePoints: 80, rangeMillimeters: 160_000 });

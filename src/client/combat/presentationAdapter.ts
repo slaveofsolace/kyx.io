@@ -399,6 +399,8 @@ export const COMBAT_PRESENTATION_MARKERS_V1 = Object.freeze({
   rifleReloadCompleted: markerBundle('rifle.reload.completed', ['animation', 'audio', 'hud']),
   rifleReloadCancelled: markerBundle('rifle.reload.cancelled', ['animation', 'audio', 'hud']),
   hitBody: markerBundle('hit.body.confirmed', ['audio', 'vfx', 'hud']),
+  hitHead: markerBundle('hit.head.confirmed', ['audio', 'vfx', 'hud']),
+  hitHeadKill: markerBundle('hit.head.kill.confirmed', ['audio', 'vfx', 'hud']),
   hitShield: markerBundle('hit.shield.confirmed', ['audio', 'vfx', 'hud']),
   hitKill: markerBundle('hit.kill.confirmed', ['audio', 'vfx', 'hud']),
   damageReceived: markerBundle('damage.received', ['audio', 'vfx', 'hud']),
@@ -1139,11 +1141,18 @@ function parseFeedEvent(value: unknown): ParsedAuthorityEventV1 {
 function parseMatchEvent(value: unknown): ParsedAuthorityEventV1 {
   const kind = dataRecord(value, 'match event').kind;
   if (kind === 'damage_applied') {
-    const item = parseBaseEvent(value, [
+    const damageFields = [
       'kind', 'eventId', 'eventSequence', 'authorityTick', 'causeId', 'sourcePlayerId',
       'targetPlayerId', 'shieldDamagePoints', 'healthDamagePoints', 'shieldPointsAfter',
       'healthPointsAfter',
-    ], 'damage event');
+    ] as const;
+    const item = parseBaseEvent(
+      value,
+      Object.hasOwn(dataRecord(value, 'damage event'), 'hitRegion')
+        ? [...damageFields, 'hitRegion']
+        : damageFields,
+      'damage event',
+    );
     integer(item.eventSequence, 0, 1_000_000, 'damage event sequence');
     stableId(item.causeId, 'damage cause');
     nullableStableId(item.sourcePlayerId, 'damage source');
@@ -1152,6 +1161,15 @@ function parseMatchEvent(value: unknown): ParsedAuthorityEventV1 {
     integer(item.healthDamagePoints, 0, 1_000_000, 'health damage');
     integer(item.shieldPointsAfter, 0, 1_000_000, 'shield after');
     integer(item.healthPointsAfter, 0, 1_000_000, 'health after');
+    if (
+      item.hitRegion !== undefined
+      && item.hitRegion !== null
+      && item.hitRegion !== 'head'
+      && item.hitRegion !== 'torso'
+      && item.hitRegion !== 'limb'
+    ) {
+      throw new RangeError('damage hit region must be head, torso, limb, null, or omitted');
+    }
     return deepFreeze(item) as ParsedAuthorityEventV1;
   }
   if (kind === 'death') {
@@ -2587,7 +2605,11 @@ export function applyCombatPresentationReliableEvent(
     }
     if (event.sourcePlayerId === adapter.localPlayerId) {
       const markers = (event.healthPointsAfter as number) === 0
-        ? COMBAT_PRESENTATION_MARKERS_V1.hitKill
+        ? event.hitRegion === 'head'
+          ? COMBAT_PRESENTATION_MARKERS_V1.hitHeadKill
+          : COMBAT_PRESENTATION_MARKERS_V1.hitKill
+        : event.hitRegion === 'head'
+          ? COMBAT_PRESENTATION_MARKERS_V1.hitHead
         : (event.shieldDamagePoints as number) > 0
           ? COMBAT_PRESENTATION_MARKERS_V1.hitShield
           : COMBAT_PRESENTATION_MARKERS_V1.hitBody;
@@ -2876,7 +2898,11 @@ function projectAuthorityEvent(
     }
     if (event.sourcePlayerId === localPlayerId) {
       const markers = (event.healthPointsAfter as number) === 0
-        ? COMBAT_PRESENTATION_MARKERS_V1.hitKill
+        ? event.hitRegion === 'head'
+          ? COMBAT_PRESENTATION_MARKERS_V1.hitHeadKill
+          : COMBAT_PRESENTATION_MARKERS_V1.hitKill
+        : event.hitRegion === 'head'
+          ? COMBAT_PRESENTATION_MARKERS_V1.hitHead
         : (event.shieldDamagePoints as number) > 0
           ? COMBAT_PRESENTATION_MARKERS_V1.hitShield
           : COMBAT_PRESENTATION_MARKERS_V1.hitBody;

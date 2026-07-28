@@ -419,27 +419,38 @@ export class Game {
 
   _onEnemyKilled(enemy, weaponEntry, rewardMult = 1, headshot = false) {
     this.kills++;
-    const hsTag    = headshot  ? '  🎯 HEADSHOT!' : '';
-    const knifeTag = rewardMult > 1 ? `  🔪 KNIFE THROW x${rewardMult.toFixed(1)}!` : '';
+    const tags = [
+      headshot ? 'HEADSHOT' : null,
+      rewardMult > 1 ? `THROW BONUS x${rewardMult.toFixed(1)}` : null,
+    ].filter(Boolean);
+    const tagText = tags.length > 0 ? ` · ${tags.join(' · ')}` : '';
 
     if (this._isSurvival) {
       const points = Math.round(50 * rewardMult * this.survivalManager.waveBonus());
       this.score += points;
-      this.hud.addKillFeed(`ZOMBIE DOWN  +${points} PRACTICE SCORE${hsTag}${knifeTag}`);
+      this.hud.addKillFeed(`Zombie down · +${points}${tagText}`);
+      this.hud.showKillConfirmation?.({ target: 'Zombie', points, headshot });
     } else if (this._isDM) {
       const { streak } = this.dmManager.onKill();
       const points = Math.round(100 * rewardMult);
       this.score += points;
+      this.hud.showKillConfirmation?.({
+        target: 'Practice bot',
+        points,
+        headshot,
+        streak,
+      });
       if (streak >= 2) {
         this.hud.showStreak(streak);
-        this.hud.addKillFeed(`PRACTICE BOT ELIMINATED — 🔥 x${streak} STREAK  +${points}${hsTag}${knifeTag}`);
+        this.hud.addKillFeed(`Practice bot down · ${streak} streak · +${points}${tagText}`);
       } else {
-        this.hud.addKillFeed(`PRACTICE BOT ELIMINATED  +${points}${hsTag}${knifeTag}`);
+        this.hud.addKillFeed(`Practice bot down · +${points}${tagText}`);
       }
     } else {
       const points = Math.round(100 * rewardMult);
       this.score += points;
-      this.hud.addKillFeed(`${this.player.name} eliminated a practice target  +${points}${hsTag}${knifeTag}`);
+      this.hud.addKillFeed(`${this.player.name} downed a practice target · +${points}${tagText}`);
+      this.hud.showKillConfirmation?.({ target: 'Practice target', points, headshot });
     }
   }
 
@@ -637,7 +648,7 @@ export class Game {
     const sm = this.survivalManager;
 
     sm.onGraceEnd = () => {
-      this.hud.addKillFeed('⚠ GRACE PERIOD OVER — FIRST WAVE INCOMING!');
+      this.hud.addKillFeed('Grace period over. First wave incoming.');
     };
 
     sm.onWaveStart = (wave, count, hpMult, speedMult, armedRatio = 0, dmgMult = 1) => {
@@ -645,7 +656,7 @@ export class Game {
       const bonus      = Math.round((hpMult - 1) * 100);
       const armedCount = Math.round(count * armedRatio);
       let   threat     = '';
-      if (armedRatio >= 0.60) threat = ' ⚠ HEAVILY ARMED';
+      if (armedRatio >= 0.60) threat = ' · heavily armed';
       else if (armedRatio > 0) threat = ` — ${armedCount} ARMED`;
       this.hud.showWaveBanner(`WAVE ${wave} — ${count} ZOMBIES${threat}`);
       this.hud.addKillFeed(`— WAVE ${wave}: ${count} zombies${bonus > 0 ? ` (+${bonus}% HP)` : ''}${armedCount > 0 ? ` | ${armedCount} carry guns!` : ''}`);

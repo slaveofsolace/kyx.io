@@ -305,7 +305,7 @@
     </div>
 
     <!-- In-practice HUD: every population label identifies bots explicitly. -->
-    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="g7-foundation-v1" data-ui-revision="kyx-field-ui-v3" data-kyx-a11y="text-and-pattern-critical-states">
+    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="match-instrument-v1" data-ui-revision="match-instrument-v1" data-kyx-a11y="text-and-pattern-critical-states">
       <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div id="hitmarker" aria-hidden="true"></div>
       <div id="damage-flash" aria-hidden="true"></div>
@@ -352,6 +352,11 @@
 
       <div id="weapon-slots"></div>
       <div id="killfeed" aria-live="polite"></div>
+      <div id="kill-confirmation" class="hidden" role="status" aria-live="polite" aria-atomic="true">
+        <span class="kill-confirmation__rule" aria-hidden="true"></span>
+        <span id="kill-confirmation-label" class="kill-confirmation__label">Target down</span>
+        <span id="kill-confirmation-detail" class="kill-confirmation__detail"></span>
+      </div>
       <div id="caption-region" class="caption-region hidden" aria-live="polite" aria-atomic="true" aria-label="Subtitles" data-caption-contract="speaker-text-direction"></div>
       <div id="audio-cue-region" class="audio-cue-region hidden" aria-live="polite" aria-atomic="true" aria-label="Critical sound indicators" data-audio-cue-contract="bounded-non-positional"></div>
       <div id="damage-direction" class="damage-direction hidden" data-direction="front" aria-live="polite" aria-atomic="true">
@@ -375,17 +380,21 @@
       </div>
       <div id="wave-banner" class="hidden"></div>
       <div id="teleport-flash"></div>
-      <div id="ability-rack" role="group" aria-label="Selected abilities" data-ability-count="3">
-        <div id="ability-frag" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Frag grenade, F, 2 available">
-          <span class="ability-key">F</span><span class="ability-name">Frag</span><span id="frag-count" class="ability-count">2</span><span id="ability-frag-state" class="ability-state">Ready</span>
+      <div id="ability-rack" role="group" aria-label="Selected abilities" data-ability-contract="blink-locked-plus-three" data-ability-count="4" data-fixed-slot-id="blink" data-selectable-slot-count="3" data-selectable-keys="E,F,Z">
+        <div id="ability-q" class="ability-indicator ability-slot ability-slot--fixed ready" data-state="ready" data-slot-role="fixed" data-loadout-slot="blink" data-ability-id="blink" data-ability-key="Q" aria-label="Blink, Q, locked ability, ready">
+          <span class="ability-key">Q</span><span class="ability-name">Blink</span><span class="ability-lock">Fixed</span><span id="ability-q-state" class="ability-state">Ready</span>
         </div>
-        <div id="ability-q" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Blink, Q, ready">
-          <span class="ability-key">Q</span><span class="ability-name">Blink</span><span id="ability-q-state" class="ability-state">Ready</span>
+        <div id="ability-slot-1" class="ability-indicator ability-slot ability-slot--selectable" data-state="assigned" data-slot-role="selectable" data-loadout-slot="1" data-selectable-index="0" data-ability-id="launch" data-ability-key="E" aria-label="Launch, E, assigned ability">
+          <span class="ability-key">E</span><span id="ability-slot-1-name" class="ability-name">Launch</span><span id="ability-slot-1-count" class="ability-count"></span><span id="ability-slot-1-state" class="ability-state">Assigned</span>
         </div>
-        <div id="ability-smoke" class="ability-indicator ability-slot ready" data-state="ready" aria-label="Smoke grenade, E, 2 available">
-          <span class="ability-key">E</span><span class="ability-name">Smoke</span><span id="smoke-count" class="ability-count">2</span><span id="ability-smoke-state" class="ability-state">Ready</span>
+        <div id="ability-slot-2" class="ability-indicator ability-slot ability-slot--selectable ready" data-state="ready" data-slot-role="selectable" data-loadout-slot="2" data-selectable-index="1" data-ability-id="smoke" data-ability-key="F" aria-label="Smoke grenade, F, 2 available">
+          <span class="ability-key">F</span><span id="ability-slot-2-name" class="ability-name">Smoke</span><span id="ability-slot-2-count" class="ability-count">2</span><span id="ability-slot-2-state" class="ability-state">Ready</span>
+        </div>
+        <div id="ability-slot-3" class="ability-indicator ability-slot ability-slot--selectable ready" data-state="ready" data-slot-role="selectable" data-loadout-slot="3" data-selectable-index="2" data-ability-id="frag" data-ability-key="Z" aria-label="Frag grenade, Z, 2 available">
+          <span class="ability-key">Z</span><span id="ability-slot-3-name" class="ability-name">Frag</span><span id="ability-slot-3-count" class="ability-count">2</span><span id="ability-slot-3-state" class="ability-state">Ready</span>
         </div>
       </div>
+      <div id="ability-flash-overlay" class="ability-flash-overlay" aria-hidden="true"></div>
 
       <div id="scope-overlay" aria-hidden="true">
         <div class="scope-ring">

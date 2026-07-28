@@ -1,3 +1,5 @@
+import type { CombatHitRegion } from './poseHistory';
+
 const MAX_STABLE_ID_BYTES = 96;
 const MAX_DAMAGE_POINTS = 1_000_000;
 
@@ -84,6 +86,8 @@ export interface AuthoritativeDamageRequest {
   readonly sourceTeamId: string | null;
   readonly damagePoints: number;
   readonly causeId: string;
+  /** Null for non-locational damage such as splash, melee, or admin damage. */
+  readonly hitRegion?: CombatHitRegion | null;
 }
 
 export type DamageRejectionReason =
@@ -106,6 +110,7 @@ export interface CombatDamageAppliedEvent {
   readonly healthDamagePoints: number;
   readonly shieldPointsAfter: number;
   readonly healthPointsAfter: number;
+  readonly hitRegion: CombatHitRegion | null;
 }
 
 export interface CombatDeathEvent {
@@ -352,7 +357,7 @@ export function endSpawnProtectionOnAcceptedOffense(
 
 function validateDamageRequest(request: AuthoritativeDamageRequest): AuthoritativeDamageRequest {
   if (request === null || typeof request !== 'object') throw new TypeError('authoritative damage request is required');
-  exactKeys(request, [
+  const allowed = new Set([
     'eventSequence',
     'authorityTick',
     'targetPlayerId',
@@ -360,7 +365,27 @@ function validateDamageRequest(request: AuthoritativeDamageRequest): Authoritati
     'sourceTeamId',
     'damagePoints',
     'causeId',
-  ], 'authoritative damage request');
+    'hitRegion',
+  ]);
+  const keys = Object.keys(request);
+  if (
+    keys.some((key) => !allowed.has(key))
+    || [
+      'eventSequence',
+      'authorityTick',
+      'targetPlayerId',
+      'sourcePlayerId',
+      'sourceTeamId',
+      'damagePoints',
+      'causeId',
+    ].some((key) => !keys.includes(key))
+  ) {
+    throw new TypeError('authoritative damage request contains unsupported or missing fields');
+  }
+  const hitRegion = request.hitRegion ?? null;
+  if (hitRegion !== null && hitRegion !== 'head' && hitRegion !== 'torso' && hitRegion !== 'limb') {
+    throw new RangeError('damage hit region must be head, torso, limb, or null');
+  }
   return Object.freeze({
     eventSequence: integer(request.eventSequence, 0, Number.MAX_SAFE_INTEGER, 'damage event sequence'),
     authorityTick: integer(request.authorityTick, 0, Number.MAX_SAFE_INTEGER, 'damage authority tick'),
@@ -369,6 +394,7 @@ function validateDamageRequest(request: AuthoritativeDamageRequest): Authoritati
     sourceTeamId: optionalStableId(request.sourceTeamId, 'damage source team id'),
     damagePoints: integer(request.damagePoints, 0, MAX_DAMAGE_POINTS, 'damage points'),
     causeId: stableId(request.causeId, 'damage cause id'),
+    hitRegion,
   });
 }
 
@@ -453,6 +479,7 @@ export function applyAuthoritativeDamage(
     healthDamagePoints,
     shieldPointsAfter,
     healthPointsAfter,
+    hitRegion: request.hitRegion ?? null,
   } satisfies CombatDamageAppliedEvent);
 
   let death: CombatDeathEvent | null = null;

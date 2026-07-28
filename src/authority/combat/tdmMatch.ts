@@ -344,11 +344,20 @@ function enterPostmatch(
 }
 
 function validateDamageEvent(value: unknown): CombatDamageAppliedEvent {
-  const item = strictRecord(value, [
+  const damageKeys = [
     'kind', 'eventId', 'eventSequence', 'authorityTick', 'causeId',
     'sourcePlayerId', 'targetPlayerId', 'shieldDamagePoints',
     'healthDamagePoints', 'shieldPointsAfter', 'healthPointsAfter',
-  ], 'TDM damage event');
+  ] as const;
+  const hasHitRegion = value !== null
+    && typeof value === 'object'
+    && !Array.isArray(value)
+    && Object.hasOwn(value, 'hitRegion');
+  const item = strictRecord(
+    value,
+    hasHitRegion ? [...damageKeys, 'hitRegion'] : damageKeys,
+    'TDM damage event',
+  );
   strictLiteral(item.kind, 'damage_applied', 'TDM damage event kind');
   const eventSequence = strictInteger(
     item.eventSequence,
@@ -357,6 +366,15 @@ function validateDamageEvent(value: unknown): CombatDamageAppliedEvent {
     'TDM damage event sequence',
   );
   strictLiteral(item.eventId, `combat.damage.${eventSequence}`, 'TDM damage event id');
+  const hitRegion = item.hitRegion ?? null;
+  if (
+    hitRegion !== null
+    && hitRegion !== 'head'
+    && hitRegion !== 'torso'
+    && hitRegion !== 'limb'
+  ) {
+    throw new RangeError('TDM damage hit region must be head, torso, limb, or null');
+  }
   return deepFreezeCombatValue({
     kind: 'damage_applied',
     eventId: item.eventId as string,
@@ -379,6 +397,7 @@ function validateDamageEvent(value: unknown): CombatDamageAppliedEvent {
     ),
     shieldPointsAfter: strictInteger(item.shieldPointsAfter, 0, 1_000_000, 'TDM shield after'),
     healthPointsAfter: strictInteger(item.healthPointsAfter, 0, 1_000_000, 'TDM health after'),
+    hitRegion,
   });
 }
 

@@ -2,7 +2,7 @@
 // `key` is the keyboard binding shown in the HUD (digits for the first ten guns,
 // letters for the rest, "V" for the blade). `sound` maps to a profile in
 // AudioManager.playShot(). The scroll wheel cycles through everything.
-export const WEAPONS = [
+const WEAPON_DEFINITIONS = [
   {
     id: 'sidearm',
     name: 'Pulse Pistol',
@@ -373,6 +373,27 @@ export const WEAPONS = [
     color: 0x1a0a00
   },
 ];
+
+function defaultHeadshotMultiplier(definition) {
+  if (definition.kind !== 'hitscan') return undefined;
+  if (definition.sound === 'shotgun') return 1.25;
+  if (definition.sound === 'sniper') return 2.0;
+  return 1.75;
+}
+
+/**
+ * Every local hitscan family has an explicit headshot balance. Individually
+ * authored values above remain authoritative (for example, the Pulse Pistol's
+ * deliberate one-shot headshot); missing values use a 1.75x baseline, with a
+ * restrained 1.25x per-pellet shotgun bonus and a 2.0x precision-rifle bonus.
+ */
+export const WEAPONS = WEAPON_DEFINITIONS.map((definition) => {
+  const headshotMultiplier = definition.headshotMultiplier
+    ?? defaultHeadshotMultiplier(definition);
+  return Object.freeze(headshotMultiplier === undefined
+    ? { ...definition }
+    : { ...definition, headshotMultiplier });
+});
 
 export function getWeapon(id) {
   return WEAPONS.find((w) => w.id === id);

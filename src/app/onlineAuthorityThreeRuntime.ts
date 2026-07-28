@@ -597,7 +597,7 @@ export async function createOnlineAuthorityThreeRuntime(
       } else if (semantic.kind === 'damage_applied') {
         const impact = entityScenePosition(semantic.targetPlayerId, frame);
         if (impact !== null) {
-          impact.y += 1.15;
+          impact.y += semantic.hitRegion === 'head' ? 1.65 : 1.15;
           const sourceMuzzle = semantic.sourcePlayerId === null
             ? null
             : entityMuzzle(semantic.sourcePlayerId, frame);

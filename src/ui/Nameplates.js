@@ -90,7 +90,7 @@ export class Nameplates {
     if (!camera || !bots) return;
     const w = window.innerWidth, h = window.innerHeight;
     const deconflictLabels =
-      document.body?.dataset.g7Candidate === 'foundry-tactical-v1';
+      document.body?.dataset.uiSystem === 'match-instrument-v1';
     const visiblePlacements = [];
     camera.getWorldPosition(this._cam);
     const live = new Set();

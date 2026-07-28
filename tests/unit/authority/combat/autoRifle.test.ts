@@ -93,7 +93,7 @@ describe('P5.2 authoritative Auto Rifle state machine', () => {
       authorityHz: 20,
       referenceDamagePoints: 10,
       pelletsPerShot: 1,
-      headMultiplierPermille: 1_000,
+      headMultiplierPermille: 1_750,
       limbMultiplierPermille: 1_000,
       rangeMillimeters: 120_000,
       magazineCapacity: 50,

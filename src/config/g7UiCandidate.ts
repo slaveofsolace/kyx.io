@@ -3,8 +3,8 @@ export const G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE = 'tournament-instrument-rev2'
 export const G7_LEGACY_FALLBACK_QUERY_VALUE = 'legacy';
 export const G7_COMPATIBILITY_QUERY_KEY = 'g7Candidate';
 export const G7_COMPATIBILITY_QUERY_VALUE = 'foundry-tactical';
-export const G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE = 'tournament-instrument-rev2';
-export const G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN = 'foundry-tactical-v1';
+export const G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE = 'match-instrument-v1';
+export const G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN = 'match-instrument-v1';
 
 export type G7UiCandidateResolution =
   | Readonly<{

@@ -24,12 +24,6 @@ export class HUD {
     this.staminaBar  = document.getElementById('stamina-bar');
     this.staminaText = document.getElementById('stamina-text');
     this.staminaState = document.getElementById('stamina-state');
-    this.fragCount   = document.getElementById('frag-count');
-    this.smokeCount  = document.getElementById('smoke-count');
-    this.fragSlot    = document.getElementById('ability-frag');
-    this.smokeSlot   = document.getElementById('ability-smoke');
-    this.fragState   = document.getElementById('ability-frag-state');
-    this.smokeState  = document.getElementById('ability-smoke-state');
     this.weaponName  = document.getElementById('weapon-name');
     this.weaponWrap  = document.getElementById('weapon-wrap');
     this.ammoText    = document.getElementById('ammo-text');
@@ -41,6 +35,9 @@ export class HUD {
     this.hitmarker   = document.getElementById('hitmarker');
     this.damageFlash = document.getElementById('damage-flash');
     this.killfeed    = document.getElementById('killfeed');
+    this.killConfirmation = document.getElementById('kill-confirmation');
+    this.killConfirmationLabel = document.getElementById('kill-confirmation-label');
+    this.killConfirmationDetail = document.getElementById('kill-confirmation-detail');
     this.modeInfo    = document.getElementById('mode-info');
     this.dmTimer        = document.getElementById('dm-timer');
     this.streakBadge    = document.getElementById('streak-badge');
@@ -66,6 +63,7 @@ export class HUD {
     this._teleportFlashTimeout = null;
     this._damageDirectionTimeout = null;
     this._abilityReasonTimeout = null;
+    this._killConfirmationTimeout = null;
   }
 
   show() { this.root?.classList.remove('hidden'); }
@@ -241,21 +239,65 @@ export class HUD {
   updateGrenades(frags, smokes) {
     const safeFrags = Number.isFinite(frags) ? Math.max(0, Math.floor(frags)) : 0;
     const safeSmokes = Number.isFinite(smokes) ? Math.max(0, Math.floor(smokes)) : 0;
-    this.fragCount.textContent  = `${safeFrags}`;
-    this.smokeCount.textContent = `${safeSmokes}`;
-    this.fragCount.classList.toggle('grenade-empty', safeFrags === 0);
-    this.smokeCount.classList.toggle('grenade-empty', safeSmokes === 0);
+    this.updateAbilitySlot('frag', {
+      name: 'Frag',
+      count: safeFrags,
+      state: safeFrags > 0 ? 'ready' : 'empty',
+      stateLabel: safeFrags > 0 ? 'Ready' : 'Empty',
+      ready: safeFrags > 0,
+    });
+    this.updateAbilitySlot('smoke', {
+      name: 'Smoke',
+      count: safeSmokes,
+      state: safeSmokes > 0 ? 'ready' : 'empty',
+      stateLabel: safeSmokes > 0 ? 'Ready' : 'Empty',
+      ready: safeSmokes > 0,
+    });
+  }
 
-    for (const [slot, state, count, name, key] of [
-      [this.fragSlot, this.fragState, safeFrags, 'Frag grenade', 'F'],
-      [this.smokeSlot, this.smokeState, safeSmokes, 'Smoke grenade', 'E'],
-    ]) {
-      const ready = count > 0;
-      slot?.classList.toggle('ready', ready);
-      if (slot) slot.dataset.state = ready ? 'ready' : 'empty';
-      if (state) state.textContent = ready ? 'Ready' : 'Empty';
-      slot?.setAttribute('aria-label', `${name}, ${key}, ${count} available${ready ? '' : ', empty'}`);
-    }
+  /**
+   * Runtime-generic loadout hook. Blink remains the fixed Q slot; the ability
+   * runtime may populate the three selectable E/F/Z slots without replacing
+   * HUD markup or relying on ability-specific CSS selectors.
+   */
+  updateAbilitySlot(abilityId, {
+    name,
+    key,
+    state = 'assigned',
+    stateLabel = 'Assigned',
+    count = null,
+    ready = state === 'ready',
+  } = {}) {
+    const safeId = String(abilityId ?? '').replace(/[^a-z0-9_-]/giu, '').slice(0, 32);
+    if (!safeId) return false;
+    const slot = this.root?.querySelector?.(`[data-ability-id="${safeId}"]`);
+    if (!slot) return false;
+    const safeKey = String(key ?? slot.dataset.abilityKey ?? '')
+      .replace(/[^A-Z0-9]/giu, '')
+      .slice(0, 3)
+      .toUpperCase();
+    const safeName = sentenceCaseHudText(name ?? safeId).slice(0, 24);
+    const safeState = String(state ?? 'assigned')
+      .replace(/[^a-z0-9_-]/giu, '')
+      .slice(0, 24) || 'assigned';
+    const safeStateLabel = sentenceCaseHudText(stateLabel ?? safeState).slice(0, 28);
+    const keyElement = slot.querySelector?.('.ability-key');
+    const nameElement = slot.querySelector?.('.ability-name');
+    const stateElement = slot.querySelector?.('.ability-state');
+    const countElement = slot.querySelector?.('.ability-count');
+    if (keyElement && safeKey) keyElement.textContent = safeKey;
+    if (nameElement) nameElement.textContent = safeName;
+    if (stateElement) stateElement.textContent = safeStateLabel;
+    if (countElement) countElement.textContent = Number.isFinite(count) ? `${Math.max(0, Math.floor(count))}` : '';
+    slot.dataset.abilityId = safeId;
+    if (safeKey) slot.dataset.abilityKey = safeKey;
+    slot.dataset.state = safeState;
+    slot.classList.toggle('ready', ready === true);
+    slot.setAttribute(
+      'aria-label',
+      `${safeName}${safeKey ? `, ${safeKey}` : ''}, ${safeStateLabel.toLocaleLowerCase()}`,
+    );
+    return true;
   }
 
   flashHitmarker(headshot = false) {
@@ -350,10 +392,13 @@ export class HUD {
   clearTransientEvents() {
     clearTimeout(this._damageDirectionTimeout);
     clearTimeout(this._abilityReasonTimeout);
+    clearTimeout(this._killConfirmationTimeout);
     this._damageDirectionTimeout = null;
     this._abilityReasonTimeout = null;
+    this._killConfirmationTimeout = null;
     this.damageDirection?.classList.add('hidden');
     this.abilityReason?.classList.add('hidden');
+    this.killConfirmation?.classList.add('hidden');
     this.hideInteractionPrompt();
     this.setConnectionWarning(false);
   }
@@ -492,5 +537,38 @@ export class HUD {
     while (this.killfeed.children.length > 5) {
       this.killfeed.removeChild(this.killfeed.firstChild);
     }
+  }
+
+  showKillConfirmation({
+    target = 'Target',
+    points = 0,
+    headshot = false,
+    streak = 1,
+    durationMs = 1_150,
+  } = {}) {
+    if (!this.killConfirmation || !this.killConfirmationLabel || !this.killConfirmationDetail) {
+      return false;
+    }
+    const safeTarget = sentenceCaseHudText(target).slice(0, 32) || 'Target';
+    const safePoints = Number.isFinite(points) ? Math.max(0, Math.round(points)) : 0;
+    const safeStreak = Number.isFinite(streak) ? Math.max(1, Math.floor(streak)) : 1;
+    const details = [
+      safePoints > 0 ? `+${safePoints}` : null,
+      headshot ? 'Headshot' : null,
+      safeStreak > 1 ? `${safeStreak} streak` : null,
+    ].filter(Boolean);
+    this.killConfirmationLabel.textContent = `${safeTarget} down`;
+    this.killConfirmationDetail.textContent = details.join(' · ');
+    this.killConfirmation.dataset.headshot = String(headshot === true);
+    this.killConfirmation.classList.remove('hidden');
+    clearTimeout(this._killConfirmationTimeout);
+    const safeDuration = Number.isFinite(durationMs)
+      ? Math.min(2_500, Math.max(650, durationMs))
+      : 1_150;
+    this._killConfirmationTimeout = setTimeout(
+      () => this.killConfirmation.classList.add('hidden'),
+      safeDuration,
+    );
+    return true;
   }
 }

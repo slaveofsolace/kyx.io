@@ -1,7 +1,5 @@
 import './style.css';
-import './ui/g7-ui.css';
-import './ui/g7-foundry-tactical.css';
-import './ui/g7-arena-instrument.css';
+import './ui/kyx-match-instrument.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
@@ -22,17 +20,14 @@ import {
 
 const canvas = document.getElementById('game-canvas');
 const g7UiCandidate = resolveG7UiCandidate(window.location.search);
-const useAcceptedG7Presentation = g7UiCandidate.kind !== 'fallback';
-document.body.dataset.g7Presentation = useAcceptedG7Presentation
-  ? 'tournament-instrument-rev2'
-  : 'legacy-fallback';
-if (useAcceptedG7Presentation) {
-  document.body.dataset.g7Candidate = 'foundry-tactical-v1';
-  document.body.dataset.g7Theme = 'arena-instrument-v3';
-  document.getElementById('hud')?.setAttribute('data-ui-candidate', 'arena-instrument-v3');
-}
+const uiSystem = 'match-instrument-v1';
+document.body.dataset.g7Presentation = uiSystem;
+document.body.dataset.uiSystem = uiSystem;
+document.getElementById('hud')?.setAttribute('data-ui-system', uiSystem);
 if (g7UiCandidate.kind === 'invalid') {
   document.body.dataset.g7PresentationQuery = `invalid-${g7UiCandidate.reason}`;
+} else if (g7UiCandidate.kind === 'fallback') {
+  document.body.dataset.g7PresentationQuery = 'legacy-query-retired';
 }
 const desktopSupported = supportsDesktopLaunch();
 const deterministicTestRoute = import.meta.env.DEV

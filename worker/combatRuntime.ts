@@ -850,6 +850,7 @@ export function reliableCombatEvents(
         healthDamagePoints: damage.damage.healthDamagePoints,
         shieldPointsAfter: damage.damage.shieldPointsAfter,
         healthPointsAfter: damage.damage.healthPointsAfter,
+        hitRegion: damage.damage.hitRegion,
       }),
     }));
     if (damage.death !== null) {
@@ -897,6 +898,7 @@ export function reliableCombatEvents(
         healthDamagePoints: damage.damage.healthDamagePoints,
         shieldPointsAfter: damage.damage.shieldPointsAfter,
         healthPointsAfter: damage.damage.healthPointsAfter,
+        hitRegion: damage.damage.hitRegion,
       }),
     }));
     if (damage.death !== null) {

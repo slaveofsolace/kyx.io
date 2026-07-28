@@ -70,7 +70,7 @@
       "weaponId": "vertical_rifle_v1",
       "baseDamagePoints": 10,
       "pelletsPerShot": 1,
-      "headMultiplierPermille": 1000,
+      "headMultiplierPermille": 1750,
       "limbMultiplierPermille": 1000,
       "rangeMillimeters": 120000,
       "magazineCapacity": 50,
@@ -144,7 +144,7 @@
       "damage": {
         "base": 10,
         "pellets": 1,
-        "headMultiplier": 1,
+        "headMultiplier": 1.75,
         "limbMultiplier": 1
       },
       "delivery": {

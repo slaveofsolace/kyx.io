@@ -518,6 +518,11 @@ export interface CombatPresentationDamageEventV1 {
   readonly healthDamagePoints: number;
   readonly shieldPointsAfter: number;
   readonly healthPointsAfter: number;
+  /**
+   * Additive presentation metadata. Missing values from pre-headshot persisted
+   * reliable events are interpreted as null during reconnect/replay.
+   */
+  readonly hitRegion?: 'head' | 'torso' | 'limb' | null;
 }
 
 export interface CombatPresentationWeaponBallisticsSampleV1 {

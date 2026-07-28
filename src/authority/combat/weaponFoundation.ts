@@ -1,4 +1,5 @@
 import type {
+  CombatHitRegion,
   CombatVector3Millimeters,
   TargetPoseHistoryV1,
 } from './poseHistory';
@@ -122,7 +123,7 @@ export const KYX_WEAPON_PROFILES: readonly KyxWeaponProfileV1[] = Object.freeze(
     equipDurationTicks: 4,
     pelletsPerAttack: 1,
     spreadMilliDegrees: 1_146,
-    headMultiplierPermille: 1_000,
+    headMultiplierPermille: 1_750,
     torsoMultiplierPermille: 1_000,
     limbMultiplierPermille: 1_000,
     projectileSpeedMillimetersPerSecond: null,
@@ -145,7 +146,7 @@ export const KYX_WEAPON_PROFILES: readonly KyxWeaponProfileV1[] = Object.freeze(
     equipDurationTicks: 4,
     pelletsPerAttack: 1,
     spreadMilliDegrees: 350,
-    headMultiplierPermille: 1_500,
+    headMultiplierPermille: 1_750,
     torsoMultiplierPermille: 1_000,
     limbMultiplierPermille: 850,
     projectileSpeedMillimetersPerSecond: null,
@@ -168,7 +169,7 @@ export const KYX_WEAPON_PROFILES: readonly KyxWeaponProfileV1[] = Object.freeze(
     equipDurationTicks: 6,
     pelletsPerAttack: 8,
     spreadMilliDegrees: 4_500,
-    headMultiplierPermille: 1_000,
+    headMultiplierPermille: 1_250,
     torsoMultiplierPermille: 1_000,
     limbMultiplierPermille: 900,
     projectileSpeedMillimetersPerSecond: null,
@@ -191,7 +192,7 @@ export const KYX_WEAPON_PROFILES: readonly KyxWeaponProfileV1[] = Object.freeze(
     equipDurationTicks: 8,
     pelletsPerAttack: 1,
     spreadMilliDegrees: 75,
-    headMultiplierPermille: 1_500,
+    headMultiplierPermille: 2_000,
     torsoMultiplierPermille: 1_000,
     limbMultiplierPermille: 750,
     projectileSpeedMillimetersPerSecond: null,
@@ -804,6 +805,8 @@ export interface AuthorityWeaponHitscanDamageTotalV1 {
   readonly targetPlayerId: string;
   readonly damagePoints: number;
   readonly pelletHits: number;
+  /** Highest-value confirmed region across every pellet contributing to this total. */
+  readonly hitRegion: CombatHitRegion;
 }
 
 export interface ResolveAuthorityWeaponHitscanAttackResultV1 {
@@ -845,6 +848,11 @@ export function resolveAuthorityWeaponHitscanAttack(
     }, hitscanProfile, worldOcclusionPort)
   ));
   const totals = new Map<string, AuthorityWeaponHitscanDamageTotalV1>();
+  const regionPriority: Readonly<Record<CombatHitRegion, number>> = Object.freeze({
+    limb: 0,
+    torso: 1,
+    head: 2,
+  });
   for (const result of pelletResults) {
     if (!result.accepted || result.outcome !== 'hit') continue;
     const previous = totals.get(result.hit.targetPlayerId);
@@ -852,6 +860,10 @@ export function resolveAuthorityWeaponHitscanAttack(
       targetPlayerId: result.hit.targetPlayerId,
       damagePoints: (previous?.damagePoints ?? 0) + result.hit.damagePoints,
       pelletHits: (previous?.pelletHits ?? 0) + 1,
+      hitRegion: previous === undefined
+        || regionPriority[result.hit.region] > regionPriority[previous.hitRegion]
+        ? result.hit.region
+        : previous.hitRegion,
     });
   }
   return deepFreeze({

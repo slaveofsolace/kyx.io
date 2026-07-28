@@ -261,7 +261,7 @@ describe('P5.3 authoritative Auto Rifle rewind and hitscan', () => {
       maximumAimYawFromBodyMilliDegrees: 90_000,
       maximumAimPitchMilliDegrees: 89_000,
       friendlyFireEnabled: false,
-      headMultiplierPermille: 1_000,
+      headMultiplierPermille: 1_750,
       torsoMultiplierPermille: 1_000,
       limbMultiplierPermille: 1_000,
     });
@@ -285,8 +285,8 @@ describe('P5.3 authoritative Auto Rifle rewind and hitscan', () => {
         targetPlayerId: 'player_target',
         targetPoseTick: 96,
         region: 'head',
-        damageMultiplierPermille: 1_000,
-        damagePoints: 10,
+        damageMultiplierPermille: 1_750,
+        damagePoints: 18,
       },
       debug: {
         compensation: {
@@ -499,7 +499,7 @@ describe('P5.3 authoritative Auto Rifle rewind and hitscan', () => {
     });
   });
 
-  it('retains head, torso, and limb classification at the current 1.0 multiplier', () => {
+  it('applies the 1.75 headshot multiplier while retaining torso and limb classification', () => {
     for (const region of ['head', 'torso', 'limb'] as const) {
       const target = history(`player_${region}`, [
         pose(96, {
@@ -521,8 +521,8 @@ describe('P5.3 authoritative Auto Rifle rewind and hitscan', () => {
           targetPlayerId: `player_${region}`,
           volumeId: `test_${region}`,
           region,
-          damageMultiplierPermille: 1_000,
-          damagePoints: 10,
+          damageMultiplierPermille: region === 'head' ? 1_750 : 1_000,
+          damagePoints: region === 'head' ? 18 : 10,
         },
       });
     }

@@ -188,6 +188,38 @@ function damage(
   } as const;
 }
 
+describe('confirmed hit-region presentation', () => {
+  it('emits distinct headshot and lethal-headshot markers while accepting legacy regionless events', () => {
+    const authority = room();
+    start(authority);
+    let adapter = adapterFrom(authority);
+
+    const headshot = applyCombatPresentationFrame(adapter, {
+      ...emptyFrame(1),
+      matchEvents: [damage(0, 1, { hitRegion: 'head' })],
+    });
+    adapter = headshot.adapter;
+    expect(headshot.intents[0]?.markers.hud).toContain('.hit.head.confirmed.');
+
+    const lethalHeadshot = applyCombatPresentationFrame(adapter, {
+      ...emptyFrame(2),
+      matchEvents: [damage(1, 2, {
+        hitRegion: 'head',
+        healthDamagePoints: 90,
+        healthPointsAfter: 0,
+      })],
+    });
+    adapter = lethalHeadshot.adapter;
+    expect(lethalHeadshot.intents[0]?.markers.hud).toContain('.hit.head.kill.confirmed.');
+
+    const legacyRegionless = applyCombatPresentationFrame(adapterFrom(authority), {
+      ...emptyFrame(1),
+      matchEvents: [damage(0, 1)],
+    });
+    expect(legacyRegionless.intents[0]?.markers.hud).toContain('.hit.body.confirmed.');
+  });
+});
+
 type MutableSnapshotFixture = {
   identity: Record<string, unknown>;
   serverTick: number;

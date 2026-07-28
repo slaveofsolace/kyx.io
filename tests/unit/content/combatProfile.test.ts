@@ -38,6 +38,7 @@ describe('revamped_classic revision 3 combat implementation fixture', () => {
         autoRifle: {
           weaponId: 'vertical_rifle_v1',
           baseDamagePoints: 10,
+          headMultiplierPermille: 1_750,
           magazineCapacity: 50,
           reserveCapacity: 150,
           fireCooldownTicks: 2,
@@ -66,7 +67,7 @@ describe('revamped_classic revision 3 combat implementation fixture', () => {
   it('pins the immutable revision 3 identity without changing historical identities', () => {
     expect(hashRulesetContent(requireRuleset('revamped_classic', 1))).toBe('75c24a622286d2b0');
     expect(hashRulesetContent(requireRuleset('revamped_classic', 2))).toBe('039ae95bed7ee716');
-    expect(hashRulesetContent(requireRuleset('revamped_classic', 3))).toBe('d5f0418d1d927370');
+    expect(hashRulesetContent(requireRuleset('revamped_classic', 3))).toBe('69b19f19a19de288');
   });
 
   it('requires the combat profile at revision 3 and forbids it on earlier revisions', () => {

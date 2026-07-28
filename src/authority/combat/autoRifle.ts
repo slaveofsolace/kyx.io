@@ -22,7 +22,7 @@ export interface AutoRifleRulesV1 {
   readonly authorityHz: 20;
   readonly referenceDamagePoints: 10;
   readonly pelletsPerShot: 1;
-  readonly headMultiplierPermille: 1_000;
+  readonly headMultiplierPermille: 1_750;
   readonly limbMultiplierPermille: 1_000;
   readonly rangeMillimeters: 120_000;
   readonly magazineCapacity: 50;
@@ -51,7 +51,7 @@ export const G4_AUTO_RIFLE_RULES: AutoRifleRulesV1 = Object.freeze({
   authorityHz: 20,
   referenceDamagePoints: 10,
   pelletsPerShot: 1,
-  headMultiplierPermille: 1_000,
+  headMultiplierPermille: 1_750,
   limbMultiplierPermille: 1_000,
   rangeMillimeters: 120_000,
   magazineCapacity: 50,
@@ -291,7 +291,7 @@ export function assertAutoRifleRules(rules: AutoRifleRulesV1): void {
   requireLiteral(rules.authorityHz, 20, 'auto rifle authority rate');
   requireLiteral(rules.referenceDamagePoints, 10, 'auto rifle reference damage');
   requireLiteral(rules.pelletsPerShot, 1, 'auto rifle pellets per shot');
-  requireLiteral(rules.headMultiplierPermille, 1_000, 'auto rifle head multiplier');
+  requireLiteral(rules.headMultiplierPermille, 1_750, 'auto rifle head multiplier');
   requireLiteral(rules.limbMultiplierPermille, 1_000, 'auto rifle limb multiplier');
   requireLiteral(rules.rangeMillimeters, 120_000, 'auto rifle range');
   requireLiteral(rules.magazineCapacity, 50, 'auto rifle magazine capacity');

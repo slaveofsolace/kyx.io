@@ -222,6 +222,7 @@ export interface AuthorityRoomDamageRequest {
   readonly sourcePlayerId: string | null;
   readonly damagePoints: number;
   readonly causeId: string;
+  readonly hitRegion?: 'head' | 'torso' | 'limb' | null;
 }
 
 export type AuthorityJoinResult =
@@ -1803,9 +1804,9 @@ export class AuthoritativeRoom {
       throw new Error('AUTHORITY_COMBAT_PHASE_REJECTED');
     }
     const record = snapshotPlainDataRecord(request, 'room combat damage request');
-    exactKeys(
+    allowedKeys(
       record,
-      ['targetPlayerId', 'sourcePlayerId', 'damagePoints', 'causeId'],
+      ['targetPlayerId', 'sourcePlayerId', 'damagePoints', 'causeId', 'hitRegion'],
       'room combat damage request',
     );
     const targetPlayerId = stableId(record.targetPlayerId, 'combat target player id');
@@ -1817,6 +1818,15 @@ export class AuthoritativeRoom {
       'combat damage points',
     );
     const causeId = stableId(record.causeId, 'combat damage cause id');
+    const hitRegionValue = record.hitRegion ?? null;
+    if (
+      hitRegionValue !== null
+      && hitRegionValue !== 'head'
+      && hitRegionValue !== 'torso'
+      && hitRegionValue !== 'limb'
+    ) {
+      throw new RangeError('combat damage hit region must be head, torso, limb, or null');
+    }
     const target = this.players.get(targetPlayerId);
     if (!target || target.life === null) throw new Error('AUTHORITY_COMBAT_TARGET_NOT_FOUND');
     const source = sourcePlayerId === null ? null : this.players.get(sourcePlayerId);
@@ -1833,6 +1843,7 @@ export class AuthoritativeRoom {
       sourceTeamId: source?.life?.teamId ?? null,
       damagePoints,
       causeId,
+      hitRegion: hitRegionValue,
     }, G4_COMBAT_SLICE_LIFE_RULES);
     if (!result.accepted) return result;
     const recordedMatch = this.tdmMatchState === null
@@ -2463,6 +2474,7 @@ export class AuthoritativeRoom {
             sourcePlayerId: pending.shot.playerId,
             damagePoints: resolution.hit.damagePoints,
             causeId: pending.shot.eventId,
+            hitRegion: resolution.hit.region,
           }, false)
         : null;
       return deepFreeze({
@@ -2675,6 +2687,7 @@ export class AuthoritativeRoom {
             sourcePlayerId: attack.playerId,
             damagePoints: total.damagePoints,
             causeId: boundedAuthorityCombatId(attack.eventId),
+            hitRegion: total.hitRegion,
           }, false)
         ));
         return deepFreeze({

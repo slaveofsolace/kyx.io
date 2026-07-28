@@ -1607,7 +1607,7 @@ function validateCombatPresentationReliableEvent(
     exactKeys(record, path, [
       'schemaVersion', 'kind', 'eventId', 'eventSequence', 'authorityTick', 'causeId',
       'sourcePlayerId', 'targetPlayerId', 'shieldDamagePoints', 'healthDamagePoints',
-      'shieldPointsAfter', 'healthPointsAfter',
+      'shieldPointsAfter', 'healthPointsAfter', 'hitRegion',
     ]);
     numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
       integer: true, min: 1, max: 1,
@@ -1626,6 +1626,19 @@ function validateCombatPresentationReliableEvent(
       numberAt(required(record, field, path), `${path}.${field}`, {
         integer: true, min: 0, max: PROTOCOL_LIMITS.maxHealthValue,
       });
+    }
+    if (
+      record.hitRegion !== undefined
+      && record.hitRegion !== null
+      && record.hitRegion !== 'head'
+      && record.hitRegion !== 'torso'
+      && record.hitRegion !== 'limb'
+    ) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.hitRegion`,
+        'Damage hit region must be head, torso, limb, null, or omitted for legacy events.',
+      );
     }
     return record as unknown as CombatPresentationReliableEventV1;
   }

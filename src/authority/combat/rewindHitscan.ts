@@ -57,7 +57,7 @@ export interface AuthoritativeHitscanRulesV1 {
   readonly maximumAimYawFromBodyMilliDegrees: 90_000;
   readonly maximumAimPitchMilliDegrees: 89_000;
   readonly friendlyFireEnabled: false;
-  readonly headMultiplierPermille: 1_000;
+  readonly headMultiplierPermille: 1_750;
   readonly torsoMultiplierPermille: 1_000;
   readonly limbMultiplierPermille: 1_000;
 }
