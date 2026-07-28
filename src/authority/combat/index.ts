@@ -7,3 +7,4 @@ export * from './loadoutRequest';
 export * from './poseHistory';
 export * from './rewindHitscan';
 export * from './tdmMatch';
+export * from './weaponFoundation';

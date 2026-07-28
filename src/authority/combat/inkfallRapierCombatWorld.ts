@@ -168,12 +168,21 @@ function validateHitscanRay(value: AuthorityWorldOcclusionRayV1): AuthorityWorld
     'directionUnit',
     'maximumDistanceMillimeters',
     'layer',
+    'purpose',
   ], 'hitscan world ray');
   if (item.schemaVersion !== 1 || item.layer !== 'authoritative_world') {
     throw new RangeError('hitscan world ray identity is unsupported');
   }
-  if (item.maximumDistanceMillimeters !== 120_000) {
+  if (
+    typeof item.maximumDistanceMillimeters !== 'number'
+    || !Number.isFinite(item.maximumDistanceMillimeters)
+    || item.maximumDistanceMillimeters <= 0
+    || item.maximumDistanceMillimeters > 200_000
+  ) {
     throw new RangeError('hitscan world ray range is unsupported');
+  }
+  if (item.purpose !== 'barrel_clearance' && item.purpose !== 'shot_path') {
+    throw new RangeError('hitscan world ray purpose is unsupported');
   }
   const origin = vector(item.originMillimeters, 'hitscan world ray origin');
   const direction = strictRecord(item.directionUnit, ['x', 'y', 'z'], 'hitscan direction');
@@ -194,8 +203,9 @@ function validateHitscanRay(value: AuthorityWorldOcclusionRayV1): AuthorityWorld
       y: direction.y as number,
       z: direction.z as number,
     }),
-    maximumDistanceMillimeters: 120_000,
+    maximumDistanceMillimeters: item.maximumDistanceMillimeters,
     layer: 'authoritative_world',
+    purpose: item.purpose,
   });
 }
 

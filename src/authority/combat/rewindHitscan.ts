@@ -2,7 +2,6 @@ import {
   AUTO_RIFLE_RECOIL_PATTERN_ID,
   AUTO_RIFLE_WEAPON_ID,
   G4_AUTO_RIFLE_RULES,
-  type AutoRifleBallisticsSample,
   type AutoRifleShotAcceptedEvent,
 } from './autoRifle';
 import {
@@ -117,6 +116,55 @@ export interface AuthoritativeAutoRifleHitscanRequestV1 {
   readonly targetHistories: readonly TargetPoseHistoryV1[];
 }
 
+export interface AuthoritativeWeaponHitscanProfileV1 {
+  readonly schemaVersion: 1;
+  readonly weaponId: string;
+  readonly family: 'rifle' | 'pistol' | 'shotgun' | 'sniper';
+  readonly attackModel: 'hitscan' | 'pellet_hitscan';
+  readonly referenceDamagePoints: number;
+  readonly pelletsPerAttack: number;
+  readonly rangeMillimeters: number;
+  readonly spreadMilliDegrees: number;
+  readonly headMultiplierPermille: number;
+  readonly torsoMultiplierPermille: number;
+  readonly limbMultiplierPermille: number;
+  readonly friendlyFireEnabled: false;
+}
+
+export interface AuthoritativeWeaponHitscanAcceptedAttackV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'weapon_attack_accepted';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly playerId: string;
+  readonly weaponId: string;
+  readonly family: 'rifle' | 'pistol' | 'shotgun' | 'sniper';
+  readonly attackModel: 'hitscan' | 'pellet_hitscan';
+  readonly attackOrdinal: number;
+  readonly referenceDamagePoints: number;
+  readonly magazineRoundsAfter: number | null;
+  readonly reserveRoundsAfter: number | null;
+  readonly nextAttackAtTick: number;
+  readonly ballistics: readonly Readonly<{
+    pelletIndex: number;
+    spreadRadiusMilliDegrees: number;
+    spreadPitchMilliDegrees: number;
+    spreadYawMilliDegrees: number;
+  }>[];
+}
+
+export interface AuthoritativeWeaponHitscanRequestV1 {
+  readonly schemaVersion: 1;
+  readonly currentAuthorityTick: number;
+  readonly serverReceiptTick: number;
+  readonly shooterPose: CurrentShooterPoseV1;
+  readonly acceptedLook: CurrentAcceptedLookV1;
+  readonly acceptedAttack: AuthoritativeWeaponHitscanAcceptedAttackV1;
+  readonly pelletIndex: number;
+  readonly observedRttHistory: readonly ObservedRttSampleV1[];
+  readonly targetHistories: readonly TargetPoseHistoryV1[];
+}
+
 export interface HitscanUnitVector3 {
   readonly x: number;
   readonly y: number;
@@ -127,8 +175,9 @@ export interface AuthorityWorldOcclusionRayV1 {
   readonly schemaVersion: 1;
   readonly originMillimeters: CombatVector3Millimeters;
   readonly directionUnit: HitscanUnitVector3;
-  readonly maximumDistanceMillimeters: 120_000;
+  readonly maximumDistanceMillimeters: number;
   readonly layer: 'authoritative_world';
+  readonly purpose: 'barrel_clearance' | 'shot_path';
 }
 
 export interface AuthorityWorldOcclusionHitV1 {
@@ -186,6 +235,7 @@ export interface HitscanResolutionDebugV1 {
   readonly schemaVersion: 1;
   readonly compensation: HitscanCompensationDebugV1;
   readonly aimRay: HitscanAimRayDebugV1 | null;
+  readonly barrelObstruction: HitscanWorldOcclusionDebugV1 | null;
   readonly worldOcclusion: HitscanWorldOcclusionDebugV1 | null;
   readonly targetHistoryCount: number;
   readonly candidatesWithCurrentPose: number;
@@ -206,8 +256,8 @@ export interface AuthoritativeHitscanHitV1 {
   readonly region: CombatHitRegion;
   readonly distanceMillimeters: number;
   readonly impactPointMillimeters: CombatVector3Millimeters;
-  readonly damageMultiplierPermille: 1_000;
-  readonly damagePoints: 10;
+  readonly damageMultiplierPermille: number;
+  readonly damagePoints: number;
 }
 
 export type AuthoritativeHitscanRejectionReason =
@@ -221,7 +271,10 @@ export type AuthoritativeHitscanRejectionReason =
   | 'rewind_before_tick_zero'
   | 'target_history_unavailable';
 
-export type AuthoritativeHitscanMissReason = 'no_target' | 'world_occluded';
+export type AuthoritativeHitscanMissReason =
+  | 'no_target'
+  | 'barrel_obstructed'
+  | 'world_occluded';
 
 export type ResolveAuthoritativeHitscanResult =
   | {
@@ -248,6 +301,36 @@ export type ResolveAuthoritativeHitscanResult =
 
 interface ValidatedRequestFacts {
   readonly rttSamples: readonly ObservedRttSampleV1[];
+}
+
+interface HitscanBallisticsAngles {
+  readonly recoilPitchMilliDegrees: number;
+  readonly recoilYawMilliDegrees: number;
+  readonly spreadPitchMilliDegrees: number;
+  readonly spreadYawMilliDegrees: number;
+}
+
+interface HitscanCoreRequest {
+  readonly currentAuthorityTick: number;
+  readonly serverReceiptTick: number;
+  readonly shooterPose: CurrentShooterPoseV1;
+  readonly acceptedLook: CurrentAcceptedLookV1;
+  readonly acceptedShot: Readonly<{
+    authorityTick: number;
+    playerId: string;
+    ballistics: HitscanBallisticsAngles;
+  }>;
+  readonly observedRttHistory: readonly ObservedRttSampleV1[];
+  readonly targetHistories: readonly TargetPoseHistoryV1[];
+}
+
+interface HitscanCoreProfile {
+  readonly rangeMillimeters: number;
+  readonly referenceDamagePoints: number;
+  readonly headMultiplierPermille: number;
+  readonly torsoMultiplierPermille: number;
+  readonly limbMultiplierPermille: number;
+  readonly friendlyFireEnabled: boolean;
 }
 
 interface MutableResolutionCounts {
@@ -503,8 +586,13 @@ function validateRequest(request: AuthoritativeAutoRifleHitscanRequestV1): Valid
   validateAcceptedLook(record.acceptedLook);
   validateAcceptedShot(record.acceptedShot);
   const rttSamples = validateRttHistory(record.observedRttHistory, receiptTick);
+  validateTargetHistories(record.targetHistories, currentTick);
+  return { rttSamples };
+}
+
+function validateTargetHistories(value: unknown, currentTick: number): void {
   const histories = strictArray(
-    record.targetHistories,
+    value,
     0,
     MAX_TARGET_HISTORIES,
     'authoritative hitscan target histories',
@@ -524,7 +612,246 @@ function validateRequest(request: AuthoritativeAutoRifleHitscanRequestV1): Valid
       throw new RangeError(`target history ${typedHistory.playerId} contains a future pose sample`);
     }
   });
-  return { rttSamples };
+}
+
+function validateWeaponHitscanProfile(
+  profile: AuthoritativeWeaponHitscanProfileV1,
+): HitscanCoreProfile {
+  assertStrictCombatDataTree(profile, 'authoritative weapon hitscan profile');
+  const record = strictRecord(profile, [
+    'schemaVersion',
+    'weaponId',
+    'family',
+    'attackModel',
+    'referenceDamagePoints',
+    'pelletsPerAttack',
+    'rangeMillimeters',
+    'spreadMilliDegrees',
+    'headMultiplierPermille',
+    'torsoMultiplierPermille',
+    'limbMultiplierPermille',
+    'friendlyFireEnabled',
+  ], 'authoritative weapon hitscan profile');
+  strictLiteral(record.schemaVersion, 1, 'weapon hitscan profile schemaVersion');
+  strictStableId(record.weaponId, 'weapon hitscan profile weaponId');
+  if (!['rifle', 'pistol', 'shotgun', 'sniper'].includes(record.family as string)) {
+    throw new RangeError('weapon hitscan profile family is unsupported');
+  }
+  if (record.attackModel !== 'hitscan' && record.attackModel !== 'pellet_hitscan') {
+    throw new RangeError('weapon hitscan profile attack model is unsupported');
+  }
+  const referenceDamagePoints = strictInteger(
+    record.referenceDamagePoints,
+    1,
+    1_000,
+    'weapon hitscan reference damage',
+  );
+  strictInteger(record.pelletsPerAttack, 1, 32, 'weapon hitscan pellet count');
+  const rangeMillimeters = strictInteger(
+    record.rangeMillimeters,
+    1,
+    200_000,
+    'weapon hitscan range',
+  );
+  strictInteger(record.spreadMilliDegrees, 0, 20_000, 'weapon hitscan spread');
+  const headMultiplierPermille = strictInteger(
+    record.headMultiplierPermille,
+    1,
+    5_000,
+    'weapon hitscan head multiplier',
+  );
+  const torsoMultiplierPermille = strictInteger(
+    record.torsoMultiplierPermille,
+    1,
+    5_000,
+    'weapon hitscan torso multiplier',
+  );
+  const limbMultiplierPermille = strictInteger(
+    record.limbMultiplierPermille,
+    1,
+    5_000,
+    'weapon hitscan limb multiplier',
+  );
+  strictLiteral(record.friendlyFireEnabled, false, 'weapon hitscan friendly fire');
+  return {
+    rangeMillimeters,
+    referenceDamagePoints,
+    headMultiplierPermille,
+    torsoMultiplierPermille,
+    limbMultiplierPermille,
+    friendlyFireEnabled: false,
+  };
+}
+
+function validateWeaponAcceptedAttack(
+  value: unknown,
+  profile: AuthoritativeWeaponHitscanProfileV1,
+): AuthoritativeWeaponHitscanAcceptedAttackV1 {
+  const record = strictRecord(value, [
+    'schemaVersion',
+    'kind',
+    'eventId',
+    'authorityTick',
+    'playerId',
+    'weaponId',
+    'family',
+    'attackModel',
+    'attackOrdinal',
+    'referenceDamagePoints',
+    'magazineRoundsAfter',
+    'reserveRoundsAfter',
+    'nextAttackAtTick',
+    'ballistics',
+  ], 'accepted authority weapon attack');
+  strictLiteral(record.schemaVersion, 1, 'accepted authority weapon attack schemaVersion');
+  strictLiteral(record.kind, 'weapon_attack_accepted', 'accepted authority weapon attack kind');
+  strictStableId(record.eventId, 'accepted authority weapon attack eventId');
+  const authorityTick = strictInteger(
+    record.authorityTick,
+    0,
+    MAX_AUTHORITY_TICK,
+    'accepted authority weapon attack tick',
+  );
+  strictStableId(record.playerId, 'accepted authority weapon attack playerId');
+  strictLiteral(record.weaponId, profile.weaponId, 'accepted authority weapon attack weaponId');
+  strictLiteral(record.family, profile.family, 'accepted authority weapon attack family');
+  strictLiteral(
+    record.attackModel,
+    profile.attackModel,
+    'accepted authority weapon attack model',
+  );
+  strictInteger(
+    record.attackOrdinal,
+    1,
+    Number.MAX_SAFE_INTEGER,
+    'accepted authority weapon attack ordinal',
+  );
+  strictLiteral(
+    record.referenceDamagePoints,
+    profile.referenceDamagePoints,
+    'accepted authority weapon attack damage',
+  );
+  for (const [label, count] of [
+    ['magazine', record.magazineRoundsAfter],
+    ['reserve', record.reserveRoundsAfter],
+  ] as const) {
+    if (count !== null) {
+      strictInteger(count, 0, 10_000, `accepted authority weapon attack ${label} rounds`);
+    }
+  }
+  strictInteger(
+    record.nextAttackAtTick,
+    authorityTick,
+    MAX_AUTHORITY_TICK,
+    'accepted authority weapon next attack tick',
+  );
+  const ballistics = strictArray(
+    record.ballistics,
+    profile.pelletsPerAttack,
+    profile.pelletsPerAttack,
+    'accepted authority weapon ballistics',
+  );
+  ballistics.forEach((sample, index) => {
+    const item = strictRecord(sample, [
+      'pelletIndex',
+      'spreadRadiusMilliDegrees',
+      'spreadPitchMilliDegrees',
+      'spreadYawMilliDegrees',
+    ], `accepted authority weapon ballistics[${index}]`);
+    strictLiteral(item.pelletIndex, index, `accepted ballistics pellet index ${index}`);
+    const radius = strictInteger(
+      item.spreadRadiusMilliDegrees,
+      0,
+      profile.spreadMilliDegrees,
+      `accepted ballistics spread radius ${index}`,
+    );
+    const pitch = strictInteger(
+      item.spreadPitchMilliDegrees,
+      -radius,
+      radius,
+      `accepted ballistics spread pitch ${index}`,
+    );
+    const yaw = strictInteger(
+      item.spreadYawMilliDegrees,
+      -radius,
+      radius,
+      `accepted ballistics spread yaw ${index}`,
+    );
+    if (Math.hypot(pitch, yaw) > radius + 2) {
+      throw new RangeError(`accepted ballistics sample ${index} exceeds its declared radius`);
+    }
+  });
+  return value as AuthoritativeWeaponHitscanAcceptedAttackV1;
+}
+
+function validateWeaponHitscanRequest(
+  request: AuthoritativeWeaponHitscanRequestV1,
+  profile: AuthoritativeWeaponHitscanProfileV1,
+): Readonly<{
+  rttSamples: readonly ObservedRttSampleV1[];
+  coreProfile: HitscanCoreProfile;
+  coreRequest: HitscanCoreRequest;
+}> {
+  assertStrictCombatDataTree(request, 'authoritative weapon hitscan request');
+  const coreProfile = validateWeaponHitscanProfile(profile);
+  const record = strictRecord(request, [
+    'schemaVersion',
+    'currentAuthorityTick',
+    'serverReceiptTick',
+    'shooterPose',
+    'acceptedLook',
+    'acceptedAttack',
+    'pelletIndex',
+    'observedRttHistory',
+    'targetHistories',
+  ], 'authoritative weapon hitscan request');
+  strictLiteral(record.schemaVersion, 1, 'authoritative weapon hitscan schemaVersion');
+  const currentTick = strictInteger(
+    record.currentAuthorityTick,
+    0,
+    MAX_AUTHORITY_TICK,
+    'authoritative weapon hitscan current tick',
+  );
+  const receiptTick = strictInteger(
+    record.serverReceiptTick,
+    0,
+    MAX_AUTHORITY_TICK,
+    'authoritative weapon hitscan receipt tick',
+  );
+  validateShooterPose(record.shooterPose);
+  validateAcceptedLook(record.acceptedLook);
+  const acceptedAttack = validateWeaponAcceptedAttack(record.acceptedAttack, profile);
+  const pelletIndex = strictInteger(
+    record.pelletIndex,
+    0,
+    profile.pelletsPerAttack - 1,
+    'authoritative weapon hitscan pellet index',
+  );
+  const rttSamples = validateRttHistory(record.observedRttHistory, receiptTick);
+  validateTargetHistories(record.targetHistories, currentTick);
+  const sample = acceptedAttack.ballistics[pelletIndex];
+  return {
+    rttSamples,
+    coreProfile,
+    coreRequest: {
+      currentAuthorityTick: currentTick,
+      serverReceiptTick: receiptTick,
+      shooterPose: request.shooterPose,
+      acceptedLook: request.acceptedLook,
+      acceptedShot: {
+        authorityTick: acceptedAttack.authorityTick,
+        playerId: acceptedAttack.playerId,
+        ballistics: {
+          recoilPitchMilliDegrees: 0,
+          recoilYawMilliDegrees: 0,
+          spreadPitchMilliDegrees: sample.spreadPitchMilliDegrees,
+          spreadYawMilliDegrees: sample.spreadYawMilliDegrees,
+        },
+      },
+      observedRttHistory: request.observedRttHistory,
+      targetHistories: request.targetHistories,
+    },
+  };
 }
 
 function medianObservedRtt(samples: readonly ObservedRttSampleV1[]): number {
@@ -537,7 +864,7 @@ function medianObservedRtt(samples: readonly ObservedRttSampleV1[]): number {
 }
 
 function compensationDebug(
-  request: AuthoritativeAutoRifleHitscanRequestV1,
+  request: HitscanCoreRequest,
   rttSamples: readonly ObservedRttSampleV1[],
 ): HitscanCompensationDebugV1 {
   const median = medianObservedRtt(rttSamples);
@@ -572,16 +899,18 @@ function emptyCounts(): MutableResolutionCounts {
 }
 
 function resolutionDebug(
-  request: AuthoritativeAutoRifleHitscanRequestV1,
+  request: HitscanCoreRequest,
   compensation: HitscanCompensationDebugV1,
   counts: MutableResolutionCounts,
   aimRay: HitscanAimRayDebugV1 | null,
+  barrelObstruction: HitscanWorldOcclusionDebugV1 | null,
   worldOcclusion: HitscanWorldOcclusionDebugV1 | null,
 ): HitscanResolutionDebugV1 {
   return {
     schemaVersion: 1,
     compensation,
     aimRay,
+    barrelObstruction,
     worldOcclusion,
     targetHistoryCount: request.targetHistories.length,
     candidatesWithCurrentPose: counts.candidatesWithCurrentPose,
@@ -676,7 +1005,8 @@ function normalizeVector(value: CombatVector3Millimeters): HitscanUnitVector3 {
 function buildAimRay(
   shooter: CurrentShooterPoseV1,
   look: CurrentAcceptedLookV1,
-  ballistics: AutoRifleBallisticsSample,
+  ballistics: HitscanBallisticsAngles,
+  maximumRangeMillimeters: number,
 ): HitscanAimRayDebugV1 {
   const bodyYaw = normalizeYawMilliDegrees(shooter.bodyYawMilliDegrees);
   const rawYawDelta = yawDeltaMilliDegrees(look.yawMilliDegrees, bodyYaw);
@@ -714,9 +1044,9 @@ function buildAimRay(
   ));
   const eyeDirection = directionFromAngles(finalYaw, finalPitch);
   const eyeAimPoint = {
-    x: eyeOrigin.x + eyeDirection.x * G4_AUTO_RIFLE_RULES.rangeMillimeters,
-    y: eyeOrigin.y + eyeDirection.y * G4_AUTO_RIFLE_RULES.rangeMillimeters,
-    z: eyeOrigin.z + eyeDirection.z * G4_AUTO_RIFLE_RULES.rangeMillimeters,
+    x: eyeOrigin.x + eyeDirection.x * maximumRangeMillimeters,
+    y: eyeOrigin.y + eyeDirection.y * maximumRangeMillimeters,
+    z: eyeOrigin.z + eyeDirection.z * maximumRangeMillimeters,
   };
   const directionUnit = normalizeVector({
     x: eyeAimPoint.x - muzzleOrigin.x,
@@ -881,26 +1211,31 @@ function worldDebug(result: AuthorityWorldOcclusionHitV1): HitscanWorldOcclusion
   };
 }
 
-function damageMultiplier(_region: CombatHitRegion): 1_000 {
-  // The classification is retained even though revision 3 deliberately pins
-  // head, torso, and limb multipliers to the same current product value.
-  return 1_000;
+function damageMultiplier(
+  region: CombatHitRegion,
+  profile: HitscanCoreProfile,
+): number {
+  if (region === 'head') return profile.headMultiplierPermille;
+  if (region === 'torso') return profile.torsoMultiplierPermille;
+  return profile.limbMultiplierPermille;
 }
 
-export function resolveAuthoritativeAutoRifleHitscan(
-  request: AuthoritativeAutoRifleHitscanRequestV1,
+function resolveValidatedHitscan(
+  request: HitscanCoreRequest,
+  validated: ValidatedRequestFacts,
   worldOcclusionPort: AuthorityWorldOcclusionPort,
+  profile: HitscanCoreProfile,
 ): ResolveAuthoritativeHitscanResult {
   if (typeof worldOcclusionPort !== 'function') {
     throw new TypeError('authoritative world occlusion port must be a function');
   }
-  const validated = validateRequest(request);
   const compensation = compensationDebug(request, validated.rttSamples);
   const counts = emptyCounts();
   const earlyDebug = (): HitscanResolutionDebugV1 => resolutionDebug(
     request,
     compensation,
     counts,
+    null,
     null,
     null,
   );
@@ -934,7 +1269,50 @@ export function resolveAuthoritativeAutoRifleHitscan(
     request.shooterPose,
     request.acceptedLook,
     request.acceptedShot.ballistics,
+    profile.rangeMillimeters,
   );
+  const eyeToMuzzle = {
+    x: aimRay.muzzleOriginMillimeters.x - aimRay.eyeOriginMillimeters.x,
+    y: aimRay.muzzleOriginMillimeters.y - aimRay.eyeOriginMillimeters.y,
+    z: aimRay.muzzleOriginMillimeters.z - aimRay.eyeOriginMillimeters.z,
+  };
+  const eyeToMuzzleDistance = Math.hypot(
+    eyeToMuzzle.x,
+    eyeToMuzzle.y,
+    eyeToMuzzle.z,
+  );
+  let barrelDebug: HitscanWorldOcclusionDebugV1 | null = null;
+  if (eyeToMuzzleDistance > 0) {
+    const barrelQuery: AuthorityWorldOcclusionRayV1 = deepFreezeCombatValue({
+      schemaVersion: 1,
+      originMillimeters: { ...aimRay.eyeOriginMillimeters },
+      directionUnit: { ...normalizeVector(eyeToMuzzle) },
+      maximumDistanceMillimeters: eyeToMuzzleDistance,
+      layer: 'authoritative_world' as const,
+      purpose: 'barrel_clearance' as const,
+    });
+    const barrelResult = validateWorldOcclusionResult(
+      worldOcclusionPort(barrelQuery),
+      barrelQuery.maximumDistanceMillimeters,
+    );
+    barrelDebug = worldDebug(barrelResult);
+    if (barrelResult.hit) {
+      return deepFreezeCombatValue({
+        accepted: true as const,
+        outcome: 'miss' as const,
+        reason: 'barrel_obstructed' as const,
+        hit: null,
+        debug: resolutionDebug(
+          request,
+          compensation,
+          counts,
+          aimRay,
+          barrelDebug,
+          null,
+        ),
+      });
+    }
+  }
   const intersections: TargetIntersection[] = [];
   for (const history of request.targetHistories) {
     if (history.playerId === request.shooterPose.playerId) {
@@ -952,7 +1330,7 @@ export function resolveAuthoritativeAutoRifleHitscan(
       continue;
     }
     if (
-      !G4_AUTHORITATIVE_HITSCAN_RULES.friendlyFireEnabled
+      !profile.friendlyFireEnabled
       && request.shooterPose.teamId !== null
       && currentPose.teamId === request.shooterPose.teamId
     ) {
@@ -973,7 +1351,7 @@ export function resolveAuthoritativeAutoRifleHitscan(
       const distance = rayBoxDistance(
         aimRay.muzzleOriginMillimeters,
         aimRay.directionUnit,
-        G4_AUTO_RIFLE_RULES.rangeMillimeters,
+        profile.rangeMillimeters,
         rewoundPose,
         volume,
       );
@@ -993,7 +1371,7 @@ export function resolveAuthoritativeAutoRifleHitscan(
   if (counts.missingHistoryCount > 0) {
     return rejected(
       'target_history_unavailable',
-      resolutionDebug(request, compensation, counts, aimRay, null),
+      resolutionDebug(request, compensation, counts, aimRay, barrelDebug, null),
     );
   }
   intersections.sort(compareIntersections);
@@ -1001,15 +1379,23 @@ export function resolveAuthoritativeAutoRifleHitscan(
     schemaVersion: 1,
     originMillimeters: { ...aimRay.muzzleOriginMillimeters },
     directionUnit: { ...aimRay.directionUnit },
-    maximumDistanceMillimeters: G4_AUTO_RIFLE_RULES.rangeMillimeters,
+    maximumDistanceMillimeters: profile.rangeMillimeters,
     layer: 'authoritative_world' as const,
+    purpose: 'shot_path' as const,
   });
   const worldResult = validateWorldOcclusionResult(
     worldOcclusionPort(rayQuery),
     rayQuery.maximumDistanceMillimeters,
   );
   const collisionDebug = worldDebug(worldResult);
-  const debug = resolutionDebug(request, compensation, counts, aimRay, collisionDebug);
+  const debug = resolutionDebug(
+    request,
+    compensation,
+    counts,
+    aimRay,
+    barrelDebug,
+    collisionDebug,
+  );
   const nearest = intersections[0] ?? null;
   if (nearest === null) {
     return deepFreezeCombatValue({
@@ -1033,7 +1419,7 @@ export function resolveAuthoritativeAutoRifleHitscan(
       debug,
     });
   }
-  const multiplier = damageMultiplier(nearest.region);
+  const multiplier = damageMultiplier(nearest.region, profile);
   const hit: AuthoritativeHitscanHitV1 = {
     schemaVersion: 1,
     targetPlayerId: nearest.targetPlayerId,
@@ -1051,7 +1437,10 @@ export function resolveAuthoritativeAutoRifleHitscan(
         + aimRay.directionUnit.z * nearest.distanceMillimeters,
     },
     damageMultiplierPermille: multiplier,
-    damagePoints: 10,
+    damagePoints: Math.max(
+      1,
+      Math.round(profile.referenceDamagePoints * multiplier / 1_000),
+    ),
   };
   return deepFreezeCombatValue({
     accepted: true as const,
@@ -1060,4 +1449,38 @@ export function resolveAuthoritativeAutoRifleHitscan(
     hit,
     debug,
   });
+}
+
+export function resolveAuthoritativeAutoRifleHitscan(
+  request: AuthoritativeAutoRifleHitscanRequestV1,
+  worldOcclusionPort: AuthorityWorldOcclusionPort,
+): ResolveAuthoritativeHitscanResult {
+  const validated = validateRequest(request);
+  return resolveValidatedHitscan(
+    request,
+    validated,
+    worldOcclusionPort,
+    {
+      rangeMillimeters: G4_AUTO_RIFLE_RULES.rangeMillimeters,
+      referenceDamagePoints: G4_AUTO_RIFLE_RULES.referenceDamagePoints,
+      headMultiplierPermille: G4_AUTHORITATIVE_HITSCAN_RULES.headMultiplierPermille,
+      torsoMultiplierPermille: G4_AUTHORITATIVE_HITSCAN_RULES.torsoMultiplierPermille,
+      limbMultiplierPermille: G4_AUTHORITATIVE_HITSCAN_RULES.limbMultiplierPermille,
+      friendlyFireEnabled: G4_AUTHORITATIVE_HITSCAN_RULES.friendlyFireEnabled,
+    },
+  );
+}
+
+export function resolveAuthoritativeWeaponHitscan(
+  request: AuthoritativeWeaponHitscanRequestV1,
+  profile: AuthoritativeWeaponHitscanProfileV1,
+  worldOcclusionPort: AuthorityWorldOcclusionPort,
+): ResolveAuthoritativeHitscanResult {
+  const validated = validateWeaponHitscanRequest(request, profile);
+  return resolveValidatedHitscan(
+    validated.coreRequest,
+    { rttSamples: validated.rttSamples },
+    worldOcclusionPort,
+    validated.coreProfile,
+  );
 }

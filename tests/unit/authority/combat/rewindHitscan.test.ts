@@ -417,6 +417,43 @@ describe('P5.3 authoritative Auto Rifle rewind and hitscan', () => {
     });
   });
 
+  it('fails the shot at the authority eye-to-muzzle segment when the barrel is obstructed', () => {
+    const queriedPurposes: AuthorityWorldOcclusionRayV1['purpose'][] = [];
+    const result = resolveAuthoritativeAutoRifleHitscan(request({
+      shooterPose: shooterPose(100, {
+        eyeOffsetMillimeters: { x: 0, y: 1_700, z: 0 },
+        muzzleOffsetMillimeters: { x: 0, y: 1_700, z: 500 },
+      }),
+    }), (ray) => {
+      queriedPurposes.push(ray.purpose);
+      if (ray.purpose === 'barrel_clearance') {
+        expect(ray.maximumDistanceMillimeters).toBe(500);
+        return {
+          schemaVersion: 1,
+          hit: true,
+          distanceMillimeters: 250,
+          colliderId: 'world_barrel_wall',
+        };
+      }
+      return clearWorld(ray);
+    });
+    expect(result).toMatchObject({
+      accepted: true,
+      outcome: 'miss',
+      reason: 'barrel_obstructed',
+      hit: null,
+      debug: {
+        barrelObstruction: {
+          hit: true,
+          distanceMillimeters: 250,
+          colliderId: 'world_barrel_wall',
+        },
+        worldOcclusion: null,
+      },
+    });
+    expect(queriedPurposes).toEqual(['barrel_clearance']);
+  });
+
   it('uses distance then stable player and volume identifiers independent of input order', () => {
     const alpha = history('player_alpha', [pose(96), pose(100)]);
     const zulu = history('player_zulu', [pose(96), pose(100)]);
