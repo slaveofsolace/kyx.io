@@ -22,6 +22,7 @@ export const INTENT_BUTTON = Object.freeze({
   utility: 1 << 7,
   reload: 1 << 8,
   melee: 1 << 9,
+  abilityThree: 1 << 10,
 } as const);
 
 export const INTENT_BUTTON_MASK = Object.values(INTENT_BUTTON).reduce(

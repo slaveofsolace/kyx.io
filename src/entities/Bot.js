@@ -91,6 +91,7 @@ export class Bot {
     this._shootTarget = new THREE.Vector3();
     this._shootDir    = new THREE.Vector3();
     this._raycaster   = new THREE.Raycaster();
+    this.abilityImpulse = new THREE.Vector3();
 
     this.position = spawnPoint.clone();
 
@@ -173,6 +174,19 @@ export class Bot {
     }
   }
 
+  applyAbilityImpulse(impulse) {
+    if (!impulse?.isVector3 || !this.alive) return;
+    this.abilityImpulse.add(impulse);
+  }
+
+  applyFlash(durationSeconds, intensity = 1) {
+    if (!this.alive) return;
+    this.flashTimer = Math.max(
+      this.flashTimer,
+      Math.max(0, durationSeconds) * THREE.MathUtils.clamp(intensity, 0, 1),
+    );
+  }
+
   resetForMatch(spawnPoint, noRespawn = false, healthMult = 1, displayIndex = 0) {
     this.noRespawn = noRespawn;
     this.maxHealth = Math.round(100 * healthMult);
@@ -251,15 +265,17 @@ export class Bot {
     this.healthBarFg.position.x = 0;
     this.healthBarGroup.visible = true;
     this._dying = false;
+    this.flashTimer = 0;
     this.alive = true;
     this.mesh.visible = true;
   }
 
-  _shootAt(player, onAttack, world) {
+  _shootAt(player, onAttack, world, abilitySystem) {
     this._shootFrom.set(this.position.x, this.position.y + 1.5, this.position.z);
     this._shootTarget.set(player.position.x, player.position.y + 1.0, player.position.z);
     const dist = this._shootFrom.distanceTo(this._shootTarget);
     if (dist < 0.5) return;
+    if (abilitySystem?.isLineObscured?.(this._shootFrom, this._shootTarget)) return;
     this._shootDir.subVectors(this._shootTarget, this._shootFrom).normalize();
 
     // Line-of-sight check against world geometry
@@ -279,7 +295,7 @@ export class Bot {
     if (Math.random() < hitP) onAttack(this._botGun.damage, this.position);
   }
 
-  update(dt, player, camera, onAttack, world) {
+  update(dt, player, camera, onAttack, world, abilitySystem) {
     // ── death animation ──────────────────────────────────────────────────────
     if (this._dying) {
       this._deathT += dt;
@@ -316,11 +332,16 @@ export class Bot {
       return;
     }
 
-    if (this.flashTimer > 0) {
+    const flashed = this.flashTimer > 0;
+    if (flashed) {
       this.flashTimer -= dt;
       if (this.bodyMat) {
         this.bodyMat.emissive.setRGB(1, 1, 1);
-        this.bodyMat.emissiveIntensity = Math.max(0, this.flashTimer / 0.12) * 0.8;
+        this.bodyMat.emissiveIntensity = THREE.MathUtils.clamp(
+          this.flashTimer / 0.12,
+          0,
+          1,
+        ) * 0.8;
       }
     } else if (this.bodyMat) {
       this.bodyMat.emissiveIntensity = 0;
@@ -337,6 +358,12 @@ export class Bot {
     this._toPlayer.set(player.position.x - this.position.x, 0, player.position.z - this.position.z);
     const toPlayer = this._toPlayer;
     const distToPlayer = toPlayer.length();
+    this._shootFrom.set(this.position.x, this.position.y + 1.5, this.position.z);
+    this._shootTarget.set(player.position.x, player.position.y + 1.0, player.position.z);
+    const smokeObscured = abilitySystem?.isLineObscured?.(
+      this._shootFrom,
+      this._shootTarget,
+    ) === true;
 
     if (this.attackCooldown > 0) this.attackCooldown -= dt;
 
@@ -346,7 +373,11 @@ export class Bot {
       this._provokeTimer -= dt;
       if (this._provokeTimer <= 0) this._provoked = false;
     }
-    const engaged = this._provoked && !player.isDead && distToPlayer < DETECT_RADIUS;
+    const engaged = !flashed
+      && !smokeObscured
+      && this._provoked
+      && !player.isDead
+      && distToPlayer < DETECT_RADIUS;
 
     let moveTarget = null;
     if (engaged) {
@@ -363,7 +394,7 @@ export class Bot {
           this._gunTimer -= dt;
           if (this._gunTimer <= 0) {
             this._gunTimer = this._botGun.fireRate * (0.7 + Math.random() * 0.6);
-            this._shootAt(player, onAttack, world);
+            this._shootAt(player, onAttack, world, abilitySystem);
           }
         }
       } else if (this.attackCooldown <= 0) {
@@ -371,7 +402,7 @@ export class Bot {
         this.lungeTimer = 0.2;
         onAttack(ATTACK_DAMAGE, this.position);
       }
-    } else {
+    } else if (!flashed) {
       this.wanderCooldown -= dt;
       if (this.wanderCooldown <= 0 || this.position.distanceTo(this.wanderTarget) < 1.5) {
         const r = this.world.arenaHalf - 4;
@@ -384,6 +415,18 @@ export class Bot {
         this.mesh.rotation.y = Math.atan2(this.wanderTarget.x - this.position.x,
                                           this.wanderTarget.z - this.position.z);
       }
+    }
+
+    if (this.abilityImpulse.lengthSq() > 0.001) {
+      this.position.addScaledVector(this.abilityImpulse, dt);
+      this.abilityImpulse.y -= 20 * dt;
+      this.abilityImpulse.x *= Math.exp(-2.4 * dt);
+      this.abilityImpulse.z *= Math.exp(-2.4 * dt);
+      if (this.position.y <= 0) {
+        this.position.y = 0;
+        if (this.abilityImpulse.y < 0) this.abilityImpulse.y = 0;
+      }
+      this.world.resolveCollisions(this.position, RADIUS);
     }
 
     if (moveTarget) {
@@ -430,7 +473,7 @@ export class Bot {
       // Aim: when engaged with the player, spine + head track them; otherwise
       // gently return to zero via the smoother inside armorTick.
       if (ud.setAim && player) {
-        if (this._provoked || engaged) {
+        if (!flashed && !smokeObscured && (this._provoked || engaged)) {
           const dx = player.position.x - this.position.x;
           const dz = player.position.z - this.position.z;
           const dy = (player.position.y + 1.0) - (this.position.y + 1.5);

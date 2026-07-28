@@ -35,6 +35,8 @@ import { buildWeaponModel } from '../weapons/WeaponModels.js';
 import { PickupSystem } from '../world/PickupSystem.js';
 import { PRODUCT_CONFIG } from '../config/productConfig.js';
 import { G6_CHARACTER_CANDIDATE } from '../config/g6CharacterCandidate.js';
+import { ABILITY_SLOT_INPUT_LABELS } from '../abilities/abilityLoadout.ts';
+import { BlinkPreviewRenderer } from '../abilities/BlinkPreviewRenderer.js';
 
 const SPAWN_POINT = new THREE.Vector3(0, 0, 8);
 
@@ -129,6 +131,9 @@ export class Game {
     this.player.onTeleportUnavailable = (remainingSeconds) => {
       this.hud.showAbilityUnavailable('Q', `BLINK RECHARGING ${remainingSeconds.toFixed(1)}S`);
     };
+    this.player.onTeleportInvalid = () => {
+      this.hud.showAbilityUnavailable('Q', 'BLINK LANDING BLOCKED');
+    };
     this.weaponSystem = new WeaponSystem(this.player.camera, this.world.scene, this.audio);
     // Hide FPS viewmodel during menu — it floats in the scene otherwise.
     if (this.weaponSystem.weaponMount) this.weaponSystem.weaponMount.visible = false;
@@ -146,6 +151,7 @@ export class Game {
     this._isDM           = false;
     this._playerDowned   = false;
     this.input        = new InputManager(canvas);
+    this.input.onInputsCancelled = () => this.player.cancelBlinkPreview?.('input_cancelled');
     this._movementDriver?.attach({ player: this.player });
     this.hud            = new HUD();
     this.captionCues    = new CaptionCueOverlay();
@@ -156,7 +162,10 @@ export class Game {
     this._scopeOverlay  = document.getElementById('scope-overlay');
     this._hudCrosshair  = document.getElementById('crosshair');
     this._menuOpen      = false; // in-match menu overlay (the match keeps running)
-    this.grenadeSystem  = new GrenadeSystem(this.world.scene, this.audio);
+    this.grenadeSystem  = new GrenadeSystem(this.world.scene, {
+      collisionMeshes: this.world.colliders.map((collider) => collider.mesh).filter(Boolean),
+    });
+    this.blinkPreviewRenderer = new BlinkPreviewRenderer(this.world.scene);
     this.pickupSystem = null; // created on first play, cleared on restart
     this.menu           = new MenuUI();
 
@@ -393,6 +402,34 @@ export class Game {
         }
       }
     };
+    this.grenadeSystem.onDamagePlayer = (damage, sourcePosition) => {
+      this._onPlayerDamaged(damage, sourcePosition);
+    };
+    this.grenadeSystem.onFlash = (_point, _radius, _duration, event) => {
+      const local = event.affected.find(({ actorId }) => actorId === 'local_player');
+      if (local) this.hud.showFlashEffect?.(local.intensity, local.durationSeconds);
+    };
+    this.grenadeSystem.onProjectileEvent = (event) => {
+      if (event.kind === 'ability_bounce') {
+        this.audio.playGrenadeBounce?.(event.outgoingSpeed, event.abilityId);
+      } else if (event.kind === 'ability_stuck') {
+        this.audio.playGrenadeBounce?.(0.5, event.abilityId);
+      } else if (event.kind === 'ability_throw') {
+        this.audio.playGrenadeThrow?.(event.abilityId);
+      } else if (event.kind === 'ability_detonated') {
+        if (event.abilityId === 'smoke_grenade_v1') {
+          this.audio.playSmokeDeploy?.();
+        } else if (event.abilityId === 'flash_grenade_v1') {
+          if (typeof this.audio.playFlashDetonation === 'function') {
+            this.audio.playFlashDetonation();
+          } else {
+            this.audio.playExplosion();
+          }
+        } else {
+          this.audio.playExplosion();
+        }
+      }
+    };
 
     this.weaponSystem.onHitBot = (enemy, dmg, point, meta) => {
       const killed = enemy.takeDamage(dmg);
@@ -519,7 +556,7 @@ export class Game {
     this.player.setMaxShield(this.selectedArmorSkin?.shield || 0);
     this._respawnPlayer(SPAWN_POINT);
     this.weaponSystem.resetState(this.player.baseFov);
-    this.grenadeSystem.reset();
+    this.grenadeSystem.setLoadout(Loadout.getAbilities());
 
     this._mode    = getMode(modeId);
     this.kills    = 0;
@@ -795,9 +832,9 @@ export class Game {
     const el = document.getElementById('map-loading');
     if (!el) return;
     const TIPS = [
-      'TIP: press Q to blink-teleport forward',
+      'TIP: hold Q to preview a Blink landing, then release to commit',
       'TIP: hold TAB to check the scoreboard mid-match',
-      'TIP: F throws a frag grenade, E throws smoke',
+      'TIP: your three selected abilities use E, F, and X',
       'TIP: headshots deal bonus damage — aim high',
       'TIP: grav-lifts by the plaza launch you onto the rooftops',
       'TIP: all opponents in this build are local practice bots',
@@ -828,6 +865,8 @@ export class Game {
 
   _openMenu() {
     this._movementDriver?.neutralize();
+    this.player.cancelBlinkPreview?.('menu_open');
+    this.blinkPreviewRenderer?.hide();
     this._menuOpen = true;
     this.menu.showPause();
   }
@@ -1080,26 +1119,38 @@ export class Game {
       this.player.camera,
       (dmg, sourcePosition) => this._onPlayerDamaged(dmg, sourcePosition),
       this.world,
+      this.grenadeSystem,
     );
     this.pickupSystem?.update(dt, this.player, this.weaponSystem, this.hud);
 
-    // grenade input  F = frag  E = smoke
-    if (!menuOpen && this.input.consumeJustPressed('KeyF')) {
-      const thrown = this.grenadeSystem.throwFrag(this.player.camera);
-      if (!thrown) this.hud.showAbilityUnavailable('F', 'NO FRAG GRENADES');
-      else this.weaponSystem.presentAbility();
-      this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
+    const abilityLoadout = this.grenadeSystem.getLoadout();
+    const abilityInputs = [
+      ['KeyE', 1],
+      ['KeyF', 2],
+      ['KeyZ', 3],
+    ];
+    if (!menuOpen && !this._playerDowned) {
+      for (const [code, slot] of abilityInputs) {
+        if (!this.input.consumeJustPressed(code)) continue;
+        const abilityId = abilityLoadout.slots[slot];
+        const thrown = this.grenadeSystem.throwAbility(abilityId, this.player.camera);
+        const inputLabel = ABILITY_SLOT_INPUT_LABELS[slot];
+        if (!thrown) {
+          this.hud.showAbilityUnavailable(inputLabel, `${abilityId.replaceAll('_', ' ').toUpperCase()} UNAVAILABLE`);
+        } else {
+          this.weaponSystem.presentAbility();
+        }
+      }
     }
-    if (!menuOpen && this.input.consumeJustPressed('KeyE')) {
-      const thrown = this.grenadeSystem.throwSmoke(this.player.camera);
-      if (!thrown) this.hud.showAbilityUnavailable('E', 'NO SMOKE GRENADES');
-      else this.weaponSystem.presentAbility();
-      this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
-    }
-    this.grenadeSystem.update(dt, this.player);
+    this.grenadeSystem.update(dt, {
+      player: this.player,
+      targets: this._activeManager?.bots || [],
+      collisionMeshes: this.world.colliders.map((collider) => collider.mesh).filter(Boolean),
+    });
 
     this.hud.update(this.player, this.weaponSystem.getHudInfo(), this.kills, this.score);
     this.hud.updateGrenades(this.grenadeSystem.frags, this.grenadeSystem.smokes);
+    this.hud.updateAbilities?.(this.grenadeSystem.getHudInfo());
     this.hud.setActiveSlot(this.weaponSystem.currentIndex);
 
     // Enemy nameplates (name + health bar) over living opponents.
@@ -1338,7 +1389,14 @@ export class Game {
     if (this.state === 'menu' && !this._menuBotsActive) this._spawnMenuBots();
     if (this._menuBotsActive) {
       const dummyPlayer = { position: new THREE.Vector3(9999, 9999, 9999), isDead: true };
-      this.botManager.update(dt, dummyPlayer, this.menuCamera, () => {}, this.world);
+      this.botManager.update(
+        dt,
+        dummyPlayer,
+        this.menuCamera,
+        () => {},
+        this.world,
+        this.grenadeSystem,
+      );
     }
 
     // Cinematic spectator fly-through
@@ -1372,6 +1430,16 @@ export class Game {
         return;
       }
       throw error;
+    }
+
+    if (this.state === 'playing' && !this._menuOpen) {
+      this.blinkPreviewRenderer?.update(
+        this.player.getBlinkPreview?.(),
+        this.playTime,
+        this.player.reducedMotion,
+      );
+    } else {
+      this.blinkPreviewRenderer?.hide();
     }
 
     const camera = this.state === 'playing' ? this.player.camera : this.menuCamera;

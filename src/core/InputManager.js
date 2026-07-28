@@ -17,6 +17,7 @@ export class InputManager {
     this.rightMouseJustPressed = false;
     this.rightMouseJustReleased = false;
     this.onFocusLoss = null; // () => void
+    this.onInputsCancelled = null; // () => void
     this.onPointerLockError = null; // (reason: string) => void
     this._pointerLockErrorNotified = false;
     this._pointerLockRequestPending = false;
@@ -35,6 +36,7 @@ export class InputManager {
       this.mouseDX = 0;
       this.mouseDY = 0;
       this.wheelDelta = 0;
+      this.onInputsCancelled?.();
     };
 
     this._onKeyDown = (e) => {
@@ -149,6 +151,14 @@ export class InputManager {
     return false;
   }
 
+  consumeJustReleased(code) {
+    if (this.justReleased.has(code)) {
+      this.justReleased.delete(code);
+      return true;
+    }
+    return false;
+  }
+
   async requestPointerLock() {
     this._pointerLockErrorNotified = false;
     this._pointerLockRequestPending = true;
@@ -191,6 +201,7 @@ export class InputManager {
     this.domElement.removeEventListener('contextmenu', this._onContextMenu);
     clearTimeout(this._pointerLockErrorTimer);
     this.onFocusLoss = null;
+    this.onInputsCancelled = null;
     this.onPointerLockError = null;
   }
 }

@@ -1,263 +1,827 @@
 import * as THREE from 'three';
 
-const THROW_SPEED = 16;
-const THROW_ARC   = 4.5;
-const GRAVITY     = -18;
-const BOUNCE_DAMP = 0.40;
-const FRAG_FUSE   = 2.5;
-const SMOKE_FUSE  = 1.2;
-const FRAG_RADIUS = 5;
-const FRAG_DMG    = 80;
+import {
+  ABILITY_ID,
+  ABILITY_PRESENTATION,
+  DEFAULT_ABILITY_LOADOUT,
+  assertAbilityLoadout,
+} from '../abilities/abilityLoadout.ts';
+
+const MAX_PHYSICS_STEP = 1 / 120;
+const MAX_PHYSICS_SUBSTEPS = 12;
+const THROW_ORIGIN_DROP = 0.15;
+const SMOKE_RADIUS = 4.2 * 1.4;
+const SMOKE_EXPANSION_SECONDS = 1.35;
+const SMOKE_LIFETIME_SECONDS = 10;
+
+const PROJECTILE_RULES = Object.freeze({
+  [ABILITY_ID.launch]: Object.freeze({
+    type: 'launch',
+    throwSpeed: 17,
+    throwArc: 6.2,
+    gravity: -21,
+    restitution: 0.56,
+    friction: 0.18,
+    fuseSeconds: 1.45,
+    maximumLifetimeSeconds: 6,
+    radius: 0.075,
+    maximumBounces: 5,
+    color: 0x27d3c2,
+  }),
+  [ABILITY_ID.frag]: Object.freeze({
+    type: 'frag',
+    throwSpeed: 16,
+    throwArc: 4.8,
+    gravity: -19,
+    restitution: 0.42,
+    friction: 0.28,
+    fuseSeconds: 2.5,
+    maximumLifetimeSeconds: 4,
+    radius: 0.07,
+    maximumBounces: 4,
+    color: 0x5b6d38,
+  }),
+  [ABILITY_ID.smoke]: Object.freeze({
+    type: 'smoke',
+    throwSpeed: 15,
+    throwArc: 4.6,
+    gravity: -19,
+    restitution: 0.38,
+    friction: 0.3,
+    fuseSeconds: 1.25,
+    maximumLifetimeSeconds: 4,
+    radius: 0.065,
+    maximumBounces: 3,
+    color: 0x526a7d,
+  }),
+  [ABILITY_ID.sticky]: Object.freeze({
+    type: 'sticky',
+    throwSpeed: 18,
+    throwArc: 3.6,
+    gravity: -17,
+    restitution: 0,
+    friction: 1,
+    fuseSeconds: 1.9,
+    maximumLifetimeSeconds: 4,
+    radius: 0.065,
+    maximumBounces: 0,
+    color: 0xf3c94d,
+  }),
+  [ABILITY_ID.flash]: Object.freeze({
+    type: 'flash',
+    throwSpeed: 16,
+    throwArc: 4.2,
+    gravity: -19,
+    restitution: 0.44,
+    friction: 0.28,
+    fuseSeconds: 1.15,
+    maximumLifetimeSeconds: 3,
+    radius: 0.065,
+    maximumBounces: 3,
+    color: 0xe8f2f8,
+  }),
+});
+
+const DEFAULT_CHARGES = Object.freeze({
+  [ABILITY_ID.launch]: 2,
+  [ABILITY_ID.frag]: 2,
+  [ABILITY_ID.smoke]: 2,
+  [ABILITY_ID.sticky]: 2,
+  [ABILITY_ID.flash]: 2,
+});
+
+const _scratchDirection = new THREE.Vector3();
+const _scratchPrevious = new THREE.Vector3();
+const _scratchNext = new THREE.Vector3();
+const _scratchDelta = new THREE.Vector3();
+const _scratchNormal = new THREE.Vector3();
+const _scratchClosest = new THREE.Vector3();
+const _scratchActorCenter = new THREE.Vector3();
+const _scratchRay = new THREE.Raycaster();
+
+function smooth01(value) {
+  const t = THREE.MathUtils.clamp(value, 0, 1);
+  return t * t * (3 - 2 * t);
+}
+
+function disposeObject(root) {
+  root.traverse((object) => {
+    if (!object.isMesh) return;
+    object.geometry?.dispose?.();
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    for (const material of materials) material?.dispose?.();
+  });
+}
+
+function actorPosition(actor) {
+  return actor?.position?.isVector3 ? actor.position : null;
+}
+
+function actorAlive(actor) {
+  return actor && actor.isDead !== true && actor.alive !== false;
+}
 
 export class GrenadeSystem {
-  constructor(scene, audio = null) {
-    this.scene       = scene;
-    this.audio       = audio;
-    this.frags       = 2;
-    this.smokes      = 2;
-    this.throwables  = [];
+  constructor(scene, options = {}) {
+    this.scene = scene;
+    this.throwables = [];
     this.smokeClouds = [];
-    this.explosions  = [];
+    this.explosions = [];
+    this._collisionMeshes = options.collisionMeshes || [];
+    this._loadout = DEFAULT_ABILITY_LOADOUT;
+    this._charges = new Map();
+    this._cooldowns = new Map();
+    this._throwOrdinal = 0;
 
-    this.onExplode = null; // (point, radius, damage) => void
+    this.onExplode = null;
+    this.onImpulse = null;
+    this.onFlash = null;
+    this.onDamagePlayer = null;
+    this.onProjectileEvent = null;
+
+    this.reset();
+  }
+
+  get frags() {
+    return this._charges.get(ABILITY_ID.frag) || 0;
+  }
+
+  get smokes() {
+    return this._charges.get(ABILITY_ID.smoke) || 0;
+  }
+
+  setCollisionMeshes(meshes) {
+    this._collisionMeshes = Array.isArray(meshes) ? meshes.filter(Boolean) : [];
+  }
+
+  setLoadout(loadout) {
+    this._loadout = assertAbilityLoadout(loadout);
+    this.reset();
+    return this._loadout;
+  }
+
+  getLoadout() {
+    return this._loadout;
+  }
+
+  throwAbility(abilityId, camera) {
+    const rules = PROJECTILE_RULES[abilityId];
+    if (!rules || !this._loadout.slots.includes(abilityId)) return false;
+    const remaining = this._charges.get(abilityId) || 0;
+    if (remaining <= 0) return false;
+    const nextChargeCount = remaining - 1;
+    this._charges.set(abilityId, nextChargeCount);
+    if (
+      nextChargeCount < (DEFAULT_CHARGES[abilityId] || 0)
+      && (this._cooldowns.get(abilityId) || 0) <= 0
+    ) {
+      this._cooldowns.set(
+        abilityId,
+        ABILITY_PRESENTATION[abilityId]?.cooldownSeconds || 0,
+      );
+    }
+    this._spawn(camera, abilityId, rules);
+    return true;
+  }
+
+  throwLaunch(camera) {
+    return this.throwAbility(ABILITY_ID.launch, camera);
   }
 
   throwFrag(camera) {
-    if (this.frags <= 0) return false;
-    this.frags--;
-    this._spawn(camera, 'frag');
-    this.audio?.playGrenadeThrow?.('frag');
-    return true;
+    return this.throwAbility(ABILITY_ID.frag, camera);
   }
 
   throwSmoke(camera) {
-    if (this.smokes <= 0) return false;
-    this.smokes--;
-    this._spawn(camera, 'smoke');
-    this.audio?.playGrenadeThrow?.('smoke');
-    return true;
+    return this.throwAbility(ABILITY_ID.smoke, camera);
   }
 
-  _spawn(camera, type) {
+  throwSticky(camera) {
+    return this.throwAbility(ABILITY_ID.sticky, camera);
+  }
+
+  throwFlash(camera) {
+    return this.throwAbility(ABILITY_ID.flash, camera);
+  }
+
+  _spawn(camera, abilityId, rules) {
     const pos = new THREE.Vector3();
     camera.getWorldPosition(pos);
-    pos.y -= 0.15;
+    pos.y -= THROW_ORIGIN_DROP;
 
-    const dir = new THREE.Vector3();
-    camera.getWorldDirection(dir);
+    const direction = new THREE.Vector3();
+    camera.getWorldDirection(direction);
+    const velocity = direction.multiplyScalar(rules.throwSpeed);
+    velocity.y += rules.throwArc;
 
-    const vel = dir.clone().multiplyScalar(THROW_SPEED);
-    vel.y += THROW_ARC;
-
-    const mesh = this._buildMesh(type);
+    const mesh = this._buildMesh(abilityId, rules);
     mesh.position.copy(pos);
     this.scene.add(mesh);
 
+    const projectileId = `offline_ability_${++this._throwOrdinal}`;
     this.throwables.push({
+      projectileId,
+      abilityId,
+      rules,
       mesh,
       pos: pos.clone(),
-      vel,
-      type,
-      life: type === 'frag' ? FRAG_FUSE : SMOKE_FUSE,
-      bounceSoundCooldown: 0,
+      vel: velocity,
+      elapsed: 0,
+      fuseRemaining: rules.fuseSeconds,
+      fuseStarted: abilityId !== ABILITY_ID.launch,
+      bounceCount: 0,
+      settled: false,
+      attachedTarget: null,
+      attachedOffset: new THREE.Vector3(),
+    });
+    this._emitProjectileEvent('ability_throw', {
+      projectileId,
+      abilityId,
+      position: pos,
+      velocity,
+      audioCue: 'throw',
     });
   }
 
-  _buildMesh(type) {
-    const g = new THREE.Group();
-    if (type === 'frag') {
-      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x2e3d1f, roughness: 0.7, metalness: 0.45 });
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.065, 10, 8), bodyMat);
-      g.add(body);
-      // segmented surface bands
-      for (let i = -1; i <= 1; i++) {
-        const band = new THREE.Mesh(
-          new THREE.TorusGeometry(0.065, 0.009, 6, 14),
-          new THREE.MeshStandardMaterial({ color: 0x1a2410, roughness: 0.8, metalness: 0.3 })
-        );
-        band.rotation.x = Math.PI / 2;
-        band.position.y = i * 0.03;
-        g.add(band);
-      }
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(0.022, 0.005, 6, 12),
-        new THREE.MeshStandardMaterial({ color: 0xb0a890, roughness: 0.4, metalness: 0.75 })
+  _buildMesh(abilityId, rules) {
+    const group = new THREE.Group();
+    const bodyMaterial = new THREE.MeshStandardMaterial({
+      color: rules.color,
+      roughness: rules.type === 'flash' ? 0.28 : 0.58,
+      metalness: rules.type === 'smoke' ? 0.38 : 0.68,
+      emissive: rules.type === 'launch' ? 0x063b39 : 0x000000,
+      emissiveIntensity: rules.type === 'launch' ? 0.8 : 0,
+    });
+    const body = new THREE.Mesh(
+      rules.type === 'smoke'
+        ? new THREE.CylinderGeometry(0.05, 0.05, 0.15, 12)
+        : rules.type === 'sticky'
+          ? new THREE.CylinderGeometry(0.06, 0.075, 0.09, 12)
+          : new THREE.SphereGeometry(rules.radius, 12, 9),
+      bodyMaterial,
+    );
+    group.add(body);
+
+    const bandMaterial = new THREE.MeshStandardMaterial({
+      color: rules.type === 'flash' ? 0x14202a : 0x101a22,
+      roughness: 0.45,
+      metalness: 0.75,
+    });
+    const band = new THREE.Mesh(
+      new THREE.TorusGeometry(Math.max(0.04, rules.radius * 0.94), 0.008, 6, 16),
+      bandMaterial,
+    );
+    band.rotation.x = Math.PI / 2;
+    group.add(band);
+
+    if (rules.type === 'launch') {
+      const core = new THREE.Mesh(
+        new THREE.SphereGeometry(0.033, 10, 7),
+        new THREE.MeshBasicMaterial({ color: 0x9fffee }),
       );
-      ring.position.y = 0.075;
-      g.add(ring);
-    } else {
-      const bodyMat = new THREE.MeshStandardMaterial({ color: 0x3a5068, roughness: 0.55, metalness: 0.35 });
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.14, 10), bodyMat);
-      g.add(body);
-      const band = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.046, 0.046, 0.028, 10),
-        new THREE.MeshStandardMaterial({ color: 0xff6600, roughness: 0.5, metalness: 0.2 })
+      group.add(core);
+    } else if (rules.type === 'sticky') {
+      const contact = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.04, 0.055, 0.025, 12),
+        new THREE.MeshStandardMaterial({ color: 0x161b20, roughness: 0.65, metalness: 0.75 }),
       );
-      band.position.y = 0.028;
-      g.add(band);
-      const cap = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.030, 0.042, 0.018, 10),
-        new THREE.MeshStandardMaterial({ color: 0x2a3d4f, roughness: 0.6, metalness: 0.4 })
-      );
-      cap.position.y = 0.079;
-      g.add(cap);
+      contact.position.y = -0.055;
+      group.add(contact);
     }
-    g.traverse(o => { if (o.isMesh) o.castShadow = true; });
-    return g;
+
+    group.traverse((object) => {
+      if (object.isMesh) object.castShadow = true;
+    });
+    return group;
   }
 
-  update(dt, player) {
-    // in-flight throwables
-    for (let i = this.throwables.length - 1; i >= 0; i--) {
-      const t = this.throwables[i];
-      t.vel.y += GRAVITY * dt;
-      t.pos.addScaledVector(t.vel, dt);
-      t.life -= dt;
-      t.bounceSoundCooldown = Math.max(0, t.bounceSoundCooldown - dt);
-      t.mesh.position.copy(t.pos);
-      t.mesh.rotation.x += dt * 5;
-      t.mesh.rotation.z += dt * 3.5;
+  update(dt, playerOrContext) {
+    const elapsed = THREE.MathUtils.clamp(Number.isFinite(dt) ? dt : 0, 0, 0.1);
+    const context = playerOrContext && Object.prototype.hasOwnProperty.call(playerOrContext, 'player')
+      ? playerOrContext
+      : { player: playerOrContext, targets: [] };
+    const targets = Array.isArray(context.targets) ? context.targets.filter(actorAlive) : [];
+    const colliders = Array.isArray(context.collisionMeshes)
+      ? context.collisionMeshes.filter(Boolean)
+      : this._collisionMeshes;
+    const substepCount = Math.max(
+      1,
+      Math.min(MAX_PHYSICS_SUBSTEPS, Math.ceil(elapsed / MAX_PHYSICS_STEP)),
+    );
+    const stepSeconds = substepCount > 0 ? elapsed / substepCount : 0;
 
-      if (t.pos.y <= 0.07 && t.vel.y < 0) {
-        const impactSpeed = Math.abs(t.vel.y);
-        t.pos.y = 0.07;
-        t.vel.y *= -BOUNCE_DAMP;
-        t.vel.x *= 0.72;
-        t.vel.z *= 0.72;
-        if (impactSpeed > 1.2 && t.bounceSoundCooldown <= 0) {
-          this.audio?.playGrenadeBounce?.(
-            THREE.MathUtils.clamp(impactSpeed / 9, 0.15, 1),
-            t.type,
-          );
-          t.bounceSoundCooldown = 0.08;
-        }
+    this._updateCooldowns(elapsed);
+
+    for (let i = this.throwables.length - 1; i >= 0; i -= 1) {
+      const projectile = this.throwables[i];
+      projectile.elapsed += elapsed;
+      for (let step = 0; step < substepCount && !projectile.detonated; step += 1) {
+        this._stepProjectile(projectile, stepSeconds, targets, colliders);
+      }
+      if (projectile.fuseStarted) projectile.fuseRemaining -= elapsed;
+      projectile.mesh.position.copy(projectile.pos);
+      if (!projectile.settled && projectile.attachedTarget === null) {
+        projectile.mesh.rotation.x += elapsed * 6;
+        projectile.mesh.rotation.z += elapsed * 4.2;
       }
 
-      if (t.life <= 0) {
-        this._detonate(t, player);
-        this.scene.remove(t.mesh);
-        t.mesh.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
-        this.throwables.splice(i, 1);
+      if (
+        projectile.fuseRemaining <= 0
+        || projectile.elapsed >= projectile.rules.maximumLifetimeSeconds
+      ) {
+        this._detonate(projectile, context);
+        this._removeThrowable(i);
       }
     }
 
-    // smoke clouds
-    for (let i = this.smokeClouds.length - 1; i >= 0; i--) {
-      const s = this.smokeClouds[i];
-      s.t += dt;
-      const p = s.t / s.life;
-      if (p >= 1) {
-        for (const m of s.meshes) {
-          this.scene.remove(m);
-          m.geometry.dispose();
-          m.material.dispose();
+    this._updateSmokeClouds(elapsed);
+    this._updateExplosions(elapsed);
+  }
+
+  _stepProjectile(projectile, dt, targets, colliders) {
+    if (projectile.attachedTarget) {
+      const targetPosition = actorPosition(projectile.attachedTarget);
+      if (targetPosition) projectile.pos.copy(targetPosition).add(projectile.attachedOffset);
+      return;
+    }
+    if (projectile.settled || dt <= 0) return;
+
+    _scratchPrevious.copy(projectile.pos);
+    projectile.vel.y += projectile.rules.gravity * dt;
+    _scratchNext.copy(projectile.pos).addScaledVector(projectile.vel, dt);
+    const collision = this._findEarliestCollision(
+      projectile,
+      _scratchPrevious,
+      _scratchNext,
+      targets,
+      colliders,
+    );
+    if (!collision) {
+      projectile.pos.copy(_scratchNext);
+      return;
+    }
+
+    projectile.pos.copy(collision.point).addScaledVector(collision.normal, 0.002);
+    if (projectile.abilityId === ABILITY_ID.sticky) {
+      projectile.vel.set(0, 0, 0);
+      projectile.settled = true;
+      projectile.fuseStarted = true;
+      projectile.attachedTarget = collision.target || null;
+      if (collision.target && actorPosition(collision.target)) {
+        projectile.attachedOffset.copy(projectile.pos).sub(actorPosition(collision.target));
+      }
+      projectile.mesh.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, -1, 0),
+        collision.normal,
+      );
+      this._emitProjectileEvent('ability_stuck', {
+        projectileId: projectile.projectileId,
+        abilityId: projectile.abilityId,
+        position: projectile.pos,
+        targetId: collision.target?.id || collision.target?.name || null,
+        colliderId: collision.colliderId,
+        audioCue: 'adhere',
+      });
+      return;
+    }
+
+    if (projectile.abilityId === ABILITY_ID.launch && !projectile.fuseStarted) {
+      projectile.fuseStarted = true;
+      projectile.fuseRemaining = projectile.rules.fuseSeconds;
+    }
+    projectile.bounceCount += 1;
+    const incomingSpeed = projectile.vel.length();
+    const normalVelocity = projectile.vel.dot(collision.normal);
+    projectile.vel.addScaledVector(collision.normal, -2 * normalVelocity);
+    const normalComponent = collision.normal.clone().multiplyScalar(projectile.vel.dot(collision.normal));
+    const tangent = projectile.vel.clone().sub(normalComponent)
+      .multiplyScalar(1 - projectile.rules.friction);
+    projectile.vel.copy(tangent).addScaledVector(
+      normalComponent,
+      projectile.rules.restitution,
+    );
+    const outgoingSpeed = projectile.vel.length();
+    if (
+      projectile.bounceCount >= projectile.rules.maximumBounces
+      || outgoingSpeed < 1.15
+    ) {
+      projectile.vel.set(0, 0, 0);
+      projectile.settled = true;
+      if (!projectile.fuseStarted) projectile.fuseStarted = true;
+    }
+    this._emitProjectileEvent('ability_bounce', {
+      projectileId: projectile.projectileId,
+      abilityId: projectile.abilityId,
+      position: projectile.pos,
+      colliderId: collision.colliderId,
+      bounceCount: projectile.bounceCount,
+      incomingSpeed,
+      outgoingSpeed,
+      settled: projectile.settled,
+      audioCue: outgoingSpeed > 4 ? 'bounce_hard' : 'bounce_soft',
+    });
+  }
+
+  _findEarliestCollision(projectile, start, end, targets, colliders) {
+    _scratchDelta.copy(end).sub(start);
+    const distance = _scratchDelta.length();
+    let best = null;
+
+    for (const target of targets) {
+      const position = actorPosition(target);
+      if (!position) continue;
+      _scratchActorCenter.copy(position);
+      _scratchActorCenter.y += Number.isFinite(target.height) ? target.height * 0.5 : 0.85;
+      const segment = new THREE.Line3(start, end);
+      segment.closestPointToPoint(_scratchActorCenter, true, _scratchClosest);
+      const targetRadius = Number.isFinite(target.radius) ? target.radius : 0.45;
+      const separation = _scratchClosest.distanceTo(_scratchActorCenter);
+      if (separation > projectile.rules.radius + targetRadius) continue;
+      const along = distance > 0 ? start.distanceTo(_scratchClosest) / distance : 0;
+      _scratchNormal.copy(_scratchClosest).sub(_scratchActorCenter);
+      if (_scratchNormal.lengthSq() < 1e-6) _scratchNormal.copy(_scratchDelta).normalize().negate();
+      else _scratchNormal.normalize();
+      if (!best || along < best.fraction) {
+        best = {
+          fraction: along,
+          point: _scratchClosest.clone(),
+          normal: _scratchNormal.clone(),
+          target,
+          colliderId: target.id || target.name || 'offline_target',
+        };
+      }
+    }
+
+    if (distance > 1e-6 && colliders.length > 0) {
+      _scratchDirection.copy(_scratchDelta).normalize();
+      _scratchRay.set(start, _scratchDirection);
+      _scratchRay.near = 0;
+      _scratchRay.far = distance + projectile.rules.radius;
+      const hit = _scratchRay.intersectObjects(colliders, true)[0];
+      if (hit) {
+        const fraction = THREE.MathUtils.clamp(
+          Math.max(0, hit.distance - projectile.rules.radius) / distance,
+          0,
+          1,
+        );
+        if (!best || fraction < best.fraction) {
+          const normal = hit.face?.normal?.clone() || _scratchDirection.clone().negate();
+          if (hit.object?.matrixWorld) normal.transformDirection(hit.object.matrixWorld);
+          best = {
+            fraction,
+            point: start.clone().addScaledVector(_scratchDelta, fraction),
+            normal,
+            target: null,
+            colliderId: hit.object?.name || hit.object?.uuid || 'world',
+          };
+        }
+      }
+    }
+
+    const groundFraction = (
+      end.y < projectile.rules.radius
+      && start.y >= projectile.rules.radius
+      && Math.abs(start.y - end.y) > 1e-6
+    )
+      ? (start.y - projectile.rules.radius) / (start.y - end.y)
+      : null;
+    if (groundFraction !== null && (!best || groundFraction < best.fraction)) {
+      best = {
+        fraction: groundFraction,
+        point: start.clone().addScaledVector(_scratchDelta, groundFraction),
+        normal: new THREE.Vector3(0, 1, 0),
+        target: null,
+        colliderId: 'offline_ground',
+      };
+    }
+    return best;
+  }
+
+  _detonate(projectile, context) {
+    const point = projectile.pos.clone();
+    this._emitProjectileEvent('ability_detonated', {
+      projectileId: projectile.projectileId,
+      abilityId: projectile.abilityId,
+      position: point,
+      audioCue: projectile.rules.type === 'flash' ? 'flash' : 'detonation',
+    });
+    if (projectile.abilityId === ABILITY_ID.launch) {
+      this._launchExplode(point, context, projectile);
+    } else if (projectile.abilityId === ABILITY_ID.smoke) {
+      this._smokeExplode(point);
+    } else if (projectile.abilityId === ABILITY_ID.flash) {
+      this._flashExplode(point, context, projectile);
+    } else {
+      this._fragExplode(
+        point,
+        context.player,
+        projectile.abilityId === ABILITY_ID.sticky ? 4.5 : 5,
+        projectile.abilityId === ABILITY_ID.sticky ? 90 : 80,
+        projectile.abilityId,
+      );
+    }
+  }
+
+  _fragExplode(point, player, radius, damage, abilityId) {
+    this._spawnExplosionVisual(point, abilityId === ABILITY_ID.sticky ? 0xffcc42 : 0xff7a1a);
+    this.onExplode?.(point, radius, damage, { abilityId });
+
+    if (player && actorPosition(player)) {
+      const distance = player.position.distanceTo(point);
+      if (distance <= radius) {
+        const falloff = THREE.MathUtils.lerp(
+          1,
+          0.1,
+          THREE.MathUtils.clamp(distance / radius, 0, 1),
+        );
+        const appliedDamage = damage * falloff;
+        if (this.onDamagePlayer) this.onDamagePlayer(appliedDamage, point, { abilityId });
+        else player.takeDamage?.(appliedDamage);
+      }
+    }
+  }
+
+  _launchExplode(point, context, projectile) {
+    const radius = 11;
+    const maximumImpulse = 10.5;
+    this._spawnExplosionVisual(point, 0x4fffe1, 0.7);
+    const actors = [context.player, ...(Array.isArray(context.targets) ? context.targets : [])]
+      .filter(actorAlive);
+    const applied = [];
+    for (const actor of actors) {
+      const position = actorPosition(actor);
+      if (!position) continue;
+      const distance = position.distanceTo(point);
+      if (distance >= radius) continue;
+      const falloff = smooth01(1 - distance / radius);
+      const direction = position.clone().sub(point);
+      direction.y = Math.max(1.4, direction.y + 2.6);
+      direction.normalize();
+      const impulse = direction.multiplyScalar(maximumImpulse * falloff);
+      if (actor.velocity?.isVector3) actor.velocity.add(impulse);
+      else actor.applyAbilityImpulse?.(impulse);
+      applied.push(Object.freeze({
+        actorId: actor.id || actor.name || (actor === context.player ? 'local_player' : 'target'),
+        distance,
+        impulse: impulse.clone(),
+      }));
+    }
+    this.onImpulse?.(point, radius, maximumImpulse, {
+      abilityId: projectile.abilityId,
+      projectileId: projectile.projectileId,
+      applied,
+      upwardBiasMetersPerSecond: 2.6,
+    });
+  }
+
+  _flashExplode(point, context, projectile) {
+    const radius = 12;
+    const durationSeconds = 2.25;
+    this._spawnExplosionVisual(point, 0xf7fbff, 0.35);
+    const actors = [context.player, ...(Array.isArray(context.targets) ? context.targets : [])]
+      .filter(actorAlive);
+    const affected = [];
+    for (const actor of actors) {
+      const position = actorPosition(actor);
+      if (!position) continue;
+      _scratchActorCenter.copy(position);
+      _scratchActorCenter.y += actor === context.player ? 1.55 : 0.85;
+      _scratchDelta.copy(_scratchActorCenter).sub(point);
+      const distance = _scratchDelta.length();
+      if (distance >= radius || distance <= 1e-4) continue;
+      _scratchDirection.copy(_scratchDelta).normalize();
+      _scratchRay.set(point, _scratchDirection);
+      _scratchRay.near = 0.04;
+      _scratchRay.far = Math.max(0.04, distance - 0.08);
+      const blocker = this._collisionMeshes.length > 0
+        ? _scratchRay.intersectObjects(this._collisionMeshes, true)[0]
+        : null;
+      if (blocker) continue;
+      const intensity = smooth01(1 - distance / radius);
+      const affectedDuration = durationSeconds * (0.45 + intensity * 0.55);
+      actor.applyFlash?.(affectedDuration, intensity);
+      affected.push(Object.freeze({
+        actorId: actor === context.player
+          ? 'local_player'
+          : actor.id || actor.name || 'target',
+        distance,
+        intensity,
+        durationSeconds: affectedDuration,
+      }));
+    }
+    this.onFlash?.(point, radius, durationSeconds, {
+      abilityId: projectile.abilityId,
+      projectileId: projectile.projectileId,
+      affected,
+      authorityPolicy: 'presentation_only_no_damage_authority',
+    });
+  }
+
+  _smokeExplode(point) {
+    const puffs = [];
+    const puffCount = 10;
+    for (let i = 0; i < puffCount; i += 1) {
+      const angle = i * Math.PI * (3 - Math.sqrt(5));
+      const ring = Math.sqrt((i + 0.5) / puffCount);
+      const horizontal = SMOKE_RADIUS * 0.38 * ring;
+      const offset = new THREE.Vector3(
+        Math.cos(angle) * horizontal,
+        0.25 + SMOKE_RADIUS * (0.08 + (i % 4) * 0.07),
+        Math.sin(angle) * horizontal,
+      );
+      const radius = SMOKE_RADIUS * (0.46 + (i % 3) * 0.035);
+      const material = new THREE.MeshBasicMaterial({
+        color: i % 2 === 0 ? 0xb8c0c6 : 0x9ca8b1,
+        transparent: true,
+        opacity: 0,
+        depthWrite: false,
+      });
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 12, 9), material);
+      mesh.position.copy(point).add(offset);
+      mesh.scale.setScalar(0.03);
+      this.scene.add(mesh);
+      puffs.push({ mesh, baseRadius: radius, phase: i / puffCount });
+    }
+    this.smokeClouds.push({
+      puffs,
+      origin: point.clone(),
+      elapsed: 0,
+      life: SMOKE_LIFETIME_SECONDS,
+      radius: SMOKE_RADIUS,
+    });
+  }
+
+  _updateSmokeClouds(dt) {
+    for (let i = this.smokeClouds.length - 1; i >= 0; i -= 1) {
+      const cloud = this.smokeClouds[i];
+      cloud.elapsed += dt;
+      if (cloud.elapsed >= cloud.life) {
+        for (const puff of cloud.puffs) {
+          this.scene.remove(puff.mesh);
+          puff.mesh.geometry.dispose();
+          puff.mesh.material.dispose();
         }
         this.smokeClouds.splice(i, 1);
         continue;
       }
-      const scale   = p < 0.25 ? THREE.MathUtils.lerp(0.05, 1, p / 0.25) : 1;
-      const opacity = p > 0.72 ? THREE.MathUtils.lerp(0.7, 0, (p - 0.72) / 0.28) : 0.7;
-      for (const m of s.meshes) {
-        m.scale.setScalar(scale);
-        m.material.opacity = opacity;
+
+      const expansion = smooth01(cloud.elapsed / SMOKE_EXPANSION_SECONDS);
+      const fade = cloud.elapsed > cloud.life - 2.4
+        ? smooth01((cloud.life - cloud.elapsed) / 2.4)
+        : 1;
+      for (const puff of cloud.puffs) {
+        const delayedExpansion = smooth01(
+          (cloud.elapsed - puff.phase * 0.16) / SMOKE_EXPANSION_SECONDS,
+        );
+        puff.mesh.scale.setScalar(0.03 + delayedExpansion * 0.97);
+        puff.mesh.material.opacity = 0.56 * expansion * fade;
+        puff.mesh.position.y += dt * (0.025 + puff.phase * 0.018);
       }
     }
+  }
 
-    // frag explosions
-    for (let i = this.explosions.length - 1; i >= 0; i--) {
-      const e = this.explosions[i];
-      e.t += dt;
-      const p = e.t / e.life;
-      if (p >= 1) {
-        this.scene.remove(e.mesh);
-        e.mesh.geometry.dispose();
-        e.mesh.material.dispose();
-        this.scene.remove(e.light);
-        this.explosions.splice(i, 1);
+  _updateCooldowns(dt) {
+    if (dt <= 0) return;
+    for (const [abilityId, cooldown] of this._cooldowns) {
+      const nextCooldown = cooldown - dt;
+      if (nextCooldown > 0) {
+        this._cooldowns.set(abilityId, nextCooldown);
         continue;
       }
-      e.mesh.scale.setScalar(THREE.MathUtils.lerp(0.3, 4, p));
-      e.mesh.material.opacity = 0.9 * (1 - p);
-      e.light.intensity = 12 * (1 - p);
+      const maximumCharges = DEFAULT_CHARGES[abilityId] || 0;
+      const nextChargeCount = Math.min(
+        maximumCharges,
+        (this._charges.get(abilityId) || 0) + 1,
+      );
+      this._charges.set(abilityId, nextChargeCount);
+      this._cooldowns.set(
+        abilityId,
+        nextChargeCount < maximumCharges
+          ? ABILITY_PRESENTATION[abilityId]?.cooldownSeconds || 0
+          : 0,
+      );
     }
   }
 
-  _detonate(t, player) {
-    if (t.type === 'frag') {
-      this.audio?.playExplosion?.();
-      this._fragExplode(t.pos.clone(), player);
-    } else {
-      this.audio?.playSmokeDeploy?.();
-      this._smokeExplode(t.pos.clone());
-    }
+  getActiveSmokeVolumes() {
+    return this.smokeClouds.map((cloud) => Object.freeze({
+      center: cloud.origin.clone().add(new THREE.Vector3(0, cloud.radius * 0.22, 0)),
+      radius: cloud.radius * smooth01(cloud.elapsed / SMOKE_EXPANSION_SECONDS),
+      expiresInSeconds: Math.max(0, cloud.life - cloud.elapsed),
+    }));
   }
 
-  _fragExplode(point, player) {
+  isLineObscured(start, end) {
+    if (!start?.isVector3 || !end?.isVector3) return false;
+    _scratchDelta.copy(end).sub(start);
+    const segmentLengthSq = _scratchDelta.lengthSq();
+    if (segmentLengthSq <= 1e-6) return false;
+    for (const cloud of this.smokeClouds) {
+      const radius = cloud.radius * smooth01(cloud.elapsed / SMOKE_EXPANSION_SECONDS);
+      if (radius < 0.35) continue;
+      _scratchActorCenter.copy(cloud.origin);
+      _scratchActorCenter.y += cloud.radius * 0.22;
+      const t = THREE.MathUtils.clamp(
+        _scratchActorCenter.clone().sub(start).dot(_scratchDelta) / segmentLengthSq,
+        0,
+        1,
+      );
+      _scratchClosest.copy(start).addScaledVector(_scratchDelta, t);
+      if (_scratchClosest.distanceToSquared(_scratchActorCenter) <= radius * radius) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  _spawnExplosionVisual(point, color, lifetime = 0.5) {
     const fireball = new THREE.Mesh(
       new THREE.SphereGeometry(0.3, 14, 10),
-      new THREE.MeshBasicMaterial({ color: 0xff7a1a, transparent: true, opacity: 0.92 })
+      new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.92,
+        depthWrite: false,
+      }),
     );
     fireball.position.copy(point);
     this.scene.add(fireball);
+    this.explosions.push({ mesh: fireball, elapsed: 0, life: lifetime });
+  }
 
-    const light = new THREE.PointLight(0xff8a3a, 12, FRAG_RADIUS * 3.5, 2);
-    light.position.copy(point);
-    // (sky-only lighting) explosion light not added to scene
-    this.explosions.push({ mesh: fireball, light, t: 0, life: 0.5 });
-
-    if (this.onExplode) this.onExplode(point, FRAG_RADIUS, FRAG_DMG);
-
-    // self-damage
-    if (player) {
-      const d = player.position.distanceTo(point);
-      if (d <= FRAG_RADIUS) {
-        const f = THREE.MathUtils.lerp(1, 0.1, THREE.MathUtils.clamp(d / FRAG_RADIUS, 0, 1));
-        player.takeDamage(FRAG_DMG * f);
+  _updateExplosions(dt) {
+    for (let i = this.explosions.length - 1; i >= 0; i -= 1) {
+      const explosion = this.explosions[i];
+      explosion.elapsed += dt;
+      const progress = explosion.elapsed / explosion.life;
+      if (progress >= 1) {
+        this.scene.remove(explosion.mesh);
+        explosion.mesh.geometry.dispose();
+        explosion.mesh.material.dispose();
+        this.explosions.splice(i, 1);
+        continue;
       }
+      explosion.mesh.scale.setScalar(THREE.MathUtils.lerp(0.3, 4, smooth01(progress)));
+      explosion.mesh.material.opacity = 0.9 * (1 - smooth01(progress));
     }
   }
 
-  _smokeExplode(point) {
-    const RADIUS = 4.2;
-    const meshes = [];
-    for (let i = 0; i < 6; i++) {
-      const offset = new THREE.Vector3(
-        (Math.random() - 0.5) * RADIUS * 0.9,
-        Math.random() * RADIUS * 0.55,
-        (Math.random() - 0.5) * RADIUS * 0.9
-      );
-      const r = RADIUS * (0.55 + Math.random() * 0.45);
-      const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(r, 8, 6),
-        new THREE.MeshBasicMaterial({ color: 0xd0d0d0, transparent: true, opacity: 0, depthWrite: false })
-      );
-      mesh.position.copy(point).add(offset);
-      this.scene.add(mesh);
-      meshes.push(mesh);
-    }
-    this.smokeClouds.push({ meshes, t: 0, life: 9 });
+  _emitProjectileEvent(kind, payload) {
+    this.onProjectileEvent?.(Object.freeze({
+      schemaVersion: 1,
+      kind,
+      ...payload,
+      position: payload.position?.clone?.() || payload.position,
+      velocity: payload.velocity?.clone?.() || payload.velocity,
+    }));
+  }
+
+  _removeThrowable(index) {
+    const projectile = this.throwables[index];
+    this.scene.remove(projectile.mesh);
+    disposeObject(projectile.mesh);
+    this.throwables.splice(index, 1);
   }
 
   getHudInfo() {
-    return { frags: this.frags, smokes: this.smokes };
+    return {
+      frags: this.frags,
+      smokes: this.smokes,
+      slots: this._loadout.slots.map((abilityId, slot) => ({
+        slot,
+        abilityId,
+        count: abilityId === ABILITY_ID.blink
+          ? null
+          : this._charges.get(abilityId) || 0,
+        cooldownSeconds: abilityId === ABILITY_ID.blink
+          ? 0
+          : Math.max(0, this._cooldowns.get(abilityId) || 0),
+        metadata: ABILITY_PRESENTATION[abilityId],
+      })),
+    };
   }
 
   reset() {
-    for (const t of this.throwables) {
-      this.scene.remove(t.mesh);
-      t.mesh.traverse(o => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
-    }
-    this.throwables.length = 0;
-    for (const s of this.smokeClouds) {
-      for (const m of s.meshes) { this.scene.remove(m); m.geometry.dispose(); m.material.dispose(); }
+    for (let i = this.throwables.length - 1; i >= 0; i -= 1) this._removeThrowable(i);
+    for (const cloud of this.smokeClouds) {
+      for (const puff of cloud.puffs) {
+        this.scene.remove(puff.mesh);
+        puff.mesh.geometry.dispose();
+        puff.mesh.material.dispose();
+      }
     }
     this.smokeClouds.length = 0;
-    for (const e of this.explosions) {
-      this.scene.remove(e.mesh); e.mesh.geometry.dispose(); e.mesh.material.dispose();
-      this.scene.remove(e.light);
+    for (const explosion of this.explosions) {
+      this.scene.remove(explosion.mesh);
+      explosion.mesh.geometry.dispose();
+      explosion.mesh.material.dispose();
     }
     this.explosions.length = 0;
-    this.frags  = 2;
-    this.smokes = 2;
+    this._charges.clear();
+    this._cooldowns.clear();
+    for (const id of this._loadout.slots.slice(1)) {
+      this._charges.set(id, DEFAULT_CHARGES[id] || 0);
+      this._cooldowns.set(id, 0);
+    }
   }
 }

@@ -380,6 +380,8 @@ export class MenuUI {
 
     const currentGun = Loadout.getGun();
     const currentMelee = Loadout.getMelee();
+    const abilitySlots = Loadout.getAbilityUiSlots();
+    const selectableAbilities = Loadout.getSelectableAbilities();
     if (equipped) {
       const gun = GUNS.find((weapon) => weapon.id === currentGun);
       const melee = MELEE.find((weapon) => weapon.id === currentMelee);
@@ -387,6 +389,12 @@ export class MenuUI {
         const chip = document.createElement('div');
         chip.className = 'local-loadout-chip';
         chip.textContent = `${label} · ${weapon?.name ?? 'Default'}`;
+        equipped.appendChild(chip);
+      }
+      for (const slot of abilitySlots) {
+        const chip = document.createElement('div');
+        chip.className = 'local-loadout-chip';
+        chip.textContent = `${slot.inputLabel} · ${slot.ability.displayName}${slot.locked ? ' · Locked' : ''}`;
         equipped.appendChild(chip);
       }
     }
@@ -409,6 +417,40 @@ export class MenuUI {
     };
     renderGroup('Primary weapon', GUNS, currentGun, (id) => Loadout.setGun(id));
     renderGroup('Melee weapon', MELEE, currentMelee, (id) => Loadout.setMelee(id));
+
+    const blinkHeading = document.createElement('div');
+    blinkHeading.className = 'inv-section-label';
+    blinkHeading.textContent = 'Locked mobility slot';
+    grid.appendChild(blinkHeading);
+    const blink = abilitySlots[0];
+    const blinkButton = document.createElement('button');
+    blinkButton.className = 'local-loadout-option equipped';
+    blinkButton.disabled = true;
+    blinkButton.setAttribute('aria-label', `${blink.ability.displayName}, locked to ${blink.inputLabel}`);
+    blinkButton.textContent = `${blink.inputLabel} · ${blink.ability.displayName} · Locked`;
+    grid.appendChild(blinkButton);
+
+    for (const slot of abilitySlots.slice(1)) {
+      const heading = document.createElement('div');
+      heading.className = 'inv-section-label';
+      heading.textContent = `Ability slot ${slot.slot} · ${slot.inputLabel}`;
+      grid.appendChild(heading);
+      for (const ability of selectableAbilities) {
+        const selected = ability.id === slot.ability.id;
+        const button = document.createElement('button');
+        button.className = `local-loadout-option${selected ? ' equipped' : ''}`;
+        button.dataset.abilitySlot = String(slot.slot);
+        button.dataset.abilityId = ability.id;
+        button.setAttribute('aria-pressed', String(selected));
+        button.title = ability.description;
+        button.textContent = `${ability.displayName}${selected ? ' · Equipped' : ''}`;
+        button.addEventListener('click', () => {
+          Loadout.setAbilitySlot(slot.slot, ability.id);
+          this._renderLocalLoadout();
+        });
+        grid.appendChild(button);
+      }
+    }
   }
 
   setUsername(displayName) {

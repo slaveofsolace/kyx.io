@@ -113,7 +113,7 @@ function detonation(): ImpulseGrenadeDetonatedEvent {
 }
 
 describe('P5.4 authoritative Impulse Grenade foundation', () => {
-  it('enforces equip readiness, atomic cooldown, and the two-active limit', () => {
+  it('enforces equip readiness, two sequential charges, and the two-active limit', () => {
     let state = createImpulseGrenadeAbilityState({
       playerId: 'player_A',
       roomSeed: 'match_P54',
@@ -141,13 +141,19 @@ describe('P5.4 authoritative Impulse Grenade foundation', () => {
     });
     expect(accepted).toMatchObject({
       accepted: true,
-      state: { phase: 'cooldown', cooldownEndsAtTick: 248, acceptedThrowCount: 1 },
+      state: {
+        phase: 'ready',
+        cooldownEndsAtTick: 248,
+        currentCharges: 1,
+        maximumCharges: 2,
+        acceptedThrowCount: 1,
+      },
       throw: { authorityTick: 8, throwOrdinal: 1, cooldownEndsAtTick: 248 },
       throwRejection: null,
     });
     if (!accepted.accepted) throw new Error('expected accepted authority tick');
 
-    const cooling = advanceImpulseGrenadeAbility(accepted.state, {
+    const secondCharge = advanceImpulseGrenadeAbility(accepted.state, {
       authorityTick: 9,
       authorityInputSequence: 9,
       lifePhase: 'alive',
@@ -155,10 +161,21 @@ describe('P5.4 authoritative Impulse Grenade foundation', () => {
       throwPressed: true,
       activeProjectileCount: 1,
     });
-    expect(cooling).toMatchObject({ accepted: true, throw: null, throwRejection: 'cooldown' });
-    if (!cooling.accepted) throw new Error('expected accepted authority tick');
+    expect(secondCharge).toMatchObject({
+      accepted: true,
+      state: {
+        phase: 'cooldown',
+        cooldownEndsAtTick: 248,
+        currentCharges: 0,
+        maximumCharges: 2,
+        acceptedThrowCount: 2,
+      },
+      throw: { authorityTick: 9, throwOrdinal: 2, cooldownEndsAtTick: 248 },
+      throwRejection: null,
+    });
+    if (!secondCharge.accepted) throw new Error('expected accepted authority tick');
 
-    const capped = advanceImpulseGrenadeAbility(cooling.state, {
+    const capped = advanceImpulseGrenadeAbility(secondCharge.state, {
       authorityTick: 248,
       authorityInputSequence: 248,
       lifePhase: 'alive',
@@ -168,7 +185,7 @@ describe('P5.4 authoritative Impulse Grenade foundation', () => {
     });
     expect(capped).toMatchObject({
       accepted: true,
-      state: { phase: 'ready', acceptedThrowCount: 1 },
+      state: { phase: 'ready', currentCharges: 1, acceptedThrowCount: 2 },
       throw: null,
       throwRejection: 'active_projectile_limit',
     });

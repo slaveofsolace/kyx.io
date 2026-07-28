@@ -710,6 +710,8 @@ export function combatSnapshotFromAuthority(
     throw new Error('AUTHORITY_COMBAT_SNAPSHOT_INCOMPLETE');
   }
   const projectiles = snapshot.impulseGrenadeProjectiles ?? [];
+  const abilityProjectiles = snapshot.abilityProjectiles ?? [];
+  const smokeFields = snapshot.abilitySmokeFields ?? [];
   const weaponProjectiles = snapshot.weaponProjectiles ?? [];
   return Object.freeze({
     schemaVersion: 1,
@@ -721,6 +723,33 @@ export function combatSnapshotFromAuthority(
         || combat.armory === undefined
       ) {
         throw new Error('AUTHORITY_COMBAT_PLAYER_SNAPSHOT_INCOMPLETE');
+      }
+      const abilityCooldowns = combat.abilityLoadout === undefined
+        ? null
+        : [...combat.abilityLoadout.cooldownEndsAtTicks] as [number, number, number];
+      const abilityActivationCounts = combat.abilityLoadout === undefined
+        ? null
+        : [...combat.abilityLoadout.acceptedActivationCounts] as [number, number, number];
+      const abilityCurrentCharges = combat.abilityLoadout === undefined
+        ? null
+        : [...combat.abilityLoadout.currentCharges] as [number, number, number];
+      const abilityMaximumCharges = combat.abilityLoadout === undefined
+        ? null
+        : [...combat.abilityLoadout.maximumCharges] as [number, number, number];
+      const launchSlotIndex = combat.abilityLoadout?.loadout.slots
+        .slice(1)
+        .indexOf('vertical_impulse_grenade_v1') ?? -1;
+      if (
+        launchSlotIndex >= 0
+        && abilityCooldowns !== null
+        && abilityActivationCounts !== null
+        && abilityCurrentCharges !== null
+        && abilityMaximumCharges !== null
+      ) {
+        abilityCooldowns[launchSlotIndex] = combat.impulseGrenade.cooldownEndsAtTick;
+        abilityActivationCounts[launchSlotIndex] = combat.impulseGrenade.acceptedThrowCount;
+        abilityCurrentCharges[launchSlotIndex] = combat.impulseGrenade.currentCharges;
+        abilityMaximumCharges[launchSlotIndex] = combat.impulseGrenade.maximumCharges;
       }
       return Object.freeze({
         playerId: player.playerId,
@@ -764,6 +793,34 @@ export function combatSnapshotFromAuthority(
         activeProjectileCount: projectiles.filter((projectile) => (
           projectile.phase === 'active' && projectile.ownerPlayerId === player.playerId
         )).length,
+        ...(combat.abilityLoadout === undefined
+          ? {}
+          : {
+              abilityLoadout: Object.freeze({
+                slots: combat.abilityLoadout.loadout.slots,
+                cooldownEndsAtTicks: Object.freeze(abilityCooldowns) as readonly [
+                  number,
+                  number,
+                  number,
+                ],
+                currentCharges: Object.freeze(abilityCurrentCharges) as readonly [
+                  number,
+                  number,
+                  number,
+                ],
+                maximumCharges: Object.freeze(abilityMaximumCharges) as readonly [
+                  number,
+                  number,
+                  number,
+                ],
+                acceptedActivationCounts: Object.freeze(abilityActivationCounts) as readonly [
+                  number,
+                  number,
+                  number,
+                ],
+                flashImpairedUntilTick: combat.flashImpairedUntilTick ?? snapshot.serverTick,
+              }),
+            }),
       });
     })),
     projectiles: Object.freeze(projectiles.map((projectile) => Object.freeze({
@@ -784,6 +841,43 @@ export function combatSnapshotFromAuthority(
       bounceCount: projectile.bounceCount,
       settled: projectile.settled,
     }))),
+    ...(abilityProjectiles.length === 0
+      ? {}
+      : {
+          abilityProjectiles: Object.freeze(abilityProjectiles.map((projectile) => Object.freeze({
+            projectileId: combatWireId(projectile.projectileId),
+            ownerPlayerId: projectile.ownerPlayerId,
+            ownerTeamId: projectile.ownerTeamId,
+            abilityId: projectile.abilityId,
+            spawnTick: projectile.spawnTick,
+            lifetimeEndsAtTick: projectile.lifetimeEndsAtTick,
+            detonatesAtTick: projectile.detonatesAtTick,
+            xMillimeters: projectile.positionMillimeters.x,
+            yMillimeters: projectile.positionMillimeters.y,
+            zMillimeters: projectile.positionMillimeters.z,
+            velocityXMillimetersPerSecond: projectile.velocityMillimetersPerSecond.x,
+            velocityYMillimetersPerSecond: projectile.velocityMillimetersPerSecond.y,
+            velocityZMillimetersPerSecond: projectile.velocityMillimetersPerSecond.z,
+            bounceCount: projectile.bounceCount,
+            settled: projectile.settled,
+            attachedPlayerId: projectile.attachedPlayerId,
+          }))),
+        }),
+    ...(smokeFields.length === 0
+      ? {}
+      : {
+          smokeFields: Object.freeze(smokeFields.map((field) => Object.freeze({
+            fieldId: combatWireId(field.fieldId),
+            ownerPlayerId: field.ownerPlayerId,
+            ownerTeamId: field.ownerTeamId,
+            spawnedAtTick: field.spawnedAtTick,
+            expiresAtTick: field.expiresAtTick,
+            xMillimeters: field.centerMillimeters.x,
+            yMillimeters: field.centerMillimeters.y,
+            zMillimeters: field.centerMillimeters.z,
+            radiusMillimeters: field.radiusMillimeters,
+          }))),
+        }),
     ...(weaponProjectiles.length === 0
       ? {}
       : {
@@ -1142,6 +1236,152 @@ export function reliableCombatEvents(
             ...event.appliedImpulseMillimetersPerSecond,
           }),
           damageHealthPoints: event.damageHealthPoints,
+        }),
+      }));
+    }
+  }
+  for (const event of tick.abilityLoadoutEvents ?? []) {
+    const wireEventId = combatWireId(
+      `ability.${event.abilityId}.${fnv1a64(event.eventId)}`,
+    );
+    if (event.kind === 'ability_activation_accepted') {
+      events.push(Object.freeze({
+        serverTick: event.authorityTick,
+        kind: 'projectileSpawned',
+        subjectId: wireEventId,
+        actorId: event.playerId,
+        targetId: null,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'throwable_ability_event' as const,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          phase: 'activated' as const,
+          playerId: event.playerId,
+          abilityId: event.abilityId,
+          projectileId: combatWireId(event.projectileId),
+          targetPlayerId: null,
+          cooldownEndsAtTick: event.cooldownEndsAtTick,
+          positionMillimeters: null,
+          areaRadiusMillimeters: null,
+          reason: null,
+        }),
+      }));
+      events.push(Object.freeze({
+        serverTick: event.authorityTick,
+        kind: 'cooldownStarted',
+        subjectId: wireEventId,
+        actorId: event.playerId,
+        targetId: null,
+        amountHealthPoints: null,
+      }));
+    } else if (event.kind === 'ability_activation_rejected') {
+      events.push(Object.freeze({
+        serverTick: event.authorityTick,
+        kind: 'abilityRejected',
+        subjectId: wireEventId,
+        actorId: event.playerId,
+        targetId: null,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'throwable_ability_event' as const,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          phase: 'rejected' as const,
+          playerId: event.playerId,
+          abilityId: event.abilityId,
+          projectileId: null,
+          targetPlayerId: null,
+          cooldownEndsAtTick: event.cooldownEndsAtTick,
+          positionMillimeters: null,
+          areaRadiusMillimeters: null,
+          reason: event.reason,
+        }),
+      }));
+    } else if (event.kind === 'ability_projectile_collision') {
+      events.push(Object.freeze({
+        serverTick: event.authorityTick,
+        kind: 'projectileCollided',
+        subjectId: wireEventId,
+        actorId: event.ownerPlayerId,
+        targetId: event.playerId,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'throwable_ability_event' as const,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          phase: 'collision' as const,
+          playerId: event.ownerPlayerId,
+          abilityId: event.abilityId,
+          projectileId: combatWireId(event.projectileId),
+          targetPlayerId: event.playerId,
+          cooldownEndsAtTick: null,
+          positionMillimeters: null,
+          areaRadiusMillimeters: null,
+          reason: event.attached ? 'attached' : event.settled ? 'settled' : 'bounce',
+        }),
+      }));
+    } else {
+      events.push(Object.freeze({
+        serverTick: event.authorityTick,
+        kind: 'projectileDetonated',
+        subjectId: wireEventId,
+        actorId: event.ownerPlayerId,
+        targetId: null,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'throwable_ability_event' as const,
+          eventId: wireEventId,
+          authorityTick: event.authorityTick,
+          phase: 'detonated' as const,
+          playerId: event.ownerPlayerId,
+          abilityId: event.abilityId,
+          projectileId: combatWireId(event.projectileId),
+          targetPlayerId: null,
+          cooldownEndsAtTick: null,
+          positionMillimeters: Object.freeze({ ...event.positionMillimeters }),
+          areaRadiusMillimeters: event.areaRadiusMillimeters,
+          reason: event.reason,
+        }),
+      }));
+    }
+  }
+  for (const result of tick.abilityEffectResults ?? []) {
+    result.damages.forEach(appendDamage);
+    for (const outcome of result.outcomes) {
+      if (outcome.status !== 'applied' || outcome.flashDurationTicks <= 0) continue;
+      const flashEventId = combatWireId(
+        `ability.${result.detonation.abilityId}.flash.${fnv1a64(
+          `${result.detonation.eventId}:${outcome.targetPlayerId}`,
+        )}`,
+      );
+      events.push(Object.freeze({
+        serverTick: result.detonation.authorityTick,
+        kind: 'abilityActivated',
+        subjectId: flashEventId,
+        actorId: result.detonation.ownerPlayerId,
+        targetId: outcome.targetPlayerId,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'throwable_ability_event' as const,
+          eventId: flashEventId,
+          authorityTick: result.detonation.authorityTick,
+          phase: 'flash_applied' as const,
+          playerId: result.detonation.ownerPlayerId,
+          abilityId: result.detonation.abilityId,
+          projectileId: combatWireId(result.detonation.projectileId),
+          targetPlayerId: outcome.targetPlayerId,
+          cooldownEndsAtTick: null,
+          positionMillimeters: Object.freeze({
+            ...result.detonation.positionMillimeters,
+          }),
+          areaRadiusMillimeters: result.detonation.areaRadiusMillimeters,
+          reason: null,
         }),
       }));
     }

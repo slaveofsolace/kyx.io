@@ -34,6 +34,7 @@ export class HUD {
     this.weaponSlots = document.getElementById('weapon-slots');
     this.hitmarker   = document.getElementById('hitmarker');
     this.damageFlash = document.getElementById('damage-flash');
+    this.abilityFlashOverlay = document.getElementById('ability-flash-overlay');
     this.killfeed    = document.getElementById('killfeed');
     this.killConfirmation = document.getElementById('kill-confirmation');
     this.killConfirmationLabel = document.getElementById('kill-confirmation-label');
@@ -64,6 +65,7 @@ export class HUD {
     this._damageDirectionTimeout = null;
     this._abilityReasonTimeout = null;
     this._killConfirmationTimeout = null;
+    this._abilityFlashTimeout = null;
   }
 
   show() { this.root?.classList.remove('hidden'); }
@@ -300,6 +302,86 @@ export class HUD {
     return true;
   }
 
+  updateAbilities(info) {
+    if (!Array.isArray(info?.slots)) return;
+    const slotElements = [
+      null,
+      {
+        root: document.getElementById('ability-slot-1'),
+        name: document.getElementById('ability-slot-1-name'),
+        count: document.getElementById('ability-slot-1-count'),
+        state: document.getElementById('ability-slot-1-state'),
+        key: 'E',
+      },
+      {
+        root: document.getElementById('ability-slot-2'),
+        name: document.getElementById('ability-slot-2-name'),
+        count: document.getElementById('ability-slot-2-count'),
+        state: document.getElementById('ability-slot-2-state'),
+        key: 'F',
+      },
+      {
+        root: document.getElementById('ability-slot-3'),
+        name: document.getElementById('ability-slot-3-name'),
+        count: document.getElementById('ability-slot-3-count'),
+        state: document.getElementById('ability-slot-3-state'),
+        key: 'Z',
+      },
+    ];
+    for (const slot of info.slots.slice(1)) {
+      const elements = slotElements[slot.slot];
+      if (!elements?.root) continue;
+      const count = Number.isFinite(slot.count) ? Math.max(0, Math.floor(slot.count)) : 0;
+      const ready = count > 0;
+      const maximumCharges = Number.isFinite(slot.metadata?.charges)
+        ? Math.max(1, Math.floor(slot.metadata.charges))
+        : 1;
+      const cooldownSeconds = Number.isFinite(slot.cooldownSeconds)
+        ? Math.max(0, slot.cooldownSeconds)
+        : 0;
+      const displayName = slot.metadata?.shortName || slot.metadata?.displayName || 'Ability';
+      elements.root.dataset.abilityId = slot.abilityId;
+      elements.root.dataset.state = ready ? 'ready' : 'empty';
+      elements.root.classList.toggle('ready', ready);
+      elements.root.classList.toggle('empty', !ready);
+      if (elements.name) elements.name.textContent = displayName;
+      if (elements.count) {
+        elements.count.textContent = String(count);
+        elements.count.classList.toggle('grenade-empty', !ready);
+      }
+      if (elements.state) {
+        elements.state.textContent = cooldownSeconds > 0 && count < maximumCharges
+          ? `${ready ? 'Ready' : 'Recharging'} · +1 ${cooldownSeconds.toFixed(1)}s`
+          : ready ? 'Ready' : 'Empty';
+      }
+      elements.root.setAttribute(
+        'aria-label',
+        `${slot.metadata?.displayName || displayName}, ${elements.key}, ${count} of ${maximumCharges} charges${
+          cooldownSeconds > 0 && count < maximumCharges
+            ? `, next charge in ${cooldownSeconds.toFixed(1)} seconds`
+            : ''
+        }`,
+      );
+    }
+  }
+
+  showFlashEffect(intensity, durationSeconds) {
+    if (!this.abilityFlashOverlay) return false;
+    const reducedFlash = document.body.dataset.reducedFlash === 'true';
+    const safeIntensity = Math.max(0, Math.min(reducedFlash ? 0.22 : 0.68, Number(intensity) || 0));
+    const safeDuration = Math.max(0.15, Math.min(reducedFlash ? 0.45 : 2.5, Number(durationSeconds) || 0));
+    this.abilityFlashOverlay.style.setProperty('--flash-intensity', safeIntensity);
+    this.abilityFlashOverlay.style.setProperty('--flash-duration', `${safeDuration}s`);
+    this.abilityFlashOverlay.classList.remove('show');
+    void this.abilityFlashOverlay.offsetWidth;
+    this.abilityFlashOverlay.classList.add('show');
+    clearTimeout(this._abilityFlashTimeout);
+    this._abilityFlashTimeout = setTimeout(() => {
+      this.abilityFlashOverlay?.classList.remove('show');
+    }, safeDuration * 1_000);
+    return true;
+  }
+
   flashHitmarker(headshot = false) {
     this.hitmarker.classList.remove('show', 'headshot');
     void this.hitmarker.offsetWidth;
@@ -344,6 +426,7 @@ export class HUD {
     this.abilityReason.textContent = `${safeKey.toUpperCase()}: ${safeReason}`;
     this.abilityReason.classList.remove('hidden');
     clearTimeout(this._abilityReasonTimeout);
+    clearTimeout(this._abilityFlashTimeout);
     const safeDuration = Number.isFinite(durationMs) ? Math.min(5_000, Math.max(500, durationMs)) : 1_400;
     this._abilityReasonTimeout = setTimeout(() => this.abilityReason.classList.add('hidden'), safeDuration);
     return true;
@@ -393,12 +476,15 @@ export class HUD {
     clearTimeout(this._damageDirectionTimeout);
     clearTimeout(this._abilityReasonTimeout);
     clearTimeout(this._killConfirmationTimeout);
+    clearTimeout(this._abilityFlashTimeout);
     this._damageDirectionTimeout = null;
     this._abilityReasonTimeout = null;
     this._killConfirmationTimeout = null;
+    this._abilityFlashTimeout = null;
     this.damageDirection?.classList.add('hidden');
     this.abilityReason?.classList.add('hidden');
     this.killConfirmation?.classList.add('hidden');
+    this.abilityFlashOverlay?.classList.remove('show');
     this.hideInteractionPrompt();
     this.setConnectionWarning(false);
   }

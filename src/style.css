@@ -403,6 +403,33 @@ html, body {
   transition: opacity 0.6s ease-out;
 }
 
+#ability-flash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 121;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(232, 248, 255, 0.74) 0 18%, rgba(153, 211, 225, 0.42) 46%, rgba(16, 31, 43, 0.62) 100%);
+  mix-blend-mode: screen;
+  backdrop-filter: saturate(0.35) blur(1.5px);
+}
+
+#ability-flash-overlay.show {
+  animation: abilityFlashImpairment var(--flash-duration, 1.4s) cubic-bezier(0.16, 0.72, 0.2, 1) forwards;
+}
+
+@keyframes abilityFlashImpairment {
+  0% { opacity: var(--flash-intensity, 0.6); }
+  18% { opacity: var(--flash-intensity, 0.6); }
+  100% { opacity: 0; }
+}
+
+body[data-reduced-flash="true"] #ability-flash-overlay {
+  backdrop-filter: none;
+  mix-blend-mode: normal;
+}
+
 /* Teleport blink flash */
 #teleport-flash {
   position: fixed; inset: 0; pointer-events: none;

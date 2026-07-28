@@ -440,6 +440,8 @@ export async function createOnlineAuthorityThreeRuntime(
 
   const avatars = new Map<string, PlayerAvatar>();
   const grenadeProjectiles = new Map<string, THREE.Mesh>();
+  const abilityProjectiles = new Map<string, THREE.Mesh>();
+  const smokeFields = new Map<string, THREE.Group>();
   const processedReliableEvents = new Set<string>();
   const processedReliableEventOrder: string[] = [];
   const weaponPresentationFx = createOnlineWeaponPresentationFx(scene, canvas);
@@ -820,7 +822,10 @@ export async function createOnlineAuthorityThreeRuntime(
     }
   };
 
-  const syncGrenades = (combat: CombatSnapshotV1 | null): void => {
+  const syncGrenades = (
+    combat: CombatSnapshotV1 | null,
+    estimatedServerTick: number,
+  ): void => {
     const active = new Set<string>();
     for (const projectile of combat?.projectiles ?? []) {
       if (projectile.phase !== 'active') continue;
@@ -855,6 +860,107 @@ export async function createOnlineAuthorityThreeRuntime(
       disposeObject(mesh);
       grenadeProjectiles.delete(projectileId);
     }
+    const activeAbilities = new Set<string>();
+    for (const projectile of combat?.abilityProjectiles ?? []) {
+      activeAbilities.add(projectile.projectileId);
+      let mesh = abilityProjectiles.get(projectile.projectileId);
+      if (mesh === undefined) {
+        const color = projectile.abilityId === 'smoke_grenade_v1'
+          ? 0x8ca3a7
+          : projectile.abilityId === 'flash_grenade_v1'
+            ? 0x7fe7ff
+            : projectile.abilityId === 'sticky_grenade_v1' ? 0xff8b61 : 0xff654f;
+        mesh = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(0.14, 1),
+          new THREE.MeshStandardMaterial({
+            color,
+            emissive: color,
+            emissiveIntensity: 1.15,
+            metalness: 0.62,
+            roughness: 0.28,
+          }),
+        );
+        mesh.name = `ONLINE_AUTHORITY_ABILITY_${projectile.abilityId}_${projectile.projectileId}`;
+        abilityProjectiles.set(projectile.projectileId, mesh);
+        scene.add(mesh);
+      }
+      mesh.position.set(
+        projectile.xMillimeters / 1_000,
+        projectile.yMillimeters / 1_000,
+        -projectile.zMillimeters / 1_000,
+      );
+      mesh.rotation.x += 0.07;
+      mesh.rotation.y += 0.11;
+    }
+    for (const [projectileId, mesh] of abilityProjectiles) {
+      if (activeAbilities.has(projectileId)) continue;
+      scene.remove(mesh);
+      disposeObject(mesh);
+      abilityProjectiles.delete(projectileId);
+    }
+    const activeSmokeFields = new Set<string>();
+    for (const field of combat?.smokeFields ?? []) {
+      activeSmokeFields.add(field.fieldId);
+      let smoke = smokeFields.get(field.fieldId);
+      if (smoke === undefined) {
+        smoke = new THREE.Group();
+        smoke.name = `ONLINE_AUTHORITY_SMOKE_${field.fieldId}`;
+        for (const [layerScale, opacity] of [
+          [1, 0.2],
+          [0.72, 0.16],
+          [0.46, 0.12],
+        ] as const) {
+          const layer = new THREE.Mesh(
+            new THREE.SphereGeometry(1, 20, 14),
+            new THREE.MeshStandardMaterial({
+              color: 0x8aa2a8,
+              emissive: 0x263a40,
+              emissiveIntensity: 0.38,
+              transparent: true,
+              opacity,
+              depthWrite: false,
+              side: THREE.DoubleSide,
+              roughness: 1,
+            }),
+          );
+          layer.scale.setScalar(layerScale);
+          layer.userData.baseOpacity = opacity;
+          smoke.add(layer);
+        }
+        smokeFields.set(field.fieldId, smoke);
+        scene.add(smoke);
+      }
+      smoke.position.set(
+        field.xMillimeters / 1_000,
+        field.yMillimeters / 1_000,
+        -field.zMillimeters / 1_000,
+      );
+      const radius = field.radiusMillimeters / 1_000;
+      const expansionLinear = THREE.MathUtils.clamp(
+        (estimatedServerTick - field.spawnedAtTick) / 27,
+        0,
+        1,
+      );
+      const expansion = expansionLinear * expansionLinear * (3 - 2 * expansionLinear);
+      const fade = THREE.MathUtils.clamp(
+        (field.expiresAtTick - estimatedServerTick) / 30,
+        0,
+        1,
+      );
+      const scale = radius * Math.max(0.04, expansion);
+      smoke.scale.set(scale, scale * 0.72, scale);
+      smoke.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        if (!(child.material instanceof THREE.MeshStandardMaterial)) return;
+        child.material.opacity = Number(child.userData.baseOpacity ?? 0.12) * fade;
+      });
+    }
+    for (const [fieldId, smoke] of smokeFields) {
+      if (activeSmokeFields.has(fieldId)) continue;
+      scene.remove(smoke);
+      disposeObject(smoke);
+      smokeFields.delete(fieldId);
+    }
   };
 
   const render = (frame: OnlineAuthorityThreeFrame): void => {
@@ -869,7 +975,7 @@ export async function createOnlineAuthorityThreeRuntime(
     resize();
     syncFirstPersonWeapon(frame);
     syncAvatars(frame, deltaSeconds);
-    syncGrenades(frame.combat.snapshot);
+    syncGrenades(frame.combat.snapshot, frame.presentation.estimatedServerTick);
     weaponPresentationFx.syncAuthoritativeRockets(
       frame.combat.snapshot?.weaponProjectiles ?? [],
       frame.nowMilliseconds,
@@ -953,7 +1059,7 @@ export async function createOnlineAuthorityThreeRuntime(
       spawnCount: 12,
       zoneCount: 9,
       remoteAvatarCount: avatars.size,
-      grenadeProjectileCount: grenadeProjectiles.size,
+      grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
       weaponProjectileCount: weaponDiagnostics.activeRocketCount,
       activeWeaponEffectCount: weaponDiagnostics.activeTransientCount,
       renderedReliableEventCount,

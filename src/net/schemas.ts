@@ -458,9 +458,13 @@ function validateLoadoutRequest(record: UnknownRecord): ClientMessage {
   idAt(required(record, 'primaryWeaponId', '$'), '$.primaryWeaponId');
   nullableIdAt(required(record, 'secondaryWeaponId', '$'), '$.secondaryWeaponId');
   idAt(required(record, 'meleeWeaponId', '$'), '$.meleeWeaponId');
-  const damageIds = validateStringIds(required(record, 'damageAbilityIds', '$'), '$.damageAbilityIds', 2);
-  if (damageIds.length !== 2) {
-    fail('PROTOCOL_INVALID_FIELD_VALUE', '$.damageAbilityIds', 'Exactly two damage ability IDs are required.');
+  const damageIds = validateStringIds(required(record, 'damageAbilityIds', '$'), '$.damageAbilityIds', 3);
+  if (damageIds.length !== 2 && damageIds.length !== 3) {
+    fail(
+      'PROTOCOL_INVALID_FIELD_VALUE',
+      '$.damageAbilityIds',
+      'Two legacy or three current selectable ability IDs are required.',
+    );
   }
   assertUnique(damageIds, '$.damageAbilityIds');
   idAt(required(record, 'utilityAbilityId', '$'), '$.utilityAbilityId');
@@ -1117,6 +1121,7 @@ function validateCombatWeapon(
 
 function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['players'][number] {
   const record = recordAt(value, path);
+  const hasAbilityLoadout = Object.hasOwn(record, 'abilityLoadout');
   const armoryKeys = ['weaponCatalogId', 'selectedWeaponSlot', 'selectedWeaponId', 'weapons'];
   const presentArmoryKeys = armoryKeys.filter((key) => Object.hasOwn(record, key));
   if (presentArmoryKeys.length !== 0 && presentArmoryKeys.length !== armoryKeys.length) {
@@ -1133,6 +1138,7 @@ function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['p
     'grenadePhase', 'grenadeCooldownEndsAtTick', 'acceptedThrowCount',
     'activeProjectileCount',
     ...(presentArmoryKeys.length === 0 ? [] : armoryKeys),
+    ...(hasAbilityLoadout ? ['abilityLoadout'] : []),
   ]);
   idAt(required(record, 'playerId', path), `${path}.playerId`);
   booleanAt(required(record, 'connected', path), `${path}.connected`);
@@ -1215,6 +1221,79 @@ function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['p
         'Selected weapon id must match the authoritative selected slot.',
       );
     }
+  }
+  if (hasAbilityLoadout) {
+    const loadoutPath = `${path}.abilityLoadout`;
+    const loadout = recordAt(required(record, 'abilityLoadout', path), loadoutPath);
+    exactKeys(loadout, loadoutPath, [
+      'slots', 'cooldownEndsAtTicks', 'currentCharges', 'maximumCharges',
+      'acceptedActivationCounts', 'flashImpairedUntilTick',
+    ]);
+    const slots = arrayAt(required(loadout, 'slots', loadoutPath), `${loadoutPath}.slots`, 4);
+    if (slots.length !== 4) {
+      fail('PROTOCOL_INVALID_FIELD_VALUE', `${loadoutPath}.slots`, 'Ability loadout requires four slots.');
+    }
+    const abilityIds = slots.map((ability, index) => stringAt(
+      ability,
+      `${loadoutPath}.slots[${index}]`,
+      {
+        allowed: [
+          'vertical_teleport_v1',
+          'vertical_impulse_grenade_v1',
+          'frag_grenade_v1',
+          'smoke_grenade_v1',
+          'sticky_grenade_v1',
+          'flash_grenade_v1',
+        ],
+      },
+    ) as string);
+    if (abilityIds[0] !== 'vertical_teleport_v1') {
+      fail('PROTOCOL_INVALID_FIELD_VALUE', `${loadoutPath}.slots[0]`, 'Blink must remain locked.');
+    }
+    assertUnique(abilityIds, `${loadoutPath}.slots`);
+    for (const key of ['cooldownEndsAtTicks', 'acceptedActivationCounts'] as const) {
+      const values = arrayAt(required(loadout, key, loadoutPath), `${loadoutPath}.${key}`, 3);
+      if (values.length !== 3) {
+        fail('PROTOCOL_INVALID_FIELD_VALUE', `${loadoutPath}.${key}`, 'Ability slot state requires three values.');
+      }
+      values.forEach((entry, index) => tickAt(entry, `${loadoutPath}.${key}[${index}]`));
+    }
+    const currentCharges = arrayAt(
+      required(loadout, 'currentCharges', loadoutPath),
+      `${loadoutPath}.currentCharges`,
+      3,
+    );
+    const maximumCharges = arrayAt(
+      required(loadout, 'maximumCharges', loadoutPath),
+      `${loadoutPath}.maximumCharges`,
+      3,
+    );
+    if (currentCharges.length !== 3 || maximumCharges.length !== 3) {
+      fail('PROTOCOL_INVALID_FIELD_VALUE', loadoutPath, 'Ability charge state requires three values.');
+    }
+    currentCharges.forEach((entry, index) => {
+      const current = numberAt(
+        entry,
+        `${loadoutPath}.currentCharges[${index}]`,
+        { integer: true, min: 0, max: 2 },
+      )!;
+      const maximum = numberAt(
+        maximumCharges[index],
+        `${loadoutPath}.maximumCharges[${index}]`,
+        { integer: true, min: 2, max: 2 },
+      )!;
+      if (current > maximum) {
+        fail(
+          'PROTOCOL_INVALID_FIELD_VALUE',
+          `${loadoutPath}.currentCharges[${index}]`,
+          'Ability charge count exceeds its maximum.',
+        );
+      }
+    });
+    tickAt(
+      required(loadout, 'flashImpairedUntilTick', loadoutPath),
+      `${loadoutPath}.flashImpairedUntilTick`,
+    );
   }
   return record as unknown as CombatSnapshotV1['players'][number];
 }
@@ -1312,11 +1391,84 @@ function validateCombatWeaponProjectile(value: unknown, path: string): void {
   }
 }
 
+function validateCombatAbilityProjectile(value: unknown, path: string): void {
+  const record = recordAt(value, path);
+  exactKeys(record, path, [
+    'projectileId', 'ownerPlayerId', 'ownerTeamId', 'abilityId', 'spawnTick',
+    'lifetimeEndsAtTick', 'detonatesAtTick', 'xMillimeters', 'yMillimeters',
+    'zMillimeters', 'velocityXMillimetersPerSecond', 'velocityYMillimetersPerSecond',
+    'velocityZMillimetersPerSecond', 'bounceCount', 'settled', 'attachedPlayerId',
+  ]);
+  idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+  idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+  nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
+  stringAt(required(record, 'abilityId', path), `${path}.abilityId`, {
+    allowed: [
+      'frag_grenade_v1', 'smoke_grenade_v1', 'sticky_grenade_v1', 'flash_grenade_v1',
+    ],
+  });
+  tickAt(required(record, 'spawnTick', path), `${path}.spawnTick`);
+  tickAt(required(record, 'lifetimeEndsAtTick', path), `${path}.lifetimeEndsAtTick`);
+  nullableTickAt(required(record, 'detonatesAtTick', path), `${path}.detonatesAtTick`);
+  for (const key of ['xMillimeters', 'yMillimeters', 'zMillimeters'] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: -PROTOCOL_LIMITS.maxCoordinateMillimeters,
+      max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+    });
+  }
+  for (const key of [
+    'velocityXMillimetersPerSecond',
+    'velocityYMillimetersPerSecond',
+    'velocityZMillimetersPerSecond',
+  ] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: -PROTOCOL_LIMITS.maxVelocityMillimetersPerSecond,
+      max: PROTOCOL_LIMITS.maxVelocityMillimetersPerSecond,
+    });
+  }
+  numberAt(required(record, 'bounceCount', path), `${path}.bounceCount`, {
+    integer: true,
+    min: 0,
+    max: PROTOCOL_LIMITS.maxSequence,
+  });
+  booleanAt(required(record, 'settled', path), `${path}.settled`);
+  nullableIdAt(required(record, 'attachedPlayerId', path), `${path}.attachedPlayerId`);
+}
+
+function validateCombatSmokeField(value: unknown, path: string): void {
+  const record = recordAt(value, path);
+  exactKeys(record, path, [
+    'fieldId', 'ownerPlayerId', 'ownerTeamId', 'spawnedAtTick', 'expiresAtTick',
+    'xMillimeters', 'yMillimeters', 'zMillimeters', 'radiusMillimeters',
+  ]);
+  idAt(required(record, 'fieldId', path), `${path}.fieldId`);
+  idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+  nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
+  tickAt(required(record, 'spawnedAtTick', path), `${path}.spawnedAtTick`);
+  tickAt(required(record, 'expiresAtTick', path), `${path}.expiresAtTick`);
+  for (const key of ['xMillimeters', 'yMillimeters', 'zMillimeters'] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: -PROTOCOL_LIMITS.maxCoordinateMillimeters,
+      max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+    });
+  }
+  numberAt(required(record, 'radiusMillimeters', path), `${path}.radiusMillimeters`, {
+    integer: true,
+    min: 1,
+    max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+  });
+}
+
 function validateCombatSnapshot(value: unknown, path: string): CombatSnapshotV1 {
   const record = recordAt(value, path);
   exactKeys(record, path, [
     'schemaVersion', 'players', 'projectiles', 'match',
     ...(Object.hasOwn(record, 'weaponProjectiles') ? ['weaponProjectiles'] : []),
+    ...(Object.hasOwn(record, 'abilityProjectiles') ? ['abilityProjectiles'] : []),
+    ...(Object.hasOwn(record, 'smokeFields') ? ['smokeFields'] : []),
   ]);
   if (required(record, 'schemaVersion', path) !== 1) {
     fail('PROTOCOL_INVALID_FIELD_VALUE', `${path}.schemaVersion`, 'Unsupported combat snapshot version.');
@@ -1357,6 +1509,50 @@ function validateCombatSnapshot(value: unknown, path: string): CombatSnapshotV1 
         )
       )),
       `${path}.weaponProjectiles`,
+    );
+  }
+  if (Object.hasOwn(record, 'abilityProjectiles')) {
+    const abilityProjectiles = arrayAt(
+      required(record, 'abilityProjectiles', path),
+      `${path}.abilityProjectiles`,
+      PROTOCOL_LIMITS.maxEntitiesPerSnapshot,
+    );
+    abilityProjectiles.forEach((projectile, index) => validateCombatAbilityProjectile(
+      projectile,
+      `${path}.abilityProjectiles[${index}]`,
+    ));
+    assertUnique(
+      abilityProjectiles.map((projectile, index) => idAt(
+        required(
+          recordAt(projectile, `${path}.abilityProjectiles[${index}]`),
+          'projectileId',
+          `${path}.abilityProjectiles[${index}]`,
+        ),
+        `${path}.abilityProjectiles[${index}].projectileId`,
+      )),
+      `${path}.abilityProjectiles`,
+    );
+  }
+  if (Object.hasOwn(record, 'smokeFields')) {
+    const smokeFields = arrayAt(
+      required(record, 'smokeFields', path),
+      `${path}.smokeFields`,
+      PROTOCOL_LIMITS.maxEntitiesPerSnapshot,
+    );
+    smokeFields.forEach((field, index) => validateCombatSmokeField(
+      field,
+      `${path}.smokeFields[${index}]`,
+    ));
+    assertUnique(
+      smokeFields.map((field, index) => idAt(
+        required(
+          recordAt(field, `${path}.smokeFields[${index}]`),
+          'fieldId',
+          `${path}.smokeFields[${index}]`,
+        ),
+        `${path}.smokeFields[${index}].fieldId`,
+      )),
+      `${path}.smokeFields`,
     );
   }
 
@@ -1599,6 +1795,7 @@ function validateCombatPresentationReliableEvent(
       'impulse_grenade_collision',
       'impulse_grenade_detonated',
       'impulse_grenade_impulse_applied',
+      'throwable_ability_event',
       'teleport_resource_confirmed',
       'teleport_resource_rejected',
     ],
@@ -1967,6 +2164,48 @@ function validateCombatPresentationReliableEvent(
     }
     return record as unknown as CombatPresentationReliableEventV1;
   }
+  if (kind === 'throwable_ability_event') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'phase', 'playerId',
+      'abilityId', 'projectileId', 'targetPlayerId', 'cooldownEndsAtTick',
+      'positionMillimeters', 'areaRadiusMillimeters', 'reason',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    stringAt(required(record, 'phase', path), `${path}.phase`, {
+      allowed: ['activated', 'rejected', 'collision', 'detonated', 'flash_applied'],
+    });
+    idAt(required(record, 'playerId', path), `${path}.playerId`);
+    stringAt(required(record, 'abilityId', path), `${path}.abilityId`, {
+      allowed: [
+        'vertical_impulse_grenade_v1', 'frag_grenade_v1', 'smoke_grenade_v1',
+        'sticky_grenade_v1', 'flash_grenade_v1',
+      ],
+    });
+    nullableIdAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    nullableIdAt(required(record, 'targetPlayerId', path), `${path}.targetPlayerId`);
+    nullableTickAt(required(record, 'cooldownEndsAtTick', path), `${path}.cooldownEndsAtTick`);
+    const position = required(record, 'positionMillimeters', path);
+    if (position !== null) validatePresentationVector(position, `${path}.positionMillimeters`);
+    numberAt(
+      required(record, 'areaRadiusMillimeters', path),
+      `${path}.areaRadiusMillimeters`,
+      {
+        integer: true,
+        min: 1,
+        max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+        nullable: true,
+      },
+    );
+    stringAt(required(record, 'reason', path), `${path}.reason`, {
+      maxBytes: PROTOCOL_LIMITS.maxNoticeBytes,
+      nullable: true,
+    });
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
   if (kind === 'teleport_resource_confirmed') {
     exactKeys(record, path, [
       'schemaVersion', 'kind', 'eventId', 'authorityTick', 'playerId', 'abilityId',
@@ -2096,6 +2335,22 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
         `${path}.presentation.kind`,
         'Impulse Grenade presentation requires its exact reliable projection kind.',
       );
+    }
+    if (presentation.kind === 'throwable_ability_event') {
+      const abilityProjection = {
+        activated: 'projectileSpawned',
+        rejected: 'abilityRejected',
+        collision: 'projectileCollided',
+        detonated: 'projectileDetonated',
+        flash_applied: 'abilityActivated',
+      } as const;
+      if (kind !== abilityProjection[presentation.phase]) {
+        fail(
+          'PROTOCOL_INVALID_FIELD_VALUE',
+          `${path}.presentation.kind`,
+          'Throwable ability presentation requires its exact reliable projection kind.',
+        );
+      }
     }
     if (
       presentation.kind === 'teleport_resource_confirmed'

@@ -28,9 +28,9 @@ export const PROTOCOL_LIMITS = Object.freeze({
   maxHealthValue: 1_000_000,
   maxAuthorityTick: 0xffff_ffff,
   maxSequence: 0xffff_ffff,
-  // Ten intent bits are currently defined by src/sim/commands.ts. Keep this
+  // Eleven intent bits are currently defined by src/sim/commands.ts. Keep this
   // wire ceiling aligned so unsupported bits fail before the sim adapter.
-  maxButtonBits: 0x03ff,
+  maxButtonBits: 0x07ff,
   maxSelectedSlot: 7,
 } as const);
 
@@ -114,7 +114,9 @@ export interface LoadoutRequestMessage extends ProtocolEnvelope {
   readonly primaryWeaponId: string;
   readonly secondaryWeaponId: string | null;
   readonly meleeWeaponId: string;
-  readonly damageAbilityIds: readonly [string, string];
+  readonly damageAbilityIds:
+    | readonly [string, string]
+    | readonly [string, string, string];
   readonly utilityAbilityId: string;
 }
 
@@ -363,6 +365,14 @@ export interface CombatPlayerSnapshotV1 {
   readonly grenadeCooldownEndsAtTick: number;
   readonly acceptedThrowCount: number;
   readonly activeProjectileCount: number;
+  readonly abilityLoadout?: Readonly<{
+    readonly slots: readonly [string, string, string, string];
+    readonly cooldownEndsAtTicks: readonly [number, number, number];
+    readonly currentCharges: readonly [number, number, number];
+    readonly maximumCharges: readonly [number, number, number];
+    readonly acceptedActivationCounts: readonly [number, number, number];
+    readonly flashImpairedUntilTick: number;
+  }>;
 }
 
 export interface CombatWeaponSnapshotV1 {
@@ -423,6 +433,37 @@ export interface CombatWeaponProjectileSnapshotV1 {
   readonly splashRadiusMillimeters: number;
 }
 
+export interface CombatAbilityProjectileSnapshotV1 {
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly ownerTeamId: string | null;
+  readonly abilityId: string;
+  readonly spawnTick: number;
+  readonly lifetimeEndsAtTick: number;
+  readonly detonatesAtTick: number | null;
+  readonly xMillimeters: number;
+  readonly yMillimeters: number;
+  readonly zMillimeters: number;
+  readonly velocityXMillimetersPerSecond: number;
+  readonly velocityYMillimetersPerSecond: number;
+  readonly velocityZMillimetersPerSecond: number;
+  readonly bounceCount: number;
+  readonly settled: boolean;
+  readonly attachedPlayerId: string | null;
+}
+
+export interface CombatSmokeFieldSnapshotV1 {
+  readonly fieldId: string;
+  readonly ownerPlayerId: string;
+  readonly ownerTeamId: string | null;
+  readonly spawnedAtTick: number;
+  readonly expiresAtTick: number;
+  readonly xMillimeters: number;
+  readonly yMillimeters: number;
+  readonly zMillimeters: number;
+  readonly radiusMillimeters: number;
+}
+
 export interface CombatMatchSnapshotV1 {
   readonly phase: 'lobby' | 'warmup' | 'active' | 'postmatch' | 'completed';
   readonly phaseEndsAtTick: number | null;
@@ -448,6 +489,8 @@ export interface CombatSnapshotV1 {
   readonly schemaVersion: 1;
   readonly players: readonly CombatPlayerSnapshotV1[];
   readonly projectiles: readonly CombatProjectileSnapshotV1[];
+  readonly abilityProjectiles?: readonly CombatAbilityProjectileSnapshotV1[];
+  readonly smokeFields?: readonly CombatSmokeFieldSnapshotV1[];
   readonly weaponProjectiles?: readonly CombatWeaponProjectileSnapshotV1[];
   readonly match: CombatMatchSnapshotV1;
 }
@@ -694,6 +737,27 @@ export interface CombatPresentationGrenadeImpulseEventV1 {
   readonly damageHealthPoints: 0;
 }
 
+export interface CombatPresentationThrowableAbilityEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'throwable_ability_event';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly phase: 'activated' | 'rejected' | 'collision' | 'detonated' | 'flash_applied';
+  readonly playerId: string;
+  readonly abilityId:
+    | 'vertical_impulse_grenade_v1'
+    | 'frag_grenade_v1'
+    | 'smoke_grenade_v1'
+    | 'sticky_grenade_v1'
+    | 'flash_grenade_v1';
+  readonly projectileId: string | null;
+  readonly targetPlayerId: string | null;
+  readonly cooldownEndsAtTick: number | null;
+  readonly positionMillimeters: ReconciliationVector3 | null;
+  readonly areaRadiusMillimeters: number | null;
+  readonly reason: string | null;
+}
+
 /**
  * Optional, versioned semantic payload retained alongside the legacy reliable
  * event projection. Legacy events without this field remain valid. When the
@@ -710,6 +774,7 @@ export type CombatPresentationReliableEventV1 =
   | CombatPresentationGrenadeCollisionEventV1
   | CombatPresentationGrenadeDetonationEventV1
   | CombatPresentationGrenadeImpulseEventV1
+  | CombatPresentationThrowableAbilityEventV1
   | CombatPresentationTeleportConfirmedEventV1
   | CombatPresentationTeleportRejectedEventV1;
 

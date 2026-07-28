@@ -85,6 +85,8 @@ export interface ImpulseGrenadeAbilityState {
   readonly phase: ImpulseGrenadeAbilityPhase;
   readonly readyAtTick: number;
   readonly cooldownEndsAtTick: number;
+  readonly currentCharges: number;
+  readonly maximumCharges: 2;
   readonly acceptedThrowCount: number;
   readonly eventNamespace: string;
   readonly lastProcessedAuthorityTick: number;
@@ -535,6 +537,8 @@ export function createImpulseGrenadeAbilityState(
     phase: 'equipping' as const,
     readyAtTick: checkedTickAdd(authorityTick, rules.readyTicks, 'impulse grenade ready tick'),
     cooldownEndsAtTick: authorityTick,
+    currentCharges: 2,
+    maximumCharges: 2 as const,
     acceptedThrowCount: 0,
     eventNamespace: `impulse_grenade.${hashSeed(`${roomSeed}:${playerId}`).toString(16)}.${playerId}`,
     lastProcessedAuthorityTick: authorityTick,
@@ -612,17 +616,24 @@ export function advanceImpulseGrenadeAbility(
   if (state.phase === 'dead' && lifePhase === 'alive') {
     readyAtTick = checkedTickAdd(authorityTick, rules.readyTicks, 'impulse grenade life ready tick');
   }
+  let cooldownEndsAtTick = state.cooldownEndsAtTick;
+  let currentCharges = state.currentCharges;
+  while (currentCharges < state.maximumCharges && authorityTick >= cooldownEndsAtTick) {
+    currentCharges += 1;
+    cooldownEndsAtTick = currentCharges < state.maximumCharges
+      ? checkedTickAdd(cooldownEndsAtTick, rules.cooldownTicks, 'impulse grenade recharge')
+      : authorityTick;
+  }
   let phase: ImpulseGrenadeAbilityPhase = lifePhase === 'dead'
     ? 'dead'
     : authorityTick < readyAtTick
       ? 'equipping'
-      : authorityTick < state.cooldownEndsAtTick
+      : currentCharges <= 0
         ? 'cooldown'
         : 'ready';
   let throwRejection: ImpulseGrenadeThrowRejectionReason | null = null;
   let acceptedThrow: ImpulseGrenadeThrowAcceptedEvent | null = null;
   let acceptedThrowCount = state.acceptedThrowCount;
-  let cooldownEndsAtTick = state.cooldownEndsAtTick;
   if (throwPressed) {
     throwRejection = lifePhase === 'dead'
       ? 'dead'
@@ -630,15 +641,23 @@ export function advanceImpulseGrenadeAbility(
         ? 'not_equipped'
         : phase === 'equipping'
           ? 'equipping'
-          : phase === 'cooldown'
+          : currentCharges <= 0
             ? 'cooldown'
             : activeProjectileCount >= rules.maximumActivePerPlayer
               ? 'active_projectile_limit'
               : null;
     if (throwRejection === null) {
       acceptedThrowCount += 1;
-      cooldownEndsAtTick = checkedTickAdd(authorityTick, rules.cooldownTicks, 'impulse grenade cooldown');
-      phase = 'cooldown';
+      const chargeCountBeforeThrow = currentCharges;
+      currentCharges -= 1;
+      if (chargeCountBeforeThrow === state.maximumCharges) {
+        cooldownEndsAtTick = checkedTickAdd(
+          authorityTick,
+          rules.cooldownTicks,
+          'impulse grenade cooldown',
+        );
+      }
+      phase = currentCharges > 0 ? 'ready' : 'cooldown';
       const projectileId = `${state.eventNamespace}.projectile.${acceptedThrowCount}`;
       acceptedThrow = deepFreeze({
         kind: 'impulse_grenade_throw_accepted' as const,
@@ -659,6 +678,7 @@ export function advanceImpulseGrenadeAbility(
       phase,
       readyAtTick,
       cooldownEndsAtTick,
+      currentCharges,
       acceptedThrowCount,
       lastProcessedAuthorityTick: authorityTick,
       lastProcessedAuthorityInputSequence: inputSequence,

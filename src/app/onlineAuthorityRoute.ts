@@ -1,5 +1,16 @@
 import { hashRulesetContent, requireRuleset } from '../content';
 import { GameSettings } from '../core/GameSettings.js';
+import {
+  authorityLoadoutFromRuleset,
+  createAuthorityLoadoutRequestMessage,
+} from '../authority';
+import {
+  ABILITY_ID,
+  ABILITY_PRESENTATION,
+  type AbilityId,
+  type SelectableAbilityId,
+} from '../abilities/abilityLoadout';
+import { Loadout } from '../core/Loadout.js';
 import { UserAccount } from '../core/UserAccount.js';
 import {
   applyCombatPresentationReliableEvent,
@@ -524,6 +535,42 @@ function renderArena(
     context.arc(x, y, 12, 0, Math.PI * 2);
     context.stroke();
   }
+  for (const field of combat.snapshot?.smokeFields ?? []) {
+    const [x, y] = project({ x: field.xMillimeters, z: field.zMillimeters });
+    const expansionLinear = Math.max(
+      0,
+      Math.min(1, (presentation.estimatedServerTick - field.spawnedAtTick) / 27),
+    );
+    const expansion = expansionLinear * expansionLinear * (3 - 2 * expansionLinear);
+    const fade = Math.max(
+      0,
+      Math.min(1, (field.expiresAtTick - presentation.estimatedServerTick) / 30),
+    );
+    const radius = Math.max(2, field.radiusMillimeters * scale * expansion);
+    const smoke = context.createRadialGradient(x, y, radius * 0.2, x, y, radius);
+    smoke.addColorStop(0, `rgba(154, 178, 184, ${0.5 * fade})`);
+    smoke.addColorStop(0.65, `rgba(93, 117, 124, ${0.28 * fade})`);
+    smoke.addColorStop(1, 'rgba(44, 58, 63, 0)');
+    context.fillStyle = smoke;
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.fill();
+  }
+  for (const projectile of combat.snapshot?.abilityProjectiles ?? []) {
+    const [x, y] = project({ x: projectile.xMillimeters, z: projectile.zMillimeters });
+    const color = projectile.abilityId === 'smoke_grenade_v1'
+      ? '#a6bec3'
+      : projectile.abilityId === 'flash_grenade_v1'
+        ? '#7fe7ff'
+        : projectile.abilityId === 'sticky_grenade_v1' ? '#ff9a69' : '#ff6552';
+    context.fillStyle = color;
+    context.shadowColor = color;
+    context.shadowBlur = 15;
+    context.beginPath();
+    context.arc(x, y, 7, 0, Math.PI * 2);
+    context.fill();
+    context.shadowBlur = 0;
+  }
 
   if (presentation.localAuthoritative !== null) {
     const [x, y] = project(presentation.localAuthoritative);
@@ -701,10 +748,10 @@ async function mountSession(
       'p',
       '',
       inkfallRev4
-        ? 'Use W, A, S, and D to move and steer in air, Shift to sprint, Space to jump, C or Ctrl to crouch and slide, Q and E to turn, Up and Down to aim, F or Mouse 1 to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev4 art cannot become collision.'
+        ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys or mouse to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your three selected abilities, and Q for locked Blink. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev4 art cannot become collision.'
         : inkfallRuntime
-          ? 'Use W, A, S, and D to move and steer in air, Shift to sprint, Space to jump, C or Ctrl to crouch and slide, Q and E to turn, Up and Down to aim, F or Mouse 1 to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
-        : 'Use W, A, S, and D to move and steer in air, Shift to sprint, Space to jump, C or Ctrl to crouch and slide, Q and E to turn, Up and Down to aim, F or Mouse 1 to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. Health, ammo, score, feed, death, respawn, teleport, and resume state come from the authority.',
+          ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your selected abilities, and Q for locked Blink. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, throwable collision, health, score, death, and respawn.'
+        : 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for selected abilities, and Q for locked Blink. Health, ammo, score, feed, death, respawn, ability, and resume state come from the authority.',
     ),
   );
   const room = element('div', 'online-session__room');
@@ -762,8 +809,8 @@ async function mountSession(
     'span',
     '',
     inkfallRev4
-      ? 'CLICK FOR MOUSE LOOK · WASD · 1–6 EQUIP · M1 FIRE · R RELOAD · G GRENADE · T TELEPORT'
-      : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · Q/E turn · F/M1 fire · R reload · G grenade · T teleport',
+      ? 'CLICK FOR MOUSE LOOK · WASD · 1–6 EQUIP · M1/ENTER FIRE · R RELOAD · E/F/Z ABILITIES · Q BLINK'
+      : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · ARROWS aim · M1/ENTER fire · R reload · E/F/Z abilities · Q Blink',
   ));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
@@ -789,6 +836,9 @@ async function mountSession(
   mapStatus.dataset.state = inkfallRev4 ? 'loading' : 'ready';
   const reticle = element('div', 'online-session__reticle');
   reticle.setAttribute('aria-hidden', 'true');
+  const flashOverlay = element('div', 'online-session__flash-overlay');
+  flashOverlay.dataset.active = 'false';
+  flashOverlay.setAttribute('aria-hidden', 'true');
   const weaponRail = element('div', 'online-session__weapon-rail');
   weaponRail.dataset.testid = 'online-weapon-rail';
   const weaponSlotDefinitions = Object.freeze([
@@ -830,6 +880,7 @@ async function mountSession(
   canvasWrap.append(
     canvas,
     ...(inkfallRev4 ? [mapStatus, reticle] : []),
+    flashOverlay,
     feedbackVfx,
     feedbackHud,
     weaponRail,
@@ -919,7 +970,7 @@ async function mountSession(
   const localHealth = metric('Health / life');
   const localAmmo = metric('Selected ammo');
   const localRifle = metric('Selected weapon');
-  const localGrenade = metric('Grenade state');
+  const localGrenade = metric('Ability state');
   localHealth.value.dataset.testid = 'online-local-health';
   localAmmo.value.dataset.testid = 'online-local-ammo';
   localRifle.value.dataset.testid = 'online-local-rifle';
@@ -938,16 +989,22 @@ async function mountSession(
   const crouchButton = element('button', 'online-session__control', 'HOLD CROUCH / SLIDE · C / CTRL');
   crouchButton.type = 'button';
   crouchButton.dataset.testid = 'online-crouch';
-  const fireButton = element('button', 'online-session__control', 'HOLD FIRE · F / MOUSE 1');
+  const fireButton = element('button', 'online-session__control', 'HOLD FIRE · ENTER / MOUSE 1');
   fireButton.type = 'button';
   fireButton.dataset.testid = 'online-fire';
   const reloadButton = element('button', 'online-session__control', 'RELOAD · R');
   reloadButton.type = 'button';
   reloadButton.dataset.testid = 'online-reload';
-  const grenadeButton = element('button', 'online-session__control', 'GRENADE · G');
-  grenadeButton.type = 'button';
-  grenadeButton.dataset.testid = 'online-grenade';
-  const teleportButton = element('button', 'online-session__control', 'TELEPORT · T');
+  const abilityOneButton = element('button', 'online-session__control', 'ABILITY 1 · E');
+  abilityOneButton.type = 'button';
+  abilityOneButton.dataset.testid = 'online-ability-one';
+  const abilityTwoButton = element('button', 'online-session__control', 'ABILITY 2 · F');
+  abilityTwoButton.type = 'button';
+  abilityTwoButton.dataset.testid = 'online-ability-two';
+  const abilityThreeButton = element('button', 'online-session__control', 'ABILITY 3 · Z');
+  abilityThreeButton.type = 'button';
+  abilityThreeButton.dataset.testid = 'online-ability-three';
+  const teleportButton = element('button', 'online-session__control', 'BLINK · Q');
   teleportButton.type = 'button';
   teleportButton.dataset.testid = 'online-teleport';
   controls.append(
@@ -956,7 +1013,9 @@ async function mountSession(
     crouchButton,
     fireButton,
     reloadButton,
-    grenadeButton,
+    abilityOneButton,
+    abilityTwoButton,
+    abilityThreeButton,
     teleportButton,
   );
   const feed = element('div', 'online-session__feed');
@@ -1034,7 +1093,9 @@ async function mountSession(
         crouchButton,
         fireButton,
         reloadButton,
-        grenadeButton,
+        abilityOneButton,
+        abilityTwoButton,
+        abilityThreeButton,
         teleportButton,
         resumeButton,
       ]) button.disabled = true;
@@ -1061,6 +1122,7 @@ async function mountSession(
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
   let selectedWeaponSlot = 0;
+  let loadoutSubmittedForPlayerId: string | null = null;
 
   type FeedbackCue = OnlinePreviewSnapshot['presentation']['lastCue'];
   let combatPresentationAdapter: CombatPresentationAdapterV1 | null = null;
@@ -1290,6 +1352,29 @@ async function mountSession(
           resonance: 1.1,
         });
         feedbackBody(155, 64, 0.09, 0.065);
+      } else if (cue === 'head' || cue === 'head_kill') {
+        feedbackBurst({
+          duration: 0.045,
+          level: cue === 'head_kill' ? 0.24 : 0.19,
+          type: 'highpass',
+          frequency: 5_800,
+          endFrequency: 1_450,
+          resonance: 3.4,
+        });
+        feedbackBurst({
+          delay: 0.032,
+          duration: cue === 'head_kill' ? 0.11 : 0.065,
+          level: cue === 'head_kill' ? 0.15 : 0.09,
+          frequency: 2_450,
+          endFrequency: 620,
+          resonance: 2,
+        });
+        feedbackBody(
+          cue === 'head_kill' ? 132 : 174,
+          46,
+          cue === 'head_kill' ? 0.19 : 0.1,
+          cue === 'head_kill' ? 0.13 : 0.07,
+        );
       } else if (cue === 'shield') {
         feedbackBurst({
           duration: 0.12,
@@ -1470,6 +1555,102 @@ async function mountSession(
     feedbackProofValue.dataset.confirmedIntents = String(presentationConfirmedIntentCount);
     feedbackProofValue.dataset.duplicateEvents = String(metrics?.duplicateAuthorityEvents ?? 0);
   };
+  type ThrowableAbilityPresentation = Extract<
+    NonNullable<ReliableEvent['presentation']>,
+    { readonly kind: 'throwable_ability_event' }
+  >;
+  const playThrowableAbilityCue = (
+    presentation: ThrowableAbilityPresentation,
+  ): void => {
+    presentationAudioCueAttempts += 1;
+    const smokeDetonation = presentation.phase === 'detonated'
+      && presentation.abilityId === ABILITY_ID.smoke;
+    const flashCue = presentation.phase === 'flash_applied'
+      || (
+        presentation.phase === 'detonated'
+        && presentation.abilityId === ABILITY_ID.flash
+      );
+    const launchCue = presentation.abilityId === ABILITY_ID.launch;
+    const adhered = presentation.phase === 'collision' && presentation.reason === 'attached';
+    const cue = presentation.phase === 'activated'
+      ? { durationSeconds: 0.1, filterType: 'bandpass' as const, startFrequencyHz: 1_250, endFrequencyHz: 420, peakGain: 0.045 }
+      : adhered
+        ? { durationSeconds: 0.09, filterType: 'lowpass' as const, startFrequencyHz: 620, endFrequencyHz: 115, peakGain: 0.052 }
+        : presentation.phase === 'collision'
+          ? { durationSeconds: 0.075, filterType: 'lowpass' as const, startFrequencyHz: 520, endFrequencyHz: 140, peakGain: 0.048 }
+          : smokeDetonation
+            ? { durationSeconds: 0.42, filterType: 'bandpass' as const, startFrequencyHz: 1_100, endFrequencyHz: 360, peakGain: 0.045 }
+            : flashCue
+              ? { durationSeconds: 0.19, filterType: 'highpass' as const, startFrequencyHz: 2_700, endFrequencyHz: 6_200, peakGain: 0.055 }
+              : presentation.phase === 'detonated'
+                ? {
+                    durationSeconds: launchCue ? 0.3 : 0.24,
+                    filterType: 'lowpass' as const,
+                    startFrequencyHz: launchCue ? 460 : 380,
+                    endFrequencyHz: 65,
+                    peakGain: launchCue ? 0.085 : 0.072,
+                  }
+                : { durationSeconds: 0.07, filterType: 'bandpass' as const, startFrequencyHz: 260, endFrequencyHz: 120, peakGain: 0.025 };
+    void ensureFeedbackAudio().then(() => {
+      feedbackBurst({
+        duration: cue.durationSeconds,
+        level: Math.min(0.24, cue.peakGain * 2.2),
+        type: cue.filterType,
+        frequency: cue.startFrequencyHz,
+        endFrequency: cue.endFrequencyHz,
+        resonance: adhered ? 2.8 : flashCue ? 1.8 : 0.8,
+      });
+      if (presentation.phase === 'detonated' && !smokeDetonation && !flashCue) {
+        feedbackBody(
+          launchCue ? 112 : 84,
+          24,
+          launchCue ? 0.34 : 0.25,
+          launchCue ? 0.14 : 0.1,
+        );
+      }
+      feedbackHud.dataset.audio = 'played_non_tonal';
+    }).catch(() => {
+      feedbackHud.dataset.audio = 'caption_only';
+    });
+  };
+  const consumeThrowableAbilityEvent = (
+    event: ReliableEvent & {
+      readonly presentation: ThrowableAbilityPresentation;
+    },
+  ): void => {
+    if (
+      event.presentation.phase === 'flash_applied'
+      && event.presentation.targetPlayerId !== client.diagnostics().authority.playerId
+    ) return;
+    const ability = ABILITY_PRESENTATION[event.presentation.abilityId];
+    const phaseCopy = event.presentation.phase === 'activated'
+      ? 'ACCEPTED'
+      : event.presentation.phase === 'rejected'
+        ? 'NOT READY'
+        : event.presentation.phase === 'collision'
+          ? event.presentation.reason === 'attached' ? 'ADHERED' : 'CONTACT'
+          : event.presentation.phase === 'detonated'
+            ? 'DETONATED'
+            : 'FLASHED';
+    feedbackHud.textContent = `${ability.shortName.toUpperCase()} · ${phaseCopy}`;
+    feedbackHud.dataset.cue = `ability_${event.presentation.phase}`;
+    feedbackHud.dataset.authorityEventId = event.presentation.eventId;
+    feedbackHud.dataset.active = 'true';
+    feedbackGlyph.dataset.cue = `ability_${event.presentation.phase}`;
+    feedbackGlyph.dataset.authorityEventId = event.presentation.eventId;
+    feedbackGlyph.dataset.reducedMotion = String(
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    );
+    feedbackGlyph.dataset.active = event.presentation.phase === 'rejected'
+      ? 'false'
+      : 'true';
+    playThrowableAbilityCue(event.presentation);
+    window.clearTimeout(feedbackTimeout);
+    feedbackTimeout = window.setTimeout(() => {
+      feedbackHud.dataset.active = 'false';
+      feedbackGlyph.dataset.active = 'false';
+    }, event.presentation.phase === 'detonated' ? 900 : 620);
+  };
 
   const onlineSnapshot = (): OnlinePreviewSnapshot => {
     const diagnostics = client.diagnostics();
@@ -1573,7 +1754,8 @@ async function mountSession(
     ) >>> 0;
     client.setAxes(axes);
     client.setInputButtons(heldInputButtons);
-    const lookYawDirection = Number(pressedKeys.has('KeyE')) - Number(pressedKeys.has('KeyQ'));
+    const lookYawDirection = Number(pressedKeys.has('ArrowRight'))
+      - Number(pressedKeys.has('ArrowLeft'));
     const lookPitchDirection = Number(pressedKeys.has('ArrowUp'))
       - Number(pressedKeys.has('ArrowDown'));
     client.setLookDeltas(lookYawDirection * 1_500, lookPitchDirection * 1_500);
@@ -1583,7 +1765,9 @@ async function mountSession(
       [crouchButton, INTENT_BUTTON.crouch],
       [fireButton, INTENT_BUTTON.primaryFire],
       [reloadButton, INTENT_BUTTON.reload],
-      [grenadeButton, INTENT_BUTTON.abilityOne],
+      [abilityOneButton, INTENT_BUTTON.abilityOne],
+      [abilityTwoButton, INTENT_BUTTON.abilityTwo],
+      [abilityThreeButton, INTENT_BUTTON.abilityThree],
       [teleportButton, INTENT_BUTTON.utility],
     ] as const) {
       const active = (heldInputButtons & mask) !== 0;
@@ -1707,7 +1891,9 @@ async function mountSession(
   document.addEventListener('mousemove', pointerLook);
   document.addEventListener('pointerlockchange', pointerLockChange);
   reloadButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.reload));
-  grenadeButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityOne));
+  abilityOneButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityOne));
+  abilityTwoButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityTwo));
+  abilityThreeButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityThree));
   teleportButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.utility));
   for (const [slot, button] of weaponSlotButtons.entries()) {
     button.addEventListener('click', () => selectWeaponSlot(slot));
@@ -1729,6 +1915,28 @@ async function mountSession(
   const render = (nowMilliseconds: number): void => {
     const presentation = client.samplePresentation();
     const diagnostics = client.diagnostics();
+    const joinedPlayerId = diagnostics.authority.playerId;
+    if (
+      diagnostics.connection.phase === 'joined'
+      && joinedPlayerId !== null
+      && loadoutSubmittedForPlayerId !== joinedPlayerId
+    ) {
+      const localAbilities = Loadout.getAbilities();
+      const baseLoadout = authorityLoadoutFromRuleset(requireRuleset('revamped_classic', 3));
+      const damageAbilityIds = Object.freeze([
+        localAbilities.slots[1],
+        localAbilities.slots[2],
+        localAbilities.slots[3],
+      ]) as readonly [SelectableAbilityId, SelectableAbilityId, SelectableAbilityId];
+      const submitted = client.requestLoadout(createAuthorityLoadoutRequestMessage({
+        requestId: `loadout.${crypto.randomUUID()}`,
+        loadout: Object.freeze({
+          ...baseLoadout,
+          damageAbilityIds,
+        }),
+      }));
+      if (submitted) loadoutSubmittedForPlayerId = joinedPlayerId;
+    }
     if (presentationStatus !== 'failed') {
       try {
         const combat = diagnostics.combat.snapshot;
@@ -1809,8 +2017,18 @@ async function mountSession(
         }
         if (combatPresentationAdapter !== null) {
           for (const event of diagnostics.combat.recentEvents) {
-            if (event.presentation === undefined) continue;
             if (processedPresentationTransportIds.has(event.id)) continue;
+            if (event.presentation?.kind === 'throwable_ability_event') {
+              consumeThrowableAbilityEvent(event as ReliableEvent & {
+                readonly presentation: Extract<
+                  NonNullable<ReliableEvent['presentation']>,
+                  { readonly kind: 'throwable_ability_event' }
+                >;
+              });
+              processedPresentationTransportIds.add(event.id);
+              continue;
+            }
+            if (event.presentation === undefined) continue;
             const applied = applyCombatPresentationReliableEvent(
               combatPresentationAdapter,
               event,
@@ -1838,6 +2056,26 @@ async function mountSession(
       recentEvents: diagnostics.combat.recentEvents,
       localPlayerId: diagnostics.authority.playerId,
     } as const;
+    const localAbilityState = diagnostics.combat.snapshot?.players.find(
+      ({ playerId }) => playerId === diagnostics.authority.playerId,
+    )?.abilityLoadout;
+    const flashTicksRemaining = localAbilityState === undefined
+      ? 0
+      : Math.max(
+          0,
+          localAbilityState.flashImpairedUntilTick - diagnostics.authority.serverTick,
+        );
+    const reduceFlash = body.dataset.reducedFlash === 'true'
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    flashOverlay.dataset.active = String(flashTicksRemaining > 0);
+    flashOverlay.style.opacity = flashTicksRemaining <= 0
+      ? '0'
+      : String(
+          Math.min(
+            reduceFlash ? 0.32 : 0.78,
+            (reduceFlash ? 0.32 : 0.78) * Math.min(1, flashTicksRemaining / 12),
+          ),
+        );
     if (threeRuntime !== null) {
       try {
         const velocity = diagnostics.local.predictedVelocity;
@@ -1941,7 +2179,62 @@ async function mountSession(
         : `${selectedWeapon.family.toUpperCase()} · ${selectedWeapon.phase.toUpperCase()}`;
       localGrenade.value.textContent = localPlayer === undefined
         ? 'WAITING'
-        : `${localPlayer.grenadePhase} · ${localPlayer.activeProjectileCount} ACTIVE`;
+        : localPlayer.abilityLoadout === undefined
+          ? `${localPlayer.grenadePhase} · ${localPlayer.activeProjectileCount} ACTIVE`
+          : localPlayer.abilityLoadout.slots.slice(1).map((abilityId, index) => {
+              const ability = ABILITY_PRESENTATION[abilityId as AbilityId];
+               const readyIn = Math.max(
+                 0,
+                 localPlayer.abilityLoadout!.cooldownEndsAtTicks[index]
+                   - diagnostics.authority.serverTick,
+               );
+               const charges = localPlayer.abilityLoadout!.currentCharges[index];
+               const maximum = localPlayer.abilityLoadout!.maximumCharges[index];
+               return `${ability.shortName} ${charges}/${maximum}${
+                 charges < maximum && readyIn > 0 ? ` · +1 ${readyIn}T` : ''
+               }`;
+            }).join(' · ');
+      const selectedAbilities = localPlayer?.abilityLoadout?.slots.slice(1) ?? [];
+      for (const [index, button, inputLabel] of [
+        [0, abilityOneButton, 'E'],
+        [1, abilityTwoButton, 'F'],
+        [2, abilityThreeButton, 'Z'],
+      ] as const) {
+        const abilityId = selectedAbilities[index] as AbilityId | undefined;
+        const ability = abilityId === undefined ? null : ABILITY_PRESENTATION[abilityId];
+         const readyIn = localPlayer?.abilityLoadout === undefined
+           ? 0
+          : Math.max(
+              0,
+              localPlayer.abilityLoadout.cooldownEndsAtTicks[index]
+                 - diagnostics.authority.serverTick,
+             );
+         const charges = localPlayer?.abilityLoadout?.currentCharges[index] ?? 0;
+         const maximumCharges = localPlayer?.abilityLoadout?.maximumCharges[index] ?? 0;
+         const ready = charges > 0;
+         button.textContent = ability === null
+           ? `ABILITY ${index + 1} · ${inputLabel}`
+           : `${ability.shortName.toUpperCase()} · ${inputLabel} · ${charges}/${maximumCharges}${
+               charges < maximumCharges && readyIn > 0 ? ` · +1 ${readyIn}T` : ''
+             }`;
+        button.setAttribute(
+          'aria-label',
+          ability === null
+            ? `Ability slot ${index + 1}, key ${inputLabel}`
+             : `${ability.displayName}, key ${inputLabel}, ${charges} of ${maximumCharges} charges${
+                 charges < maximumCharges && readyIn > 0
+                   ? `, next charge in ${readyIn} ticks`
+                   : ''
+               }`,
+         );
+         button.dataset.ready = String(ready);
+      }
+      const blinkReadyIn = Math.max(
+        0,
+        diagnostics.local.teleportCooldownTicksRemaining ?? 0,
+      );
+      teleportButton.textContent = `BLINK · Q${blinkReadyIn === 0 ? '' : ` · ${blinkReadyIn}T`}`;
+      teleportButton.dataset.ready = String(blinkReadyIn === 0);
       const playerLabel = (playerId: string | null): string => {
         if (playerId === null) return 'AUTHORITY';
         if (playerId === diagnostics.authority.playerId) return 'YOU';

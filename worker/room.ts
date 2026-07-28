@@ -64,8 +64,6 @@ import {
 } from './combatRuntime';
 import { initializeWorkerRapierRuntime } from './rapierRuntime';
 import {
-  INTERNAL_METRICS_ACCESS_DIGEST_HEADER,
-  INTERNAL_METRICS_ACCESS_EXPIRY_HEADER,
   METRICS_ACCESS_CREDENTIAL_HEADER,
   digestMetricsAccessCredential,
   equalMetricsAccessDigests,
@@ -204,6 +202,11 @@ interface LoadoutRequestLedgerRow {
   readonly [column: string]: string | number | ArrayBuffer | null;
   readonly request_fingerprint: string;
   readonly outcome_code: string;
+}
+
+interface PlayerLoadoutRow {
+  readonly [column: string]: string | number | ArrayBuffer | null;
+  readonly selection_json: string;
 }
 
 interface ActiveMatchCheckpointRow {
@@ -2317,6 +2320,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.markRecoveryState('expired');
         throw new Error(`AUTHORITY_LOBBY_CHECKPOINT_PLAYER_REJECTED:${row.player_id}`);
       }
+      this.applyPersistedPlayerLoadout(row.player_id);
       if (!this.playerEventAcknowledgements.has(row.player_id)) {
         this.markRecoveryState('expired');
         throw new Error(`AUTHORITY_LOBBY_CHECKPOINT_ACK_MISSING:${row.player_id}`);
@@ -2726,6 +2730,36 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     return this.reliableEvents.latestId;
   }
 
+  private applyPersistedPlayerLoadout(playerId: string): void {
+    const row = [...this.ctx.storage.sql.exec<PlayerLoadoutRow>(
+      `SELECT selection_json
+       FROM room_player_loadouts_v1
+       WHERE player_id = ?
+       LIMIT 1`,
+      playerId,
+    )][0] ?? null;
+    if (row === null) return;
+    let selection: AuthorityLoadoutSelectionV1;
+    try {
+      selection = JSON.parse(row.selection_json) as AuthorityLoadoutSelectionV1;
+    } catch {
+      throw new Error('PERSISTED_LOADOUT_JSON_INVALID');
+    }
+    const authoritative = this.requireAuthoritativeLoadout();
+    if (
+      selection === null
+      || typeof selection !== 'object'
+      || selection.schemaVersion !== 1
+      || selection.rulesetId !== authoritative.rulesetId
+      || selection.rulesetRevision !== authoritative.rulesetRevision
+      || !Array.isArray(selection.damageAbilityIds)
+      || selection.damageAbilityIds.length !== 3
+    ) {
+      throw new Error('PERSISTED_LOADOUT_SELECTION_INVALID');
+    }
+    this.requireAuthority().setPlayerAbilityLoadout(playerId, selection.damageAbilityIds);
+  }
+
   private loadoutRequestLedgerEntry(
     playerId: string,
     requestId: string,
@@ -2825,6 +2859,21 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       }
       this.transportMetrics.loadoutRequestsReplayed += 1;
       if (prior.outcome_code === LOADOUT_ACCEPTED_OUTCOME) {
+        if (
+          this.requireAuthority().lifecycle === 'lobby'
+          || this.requireAuthority().lifecycle === 'warmup'
+        ) {
+          try {
+            this.applyPersistedPlayerLoadout(attachment.playerId);
+          } catch {
+            safeSocketSend(webSocket, errorMessage(
+              'LOADOUT_STATE_UNAVAILABLE',
+              null,
+              request.requestId,
+            ));
+            return;
+          }
+        }
         this.sendLoadoutAcceptedNotice(webSocket, request.requestId);
       } else {
         safeSocketSend(webSocket, errorMessage(
@@ -2850,6 +2899,12 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         outcomeCode: decision.accepted ? LOADOUT_ACCEPTED_OUTCOME : decision.reason,
         acceptedLoadout: decision.loadout,
       });
+      if (decision.accepted) {
+        authority.setPlayerAbilityLoadout(
+          attachment.playerId,
+          decision.loadout.damageAbilityIds,
+        );
+      }
     } catch {
       safeSocketSend(webSocket, errorMessage(
         'LOADOUT_STATE_UNAVAILABLE',

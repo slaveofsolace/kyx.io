@@ -144,9 +144,11 @@ export interface AuthorityAbilityResourceSnapshotV1 {
     readonly phase: ImpulseGrenadeAbilityPhase;
     readonly readyTicksRemaining: number;
     readonly cooldownTicksRemaining: number;
+    readonly currentCharges: number;
+    readonly maximumCharges: 2;
     readonly activeProjectileCount: number;
     readonly maximumActiveProjectileCount: 2;
-    readonly resourcePolicy: 'cooldown_only';
+    readonly resourcePolicy: 'two_charges_sequential_recharge';
   }>;
   readonly damageAbilityTwo: Readonly<{
     readonly abilityId: typeof G4_DEPLOYABLE_ABILITY_ID;
@@ -331,7 +333,8 @@ function validateImpulseGrenadeState(
   const state = record(value, 'impulse grenade resource state');
   exactKeys(state, [
     'schemaVersion', 'playerId', 'abilityId', 'phase', 'readyAtTick',
-    'cooldownEndsAtTick', 'acceptedThrowCount', 'eventNamespace',
+    'cooldownEndsAtTick', 'currentCharges', 'maximumCharges',
+    'acceptedThrowCount', 'eventNamespace',
     'lastProcessedAuthorityTick', 'lastProcessedAuthorityInputSequence',
   ], 'impulse grenade resource state');
   literal(state.schemaVersion, 1, 'impulse grenade resource schema');
@@ -344,6 +347,21 @@ function validateImpulseGrenadeState(
   stableId(state.eventNamespace, 'impulse grenade resource namespace');
   integer(state.readyAtTick, 0, MAX_AUTHORITY_TICK, 'impulse grenade ready tick');
   integer(state.cooldownEndsAtTick, 0, MAX_AUTHORITY_TICK, 'impulse grenade cooldown tick');
+  const currentCharges = integer(
+    state.currentCharges,
+    0,
+    2,
+    'impulse grenade current charges',
+  );
+  const maximumCharges = integer(
+    state.maximumCharges,
+    2,
+    2,
+    'impulse grenade maximum charges',
+  );
+  if (currentCharges > maximumCharges) {
+    throw new RangeError('impulse grenade current charges exceed maximum charges');
+  }
   integer(state.acceptedThrowCount, 0, 1_000_000, 'impulse grenade throw count');
   const lastTick = integer(
     state.lastProcessedAuthorityTick,
@@ -453,9 +471,11 @@ export function deriveAuthorityAbilityResources(
       phase: dead ? 'dead' : impulseGrenade.phase,
       readyTicksRemaining: grenadeReadyTicksRemaining,
       cooldownTicksRemaining: grenadeCooldownTicksRemaining,
+      currentCharges: impulseGrenade.currentCharges,
+      maximumCharges: impulseGrenade.maximumCharges,
       activeProjectileCount: activeImpulseGrenadeCount,
       maximumActiveProjectileCount: G4_IMPULSE_GRENADE_RULES.maximumActivePerPlayer,
-      resourcePolicy: 'cooldown_only' as const,
+      resourcePolicy: 'two_charges_sequential_recharge' as const,
     },
     damageAbilityTwo: {
       abilityId: rules.damageAbilityTwoId,

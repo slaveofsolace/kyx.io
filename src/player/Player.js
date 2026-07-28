@@ -69,6 +69,31 @@ export class Player {
     this.teleportMaxCooldown = TELEPORT_COOLDOWN;
     this.onTeleport = null; // (fromPos, toPos) => void
     this.onTeleportUnavailable = null; // (remainingSeconds) => void
+    this.onTeleportInvalid = null; // (reason: string) => void
+    this.flashImpairment = 0;
+    this.flashImpairmentSeconds = 0;
+    this._blinkTargeting = false;
+    this._blinkPreview = {
+      schemaVersion: 1,
+      active: false,
+      valid: false,
+      blocked: false,
+      reason: 'inactive',
+      maximumRange: TELEPORT_RANGE,
+      distance: 0,
+      origin: new THREE.Vector3(),
+      destination: new THREE.Vector3(),
+      surfaceNormal: new THREE.Vector3(0, 1, 0),
+      yaw: this.yaw,
+    };
+    this._blinkRaycaster = new THREE.Raycaster();
+    this._blinkGroundRaycaster = new THREE.Raycaster();
+    this._blinkCameraPosition = new THREE.Vector3();
+    this._blinkCameraDirection = new THREE.Vector3();
+    this._blinkCandidate = new THREE.Vector3();
+    this._blinkResolved = new THREE.Vector3();
+    this._blinkGroundOrigin = new THREE.Vector3();
+    this._blinkDownDirection = new THREE.Vector3(0, -1, 0);
 
     // Sound state
     this._wasOnGround = true;
@@ -99,6 +124,121 @@ export class Player {
     this._shieldRegenDelay = 0;
   }
 
+  getBlinkPreview() {
+    return this._blinkPreview;
+  }
+
+  cancelBlinkPreview(reason = 'cancelled') {
+    this._blinkTargeting = false;
+    this._blinkPreview.active = false;
+    this._blinkPreview.valid = false;
+    this._blinkPreview.reason = reason;
+  }
+
+  applyFlash(durationSeconds, intensity = 1) {
+    const boundedIntensity = THREE.MathUtils.clamp(
+      Number.isFinite(intensity) ? intensity : 0,
+      0,
+      1,
+    );
+    const boundedDuration = THREE.MathUtils.clamp(
+      Number.isFinite(durationSeconds) ? durationSeconds : 0,
+      0,
+      3,
+    );
+    this.flashImpairment = Math.max(this.flashImpairment, boundedIntensity);
+    this.flashImpairmentSeconds = Math.max(this.flashImpairmentSeconds, boundedDuration);
+  }
+
+  _isBlinkDestinationClear(world, position) {
+    const feetY = position.y + 0.035;
+    const headY = position.y + EYE_HEIGHT + 0.18;
+    for (const collider of world?.colliders || []) {
+      const box = collider?.box;
+      if (!box) continue;
+      if (headY <= box.min.y || feetY >= box.max.y) continue;
+      const closestX = THREE.MathUtils.clamp(position.x, box.min.x, box.max.x);
+      const closestZ = THREE.MathUtils.clamp(position.z, box.min.z, box.max.z);
+      const dx = position.x - closestX;
+      const dz = position.z - closestZ;
+      if (dx * dx + dz * dz < (RADIUS + 0.035) ** 2) return false;
+    }
+    return true;
+  }
+
+  _updateBlinkPreview(world) {
+    this.camera.getWorldPosition(this._blinkCameraPosition);
+    this.camera.getWorldDirection(this._blinkCameraDirection);
+    const meshes = (world?.colliders || []).map((collider) => collider.mesh).filter(Boolean);
+
+    this._blinkRaycaster.set(this._blinkCameraPosition, this._blinkCameraDirection);
+    this._blinkRaycaster.near = 0.1;
+    this._blinkRaycaster.far = TELEPORT_RANGE;
+    const forwardHit = meshes.length > 0
+      ? this._blinkRaycaster.intersectObjects(meshes, true)[0]
+      : null;
+    const safeDistance = forwardHit
+      ? Math.max(0.1, forwardHit.distance - RADIUS - 0.35)
+      : TELEPORT_RANGE;
+
+    this._blinkCandidate
+      .copy(this._blinkCameraPosition)
+      .addScaledVector(this._blinkCameraDirection, safeDistance);
+    this._blinkCandidate.y -= EYE_HEIGHT;
+
+    this._blinkGroundOrigin.copy(this._blinkCandidate);
+    this._blinkGroundOrigin.y += 4;
+    this._blinkGroundRaycaster.set(this._blinkGroundOrigin, this._blinkDownDirection);
+    this._blinkGroundRaycaster.near = 0;
+    this._blinkGroundRaycaster.far = 12;
+    const groundHit = meshes.length > 0
+      ? this._blinkGroundRaycaster.intersectObjects(meshes, true)
+        .find((hit) => {
+          const normal = hit.face?.normal?.clone();
+          if (!normal) return true;
+          normal.transformDirection(hit.object.matrixWorld);
+          return normal.y >= 0.45;
+        })
+      : null;
+    if (groundHit) {
+      this._blinkCandidate.y = groundHit.point.y + 0.025;
+    } else {
+      this._blinkCandidate.y = Math.max(0, this._blinkCandidate.y);
+    }
+
+    this._blinkResolved.copy(this._blinkCandidate);
+    world?.resolveCollisions?.(this._blinkResolved, RADIUS);
+    const correctionDistance = this._blinkResolved.distanceTo(this._blinkCandidate);
+    const travelDistance = this.position.distanceTo(this._blinkResolved);
+    const hasSupport = groundHit !== null || this._blinkResolved.y <= 0.05;
+    const hasCapsuleClearance = this._isBlinkDestinationClear(world, this._blinkResolved);
+    const valid = safeDistance >= 0.65
+      && travelDistance <= TELEPORT_RANGE + 0.25
+      && correctionDistance <= 0.8
+      && hasSupport
+      && hasCapsuleClearance;
+
+    this._blinkPreview.schemaVersion = 1;
+    this._blinkPreview.active = true;
+    this._blinkPreview.valid = valid;
+    this._blinkPreview.blocked = forwardHit !== null || correctionDistance > 0.05;
+    this._blinkPreview.reason = valid
+      ? (forwardHit ? 'collision_clamped' : 'range_clamped')
+      : 'destination_blocked';
+    this._blinkPreview.maximumRange = TELEPORT_RANGE;
+    this._blinkPreview.distance = travelDistance;
+    this._blinkPreview.origin.copy(this._blinkCameraPosition);
+    this._blinkPreview.destination.copy(this._blinkResolved);
+    this._blinkPreview.surfaceNormal.set(0, 1, 0);
+    if (groundHit?.face?.normal) {
+      this._blinkPreview.surfaceNormal
+        .copy(groundHit.face.normal)
+        .transformDirection(groundHit.object.matrixWorld);
+    }
+    this._blinkPreview.yaw = this.yaw;
+    return this._blinkPreview;
+  }
+
   respawn(position) {
     this.health   = this.maxHealth;
     this.stamina  = this.maxStamina;
@@ -107,6 +247,9 @@ export class Player {
     this._shieldRegenDelay  = 0;
     this.position.copy(position);
     this.velocity.set(0, 0, 0);
+    this.flashImpairment = 0;
+    this.flashImpairmentSeconds = 0;
+    this.cancelBlinkPreview('respawn');
     this.resetDrivenPresentation();
   }
 
@@ -145,6 +288,10 @@ export class Player {
   }
 
   update(dt, input, world) {
+    if (this.flashImpairmentSeconds > 0) {
+      this.flashImpairmentSeconds = Math.max(0, this.flashImpairmentSeconds - dt);
+      if (this.flashImpairmentSeconds === 0) this.flashImpairment = 0;
+    }
     // --- third-person camera zoom (scroll wheel) ---
     if (input.wheelDelta !== 0) {
       this._camDist = THREE.MathUtils.clamp(this._camDist + input.wheelDelta * 0.9, 0, 6.0);
@@ -249,38 +396,35 @@ export class Player {
     const targetEye = (this.isSliding || this.isCrouching) ? CROUCH_HEIGHT : EYE_HEIGHT;
     this._eyeHeight += (targetEye - this._eyeHeight) * Math.min(1, dt * 16);
 
-    // --- teleport blink (Q key) ---
+    // --- Blink targeting: hold Q to preview, release Q to commit. ---
     if (this.teleportCooldown > 0) this.teleportCooldown = Math.max(0, this.teleportCooldown - dt);
-    const teleportRequested = input.consumeJustPressed('KeyQ');
-    if (teleportRequested && this.teleportCooldown > 0) {
+    const blinkPressed = input.consumeJustPressed('KeyQ');
+    if (blinkPressed && this.teleportCooldown > 0) {
+      this.cancelBlinkPreview('cooldown');
       this.onTeleportUnavailable?.(this.teleportCooldown);
-    } else if (teleportRequested) {
-      const camPos = new THREE.Vector3();
-      this.camera.getWorldPosition(camPos);
-      const camDir = new THREE.Vector3();
-      this.camera.getWorldDirection(camDir);
-
-      const raycaster = new THREE.Raycaster(camPos, camDir, 0.1, TELEPORT_RANGE);
-      const meshes = world.colliders.map((c) => c.mesh).filter(Boolean);
-      const hits = raycaster.intersectObjects(meshes, true);
-
-      let destEye;
-      if (hits.length > 0) {
-        const safeDist = Math.max(0.1, hits[0].distance - 0.9);
-        destEye = camPos.clone().addScaledVector(camDir, safeDist);
-      } else {
-        destEye = camPos.clone().addScaledVector(camDir, TELEPORT_RANGE);
+    } else if (blinkPressed) {
+      this._blinkTargeting = true;
+      this._updateBlinkPreview(world);
+    }
+    if (this._blinkTargeting) {
+      this._updateBlinkPreview(world);
+      if (input.consumeJustReleased?.('KeyQ')) {
+        const preview = this._blinkPreview;
+        if (!preview.valid) {
+          this.cancelBlinkPreview('destination_blocked');
+          this.onTeleportInvalid?.(preview.reason);
+        } else {
+          const fromPos = this.position.clone();
+          this.position.copy(preview.destination);
+          this.velocity.set(0, 0, 0);
+          this.onGround = false;
+          this.teleportCooldown = TELEPORT_COOLDOWN;
+          this.cancelBlinkPreview('committed');
+          this.onTeleport?.(fromPos, this.position.clone());
+        }
       }
-      // Eye → foot position, clamped to ground
-      destEye.y -= EYE_HEIGHT;
-      destEye.y = Math.max(0, destEye.y);
-
-      const fromPos = this.position.clone();
-      this.position.copy(destEye);
-      this.velocity.set(0, 0, 0);
-      this.onGround = false;
-      this.teleportCooldown = TELEPORT_COOLDOWN;
-      this.onTeleport?.(fromPos, this.position.clone());
+    } else {
+      this._blinkPreview.active = false;
     }
 
     // --- coyote time (forgives jumps just after walking off a ledge) ---

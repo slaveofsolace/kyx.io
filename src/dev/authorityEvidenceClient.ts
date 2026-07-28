@@ -27,6 +27,7 @@ import {
   type DeltaSnapshotMessage,
   type ErrorMessage,
   type FullSnapshotMessage,
+  type LoadoutRequestMessage,
   type MatchPhase,
   type ReliableEvent,
   type ServerMessage,
@@ -555,6 +556,15 @@ export class AuthorityEvidenceClient {
     }
     this.selectedWeaponSlot = slot;
     this.emitChange();
+    return true;
+  }
+
+  requestLoadout(message: LoadoutRequestMessage): boolean {
+    if (
+      this.phase !== 'joined'
+      || this.connection?.state() !== 'open'
+    ) return false;
+    this.send(message);
     return true;
   }
 

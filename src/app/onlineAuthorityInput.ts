@@ -6,10 +6,12 @@ function buttonForCode(code: string): number {
   if (code === 'KeyC' || code === 'ControlLeft' || code === 'ControlRight') {
     return INTENT_BUTTON.crouch;
   }
-  if (code === 'KeyF') return INTENT_BUTTON.primaryFire;
   if (code === 'KeyR') return INTENT_BUTTON.reload;
-  if (code === 'KeyG') return INTENT_BUTTON.abilityOne;
-  if (code === 'KeyT') return INTENT_BUTTON.utility;
+  if (code === 'Enter' || code === 'NumpadEnter') return INTENT_BUTTON.primaryFire;
+  if (code === 'KeyE') return INTENT_BUTTON.abilityOne;
+  if (code === 'KeyF') return INTENT_BUTTON.abilityTwo;
+  if (code === 'KeyZ') return INTENT_BUTTON.abilityThree;
+  if (code === 'KeyQ') return INTENT_BUTTON.utility;
   return 0;
 }
 
@@ -19,8 +21,8 @@ export function isOnlineAuthorityInputCode(code: string): boolean {
     'KeyA',
     'KeyS',
     'KeyD',
-    'KeyQ',
-    'KeyE',
+    'ArrowLeft',
+    'ArrowRight',
     'ArrowUp',
     'ArrowDown',
     'Digit1',

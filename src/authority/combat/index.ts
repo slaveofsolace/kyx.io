@@ -4,6 +4,7 @@ export * from './impulseGrenade';
 export * from './inkfallRapierCombatWorld';
 export * from './life';
 export * from './loadoutRequest';
+export * from './abilityLoadoutRuntime';
 export * from './poseHistory';
 export * from './rewindHitscan';
 export * from './tdmMatch';

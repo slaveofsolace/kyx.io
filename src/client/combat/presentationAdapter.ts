@@ -1269,7 +1269,8 @@ function parseAuthorityFrame(value: unknown): ParsedAuthorityFrameV1 {
   allowedKeys(item, [
     'serverTick', 'lifecycle', 'lifecycleTransitions', 'movementEvents', 'queryMetrics',
     'prunedPlayerIds', 'combatEvents', 'hitscanResults', 'impulseGrenadeEvents',
-    'impulseGrenadeResults', 'abilityResourceEvents', 'matchEvents',
+    'impulseGrenadeResults', 'weaponAttackResults', 'weaponProjectileResults',
+    'abilityLoadoutEvents', 'abilityEffectResults', 'abilityResourceEvents', 'matchEvents',
   ], 'authority presentation frame');
   requireKeys(item, ['serverTick', 'lifecycle'], 'authority presentation frame');
   const serverTick = integer(item.serverTick, 0, MAX_AUTHORITY_TICK, 'authority frame tick');
@@ -1281,6 +1282,10 @@ function parseAuthorityFrame(value: unknown): ParsedAuthorityFrameV1 {
   for (const event of array(item.abilityResourceEvents ?? [], 512, 'ability resource events')) {
     parsed.push(parseTeleportEvent(event));
   }
+  array(item.weaponAttackResults ?? [], 512, 'weapon attack results');
+  array(item.weaponProjectileResults ?? [], 2_048, 'weapon projectile results');
+  array(item.abilityLoadoutEvents ?? [], 2_048, 'ability loadout events');
+  array(item.abilityEffectResults ?? [], 2_048, 'ability effect results');
   for (const event of array(item.matchEvents ?? [], 2_048, 'match events')) parsed.push(parseMatchEvent(event));
   for (const event of parsed) {
     if (event.authorityTick > serverTick) {
@@ -1556,7 +1561,7 @@ function parseGrenadeSnapshot(value: unknown): {
   const item = dataRecord(value, 'impulse grenade snapshot');
   exactKeys(item, [
     'schemaVersion', 'playerId', 'abilityId', 'phase', 'readyAtTick', 'cooldownEndsAtTick',
-    'acceptedThrowCount', 'eventNamespace', 'lastProcessedAuthorityTick',
+    'currentCharges', 'maximumCharges', 'acceptedThrowCount', 'eventNamespace', 'lastProcessedAuthorityTick',
     'lastProcessedAuthorityInputSequence',
   ], 'impulse grenade snapshot');
   literal(item.schemaVersion, 1, 'impulse grenade schema');
@@ -1565,6 +1570,8 @@ function parseGrenadeSnapshot(value: unknown): {
   stringValue(item.phase, 'impulse grenade phase');
   integer(item.readyAtTick, 0, MAX_AUTHORITY_TICK, 'impulse grenade ready tick');
   integer(item.cooldownEndsAtTick, 0, MAX_AUTHORITY_TICK, 'impulse grenade cooldown end');
+  integer(item.currentCharges, 0, 2, 'impulse grenade current charges');
+  literal(item.maximumCharges, 2, 'impulse grenade maximum charges');
   return Object.freeze({
     eventNamespace: stableId(item.eventNamespace, 'impulse grenade event namespace'),
     acceptedThrowCount: integer(item.acceptedThrowCount, 0, 1_000_000, 'accepted throw count'),
@@ -1605,7 +1612,8 @@ function parseAbilityResources(
   ], 'primary weapon resources');
   exactKeys(grenade, [
     'abilityId', 'phase', 'readyTicksRemaining', 'cooldownTicksRemaining',
-    'activeProjectileCount', 'maximumActiveProjectileCount', 'resourcePolicy',
+    'currentCharges', 'maximumCharges', 'activeProjectileCount',
+    'maximumActiveProjectileCount', 'resourcePolicy',
   ], 'grenade resources');
   exactKeys(deployable, ['abilityId', 'status'], 'deployable resources');
   exactKeys(teleport, [
@@ -1628,6 +1636,21 @@ function parseAbilityResources(
   integer(primaryWeapon.nextShotAtTick, 0, MAX_AUTHORITY_TICK, 'resource next shot tick');
   optionalInteger(primaryWeapon.reloadCompletesAtTick, 0, MAX_AUTHORITY_TICK, 'resource reload end');
   integer(grenade.readyTicksRemaining, 0, 100_000, 'grenade ready ticks');
+  const grenadeCurrentCharges = integer(
+    grenade.currentCharges,
+    0,
+    2,
+    'grenade current charges',
+  );
+  const grenadeMaximumCharges = integer(
+    grenade.maximumCharges,
+    2,
+    2,
+    'grenade maximum charges',
+  );
+  if (grenadeCurrentCharges > grenadeMaximumCharges) {
+    throw new RangeError('grenade current charges exceed maximum charges');
+  }
   integer(grenade.maximumActiveProjectileCount, 0, 1_000, 'maximum grenade projectiles');
   stringValue(grenade.resourcePolicy, 'grenade resource policy');
   stableId(deployable.abilityId, 'deployable ability id');
@@ -1935,7 +1958,8 @@ function parseSnapshot(value: unknown, localPlayerId: string): ParsedSnapshotV1 
   const item = dataRecord(value, 'authority full snapshot');
   allowedKeys(item, [
     'kind', 'identity', 'serverTick', 'lifecycle', 'phaseEndsAtTick', 'players',
-    'impulseGrenadeProjectiles', 'weaponProjectiles', 'match',
+    'impulseGrenadeProjectiles', 'abilityProjectiles', 'abilitySmokeFields',
+    'smokeFields', 'weaponProjectiles', 'match',
   ], 'authority full snapshot');
   requireKeys(
     item,
@@ -1974,7 +1998,10 @@ function parseSnapshot(value: unknown, localPlayerId: string): ParsedSnapshotV1 
     const combat = dataRecord(player.combat, 'player combat snapshot');
     allowedKeys(
       combat,
-      ['life', 'autoRifle', 'armory', 'impulseGrenade', 'abilityResources'],
+      [
+        'life', 'autoRifle', 'armory', 'impulseGrenade', 'abilityResources',
+        'abilityLoadout', 'flashImpairedUntilTick',
+      ],
       'player combat snapshot',
     );
     requireKeys(combat, ['life', 'autoRifle'], 'player combat snapshot');

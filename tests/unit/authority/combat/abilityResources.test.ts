@@ -156,11 +156,13 @@ describe('P5.5 authoritative equip, cooldown, and resource policy', () => {
       impulseGrenade: thrown.state,
       activeImpulseGrenadeCount: 2,
     }).damageAbilityOne).toMatchObject({
-      phase: 'cooldown',
+      phase: 'ready',
       cooldownTicksRemaining: 240,
+      currentCharges: 1,
+      maximumCharges: 2,
       activeProjectileCount: 2,
       maximumActiveProjectileCount: 2,
-      resourcePolicy: 'cooldown_only',
+      resourcePolicy: 'two_charges_sequential_recharge',
     });
     expect(() => resources({ activeImpulseGrenadeCount: 3 })).toThrow(
       /active impulse grenade count/u,
