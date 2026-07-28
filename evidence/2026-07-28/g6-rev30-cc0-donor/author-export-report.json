@@ -1,0 +1,843 @@
+{
+  "candidate": "g6-rev30-cc0-donor",
+  "sourceMaster": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/kyx-v6c-character-rev17-master.blend",
+  "masterBlend": {
+    "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/kyx-v6c-character-rev30-cc0-donor-master.blend",
+    "bytes": 19171492,
+    "sha256": "ebfc91e9918a1d48fa1dd6330387debdf2f4c1aa0d08fbcf743071023a5f0a2a"
+  },
+  "runtimeGlb": {
+    "path": "public/candidates/g6-rev30-cc0-donor/character-lod0.glb",
+    "sha256": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
+    "bytes": 15025320,
+    "nodes": 71,
+    "meshes": 4,
+    "primitives": 9,
+    "materials": 6,
+    "textures": 9,
+    "skins": 1,
+    "joints": 66,
+    "animations": [
+      "KYX_REV17_TP_IDLE",
+      "KYX_REV17_TP_WALK",
+      "KYX_REV17_TP_RUN",
+      "KYX_REV17_TP_JUMP_START",
+      "KYX_REV17_TP_AIRBORNE_LOOP",
+      "KYX_REV17_TP_LAND",
+      "KYX_REV17_TP_PRIMARY_FIRE",
+      "KYX_REV17_TP_RELOAD",
+      "KYX_REV17_TP_HIT_REACTION_FRONT",
+      "KYX_REV17_TP_DEATH_FRONT",
+      "KYX_REV17_FP_IDLE",
+      "KYX_REV17_FP_FIRE",
+      "KYX_REV17_FP_RELOAD",
+      "KYX_REV17_FP_SPRINT",
+      "KYX_REV17_FP_AIRBORNE",
+      "KYX_REV17_FP_LAND"
+    ]
+  },
+  "donorProvenance": {
+    "sourceUrl": "https://opengameart.org/content/sci-fi-soldier",
+    "author": "Irondust",
+    "license": "CC0-1.0",
+    "archiveBytes": 59609012,
+    "archiveSha256": "4a91f4ae01117656c9a5a8fc71930f852b2c4d3e94f3f9a2c88109ad931e0db4",
+    "objectsUsed": [
+      "Body",
+      "HandSimple",
+      "Head2"
+    ],
+    "objectsExplicitlyOmitted": [
+      "Cannon",
+      "Head1",
+      "Head3"
+    ],
+    "texturesUsed": [
+      "FederalSoldierSkin_NormalMap.png",
+      "FederalSoldierSkin_Occlusion.png",
+      "FederalSoldierSkin_Specular.tga"
+    ],
+    "texturesExplicitlyNotUsed": [
+      "FederalSoldierSkin_Albedo.tga",
+      "FederalSoldierSkin_Emission.png"
+    ],
+    "sourceArchiveCommitted": false
+  },
+  "donorRig": {
+    "boneCount": 63,
+    "boneNames": [
+      "hips",
+      "spine",
+      "chest",
+      "neck",
+      "head",
+      "shoulder.L",
+      "upper_arm.L",
+      "forearm.L",
+      "hand.L",
+      "palm.01.L",
+      "f_index.01.L",
+      "f_index.02.L",
+      "f_index.03.L",
+      "thumb.01.L",
+      "thumb.02.L",
+      "thumb.03.L",
+      "palm.02.L",
+      "f_middle.01.L",
+      "f_middle.02.L",
+      "f_middle.03.L",
+      "palm.03.L",
+      "f_ring.01.L",
+      "f_ring.02.L",
+      "f_ring.03.L",
+      "palm.04.L",
+      "f_pinky.01.L",
+      "f_pinky.02.L",
+      "f_pinky.03.L",
+      "shoulder.R",
+      "upper_arm.R",
+      "forearm.R",
+      "hand.R",
+      "palm.01.R",
+      "f_index.01.R",
+      "f_index.02.R",
+      "f_index.03.R",
+      "thumb.01.R",
+      "thumb.02.R",
+      "thumb.03.R",
+      "palm.02.R",
+      "f_middle.01.R",
+      "f_middle.02.R",
+      "f_middle.03.R",
+      "palm.03.R",
+      "f_ring.01.R",
+      "f_ring.02.R",
+      "f_ring.03.R",
+      "palm.04.R",
+      "f_pinky.01.R",
+      "f_pinky.02.R",
+      "f_pinky.03.R",
+      "thigh.L",
+      "shin.L",
+      "foot.L",
+      "toe.L",
+      "heel.L",
+      "heel.02.L",
+      "thigh.R",
+      "shin.R",
+      "foot.R",
+      "toe.R",
+      "heel.R",
+      "heel.02.R"
+    ]
+  },
+  "retarget": {
+    "strategy": "rest-pose linear blend skin mapping from donor 63-bone weights to unchanged Rev17 66-bone rig",
+    "body": "KYX_REV30_CC0_DONOR_BODY_WITH_LEFT_HAND",
+    "rightHand": "KYX_REV30_CC0_DONOR_RIGHT_HAND",
+    "helmet": "KYX_REV30_CC0_DONOR_HEAD2_BROAD_VISOR",
+    "cannonIncluded": false,
+    "materialAssignments": {
+      "KYX_REV30_CC0_DONOR_BODY_WITH_LEFT_HAND": {
+        "base": 336,
+        "accent": 578,
+        "glove": 340,
+        "cleanKnee": 76
+      },
+      "KYX_REV30_CC0_DONOR_RIGHT_HAND": {
+        "glove": 340
+      },
+      "KYX_REV30_CC0_DONOR_HEAD2_BROAD_VISOR": {
+        "base": 72,
+        "accent": 44,
+        "visor": 18
+      }
+    },
+    "meshValidation": {
+      "KYX_REV30_CC0_DONOR_BODY_WITH_LEFT_HAND": {
+        "changedByBlenderValidation": true,
+        "before": {
+          "vertices": 1272,
+          "edges": 2599,
+          "polygons": 1330
+        },
+        "after": {
+          "vertices": 1272,
+          "edges": 2599,
+          "polygons": 1330
+        }
+      },
+      "KYX_REV30_CC0_DONOR_RIGHT_HAND": {
+        "changedByBlenderValidation": true,
+        "before": {
+          "vertices": 306,
+          "edges": 645,
+          "polygons": 340
+        },
+        "after": {
+          "vertices": 306,
+          "edges": 645,
+          "polygons": 340
+        }
+      },
+      "KYX_REV30_CC0_DONOR_HEAD2_BROAD_VISOR": {
+        "changedByBlenderValidation": false,
+        "before": {
+          "vertices": 140,
+          "edges": 273,
+          "polygons": 134
+        },
+        "after": {
+          "vertices": 140,
+          "edges": 273,
+          "polygons": 134
+        }
+      }
+    },
+    "kneeSilhouetteRepair": {
+      "strategy": "fit thigh/shin surfaces to target bone lengths, then mirror the clean viewer-left knee band positions and side-swapped weights",
+      "repairedVertexCount": 50,
+      "copiedWeightMembershipCount": 184,
+      "maximumPreRepairMirrorDistance": 2.2003487174515612e-05,
+      "band": {
+        "xMinimum": 0.045,
+        "zMinimum": 0.45,
+        "zMaximum": 0.69
+      }
+    },
+    "albedoOrEmissionShipped": false,
+    "footLocalScale": [
+      0.86,
+      0.9,
+      0.86
+    ],
+    "footVerticalDropMeters": 0.04,
+    "crossSectionScaleRange": [
+      0.86,
+      0.93
+    ]
+  },
+  "preservedContract": {
+    "rigObject": "KYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+    "rigMatrix": [
+      [
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "boneCount": 66,
+    "bones": [
+      "root",
+      "spine_01",
+      "spine_02",
+      "chest",
+      "neck",
+      "head",
+      "socket_head",
+      "clavicle.R",
+      "upper_arm.R",
+      "forearm.R",
+      "wrist.R",
+      "palm.R",
+      "index_01.R",
+      "index_02.R",
+      "index_03.R",
+      "middle_01.R",
+      "middle_02.R",
+      "middle_03.R",
+      "ring_01.R",
+      "ring_02.R",
+      "ring_03.R",
+      "pinky_01.R",
+      "pinky_02.R",
+      "pinky_03.R",
+      "thumb_01.R",
+      "thumb_02.R",
+      "thumb_03.R",
+      "socket_hand_r",
+      "socket_weapon_r",
+      "socket_muzzle",
+      "socket_nozzle",
+      "socket_casing",
+      "clavicle.L",
+      "upper_arm.L",
+      "forearm.L",
+      "wrist.L",
+      "palm.L",
+      "index_01.L",
+      "index_02.L",
+      "index_03.L",
+      "middle_01.L",
+      "middle_02.L",
+      "middle_03.L",
+      "ring_01.L",
+      "ring_02.L",
+      "ring_03.L",
+      "pinky_01.L",
+      "pinky_02.L",
+      "pinky_03.L",
+      "thumb_01.L",
+      "thumb_02.L",
+      "thumb_03.L",
+      "socket_hand_l",
+      "socket_support_l",
+      "socket_chest",
+      "socket_back",
+      "socket_ability",
+      "thigh_anchor.R",
+      "shin_anchor.R",
+      "foot_anchor.R",
+      "socket_foot_r",
+      "thigh_anchor.L",
+      "shin_anchor.L",
+      "foot_anchor.L",
+      "socket_foot_l",
+      "socket_hips"
+    ],
+    "actions": {
+      "KYX_REV17_FP_AIRBORNE": [
+        1.0,
+        25.0
+      ],
+      "KYX_REV17_FP_FIRE": [
+        1.0,
+        12.0
+      ],
+      "KYX_REV17_FP_IDLE": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_FP_LAND": [
+        1.0,
+        16.0
+      ],
+      "KYX_REV17_FP_RELOAD": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_FP_SPRINT": [
+        1.0,
+        19.0
+      ],
+      "KYX_REV17_TP_AIRBORNE_LOOP": [
+        1.0,
+        25.0
+      ],
+      "KYX_REV17_TP_DEATH_FRONT": [
+        1.0,
+        60.0
+      ],
+      "KYX_REV17_TP_HIT_REACTION_FRONT": [
+        1.0,
+        20.0
+      ],
+      "KYX_REV17_TP_IDLE": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_TP_JUMP_START": [
+        1.0,
+        14.0
+      ],
+      "KYX_REV17_TP_LAND": [
+        1.0,
+        16.0
+      ],
+      "KYX_REV17_TP_PRIMARY_FIRE": [
+        1.0,
+        12.0
+      ],
+      "KYX_REV17_TP_RELOAD": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_TP_RUN": [
+        1.0,
+        19.0
+      ],
+      "KYX_REV17_TP_WALK": [
+        1.0,
+        25.0
+      ]
+    },
+    "sockets": {
+      "socket_hand_r": [
+        [
+          1.0,
+          -0.0,
+          -0.0,
+          -0.40499991
+        ],
+        [
+          -2e-07,
+          1.0,
+          5.1e-07,
+          -0.09000035
+        ],
+        [
+          1.6e-07,
+          0.0,
+          1.0,
+          0.84499991
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_weapon_r": [
+        [
+          1.0,
+          -0.0,
+          -0.0,
+          -0.40499991
+        ],
+        [
+          -2e-07,
+          1.0,
+          5.1e-07,
+          -0.09000035
+        ],
+        [
+          1.6e-07,
+          0.0,
+          1.0,
+          0.84499991
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_muzzle": [
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.31820971
+        ],
+        [
+          -2e-07,
+          1.0,
+          5.1e-07,
+          -0.48148543
+        ],
+        [
+          1.6e-07,
+          0.0,
+          1.0,
+          0.07833047
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_nozzle": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -0.31820971
+        ],
+        [
+          -2e-07,
+          1.0,
+          5.1e-07,
+          -0.48148543
+        ],
+        [
+          1.6e-07,
+          0.0,
+          1.0,
+          0.06033047
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_casing": [
+        [
+          1.0,
+          -0.0,
+          0.0,
+          -0.5
+        ],
+        [
+          -2e-07,
+          1.0,
+          5.1e-07,
+          -0.06
+        ],
+        [
+          1.6e-07,
+          0.0,
+          1.0,
+          0.68999988
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "exactGlbReimport": {
+    "rigName": "KYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+    "boneCount": 66,
+    "bones": [
+      "root",
+      "spine_01",
+      "spine_02",
+      "chest",
+      "neck",
+      "head",
+      "socket_head",
+      "clavicle.R",
+      "upper_arm.R",
+      "forearm.R",
+      "wrist.R",
+      "palm.R",
+      "index_01.R",
+      "index_02.R",
+      "index_03.R",
+      "middle_01.R",
+      "middle_02.R",
+      "middle_03.R",
+      "ring_01.R",
+      "ring_02.R",
+      "ring_03.R",
+      "pinky_01.R",
+      "pinky_02.R",
+      "pinky_03.R",
+      "thumb_01.R",
+      "thumb_02.R",
+      "thumb_03.R",
+      "socket_hand_r",
+      "socket_weapon_r",
+      "socket_muzzle",
+      "socket_nozzle",
+      "socket_casing",
+      "clavicle.L",
+      "upper_arm.L",
+      "forearm.L",
+      "wrist.L",
+      "palm.L",
+      "index_01.L",
+      "index_02.L",
+      "index_03.L",
+      "middle_01.L",
+      "middle_02.L",
+      "middle_03.L",
+      "ring_01.L",
+      "ring_02.L",
+      "ring_03.L",
+      "pinky_01.L",
+      "pinky_02.L",
+      "pinky_03.L",
+      "thumb_01.L",
+      "thumb_02.L",
+      "thumb_03.L",
+      "socket_hand_l",
+      "socket_support_l",
+      "socket_chest",
+      "socket_back",
+      "socket_ability",
+      "thigh_anchor.R",
+      "shin_anchor.R",
+      "foot_anchor.R",
+      "socket_foot_r",
+      "thigh_anchor.L",
+      "shin_anchor.L",
+      "foot_anchor.L",
+      "socket_foot_l",
+      "socket_hips"
+    ],
+    "actions": {
+      "KYX_REV17_FP_AIRBORNE": [
+        1.0,
+        25.0
+      ],
+      "KYX_REV17_FP_FIRE": [
+        1.0,
+        12.0
+      ],
+      "KYX_REV17_FP_IDLE": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_FP_LAND": [
+        1.0,
+        16.0
+      ],
+      "KYX_REV17_FP_RELOAD": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_FP_SPRINT": [
+        1.0,
+        19.0
+      ],
+      "KYX_REV17_TP_AIRBORNE_LOOP": [
+        1.0,
+        25.0
+      ],
+      "KYX_REV17_TP_DEATH_FRONT": [
+        1.0,
+        60.0
+      ],
+      "KYX_REV17_TP_HIT_REACTION_FRONT": [
+        1.0,
+        20.0
+      ],
+      "KYX_REV17_TP_IDLE": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_TP_JUMP_START": [
+        1.0,
+        14.0
+      ],
+      "KYX_REV17_TP_LAND": [
+        1.0,
+        16.0
+      ],
+      "KYX_REV17_TP_PRIMARY_FIRE": [
+        1.0,
+        12.0
+      ],
+      "KYX_REV17_TP_RELOAD": [
+        1.0,
+        49.0
+      ],
+      "KYX_REV17_TP_RUN": [
+        1.0,
+        19.0
+      ],
+      "KYX_REV17_TP_WALK": [
+        1.0,
+        25.0
+      ]
+    },
+    "sockets": {
+      "socket_hand_r": [
+        [
+          1.00000012,
+          0.0,
+          -1.5e-07,
+          -0.40499985
+        ],
+        [
+          -1e-07,
+          1.00000012,
+          2.4e-07,
+          -0.09000031
+        ],
+        [
+          4.6e-07,
+          -6e-08,
+          1.0,
+          0.84500021
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_weapon_r": [
+        [
+          1.00000012,
+          3.2e-07,
+          -1.5e-07,
+          -0.40499985
+        ],
+        [
+          -4.2e-07,
+          1.00000024,
+          6e-08,
+          -0.09000031
+        ],
+        [
+          4.6e-07,
+          -2.7e-07,
+          1.00000024,
+          0.84500021
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_muzzle": [
+        [
+          1.00000012,
+          -9e-08,
+          -1.5e-07,
+          -0.31820965
+        ],
+        [
+          -1e-08,
+          1.00000024,
+          6e-08,
+          -0.48148492
+        ],
+        [
+          4.6e-07,
+          -2.7e-07,
+          1.00000024,
+          0.07833114
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_nozzle": [
+        [
+          1.00000012,
+          -0.0,
+          -1.5e-07,
+          -0.31820965
+        ],
+        [
+          -1e-07,
+          1.00000024,
+          -4e-08,
+          -0.48148492
+        ],
+        [
+          4.6e-07,
+          -1.6e-07,
+          1.00000024,
+          0.06033115
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "socket_casing": [
+        [
+          1.00000012,
+          3.2e-07,
+          -1.5e-07,
+          -0.49999988
+        ],
+        [
+          -4.2e-07,
+          1.00000024,
+          1.4e-07,
+          -0.05999993
+        ],
+        [
+          4.6e-07,
+          -3.5e-07,
+          1.00000024,
+          0.69000024
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "socketMatrixMaxAbsoluteDelta": {
+      "socket_hand_r": 3.0000000006413785e-07,
+      "socket_weapon_r": 4.5e-07,
+      "socket_muzzle": 6.699999999942863e-07,
+      "socket_nozzle": 6.800000000029005e-07,
+      "socket_casing": 3.6999999999999995e-07
+    },
+    "meshNames": [
+      "KYX_REV17_LOD0_COMPACT_RIFLE",
+      "KYX_REV30_CC0_DONOR_BODY_WITH_LEFT_HAND",
+      "KYX_REV30_CC0_DONOR_HEAD2_BROAD_VISOR",
+      "KYX_REV30_CC0_DONOR_RIGHT_HAND"
+    ],
+    "cannonMeshCount": 0,
+    "characterBoundsRest": {
+      "min": [
+        -0.4091866612434387,
+        -0.6669795513153076,
+        -0.0017646979540586472
+      ],
+      "max": [
+        0.21724945306777954,
+        0.14280986785888672,
+        1.7847837209701538
+      ]
+    },
+    "weaponReadyFrame": 13,
+    "weaponReadyContactTarget": [
+      -0.1085127741098404,
+      -0.510055661201477,
+      1.2192151546478271
+    ],
+    "renders": [
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-neutral-full-body-three-quarter.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-helmet-chest.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-proportioned-boots.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-weapon-ready-hands-clearance.png"
+    ],
+    "renderedThisRun": [
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-neutral-full-body-three-quarter.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-proportioned-boots.png"
+    ],
+    "reusedFromPriorAcceptedBatch": [
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-helmet-chest.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-weapon-ready-hands-clearance.png"
+    ]
+  },
+  "renders": [
+    "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-neutral-full-body-three-quarter.png",
+    "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-helmet-chest.png",
+    "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-proportioned-boots.png",
+    "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-weapon-ready-hands-clearance.png"
+  ],
+  "nonclaims": [
+    "Candidate only; no human visual acceptance is self-declared.",
+    "No broad animation, gameplay, performance or release regression was run.",
+    "LOD1, LOD2 and first-person donor derivatives are not authored in this batch."
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "assetId": "g6.rev30.cc0-donor-character-lod0",
+  "kind": "character",
+  "releaseEligible": false,
+  "sourceHash": "ebfc91e9918a1d48fa1dd6330387debdf2f4c1aa0d08fbcf743071023a5f0a2a",
+  "sourceHashKind": "canonical_source",
+  "runtime": {
+    "uri": "public/candidates/g6-rev30-cc0-donor/character-lod0.glb",
+    "hash": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
+    "bytes": 15025320
+  },
+  "budgets": {
+    "primitives": 9,
+    "materials": 6,
+    "nodes": 71,
+    "bones": 66,
+    "clips": 16,
+    "textures": 9,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_rev30_exact_glb_reimport_v1",
+    "structuralStatus": "passed",
+    "errors": [],
+    "warnings": [
+      "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED"
+    ]
+  },
+  "provenance": {
+    "status": "verified_cc0_donor",
+    "creator": "KYX.IO adaptation of CC0 donor geometry by Irondust",
+    "source": "https://opengameart.org/content/sci-fi-soldier",
+    "license": "CC0-1.0",
+    "licenseSnapshot": "assets/source/blender/phase7-character-original-v6/LICENSES/CC0-1.0.txt",
+    "attribution": "Sci-fi Soldier by Irondust, CC0. Body, HandSimple and Head2 geometry; Federal Soldier normal/spec/occlusion detail. KYX Rev17 rig/actions/sockets.",
+    "reviewer": "G6 Rev30 donor adaptation audit",
+    "notes": "Candidate only; final human visual acceptance required."
+  },
+  "disposition": "candidate",
+  "evidence": {
+    "report": "evidence/2026-07-28/g6-rev30-cc0-donor/author-export-report.json",
+    "renders": [
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-neutral-full-body-three-quarter.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-helmet-chest.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-proportioned-boots.png",
+      "evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-weapon-ready-hands-clearance.png"
+    ]
+  }
+}
