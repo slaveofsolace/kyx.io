@@ -993,9 +993,6 @@ async function mountSession(
   const sprintButton = element('button', 'online-session__control', 'HOLD SPRINT · SHIFT');
   sprintButton.type = 'button';
   sprintButton.dataset.testid = 'online-sprint';
-  const crouchButton = element('button', 'online-session__control', 'HOLD CROUCH / SLIDE · C');
-  crouchButton.type = 'button';
-  crouchButton.dataset.testid = 'online-crouch';
   const jumpButton = element('button', 'online-session__control', 'JUMP · SPACE');
   jumpButton.type = 'button';
   jumpButton.dataset.testid = 'online-jump';
@@ -1016,7 +1013,6 @@ async function mountSession(
   teleportButton.dataset.testid = 'online-teleport';
   controls.append(
     sprintButton,
-    crouchButton,
     jumpButton,
     crouchButton,
     fireButton,
