@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "status": "focused_visual_capture_complete",
+  "profile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+  "mapReference": "inkfall_foundry@3",
+  "authority": {
+    "fixtureHash": "6cf785c5171f2ff5",
+    "colliderCount": 339,
+    "spawnCount": 12,
+    "zoneCount": 9,
+    "renderMeshesMayBeAuthority": false
+  },
+  "presentation": {
+    "renderMeshCount": 45,
+    "renderOnlyVisualContinuityMeshCount": 311,
+    "spawnPocketCount": 2
+  },
+  "player": {
+    "joinedPositionMm": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    },
+    "pressApproachPositionMm": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    },
+    "finalPositionMm": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    }
+  },
+  "screenshots": [
+    "screenshots/01-west-spawn-pocket-forward.png",
+    "screenshots/02-west-spawn-attempted-press-look.png",
+    "screenshots/03-west-spawn-attempted-ink-look.png",
+    "screenshots/04-west-spawn-attempted-archive-look.png"
+  ],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "nonClaims": [
+    "Focused visual capture only; no broad regression, performance, spawn-safety, fun, staging, deployment, release, or G5 acceptance claim.",
+    "All visual-continuity additions are render-only/noHit; Rev3 remains the sole authority fixture.",
+    "The one-occupant match stayed in waiting state, so the attempted Press, Ink, and Archive frames did not become distinct traversed viewpoints."
+  ]
+}

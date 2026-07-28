@@ -9,7 +9,6 @@ import type {
   CombatWeaponSnapshotV1,
   ReliableEvent,
 } from '../net';
-import type { PhysicsFixtureV1 } from '../physics';
 import {
   buildHumanSoldier,
   isHumanSoldierReady,
@@ -27,6 +26,9 @@ import {
   inspectInkfallRev4CandidateScene,
   loadInkfallRev4CandidateAuthorityBinding,
 } from './inkfallRev4CandidateBinding';
+import {
+  createInkfallRev4VisualContinuity,
+} from './inkfallRev4VisualContinuity';
 import {
   ONLINE_INKFALL_REV4_MAP_BINDING,
 } from './onlineAuthorityProfiles';
@@ -112,7 +114,6 @@ interface LoadedRev4Visual {
   readonly containmentMeshCount: number;
 }
 
-const SPAWN_CONTAINMENT_COLLIDER_ID = /^(?:map_collision_(?:spawn_pad_spawn_[a-z0-9_]+|node_(?:west|east)_spawn|spawn_pocket_(?:floor|wall)_[a-z0-9_]+|kill_boundary_guard_(?:west|east)_back|spawn_sight_blocker_[a-z0-9_]+|door_frame_(?:west|east)_spawn_main_(?:left|right|lintel)|route_(?:west_spawn_choice_s00|east_choice_spawn_s01)))$/u;
 const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
 
 function mapMillimetersToScene(
@@ -120,140 +121,6 @@ function mapMillimetersToScene(
   target = new THREE.Vector3(),
 ): THREE.Vector3 {
   return target.set(value.x / 1_000, value.y / 1_000, -value.z / 1_000);
-}
-
-function markRenderOnly(
-  object: THREE.Object3D,
-  source: 'authority_aligned_cladding' | 'spawn_pocket_dressing',
-): void {
-  object.userData.presentationRole = 'render_only';
-  object.userData.renderMeshesMayBeAuthority = false;
-  object.userData.onlineAuthoritySource = source;
-  object.userData.noHit = true;
-}
-
-function createAuthorityAlignedSpawnContainment(
-  fixture: PhysicsFixtureV1,
-): Readonly<{ group: THREE.Group; meshCount: number }> {
-  const group = new THREE.Group();
-  group.name = 'INKFALL_REV4_RENDER_ONLY_SPAWN_CONTAINMENT';
-  markRenderOnly(group, 'authority_aligned_cladding');
-  const floorMaterial = new THREE.MeshStandardMaterial({
-    color: 0x26383e,
-    metalness: 0.76,
-    roughness: 0.4,
-  });
-  const wallMaterial = new THREE.MeshStandardMaterial({
-    color: 0x15252b,
-    metalness: 0.58,
-    roughness: 0.5,
-  });
-  const trimMaterial = new THREE.MeshStandardMaterial({
-    color: 0x5e7479,
-    metalness: 0.88,
-    roughness: 0.24,
-  });
-  let meshCount = 0;
-  for (const solid of fixture.solids) {
-    if (
-      solid.shape.type !== 'box'
-      || !SPAWN_CONTAINMENT_COLLIDER_ID.test(solid.id)
-    ) continue;
-    const half = solid.shape.halfExtentsMm;
-    const floorLike = /(?:spawn_pad|node_|spawn_pocket_floor|route_)/u.test(
-      solid.id,
-    );
-    const frameLike = /door_frame/u.test(solid.id);
-    const material = floorLike
-      ? floorMaterial
-      : frameLike
-        ? trimMaterial
-        : wallMaterial;
-    const mesh = new THREE.Mesh(
-      new THREE.BoxGeometry(
-        half.x * 2 / 1_000,
-        half.y * 2 / 1_000,
-        half.z * 2 / 1_000,
-      ),
-      material,
-    );
-    mesh.name = `RENDER_ONLY_CLADDING_${solid.id}`;
-    mesh.position.copy(mapMillimetersToScene(solid.centerMm));
-    mesh.rotation.set(
-      solid.rotationMilliDegrees.x * Math.PI / 180_000,
-      -solid.rotationMilliDegrees.y * Math.PI / 180_000,
-      -solid.rotationMilliDegrees.z * Math.PI / 180_000,
-      'YXZ',
-    );
-    mesh.receiveShadow = true;
-    mesh.castShadow = false;
-    markRenderOnly(mesh, 'authority_aligned_cladding');
-    mesh.userData.authorityAlignmentColliderId = solid.id;
-    group.add(mesh);
-    meshCount += 1;
-  }
-
-  const canopyMaterial = new THREE.MeshStandardMaterial({
-    color: 0x111d22,
-    metalness: 0.72,
-    roughness: 0.44,
-  });
-  const ribMaterial = new THREE.MeshStandardMaterial({
-    color: 0x41565c,
-    metalness: 0.9,
-    roughness: 0.22,
-  });
-  const lightMaterials = {
-    west: new THREE.MeshBasicMaterial({ color: 0x53e3ee }),
-    east: new THREE.MeshBasicMaterial({ color: 0xff9b5b }),
-  } as const;
-  for (const side of [-1, 1] as const) {
-    const sideName = side < 0 ? 'west' : 'east';
-    const centerX = side * 32;
-    const canopy = new THREE.Mesh(
-      new THREE.BoxGeometry(8, 0.18, 18),
-      canopyMaterial,
-    );
-    canopy.name = `RENDER_ONLY_${sideName.toUpperCase()}_SPAWN_CANOPY`;
-    canopy.position.set(centerX, 3.42, 0);
-    markRenderOnly(canopy, 'spawn_pocket_dressing');
-    canopy.userData.authorityAlignedRegion = `${sideName}_spawn_pocket`;
-    group.add(canopy);
-    meshCount += 1;
-    for (const z of [-7.7, -4, 0, 4, 7.7]) {
-      const rib = new THREE.Mesh(
-        new THREE.BoxGeometry(7.9, 0.14, 0.16),
-        ribMaterial,
-      );
-      rib.name = `RENDER_ONLY_${sideName.toUpperCase()}_CANOPY_RIB_${z}`;
-      rib.position.set(centerX, 3.27, z);
-      markRenderOnly(rib, 'spawn_pocket_dressing');
-      group.add(rib);
-      meshCount += 1;
-    }
-    for (const z of [-5.7, -1.9, 1.9, 5.7]) {
-      const strip = new THREE.Mesh(
-        new THREE.BoxGeometry(3.4, 0.035, 0.11),
-        lightMaterials[sideName],
-      );
-      strip.name = `RENDER_ONLY_${sideName.toUpperCase()}_SPAWN_LIGHT_${z}`;
-      strip.position.set(centerX - side * 1.2, 3.15, z);
-      markRenderOnly(strip, 'spawn_pocket_dressing');
-      group.add(strip);
-      meshCount += 1;
-    }
-    const pocketLight = new THREE.PointLight(
-      side < 0 ? 0x68e9f3 : 0xffa36d,
-      3.8,
-      22,
-      1.7,
-    );
-    pocketLight.name = `RENDER_ONLY_${sideName.toUpperCase()}_SPAWN_LIGHTING`;
-    pocketLight.position.set(centerX - side * 1.5, 2.5, 0);
-    markRenderOnly(pocketLight, 'spawn_pocket_dressing');
-    group.add(pocketLight);
-  }
-  return Object.freeze({ group, meshCount });
 }
 
 function normalizedYawRadians(yawMilliDegrees: number): number {
@@ -345,7 +212,7 @@ async function loadRev4Visual(): Promise<LoadedRev4Visual> {
   }
   const art = await parseGltf(binding.presentationArt);
   const sceneFacts = inspectInkfallRev4CandidateScene(art);
-  const containment = createAuthorityAlignedSpawnContainment(
+  const containment = createInkfallRev4VisualContinuity(
     loaded.authority.fixture,
   );
   art.name = 'INKFALL_REV4_PRESENTATION_ONLY_NOT_AUTHORITY';
@@ -510,8 +377,8 @@ export async function createOnlineAuthorityThreeRuntime(
   renderer.shadowMap.enabled = false;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x071116);
-  scene.fog = new THREE.FogExp2(0x0a171c, 0.0125);
+  scene.background = new THREE.Color(0x0a151b);
+  scene.fog = new THREE.FogExp2(0x111e23, 0.0095);
   scene.add(loadedVisual.art, loadedVisual.containment);
   scene.add(new THREE.HemisphereLight(0xc4e6ef, 0x182126, 1.38));
   const key = new THREE.DirectionalLight(0xffd7af, 1.9);
