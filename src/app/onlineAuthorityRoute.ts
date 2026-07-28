@@ -39,6 +39,10 @@ import {
   verifyOnlineInkfallCombatRoom,
   type OnlineInkfallRoomProof,
 } from './onlineAuthorityGateway';
+import {
+  isOnlineAuthorityInputCode,
+  onlineAuthorityInputButtonsFromPressedKeys,
+} from './onlineAuthorityInput';
 import { createOnlineInkfallWorld } from './onlineAuthorityInkfallWorld';
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
@@ -70,6 +74,15 @@ interface OnlinePreviewSnapshot {
   readonly reconciliations: number;
   readonly resumeSuccesses: number;
   readonly combat: AuthorityEvidenceDiagnostics['combat'];
+  readonly inputBridge: Readonly<{
+    pressedKeys: readonly string[];
+    axes: Readonly<{ moveX: number; moveY: number }>;
+    heldButtons: number;
+    jump: boolean;
+    sprint: boolean;
+    crouch: boolean;
+    primaryFire: boolean;
+  }>;
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localPredictedYawMilliDegrees: number | null;
@@ -801,10 +814,10 @@ async function mountSession(
       'p',
       '',
       inkfallRev4
-        ? 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev4 art cannot become collision.'
+        ? 'Use W, A, S, and D to move and steer in air, Shift to sprint, Space to jump, C or Ctrl to crouch and slide, Q and E to turn, Up and Down to aim, F or Mouse 1 to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev4 art cannot become collision.'
         : inkfallRuntime
-          ? 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
-        : 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. Health, ammo, score, feed, death, respawn, teleport, and resume state come from the authority.',
+          ? 'Use W, A, S, and D to move and steer in air, Shift to sprint, Space to jump, C or Ctrl to crouch and slide, Q and E to turn, Up and Down to aim, F or Mouse 1 to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
+        : 'Use W, A, S, and D to move and steer in air, Shift to sprint, Space to jump, C or Ctrl to crouch and slide, Q and E to turn, Up and Down to aim, F or Mouse 1 to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. Health, ammo, score, feed, death, respawn, teleport, and resume state come from the authority.',
     ),
   );
   const room = element('div', 'online-session__room');
@@ -858,13 +871,14 @@ async function mountSession(
         ? 'Live Inkfall Foundry @2 authority plane'
         : 'Live authority combat plane',
   );
-  arenaHead.append(element('span', '', 'WASD · C crouch · Q/E turn · SPACE fire · R reload · G grenade · T teleport'));
+  arenaHead.append(element('span', '', 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · Q/E turn · F/M1 fire · R reload · G grenade · T teleport'));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
   canvas.width = 960;
   canvas.height = 640;
   canvas.dataset.testid = 'online-arena';
-  canvas.setAttribute('aria-label', 'Online authoritative combat arena');
+  canvas.tabIndex = 0;
+  canvas.setAttribute('aria-label', 'Online authoritative combat arena. Click to focus; Mouse 1 fires.');
   const feedbackVfx = element('div', 'online-session__feedback-vfx');
   feedbackVfx.setAttribute('aria-hidden', 'true');
   const feedbackGlyph = element('div', 'online-session__feedback-glyph');
@@ -970,7 +984,16 @@ async function mountSession(
     combatStats.append(item.root);
   }
   const controls = element('div', 'online-session__controls');
-  const fireButton = element('button', 'online-session__control', 'HOLD FIRE · SPACE');
+  const sprintButton = element('button', 'online-session__control', 'HOLD SPRINT · SHIFT');
+  sprintButton.type = 'button';
+  sprintButton.dataset.testid = 'online-sprint';
+  const jumpButton = element('button', 'online-session__control', 'JUMP · SPACE');
+  jumpButton.type = 'button';
+  jumpButton.dataset.testid = 'online-jump';
+  const crouchButton = element('button', 'online-session__control', 'HOLD CROUCH / SLIDE · C / CTRL');
+  crouchButton.type = 'button';
+  crouchButton.dataset.testid = 'online-crouch';
+  const fireButton = element('button', 'online-session__control', 'HOLD FIRE · F / MOUSE 1');
   fireButton.type = 'button';
   fireButton.dataset.testid = 'online-fire';
   const reloadButton = element('button', 'online-session__control', 'RELOAD · R');
@@ -982,7 +1005,15 @@ async function mountSession(
   const teleportButton = element('button', 'online-session__control', 'TELEPORT · T');
   teleportButton.type = 'button';
   teleportButton.dataset.testid = 'online-teleport';
-  controls.append(fireButton, reloadButton, grenadeButton, teleportButton);
+  controls.append(
+    sprintButton,
+    jumpButton,
+    crouchButton,
+    fireButton,
+    reloadButton,
+    grenadeButton,
+    teleportButton,
+  );
   const feed = element('div', 'online-session__feed');
   feed.dataset.testid = 'online-killfeed';
   const limitation = element(
@@ -1048,6 +1079,9 @@ async function mountSession(
       renderRequested = true;
     },
   });
+  const pressedKeys = new Set<string>();
+  let pointerHeldButtons = 0;
+  let heldInputButtons = 0;
 
   type FeedbackCue = OnlinePreviewSnapshot['presentation']['lastCue'];
   let combatPresentationAdapter: CombatPresentationAdapterV1 | null = null;
@@ -1216,6 +1250,15 @@ async function mountSession(
       reconciliations: diagnostics.counters.reconciliations,
       resumeSuccesses: diagnostics.counters.resumeSuccesses,
       combat: diagnostics.combat,
+      inputBridge: Object.freeze({
+        pressedKeys: Object.freeze([...pressedKeys].sort()),
+        axes: Object.freeze(axesFromPressedKeys(pressedKeys)),
+        heldButtons: heldInputButtons,
+        jump: (heldInputButtons & INTENT_BUTTON.jump) !== 0,
+        sprint: (heldInputButtons & INTENT_BUTTON.sprint) !== 0,
+        crouch: (heldInputButtons & INTENT_BUTTON.crouch) !== 0,
+        primaryFire: (heldInputButtons & INTENT_BUTTON.primaryFire) !== 0,
+      }),
       localPredictedPosition: diagnostics.local.predictedPosition,
       localAuthoritativePosition: diagnostics.local.authoritativePosition,
       localPredictedYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
@@ -1258,77 +1301,103 @@ async function mountSession(
     value: Object.freeze({ schemaVersion: 1, getSnapshot: onlineSnapshot }),
   });
 
-  const pressedKeys = new Set<string>();
-  let heldCombatButtons = 0;
-  const combatButton = (code: string): number => {
-    if (code === 'KeyC') return INTENT_BUTTON.crouch;
-    if (code === 'Space') return INTENT_BUTTON.primaryFire;
-    if (code === 'KeyR') return INTENT_BUTTON.reload;
-    if (code === 'KeyG') return INTENT_BUTTON.abilityOne;
-    if (code === 'KeyT') return INTENT_BUTTON.utility;
-    return 0;
-  };
   const updateInput = (): void => {
-    client.setAxes(axesFromPressedKeys(pressedKeys));
-    client.setCombatButtons(heldCombatButtons);
+    const axes = axesFromPressedKeys(pressedKeys);
+    heldInputButtons = (
+      onlineAuthorityInputButtonsFromPressedKeys(pressedKeys)
+      | pointerHeldButtons
+    ) >>> 0;
+    client.setAxes(axes);
+    client.setInputButtons(heldInputButtons);
     const lookYawDirection = Number(pressedKeys.has('KeyE')) - Number(pressedKeys.has('KeyQ'));
     const lookPitchDirection = Number(pressedKeys.has('ArrowUp'))
       - Number(pressedKeys.has('ArrowDown'));
     client.setLookDeltas(lookYawDirection * 1_500, lookPitchDirection * 1_500);
-    fireButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.primaryFire) !== 0);
-    reloadButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.reload) !== 0);
-    grenadeButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.abilityOne) !== 0);
-    teleportButton.dataset.active = String((heldCombatButtons & INTENT_BUTTON.utility) !== 0);
+    for (const [button, mask] of [
+      [sprintButton, INTENT_BUTTON.sprint],
+      [jumpButton, INTENT_BUTTON.jump],
+      [crouchButton, INTENT_BUTTON.crouch],
+      [fireButton, INTENT_BUTTON.primaryFire],
+      [reloadButton, INTENT_BUTTON.reload],
+      [grenadeButton, INTENT_BUTTON.abilityOne],
+      [teleportButton, INTENT_BUTTON.utility],
+    ] as const) {
+      const active = (heldInputButtons & mask) !== 0;
+      button.dataset.active = String(active);
+      button.setAttribute('aria-pressed', String(active));
+    }
   };
   const keyboardHandler = (event: KeyboardEvent): void => {
-    const movementKey = ['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(event.code);
-    const lookKey = ['KeyQ', 'KeyE', 'ArrowUp', 'ArrowDown'].includes(event.code);
-    const combatMask = combatButton(event.code);
-    if (!movementKey && !lookKey && combatMask === 0) return;
+    if (!isOnlineAuthorityInputCode(event.code)) return;
     event.preventDefault();
-    if (movementKey || lookKey) {
-      if (event.type === 'keydown') pressedKeys.add(event.code);
-      else pressedKeys.delete(event.code);
-    }
-    if (combatMask !== 0) {
-      if (event.type === 'keydown') heldCombatButtons = (heldCombatButtons | combatMask) >>> 0;
-      else heldCombatButtons = (heldCombatButtons & ~combatMask) >>> 0;
-    }
+    if (event.type === 'keydown') pressedKeys.add(event.code);
+    else pressedKeys.delete(event.code);
+    updateInput();
+    renderRequested = true;
+  };
+  const neutralizeRouteInput = (): void => {
+    pressedKeys.clear();
+    pointerHeldButtons = 0;
+    client.neutralizeInput();
     updateInput();
     renderRequested = true;
   };
   const blurHandler = (): void => {
-    pressedKeys.clear();
-    heldCombatButtons = 0;
+    neutralizeRouteInput();
+  };
+  const visibilityHandler = (): void => {
+    if (document.visibilityState === 'hidden') neutralizeRouteInput();
+  };
+  const holdPointerButton = (button: number): void => {
+    pointerHeldButtons = (pointerHeldButtons | button) >>> 0;
     updateInput();
   };
-  const holdFire = (): void => {
-    heldCombatButtons = (heldCombatButtons | INTENT_BUTTON.primaryFire) >>> 0;
-    updateInput();
-  };
-  const releaseFire = (): void => {
-    heldCombatButtons = (heldCombatButtons & ~INTENT_BUTTON.primaryFire) >>> 0;
+  const releasePointerButton = (button: number): void => {
+    pointerHeldButtons = (pointerHeldButtons & ~button) >>> 0;
     updateInput();
   };
   const pulseButton = (button: number): void => {
-    heldCombatButtons = (heldCombatButtons | button) >>> 0;
-    updateInput();
+    holdPointerButton(button);
     window.setTimeout(() => {
-      heldCombatButtons = (heldCombatButtons & ~button) >>> 0;
-      updateInput();
+      releasePointerButton(button);
     }, 90);
   };
+  const holdSprint = (): void => holdPointerButton(INTENT_BUTTON.sprint);
+  const releaseSprint = (): void => releasePointerButton(INTENT_BUTTON.sprint);
+  const holdCrouch = (): void => holdPointerButton(INTENT_BUTTON.crouch);
+  const releaseCrouch = (): void => releasePointerButton(INTENT_BUTTON.crouch);
+  const holdFire = (): void => holdPointerButton(INTENT_BUTTON.primaryFire);
+  const releaseFire = (): void => releasePointerButton(INTENT_BUTTON.primaryFire);
+  const canvasFire = (event: PointerEvent): void => {
+    if (event.button !== 0) return;
+    canvas.focus();
+    holdFire();
+  };
+  sprintButton.addEventListener('pointerdown', holdSprint);
+  sprintButton.addEventListener('pointerup', releaseSprint);
+  sprintButton.addEventListener('pointercancel', releaseSprint);
+  sprintButton.addEventListener('pointerleave', releaseSprint);
+  jumpButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.jump));
+  crouchButton.addEventListener('pointerdown', holdCrouch);
+  crouchButton.addEventListener('pointerup', releaseCrouch);
+  crouchButton.addEventListener('pointercancel', releaseCrouch);
+  crouchButton.addEventListener('pointerleave', releaseCrouch);
   fireButton.addEventListener('pointerdown', holdFire);
   fireButton.addEventListener('pointerup', releaseFire);
   fireButton.addEventListener('pointercancel', releaseFire);
   fireButton.addEventListener('pointerleave', releaseFire);
+  canvas.addEventListener('pointerdown', canvasFire);
   reloadButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.reload));
   grenadeButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityOne));
   teleportButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.utility));
   window.addEventListener('keydown', keyboardHandler);
   window.addEventListener('keyup', keyboardHandler);
   window.addEventListener('blur', blurHandler);
+  window.addEventListener('pointerup', releaseFire);
+  window.addEventListener('pointercancel', releaseFire);
+  document.addEventListener('visibilitychange', visibilityHandler);
   resumeButton.addEventListener('click', () => {
+    neutralizeRouteInput();
     client.requestResume();
     renderRequested = true;
   });
@@ -1539,12 +1608,14 @@ async function mountSession(
       body.dataset.onlinePresentationStatus = presentationStatus;
       body.dataset.onlinePresentationLastCue = presentationLastCue ?? 'none';
       body.dataset.onlinePresentationConfirmed = String(presentationConfirmedIntentCount);
+      body.dataset.onlineInputHeldButtons = String(heldInputButtons);
       renderRequested = false;
       lastDiagnosticsRefresh = nowMilliseconds;
     }
     animationFrame = requestAnimationFrame(render);
   };
 
+  updateInput();
   client.start();
   animationFrame = requestAnimationFrame(render);
   window.addEventListener('pagehide', () => {
@@ -1552,6 +1623,9 @@ async function mountSession(
     window.removeEventListener('keydown', keyboardHandler);
     window.removeEventListener('keyup', keyboardHandler);
     window.removeEventListener('blur', blurHandler);
+    window.removeEventListener('pointerup', releaseFire);
+    window.removeEventListener('pointercancel', releaseFire);
+    document.removeEventListener('visibilitychange', visibilityHandler);
     window.clearTimeout(feedbackTimeout);
     if (audioContext !== null) void audioContext.close();
     client.dispose();

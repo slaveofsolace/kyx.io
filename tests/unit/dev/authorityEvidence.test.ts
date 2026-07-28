@@ -369,7 +369,7 @@ describe('authority evidence route adapters', () => {
 });
 
 describe('authority evidence transport state', () => {
-  it('keeps combat input opt-in and exposes authoritative combat snapshots and events', () => {
+  it('keeps button input opt-in and exposes authoritative combat snapshots and events', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();
     const initialState = stateAtTick(createTestMovementState(), 10);
@@ -441,33 +441,40 @@ describe('authority evidence transport state', () => {
       snapshot: { players: [{ playerId: 'player.1', magazineRounds: 50 }] },
     });
 
-    expect(client.setCombatButtons(INTENT_BUTTON.primaryFire | INTENT_BUTTON.reload)).toBe(true);
+    const movementAndCombatButtons = (
+      INTENT_BUTTON.jump
+      | INTENT_BUTTON.sprint
+      | INTENT_BUTTON.crouch
+      | INTENT_BUTTON.primaryFire
+      | INTENT_BUTTON.reload
+    );
+    expect(client.setInputButtons(movementAndCombatButtons)).toBe(true);
     expect(client.setLookDeltas(1_500)).toBe(true);
     scheduler.runTick();
     expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
       type: 'inputBatch',
       commands: [{
-        heldButtons: INTENT_BUTTON.primaryFire | INTENT_BUTTON.reload,
-        pressedButtons: INTENT_BUTTON.primaryFire | INTENT_BUTTON.reload,
+        heldButtons: movementAndCombatButtons,
+        pressedButtons: movementAndCombatButtons,
         releasedButtons: 0,
         selectedSlot: 0,
         lookYawDeltaMilliDegrees: 1_500,
         lookPitchDeltaMilliDegrees: 0,
       }],
     });
-    client.setCombatButtons(INTENT_BUTTON.primaryFire);
+    client.setInputButtons(INTENT_BUTTON.primaryFire);
     scheduler.runTick();
     expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
       type: 'inputBatch',
       commands: [{
         heldButtons: INTENT_BUTTON.primaryFire,
         pressedButtons: 0,
-        releasedButtons: INTENT_BUTTON.reload,
+        releasedButtons: movementAndCombatButtons & ~INTENT_BUTTON.primaryFire,
       }],
     });
-    client.setCombatButtons(0);
-    client.setCombatButtons(INTENT_BUTTON.primaryFire);
-    client.setCombatButtons(0);
+    client.setInputButtons(0);
+    client.setInputButtons(INTENT_BUTTON.primaryFire);
+    client.setInputButtons(0);
     scheduler.runTick();
     expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
       type: 'inputBatch',
@@ -877,6 +884,7 @@ describe('authority evidence transport state', () => {
       transport,
       scheduler,
       createRequestId: () => `request.${requestSequence++}`,
+      enableCombatInput: true,
     });
 
     client.start();
@@ -920,11 +928,23 @@ describe('authority evidence transport state', () => {
     expect(client.diagnostics().authority.lastReliableEventId).toBe('event.22');
     expect(client.diagnostics().connection.phase).toBe('joined');
 
+    const heldBeforeResume = (
+      INTENT_BUTTON.jump
+      | INTENT_BUTTON.sprint
+      | INTENT_BUTTON.crouch
+    );
     client.setAxes({ moveX: 0, moveY: 127 });
+    expect(client.setInputButtons(heldBeforeResume)).toBe(true);
     scheduler.runTick();
     expect(sentMessage(first, first.sent.length - 1)).toMatchObject({
       type: 'inputBatch',
-      commands: [{ sequence: 0, moveY: 127 }],
+      commands: [{
+        sequence: 0,
+        moveY: 127,
+        heldButtons: heldBeforeResume,
+        pressedButtons: heldBeforeResume,
+        releasedButtons: 0,
+      }],
     });
     expect(client.diagnostics().counters.commandsGenerated).toBe(1);
     first.receive({
@@ -969,6 +989,12 @@ describe('authority evidence transport state', () => {
     expect(Object.values(correctionBounds.histogram).reduce((sum, count) => sum + count, 0)).toBe(1);
 
     expect(client.requestResume()).toBe(true);
+    expect(client.diagnostics().input).toMatchObject({
+      moveX: 0,
+      moveY: 0,
+      heldButtons: 0,
+      nextSequence: 1,
+    });
     scheduler.runDelay();
     const second = rawTransport.connections[1]!;
     second.open();
@@ -989,6 +1015,18 @@ describe('authority evidence transport state', () => {
     expect(sentMessage(second, second.sent.length - 1)).toMatchObject({
       type: 'ack',
       lastEventId: 'event.22',
+    });
+    scheduler.runTick();
+    expect(sentMessage(second, second.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{
+        sequence: 1,
+        moveX: 0,
+        moveY: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: heldBeforeResume,
+      }],
     });
     second.receive({
       protocolVersion: PROTOCOL_VERSION,

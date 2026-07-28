@@ -484,15 +484,29 @@ export class AuthorityEvidenceClient {
     this.axes = Object.freeze({ moveX: axes.moveX, moveY: axes.moveY });
   }
 
-  setCombatButtons(heldButtons: number): boolean {
+  setInputButtons(heldButtons: number): boolean {
     if (!this.combatInputEnabled) return false;
-    assertIntentButtonMask(heldButtons, 'authority evidence combat buttons');
+    assertIntentButtonMask(heldButtons, 'authority evidence input buttons');
     const nextHeldButtons = heldButtons >>> 0;
     this.pendingCombatPressedButtons |= nextHeldButtons & ~this.combatHeldButtons;
     this.pendingCombatReleasedButtons |= this.combatHeldButtons & ~nextHeldButtons;
     this.combatHeldButtons = nextHeldButtons;
     this.emitChange();
     return true;
+  }
+
+  setCombatButtons(heldButtons: number): boolean {
+    return this.setInputButtons(heldButtons);
+  }
+
+  neutralizeInput(): void {
+    this.axes = Object.freeze({ moveX: 0, moveY: 0 });
+    this.combatHeldButtons = 0;
+    this.pendingCombatPressedButtons = 0;
+    this.pendingCombatReleasedButtons = this.lastSentCombatHeldButtons;
+    this.lookYawDeltaMilliDegrees = 0;
+    this.lookPitchDeltaMilliDegrees = 0;
+    this.emitChange();
   }
 
   setLookDeltas(yawMilliDegrees: number, pitchMilliDegrees = 0): boolean {
@@ -518,6 +532,7 @@ export class AuthorityEvidenceClient {
       || this.resumeToken === null
       || this.connection?.state() !== 'open'
     ) return false;
+    this.neutralizeInput();
     this.resumeRequested = true;
     this.phase = 'disconnecting';
     this.counters.resumeAttempts += 1;
