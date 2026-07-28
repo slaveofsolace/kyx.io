@@ -1,0 +1,141 @@
+{
+  "binding": {
+    "artRevision": "4.1",
+    "authorityFixtureHash": "6cf785c5171f2ff5",
+    "authorityPackageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+    "authorityRevision": 3,
+    "catalogDefaultRevision": 1,
+    "explicitInspectionOnly": true,
+    "mapId": "inkfall_foundry",
+    "renderGeometryMayBeAuthority": false,
+    "runtimeIntegrated": false,
+    "shippingDefault": false
+  },
+  "id": "inkfall_foundry_press_archive_rev4",
+  "kind": "inkfall_foundry_non_default_art_review_manifest",
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "REVISION_3_NOT_PROMOTED",
+    "REVISION_4_ART_NOT_DEFAULT",
+    "RENDER_GEOMETRY_NOT_COLLISION_AUTHORITY",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_2_4_8_PLAYER_REVIEW_NOT_PASSED",
+    "TARGET_HARDWARE_PERFORMANCE_NOT_ACCEPTED",
+    "FOCAL_LANDMARK_HAS_NO_OBJECTIVE_OR_GAMEPLAY_SEMANTICS",
+    "NO_DEPLOYMENT_OR_PUBLISHING_AUTHORIZATION_USED"
+  ],
+  "reviewRenders": [
+    {
+      "bytes": 1484189,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-gameplay_continuity.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "7d832017bc4403042dbc55d73f400f87daec1c9245925718101a215648925066",
+      "view": "gameplay_continuity"
+    },
+    {
+      "bytes": 1438649,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-press_entry.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "27729a696b0bd185c6650c030a328206e6b87162bf305b6c95d837eceb4399d5",
+      "view": "press_entry"
+    },
+    {
+      "bytes": 1373403,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-archive_rise.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "c9b269f8a495bc46820704147c6ad8e5f942ed1bff20451e217bc3b9a0ecdb7c",
+      "view": "archive_rise"
+    },
+    {
+      "bytes": 1497019,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-landing_arrival.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "fde6f43414c3833b39d708b536eace8d79a4d51a67dd20ec3e84e915dd55c5fd",
+      "view": "landing_arrival"
+    },
+    {
+      "bytes": 1499650,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-index_wheel.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "3def0519b473cae08aa080a0bc1e56b79359c4785ad7369d160dce633cc7b667",
+      "view": "index_wheel"
+    },
+    {
+      "bytes": 1613568,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-press_return.png",
+      "resolution": [
+        1600,
+        900
+      ],
+      "sha256": "330bc1d2e96d2999a3afe68b8e1bf594ad63ddff2d47803501a2285ecefcae8a",
+      "view": "press_return"
+    },
+    {
+      "bytes": 1600081,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-overhead_context.png",
+      "resolution": [
+        1600,
+        1200
+      ],
+      "sha256": "e5665613eacc1c116dbdd5486145b4b75d93cdeb112777b451cc4a65f338a95d",
+      "view": "overhead_context"
+    }
+  ],
+  "schemaVersion": 1,
+  "scope": "G5_INKFALL_REV4_PRESS_ARCHIVE_RENDER_ONLY_NON_DEFAULT",
+  "source": {
+    "blend": {
+      "bytes": 2623596,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/source/inkfall_foundry_press_archive_rev4.blend",
+      "sha256": "3d2758ecfa77f6d670033cec53c52766986ae8b815fddd2b921c0666543af4a8"
+    },
+    "builder": {
+      "bytes": 56368,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/build_press_archive_rev4.py",
+      "sha256": "c34bb568c3eb1f6158f19578338be6acb39ae0ffea71dfd4217b53041c5661dd"
+    },
+    "parent": {
+      "export": {
+        "actualSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+        "bytes": 13301752,
+        "expectedSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb"
+      },
+      "id": "inkfall_foundry_press_hall_material_export_v3_3",
+      "source": {
+        "actualSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+        "bytes": 2276648,
+        "expectedSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/source/inkfall_foundry_press_hall_material_export_v3_3.optimized-export.blend"
+      }
+    }
+  },
+  "stagedRenderExport": {
+    "bytes": 12954608,
+    "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb",
+    "runtimeIntegrated": false,
+    "sha256": "5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00"
+  },
+  "status": "bounded_authored_art_candidate_ready_for_human_review_g5_open",
+  "validation": {
+    "buildReport": {
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/validation/inkfall-rev4-press-archive-build-report.json",
+      "status": "INKFALL_REV4_PRESS_ARCHIVE_ART_BUILD_PASS_G5_OPEN"
+    }
+  }
+}

@@ -9,3 +9,10 @@
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 *.jsonl filter=lfs diff=lfs merge=lfs -text
+
+# Rev4 evidence records hash their text inputs, so keep those scoped sources
+# byte-stable across Windows worktrees.
+assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/*.md text eol=lf
+assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/*.py text eol=lf
+assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/**/*.json text eol=lf
+tools/evidence/verify-inkfall-g5-press-archive-rev4.py text eol=lf

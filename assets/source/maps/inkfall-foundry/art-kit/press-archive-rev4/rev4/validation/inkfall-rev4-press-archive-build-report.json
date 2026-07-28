@@ -1,0 +1,690 @@
+{
+  "artifacts": {
+    "renderGlb": {
+      "bytes": 12954608,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb",
+      "sha256": "5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00"
+    },
+    "reviewRenders": [
+      {
+        "bytes": 1484189,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-gameplay_continuity.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "7d832017bc4403042dbc55d73f400f87daec1c9245925718101a215648925066",
+        "view": "gameplay_continuity"
+      },
+      {
+        "bytes": 1438649,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-press_entry.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "27729a696b0bd185c6650c030a328206e6b87162bf305b6c95d837eceb4399d5",
+        "view": "press_entry"
+      },
+      {
+        "bytes": 1373403,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-archive_rise.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "c9b269f8a495bc46820704147c6ad8e5f942ed1bff20451e217bc3b9a0ecdb7c",
+        "view": "archive_rise"
+      },
+      {
+        "bytes": 1497019,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-landing_arrival.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "fde6f43414c3833b39d708b536eace8d79a4d51a67dd20ec3e84e915dd55c5fd",
+        "view": "landing_arrival"
+      },
+      {
+        "bytes": 1499650,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-index_wheel.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "3def0519b473cae08aa080a0bc1e56b79359c4785ad7369d160dce633cc7b667",
+        "view": "index_wheel"
+      },
+      {
+        "bytes": 1613568,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-press_return.png",
+        "resolution": [
+          1600,
+          900
+        ],
+        "sha256": "330bc1d2e96d2999a3afe68b8e1bf594ad63ddff2d47803501a2285ecefcae8a",
+        "view": "press_return"
+      },
+      {
+        "bytes": 1600081,
+        "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/renders/inkfall-rev4-press-archive-overhead_context.png",
+        "resolution": [
+          1600,
+          1200
+        ],
+        "sha256": "e5665613eacc1c116dbdd5486145b4b75d93cdeb112777b451cc4a65f338a95d",
+        "view": "overhead_context"
+      }
+    ],
+    "sourceBlend": {
+      "bytes": 2623596,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/source/inkfall_foundry_press_archive_rev4.blend",
+      "sha256": "3d2758ecfa77f6d670033cec53c52766986ae8b815fddd2b921c0666543af4a8"
+    }
+  },
+  "authoredFamilyCountsBeforeJoin": {
+    "archive_context_wall": 6,
+    "archive_gantry": 16,
+    "archive_rack": 18,
+    "datum_frame": 9,
+    "drainage_seam": 3,
+    "edge_structure": 6,
+    "floor_seam": 8,
+    "guard_post": 18,
+    "guard_rail": 6,
+    "hazard_identifier": 6,
+    "index_wheel_landmark": 11,
+    "landing_deck": 1,
+    "landmark_suspension": 2,
+    "ledger_hub": 15,
+    "oversized_wayfinding": 6,
+    "paper_ledger": 15,
+    "press_return_wayfinding": 3,
+    "route_tread": 6,
+    "route_wayfinding": 9
+  },
+  "binding": {
+    "artRevision": "4.1",
+    "authorityFixtureHash": "6cf785c5171f2ff5",
+    "authorityPackageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+    "authorityRevision": 3,
+    "catalogDefaultRevision": 1,
+    "explicitInspectionOnly": true,
+    "mapId": "inkfall_foundry",
+    "renderGeometryMayBeAuthority": false,
+    "runtimeIntegrated": false,
+    "shippingDefault": false
+  },
+  "checks": {
+    "boundedRev4MeshesPresent": true,
+    "catalogDefaultStillRevision1": true,
+    "clearVisualLaneAtLeastTwoMeters": true,
+    "derivativePresentationPortalOpened": true,
+    "finishedCoverageMateriallyExpanded": true,
+    "frozenInputsUnchanged": true,
+    "functionalWayfindingPresent": true,
+    "glbWritten": true,
+    "landmarkEvidencePulledBackForSpatialContext": true,
+    "levelWideGameplayFovContinuityEvidence": true,
+    "onlyApprovedMaterialSetUsed": true,
+    "overheadEvidenceTopDownUnrolledAndContainsExpansion": true,
+    "parentPressHallRetained": true,
+    "renderOnlyNoCollisionObjects": true,
+    "restrainedNeutralValueHierarchySeparated": true,
+    "routeLengthMateriallyExpanded": true,
+    "routeTreadsUseLighterInheritedCeramic": true,
+    "sevenFreshReviewRenders": true,
+    "singleFocalLandmarkFamily": true
+  },
+  "derivativePresentationClearance": {
+    "affectedParentMeshes": [
+      {
+        "object": "V33OPT_SOUTH_V3_CAST_IRON",
+        "trianglesAfter": 27476,
+        "trianglesBefore": 37788
+      },
+      {
+        "object": "V33OPT_NORTH_V3_USED_CERAMIC",
+        "trianglesAfter": 7504,
+        "trianglesBefore": 7620
+      },
+      {
+        "object": "V33OPT_NORTH_V3_CAST_IRON",
+        "trianglesAfter": 27876,
+        "trianglesBefore": 40428
+      },
+      {
+        "object": "V33OPT_CENTER_EAST_V3_CAST_IRON",
+        "trianglesAfter": 13456,
+        "trianglesBefore": 14072
+      },
+      {
+        "object": "V33OPT_CENTER_EAST_V3_CHIPPED_SAFETY_RED",
+        "trianglesAfter": 4772,
+        "trianglesBefore": 4856
+      },
+      {
+        "object": "V33OPT_NORTH_V3_WORN_STEEL",
+        "trianglesAfter": 18012,
+        "trianglesBefore": 19528
+      },
+      {
+        "object": "V33OPT_SOUTH_V3_WORN_STEEL",
+        "trianglesAfter": 19064,
+        "trianglesBefore": 20192
+      }
+    ],
+    "authorityGeometryModified": false,
+    "clearHeightMeters": 3.36,
+    "clearWidthMeters": 2.72,
+    "cutterSliceCount": 9,
+    "frozenParentSourceModified": false,
+    "kind": "derivative_presentation_portal_above_frozen_route"
+  },
+  "expansion": {
+    "authorityRouteAlignment": [
+      "R_ROUTE__PRESS_WEST_ARCHIVE__S00",
+      "R_ROUTE__PRESS_WEST_ARCHIVE__S01",
+      "R_ROUTE__PRESS_WEST_ARCHIVE__S02",
+      "R_NODE__ARCHIVE_WEST"
+    ],
+    "clearRouteIntent": "Press Hall to west Paper Archive ascent and landing",
+    "coordinateContract": "Blender X east, Y north, Z up; map x,z,y millimeters",
+    "estimatedFinishedCoverageSquareMeters": 95.91317253242383,
+    "id": "west_archive_rise_and_paper_archive_landing",
+    "landingCenterBlenderMeters": [
+      -22.0,
+      19.0,
+      5.91
+    ],
+    "landingSizeMeters": [
+      8.0,
+      7.0,
+      0.18
+    ],
+    "landmark": {
+      "gameplayObjective": false,
+      "id": "archive_index_wheel",
+      "role": "visual_orientation_only"
+    },
+    "routeLengthMeters": 18.308794739643957,
+    "routePointsBlenderMeters": [
+      [
+        -13.4,
+        2.0,
+        0.06
+      ],
+      [
+        -16.0,
+        7.0,
+        2.06
+      ],
+      [
+        -19.0,
+        12.0,
+        4.06
+      ],
+      [
+        -22.0,
+        17.0,
+        6.06
+      ]
+    ],
+    "visualLaneWidthMeters": 2.18
+  },
+  "frozenInputsAfter": {
+    "catalogConstants": {
+      "actualSha256": "7dd9dc7b6aa00207d819434695d3daae6e313d1947e19891bab97d5207908dcd",
+      "bytes": 164,
+      "expectedSha256": "7dd9dc7b6aa00207d819434695d3daae6e313d1947e19891bab97d5207908dcd",
+      "path": "src/content/maps/constants.ts"
+    },
+    "parentPressHallV33Export": {
+      "actualSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "bytes": 13301752,
+      "expectedSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb"
+    },
+    "parentPressHallV33Source": {
+      "actualSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+      "bytes": 2276648,
+      "expectedSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/source/inkfall_foundry_press_hall_material_export_v3_3.optimized-export.blend"
+    },
+    "revision3AuthorityFixture": {
+      "actualSha256": "dbdb5cfca1ea9aa1088457c89e1d269e9020b2ca3a67cb9ae1cc586703ed95ca",
+      "bytes": 214170,
+      "expectedSha256": "dbdb5cfca1ea9aa1088457c89e1d269e9020b2ca3a67cb9ae1cc586703ed95ca",
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json"
+    },
+    "revision3Collision": {
+      "actualSha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+      "bytes": 605112,
+      "expectedSha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb"
+    },
+    "revision3Package": {
+      "actualSha256": "53eaa6dd91fa407cdaf5738e0fe9193c72a20e209a412258dd01083c2b6fd67b",
+      "bytes": 10104,
+      "expectedSha256": "53eaa6dd91fa407cdaf5738e0fe9193c72a20e209a412258dd01083c2b6fd67b",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json"
+    },
+    "revision3Render": {
+      "actualSha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
+      "bytes": 614340,
+      "expectedSha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/render.graybox.glb"
+    }
+  },
+  "frozenInputsBefore": {
+    "catalogConstants": {
+      "actualSha256": "7dd9dc7b6aa00207d819434695d3daae6e313d1947e19891bab97d5207908dcd",
+      "bytes": 164,
+      "expectedSha256": "7dd9dc7b6aa00207d819434695d3daae6e313d1947e19891bab97d5207908dcd",
+      "path": "src/content/maps/constants.ts"
+    },
+    "parentPressHallV33Export": {
+      "actualSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "bytes": 13301752,
+      "expectedSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb"
+    },
+    "parentPressHallV33Source": {
+      "actualSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+      "bytes": 2276648,
+      "expectedSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/source/inkfall_foundry_press_hall_material_export_v3_3.optimized-export.blend"
+    },
+    "revision3AuthorityFixture": {
+      "actualSha256": "dbdb5cfca1ea9aa1088457c89e1d269e9020b2ca3a67cb9ae1cc586703ed95ca",
+      "bytes": 214170,
+      "expectedSha256": "dbdb5cfca1ea9aa1088457c89e1d269e9020b2ca3a67cb9ae1cc586703ed95ca",
+      "path": "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json"
+    },
+    "revision3Collision": {
+      "actualSha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+      "bytes": 605112,
+      "expectedSha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb"
+    },
+    "revision3Package": {
+      "actualSha256": "53eaa6dd91fa407cdaf5738e0fe9193c72a20e209a412258dd01083c2b6fd67b",
+      "bytes": 10104,
+      "expectedSha256": "53eaa6dd91fa407cdaf5738e0fe9193c72a20e209a412258dd01083c2b6fd67b",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json"
+    },
+    "revision3Render": {
+      "actualSha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
+      "bytes": 614340,
+      "expectedSha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6",
+      "path": "assets/source/maps/inkfall-foundry/revisions/revision-3/export/render.graybox.glb"
+    }
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "builder": {
+      "bytes": 56368,
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/build_press_archive_rev4.py",
+      "sha256": "c34bb568c3eb1f6158f19578338be6acb39ae0ffea71dfd4217b53041c5661dd"
+    },
+    "id": "inkfall_foundry_press_archive_rev4",
+    "version": 2
+  },
+  "influenceBoundary": {
+    "adaptedAbstractPrinciples": [
+      "one recognizable focal landmark",
+      "oversized functional route wayfinding",
+      "compressed side-route contrast",
+      "disciplined route-color hierarchy"
+    ],
+    "copiedAssets": false,
+    "copiedCode": false,
+    "copiedCoordinates": false,
+    "copiedGeometry": false,
+    "copiedWording": false,
+    "licenseTextReliedUpon": false,
+    "sourceAudited": "NotHereButAfk/Ev.io at 92b9716, d2ddb75 landmark delta"
+  },
+  "joinedRev4Meshes": [
+    {
+      "material": "V3_AQUA_INDICATOR",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_AQUA_INDICATOR",
+      "sourceObjectCount": 3,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_CAST_IRON",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_CAST_IRON",
+      "sourceObjectCount": 20,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_CHIPPED_SAFETY_RED",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_CHIPPED_SAFETY_RED",
+      "sourceObjectCount": 4,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_GARDEN_FRAGMENT",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_GARDEN_FRAGMENT",
+      "sourceObjectCount": 15,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_GREASED_LINKAGE",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_GREASED_LINKAGE",
+      "sourceObjectCount": 16,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_INK_BLACK",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_INK_BLACK",
+      "sourceObjectCount": 9,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_USED_CERAMIC",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_USED_CERAMIC",
+      "sourceObjectCount": 2,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_WORN_AMBER",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_WORN_AMBER",
+      "sourceObjectCount": 8,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_WORN_STEEL",
+      "name": "V4OPT_ARCHIVE_LANDING_V3_WORN_STEEL",
+      "sourceObjectCount": 28,
+      "zone": "archive_landing"
+    },
+    {
+      "material": "V3_AQUA_INDICATOR",
+      "name": "V4OPT_ARCHIVE_RISE_V3_AQUA_INDICATOR",
+      "sourceObjectCount": 3,
+      "zone": "archive_rise"
+    },
+    {
+      "material": "V3_CAST_IRON",
+      "name": "V4OPT_ARCHIVE_RISE_V3_CAST_IRON",
+      "sourceObjectCount": 33,
+      "zone": "archive_rise"
+    },
+    {
+      "material": "V3_CHIPPED_SAFETY_RED",
+      "name": "V4OPT_ARCHIVE_RISE_V3_CHIPPED_SAFETY_RED",
+      "sourceObjectCount": 2,
+      "zone": "archive_rise"
+    },
+    {
+      "material": "V3_INK_BLACK",
+      "name": "V4OPT_ARCHIVE_RISE_V3_INK_BLACK",
+      "sourceObjectCount": 3,
+      "zone": "archive_rise"
+    },
+    {
+      "material": "V3_USED_CERAMIC",
+      "name": "V4OPT_ARCHIVE_RISE_V3_USED_CERAMIC",
+      "sourceObjectCount": 6,
+      "zone": "archive_rise"
+    },
+    {
+      "material": "V3_WORN_AMBER",
+      "name": "V4OPT_ARCHIVE_RISE_V3_WORN_AMBER",
+      "sourceObjectCount": 6,
+      "zone": "archive_rise"
+    },
+    {
+      "material": "V3_WORN_STEEL",
+      "name": "V4OPT_ARCHIVE_RISE_V3_WORN_STEEL",
+      "sourceObjectCount": 6,
+      "zone": "archive_rise"
+    }
+  ],
+  "kind": "inkfall_foundry_rev4_press_archive_authored_art_build_report",
+  "materialValueHierarchy": {
+    "V3_AQUA_INDICATOR": {
+      "baseColorLinear": [
+        0.018,
+        0.31,
+        0.34,
+        1.0
+      ],
+      "metallic": 0.05,
+      "roughness": 0.48
+    },
+    "V3_CAST_IRON": {
+      "baseColorLinear": [
+        0.028,
+        0.043,
+        0.049,
+        1.0
+      ],
+      "metallic": 0.16,
+      "roughness": 0.66
+    },
+    "V3_CHIPPED_SAFETY_RED": {
+      "baseColorLinear": [
+        0.34,
+        0.025,
+        0.009,
+        1.0
+      ],
+      "metallic": 0.05,
+      "roughness": 0.68
+    },
+    "V3_GARDEN_FRAGMENT": {
+      "baseColorLinear": [
+        0.2,
+        0.135,
+        0.055,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.82
+    },
+    "V3_GREASED_LINKAGE": {
+      "baseColorLinear": [
+        0.02,
+        0.014,
+        0.009,
+        1.0
+      ],
+      "metallic": 0.35,
+      "roughness": 0.44
+    },
+    "V3_INK_BLACK": {
+      "baseColorLinear": [
+        0.008,
+        0.012,
+        0.016,
+        1.0
+      ],
+      "metallic": 0.02,
+      "roughness": 0.78
+    },
+    "V3_USED_CERAMIC": {
+      "baseColorLinear": [
+        0.31,
+        0.345,
+        0.355,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.74
+    },
+    "V3_WORN_AMBER": {
+      "baseColorLinear": [
+        0.46,
+        0.205,
+        0.014,
+        1.0
+      ],
+      "metallic": 0.1,
+      "roughness": 0.56
+    },
+    "V3_WORN_STEEL": {
+      "baseColorLinear": [
+        0.115,
+        0.155,
+        0.165,
+        1.0
+      ],
+      "metallic": 0.3,
+      "roughness": 0.58
+    }
+  },
+  "nonClaims": [
+    "G5_NOT_PASSED",
+    "REVISION_3_NOT_PROMOTED",
+    "REVISION_4_ART_NOT_DEFAULT",
+    "RENDER_GEOMETRY_NOT_COLLISION_AUTHORITY",
+    "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
+    "HUMAN_2_4_8_PLAYER_REVIEW_NOT_PASSED",
+    "TARGET_HARDWARE_PERFORMANCE_NOT_ACCEPTED",
+    "FOCAL_LANDMARK_HAS_NO_OBJECTIVE_OR_GAMEPLAY_SEMANTICS",
+    "NO_DEPLOYMENT_OR_PUBLISHING_AUTHORIZATION_USED"
+  ],
+  "parent": {
+    "export": {
+      "actualSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "bytes": 13301752,
+      "expectedSha256": "4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb"
+    },
+    "id": "inkfall_foundry_press_hall_material_export_v3_3",
+    "source": {
+      "actualSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+      "bytes": 2276648,
+      "expectedSha256": "9c19ba572b9808aa1776ab1c96e7653d381ba8c5b2d53c4cd28601c7517cf5a5",
+      "path": "assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/source/inkfall_foundry_press_hall_material_export_v3_3.optimized-export.blend"
+    }
+  },
+  "reviewEvidenceContract": {
+    "gameplayContinuity": {
+      "camera": {
+        "clipEndMeters": 500.0,
+        "clipStartMeters": 0.05000000074505806,
+        "distanceToTargetMeters": 38.571082429114824,
+        "lensMillimeters": 28.0,
+        "locationBlenderMeters": [
+          16.0,
+          -7.0,
+          1.7200000286102295
+        ],
+        "name": "CAM_V4_GAMEPLAY_CONTINUITY",
+        "projection": "PERSP",
+        "rotationEulerRadians": [
+          1.6429336071014404,
+          9.04831196635314e-08,
+          1.0838971138000488
+        ],
+        "targetBlenderMeters": [
+          -18.0,
+          11.0,
+          4.5
+        ]
+      },
+      "intent": "single level-wide gameplay-eye-height frame showing Press Hall, the west ascent, and the Archive landmark in one continuous view",
+      "resolution": [
+        1600,
+        900
+      ],
+      "view": "gameplay_continuity"
+    },
+    "landmarkContext": {
+      "camera": {
+        "clipEndMeters": 500.0,
+        "clipStartMeters": 0.05000000074505806,
+        "distanceToTargetMeters": 13.594484217316685,
+        "lensMillimeters": 45.0,
+        "locationBlenderMeters": [
+          -22.0,
+          5.5,
+          9.800000190734863
+        ],
+        "name": "CAM_V4_INDEX_WHEEL",
+        "projection": "PERSP",
+        "rotationEulerRadians": [
+          1.4528279304504395,
+          -0.0,
+          0.0
+        ],
+        "targetBlenderMeters": [
+          -22.0,
+          19.0,
+          8.199999809265137
+        ]
+      },
+      "intent": "pulled-back spatial framing of the Archive index wheel, racks, landing deck, gantry, and return rail",
+      "resolution": [
+        1600,
+        900
+      ],
+      "view": "index_wheel"
+    },
+    "overheadContext": {
+      "camera": {
+        "clipEndMeters": 500.0,
+        "clipStartMeters": 0.05000000074505806,
+        "distanceToTargetMeters": 42.75500102098803,
+        "frameAspect": 1.3333333333333333,
+        "frameMarginRatio": 0.08,
+        "framedMeshBoundsXY": [
+          -26.0,
+          -11.84000015258789,
+          22.760000228881836,
+          24.604768753051758
+        ],
+        "locationBlenderMeters": [
+          -1.619999885559082,
+          6.382384300231934,
+          42.755001068115234
+        ],
+        "name": "CAM_V4_OVERHEAD_CONTEXT",
+        "orthoScaleMeters": 52.66080093383789,
+        "projection": "ORTHO",
+        "rotationEulerRadians": [
+          0.0,
+          -0.0,
+          0.0
+        ],
+        "targetBlenderMeters": [
+          -1.619999885559082,
+          6.382384300231934,
+          0.0
+        ]
+      },
+      "intent": "orthographic, zero-roll top-down frame containing the complete bounded Press Hall parent plus Press-to-Archive authored expansion without edge clipping; this is not map-wide Inkfall coverage",
+      "resolution": [
+        1600,
+        1200
+      ],
+      "view": "overhead_context"
+    }
+  },
+  "sceneFacts": {
+    "materialCount": 9,
+    "materialNames": [
+      "V3_AQUA_INDICATOR",
+      "V3_CAST_IRON",
+      "V3_CHIPPED_SAFETY_RED",
+      "V3_GARDEN_FRAGMENT",
+      "V3_GREASED_LINKAGE",
+      "V3_INK_BLACK",
+      "V3_USED_CERAMIC",
+      "V3_WORN_AMBER",
+      "V3_WORN_STEEL"
+    ],
+    "meshCount": 45,
+    "parentMeshCount": 29,
+    "rev4JoinedMeshCount": 16,
+    "triangleCount": 190788
+  },
+  "schemaVersion": 1,
+  "scope": "G5_INKFALL_REV4_PRESS_ARCHIVE_RENDER_ONLY_NON_DEFAULT",
+  "status": "INKFALL_REV4_PRESS_ARCHIVE_ART_BUILD_PASS_G5_OPEN"
+}
