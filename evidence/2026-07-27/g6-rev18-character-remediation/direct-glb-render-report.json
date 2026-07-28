@@ -1,0 +1,980 @@
+{
+  "schema": "kyx-g6-rev18-direct-glb-render-report-v1",
+  "generatedAt": "2026-07-27T19:15:26.813161+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "G6_REV18_CHARACTER_REMEDIATION_SLICE",
+  "status": "REV18_DIRECT_GLB_VISUAL_EVIDENCE_COMPLETE_HUMAN_REVIEW_REQUIRED_NOT_G6",
+  "candidateDisposition": {
+    "default": false,
+    "releaseEligible": false,
+    "g6Accepted": false,
+    "humanVisualReviewRequired": true
+  },
+  "lod0Import": {
+    "source": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-lod0.runtime-candidate.glb",
+    "sha256": "50a958fcf24dbc2e840e41a9cad8923cb28e6a85a0d96bee55c52e2a182e4145",
+    "bytes": 4640744,
+    "operatorResult": [
+      "FINISHED"
+    ],
+    "runtimeMeshes": [
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+      "KYX_REV18_LOD0_COMPACT_RIFLE",
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT"
+    ],
+    "armature": "KYX_REV18_RIG_67_JOINT_WITH_SOCKETS",
+    "boneCount": 67,
+    "actions": [
+      "KYX_REV18_FP_AIRBORNE",
+      "KYX_REV18_FP_FIRE",
+      "KYX_REV18_FP_IDLE",
+      "KYX_REV18_FP_LAND",
+      "KYX_REV18_FP_RELOAD",
+      "KYX_REV18_FP_SPRINT",
+      "KYX_REV18_TP_AIRBORNE_LOOP",
+      "KYX_REV18_TP_DEATH_FRONT",
+      "KYX_REV18_TP_HIT_REACTION_FRONT",
+      "KYX_REV18_TP_IDLE",
+      "KYX_REV18_TP_JUMP_START",
+      "KYX_REV18_TP_LAND",
+      "KYX_REV18_TP_MELEE",
+      "KYX_REV18_TP_PRIMARY_FIRE",
+      "KYX_REV18_TP_RELOAD",
+      "KYX_REV18_TP_RUN",
+      "KYX_REV18_TP_WALK"
+    ],
+    "topologyBefore": {
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR": {
+        "meshData": "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR_MESH",
+        "vertices": 11434,
+        "edges": 28501,
+        "polygons": 17919,
+        "triangles": 17919,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_FITTED_ARMOR_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_LOD0_COMPACT_RIFLE": {
+        "meshData": "KYX_REV18_LOD0_COMPACT_RIFLE_MESH",
+        "vertices": 21110,
+        "edges": 21796,
+        "polygons": 7356,
+        "triangles": 7356,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_RIFLE_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT": {
+        "meshData": "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+        "vertices": 12010,
+        "edges": 33134,
+        "polygons": 21160,
+        "triangles": 21160,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_UNDERSUIT_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "topologyAfter": {
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR": {
+        "meshData": "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR_MESH",
+        "vertices": 11434,
+        "edges": 28501,
+        "polygons": 17919,
+        "triangles": 17919,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_FITTED_ARMOR_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_LOD0_COMPACT_RIFLE": {
+        "meshData": "KYX_REV18_LOD0_COMPACT_RIFLE_MESH",
+        "vertices": 21110,
+        "edges": 21796,
+        "polygons": 7356,
+        "triangles": 7356,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_RIFLE_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT": {
+        "meshData": "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+        "vertices": 12010,
+        "edges": 33134,
+        "polygons": 21160,
+        "triangles": 21160,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_UNDERSUIT_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "sourceAfter": {
+      "sha256": "50a958fcf24dbc2e840e41a9cad8923cb28e6a85a0d96bee55c52e2a182e4145",
+      "bytes": 4640744
+    }
+  },
+  "meleeImport": {
+    "source": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-melee-proof.runtime-candidate.glb",
+    "sha256": "3def1d370e6fabcf7e741f64920e110bc748955f5a4c52daddcb139525bf74bb",
+    "bytes": 3189852,
+    "operatorResult": [
+      "FINISHED"
+    ],
+    "runtimeMeshes": [
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT",
+      "KYX_REV18_MELEE_SOCKET_DERIVED_BLADE"
+    ],
+    "armature": "KYX_REV18_RIG_67_JOINT_WITH_SOCKETS",
+    "boneCount": 67,
+    "actions": [
+      "KYX_REV18_FP_AIRBORNE",
+      "KYX_REV18_FP_FIRE",
+      "KYX_REV18_FP_IDLE",
+      "KYX_REV18_FP_LAND",
+      "KYX_REV18_FP_RELOAD",
+      "KYX_REV18_FP_SPRINT",
+      "KYX_REV18_TP_AIRBORNE_LOOP",
+      "KYX_REV18_TP_DEATH_FRONT",
+      "KYX_REV18_TP_HIT_REACTION_FRONT",
+      "KYX_REV18_TP_IDLE",
+      "KYX_REV18_TP_JUMP_START",
+      "KYX_REV18_TP_LAND",
+      "KYX_REV18_TP_MELEE",
+      "KYX_REV18_TP_PRIMARY_FIRE",
+      "KYX_REV18_TP_RELOAD",
+      "KYX_REV18_TP_RUN",
+      "KYX_REV18_TP_WALK"
+    ],
+    "topologyBefore": {
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR": {
+        "meshData": "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR_MESH",
+        "vertices": 11434,
+        "edges": 28501,
+        "polygons": 17919,
+        "triangles": 17919,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_FITTED_ARMOR_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT": {
+        "meshData": "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+        "vertices": 12010,
+        "edges": 33134,
+        "polygons": 21160,
+        "triangles": 21160,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_UNDERSUIT_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_MELEE_SOCKET_DERIVED_BLADE": {
+        "meshData": "KYX_REV18_MELEE_SOCKET_DERIVED_BLADE_MESH",
+        "vertices": 638,
+        "edges": 799,
+        "polygons": 320,
+        "triangles": 320,
+        "uvLayers": [],
+        "colorAttributes": [],
+        "materials": [
+          "KYX_REV18_FITTED_ARMOR_VERTEX_COLOR.001"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "topologyAfter": {
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR": {
+        "meshData": "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR_MESH",
+        "vertices": 11434,
+        "edges": 28501,
+        "polygons": 17919,
+        "triangles": 17919,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_FITTED_ARMOR_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT": {
+        "meshData": "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT_MESH",
+        "vertices": 12010,
+        "edges": 33134,
+        "polygons": 21160,
+        "triangles": 21160,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [
+          "Color"
+        ],
+        "materials": [
+          "KYX_REV18_UNDERSUIT_VERTEX_COLOR"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV18_MELEE_SOCKET_DERIVED_BLADE": {
+        "meshData": "KYX_REV18_MELEE_SOCKET_DERIVED_BLADE_MESH",
+        "vertices": 638,
+        "edges": 799,
+        "polygons": 320,
+        "triangles": 320,
+        "uvLayers": [],
+        "colorAttributes": [],
+        "materials": [
+          "KYX_REV18_FITTED_ARMOR_VERTEX_COLOR.001"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "sourceAfter": {
+      "sha256": "3def1d370e6fabcf7e741f64920e110bc748955f5a4c52daddcb139525bf74bb",
+      "bytes": 3189852
+    }
+  },
+  "renderConfiguration": {
+    "eightView": {
+      "engine": "BLENDER_EEVEE",
+      "look": "AgX - Medium High Contrast",
+      "exposure": -0.800000011920929,
+      "worldColor": [
+        0.0035,
+        0.008,
+        0.014,
+        1.0
+      ],
+      "worldStrength": 0.16,
+      "renderHelpers": {
+        "cameraCountCreatedPerView": 1,
+        "lights": [
+          "KYX_REV18_DIRECT_GLB_Key",
+          "KYX_REV18_DIRECT_GLB_WarmFill",
+          "KYX_REV18_DIRECT_GLB_CyanRim",
+          "KYX_REV18_DIRECT_GLB_ContactFill"
+        ],
+        "floor": "KYX_REV18_DIRECT_GLB_Floor",
+        "floorZ": -0.026979
+      },
+      "rev18NeutralInspectionLighting": true
+    },
+    "melee": {
+      "engine": "BLENDER_EEVEE",
+      "look": "AgX - Medium High Contrast",
+      "exposure": -0.800000011920929,
+      "worldColor": [
+        0.0035,
+        0.008,
+        0.014,
+        1.0
+      ],
+      "worldStrength": 0.16,
+      "renderHelpers": {
+        "cameraCountCreatedPerView": 1,
+        "lights": [
+          "KYX_REV18_DIRECT_GLB_Key",
+          "KYX_REV18_DIRECT_GLB_WarmFill",
+          "KYX_REV18_DIRECT_GLB_CyanRim",
+          "KYX_REV18_DIRECT_GLB_ContactFill"
+        ],
+        "floor": "KYX_REV18_DIRECT_GLB_Floor",
+        "floorZ": -0.026979
+      },
+      "rev18NeutralInspectionLighting": true
+    }
+  },
+  "eightView": [
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-front.png",
+      "sha256": "3e465f815819c1d5e3c4516c2f4f12a9c74117842d241999d4a7e9a3383d8a72",
+      "bytes": 1056472,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "FRONT",
+      "camera": {
+        "location": [
+          -0.070638,
+          4.647217,
+          2.007481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-front-right.png",
+      "sha256": "bd9ee6786c2e40fb6228330454c94d08f4a42650ed61f3e2b55f816bda97216d",
+      "bytes": 1208221,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "FRONT RIGHT THREE-QUARTER",
+      "camera": {
+        "location": [
+          3.729362,
+          3.247217,
+          2.057481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-right.png",
+      "sha256": "ea0e1375f718bbb5446da5d33d982f16672daabe89bf8d8447eeffce9b180a63",
+      "bytes": 1154716,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "RIGHT PROFILE",
+      "camera": {
+        "location": [
+          5.129362,
+          -0.552783,
+          2.007481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-rear-right.png",
+      "sha256": "4a4de8aa9dc4a48f5ac45f324e44973e4e972503be738f7db41e49c3ed1e3af3",
+      "bytes": 1260849,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "REAR RIGHT THREE-QUARTER",
+      "camera": {
+        "location": [
+          3.729362,
+          -4.352783,
+          2.057481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-rear.png",
+      "sha256": "74ab09ed77323218f275f619ec1863e6b21dad41c2091c2c5f6c5f84b9c15bb9",
+      "bytes": 1160351,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "REAR",
+      "camera": {
+        "location": [
+          -0.070638,
+          -5.752783,
+          2.007481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-rear-left.png",
+      "sha256": "c7accb44d13cbd649701eec891e4dc008f88895d33b1693f55dc0d3e4b06a7bd",
+      "bytes": 1264824,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "REAR LEFT THREE-QUARTER",
+      "camera": {
+        "location": [
+          -3.870638,
+          -4.352783,
+          2.057481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-left.png",
+      "sha256": "f460b2f38bee2d2b1bc4eada0bf12ebd619c7ea2795bf694df264dbb73fad031",
+      "bytes": 1167452,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "LEFT PROFILE",
+      "camera": {
+        "location": [
+          -5.270638,
+          -0.552783,
+          2.007481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\eight-view\\kyx-v6c-character-rev18-eight-view-front-left.png",
+      "sha256": "1677e3f73fb6b04fb6b24b63bcf27c3f294cd230acf3f89d4856f5c81bf2fff4",
+      "bytes": 1204617,
+      "resolution": [
+        1000,
+        1250
+      ],
+      "action": "KYX_REV18_TP_IDLE",
+      "frame": 13,
+      "label": "FRONT LEFT THREE-QUARTER",
+      "camera": {
+        "location": [
+          -3.870638,
+          3.247217,
+          2.057481
+        ],
+        "target": [
+          -0.070638,
+          -0.552783,
+          0.907481
+        ],
+        "orthographicScale": 2.024168
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.432406,
+          -1.23761,
+          -0.015037
+        ],
+        "maximum": [
+          0.29113,
+          0.172044,
+          1.776261
+        ]
+      }
+    }
+  ],
+  "dynamicMeleeContact": [
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-frame-01.png",
+      "sha256": "b21399ae5594bc5f1a33bab6a3635245fe750dfecbb70d3e8497833210a5fa70",
+      "bytes": 1334646,
+      "resolution": [
+        1150,
+        1250
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 1,
+      "label": "MELEE WINDUP",
+      "camera": {
+        "location": [
+          -3.597306,
+          4.738709,
+          2.191019
+        ],
+        "target": [
+          0.102694,
+          0.13871,
+          0.891019
+        ],
+        "orthographicScale": 2.15
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.291113,
+          -0.188851,
+          -0.015038
+        ],
+        "maximum": [
+          0.496501,
+          0.50627,
+          1.744296
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-frame-06.png",
+      "sha256": "b6c03050985d2578f2e1dd53d4a7d9f7b706eb7fa887d6fb2f4d14fc6e84ce90",
+      "bytes": 1344662,
+      "resolution": [
+        1150,
+        1250
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 6,
+      "label": "MELEE MAXIMUM WINDUP",
+      "camera": {
+        "location": [
+          -3.68298,
+          4.901971,
+          2.12276
+        ],
+        "target": [
+          0.01702,
+          0.301972,
+          0.82276
+        ],
+        "orthographicScale": 2.15
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.488177,
+          -0.196128,
+          -0.015038
+        ],
+        "maximum": [
+          0.522216,
+          0.840071,
+          1.611755
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-frame-11.png",
+      "sha256": "26b20402df8db0e5d7ed18d9a517a4b09fd86b76a250fa9a5bfb1d673a0e096e",
+      "bytes": 1358128,
+      "resolution": [
+        1150,
+        1250
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 11,
+      "label": "MELEE ACCELERATION",
+      "camera": {
+        "location": [
+          -3.693948,
+          4.844429,
+          2.109406
+        ],
+        "target": [
+          0.006053,
+          0.244429,
+          0.809407
+        ],
+        "orthographicScale": 2.15
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.506138,
+          -0.196861,
+          -0.015038
+        ],
+        "maximum": [
+          0.518243,
+          0.725718,
+          1.585825
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-frame-15.png",
+      "sha256": "485f9e6db78fc808a5b46836d5ccf50f96b00c4a391f53e257801fec6f6fd91a",
+      "bytes": 1317594,
+      "resolution": [
+        1150,
+        1250
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 15,
+      "label": "MELEE STRIKE",
+      "camera": {
+        "location": [
+          -3.59816,
+          4.725133,
+          2.188093
+        ],
+        "target": [
+          0.10184,
+          0.125134,
+          0.888093
+        ],
+        "orthographicScale": 2.15
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.297665,
+          -0.189301,
+          -0.015038
+        ],
+        "maximum": [
+          0.501345,
+          0.479568,
+          1.738614
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-frame-19.png",
+      "sha256": "576e84ed7829747cef77926c137f913d4464f9ba53785c6f12bc9b7d7cbc1a07",
+      "bytes": 1300583,
+      "resolution": [
+        1150,
+        1250
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 19,
+      "label": "MELEE FOLLOW THROUGH",
+      "camera": {
+        "location": [
+          -3.620219,
+          4.535536,
+          2.205009
+        ],
+        "target": [
+          0.079781,
+          -0.064464,
+          0.905009
+        ],
+        "orthographicScale": 2.15
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.291113,
+          -0.466644,
+          -0.015038
+        ],
+        "maximum": [
+          0.450674,
+          0.377717,
+          1.771461
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-frame-24.png",
+      "sha256": "ac570c342b94fa899d5bd942a011cd9b21c378e1b8033e6c8921638e9a009259",
+      "bytes": 1307144,
+      "resolution": [
+        1150,
+        1250
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 24,
+      "label": "MELEE RECOVERY",
+      "camera": {
+        "location": [
+          -3.599951,
+          4.628295,
+          2.193706
+        ],
+        "target": [
+          0.100049,
+          0.028296,
+          0.893706
+        ],
+        "orthographicScale": 2.15
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.291113,
+          -0.345144,
+          -0.015038
+        ],
+        "maximum": [
+          0.49121,
+          0.441735,
+          1.749514
+        ]
+      }
+    },
+    {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\evidence\\2026-07-27\\g6-rev18-character-remediation\\renders\\melee-contact\\kyx-v6c-character-rev18-melee-contact-close.png",
+      "sha256": "dc67fa55d057bc5ddd51e36888dbf9280892ab9b79e0b16c3bbcc8be0aec1db5",
+      "bytes": 1572623,
+      "resolution": [
+        1400,
+        1000
+      ],
+      "action": "KYX_REV18_TP_MELEE",
+      "frame": 15,
+      "label": "MELEE HAND / HILT / SOCKET CONTACT",
+      "camera": {
+        "location": [
+          -0.961443,
+          1.76108,
+          1.761744
+        ],
+        "target": [
+          0.088557,
+          0.41108,
+          1.311744
+        ],
+        "orthographicScale": 0.62
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.297665,
+          -0.189301,
+          -0.015038
+        ],
+        "maximum": [
+          0.501345,
+          0.479568,
+          1.738614
+        ]
+      }
+    }
+  ],
+  "assertions": {
+    "lod0ExactSourceUnchanged": true,
+    "meleeExactSourceUnchanged": true,
+    "lod0HasThreeRuntimeMeshes": true,
+    "meleeHasThreeRuntimeMeshes": true,
+    "lod0HasSeventeenActions": true,
+    "meleeHasSeventeenActions": true,
+    "allEightViewsRendered": true,
+    "allDynamicContactViewsRendered": true,
+    "topologyUnchangedDuringRenders": true
+  },
+  "visualDecision": "PENDING_EXPLICIT_HUMAN_REVIEW_NOT_G6",
+  "nonClaims": [
+    "Rendered evidence does not grant visual acceptance.",
+    "Sampled melee frames do not prove every-frame clipping freedom.",
+    "The melee proof GLB is not a runtime equipment promotion.",
+    "Runtime camera and gameplay population review remain separate."
+  ]
+}

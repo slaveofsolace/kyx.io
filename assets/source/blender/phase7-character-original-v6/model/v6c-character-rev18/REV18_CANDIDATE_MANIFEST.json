@@ -1,0 +1,108 @@
+{
+  "schema": "kyx-g6-rev18-character-remediation-manifest-v1",
+  "revision": "rev18",
+  "status": "SUBSTANTIVE_FIRST_REMEDIATION_CANDIDATE_HUMAN_REVIEW_REQUIRED_NOT_G6",
+  "baseCommit": "6e67732f7525a5df7cbf1b17409157a208aec059",
+  "default": false,
+  "releaseEligible": false,
+  "g6Accepted": false,
+  "humanVisualReviewRequired": true,
+  "runtimeOptIn": null,
+  "source": {
+    "blend": "kyx-v6c-character-rev18-master.blend",
+    "sha256": "7b22eee2f41d30ee633cb216e837d2c5101d14dac90a63d2f05452c4a8e81f37",
+    "bytes": 6204503,
+    "derivedFrom": "../v6c-character-rev17/kyx-v6c-character-rev17-master.blend",
+    "derivedFromSha256": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+    "derivedSourceUnchanged": true
+  },
+  "provenance": {
+    "record": "PROVENANCE.md",
+    "authoringMethod": "Blender Python remediation of the repository-owned Rev17 master",
+    "authoringScript": "../../scripts/author_remediate_v6c_character_rev18.py",
+    "renderScript": "../../scripts/render_v6c_character_rev18.py",
+    "validationScript": "../../scripts/validate_v6c_character_rev18.py",
+    "blenderVersion": "5.1.2",
+    "thirdPartyMeshesAdded": false,
+    "thirdPartyRigsAdded": false,
+    "thirdPartyMotionAdded": false,
+    "downloadedRuntimeContentAdded": false,
+    "legalAndHumanReview": "PENDING"
+  },
+  "assets": {
+    "lod0": {
+      "path": "export/kyx-v6c-character-rev18-lod0.runtime-candidate.glb",
+      "sha256": "50a958fcf24dbc2e840e41a9cad8923cb28e6a85a0d96bee55c52e2a182e4145",
+      "bytes": 4640744,
+      "triangles": 46435
+    },
+    "lod1": {
+      "path": "export/kyx-v6c-character-rev18-lod1.runtime-candidate.glb",
+      "sha256": "05f8ba05ea214b3e9f6b6829272f5bd04753bc755699d670ac513c21b2c20582",
+      "bytes": 2677980,
+      "triangles": 13982
+    },
+    "lod2": {
+      "path": "export/kyx-v6c-character-rev18-lod2.runtime-candidate.glb",
+      "sha256": "13c4af9608851a1cd7e6a7e884a33cfc860864c3b30dcad5b5cf1924e61c6cfe",
+      "bytes": 1928388,
+      "triangles": 5184
+    },
+    "firstPerson": {
+      "path": "export/kyx-v6c-character-rev18-first-person.runtime-candidate.glb",
+      "sha256": "2b79ffe7470cfd9f8fab2228a644db58703262608d8e72d6ebe09237a28e9db0",
+      "bytes": 3586148,
+      "triangles": 27026
+    },
+    "meleeProof": {
+      "path": "export/kyx-v6c-character-rev18-melee-proof.runtime-candidate.glb",
+      "sha256": "3def1d370e6fabcf7e741f64920e110bc748955f5a4c52daddcb139525bf74bb",
+      "bytes": 3189852,
+      "triangles": 39399,
+      "normalRuntimeAsset": false
+    }
+  },
+  "sharedContract": {
+    "armature": "KYX_REV18_RIG_67_JOINT_WITH_SOCKETS",
+    "joints": 67,
+    "sockets": 15,
+    "clips": 17,
+    "lod0Meshes": 3,
+    "lod0Materials": 3,
+    "skins": 1,
+    "embeddedTextures": 0
+  },
+  "meleeContact": {
+    "action": "KYX_REV18_TP_MELEE",
+    "frameRange": [1, 24],
+    "sampledFrames": [1, 4, 7, 10, 13, 16, 19, 22, 24],
+    "singleSourceClock": true,
+    "bladeTransformSource": "socket_melee child of palm.R",
+    "worstHandToGripSurfaceGapMeters": 0.020736,
+    "thresholdMeters": 0.05,
+    "passesStructuralContactThreshold": true
+  },
+  "validation": {
+    "blenderExportReimportAssertions": "PASS",
+    "directGlbEightViewCapture": "PASS_EIGHT_OF_EIGHT",
+    "directGlbMeleeContactCapture": "PASS_SEVEN_OF_SEVEN",
+    "khronosValidator": "PASS_ZERO_ERRORS_WITH_THREE_DISCLOSED_WARNINGS_PER_GLB",
+    "khronosWarningCode": "NODE_SKINNED_MESH_NON_ROOT",
+    "khronosInfoCode": "UNUSED_OBJECT",
+    "runtimeGameplayCamera": "NOT_TESTED_CANDIDATE_NOT_INTEGRATED",
+    "visualAcceptance": "PENDING_HUMAN_REVIEW"
+  },
+  "visualDecision": {
+    "substantiveImprovementOverRev17": true,
+    "productionReady": false,
+    "g6Accepted": false
+  },
+  "nonClaims": [
+    "Rev18 does not replace public/soldier.glb or any default runtime asset.",
+    "The melee blade is evidence-only and absent from normal LOD and first-person exports.",
+    "Sampled frames do not prove every-frame clipping freedom.",
+    "The oversized head and visor, shoulder and waist transitions, and hand contact remain open.",
+    "Gameplay-camera presentation, runtime animation integration, and performance remain untested.",
+    "No G6 acceptance or release promotion is claimed."
+  ]
+}
