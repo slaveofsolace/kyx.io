@@ -90,7 +90,15 @@
       "filesFailed": 1,
       "testsPassed": 771,
       "testsFailed": 1,
-      "unrelatedFailure": "tests/integration/content/inkfallGrayboxLock.test.ts frozen-source hashes"
+      "worktreeOnlyFailure": "tests/integration/content/inkfallGrayboxLock.test.ts byte hashes for nine frozen JSON sources differed in this isolated checkout",
+      "branchTouchesFrozenSources": false
+    },
+    "canonicalPostMergeFocused": {
+      "filesPassed": 4,
+      "testsPassed": 20,
+      "testsFailed": 0,
+      "inkfallFrozenSourceTestsPassed": 7,
+      "viewmodelVisibilityTestsPassed": 4
     }
   },
   "screenshots": [

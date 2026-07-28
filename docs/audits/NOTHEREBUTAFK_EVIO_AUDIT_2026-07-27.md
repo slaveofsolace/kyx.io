@@ -62,9 +62,15 @@ with Inkfall Foundry's authored map/collision packages.
 ## Current disposition
 
 - Targeted audit: complete through upstream `436da5b`.
-- First adoption candidate: routed to the active sword/viewmodel fix.
-- Character-facing and gait/contact checks: routed into the Rev18 remediation
-  acceptance work.
+- The first adoption candidate triggered a live sword/viewmodel inventory. That
+  proved the visible obstruction was KYX.IO's own 15-primitive blockout arm on
+  both the default and Rev17 paths, not the sword. The bounded correction hides
+  that invalid arm for melee while retaining each rifle path; recoloring it
+  would have preserved false contact. Authored melee arms/contact remain G6
+  work.
+- Character-facing and gait/contact checks: Rev18 proved the validation
+  pipeline but failed visual acceptance; the findings are now routed into the
+  active Rev19 true-remodel pass.
 - Shared online character renderer: retained as a required post-model
   integration task, not falsely counted as complete.
 - Arena language: held as reference material pending human review of Inkfall

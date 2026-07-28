@@ -73,10 +73,11 @@ Sword corrected:
 - TypeScript typecheck: passed
 - focused ESLint: passed
 - production Vite build: passed
-- complete Vitest run: 98 files passed, 771/772 tests passed
-  - the sole failure is the pre-existing Inkfall frozen-source hash mismatch in
-    `tests/integration/content/inkfallGrayboxLock.test.ts`; this change touches
-    only `WeaponSystem.js` and its new visibility test
+- isolated-worktree complete Vitest run: 98 files passed, 771/772 tests passed
+  - the sole failure was a checkout-specific byte-hash mismatch across nine
+    frozen Inkfall JSON sources; this branch does not modify those sources
+- canonical main immediately after merge: 20/20 focused tests passed, including
+  all 7 Inkfall frozen-source checks and the 4 new visibility checks
 
 `tests/unit/player/g6ActionContract.test.ts` still passes the existing
 third-person socket-local melee origin/rotation/scale invariant.
