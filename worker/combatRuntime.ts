@@ -8,8 +8,12 @@ import {
   G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
   G4_TDM_MATCH_ROOM_CAPABILITY_ID,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
+  KYX_ARMORY_CATALOG_ID,
+  KYX_WEAPON_ID,
+  kyxWeaponProfile,
   type AuthorityFullSnapshot,
   type AuthorityRoomCombatOptions,
+  type AuthorityRoomDamageResult,
   type AuthorityRoomTickResult,
   type AuthoritySpawn,
   type ImpulseGrenadeCollisionSafeImpulseRequestV1,
@@ -651,11 +655,16 @@ export function combatSnapshotFromAuthority(
     throw new Error('AUTHORITY_COMBAT_SNAPSHOT_INCOMPLETE');
   }
   const projectiles = snapshot.impulseGrenadeProjectiles ?? [];
+  const weaponProjectiles = snapshot.weaponProjectiles ?? [];
   return Object.freeze({
     schemaVersion: 1,
     players: Object.freeze(combatPlayers.map((player) => {
       const combat = player.combat;
-      if (combat === undefined || combat.impulseGrenade === undefined) {
+      if (
+        combat === undefined
+        || combat.impulseGrenade === undefined
+        || combat.armory === undefined
+      ) {
         throw new Error('AUTHORITY_COMBAT_PLAYER_SNAPSHOT_INCOMPLETE');
       }
       return Object.freeze({
@@ -673,6 +682,27 @@ export function combatSnapshotFromAuthority(
         nextShotAtTick: combat.autoRifle.nextShotAtTick,
         reloadCompletesAtTick: combat.autoRifle.activeReload?.completesAtTick ?? null,
         acceptedShotCount: combat.autoRifle.acceptedShotCount,
+        weaponCatalogId: KYX_ARMORY_CATALOG_ID,
+        selectedWeaponSlot: combat.armory.selectedSlot,
+        selectedWeaponId: combat.armory.weapons.find(
+          (weapon) => kyxWeaponProfile(weapon.weaponId).slot === combat.armory.selectedSlot,
+        )?.weaponId ?? null,
+        weapons: Object.freeze(combat.armory.weapons.map((weapon) => {
+          const profile = kyxWeaponProfile(weapon.weaponId);
+          return Object.freeze({
+            weaponId: weapon.weaponId,
+            slot: profile.slot,
+            family: profile.family,
+            attackModel: profile.attackModel,
+            phase: weapon.phase,
+            magazineRounds: weapon.magazineRounds,
+            reserveRounds: weapon.reserveRounds,
+            readyAtTick: weapon.readyAtTick,
+            reloadCompletesAtTick: weapon.reloadCompletesAtTick,
+            nextAttackAtTick: weapon.nextAttackAtTick,
+            acceptedAttackCount: weapon.acceptedAttackCount,
+          });
+        })),
         grenadePhase: combat.impulseGrenade.phase,
         grenadeCooldownEndsAtTick: combat.impulseGrenade.cooldownEndsAtTick,
         acceptedThrowCount: combat.impulseGrenade.acceptedThrowCount,
@@ -699,6 +729,27 @@ export function combatSnapshotFromAuthority(
       bounceCount: projectile.bounceCount,
       settled: projectile.settled,
     }))),
+    ...(weaponProjectiles.length === 0
+      ? {}
+      : {
+          weaponProjectiles: Object.freeze(weaponProjectiles.map((projectile) => Object.freeze({
+            projectileId: combatWireId(projectile.projectileId),
+            ownerPlayerId: projectile.ownerPlayerId,
+            ownerTeamId: projectile.ownerTeamId,
+            weaponId: projectile.weaponId,
+            phase: projectile.phase,
+            spawnTick: projectile.spawnTick,
+            expiresAtTick: projectile.expiresAtTick,
+            xMillimeters: projectile.positionMillimeters.x,
+            yMillimeters: projectile.positionMillimeters.y,
+            zMillimeters: projectile.positionMillimeters.z,
+            velocityXMillimetersPerSecond: projectile.velocityMillimetersPerSecond.x,
+            velocityYMillimetersPerSecond: projectile.velocityMillimetersPerSecond.y,
+            velocityZMillimetersPerSecond: projectile.velocityMillimetersPerSecond.z,
+            radiusMillimeters: projectile.radiusMillimeters,
+            splashRadiusMillimeters: projectile.splashRadiusMillimeters,
+          }))),
+        }),
     match: Object.freeze({
       phase: snapshot.match.phase,
       phaseEndsAtTick: snapshot.match.phaseEndsAtTick,
@@ -722,6 +773,41 @@ export function reliableCombatEvents(
   tick: AuthorityRoomTickResult,
 ): readonly ReliableEventInput[] {
   const events: ReliableEventInput[] = [];
+  const appendDamage = (damage: AuthorityRoomDamageResult | null): void => {
+    if (damage === null || !damage.accepted) return;
+    events.push(Object.freeze({
+      serverTick: damage.damage.authorityTick,
+      kind: 'damageApplied',
+      subjectId: combatWireId(damage.damage.eventId),
+      actorId: damage.damage.sourcePlayerId,
+      targetId: damage.damage.targetPlayerId,
+      amountHealthPoints: damage.damage.healthDamagePoints,
+      presentation: Object.freeze({
+        schemaVersion: 1 as const,
+        kind: damage.damage.kind,
+        eventId: combatWireId(damage.damage.eventId),
+        eventSequence: damage.damage.eventSequence,
+        authorityTick: damage.damage.authorityTick,
+        causeId: combatWireId(damage.damage.causeId),
+        sourcePlayerId: damage.damage.sourcePlayerId,
+        targetPlayerId: damage.damage.targetPlayerId,
+        shieldDamagePoints: damage.damage.shieldDamagePoints,
+        healthDamagePoints: damage.damage.healthDamagePoints,
+        shieldPointsAfter: damage.damage.shieldPointsAfter,
+        healthPointsAfter: damage.damage.healthPointsAfter,
+      }),
+    }));
+    if (damage.death !== null) {
+      events.push(Object.freeze({
+        serverTick: damage.death.authorityTick,
+        kind: 'playerKilled',
+        subjectId: combatWireId(damage.death.eventId),
+        actorId: damage.death.killerPlayerId,
+        targetId: damage.death.victimPlayerId,
+        amountHealthPoints: null,
+      }));
+    }
+  };
   for (const event of tick.combatEvents ?? []) {
     if (event.kind !== 'auto_rifle_shot_accepted') continue;
     events.push(Object.freeze({
@@ -768,6 +854,129 @@ export function reliableCombatEvents(
         amountHealthPoints: null,
       }));
     }
+  }
+  for (const result of tick.weaponAttackResults ?? []) {
+    const attack = result.acceptedAttack;
+    const attackEventId = combatWireId(attack.eventId);
+    events.push(Object.freeze({
+      serverTick: attack.authorityTick,
+      kind: 'weaponAttackAccepted',
+      subjectId: attackEventId,
+      actorId: attack.playerId,
+      targetId: null,
+      amountHealthPoints: null,
+      presentation: Object.freeze({
+        schemaVersion: 1 as const,
+        kind: 'weapon_attack_accepted' as const,
+        eventId: attackEventId,
+        authorityTick: attack.authorityTick,
+        playerId: attack.playerId,
+        weaponId: attack.weaponId,
+        family: attack.family,
+        attackModel: attack.attackModel,
+        attackOrdinal: attack.attackOrdinal,
+        referenceDamagePoints: attack.referenceDamagePoints,
+        magazineRoundsAfter: attack.magazineRoundsAfter,
+        reserveRoundsAfter: attack.reserveRoundsAfter,
+        nextAttackAtTick: attack.nextAttackAtTick,
+        ballistics: Object.freeze(attack.ballistics.map((sample) => Object.freeze({
+          pelletIndex: sample.pelletIndex,
+          spreadRadiusMilliDegrees: sample.spreadRadiusMilliDegrees,
+          spreadPitchMilliDegrees: sample.spreadPitchMilliDegrees,
+          spreadYawMilliDegrees: sample.spreadYawMilliDegrees,
+        }))),
+      }),
+    }));
+    if (result.kind === 'hitscan') {
+      result.damages.forEach(appendDamage);
+    } else if (result.kind === 'projectile' && result.projectile !== null) {
+      const projectile = result.projectile;
+      const projectileEventId = combatWireId(projectile.projectileId);
+      events.push(Object.freeze({
+        serverTick: projectile.spawnTick,
+        kind: 'projectileSpawned',
+        subjectId: projectileEventId,
+        actorId: projectile.ownerPlayerId,
+        targetId: null,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'weapon_projectile_spawned' as const,
+          eventId: projectileEventId,
+          authorityTick: projectile.spawnTick,
+          projectileId: projectileEventId,
+          ownerPlayerId: projectile.ownerPlayerId,
+          ownerTeamId: projectile.ownerTeamId,
+          weaponId: projectile.weaponId,
+          spawnTick: projectile.spawnTick,
+          expiresAtTick: projectile.expiresAtTick,
+          positionMillimeters: Object.freeze({ ...projectile.positionMillimeters }),
+          velocityMillimetersPerSecond: Object.freeze({
+            ...projectile.velocityMillimetersPerSecond,
+          }),
+          radiusMillimeters: projectile.radiusMillimeters,
+          splashRadiusMillimeters: projectile.splashRadiusMillimeters,
+        }),
+      }));
+    } else if (result.kind === 'melee') {
+      const contactEventId = combatWireId(`${attack.eventId}.contact`);
+      events.push(Object.freeze({
+        serverTick: attack.authorityTick,
+        kind: 'meleeContact',
+        subjectId: contactEventId,
+        actorId: attack.playerId,
+        targetId: result.resolution.targetPlayerId,
+        amountHealthPoints: null,
+        presentation: Object.freeze({
+          schemaVersion: 1 as const,
+          kind: 'weapon_melee_contact' as const,
+          eventId: contactEventId,
+          authorityTick: attack.authorityTick,
+          playerId: attack.playerId,
+          weaponId: KYX_WEAPON_ID.melee,
+          attackOrdinal: attack.attackOrdinal,
+          outcome: result.resolution.outcome,
+          reason: result.resolution.reason,
+          targetPlayerId: result.resolution.targetPlayerId,
+          distanceMillimeters: result.resolution.distanceMillimeters,
+          damagePoints: result.resolution.damagePoints,
+          contactPointMillimeters: result.resolution.contactPointMillimeters === null
+            ? null
+            : Object.freeze({ ...result.resolution.contactPointMillimeters }),
+        }),
+      }));
+      appendDamage(result.damage);
+    }
+  }
+  for (const result of tick.weaponProjectileResults ?? []) {
+    const detonation = result.detonation;
+    const detonationEventId = combatWireId(detonation.eventId);
+    events.push(Object.freeze({
+      serverTick: detonation.authorityTick,
+      kind: 'projectileDetonated',
+      subjectId: detonationEventId,
+      actorId: detonation.ownerPlayerId,
+      targetId: null,
+      amountHealthPoints: null,
+      presentation: Object.freeze({
+        schemaVersion: 1 as const,
+        kind: 'weapon_projectile_detonated' as const,
+        eventId: detonationEventId,
+        authorityTick: detonation.authorityTick,
+        projectileId: combatWireId(detonation.projectileId),
+        ownerPlayerId: detonation.ownerPlayerId,
+        ownerTeamId: detonation.ownerTeamId,
+        weaponId: detonation.weaponId,
+        positionMillimeters: Object.freeze({ ...detonation.positionMillimeters }),
+        referenceDamagePoints: detonation.referenceDamagePoints,
+        splashRadiusMillimeters: detonation.splashRadiusMillimeters,
+        colliderId: detonation.colliderId === null
+          ? null
+          : combatWireId(detonation.colliderId),
+        reason: detonation.reason,
+      }),
+    }));
+    result.damages.forEach(appendDamage);
   }
   for (const event of tick.impulseGrenadeEvents ?? []) {
     if (event.kind === 'impulse_grenade_throw_accepted') {

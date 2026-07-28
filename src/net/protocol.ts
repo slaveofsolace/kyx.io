@@ -342,10 +342,35 @@ export interface CombatPlayerSnapshotV1 {
   readonly nextShotAtTick: number;
   readonly reloadCompletesAtTick: number | null;
   readonly acceptedShotCount: number;
+  readonly weaponCatalogId?: 'kyx_authoritative_armory_v1';
+  readonly selectedWeaponSlot?: number;
+  readonly selectedWeaponId?: string | null;
+  readonly weapons?: readonly CombatWeaponSnapshotV1[];
   readonly grenadePhase: 'equipping' | 'ready' | 'cooldown' | 'dead';
   readonly grenadeCooldownEndsAtTick: number;
   readonly acceptedThrowCount: number;
   readonly activeProjectileCount: number;
+}
+
+export interface CombatWeaponSnapshotV1 {
+  readonly weaponId: string;
+  readonly slot: number;
+  readonly family: 'rifle' | 'pistol' | 'shotgun' | 'sniper' | 'rocket' | 'melee';
+  readonly attackModel: 'hitscan' | 'pellet_hitscan' | 'projectile' | 'melee_contact';
+  readonly phase:
+    | 'holstered'
+    | 'equipping'
+    | 'ready'
+    | 'recovering'
+    | 'reloading'
+    | 'empty'
+    | 'dead';
+  readonly magazineRounds: number | null;
+  readonly reserveRounds: number | null;
+  readonly readyAtTick: number | null;
+  readonly reloadCompletesAtTick: number | null;
+  readonly nextAttackAtTick: number;
+  readonly acceptedAttackCount: number;
 }
 
 export interface CombatProjectileSnapshotV1 {
@@ -365,6 +390,24 @@ export interface CombatProjectileSnapshotV1 {
   readonly velocityZMillimetersPerSecond: number;
   readonly bounceCount: number;
   readonly settled: boolean;
+}
+
+export interface CombatWeaponProjectileSnapshotV1 {
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly ownerTeamId: string | null;
+  readonly weaponId: 'kyx_breach_rocket_v1';
+  readonly phase: 'active' | 'detonated' | 'expired';
+  readonly spawnTick: number;
+  readonly expiresAtTick: number;
+  readonly xMillimeters: number;
+  readonly yMillimeters: number;
+  readonly zMillimeters: number;
+  readonly velocityXMillimetersPerSecond: number;
+  readonly velocityYMillimetersPerSecond: number;
+  readonly velocityZMillimetersPerSecond: number;
+  readonly radiusMillimeters: number;
+  readonly splashRadiusMillimeters: number;
 }
 
 export interface CombatMatchSnapshotV1 {
@@ -392,6 +435,7 @@ export interface CombatSnapshotV1 {
   readonly schemaVersion: 1;
   readonly players: readonly CombatPlayerSnapshotV1[];
   readonly projectiles: readonly CombatProjectileSnapshotV1[];
+  readonly weaponProjectiles?: readonly CombatWeaponProjectileSnapshotV1[];
   readonly match: CombatMatchSnapshotV1;
 }
 
@@ -432,6 +476,8 @@ export interface DeltaSnapshotMessage extends ProtocolEnvelope {
 
 export type ReliableEventKind =
   | 'shotAccepted'
+  | 'weaponAttackAccepted'
+  | 'meleeContact'
   | 'projectileSpawned'
   | 'projectileCollided'
   | 'projectileDetonated'
@@ -459,6 +505,79 @@ export interface CombatPresentationDamageEventV1 {
   readonly healthDamagePoints: number;
   readonly shieldPointsAfter: number;
   readonly healthPointsAfter: number;
+}
+
+export interface CombatPresentationWeaponBallisticsSampleV1 {
+  readonly pelletIndex: number;
+  readonly spreadRadiusMilliDegrees: number;
+  readonly spreadPitchMilliDegrees: number;
+  readonly spreadYawMilliDegrees: number;
+}
+
+export interface CombatPresentationWeaponAttackEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'weapon_attack_accepted';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly playerId: string;
+  readonly weaponId: string;
+  readonly family: 'rifle' | 'pistol' | 'shotgun' | 'sniper' | 'rocket' | 'melee';
+  readonly attackModel: 'hitscan' | 'pellet_hitscan' | 'projectile' | 'melee_contact';
+  readonly attackOrdinal: number;
+  readonly referenceDamagePoints: number;
+  readonly magazineRoundsAfter: number | null;
+  readonly reserveRoundsAfter: number | null;
+  readonly nextAttackAtTick: number;
+  readonly ballistics: readonly CombatPresentationWeaponBallisticsSampleV1[];
+}
+
+export interface CombatPresentationWeaponProjectileSpawnedEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'weapon_projectile_spawned';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly ownerTeamId: string | null;
+  readonly weaponId: 'kyx_breach_rocket_v1';
+  readonly spawnTick: number;
+  readonly expiresAtTick: number;
+  readonly positionMillimeters: ReconciliationVector3;
+  readonly velocityMillimetersPerSecond: ReconciliationVector3;
+  readonly radiusMillimeters: number;
+  readonly splashRadiusMillimeters: number;
+}
+
+export interface CombatPresentationWeaponProjectileDetonatedEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'weapon_projectile_detonated';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly projectileId: string;
+  readonly ownerPlayerId: string;
+  readonly ownerTeamId: string | null;
+  readonly weaponId: 'kyx_breach_rocket_v1';
+  readonly positionMillimeters: ReconciliationVector3;
+  readonly referenceDamagePoints: number;
+  readonly splashRadiusMillimeters: number;
+  readonly colliderId: string | null;
+  readonly reason: 'collision' | 'lifetime';
+}
+
+export interface CombatPresentationWeaponMeleeContactEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'weapon_melee_contact';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly playerId: string;
+  readonly weaponId: 'kyx_edge_v1';
+  readonly attackOrdinal: number;
+  readonly outcome: 'contact' | 'miss';
+  readonly reason: 'no_target' | 'world_occluded' | null;
+  readonly targetPlayerId: string | null;
+  readonly distanceMillimeters: number | null;
+  readonly damagePoints: number;
+  readonly contactPointMillimeters: ReconciliationVector3 | null;
 }
 
 export interface CombatPresentationTeleportConfirmedEventV1 {
@@ -565,6 +684,10 @@ export interface CombatPresentationGrenadeImpulseEventV1 {
  */
 export type CombatPresentationReliableEventV1 =
   | CombatPresentationDamageEventV1
+  | CombatPresentationWeaponAttackEventV1
+  | CombatPresentationWeaponProjectileSpawnedEventV1
+  | CombatPresentationWeaponProjectileDetonatedEventV1
+  | CombatPresentationWeaponMeleeContactEventV1
   | CombatPresentationGrenadeThrowEventV1
   | CombatPresentationGrenadeCollisionEventV1
   | CombatPresentationGrenadeDetonationEventV1

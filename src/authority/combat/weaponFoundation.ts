@@ -665,6 +665,44 @@ export interface AuthorityWeaponLoadoutStateV1 {
   readonly weapons: readonly AuthorityWeaponStateV1[];
 }
 
+export function assertAuthorityWeaponLoadoutState(
+  loadout: AuthorityWeaponLoadoutStateV1,
+): void {
+  if (loadout === null || typeof loadout !== 'object' || Array.isArray(loadout)) {
+    throw new TypeError('authority weapon loadout must be an object');
+  }
+  if (
+    loadout.schemaVersion !== 1
+    || loadout.catalogId !== KYX_ARMORY_CATALOG_ID
+  ) {
+    throw new RangeError('authority weapon loadout identity is unsupported');
+  }
+  const playerId = stableString(loadout.playerId, 'authority loadout player id');
+  integer(loadout.selectedSlot, 0, 7, 'selected weapon slot');
+  if (
+    !Array.isArray(loadout.weapons)
+    || loadout.weapons.length !== KYX_WEAPON_PROFILES.length
+  ) {
+    throw new RangeError('authority weapon loadout catalog cardinality is unsupported');
+  }
+  const seenWeaponIds = new Set<KyxWeaponId>();
+  for (const state of loadout.weapons) {
+    assertAuthorityWeaponState(state);
+    if (state.playerId !== playerId) {
+      throw new RangeError('authority weapon loadout player identity is inconsistent');
+    }
+    if (seenWeaponIds.has(state.weaponId)) {
+      throw new RangeError(`authority weapon loadout duplicates ${state.weaponId}`);
+    }
+    seenWeaponIds.add(state.weaponId);
+  }
+  for (const profileValue of KYX_WEAPON_PROFILES) {
+    if (!seenWeaponIds.has(profileValue.weaponId)) {
+      throw new RangeError(`authority weapon loadout is missing ${profileValue.weaponId}`);
+    }
+  }
+}
+
 export function createAuthorityWeaponLoadout(options: Readonly<{
   playerId: string;
   roomSeed: string;
@@ -680,13 +718,15 @@ export function createAuthorityWeaponLoadout(options: Readonly<{
     authorityTick: options.authorityTick,
     selected: profileValue.slot === selectedSlot,
   }));
-  return deepFreeze({
+  const loadout: AuthorityWeaponLoadoutStateV1 = {
     schemaVersion: 1,
     catalogId: KYX_ARMORY_CATALOG_ID,
     playerId: stableString(options.playerId, 'authority loadout player id'),
     selectedSlot,
     weapons,
-  });
+  };
+  assertAuthorityWeaponLoadoutState(loadout);
+  return deepFreeze(loadout);
 }
 
 export function advanceAuthorityWeaponLoadout(
@@ -697,13 +737,7 @@ export function advanceAuthorityWeaponLoadout(
   loadout: AuthorityWeaponLoadoutStateV1;
   acceptedAttacks: readonly AuthorityWeaponAttackAcceptedEventV1[];
 }> {
-  if (
-    inputLoadout.schemaVersion !== 1
-    || inputLoadout.catalogId !== KYX_ARMORY_CATALOG_ID
-    || inputLoadout.weapons.length !== KYX_WEAPON_PROFILES.length
-  ) {
-    throw new RangeError('authority weapon loadout identity is unsupported');
-  }
+  assertAuthorityWeaponLoadoutState(inputLoadout);
   integer(input.selectedSlot, 0, 7, 'selected weapon slot');
   const acceptedAttacks: AuthorityWeaponAttackAcceptedEventV1[] = [];
   const weapons = inputLoadout.weapons.map((state) => {
@@ -715,15 +749,17 @@ export function advanceAuthorityWeaponLoadout(
   if (acceptedAttacks.length > 1) {
     throw new Error('authority weapon loadout accepted more than one attack in a single input step');
   }
+  const loadout: AuthorityWeaponLoadoutStateV1 = {
+    schemaVersion: 1,
+    catalogId: KYX_ARMORY_CATALOG_ID,
+    playerId: inputLoadout.playerId,
+    selectedSlot: input.selectedSlot,
+    weapons,
+  };
+  assertAuthorityWeaponLoadoutState(loadout);
   return deepFreeze({
     schemaVersion: 1,
-    loadout: {
-      schemaVersion: 1,
-      catalogId: KYX_ARMORY_CATALOG_ID,
-      playerId: inputLoadout.playerId,
-      selectedSlot: input.selectedSlot,
-      weapons,
-    },
+    loadout,
     acceptedAttacks,
   });
 }
@@ -844,6 +880,55 @@ export interface AuthorityRocketProjectileStateV1 {
   readonly splashRadiusMillimeters: number;
   readonly referenceDamagePoints: number;
   readonly phase: 'active' | 'detonated' | 'expired';
+}
+
+export function assertAuthorityRocketProjectileState(
+  state: AuthorityRocketProjectileStateV1,
+): void {
+  if (state === null || typeof state !== 'object' || Array.isArray(state)) {
+    throw new TypeError('authority rocket projectile state must be an object');
+  }
+  if (state.schemaVersion !== 1 || state.weaponId !== KYX_WEAPON_ID.rocket) {
+    throw new RangeError('authority rocket projectile identity is unsupported');
+  }
+  stableString(state.projectileId, 'rocket projectile id');
+  stableString(state.ownerPlayerId, 'rocket owner player id');
+  if (state.ownerTeamId !== null) stableString(state.ownerTeamId, 'rocket owner team id');
+  integer(state.spawnTick, 0, MAX_AUTHORITY_TICK, 'rocket spawn tick');
+  integer(
+    state.lastProcessedAuthorityTick,
+    state.spawnTick,
+    MAX_AUTHORITY_TICK,
+    'rocket processed tick',
+  );
+  integer(
+    state.expiresAtTick,
+    state.spawnTick + 1,
+    MAX_AUTHORITY_TICK,
+    'rocket expiry tick',
+  );
+  for (const [label, vector] of [
+    ['rocket position', state.positionMillimeters],
+    ['rocket velocity', state.velocityMillimetersPerSecond],
+  ] as const) {
+    if (vector === null || typeof vector !== 'object' || Array.isArray(vector)) {
+      throw new TypeError(`${label} must be a vector`);
+    }
+    for (const axis of ['x', 'y', 'z'] as const) {
+      integer(vector[axis], -2_000_000, 2_000_000, `${label}.${axis}`);
+    }
+  }
+  const profileValue = kyxWeaponProfile(KYX_WEAPON_ID.rocket);
+  if (
+    state.radiusMillimeters !== profileValue.projectileRadiusMillimeters
+    || state.splashRadiusMillimeters !== profileValue.splashRadiusMillimeters
+    || state.referenceDamagePoints !== profileValue.referenceDamagePoints
+  ) {
+    throw new RangeError('authority rocket projectile does not match its weapon profile');
+  }
+  if (!['active', 'detonated', 'expired'].includes(state.phase)) {
+    throw new RangeError('authority rocket projectile phase is unsupported');
+  }
 }
 
 export interface AuthorityRocketSweepRequestV1 {
@@ -1071,6 +1156,7 @@ export function createAuthorityRocketProjectile(
     referenceDamagePoints: profileValue.referenceDamagePoints,
     phase: 'active',
   };
+  assertAuthorityRocketProjectileState(state);
   return deepFreeze({
     schemaVersion: 1,
     accepted: true,
@@ -1088,6 +1174,7 @@ export function advanceAuthorityRocketProjectile(
   state: AuthorityRocketProjectileStateV1;
   detonation: AuthorityRocketDetonationV1 | null;
 }> {
+  assertAuthorityRocketProjectileState(inputState);
   integer(authorityTick, inputState.lastProcessedAuthorityTick + 1, MAX_AUTHORITY_TICK, 'rocket tick');
   if (authorityTick !== inputState.lastProcessedAuthorityTick + 1) {
     throw new RangeError('rocket projectile must advance exactly one authority tick');
@@ -1129,13 +1216,15 @@ export function advanceAuthorityRocketProjectile(
   };
   const expired = authorityTick >= inputState.expiresAtTick;
   if (!sweep.hit && !expired) {
+    const state: AuthorityRocketProjectileStateV1 = {
+      ...inputState,
+      lastProcessedAuthorityTick: authorityTick,
+      positionMillimeters,
+    };
+    assertAuthorityRocketProjectileState(state);
     return deepFreeze({
       schemaVersion: 1,
-      state: {
-        ...inputState,
-        lastProcessedAuthorityTick: authorityTick,
-        positionMillimeters,
-      },
+      state,
       detonation: null,
     });
   }
@@ -1161,6 +1250,7 @@ export function advanceAuthorityRocketProjectile(
     colliderId: sweep.colliderId,
     reason,
   };
+  assertAuthorityRocketProjectileState(state);
   return deepFreeze({ schemaVersion: 1, state, detonation });
 }
 

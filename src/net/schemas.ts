@@ -978,14 +978,115 @@ function nullableTickAt(value: unknown, path: string): number | null {
   });
 }
 
+const COMBAT_WEAPON_PROFILE_BY_ID = Object.freeze({
+  vertical_rifle_v1: Object.freeze({
+    slot: 0, family: 'rifle', attackModel: 'hitscan', pellets: 1,
+  }),
+  kyx_sidearm_v1: Object.freeze({
+    slot: 1, family: 'pistol', attackModel: 'hitscan', pellets: 1,
+  }),
+  kyx_scattergun_v1: Object.freeze({
+    slot: 2,
+    family: 'shotgun',
+    attackModel: 'pellet_hitscan',
+    pellets: 8,
+  }),
+  kyx_longshot_v1: Object.freeze({
+    slot: 3, family: 'sniper', attackModel: 'hitscan', pellets: 1,
+  }),
+  kyx_breach_rocket_v1: Object.freeze({
+    slot: 4,
+    family: 'rocket',
+    attackModel: 'projectile',
+    pellets: 1,
+  }),
+  kyx_edge_v1: Object.freeze({
+    slot: 5, family: 'melee', attackModel: 'melee_contact', pellets: 1,
+  }),
+} as const);
+
+function validateCombatWeapon(
+  value: unknown,
+  path: string,
+): Readonly<{ readonly weaponId: string; readonly slot: number }> {
+  const record = recordAt(value, path);
+  exactKeys(record, path, [
+    'weaponId', 'slot', 'family', 'attackModel', 'phase', 'magazineRounds',
+    'reserveRounds', 'readyAtTick', 'reloadCompletesAtTick', 'nextAttackAtTick',
+    'acceptedAttackCount',
+  ]);
+  const weaponId = idAt(required(record, 'weaponId', path), `${path}.weaponId`);
+  const profile = COMBAT_WEAPON_PROFILE_BY_ID[
+    weaponId as keyof typeof COMBAT_WEAPON_PROFILE_BY_ID
+  ];
+  if (profile === undefined) {
+    fail('PROTOCOL_INVALID_FIELD_VALUE', `${path}.weaponId`, 'Unsupported KYX weapon profile.');
+  }
+  const slot = numberAt(required(record, 'slot', path), `${path}.slot`, {
+    integer: true,
+    min: 0,
+    max: PROTOCOL_LIMITS.maxSelectedSlot,
+  });
+  const family = stringAt(required(record, 'family', path), `${path}.family`, {
+    allowed: ['rifle', 'pistol', 'shotgun', 'sniper', 'rocket', 'melee'],
+  });
+  const attackModel = stringAt(required(record, 'attackModel', path), `${path}.attackModel`, {
+    allowed: ['hitscan', 'pellet_hitscan', 'projectile', 'melee_contact'],
+  });
+  if (
+    slot !== profile.slot
+    || family !== profile.family
+    || attackModel !== profile.attackModel
+  ) {
+    fail(
+      'PROTOCOL_INVALID_FIELD_VALUE',
+      path,
+      'Weapon slot, family, and attack model must match the authoritative profile.',
+    );
+  }
+  stringAt(required(record, 'phase', path), `${path}.phase`, {
+    allowed: ['holstered', 'equipping', 'ready', 'recovering', 'reloading', 'empty', 'dead'],
+  });
+  for (const key of ['magazineRounds', 'reserveRounds'] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: 0,
+      max: PROTOCOL_LIMITS.maxSequence,
+      nullable: true,
+    });
+  }
+  nullableTickAt(required(record, 'readyAtTick', path), `${path}.readyAtTick`);
+  nullableTickAt(
+    required(record, 'reloadCompletesAtTick', path),
+    `${path}.reloadCompletesAtTick`,
+  );
+  tickAt(required(record, 'nextAttackAtTick', path), `${path}.nextAttackAtTick`);
+  numberAt(required(record, 'acceptedAttackCount', path), `${path}.acceptedAttackCount`, {
+    integer: true,
+    min: 0,
+    max: PROTOCOL_LIMITS.maxSequence,
+  });
+  return Object.freeze({ weaponId, slot });
+}
+
 function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['players'][number] {
   const record = recordAt(value, path);
+  const armoryKeys = ['weaponCatalogId', 'selectedWeaponSlot', 'selectedWeaponId', 'weapons'];
+  const presentArmoryKeys = armoryKeys.filter((key) => Object.hasOwn(record, key));
+  if (presentArmoryKeys.length !== 0 && presentArmoryKeys.length !== armoryKeys.length) {
+    fail(
+      'PROTOCOL_REQUIRED_FIELD',
+      path,
+      'Combat armory projection must be omitted or supplied as one complete unit.',
+    );
+  }
   exactKeys(record, path, [
     'playerId', 'connected', 'teamId', 'lifePhase', 'healthPoints', 'shieldPoints',
     'deathOrdinal', 'respawnEligibleAtTick', 'riflePhase', 'magazineRounds',
     'reserveRounds', 'nextShotAtTick', 'reloadCompletesAtTick', 'acceptedShotCount',
     'grenadePhase', 'grenadeCooldownEndsAtTick', 'acceptedThrowCount',
     'activeProjectileCount',
+    ...(presentArmoryKeys.length === 0 ? [] : armoryKeys),
   ]);
   idAt(required(record, 'playerId', path), `${path}.playerId`);
   booleanAt(required(record, 'connected', path), `${path}.connected`);
@@ -1021,6 +1122,54 @@ function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['p
     allowed: ['equipping', 'ready', 'cooldown', 'dead'],
   });
   tickAt(required(record, 'grenadeCooldownEndsAtTick', path), `${path}.grenadeCooldownEndsAtTick`);
+  if (presentArmoryKeys.length !== 0) {
+    stringAt(required(record, 'weaponCatalogId', path), `${path}.weaponCatalogId`, {
+      allowed: ['kyx_authoritative_armory_v1'],
+    });
+    const selectedWeaponSlot = numberAt(
+      required(record, 'selectedWeaponSlot', path),
+      `${path}.selectedWeaponSlot`,
+      {
+      integer: true,
+      min: 0,
+      max: PROTOCOL_LIMITS.maxSelectedSlot,
+      },
+    );
+    const selectedWeaponId = nullableIdAt(
+      required(record, 'selectedWeaponId', path),
+      `${path}.selectedWeaponId`,
+    );
+    const weapons = arrayAt(required(record, 'weapons', path), `${path}.weapons`, 8);
+    if (weapons.length !== 6) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.weapons`,
+        'The KYX armory projection requires all six original weapon profiles.',
+      );
+    }
+    const weaponIdentities = weapons.map((weapon, index) => validateCombatWeapon(
+      weapon,
+      `${path}.weapons[${index}]`,
+    ));
+    assertUnique(
+      weaponIdentities.map(({ weaponId }) => weaponId),
+      `${path}.weapons.weaponId`,
+    );
+    assertUnique(
+      weaponIdentities.map(({ slot }) => String(slot)),
+      `${path}.weapons.slot`,
+    );
+    const expectedSelectedWeaponId = weaponIdentities.find(
+      ({ slot }) => slot === selectedWeaponSlot,
+    )?.weaponId ?? null;
+    if (selectedWeaponId !== expectedSelectedWeaponId) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.selectedWeaponId`,
+        'Selected weapon id must match the authoritative selected slot.',
+      );
+    }
+  }
   return record as unknown as CombatSnapshotV1['players'][number];
 }
 
@@ -1071,9 +1220,58 @@ function validateCombatProjectile(
   return record as unknown as CombatSnapshotV1['projectiles'][number];
 }
 
+function validateCombatWeaponProjectile(value: unknown, path: string): void {
+  const record = recordAt(value, path);
+  exactKeys(record, path, [
+    'projectileId', 'ownerPlayerId', 'ownerTeamId', 'weaponId', 'phase', 'spawnTick',
+    'expiresAtTick', 'xMillimeters', 'yMillimeters', 'zMillimeters',
+    'velocityXMillimetersPerSecond', 'velocityYMillimetersPerSecond',
+    'velocityZMillimetersPerSecond', 'radiusMillimeters', 'splashRadiusMillimeters',
+  ]);
+  idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+  idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+  nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
+  stringAt(required(record, 'weaponId', path), `${path}.weaponId`, {
+    allowed: ['kyx_breach_rocket_v1'],
+  });
+  stringAt(required(record, 'phase', path), `${path}.phase`, {
+    allowed: ['active', 'detonated', 'expired'],
+  });
+  tickAt(required(record, 'spawnTick', path), `${path}.spawnTick`);
+  tickAt(required(record, 'expiresAtTick', path), `${path}.expiresAtTick`);
+  for (const key of ['xMillimeters', 'yMillimeters', 'zMillimeters'] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: -PROTOCOL_LIMITS.maxCoordinateMillimeters,
+      max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+    });
+  }
+  for (const key of [
+    'velocityXMillimetersPerSecond',
+    'velocityYMillimetersPerSecond',
+    'velocityZMillimetersPerSecond',
+  ] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: -PROTOCOL_LIMITS.maxVelocityMillimetersPerSecond,
+      max: PROTOCOL_LIMITS.maxVelocityMillimetersPerSecond,
+    });
+  }
+  for (const key of ['radiusMillimeters', 'splashRadiusMillimeters'] as const) {
+    numberAt(required(record, key, path), `${path}.${key}`, {
+      integer: true,
+      min: 1,
+      max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+    });
+  }
+}
+
 function validateCombatSnapshot(value: unknown, path: string): CombatSnapshotV1 {
   const record = recordAt(value, path);
-  exactKeys(record, path, ['schemaVersion', 'players', 'projectiles', 'match']);
+  exactKeys(record, path, [
+    'schemaVersion', 'players', 'projectiles', 'match',
+    ...(Object.hasOwn(record, 'weaponProjectiles') ? ['weaponProjectiles'] : []),
+  ]);
   if (required(record, 'schemaVersion', path) !== 1) {
     fail('PROTOCOL_INVALID_FIELD_VALUE', `${path}.schemaVersion`, 'Unsupported combat snapshot version.');
   }
@@ -1091,6 +1289,30 @@ function validateCombatSnapshot(value: unknown, path: string): CombatSnapshotV1 
     validateCombatProjectile(projectile, `${path}.projectiles[${index}]`)
   ));
   assertUnique(projectiles.map(({ projectileId }) => projectileId), `${path}.projectiles`);
+  if (Object.hasOwn(record, 'weaponProjectiles')) {
+    const weaponProjectiles = arrayAt(
+      required(record, 'weaponProjectiles', path),
+      `${path}.weaponProjectiles`,
+      PROTOCOL_LIMITS.maxEntitiesPerSnapshot,
+    );
+    weaponProjectiles.forEach((projectile, index) => validateCombatWeaponProjectile(
+      projectile,
+      `${path}.weaponProjectiles[${index}]`,
+    ));
+    assertUnique(
+      weaponProjectiles.map((projectile, index) => (
+        idAt(
+          required(
+            recordAt(projectile, `${path}.weaponProjectiles[${index}]`),
+            'projectileId',
+            `${path}.weaponProjectiles[${index}]`,
+          ),
+          `${path}.weaponProjectiles[${index}].projectileId`,
+        )
+      )),
+      `${path}.weaponProjectiles`,
+    );
+  }
 
   const matchPath = `${path}.match`;
   const match = recordAt(required(record, 'match', path), matchPath);
@@ -1323,6 +1545,10 @@ function validateCombatPresentationReliableEvent(
   const kind = stringAt(required(record, 'kind', path), `${path}.kind`, {
     allowed: [
       'damage_applied',
+      'weapon_attack_accepted',
+      'weapon_projectile_spawned',
+      'weapon_projectile_detonated',
+      'weapon_melee_contact',
       'impulse_grenade_throw_accepted',
       'impulse_grenade_collision',
       'impulse_grenade_detonated',
@@ -1354,6 +1580,200 @@ function validateCombatPresentationReliableEvent(
       numberAt(required(record, field, path), `${path}.${field}`, {
         integer: true, min: 0, max: PROTOCOL_LIMITS.maxHealthValue,
       });
+    }
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'weapon_attack_accepted') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'playerId', 'weaponId',
+      'family', 'attackModel', 'attackOrdinal', 'referenceDamagePoints',
+      'magazineRoundsAfter', 'reserveRoundsAfter', 'nextAttackAtTick', 'ballistics',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'playerId', path), `${path}.playerId`);
+    const weaponId = stringAt(required(record, 'weaponId', path), `${path}.weaponId`, {
+      allowed: [
+        'vertical_rifle_v1', 'kyx_sidearm_v1', 'kyx_scattergun_v1', 'kyx_longshot_v1',
+        'kyx_breach_rocket_v1', 'kyx_edge_v1',
+      ],
+    });
+    const family = stringAt(required(record, 'family', path), `${path}.family`, {
+      allowed: ['rifle', 'pistol', 'shotgun', 'sniper', 'rocket', 'melee'],
+    });
+    const attackModel = stringAt(required(record, 'attackModel', path), `${path}.attackModel`, {
+      allowed: ['hitscan', 'pellet_hitscan', 'projectile', 'melee_contact'],
+    });
+    const weaponProfile = COMBAT_WEAPON_PROFILE_BY_ID[
+      weaponId as keyof typeof COMBAT_WEAPON_PROFILE_BY_ID
+    ];
+    if (
+      weaponProfile === undefined
+      || family !== weaponProfile.family
+      || attackModel !== weaponProfile.attackModel
+    ) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        path,
+        'Accepted weapon attack must match its authoritative profile.',
+      );
+    }
+    for (const field of ['attackOrdinal', 'referenceDamagePoints'] as const) {
+      numberAt(required(record, field, path), `${path}.${field}`, {
+        integer: true, min: 1, max: PROTOCOL_LIMITS.maxSequence,
+      });
+    }
+    for (const field of ['magazineRoundsAfter', 'reserveRoundsAfter'] as const) {
+      numberAt(required(record, field, path), `${path}.${field}`, {
+        integer: true, min: 0, max: PROTOCOL_LIMITS.maxSequence, nullable: true,
+      });
+    }
+    tickAt(required(record, 'nextAttackAtTick', path), `${path}.nextAttackAtTick`);
+    const ballistics = arrayAt(required(record, 'ballistics', path), `${path}.ballistics`, 8);
+    if (ballistics.length !== weaponProfile.pellets) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.ballistics`,
+        'Accepted weapon attack ballistics count does not match its authoritative profile.',
+      );
+    }
+    const pelletIndexes = ballistics.map((sampleValue, index) => {
+      const samplePath = `${path}.ballistics[${index}]`;
+      const sample = recordAt(sampleValue, samplePath);
+      exactKeys(sample, samplePath, [
+        'pelletIndex', 'spreadRadiusMilliDegrees', 'spreadPitchMilliDegrees',
+        'spreadYawMilliDegrees',
+      ]);
+      const pelletIndex = numberAt(
+        required(sample, 'pelletIndex', samplePath),
+        `${samplePath}.pelletIndex`,
+        {
+        integer: true, min: 0, max: 7,
+        },
+      );
+      numberAt(
+        required(sample, 'spreadRadiusMilliDegrees', samplePath),
+        `${samplePath}.spreadRadiusMilliDegrees`,
+        { integer: true, min: 0, max: 180_000 },
+      );
+      for (const field of ['spreadPitchMilliDegrees', 'spreadYawMilliDegrees'] as const) {
+        numberAt(required(sample, field, samplePath), `${samplePath}.${field}`, {
+          integer: true, min: -180_000, max: 180_000,
+        });
+      }
+      return String(pelletIndex);
+    });
+    assertUnique(pelletIndexes, `${path}.ballistics.pelletIndex`);
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'weapon_projectile_spawned') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'projectileId',
+      'ownerPlayerId', 'ownerTeamId', 'weaponId', 'spawnTick', 'expiresAtTick',
+      'positionMillimeters', 'velocityMillimetersPerSecond', 'radiusMillimeters',
+      'splashRadiusMillimeters',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+    nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
+    stringAt(required(record, 'weaponId', path), `${path}.weaponId`, {
+      allowed: ['kyx_breach_rocket_v1'],
+    });
+    tickAt(required(record, 'spawnTick', path), `${path}.spawnTick`);
+    tickAt(required(record, 'expiresAtTick', path), `${path}.expiresAtTick`);
+    validatePresentationVector(
+      required(record, 'positionMillimeters', path),
+      `${path}.positionMillimeters`,
+    );
+    validatePresentationVelocity(
+      required(record, 'velocityMillimetersPerSecond', path),
+      `${path}.velocityMillimetersPerSecond`,
+    );
+    for (const field of ['radiusMillimeters', 'splashRadiusMillimeters'] as const) {
+      numberAt(required(record, field, path), `${path}.${field}`, {
+        integer: true, min: 1, max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+      });
+    }
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'weapon_projectile_detonated') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'projectileId',
+      'ownerPlayerId', 'ownerTeamId', 'weaponId', 'positionMillimeters',
+      'referenceDamagePoints', 'splashRadiusMillimeters', 'colliderId', 'reason',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'projectileId', path), `${path}.projectileId`);
+    idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
+    nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
+    stringAt(required(record, 'weaponId', path), `${path}.weaponId`, {
+      allowed: ['kyx_breach_rocket_v1'],
+    });
+    validatePresentationVector(
+      required(record, 'positionMillimeters', path),
+      `${path}.positionMillimeters`,
+    );
+    for (const field of ['referenceDamagePoints', 'splashRadiusMillimeters'] as const) {
+      numberAt(required(record, field, path), `${path}.${field}`, {
+        integer: true, min: 1, max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+      });
+    }
+    nullableIdAt(required(record, 'colliderId', path), `${path}.colliderId`);
+    stringAt(required(record, 'reason', path), `${path}.reason`, {
+      allowed: ['collision', 'lifetime'],
+    });
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
+  if (kind === 'weapon_melee_contact') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'playerId', 'weaponId',
+      'attackOrdinal', 'outcome', 'reason', 'targetPlayerId', 'distanceMillimeters',
+      'damagePoints', 'contactPointMillimeters',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    idAt(required(record, 'playerId', path), `${path}.playerId`);
+    stringAt(required(record, 'weaponId', path), `${path}.weaponId`, {
+      allowed: ['kyx_edge_v1'],
+    });
+    numberAt(required(record, 'attackOrdinal', path), `${path}.attackOrdinal`, {
+      integer: true, min: 1, max: PROTOCOL_LIMITS.maxSequence,
+    });
+    stringAt(required(record, 'outcome', path), `${path}.outcome`, {
+      allowed: ['contact', 'miss'],
+    });
+    const reason = required(record, 'reason', path);
+    if (reason !== null) {
+      stringAt(reason, `${path}.reason`, { allowed: ['no_target', 'world_occluded'] });
+    }
+    nullableIdAt(required(record, 'targetPlayerId', path), `${path}.targetPlayerId`);
+    numberAt(required(record, 'distanceMillimeters', path), `${path}.distanceMillimeters`, {
+      integer: true,
+      min: 0,
+      max: PROTOCOL_LIMITS.maxCoordinateMillimeters,
+      nullable: true,
+    });
+    numberAt(required(record, 'damagePoints', path), `${path}.damagePoints`, {
+      integer: true, min: 0, max: PROTOCOL_LIMITS.maxHealthValue,
+    });
+    const contactPoint = required(record, 'contactPointMillimeters', path);
+    if (contactPoint !== null) {
+      validatePresentationVector(contactPoint, `${path}.contactPointMillimeters`);
     }
     return record as unknown as CombatPresentationReliableEventV1;
   }
@@ -1555,7 +1975,7 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
   reliableEventIdAt(required(record, 'id', path), `${path}.id`);
   tickAt(required(record, 'serverTick', path), `${path}.serverTick`);
   const kind = stringAt(required(record, 'kind', path), `${path}.kind`, {
-    allowed: ['shotAccepted', 'projectileSpawned', 'projectileCollided', 'projectileDetonated', 'impulseApplied', 'damageApplied', 'playerKilled', 'abilityActivated', 'abilityRejected', 'cooldownStarted', 'deployableSpawned', 'loadoutAccepted', 'playerJoined', 'playerLeft'],
+    allowed: ['shotAccepted', 'weaponAttackAccepted', 'meleeContact', 'projectileSpawned', 'projectileCollided', 'projectileDetonated', 'impulseApplied', 'damageApplied', 'playerKilled', 'abilityActivated', 'abilityRejected', 'cooldownStarted', 'deployableSpawned', 'loadoutAccepted', 'playerJoined', 'playerLeft'],
   });
   idAt(required(record, 'subjectId', path), `${path}.subjectId`);
   nullableIdAt(required(record, 'actorId', path), `${path}.actorId`);
@@ -1584,6 +2004,22 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
         'PROTOCOL_INVALID_FIELD_VALUE',
         `${path}.presentation.kind`,
         'Damage presentation requires a damageApplied reliable event.',
+      );
+    }
+    const weaponProjection = {
+      weapon_attack_accepted: 'weaponAttackAccepted',
+      weapon_projectile_spawned: 'projectileSpawned',
+      weapon_projectile_detonated: 'projectileDetonated',
+      weapon_melee_contact: 'meleeContact',
+    } as const;
+    if (
+      presentation.kind in weaponProjection
+      && kind !== weaponProjection[presentation.kind as keyof typeof weaponProjection]
+    ) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.presentation.kind`,
+        'Weapon presentation requires its exact reliable projection kind.',
       );
     }
     const grenadeProjection = {

@@ -32,15 +32,21 @@ import {
 } from './inputQueue';
 import {
   advanceAutoRifle,
+  advanceAuthorityRocketProjectile,
+  advanceAuthorityWeaponLoadout,
   advanceImpulseGrenadeAbility,
   advanceImpulseGrenadeProjectile,
   assertAbilityResourceIntegrationRules,
+  assertAuthorityRocketProjectileState,
   assertAuthorityTdmMatchRules,
+  assertAuthorityWeaponLoadoutState,
   assertAutoRifleState,
   applyAuthoritativeDamage,
   applyAuthoritativeRespawn,
+  createAuthorityRocketProjectile,
   createAuthorityTdmMatchState,
   createAuthorityTeleportResourceEvents,
+  createAuthorityWeaponLoadout,
   createAutoRifleState,
   createCombatLifeState,
   createImpulseGrenadeAbilityState,
@@ -55,7 +61,10 @@ import {
   G4_AUTO_RIFLE_RULES,
   G4_IMPULSE_GRENADE_RULES,
   G4_TDM_MATCH_RULES,
+  IMPULSE_GRENADE_SOLID_LAYERS,
   KYX_STANDARD_HUMANOID_HIT_VOLUMES_V1,
+  KYX_ARMORY_CATALOG_ID,
+  KYX_WEAPON_ID,
   G4_COMBAT_SLICE_LIFE_RULES,
   impulseGrenadeDirectionQ15FromLook,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
@@ -68,6 +77,9 @@ import {
   registerAuthorityTdmPlayer,
   resetImpulseGrenadeAbilityForRespawn,
   resolveImpulseGrenadeRadialImpulse,
+  resolveAuthorityMeleeContact,
+  resolveAuthorityRocketSplash,
+  resolveAuthorityWeaponHitscanAttack,
   resolveAuthoritativeAutoRifleHitscan,
   settleAuthorityTdmMatchTick,
   startAuthorityTdmMatch,
@@ -75,6 +87,14 @@ import {
   type ApplyAuthoritativeRespawnResult,
   type AuthorityAbilityResourceSnapshotV1,
   type AuthorityImpulseGrenadeWorldPort,
+  type AuthorityRocketDetonationV1,
+  type AuthorityRocketProjectileStateV1,
+  type AuthorityRocketSweepRequestV1,
+  type AuthorityRocketSweepResultV1,
+  type AuthorityWeaponAttackAcceptedEventV1,
+  type AuthorityWeaponLoadoutStateV1,
+  type AuthorityWeaponPhase,
+  type AuthorityWeaponStateV1,
   type AuthorityTdmMatchEvent,
   type AuthorityTdmMatchStateV1,
   type AuthorityTeleportMovementOutcomeV1,
@@ -90,6 +110,9 @@ import {
   type ImpulseGrenadeEvent,
   type ImpulseGrenadeProjectileState,
   type ObservedRttSampleV1,
+  type ResolveAuthorityMeleeContactResultV1,
+  type ResolveAuthorityRocketSplashResultV1,
+  type ResolveAuthorityWeaponHitscanAttackResultV1,
   type ResolveImpulseGrenadeRadialResult,
   type ResolveAuthoritativeHitscanResult,
   type TargetPoseHistoryV1,
@@ -226,6 +249,7 @@ export interface AuthorityPlayerSnapshot {
   readonly combat?: {
     readonly life: CombatLifeState;
     readonly autoRifle: AutoRifleState;
+    readonly armory: AuthorityWeaponLoadoutStateV1;
     readonly impulseGrenade?: ImpulseGrenadeAbilityState;
     readonly abilityResources?: AuthorityAbilityResourceSnapshotV1;
   };
@@ -243,6 +267,7 @@ export interface AuthorityFullSnapshot {
   readonly phaseEndsAtTick: number | null;
   readonly players: readonly AuthorityPlayerSnapshot[];
   readonly impulseGrenadeProjectiles?: readonly ImpulseGrenadeProjectileState[];
+  readonly weaponProjectiles?: readonly AuthorityRocketProjectileStateV1[];
   readonly match?: AuthorityTdmMatchStateV1;
 }
 
@@ -257,6 +282,7 @@ export interface AuthorityActiveMatchCheckpointPlayerV1 {
   readonly movement: MovementSimulationState;
   readonly life: CombatLifeState;
   readonly autoRifle: AutoRifleState;
+  readonly armory?: AuthorityWeaponLoadoutStateV1;
   readonly impulseGrenade: ImpulseGrenadeAbilityState;
   readonly poseHistory: TargetPoseHistoryV1;
   readonly observedRttHistory: readonly ObservedRttSampleV1[];
@@ -297,6 +323,7 @@ export interface AuthorityActiveMatchCheckpointV1 {
   };
   readonly players: readonly AuthorityActiveMatchCheckpointPlayerV1[];
   readonly impulseGrenadeProjectiles: readonly ImpulseGrenadeProjectileState[];
+  readonly weaponProjectiles?: readonly AuthorityRocketProjectileStateV1[];
   readonly match: AuthorityTdmMatchStateV1;
   readonly pendingMatchEvents: readonly AuthorityTdmMatchEvent[];
 }
@@ -310,6 +337,8 @@ export interface AuthorityRoomTickResult {
   readonly prunedPlayerIds: readonly string[];
   readonly combatEvents?: readonly AutoRifleEvent[];
   readonly hitscanResults?: readonly AuthorityRoomHitscanTickResult[];
+  readonly weaponAttackResults?: readonly AuthorityRoomWeaponAttackTickResult[];
+  readonly weaponProjectileResults?: readonly AuthorityRoomWeaponProjectileTickResult[];
   readonly impulseGrenadeEvents?: readonly ImpulseGrenadeEvent[];
   readonly impulseGrenadeResults?: readonly AuthorityRoomImpulseGrenadeTickResult[];
   readonly abilityResourceEvents?: readonly AuthorityTeleportResourceEvent[];
@@ -344,6 +373,37 @@ export interface AuthorityRoomImpulseGrenadeTickResult {
   readonly radial: ResolveImpulseGrenadeRadialResult;
 }
 
+export type AuthorityRoomWeaponAttackTickResult =
+  | Readonly<{
+      readonly resolutionOrdinal: number;
+      readonly acceptedAttack: AuthorityWeaponAttackAcceptedEventV1;
+      readonly kind: 'hitscan';
+      readonly roomRejectionReason: AuthorityRoomHitscanRejectionReason | null;
+      readonly resolution: ResolveAuthorityWeaponHitscanAttackResultV1 | null;
+      readonly damages: readonly AuthorityRoomDamageResult[];
+    }>
+  | Readonly<{
+      readonly resolutionOrdinal: number;
+      readonly acceptedAttack: AuthorityWeaponAttackAcceptedEventV1;
+      readonly kind: 'projectile';
+      readonly projectile: AuthorityRocketProjectileStateV1 | null;
+      readonly rejectionReason: 'barrel_obstructed' | null;
+    }>
+  | Readonly<{
+      readonly resolutionOrdinal: number;
+      readonly acceptedAttack: AuthorityWeaponAttackAcceptedEventV1;
+      readonly kind: 'melee';
+      readonly resolution: ResolveAuthorityMeleeContactResultV1;
+      readonly damage: AuthorityRoomDamageResult | null;
+    }>;
+
+export interface AuthorityRoomWeaponProjectileTickResult {
+  readonly resolutionOrdinal: number;
+  readonly detonation: AuthorityRocketDetonationV1;
+  readonly splash: ResolveAuthorityRocketSplashResultV1;
+  readonly damages: readonly AuthorityRoomDamageResult[];
+}
+
 export interface AuthorityRoomMetricsSnapshot {
   readonly serverTick: number;
   readonly lifecycle: RoomLifecycle;
@@ -366,6 +426,7 @@ interface AuthorityPlayerRecord {
   state: MovementSimulationState;
   life: CombatLifeState | null;
   autoRifle: AutoRifleState | null;
+  armory: AuthorityWeaponLoadoutStateV1 | null;
   impulseGrenade: ImpulseGrenadeAbilityState | null;
   poseHistory: TargetPoseHistoryV1 | null;
   observedRttHistory: readonly ObservedRttSampleV1[] | null;
@@ -375,6 +436,11 @@ interface AuthorityPlayerRecord {
 interface PendingAcceptedRoomShot {
   readonly playerId: string;
   readonly shot: AutoRifleShotAcceptedEvent;
+}
+
+interface PendingAcceptedWeaponAttack {
+  readonly playerId: string;
+  readonly attack: AuthorityWeaponAttackAcceptedEventV1;
 }
 
 interface PendingRoomHitscanResolution {
@@ -557,6 +623,106 @@ function deepFreeze<T>(value: T): T {
   if (typeof value !== 'object' || value === null) return value;
   for (const nested of Object.values(value)) deepFreeze(nested);
   return Object.isFrozen(value) ? value : Object.freeze(value);
+}
+
+function armoryPhaseFromAutoRifle(state: AutoRifleState): AuthorityWeaponPhase {
+  switch (state.phase) {
+    case 'holstered': return 'holstered';
+    case 'equipping': return 'equipping';
+    case 'ready':
+    case 'sprinting': return 'ready';
+    case 'firing':
+    case 'recovering': return 'recovering';
+    case 'reloading': return 'reloading';
+    case 'empty': return 'empty';
+    case 'dead': return 'dead';
+  }
+}
+
+/**
+ * Slot zero remains on the accepted Auto Rifle state machine. The generalized
+ * catalog mirrors that server-owned state so clients and checkpoints see one
+ * coherent six-weapon armory without running a second rifle authority.
+ */
+function mirrorAutoRifleIntoArmory(
+  loadout: AuthorityWeaponLoadoutStateV1,
+  autoRifle: AutoRifleState,
+): AuthorityWeaponLoadoutStateV1 {
+  const rifleIndex = loadout.weapons.findIndex(
+    ({ weaponId }) => weaponId === KYX_WEAPON_ID.autoRifle,
+  );
+  if (rifleIndex < 0) throw new Error('AUTHORITY_ARMORY_AUTO_RIFLE_MISSING');
+  const prior = loadout.weapons[rifleIndex] as AuthorityWeaponStateV1;
+  const mirrored: AuthorityWeaponStateV1 = {
+    ...prior,
+    phase: armoryPhaseFromAutoRifle(autoRifle),
+    magazineRounds: autoRifle.magazineRounds,
+    reserveRounds: autoRifle.reserveRounds,
+    readyAtTick: autoRifle.readyAtTick,
+    reloadCompletesAtTick: autoRifle.activeReload?.completesAtTick ?? null,
+    nextAttackAtTick: autoRifle.nextShotAtTick,
+    acceptedAttackCount: autoRifle.acceptedShotCount,
+    ballisticsSeed: autoRifle.ballisticsSeed,
+    eventNamespace: autoRifle.eventNamespace,
+    lastProcessedAuthorityTick: autoRifle.lastProcessedAuthorityTick,
+    lastProcessedAuthorityInputSequence: autoRifle.lastProcessedAuthorityInputSequence,
+  };
+  const armory: AuthorityWeaponLoadoutStateV1 = {
+    ...loadout,
+    weapons: loadout.weapons.map((state, index) => index === rifleIndex ? mirrored : state),
+  };
+  assertAuthorityWeaponLoadoutState(armory);
+  return deepFreeze(armory);
+}
+
+function rotateCombatOffset(
+  offset: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>,
+  yawMilliDegrees: number,
+): Readonly<{ readonly x: number; readonly y: number; readonly z: number }> {
+  const radians = yawMilliDegrees * Math.PI / 180_000;
+  const cosine = Math.cos(radians);
+  const sine = Math.sin(radians);
+  return {
+    x: Math.round(offset.x * cosine + offset.z * sine),
+    y: offset.y,
+    z: Math.round(-offset.x * sine + offset.z * cosine),
+  };
+}
+
+function segmentSphereTravelPermille(
+  start: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>,
+  translation: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>,
+  center: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>,
+  radiusMillimeters: number,
+): number | null {
+  const offset = {
+    x: start.x - center.x,
+    y: start.y - center.y,
+    z: start.z - center.z,
+  };
+  const a = (
+    translation.x * translation.x
+    + translation.y * translation.y
+    + translation.z * translation.z
+  );
+  if (a <= 0) return null;
+  const c = (
+    offset.x * offset.x
+    + offset.y * offset.y
+    + offset.z * offset.z
+    - radiusMillimeters * radiusMillimeters
+  );
+  if (c <= 0) return 0;
+  const b = 2 * (
+    offset.x * translation.x
+    + offset.y * translation.y
+    + offset.z * translation.z
+  );
+  const discriminant = b * b - 4 * a * c;
+  if (discriminant < 0) return null;
+  const travel = (-b - Math.sqrt(discriminant)) / (2 * a);
+  if (!Number.isFinite(travel) || travel < 0 || travel > 1) return null;
+  return Math.max(0, Math.min(1_000, Math.floor(travel * 1_000)));
 }
 
 const ACTIVE_MATCH_CHECKPOINT_MAX_TICK = Number.MAX_SAFE_INTEGER - 100_000;
@@ -1122,6 +1288,7 @@ export class AuthoritativeRoom {
 
   private readonly players = new Map<string, AuthorityPlayerRecord>();
   private readonly impulseGrenadeProjectiles = new Map<string, ImpulseGrenadeProjectileState>();
+  private readonly weaponProjectiles = new Map<string, AuthorityRocketProjectileStateV1>();
   private readonly connectionOwners = new Map<string, string>();
   private phase: RoomLifecycle = 'created';
   private phaseStartedAtTick = 0;
@@ -1435,6 +1602,14 @@ export class AuthoritativeRoom {
           roomSeed: this.identity.matchId,
           authorityTick: this.tick,
         }, G4_AUTO_RIFLE_RULES);
+    const armory = autoRifle === null
+      ? null
+      : mirrorAutoRifleIntoArmory(createAuthorityWeaponLoadout({
+          playerId,
+          roomSeed: this.identity.matchId,
+          authorityTick: this.tick,
+          selectedSlot: 0,
+        }), autoRifle);
     const impulseGrenade = this.impulseGrenadeCapabilityId === null
       ? null
       : createImpulseGrenadeAbilityState({
@@ -1459,6 +1634,7 @@ export class AuthoritativeRoom {
       state,
       life,
       autoRifle,
+      armory,
       impulseGrenade,
       poseHistory: this.hitscanCapabilityId === null
         ? null
@@ -1813,6 +1989,8 @@ export class AuthoritativeRoom {
     const abilityResourceEvents: AuthorityTeleportResourceEvent[] = [];
     const impulseGrenadeDetonations: ImpulseGrenadeDetonatedEvent[] = [];
     const acceptedShots: PendingAcceptedRoomShot[] = [];
+    const acceptedWeaponAttacks: PendingAcceptedWeaponAttack[] = [];
+    const weaponProjectileDetonations: AuthorityRocketDetonationV1[] = [];
     const lifecycleTransitions: RoomLifecycle[] = [];
     const matchEvents = this.tdmMatchCapabilityId === null
       ? []
@@ -1877,6 +2055,43 @@ export class AuthoritativeRoom {
         combatEvents.push(...rifle.events);
         if (rifle.shot !== null) {
           acceptedShots.push({ playerId: player.playerId, shot: rifle.shot });
+          player.life = endSpawnProtectionOnAcceptedOffense(
+            player.life,
+            nextTick,
+            G4_COMBAT_SLICE_LIFE_RULES,
+          );
+        }
+      }
+      if (
+        player.life !== null
+        && player.autoRifle !== null
+        && player.armory !== null
+      ) {
+        const intent = player.state.player.intent;
+        const selectedSlot = intent.selectedSlot;
+        const generalizedWeaponSelected = selectedSlot !== 0;
+        const armory = advanceAuthorityWeaponLoadout(player.armory, {
+          authorityTick: nextTick,
+          authorityInputSequence: nextTick,
+          lifePhase: player.life.phase,
+          selectedSlot,
+          sprintHeld: player.connected && (intent.heldButtons & INTENT_BUTTON.sprint) !== 0,
+          fireHeld: generalizedWeaponSelected
+            && player.connected
+            && (intent.heldButtons & INTENT_BUTTON.primaryFire) !== 0,
+          firePressed: generalizedWeaponSelected
+            && player.connected
+            && (intent.pressedButtons & INTENT_BUTTON.primaryFire) !== 0,
+          reloadPressed: generalizedWeaponSelected
+            && player.connected
+            && (intent.pressedButtons & INTENT_BUTTON.reload) !== 0,
+        });
+        player.armory = mirrorAutoRifleIntoArmory(armory.loadout, player.autoRifle);
+        for (const attack of armory.acceptedAttacks) {
+          if (attack.weaponId === KYX_WEAPON_ID.autoRifle) {
+            throw new Error('AUTHORITY_ARMORY_DUPLICATE_AUTO_RIFLE_ATTACK');
+          }
+          acceptedWeaponAttacks.push({ playerId: player.playerId, attack });
           player.life = endSpawnProtectionOnAcceptedOffense(
             player.life,
             nextTick,
@@ -1955,6 +2170,27 @@ export class AuthoritativeRoom {
         nextTick,
       );
     }
+    if (this.combatProfileId !== null && simulateMovement) {
+      const orderedWeaponProjectiles = [...this.weaponProjectiles.values()]
+        .sort((left, right) => (
+          left.projectileId < right.projectileId
+            ? -1
+            : left.projectileId > right.projectileId ? 1 : 0
+        ));
+      for (const projectile of orderedWeaponProjectiles) {
+        const step = advanceAuthorityRocketProjectile(
+          projectile,
+          nextTick,
+          (request) => this.resolveRocketSweep(request, sortedPlayers, nextTick),
+        );
+        if (step.detonation === null) {
+          this.weaponProjectiles.set(projectile.projectileId, step.state);
+        } else {
+          this.weaponProjectiles.delete(projectile.projectileId);
+          weaponProjectileDetonations.push(step.detonation);
+        }
+      }
+    }
     if (this.impulseGrenadeCapabilityId !== null && simulateMovement) {
       if (this.impulseGrenadeWorldPort === null) {
         throw new Error('AUTHORITY_IMPULSE_GRENADE_WORLD_PORT_MISSING');
@@ -1990,8 +2226,19 @@ export class AuthoritativeRoom {
     }
     this.deferTdmLifecycleSync = this.tdmMatchState !== null;
     let hitscanResults: readonly AuthorityRoomHitscanTickResult[];
+    let weaponAttackResults: readonly AuthorityRoomWeaponAttackTickResult[];
+    let weaponProjectileResults: readonly AuthorityRoomWeaponProjectileTickResult[];
     try {
       hitscanResults = this.resolvePendingHitscanResolutions(pendingHitscanResolutions);
+      weaponAttackResults = this.resolveAcceptedWeaponAttacks(
+        acceptedWeaponAttacks,
+        sortedPlayers,
+        nextTick,
+      );
+      weaponProjectileResults = this.resolveWeaponProjectileDetonations(
+        weaponProjectileDetonations,
+        sortedPlayers,
+      );
     } finally {
       this.deferTdmLifecycleSync = false;
     }
@@ -2027,6 +2274,7 @@ export class AuthoritativeRoom {
       } else if (this.phase === 'active' && phaseAge >= this.activeTicks) {
         this.transitionTo('postmatch');
         this.impulseGrenadeProjectiles.clear();
+        this.weaponProjectiles.clear();
         lifecycleTransitions.push('postmatch');
       } else if (this.phase === 'postmatch' && phaseAge >= this.postmatchTicks) {
         this.transitionTo('idle');
@@ -2047,6 +2295,16 @@ export class AuthoritativeRoom {
       ...(this.hitscanCapabilityId === null
         ? {}
         : { hitscanResults: deepFreeze(hitscanResults) }),
+      ...(weaponAttackResults.length === 0 && weaponProjectileResults.length === 0
+        ? {}
+        : {
+            ...(weaponAttackResults.length === 0
+              ? {}
+              : { weaponAttackResults: deepFreeze(weaponAttackResults) }),
+            ...(weaponProjectileResults.length === 0
+              ? {}
+              : { weaponProjectileResults: deepFreeze(weaponProjectileResults) }),
+          }),
       ...(this.impulseGrenadeCapabilityId === null
         ? {}
         : {
@@ -2196,6 +2454,320 @@ export class AuthoritativeRoom {
         resolution,
         damage,
       });
+    });
+  }
+
+  private resolveRocketSweep(
+    request: AuthorityRocketSweepRequestV1,
+    sortedPlayers: readonly AuthorityPlayerRecord[],
+    authorityTick: number,
+  ): AuthorityRocketSweepResultV1 {
+    if (this.impulseGrenadeWorldPort === null) {
+      throw new Error('AUTHORITY_ROCKET_SWEEP_WORLD_PORT_MISSING');
+    }
+    if (request.authorityTick !== authorityTick) {
+      throw new RangeError('rocket sweep tick does not match the authority tick');
+    }
+    const staticSweep = this.impulseGrenadeWorldPort.sweepSphere({
+      schemaVersion: 1,
+      authorityTick,
+      projectileId: request.projectileId,
+      ownerPlayerId: request.ownerPlayerId,
+      centerMillimeters: request.centerMillimeters,
+      translationMillimeters: request.translationMillimeters,
+      radiusMillimeters: request.radiusMillimeters,
+      solidLayers: IMPULSE_GRENADE_SOLID_LAYERS,
+      ignoredPlayerIds: Object.freeze([request.ownerPlayerId]),
+    });
+    if (
+      staticSweep === null
+      || typeof staticSweep !== 'object'
+      || staticSweep.schemaVersion !== 1
+      || !Array.isArray(staticSweep.contacts)
+    ) {
+      throw new RangeError('rocket static sweep returned an invalid result');
+    }
+    let best: { travelPermille: number; colliderId: string } | null = null;
+    for (const contact of staticSweep.contacts) {
+      const travelPermille = boundedInteger(
+        contact.timeOfImpactPermille,
+        0,
+        1_000,
+        'rocket static contact time',
+      );
+      const colliderId = stableId(contact.colliderId, 'rocket static collider id');
+      if (
+        best === null
+        || travelPermille < best.travelPermille
+        || (travelPermille === best.travelPermille && colliderId < best.colliderId)
+      ) {
+        best = { travelPermille, colliderId };
+      }
+    }
+    for (const player of sortedPlayers) {
+      if (
+        player.playerId === request.ownerPlayerId
+        || player.life === null
+        || player.life.phase !== 'alive'
+        || player.poseHistory === null
+      ) {
+        continue;
+      }
+      const pose = player.poseHistory.samples.find(
+        (sample) => sample.authorityTick === authorityTick,
+      );
+      if (pose === undefined || pose.lifePhase !== 'alive') continue;
+      const torso = pose.hitVolumes.find((volume) => volume.region === 'torso')
+        ?? pose.hitVolumes[0];
+      if (torso === undefined) continue;
+      const rotated = rotateCombatOffset(
+        torso.centerOffsetMillimeters,
+        pose.bodyYawMilliDegrees,
+      );
+      const center = {
+        x: pose.positionMillimeters.x + rotated.x,
+        y: pose.positionMillimeters.y + rotated.y,
+        z: pose.positionMillimeters.z + rotated.z,
+      };
+      const targetRadius = request.radiusMillimeters + Math.max(
+        torso.halfExtentsMillimeters.x,
+        torso.halfExtentsMillimeters.y,
+        torso.halfExtentsMillimeters.z,
+      );
+      const travelPermille = segmentSphereTravelPermille(
+        request.centerMillimeters,
+        request.translationMillimeters,
+        center,
+        targetRadius,
+      );
+      if (travelPermille === null) continue;
+      const colliderId = stableId(`player.${player.playerId}`, 'rocket player collider id');
+      if (
+        best === null
+        || travelPermille < best.travelPermille
+        || (travelPermille === best.travelPermille && colliderId < best.colliderId)
+      ) {
+        best = { travelPermille, colliderId };
+      }
+    }
+    return best === null
+      ? Object.freeze({
+          schemaVersion: 1,
+          hit: false,
+          travelPermille: 1_000,
+          colliderId: null,
+        })
+      : Object.freeze({
+          schemaVersion: 1,
+          hit: true,
+          travelPermille: best.travelPermille,
+          colliderId: best.colliderId,
+        });
+  }
+
+  private resolveAcceptedWeaponAttacks(
+    acceptedAttacks: readonly PendingAcceptedWeaponAttack[],
+    sortedPlayers: readonly AuthorityPlayerRecord[],
+    authorityTick: number,
+  ): readonly AuthorityRoomWeaponAttackTickResult[] {
+    if (acceptedAttacks.length === 0) return Object.freeze([]);
+    const targetHistories = sortedPlayers.map((player) => {
+      if (player.poseHistory === null) {
+        throw new Error('AUTHORITY_ARMORY_TARGET_POSE_HISTORY_MISSING');
+      }
+      return player.poseHistory;
+    });
+    const ordered = [...acceptedAttacks].sort((left, right) => {
+      if (left.attack.authorityTick !== right.attack.authorityTick) {
+        return left.attack.authorityTick - right.attack.authorityTick;
+      }
+      if (left.playerId !== right.playerId) return left.playerId < right.playerId ? -1 : 1;
+      if (left.attack.attackOrdinal !== right.attack.attackOrdinal) {
+        return left.attack.attackOrdinal - right.attack.attackOrdinal;
+      }
+      return left.attack.eventId < right.attack.eventId
+        ? -1
+        : left.attack.eventId > right.attack.eventId ? 1 : 0;
+    });
+    return ordered.map(({ playerId, attack }, resolutionOrdinal) => {
+      const shooter = this.players.get(playerId);
+      if (
+        shooter === undefined
+        || shooter.life === null
+        || shooter.poseHistory === null
+        || shooter.observedRttHistory === null
+      ) {
+        throw new Error('AUTHORITY_ARMORY_SHOOTER_STATE_MISSING');
+      }
+      const acceptedPose = shooter.poseHistory.samples.find(
+        (sample) => sample.authorityTick === authorityTick,
+      );
+      if (acceptedPose === undefined) {
+        throw new Error('AUTHORITY_ARMORY_SHOOTER_POSE_MISSING');
+      }
+      const aimOffsets = authorityAimOffsets(shooter.state, this.profile);
+      const shooterPose = {
+        schemaVersion: 1 as const,
+        authorityTick,
+        playerId,
+        teamId: acceptedPose.teamId,
+        lifePhase: acceptedPose.lifePhase,
+        positionMillimeters: {
+          x: shooter.state.player.feetPosition.x,
+          y: shooter.state.player.feetPosition.y,
+          z: shooter.state.player.feetPosition.z,
+        },
+        bodyYawMilliDegrees: signedYawMilliDegrees(shooter.state.player.yawMilliDegrees),
+        eyeOffsetMillimeters: aimOffsets.eyeOffsetMillimeters,
+        muzzleOffsetMillimeters: aimOffsets.muzzleOffsetMillimeters,
+      };
+      const acceptedLook = {
+        schemaVersion: 1 as const,
+        acceptedAtAuthorityTick: attack.authorityTick,
+        yawMilliDegrees: signedYawMilliDegrees(shooter.state.player.yawMilliDegrees),
+        pitchMilliDegrees: shooter.state.player.pitchMilliDegrees,
+      };
+      if (attack.attackModel === 'hitscan' || attack.attackModel === 'pellet_hitscan') {
+        if (this.worldOcclusionPort === null) {
+          throw new Error('AUTHORITY_ARMORY_HITSCAN_WORLD_PORT_MISSING');
+        }
+        if (shooter.observedRttHistory.length === 0) {
+          return deepFreeze({
+            resolutionOrdinal,
+            acceptedAttack: attack,
+            kind: 'hitscan' as const,
+            roomRejectionReason: 'server_rtt_history_unavailable' as const,
+            resolution: null,
+            damages: Object.freeze([]),
+          });
+        }
+        const resolution = resolveAuthorityWeaponHitscanAttack({
+          schemaVersion: 1,
+          currentAuthorityTick: authorityTick,
+          serverReceiptTick: attack.authorityTick,
+          shooterPose,
+          acceptedLook,
+          acceptedAttack: attack,
+          observedRttHistory: shooter.observedRttHistory,
+          targetHistories,
+        }, this.worldOcclusionPort);
+        const damages = resolution.damageTotals.map((total) => (
+          this.applyCombatDamageInternal({
+            targetPlayerId: total.targetPlayerId,
+            sourcePlayerId: attack.playerId,
+            damagePoints: total.damagePoints,
+            causeId: attack.eventId,
+          }, false)
+        ));
+        return deepFreeze({
+          resolutionOrdinal,
+          acceptedAttack: attack,
+          kind: 'hitscan' as const,
+          roomRejectionReason: null,
+          resolution,
+          damages,
+        });
+      }
+      if (attack.attackModel === 'projectile') {
+        if (this.worldOcclusionPort === null) {
+          throw new Error('AUTHORITY_ARMORY_PROJECTILE_WORLD_PORT_MISSING');
+        }
+        const spawn = createAuthorityRocketProjectile({
+          currentAuthorityTick: authorityTick,
+          shooterPose,
+          acceptedLook,
+          acceptedAttack: attack,
+        }, this.worldOcclusionPort);
+        if (!spawn.accepted) {
+          return deepFreeze({
+            resolutionOrdinal,
+            acceptedAttack: attack,
+            kind: 'projectile' as const,
+            projectile: null,
+            rejectionReason: spawn.reason,
+          });
+        }
+        if (this.weaponProjectiles.has(spawn.state.projectileId)) {
+          throw new Error('AUTHORITY_ARMORY_DUPLICATE_ROCKET_PROJECTILE_ID');
+        }
+        this.weaponProjectiles.set(spawn.state.projectileId, spawn.state);
+        return deepFreeze({
+          resolutionOrdinal,
+          acceptedAttack: attack,
+          kind: 'projectile' as const,
+          projectile: spawn.state,
+          rejectionReason: null,
+        });
+      }
+      if (attack.attackModel !== 'melee_contact') {
+        throw new Error('AUTHORITY_ARMORY_ATTACK_MODEL_UNSUPPORTED');
+      }
+      if (this.worldOcclusionPort === null) {
+        throw new Error('AUTHORITY_ARMORY_MELEE_WORLD_PORT_MISSING');
+      }
+      const resolution = resolveAuthorityMeleeContact({
+        schemaVersion: 1,
+        currentAuthorityTick: authorityTick,
+        shooterPose,
+        acceptedLook,
+        acceptedAttack: attack,
+        targetHistories,
+      }, this.worldOcclusionPort);
+      const damage = resolution.outcome === 'contact'
+        ? this.applyCombatDamageInternal({
+            targetPlayerId: resolution.targetPlayerId,
+            sourcePlayerId: attack.playerId,
+            damagePoints: resolution.damagePoints,
+            causeId: attack.eventId,
+          }, false)
+        : null;
+      return deepFreeze({
+        resolutionOrdinal,
+        acceptedAttack: attack,
+        kind: 'melee' as const,
+        resolution,
+        damage,
+      });
+    });
+  }
+
+  private resolveWeaponProjectileDetonations(
+    detonations: readonly AuthorityRocketDetonationV1[],
+    sortedPlayers: readonly AuthorityPlayerRecord[],
+  ): readonly AuthorityRoomWeaponProjectileTickResult[] {
+    if (detonations.length === 0) return Object.freeze([]);
+    if (this.worldOcclusionPort === null) {
+      throw new Error('AUTHORITY_ARMORY_PROJECTILE_WORLD_PORT_MISSING');
+    }
+    const targetHistories = sortedPlayers.map((player) => {
+      if (player.poseHistory === null) {
+        throw new Error('AUTHORITY_ARMORY_TARGET_POSE_HISTORY_MISSING');
+      }
+      return player.poseHistory;
+    });
+    const ordered = [...detonations].sort((left, right) => {
+      if (left.authorityTick !== right.authorityTick) {
+        return left.authorityTick - right.authorityTick;
+      }
+      return left.projectileId < right.projectileId
+        ? -1
+        : left.projectileId > right.projectileId ? 1 : 0;
+    });
+    return ordered.map((detonation, resolutionOrdinal) => {
+      const splash = resolveAuthorityRocketSplash(
+        detonation,
+        targetHistories,
+        this.worldOcclusionPort as AuthorityWorldOcclusionPort,
+      );
+      const damages = splash.impacts.map((impact) => (
+        this.applyCombatDamageInternal({
+          targetPlayerId: impact.targetPlayerId,
+          sourcePlayerId: detonation.ownerPlayerId,
+          damagePoints: impact.damagePoints,
+          causeId: detonation.eventId,
+        }, false)
+      ));
+      return deepFreeze({ resolutionOrdinal, detonation, splash, damages });
     });
   }
 
@@ -2365,6 +2937,7 @@ export class AuthoritativeRoom {
         if (
           player.life === null
           || player.autoRifle === null
+          || player.armory === null
           || player.impulseGrenade === null
           || player.poseHistory === null
           || player.observedRttHistory === null
@@ -2380,6 +2953,7 @@ export class AuthoritativeRoom {
           movement: structuredClone(player.state),
           life: structuredClone(player.life),
           autoRifle: structuredClone(player.autoRifle),
+          armory: structuredClone(player.armory),
           impulseGrenade: structuredClone(player.impulseGrenade),
           poseHistory: structuredClone(player.poseHistory),
           observedRttHistory: structuredClone(player.observedRttHistory),
@@ -2422,6 +2996,9 @@ export class AuthoritativeRoom {
       impulseGrenadeProjectiles: [...this.impulseGrenadeProjectiles.values()]
         .sort((left, right) => left.projectileId < right.projectileId ? -1 : 1)
         .map((projectile) => structuredClone(projectile)),
+      weaponProjectiles: [...this.weaponProjectiles.values()]
+        .sort((left, right) => left.projectileId < right.projectileId ? -1 : 1)
+        .map((projectile) => structuredClone(projectile)),
       match: structuredClone(this.tdmMatchState as AuthorityTdmMatchStateV1),
       pendingMatchEvents: structuredClone(this.pendingMatchEvents),
     } satisfies AuthorityActiveMatchCheckpointV1);
@@ -2436,6 +3013,7 @@ export class AuthoritativeRoom {
       || this.players.size !== 0
       || this.connectionOwners.size !== 0
       || this.impulseGrenadeProjectiles.size !== 0
+      || this.weaponProjectiles.size !== 0
       || this.pendingMatchEvents.length !== 0
       || this.activeTickMatchEvents !== null
       || this.deferTdmLifecycleSync
@@ -2449,6 +3027,7 @@ export class AuthoritativeRoom {
     const root = checkpointRecord(checkpoint, [
       'kind', 'schemaVersion', 'identity', 'options', 'clock', 'counters', 'players',
       'impulseGrenadeProjectiles', 'match', 'pendingMatchEvents',
+      ...(Object.hasOwn(checkpoint, 'weaponProjectiles') ? ['weaponProjectiles'] : []),
     ], 'authority active match checkpoint');
     checkpointLiteral(root.kind, 'authority_active_match_checkpoint', 'authority checkpoint kind');
     checkpointLiteral(
@@ -2570,10 +3149,15 @@ export class AuthoritativeRoom {
     const defaultQueue = new BoundedInputQueue().exportCheckpoint();
     for (let playerIndex = 0; playerIndex < playerValues.length; playerIndex += 1) {
       const value = playerValues[playerIndex];
+      const hasArmory = value !== null
+        && typeof value === 'object'
+        && !Array.isArray(value)
+        && Object.hasOwn(value, 'armory');
       const player = checkpointRecord(value, [
         'playerOrdinal', 'playerId', 'connectionId', 'connected', 'disconnectedAtTick',
         'movement', 'life', 'autoRifle', 'impulseGrenade', 'poseHistory',
         'observedRttHistory', 'inputQueue',
+        ...(hasArmory ? ['armory'] : []),
       ], 'authority checkpoint player') as unknown as AuthorityActiveMatchCheckpointPlayerV1;
       const playerOrdinal = checkpointInteger(
         player.playerOrdinal,
@@ -2636,6 +3220,33 @@ export class AuthoritativeRoom {
         serverTick,
         'checkpoint auto rifle tick',
       );
+      const armorySource = player.armory ?? createAuthorityWeaponLoadout({
+        playerId,
+        roomSeed: this.identity.matchId,
+        authorityTick: serverTick,
+        selectedSlot: player.movement.player.intent.selectedSlot,
+      });
+      assertAuthorityWeaponLoadoutState(armorySource);
+      checkpointLiteral(armorySource.playerId, playerId, 'checkpoint armory player');
+      checkpointLiteral(
+        armorySource.catalogId,
+        KYX_ARMORY_CATALOG_ID,
+        'checkpoint armory catalog',
+      );
+      checkpointLiteral(
+        armorySource.selectedSlot,
+        player.movement.player.intent.selectedSlot,
+        'checkpoint armory selected slot',
+      );
+      for (const weapon of armorySource.weapons) {
+        checkpointInteger(
+          weapon.lastProcessedAuthorityTick,
+          -1,
+          serverTick,
+          `checkpoint ${weapon.weaponId} authority tick`,
+        );
+      }
+      const armory = mirrorAutoRifleIntoArmory(armorySource, player.autoRifle);
       const expectedGrenadeNamespace = createImpulseGrenadeAbilityState({
         playerId,
         roomSeed: this.identity.matchId,
@@ -2692,6 +3303,7 @@ export class AuthoritativeRoom {
         movement: structuredClone(player.movement),
         life: structuredClone(life),
         autoRifle: structuredClone(player.autoRifle),
+        armory: structuredClone(armory),
         impulseGrenade: structuredClone(impulseGrenade),
         poseHistory: structuredClone(player.poseHistory),
         observedRttHistory: structuredClone(observedRttHistory),
@@ -2707,6 +3319,7 @@ export class AuthoritativeRoom {
         state: retainedPlayer.movement,
         life: retainedPlayer.life,
         autoRifle: retainedPlayer.autoRifle,
+        armory: retainedPlayer.armory as AuthorityWeaponLoadoutStateV1,
         impulseGrenade: retainedPlayer.impulseGrenade,
         poseHistory: retainedPlayer.poseHistory,
         observedRttHistory: retainedPlayer.observedRttHistory,
@@ -2743,6 +3356,46 @@ export class AuthoritativeRoom {
       activeProjectileCounts.set(projectile.ownerPlayerId, activeCount);
       restoredProjectiles.set(projectile.projectileId, deepFreeze(structuredClone(projectile)));
     }
+    const weaponProjectileValues = checkpointArray(
+      root.weaponProjectiles ?? [],
+      0,
+      this.maximumPlayers * 6,
+      'authority checkpoint weapon projectiles',
+    );
+    if (lifecycle === 'postmatch' && weaponProjectileValues.length !== 0) {
+      throw new RangeError('postmatch checkpoint cannot retain active weapon projectiles');
+    }
+    const restoredWeaponProjectiles = new Map<string, AuthorityRocketProjectileStateV1>();
+    let previousWeaponProjectileId: string | null = null;
+    for (const projectileValue of weaponProjectileValues) {
+      const projectile = projectileValue as AuthorityRocketProjectileStateV1;
+      assertAuthorityRocketProjectileState(projectile);
+      if (projectile.phase !== 'active') {
+        throw new RangeError('authority checkpoint retains an inactive weapon projectile');
+      }
+      if (!checkpointPlayersById.has(projectile.ownerPlayerId)) {
+        throw new RangeError('authority checkpoint weapon projectile owner is missing');
+      }
+      checkpointInteger(
+        projectile.lastProcessedAuthorityTick,
+        projectile.spawnTick,
+        serverTick,
+        'authority checkpoint weapon projectile tick',
+      );
+      if (
+        previousWeaponProjectileId !== null
+        && projectile.projectileId <= previousWeaponProjectileId
+      ) {
+        throw new RangeError(
+          'authority checkpoint weapon projectile ids must be unique and sorted',
+        );
+      }
+      previousWeaponProjectileId = projectile.projectileId;
+      restoredWeaponProjectiles.set(
+        projectile.projectileId,
+        deepFreeze(structuredClone(projectile)),
+      );
+    }
     const restoredMatch = validateCheckpointTdmMatch(
       root.match,
       this.identity.matchId,
@@ -2769,6 +3422,10 @@ export class AuthoritativeRoom {
     this.impulseGrenadeProjectiles.clear();
     for (const [projectileId, projectile] of restoredProjectiles) {
       this.impulseGrenadeProjectiles.set(projectileId, projectile);
+    }
+    this.weaponProjectiles.clear();
+    for (const [projectileId, projectile] of restoredWeaponProjectiles) {
+      this.weaponProjectiles.set(projectileId, projectile);
     }
     this.phase = lifecycle;
     this.phaseStartedAtTick = phaseStartedAtTick;
@@ -2806,12 +3463,13 @@ export class AuthoritativeRoom {
           connected: player.connected,
           lastProcessedInputSequence: player.state.player.lastProcessedSequence,
           movement: structuredClone(player.state),
-          ...(player.life === null || player.autoRifle === null
+          ...(player.life === null || player.autoRifle === null || player.armory === null
             ? {}
             : {
                 combat: Object.freeze({
                   life: structuredClone(player.life),
                   autoRifle: structuredClone(player.autoRifle),
+                  armory: structuredClone(player.armory),
                   ...(player.impulseGrenade === null
                     ? {}
                     : { impulseGrenade: structuredClone(player.impulseGrenade) }),
@@ -2826,6 +3484,19 @@ export class AuthoritativeRoom {
         : {
             impulseGrenadeProjectiles: Object.freeze(
               [...this.impulseGrenadeProjectiles.values()]
+                .sort((left, right) => (
+                  left.projectileId < right.projectileId
+                    ? -1
+                    : left.projectileId > right.projectileId ? 1 : 0
+                ))
+                .map((projectile) => structuredClone(projectile)),
+            ),
+          }),
+      ...(this.weaponProjectiles.size === 0
+        ? {}
+        : {
+            weaponProjectiles: Object.freeze(
+              [...this.weaponProjectiles.values()]
                 .sort((left, right) => (
                   left.projectileId < right.projectileId
                     ? -1
@@ -2901,7 +3572,10 @@ export class AuthoritativeRoom {
             : null;
     if (desired === null || desired === this.phase) return null;
     this.transitionTo(desired);
-    if (desired === 'postmatch') this.impulseGrenadeProjectiles.clear();
+    if (desired === 'postmatch') {
+      this.impulseGrenadeProjectiles.clear();
+      this.weaponProjectiles.clear();
+    }
     return desired;
   }
 

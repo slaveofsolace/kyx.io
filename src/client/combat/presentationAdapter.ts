@@ -78,6 +78,20 @@ export interface CombatPresentationRifleViewV1 {
   readonly reloadCompletesAtTick: number | null;
 }
 
+export interface CombatPresentationWeaponViewV1 {
+  readonly weaponId: string;
+  readonly slot: number;
+  readonly family: string;
+  readonly attackModel: string;
+  readonly phase: string;
+  readonly magazineRounds: number | null;
+  readonly reserveRounds: number | null;
+  readonly readyAtTick: number | null;
+  readonly reloadCompletesAtTick: number | null;
+  readonly nextAttackAtTick: number;
+  readonly acceptedAttackCount: number;
+}
+
 export interface CombatPresentationAbilityViewV1 {
   readonly abilityId: string;
   readonly phase: string;
@@ -90,6 +104,9 @@ export interface CombatPresentationLocalPlayerViewV1 {
   readonly playerId: string;
   readonly connected: boolean;
   readonly selectedWeaponSlot: number;
+  readonly weaponCatalogId?: string;
+  readonly selectedWeaponId?: string | null;
+  readonly weapons?: readonly CombatPresentationWeaponViewV1[];
   readonly life: CombatPresentationLifeViewV1;
   readonly rifle: CombatPresentationRifleViewV1;
   readonly impulseGrenade: CombatPresentationAbilityViewV1 | null;
@@ -145,6 +162,12 @@ export interface CombatPresentationProjectileViewV1 {
   readonly phase: string;
   readonly positionMillimeters: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>;
   readonly detonatesAtTick: number | null;
+  readonly weaponId?: string;
+  readonly velocityMillimetersPerSecond?: Readonly<{
+    readonly x: number;
+    readonly y: number;
+    readonly z: number;
+  }>;
 }
 
 export interface CombatPresentationAuthorityIdentityV1 {
@@ -294,6 +317,10 @@ export interface CombatPresentationWireHydrationV1 {
     readonly riflePhase: string;
     readonly magazineRounds: number;
     readonly reserveRounds: number;
+    readonly weaponCatalogId?: string;
+    readonly selectedWeaponSlot?: number;
+    readonly selectedWeaponId?: string | null;
+    readonly weapons?: readonly CombatPresentationWeaponViewV1[];
     readonly grenadePhase: string;
     readonly grenadeCooldownEndsAtTick: number;
     readonly activeProjectileCount: number;
@@ -388,6 +415,10 @@ export const COMBAT_PRESENTATION_MARKERS_V1 = Object.freeze({
   grenadeCollision: markerBundle('grenade.projectile.collision', ['audio', 'vfx']),
   grenadeDetonation: markerBundle('grenade.projectile.detonation', ['audio', 'vfx']),
   grenadeImpulse: markerBundle('grenade.impulse.applied', ['audio', 'vfx', 'hud']),
+  weaponAttackAccepted: markerBundle('weapon.attack.accepted', ['animation', 'audio', 'vfx', 'hud']),
+  weaponProjectileSpawned: markerBundle('weapon.projectile.spawned', ['animation', 'audio', 'vfx']),
+  weaponProjectileDetonation: markerBundle('weapon.projectile.detonation', ['audio', 'vfx', 'hud']),
+  weaponMeleeContact: markerBundle('weapon.melee.contact', ['animation', 'audio', 'vfx', 'hud']),
   teleportPredicted: markerBundle('teleport.predicted', ['animation', 'audio', 'vfx']),
   teleportConfirmed: markerBundle('teleport.confirmed', ['animation', 'audio', 'vfx', 'hud']),
   teleportRejected: markerBundle('teleport.rejected', ['audio', 'vfx', 'hud']),
@@ -919,6 +950,139 @@ function parseGrenadeEvent(value: unknown): ParsedAuthorityEventV1 {
   return deepFreeze(item) as ParsedAuthorityEventV1;
 }
 
+function parseWeaponEvent(value: unknown): ParsedAuthorityEventV1 {
+  const kind = dataRecord(value, 'weapon event').kind;
+  let item: Readonly<Record<string, unknown>> & {
+    kind: string;
+    eventId: string;
+    authorityTick: number;
+  };
+  if (kind === 'weapon_attack_accepted') {
+    item = parseBaseEvent(value, [
+      'kind', 'eventId', 'authorityTick', 'playerId', 'weaponId', 'family', 'attackModel',
+      'attackOrdinal', 'referenceDamagePoints', 'magazineRoundsAfter', 'reserveRoundsAfter',
+      'nextAttackAtTick', 'ballistics',
+    ], 'weapon attack event');
+    stableId(item.playerId, 'weapon attack player');
+    const weaponId = stableId(item.weaponId, 'weapon attack weapon');
+    const weaponProfile = clientWeaponProfile(weaponId);
+    if (!['rifle', 'pistol', 'shotgun', 'sniper', 'rocket', 'melee'].includes(item.family as string)) {
+      throw new RangeError('weapon attack family is unsupported');
+    }
+    if (!['hitscan', 'pellet_hitscan', 'projectile', 'melee_contact'].includes(item.attackModel as string)) {
+      throw new RangeError('weapon attack model is unsupported');
+    }
+    if (
+      item.family !== weaponProfile.family
+      || item.attackModel !== weaponProfile.attackModel
+    ) throw new RangeError('weapon attack does not match its authoritative profile');
+    integer(item.attackOrdinal, 1, 1_000_000, 'weapon attack ordinal');
+    integer(item.referenceDamagePoints, 0, 1_000_000, 'weapon reference damage');
+    optionalInteger(item.magazineRoundsAfter, 0, 1_000_000, 'weapon magazine rounds');
+    optionalInteger(item.reserveRoundsAfter, 0, 1_000_000, 'weapon reserve rounds');
+    integer(item.nextAttackAtTick, 0, MAX_AUTHORITY_TICK, 'weapon next attack tick');
+    const ballistics = array(item.ballistics, 64, 'weapon ballistics');
+    if (ballistics.length !== weaponProfile.pellets) {
+      throw new RangeError('weapon ballistics count does not match its authoritative profile');
+    }
+    const pelletIndexes = new Set<number>();
+    ballistics.forEach((sample, index) => {
+      const entry = dataRecord(sample, `weapon ballistics ${index}`);
+      exactKeys(entry, [
+        'pelletIndex', 'spreadRadiusMilliDegrees', 'spreadPitchMilliDegrees',
+        'spreadYawMilliDegrees',
+      ], `weapon ballistics ${index}`);
+      const pelletIndex = integer(
+        entry.pelletIndex,
+        0,
+        weaponProfile.pellets - 1,
+        `weapon ballistics ${index} pellet`,
+      );
+      if (pelletIndexes.has(pelletIndex)) {
+        throw new RangeError('weapon ballistics pellet indexes must be unique');
+      }
+      pelletIndexes.add(pelletIndex);
+      integer(
+        entry.spreadRadiusMilliDegrees,
+        0,
+        360_000,
+        `weapon ballistics ${index} spread radius`,
+      );
+      integer(
+        entry.spreadPitchMilliDegrees,
+        -360_000,
+        360_000,
+        `weapon ballistics ${index} spread pitch`,
+      );
+      integer(
+        entry.spreadYawMilliDegrees,
+        -360_000,
+        360_000,
+        `weapon ballistics ${index} spread yaw`,
+      );
+    });
+  } else if (kind === 'weapon_projectile_spawned') {
+    item = parseBaseEvent(value, [
+      'kind', 'eventId', 'authorityTick', 'projectileId', 'ownerPlayerId', 'ownerTeamId',
+      'weaponId', 'spawnTick', 'expiresAtTick', 'positionMillimeters',
+      'velocityMillimetersPerSecond', 'radiusMillimeters', 'splashRadiusMillimeters',
+    ], 'weapon projectile spawn event');
+    stableId(item.projectileId, 'weapon projectile');
+    stableId(item.ownerPlayerId, 'weapon projectile owner');
+    nullableStableId(item.ownerTeamId, 'weapon projectile owner team');
+    literal(item.weaponId, 'kyx_breach_rocket_v1', 'weapon projectile weapon');
+    integer(item.spawnTick, 0, MAX_AUTHORITY_TICK, 'weapon projectile spawn tick');
+    integer(item.expiresAtTick, 0, MAX_AUTHORITY_TICK, 'weapon projectile expiry tick');
+    vector3(item.positionMillimeters, 'weapon projectile position');
+    vector3(item.velocityMillimetersPerSecond, 'weapon projectile velocity');
+    integer(item.radiusMillimeters, 1, 1_000_000, 'weapon projectile radius');
+    integer(item.splashRadiusMillimeters, 1, 1_000_000, 'weapon projectile splash radius');
+  } else if (kind === 'weapon_projectile_detonated') {
+    item = parseBaseEvent(value, [
+      'kind', 'eventId', 'authorityTick', 'projectileId', 'ownerPlayerId', 'ownerTeamId',
+      'weaponId', 'positionMillimeters', 'referenceDamagePoints', 'splashRadiusMillimeters',
+      'colliderId', 'reason',
+    ], 'weapon projectile detonation event');
+    stableId(item.projectileId, 'weapon projectile');
+    stableId(item.ownerPlayerId, 'weapon projectile owner');
+    nullableStableId(item.ownerTeamId, 'weapon projectile owner team');
+    literal(item.weaponId, 'kyx_breach_rocket_v1', 'weapon projectile weapon');
+    vector3(item.positionMillimeters, 'weapon projectile detonation position');
+    integer(item.referenceDamagePoints, 0, 1_000_000, 'weapon projectile reference damage');
+    integer(item.splashRadiusMillimeters, 1, 1_000_000, 'weapon projectile splash radius');
+    nullableStableId(item.colliderId, 'weapon projectile collider');
+    if (item.reason !== 'collision' && item.reason !== 'lifetime') {
+      throw new RangeError('weapon projectile detonation reason is unsupported');
+    }
+  } else if (kind === 'weapon_melee_contact') {
+    item = parseBaseEvent(value, [
+      'kind', 'eventId', 'authorityTick', 'playerId', 'weaponId', 'attackOrdinal',
+      'outcome', 'reason', 'targetPlayerId', 'distanceMillimeters', 'damagePoints',
+      'contactPointMillimeters',
+    ], 'weapon melee contact event');
+    stableId(item.playerId, 'weapon melee player');
+    literal(item.weaponId, 'kyx_edge_v1', 'weapon melee weapon');
+    integer(item.attackOrdinal, 1, 1_000_000, 'weapon melee attack ordinal');
+    if (item.outcome !== 'contact' && item.outcome !== 'miss') {
+      throw new RangeError('weapon melee outcome is unsupported');
+    }
+    if (
+      item.reason !== null
+      && item.reason !== 'no_target'
+      && item.reason !== 'world_occluded'
+    ) throw new RangeError('weapon melee reason is unsupported');
+    nullableStableId(item.targetPlayerId, 'weapon melee target');
+    optionalInteger(item.distanceMillimeters, 0, 1_000_000, 'weapon melee distance');
+    integer(item.damagePoints, 0, 1_000_000, 'weapon melee damage');
+    if (item.contactPointMillimeters !== null) {
+      vector3(item.contactPointMillimeters, 'weapon melee contact point');
+    }
+  } else {
+    throw new RangeError('weapon presentation event kind is unsupported');
+  }
+  return deepFreeze(item) as ParsedAuthorityEventV1;
+}
+
 function parseTeleportEvent(value: unknown): ParsedAuthorityEventV1 {
   const kind = dataRecord(value, 'teleport resource event').kind;
   let item: Readonly<Record<string, unknown>> & { kind: string; eventId: string; authorityTick: number };
@@ -1227,6 +1391,146 @@ function parseRifleSnapshot(value: unknown): {
   });
 }
 
+const CLIENT_WEAPON_PROFILE_BY_ID = Object.freeze({
+  vertical_rifle_v1: Object.freeze({
+    slot: 0, family: 'rifle', attackModel: 'hitscan', pellets: 1,
+  }),
+  kyx_sidearm_v1: Object.freeze({
+    slot: 1, family: 'pistol', attackModel: 'hitscan', pellets: 1,
+  }),
+  kyx_scattergun_v1: Object.freeze({
+    slot: 2,
+    family: 'shotgun',
+    attackModel: 'pellet_hitscan',
+    pellets: 8,
+  }),
+  kyx_longshot_v1: Object.freeze({
+    slot: 3, family: 'sniper', attackModel: 'hitscan', pellets: 1,
+  }),
+  kyx_breach_rocket_v1: Object.freeze({
+    slot: 4,
+    family: 'rocket',
+    attackModel: 'projectile',
+    pellets: 1,
+  }),
+  kyx_edge_v1: Object.freeze({
+    slot: 5, family: 'melee', attackModel: 'melee_contact', pellets: 1,
+  }),
+} as const);
+
+function clientWeaponProfile(weaponId: string): (
+  typeof CLIENT_WEAPON_PROFILE_BY_ID[keyof typeof CLIENT_WEAPON_PROFILE_BY_ID]
+) {
+  const profile = CLIENT_WEAPON_PROFILE_BY_ID[
+    weaponId as keyof typeof CLIENT_WEAPON_PROFILE_BY_ID
+  ];
+  if (profile === undefined) throw new RangeError('authority weapon profile is unsupported');
+  return profile;
+}
+
+function parseAuthorityArmorySnapshot(
+  value: unknown,
+  expectedPlayerId: string,
+): Readonly<{
+  readonly weaponCatalogId: string;
+  readonly selectedWeaponSlot: number;
+  readonly selectedWeaponId: string | null;
+  readonly weapons: readonly CombatPresentationWeaponViewV1[];
+}> {
+  const item = dataRecord(value, 'authority armory snapshot');
+  exactKeys(item, [
+    'schemaVersion', 'catalogId', 'playerId', 'selectedSlot', 'weapons',
+  ], 'authority armory snapshot');
+  literal(item.schemaVersion, 1, 'authority armory schema');
+  const weaponCatalogId = literal(
+    item.catalogId,
+    'kyx_authoritative_armory_v1',
+    'authority armory catalog',
+  );
+  if (stableId(item.playerId, 'authority armory player') !== expectedPlayerId) {
+    throw new Error('COMBAT_PRESENTATION_ARMORY_PLAYER_MISMATCH');
+  }
+  const selectedWeaponSlot = integer(item.selectedSlot, 0, 7, 'authority selected weapon slot');
+  const weaponValues = array(item.weapons, 8, 'authority armory weapons');
+  if (weaponValues.length !== 6) {
+    throw new RangeError('authority armory must contain all six original weapon profiles');
+  }
+  const seenWeaponIds = new Set<string>();
+  const seenSlots = new Set<number>();
+  const weapons = weaponValues.map((weaponValue) => {
+    const weapon = dataRecord(weaponValue, 'authority weapon snapshot');
+    exactKeys(weapon, [
+      'schemaVersion', 'catalogId', 'playerId', 'weaponId', 'phase', 'magazineRounds',
+      'reserveRounds', 'readyAtTick', 'reloadCompletesAtTick', 'nextAttackAtTick',
+      'acceptedAttackCount', 'ballisticsSeed', 'eventNamespace',
+      'lastProcessedAuthorityTick', 'lastProcessedAuthorityInputSequence',
+    ], 'authority weapon snapshot');
+    literal(weapon.schemaVersion, 1, 'authority weapon schema');
+    literal(
+      weapon.catalogId,
+      'kyx_authoritative_armory_v1',
+      'authority weapon catalog',
+    );
+    if (stableId(weapon.playerId, 'authority weapon player') !== expectedPlayerId) {
+      throw new Error('COMBAT_PRESENTATION_WEAPON_PLAYER_MISMATCH');
+    }
+    const weaponId = stableId(weapon.weaponId, 'authority weapon id');
+    const profile = clientWeaponProfile(weaponId);
+    if (seenWeaponIds.has(weaponId) || seenSlots.has(profile.slot)) {
+      throw new Error('COMBAT_PRESENTATION_ARMORY_DUPLICATE_WEAPON');
+    }
+    seenWeaponIds.add(weaponId);
+    seenSlots.add(profile.slot);
+    const phase = stringValue(weapon.phase, 'authority weapon phase');
+    if (![
+      'holstered', 'equipping', 'ready', 'recovering', 'reloading', 'empty', 'dead',
+    ].includes(phase)) throw new RangeError('authority weapon phase is unsupported');
+    return deepFreeze({
+      weaponId,
+      slot: profile.slot,
+      family: profile.family,
+      attackModel: profile.attackModel,
+      phase,
+      magazineRounds: weapon.magazineRounds === null
+        ? null
+        : integer(weapon.magazineRounds, 0, 1_000_000, 'authority weapon magazine'),
+      reserveRounds: weapon.reserveRounds === null
+        ? null
+        : integer(weapon.reserveRounds, 0, 1_000_000, 'authority weapon reserve'),
+      readyAtTick: optionalInteger(
+        weapon.readyAtTick,
+        0,
+        MAX_AUTHORITY_TICK,
+        'authority weapon ready tick',
+      ),
+      reloadCompletesAtTick: optionalInteger(
+        weapon.reloadCompletesAtTick,
+        0,
+        MAX_AUTHORITY_TICK,
+        'authority weapon reload tick',
+      ),
+      nextAttackAtTick: integer(
+        weapon.nextAttackAtTick,
+        0,
+        MAX_AUTHORITY_TICK,
+        'authority weapon next attack tick',
+      ),
+      acceptedAttackCount: integer(
+        weapon.acceptedAttackCount,
+        0,
+        1_000_000,
+        'authority accepted attack count',
+      ),
+    });
+  });
+  return deepFreeze({
+    weaponCatalogId,
+    selectedWeaponSlot,
+    selectedWeaponId: weapons.find(({ slot }) => slot === selectedWeaponSlot)?.weaponId ?? null,
+    weapons,
+  });
+}
+
 function parseGrenadeSnapshot(value: unknown): {
   readonly eventNamespace: string;
   readonly acceptedThrowCount: number;
@@ -1476,6 +1780,34 @@ function parseProjectileSnapshot(value: unknown): CombatPresentationProjectileVi
   });
 }
 
+function parseWeaponProjectileSnapshot(value: unknown): CombatPresentationProjectileViewV1 {
+  const item = dataRecord(value, 'weapon projectile snapshot');
+  exactKeys(item, [
+    'schemaVersion', 'projectileId', 'ownerPlayerId', 'ownerTeamId', 'weaponId',
+    'spawnTick', 'lastProcessedAuthorityTick', 'expiresAtTick', 'positionMillimeters',
+    'velocityMillimetersPerSecond', 'radiusMillimeters', 'splashRadiusMillimeters',
+    'referenceDamagePoints', 'phase',
+  ], 'weapon projectile snapshot');
+  literal(item.schemaVersion, 1, 'weapon projectile schema');
+  return deepFreeze({
+    projectileId: stableId(item.projectileId, 'weapon projectile id'),
+    ownerPlayerId: stableId(item.ownerPlayerId, 'weapon projectile owner'),
+    weaponId: stableId(item.weaponId, 'weapon projectile weapon id'),
+    phase: stringValue(item.phase, 'weapon projectile phase'),
+    positionMillimeters: vector3(item.positionMillimeters, 'weapon projectile position'),
+    velocityMillimetersPerSecond: vector3(
+      item.velocityMillimetersPerSecond,
+      'weapon projectile velocity',
+    ),
+    detonatesAtTick: integer(
+      item.expiresAtTick,
+      0,
+      MAX_AUTHORITY_TICK,
+      'weapon projectile expiry tick',
+    ),
+  });
+}
+
 const SNAPSHOT_IDENTITY_KEYS = [
   'roomId', 'matchId', 'rulesetId', 'rulesetRevision', 'rulesetHash', 'mapId',
   'fixtureId', 'fixtureHash', 'physicsAdapterId', 'physicsAdapterVersion',
@@ -1585,7 +1917,7 @@ function parseSnapshot(value: unknown, localPlayerId: string): ParsedSnapshotV1 
   const item = dataRecord(value, 'authority full snapshot');
   allowedKeys(item, [
     'kind', 'identity', 'serverTick', 'lifecycle', 'phaseEndsAtTick', 'players',
-    'impulseGrenadeProjectiles', 'match',
+    'impulseGrenadeProjectiles', 'weaponProjectiles', 'match',
   ], 'authority full snapshot');
   requireKeys(
     item,
@@ -1624,12 +1956,15 @@ function parseSnapshot(value: unknown, localPlayerId: string): ParsedSnapshotV1 
     const combat = dataRecord(player.combat, 'player combat snapshot');
     allowedKeys(
       combat,
-      ['life', 'autoRifle', 'impulseGrenade', 'abilityResources'],
+      ['life', 'autoRifle', 'armory', 'impulseGrenade', 'abilityResources'],
       'player combat snapshot',
     );
     requireKeys(combat, ['life', 'autoRifle'], 'player combat snapshot');
     const life = parseLife(combat.life);
     const rifle = parseRifleSnapshot(combat.autoRifle);
+    const armory = combat.armory === undefined
+      ? null
+      : parseAuthorityArmorySnapshot(combat.armory, playerId);
     const grenade = combat.impulseGrenade === undefined ? null : parseGrenadeSnapshot(combat.impulseGrenade);
     const resources = combat.abilityResources === undefined
       ? null
@@ -1637,7 +1972,14 @@ function parseSnapshot(value: unknown, localPlayerId: string): ParsedSnapshotV1 
     localPlayer = deepFreeze({
       playerId,
       connected: player.connected as boolean,
-      selectedWeaponSlot: resources?.selectedWeaponSlot ?? 0,
+      selectedWeaponSlot: armory?.selectedWeaponSlot ?? resources?.selectedWeaponSlot ?? 0,
+      ...(armory === null
+        ? {}
+        : {
+            weaponCatalogId: armory.weaponCatalogId,
+            selectedWeaponId: armory.selectedWeaponId,
+            weapons: armory.weapons,
+          }),
       life,
       rifle: rifle.view,
       impulseGrenade: resources?.impulseGrenade ?? null,
@@ -1651,11 +1993,18 @@ function parseSnapshot(value: unknown, localPlayerId: string): ParsedSnapshotV1 
     });
   }
   const match = item.match === undefined ? null : parseMatchSnapshot(item.match, serverTick);
-  const projectiles = Object.freeze(array(
+  const projectiles = Object.freeze([
+    ...array(
     item.impulseGrenadeProjectiles ?? [],
     256,
     'snapshot projectiles',
-  ).map(parseProjectileSnapshot));
+    ).map(parseProjectileSnapshot),
+    ...array(
+      item.weaponProjectiles ?? [],
+      256,
+      'snapshot weapon projectiles',
+    ).map(parseWeaponProjectileSnapshot),
+  ].sort((left, right) => left.projectileId.localeCompare(right.projectileId)));
   return deepFreeze({
     identity,
     roomId: identity.roomId,
@@ -1682,6 +2031,9 @@ function snapshotIntent(view: CombatPresentationViewModelV1): CombatPresentation
       data: {
         lifecycle: view.lifecycle,
         selectedWeaponSlot: view.localPlayer?.selectedWeaponSlot ?? null,
+        weaponCatalogId: view.localPlayer?.weaponCatalogId ?? null,
+        selectedWeaponId: view.localPlayer?.selectedWeaponId ?? null,
+        weapons: view.localPlayer?.weapons ?? [],
         magazineRounds: view.localPlayer?.rifle.magazineRounds ?? null,
         reserveRounds: view.localPlayer?.rifle.reserveRounds ?? null,
         riflePhase: view.localPlayer?.rifle.phase ?? null,
@@ -1806,14 +2158,108 @@ function parseWireHydration(value: unknown): CombatPresentationWireHydrationV1 {
     ? null
     : (() => {
         const player = dataRecord(item.localPlayer, 'combat presentation wire local player');
+        const armoryKeys = [
+          'weaponCatalogId', 'selectedWeaponSlot', 'selectedWeaponId', 'weapons',
+        ];
+        const hasArmory = armoryKeys.some((key) => Object.hasOwn(player, key));
+        if (hasArmory && armoryKeys.some((key) => !Object.hasOwn(player, key))) {
+          throw new TypeError('combat presentation wire armory projection is incomplete');
+        }
         exactKeys(player, [
           'playerId', 'lifePhase', 'healthPoints', 'shieldPoints', 'riflePhase',
           'magazineRounds', 'reserveRounds', 'grenadePhase', 'grenadeCooldownEndsAtTick',
           'activeProjectileCount', 'teleportCooldownTicksRemaining',
+          ...(hasArmory ? armoryKeys : []),
         ], 'combat presentation wire local player');
         if (player.lifePhase !== 'alive' && player.lifePhase !== 'dead') {
           throw new RangeError('combat presentation wire life phase is unsupported');
         }
+        const weaponValues = hasArmory
+          ? array(player.weapons, 8, 'wire armory weapons')
+          : [];
+        if (hasArmory && weaponValues.length !== 6) {
+          throw new RangeError('wire armory must contain all six original weapon profiles');
+        }
+        const seenWeaponIds = new Set<string>();
+        const seenWeaponSlots = new Set<number>();
+        const weapons = hasArmory
+          ? weaponValues.map((weaponValue) => {
+              const weapon = dataRecord(weaponValue, 'wire armory weapon');
+              exactKeys(weapon, [
+                'weaponId', 'slot', 'family', 'attackModel', 'phase', 'magazineRounds',
+                'reserveRounds', 'readyAtTick', 'reloadCompletesAtTick', 'nextAttackAtTick',
+                'acceptedAttackCount',
+              ], 'wire armory weapon');
+              const weaponId = stableId(weapon.weaponId, 'wire weapon id');
+              const profile = clientWeaponProfile(weaponId);
+              const slot = integer(weapon.slot, 0, 7, 'wire weapon slot');
+              const family = stableId(weapon.family, 'wire weapon family');
+              const attackModel = stableId(weapon.attackModel, 'wire weapon attack model');
+              if (
+                slot !== profile.slot
+                || family !== profile.family
+                || attackModel !== profile.attackModel
+              ) throw new RangeError('wire weapon does not match its authoritative profile');
+              if (seenWeaponIds.has(weaponId) || seenWeaponSlots.has(slot)) {
+                throw new Error('COMBAT_PRESENTATION_WIRE_DUPLICATE_WEAPON');
+              }
+              seenWeaponIds.add(weaponId);
+              seenWeaponSlots.add(slot);
+              const phase = stableId(weapon.phase, 'wire weapon phase');
+              if (![
+                'holstered', 'equipping', 'ready', 'recovering', 'reloading', 'empty', 'dead',
+              ].includes(phase)) throw new RangeError('wire weapon phase is unsupported');
+              return deepFreeze({
+                weaponId,
+                slot,
+                family,
+                attackModel,
+                phase,
+                magazineRounds: weapon.magazineRounds === null
+                  ? null
+                  : integer(weapon.magazineRounds, 0, 1_000_000, 'wire weapon magazine'),
+                reserveRounds: weapon.reserveRounds === null
+                  ? null
+                  : integer(weapon.reserveRounds, 0, 1_000_000, 'wire weapon reserve'),
+                readyAtTick: optionalInteger(
+                  weapon.readyAtTick,
+                  0,
+                  MAX_AUTHORITY_TICK,
+                  'wire weapon ready tick',
+                ),
+                reloadCompletesAtTick: optionalInteger(
+                  weapon.reloadCompletesAtTick,
+                  0,
+                  MAX_AUTHORITY_TICK,
+                  'wire weapon reload tick',
+                ),
+                nextAttackAtTick: integer(
+                  weapon.nextAttackAtTick,
+                  0,
+                  MAX_AUTHORITY_TICK,
+                  'wire weapon next attack tick',
+                ),
+                acceptedAttackCount: integer(
+                  weapon.acceptedAttackCount,
+                  0,
+                  1_000_000,
+                  'wire weapon accepted attacks',
+                ),
+              });
+            })
+          : undefined;
+        const selectedWeaponSlot = hasArmory
+          ? integer(player.selectedWeaponSlot, 0, 7, 'wire selected weapon slot')
+          : undefined;
+        const selectedWeaponId = hasArmory
+          ? nullableStableId(player.selectedWeaponId, 'wire selected weapon id')
+          : undefined;
+        if (
+          hasArmory
+          && selectedWeaponId !== (
+            weapons?.find(({ slot }) => slot === selectedWeaponSlot)?.weaponId ?? null
+          )
+        ) throw new Error('COMBAT_PRESENTATION_WIRE_SELECTED_WEAPON_MISMATCH');
         return deepFreeze({
           playerId: stableId(player.playerId, 'combat presentation wire player id'),
           lifePhase: player.lifePhase as 'alive' | 'dead',
@@ -1822,6 +2268,18 @@ function parseWireHydration(value: unknown): CombatPresentationWireHydrationV1 {
           riflePhase: stableId(player.riflePhase, 'wire rifle phase'),
           magazineRounds: integer(player.magazineRounds, 0, 1_000_000, 'wire magazine'),
           reserveRounds: integer(player.reserveRounds, 0, 1_000_000, 'wire reserve'),
+          ...(hasArmory
+            ? {
+                weaponCatalogId: literal(
+                  player.weaponCatalogId,
+                  'kyx_authoritative_armory_v1',
+                  'wire weapon catalog id',
+                ),
+                selectedWeaponSlot: selectedWeaponSlot as number,
+                selectedWeaponId: selectedWeaponId as string | null,
+                weapons: Object.freeze(weapons as CombatPresentationWeaponViewV1[]),
+              }
+            : {}),
           grenadePhase: stableId(player.grenadePhase, 'wire grenade phase'),
           grenadeCooldownEndsAtTick: integer(
             player.grenadeCooldownEndsAtTick,
@@ -1985,7 +2443,9 @@ function parseWirePresentationEvent(value: unknown): {
     ? parseMatchEvent(payload)
     : typeof payload.kind === 'string' && payload.kind.startsWith('impulse_grenade_')
       ? parseGrenadeEvent(payload)
-      : parseTeleportEvent(payload);
+      : typeof payload.kind === 'string' && payload.kind.startsWith('weapon_')
+        ? parseWeaponEvent(payload)
+        : parseTeleportEvent(payload);
   if (event.authorityTick !== serverTick) {
     throw new Error('COMBAT_PRESENTATION_WIRE_TICK_MISMATCH');
   }
@@ -2029,6 +2489,32 @@ function parseWirePresentationEvent(value: unknown): {
       || targetId !== expectedProjection.targetId
       || amountHealthPoints !== null
     ) throw new Error('COMBAT_PRESENTATION_WIRE_GRENADE_PROJECTION_MISMATCH');
+  } else if (event.kind.startsWith('weapon_')) {
+    const expectedProjection = event.kind === 'weapon_attack_accepted'
+      ? {
+          kind: 'weaponAttackAccepted',
+          actorId: event.playerId,
+          targetId: null,
+        }
+      : event.kind === 'weapon_melee_contact'
+        ? {
+            kind: 'meleeContact',
+            actorId: event.playerId,
+            targetId: event.targetPlayerId,
+          }
+        : {
+            kind: event.kind === 'weapon_projectile_spawned'
+              ? 'projectileSpawned'
+              : 'projectileDetonated',
+            actorId: event.ownerPlayerId,
+            targetId: null,
+          };
+    if (
+      reliableKind !== expectedProjection.kind
+      || actorId !== expectedProjection.actorId
+      || targetId !== expectedProjection.targetId
+      || amountHealthPoints !== null
+    ) throw new Error('COMBAT_PRESENTATION_WIRE_WEAPON_PROJECTION_MISMATCH');
   } else {
     const expectedKind = event.kind === 'teleport_resource_confirmed'
       ? 'abilityActivated'
@@ -2131,6 +2617,23 @@ export function applyCombatPresentationReliableEvent(
     intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.grenadeImpulse, {
       subjectPlayerId: event.ownerPlayerId as string,
       targetPlayerId: event.targetPlayerId as string,
+    }));
+  } else if (event.kind === 'weapon_attack_accepted') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.weaponAttackAccepted, {
+      subjectPlayerId: event.playerId as string,
+    }));
+  } else if (event.kind === 'weapon_projectile_spawned') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.weaponProjectileSpawned, {
+      subjectPlayerId: event.ownerPlayerId as string,
+    }));
+  } else if (event.kind === 'weapon_projectile_detonated') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.weaponProjectileDetonation, {
+      subjectPlayerId: event.ownerPlayerId as string,
+    }));
+  } else if (event.kind === 'weapon_melee_contact') {
+    intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.weaponMeleeContact, {
+      subjectPlayerId: event.playerId as string,
+      targetPlayerId: event.targetPlayerId as string | null,
     }));
   } else {
     intents.push(eventIntent(event, COMBAT_PRESENTATION_MARKERS_V1.teleportRejected, {

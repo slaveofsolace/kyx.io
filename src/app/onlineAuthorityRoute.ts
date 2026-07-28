@@ -1470,6 +1470,14 @@ async function mountSession(
                   riflePhase: local.riflePhase,
                   magazineRounds: local.magazineRounds,
                   reserveRounds: local.reserveRounds,
+                  ...(local.weaponCatalogId === undefined
+                    ? {}
+                    : {
+                        weaponCatalogId: local.weaponCatalogId,
+                        selectedWeaponSlot: local.selectedWeaponSlot,
+                        selectedWeaponId: local.selectedWeaponId,
+                        weapons: local.weapons,
+                      }),
                   grenadePhase: local.grenadePhase,
                   grenadeCooldownEndsAtTick: local.grenadeCooldownEndsAtTick,
                   activeProjectileCount: local.activeProjectileCount,
