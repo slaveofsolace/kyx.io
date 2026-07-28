@@ -136,7 +136,7 @@ export class Nameplates {
       el.style.display = 'block';
       const x = (this._v.x * 0.5 + 0.5) * w;
       const y = (-this._v.y * 0.5 + 0.5) * h;
-      const s = Math.max(0.6, Math.min(1.1, 16 / dist));
+      const s = Math.max(0.58, Math.min(0.92, 14 / dist));
       if (deconflictLabels) {
         visiblePlacements.push({ el, x, y, scale: s, distance: dist });
       } else {

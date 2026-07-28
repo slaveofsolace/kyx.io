@@ -1,6 +1,7 @@
 import './style.css';
 import './ui/g7-ui.css';
 import './ui/g7-foundry-tactical.css';
+import './ui/g7-arena-instrument.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
@@ -27,7 +28,8 @@ document.body.dataset.g7Presentation = useAcceptedG7Presentation
   : 'legacy-fallback';
 if (useAcceptedG7Presentation) {
   document.body.dataset.g7Candidate = 'foundry-tactical-v1';
-  document.getElementById('hud')?.setAttribute('data-ui-candidate', 'foundry-tactical-v1');
+  document.body.dataset.g7Theme = 'arena-instrument-v3';
+  document.getElementById('hud')?.setAttribute('data-ui-candidate', 'arena-instrument-v3');
 }
 if (g7UiCandidate.kind === 'invalid') {
   document.body.dataset.g7PresentationQuery = `invalid-${g7UiCandidate.reason}`;
