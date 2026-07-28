@@ -1544,7 +1544,7 @@ export function resolveAuthorityMeleeContact(
       targetPlayerId: candidate.playerId,
       targetTeamId: candidate.teamId,
       targetPoseTick: request.currentAuthorityTick,
-      distanceMillimeters: candidate.distance,
+      distanceMillimeters: Math.round(candidate.distance),
       damagePoints: profileValue.referenceDamagePoints,
       contactPointMillimeters: candidate.point,
     });

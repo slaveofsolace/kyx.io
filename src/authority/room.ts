@@ -550,6 +550,24 @@ function stableId(value: unknown, label: string): string {
   return value;
 }
 
+function fnv1a64(source: string): string {
+  let hash = 0xcbf29ce484222325n;
+  for (const byte of new TextEncoder().encode(source)) {
+    hash ^= BigInt(byte);
+    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+  }
+  return hash.toString(16).padStart(16, '0');
+}
+
+/** Keep internal authority event identities usable by the bounded damage contract. */
+function boundedAuthorityCombatId(authorityId: string): string {
+  if (
+    new TextEncoder().encode(authorityId).byteLength <= PROTOCOL_LIMITS.maxIdBytes
+    && /^[A-Za-z0-9][A-Za-z0-9_.:-]*$/u.test(authorityId)
+  ) return authorityId;
+  return `combat.${fnv1a64(authorityId)}`;
+}
+
 function stableHash(value: string, label: string): string {
   if (typeof value !== 'string' || !/^(?:[a-f0-9]{16}|[a-f0-9]{64})$/u.test(value)) {
     throw new RangeError(`${label} must be a lowercase 64-bit or 256-bit hexadecimal hash`);
@@ -2656,7 +2674,7 @@ export class AuthoritativeRoom {
             targetPlayerId: total.targetPlayerId,
             sourcePlayerId: attack.playerId,
             damagePoints: total.damagePoints,
-            causeId: attack.eventId,
+            causeId: boundedAuthorityCombatId(attack.eventId),
           }, false)
         ));
         return deepFreeze({
@@ -2718,7 +2736,7 @@ export class AuthoritativeRoom {
             targetPlayerId: resolution.targetPlayerId,
             sourcePlayerId: attack.playerId,
             damagePoints: resolution.damagePoints,
-            causeId: attack.eventId,
+            causeId: boundedAuthorityCombatId(attack.eventId),
           }, false)
         : null;
       return deepFreeze({
@@ -2764,7 +2782,7 @@ export class AuthoritativeRoom {
           targetPlayerId: impact.targetPlayerId,
           sourcePlayerId: detonation.ownerPlayerId,
           damagePoints: impact.damagePoints,
-          causeId: detonation.eventId,
+          causeId: boundedAuthorityCombatId(detonation.eventId),
         }, false)
       ));
       return deepFreeze({ resolutionOrdinal, detonation, splash, damages });

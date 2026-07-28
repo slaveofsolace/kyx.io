@@ -211,7 +211,11 @@ function reliablePresentation(
     matchId: authority.identity.matchId,
     events,
   });
-  expect(validation).toMatchObject({ ok: true });
+  if (!validation.ok) {
+    throw new Error(
+      `armory reliable projection failed schema validation: ${JSON.stringify(validation.error)}`,
+    );
+  }
 
   const full = authority.fullSnapshot();
   const combat = combatSnapshotFromAuthority(full);
@@ -259,6 +263,10 @@ function reliablePresentation(
   }).adapter;
   const intents: CombatPresentationIntentV1[] = [];
   for (const event of events) {
+    // The production bridge only sends events with the explicit semantic
+    // projection to the presentation adapter. Transport-only events such as a
+    // lethal sniper's playerKilled companion remain in the reliable stream.
+    if (event.presentation === undefined) continue;
     const applied = applyCombatPresentationReliableEvent(adapter, event);
     adapter = applied.adapter;
     intents.push(...applied.intents);
@@ -357,28 +365,27 @@ describe('authoritative room KYX armory integration', () => {
     expect(resumed).toMatchObject({
       ok: true,
       connectionMode: 'resumed',
-      snapshot: {
-        players: [expect.objectContaining({
-          playerId: 'player_A',
-          combat: {
-            armory: {
-              selectedSlot: 4,
-              weapons: expect.arrayContaining([
-                expect.objectContaining({
-                  weaponId: KYX_WEAPON_ID.rocket,
-                  magazineRounds: 0,
-                  acceptedAttackCount: 1,
-                }),
-              ]),
-            },
-          },
-        })],
-        weaponProjectiles: [expect.objectContaining({
-          weaponId: KYX_WEAPON_ID.rocket,
-          phase: 'active',
-        })],
-      },
     });
+    if (!resumed.ok) return;
+    const resumedPlayer = resumed.snapshot.players.find(
+      ({ playerId }) => playerId === 'player_A',
+    );
+    expect(resumedPlayer?.combat?.armory).toMatchObject({
+      selectedSlot: 4,
+      weapons: expect.arrayContaining([
+        expect.objectContaining({
+          weaponId: KYX_WEAPON_ID.rocket,
+          magazineRounds: 0,
+          acceptedAttackCount: 1,
+        }),
+      ]),
+    });
+    expect(resumed.snapshot.weaponProjectiles).toEqual([
+      expect.objectContaining({
+        weaponId: KYX_WEAPON_ID.rocket,
+        phase: 'active',
+      }),
+    ]);
 
     let detonationTick: AuthorityRoomTickResult | null = null;
     for (let index = 0; index < 4 && detonationTick === null; index += 1) {
