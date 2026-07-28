@@ -5,36 +5,37 @@ appending prose to executable source files or binary assets.
 
 ## Active now
 
-- `assets/source/blender/phase7-character-original-v6/model/v6c-character-rev18/`
-  and `evidence/2026-07-27/g6-rev18-character-remediation/` preserve the latest
-  rejected character candidate on public `main`. Rev19 is active in the
-  isolated `codex/g6-rev19-true-remodel-20260727` lane and is not part of the
-  public snapshot yet. Its first exact-GLB attempt preserved the technical
-  contracts but was immediately rejected for block-built armor, dome-backed
-  helmet construction, tube anatomy, disconnected fingers, weak weapon contact,
-  and a primitive rifle. Rev17 remains the opt-in runtime path; no revision is
-  the final player model.
+- `public/candidates/g6-rev30-cc0-donor/` is the visually accepted character
+  asset direction: a cohesive charcoal/gunmetal cyber-suit adapted from
+  Irondust's CC0 Sci-fi Soldier donor, with broad visor, fitted gloves,
+  continuous knee/shin construction, grounded boots, and the unchanged Rev17
+  66-bone / 16-action / weapon-socket contract. The source, provenance notice,
+  reproducible Blender exporter, exact-reimport report, and four review renders
+  are committed. Runtime selection, shared low-poly loading, final weapon
+  attachment, and live animation review are still being integrated.
   *Currently being worked on.*
 
-- `src/weapons/WeaponSystem.js` now explicitly hides the invalid 15-primitive
-  legacy blockout arm whenever the sword is active, while preserving both
-  default and Rev17 rifle paths. The correction and before/after evidence are
-  published on `main`. Authored first-person melee arms, a closed grip, and the
-  final melee animation/contact pass remain G6 work.
+- `src/app/weaponPresentationRuntime.ts` and the project-authored weapon model
+  catalog now provide distinct rifle, sidearm, scattergun, sniper, rocket, and
+  phase-saber presentation with authored muzzle/blade-tip nodes, event-driven
+  muzzle flash, pellet/tracer/impact effects, rocket backblast/trail/detonation,
+  reload motion, and synthesized audio. Third-person socket/contact integration
+  with the accepted Rev30 character remains active.
   *Currently being worked on.*
 
 - `worker/`, `tests/worker/authorityFullOccupancySoak.test.ts`, and the
   multiplayer evidence harness — the local eight-client movement/combat/resume
-  run is green on the integrated tree; authenticated production staging,
-  external capacity evidence, and full 3D online presentation remain open.
+  run was green on the prior integrated snapshot; authenticated production
+  staging, external capacity evidence, and the final source-frozen rerun remain
+  open.
   *Currently being worked on.*
 
 - `assets/source/maps/inkfall-foundry/` and the product map route — complete
-  authoritative traversal, no-snag/embed/escape proof, counterplay telemetry,
-  and human 2/4/8-player play review. The Rev3 review candidate and exact
-  west-archive rounding regression are present. A bounded, non-default Rev4
-  authored-art expansion is active in an isolated lane, but the human product
-  gate is still open. *Currently being worked on.*
+  Rev4 art, exact Rev3 authority binding, 339 colliders, 12 spawns, 9 zones,
+  server-owned distance/occluded-LOS spawn selection, and render-only foundry
+  continuity are integrated. Technical 2/4/8 occupancy evidence exists; human
+  fun, sightline, spawn-safety, and final visual acceptance remain open.
+  *Currently being worked on.*
 
 - `docs/audits/NOTHEREBUTAFK_EVIO_AUDIT_2026-07-27.md` records the completed
   targeted audit through upstream `92b9716`. The useful ideas are routed as
@@ -42,10 +43,11 @@ appending prose to executable source files or binary assets.
   upstream source, assets, spawn coordinates, or network implementation have
   been merged. Upstream push remains disabled.
 
-- The rejected G7 HUD remains unchanged on the default path. An opt-in
-  Foundry Tactical replacement is active in an isolated lane using a dense,
-  hard-edged industrial instrument language rather than generic glass panels
-  or ornamental glow. *Currently being worked on.*
+- `src/ui/g7-arena-instrument.css` replaces the rejected card-heavy HUD with a
+  compact edge-anchored arena instrument: cyan suit/team telemetry, amber
+  actions/warnings, integrated timer/objective rails, compact abilities, and a
+  bottom-left command-bay menu. Final responsive/accessibility capture and
+  human acceptance are still open. *Currently being worked on.*
 
 ## Open release work
 
@@ -57,17 +59,18 @@ appending prose to executable source files or binary assets.
   production staging and the complete 3D online product path remain open.
   *Currently being worked on.*
 
-- G5: Inkfall Rev3 is a review candidate, not a human-accepted final map.
+- G5: the Rev4 technical integration candidate is present, but it is not yet a
+  human-accepted final map.
   *Currently being worked on.*
 
-- G6: movement/socket and semantic-action contracts are integrated; final
-  model quality, authored equip/melee/ability clips, close-contact review,
-  hidden-view action clocks, and online 3D avatar integration remain open.
+- G6: Rev30 model art is accepted for integration; runtime default selection,
+  directional/aim animation polish, final weapon contact, online 3D avatar
+  integration, and live visual review remain open.
   *Currently being worked on.*
 
-- G7: the current HUD/UI has been rejected and will not be deployed. A
-  replacement visual direction and full UX/accessibility acceptance remain
-  open. *Currently being worked on.*
+- G7: the replacement arena-instrument source is integrated. Final capture,
+  responsive/accessibility review, and human acceptance remain open.
+  *Currently being worked on.*
 
 - G8: restart resources remain stable in the bounded five-restart proof and the
   capture cadence is repaired; a fresh qualifying 30-minute soak on the final
@@ -77,27 +80,19 @@ appending prose to executable source files or binary assets.
   missing provenance evidence for six legacy assets still block release.
   *Currently being worked on.*
 
-## Snapshot validation
+## Validation cadence
 
-- Vite production build: PASS.
-- Main and Cloudflare Worker TypeScript checks: PASS.
-- ESLint across client, Worker, tests, and tools: PASS.
-- Application Vitest regression on the integrated melee correction: PASS,
-  772/772.
-- Cloudflare Worker regression excluding the dedicated soak: PASS, 43/43.
-- Integrated eight-client authority soak: PASS, 1/1; 20.009 Hz, authority tick
-  p99 25 ms / max 36 ms, 8/8 combat convergence, resume preserved, and zero
-  rate rejects, backpressure episodes, evictions, tick failures, or decode
-  errors.
-- Rev17 Blender/export/Khronos and bounded runtime checks: technically green;
-  direct character visual review: FAILED/OPEN.
-- Rev18 isolated Blender/export evidence: five exact GLBs with zero Khronos
-  errors, 67 bones, 17 actions, and a 0.020736 m sampled melee contact bound;
-  direct character visual review: IMPROVED BUT FAILED/OPEN, not runtime/default.
-- Rev19 attempt 1 isolated Blender/export evidence: exact 24,012-triangle LOD0,
-  67 bones, 15 sockets, and 17 actions; direct character visual review:
-  FAILED/ITERATING, not committed, runtime, default, or G6 accepted.
-- Cloudflare deployment: PAUSED. The rejected G7 presentation and incomplete
-  product gates must not be published as the replacement build.
+- Broad regression is intentionally deferred until the current model,
+  animation/contact, HUD/UI, and runtime-integration batch is assembled.
+- Previously captured authority, reconnect, performance, and release evidence
+  remains historical support only; it does not validate the new integrated
+  source.
+- The Rev30 Blender export has passed exact GLB reimport with 66 bones,
+  16 actions, zero donor Cannon geometry, and socket/nozzle matrix delta below
+  `7e-7`. Root visual review accepted the four asset renders.
+- One local menu/HUD capture of Arena Instrument v3 loaded without browser
+  console/page errors; final multi-size/accessibility capture is still pending.
+- Cloudflare deployment is paused until the major-change batch is integrated and
+  the single consolidated validation pass completes.
 
-Last refreshed: 2026-07-27 at canonical `c213def`.
+Last refreshed: 2026-07-28 during the canonical major-change integration batch.
