@@ -23,7 +23,18 @@ export function isOnlineAuthorityInputCode(code: string): boolean {
     'KeyE',
     'ArrowUp',
     'ArrowDown',
+    'Digit1',
+    'Digit2',
+    'Digit3',
+    'Digit4',
+    'Digit5',
+    'Digit6',
   ].includes(code);
+}
+
+export function onlineAuthorityWeaponSlotFromCode(code: string): number | null {
+  const match = /^Digit([1-6])$/u.exec(code);
+  return match === null ? null : Number(match[1]) - 1;
 }
 
 export function onlineAuthorityInputButtonsFromPressedKeys(

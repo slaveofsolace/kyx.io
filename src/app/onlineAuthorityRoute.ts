@@ -42,8 +42,14 @@ import {
 import {
   isOnlineAuthorityInputCode,
   onlineAuthorityInputButtonsFromPressedKeys,
+  onlineAuthorityWeaponSlotFromCode,
 } from './onlineAuthorityInput';
 import { createOnlineInkfallWorld } from './onlineAuthorityInkfallWorld';
+import {
+  createOnlineAuthorityThreeRuntime,
+  type OnlineAuthorityThreeDiagnostics,
+  type OnlineAuthorityThreeRuntime,
+} from './onlineAuthorityThreeRuntime';
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
@@ -82,6 +88,7 @@ interface OnlinePreviewSnapshot {
     sprint: boolean;
     crouch: boolean;
     primaryFire: boolean;
+    selectedWeaponSlot: number;
   }>;
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
@@ -102,6 +109,7 @@ interface OnlinePreviewSnapshot {
   }>[];
   readonly remotePositions: readonly Readonly<{ x: number; y: number; z: number }>[];
   readonly lastError: string | null;
+  readonly render3d: OnlineAuthorityThreeDiagnostics | null;
   readonly presentation: Readonly<{
     status: 'waiting' | 'ready' | 'failed';
     hydrationCount: number;
@@ -230,6 +238,18 @@ function onlineStyles(): HTMLStyleElement {
     .online-session__panel-head span { color: #63747e; font-weight: 700; letter-spacing: .05em; }
     .online-session__canvas-wrap { position: relative; padding: 12px; }
     .online-session__canvas { display: block; width: 100%; height: auto; border: 1px solid #1c3539; background: #061012; }
+    .online-session__canvas[data-renderer='three'] { aspect-ratio: 16 / 9; cursor: crosshair; outline: 0; }
+    .online-session__canvas[data-renderer='three']:focus { border-color: #5fdde8; box-shadow: 0 0 0 1px rgba(95, 221, 232, .55); }
+    .online-session__map-status { position: absolute; top: 24px; left: 24px; z-index: 4; max-width: calc(100% - 48px); padding: 8px 10px; border: 1px solid rgba(108, 222, 226, .5); background: rgba(5, 12, 15, .86); color: #aef8fb; font: 850 8px/1.45 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; pointer-events: none; }
+    .online-session__map-status[data-state='failed'] { border-color: #ff7869; background: rgba(42, 10, 8, .94); color: #ffb4aa; }
+    .online-session__reticle { position: absolute; top: 50%; left: 50%; z-index: 3; width: 18px; height: 18px; transform: translate(-50%, -50%); pointer-events: none; }
+    .online-session__reticle::before, .online-session__reticle::after { position: absolute; background: rgba(235, 252, 255, .88); box-shadow: 0 0 5px rgba(71, 226, 243, .72); content: ''; }
+    .online-session__reticle::before { top: 8px; left: 1px; width: 16px; height: 2px; }
+    .online-session__reticle::after { top: 1px; left: 8px; width: 2px; height: 16px; }
+    .online-session__weapon-rail { position: absolute; right: 24px; bottom: 24px; z-index: 4; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; width: min(620px, calc(100% - 48px)); pointer-events: auto; }
+    .online-session__weapon-slot { min-width: 0; min-height: 42px; padding: 6px 5px; border: 1px solid rgba(73, 104, 113, .76); background: rgba(5, 12, 15, .84); color: #8ca0a8; cursor: pointer; font: 850 7px/1.25 ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+    .online-session__weapon-slot strong { display: block; margin-bottom: 3px; color: #dbe9ed; font-size: 9px; }
+    .online-session__weapon-slot[data-active='true'] { border-color: #68e9f3; background: rgba(12, 68, 76, .92); color: #c7fbff; box-shadow: inset 0 -2px #68e9f3; }
     .online-session__legend { display: flex; flex-wrap: wrap; gap: 16px; padding: 0 15px 15px; color: #74848e; font: 700 10px/1.4 ui-monospace, monospace; }
     .online-session__legend i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--legend-color); }
     .online-session__side { display: grid; gap: 16px; align-content: start; }
@@ -297,7 +317,7 @@ function onlineStyles(): HTMLStyleElement {
     @media (prefers-reduced-motion: reduce) { .online-session__feedback-glyph[data-active='true'] { animation: online-feedback-fade 260ms linear; } .online-session__feedback-hud[data-active='true'] { transform: translate(-50%, 0); transition: opacity 60ms linear; } }
     @keyframes online-feedback-fade { 0%, 70% { opacity: .92; transform: none; } 100% { opacity: 0; transform: none; } }
     @media (max-width: 1020px) { .online-preview__lobby, .online-session__grid { grid-template-columns: 1fr; } .online-session__facts { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 700px) { .online-preview__bar-meta > span:not(.online-preview__status-dot) { display: none; } .online-preview__content { width: min(100% - 24px, 1420px); padding-top: 30px; } .online-preview__lobby { grid-template-columns: 1fr; } .online-preview__join-row { grid-template-columns: 1fr; } .online-session__head { grid-template-columns: 1fr; } .online-session__room { text-align: left; } .online-session__facts { grid-template-columns: 1fr 1fr; } .online-session__combat-strip { grid-template-columns: 1fr; } .online-session__combat-player:last-child { text-align: left; } .online-session__combat-player:last-child .online-session__combat-name { flex-direction: row; } }
+    @media (max-width: 700px) { .online-preview__bar-meta > span:not(.online-preview__status-dot) { display: none; } .online-preview__content { width: min(100% - 24px, 1420px); padding-top: 30px; } .online-preview__lobby { grid-template-columns: 1fr; } .online-preview__join-row { grid-template-columns: 1fr; } .online-session__head { grid-template-columns: 1fr; } .online-session__room { text-align: left; } .online-session__facts { grid-template-columns: 1fr 1fr; } .online-session__combat-strip { grid-template-columns: 1fr; } .online-session__combat-player:last-child { text-align: left; } .online-session__combat-player:last-child .online-session__combat-name { flex-direction: row; } .online-session__weapon-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   `;
   return style;
 }
@@ -390,7 +410,7 @@ function renderLanding(
   profileCheckbox.dataset.testid = 'online-inkfall-profile';
   const profileCopy = element('span', '');
   profileCopy.append(
-    element('strong', '', 'Opt in · Inkfall Foundry @2 real collision integration'),
+    element('strong', '', 'Legacy preview · Inkfall Foundry @2 authority plane'),
     element(
       'span',
       '',
@@ -401,16 +421,17 @@ function renderLanding(
   const rev4ProfileOption = element('label', 'online-preview__profile-option');
   const rev4ProfileCheckbox = document.createElement('input');
   rev4ProfileCheckbox.type = 'checkbox';
-  rev4ProfileCheckbox.checked = selectedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+  rev4ProfileCheckbox.checked = selectedProfile === undefined
+    || selectedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
   rev4ProfileCheckbox.disabled = !configured;
   rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
   const rev4ProfileCopy = element('span', '');
   rev4ProfileCopy.append(
-    element('strong', '', 'Opt in · Inkfall Foundry Rev4 / Rev3 authority'),
+    element('strong', '', 'Default · Inkfall Foundry Rev4 playable 3D / Rev3 authority'),
     element(
       'span',
       '',
-      `Sends and verifies ${ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID}. Rev4 presentation remains non-authoritative; the frozen Rev3 collision, spawn, zone, pickup, and telemetry binding owns play.`,
+      `Creates the current playable 3D route with ${ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID}. The Rev4 render scene is visual only; frozen Rev3 collision, spawns, zones, combat, checkpoints, and resume remain authoritative.`,
     ),
   );
   rev4ProfileOption.append(rev4ProfileCheckbox, rev4ProfileCopy);
@@ -872,19 +893,66 @@ async function mountSession(
     'div',
     'online-session__panel-head',
     inkfallRev4
-      ? 'Live Inkfall Foundry Rev3 authority plane / Rev4 presentation binding'
+      ? 'Playable Inkfall Foundry Rev4 3D / frozen Rev3 authority'
       : inkfallRuntime
         ? 'Live Inkfall Foundry @2 authority plane'
         : 'Live authority combat plane',
   );
-  arenaHead.append(element('span', '', 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · Q/E turn · F/M1 fire · R reload · G grenade · T teleport'));
+  arenaHead.append(element(
+    'span',
+    '',
+    inkfallRev4
+      ? 'CLICK FOR MOUSE LOOK · WASD · 1–6 EQUIP · M1 FIRE · R RELOAD · G GRENADE · T TELEPORT'
+      : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · Q/E turn · F/M1 fire · R reload · G grenade · T teleport',
+  ));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
-  canvas.width = 960;
-  canvas.height = 640;
+  canvas.width = inkfallRev4 ? 1280 : 960;
+  canvas.height = inkfallRev4 ? 720 : 640;
   canvas.dataset.testid = 'online-arena';
+  canvas.dataset.renderer = inkfallRev4 ? 'three' : 'canvas2d';
   canvas.tabIndex = 0;
-  canvas.setAttribute('aria-label', 'Online authoritative combat arena. Click to focus; Mouse 1 fires.');
+  canvas.setAttribute(
+    'aria-label',
+    inkfallRev4
+      ? 'Playable Inkfall Foundry Rev4 3D online combat arena. Click for pointer lock and mouse look; Mouse 1 fires.'
+      : 'Online authoritative combat arena. Click to focus; Mouse 1 fires.',
+  );
+  const mapStatus = element(
+    'div',
+    'online-session__map-status',
+    inkfallRev4
+      ? 'VERIFYING REV4 ART + REV3 AUTHORITY BINDING…'
+      : '2D AUTHORITY PRESENTATION',
+  );
+  mapStatus.dataset.testid = 'online-map-load-status';
+  mapStatus.dataset.state = inkfallRev4 ? 'loading' : 'ready';
+  const reticle = element('div', 'online-session__reticle');
+  reticle.setAttribute('aria-hidden', 'true');
+  const weaponRail = element('div', 'online-session__weapon-rail');
+  weaponRail.dataset.testid = 'online-weapon-rail';
+  const weaponSlotDefinitions = Object.freeze([
+    Object.freeze({ slot: 0, key: '1', label: 'Auto Rifle' }),
+    Object.freeze({ slot: 1, key: '2', label: 'Sidearm' }),
+    Object.freeze({ slot: 2, key: '3', label: 'Scattergun' }),
+    Object.freeze({ slot: 3, key: '4', label: 'Longshot' }),
+    Object.freeze({ slot: 4, key: '5', label: 'Breach Rocket' }),
+    Object.freeze({ slot: 5, key: '6', label: 'Edge Blade' }),
+  ] as const);
+  const weaponSlotButtons = weaponSlotDefinitions.map((definition) => {
+    const button = element('button', 'online-session__weapon-slot');
+    button.type = 'button';
+    button.dataset.testid = `online-weapon-slot-${definition.slot}`;
+    button.dataset.slot = String(definition.slot);
+    button.dataset.active = String(definition.slot === 0);
+    button.setAttribute('aria-pressed', String(definition.slot === 0));
+    button.append(
+      element('strong', '', definition.key),
+      document.createTextNode(definition.label),
+    );
+    weaponRail.append(button);
+    return button;
+  });
   const feedbackVfx = element('div', 'online-session__feedback-vfx');
   feedbackVfx.setAttribute('aria-hidden', 'true');
   const feedbackGlyph = element('div', 'online-session__feedback-glyph');
@@ -894,7 +962,13 @@ async function mountSession(
   feedbackHud.dataset.testid = 'online-confirmed-hud';
   feedbackHud.setAttribute('role', 'status');
   feedbackHud.setAttribute('aria-live', 'polite');
-  canvasWrap.append(canvas, feedbackVfx, feedbackHud);
+  canvasWrap.append(
+    canvas,
+    ...(inkfallRev4 ? [mapStatus, reticle] : []),
+    feedbackVfx,
+    feedbackHud,
+    weaponRail,
+  );
   const combatStrip = element('div', 'online-session__combat-strip');
   const blueCombat = element('div', 'online-session__combat-player');
   const blueName = element('div', 'online-session__combat-name');
@@ -978,8 +1052,8 @@ async function mountSession(
   const combatBody = element('div', 'online-session__combat-panel');
   const combatStats = element('div', 'online-session__combat-stats');
   const localHealth = metric('Health / life');
-  const localAmmo = metric('Rifle ammo');
-  const localRifle = metric('Rifle state');
+  const localAmmo = metric('Selected ammo');
+  const localRifle = metric('Selected weapon');
   const localGrenade = metric('Grenade state');
   localHealth.value.dataset.testid = 'online-local-health';
   localAmmo.value.dataset.testid = 'online-local-ammo';
@@ -1070,6 +1144,39 @@ async function mountSession(
   );
   appendScopeNotice(content, inkfallProfile);
 
+  let threeRuntime: OnlineAuthorityThreeRuntime | null = null;
+  if (inkfallRev4) {
+    body.dataset.online3dStatus = 'loading';
+    try {
+      threeRuntime = await createOnlineAuthorityThreeRuntime(canvas);
+      const sceneFacts = threeRuntime.diagnostics();
+      mapStatus.textContent = `3D READY · REV4 ${sceneFacts.renderMeshCount} RENDER MESHES · REV3 ${sceneFacts.authorityColliderCount} AUTHORITY COLLIDERS`;
+      mapStatus.dataset.state = 'ready';
+      body.dataset.online3dStatus = 'ready';
+      body.dataset.online3dRenderer = sceneFacts.renderer;
+      body.dataset.online3dPresentationReference = sceneFacts.presentationReference;
+    } catch (cause) {
+      const detail = cause instanceof Error ? cause.message : String(cause);
+      mapStatus.textContent = `MAP LOAD FAILED CLOSED · ${detail}`;
+      mapStatus.dataset.state = 'failed';
+      error.textContent = `ONLINE_REV4_3D_INITIALIZATION_FAILED: ${detail}`;
+      body.dataset.onlinePreviewStatus = 'map-load-failed';
+      body.dataset.online3dStatus = 'failed';
+      for (const button of [
+        ...weaponSlotButtons,
+        sprintButton,
+        jumpButton,
+        crouchButton,
+        fireButton,
+        reloadButton,
+        grenadeButton,
+        teleportButton,
+        resumeButton,
+      ]) button.disabled = true;
+      return;
+    }
+  }
+
   let renderRequested = true;
   const client = new AuthorityEvidenceClient({
     config,
@@ -1088,6 +1195,8 @@ async function mountSession(
   const pressedKeys = new Set<string>();
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
+  let selectedWeaponSlot = 0;
+  let pointerLookResetTimeout = 0;
 
   type FeedbackCue = OnlinePreviewSnapshot['presentation']['lastCue'];
   let combatPresentationAdapter: CombatPresentationAdapterV1 | null = null;
@@ -1264,6 +1373,7 @@ async function mountSession(
         sprint: (heldInputButtons & INTENT_BUTTON.sprint) !== 0,
         crouch: (heldInputButtons & INTENT_BUTTON.crouch) !== 0,
         primaryFire: (heldInputButtons & INTENT_BUTTON.primaryFire) !== 0,
+        selectedWeaponSlot,
       }),
       localPredictedPosition: diagnostics.local.predictedPosition,
       localAuthoritativePosition: diagnostics.local.authoritativePosition,
@@ -1280,6 +1390,7 @@ async function mountSession(
       remoteEntities,
       remotePositions: Object.freeze(remoteEntities.map(({ position }) => position)),
       lastError: diagnostics.lastError,
+      render3d: threeRuntime?.diagnostics() ?? null,
       presentation: Object.freeze({
         status: presentationStatus,
         hydrationCount: presentationHydrationCount,
@@ -1339,9 +1450,25 @@ async function mountSession(
       button.setAttribute('aria-pressed', String(active));
     }
   };
+  const selectWeaponSlot = (slot: number): void => {
+    selectedWeaponSlot = slot;
+    client.setSelectedWeaponSlot(slot);
+    for (const [index, button] of weaponSlotButtons.entries()) {
+      const active = index === slot;
+      button.dataset.active = String(active);
+      button.setAttribute('aria-pressed', String(active));
+    }
+    renderRequested = true;
+  };
   const keyboardHandler = (event: KeyboardEvent): void => {
     if (!isOnlineAuthorityInputCode(event.code)) return;
     event.preventDefault();
+    const weaponSlot = onlineAuthorityWeaponSlotFromCode(event.code);
+    if (
+      event.type === 'keydown'
+      && !event.repeat
+      && weaponSlot !== null
+    ) selectWeaponSlot(weaponSlot);
     if (event.type === 'keydown') pressedKeys.add(event.code);
     else pressedKeys.delete(event.code);
     updateInput();
@@ -1383,7 +1510,33 @@ async function mountSession(
   const canvasFire = (event: PointerEvent): void => {
     if (event.button !== 0) return;
     canvas.focus();
+    if (inkfallRev4 && document.pointerLockElement !== canvas) {
+      const pointerLockRequest = canvas.requestPointerLock();
+      if (pointerLockRequest !== undefined) {
+        void pointerLockRequest.catch(() => {
+          canvas.dataset.pointerLock = 'unavailable';
+        });
+      }
+    }
     holdFire();
+  };
+  const pointerLook = (event: MouseEvent): void => {
+    if (!inkfallRev4 || document.pointerLockElement !== canvas) return;
+    const yaw = Math.max(-12_000, Math.min(12_000, Math.round(event.movementX * 110)));
+    const pitch = Math.max(-12_000, Math.min(12_000, Math.round(-event.movementY * 110)));
+    client.setLookDeltas(yaw, pitch);
+    window.clearTimeout(pointerLookResetTimeout);
+    pointerLookResetTimeout = window.setTimeout(updateInput, 70);
+    canvas.dataset.pointerLock = 'active';
+    renderRequested = true;
+  };
+  const pointerLockChange = (): void => {
+    const active = document.pointerLockElement === canvas;
+    canvas.dataset.pointerLock = active ? 'active' : 'inactive';
+    if (!active) {
+      pointerHeldButtons = 0;
+      updateInput();
+    }
   };
   sprintButton.addEventListener('pointerdown', holdSprint);
   sprintButton.addEventListener('pointerup', releaseSprint);
@@ -1399,9 +1552,14 @@ async function mountSession(
   fireButton.addEventListener('pointercancel', releaseFire);
   fireButton.addEventListener('pointerleave', releaseFire);
   canvas.addEventListener('pointerdown', canvasFire);
+  document.addEventListener('mousemove', pointerLook);
+  document.addEventListener('pointerlockchange', pointerLockChange);
   reloadButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.reload));
   grenadeButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityOne));
   teleportButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.utility));
+  for (const [slot, button] of weaponSlotButtons.entries()) {
+    button.addEventListener('click', () => selectWeaponSlot(slot));
+  }
   window.addEventListener('keydown', keyboardHandler);
   window.addEventListener('keyup', keyboardHandler);
   window.addEventListener('blur', blurHandler);
@@ -1523,16 +1681,46 @@ async function mountSession(
         error.textContent = presentationFailureDetail;
       }
     }
-    renderArena(canvas, presentation, {
+    const combatView = {
       snapshot: diagnostics.combat.snapshot,
       recentEvents: diagnostics.combat.recentEvents,
       localPlayerId: diagnostics.authority.playerId,
-    }, inkfallRuntime);
+    } as const;
+    if (threeRuntime !== null) {
+      try {
+        const velocity = diagnostics.local.predictedVelocity;
+        threeRuntime.render({
+          nowMilliseconds,
+          presentation,
+          combat: combatView,
+          localYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
+          localPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
+          localSpeedMillimetersPerSecond: velocity === null
+            ? 0
+            : Math.hypot(velocity.x, velocity.z),
+        });
+      } catch (renderFailure) {
+        const detail = renderFailure instanceof Error
+          ? renderFailure.message
+          : String(renderFailure);
+        presentationFailureDetail = `ONLINE_REV4_3D_RENDER_FAILED_CLOSED: ${detail}`;
+        mapStatus.textContent = `3D RENDER FAILED CLOSED · ${detail}`;
+        mapStatus.dataset.state = 'failed';
+        body.dataset.online3dStatus = 'failed';
+        threeRuntime.dispose();
+        threeRuntime = null;
+      }
+    } else if (!inkfallRev4) {
+      renderArena(canvas, presentation, combatView, inkfallRuntime);
+    }
     if (renderRequested || nowMilliseconds - lastDiagnosticsRefresh >= 100) {
       const combat = diagnostics.combat.snapshot;
       const localPlayer = combat?.players.find(({ playerId }) => (
         playerId === diagnostics.authority.playerId
       ));
+      const selectedWeapon = localPlayer?.weapons?.find(
+        ({ slot }) => slot === localPlayer.selectedWeaponSlot,
+      );
       const bluePlayer = combat?.players.find(({ teamId }) => teamId === 'team_blue');
       const redPlayer = combat?.players.find(({ teamId }) => teamId === 'team_red');
       const blueScore = combat?.match.teamScores.find(({ teamId }) => teamId === 'team_blue')?.score ?? 0;
@@ -1569,8 +1757,14 @@ async function mountSession(
           : `${localPlayer.healthPoints} HP · ALIVE`;
       localAmmo.value.textContent = localPlayer === undefined
         ? '—'
-        : `${localPlayer.magazineRounds} / ${localPlayer.reserveRounds}`;
-      localRifle.value.textContent = localPlayer?.riflePhase ?? 'WAITING';
+        : selectedWeapon === undefined
+          ? `${localPlayer.magazineRounds} / ${localPlayer.reserveRounds}`
+          : selectedWeapon.magazineRounds === null
+            ? 'UNLIMITED'
+            : `${selectedWeapon.magazineRounds} / ${selectedWeapon.reserveRounds ?? 0}`;
+      localRifle.value.textContent = selectedWeapon === undefined
+        ? localPlayer?.riflePhase ?? 'WAITING'
+        : `${selectedWeapon.family.toUpperCase()} · ${selectedWeapon.phase.toUpperCase()}`;
       localGrenade.value.textContent = localPlayer === undefined
         ? 'WAITING'
         : `${localPlayer.grenadePhase} · ${localPlayer.activeProjectileCount} ACTIVE`;
@@ -1590,9 +1784,17 @@ async function mountSession(
           ? `${actor} hit ${target} for ${event.amountHealthPoints ?? 0}`
           : event.kind === 'playerKilled'
             ? `${actor} eliminated ${target}`
-            : event.kind === 'shotAccepted'
-              ? `${actor} fired an accepted rifle shot`
-              : event.kind === 'projectileSpawned'
+           : event.kind === 'shotAccepted'
+             ? `${actor} fired an accepted rifle shot`
+             : event.kind === 'weaponAttackAccepted'
+               ? `${actor} fired an accepted ${
+                   event.presentation?.kind === 'weapon_attack_accepted'
+                     ? event.presentation.family
+                     : 'weapon'
+                 } attack`
+               : event.kind === 'meleeContact'
+                 ? `${actor} resolved an authoritative melee contact`
+             : event.kind === 'projectileSpawned'
                 ? `${actor} deployed an Impulse Grenade`
                 : event.kind === 'projectileCollided'
                   ? `${actor}'s Impulse Grenade made contact`
@@ -1629,6 +1831,15 @@ async function mountSession(
       body.dataset.onlinePresentationLastCue = presentationLastCue ?? 'none';
       body.dataset.onlinePresentationConfirmed = String(presentationConfirmedIntentCount);
       body.dataset.onlineInputHeldButtons = String(heldInputButtons);
+      body.dataset.onlineSelectedWeaponSlot = String(
+        localPlayer?.selectedWeaponSlot ?? selectedWeaponSlot,
+      );
+      body.dataset.onlineSelectedWeaponId = localPlayer?.selectedWeaponId ?? 'waiting';
+      for (const [slot, button] of weaponSlotButtons.entries()) {
+        const active = slot === (localPlayer?.selectedWeaponSlot ?? selectedWeaponSlot);
+        button.dataset.active = String(active);
+        button.setAttribute('aria-pressed', String(active));
+      }
       renderRequested = false;
       lastDiagnosticsRefresh = nowMilliseconds;
     }
@@ -1646,9 +1857,13 @@ async function mountSession(
     window.removeEventListener('pointerup', releaseFire);
     window.removeEventListener('pointercancel', releaseFire);
     document.removeEventListener('visibilitychange', visibilityHandler);
+    document.removeEventListener('mousemove', pointerLook);
+    document.removeEventListener('pointerlockchange', pointerLockChange);
     window.clearTimeout(feedbackTimeout);
+    window.clearTimeout(pointerLookResetTimeout);
     if (audioContext !== null) void audioContext.close();
     client.dispose();
+    threeRuntime?.dispose();
     world.dispose();
     delete (window as { __KYX_ONLINE_PREVIEW__?: unknown }).__KYX_ONLINE_PREVIEW__;
   }, { once: true });

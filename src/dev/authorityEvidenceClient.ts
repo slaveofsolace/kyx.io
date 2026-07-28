@@ -439,6 +439,7 @@ export class AuthorityEvidenceClient {
   private pendingCombatReleasedButtons = 0;
   private lookYawDeltaMilliDegrees = 0;
   private lookPitchDeltaMilliDegrees = 0;
+  private selectedWeaponSlot = 0;
   private combatSnapshot: CombatSnapshotV1 | null = null;
   private readonly recentCombatEvents: ReliableEvent[] = [];
   private prediction: LocalPredictionState | null = null;
@@ -531,6 +532,16 @@ export class AuthorityEvidenceClient {
     }
     this.lookYawDeltaMilliDegrees = yawMilliDegrees;
     this.lookPitchDeltaMilliDegrees = pitchMilliDegrees;
+    this.emitChange();
+    return true;
+  }
+
+  setSelectedWeaponSlot(slot: number): boolean {
+    if (!this.combatInputEnabled) return false;
+    if (!Number.isInteger(slot) || slot < 0 || slot > 5) {
+      throw new RangeError('authority evidence weapon slot must be an integer from 0 through 5');
+    }
+    this.selectedWeaponSlot = slot;
     this.emitChange();
     return true;
   }
@@ -1241,7 +1252,7 @@ export class AuthorityEvidenceClient {
             heldButtons,
             pressedButtons,
             releasedButtons,
-            selectedSlot: 0,
+            selectedSlot: this.selectedWeaponSlot,
             lookYawDeltaMilliDegrees: this.lookYawDeltaMilliDegrees,
             lookPitchDeltaMilliDegrees: this.lookPitchDeltaMilliDegrees,
           }

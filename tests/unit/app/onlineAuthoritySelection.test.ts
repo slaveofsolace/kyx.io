@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  inkfallOnlineProfile,
   onlineCreatePath,
   onlineJoinPath,
   parseOnlineAuthorityRequest,
@@ -112,6 +113,10 @@ describe('parseOnlineAuthorityRequest', () => {
 });
 
 describe('online URL and display-name boundaries', () => {
+  it('selects the playable Rev4 presentation with frozen Rev3 authority by default', () => {
+    expect(inkfallOnlineProfile()).toBe(ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID);
+  });
+
   it('builds a canonical join path', () => {
     expect(onlineCreatePath()).toBe('/online?mode=create');
     expect(onlineJoinPath('kyx-abc234')).toBe('/online?mode=join&room=KYX-ABC234');

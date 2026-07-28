@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   isOnlineAuthorityInputCode,
   onlineAuthorityInputButtonsFromPressedKeys,
+  onlineAuthorityWeaponSlotFromCode,
 } from '../../../src/app/onlineAuthorityInput';
 import { INTENT_BUTTON } from '../../../src/sim';
 
@@ -65,9 +66,28 @@ describe('online authority input mapping', () => {
       'KeyR',
       'KeyG',
       'KeyT',
+      'Digit1',
+      'Digit2',
+      'Digit3',
+      'Digit4',
+      'Digit5',
+      'Digit6',
     ]) {
       expect(isOnlineAuthorityInputCode(code), code).toBe(true);
     }
     expect(isOnlineAuthorityInputCode('Escape')).toBe(false);
+  });
+
+  it('maps the six visible armory keys to zero-based authoritative slots', () => {
+    expect([
+      'Digit1',
+      'Digit2',
+      'Digit3',
+      'Digit4',
+      'Digit5',
+      'Digit6',
+    ].map(onlineAuthorityWeaponSlotFromCode)).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(onlineAuthorityWeaponSlotFromCode('Digit0')).toBeNull();
+    expect(onlineAuthorityWeaponSlotFromCode('Numpad1')).toBeNull();
   });
 });
