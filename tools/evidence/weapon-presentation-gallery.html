@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KYX.IO Project-Authored Armory Presentation</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Arial Narrow", "Roboto Condensed", sans-serif;
+        background: #05090c;
+        color: #dff7ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 42%, #162a32 0, #081116 45%, #030609 100%);
+      }
+
+      canvas {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+      }
+
+      .title {
+        position: fixed;
+        inset: 22px auto auto 28px;
+        z-index: 2;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+      }
+
+      .subtitle {
+        position: fixed;
+        inset: 52px auto auto 29px;
+        z-index: 2;
+        color: #76939e;
+        font-family: Consolas, monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .legend {
+        position: fixed;
+        top: 24px;
+        right: 28px;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #8eabb5;
+        font-family: Consolas, monospace;
+        font-size: 11px;
+      }
+
+      .legend::before {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 0 12px #8fefff;
+        content: "";
+      }
+
+      .labels {
+        position: fixed;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        padding: 80px 38px 30px;
+        pointer-events: none;
+      }
+
+      .label {
+        align-self: end;
+        margin: 0 18px 18px;
+        padding: 8px 10px 7px;
+        border-left: 2px solid var(--accent);
+        background: linear-gradient(90deg, rgb(5 12 16 / 82%), transparent);
+      }
+
+      .label strong {
+        display: block;
+        color: #ecfbff;
+        font-size: 13px;
+        letter-spacing: 0.09em;
+      }
+
+      .label span {
+        display: block;
+        margin-top: 3px;
+        color: #78959e;
+        font-family: Consolas, monospace;
+        font-size: 9px;
+        letter-spacing: 0.06em;
+      }
+
+      .footer {
+        position: fixed;
+        right: 28px;
+        bottom: 15px;
+        z-index: 2;
+        color: #5f7881;
+        font-family: Consolas, monospace;
+        font-size: 9px;
+        letter-spacing: 0.08em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">KYX.IO // AUTHORITY ARMORY</div>
+    <div class="subtitle">PROJECT-AUTHORED REV1 · SIX DISTINCT SILHOUETTES · STANDARDIZED -Z NOZZLES</div>
+    <div class="legend">WHITE BEACON = ACTUAL MUZZLE / BLADE TIP NODE</div>
+    <div class="labels" id="labels"></div>
+    <div class="footer">PRESENTATION-ONLY INSPECTION · NO GAMEPLAY OR DAMAGE STATE</div>
+    <canvas id="gallery"></canvas>
+    <script type="module">
+      import * as THREE from 'three';
+      import {
+        createKyxWeaponPresentationModel,
+        KYX_AUTHORITY_WEAPON_PRESENTATION,
+      } from '/src/weapons/KyxArmoryPresentation.ts';
+
+      const ids = Object.keys(KYX_AUTHORITY_WEAPON_PRESENTATION);
+      const canvas = document.querySelector('#gallery');
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance',
+      });
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.18;
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+      renderer.setSize(innerWidth, innerHeight, false);
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.Fog(0x071014, 7.5, 13.5);
+      scene.add(new THREE.HemisphereLight(0xbcecff, 0x10171b, 2.1));
+      const key = new THREE.DirectionalLight(0xffdec1, 3.2);
+      key.position.set(-4, 7, 6);
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0x4edcff, 2.6);
+      rim.position.set(7, 3, -5);
+      scene.add(rim);
+
+      const camera = new THREE.PerspectiveCamera(
+        42,
+        innerWidth / innerHeight,
+        0.02,
+        40,
+      );
+      camera.position.set(0, 0.2, 10.4);
+      camera.lookAt(0, 0.1, 0);
+
+      const positions = [
+        [-3.35, 1.45, 0],
+        [0, 1.45, 0],
+        [3.35, 1.45, 0],
+        [-3.35, -1.55, 0],
+        [0, -1.55, 0],
+        [3.35, -1.55, 0],
+      ];
+      const diagnostics = [];
+      const labels = document.querySelector('#labels');
+
+      ids.forEach((id, index) => {
+        const weapon = createKyxWeaponPresentationModel(id, 'world');
+        const spec = KYX_AUTHORITY_WEAPON_PRESENTATION[id];
+        weapon.group.position.set(...positions[index]);
+        weapon.group.rotation.set(-0.12, -0.72, -0.04);
+        weapon.group.scale.setScalar(id === 'kyx_breach_rocket_v1' ? 1.42 : 1.62);
+        scene.add(weapon.group);
+
+        weapon.group.updateMatrixWorld(true);
+        const bounds = new THREE.Box3().setFromObject(weapon.group);
+        const muzzleWorld = weapon.muzzle.getWorldPosition(new THREE.Vector3());
+        const modelLength = bounds.max.distanceTo(bounds.min);
+        const beaconMaterial = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: true,
+          opacity: 0.96,
+        });
+        const beacon = new THREE.Mesh(
+          new THREE.SphereGeometry(0.022, 9, 7),
+          beaconMaterial,
+        );
+        weapon.muzzle.add(beacon);
+        const beaconLight = new THREE.PointLight(spec.accent, 4.5, 1.1);
+        weapon.muzzle.add(beaconLight);
+
+        const localMuzzle = weapon.group.worldToLocal(muzzleWorld.clone());
+        diagnostics.push({
+          id,
+          family: spec.family,
+          label: spec.label,
+          muzzleNode: weapon.muzzle.name,
+          backblastNode: weapon.backblast?.name ?? null,
+          muzzleLocal: localMuzzle.toArray().map((value) => Number(value.toFixed(4))),
+          boundingDiagonal: Number(modelLength.toFixed(4)),
+          meshCount: (() => {
+            let count = 0;
+            weapon.group.traverse((object) => {
+              if (object.isMesh) count += 1;
+            });
+            return count;
+          })(),
+        });
+
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.style.setProperty(
+          '--accent',
+          `#${spec.accent.toString(16).padStart(6, '0')}`,
+        );
+        label.innerHTML = `
+          <strong>${index + 1} · ${spec.label}</strong>
+          <span>${id} / ${weapon.muzzle.name}</span>
+        `;
+        labels.append(label);
+      });
+
+      const floor = new THREE.GridHelper(20, 40, 0x1b4d59, 0x10262d);
+      floor.position.y = -3.15;
+      floor.rotation.x = Math.PI / 2;
+      scene.add(floor);
+
+      renderer.render(scene, camera);
+      window.__weaponGalleryDiagnostics = diagnostics;
+      document.body.dataset.weaponGalleryReady = 'true';
+    </script>
+  </body>
+</html>

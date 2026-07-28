@@ -1,0 +1,94 @@
+{
+  "status": "KYX_WEAPON_PRESENTATION_SENTINEL_PASS",
+  "authorityMutation": false,
+  "modelCount": 6,
+  "uniqueMuzzleNodeCount": 6,
+  "uniquePresentationLabelCount": 6,
+  "diagnostics": [
+    {
+      "id": "vertical_rifle_v1",
+      "family": "rifle",
+      "label": "VLR-7 LINE RIFLE",
+      "muzzleNode": "KYX_VLR7_MUZZLE",
+      "backblastNode": null,
+      "muzzleLocal": [
+        0,
+        0.105,
+        -0.89
+      ],
+      "boundingDiagonal": 2.4842,
+      "meshCount": 29
+    },
+    {
+      "id": "kyx_sidearm_v1",
+      "family": "pistol",
+      "label": "K-9 ARC SIDEARM",
+      "muzzleNode": "KYX_K9_MUZZLE",
+      "backblastNode": null,
+      "muzzleLocal": [
+        0,
+        0.12,
+        -0.385
+      ],
+      "boundingDiagonal": 1.2484,
+      "meshCount": 26
+    },
+    {
+      "id": "kyx_scattergun_v1",
+      "family": "shotgun",
+      "label": "SG-4 BREACH ARRAY",
+      "muzzleNode": "KYX_SG4_MUZZLE",
+      "backblastNode": null,
+      "muzzleLocal": [
+        0,
+        0.095,
+        -0.74
+      ],
+      "boundingDiagonal": 2.2792,
+      "meshCount": 25
+    },
+    {
+      "id": "kyx_longshot_v1",
+      "family": "sniper",
+      "label": "LONGBOW-12",
+      "muzzleNode": "KYX_LONGBOW12_MUZZLE",
+      "backblastNode": null,
+      "muzzleLocal": [
+        0,
+        0.11,
+        -1.205
+      ],
+      "boundingDiagonal": 3.1714,
+      "meshCount": 32
+    },
+    {
+      "id": "kyx_breach_rocket_v1",
+      "family": "rocket",
+      "label": "BR-6 SIEGE TUBE",
+      "muzzleNode": "KYX_BR6_NOZZLE",
+      "backblastNode": "KYX_BR6_BACKBLAST",
+      "muzzleLocal": [
+        0,
+        0.11,
+        -0.76
+      ],
+      "boundingDiagonal": 2.4333,
+      "meshCount": 29
+    },
+    {
+      "id": "kyx_edge_v1",
+      "family": "melee",
+      "label": "EDGE-1 PHASE SABER",
+      "muzzleNode": "KYX_EDGE1_TIP",
+      "backblastNode": null,
+      "muzzleLocal": [
+        0,
+        0.02,
+        -1.1
+      ],
+      "boundingDiagonal": 2.4211,
+      "meshCount": 16
+    }
+  ],
+  "screenshot": "evidence/2026-07-28/weapon-presentation-batch-rev1/kyx-six-weapon-project-authored-gallery.jpg"
+}

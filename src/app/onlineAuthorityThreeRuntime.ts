@@ -6,6 +6,7 @@ import type { AuthorityEvidencePresentation } from '../dev/authorityEvidenceClie
 import type {
   CombatPlayerSnapshotV1,
   CombatSnapshotV1,
+  CombatWeaponSnapshotV1,
   ReliableEvent,
 } from '../net';
 import type { PhysicsFixtureV1 } from '../physics';
@@ -14,8 +15,13 @@ import {
   isHumanSoldierReady,
   preloadHumanSoldier,
 } from '../player/HumanSoldier.js';
-import { buildWeaponModel } from '../weapons/WeaponModels.js';
-import { getWeapon } from '../weapons/weaponDefs.js';
+import {
+  createKyxWeaponPresentationModel,
+  normalizeKyxAuthorityWeaponId,
+  updateKyxWeaponPresentation,
+  type KyxWeaponPhase,
+  type KyxWeaponPresentationModel,
+} from '../weapons/KyxArmoryPresentation';
 import {
   INKFALL_REV4_CANDIDATE_ART,
   inspectInkfallRev4CandidateScene,
@@ -24,6 +30,7 @@ import {
 import {
   ONLINE_INKFALL_REV4_MAP_BINDING,
 } from './onlineAuthorityProfiles';
+import { createOnlineWeaponPresentationFx } from './onlineWeaponPresentationFx';
 
 const rev4PresentationArtifactUrl = new URL(
   '../../assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
@@ -37,26 +44,6 @@ const revision3CollisionArtifactUrl = new URL(
   '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb',
   import.meta.url,
 ).href;
-
-const AUTHORITY_WEAPON_TO_PROCEDURAL_DEFINITION = Object.freeze({
-  vertical_rifle_v1: 'm4',
-  kyx_sidearm_v1: 'magnum',
-  kyx_scattergun_v1: 'energyshotgun',
-  kyx_longshot_v1: 'boltsniper',
-  kyx_breach_rocket_v1: 'rpg',
-  kyx_edge_v1: 'sword',
-} as const);
-
-type AuthorityWeaponId = keyof typeof AUTHORITY_WEAPON_TO_PROCEDURAL_DEFINITION;
-
-const WEAPON_ACCENT = Object.freeze({
-  rifle: 0x64e8ff,
-  pistol: 0xffd166,
-  shotgun: 0xff9b66,
-  sniper: 0xe2f2ff,
-  rocket: 0xff6d42,
-  melee: 0x58f4ff,
-} as const);
 
 interface OnlineCombatView {
   readonly snapshot: CombatSnapshotV1 | null;
@@ -91,9 +78,15 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly remoteAvatarCount: number;
   readonly grenadeProjectileCount: number;
   readonly weaponProjectileCount: number;
+  readonly activeWeaponEffectCount: number;
   readonly renderedReliableEventCount: number;
+  readonly acceptedAttackPresentationCount: number;
+  readonly confirmedDamagePresentationCount: number;
+  readonly reloadPresentationCount: number;
+  readonly authoredWeaponAudio: 'locked' | 'ready' | 'unavailable' | 'disposed';
   readonly selectedWeaponId: string | null;
   readonly selectedProceduralDefinitionId: string | null;
+  readonly selectedWeaponLabel: string | null;
   readonly pointerLocked: boolean;
   readonly canvasWidth: number;
   readonly canvasHeight: number;
@@ -105,26 +98,11 @@ export interface OnlineAuthorityThreeRuntime {
   readonly dispose: () => void;
 }
 
-interface WeaponModel {
-  readonly authorityWeaponId: AuthorityWeaponId;
-  readonly definitionId: string;
-  readonly group: THREE.Group;
-  readonly muzzle: THREE.Object3D;
-}
-
 interface PlayerAvatar {
   readonly root: THREE.Group;
-  weapon: WeaponModel | null;
+  weapon: KyxWeaponPresentationModel | null;
   weaponId: string | null;
   recoil: number;
-}
-
-interface TransientEffect {
-  readonly root: THREE.Object3D;
-  readonly startedAtMilliseconds: number;
-  readonly expiresAtMilliseconds: number;
-  readonly material: THREE.Material | readonly THREE.Material[];
-  readonly kind: 'flash' | 'tracer' | 'impact' | 'blast' | 'melee';
 }
 
 interface LoadedRev4Visual {
@@ -141,13 +119,6 @@ function mapMillimetersToScene(
   target = new THREE.Vector3(),
 ): THREE.Vector3 {
   return target.set(value.x / 1_000, value.y / 1_000, -value.z / 1_000);
-}
-
-function mapVelocityToScene(
-  value: Readonly<{ x: number; y: number; z: number }>,
-  target = new THREE.Vector3(),
-): THREE.Vector3 {
-  return target.set(value.x, value.y, -value.z);
 }
 
 function markRenderOnly(
@@ -401,79 +372,6 @@ async function loadRev4Visual(): Promise<LoadedRev4Visual> {
   });
 }
 
-function authorityWeaponId(value: string | null | undefined): AuthorityWeaponId {
-  return value !== undefined
-    && value !== null
-    && Object.prototype.hasOwnProperty.call(
-      AUTHORITY_WEAPON_TO_PROCEDURAL_DEFINITION,
-      value,
-    )
-    ? value as AuthorityWeaponId
-    : 'vertical_rifle_v1';
-}
-
-function createWeaponModel(
-  requestedWeaponId: string | null | undefined,
-  presentation: 'first_person' | 'world',
-): WeaponModel {
-  const weaponId = authorityWeaponId(requestedWeaponId);
-  const definitionId = AUTHORITY_WEAPON_TO_PROCEDURAL_DEFINITION[weaponId];
-  const definition = getWeapon(definitionId);
-  if (definition === undefined) {
-    throw new Error(`ONLINE_PROCEDURAL_WEAPON_DEFINITION_MISSING:${definitionId}`);
-  }
-  const built = buildWeaponModel(definition, { procedural: true }) as {
-    readonly group: THREE.Group;
-    readonly muzzle: THREE.Object3D;
-  };
-  built.group.name = `ONLINE_${presentation.toUpperCase()}_${weaponId}`;
-  built.group.traverse((object) => {
-    if (!(object as THREE.Mesh).isMesh) return;
-    const mesh = object as THREE.Mesh;
-    mesh.castShadow = presentation === 'world';
-    mesh.receiveShadow = presentation === 'world';
-    mesh.frustumCulled = false;
-    if (presentation === 'first_person') {
-      mesh.renderOrder = 40;
-    }
-  });
-  if (presentation === 'first_person') {
-    const scale = weaponId === 'kyx_breach_rocket_v1'
-      ? 0.55
-      : weaponId === 'kyx_edge_v1'
-        ? 0.84
-        : weaponId === 'kyx_longshot_v1'
-          ? 0.64
-          : 0.78;
-    built.group.scale.setScalar(scale);
-    built.group.position.set(
-      weaponId === 'kyx_edge_v1' ? 0.31 : 0.28,
-      weaponId === 'kyx_edge_v1' ? -0.34 : -0.27,
-      weaponId === 'kyx_breach_rocket_v1' ? -0.5 : -0.42,
-    );
-    built.group.rotation.set(
-      weaponId === 'kyx_edge_v1' ? -0.12 : -0.045,
-      weaponId === 'kyx_edge_v1' ? -0.1 : 0.035,
-      weaponId === 'kyx_edge_v1' ? -0.09 : 0,
-    );
-  } else {
-    const scale = weaponId === 'kyx_breach_rocket_v1'
-      ? 0.55
-      : weaponId === 'kyx_edge_v1'
-        ? 0.8
-        : 0.68;
-    built.group.scale.setScalar(scale);
-    built.group.position.set(0, 0, 0);
-    built.group.rotation.set(0, 0, 0);
-  }
-  return {
-    authorityWeaponId: weaponId,
-    definitionId,
-    group: built.group,
-    muzzle: built.muzzle,
-  };
-}
-
 function disposeObject(root: THREE.Object3D): void {
   root.traverse((object) => {
     if (!(object as THREE.Mesh).isMesh) return;
@@ -547,18 +445,37 @@ function selectedPlayerWeapon(
   return combat?.players.find((player) => player.playerId === playerId) ?? null;
 }
 
+function selectedWeaponState(
+  player: CombatPlayerSnapshotV1 | null,
+): CombatWeaponSnapshotV1 | null {
+  if (player === null) return null;
+  const selectedId = normalizeKyxAuthorityWeaponId(player.selectedWeaponId);
+  return player.weapons?.find(
+    (weapon) => weapon.weaponId === selectedId,
+  ) ?? null;
+}
+
+function selectedWeaponPhase(
+  player: CombatPlayerSnapshotV1 | null,
+  weapon: CombatWeaponSnapshotV1 | null,
+): KyxWeaponPhase {
+  if (player === null || player.lifePhase === 'dead') return 'dead';
+  if (weapon !== null) return weapon.phase;
+  return player.riflePhase;
+}
+
 function setAvatarWeapon(
   avatar: PlayerAvatar,
   selectedWeaponId: string | null | undefined,
 ): void {
-  const normalized = authorityWeaponId(selectedWeaponId);
+  const normalized = normalizeKyxAuthorityWeaponId(selectedWeaponId);
   if (avatar.weaponId === normalized) return;
   if (avatar.weapon !== null) {
     avatar.root.userData.attachWeapon?.(null);
     avatar.weapon.group.parent?.remove(avatar.weapon.group);
     disposeObject(avatar.weapon.group);
   }
-  avatar.weapon = createWeaponModel(normalized, 'world');
+  avatar.weapon = createKyxWeaponPresentationModel(normalized, 'world');
   avatar.weaponId = normalized;
   if (typeof avatar.root.userData.attachWeapon === 'function') {
     avatar.root.userData.attachWeapon(
@@ -613,21 +530,21 @@ export async function createOnlineAuthorityThreeRuntime(
   const firstPersonWeaponMount = new THREE.Group();
   firstPersonWeaponMount.name = 'ONLINE_FIRST_PERSON_WEAPON_ONLY';
   camera.add(firstPersonWeaponMount);
-  let firstPersonWeapon: WeaponModel | null = null;
+  let firstPersonWeapon: KyxWeaponPresentationModel | null = null;
   let selectedWeaponId: string | null = null;
   let firstPersonRecoil = 0;
   let firstPersonMelee = 0;
 
   const avatars = new Map<string, PlayerAvatar>();
   const grenadeProjectiles = new Map<string, THREE.Mesh>();
-  const weaponProjectiles = new Map<string, THREE.Group>();
   const processedReliableEvents = new Set<string>();
-  const transientEffects: TransientEffect[] = [];
+  const weaponPresentationFx = createOnlineWeaponPresentationFx(scene, canvas);
   let renderedReliableEventCount = 0;
   let disposed = false;
   let pointerLocked = document.pointerLockElement === canvas;
   let canvasWidth = 0;
   let canvasHeight = 0;
+  let previousRenderMilliseconds: number | null = null;
 
   const resize = (): void => {
     const rect = canvas.getBoundingClientRect();
@@ -648,124 +565,6 @@ export async function createOnlineAuthorityThreeRuntime(
     pointerLocked = document.pointerLockElement === canvas;
   };
   document.addEventListener('pointerlockchange', pointerLockHandler);
-
-  const transient = (
-    root: THREE.Object3D,
-    material: THREE.Material | readonly THREE.Material[],
-    kind: TransientEffect['kind'],
-    nowMilliseconds: number,
-    lifetimeMilliseconds: number,
-  ): void => {
-    scene.add(root);
-    transientEffects.push({
-      root,
-      material,
-      kind,
-      startedAtMilliseconds: nowMilliseconds,
-      expiresAtMilliseconds: nowMilliseconds + lifetimeMilliseconds,
-    });
-  };
-
-  const flashAt = (
-    position: THREE.Vector3,
-    color: number,
-    nowMilliseconds: number,
-  ): void => {
-    const material = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.95,
-      depthWrite: false,
-    });
-    const mesh = new THREE.Mesh(
-      new THREE.SphereGeometry(0.08, 8, 6),
-      material,
-    );
-    mesh.position.copy(position);
-    transient(mesh, material, 'flash', nowMilliseconds, 110);
-  };
-
-  const impactAt = (
-    position: THREE.Vector3,
-    color: number,
-    nowMilliseconds: number,
-  ): void => {
-    const material = new THREE.MeshBasicMaterial({
-      color,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.9,
-      depthWrite: false,
-    });
-    const mesh = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(0.16, 1),
-      material,
-    );
-    mesh.position.copy(position);
-    transient(mesh, material, 'impact', nowMilliseconds, 340);
-  };
-
-  const tracerBetween = (
-    origin: THREE.Vector3,
-    end: THREE.Vector3,
-    color: number,
-    nowMilliseconds: number,
-  ): void => {
-    const material = new THREE.LineBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.92,
-      depthWrite: false,
-    });
-    const line = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([origin, end]),
-      material,
-    );
-    line.renderOrder = 30;
-    transient(line, material, 'tracer', nowMilliseconds, 145);
-  };
-
-  const blastAt = (
-    position: THREE.Vector3,
-    color: number,
-    nowMilliseconds: number,
-  ): void => {
-    const material = new THREE.MeshBasicMaterial({
-      color,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.88,
-      depthWrite: false,
-    });
-    const mesh = new THREE.Mesh(
-      new THREE.SphereGeometry(0.45, 16, 10),
-      material,
-    );
-    mesh.position.copy(position);
-    transient(mesh, material, 'blast', nowMilliseconds, 620);
-  };
-
-  const meleeAt = (
-    position: THREE.Vector3,
-    yawMilliDegrees: number,
-    color: number,
-    nowMilliseconds: number,
-  ): void => {
-    const material = new THREE.MeshBasicMaterial({
-      color,
-      transparent: true,
-      opacity: 0.86,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    });
-    const slash = new THREE.Mesh(
-      new THREE.TorusGeometry(0.72, 0.028, 4, 24, Math.PI * 1.25),
-      material,
-    );
-    slash.position.copy(position).add(new THREE.Vector3(0, 1.25, 0));
-    slash.rotation.set(Math.PI / 2, normalizedYawRadians(yawMilliDegrees), 0.3);
-    transient(slash, material, 'melee', nowMilliseconds, 260);
-  };
 
   const entityScenePosition = (
     playerId: string,
@@ -822,6 +621,14 @@ export async function createOnlineAuthorityThreeRuntime(
     return position?.add(new THREE.Vector3(0, 1.45, 0)) ?? null;
   };
 
+  const entityWeapon = (
+    playerId: string,
+    frame: OnlineAuthorityThreeFrame,
+  ): KyxWeaponPresentationModel | null => {
+    if (playerId === frame.combat.localPlayerId) return firstPersonWeapon;
+    return avatars.get(playerId)?.weapon ?? null;
+  };
+
   const processReliableEvents = (frame: OnlineAuthorityThreeFrame): void => {
     for (const event of frame.combat.recentEvents) {
       if (processedReliableEvents.has(event.id)) continue;
@@ -840,27 +647,25 @@ export async function createOnlineAuthorityThreeRuntime(
       if (semantic.kind === 'weapon_attack_accepted') {
         const actor = entityScenePosition(semantic.playerId, frame);
         const muzzle = entityMuzzle(semantic.playerId, frame);
-        if (actor === null || muzzle === null) continue;
-        const color = WEAPON_ACCENT[semantic.family];
-        flashAt(muzzle, color, frame.nowMilliseconds);
+        const weapon = entityWeapon(semantic.playerId, frame);
+        if (actor === null || muzzle === null || weapon === null) continue;
         const look = entityLook(semantic.playerId, frame);
+        weaponPresentationFx.presentAttack({
+          event: semantic,
+          weapon,
+          muzzle,
+          direction: directionFromLook(look.yaw, look.pitch),
+          actorPosition: actor,
+          yawMilliDegrees: look.yaw,
+          pitchMilliDegrees: look.pitch,
+          nowMilliseconds: frame.nowMilliseconds,
+          local: semantic.playerId === frame.combat.localPlayerId,
+        });
         if (
-          semantic.attackModel === 'hitscan'
-          || semantic.attackModel === 'pellet_hitscan'
+          semantic.attackModel === 'melee_contact'
+          && semantic.playerId === frame.combat.localPlayerId
         ) {
-          const direction = directionFromLook(look.yaw, look.pitch);
-          const distance = semantic.family === 'shotgun' ? 22 : 72;
-          tracerBetween(
-            muzzle,
-            muzzle.clone().addScaledVector(direction, distance),
-            color,
-            frame.nowMilliseconds,
-          );
-        } else if (semantic.attackModel === 'melee_contact') {
-          meleeAt(actor, look.yaw, color, frame.nowMilliseconds);
-          if (semantic.playerId === frame.combat.localPlayerId) {
-            firstPersonMelee = 1;
-          }
+          firstPersonMelee = 1;
         }
         if (semantic.playerId === frame.combat.localPlayerId) {
           firstPersonRecoil = 1;
@@ -875,38 +680,43 @@ export async function createOnlineAuthorityThreeRuntime(
         const impact = entityScenePosition(semantic.targetPlayerId, frame);
         if (impact !== null) {
           impact.y += 1.15;
-          impactAt(impact, 0xffe8a6, frame.nowMilliseconds);
+          const sourceMuzzle = semantic.sourcePlayerId === null
+            ? null
+            : entityMuzzle(semantic.sourcePlayerId, frame);
+          const sourceWeapon = semantic.sourcePlayerId === null
+            ? null
+            : entityWeapon(semantic.sourcePlayerId, frame);
+          weaponPresentationFx.presentDamage({
+            event: semantic,
+            impactPosition: impact,
+            sourceMuzzle,
+            sourceWeapon,
+            nowMilliseconds: frame.nowMilliseconds,
+            localSource:
+              semantic.sourcePlayerId === frame.combat.localPlayerId,
+            localTarget:
+              semantic.targetPlayerId === frame.combat.localPlayerId,
+          });
         }
-        if (
-          semantic.sourcePlayerId !== null
-          && semantic.sourcePlayerId !== semantic.targetPlayerId
-        ) {
-          const origin = entityMuzzle(semantic.sourcePlayerId, frame);
-          if (origin !== null && impact !== null) {
-            tracerBetween(origin, impact, 0xffefb4, frame.nowMilliseconds);
-          }
-        }
+        avatars.get(semantic.targetPlayerId)?.root.userData.triggerHit?.(0, 0);
       } else if (semantic.kind === 'weapon_projectile_detonated') {
-        blastAt(
+        weaponPresentationFx.presentProjectileDetonation(
+          semantic,
           mapMillimetersToScene(semantic.positionMillimeters),
-          0xff744d,
           frame.nowMilliseconds,
+          semantic.ownerPlayerId === frame.combat.localPlayerId,
         );
       } else if (semantic.kind === 'weapon_melee_contact') {
-        const actor = entityScenePosition(semantic.playerId, frame);
-        const look = entityLook(semantic.playerId, frame);
-        if (actor !== null) {
-          meleeAt(actor, look.yaw, 0x58f4ff, frame.nowMilliseconds);
-        }
-        if (semantic.contactPointMillimeters !== null) {
-          impactAt(
-            mapMillimetersToScene(semantic.contactPointMillimeters),
-            0xa8fbff,
-            frame.nowMilliseconds,
-          );
-        }
+        weaponPresentationFx.presentMeleeContact(
+          semantic,
+          semantic.contactPointMillimeters === null
+            ? null
+            : mapMillimetersToScene(semantic.contactPointMillimeters),
+          frame.nowMilliseconds,
+          semantic.playerId === frame.combat.localPlayerId,
+        );
       } else if (semantic.kind === 'impulse_grenade_detonated') {
-        blastAt(
+        weaponPresentationFx.presentBlast(
           mapMillimetersToScene(semantic.positionMillimeters),
           0xc889ff,
           frame.nowMilliseconds,
@@ -915,7 +725,7 @@ export async function createOnlineAuthorityThreeRuntime(
         semantic.kind === 'teleport_resource_confirmed'
         && actorId !== null
       ) {
-        blastAt(
+        weaponPresentationFx.presentBlast(
           mapMillimetersToScene(semantic.to),
           0x77e8ff,
           frame.nowMilliseconds,
@@ -931,15 +741,29 @@ export async function createOnlineAuthorityThreeRuntime(
     const local = localId === null
       ? null
       : selectedPlayerWeapon(frame.combat.snapshot, localId);
-    const nextId = authorityWeaponId(local?.selectedWeaponId);
-    if (selectedWeaponId === nextId && firstPersonWeapon !== null) return;
-    if (firstPersonWeapon !== null) {
-      firstPersonWeaponMount.remove(firstPersonWeapon.group);
-      disposeObject(firstPersonWeapon.group);
+    const weaponState = selectedWeaponState(local);
+    const nextId = normalizeKyxAuthorityWeaponId(local?.selectedWeaponId);
+    if (selectedWeaponId !== nextId || firstPersonWeapon === null) {
+      if (firstPersonWeapon !== null) {
+        firstPersonWeaponMount.remove(firstPersonWeapon.group);
+        disposeObject(firstPersonWeapon.group);
+      }
+      firstPersonWeapon = createKyxWeaponPresentationModel(
+        nextId,
+        'first_person',
+      );
+      selectedWeaponId = nextId;
+      firstPersonWeaponMount.add(firstPersonWeapon.group);
     }
-    firstPersonWeapon = createWeaponModel(nextId, 'first_person');
-    selectedWeaponId = nextId;
-    firstPersonWeaponMount.add(firstPersonWeapon.group);
+    if (localId !== null && firstPersonWeapon !== null) {
+      weaponPresentationFx.notifyWeaponPhase(
+        localId,
+        firstPersonWeapon,
+        selectedWeaponPhase(local, weaponState),
+        frame.nowMilliseconds,
+        true,
+      );
+    }
   };
 
   const syncAvatars = (frame: OnlineAuthorityThreeFrame): void => {
@@ -965,6 +789,15 @@ export async function createOnlineAuthorityThreeRuntime(
       );
       avatar.root.scale.y = remote.state.stance === 'crouched' ? 0.78 : 1;
       setAvatarWeapon(avatar, combatPlayer?.selectedWeaponId);
+      if (avatar.weapon !== null) {
+        weaponPresentationFx.notifyWeaponPhase(
+          remote.entityId,
+          avatar.weapon,
+          selectedWeaponPhase(combatPlayer, selectedWeaponState(combatPlayer)),
+          frame.nowMilliseconds,
+          false,
+        );
+      }
       const speed = (
         remote.state.locomotionSignal.planarSpeedMillimetersPerSecond
         / 1_000
@@ -1032,102 +865,38 @@ export async function createOnlineAuthorityThreeRuntime(
     }
   };
 
-  const syncWeaponProjectiles = (combat: CombatSnapshotV1 | null): void => {
-    const active = new Set<string>();
-    for (const projectile of combat?.weaponProjectiles ?? []) {
-      if (projectile.phase !== 'active') continue;
-      active.add(projectile.projectileId);
-      let group = weaponProjectiles.get(projectile.projectileId);
-      if (group === undefined) {
-        group = new THREE.Group();
-        const bodyMaterial = new THREE.MeshStandardMaterial({
-          color: 0x313840,
-          metalness: 0.82,
-          roughness: 0.24,
-        });
-        const plumeMaterial = new THREE.MeshBasicMaterial({
-          color: 0xff784d,
-          transparent: true,
-          opacity: 0.86,
-          depthWrite: false,
-        });
-        const body = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.08, 0.11, 0.52, 10),
-          bodyMaterial,
-        );
-        body.rotation.x = Math.PI / 2;
-        const plume = new THREE.Mesh(
-          new THREE.ConeGeometry(0.1, 0.36, 10),
-          plumeMaterial,
-        );
-        plume.rotation.x = -Math.PI / 2;
-        plume.position.z = 0.4;
-        group.add(body, plume);
-        group.name = `ONLINE_AUTHORITY_ROCKET_${projectile.projectileId}`;
-        weaponProjectiles.set(projectile.projectileId, group);
-        scene.add(group);
-      }
-      group.position.set(
-        projectile.xMillimeters / 1_000,
-        projectile.yMillimeters / 1_000,
-        -projectile.zMillimeters / 1_000,
-      );
-      const velocity = mapVelocityToScene({
-        x: projectile.velocityXMillimetersPerSecond,
-        y: projectile.velocityYMillimetersPerSecond,
-        z: projectile.velocityZMillimetersPerSecond,
-      });
-      if (velocity.lengthSq() > 0) {
-        group.quaternion.setFromUnitVectors(
-          new THREE.Vector3(0, 0, -1),
-          velocity.normalize(),
-        );
-      }
-    }
-    for (const [projectileId, group] of weaponProjectiles) {
-      if (active.has(projectileId)) continue;
-      scene.remove(group);
-      disposeObject(group);
-      weaponProjectiles.delete(projectileId);
-    }
-  };
-
-  const updateTransientEffects = (nowMilliseconds: number): void => {
-    for (let index = transientEffects.length - 1; index >= 0; index -= 1) {
-      const effect = transientEffects[index];
-      const span = effect.expiresAtMilliseconds - effect.startedAtMilliseconds;
-      const elapsed = nowMilliseconds - effect.startedAtMilliseconds;
-      const progress = Math.max(0, Math.min(1, elapsed / span));
-      const materials = Array.isArray(effect.material)
-        ? effect.material
-        : [effect.material];
-      for (const material of materials) {
-        if ('opacity' in material) material.opacity = 1 - progress;
-      }
-      if (effect.kind === 'blast') {
-        effect.root.scale.setScalar(1 + progress * 6);
-      } else if (effect.kind === 'impact') {
-        effect.root.scale.setScalar(1 + progress * 2.4);
-        effect.root.rotation.y += 0.12;
-      } else if (effect.kind === 'melee') {
-        effect.root.rotation.z += 0.07;
-      }
-      if (nowMilliseconds < effect.expiresAtMilliseconds) continue;
-      scene.remove(effect.root);
-      disposeObject(effect.root);
-      transientEffects.splice(index, 1);
-    }
-  };
-
   const render = (frame: OnlineAuthorityThreeFrame): void => {
     if (disposed) return;
+    const deltaSeconds = previousRenderMilliseconds === null
+      ? 1 / 60
+      : Math.max(
+          1 / 240,
+          Math.min(0.1, (frame.nowMilliseconds - previousRenderMilliseconds) / 1_000),
+        );
+    previousRenderMilliseconds = frame.nowMilliseconds;
     resize();
     syncFirstPersonWeapon(frame);
     syncAvatars(frame);
     syncGrenades(frame.combat.snapshot);
-    syncWeaponProjectiles(frame.combat.snapshot);
-    processReliableEvents(frame);
-    updateTransientEffects(frame.nowMilliseconds);
+    weaponPresentationFx.syncAuthoritativeRockets(
+      frame.combat.snapshot?.weaponProjectiles ?? [],
+      frame.nowMilliseconds,
+    );
+    if (firstPersonWeapon !== null) {
+      updateKyxWeaponPresentation(
+        firstPersonWeapon,
+        frame.nowMilliseconds,
+        deltaSeconds,
+      );
+    }
+    for (const avatar of avatars.values()) {
+      if (avatar.weapon === null) continue;
+      updateKyxWeaponPresentation(
+        avatar.weapon,
+        frame.nowMilliseconds,
+        deltaSeconds,
+      );
+    }
 
     if (frame.presentation.localPredicted !== null) {
       const target = mapMillimetersToScene(
@@ -1146,8 +915,8 @@ export async function createOnlineAuthorityThreeRuntime(
       camera.lookAt(-14, 2.2, -5);
     }
 
-    firstPersonRecoil *= 0.72;
-    firstPersonMelee *= 0.82;
+    firstPersonRecoil *= Math.pow(0.72, deltaSeconds * 60);
+    firstPersonMelee *= Math.pow(0.82, deltaSeconds * 60);
     if (firstPersonWeapon !== null) {
       const movementBob = Math.min(
         1,
@@ -1156,43 +925,60 @@ export async function createOnlineAuthorityThreeRuntime(
       const bobPhase = frame.nowMilliseconds * 0.012;
       firstPersonWeaponMount.position.set(
         Math.sin(bobPhase) * 0.008 * movementBob,
-        Math.abs(Math.cos(bobPhase)) * -0.008 * movementBob,
+        Math.abs(Math.cos(bobPhase)) * -0.008 * movementBob
+          - firstPersonWeapon.reloadMix * 0.045,
         firstPersonRecoil * 0.055,
       );
       firstPersonWeaponMount.rotation.set(
-        firstPersonRecoil * -0.08,
+        firstPersonRecoil * -0.08 + firstPersonWeapon.reloadMix * 0.18,
         firstPersonMelee * -0.52,
-        firstPersonMelee * -0.26,
+        firstPersonMelee * -0.26 + firstPersonWeapon.reloadMix * 0.24,
       );
     }
+    // Reliable presentation resolves from the current camera, hand socket, and
+    // authored muzzle matrices. Combat results still come only from the event.
+    scene.updateMatrixWorld(true);
+    processReliableEvents(frame);
+    weaponPresentationFx.update(frame.nowMilliseconds);
     renderer.render(scene, camera);
   };
 
-  const diagnostics = (): OnlineAuthorityThreeDiagnostics => Object.freeze({
-    status: disposed ? 'disposed' : 'ready',
-    renderer: 'three_webgl',
-    mapReference: ONLINE_INKFALL_REV4_MAP_BINDING.mapReference,
-    presentationReference:
-      ONLINE_INKFALL_REV4_MAP_BINDING.presentationReference,
-    presentationSha256: INKFALL_REV4_CANDIDATE_ART.sha256,
-    authorityFixtureHash: ONLINE_INKFALL_REV4_MAP_BINDING.fixtureHash,
-    renderMeshesMayBeAuthority: false,
-    renderMeshCount: loadedVisual.meshCount,
-    renderOnlyContainmentMeshCount: loadedVisual.containmentMeshCount,
-    spawnPocketContainmentCount: 2,
-    authorityColliderCount: 339,
-    spawnCount: 12,
-    zoneCount: 9,
-    remoteAvatarCount: avatars.size,
-    grenadeProjectileCount: grenadeProjectiles.size,
-    weaponProjectileCount: weaponProjectiles.size,
-    renderedReliableEventCount,
-    selectedWeaponId,
-    selectedProceduralDefinitionId: firstPersonWeapon?.definitionId ?? null,
-    pointerLocked,
-    canvasWidth,
-    canvasHeight,
-  });
+  const diagnostics = (): OnlineAuthorityThreeDiagnostics => {
+    const weaponDiagnostics = weaponPresentationFx.diagnostics();
+    return Object.freeze({
+      status: disposed ? 'disposed' : 'ready',
+      renderer: 'three_webgl',
+      mapReference: ONLINE_INKFALL_REV4_MAP_BINDING.mapReference,
+      presentationReference:
+        ONLINE_INKFALL_REV4_MAP_BINDING.presentationReference,
+      presentationSha256: INKFALL_REV4_CANDIDATE_ART.sha256,
+      authorityFixtureHash: ONLINE_INKFALL_REV4_MAP_BINDING.fixtureHash,
+      renderMeshesMayBeAuthority: false,
+      renderMeshCount: loadedVisual.meshCount,
+      renderOnlyContainmentMeshCount: loadedVisual.containmentMeshCount,
+      spawnPocketContainmentCount: 2,
+      authorityColliderCount: 339,
+      spawnCount: 12,
+      zoneCount: 9,
+      remoteAvatarCount: avatars.size,
+      grenadeProjectileCount: grenadeProjectiles.size,
+      weaponProjectileCount: weaponDiagnostics.activeRocketCount,
+      activeWeaponEffectCount: weaponDiagnostics.activeTransientCount,
+      renderedReliableEventCount,
+      acceptedAttackPresentationCount:
+        weaponDiagnostics.acceptedAttackPresentationCount,
+      confirmedDamagePresentationCount:
+        weaponDiagnostics.confirmedDamagePresentationCount,
+      reloadPresentationCount: weaponDiagnostics.reloadPresentationCount,
+      authoredWeaponAudio: weaponDiagnostics.authoredAudio,
+      selectedWeaponId,
+      selectedProceduralDefinitionId: firstPersonWeapon?.definitionId ?? null,
+      selectedWeaponLabel: firstPersonWeapon?.label ?? null,
+      pointerLocked,
+      canvasWidth,
+      canvasHeight,
+    });
+  };
 
   const dispose = (): void => {
     if (disposed) return;
@@ -1200,6 +986,7 @@ export async function createOnlineAuthorityThreeRuntime(
     resizeObserver.disconnect();
     document.removeEventListener('pointerlockchange', pointerLockHandler);
     if (document.pointerLockElement === canvas) void document.exitPointerLock();
+    weaponPresentationFx.dispose();
     renderer.dispose();
     disposeObject(scene);
     scene.clear();

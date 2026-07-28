@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "incremental": false,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node", "vite/client"]
+  },
+  "include": [
+    "src/app/onlineAuthorityThreeRuntime.ts",
+    "src/app/onlineWeaponPresentationFx.ts",
+    "src/weapons/KyxArmoryPresentation.ts"
+  ],
+  "exclude": [
+    "dist",
+    "evidence",
+    "node_modules",
+    "public",
+    "server",
+    "tests",
+    "worker"
+  ]
+}
