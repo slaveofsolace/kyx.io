@@ -6,19 +6,22 @@ appending prose to executable source files or binary assets.
 ## Active now
 
 - `assets/source/blender/phase7-character-original-v6/model/v6c-character-rev18/`
-  and `evidence/2026-07-27/g6-rev18-character-remediation/` now preserve a
-  substantive non-default correction candidate. It improves the lower-body
-  silhouette, armor scale/value hierarchy, export contract, and socket-driven
-  melee evidence, but still fails final review on head/visor proportions,
-  mannequin-like anatomy, joint construction, hand/finger contact, materials,
-  and gameplay-camera proof. Rev17 remains the opt-in runtime path; neither
-  revision is the final player model.
+  and `evidence/2026-07-27/g6-rev18-character-remediation/` preserve the latest
+  rejected character candidate on public `main`. Rev19 is active in the
+  isolated `codex/g6-rev19-true-remodel-20260727` lane and is not part of the
+  public snapshot yet. Its first exact-GLB attempt preserved the technical
+  contracts but was immediately rejected for block-built armor, dome-backed
+  helmet construction, tube anatomy, disconnected fingers, weak weapon contact,
+  and a primitive rifle. Rev17 remains the opt-in runtime path; no revision is
+  the final player model.
   *Currently being worked on.*
 
-- `src/weapons/WeaponSystem.js`, `src/player/Rev17Character.js`, and the
-  first-person melee viewmodel — reproduce and remove the extra legacy mesh
-  shown over the sword without regressing the rifle viewmodel or third-person
-  hand socket. *Currently being worked on.*
+- `src/weapons/WeaponSystem.js` now explicitly hides the invalid 15-primitive
+  legacy blockout arm whenever the sword is active, while preserving both
+  default and Rev17 rifle paths. The correction and before/after evidence are
+  published on `main`. Authored first-person melee arms, a closed grip, and the
+  final melee animation/contact pass remain G6 work.
+  *Currently being worked on.*
 
 - `worker/`, `tests/worker/authorityFullOccupancySoak.test.ts`, and the
   multiplayer evidence harness — the local eight-client movement/combat/resume
@@ -29,14 +32,20 @@ appending prose to executable source files or binary assets.
 - `assets/source/maps/inkfall-foundry/` and the product map route — complete
   authoritative traversal, no-snag/embed/escape proof, counterplay telemetry,
   and human 2/4/8-player play review. The Rev3 review candidate and exact
-  west-archive rounding regression are present, but the human product gate is
-  still open. *Currently being worked on.*
+  west-archive rounding regression are present. A bounded, non-default Rev4
+  authored-art expansion is active in an isolated lane, but the human product
+  gate is still open. *Currently being worked on.*
 
 - `docs/audits/NOTHEREBUTAFK_EVIO_AUDIT_2026-07-27.md` records the completed
-  targeted audit through upstream `436da5b`. Its first bounded adoption
-  candidate is part of the active sword/viewmodel correction; the shared
-  local/remote character renderer and Inkfall visual-language references remain
-  future adaptation work. Upstream push remains disabled.
+  targeted audit through upstream `92b9716`. The useful ideas are routed as
+  independently implemented validation or visual-language references; no
+  upstream source, assets, spawn coordinates, or network implementation have
+  been merged. Upstream push remains disabled.
+
+- The rejected G7 HUD remains unchanged on the default path. An opt-in
+  Foundry Tactical replacement is active in an isolated lane using a dense,
+  hard-edged industrial instrument language rather than generic glass panels
+  or ornamental glow. *Currently being worked on.*
 
 ## Open release work
 
@@ -73,7 +82,8 @@ appending prose to executable source files or binary assets.
 - Vite production build: PASS.
 - Main and Cloudflare Worker TypeScript checks: PASS.
 - ESLint across client, Worker, tests, and tools: PASS.
-- Application Vitest regression on integrated `f3b89d7`: PASS, 768/768.
+- Application Vitest regression on the integrated melee correction: PASS,
+  772/772.
 - Cloudflare Worker regression excluding the dedicated soak: PASS, 43/43.
 - Integrated eight-client authority soak: PASS, 1/1; 20.009 Hz, authority tick
   p99 25 ms / max 36 ms, 8/8 combat convergence, resume preserved, and zero
@@ -84,7 +94,10 @@ appending prose to executable source files or binary assets.
 - Rev18 isolated Blender/export evidence: five exact GLBs with zero Khronos
   errors, 67 bones, 17 actions, and a 0.020736 m sampled melee contact bound;
   direct character visual review: IMPROVED BUT FAILED/OPEN, not runtime/default.
+- Rev19 attempt 1 isolated Blender/export evidence: exact 24,012-triangle LOD0,
+  67 bones, 15 sockets, and 17 actions; direct character visual review:
+  FAILED/ITERATING, not committed, runtime, default, or G6 accepted.
 - Cloudflare deployment: PAUSED. The rejected G7 presentation and incomplete
   product gates must not be published as the replacement build.
 
-Last refreshed: 2026-07-27.
+Last refreshed: 2026-07-27 at canonical `c213def`.
