@@ -19,6 +19,16 @@ infrastructure. The useful work is a set of bounded fixes, invariants, and
 visual-language references that should be adapted to KYX.IO and re-proven in
 its own runtime.
 
+## License boundary
+
+At audited head `436da5b`, the root `package.json` declares `"license": "ISC"`,
+but the repository tree contains no `LICENSE` or `COPYING` file and the README
+does not state a license. Until the owner supplies the actual license text or
+written permission is recorded in KYX.IO's provenance ledger, this audit does
+not authorize verbatim source or asset copying. The decisions below therefore
+favor independently implemented behavior, test invariants, and high-level
+design references; no upstream commit has been cherry-picked.
+
 ## Adoption matrix
 
 | Priority | Upstream evidence | Decision for KYX.IO | Required proof |
