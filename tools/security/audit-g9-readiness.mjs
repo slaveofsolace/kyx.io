@@ -231,11 +231,13 @@ const blockedAssets = ledger.assets.filter(
 record(
   'asset_clearance_classification',
   clearedAssets.length === 4
-    && blockedAssets.length === 6
+    && blockedAssets.length === 0
+    && ledger.summary?.quarantinedLegacyAssets === 6
     && ledger.assets.every((asset) => asset.releaseEligible === false),
   {
     clearedProjectOriginals: clearedAssets.length,
     blockedLegacyAssets: blockedAssets.length,
+    quarantinedLegacyAssets: ledger.summary?.quarantinedLegacyAssets ?? null,
     publicReleaseEligibleAssets: ledger.assets.filter((asset) => asset.releaseEligible).length,
   },
 );
@@ -360,11 +362,11 @@ const report = {
       code: 'PROJECT_LICENSE_SELECTION_REQUIRED',
       affectedAssetCount: ledger.assets.length,
     },
-    {
+    ...(blockedAssets.length === 0 ? [] : [{
       code: 'OWNER_ATTESTATION_OR_LICENSE_REQUIRED',
       affectedAssetCount: blockedAssets.length,
       affectedAssetIds: blockedAssets.map((asset) => asset.assetId),
-    },
+    }]),
     {
       code: 'G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED',
       affectedAssetCount: clearedAssets.length,

@@ -1,12 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "assetId": "legacy.zombie",
   "kind": "character",
   "releaseEligible": false,
   "sourceHash": "f67258d00882c787653f3996b7478e14b2a04211b83be2487a9f87346767d6ef",
   "sourceHashKind": "runtime_snapshot",
-  "runtime": {
-    "uri": "public/zombie.glb",
+  "distributionStatus": "quarantined_not_shipped",
+  "quarantine": {
+    "path": "assets/quarantine/legacy-unverified/runtime-snapshots/zombie.glb",
     "hash": "f67258d00882c787653f3996b7478e14b2a04211b83be2487a9f87346767d6ef",
     "bytes": 234604
   },
@@ -40,5 +41,5 @@
     "reviewer": null,
     "notes": "Legacy fragmented, unrigged enemy proxy. Survival content is outside the current launch slice."
   },
-  "disposition": "legacy_proxy_replace"
+  "disposition": "quarantined_owner_attestation_or_license_required"
 }

@@ -67,8 +67,8 @@ export const WEAPON_SKINS = [
     decal: 'fire', decalEmissive: true, decalOnMetal: true, decalOnAccent: true,
     animated: true, animType: 'flicker', animSpeed: 8.0, animMin: 0.55, animMax: 1.6,
     shootSound: 'fireball' },   // every shot shouts "FIREBALL!"
-  { // Japanese anime showpiece: the hand-drawn Neko Neon street wrap (cat-girl,
-    // neon kanji signs, lanterns — textures/sakura/wrap.png) over a white base,
+  { // Japanese anime showpiece: the project-authored procedural Neko Neon canvas
+    // (cat-girl, neon kanji signs, and lanterns) over a white base,
     // warm neon-pink glow, and the cute anime-girl "ah~♪" vocal per shot.
     id: 'sakura', name: 'Neko Neon 😺', rarity: 'mythic',
     body: 0xffffff, accent: 0xffffff, metal: 0xffffff, metalness: 0.4, roughness: 0.36,

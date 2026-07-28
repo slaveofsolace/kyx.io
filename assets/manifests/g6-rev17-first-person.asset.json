@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "assetId": "g6.rev17.first-person",
+  "kind": "first_person_arms",
+  "releaseEligible": false,
+  "sourceHash": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+  "sourceHashKind": "canonical_source",
+  "runtime": {
+    "uri": "public/candidates/g6-rev17/first-person.glb",
+    "hash": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+    "bytes": 2495708
+  },
+  "budgets": {
+    "triangles": 27026,
+    "primitives": 3,
+    "materials": 3,
+    "nodes": 70,
+    "bones": 66,
+    "clips": 16,
+    "textures": 0,
+    "estimatedTextureBytes": 0,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": [
+      "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED"
+    ]
+  },
+  "provenance": {
+    "status": "verified",
+    "creator": "KYX.IO project-authored Blender pipeline",
+    "source": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/kyx-v6c-character-rev17-master.blend",
+    "acquiredAt": "2026-07-26",
+    "license": null,
+    "licenseSnapshot": null,
+    "attribution": "No third-party mesh, rig, animation, or downloaded runtime content",
+    "reviewer": "G6 Rev17 author/export audit",
+    "notes": "Provenance-cleared interim first-person candidate. Human visual acceptance and project license selection remain open."
+  },
+  "disposition": "candidate"
+}

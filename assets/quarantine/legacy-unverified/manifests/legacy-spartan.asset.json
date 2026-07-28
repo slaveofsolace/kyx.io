@@ -1,12 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "assetId": "legacy.spartan",
   "kind": "character",
   "releaseEligible": false,
   "sourceHash": "377d6461d47c4324880832d9bff81d5a4bc8470ad3f2a4412a21c1e892dce43c",
   "sourceHashKind": "runtime_snapshot",
-  "runtime": {
-    "uri": "public/spartan.glb",
+  "distributionStatus": "quarantined_not_shipped",
+  "quarantine": {
+    "path": "assets/quarantine/legacy-unverified/runtime-snapshots/spartan.glb",
     "hash": "377d6461d47c4324880832d9bff81d5a4bc8470ad3f2a4412a21c1e892dce43c",
     "bytes": 256508
   },
@@ -40,5 +41,5 @@
     "reviewer": null,
     "notes": "Legacy unrigged proxy. Style and rights review are unresolved."
   },
-  "disposition": "audit_then_replace"
+  "disposition": "quarantined_owner_attestation_or_license_required"
 }

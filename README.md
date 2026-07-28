@@ -72,7 +72,7 @@ npm run test
 | `src/` | Game client, presentation, deterministic simulation adapters, UI, HUD, weapons, and world integration |
 | `worker/` | Cloudflare Worker and Durable Object authoritative room runtime |
 | `tests/` | Unit, contract, integration, multiplayer, and browser regression suites |
-| `assets/` | Asset manifests, map packages, Blender sources, exports, and bounded visual audits |
+| `assets/` | Active asset manifests, map packages, Blender sources, exports, bounded visual audits, and clearly separated non-shipping quarantine records |
 | `public/` | Runtime-served models and static game assets |
 | `tools/` | Evidence capture, verification, asset validation, and runtime harnesses |
 | `docs/` | Architecture decisions, design contracts, migration notes, operations, and work logs |
@@ -107,5 +107,12 @@ Do not treat a screenshot, automated PASS, or committed work-in-progress label
 as human visual acceptance. Preserve immutable evidence revisions and add a new
 revision when correcting a sealed artifact.
 
-Licensing and provenance will receive a final audit before this repository is
-made public.
+The active runtime no longer fetches the six unresolved-rights legacy binaries.
+Those exact historical bytes are preserved only in
+`assets/quarantine/legacy-unverified/`, outside Vite's `public/` release path,
+with hash-bound records and replacement notes. Do not copy quarantined files
+into a build or infer ownership from their presence in repository history.
+
+The project remains `UNLICENSED`. The owner must select the repository's public
+distribution license, and the active character still requires human visual
+acceptance, before a public release can be described as cleared.

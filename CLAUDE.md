@@ -40,16 +40,20 @@ path. Treat public builds as historical baselines until release gates pass.
   rooftop bridges, grav-lifts, central pavilion, snow drifts, string lights.
   Collision via `colliders[]` (boxes) + `platforms[]` (walkable tops) +
   `groundHeightAt()`. Snowy overcast palette, no neon.
-- `src/player/` — `HumanSoldier.js` (rigged Mixamo Vanguard w/ procedural armor,
-  worn-metal PBR detail textures, `setLocomotion()` speed-scaled anim + idle
-  breathing), `PreviewCharacter.js` (also loads Blender `public/spartan.glb` for
-  the menu preview), `skins.js` (default = white/silver spartan), `Player.js`.
-- `src/weapons/` — WeaponSystem, weapon defs, skins, `WeaponModels.js` (GLB).
+- `src/player/` — `HumanSoldier.js` selects the project-authored Rev17 interim
+  character; `PreviewCharacter.js` falls back to project-authored procedural
+  armor; `skins.js` and `Player.js` own local presentation/gameplay.
+- `src/weapons/` — WeaponSystem, weapon defs, skins, and project-authored
+  procedural models in `WeaponModels.js`.
 - `src/ui/` — `MainMenu.js` (truthful offline-practice, local loadout, and
   settings panels), `HUD.js` (health, ammo, local practice score, scoreboard,
   and measured post-run results), `Nameplates.js`, `DamageNumbers.js`, and
   `WeaponThumbnails.js` (renders local weapon thumbnails).
-- `public/*.glb` — soldier, player, spartan, weapons, zombie models.
+- `public/candidates/g6-rev17/*.glb` — provenance-cleared project-authored
+  character candidates. Human visual acceptance and the project license remain
+  open.
+- `assets/quarantine/legacy-unverified/` — six preserved, unresolved-rights
+  snapshots. Never import, serve, package, or treat these as cleared assets.
 - The old `src/core/NetClient.js` and `src/core/ServerSim.js` launch paths are
   removed. `server/` is a loopback-only historical relay used for protocol
   comparison, never production multiplayer.
@@ -71,10 +75,9 @@ path. Treat public builds as historical baselines until release gates pass.
   **Inventory v2** = real skinned-weapon renders + search + rarity filter chips.
 
 ## Known constraints / notes
-- Can't generate/sculpt realistic character meshes from an image; the player
-  model is a themed rigged Vanguard + a procedural Blender `spartan.glb`. For a
-  truly realistic character, drop in an authored/licensed `.glb` and wire it via
-  `PreviewCharacter.js`.
+- Character replacements must be project-authored or arrive with verifiable
+  creator/source/license evidence, then pass the human visual gate before
+  default promotion.
 - Keep chat sessions from getting huge (lots of embedded video/screenshots) — it
   can trip a 32MB request limit. Prefer short clips + fresh sessions.
 </content>

@@ -4,7 +4,8 @@ Blender 4.x headless script — builds human Spartan-style character models for 
 Run with:
   blender --background --python build_player.py
 
-Output: public/player.glb
+Historical diagnostic output only:
+  assets/quarantine/legacy-unverified/runtime-snapshots/player.glb
   armor_assault  — balanced tactical plate
   armor_recon    — light scout, slim
   armor_heavy    — juggernaut, imposing
@@ -454,7 +455,7 @@ build_stealth()
 print(f"Built {len([o for o in D.objects if o.type == 'MESH'])} mesh objects")
 
 # ── Export GLB ─────────────────────────────────────────────────────────────────
-out = '/home/user/Ev.io/public/player.glb'
+out = '/home/user/Ev.io/assets/quarantine/legacy-unverified/runtime-snapshots/player.glb'
 bpy.ops.export_scene.gltf(
     filepath=out,
     export_format='GLB',

@@ -1,12 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "assetId": "legacy.player",
   "kind": "character",
   "releaseEligible": false,
   "sourceHash": "cdb9a8d694a132099e2b505f07957bb39683def8ec9356be304d79b6f6f92564",
   "sourceHashKind": "runtime_snapshot",
-  "runtime": {
-    "uri": "public/player.glb",
+  "distributionStatus": "quarantined_not_shipped",
+  "quarantine": {
+    "path": "assets/quarantine/legacy-unverified/runtime-snapshots/player.glb",
     "hash": "cdb9a8d694a132099e2b505f07957bb39683def8ec9356be304d79b6f6f92564",
     "bytes": 1363668
   },
@@ -40,5 +41,5 @@
     "reviewer": null,
     "notes": "Legacy runtime proxy. Original source and rights evidence were not present in the handoff."
   },
-  "disposition": "legacy_proxy_replace"
+  "disposition": "quarantined_owner_attestation_or_license_required"
 }

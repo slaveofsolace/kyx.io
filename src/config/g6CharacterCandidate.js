@@ -22,7 +22,7 @@ export const G6_CHARACTER_CANDIDATE = Object.freeze({
   query: `?${QUERY_KEY}=${REVISION}`,
   population: selectedPopulation(),
   populationQueryKey: POPULATION_QUERY_KEY,
-  defaultAssetUnchanged: '/soldier.glb',
+  provenanceSafeDefaultAsset: '/candidates/g6-rev17/character-lod0.glb',
   assets: Object.freeze({
     lod0: '/candidates/g6-rev17/character-lod0.glb',
     lod1: '/candidates/g6-rev17/character-lod1.glb',

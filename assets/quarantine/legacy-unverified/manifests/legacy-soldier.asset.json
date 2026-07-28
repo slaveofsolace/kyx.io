@@ -1,12 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "assetId": "legacy.soldier",
   "kind": "character",
   "releaseEligible": false,
   "sourceHash": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
   "sourceHashKind": "runtime_snapshot",
-  "runtime": {
-    "uri": "public/soldier.glb",
+  "distributionStatus": "quarantined_not_shipped",
+  "quarantine": {
+    "path": "assets/quarantine/legacy-unverified/runtime-snapshots/soldier.glb",
     "hash": "5f75df0a1035956c5da3781dcdaa6e5bf06d27e913d3c428eef0da5d10ba7bde",
     "bytes": 2159764
   },
@@ -40,5 +41,5 @@
     "reviewer": null,
     "notes": "Temporary rig and animation diagnostic only. Four clips are not the production animation contract."
   },
-  "disposition": "temporary_diagnostic_only_then_replace"
+  "disposition": "quarantined_owner_attestation_or_license_required"
 }

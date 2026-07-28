@@ -1,33 +1,15 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { metalNormalMap, metalRoughnessMap, polymerNormalMap } from './WeaponTextures.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ── Blender GLB weapon loader ─────────────────────────────────────────────────
-let _weaponTemplate = null, _weaponLoading = false;
-
-// Callbacks waiting on the GLB template (e.g. WeaponSystem swaps its
-// procedural viewmodels for the detailed Blender guns once it arrives).
-let _readyCallbacks = [];
-
+// Compatibility callbacks remain asynchronous, but every weapon is assembled
+// from project-authored procedural geometry. No external catalog is fetched.
+const _weaponTemplate = null;
 export function onWeaponModelsReady(cb) {
-  if (_weaponTemplate) { cb(); return; }
-  _readyCallbacks.push(cb);
+  queueMicrotask(cb);
 }
 
 export function preloadWeaponModels() {
-  if (_weaponTemplate || _weaponLoading) return;
-  _weaponLoading = true;
-  new GLTFLoader().load('/weapons.glb',
-    (gltf) => {
-      _weaponTemplate = gltf.scene;
-      _weaponLoading = false;
-      const cbs = _readyCallbacks; _readyCallbacks = [];
-      for (const cb of cbs) { try { cb(); } catch (e) { console.warn('[WeaponGLB] ready cb failed:', e); } }
-    },
-    undefined,
-    (err) => { console.warn('[WeaponGLB] load failed:', err.message); _weaponLoading = false; }
-  );
 }
 
 function _buildFromGLB(weaponDef) {
@@ -1883,18 +1865,11 @@ const BUILDERS = {
 };
 
 export function buildWeaponModel(weaponDef, opts = {}) {
-  // Prefer Blender GLB when already loaded. Character-held (third-person)
-  // weapons force the procedural path: the GLB's meshes carry baked-in scene
-  // offsets that place them metres from the group origin, which is harmless
-  // for the FPS viewmodel (built before the GLB loads, so it's procedural)
-  // but puts a hand-held weapon far outside the character.
-  // weaponDef.proceduralModel forces the procedural builder even when the GLB
-  // is loaded — used by the main guns, whose GLB entries are low-detail
-  // placeholders and whose detailed sci-fi look lives in buildSciFiRifle.
-  const glb = !opts.procedural && !weaponDef.proceduralModel && _buildFromGLB(weaponDef);
-  if (glb) return glb;
-
-  // Fall back to procedural
+  // Project-authored procedural models are the only release runtime path.
+  // Keep the dormant converter referenced only until its migration scaffolding
+  // is removed; the template is hard-null and has no loader or public URI.
+  void opts;
+  void _buildFromGLB;
   const builder = BUILDERS[weaponDef.id] ?? buildEnergyWeapon;
   const { group, muzzle } = builder(weaponDef.color, weaponDef);
   group.traverse((obj) => {

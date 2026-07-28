@@ -1,12 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "assetId": "legacy.weapons",
   "kind": "weapon_world",
   "releaseEligible": false,
   "sourceHash": "3c0ded95defbb4ddc52e8b9a2bc22de233cdfdccbeb4e6cbcc548252f5d08ce8",
   "sourceHashKind": "runtime_snapshot",
-  "runtime": {
-    "uri": "public/weapons.glb",
+  "distributionStatus": "quarantined_not_shipped",
+  "quarantine": {
+    "path": "assets/quarantine/legacy-unverified/runtime-snapshots/weapons.glb",
     "hash": "3c0ded95defbb4ddc52e8b9a2bc22de233cdfdccbeb4e6cbcc548252f5d08ce8",
     "bytes": 2019140
   },
@@ -40,5 +41,5 @@
     "reviewer": null,
     "notes": "Legacy monolithic weapon proxy. The 386 primitives must be split and replaced by semantic assets."
   },
-  "disposition": "legacy_proxy_replace"
+  "disposition": "quarantined_owner_attestation_or_license_required"
 }

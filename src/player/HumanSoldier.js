@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
-import { isG6Rev17CharacterCandidateEnabled } from '../config/g6CharacterCandidate.js';
 import {
   buildRev17Character,
   isRev17CharacterReady,
@@ -10,45 +8,22 @@ import {
 } from './Rev17Character.js';
 
 // ───────────────────────────────────────────────────────────────────────────
-// Real rigged human soldier (Mixamo "Vanguard"), with Idle / Walk / Run clips.
-// Replaces the procedural block character: this is an actual human mesh driven
-// by skeletal animation rather than rotating box primitives.
+// Provenance-safe project-authored runtime character.
+//
+// The former default loaded an unresolved legacy binary from public/. Keep the
+// mature legacy animation implementation below only as non-shipping migration
+// scaffolding while the accepted project-authored character revision is wired
+// in. It cannot be selected or fetched by the runtime.
 // ───────────────────────────────────────────────────────────────────────────
-let _template   = null;   // { scene, animations }
-let _loading    = false;
-const _callbacks = [];
+const DEFAULT_CHARACTER_SOURCE = 'project-authored-rev17';
+let _template = null;
 
 export function preloadHumanSoldier(onLoad) {
-  if (isG6Rev17CharacterCandidateEnabled()) {
-    preloadRev17Character(onLoad);
-    return;
-  }
-  if (onLoad) _callbacks.push(onLoad);
-  if (_template) { onLoad?.(); return; }
-  if (_loading) return;
-  _loading = true;
-  new GLTFLoader().load('/soldier.glb',
-    (gltf) => {
-      gltf.scene.traverse((o) => {
-        if (o.isMesh) {
-          o.castShadow = true;
-          o.receiveShadow = true;
-          o.frustumCulled = false; // skinned bounds expand past the bind pose
-        }
-      });
-      _template = { scene: gltf.scene, animations: gltf.animations };
-      _loading  = false;
-      _callbacks.splice(0).forEach((cb) => cb());
-    },
-    undefined,
-    (err) => { console.warn('[HumanSoldier] load failed:', err?.message); _loading = false; }
-  );
+  preloadRev17Character(onLoad);
 }
 
 export function isHumanSoldierReady() {
-  return isG6Rev17CharacterCandidateEnabled()
-    ? isRev17CharacterReady()
-    : !!_template;
+  return isRev17CharacterReady();
 }
 
 // The Vanguard model is authored ~1.8 world units tall already, but the game's
@@ -103,7 +78,7 @@ function findBone(root, name) {
  * type previews as a distinct super-soldier.
  */
 export function buildHumanSoldier(skin = null, armorTypeId = 'assault', opts = {}) {
-  if (isG6Rev17CharacterCandidateEnabled()) {
+  if (DEFAULT_CHARACTER_SOURCE === 'project-authored-rev17') {
     return buildRev17Character(skin, armorTypeId, opts);
   }
   if (!_template) return null;

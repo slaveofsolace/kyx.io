@@ -1,95 +1,19 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { buildHumanSoldier, isHumanSoldierReady, tintHumanSoldier } from './HumanSoldier.js';
 
-// ── Blender-built Spartan GLB (the white/orange armoured soldier) ────────────
-let _spartanTemplate = null, _spartanLoading = false;
-const _spartanCbs = [];
+// Compatibility hooks retained for menu callers. The unresolved legacy static
+// models are quarantined and cannot be fetched; previews use the project-authored
+// human candidate when ready and the procedural builders below otherwise.
 export function preloadSpartanModel(onLoad) {
-  if (onLoad) _spartanCbs.push(onLoad);
-  if (_spartanTemplate) { onLoad?.(); return; }
-  if (_spartanLoading) return;
-  _spartanLoading = true;
-  new GLTFLoader().load('/spartan.glb',
-    (gltf) => {
-      gltf.scene.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
-      _spartanTemplate = gltf.scene;
-      _spartanLoading = false;
-      _spartanCbs.splice(0).forEach((cb) => cb());
-    },
-    undefined,
-    (err) => { console.warn('[Spartan] load failed:', err?.message); _spartanLoading = false; }
-  );
+  onLoad?.();
 }
-export function isSpartanReady() { return !!_spartanTemplate; }
+export function isSpartanReady() { return false; }
 export function buildSpartanModel() {
-  if (!_spartanTemplate) return null;
-  const g = new THREE.Group();
-  const m = _spartanTemplate.clone(true);
-  m.traverse((o) => { if (o.isMesh && o.material) o.material = o.material.clone(); });
-  g.add(m);
-  g.userData = { isSpartan: true, primaryMat: null, secondaryMat: null };
-  return g;
+  return null;
 }
-
-// ── Blender GLB player model loader ─────────────────────────────────────────
-let _playerTemplate = null, _playerLoading = false;
-const _loadCallbacks = [];
 
 export function preloadPlayerModel(onLoad) {
-  if (onLoad) _loadCallbacks.push(onLoad);
-  if (_playerTemplate) { onLoad?.(); return; }
-  if (_playerLoading) return;
-  _playerLoading = true;
-  new GLTFLoader().load('/player.glb',
-    (gltf) => {
-      _playerTemplate = gltf.scene;
-      _playerLoading  = false;
-      _loadCallbacks.splice(0).forEach(cb => cb());
-    },
-    undefined,
-    (err) => { console.warn('[PlayerGLB] load failed:', err.message); _playerLoading = false; }
-  );
-}
-
-function _buildFromGLB(skin, armorTypeId, armorSkin) {
-  const armorRoot = _playerTemplate?.getObjectByName(`armor_${armorTypeId}`);
-  if (!armorRoot) return null;
-
-  const cloned = armorRoot.clone(true);
-  cloned.position.set(0, 0, 0);
-  // Blender -Y face → Three.js +Z; rotate 180° to match existing -Z facing convention
-  cloned.rotation.y = Math.PI;
-
-  const src = armorSkin || {};
-  const P = new THREE.MeshStandardMaterial({
-    color:             armorSkin ? armorSkin.primary   : skin.primary,
-    roughness:         src.roughness         ?? 0.82,
-    metalness:         src.metalness         ?? 0.06,
-    emissive:          new THREE.Color(src.emissive ?? 0x000000),
-    emissiveIntensity: src.emissiveIntensity ?? 0,
-    envMapIntensity:   1.0,
-  });
-  const S = new THREE.MeshStandardMaterial({
-    color:     armorSkin ? armorSkin.secondary : skin.secondary,
-    roughness: (src.roughness ?? 0.82) * 1.1,
-    metalness: (src.metalness ?? 0.06) * 0.2,
-    envMapIntensity: 0.8,
-  });
-
-  cloned.traverse(obj => {
-    if (!obj.isMesh || !obj.material) return;
-    const n = obj.material.name || '';
-    if      (n.endsWith('_Primary'))   obj.material = P;
-    else if (n.endsWith('_Secondary')) obj.material = S;
-    // Trim, DarkJoint, Visor materials kept from GLB
-    obj.castShadow = obj.receiveShadow = true;
-  });
-
-  const g = new THREE.Group();
-  g.add(cloned);
-  g.userData = { primaryMat: P, secondaryMat: S, armorTypeId };
-  return g;
+  onLoad?.();
 }
 
 // ---------------------------------------------------------------------------
@@ -342,11 +266,7 @@ export function buildPreviewCharacter(skin, armorTypeId = 'assault', armorSkin =
     if (human) return human;
   }
 
-  // Then the blocky Blender GLB
-  const glbResult = _buildFromGLB(skin, armorTypeId, armorSkin);
-  if (glbResult) return glbResult;
-
-  // Fall back to procedural
+  // Project-authored procedural fallback.
   const g = new THREE.Group();
 
   const src = armorSkin || {};

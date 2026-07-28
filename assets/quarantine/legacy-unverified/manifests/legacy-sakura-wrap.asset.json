@@ -1,12 +1,13 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "assetId": "legacy.sakura-wrap",
   "kind": "weapon_world",
   "releaseEligible": false,
   "sourceHash": "376c4a7688e0d76afc1308d91bf7deca0ccef48bcc2bc51cdc4438066dc7137c",
   "sourceHashKind": "runtime_snapshot",
-  "runtime": {
-    "uri": "public/textures/sakura/wrap.png",
+  "distributionStatus": "quarantined_not_shipped",
+  "quarantine": {
+    "path": "assets/quarantine/legacy-unverified/runtime-snapshots/textures/sakura/wrap.png",
     "hash": "376c4a7688e0d76afc1308d91bf7deca0ccef48bcc2bc51cdc4438066dc7137c",
     "bytes": 127881
   },
@@ -40,5 +41,5 @@
     "reviewer": null,
     "notes": "Legacy 512x512 PNG weapon-wrap texture. Source and rights evidence are unresolved."
   },
-  "disposition": "audit_then_replace"
+  "disposition": "quarantined_owner_attestation_or_license_required"
 }

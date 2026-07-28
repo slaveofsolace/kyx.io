@@ -1,8 +1,14 @@
 # Runtime asset manifests
 
-Each `*.asset.json` file records the exact runtime bytes currently present in
-`public/`. These manifests describe legacy evidence; they do not make an asset
-release-ready.
+Each `*.asset.json` file records exact runtime bytes currently present in
+`public/`. The active inventory contains only project-authored Rev17 runtime
+candidates. It does not make those assets release-ready: human visual acceptance
+and a project distribution license remain open.
+
+The six unresolved-rights legacy binaries and their historical records are
+preserved under `assets/quarantine/legacy-unverified/`. Quarantined files are
+outside `public/`, excluded from release packaging, and intentionally ignored by
+the active runtime validator.
 
 - `node tools/assets/validate-manifests.mjs` verifies schema-critical fields,
   file hashes/sizes, supported kind/extension pairs, GLB/PNG structure,
@@ -13,10 +19,11 @@ release-ready.
   initial per-asset primitive/triangle budgets. An arbitrary or unsupported
   file cannot become eligible merely by recording its hash.
 
-The current files intentionally use `runtime_snapshot` hashes and unresolved
-provenance. Missing creator, source, acquisition, license, or reviewer records
-must never be guessed. Release validation therefore fails until authored
-replacement assets or documented rights evidence are reviewed.
+The current active files bind runtime hashes to a canonical project-authored
+Blender source. Release validation still fails until the candidate has human
+acceptance, a reviewed external glTF receipt in the active manifest format, and
+the project owner selects a distribution license. Missing records must never be
+guessed.
 
 `structuralInspector: "kyx_binary_inspector_v1"` means the project parsed the
 GLB/PNG container and remeasured the recorded counts. It is not the Khronos

@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const DETECT_RADIUS   = 22;
 const ATTACK_RADIUS   = 1.7;
@@ -26,20 +25,10 @@ const VARIANTS = {
   brute:    { speed: 0.72, hp: 2.4, dmg: 1.8, scale: 1.22, anim: 0.75, glow: 0xff2e18 },
 };
 
-// ─── GLB model loader (preloaded once, shared across all zombie instances) ────
-
-let _glbTemplate = null;   // THREE.Group — the raw loaded GLB scene
-let _glbLoading  = false;
-
+// Retained compatibility API. Enemy presentation is project-authored procedural
+// geometry; the unresolved legacy binary is quarantined and never fetched.
+let _glbTemplate = null;
 export function preloadZombieModel() {
-  if (_glbTemplate || _glbLoading) return;
-  _glbLoading = true;
-  new GLTFLoader().load(
-    '/zombie.glb',
-    (gltf) => { _glbTemplate = gltf.scene; _glbLoading = false; },
-    undefined,
-    (err) => { console.warn('[Zombie] GLB load failed, using procedural:', err.message); _glbLoading = false; }
-  );
 }
 
 function buildZombieRigFromGLB(mat) {

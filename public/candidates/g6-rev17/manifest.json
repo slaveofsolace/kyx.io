@@ -1,9 +1,9 @@
 {
   "schema": "kyx-g6-rev17-runtime-candidate-manifest-v1",
   "revision": "rev17",
-  "enabledOnlyBy": "?g6Candidate=rev17",
-  "default": false,
-  "defaultAssetUnchanged": "/soldier.glb",
+  "runtimeSelection": "provenance-safe interim default",
+  "default": true,
+  "defaultAsset": "/candidates/g6-rev17/character-lod0.glb",
   "humanVisualReviewRequired": true,
   "assets": {
     "lod0": {
@@ -32,7 +32,7 @@
     }
   },
   "nonClaims": [
-    "Candidate runtime integration is not a default promotion.",
+    "Default runtime selection removes an unresolved-rights legacy dependency; it does not grant G6.",
     "Runtime screenshots do not grant G6.",
     "Human visual acceptance remains required."
   ]
