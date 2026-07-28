@@ -48,6 +48,7 @@ const RELIABLE_EVENT_KINDS: ReadonlySet<ReliableEventKind> = new Set([
   'playerKilled',
   'abilityActivated',
   'abilityRejected',
+  'worldPortalTraversed',
   'cooldownStarted',
   'deployableSpawned',
   'loadoutAccepted',

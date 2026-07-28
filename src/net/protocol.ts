@@ -542,6 +542,7 @@ export type ReliableEventKind =
   | 'playerKilled'
   | 'abilityActivated'
   | 'abilityRejected'
+  | 'worldPortalTraversed'
   | 'cooldownStarted'
   | 'deployableSpawned'
   | 'loadoutAccepted'
@@ -668,6 +669,23 @@ export interface CombatPresentationTeleportRejectedEventV1 {
   readonly cooldownConsumedByFailure: false;
 }
 
+export interface CombatPresentationWorldPortalTraversedEventV1 {
+  readonly schemaVersion: 1;
+  readonly kind: 'world_portal_traversed';
+  readonly eventId: string;
+  readonly authorityTick: number;
+  readonly playerId: string;
+  readonly capabilityId: string;
+  readonly endpointId: string;
+  readonly partnerEndpointId: string;
+  readonly from: ReconciliationVector3;
+  readonly to: ReconciliationVector3;
+  readonly departureAudioHook: string;
+  readonly arrivalAudioHook: string;
+  readonly departureVfxHook: string;
+  readonly arrivalVfxHook: string;
+}
+
 export interface CombatPresentationGrenadeThrowEventV1 {
   readonly schemaVersion: 1;
   readonly kind: 'impulse_grenade_throw_accepted';
@@ -776,7 +794,8 @@ export type CombatPresentationReliableEventV1 =
   | CombatPresentationGrenadeImpulseEventV1
   | CombatPresentationThrowableAbilityEventV1
   | CombatPresentationTeleportConfirmedEventV1
-  | CombatPresentationTeleportRejectedEventV1;
+  | CombatPresentationTeleportRejectedEventV1
+  | CombatPresentationWorldPortalTraversedEventV1;
 
 export interface ReliableEvent {
   readonly id: string;

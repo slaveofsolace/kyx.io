@@ -5,6 +5,9 @@ export const ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID =
   'p511-inkfall-foundry-revision-2-combat-v1' as const;
 export const ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID =
   'g5-inkfall-foundry-rev4-revision-3-authority-v1' as const;
+// The profile id remains wire-compatible with existing room checkpoints.
+export const ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID =
+  ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
 
 export type OnlineAuthorityProfileSelection =
   | typeof ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
@@ -116,10 +119,10 @@ const ONLINE_INKFALL_REV4_SPAWNS = Object.freeze(
   }),
 );
 
-export const ONLINE_INKFALL_REV4_MAP_BINDING = Object.freeze({
+export const ONLINE_INKFALL_REV5_MAP_BINDING = Object.freeze({
   mapReference: 'inkfall_foundry@3',
   presentationReference:
-    'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+    'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
   mapId: 'inkfall_foundry',
   mapRevision: 3,
   packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
@@ -136,9 +139,9 @@ export const ONLINE_INKFALL_REV4_MAP_BINDING = Object.freeze({
   render: Object.freeze({
     role: 'render_only',
     path:
-      'art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
-    sha256: '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00',
-    bytes: 12_954_608,
+      'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
+    sha256: '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676',
+    bytes: 2_803_128,
     renderMeshesMayBeAuthority: false,
   }),
   collision: Object.freeze({
@@ -163,6 +166,12 @@ export const ONLINE_INKFALL_REV4_MAP_BINDING = Object.freeze({
     halfExtentsMm: Object.freeze({ ...trigger.halfExtentsMm }),
     destinationFeetMm: Object.freeze({ ...trigger.destinationFeetMm }),
   }))),
+  portal: Object.freeze({
+    capabilityId: 'inkfall_rev5_linked_world_portal_v1',
+    authorityRole: 'additive_server_authority',
+    renderRole: 'rev5_render_only_no_hit',
+    endpointCount: 2,
+  }),
   telemetry: Object.freeze({
     schemaVersion: 1,
     authoritySource: 'durable_object_room_metrics_v1',
@@ -179,8 +188,15 @@ export const ONLINE_INKFALL_REV4_MAP_BINDING = Object.freeze({
   }),
 } as const);
 
+// Source compatibility for code and persisted selections that still use Rev4
+// naming while presenting the additive Rev5 candidate.
+export const ONLINE_INKFALL_REV4_MAP_BINDING =
+  ONLINE_INKFALL_REV5_MAP_BINDING;
+
 export type OnlineInkfallRevision4MapBinding =
   typeof ONLINE_INKFALL_REV4_MAP_BINDING;
+export type OnlineInkfallRevision5MapBinding =
+  typeof ONLINE_INKFALL_REV5_MAP_BINDING;
 export type OnlineInkfallMapBinding =
   | OnlineInkfallRevision2MapBinding
   | OnlineInkfallRevision4MapBinding;

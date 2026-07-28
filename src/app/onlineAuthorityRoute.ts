@@ -1,4 +1,5 @@
 import { hashRulesetContent, requireRuleset } from '../content';
+import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
 import {
   authorityLoadoutFromRuleset,
@@ -27,6 +28,7 @@ import {
 import type { SimulationIdentityV1 } from '../net';
 import type { CombatSnapshotV1, ReliableEvent } from '../net';
 import { deriveRev17AuthorityAction } from '../player/rev17ActionContract.js';
+import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
 import {
   INTENT_BUTTON,
   PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
@@ -226,7 +228,7 @@ function appendScopeNotice(
       'span',
       '',
       inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-        ? 'Inkfall Foundry Rev4 acceptance candidate: the Rev4.1 render-only presentation is identity-bound to the frozen Rev3 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Human visual approval and release deployment remain separate gates.'
+        ? 'Inkfall Foundry Rev5 integration candidate: the Rev5 modular render-only presentation and linked world portal are identity-bound to the frozen Rev3 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Human visual approval and release deployment remain separate gates.'
         : inkfallProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
           ? 'Explicit Inkfall Foundry @2 integration preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. Final-map traversal, final visuals, matchmaking, progression, and release readiness remain open; G4 and G5 are not claimed.'
         : 'Authoritative revision-3 combat preview: movement, rifle, health, team score, feed, respawn, grenade state, remote interpolation, and secure resume. Matchmaking, progression, real-map grenade collision, and release readiness are not included yet.',
@@ -298,11 +300,11 @@ function renderLanding(
   rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
   const rev4ProfileCopy = element('span', '');
   rev4ProfileCopy.append(
-    element('strong', '', 'Default · Inkfall Foundry Rev4 playable 3D / Rev3 authority'),
+    element('strong', '', 'Default · Inkfall Foundry Rev5 playable 3D / Rev3 authority'),
     element(
       'span',
       '',
-      `Creates the current playable 3D route with ${ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID}. The Rev4 render scene is visual only; frozen Rev3 collision, spawns, zones, combat, checkpoints, and resume remain authoritative.`,
+      `Creates the current playable 3D route with ${ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID}. Rev5 modular art and portal effects are visual only; frozen Rev3 collision plus the server portal capability, spawns, zones, combat, checkpoints, and resume remain authoritative.`,
     ),
   );
   rev4ProfileOption.append(rev4ProfileCheckbox, rev4ProfileCopy);
@@ -734,7 +736,7 @@ async function mountSession(
       'p',
       'online-preview__eyebrow',
       inkfallRev4
-        ? 'AUTHORITATIVE COMBAT ROOM / INKFALL REV4 + REV3 AUTHORITY'
+        ? 'AUTHORITATIVE COMBAT ROOM / INKFALL REV5 + REV3 AUTHORITY'
         : inkfallRuntime
           ? 'AUTHORITATIVE COMBAT ROOM / INKFALL FOUNDRY @2'
         : 'AUTHORITATIVE COMBAT ROOM',
@@ -748,7 +750,7 @@ async function mountSession(
       'p',
       '',
       inkfallRev4
-        ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys or mouse to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your three selected abilities, and Q for locked Blink. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev4 art cannot become collision.'
+        ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys or mouse to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your three selected abilities, and Q for locked Blink. The linked portal pair traverses on entry. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev5 art cannot become collision.'
         : inkfallRuntime
           ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your selected abilities, and Q for locked Blink. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, throwable collision, health, score, death, and respawn.'
         : 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for selected abilities, and Q for locked Blink. Health, ammo, score, feed, death, respawn, ability, and resume state come from the authority.',
@@ -800,7 +802,7 @@ async function mountSession(
     'div',
     'online-session__panel-head',
     inkfallRev4
-      ? 'Playable Inkfall Foundry Rev4 3D / frozen Rev3 authority'
+      ? 'Playable Inkfall Foundry Rev5 3D / frozen Rev3 authority'
       : inkfallRuntime
         ? 'Live Inkfall Foundry @2 authority plane'
         : 'Live authority combat plane',
@@ -822,14 +824,14 @@ async function mountSession(
   canvas.setAttribute(
     'aria-label',
     inkfallRev4
-      ? 'Playable Inkfall Foundry Rev4 3D online combat arena. Click for pointer lock and mouse look; Mouse 1 fires.'
+      ? 'Playable Inkfall Foundry Rev5 3D online combat arena with linked portals. Click for pointer lock and mouse look; Mouse 1 fires.'
       : 'Online authoritative combat arena. Click to focus; Mouse 1 fires.',
   );
   const mapStatus = element(
     'div',
     'online-session__map-status',
     inkfallRev4
-      ? 'VERIFYING REV4 ART + REV3 AUTHORITY BINDING…'
+      ? 'VERIFYING REV5 ART + REV3 AUTHORITY BINDING…'
       : '2D AUTHORITY PRESENTATION',
   );
   mapStatus.dataset.testid = 'online-map-load-status';
@@ -877,6 +879,16 @@ async function mountSession(
   feedbackHud.dataset.testid = 'online-confirmed-hud';
   feedbackHud.setAttribute('role', 'status');
   feedbackHud.setAttribute('aria-live', 'polite');
+  const captionRegion = element('div', 'caption-region hidden');
+  captionRegion.id = 'caption-region';
+  captionRegion.setAttribute('aria-live', 'polite');
+  captionRegion.setAttribute('aria-atomic', 'true');
+  captionRegion.setAttribute('aria-label', 'Subtitles');
+  const audioCueRegion = element('div', 'audio-cue-region hidden');
+  audioCueRegion.id = 'audio-cue-region';
+  audioCueRegion.setAttribute('aria-live', 'polite');
+  audioCueRegion.setAttribute('aria-atomic', 'true');
+  audioCueRegion.setAttribute('aria-label', 'Critical sound indicators');
   canvasWrap.append(
     canvas,
     ...(inkfallRev4 ? [mapStatus, reticle] : []),
@@ -884,6 +896,7 @@ async function mountSession(
     feedbackVfx,
     feedbackHud,
     weaponRail,
+    ...(inkfallRev4 ? [captionRegion, audioCueRegion] : []),
   );
   const combatStrip = element('div', 'online-session__combat-strip');
   const blueCombat = element('div', 'online-session__combat-player');
@@ -1024,7 +1037,7 @@ async function mountSession(
     'p',
     'online-session__limitation',
     inkfallRev4
-      ? 'ACCEPTANCE CANDIDATE: this room uses the frozen Inkfall @3 collision, spawns, zones, combat ports, telemetry, and resume persistence. Rev4 render meshes are explicitly non-authoritative; human visual approval and deployment remain separate.'
+      ? 'INTEGRATION CANDIDATE: this room uses frozen Inkfall @3 collision plus the additive server portal capability, spawns, zones, combat ports, telemetry, and resume persistence. Rev5 render meshes are explicitly non-authoritative; human visual approval and deployment remain separate.'
       : inkfallRuntime
         ? 'INTEGRATION LIMIT: this room uses the real hash-locked P5.10 Inkfall @2 hitscan and grenade collision ports. Final-map traversal, final visuals, and human acceptance are still open; this preview does not claim G4 or G5.'
       : 'PRE-RELEASE LIMIT: movement uses the real flat-run Rapier fixture; grenade flight is authoritative, but this room still uses the deterministic empty combat-collision evidence port rather than accepted real-map grenade collision.',
@@ -1068,13 +1081,49 @@ async function mountSession(
   );
   appendScopeNotice(content, inkfallProfile);
 
+  const portalAudio = inkfallRev4 ? new AudioManager() : null;
+  const portalCaptionCues = inkfallRev4
+    ? new CaptionCueOverlay({
+        document,
+        captionRegion,
+        audioCueRegion,
+      })
+    : null;
+  if (portalAudio !== null && portalCaptionCues !== null) {
+    const settings = GameSettings.snapshot();
+    portalAudio.setVolume(settings.volume);
+    portalCaptionCues.setPreferences(settings);
+  }
+
   let threeRuntime: OnlineAuthorityThreeRuntime | null = null;
   if (inkfallRev4) {
     body.dataset.online3dStatus = 'loading';
     try {
-      threeRuntime = await createOnlineAuthorityThreeRuntime(canvas);
+      threeRuntime = await createOnlineAuthorityThreeRuntime(canvas, {
+        onWorldPortalAudio: ({ local }) => {
+          if (!local || portalAudio === null || portalCaptionCues === null) {
+            return;
+          }
+          try {
+            portalAudio.resume();
+            portalAudio.playTeleportDeparture();
+            portalAudio.playTeleportArrival(0.105);
+            portalCaptionCues.showAudioCue({
+              id: 'world-portal',
+              text: 'PORTAL TRANSIT',
+              direction: 'none',
+              priority: 'status',
+              durationMs: 900,
+              minIntervalMs: 300,
+            });
+          } catch {
+            // Presentation-only audio/accessibility failure does not affect
+            // the server-authoritative traversal or Three renderer.
+          }
+        },
+      });
       const sceneFacts = threeRuntime.diagnostics();
-      mapStatus.textContent = `3D READY · REV4 ${sceneFacts.renderMeshCount} RENDER MESHES · REV3 ${sceneFacts.authorityColliderCount} AUTHORITY COLLIDERS`;
+      mapStatus.textContent = `3D READY · REV5 ${sceneFacts.renderMeshCount} RENDER MESHES · REV3 ${sceneFacts.authorityColliderCount} AUTHORITY COLLIDERS`;
       mapStatus.dataset.state = 'ready';
       body.dataset.online3dStatus = 'ready';
       body.dataset.online3dRenderer = sceneFacts.renderer;
@@ -1083,7 +1132,7 @@ async function mountSession(
       const detail = cause instanceof Error ? cause.message : String(cause);
       mapStatus.textContent = `MAP LOAD FAILED CLOSED · ${detail}`;
       mapStatus.dataset.state = 'failed';
-      error.textContent = `ONLINE_REV4_3D_INITIALIZATION_FAILED: ${detail}`;
+      error.textContent = `ONLINE_REV5_3D_INITIALIZATION_FAILED: ${detail}`;
       body.dataset.onlinePreviewStatus = 'map-load-failed';
       body.dataset.online3dStatus = 'failed';
       for (const button of [
@@ -2115,7 +2164,7 @@ async function mountSession(
         const detail = renderFailure instanceof Error
           ? renderFailure.message
           : String(renderFailure);
-        presentationFailureDetail = `ONLINE_REV4_3D_RENDER_FAILED_CLOSED: ${detail}`;
+        presentationFailureDetail = `ONLINE_REV5_3D_RENDER_FAILED_CLOSED: ${detail}`;
         mapStatus.textContent = `3D RENDER FAILED CLOSED · ${detail}`;
         mapStatus.dataset.state = 'failed';
         body.dataset.online3dStatus = 'failed';
@@ -2331,6 +2380,7 @@ async function mountSession(
     audioContext = null;
     feedbackOutput = null;
     feedbackNoise = null;
+    portalCaptionCues?.dispose();
     client.dispose();
     threeRuntime?.dispose();
     world.dispose();
@@ -2413,7 +2463,7 @@ export async function mountOnlineAuthorityRoute(
       renderNotice(
         content,
         requestedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-          ? 'Verifying Inkfall Foundry Rev4 / Rev3 authority room…'
+          ? 'Verifying Inkfall Foundry Rev5 / Rev3 authority room…'
           : 'Verifying Inkfall Foundry @2 room…',
         'The profile and complete locked map binding must match before the socket can open.',
         'CANCEL',

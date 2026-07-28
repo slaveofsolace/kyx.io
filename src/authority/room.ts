@@ -37,6 +37,10 @@ import {
   type InputQueueRejectionReason,
 } from './inputQueue';
 import {
+  AUTHORITY_WORLD_PORTAL_SCHEMA_VERSION,
+  type AuthorityWorldPortalPort,
+} from './worldPortal';
+import {
   advanceAutoRifle,
   advanceAuthorityRocketProjectile,
   advanceAuthorityWeaponLoadout,
@@ -180,6 +184,7 @@ export interface AuthorityRoomOptions {
   readonly identity: AuthorityRoomIdentity;
   readonly profile: MovementProfileV1;
   readonly queries: MovementQueryPort;
+  readonly worldPortal?: AuthorityWorldPortalPort;
   readonly maximumPlayers?: number;
   readonly commandsPerPlayerPerTick?: number;
   readonly warmupTicks?: number;
@@ -1352,6 +1357,7 @@ export class AuthoritativeRoom {
   readonly identity: AuthorityRoomIdentity;
   readonly profile: MovementProfileV1;
   readonly queries: MovementQueryPort;
+  readonly worldPortalCapabilityId: string | null;
   readonly maximumPlayers: number;
   readonly commandsPerPlayerPerTick: number;
   readonly warmupTicks: number;
@@ -1386,6 +1392,7 @@ export class AuthoritativeRoom {
   private nextCombatEventSequence = 0;
   private readonly worldOcclusionPort: AuthorityWorldOcclusionPort | null;
   private readonly impulseGrenadeWorldPort: AuthorityImpulseGrenadeWorldPort | null;
+  private readonly worldPortalPort: AuthorityWorldPortalPort | null;
   private tdmMatchState: AuthorityTdmMatchStateV1 | null = null;
   private activeTickMatchEvents: AuthorityTdmMatchEvent[] | null = null;
   private pendingMatchEvents: AuthorityTdmMatchEvent[] = [];
@@ -1419,6 +1426,29 @@ export class AuthoritativeRoom {
       castCapsule: querySource.castCapsule.bind(querySource),
       volumesAtCapsule: querySource.volumesAtCapsule.bind(querySource),
     });
+    if (options.worldPortal === undefined) {
+      this.worldPortalCapabilityId = null;
+      this.worldPortalPort = null;
+    } else {
+      const portal = options.worldPortal;
+      if (
+        portal === null
+        || typeof portal !== 'object'
+        || portal.schemaVersion !== AUTHORITY_WORLD_PORTAL_SCHEMA_VERSION
+        || typeof portal.advance !== 'function'
+      ) {
+        throw new TypeError('room world portal port is invalid');
+      }
+      this.worldPortalCapabilityId = stableId(
+        portal.capabilityId,
+        'world portal capability id',
+      );
+      this.worldPortalPort = Object.freeze({
+        schemaVersion: AUTHORITY_WORLD_PORTAL_SCHEMA_VERSION,
+        capabilityId: this.worldPortalCapabilityId,
+        advance: portal.advance.bind(portal),
+      });
+    }
     this.maximumPlayers = boundedInteger(options.maximumPlayers ?? 8, 1, 64, 'maximum players');
     this.commandsPerPlayerPerTick = boundedInteger(
       options.commandsPerPlayerPerTick ?? DEFAULT_MAX_COMMANDS_PER_AUTHORITY_TICK,
@@ -2136,17 +2166,44 @@ export class AuthoritativeRoom {
     for (const player of sortedPlayers) {
       if (!simulateMovement) continue;
       let playerMovementEvents: readonly MovementSemanticEvent[] = [];
+      let abilityTeleportMovementEvents: readonly MovementSemanticEvent[] = [];
       if (player.connected && player.life?.phase !== 'dead') {
+        const previousState = player.state;
         const result = stepMovementSimulation(
-          player.state,
+          previousState,
           player.queue.drain(this.commandsPerPlayerPerTick),
           this.profile,
           this.queries,
         );
-        player.state = result.state;
-        playerMovementEvents = result.events;
-        movementEvents.push(...result.events);
+        abilityTeleportMovementEvents = result.events;
+        let nextState = result.state;
+        let nextEvents: readonly MovementSemanticEvent[] = result.events;
         queryMetrics = addQueryMetrics(queryMetrics, result.metrics);
+        if (this.worldPortalPort !== null) {
+          const portal = this.worldPortalPort.advance({
+            schemaVersion: 1,
+            authorityTick: nextTick,
+            previousState,
+            nextState,
+            profile: this.profile,
+          });
+          if (portal.schemaVersion !== 1) {
+            throw new Error('AUTHORITY_WORLD_PORTAL_RESULT_SCHEMA_MISMATCH');
+          }
+          assertMovementSimulationState(portal.state, this.profile);
+          if (
+            portal.state.tick !== nextTick
+            || portal.state.player.id !== player.state.player.id
+          ) {
+            throw new Error('AUTHORITY_WORLD_PORTAL_RESULT_IDENTITY_MISMATCH');
+          }
+          nextState = portal.state;
+          nextEvents = Object.freeze([...result.events, ...portal.events]);
+          queryMetrics = addQueryMetrics(queryMetrics, portal.metrics);
+        }
+        player.state = nextState;
+        playerMovementEvents = nextEvents;
+        movementEvents.push(...nextEvents);
       } else if (player.connected && player.life?.phase === 'dead') {
         player.queue.drain(this.commandsPerPlayerPerTick);
         player.state = {
@@ -2315,7 +2372,9 @@ export class AuthoritativeRoom {
       }
       if (this.abilityResourceCapabilityId !== null) {
         const resources = this.deriveAbilityResources(player, nextTick);
-        const teleportOutcomes = playerMovementEvents.filter(
+        // Linked world portals share movement-safe teleport semantics, but do
+        // not spend or confirm the player's activatable Blink resource.
+        const teleportOutcomes = abilityTeleportMovementEvents.filter(
           (event): event is Extract<
             MovementSemanticEvent,
             { readonly kind: 'teleport_succeeded' | 'teleport_rejected' }

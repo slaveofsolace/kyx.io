@@ -76,6 +76,34 @@ describe('versioned reliable combat presentation payload', () => {
     }))).toMatchObject({ ok: true });
   });
 
+  it('accepts an exact reliable world portal traversal projection', () => {
+    expect(validateServerMessage(batch({
+      id: 'event.8',
+      serverTick: 45,
+      kind: 'worldPortalTraversed',
+      subjectId: 'world_portal.player_A.45.red_fold_lower',
+      actorId: 'player_A',
+      targetId: null,
+      amountHealthPoints: null,
+      presentation: {
+        schemaVersion: 1,
+        kind: 'world_portal_traversed',
+        eventId: 'world_portal.player_A.45.red_fold_lower',
+        authorityTick: 45,
+        playerId: 'player_A',
+        capabilityId: 'inkfall_rev5_linked_world_portal_v1',
+        endpointId: 'red_fold_lower',
+        partnerEndpointId: 'red_fold_upper',
+        from: { x: -4_000, y: -3_000, z: -10_000 },
+        to: { x: 1_539, y: 1_431, z: -4_461 },
+        departureAudioHook: 'inkfall.portal.red_fold_lower.departure',
+        arrivalAudioHook: 'inkfall.portal.red_fold_lower.arrival',
+        departureVfxHook: 'inkfall.portal.red_fold_lower.energy_departure',
+        arrivalVfxHook: 'inkfall.portal.red_fold_lower.energy_arrival',
+      },
+    }))).toMatchObject({ ok: true });
+  });
+
   it('accepts exact Impulse Grenade lifecycle semantics with truthful projections', () => {
     const grenadeEvents = [
       {

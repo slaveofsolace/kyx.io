@@ -43,6 +43,9 @@ export const P511_INKFALL_REV2_COMBAT_PROFILE =
   'p511-inkfall-foundry-revision-2-combat-v1' as const;
 export const G5_INKFALL_REV4_COMBAT_PROFILE =
   'g5-inkfall-foundry-rev4-revision-3-authority-v1' as const;
+// Wire/storage identity remains unchanged for existing Durable Object rooms.
+export const G5_INKFALL_REV5_COMBAT_PROFILE =
+  G5_INKFALL_REV4_COMBAT_PROFILE;
 export const P58D_COMBAT_PROFILE_HEADER = 'x-kyx-evidence-profile' as const;
 export const INTERNAL_ROOM_PROFILE_HEADER = 'x-kyx-room-profile' as const;
 export const DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID =
@@ -131,7 +134,7 @@ export const INKFALL_REVISION_2_WORKER_MAP_BINDING = Object.freeze({
 export const INKFALL_REVISION_3_PRESENTATION_COORDINATES = Object.freeze({
   mapReference: 'inkfall_foundry@3',
   presentationReference:
-    'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+    'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
   mapId: INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapId,
   mapRevision: INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapRevision,
   packageDigest: INKFALL_AUTHORITY_MAP_IDENTITY_V3.packageDigest,
@@ -261,9 +264,9 @@ export const INKFALL_REVISION_3_WORKER_MAP_BINDING = Object.freeze({
   render: Object.freeze({
     role: 'render_only',
     path:
-      'art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
-    sha256: '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00',
-    bytes: 12_954_608,
+      'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
+    sha256: '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676',
+    bytes: 2_803_128,
     renderMeshesMayBeAuthority: false,
   }),
   collision: Object.freeze({
@@ -282,6 +285,12 @@ export const INKFALL_REVISION_3_WORKER_MAP_BINDING = Object.freeze({
     halfExtentsMm: Object.freeze({ ...trigger.halfExtentsMm }),
     destinationFeetMm: Object.freeze({ ...trigger.destinationFeetMm }),
   }))),
+  portal: Object.freeze({
+    capabilityId: 'inkfall_rev5_linked_world_portal_v1',
+    authorityRole: 'additive_server_authority',
+    renderRole: 'rev5_render_only_no_hit',
+    endpointCount: 2,
+  }),
   telemetry: Object.freeze({
     schemaVersion: 1,
     authoritySource: 'durable_object_room_metrics_v1',
@@ -958,6 +967,39 @@ export function reliableCombatEvents(
       }));
     }
   };
+  for (const event of tick.movementEvents ?? []) {
+    if (event.kind !== 'teleport_succeeded' || event.worldPortal === undefined) {
+      continue;
+    }
+    const worldPortal = event.worldPortal;
+    const wireEventId = combatWireId(
+      `world_portal.${event.tick}.${event.entityId}.${worldPortal.endpointId}`,
+    );
+    events.push(Object.freeze({
+      serverTick: event.tick,
+      kind: 'worldPortalTraversed',
+      subjectId: wireEventId,
+      actorId: event.entityId,
+      targetId: null,
+      amountHealthPoints: null,
+      presentation: Object.freeze({
+        schemaVersion: 1 as const,
+        kind: 'world_portal_traversed' as const,
+        eventId: wireEventId,
+        authorityTick: event.tick,
+        playerId: event.entityId,
+        capabilityId: worldPortal.capabilityId,
+        endpointId: worldPortal.endpointId,
+        partnerEndpointId: worldPortal.partnerEndpointId,
+        from: Object.freeze({ ...event.from }),
+        to: Object.freeze({ ...event.to }),
+        departureAudioHook: worldPortal.departureAudioHook,
+        arrivalAudioHook: worldPortal.arrivalAudioHook,
+        departureVfxHook: worldPortal.departureVfxHook,
+        arrivalVfxHook: worldPortal.arrivalVfxHook,
+      }),
+    }));
+  }
   for (const event of tick.combatEvents ?? []) {
     if (event.kind !== 'auto_rifle_shot_accepted') continue;
     events.push(Object.freeze({

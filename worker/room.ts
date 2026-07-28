@@ -8,6 +8,7 @@ import {
   G4_COMBAT_RULESET_REVISION,
   authorityLoadoutFromRuleset,
   authorityLoadoutRequestFingerprint,
+  createInkfallRev5PortalAuthorityPort,
   evaluateAuthorityLoadoutRequest,
   type AuthorityActiveMatchCheckpointV1,
   type AuthorityLoadoutSelectionV1,
@@ -1645,6 +1646,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           },
           profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
           queries: world,
+          ...(inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+            ? { worldPortal: createInkfallRev5PortalAuthorityPort(world) }
+            : {}),
           spawnResolver: (playerId, ordinal) => {
             const restoredOrdinal = this.restoredSpawnOrdinals.get(playerId);
             const resolvedOrdinal = restoredOrdinal ?? ordinal;

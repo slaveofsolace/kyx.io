@@ -1798,6 +1798,7 @@ function validateCombatPresentationReliableEvent(
       'throwable_ability_event',
       'teleport_resource_confirmed',
       'teleport_resource_rejected',
+      'world_portal_traversed',
     ],
   });
   if (kind === 'damage_applied') {
@@ -2233,6 +2234,29 @@ function validateCombatPresentationReliableEvent(
     idAt(required(record, 'combatStatePolicy', path), `${path}.combatStatePolicy`);
     return record as unknown as CombatPresentationReliableEventV1;
   }
+  if (kind === 'world_portal_traversed') {
+    exactKeys(record, path, [
+      'schemaVersion', 'kind', 'eventId', 'authorityTick', 'playerId',
+      'capabilityId', 'endpointId', 'partnerEndpointId', 'from', 'to',
+      'departureAudioHook', 'arrivalAudioHook', 'departureVfxHook',
+      'arrivalVfxHook',
+    ]);
+    numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
+      integer: true, min: 1, max: 1,
+    });
+    idAt(required(record, 'eventId', path), `${path}.eventId`);
+    tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
+    for (const field of [
+      'playerId', 'capabilityId', 'endpointId', 'partnerEndpointId',
+      'departureAudioHook', 'arrivalAudioHook', 'departureVfxHook',
+      'arrivalVfxHook',
+    ] as const) {
+      idAt(required(record, field, path), `${path}.${field}`);
+    }
+    validatePresentationVector(required(record, 'from', path), `${path}.from`);
+    validatePresentationVector(required(record, 'to', path), `${path}.to`);
+    return record as unknown as CombatPresentationReliableEventV1;
+  }
   exactKeys(record, path, [
     'schemaVersion', 'kind', 'eventId', 'authorityTick', 'playerId', 'abilityId',
     'reason', 'cooldownTicksRemaining', 'cooldownConsumedByFailure',
@@ -2273,7 +2297,7 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
   reliableEventIdAt(required(record, 'id', path), `${path}.id`);
   tickAt(required(record, 'serverTick', path), `${path}.serverTick`);
   const kind = stringAt(required(record, 'kind', path), `${path}.kind`, {
-    allowed: ['shotAccepted', 'weaponAttackAccepted', 'meleeContact', 'projectileSpawned', 'projectileCollided', 'projectileDetonated', 'impulseApplied', 'damageApplied', 'playerKilled', 'abilityActivated', 'abilityRejected', 'cooldownStarted', 'deployableSpawned', 'loadoutAccepted', 'playerJoined', 'playerLeft'],
+    allowed: ['shotAccepted', 'weaponAttackAccepted', 'meleeContact', 'projectileSpawned', 'projectileCollided', 'projectileDetonated', 'impulseApplied', 'damageApplied', 'playerKilled', 'abilityActivated', 'abilityRejected', 'worldPortalTraversed', 'cooldownStarted', 'deployableSpawned', 'loadoutAccepted', 'playerJoined', 'playerLeft'],
   });
   idAt(required(record, 'subjectId', path), `${path}.subjectId`);
   nullableIdAt(required(record, 'actorId', path), `${path}.actorId`);
@@ -2370,6 +2394,16 @@ function validateReliableEvent(value: unknown, path: string): ReliableEvent {
         'PROTOCOL_INVALID_FIELD_VALUE',
         `${path}.presentation.kind`,
         'Rejected teleport presentation requires an abilityRejected reliable event.',
+      );
+    }
+    if (
+      presentation.kind === 'world_portal_traversed'
+      && kind !== 'worldPortalTraversed'
+    ) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.presentation.kind`,
+        'World portal presentation requires a worldPortalTraversed reliable event.',
       );
     }
   }

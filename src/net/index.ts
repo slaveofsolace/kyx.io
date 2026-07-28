@@ -29,6 +29,7 @@ export {
   type CombatPresentationReliableEventV1,
   type CombatPresentationTeleportConfirmedEventV1,
   type CombatPresentationTeleportRejectedEventV1,
+  type CombatPresentationWorldPortalTraversedEventV1,
   type CombatPresentationWeaponAttackEventV1,
   type CombatPresentationWeaponBallisticsSampleV1,
   type CombatPresentationWeaponMeleeContactEventV1,

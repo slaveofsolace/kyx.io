@@ -8,6 +8,17 @@ interface MovementEventBase {
   readonly entityId: EntityId;
 }
 
+export interface WorldPortalTraversalPresentationV1 {
+  readonly schemaVersion: 1;
+  readonly capabilityId: string;
+  readonly endpointId: string;
+  readonly partnerEndpointId: string;
+  readonly departureAudioHook: string;
+  readonly arrivalAudioHook: string;
+  readonly departureVfxHook: string;
+  readonly arrivalVfxHook: string;
+}
+
 export type MovementSemanticEvent =
   | (MovementEventBase & {
       readonly kind: 'movement_intent_applied';
@@ -48,6 +59,7 @@ export type MovementSemanticEvent =
       readonly outcome: 'full' | 'partial';
       readonly from: Vector3Millimeters;
       readonly to: Vector3Millimeters;
+      readonly worldPortal?: WorldPortalTraversalPresentationV1;
     })
   | (MovementEventBase & {
       readonly kind: 'teleport_rejected';
