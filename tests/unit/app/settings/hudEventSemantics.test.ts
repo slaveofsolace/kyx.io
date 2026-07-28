@@ -50,11 +50,39 @@ describe('HUD event and ability semantics', () => {
     vi.useFakeTimers();
     const { hud, elements } = createHud();
 
-    hud.updateGrenades(0, 2);
+    hud.updateAbilities({
+      slots: [
+        { slot: 0, abilityId: 'vertical_teleport_v1' },
+        {
+          slot: 1,
+          abilityId: 'frag_grenade_v1',
+          count: 0,
+          cooldownSeconds: 2,
+          metadata: { shortName: 'Frag', displayName: 'Frag grenade', charges: 2 },
+        },
+        {
+          slot: 2,
+          abilityId: 'smoke_grenade_v1',
+          count: 2,
+          cooldownSeconds: 0,
+          metadata: { shortName: 'Smoke', displayName: 'Smoke grenade', charges: 2 },
+        },
+        {
+          slot: 3,
+          abilityId: 'sticky_grenade_v1',
+          count: 1,
+          cooldownSeconds: 1.25,
+          metadata: { shortName: 'Sticky', displayName: 'Sticky grenade', charges: 2 },
+        },
+      ],
+    });
     hud.updateTeleport(0.42);
-    expect(elements.get('ability-frag')?.dataset.state).toBe('empty');
-    expect(elements.get('ability-frag-state')?.textContent).toBe('Empty');
-    expect(elements.get('ability-smoke-state')?.textContent).toBe('Ready');
+    expect(elements.get('ability-slot-1')?.dataset.state).toBe('empty');
+    expect(elements.get('ability-slot-1-state')?.textContent).toBe('Recharging · +1 2.0s');
+    expect(elements.get('ability-slot-2')?.dataset.state).toBe('ready');
+    expect(elements.get('ability-slot-2-state')?.textContent).toBe('Ready');
+    expect(elements.get('ability-slot-3')?.dataset.state).toBe('ready');
+    expect(elements.get('ability-slot-3-state')?.textContent).toBe('Ready · +1 1.3s');
     expect(elements.get('ability-q')?.dataset.state).toBe('charging');
     expect(elements.get('ability-q-state')?.textContent).toBe('Charging 42%');
 

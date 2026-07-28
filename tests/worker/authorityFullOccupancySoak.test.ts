@@ -222,7 +222,16 @@ function waitForMessageAfter(
     };
     timeout = setTimeout(() => {
       cleanup();
-      reject(new Error(`Timed out waiting for ${label}`));
+      const candidates = probe.messages.slice(startIndex);
+      const received = candidates.slice(-12).map((message) => (
+        message.type === 'error'
+          ? `${message.type}:${message.code}:${message.detail ?? ''}`
+          : message.type
+      ));
+      reject(new Error(
+        `Timed out waiting for ${label}; received ${candidates.length} messages`
+        + ` (last ${received.length}: ${received.join(', ') || 'nothing'})`,
+      ));
     }, timeoutMilliseconds);
     probe.waiters.add(check);
     check();

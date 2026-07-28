@@ -525,7 +525,7 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
       throw new Error(`Did not reach lethal combat consequence: ${JSON.stringify(latestSnapshot(first))}`);
     }
     const shooterAtLethal = lethal.combat?.players.find(({ playerId }) => playerId === firstJoin.playerId);
-    expect(shooterAtLethal?.acceptedShotCount).toBeGreaterThanOrEqual(10);
+    expect(shooterAtLethal?.acceptedShotCount).toBeGreaterThanOrEqual(6);
     expect(shooterAtLethal?.magazineRounds).toBe(50 - (shooterAtLethal?.acceptedShotCount ?? 0));
 
     const releaseSequence = heldSequence;
@@ -564,7 +564,7 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
           .find(({ playerId }) => playerId === secondJoin.playerId);
         if (
           shooter?.riflePhase === 'reloading'
-          && shooter.grenadePhase === 'cooldown'
+          && shooter.grenadePhase === 'ready'
           && current.combat?.projectiles
             .some(({ ownerPlayerId }) => ownerPlayerId === firstJoin.playerId) === true
           && target?.lifePhase === 'dead'
@@ -648,7 +648,11 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
     expect(resumedShooter).toMatchObject({
       connected: true,
       riflePhase: 'reloading',
-      grenadePhase: 'cooldown',
+      grenadePhase: 'ready',
+      abilityLoadout: {
+        currentCharges: [1, 2, 2],
+        maximumCharges: [2, 2, 2],
+      },
     });
     expect(resumedSnapshot.combat).toMatchObject({
       projectiles: [expect.objectContaining({ ownerPlayerId: firstJoin.playerId, phase: 'active' })],
@@ -659,7 +663,7 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
 
     const uniqueEvents = uniqueReliableEvents(first, resumed);
     const eventCounts = Object.groupBy(uniqueEvents, ({ kind }) => kind);
-    expect(eventCounts.damageApplied).toHaveLength(10);
+    expect(eventCounts.damageApplied).toHaveLength(6);
     expect(eventCounts.playerKilled).toHaveLength(1);
     expect(eventCounts.projectileSpawned).toHaveLength(1);
     expect(eventCounts.cooldownStarted).toHaveLength(1);
@@ -693,10 +697,10 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
     ]);
     expect(Object.fromEntries(results.map(({ profile, hash }) => [profile, hash])))
       .toEqual({
-        baseline: 'c614736551a1a503',
-        loss: 'c614736551a1a503',
-        reorder: 'c614736551a1a503',
-        duplicate: 'c614736551a1a503',
+        baseline: '0f9d08419d426e04',
+        loss: '0f9d08419d426e04',
+        reorder: '0f9d08419d426e04',
+        duplicate: '0f9d08419d426e04',
       });
     expect(results[0]!.consequence).toEqual({
       acceptedShotCount: 10,
@@ -705,7 +709,7 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
       targetDeathOrdinal: 1,
       blueScore: 1,
       feedSequence: 1,
-      eventCounts: { shotAccepted: 10, damageApplied: 10, playerKilled: 1 },
+      eventCounts: { shotAccepted: 10, damageApplied: 6, playerKilled: 1 },
     });
   }, 30_000);
 });

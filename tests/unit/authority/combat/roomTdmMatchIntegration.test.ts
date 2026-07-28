@@ -462,7 +462,7 @@ describe('P5.6 exact authoritative room TDM integration', () => {
       damagePoints: 100,
       causeId: 'weapon.forged',
       claimedTeamScore: 40,
-    } as never)).toThrow(/unsupported or missing fields/u);
+    } as never)).toThrow(/contains unsupported field: claimedTeamScore/u);
     expect(() => forged.enqueueInputBatch('connection_A', {
       ...emptyBatch(0),
       commands: [{ ...emptyBatch(0).commands[0], claimedKill: 'player_B', claimedScore: 40 }],

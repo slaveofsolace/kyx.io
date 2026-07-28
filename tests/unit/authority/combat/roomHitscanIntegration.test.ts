@@ -326,6 +326,14 @@ describe('P5.3b opt-in authoritative room hitscan integration', () => {
     const authority = room({
       worldOcclusion: (ray) => {
         capturedRay = ray;
+        if (ray.purpose === 'barrel_clearance') {
+          return {
+            schemaVersion: 1,
+            hit: false,
+            distanceMillimeters: null,
+            colliderId: null,
+          };
+        }
         return {
           schemaVersion: 1,
           hit: true,

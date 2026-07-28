@@ -337,14 +337,14 @@ describe('P5.1/P5.2 authoritative room combat integration', () => {
       damagePoints: 100,
       causeId: 'weapon.auto_rifle',
       sourceTeamId: 'team_red',
-    } as never)).toThrow(/unsupported or missing fields/u);
+    } as never)).toThrow(/contains unsupported field: sourceTeamId/u);
     expect(() => authority.applyCombatDamage({
       targetPlayerId: 'player_B',
       sourcePlayerId: 'player_A',
       damagePoints: 100,
       causeId: 'weapon.auto_rifle',
       authorityTick: 999_999,
-    } as never)).toThrow(/unsupported or missing fields/u);
+    } as never)).toThrow(/contains unsupported field: authorityTick/u);
     expect(authority.applyCombatDamage({
       targetPlayerId: 'player_B',
       sourcePlayerId: 'player_A',

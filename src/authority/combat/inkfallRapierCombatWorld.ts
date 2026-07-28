@@ -314,14 +314,24 @@ function createInkfallRapierCombatWorldPorts(
 
   const worldOcclusion: AuthorityWorldOcclusionPort = (rawRay) => {
     const ray = validateHitscanRay(rawRay);
+    // Hitscan barrel-clearance rays are derived from the Euclidean distance
+    // between two integer millimeter points, so their length can be
+    // fractional. Rapier's deterministic adapter accepts integer millimeters;
+    // cast conservatively through the final partial millimeter, then discard a
+    // quantized hit that lies beyond the caller's original range.
+    const castMaximumDistanceMillimeters = Math.max(
+      1,
+      Math.ceil(ray.maximumDistanceMillimeters),
+    );
     const result = world.castSolidRay({
       originMillimeters: ray.originMillimeters,
       directionUnit: ray.directionUnit,
-      maximumDistanceMillimeters: ray.maximumDistanceMillimeters,
+      maximumDistanceMillimeters: castMaximumDistanceMillimeters,
       solidLayers: WORLD_SOLID_LAYERS,
       solid: true,
     });
     return result.hit === null
+      || result.hit.distanceMillimeters > ray.maximumDistanceMillimeters
       ? Object.freeze({
           schemaVersion: 1 as const,
           hit: false as const,

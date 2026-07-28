@@ -369,6 +369,54 @@ describe('authority evidence route adapters', () => {
 });
 
 describe('authority evidence transport state', () => {
+  it('keeps a joined lobby socket alive without manufacturing movement input', () => {
+    const transport = new FakeTransport();
+    const scheduler = new FakeScheduler();
+    const initialState = stateAtTick(createTestMovementState(), 10);
+    const client = new AuthorityEvidenceClient({
+      config: {
+        authorityUrl: 'http://127.0.0.1:8787',
+        mode: 'join',
+        roomCode: 'KYX-234567',
+        displayName: 'Lobby Heartbeat Peer',
+        impairmentProfile: 'nominal',
+      },
+      roomCode: 'KYX-234567',
+      expectedIdentity: EXPECTED_IDENTITY,
+      profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      queries: new FakeMovementQueryPort(),
+      transport,
+      scheduler,
+      createRequestId: () => 'request.heartbeat',
+    });
+
+    client.start();
+    const connection = transport.connections[0]!;
+    connection.open();
+    connection.receive(welcome('connection.heartbeat'));
+    const join = sentMessage(connection, 1);
+    connection.receive(joinAccepted(
+      join.type === 'joinRoom' ? join.requestId : '',
+      'joined',
+      'H',
+    ));
+    connection.receive({
+      ...fullSnapshot(initialState),
+      phase: 'lobby',
+    } as ServerMessage);
+
+    for (let tick = 0; tick < 200; tick += 1) scheduler.runTick();
+
+    const sent = connection.sent.map((_payload, index) => sentMessage(connection, index));
+    expect(sent.filter((message) => message.type === 'inputBatch')).toEqual([]);
+    expect(sent.filter((message) => message.type === 'ping')).toEqual([{
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'ping',
+      nonce: 0,
+      clientTick: 10,
+    }]);
+  });
+
   it('keeps button input opt-in and exposes authoritative combat snapshots and events', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();

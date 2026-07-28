@@ -182,7 +182,7 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
     })).toThrow('AUTHORITY_INPUT_BATCH_INVALID');
   });
 
-  it('derives the projectile from authority pose and starts cooldown atomically', () => {
+  it('derives projectiles from authority pose and spends two charges atomically', () => {
     const sweeps: ImpulseGrenadeSweepSphereRequestV1[] = [];
     const authority = room({
       world: grenadeWorld({
@@ -218,7 +218,13 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
     });
     const snapshot = authority.fullSnapshot();
     expect(snapshot.players.find((player) => player.playerId === 'player_A')?.combat?.impulseGrenade)
-      .toMatchObject({ phase: 'cooldown', cooldownEndsAtTick: 248, acceptedThrowCount: 1 });
+      .toMatchObject({
+        phase: 'ready',
+        cooldownEndsAtTick: 248,
+        currentCharges: 1,
+        maximumCharges: 2,
+        acceptedThrowCount: 1,
+      });
     expect(snapshot.impulseGrenadeProjectiles).toEqual([
       expect.objectContaining({
         ownerPlayerId: 'player_A',
@@ -230,10 +236,24 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
 
     authority.enqueueInputBatch('connection_A', throwBatch(1, authority.serverTick));
     const coolingTick = authority.advanceOneTick();
-    expect(coolingTick.impulseGrenadeEvents).toEqual([]);
+    expect(coolingTick.impulseGrenadeEvents).toEqual([
+      expect.objectContaining({
+        kind: 'impulse_grenade_throw_accepted',
+        authorityTick: 9,
+        playerId: 'player_A',
+        throwOrdinal: 2,
+        cooldownEndsAtTick: 248,
+      }),
+    ]);
     expect(authority.fullSnapshot().players
       .find((player) => player.playerId === 'player_A')?.combat?.impulseGrenade)
-      .toMatchObject({ cooldownEndsAtTick: 248, acceptedThrowCount: 1 });
+      .toMatchObject({
+        phase: 'cooldown',
+        cooldownEndsAtTick: 248,
+        currentCharges: 0,
+        maximumCharges: 2,
+        acceptedThrowCount: 2,
+      });
   });
 
   it('resolves simultaneous projectiles in stable ID order exactly once', () => {
@@ -364,6 +384,12 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
     advanceTo(authority, 190);
     expect(authority.fullSnapshot().players
       .find((player) => player.playerId === 'player_A')?.combat?.impulseGrenade)
-      .toMatchObject({ phase: 'cooldown', readyAtTick: 190, cooldownEndsAtTick: 262 });
+      .toMatchObject({
+        phase: 'ready',
+        readyAtTick: 190,
+        cooldownEndsAtTick: 262,
+        currentCharges: 1,
+        maximumCharges: 2,
+      });
   });
 });

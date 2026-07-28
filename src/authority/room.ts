@@ -149,7 +149,7 @@ import { assertStrictCombatDataTree } from './combat/strictCombatData';
 
 export const G4_COMBAT_RULESET_ID = 'revamped_classic' as const;
 export const G4_COMBAT_RULESET_REVISION = 3 as const;
-export const G4_COMBAT_RULESET_HASH = 'd5f0418d1d927370' as const;
+export const G4_COMBAT_RULESET_HASH = '69b19f19a19de288' as const;
 export const G4_COMBAT_ROOM_PROFILE_ID = 'revamped_classic_g4_v1' as const;
 export const G4_HITSCAN_ROOM_CAPABILITY_ID = 'authoritative_hitscan_v1' as const;
 export const G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID =
@@ -1730,14 +1730,12 @@ export class AuthoritativeRoom {
           roomSeed: this.identity.matchId,
           authorityTick: this.tick,
         }, G4_IMPULSE_GRENADE_RULES);
-    const abilityLoadout = this.impulseGrenadeCapabilityId === null
-      ? null
-      : createAuthorityAbilityLoadoutRuntimeState({
-          playerId,
-          roomSeed: this.identity.matchId,
-          authorityTick: this.tick,
-          loadout: DEFAULT_ABILITY_LOADOUT,
-        });
+    const abilityLoadout = createAuthorityAbilityLoadoutRuntimeState({
+      playerId,
+      roomSeed: this.identity.matchId,
+      authorityTick: this.tick,
+      loadout: DEFAULT_ABILITY_LOADOUT,
+    });
     if (this.tdmMatchState !== null) {
       this.tdmMatchState = registerAuthorityTdmPlayer(this.tdmMatchState, {
         schemaVersion: 1,
@@ -2165,7 +2163,6 @@ export class AuthoritativeRoom {
     ));
     for (const player of sortedPlayers) {
       if (!simulateMovement) continue;
-      let playerMovementEvents: readonly MovementSemanticEvent[] = [];
       let abilityTeleportMovementEvents: readonly MovementSemanticEvent[] = [];
       if (player.connected && player.life?.phase !== 'dead') {
         const previousState = player.state;
@@ -2202,7 +2199,6 @@ export class AuthoritativeRoom {
           queryMetrics = addQueryMetrics(queryMetrics, portal.metrics);
         }
         player.state = nextState;
-        playerMovementEvents = nextEvents;
         movementEvents.push(...nextEvents);
       } else if (player.connected && player.life?.phase === 'dead') {
         player.queue.drain(this.commandsPerPlayerPerTick);

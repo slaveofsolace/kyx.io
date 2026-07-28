@@ -66,8 +66,9 @@ describe('P5.8C authoritative loadout request boundary', () => {
       secondaryWeaponId: null,
       meleeWeaponId: 'vertical_melee_v1',
       damageAbilityIds: [
-        'vertical_grenade_v1',
-        'vertical_deployable_v1',
+        'vertical_impulse_grenade_v1',
+        'smoke_grenade_v1',
+        'frag_grenade_v1',
       ],
       utilityAbilityId: 'vertical_teleport_v1',
     });
@@ -75,7 +76,7 @@ describe('P5.8C authoritative loadout request boundary', () => {
     expect(Object.isFrozen(authoritativeLoadout.damageAbilityIds)).toBe(true);
   });
 
-  it('accepts only the exact lobby selection and returns stable field/state rejection reasons', () => {
+  it('accepts the exact lobby and warmup selection and returns stable field rejections', () => {
     const decisions = parityTrace();
     expect(decisions.map(({ accepted, reason }) => ({ accepted, reason }))).toEqual([
       { accepted: true, reason: null },
@@ -85,7 +86,7 @@ describe('P5.8C authoritative loadout request boundary', () => {
       { accepted: false, reason: 'damage_ability_one_not_allowed' },
       { accepted: false, reason: 'damage_ability_two_not_allowed' },
       { accepted: false, reason: 'utility_ability_not_allowed' },
-      { accepted: false, reason: 'loadout_locked' },
+      { accepted: true, reason: null },
     ]);
     expect(decisions[0]).toMatchObject({
       accepted: true,
@@ -96,7 +97,7 @@ describe('P5.8C authoritative loadout request boundary', () => {
   });
 
   it('pins the same canonical decision hash for Node and the Worker isolate', () => {
-    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('810083ecca297f5e');
+    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('8d0719d26ae027c2');
   });
 
   it('uses payload-only idempotency fingerprints and keeps schema abuse outside authority state', () => {

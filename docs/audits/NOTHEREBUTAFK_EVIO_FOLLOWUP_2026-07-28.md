@@ -33,6 +33,28 @@ The new mainline range contains eight commits and changes 16 files
 | `b67deb4` | Merge arena, armour-arm, and feedback work | No merge or code adoption. Existing KYX map, character, and feedback lanes stay authoritative. |
 | `8675cc8` | Merge animation, action, HUD, and viewmodel work | Audit marker only. It does not change the ownership decision. |
 
+## Daytime Rook branch review
+
+The refreshed remote also exposes `upstream/codex/daytime-rook-map` at
+`6f570c9db8271114c782fd657ffe6e52ffd4b591`
+(`feat: recreate Daytime Rook arena`). At review time it is one unique commit
+and eight commits behind `upstream/main`.
+
+The branch is useful as an early layout reference: it builds an asymmetric
+arena from large readable masses, a recessed stair route, an elevated bridge,
+and landmark lighting. Its circular objective gate is decorative and
+wall-backed; `_buildRookArena()` does not register a teleporter or grav lift.
+Generic inactive map builders elsewhere in the file do contain paired
+teleporter pads that place the player just beyond the paired endpoint and use
+re-entry protection.
+
+KYX.IO independently retained only those abstract design principles: paired
+endpoints, visible destination identity, safe offset placement, and cooldown
+protection. Inkfall Rev5 uses its own geometry, coordinates, collision package,
+server-authoritative edge-entry logic, reliable traversal event, VFX, audio,
+and caption implementation. No Daytime Rook code, assets, constants, or
+coordinates were copied.
+
 ## Concrete outcome
 
 This audit did not create a new dependency on the upstream repository. It

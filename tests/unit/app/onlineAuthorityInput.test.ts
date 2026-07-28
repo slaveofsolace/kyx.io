@@ -13,10 +13,12 @@ describe('online authority input mapping', () => {
       'Space',
       'ShiftLeft',
       'KeyC',
+      'Enter',
+      'KeyE',
       'KeyF',
       'KeyR',
-      'KeyG',
-      'KeyT',
+      'KeyZ',
+      'KeyQ',
     ]));
 
     expect(heldButtons).toBe(
@@ -26,6 +28,8 @@ describe('online authority input mapping', () => {
       | INTENT_BUTTON.primaryFire
       | INTENT_BUTTON.reload
       | INTENT_BUTTON.abilityOne
+      | INTENT_BUTTON.abilityTwo
+      | INTENT_BUTTON.abilityThree
       | INTENT_BUTTON.utility,
     );
   });
@@ -54,6 +58,12 @@ describe('online authority input mapping', () => {
       'KeyD',
       'KeyQ',
       'KeyE',
+      'KeyF',
+      'KeyZ',
+      'Enter',
+      'NumpadEnter',
+      'ArrowLeft',
+      'ArrowRight',
       'ArrowUp',
       'ArrowDown',
       'Space',
@@ -62,10 +72,7 @@ describe('online authority input mapping', () => {
       'KeyC',
       'ControlLeft',
       'ControlRight',
-      'KeyF',
       'KeyR',
-      'KeyG',
-      'KeyT',
       'Digit1',
       'Digit2',
       'Digit3',

@@ -866,7 +866,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           simulationIdentity: this.simulationIdentity(joined.snapshot),
         });
         const fullAttachment = accepted
-          ? this.sendFullSnapshot(webSocket, nextAttachment, joined.snapshot)
+          ? this.sendFullSnapshot(webSocket, nextAttachment)
           : null;
         if (!accepted || fullAttachment === null) {
           this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
@@ -972,7 +972,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           simulationIdentity: this.simulationIdentity(resumed.snapshot),
         });
         const fullAttachment = accepted
-          ? this.sendFullSnapshot(webSocket, nextAttachment, resumed.snapshot)
+          ? this.sendFullSnapshot(webSocket, nextAttachment)
           : null;
         if (!accepted || fullAttachment === null) {
           this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
@@ -2556,7 +2556,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       : snapshot.players.find(({ playerId }) => playerId === attachment.playerId) ?? null;
     if (player === null) return null;
     const entities = this.requireAuthority().protocolEntities();
-    const combat = combatSnapshotFromAuthority(snapshot);
+    const combat = combatSnapshotFromAuthority(snapshot, attachment.playerId);
     const snapshotBaselineId = this.snapshotBaselines.remember(snapshot.serverTick, entities);
     const eventBaselineId = this.retainedEventBaseline(attachment.lastAcknowledgedEventId);
     const eventBaselineReset = eventBaselineId !== attachment.lastAcknowledgedEventId;
@@ -2625,7 +2625,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       snapshot.serverTick,
     );
     if (delta === null) return null;
-    const combat = combatSnapshotFromAuthority(snapshot);
+    const combat = combatSnapshotFromAuthority(snapshot, attachment.playerId);
     const sent = safeSocketSend(webSocket, {
       protocolVersion: PROTOCOL_VERSION,
       type: 'deltaSnapshot',

@@ -7,7 +7,7 @@ authority layer.
 > [!IMPORTANT]
 > This is a playable development integration, not a promoted public release.
 > Offline Practice is the easiest path to load today. Online authority,
-> reconnect/resume, six weapon families, Inkfall Foundry Rev4, the Rev30
+> reconnect/resume, six weapon families, Inkfall Foundry Rev5, the Rev30
 > character direction, and the replacement arena HUD are integrated or in their
 > final integration lane. Human map/HUD/runtime-model acceptance, final
 > source-frozen regression, public licensing, and provenance cleanup still gate
@@ -30,15 +30,17 @@ and authored weapon sockets. The accepted asset render is shown above; live
 runtime animation, external weapon contact, and final in-game visual review are
 still explicit gates.
 
-### Inkfall Foundry Rev4 / Press Archive
+### Inkfall Foundry Rev5 / Geometry Portal
 
-![Inkfall Foundry west spawn pocket](./evidence/2026-07-28/g5-inkfall-visual-continuity-v1/screenshots/01-west-spawn-pocket-forward.png)
+![Inkfall Foundry Rev5 gameplay continuity](./assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-gameplay_continuity.png)
 
-The Rev4 technical candidate binds its render package to an authoritative
-profile with 339 collision shapes, 12 spawns, 9 zones, deterministic traversal,
-and 2/4/8-client runtime evidence. Human fun, sightline, readability,
-spawn-safety, and final visual approval remain open. Screenshots are bounded
-evidence, not automatic gate promotion.
+Rev5 removes the bridge/wall interpenetration and loose floating construction,
+loads a 2.8 MB modular render package, and adds a paired cyan/amber portal with
+server-owned traversal, safe destinations, cooldown protection, VFX, audio, and
+captions. It retains the frozen Revision 3 authority package with 339 collision
+shapes, 12 spawns, and 9 zones. Rev4's 2/4/8-client proof remains historical;
+fresh Rev5 multiplayer performance plus human fun, sightline, spawn-safety,
+readability, and visual approval remain open.
 
 ## Run locally
 
@@ -65,6 +67,7 @@ Useful validation commands:
 
 ```powershell
 npm run build
+npm run build:staging
 npm run typecheck
 npm run typecheck:worker
 npm run lint
@@ -91,13 +94,17 @@ npm run test
   movement, combat, scoring, reconnect/resume with token rotation, reliable
   event recovery, hibernation, and genuine 2/4/8-client occupancy.
 - Movement includes sprint, jump, crouch/slide, measured forward/back/strafe
-  presentation, impulse grenade, and teleport ability paths.
+  presentation, fixed Blink on Q, and three selectable E/F/Z ability slots.
+  Launch, frag, smoke, sticky, and flash grenades use two-charge authoritative
+  resources with gravity, bounce/stick behavior, reconnect persistence, and
+  presentation cues.
 - Rifle, sidearm, scattergun, sniper, rocket, and melee profiles have distinct
   project-authored presentation, muzzle or blade-tip nodes, VFX, reload/equip
   behavior, and synthesized audio.
-- Inkfall Foundry Rev4's exact authority binding and render continuity are
-  integrated. The earlier west-archive collision/depenetration defect is
-  repaired; human map acceptance remains open.
+- Inkfall Foundry Rev5's exact render binding and paired world portal are
+  integrated over the unchanged Revision 3 collision authority. The earlier
+  bridge/wall interpenetration and loose floating geometry are removed; human
+  map acceptance and fresh Rev5 2/4/8 runtime proof remain open.
 - Rev30 is the accepted third-person art direction. Rev17 remains the retained
   first-person viewmodel and explicit legacy fallback while Rev30 runtime
   selection, animation, weapon contact, and live capture are finalized.

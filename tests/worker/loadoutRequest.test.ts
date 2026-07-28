@@ -416,7 +416,7 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
     });
   });
 
-  it('rejects an otherwise exact request after the room leaves lobby without mutating selection', async () => {
+  it('accepts an otherwise exact request during warmup and persists the selection', async () => {
     const room = await createRoom();
     const first = await connectSocket(room.socketPath);
     const second = await connectSocket(room.socketPath);
@@ -436,13 +436,9 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
     sendClient(first, locked);
     expect(await waitForType(
       first,
-      'error',
-      ({ code, detail, requestId }) => (
-        code === 'LOADOUT_REJECTED'
-        && detail === 'loadout_locked'
-        && requestId === locked.requestId
-      ),
-    )).toMatchObject({ code: 'LOADOUT_REJECTED' });
+      'serverNotice',
+      ({ code, message }) => code === 'LOADOUT_ACCEPTED' && message === locked.requestId,
+    )).toMatchObject({ code: 'LOADOUT_ACCEPTED' });
 
     const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
     const stored = await runInDurableObject(stub, async (_instance, state) => ({
@@ -454,10 +450,10 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
         locked.requestId,
       )][0]?.outcome_code,
     }));
-    expect(stored).toEqual({ selections: 0, outcome: 'loadout_locked' });
+    expect(stored).toEqual({ selections: 1, outcome: 'accepted' });
   });
 
   it('matches the Node decision-trace pin inside the Worker isolate', () => {
-    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('810083ecca297f5e');
+    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('8d0719d26ae027c2');
   });
 });

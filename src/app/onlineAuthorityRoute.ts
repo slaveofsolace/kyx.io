@@ -208,7 +208,7 @@ function createShell(): { readonly root: HTMLElement; readonly content: HTMLElem
     element('span', 'online-preview__status-dot', 'Pre-release online'),
     element('span', '', 'Local guest identity'),
   );
-  const back = element('a', 'online-preview__back', '← OFFLINE PRACTICE');
+  const back = element('a', 'online-preview__back', 'Offline practice');
   back.href = '/';
   meta.append(back);
   bar.append(brand, meta);
@@ -709,6 +709,8 @@ async function mountSession(
   mode: AuthorityEvidenceConfig['mode'],
   sessionBinding: OnlineSessionBinding,
 ): Promise<void> {
+  body.dataset.onlineHud = 'arena-visor-v1';
+  content.classList.add('online-preview__content--session');
   const displayName = protocolDisplayName(UserAccount.getDisplayName());
   const inkfallProof = sessionBinding.kind === 'inkfall'
     ? sessionBinding.proof
@@ -736,24 +738,24 @@ async function mountSession(
       'p',
       'online-preview__eyebrow',
       inkfallRev4
-        ? 'AUTHORITATIVE COMBAT ROOM / INKFALL REV5 + REV3 AUTHORITY'
+        ? 'Inkfall Foundry · Online'
         : inkfallRuntime
-          ? 'AUTHORITATIVE COMBAT ROOM / INKFALL FOUNDRY @2'
-        : 'AUTHORITATIVE COMBAT ROOM',
+          ? 'Inkfall Foundry · Online'
+        : 'Online match',
     ),
     element(
       'h1',
       '',
-      inkfallRuntime ? 'Fight in Inkfall. Resolve on the server.' : 'Fight locally. Resolve on the server.',
+      inkfallRuntime ? 'Inkfall Foundry' : 'Authoritative arena',
     ),
     element(
       'p',
-      '',
+      'online-session__instructions',
       inkfallRev4
-        ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys or mouse to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your three selected abilities, and Q for locked Blink. The linked portal pair traverses on entry. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev5 art cannot become collision.'
+        ? 'Click the arena to capture the pointer. WASD moves; Shift sprints; Space jumps; C crouches; 1–6 equip; E/F/Z use abilities; Q Blinks.'
         : inkfallRuntime
-          ? 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for your selected abilities, and Q for locked Blink. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, throwable collision, health, score, death, and respawn.'
-        : 'Use WASD to move, Shift to sprint, Space to jump, C or Ctrl to crouch, arrow keys to aim, Mouse 1 or Enter to fire, R to reload, E/F/Z for selected abilities, and Q for locked Blink. Health, ammo, score, feed, death, respawn, ability, and resume state come from the authority.',
+          ? 'Click the arena to focus. WASD moves; Shift sprints; Space jumps; C crouches; E/F/Z use abilities; Q Blinks.'
+          : 'Click the arena to focus. Movement, combat, score and life state resolve on the server.',
     ),
   );
   const room = element('div', 'online-session__room');
@@ -980,10 +982,10 @@ async function mountSession(
   combatPanel.append(element('div', 'online-session__panel-head', 'Local authoritative combat'));
   const combatBody = element('div', 'online-session__combat-panel');
   const combatStats = element('div', 'online-session__combat-stats');
-  const localHealth = metric('Health / life');
-  const localAmmo = metric('Selected ammo');
-  const localRifle = metric('Selected weapon');
-  const localGrenade = metric('Ability state');
+  const localHealth = metric('Health');
+  const localAmmo = metric('Ammo');
+  const localRifle = metric('Weapon');
+  const localGrenade = metric('Abilities');
   localHealth.value.dataset.testid = 'online-local-health';
   localAmmo.value.dataset.testid = 'online-local-ammo';
   localRifle.value.dataset.testid = 'online-local-rifle';
@@ -992,6 +994,10 @@ async function mountSession(
     item.root.className = 'online-session__combat-stat';
     combatStats.append(item.root);
   }
+  localHealth.root.classList.add('online-session__combat-stat--health');
+  localAmmo.root.classList.add('online-session__combat-stat--ammo');
+  localRifle.root.classList.add('online-session__combat-stat--weapon');
+  localGrenade.root.classList.add('online-session__combat-stat--abilities');
   const controls = element('div', 'online-session__controls');
   const sprintButton = element('button', 'online-session__control', 'HOLD SPRINT · SHIFT');
   sprintButton.type = 'button';
@@ -1020,6 +1026,19 @@ async function mountSession(
   const teleportButton = element('button', 'online-session__control', 'BLINK · Q');
   teleportButton.type = 'button';
   teleportButton.dataset.testid = 'online-teleport';
+  for (const button of [
+    sprintButton,
+    jumpButton,
+    crouchButton,
+    fireButton,
+    reloadButton,
+  ]) button.classList.add('online-session__control--auxiliary');
+  for (const button of [
+    abilityOneButton,
+    abilityTwoButton,
+    abilityThreeButton,
+    teleportButton,
+  ]) button.classList.add('online-session__control--ability');
   controls.append(
     sprintButton,
     jumpButton,
@@ -1066,20 +1085,58 @@ async function mountSession(
     resumeMetric.root,
   );
   metricsPanel.append(metricsGrid);
-  side.append(playerPanel, combatPanel, metricsPanel);
-  grid.append(arenaPanel, side);
+
+  const scoreboard = element('section', 'online-session__scoreboard');
+  scoreboard.dataset.testid = 'online-scoreboard';
+  scoreboard.dataset.open = 'false';
+  scoreboard.setAttribute('aria-hidden', 'true');
+  const scoreboardHeader = element('header', 'online-session__scoreboard-head');
+  scoreboardHeader.append(
+    element('strong', '', 'Match'),
+    element('span', '', 'Hold Tab'),
+  );
+  const scoreboardScore = element('strong', 'online-session__scoreboard-score', '0 — 0');
+  const scoreboardPlayers = element('div', 'online-session__scoreboard-players');
+  scoreboard.append(scoreboardHeader, scoreboardScore, scoreboardPlayers);
+  canvasWrap.append(combatStrip, combatStats, controls, feed, scoreboard);
+  arenaPanel.replaceChildren(canvasWrap);
+
+  const sessionDrawer = element('details', 'online-session__session-drawer');
+  const sessionSummary = element('summary', 'online-session__drawer-toggle');
+  sessionSummary.append(
+    element('span', '', 'Room'),
+    element('strong', '', roomCode),
+  );
+  sessionDrawer.append(sessionSummary, playerPanel);
+
+  const diagnostics = element('details', 'online-session__diagnostics');
+  const diagnosticsSummary = element('summary', 'online-session__drawer-toggle', 'Diagnostics');
+  diagnosticsSummary.setAttribute(
+    'aria-label',
+    'Open network, profile, map, and integration diagnostics',
+  );
+  side.append(
+    ...(profileBanner === null ? [] : [profileBanner]),
+    facts,
+    arenaHead,
+    legend,
+    combatPanel,
+    metricsPanel,
+  );
+  appendScopeNotice(side, inkfallProfile);
+  diagnostics.append(diagnosticsSummary, side);
+  grid.append(arenaPanel);
 
   const error = element('pre', 'online-session__error');
   error.setAttribute('role', 'alert');
   error.dataset.testid = 'online-error';
   content.replaceChildren(
     head,
-    ...(profileBanner === null ? [] : [profileBanner]),
-    facts,
     grid,
+    sessionDrawer,
+    diagnostics,
     error,
   );
-  appendScopeNotice(content, inkfallProfile);
 
   const portalAudio = inkfallRev4 ? new AudioManager() : null;
   const portalCaptionCues = inkfallRev4
@@ -1128,6 +1185,9 @@ async function mountSession(
       body.dataset.online3dStatus = 'ready';
       body.dataset.online3dRenderer = sceneFacts.renderer;
       body.dataset.online3dPresentationReference = sceneFacts.presentationReference;
+      window.setTimeout(() => {
+        if (mapStatus.dataset.state === 'ready') mapStatus.dataset.state = 'settled';
+      }, 2_200);
     } catch (cause) {
       const detail = cause instanceof Error ? cause.message : String(cause);
       mapStatus.textContent = `MAP LOAD FAILED CLOSED · ${detail}`;
@@ -1834,6 +1894,19 @@ async function mountSession(
     }
     renderRequested = true;
   };
+  const setScoreboardOpen = (open: boolean): void => {
+    scoreboard.dataset.open = String(open);
+    scoreboard.setAttribute('aria-hidden', String(!open));
+  };
+  const scoreboardKeyboardHandler = (event: KeyboardEvent): void => {
+    if (event.code !== 'Tab') return;
+    if (
+      document.pointerLockElement !== canvas
+      && document.activeElement !== canvas
+    ) return;
+    event.preventDefault();
+    setScoreboardOpen(event.type === 'keydown');
+  };
   const keyboardHandler = (event: KeyboardEvent): void => {
     if (!isOnlineAuthorityInputCode(event.code)) return;
     event.preventDefault();
@@ -1861,6 +1934,7 @@ async function mountSession(
     renderRequested = true;
   };
   const blurHandler = (): void => {
+    setScoreboardOpen(false);
     neutralizeRouteInput();
   };
   const visibilityHandler = (): void => {
@@ -1949,6 +2023,8 @@ async function mountSession(
   }
   window.addEventListener('keydown', keyboardHandler);
   window.addEventListener('keyup', keyboardHandler);
+  window.addEventListener('keydown', scoreboardKeyboardHandler);
+  window.addEventListener('keyup', scoreboardKeyboardHandler);
   window.addEventListener('blur', blurHandler);
   window.addEventListener('pointerup', releaseFire);
   window.addEventListener('pointercancel', releaseFire);
@@ -2194,9 +2270,50 @@ async function mountSession(
       phaseFact.value.textContent = combat?.match.phase ?? diagnostics.authority.matchPhase ?? 'WAITING';
       tickFact.value.textContent = String(diagnostics.authority.serverTick);
       scoreValue.textContent = `${blueScore} — ${redScore}`;
+      const remainingSeconds = combat === null
+        ? 0
+        : Math.max(0, Math.ceil(combat.match.activeTicksRemaining / 20));
       scorePhase.textContent = combat === null
-        ? 'WAITING FOR COMBAT SNAPSHOT'
-        : `${combat.match.phase} · ${combat.match.activeTicksRemaining} TICKS`;
+        ? 'Waiting'
+        : `${combat.match.phase} · ${Math.floor(remainingSeconds / 60)}:${String(
+            remainingSeconds % 60,
+          ).padStart(2, '0')}`;
+      scoreboardScore.textContent = `${blueScore} — ${redScore}`;
+      const scoreboardRows = combat === null
+        ? []
+        : [...combat.players]
+            .sort((left, right) => (
+              (left.teamId ?? '').localeCompare(right.teamId ?? '')
+              || left.playerId.localeCompare(right.playerId)
+            ))
+            .map((player) => {
+              const row = element('div', 'online-session__scoreboard-player');
+              const team = player.teamId === 'team_red' ? 'red' : 'blue';
+              row.dataset.team = team;
+              row.dataset.life = player.lifePhase;
+              const identityLabel = player.playerId === diagnostics.authority.playerId
+                ? 'You'
+                : `${team === 'red' ? 'Red' : 'Blue'} peer`;
+              const lifeLabel = player.lifePhase === 'dead'
+                ? `Respawn ${Math.max(
+                    0,
+                    (player.respawnEligibleAtTick ?? diagnostics.authority.serverTick)
+                      - diagnostics.authority.serverTick,
+                  )}t`
+                : `${player.healthPoints} hp`;
+              row.append(
+                element('span', 'online-session__scoreboard-team', team),
+                element('strong', '', identityLabel),
+                element('span', '', lifeLabel),
+                element('span', '', `${player.deathOrdinal} deaths`),
+              );
+              return row;
+            });
+      scoreboardPlayers.replaceChildren(...(
+        scoreboardRows.length > 0
+          ? scoreboardRows
+          : [element('p', 'online-session__scoreboard-empty', 'Waiting for players')]
+      ));
       const applyTeam = (
         player: CombatSnapshotV1['players'][number] | undefined,
         state: HTMLElement,
@@ -2205,7 +2322,13 @@ async function mountSession(
         label: string,
       ): void => {
         const local = player?.playerId === diagnostics.authority.playerId;
-        state.textContent = `${label} · ${local ? 'YOU' : player === undefined ? 'WAITING' : 'PEER'} · ${player?.lifePhase ?? '—'}`;
+        state.textContent = player === undefined
+          ? `${label} · WAITING`
+          : player.lifePhase === 'dead'
+            ? `${local ? 'YOU' : label} · DOWN`
+            : local
+              ? 'YOU'
+              : label;
         health.textContent = `${player?.healthPoints ?? '—'} HP`;
         fill.style.transform = `scaleX(${Math.max(0, Math.min(100, player?.healthPoints ?? 0)) / 100})`;
       };
@@ -2261,11 +2384,19 @@ async function mountSession(
          const charges = localPlayer?.abilityLoadout?.currentCharges[index] ?? 0;
          const maximumCharges = localPlayer?.abilityLoadout?.maximumCharges[index] ?? 0;
          const ready = charges > 0;
-         button.textContent = ability === null
-           ? `ABILITY ${index + 1} · ${inputLabel}`
-           : `${ability.shortName.toUpperCase()} · ${inputLabel} · ${charges}/${maximumCharges}${
-               charges < maximumCharges && readyIn > 0 ? ` · +1 ${readyIn}T` : ''
-             }`;
+         button.replaceChildren(
+           element('kbd', 'online-session__ability-key', inputLabel),
+           element(
+             'span',
+             'online-session__ability-name',
+             ability?.shortName ?? `Slot ${index + 1}`,
+           ),
+           element(
+             'strong',
+             'online-session__ability-charge',
+             ability === null ? '—' : `${charges}/${maximumCharges}`,
+           ),
+         );
         button.setAttribute(
           'aria-label',
           ability === null
@@ -2277,12 +2408,21 @@ async function mountSession(
                }`,
          );
          button.dataset.ready = String(ready);
+         button.dataset.rechargeSeconds = String(Math.ceil(readyIn / 20));
       }
       const blinkReadyIn = Math.max(
         0,
         diagnostics.local.teleportCooldownTicksRemaining ?? 0,
       );
-      teleportButton.textContent = `BLINK · Q${blinkReadyIn === 0 ? '' : ` · ${blinkReadyIn}T`}`;
+      teleportButton.replaceChildren(
+        element('kbd', 'online-session__ability-key', 'Q'),
+        element('span', 'online-session__ability-name', 'Blink'),
+        element(
+          'strong',
+          'online-session__ability-charge',
+          blinkReadyIn === 0 ? 'Ready' : `${Math.ceil(blinkReadyIn / 20)}s`,
+        ),
+      );
       teleportButton.dataset.ready = String(blinkReadyIn === 0);
       const playerLabel = (playerId: string | null): string => {
         if (playerId === null) return 'AUTHORITY';
@@ -2369,6 +2509,8 @@ async function mountSession(
     cancelAnimationFrame(animationFrame);
     window.removeEventListener('keydown', keyboardHandler);
     window.removeEventListener('keyup', keyboardHandler);
+    window.removeEventListener('keydown', scoreboardKeyboardHandler);
+    window.removeEventListener('keyup', scoreboardKeyboardHandler);
     window.removeEventListener('blur', blurHandler);
     window.removeEventListener('pointerup', releaseFire);
     window.removeEventListener('pointercancel', releaseFire);

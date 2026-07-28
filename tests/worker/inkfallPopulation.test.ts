@@ -5,10 +5,12 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   PROTOCOL_VERSION,
+  PROTOCOL_LIMITS,
   RELIABLE_EVENT_STREAM_VERSION,
   SNAPSHOT_BASELINE_VERSION,
   decodeServerMessage,
   encodeClientMessage,
+  encodeServerMessage,
   type ClientMessage,
   type DeltaSnapshotMessage,
   type FullSnapshotMessage,
@@ -534,6 +536,7 @@ describe('P5.14 exact-profile real-client population proof', () => {
         directionUnit: { x: 0, y: -1, z: 0 },
         maximumDistanceMillimeters: 120_000,
         layer: 'authoritative_world',
+        purpose: 'shot_path',
       });
       const sweep = runtime.authority.impulseGrenadeWorldPort.sweepSphere({
         schemaVersion: 1,
@@ -683,6 +686,14 @@ describe('P5.14 exact-profile real-client population proof', () => {
   it('restores eight hibernated real clients at one exact populated authority tick', async () => {
     const room = await createInkfallRoom();
     const clients = await joinPopulation(room, 8);
+    const scopedSnapshotBytes = clients.map(({ initialSnapshot }) => {
+      const encoded = encodeServerMessage(initialSnapshot);
+      if (!encoded.ok) throw new Error(`Scoped snapshot encode failed: ${encoded.error.code}`);
+      return new TextEncoder().encode(encoded.json).byteLength;
+    });
+    expect(Math.max(...scopedSnapshotBytes)).toBeLessThanOrEqual(
+      PROTOCOL_LIMITS.maxMessageBytes,
+    );
     await movePopulation(room, clients);
     const ready = await waitForMetrics(
       room,

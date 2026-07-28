@@ -712,6 +712,7 @@ export function workerCombatSpawn(ordinal: number): AuthoritySpawn {
 
 export function combatSnapshotFromAuthority(
   snapshot: AuthorityFullSnapshot,
+  recipientPlayerId: string | null = null,
 ): CombatSnapshotV1 | null {
   const combatPlayers = snapshot.players.filter((player) => player.combat !== undefined);
   if (combatPlayers.length === 0) return null;
@@ -733,6 +734,8 @@ export function combatSnapshotFromAuthority(
       ) {
         throw new Error('AUTHORITY_COMBAT_PLAYER_SNAPSHOT_INCOMPLETE');
       }
+      const includePrivateArmory = recipientPlayerId === null
+        || player.playerId === recipientPlayerId;
       const abilityCooldowns = combat.abilityLoadout === undefined
         ? null
         : [...combat.abilityLoadout.cooldownEndsAtTicks] as [number, number, number];
@@ -775,27 +778,31 @@ export function combatSnapshotFromAuthority(
         nextShotAtTick: combat.autoRifle.nextShotAtTick,
         reloadCompletesAtTick: combat.autoRifle.activeReload?.completesAtTick ?? null,
         acceptedShotCount: combat.autoRifle.acceptedShotCount,
-        weaponCatalogId: KYX_ARMORY_CATALOG_ID,
         selectedWeaponSlot: combat.armory.selectedSlot,
         selectedWeaponId: combat.armory.weapons.find(
           (weapon) => kyxWeaponProfile(weapon.weaponId).slot === combat.armory.selectedSlot,
         )?.weaponId ?? null,
-        weapons: Object.freeze(combat.armory.weapons.map((weapon) => {
-          const profile = kyxWeaponProfile(weapon.weaponId);
-          return Object.freeze({
-            weaponId: weapon.weaponId,
-            slot: profile.slot,
-            family: profile.family,
-            attackModel: profile.attackModel,
-            phase: weapon.phase,
-            magazineRounds: weapon.magazineRounds,
-            reserveRounds: weapon.reserveRounds,
-            readyAtTick: weapon.readyAtTick,
-            reloadCompletesAtTick: weapon.reloadCompletesAtTick,
-            nextAttackAtTick: weapon.nextAttackAtTick,
-            acceptedAttackCount: weapon.acceptedAttackCount,
-          });
-        })),
+        ...(includePrivateArmory
+          ? {
+              weaponCatalogId: KYX_ARMORY_CATALOG_ID,
+              weapons: Object.freeze(combat.armory.weapons.map((weapon) => {
+                const profile = kyxWeaponProfile(weapon.weaponId);
+                return Object.freeze({
+                  weaponId: weapon.weaponId,
+                  slot: profile.slot,
+                  family: profile.family,
+                  attackModel: profile.attackModel,
+                  phase: weapon.phase,
+                  magazineRounds: weapon.magazineRounds,
+                  reserveRounds: weapon.reserveRounds,
+                  readyAtTick: weapon.readyAtTick,
+                  reloadCompletesAtTick: weapon.reloadCompletesAtTick,
+                  nextAttackAtTick: weapon.nextAttackAtTick,
+                  acceptedAttackCount: weapon.acceptedAttackCount,
+                });
+              })),
+            }
+          : {}),
         grenadePhase: combat.impulseGrenade.phase,
         grenadeCooldownEndsAtTick: combat.impulseGrenade.cooldownEndsAtTick,
         acceptedThrowCount: combat.impulseGrenade.acceptedThrowCount,
@@ -803,6 +810,7 @@ export function combatSnapshotFromAuthority(
           projectile.phase === 'active' && projectile.ownerPlayerId === player.playerId
         )).length,
         ...(combat.abilityLoadout === undefined
+          || (recipientPlayerId !== null && player.playerId !== recipientPlayerId)
           ? {}
           : {
               abilityLoadout: Object.freeze({

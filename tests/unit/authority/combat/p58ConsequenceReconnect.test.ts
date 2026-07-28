@@ -315,7 +315,7 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
       });
       expect(eventKindCounts(result.first.events)).toMatchObject({
         auto_rifle_shot_accepted: 15,
-        damage_applied: 10,
+        damage_applied: 6,
         death: 1,
         team_score_changed: 1,
         kill_feed_entry: 1,
@@ -328,10 +328,10 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
     expect(results[3]!.first).toEqual(baseline.first);
     expect(Object.fromEntries(results.map(({ profile, first }) => [profile, first.hash])))
       .toEqual({
-        baseline: '02bc18767aada74b',
-        loss: '8895a698a8421aed',
-        reorder: '02bc18767aada74b',
-        duplicate: '02bc18767aada74b',
+        baseline: '8403e8f5d2c7a14f',
+        loss: '96860d5a78fca6e5',
+        reorder: '8403e8f5d2c7a14f',
+        duplicate: '8403e8f5d2c7a14f',
       });
   }, 15_000);
 
@@ -409,7 +409,7 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
           magazineRounds: 49,
           activeReload: { completesAtTick: 104 },
         },
-        impulseGrenade: { phase: 'cooldown', cooldownEndsAtTick: 281 },
+        impulseGrenade: { phase: 'ready', cooldownEndsAtTick: 281 },
       },
     });
     expect(playerB?.combat?.life).toMatchObject({
@@ -427,7 +427,7 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
       lifecycle: 'active',
       localPlayer: {
         rifle: { phase: 'reloading', magazineRounds: 49, reloadCompletesAtTick: 104 },
-        impulseGrenade: { phase: 'cooldown', cooldownEndsAtTick: 281 },
+        impulseGrenade: { phase: 'ready', cooldownEndsAtTick: 281 },
       },
       match: { phase: 'active', feedSequence: 1 },
       projectiles: [expect.objectContaining({ ownerPlayerId: 'player_A' })],

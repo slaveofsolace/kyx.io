@@ -22,6 +22,7 @@ describe('FixedTickInputLatch', () => {
       utility: 128,
       reload: 256,
       melee: 512,
+      abilityThree: 1024,
     });
 
     const latch = new FixedTickInputLatch();

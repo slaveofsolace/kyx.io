@@ -158,14 +158,14 @@ describe('P5.8D portable replay digest', () => {
       eventCounts: semanticCounts(frames),
     } satisfies CombatConsequenceDigestV1;
     expect(consequence).toEqual({
-      acceptedShotCount: 10,
-      magazineRounds: 40,
+      acceptedShotCount: 6,
+      magazineRounds: 44,
       targetHealthPoints: 0,
       targetDeathOrdinal: 1,
       blueScore: 1,
       feedSequence: 1,
-      eventCounts: { shotAccepted: 10, damageApplied: 10, playerKilled: 1 },
+      eventCounts: { shotAccepted: 6, damageApplied: 6, playerKilled: 1 },
     });
-    expect(hashCombatConsequenceV1(consequence)).toBe('c614736551a1a503');
+    expect(hashCombatConsequenceV1(consequence)).toBe('2bf582de88b61cd6');
   });
 });

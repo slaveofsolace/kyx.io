@@ -1122,13 +1122,35 @@ function validateCombatWeapon(
 function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['players'][number] {
   const record = recordAt(value, path);
   const hasAbilityLoadout = Object.hasOwn(record, 'abilityLoadout');
-  const armoryKeys = ['weaponCatalogId', 'selectedWeaponSlot', 'selectedWeaponId', 'weapons'];
-  const presentArmoryKeys = armoryKeys.filter((key) => Object.hasOwn(record, key));
-  if (presentArmoryKeys.length !== 0 && presentArmoryKeys.length !== armoryKeys.length) {
+  const weaponSelectionKeys = ['selectedWeaponSlot', 'selectedWeaponId'];
+  const weaponInventoryKeys = ['weaponCatalogId', 'weapons'];
+  const presentWeaponSelectionKeys = weaponSelectionKeys.filter(
+    (key) => Object.hasOwn(record, key),
+  );
+  const presentWeaponInventoryKeys = weaponInventoryKeys.filter(
+    (key) => Object.hasOwn(record, key),
+  );
+  if (
+    presentWeaponSelectionKeys.length !== 0
+    && presentWeaponSelectionKeys.length !== weaponSelectionKeys.length
+  ) {
     fail(
       'PROTOCOL_REQUIRED_FIELD',
       path,
-      'Combat armory projection must be omitted or supplied as one complete unit.',
+      'Combat weapon selection must include both selected slot and weapon id.',
+    );
+  }
+  if (
+    presentWeaponInventoryKeys.length !== 0
+    && (
+      presentWeaponInventoryKeys.length !== weaponInventoryKeys.length
+      || presentWeaponSelectionKeys.length !== weaponSelectionKeys.length
+    )
+  ) {
+    fail(
+      'PROTOCOL_REQUIRED_FIELD',
+      path,
+      'Combat weapon inventory must include its catalog and selected weapon projection.',
     );
   }
   exactKeys(record, path, [
@@ -1137,7 +1159,8 @@ function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['p
     'reserveRounds', 'nextShotAtTick', 'reloadCompletesAtTick', 'acceptedShotCount',
     'grenadePhase', 'grenadeCooldownEndsAtTick', 'acceptedThrowCount',
     'activeProjectileCount',
-    ...(presentArmoryKeys.length === 0 ? [] : armoryKeys),
+    ...presentWeaponSelectionKeys,
+    ...presentWeaponInventoryKeys,
     ...(hasAbilityLoadout ? ['abilityLoadout'] : []),
   ]);
   idAt(required(record, 'playerId', path), `${path}.playerId`);
@@ -1174,23 +1197,42 @@ function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['p
     allowed: ['equipping', 'ready', 'cooldown', 'dead'],
   });
   tickAt(required(record, 'grenadeCooldownEndsAtTick', path), `${path}.grenadeCooldownEndsAtTick`);
-  if (presentArmoryKeys.length !== 0) {
-    stringAt(required(record, 'weaponCatalogId', path), `${path}.weaponCatalogId`, {
-      allowed: ['kyx_authoritative_armory_v1'],
-    });
-    const selectedWeaponSlot = numberAt(
+  let selectedWeaponSlot: number | null = null;
+  let selectedWeaponId: string | null = null;
+  if (presentWeaponSelectionKeys.length !== 0) {
+    selectedWeaponSlot = numberAt(
       required(record, 'selectedWeaponSlot', path),
       `${path}.selectedWeaponSlot`,
       {
-      integer: true,
-      min: 0,
-      max: PROTOCOL_LIMITS.maxSelectedSlot,
+        integer: true,
+        min: 0,
+        max: PROTOCOL_LIMITS.maxSelectedSlot,
       },
-    );
-    const selectedWeaponId = nullableIdAt(
+    )!;
+    selectedWeaponId = nullableIdAt(
       required(record, 'selectedWeaponId', path),
       `${path}.selectedWeaponId`,
     );
+    const selectedWeaponProfile = selectedWeaponId === null
+      ? undefined
+      : COMBAT_WEAPON_PROFILE_BY_ID[
+          selectedWeaponId as keyof typeof COMBAT_WEAPON_PROFILE_BY_ID
+        ];
+    if (
+      selectedWeaponProfile === undefined
+      || selectedWeaponProfile.slot !== selectedWeaponSlot
+    ) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.selectedWeaponId`,
+        'Selected weapon id must match the authoritative KYX weapon slot.',
+      );
+    }
+  }
+  if (presentWeaponInventoryKeys.length !== 0) {
+    stringAt(required(record, 'weaponCatalogId', path), `${path}.weaponCatalogId`, {
+      allowed: ['kyx_authoritative_armory_v1'],
+    });
     const weapons = arrayAt(required(record, 'weapons', path), `${path}.weapons`, 8);
     if (weapons.length !== 6) {
       fail(
@@ -1211,10 +1253,10 @@ function validateCombatPlayer(value: unknown, path: string): CombatSnapshotV1['p
       weaponIdentities.map(({ slot }) => String(slot)),
       `${path}.weapons.slot`,
     );
-    const expectedSelectedWeaponId = weaponIdentities.find(
+    const catalogSelectedWeaponId = weaponIdentities.find(
       ({ slot }) => slot === selectedWeaponSlot,
     )?.weaponId ?? null;
-    if (selectedWeaponId !== expectedSelectedWeaponId) {
+    if (selectedWeaponId !== catalogSelectedWeaponId) {
       fail(
         'PROTOCOL_INVALID_FIELD_VALUE',
         `${path}.selectedWeaponId`,

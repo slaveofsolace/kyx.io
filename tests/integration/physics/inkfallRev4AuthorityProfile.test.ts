@@ -43,7 +43,7 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
     expect(INKFALL_REVISION_3_WORKER_MAP_BINDING).toMatchObject({
       mapReference: 'inkfall_foundry@3',
       presentationReference:
-        'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+        'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
       mapRevision: 3,
       fixtureHash: '6cf785c5171f2ff5',
       colliderCardinality: 339,
@@ -120,7 +120,7 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
       mapId: 'inkfall_foundry',
       rulesetId: 'revamped_classic',
       rulesetRevision: 3,
-      rulesetHash: 'd5f0418d1d927370',
+      rulesetHash: '69b19f19a19de288',
       fixtureId: 'inkfall_foundry_map_collision',
       fixtureHash: '6cf785c5171f2ff5',
     })).toBe(G5_INKFALL_REV4_COMBAT_PROFILE);

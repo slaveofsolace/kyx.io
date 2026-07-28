@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE,
   G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE,
+  G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN,
   resolveG7UiCandidate,
 } from '../../../src/config/g7UiCandidate';
 
@@ -13,7 +14,7 @@ describe('G7 UI candidate selection', () => {
       source: 'default',
       queryValue: null,
       datasetValue: G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE,
-      styleToken: 'foundry-tactical-v1',
+      styleToken: G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN,
     });
     expect(resolveG7UiCandidate('?g6Candidate=rev17')).toMatchObject({
       kind: 'accepted',

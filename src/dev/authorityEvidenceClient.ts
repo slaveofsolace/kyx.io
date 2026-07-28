@@ -70,6 +70,7 @@ import type {
 } from './authorityEvidenceTransport';
 
 const FIXED_TICK_MILLISECONDS = 50;
+const HEARTBEAT_INTERVAL_MILLISECONDS = 10_000;
 const RESUME_RECONNECT_DELAY_MILLISECONDS = 250;
 const MAXIMUM_SEEN_RELIABLE_EVENT_IDS = 1_024;
 const MAXIMUM_RECENT_COMBAT_EVENTS = 64;
@@ -442,6 +443,8 @@ export class AuthorityEvidenceClient {
   private readonly seenReliableEventOrder: string[] = [];
   private nextSequence = 0;
   private nextClientTick = 0;
+  private nextHeartbeatAtMilliseconds = 0;
+  private nextHeartbeatNonce = 0;
   private axes: AuthorityEvidenceAxes = Object.freeze({ moveX: 0, moveY: 0 });
   private combatHeldButtons = 0;
   private lastSentCombatHeldButtons = 0;
@@ -790,6 +793,9 @@ export class AuthorityEvidenceClient {
   private handleOpen(): void {
     this.phase = 'handshaking';
     this.counters.socketOpens += 1;
+    this.nextHeartbeatAtMilliseconds = (
+      this.scheduler.nowMilliseconds() + HEARTBEAT_INTERVAL_MILLISECONDS
+    );
     this.send({
       protocolVersion: PROTOCOL_VERSION,
       type: 'hello',
@@ -1241,6 +1247,7 @@ export class AuthorityEvidenceClient {
   }
 
   private generateFixedInputTick(): void {
+    this.sendHeartbeatIfDue();
     if (
       this.phase !== 'joined'
       || (this.matchPhase !== 'warmup' && this.matchPhase !== 'active')
@@ -1307,6 +1314,25 @@ export class AuthorityEvidenceClient {
       return;
     }
     this.emitChange();
+  }
+
+  private sendHeartbeatIfDue(): void {
+    if (
+      this.phase !== 'joined'
+      || this.connection?.state() !== 'open'
+    ) return;
+    const nowMilliseconds = this.scheduler.nowMilliseconds();
+    if (nowMilliseconds < this.nextHeartbeatAtMilliseconds) return;
+    this.send({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'ping',
+      nonce: this.nextHeartbeatNonce,
+      clientTick: Math.min(this.nextClientTick, PROTOCOL_LIMITS.maxAuthorityTick),
+    });
+    this.nextHeartbeatNonce = this.nextHeartbeatNonce >= PROTOCOL_LIMITS.maxSequence
+      ? 0
+      : this.nextHeartbeatNonce + 1;
+    this.nextHeartbeatAtMilliseconds = nowMilliseconds + HEARTBEAT_INTERVAL_MILLISECONDS;
   }
 
   private dispatchJoinOrResume(): void {

@@ -276,6 +276,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
         directionUnit: { x: 0, y: -1, z: 0 },
         maximumDistanceMillimeters: 120_000,
         layer: 'authoritative_world',
+        purpose: 'shot_path',
       });
       const sweep = runtime.authority?.impulseGrenadeWorldPort.sweepSphere({
         schemaVersion: 1,
@@ -438,7 +439,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       ({ localReconciliation }) => localReconciliation.player.id === secondJoin.playerId,
     );
     expect(secondSnapshot.localReconciliation.player.feetPosition)
-      .toEqual({ x: 33_500, y: 0, z: 3_500 });
+      .toEqual({ x: 33_500, y: 0, z: -3_500 });
 
     await waitForMetrics(
       room,
@@ -499,7 +500,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       mapBinding: {
         mapReference: 'inkfall_foundry@3',
         presentationReference:
-          'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+          'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
         fixtureHash: '6cf785c5171f2ff5',
         render: { renderMeshesMayBeAuthority: false },
         zones: expect.arrayContaining([
