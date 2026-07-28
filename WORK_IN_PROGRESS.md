@@ -5,12 +5,14 @@ appending prose to executable source files or binary assets.
 
 ## Active now
 
-- `assets/source/blender/phase7-character-original-v6/`,
-  `assets/source/blender/phase7-character-original-v6/model/v6c-character-rev17/`,
-  `src/player/Rev17Character.js`, and the corresponding G6 evidence — replace
-  the still-failed-open Rev17 anatomy, armor, materials, hands, and weapon
-  contact with a substantive Rev18 correction pass. Rev17 is feature-gated and
-  must not be promoted as the final player model.
+- `assets/source/blender/phase7-character-original-v6/model/v6c-character-rev18/`
+  and `evidence/2026-07-27/g6-rev18-character-remediation/` now preserve a
+  substantive non-default correction candidate. It improves the lower-body
+  silhouette, armor scale/value hierarchy, export contract, and socket-driven
+  melee evidence, but still fails final review on head/visor proportions,
+  mannequin-like anatomy, joint construction, hand/finger contact, materials,
+  and gameplay-camera proof. Rev17 remains the opt-in runtime path; neither
+  revision is the final player model.
   *Currently being worked on.*
 
 - `src/weapons/WeaponSystem.js`, `src/player/Rev17Character.js`, and the
@@ -79,6 +81,9 @@ appending prose to executable source files or binary assets.
   errors.
 - Rev17 Blender/export/Khronos and bounded runtime checks: technically green;
   direct character visual review: FAILED/OPEN.
+- Rev18 isolated Blender/export evidence: five exact GLBs with zero Khronos
+  errors, 67 bones, 17 actions, and a 0.020736 m sampled melee contact bound;
+  direct character visual review: IMPROVED BUT FAILED/OPEN, not runtime/default.
 - Cloudflare deployment: PAUSED. The rejected G7 presentation and incomplete
   product gates must not be published as the replacement build.
 
