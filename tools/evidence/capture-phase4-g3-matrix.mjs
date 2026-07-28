@@ -26,6 +26,7 @@ const CHROME_PATH = process.env.KYX_CHROME_PATH
 const JOIN_TIMEOUT_MILLISECONDS = 30_000;
 const MOVEMENT_HOLD_MILLISECONDS = 1_000;
 const SETTLE_MILLISECONDS = 1_750;
+const metricsAccessByRoomCode = new Map();
 
 function argument(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -190,9 +191,40 @@ function impairmentObserved(profile, first, second) {
   return { ...observed, expectedPhenomenaObserved };
 }
 
+function rememberMetricsAccess(room) {
+  const access = room?.metricsAccess;
+  if (
+    typeof room?.roomCode !== 'string'
+    || typeof access?.headerName !== 'string'
+    || typeof access?.credential !== 'string'
+    || typeof access?.expiresAt !== 'number'
+  ) {
+    throw new Error('Room creation did not issue a metrics read credential.');
+  }
+  metricsAccessByRoomCode.set(room.roomCode, access);
+  return room;
+}
+
+async function nextBrowserRoomCreation(page) {
+  const response = await page.waitForResponse((candidate) => {
+    const url = new URL(candidate.url());
+    return url.origin === AUTHORITY_ORIGIN
+      && url.pathname === '/api/rooms/create'
+      && candidate.request().method() === 'POST';
+  }, { timeout: JOIN_TIMEOUT_MILLISECONDS });
+  return rememberMetricsAccess(await response.json());
+}
+
 async function roomMetrics(roomCode) {
+  const access = metricsAccessByRoomCode.get(roomCode);
+  if (access === undefined) {
+    throw new Error(`Metrics credential is unavailable for ${roomCode}.`);
+  }
   const response = await fetch(`${AUTHORITY_ORIGIN}/api/rooms/${roomCode}/metrics`, {
-    headers: { Origin: VITE_ORIGIN },
+    headers: {
+      Origin: VITE_ORIGIN,
+      [access.headerName]: access.credential,
+    },
     cache: 'no-store',
   });
   const body = await response.json();
@@ -252,7 +284,7 @@ async function createAdversarialRoom() {
   });
   const body = await response.json();
   if (response.status !== 201) throw new Error(`Adversarial room creation failed: ${response.status}`);
-  return body;
+  return rememberMetricsAccess(body);
 }
 
 async function forgedTransformProbe(page, roomCode) {
@@ -398,7 +430,9 @@ async function captureProfile(browser, outputDirectory, profile) {
   const createUrl = `${VITE_ORIGIN}/__test__/authority?mode=create&displayName=Matrix%20A&authorityUrl=${encodedAuthority}&impairment=${profile}`;
   const capturedAt = new Date().toISOString();
   try {
+    const roomCreation = nextBrowserRoomCreation(pageA);
     await pageA.goto(createUrl, { waitUntil: 'domcontentloaded', timeout: JOIN_TIMEOUT_MILLISECONDS });
+    await roomCreation;
     const aJoined = await waitForJoined(pageA);
     const roomCode = aJoined.configuration.roomCode;
     const joinUrl = `${VITE_ORIGIN}/__test__/authority?mode=join&room=${encodeURIComponent(roomCode)}&displayName=Matrix%20B&authorityUrl=${encodedAuthority}&impairment=${profile}`;

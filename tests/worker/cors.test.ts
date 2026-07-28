@@ -30,10 +30,19 @@ describe('Worker exact-origin CORS policy', () => {
     });
     expect(created.status).toBe(201);
     expectExactCors(created);
-    const body = await created.json() as { readonly metricsPath: string };
+    const body = await created.json() as {
+      readonly metricsPath: string;
+      readonly metricsAccess: {
+        readonly headerName: string;
+        readonly credential: string;
+      };
+    };
 
     const metrics = await SELF.fetch(`${AUTHORITY_ORIGIN}${body.metricsPath}`, {
-      headers: { Origin: ALLOWED_ORIGIN },
+      headers: {
+        Origin: ALLOWED_ORIGIN,
+        [body.metricsAccess.headerName]: body.metricsAccess.credential,
+      },
     });
     expect(metrics.status).toBe(200);
     expectExactCors(metrics);

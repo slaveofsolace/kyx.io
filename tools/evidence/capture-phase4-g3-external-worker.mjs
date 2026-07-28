@@ -27,6 +27,7 @@ const SOURCE_FILES = Object.freeze([
   'worker/reliableEvents.ts',
   'worker/resumeSessions.ts',
   'worker/resumeToken.ts',
+  'worker/metricsAccess.ts',
   'worker/room.ts',
   'worker/security.ts',
   'worker/snapshotBaselines.ts',
@@ -563,7 +564,11 @@ async function main() {
       || typeof room.roomCode !== 'string'
       || typeof room.socketPath !== 'string'
       || typeof room.metricsPath !== 'string'
+      || typeof room.metricsAccess?.headerName !== 'string'
+      || typeof room.metricsAccess?.credential !== 'string'
+      || typeof room.metricsAccess?.expiresAt !== 'number'
     ) throw new Error('TLS room creation contract failed.');
+    sensitiveValues.push(room.metricsAccess.credential);
 
     const socketHttpUrl = new URL(room.socketPath, authorityOrigin);
     if (socketHttpUrl.origin !== authorityOrigin) throw new Error('Room socket escaped Worker origin.');
@@ -736,7 +741,13 @@ async function main() {
 
     const metrics = await requestJson(
       new URL(room.metricsPath, authorityOrigin),
-      { method: 'GET', headers: { Origin: LOCALHOST_ORIGIN } },
+      {
+        method: 'GET',
+        headers: {
+          Origin: LOCALHOST_ORIGIN,
+          [room.metricsAccess.headerName]: room.metricsAccess.credential,
+        },
+      },
       'room metrics',
     );
     const metricSnapshot = metrics.body?.metrics;
@@ -765,6 +776,7 @@ async function main() {
       productionOriginAuthenticationExercised: false,
       productionProductFlowExercised: false,
       externalAccessCredentialExercised: false,
+      roomMetricsReadCredentialExercised: true,
       opaqueResumePossessionAuthenticationExercised: true,
       ephemeralPreviewOnly: true,
       durableStagingClaimed: false,
@@ -789,7 +801,8 @@ async function main() {
         && created.finalProtocol === 'https:'
         && /^KYX-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/u.test(room.roomCode)
         && room.socketPath === `/api/rooms/${room.roomCode}/socket`
-        && room.metricsPath === `/api/rooms/${room.roomCode}/metrics`,
+        && room.metricsPath === `/api/rooms/${room.roomCode}/metrics`
+        && /^[A-Za-z0-9_-]{43}$/u.test(room.metricsAccess.credential),
       wssTransportUsed: [clientASummary, clientBSummary, resumedASummary].every((summary) => (
         summary.wss === true && summary.upgradeStatus === 101
       )),
@@ -918,6 +931,9 @@ async function main() {
           roomCodePatternMatched: /^KYX-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/u.test(room.roomCode),
           socketPathMatched: room.socketPath === `/api/rooms/${room.roomCode}/socket`,
           metricsPathMatched: room.metricsPath === `/api/rooms/${room.roomCode}/metrics`,
+          metricsCredentialIssued: /^[A-Za-z0-9_-]{43}$/u.test(
+            room.metricsAccess.credential,
+          ),
         },
       },
       transport: {

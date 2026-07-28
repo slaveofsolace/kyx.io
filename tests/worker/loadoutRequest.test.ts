@@ -47,6 +47,10 @@ interface RoomCreated {
   readonly roomCode: string;
   readonly socketPath: string;
   readonly metricsPath: string;
+  readonly metricsAccess: {
+    readonly headerName: string;
+    readonly credential: string;
+  };
 }
 
 type ServerMessageOfType<T extends ServerMessage['type']> =
@@ -394,7 +398,10 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
     expect([...uniqueAcceptedEventIds]).toEqual([acceptedEvent?.id]);
 
     const metricsResponse = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.metricsPath}`, {
-      headers: { Origin: ALLOWED_ORIGIN },
+      headers: {
+        Origin: ALLOWED_ORIGIN,
+        [room.metricsAccess.headerName]: room.metricsAccess.credential,
+      },
     });
     const metricsBody = await metricsResponse.json() as {
       readonly metrics: {

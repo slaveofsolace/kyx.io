@@ -58,6 +58,15 @@ import {
   type WorkerRoomProfile,
 } from './combatRuntime';
 import { initializeWorkerRapierRuntime } from './rapierRuntime';
+import {
+  INTERNAL_METRICS_ACCESS_DIGEST_HEADER,
+  INTERNAL_METRICS_ACCESS_EXPIRY_HEADER,
+  METRICS_ACCESS_CREDENTIAL_HEADER,
+  digestMetricsAccessCredential,
+  equalMetricsAccessDigests,
+  isMetricsAccessCredential,
+  readMetricsAccessProvisioning,
+} from './metricsAccess';
 import { parseRoomRoute } from './routes';
 import { ResumeSessionRegistry } from './resumeSessions';
 import {
@@ -114,6 +123,12 @@ interface RoomProfileRow {
   readonly [column: string]: string | number | ArrayBuffer | null;
   readonly schema_version: number;
   readonly profile_id: string;
+}
+
+interface MetricsAccessRow {
+  readonly [column: string]: string | number | ArrayBuffer | null;
+  readonly credential_digest: string;
+  readonly expires_at: number;
 }
 
 interface LobbyCheckpointPlayerRow {
@@ -470,6 +485,15 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       }
       allocationLeaseId = candidate;
     }
+    if (route.resource === 'metrics' && request.method === 'GET') {
+      const authorized = await this.authorizeMetricsRequest(request, route.roomCode);
+      if (!authorized) {
+        return Response.json({ ok: false, code: 'METRICS_ACCESS_DENIED' }, {
+          status: 403,
+          headers: { 'cache-control': 'no-store' },
+        });
+      }
+    }
     const rawProfile = route.resource === 'room' && request.method === 'POST'
       ? request.headers.get(INTERNAL_ROOM_PROFILE_HEADER)
       : undefined;
@@ -480,6 +504,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       ? undefined
       : rawProfile;
     try {
+      if (route.resource === 'room' && request.method === 'POST') {
+        this.provisionMetricsAccess(request, route.roomCode);
+      }
       await this.ensureInitialized(route.roomCode, requestedProfile);
     } catch (error) {
       const profileMismatch = error instanceof Error
@@ -580,6 +607,65 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       // The guard lease expires after twenty seconds. A transient release
       // failure remains fail-closed by consuming capacity until that expiry.
     }
+  }
+
+  private ensureMetricsAccessSchema(): void {
+    this.ctx.storage.sql.exec(`
+      CREATE TABLE IF NOT EXISTS room_metrics_access_v1 (
+        singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
+        schema_version INTEGER NOT NULL CHECK (schema_version = 1),
+        room_code TEXT NOT NULL,
+        credential_digest TEXT NOT NULL CHECK (length(credential_digest) = 64),
+        expires_at INTEGER NOT NULL,
+        created_at INTEGER NOT NULL
+      )
+    `);
+  }
+
+  private provisionMetricsAccess(request: Request, roomCode: string): void {
+    this.ensureMetricsAccessSchema();
+    const provisioning = readMetricsAccessProvisioning(request.headers);
+    if (provisioning === null) return;
+    const current = [...this.ctx.storage.sql.exec<MetricsAccessRow>(
+      `SELECT credential_digest, expires_at
+       FROM room_metrics_access_v1
+       WHERE singleton = 1
+       LIMIT 1`,
+    )][0];
+    if (current !== undefined) {
+      if (
+        !equalMetricsAccessDigests(current.credential_digest, provisioning.credentialDigest)
+        || current.expires_at !== provisioning.expiresAt
+      ) {
+        throw new Error('METRICS_ACCESS_ALREADY_PROVISIONED');
+      }
+      return;
+    }
+    this.ctx.storage.sql.exec(
+      `INSERT INTO room_metrics_access_v1
+        (singleton, schema_version, room_code, credential_digest, expires_at, created_at)
+       VALUES (1, 1, ?, ?, ?, ?)`,
+      roomCode,
+      provisioning.credentialDigest,
+      provisioning.expiresAt,
+      Date.now(),
+    );
+  }
+
+  private async authorizeMetricsRequest(request: Request, roomCode: string): Promise<boolean> {
+    this.ensureMetricsAccessSchema();
+    const credential = request.headers.get(METRICS_ACCESS_CREDENTIAL_HEADER);
+    if (!isMetricsAccessCredential(credential)) return false;
+    const row = [...this.ctx.storage.sql.exec<MetricsAccessRow>(
+      `SELECT credential_digest, expires_at
+       FROM room_metrics_access_v1
+       WHERE singleton = 1 AND room_code = ?
+       LIMIT 1`,
+      roomCode,
+    )][0];
+    if (row === undefined || row.expires_at <= Date.now()) return false;
+    const candidateDigest = await digestMetricsAccessCredential(roomCode, credential);
+    return equalMetricsAccessDigests(candidateDigest, row.credential_digest);
   }
 
   override async webSocketMessage(webSocket: WebSocket, message: string | ArrayBuffer): Promise<void> {

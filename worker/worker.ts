@@ -12,6 +12,13 @@ import {
   isOptInWorkerRoomProfile,
 } from './combatRuntime';
 import type { KyxAuthorityEnv } from './env';
+import {
+  INTERNAL_METRICS_ACCESS_DIGEST_HEADER,
+  INTERNAL_METRICS_ACCESS_EXPIRY_HEADER,
+  METRICS_ACCESS_CREDENTIAL_HEADER,
+  issueMetricsAccessCredential,
+  type IssuedMetricsAccessCredential,
+} from './metricsAccess';
 import { parseRoomRoute } from './routes';
 import { isAllowedOrigin } from './security';
 
@@ -20,7 +27,7 @@ export { KyxAllocationGuard };
 
 const ROOM_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const CORS_ALLOWED_METHODS = Object.freeze(['GET', 'POST'] as const);
-const CORS_ALLOWED_HEADERS = Object.freeze([
+const CORS_ROOM_ALLOWED_HEADERS = Object.freeze([
   'content-type',
   P58D_COMBAT_PROFILE_HEADER,
 ] as const);
@@ -50,7 +57,15 @@ function json(data: unknown, status = 200, extraHeaders?: HeadersInit): Response
   });
 }
 
-function corsHeaders(origin: string, preflight = false): Headers {
+function corsAllowedHeaders(pathname: string): readonly string[] {
+  const route = parseRoomRoute(pathname);
+  if (route?.resource === 'metrics') {
+    return Object.freeze([METRICS_ACCESS_CREDENTIAL_HEADER]);
+  }
+  return CORS_ROOM_ALLOWED_HEADERS;
+}
+
+function corsHeaders(origin: string, preflight = false, pathname = ''): Headers {
   const headers = new Headers({
     'access-control-allow-origin': origin,
     vary: preflight
@@ -59,7 +74,7 @@ function corsHeaders(origin: string, preflight = false): Headers {
   });
   if (preflight) {
     headers.set('access-control-allow-methods', CORS_ALLOWED_METHODS.join(', '));
-    headers.set('access-control-allow-headers', CORS_ALLOWED_HEADERS.join(', '));
+    headers.set('access-control-allow-headers', corsAllowedHeaders(pathname).join(', '));
     headers.set('access-control-max-age', '600');
   }
   return headers;
@@ -78,7 +93,7 @@ function allowedPreflight(request: Request, pathname: string): boolean {
   if (method === undefined || !(CORS_ALLOWED_METHODS as readonly string[]).includes(method)) {
     return false;
   }
-  const allowedHeaders = new Set<string>(CORS_ALLOWED_HEADERS);
+  const allowedHeaders = new Set<string>(corsAllowedHeaders(pathname));
   return requestedCorsHeaders(request).every((header) => allowedHeaders.has(header));
 }
 
@@ -231,7 +246,7 @@ export default {
       }
       return new Response(null, {
         status: 204,
-        headers: applyApiSecurityHeaders(corsHeaders(requestOrigin, true)),
+        headers: applyApiSecurityHeaders(corsHeaders(requestOrigin, true, url.pathname)),
       });
     }
 
@@ -263,13 +278,20 @@ export default {
         return json({ ok: false, code: 'ROOM_CODE_RESERVATION_FAILED' }, 503, cors);
       }
       const roomUrl = new URL(`/api/rooms/${roomCode}`, url);
+      let metricsAccess: IssuedMetricsAccessCredential;
       let initialized: Response;
       try {
+        metricsAccess = await issueMetricsAccessCredential(roomCode);
+        const initializationHeaders = new Headers({
+          [INTERNAL_METRICS_ACCESS_DIGEST_HEADER]: metricsAccess.credentialDigest,
+          [INTERNAL_METRICS_ACCESS_EXPIRY_HEADER]: String(metricsAccess.expiresAt),
+        });
+        if (requestedProfile !== null) {
+          initializationHeaders.set(INTERNAL_ROOM_PROFILE_HEADER, requestedProfile);
+        }
         initialized = await roomStub(env, roomCode).fetch(new Request(roomUrl, {
           method: 'POST',
-          headers: requestedProfile === null
-            ? undefined
-            : { [INTERNAL_ROOM_PROFILE_HEADER]: requestedProfile },
+          headers: initializationHeaders,
         }));
       } catch {
         await releaseRoomReservation(env, roomCode, callerKey);
@@ -285,6 +307,13 @@ export default {
         roomPath: `/api/rooms/${roomCode}`,
         socketPath: `/api/rooms/${roomCode}/socket`,
         metricsPath: `/api/rooms/${roomCode}/metrics`,
+        metricsAccess: {
+          scheme: metricsAccess.scheme,
+          headerName: metricsAccess.headerName,
+          credential: metricsAccess.credential,
+          expiresAt: metricsAccess.expiresAt,
+          ttlMilliseconds: metricsAccess.ttlMilliseconds,
+        },
         ...(requestedProfile === null
           ? {}
           : { roomProfile: requestedProfile }),
@@ -344,6 +373,8 @@ export default {
     const headers = new Headers(request.headers);
     headers.delete(INTERNAL_ROOM_PROFILE_HEADER);
     headers.delete(INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER);
+    headers.delete(INTERNAL_METRICS_ACCESS_DIGEST_HEADER);
+    headers.delete(INTERNAL_METRICS_ACCESS_EXPIRY_HEADER);
     if (route.resource === 'room' && request.method === 'POST') {
       if (requestedProfile !== null) {
         headers.set(INTERNAL_ROOM_PROFILE_HEADER, requestedProfile);

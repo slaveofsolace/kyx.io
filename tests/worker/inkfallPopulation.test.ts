@@ -33,6 +33,10 @@ interface RoomCreated {
   readonly roomPath: string;
   readonly socketPath: string;
   readonly metricsPath: string;
+  readonly metricsAccess: {
+    readonly headerName: string;
+    readonly credential: string;
+  };
   readonly roomProfile: string;
   readonly mapBinding: typeof INKFALL_REVISION_2_WORKER_MAP_BINDING;
 }
@@ -181,7 +185,10 @@ function joinMessage(roomCode: string, requestId: string, displayName: string): 
 
 async function roomMetrics(room: RoomCreated): Promise<Record<string, unknown>> {
   const response = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.metricsPath}`, {
-    headers: { Origin: ALLOWED_ORIGIN },
+    headers: {
+      Origin: ALLOWED_ORIGIN,
+      [room.metricsAccess.headerName]: room.metricsAccess.credential,
+    },
   });
   if (!response.ok) throw new Error(`Metrics failed: ${response.status}`);
   const payload = await response.json() as { readonly metrics: Record<string, unknown> };
@@ -1416,7 +1423,11 @@ describe('P5.14 exact-profile real-client population proof', () => {
       );
     });
     await evictDurableObject(stub);
-    const unavailable = await stub.fetch(new Request(`${AUTHORITY_ORIGIN}${room.metricsPath}`));
+    const unavailable = await stub.fetch(new Request(`${AUTHORITY_ORIGIN}${room.metricsPath}`, {
+      headers: {
+        [room.metricsAccess.headerName]: room.metricsAccess.credential,
+      },
+    }));
     expect(unavailable.status).toBe(503);
     await expect(unavailable.json()).resolves.toMatchObject({ code: 'ROOM_UNAVAILABLE' });
     for (const client of clients) expect(client.probe.decodeErrors).toEqual([]);

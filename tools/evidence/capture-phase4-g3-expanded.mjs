@@ -44,6 +44,7 @@ const VIDEO_PROFILES = new Set([
   'matrix-targeted-reorder',
   'matrix-outage-recovery',
 ]);
+const metricsAccessByRoomCode = new Map();
 
 function argument(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -124,9 +125,40 @@ async function waitForHttp(url, label, timeoutMilliseconds = 30_000) {
   throw new Error(`${label} did not become ready: ${lastError}`);
 }
 
+function rememberMetricsAccess(room) {
+  const access = room?.metricsAccess;
+  if (
+    typeof room?.roomCode !== 'string'
+    || typeof access?.headerName !== 'string'
+    || typeof access?.credential !== 'string'
+    || typeof access?.expiresAt !== 'number'
+  ) {
+    throw new Error('Room creation did not issue a metrics read credential.');
+  }
+  metricsAccessByRoomCode.set(room.roomCode, access);
+  return room;
+}
+
+async function nextBrowserRoomCreation(page) {
+  const response = await page.waitForResponse((candidate) => {
+    const url = new URL(candidate.url());
+    return url.origin === AUTHORITY_ORIGIN
+      && url.pathname === '/api/rooms/create'
+      && candidate.request().method() === 'POST';
+  }, { timeout: JOIN_TIMEOUT_MILLISECONDS });
+  return rememberMetricsAccess(await response.json());
+}
+
 async function roomMetrics(roomCode) {
+  const access = metricsAccessByRoomCode.get(roomCode);
+  if (access === undefined) {
+    throw new Error(`Metrics credential is unavailable for ${roomCode}.`);
+  }
   const response = await fetch(`${AUTHORITY_ORIGIN}/api/rooms/${roomCode}/metrics`, {
-    headers: { Origin: VITE_ORIGIN },
+    headers: {
+      Origin: VITE_ORIGIN,
+      [access.headerName]: access.credential,
+    },
     cache: 'no-store',
   });
   const body = await response.json();
@@ -163,7 +195,7 @@ async function createRoom() {
   if (response.status !== 201 || body.ok !== true) {
     throw new Error(`Room creation failed: HTTP ${response.status}`);
   }
-  return body;
+  return rememberMetricsAccess(body);
 }
 
 async function diagnostics(page) {
@@ -538,7 +570,9 @@ async function captureDimensionProfile(browser, outputDirectory, testCase) {
   const createUrl = `${VITE_ORIGIN}/__test__/authority?mode=create&displayName=Expanded%20A&authorityUrl=${authority}&impairment=${testCase.profile}`;
   let result;
   try {
+    const roomCreation = nextBrowserRoomCreation(pageA);
     await pageA.goto(createUrl, { waitUntil: 'domcontentloaded', timeout: JOIN_TIMEOUT_MILLISECONDS });
+    await roomCreation;
     const joinedA = await waitForJoined(pageA);
     const roomCode = joinedA.configuration.roomCode;
     const joinUrl = `${VITE_ORIGIN}/__test__/authority?mode=join&room=${encodeURIComponent(roomCode)}&displayName=Expanded%20B&authorityUrl=${authority}&impairment=${testCase.profile}`;
@@ -753,10 +787,12 @@ async function captureRenderRates(browser) {
   attachBrowserLog(pageB, 'render:B', browserLog);
   const authority = encodeURIComponent(AUTHORITY_ORIGIN);
   try {
+    const roomCreation = nextBrowserRoomCreation(pageA);
     await pageA.goto(
       `${VITE_ORIGIN}/__test__/authority?mode=create&displayName=Render%20A&authorityUrl=${authority}&impairment=matrix-rtt-0`,
       { waitUntil: 'domcontentloaded', timeout: JOIN_TIMEOUT_MILLISECONDS },
     );
+    await roomCreation;
     const joinedA = await waitForJoined(pageA);
     const roomCode = joinedA.configuration.roomCode;
     await pageB.goto(

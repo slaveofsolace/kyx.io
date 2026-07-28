@@ -46,6 +46,10 @@ interface RoomCreated {
   readonly roomPath: string;
   readonly socketPath: string;
   readonly metricsPath: string;
+  readonly metricsAccess: {
+    readonly headerName: string;
+    readonly credential: string;
+  };
 }
 
 interface SocketAttachmentHistoryHarness {
@@ -345,9 +349,12 @@ async function createRoom(): Promise<RoomCreated> {
   return await response.json() as RoomCreated;
 }
 
-async function roomMetrics(metricsPath: string): Promise<RoomMetrics> {
-  const response = await SELF.fetch(`${AUTHORITY_ORIGIN}${metricsPath}`, {
-    headers: { Origin: ALLOWED_ORIGIN },
+async function roomMetrics(room: RoomCreated): Promise<RoomMetrics> {
+  const response = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.metricsPath}`, {
+    headers: {
+      Origin: ALLOWED_ORIGIN,
+      [room.metricsAccess.headerName]: room.metricsAccess.credential,
+    },
   });
   if (!response.ok) throw new Error(`Metrics request failed with status ${response.status}`);
   const body = await response.json() as { readonly metrics: RoomMetrics };
@@ -355,12 +362,12 @@ async function roomMetrics(metricsPath: string): Promise<RoomMetrics> {
 }
 
 async function waitForMetrics(
-  metricsPath: string,
+  room: RoomCreated,
   predicate: (metrics: RoomMetrics) => boolean,
   label: string,
 ): Promise<RoomMetrics> {
   for (let attempt = 0; attempt < 200; attempt += 1) {
-    const metrics = await roomMetrics(metricsPath);
+    const metrics = await roomMetrics(room);
     if (predicate(metrics)) return metrics;
     await new Promise((resolve) => setTimeout(resolve, 10));
   }
@@ -407,7 +414,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     const room = await createRoom();
     const flood = await connectSocket(room.socketPath);
     await waitForType(flood, 'welcome');
-    const before = await roomMetrics(room.metricsPath);
+    const before = await roomMetrics(room);
 
     for (let index = 0; index <= MAX_MESSAGES_PER_RATE_WINDOW; index += 1) {
       flood.socket.send(JSON.stringify({
@@ -423,7 +430,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
 
     await waitForType(flood, 'error', ({ code }) => code === 'RATE_LIMITED');
     const after = await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ transport }) => (
         transport.inboundMessagesRateRejected
           === before.transport.inboundMessagesRateRejected + 1
@@ -552,7 +559,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     );
     expect(rejected.detail).toBe('snapshot_tick_future');
 
-    const metrics = await roomMetrics(room.metricsPath);
+    const metrics = await roomMetrics(room);
     expect(metrics.transport).toMatchObject({
       deltaSnapshotsSent: expect.any(Number),
       snapshotAcksAccepted: expect.any(Number),
@@ -605,7 +612,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     );
 
     const evicted = await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ connectedPlayers, transport }) => (
         connectedPlayers === 1 && transport.snapshotAckDebtEvictions === 1
       ),
@@ -700,10 +707,10 @@ describe('protocol-v2 WebSocket Worker integration', () => {
       serverTick: fallback.serverTick,
       snapshotBaselineId: fallback.snapshotBaselineId,
     });
-    const beforeIntermediateAck = await roomMetrics(room.metricsPath);
+    const beforeIntermediateAck = await roomMetrics(room);
     acknowledgeSnapshot(delayed, delayedDelta, delayedInitial.reliableEventBaselineId);
     await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ transport }) => (
         transport.snapshotAcksAccepted > beforeIntermediateAck.transport.snapshotAcksAccepted
       ),
@@ -735,7 +742,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
       message.type === 'error'
       && message.code === 'ACK_REJECTED'
     ))).toEqual([]);
-    const metrics = await roomMetrics(room.metricsPath);
+    const metrics = await roomMetrics(room);
     expect(metrics.connectedPlayers).toBe(2);
     expect(metrics.transport.snapshotAckDebtRecoveries).toBeGreaterThanOrEqual(1);
     expect(metrics.transport.snapshotAcksRejected).toBe(0);
@@ -799,7 +806,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     expect(afterPrunedRejection.lastAcknowledgedSnapshotTick).toBeGreaterThanOrEqual(
       recoveredState.lastAcknowledgedSnapshotTick ?? 0,
     );
-    const afterPrunedMetrics = await roomMetrics(room.metricsPath);
+    const afterPrunedMetrics = await roomMetrics(room);
     expect(afterPrunedMetrics.connectedPlayers).toBe(2);
     expect(afterPrunedMetrics.transport.snapshotAcksRejected).toBe(2);
     stopRecoveredAcks();
@@ -972,7 +979,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
 
     first.socket.close(1000, 'test reconnect');
     const disconnected = await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ connectedPlayers }) => connectedPlayers === 1,
       'first player disconnect',
     );
@@ -1097,7 +1104,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     expect(duplicateRejected.code).toBe('DUPLICATE_SESSION');
 
     const finalMetrics = await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ connectedPlayers, acceptedInputs }) => connectedPlayers === 2 && acceptedInputs === 1,
       'resumed session metrics',
     );
@@ -1242,7 +1249,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
         snapshotBaselineId: rehydrated?.snapshotBaselineId,
       }],
     });
-    await expect(roomMetrics(room.metricsPath)).resolves.toMatchObject({
+    await expect(roomMetrics(room)).resolves.toMatchObject({
       lifecycle: 'lobby',
       serverTick: 0,
       players: 1,
@@ -1322,7 +1329,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
       ({ requestId }) => requestId === 'req.join.hibernate-second',
     );
     const started = await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ lifecycle, connectedPlayers, serverTick }) => (
         connectedPlayers === 2 && lifecycle === 'warmup' && serverTick > 0
       ),
@@ -1365,7 +1372,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     );
     first.socket.close(1000, 'hibernate reconnect wait');
     await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ lifecycle, players, connectedPlayers }) => (
         lifecycle === 'lobby' && players === 1 && connectedPlayers === 0
       ),
@@ -1419,7 +1426,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     expect(resumedSnapshot.localReconciliation.player.feetPosition).toEqual(
       initial.localReconciliation.player.feetPosition,
     );
-    await expect(roomMetrics(room.metricsPath)).resolves.toMatchObject({
+    await expect(roomMetrics(room)).resolves.toMatchObject({
       lifecycle: 'lobby',
       serverTick: 0,
       players: 1,
@@ -1439,7 +1446,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
     );
     first.socket.close(1000, 'expire reconnect wait');
     await waitForMetrics(
-      room.metricsPath,
+      room,
       ({ lifecycle, players, connectedPlayers }) => (
         lifecycle === 'lobby' && players === 1 && connectedPlayers === 0
       ),
@@ -1483,7 +1490,7 @@ describe('protocol-v2 WebSocket Worker integration', () => {
       headers: { Origin: ALLOWED_ORIGIN },
     });
     expect(reopened.status).toBe(201);
-    await expect(roomMetrics(room.metricsPath)).resolves.toMatchObject({
+    await expect(roomMetrics(room)).resolves.toMatchObject({
       lifecycle: 'created',
       serverTick: 0,
       players: 0,

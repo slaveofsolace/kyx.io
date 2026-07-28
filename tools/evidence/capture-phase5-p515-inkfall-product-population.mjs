@@ -267,6 +267,7 @@ const sourceFiles = Object.freeze([
   'worker/rapierRuntime.ts',
   'worker/reliableEvents.ts',
   'worker/resumeSessions.ts',
+  'worker/metricsAccess.ts',
   'worker/room.ts',
   'worker/routes.ts',
   'worker/security.ts',
@@ -493,12 +494,41 @@ async function waitForHttp(url, timeoutMilliseconds = 30_000) {
   throw new Error(`Timed out waiting for ${url}`);
 }
 
+function rememberMetricsAccess(room) {
+  const access = room?.metricsAccess;
+  if (
+    typeof room?.roomCode !== 'string'
+    || typeof access?.headerName !== 'string'
+    || typeof access?.credential !== 'string'
+    || typeof access?.expiresAt !== 'number'
+  ) {
+    throw new Error('Room creation did not issue a metrics read credential.');
+  }
+  metricsAccessByRoomCode.set(room.roomCode, access);
+  return room;
+}
+
+async function nextBrowserRoomCreation(page) {
+  const response = await page.waitForResponse((candidate) => {
+    const url = new URL(candidate.url());
+    return url.origin === AUTHORITY_ORIGIN
+      && url.pathname === '/api/rooms/create'
+      && candidate.request().method() === 'POST';
+  }, { timeout: 45_000 });
+  return rememberMetricsAccess(await response.json());
+}
+
 async function recordRoomMetrics(label, roomCode, force = false) {
   if (roomCode === null || (!force && Date.now() - lastRoomMetricsAt < 1_000)) return;
   lastRoomMetricsAt = Date.now();
   try {
+    const access = metricsAccessByRoomCode.get(roomCode);
+    if (access === undefined) throw new Error(`Metrics credential unavailable for ${roomCode}.`);
     const response = await fetch(`${AUTHORITY_ORIGIN}/api/rooms/${roomCode}/metrics`, {
-      headers: { Origin: FRONTEND_ORIGIN, [PROFILE_HEADER]: PROFILE },
+      headers: {
+        Origin: FRONTEND_ORIGIN,
+        [access.headerName]: access.credential,
+      },
     });
     const body = await response.json();
     roomMetricsTimeline.push(Object.freeze({
@@ -2085,6 +2115,7 @@ const clients = [];
 const wireRecords = [];
 const connectionTimeline = [];
 const roomMetricsTimeline = [];
+const metricsAccessByRoomCode = new Map();
 const lastConnectionFingerprints = new Map();
 let lastRoomMetricsAt = 0;
 
@@ -2179,7 +2210,9 @@ try {
   await profileSelector.check();
   const roomCreationRequestedAt = new Date().toISOString();
   assert.ok(Date.parse(roomCreationRequestedAt) >= Date.parse(browserPrewarmCompletedAt));
+  const roomCreation = nextBrowserRoomCreation(first.page);
   await first.page.getByTestId('online-create-room').click();
+  await roomCreation;
   await first.page.waitForFunction(
     () => document.body.dataset.onlinePreviewStatus === 'joined',
     undefined,
@@ -2728,7 +2761,7 @@ try {
     headers: { Origin: FRONTEND_ORIGIN, [PROFILE_HEADER]: FLAT_COMBAT_PROFILE },
   });
   assert.equal(flatResponse.status, 201);
-  const flatRoom = await flatResponse.json();
+  const flatRoom = rememberMetricsAccess(await flatResponse.json());
   const mismatchClient = clients[7];
   const mismatchStartSequence = wireSequence;
   await mismatchClient.page.goto(

@@ -67,6 +67,10 @@ interface RoomCreated {
   readonly roomCode: string;
   readonly socketPath: string;
   readonly metricsPath: string;
+  readonly metricsAccess: {
+    readonly headerName: string;
+    readonly credential: string;
+  };
   readonly mapBinding: {
     readonly spawns: readonly {
       readonly feetPosition: { readonly x: number; readonly y: number; readonly z: number };
@@ -241,7 +245,10 @@ async function waitForTypeAfter<T extends ServerMessage['type']>(
 
 async function roomMetrics(room: RoomCreated): Promise<RoomMetrics> {
   const response = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.metricsPath}`, {
-    headers: { Origin: ALLOWED_ORIGIN },
+    headers: {
+      Origin: ALLOWED_ORIGIN,
+      [room.metricsAccess.headerName]: room.metricsAccess.credential,
+    },
   });
   if (!response.ok) throw new Error(`Metrics failed: ${response.status}`);
   const payload = await response.json() as { readonly metrics: RoomMetrics };

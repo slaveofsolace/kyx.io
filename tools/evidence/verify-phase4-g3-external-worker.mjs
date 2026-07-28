@@ -280,6 +280,7 @@ async function main() {
       && boundaries?.productionOriginAuthenticationExercised === false
       && boundaries?.productionProductFlowExercised === false
       && boundaries?.externalAccessCredentialExercised === false
+      && boundaries?.roomMetricsReadCredentialExercised === true
       && boundaries?.opaqueResumePossessionAuthenticationExercised === true
       && boundaries?.ephemeralPreviewOnly === true
       && boundaries?.durableStagingClaimed === false
@@ -308,7 +309,8 @@ async function main() {
       && runtime.http?.createRoom?.ok === true
       && runtime.http?.createRoom?.roomCodePatternMatched === true
       && runtime.http?.createRoom?.socketPathMatched === true
-      && runtime.http?.createRoom?.metricsPathMatched === true,
+      && runtime.http?.createRoom?.metricsPathMatched === true
+      && runtime.http?.createRoom?.metricsCredentialIssued === true,
     twoProtocolV2Clients: transport?.protocolVersion === 2
       && transport?.concurrentGameplayClients === 2
       && transport?.maximumConcurrentOpenSockets === 2
