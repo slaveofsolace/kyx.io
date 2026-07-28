@@ -171,6 +171,8 @@ try {
     '--local',
     '--port',
     String(AUTHORITY_PORT),
+    '--var',
+    `ALLOWED_ORIGINS:${FRONTEND_ORIGIN}`,
   ]);
   vite = service(
     [

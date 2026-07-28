@@ -144,7 +144,9 @@ function mapVelocityToScene(
 }
 
 function normalizedYawRadians(yawMilliDegrees: number): number {
-  return -yawMilliDegrees * Math.PI / 180_000;
+  // Authority yaw zero faces map-east (+X). Three cameras face -Z at zero
+  // rotation, so convert the map frame with a -90 degree basis offset.
+  return -yawMilliDegrees * Math.PI / 180_000 - Math.PI / 2;
 }
 
 function directionFromLook(
@@ -156,9 +158,9 @@ function directionFromLook(
   const pitch = pitchMilliDegrees * Math.PI / 180_000;
   const horizontal = Math.cos(pitch);
   return target.set(
-    Math.sin(yaw) * horizontal,
+    Math.cos(yaw) * horizontal,
     Math.sin(pitch),
-    -Math.cos(yaw) * horizontal,
+    -Math.sin(yaw) * horizontal,
   ).normalize();
 }
 

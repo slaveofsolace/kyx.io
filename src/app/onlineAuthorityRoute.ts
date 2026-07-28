@@ -247,7 +247,7 @@ function onlineStyles(): HTMLStyleElement {
     .online-session__reticle::before { top: 8px; left: 1px; width: 16px; height: 2px; }
     .online-session__reticle::after { top: 1px; left: 8px; width: 2px; height: 16px; }
     .online-session__weapon-rail { position: absolute; right: 24px; bottom: 24px; z-index: 4; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; width: min(620px, calc(100% - 48px)); pointer-events: auto; }
-    .online-session__weapon-slot { min-width: 0; min-height: 42px; padding: 6px 5px; border: 1px solid rgba(73, 104, 113, .76); background: rgba(5, 12, 15, .84); color: #8ca0a8; cursor: pointer; font: 850 7px/1.25 ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+    .online-session__weapon-slot { min-width: 0; min-height: 42px; overflow: hidden; padding: 6px 5px; border: 1px solid rgba(73, 104, 113, .76); background: rgba(5, 12, 15, .84); color: #8ca0a8; cursor: pointer; font: 850 7px/1.25 ui-monospace, monospace; letter-spacing: .04em; overflow-wrap: anywhere; text-transform: uppercase; }
     .online-session__weapon-slot strong { display: block; margin-bottom: 3px; color: #dbe9ed; font-size: 9px; }
     .online-session__weapon-slot[data-active='true'] { border-color: #68e9f3; background: rgba(12, 68, 76, .92); color: #c7fbff; box-shadow: inset 0 -2px #68e9f3; }
     .online-session__legend { display: flex; flex-wrap: wrap; gap: 16px; padding: 0 15px 15px; color: #74848e; font: 700 10px/1.4 ui-monospace, monospace; }
