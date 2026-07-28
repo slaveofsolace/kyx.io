@@ -36,6 +36,10 @@ import {
 } from '../src/sim';
 import type { KyxAuthorityEnv } from './env';
 import {
+  ALLOCATION_GUARD_NAME,
+  INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER,
+} from './allocationGuard';
+import {
   INTERNAL_ROOM_PROFILE_HEADER,
   createInkfallWorkerCombatOptions,
   combatSnapshotFromAuthority,
@@ -59,6 +63,7 @@ import { ResumeSessionRegistry } from './resumeSessions';
 import {
   FULL_SNAPSHOT_REQUEST_COOLDOWN_MILLISECONDS,
   MAX_SOCKET_BUFFERED_BYTES,
+  PRE_JOIN_TIMEOUT_MILLISECONDS,
   SOCKET_STALE_MILLISECONDS,
   applyAcceptedSnapshotAcknowledgement,
   consumeSocketRate,
@@ -372,6 +377,7 @@ function exactCheckpointEventId(value: unknown, label: string): string | null {
 }
 
 export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
+  private readonly authorityEnv: KyxAuthorityEnv;
   private authority: AuthoritativeRoom | null = null;
   private authoritativeLoadout: AuthorityLoadoutSelectionV1 | null = null;
   private world: RapierMovementWorld | null = null;
@@ -440,12 +446,30 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
 
   constructor(ctx: DurableObjectState, env: KyxAuthorityEnv) {
     super(ctx, env);
+    this.authorityEnv = env;
     this.resumeSessions = new ResumeSessionRegistry(ctx.storage);
   }
 
   override async fetch(request: Request): Promise<Response> {
     const route = parseRoomRoute(new URL(request.url).pathname);
     if (route === null) return Response.json({ ok: false, code: 'ROOM_ROUTE_INVALID' }, { status: 404 });
+    let allocationLeaseId: string | null = null;
+    if (route.resource === 'socket') {
+      if (request.headers.get('Upgrade')?.toLowerCase() !== 'websocket') {
+        return Response.json(
+          { ok: false, code: 'WEBSOCKET_UPGRADE_REQUIRED' },
+          { status: 426 },
+        );
+      }
+      const candidate = request.headers.get(INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER);
+      if (candidate === null || !/^socket\.[a-f0-9]{32}$/u.test(candidate)) {
+        return Response.json(
+          { ok: false, code: 'SOCKET_ALLOCATION_LEASE_REQUIRED' },
+          { status: 403 },
+        );
+      }
+      allocationLeaseId = candidate;
+    }
     const rawProfile = route.resource === 'room' && request.method === 'POST'
       ? request.headers.get(INTERNAL_ROOM_PROFILE_HEADER)
       : undefined;
@@ -503,7 +527,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           : {}),
       }, { status: 201, headers: { 'cache-control': 'no-store' } });
     }
-    if (route.resource !== 'socket' || request.headers.get('Upgrade')?.toLowerCase() !== 'websocket') {
+    if (route.resource !== 'socket') {
       return Response.json({ ok: false, code: 'WEBSOCKET_UPGRADE_REQUIRED' }, { status: 426 });
     }
 
@@ -512,9 +536,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const server = pair[1];
     const now = Date.now();
     const attachment: SocketAttachment = Object.freeze({
-      schemaVersion: 6,
+      schemaVersion: 7,
       roomCode: route.roomCode,
       connectionId: `connection.${crypto.randomUUID()}`,
+      allocationLeaseId,
+      preJoinExpiresAt: now + PRE_JOIN_TIMEOUT_MILLISECONDS,
       playerId: null,
       sessionGeneration: 0,
       rateWindowStartedAt: now,
@@ -538,6 +564,22 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     safeSocketSend(server, this.welcome(attachment.connectionId));
     await this.scheduleMaintenanceAlarm();
     return new Response(null, { status: 101, webSocket: client });
+  }
+
+  private async releaseAllocationLease(leaseId: string | null): Promise<void> {
+    if (leaseId === null) return;
+    try {
+      await this.authorityEnv.KYX_ALLOCATION_GUARD
+        .getByName(ALLOCATION_GUARD_NAME)
+        .fetch(new Request('https://kyx-allocation.internal/v1/sockets/release', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ leaseId }),
+        }));
+    } catch {
+      // The guard lease expires after twenty seconds. A transient release
+      // failure remains fail-closed by consuming capacity until that expiry.
+    }
   }
 
   override async webSocketMessage(webSocket: WebSocket, message: string | ArrayBuffer): Promise<void> {
@@ -635,8 +677,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           return;
         }
         const eventBaselineId = this.reliableEvents.latestId;
+        await this.releaseAllocationLease(rate.attachment.allocationLeaseId);
         const nextAttachment: SocketAttachment = Object.freeze({
           ...rate.attachment,
+          allocationLeaseId: null,
+          preJoinExpiresAt: null,
           playerId,
           sessionGeneration: issued.session.generation,
           lastAcknowledgedSnapshotTick: null,
@@ -738,8 +783,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         const restoredEventAcknowledgement = this.retainedEventBaseline(
           this.playerEventAcknowledgements.get(current.playerId) ?? null,
         );
+        await this.releaseAllocationLease(rate.attachment.allocationLeaseId);
         const nextAttachment: SocketAttachment = Object.freeze({
           ...rate.attachment,
+          allocationLeaseId: null,
+          preJoinExpiresAt: null,
           playerId: current.playerId,
           sessionGeneration: rotated.generation,
           lastAcknowledgedSnapshotTick: null,
@@ -981,6 +1029,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.disconnectAttachment(attachment, Date.now());
         await this.scheduleMaintenanceAlarm();
       } finally {
+        await this.releaseAllocationLease(attachment.allocationLeaseId);
         this.forgetSocketAttachment(attachment);
       }
     }
@@ -995,6 +1044,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.disconnectAttachment(attachment, Date.now());
         await this.scheduleMaintenanceAlarm();
       } finally {
+        await this.releaseAllocationLease(attachment.allocationLeaseId);
         this.forgetSocketAttachment(attachment);
       }
     }

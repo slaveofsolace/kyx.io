@@ -20,6 +20,10 @@
       {
         "name": "KYX_ROOM",
         "class_name": "KyxRoom"
+      },
+      {
+        "name": "KYX_ALLOCATION_GUARD",
+        "class_name": "KyxAllocationGuard"
       }
     ]
   },
@@ -27,6 +31,10 @@
     {
       "tag": "v1",
       "new_sqlite_classes": ["KyxRoom"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["KyxAllocationGuard"]
     }
   ],
   "vars": {
@@ -47,6 +55,10 @@
           {
             "name": "KYX_ROOM",
             "class_name": "KyxRoom"
+          },
+          {
+            "name": "KYX_ALLOCATION_GUARD",
+            "class_name": "KyxAllocationGuard"
           }
         ]
       },

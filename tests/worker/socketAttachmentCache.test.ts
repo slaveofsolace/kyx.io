@@ -12,9 +12,11 @@ interface SocketAttachmentCacheHarness {
 
 function attachment(connectionId: string): SocketAttachment {
   return Object.freeze({
-    schemaVersion: 6,
+    schemaVersion: 7,
     roomCode: 'KYX-234567',
     connectionId,
+    allocationLeaseId: null,
+    preJoinExpiresAt: null,
     playerId: 'player.cache-test',
     sessionGeneration: 1,
     rateWindowStartedAt: 1,
@@ -93,8 +95,10 @@ describe('KyxRoom socket attachment cache', () => {
     const migrated = room.readSocketAttachment(legacyWrapper);
 
     expect(migrated).toMatchObject({
-      schemaVersion: 6,
+      schemaVersion: 7,
       connectionId: current.connectionId,
+      allocationLeaseId: null,
+      preJoinExpiresAt: null,
       snapshotAckDebtStartedAt: null,
       sentSnapshotHistory: [{
         serverTick: 0,

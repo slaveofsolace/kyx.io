@@ -1,5 +1,10 @@
 import { KyxRoom } from './room';
 import {
+  ALLOCATION_GUARD_NAME,
+  INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER,
+  KyxAllocationGuard,
+} from './allocationGuard';
+import {
   INTERNAL_ROOM_PROFILE_HEADER,
   P58D_COMBAT_PROFILE_HEADER,
   inkfallWorkerMapBinding,
@@ -11,6 +16,7 @@ import { parseRoomRoute } from './routes';
 import { isAllowedOrigin } from './security';
 
 export { KyxRoom };
+export { KyxAllocationGuard };
 
 const ROOM_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const CORS_ALLOWED_METHODS = Object.freeze(['GET', 'POST'] as const);
@@ -103,6 +109,104 @@ function roomStub(env: KyxAuthorityEnv, roomCode: string): DurableObjectStub {
   return env.KYX_ROOM.getByName(roomCode);
 }
 
+interface AcceptedRoomReservation {
+  readonly ok: true;
+  readonly newlyReserved: boolean;
+  readonly expiresAt: number;
+}
+
+interface AcceptedSocketReservation {
+  readonly ok: true;
+  readonly newlyReserved: true;
+  readonly leaseId: string;
+  readonly expiresAt: number;
+}
+
+interface RejectedAllocationReservation {
+  readonly ok: false;
+  readonly code: string;
+  readonly retryAfterMilliseconds: number;
+}
+
+type RoomReservation = AcceptedRoomReservation | RejectedAllocationReservation;
+type SocketReservation = AcceptedSocketReservation | RejectedAllocationReservation;
+
+function allocationGuardStub(env: KyxAuthorityEnv): DurableObjectStub {
+  return env.KYX_ALLOCATION_GUARD.getByName(ALLOCATION_GUARD_NAME);
+}
+
+async function callerAllocationKey(request: Request): Promise<string> {
+  const source = (request.headers.get('CF-Connecting-IP') ?? 'unattributed')
+    .trim()
+    .slice(0, 128);
+  const digest = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(`kyx-allocation-v1:${source}`),
+  );
+  const hex = [...new Uint8Array(digest)]
+    .slice(0, 16)
+    .map((value) => value.toString(16).padStart(2, '0'))
+    .join('');
+  return `caller.${hex}`;
+}
+
+async function allocationRequest<T>(
+  env: KyxAuthorityEnv,
+  path: string,
+  body: Readonly<Record<string, unknown>>,
+): Promise<T | null> {
+  try {
+    const response = await allocationGuardStub(env).fetch(new Request(
+      new URL(path, 'https://kyx-allocation.internal'),
+      {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(body),
+      },
+    ));
+    const value = await response.json();
+    if (value === null || typeof value !== 'object' || Array.isArray(value)) return null;
+    return value as T;
+  } catch {
+    return null;
+  }
+}
+
+function allocationRejected(
+  reservation: RejectedAllocationReservation,
+  cors: Headers,
+  scope: 'room' | 'socket',
+): Response {
+  const retryAfterSeconds = Math.max(
+    1,
+    Math.ceil(reservation.retryAfterMilliseconds / 1_000),
+  );
+  return json({
+    ok: false,
+    code: scope === 'room' ? 'ROOM_ALLOCATION_LIMITED' : 'SOCKET_ALLOCATION_LIMITED',
+    reason: reservation.code,
+    retryAfterSeconds,
+  }, 429, new Headers({
+    ...Object.fromEntries(cors),
+    'retry-after': String(retryAfterSeconds),
+  }));
+}
+
+async function releaseRoomReservation(
+  env: KyxAuthorityEnv,
+  roomCode: string,
+  callerKey: string,
+): Promise<void> {
+  await allocationRequest(env, '/v1/rooms/release', { roomCode, callerKey });
+}
+
+async function releaseSocketReservation(
+  env: KyxAuthorityEnv,
+  leaseId: string,
+): Promise<void> {
+  await allocationRequest(env, '/v1/sockets/release', { leaseId });
+}
+
 export default {
   async fetch(request: Request, env: KyxAuthorityEnv): Promise<Response> {
     const url = new URL(request.url);
@@ -136,7 +240,28 @@ export default {
       if (requestedProfile !== null && !isOptInWorkerRoomProfile(requestedProfile)) {
         return json({ ok: false, code: 'ROOM_PROFILE_UNSUPPORTED' }, 400, cors);
       }
-      const roomCode = secureRoomCode();
+      const callerKey = await callerAllocationKey(request);
+      let roomCode: string | null = null;
+      let roomReservation: AcceptedRoomReservation | null = null;
+      for (let attempt = 0; attempt < 4; attempt += 1) {
+        const candidate = secureRoomCode();
+        const reservation = await allocationRequest<RoomReservation>(
+          env,
+          '/v1/rooms/reserve',
+          { roomCode: candidate, callerKey },
+        );
+        if (reservation === null) {
+          return json({ ok: false, code: 'ALLOCATION_GUARD_UNAVAILABLE' }, 503, cors);
+        }
+        if (!reservation.ok) return allocationRejected(reservation, cors, 'room');
+        if (!reservation.newlyReserved) continue;
+        roomCode = candidate;
+        roomReservation = reservation;
+        break;
+      }
+      if (roomCode === null || roomReservation === null) {
+        return json({ ok: false, code: 'ROOM_CODE_RESERVATION_FAILED' }, 503, cors);
+      }
       const roomUrl = new URL(`/api/rooms/${roomCode}`, url);
       let initialized: Response;
       try {
@@ -147,9 +272,11 @@ export default {
             : { [INTERNAL_ROOM_PROFILE_HEADER]: requestedProfile },
         }));
       } catch {
+        await releaseRoomReservation(env, roomCode, callerKey);
         return json({ ok: false, code: 'ROOM_INITIALIZATION_FAILED' }, 503, cors);
       }
       if (!initialized.ok) {
+        await releaseRoomReservation(env, roomCode, callerKey);
         return json({ ok: false, code: 'ROOM_INITIALIZATION_FAILED' }, 503, cors);
       }
       return json({
@@ -169,22 +296,79 @@ export default {
 
     const route = parseRoomRoute(url.pathname);
     if (route === null) return json({ ok: false, code: 'NOT_FOUND' }, 404, cors);
-    let roomRequest = request;
-    if (route.resource === 'room' && request.method === 'POST') {
-      const requestedProfile = request.headers.get(P58D_COMBAT_PROFILE_HEADER);
-      if (requestedProfile !== null && !isOptInWorkerRoomProfile(requestedProfile)) {
-        return json({ ok: false, code: 'ROOM_PROFILE_UNSUPPORTED' }, 400, cors);
+    if (
+      route.resource === 'socket'
+      && request.headers.get('Upgrade')?.toLowerCase() !== 'websocket'
+    ) {
+      return json({ ok: false, code: 'WEBSOCKET_UPGRADE_REQUIRED' }, 426, cors);
+    }
+    const requestedProfile = route.resource === 'room' && request.method === 'POST'
+      ? request.headers.get(P58D_COMBAT_PROFILE_HEADER)
+      : null;
+    if (requestedProfile !== null && !isOptInWorkerRoomProfile(requestedProfile)) {
+      return json({ ok: false, code: 'ROOM_PROFILE_UNSUPPORTED' }, 400, cors);
+    }
+    const callerKey = await callerAllocationKey(request);
+    const roomReservation = await allocationRequest<RoomReservation>(
+      env,
+      '/v1/rooms/reserve',
+      { roomCode: route.roomCode, callerKey },
+    );
+    if (roomReservation === null) {
+      return json({ ok: false, code: 'ALLOCATION_GUARD_UNAVAILABLE' }, 503, cors);
+    }
+    if (!roomReservation.ok) return allocationRejected(roomReservation, cors, 'room');
+
+    let socketReservation: AcceptedSocketReservation | null = null;
+    if (route.resource === 'socket') {
+      const reservation = await allocationRequest<SocketReservation>(
+        env,
+        '/v1/sockets/reserve',
+        { roomCode: route.roomCode, callerKey },
+      );
+      if (reservation === null) {
+        if (roomReservation.newlyReserved) {
+          await releaseRoomReservation(env, route.roomCode, callerKey);
+        }
+        return json({ ok: false, code: 'ALLOCATION_GUARD_UNAVAILABLE' }, 503, cors);
       }
-      const headers = new Headers(request.headers);
-      headers.delete(INTERNAL_ROOM_PROFILE_HEADER);
+      if (!reservation.ok) {
+        if (roomReservation.newlyReserved) {
+          await releaseRoomReservation(env, route.roomCode, callerKey);
+        }
+        return allocationRejected(reservation, cors, 'socket');
+      }
+      socketReservation = reservation;
+    }
+
+    const headers = new Headers(request.headers);
+    headers.delete(INTERNAL_ROOM_PROFILE_HEADER);
+    headers.delete(INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER);
+    if (route.resource === 'room' && request.method === 'POST') {
       if (requestedProfile !== null) {
         headers.set(INTERNAL_ROOM_PROFILE_HEADER, requestedProfile);
       }
-      roomRequest = new Request(request, { headers });
     }
+    if (socketReservation !== null) {
+      headers.set(INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER, socketReservation.leaseId);
+    }
+    const roomRequest = new Request(request, { headers });
     try {
-      return withCors(await roomStub(env, route.roomCode).fetch(roomRequest), requestOrigin);
+      const response = await roomStub(env, route.roomCode).fetch(roomRequest);
+      if (socketReservation !== null && response.status !== 101) {
+        await releaseSocketReservation(env, socketReservation.leaseId);
+      }
+      if (response.status !== 101 && !response.ok && roomReservation.newlyReserved) {
+        await releaseRoomReservation(env, route.roomCode, callerKey);
+      }
+      return withCors(response, requestOrigin);
     } catch {
+      if (socketReservation !== null) {
+        await releaseSocketReservation(env, socketReservation.leaseId);
+      }
+      if (roomReservation.newlyReserved) {
+        await releaseRoomReservation(env, route.roomCode, callerKey);
+      }
       return json({ ok: false, code: 'ROOM_UNAVAILABLE' }, 503, cors);
     }
   },

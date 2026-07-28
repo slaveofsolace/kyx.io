@@ -47,12 +47,15 @@ export const MAX_RETAINED_SENT_SNAPSHOT_REFERENCES = Math.ceil(
   MAX_SNAPSHOT_ACK_DEBT_MILLISECONDS / 1_000 * MAX_SNAPSHOT_SENDS_PER_SECOND,
 ) + 2;
 export const SOCKET_STALE_MILLISECONDS = 30_000 as const;
+export const PRE_JOIN_TIMEOUT_MILLISECONDS = 10_000 as const;
 export const FULL_SNAPSHOT_REQUEST_COOLDOWN_MILLISECONDS = 500 as const;
 
 export interface SocketAttachment {
-  readonly schemaVersion: 6;
+  readonly schemaVersion: 7;
   readonly roomCode: string;
   readonly connectionId: string;
+  readonly allocationLeaseId: string | null;
+  readonly preJoinExpiresAt: number | null;
   readonly playerId: string | null;
   readonly sessionGeneration: number;
   readonly rateWindowStartedAt: number;
@@ -127,13 +130,24 @@ export function isAllowedOrigin(request: Request, configuredOrigins: string | un
 export function isSocketAttachment(value: unknown): value is SocketAttachment {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
   const record = value as Partial<SocketAttachment>;
-  return record.schemaVersion === 6
+  return record.schemaVersion === 7
     && typeof record.roomCode === 'string'
     && normalizeRoomCode(record.roomCode) === record.roomCode
     && typeof record.connectionId === 'string'
     && record.connectionId.length >= 1
     && record.connectionId.length <= PROTOCOL_LIMITS.maxIdBytes
+    && nullableAllocationLeaseId(record.allocationLeaseId)
+    && nullableTimestamp(record.preJoinExpiresAt)
     && (record.playerId === null || typeof record.playerId === 'string')
+    && (
+      (record.playerId === null && record.allocationLeaseId === null)
+      || (record.playerId === null && record.preJoinExpiresAt !== null)
+      || (
+        record.playerId !== null
+        && record.allocationLeaseId === null
+        && record.preJoinExpiresAt === null
+      )
+    )
     && typeof record.sessionGeneration === 'number'
     && Number.isSafeInteger(record.sessionGeneration)
     && record.sessionGeneration >= 0
@@ -170,10 +184,11 @@ export function isSocketAttachment(value: unknown): value is SocketAttachment {
 }
 
 /**
- * Rolling deployments may wake sockets serialized by either of the two prior
- * runtimes. Version 4 lacks snapshot-ACK debt and version 5 lacks the bounded
- * session-local sent-snapshot history. Both migrations are reconstructed only
- * from fields that the version-6 validator checks in full.
+ * Rolling deployments may wake sockets serialized by any of the three prior
+ * runtimes. Version 4 lacks snapshot-ACK debt, version 5 lacks the bounded
+ * session-local sent-snapshot history, and version 6 predates the global
+ * pre-join allocation lease. Prior sockets migrate with a null lease because
+ * they were already accepted before this guard existed.
  */
 export function normalizeSocketAttachment(value: unknown): SocketAttachment | null {
   if (isSocketAttachment(value)) return value;
@@ -183,27 +198,37 @@ export function normalizeSocketAttachment(value: unknown): SocketAttachment | nu
     || Array.isArray(value)
   ) return null;
   const version = (value as { readonly schemaVersion?: unknown }).schemaVersion;
-  const version5 = version === 4
-    ? { ...value, schemaVersion: 5, snapshotAckDebtStartedAt: null }
-    : value;
-  if ((version5 as { readonly schemaVersion?: unknown }).schemaVersion !== 5) return null;
-  const previous = version5 as {
-    readonly lastSentSnapshotTick?: unknown;
-    readonly lastSentSnapshotBaselineId?: unknown;
-  };
-  const sentSnapshotHistory = (
-    typeof previous.lastSentSnapshotTick === 'number'
-    && Number.isSafeInteger(previous.lastSentSnapshotTick)
-    && previous.lastSentSnapshotTick >= 0
-    && typeof previous.lastSentSnapshotBaselineId === 'string'
-  ) ? [Object.freeze({
-      serverTick: previous.lastSentSnapshotTick,
-      snapshotBaselineId: previous.lastSentSnapshotBaselineId,
-    })] : [];
+  let version6: unknown = value;
+  if (version !== 6) {
+    const version5 = version === 4
+      ? { ...value, schemaVersion: 5, snapshotAckDebtStartedAt: null }
+      : value;
+    if ((version5 as { readonly schemaVersion?: unknown }).schemaVersion !== 5) return null;
+    const previous = version5 as {
+      readonly lastSentSnapshotTick?: unknown;
+      readonly lastSentSnapshotBaselineId?: unknown;
+    };
+    const sentSnapshotHistory = (
+      typeof previous.lastSentSnapshotTick === 'number'
+      && Number.isSafeInteger(previous.lastSentSnapshotTick)
+      && previous.lastSentSnapshotTick >= 0
+      && typeof previous.lastSentSnapshotBaselineId === 'string'
+    ) ? [Object.freeze({
+        serverTick: previous.lastSentSnapshotTick,
+        snapshotBaselineId: previous.lastSentSnapshotBaselineId,
+      })] : [];
+    version6 = Object.freeze({
+      ...version5,
+      schemaVersion: 6,
+      sentSnapshotHistory: Object.freeze(sentSnapshotHistory),
+    });
+  }
+  if ((version6 as { readonly schemaVersion?: unknown }).schemaVersion !== 6) return null;
   const migrated = Object.freeze({
-    ...version5,
-    schemaVersion: 6,
-    sentSnapshotHistory: Object.freeze(sentSnapshotHistory),
+    ...(version6 as object),
+    schemaVersion: 7,
+    allocationLeaseId: null,
+    preJoinExpiresAt: null,
   });
   return isSocketAttachment(migrated) ? migrated : null;
 }
@@ -293,6 +318,13 @@ function nullableTimestamp(value: unknown): boolean {
   );
 }
 
+function nullableAllocationLeaseId(value: unknown): boolean {
+  return value === null || (
+    typeof value === 'string'
+    && /^socket\.[a-f0-9]{32}$/u.test(value)
+  );
+}
+
 function isSentSnapshotReference(value: unknown): value is SentSnapshotReference {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
   const record = value as Partial<SentSnapshotReference>;
@@ -339,7 +371,11 @@ export function isSocketStale(
   attachment: SocketAttachment,
   nowMilliseconds: number,
 ): boolean {
-  return nowMilliseconds - attachment.lastSeenAt >= SOCKET_STALE_MILLISECONDS;
+  return (
+    attachment.playerId === null
+    && attachment.preJoinExpiresAt !== null
+    && nowMilliseconds >= attachment.preJoinExpiresAt
+  ) || nowMilliseconds - attachment.lastSeenAt >= SOCKET_STALE_MILLISECONDS;
 }
 
 export function evaluateSocketBackpressure(
