@@ -30,10 +30,11 @@ appending prose to executable source files or binary assets.
   west-archive rounding regression are present, but the human product gate is
   still open. *Currently being worked on.*
 
-- `README.md`, public project navigation, and the fetch-only
-  `NotHereButAfk/Ev.io` upstream audit — keep public status truthful and adopt
-  only compatible ideas with direct proof. Upstream push remains disabled.
-  *Currently being worked on.*
+- `docs/audits/NOTHEREBUTAFK_EVIO_AUDIT_2026-07-27.md` records the completed
+  targeted audit through upstream `436da5b`. Its first bounded adoption
+  candidate is part of the active sword/viewmodel correction; the shared
+  local/remote character renderer and Inkfall visual-language references remain
+  future adaptation work. Upstream push remains disabled.
 
 ## Open release work
 
