@@ -113,6 +113,7 @@ interface LoadedRev4Visual {
 }
 
 const SPAWN_CONTAINMENT_COLLIDER_ID = /^(?:map_collision_(?:spawn_pad_spawn_[a-z0-9_]+|node_(?:west|east)_spawn|spawn_pocket_(?:floor|wall)_[a-z0-9_]+|kill_boundary_guard_(?:west|east)_back|spawn_sight_blocker_[a-z0-9_]+|door_frame_(?:west|east)_spawn_main_(?:left|right|lintel)|route_(?:west_spawn_choice_s00|east_choice_spawn_s01)))$/u;
+const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
 
 function mapMillimetersToScene(
   value: Readonly<{ x: number; y: number; z: number }>,
@@ -538,6 +539,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const avatars = new Map<string, PlayerAvatar>();
   const grenadeProjectiles = new Map<string, THREE.Mesh>();
   const processedReliableEvents = new Set<string>();
+  const processedReliableEventOrder: string[] = [];
   const weaponPresentationFx = createOnlineWeaponPresentationFx(scene, canvas);
   let renderedReliableEventCount = 0;
   let disposed = false;
@@ -633,6 +635,16 @@ export async function createOnlineAuthorityThreeRuntime(
     for (const event of frame.combat.recentEvents) {
       if (processedReliableEvents.has(event.id)) continue;
       processedReliableEvents.add(event.id);
+      processedReliableEventOrder.push(event.id);
+      if (
+        processedReliableEventOrder.length
+        > PROCESSED_RELIABLE_EVENT_RETENTION
+      ) {
+        const expiredEventId = processedReliableEventOrder.shift();
+        if (expiredEventId !== undefined) {
+          processedReliableEvents.delete(expiredEventId);
+        }
+      }
       if (frame.presentation.estimatedServerTick - event.serverTick > 12) continue;
       const semantic = event.presentation;
       if (semantic === undefined) continue;
@@ -987,6 +999,8 @@ export async function createOnlineAuthorityThreeRuntime(
     document.removeEventListener('pointerlockchange', pointerLockHandler);
     if (document.pointerLockElement === canvas) void document.exitPointerLock();
     weaponPresentationFx.dispose();
+    processedReliableEvents.clear();
+    processedReliableEventOrder.length = 0;
     renderer.dispose();
     disposeObject(scene);
     scene.clear();
