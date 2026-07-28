@@ -85,6 +85,12 @@ interface OnlinePreviewSnapshot {
   }>;
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
+  readonly localPredictedVelocity: Readonly<{ x: number; y: number; z: number }> | null;
+  readonly localAuthoritativeVelocity: Readonly<{ x: number; y: number; z: number }> | null;
+  readonly localPredictedGrounded: boolean | null;
+  readonly localAuthoritativeGrounded: boolean | null;
+  readonly localPredictedLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
+  readonly localAuthoritativeLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
   readonly localPredictedYawMilliDegrees: number | null;
   readonly localPredictedPitchMilliDegrees: number | null;
   readonly localPredictionErrorMillimeters: number | null;
@@ -987,6 +993,9 @@ async function mountSession(
   const sprintButton = element('button', 'online-session__control', 'HOLD SPRINT · SHIFT');
   sprintButton.type = 'button';
   sprintButton.dataset.testid = 'online-sprint';
+  const crouchButton = element('button', 'online-session__control', 'HOLD CROUCH / SLIDE · C');
+  crouchButton.type = 'button';
+  crouchButton.dataset.testid = 'online-crouch';
   const jumpButton = element('button', 'online-session__control', 'JUMP · SPACE');
   jumpButton.type = 'button';
   jumpButton.dataset.testid = 'online-jump';
@@ -1007,6 +1016,7 @@ async function mountSession(
   teleportButton.dataset.testid = 'online-teleport';
   controls.append(
     sprintButton,
+    crouchButton,
     jumpButton,
     crouchButton,
     fireButton,
@@ -1261,6 +1271,12 @@ async function mountSession(
       }),
       localPredictedPosition: diagnostics.local.predictedPosition,
       localAuthoritativePosition: diagnostics.local.authoritativePosition,
+      localPredictedVelocity: diagnostics.local.predictedVelocity,
+      localAuthoritativeVelocity: diagnostics.local.authoritativeVelocity,
+      localPredictedGrounded: diagnostics.local.predictedGrounded,
+      localAuthoritativeGrounded: diagnostics.local.authoritativeGrounded,
+      localPredictedLocomotion: diagnostics.local.predictedLocomotion,
+      localAuthoritativeLocomotion: diagnostics.local.authoritativeLocomotion,
       localPredictedYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
       localPredictedPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
       localPredictionErrorMillimeters: diagnostics.local.lastPositionErrorMillimeters,

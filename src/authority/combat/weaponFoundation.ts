@@ -1,3 +1,21 @@
+import type {
+  CombatVector3Millimeters,
+  TargetPoseHistoryV1,
+} from './poseHistory';
+import { assertTargetPoseHistory } from './poseHistory';
+import type {
+  AuthorityWorldOcclusionPort,
+  AuthoritativeWeaponHitscanProfileV1,
+  CurrentAcceptedLookV1,
+  CurrentShooterPoseV1,
+  ObservedRttSampleV1,
+  ResolveAuthoritativeHitscanResult,
+} from './rewindHitscan';
+import {
+  resolveAuthoritativeWeaponHitscan,
+  validateWorldOcclusionResult,
+} from './rewindHitscan';
+
 const MAX_AUTHORITY_TICK = Number.MAX_SAFE_INTEGER - 100_000;
 const MAX_STABLE_ID_BYTES = 96;
 const UINT32_MAX = 0xffff_ffff;
@@ -940,46 +958,22 @@ function authorityMuzzleIsObstructed(
   };
   const distance = Math.hypot(delta.x, delta.y, delta.z);
   if (distance === 0) return false;
-  const result = worldOcclusionPort(deepFreeze({
-    schemaVersion: 1,
-    originMillimeters: eye,
-    directionUnit: {
-      x: delta.x / distance,
-      y: delta.y / distance,
-      z: delta.z / distance,
-    },
-    maximumDistanceMillimeters: distance,
-    layer: 'authoritative_world',
-    purpose: 'barrel_clearance',
-  }));
-  if (
-    result === null
-    || typeof result !== 'object'
-    || Array.isArray(result)
-  ) {
-    throw new TypeError('authority muzzle clearance adapter must return an object');
-  }
-  const item = result as Record<string, unknown>;
-  if (
-    item.schemaVersion !== 1
-    || typeof item.hit !== 'boolean'
-    || (item.hit ? item.colliderId === null : item.colliderId !== null)
-    || (item.hit ? typeof item.distanceMillimeters !== 'number' : item.distanceMillimeters !== null)
-  ) {
-    throw new RangeError('authority muzzle clearance adapter result is invalid');
-  }
-  if (
-    item.hit
-    && (
-      !Number.isFinite(item.distanceMillimeters as number)
-      || (item.distanceMillimeters as number) < 0
-      || (item.distanceMillimeters as number) > distance
-      || typeof item.colliderId !== 'string'
-    )
-  ) {
-    throw new RangeError('authority muzzle clearance hit is invalid');
-  }
-  return item.hit;
+  const result = validateWorldOcclusionResult(
+    worldOcclusionPort(deepFreeze({
+      schemaVersion: 1,
+      originMillimeters: eye,
+      directionUnit: {
+        x: delta.x / distance,
+        y: delta.y / distance,
+        z: delta.z / distance,
+      },
+      maximumDistanceMillimeters: distance,
+      layer: 'authoritative_world',
+      purpose: 'barrel_clearance',
+    })),
+    distance,
+  );
+  return result.hit;
 }
 
 export function createAuthorityRocketProjectile(
@@ -1018,16 +1012,45 @@ export function createAuthorityRocketProjectile(
     });
   }
   const speed = profileValue.projectileSpeedMillimetersPerSecond as number;
-  const direction = directionFromLook(request.shooterPose.bodyYawMilliDegrees, request.acceptedLook);
-  const muzzle = rotateOffset(
-    request.shooterPose.muzzleOffsetMillimeters,
+  const eyeDirection = directionFromLook(
     request.shooterPose.bodyYawMilliDegrees,
+    request.acceptedLook,
   );
-  const positionMillimeters = {
-    x: request.shooterPose.positionMillimeters.x + muzzle.x,
-    y: request.shooterPose.positionMillimeters.y + muzzle.y,
-    z: request.shooterPose.positionMillimeters.z + muzzle.z,
+  const eye = authorityPoseOrigin(request.shooterPose, request.shooterPose.eyeOffsetMillimeters);
+  const positionMillimeters = authorityPoseOrigin(
+    request.shooterPose,
+    request.shooterPose.muzzleOffsetMillimeters,
+  );
+  const eyeAimPoint = {
+    x: eye.x + eyeDirection.x * profileValue.rangeMillimeters,
+    y: eye.y + eyeDirection.y * profileValue.rangeMillimeters,
+    z: eye.z + eyeDirection.z * profileValue.rangeMillimeters,
   };
+  const muzzleToAimPoint = {
+    x: eyeAimPoint.x - positionMillimeters.x,
+    y: eyeAimPoint.y - positionMillimeters.y,
+    z: eyeAimPoint.z - positionMillimeters.z,
+  };
+  const muzzleToAimDistance = Math.hypot(
+    muzzleToAimPoint.x,
+    muzzleToAimPoint.y,
+    muzzleToAimPoint.z,
+  );
+  if (!Number.isFinite(muzzleToAimDistance) || muzzleToAimDistance <= 0) {
+    throw new RangeError('rocket authority muzzle cannot converge on the eye aim point');
+  }
+  const direction = {
+    x: muzzleToAimPoint.x / muzzleToAimDistance,
+    y: muzzleToAimPoint.y / muzzleToAimDistance,
+    z: muzzleToAimPoint.z / muzzleToAimDistance,
+  };
+  const lifetimeTicks = Math.ceil(profileValue.rangeMillimeters * 20 / speed);
+  integer(
+    request.currentAuthorityTick + lifetimeTicks,
+    request.currentAuthorityTick + 1,
+    MAX_AUTHORITY_TICK,
+    'rocket expiry tick',
+  );
   const state: AuthorityRocketProjectileStateV1 = {
     schemaVersion: 1,
     projectileId: `${attack.eventId}.projectile`,
@@ -1036,7 +1059,7 @@ export function createAuthorityRocketProjectile(
     weaponId: KYX_WEAPON_ID.rocket,
     spawnTick: request.currentAuthorityTick,
     lastProcessedAuthorityTick: request.currentAuthorityTick,
-    expiresAtTick: request.currentAuthorityTick + 80,
+    expiresAtTick: request.currentAuthorityTick + lifetimeTicks,
     positionMillimeters,
     velocityMillimetersPerSecond: {
       x: Math.round(direction.x * speed),
@@ -1066,6 +1089,9 @@ export function advanceAuthorityRocketProjectile(
   detonation: AuthorityRocketDetonationV1 | null;
 }> {
   integer(authorityTick, inputState.lastProcessedAuthorityTick + 1, MAX_AUTHORITY_TICK, 'rocket tick');
+  if (authorityTick !== inputState.lastProcessedAuthorityTick + 1) {
+    throw new RangeError('rocket projectile must advance exactly one authority tick');
+  }
   if (inputState.phase !== 'active') {
     throw new RangeError('only an active rocket projectile can advance');
   }
@@ -1090,6 +1116,7 @@ export function advanceAuthorityRocketProjectile(
     || !Number.isInteger(sweep.travelPermille)
     || sweep.travelPermille < 0
     || sweep.travelPermille > 1_000
+    || (!sweep.hit && sweep.travelPermille !== 1_000)
     || (sweep.hit ? sweep.colliderId === null : sweep.colliderId !== null)
   ) {
     throw new RangeError('rocket sweep adapter returned an invalid result');
@@ -1232,6 +1259,7 @@ export function resolveAuthorityRocketSplash(
   const occludedTargetIds: string[] = [];
   const seen = new Set<string>();
   for (const history of targetHistories) {
+    assertTargetPoseHistory(history, 'rocket splash target history');
     stableString(history.playerId, 'rocket splash target player id');
     if (seen.has(history.playerId)) throw new RangeError('duplicate rocket splash target history');
     seen.add(history.playerId);
@@ -1255,36 +1283,22 @@ export function resolveAuthorityRocketSplash(
     const distance = Math.hypot(delta.x, delta.y, delta.z);
     if (distance > detonation.splashRadiusMillimeters) continue;
     if (distance > 0) {
-      const world = worldOcclusionPort(deepFreeze({
-        schemaVersion: 1,
-        originMillimeters: detonation.positionMillimeters,
-        directionUnit: {
-          x: delta.x / distance,
-          y: delta.y / distance,
-          z: delta.z / distance,
-        },
-        maximumDistanceMillimeters: distance,
-        layer: 'authoritative_world',
-        purpose: 'shot_path',
-      })) as Record<string, unknown>;
-      if (
-        world.schemaVersion !== 1
-        || typeof world.hit !== 'boolean'
-        || (
-          world.hit
-            ? (
-                typeof world.distanceMillimeters !== 'number'
-                || !Number.isFinite(world.distanceMillimeters)
-                || world.distanceMillimeters < 0
-                || world.distanceMillimeters > distance
-                || typeof world.colliderId !== 'string'
-              )
-            : world.distanceMillimeters !== null || world.colliderId !== null
-        )
-      ) {
-        throw new RangeError('rocket splash world occlusion adapter result is invalid');
-      }
-      if (world.hit && world.distanceMillimeters <= distance) {
+      const world = validateWorldOcclusionResult(
+        worldOcclusionPort(deepFreeze({
+          schemaVersion: 1,
+          originMillimeters: detonation.positionMillimeters,
+          directionUnit: {
+            x: delta.x / distance,
+            y: delta.y / distance,
+            z: delta.z / distance,
+          },
+          maximumDistanceMillimeters: distance,
+          layer: 'authoritative_world',
+          purpose: 'shot_path',
+        })),
+        distance,
+      );
+      if (world.hit) {
         occludedTargetIds.push(history.playerId);
         continue;
       }
@@ -1355,6 +1369,7 @@ export function resolveAuthorityMeleeContact(
   }[] = [];
   const seen = new Set<string>();
   for (const history of request.targetHistories) {
+    assertTargetPoseHistory(history, 'melee target history');
     stableString(history.playerId, 'melee target player id');
     if (seen.has(history.playerId)) throw new RangeError('duplicate melee target history');
     seen.add(history.playerId);
@@ -1395,8 +1410,7 @@ export function resolveAuthorityMeleeContact(
       ? left.distance - right.distance
       : left.playerId < right.playerId ? -1 : 1
   ));
-  const nearest = candidates[0];
-  if (nearest === undefined) {
+  if (candidates.length === 0) {
     return deepFreeze({
       schemaVersion: 1,
       accepted: true,
@@ -1410,81 +1424,51 @@ export function resolveAuthorityMeleeContact(
       contactPointMillimeters: null,
     });
   }
-  const delta = {
-    x: nearest.point.x - origin.x,
-    y: nearest.point.y - origin.y,
-    z: nearest.point.z - origin.z,
-  };
-  const world = worldOcclusionPort(deepFreeze({
-    schemaVersion: 1,
-    originMillimeters: origin,
-    directionUnit: {
-      x: delta.x / nearest.distance,
-      y: delta.y / nearest.distance,
-      z: delta.z / nearest.distance,
-    },
-    maximumDistanceMillimeters: nearest.distance,
-    layer: 'authoritative_world',
-    purpose: 'shot_path',
-  })) as Record<string, unknown>;
-  if (
-    world.schemaVersion !== 1
-    || typeof world.hit !== 'boolean'
-    || (world.hit ? typeof world.distanceMillimeters !== 'number' : world.distanceMillimeters !== null)
-    || (world.hit ? typeof world.colliderId !== 'string' : world.colliderId !== null)
-  ) {
-    throw new RangeError('melee world occlusion adapter result is invalid');
-  }
-  if (
-    world.hit
-    && (
-      !Number.isFinite(world.distanceMillimeters as number)
-      || (world.distanceMillimeters as number) < 0
-      || (world.distanceMillimeters as number) > nearest.distance
-    )
-  ) {
-    throw new RangeError('melee world occlusion hit distance is invalid');
-  }
-  if (
-    world.hit
-    && (world.distanceMillimeters as number) <= nearest.distance
-  ) {
+  for (const candidate of candidates) {
+    const delta = {
+      x: candidate.point.x - origin.x,
+      y: candidate.point.y - origin.y,
+      z: candidate.point.z - origin.z,
+    };
+    const world = validateWorldOcclusionResult(
+      worldOcclusionPort(deepFreeze({
+        schemaVersion: 1,
+        originMillimeters: origin,
+        directionUnit: {
+          x: delta.x / candidate.distance,
+          y: delta.y / candidate.distance,
+          z: delta.z / candidate.distance,
+        },
+        maximumDistanceMillimeters: candidate.distance,
+        layer: 'authoritative_world',
+        purpose: 'shot_path',
+      })),
+      candidate.distance,
+    );
+    if (world.hit) continue;
     return deepFreeze({
       schemaVersion: 1,
       accepted: true,
-      outcome: 'miss',
-      reason: 'world_occluded',
-      targetPlayerId: null,
-      targetTeamId: null,
-      targetPoseTick: null,
-      distanceMillimeters: null,
-      damagePoints: 0,
-      contactPointMillimeters: null,
+      outcome: 'contact',
+      reason: null,
+      targetPlayerId: candidate.playerId,
+      targetTeamId: candidate.teamId,
+      targetPoseTick: request.currentAuthorityTick,
+      distanceMillimeters: candidate.distance,
+      damagePoints: profileValue.referenceDamagePoints,
+      contactPointMillimeters: candidate.point,
     });
   }
   return deepFreeze({
     schemaVersion: 1,
     accepted: true,
-    outcome: 'contact',
-    reason: null,
-    targetPlayerId: nearest.playerId,
-    targetTeamId: nearest.teamId,
-    targetPoseTick: request.currentAuthorityTick,
-    distanceMillimeters: nearest.distance,
-    damagePoints: profileValue.referenceDamagePoints,
-    contactPointMillimeters: nearest.point,
+    outcome: 'miss',
+    reason: 'world_occluded',
+    targetPlayerId: null,
+    targetTeamId: null,
+    targetPoseTick: null,
+    distanceMillimeters: null,
+    damagePoints: 0,
+    contactPointMillimeters: null,
   });
 }
-import type {
-  AuthorityWorldOcclusionPort,
-  AuthoritativeWeaponHitscanProfileV1,
-  CurrentAcceptedLookV1,
-  CurrentShooterPoseV1,
-  ObservedRttSampleV1,
-  ResolveAuthoritativeHitscanResult,
-} from './rewindHitscan';
-import { resolveAuthoritativeWeaponHitscan } from './rewindHitscan';
-import type {
-  CombatVector3Millimeters,
-  TargetPoseHistoryV1,
-} from './poseHistory';

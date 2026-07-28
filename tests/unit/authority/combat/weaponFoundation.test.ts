@@ -66,6 +66,7 @@ function targetHistory(
   options: Readonly<{
     playerId?: string;
     teamId?: string | null;
+    x?: number;
     z?: number;
     region?: CombatHitVolumeBoxV1['region'];
     halfExtent?: number;
@@ -80,7 +81,7 @@ function targetHistory(
       authorityTick,
       teamId: options.teamId ?? 'team_red',
       lifePhase: 'alive',
-      positionMillimeters: { x: 0, y: 0, z: options.z ?? 10_000 },
+      positionMillimeters: { x: options.x ?? 0, y: 0, z: options.z ?? 10_000 },
       bodyYawMilliDegrees: 0,
       hitVolumes: [{
         schemaVersion: 1,
@@ -424,6 +425,7 @@ describe('KYX authoritative multi-weapon foundation', () => {
       state: {
         positionMillimeters: { x: 0, y: 1_000, z: 0 },
         velocityMillimetersPerSecond: { x: 0, y: 0, z: 24_000 },
+        expiresAtTick: 85,
         radiusMillimeters: 180,
         splashRadiusMillimeters: 4_500,
       },
@@ -469,6 +471,57 @@ describe('KYX authoritative multi-weapon foundation', () => {
       .toThrow(/only an active rocket/u);
   });
 
+  it('converges rockets from the authority muzzle to the eye aim point and rejects malformed sweeps', () => {
+    const attack = acceptedAttack(KYX_WEAPON_ID.rocket, 10);
+    const spawned = createAuthorityRocketProjectile({
+      currentAuthorityTick: 10,
+      shooterPose: shooter(10, {
+        eyeOffsetMillimeters: { x: 0, y: 1_000, z: 0 },
+        muzzleOffsetMillimeters: { x: 500, y: 800, z: 1_000 },
+      }),
+      acceptedLook: look(10),
+      acceptedAttack: attack,
+    }, clearWorld);
+    if (!spawned.accepted) throw new Error('rocket unexpectedly blocked');
+    expect(spawned.state.positionMillimeters).toEqual({ x: 500, y: 800, z: 1_000 });
+    expect(spawned.state.velocityMillimetersPerSecond.x).toBeLessThan(0);
+    expect(spawned.state.velocityMillimetersPerSecond.y).toBeGreaterThan(0);
+    const velocityMagnitude = Math.hypot(
+      spawned.state.velocityMillimetersPerSecond.x,
+      spawned.state.velocityMillimetersPerSecond.y,
+      spawned.state.velocityMillimetersPerSecond.z,
+    );
+    expect(velocityMagnitude).toBeGreaterThan(23_998);
+    expect(velocityMagnitude).toBeLessThan(24_002);
+    expect(spawned.state.expiresAtTick).toBe(85);
+    expect(() => advanceAuthorityRocketProjectile(spawned.state, 12, () => ({
+      schemaVersion: 1,
+      hit: false,
+      travelPermille: 1_000,
+      colliderId: null,
+    }))).toThrow(/exactly one authority tick/u);
+    expect(() => advanceAuthorityRocketProjectile(spawned.state, 11, () => ({
+      schemaVersion: 1,
+      hit: false,
+      travelPermille: 500,
+      colliderId: null,
+    }))).toThrow(/invalid result/u);
+    expect(() => createAuthorityRocketProjectile({
+      currentAuthorityTick: 10,
+      shooterPose: shooter(10, {
+        muzzleOffsetMillimeters: { x: 0, y: 1_000, z: 500 },
+      }),
+      acceptedLook: look(10),
+      acceptedAttack: attack,
+    }, () => ({
+      schemaVersion: 1,
+      hit: false,
+      distanceMillimeters: null,
+      colliderId: null,
+      unexpected: true,
+    }))).toThrow(/unsupported or missing fields/u);
+  });
+
   it('resolves melee contact by authority range/arc/team/occlusion without a client target claim', () => {
     const attack = acceptedAttack(KYX_WEAPON_ID.melee, 3);
     const request = {
@@ -502,6 +555,25 @@ describe('KYX authoritative multi-weapon foundation', () => {
     }, clearWorld)).toMatchObject({
       outcome: 'miss',
       reason: 'no_target',
+    });
+    expect(resolveAuthorityMeleeContact({
+      ...request,
+      targetHistories: [
+        targetHistory(3, { playerId: 'player_occluded', z: 1_500, halfExtent: 100 }),
+        targetHistory(3, { playerId: 'player_visible', x: 150, z: 2_000, halfExtent: 100 }),
+      ],
+    }, (ray) => (
+      ray.maximumDistanceMillimeters < 1_750
+        ? {
+            schemaVersion: 1,
+            hit: true,
+            distanceMillimeters: 500,
+            colliderId: 'near_target_pillar',
+          }
+        : clearWorld(ray)
+    ))).toMatchObject({
+      outcome: 'contact',
+      targetPlayerId: 'player_visible',
     });
   });
 });

@@ -1167,7 +1167,7 @@ function exactPoseAtTick(
   return history.samples.find((sample) => sample.authorityTick === authorityTick) ?? null;
 }
 
-function validateWorldOcclusionResult(
+export function validateWorldOcclusionResult(
   value: unknown,
   maximumDistance: number,
 ): AuthorityWorldOcclusionHitV1 {

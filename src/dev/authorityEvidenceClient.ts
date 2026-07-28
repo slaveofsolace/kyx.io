@@ -238,6 +238,12 @@ export interface AuthorityEvidenceDiagnostics {
   readonly local: {
     readonly authoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
     readonly predictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
+    readonly authoritativeVelocity: Readonly<{ x: number; y: number; z: number }> | null;
+    readonly predictedVelocity: Readonly<{ x: number; y: number; z: number }> | null;
+    readonly authoritativeGrounded: boolean | null;
+    readonly predictedGrounded: boolean | null;
+    readonly authoritativeLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
+    readonly predictedLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
     readonly authoritativeYawMilliDegrees: number | null;
     readonly predictedYawMilliDegrees: number | null;
     readonly predictedPitchMilliDegrees: number | null;
@@ -437,6 +443,9 @@ export class AuthorityEvidenceClient {
   private readonly recentCombatEvents: ReliableEvent[] = [];
   private prediction: LocalPredictionState | null = null;
   private authoritativePosition: Readonly<{ x: number; y: number; z: number }> | null = null;
+  private authoritativeVelocity: Readonly<{ x: number; y: number; z: number }> | null = null;
+  private authoritativeGrounded: boolean | null = null;
+  private authoritativeLocomotion: 'grounded' | 'airborne' | 'sliding' | null = null;
   private authoritativeYawMilliDegrees: number | null = null;
   private lastReconciliationMode: LocalReconciliationMode | null = null;
   private lastPositionErrorMillimeters: number | null = null;
@@ -568,6 +577,9 @@ export class AuthorityEvidenceClient {
     const predictedPosition = this.prediction === null
       ? null
       : copyPosition(this.prediction.predictedState.player.feetPosition);
+    const predictedVelocity = this.prediction === null
+      ? null
+      : copyPosition(this.prediction.predictedState.player.velocity);
     return deepFreezeAuthorityEvidence({
       schemaVersion: 1,
       evidence: {
@@ -630,6 +642,14 @@ export class AuthorityEvidenceClient {
           ? null
           : copyPosition(this.authoritativePosition),
         predictedPosition,
+        authoritativeVelocity: this.authoritativeVelocity === null
+          ? null
+          : copyPosition(this.authoritativeVelocity),
+        predictedVelocity,
+        authoritativeGrounded: this.authoritativeGrounded,
+        predictedGrounded: this.prediction?.predictedState.player.grounded ?? null,
+        authoritativeLocomotion: this.authoritativeLocomotion,
+        predictedLocomotion: this.prediction?.predictedState.player.locomotion ?? null,
         authoritativeYawMilliDegrees: this.authoritativeYawMilliDegrees,
         predictedYawMilliDegrees: this.prediction?.predictedState.player.yawMilliDegrees ?? null,
         predictedPitchMilliDegrees: this.prediction?.predictedState.player.pitchMilliDegrees ?? null,
@@ -1087,6 +1107,9 @@ export class AuthorityEvidenceClient {
     this.counters.identityChecks += 1;
     const state = movementStateFromReconciliation(reconciliation, this.profile);
     this.authoritativePosition = copyPosition(state.player.feetPosition);
+    this.authoritativeVelocity = copyPosition(state.player.velocity);
+    this.authoritativeGrounded = state.player.grounded;
+    this.authoritativeLocomotion = state.player.locomotion;
     this.authoritativeYawMilliDegrees = state.player.yawMilliDegrees;
     this.teleportCooldownTicksRemaining = state.player.teleportCooldownTicksRemaining;
     this.lastAcknowledgedSequence = Math.max(
