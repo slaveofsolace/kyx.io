@@ -1,0 +1,585 @@
+{
+  "capturedAt": "2026-07-28T03:49:51.472Z",
+  "baseURL": "http://127.0.0.1:6217",
+  "candidateURL": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+  "browserChannel": "chrome",
+  "prohibitedPortsUntouched": [
+    5173,
+    8787
+  ],
+  "captures": [
+    {
+      "file": "menu-1440x900.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "settings-1440x900.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "menu-narrow-768x900.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "hud-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "hud-scale-125-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": null,
+      "notes": "Live candidate HUD rendered with the existing --hud-scale preference at 1.25."
+    },
+    {
+      "file": "hud-reload-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live HUD.update presentation fixture using existing reload, ammo, vital, and score semantics.",
+      "notes": "The render loop is frozen after a live gameplay frame so the presentation fixture cannot be overwritten before capture; this is not an authority outcome claim."
+    },
+    {
+      "file": "hud-killfeed-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live HUD.addKillFeed presentation fixture; no gameplay outcome claim.",
+      "notes": null
+    },
+    {
+      "file": "pause-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "scoreboard-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live HUD.showScoreboard presentation fixture; hold-Tab behavior is validated separately.",
+      "notes": null
+    },
+    {
+      "file": "hud-high-contrast-1280x720.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Existing high-contrast data state applied to the live candidate HUD.",
+      "notes": null
+    },
+    {
+      "file": "hud-1920x1080.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "hud-125-percent-equivalent-1024x576.png",
+      "url": "http://127.0.0.1:6217/?g7Candidate=foundry-tactical",
+      "viewport": {
+        "width": 1024,
+        "height": 576
+      },
+      "fixture": null,
+      "notes": "CSS viewport equivalent of 1280x720 at 125% browser zoom."
+    }
+  ],
+  "layoutAudits": [
+    {
+      "label": "100-percent-equivalent-1280x720",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "boxes": {
+        "hud-vitals": {
+          "left": 16,
+          "right": 280,
+          "top": 582,
+          "bottom": 704,
+          "width": 264,
+          "height": 122
+        },
+        "weapon-wrap": {
+          "left": 1062,
+          "right": 1264,
+          "top": 615,
+          "bottom": 704,
+          "width": 202,
+          "height": 89
+        },
+        "score-wrap": {
+          "left": 1034,
+          "right": 1264,
+          "top": 16,
+          "bottom": 116.1875,
+          "width": 230,
+          "height": 100.1875
+        },
+        "ability-rack": {
+          "left": 483,
+          "right": 797,
+          "top": 643,
+          "bottom": 704,
+          "width": 314,
+          "height": 61
+        },
+        "dm-timer": {
+          "left": 569,
+          "right": 711,
+          "top": 16,
+          "bottom": 67,
+          "width": 142,
+          "height": 51
+        }
+      },
+      "overlapPairs": [],
+      "outside": []
+    },
+    {
+      "label": "hud-scale-125-1280x720",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "boxes": {
+        "hud-vitals": {
+          "left": 16,
+          "right": 346,
+          "top": 551.5,
+          "bottom": 704,
+          "width": 330,
+          "height": 152.5
+        },
+        "weapon-wrap": {
+          "left": 1011.5,
+          "right": 1264,
+          "top": 592.75,
+          "bottom": 704,
+          "width": 252.5,
+          "height": 111.25
+        },
+        "score-wrap": {
+          "left": 976.5,
+          "right": 1264,
+          "top": 16,
+          "bottom": 141.234375,
+          "width": 287.5,
+          "height": 125.234375
+        },
+        "ability-rack": {
+          "left": 404.5,
+          "right": 797,
+          "top": 627.75,
+          "bottom": 704,
+          "width": 392.5,
+          "height": 76.25
+        },
+        "dm-timer": {
+          "left": 533.5,
+          "right": 711,
+          "top": 16,
+          "bottom": 79.75,
+          "width": 177.5,
+          "height": 63.75
+        }
+      },
+      "overlapPairs": [],
+      "outside": []
+    },
+    {
+      "label": "125-percent-equivalent-1024x576",
+      "viewport": {
+        "width": 1024,
+        "height": 576
+      },
+      "overflow": {
+        "x": 0,
+        "y": 0
+      },
+      "boxes": {
+        "hud-vitals": {
+          "left": 16,
+          "right": 280,
+          "top": 438,
+          "bottom": 560,
+          "width": 264,
+          "height": 122
+        },
+        "weapon-wrap": {
+          "left": 806,
+          "right": 1008,
+          "top": 471,
+          "bottom": 560,
+          "width": 202,
+          "height": 89
+        },
+        "score-wrap": {
+          "left": 778,
+          "right": 1008,
+          "top": 16,
+          "bottom": 116.1875,
+          "width": 230,
+          "height": 100.1875
+        },
+        "ability-rack": {
+          "left": 355,
+          "right": 669,
+          "top": 499,
+          "bottom": 560,
+          "width": 314,
+          "height": 61
+        },
+        "dm-timer": {
+          "left": 441,
+          "right": 583,
+          "top": 16,
+          "bottom": 67,
+          "width": 142,
+          "height": 51
+        }
+      },
+      "overlapPairs": [],
+      "outside": []
+    }
+  ],
+  "contrastAudits": [
+    {
+      "label": "settings-1440x900",
+      "samples": [
+        {
+          "name": "Settings title",
+          "selector": "#settings-title",
+          "backgroundSelector": ".settings-command-head",
+          "color": "rgb(228, 227, 218)",
+          "backgroundColor": "rgb(21, 26, 28)",
+          "fontSize": "30px",
+          "fontWeight": "780",
+          "ratio": 13.62,
+          "visible": true
+        },
+        {
+          "name": "Settings brief",
+          "selector": "#panel-settings .settings-brief",
+          "backgroundSelector": "#panel-settings",
+          "color": "rgb(48, 54, 56)",
+          "backgroundColor": "rgb(233, 229, 218)",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "ratio": 9.75,
+          "visible": true
+        },
+        {
+          "name": "Settings section",
+          "selector": "#panel-settings .settings-section",
+          "backgroundSelector": "#panel-settings",
+          "color": "rgb(22, 26, 27)",
+          "backgroundColor": "rgb(233, 229, 218)",
+          "fontSize": "13px",
+          "fontWeight": "750",
+          "ratio": 13.93,
+          "visible": true
+        },
+        {
+          "name": "Settings microcopy",
+          "selector": "#panel-settings .settings-note",
+          "backgroundSelector": "#panel-settings",
+          "color": "rgb(65, 72, 73)",
+          "backgroundColor": "rgb(233, 229, 218)",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "ratio": 7.42,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "label": "hud-objective-1280x720",
+      "samples": [
+        {
+          "name": "Objective title",
+          "selector": ".hud-practice-label",
+          "backgroundSelector": "#score-wrap",
+          "color": "rgb(228, 227, 218)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "11px",
+          "fontWeight": "700",
+          "ratio": 15.35,
+          "visible": true
+        },
+        {
+          "name": "Objective authority",
+          "selector": ".hud-match-head > span",
+          "backgroundSelector": "#score-wrap",
+          "color": "rgb(133, 139, 136)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "11px",
+          "fontWeight": "650",
+          "ratio": 5.7,
+          "visible": true
+        },
+        {
+          "name": "Objective roster",
+          "selector": "#server-pop",
+          "backgroundSelector": "#score-wrap",
+          "color": "rgb(178, 180, 173)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "ratio": 9.44,
+          "visible": true
+        },
+        {
+          "name": "Objective metric label",
+          "selector": ".hud-score-metrics small",
+          "backgroundSelector": "#score-wrap",
+          "color": "rgb(133, 139, 136)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "ratio": 5.7,
+          "visible": true
+        },
+        {
+          "name": "Ability name",
+          "selector": ".ability-name",
+          "backgroundSelector": "#ability-rack",
+          "color": "rgb(178, 180, 173)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "11px",
+          "fontWeight": "650",
+          "ratio": 9.44,
+          "visible": true
+        },
+        {
+          "name": "Ability state",
+          "selector": ".ability-state",
+          "backgroundSelector": "#ability-rack",
+          "color": "rgb(133, 139, 136)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "ratio": 5.7,
+          "visible": true
+        },
+        {
+          "name": "Ammo qualifier",
+          "selector": ".hud-ammo-row > span",
+          "backgroundSelector": "#weapon-wrap",
+          "color": "rgb(133, 139, 136)",
+          "backgroundColor": "rgba(9, 12, 14, 0.88)",
+          "fontSize": "10px",
+          "fontWeight": "600",
+          "ratio": 5.7,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "label": "hud-reload-1280x720",
+      "samples": [
+        {
+          "name": "Reload warning",
+          "selector": "#reload-text",
+          "backgroundSelector": "#reload-text",
+          "color": "rgb(9, 12, 14)",
+          "backgroundColor": "rgb(232, 169, 40)",
+          "fontSize": "11px",
+          "fontWeight": "750",
+          "ratio": 9.47,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "label": "pause-1280x720",
+      "samples": [
+        {
+          "name": "Pause title",
+          "selector": "#pause-title",
+          "backgroundSelector": "#pause-menu .menu-panel",
+          "color": "rgb(228, 227, 218)",
+          "backgroundColor": "rgb(14, 18, 20)",
+          "fontSize": "52px",
+          "fontWeight": "780",
+          "ratio": 14.61,
+          "visible": true
+        },
+        {
+          "name": "Pause guidance",
+          "selector": ".pause-recovery-note",
+          "backgroundSelector": "#pause-menu .menu-panel",
+          "color": "rgb(178, 180, 173)",
+          "backgroundColor": "rgb(14, 18, 20)",
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "ratio": 8.99,
+          "visible": true
+        },
+        {
+          "name": "Pause primary action",
+          "selector": "#resume-btn",
+          "backgroundSelector": "#resume-btn",
+          "color": "rgb(9, 12, 14)",
+          "backgroundColor": "rgb(232, 169, 40)",
+          "fontSize": "11px",
+          "fontWeight": "800",
+          "ratio": 9.47,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "label": "scoreboard-1280x720",
+      "samples": [
+        {
+          "name": "Scoreboard title",
+          "selector": ".sb-title",
+          "backgroundSelector": ".sb-panel",
+          "color": "rgb(228, 227, 218)",
+          "backgroundColor": "rgb(14, 18, 20)",
+          "fontSize": "42px",
+          "fontWeight": "780",
+          "ratio": 14.61,
+          "visible": true
+        },
+        {
+          "name": "Scoreboard combatant",
+          "selector": "#sb-rows td:nth-child(2)",
+          "backgroundSelector": ".sb-panel",
+          "color": "rgb(178, 180, 173)",
+          "backgroundColor": "rgb(14, 18, 20)",
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "ratio": 8.99,
+          "visible": true
+        },
+        {
+          "name": "Current player badge",
+          "selector": ".sb-you-badge",
+          "backgroundSelector": ".sb-row-you td",
+          "color": "rgb(228, 227, 218)",
+          "backgroundColor": "rgb(21, 26, 28)",
+          "fontSize": "10px",
+          "fontWeight": "700",
+          "ratio": 13.62,
+          "visible": true
+        },
+        {
+          "name": "Scoreboard key",
+          "selector": ".sb-key",
+          "backgroundSelector": ".sb-key",
+          "color": "rgb(9, 12, 14)",
+          "backgroundColor": "rgb(232, 169, 40)",
+          "fontSize": "11px",
+          "fontWeight": "750",
+          "ratio": 9.47,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "nameplateAudits": [
+    {
+      "label": "live-world-space-labels-1280x720",
+      "visibleCount": 1,
+      "boxes": [
+        {
+          "label": "PRACTICE BOT 07",
+          "left": 549.109130859375,
+          "right": 642.4533081054688,
+          "top": 330.30548095703125,
+          "bottom": 347.53826904296875
+        }
+      ],
+      "collisions": []
+    },
+    {
+      "label": "live-world-space-labels-1920x1080",
+      "visibleCount": 1,
+      "boxes": [
+        {
+          "label": "PRACTICE BOT 07",
+          "left": 416.90625,
+          "right": 494.90625,
+          "top": 509.78436279296875,
+          "bottom": 524.1843872070312
+        }
+      ],
+      "collisions": []
+    },
+    {
+      "label": "live-world-space-labels-1024x576",
+      "visibleCount": 1,
+      "boxes": [
+        {
+          "label": "PRACTICE BOT 07",
+          "left": 305.109375,
+          "right": 383.109375,
+          "top": 264.67498779296875,
+          "bottom": 279.0749816894531
+        }
+      ],
+      "collisions": []
+    }
+  ],
+  "navigationAborts": [],
+  "runtimeErrors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  }
+}

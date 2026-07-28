@@ -1,6 +1,8 @@
 import './style.css';
 import './ui/g7-ui.css';
+import './ui/g7-foundry-tactical.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
+import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
   LOCKED_GRAYBOX_PREVIEW_SEARCH,
   resolveLockedGrayboxPreviewRequest,
@@ -18,6 +20,18 @@ import {
 } from './app/inkfallRev3ReviewSelection.ts';
 
 const canvas = document.getElementById('game-canvas');
+const g7UiCandidate = resolveG7UiCandidate(window.location.search);
+const useAcceptedG7Presentation = g7UiCandidate.kind !== 'fallback';
+document.body.dataset.g7Presentation = useAcceptedG7Presentation
+  ? 'tournament-instrument-rev2'
+  : 'legacy-fallback';
+if (useAcceptedG7Presentation) {
+  document.body.dataset.g7Candidate = 'foundry-tactical-v1';
+  document.getElementById('hud')?.setAttribute('data-ui-candidate', 'foundry-tactical-v1');
+}
+if (g7UiCandidate.kind === 'invalid') {
+  document.body.dataset.g7PresentationQuery = `invalid-${g7UiCandidate.reason}`;
+}
 const desktopSupported = supportsDesktopLaunch();
 const deterministicTestRoute = import.meta.env.DEV
   && window.location.pathname === '/__test__/determinism';

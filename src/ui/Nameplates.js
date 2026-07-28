@@ -4,6 +4,77 @@
 import * as THREE from 'three';
 
 const MAX_DIST = 90;   // don't show plates for very distant bots
+const NAMEPLATE_WIDTH = 130;
+const NAMEPLATE_HEIGHT = 26;
+const NAMEPLATE_GAP = 4;
+const NAMEPLATE_TOP_GUTTER = 4;
+
+function placementBox(placement) {
+  const width = NAMEPLATE_WIDTH * placement.scale;
+  const height = NAMEPLATE_HEIGHT * placement.scale;
+  return {
+    left: placement.x - width / 2,
+    right: placement.x + width / 2,
+    top: placement.y - height,
+    bottom: placement.y,
+  };
+}
+
+function boxesOverlap(left, right) {
+  return left.left < right.right + NAMEPLATE_GAP
+    && left.right > right.left - NAMEPLATE_GAP
+    && left.top < right.bottom + NAMEPLATE_GAP
+    && left.bottom > right.top - NAMEPLATE_GAP;
+}
+
+/**
+ * Keeps the closest bot label at its projected anchor and moves only labels
+ * behind it upward. This stays presentation-only: world positions, targeting,
+ * health, and bot iteration order are untouched.
+ */
+export function deconflictNameplatePlacements(placements, viewportHeight) {
+  const ranked = placements
+    .map((placement, sourceIndex) => ({ ...placement, sourceIndex }))
+    .sort((left, right) => left.distance - right.distance || left.sourceIndex - right.sourceIndex);
+  const resolved = [];
+
+  for (const placement of ranked) {
+    const height = NAMEPLATE_HEIGHT * placement.scale;
+    const minimumBottom = height + NAMEPLATE_TOP_GUTTER;
+    let next = { ...placement };
+    let nextBox = placementBox(next);
+
+    for (let attempt = 0; attempt < ranked.length; attempt += 1) {
+      const collision = resolved.find(({ box }) => boxesOverlap(nextBox, box));
+      if (!collision) break;
+
+      const proposedBottom = collision.box.top - NAMEPLATE_GAP;
+      const boundedBottom = Math.max(minimumBottom, proposedBottom);
+      if (boundedBottom === next.y) break;
+
+      next = { ...next, y: boundedBottom };
+      nextBox = placementBox(next);
+    }
+
+    if (Number.isFinite(viewportHeight)) {
+      next = {
+        ...next,
+        y: Math.min(next.y, viewportHeight - NAMEPLATE_TOP_GUTTER),
+      };
+      nextBox = placementBox(next);
+    }
+
+    resolved.push({ placement: next, box: nextBox });
+  }
+
+  return resolved
+    .sort((left, right) => left.placement.sourceIndex - right.placement.sourceIndex)
+    .map(({ placement }) => {
+      const result = { ...placement };
+      delete result.sourceIndex;
+      return result;
+    });
+}
 
 export class Nameplates {
   constructor() {
@@ -18,6 +89,9 @@ export class Nameplates {
   update(camera, bots) {
     if (!camera || !bots) return;
     const w = window.innerWidth, h = window.innerHeight;
+    const deconflictLabels =
+      document.body?.dataset.g7Candidate === 'foundry-tactical-v1';
+    const visiblePlacements = [];
     camera.getWorldPosition(this._cam);
     const live = new Set();
 
@@ -63,10 +137,23 @@ export class Nameplates {
       const x = (this._v.x * 0.5 + 0.5) * w;
       const y = (-this._v.y * 0.5 + 0.5) * h;
       const s = Math.max(0.6, Math.min(1.1, 16 / dist));
-      el.style.left = `${x}px`;
-      el.style.top  = `${y}px`;
-      el.style.transform = `translate(-50%, -100%) scale(${s})`;
+      if (deconflictLabels) {
+        visiblePlacements.push({ el, x, y, scale: s, distance: dist });
+      } else {
+        el.style.left = `${x}px`;
+        el.style.top  = `${y}px`;
+        el.style.transform = `translate(-50%, -100%) scale(${s})`;
+      }
       el._fg.style.width = `${Math.max(0, (bot.health / bot.maxHealth) * 100)}%`;
+    }
+
+    if (deconflictLabels) {
+      for (const placement of deconflictNameplatePlacements(visiblePlacements, h)) {
+        placement.el.style.left = `${placement.x}px`;
+        placement.el.style.top = `${placement.y}px`;
+        placement.el.style.transform =
+          `translate(-50%, -100%) scale(${placement.scale})`;
+      }
     }
 
     // Remove plates for dead / despawned bots.

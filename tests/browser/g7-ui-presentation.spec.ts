@@ -18,11 +18,213 @@ function observeRuntimeErrors(page: Page): RuntimeErrors {
   return errors;
 }
 
-async function waitForMenu(page: Page): Promise<void> {
-  await page.goto('/', { waitUntil: 'networkidle' });
+async function waitForMenu(page: Page, search = ''): Promise<void> {
+  await page.goto(`/${search}`, { waitUntil: 'networkidle' });
   await expect(page.locator('#connect-screen')).toHaveClass(/hidden/, { timeout: 15_000 });
   await expect(page.getByRole('button', { name: 'Start offline practice' })).toBeVisible();
 }
+
+test('Tournament Instrument Rev2 is the default presentation with bounded HUD layout', async ({ page }) => {
+  const errors = observeRuntimeErrors(page);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await waitForMenu(page);
+
+  await expect(page.locator('body')).toHaveAttribute(
+    'data-g7-presentation',
+    'tournament-instrument-rev2',
+  );
+  await expect(page.locator('body')).toHaveAttribute(
+    'data-g7-candidate',
+    'foundry-tactical-v1',
+  );
+  await expect(page.locator('#hud')).toHaveAttribute(
+    'data-ui-candidate',
+    'foundry-tactical-v1',
+  );
+
+  const launchSurface = page.locator('.practice-launch-card');
+  expect(await launchSurface.evaluate((element) => getComputedStyle(element).backdropFilter)).toBe('none');
+  expect(await launchSurface.evaluate((element) => getComputedStyle(element).borderRadius)).toBe('0px');
+
+  await page.getByRole('button', { name: 'Start offline practice' }).click();
+  await expect(page.locator('#hud')).toBeVisible({ timeout: 15_000 });
+  await expect(page.locator('#map-loading')).toHaveClass(/hidden/, { timeout: 15_000 });
+
+  const auditLayout = () => page.evaluate(() => {
+    const boxes = Object.fromEntries(
+      ['hud-vitals', 'weapon-wrap', 'score-wrap', 'ability-rack', 'dm-timer'].map((id) => {
+        const rect = document.getElementById(id)?.getBoundingClientRect();
+        return [id, rect ? {
+          left: rect.left,
+          right: rect.right,
+          top: rect.top,
+          bottom: rect.bottom,
+        } : null];
+      }),
+    );
+    const overlaps = (
+      left: { left: number; right: number; top: number; bottom: number },
+      right: { left: number; right: number; top: number; bottom: number },
+    ) => left.left < right.right
+      && left.right > right.left
+      && left.top < right.bottom
+      && left.bottom > right.top;
+    return {
+      overflowX: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
+      overflowY: Math.max(0, document.documentElement.scrollHeight - window.innerHeight),
+      vitalsAbilities: overlaps(boxes['hud-vitals']!, boxes['ability-rack']!),
+      weaponAbilities: overlaps(boxes['weapon-wrap']!, boxes['ability-rack']!),
+      scoreTimer: overlaps(boxes['score-wrap']!, boxes['dm-timer']!),
+      outside: Object.entries(boxes)
+        .filter(([, box]) => box && (
+          box.left < 0
+          || box.top < 0
+          || box.right > window.innerWidth
+          || box.bottom > window.innerHeight
+        ))
+        .map(([id]) => id),
+    };
+  });
+
+  expect(await auditLayout()).toEqual({
+    overflowX: 0,
+    overflowY: 0,
+    vitalsAbilities: false,
+    weaponAbilities: false,
+    scoreTimer: false,
+    outside: [],
+  });
+
+  const instrumentText = await page.evaluate(() => Object.fromEntries(
+    [
+      ['authority', '.hud-match-head > span'],
+      ['roster', '#server-pop'],
+      ['metric', '.hud-score-metrics small'],
+      ['abilityName', '.ability-name'],
+      ['abilityState', '.ability-state'],
+      ['ammoQualifier', '.hud-ammo-row > span'],
+    ].map(([name, selector]) => {
+      const element = document.querySelector(selector);
+      return [name, element ? Number.parseFloat(getComputedStyle(element).fontSize) : 0];
+    }),
+  ));
+  expect(instrumentText).toEqual({
+    authority: 11,
+    roster: 11,
+    metric: 11,
+    abilityName: 11,
+    abilityState: 11,
+    ammoQualifier: 10,
+  });
+
+  await page.waitForTimeout(750);
+  const nameplateCollisions = await page.evaluate(() => {
+    const boxes = Array.from(document.querySelectorAll<HTMLElement>('.nameplate'))
+      .filter((element) => getComputedStyle(element).display !== 'none')
+      .map((element) => ({
+        label: element.textContent?.trim() ?? 'Enemy',
+        rect: element.getBoundingClientRect(),
+      }));
+    const collisions: string[] = [];
+    for (let leftIndex = 0; leftIndex < boxes.length; leftIndex += 1) {
+      for (let rightIndex = leftIndex + 1; rightIndex < boxes.length; rightIndex += 1) {
+        const left = boxes[leftIndex]!;
+        const right = boxes[rightIndex]!;
+        if (
+          left.rect.left < right.rect.right
+          && left.rect.right > right.rect.left
+          && left.rect.top < right.rect.bottom
+          && left.rect.bottom > right.rect.top
+        ) {
+          collisions.push(`${left.label} / ${right.label}`);
+        }
+      }
+    }
+    return collisions;
+  });
+  expect(nameplateCollisions).toEqual([]);
+
+  await page.evaluate(() => {
+    document.documentElement.style.setProperty('--hud-scale', '1.25');
+  });
+  expect(await auditLayout()).toEqual({
+    overflowX: 0,
+    overflowY: 0,
+    vitalsAbilities: false,
+    weaponAbilities: false,
+    scoreTimer: false,
+    outside: [],
+  });
+  expect((await page.locator('#score-wrap').boundingBox())?.width).toBeGreaterThan(270);
+
+  await page.evaluate(() => {
+    document.documentElement.style.setProperty('--hud-scale', '1');
+  });
+  await page.setViewportSize({ width: 1024, height: 576 });
+  expect(await auditLayout()).toEqual({
+    overflowX: 0,
+    overflowY: 0,
+    vitalsAbilities: false,
+    weaponAbilities: false,
+    scoreTimer: false,
+    outside: [],
+  });
+
+  await page.evaluate(() => {
+    window.requestAnimationFrame = () => 0;
+  });
+  await page.waitForTimeout(100);
+  await page.evaluate(async () => {
+    const hudModulePath = '/src/ui/HUD.js';
+    const { HUD } = await import(hudModulePath);
+    const hud = new HUD();
+    hud.update(
+      {
+        health: 68,
+        maxHealth: 100,
+        shield: 24,
+        maxShield: 50,
+        stamina: 44,
+        maxStamina: 100,
+      },
+      {
+        name: 'AR-9 Assault',
+        isMelee: false,
+        magAmmo: 17,
+        reserveAmmo: 90,
+        isReloading: true,
+      },
+      3,
+      450,
+    );
+  });
+  await expect(page.locator('#reload-text')).toBeVisible();
+  await expect(page.locator('#reload-text')).toHaveText('Reloading');
+  await expect(page.locator('#weapon-wrap')).toHaveAttribute('aria-label', /reloading$/);
+  expect(await page.locator('#reload-text').evaluate(
+    (element) => getComputedStyle(element).backgroundColor,
+  )).toBe('rgb(232, 169, 40)');
+
+  expect(errors).toEqual({ console: [], page: [], requests: [] });
+});
+
+test('the previous presentation remains available only through an explicit fallback', async ({ page }) => {
+  const errors = observeRuntimeErrors(page);
+  await waitForMenu(page, '?g7Presentation=legacy');
+
+  await expect(page.locator('body')).toHaveAttribute('data-g7-presentation', 'legacy-fallback');
+  await expect(page.locator('body')).not.toHaveAttribute('data-g7-candidate', /.+/u);
+  await expect(page.locator('#hud')).not.toHaveAttribute('data-ui-candidate', /.+/u);
+  await expect(page.locator('body')).toHaveAttribute('data-interface', 'kyx-field-ui-v3');
+
+  await page.getByRole('button', { name: 'Settings' }).click();
+  await expect(page.locator('#panel-settings')).toBeVisible();
+  await expect(page.locator('#settings-close-btn')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#panel-settings')).toBeHidden();
+
+  expect(errors).toEqual({ console: [], page: [], requests: [] });
+});
 
 test('authored menu remains compact, keyboard navigable, and responsive', async ({ page }) => {
   const errors = observeRuntimeErrors(page);

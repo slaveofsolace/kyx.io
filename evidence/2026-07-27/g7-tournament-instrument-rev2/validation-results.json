@@ -1,0 +1,69 @@
+{
+  "verifiedAt": "2026-07-27T22:52:14-05:00",
+  "baseCommit": "addacf2c402067194a51bb9598edaa160d05e14e",
+  "candidateQuery": "?g7Candidate=foundry-tactical",
+  "candidateDataset": "foundry-tactical-v1",
+  "checks": [
+    {
+      "name": "resolver and nameplate unit tests",
+      "command": "node node_modules/vitest/vitest.mjs run tests/unit/app/g7UiCandidate.test.ts tests/unit/ui/nameplatesLayout.test.ts --reporter=verbose",
+      "result": "pass",
+      "summary": "2 files, 5 tests passed"
+    },
+    {
+      "name": "focused Chrome Playwright",
+      "command": "node node_modules/@playwright/test/cli.js test --config playwright.g7.config.js",
+      "result": "pass",
+      "summary": "4 tests passed"
+    },
+    {
+      "name": "client typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+      "result": "pass",
+      "summary": "exit code 0"
+    },
+    {
+      "name": "focused lint",
+      "command": "node node_modules/eslint/bin/eslint.js tests/browser/g7-ui-presentation.spec.ts tests/unit/ui/nameplatesLayout.test.ts tools/evidence/capture-g7-foundry-tactical.mjs",
+      "result": "pass",
+      "summary": "exit code 0"
+    },
+    {
+      "name": "production build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "result": "pass",
+      "summary": "167 modules transformed; build completed"
+    },
+    {
+      "name": "fresh Chrome evidence capture",
+      "command": "node tools/evidence/capture-g7-foundry-tactical.mjs --base-url http://127.0.0.1:6217 --output evidence/2026-07-27/g7-tournament-instrument-rev2/after --channel chrome",
+      "result": "pass",
+      "summary": "12 views; 3 layout audits; 5 contrast audits with 19 samples; 3 nameplate audits; 0 runtime errors"
+    }
+  ],
+  "capture": {
+    "capturedAt": "2026-07-28T03:49:51.472Z",
+    "views": 12,
+    "layoutAudits": 3,
+    "layoutOverlapFailures": 0,
+    "layoutOutsideFailures": 0,
+    "layoutOverflowFailures": 0,
+    "contrastAudits": 5,
+    "contrastSamples": 19,
+    "minimumContrastRatio": 5.7,
+    "legibilityFailures": 0,
+    "nameplateAudits": 3,
+    "nameplateCollisionFailures": 0,
+    "consoleErrors": 0,
+    "pageErrors": 0,
+    "requestErrors": 0,
+    "navigationAborts": 0
+  },
+  "scope": {
+    "fullSuiteRun": false,
+    "merge": false,
+    "push": false,
+    "deploy": false,
+    "canonicalCheckoutModified": false
+  }
+}
