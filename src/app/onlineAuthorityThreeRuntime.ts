@@ -965,15 +965,15 @@ export async function createOnlineAuthorityThreeRuntime(
       );
       avatar.root.scale.y = remote.state.stance === 'crouched' ? 0.78 : 1;
       setAvatarWeapon(avatar, combatPlayer?.selectedWeaponId);
-      const speed = Math.hypot(
-        remote.state.velocity.x,
-        remote.state.velocity.z,
-      ) / 1_000;
+      const speed = (
+        remote.state.locomotionSignal.planarSpeedMillimetersPerSecond
+        / 1_000
+      );
       avatar.root.userData.setLocomotion?.(
         speed,
         remote.state.grounded,
         speed > 5.4,
-        0,
+        remote.state.locomotionSignal.strafeLean,
       );
       avatar.root.userData.setAim?.(
         remote.state.pitchMilliDegrees * Math.PI / 180_000,

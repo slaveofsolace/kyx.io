@@ -936,7 +936,7 @@ function validateEntity(value: unknown, path: string): SnapshotEntity {
     'id', 'kind', 'xMillimeters', 'yMillimeters', 'zMillimeters',
     'velocityXMillimetersPerSecond', 'velocityYMillimetersPerSecond',
     'velocityZMillimetersPerSecond', 'yawMilliDegrees', 'pitchMilliDegrees',
-    'healthPoints', 'shieldPoints',
+    'healthPoints', 'shieldPoints', 'movement',
   ]);
   idAt(required(record, 'id', path), `${path}.id`);
   stringAt(required(record, 'kind', path), `${path}.kind`, { allowed: ['player', 'projectile', 'deployable', 'pickup'] });
@@ -958,6 +958,52 @@ function validateEntity(value: unknown, path: string): SnapshotEntity {
   numberAt(required(record, 'pitchMilliDegrees', path), `${path}.pitchMilliDegrees`, { integer: true, min: -PROTOCOL_LIMITS.maxPitchMilliDegrees, max: PROTOCOL_LIMITS.maxPitchMilliDegrees });
   numberAt(required(record, 'healthPoints', path), `${path}.healthPoints`, { min: 0, max: PROTOCOL_LIMITS.maxHealthValue, nullable: true });
   numberAt(required(record, 'shieldPoints', path), `${path}.shieldPoints`, { min: 0, max: PROTOCOL_LIMITS.maxHealthValue, nullable: true });
+  if (Object.hasOwn(record, 'movement')) {
+    if (record.kind !== 'player') {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.movement`,
+        'movement facts are valid only for player entities',
+      );
+    }
+    const movement = recordAt(record.movement, `${path}.movement`);
+    exactKeys(movement, `${path}.movement`, [
+      'schemaVersion', 'grounded', 'stance', 'locomotion',
+    ]);
+    numberAt(
+      required(movement, 'schemaVersion', `${path}.movement`),
+      `${path}.movement.schemaVersion`,
+      { integer: true, min: 1, max: 1 },
+    );
+    booleanAt(
+      required(movement, 'grounded', `${path}.movement`),
+      `${path}.movement.grounded`,
+    );
+    stringAt(
+      required(movement, 'stance', `${path}.movement`),
+      `${path}.movement.stance`,
+      { allowed: ['standing', 'crouched'] },
+    );
+    stringAt(
+      required(movement, 'locomotion', `${path}.movement`),
+      `${path}.movement.locomotion`,
+      { allowed: ['grounded', 'airborne', 'sliding'] },
+    );
+    if (movement.grounded === (movement.locomotion === 'airborne')) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.movement`,
+        'grounded and locomotion states disagree',
+      );
+    }
+    if (movement.locomotion === 'sliding' && movement.stance !== 'crouched') {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${path}.movement`,
+        'sliding movement must use the crouched stance',
+      );
+    }
+  }
   return record as unknown as SnapshotEntity;
 }
 

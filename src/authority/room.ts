@@ -3547,6 +3547,12 @@ export class AuthoritativeRoom {
         pitchMilliDegrees: state.player.pitchMilliDegrees,
         healthPoints: life?.healthPoints ?? 100,
         shieldPoints: life?.shieldPoints ?? 0,
+        movement: Object.freeze({
+          schemaVersion: 1 as const,
+          grounded: state.player.grounded,
+          stance: state.player.stance,
+          locomotion: state.player.locomotion,
+        }),
       })));
   }
 

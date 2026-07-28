@@ -280,9 +280,10 @@ export function evidenceWireCommandToMovement(
 }
 
 /**
- * Snapshot entities currently omit remote stance/support semantics. This
- * development adapter labels the conservative projection used only for the
- * existing interpolation buffer; position and velocity remain server facts.
+ * Map validated server facts into the interpolation seam. Protocol-v2 peers
+ * created before the additive movement projection remain readable through the
+ * conservative legacy fallback, but current rooms never infer elevated
+ * grounding, crouch, or slide from world coordinates.
  */
 export function remoteSampleFromSnapshotEntity(
   entity: SnapshotEntity,
@@ -291,8 +292,9 @@ export function remoteSampleFromSnapshotEntity(
   firstSample: boolean,
 ): RemoteAuthoritativeSample {
   if (entity.kind !== 'player') throw new RangeError('remote interpolation requires a player entity');
-  const grounded = entity.yMillimeters === 0
+  const legacyGrounded = entity.yMillimeters === 0
     && entity.velocityYMillimetersPerSecond === 0;
+  const grounded = entity.movement?.grounded ?? legacyGrounded;
   return Object.freeze({
     entityId: entity.id,
     serverTick,
@@ -312,10 +314,10 @@ export function remoteSampleFromSnapshotEntity(
       : entity.yawMilliDegrees,
     pitchMilliDegrees: entity.pitchMilliDegrees,
     grounded,
-    stance: 'standing',
-    locomotion: grounded
-      ? 'grounded'
-      : 'airborne',
+    stance: entity.movement?.stance ?? 'standing',
+    locomotion: entity.movement?.locomotion ?? (
+      grounded ? 'grounded' : 'airborne'
+    ),
     ...(firstSample ? { discontinuity: 'spawn' as const } : {}),
   });
 }

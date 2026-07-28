@@ -30,7 +30,22 @@ function sameEntityMap(
 }
 
 function copyEntity(entity: SnapshotEntity): SnapshotEntity {
-  return Object.freeze({ ...entity });
+  return Object.freeze({
+    ...entity,
+    ...(entity.movement === undefined
+      ? {}
+      : { movement: Object.freeze({ ...entity.movement }) }),
+  });
+}
+
+function sameMovement(left: SnapshotEntity, right: SnapshotEntity): boolean {
+  if (left.movement === undefined || right.movement === undefined) {
+    return left.movement === right.movement;
+  }
+  return left.movement.schemaVersion === right.movement.schemaVersion
+    && left.movement.grounded === right.movement.grounded
+    && left.movement.stance === right.movement.stance
+    && left.movement.locomotion === right.movement.locomotion;
 }
 
 function sameEntity(left: SnapshotEntity, right: SnapshotEntity): boolean {
@@ -45,7 +60,8 @@ function sameEntity(left: SnapshotEntity, right: SnapshotEntity): boolean {
     && left.yawMilliDegrees === right.yawMilliDegrees
     && left.pitchMilliDegrees === right.pitchMilliDegrees
     && left.healthPoints === right.healthPoints
-    && left.shieldPoints === right.shieldPoints;
+    && left.shieldPoints === right.shieldPoints
+    && sameMovement(left, right);
 }
 
 function entityMap(entities: readonly SnapshotEntity[]): ReadonlyMap<string, SnapshotEntity> {

@@ -106,6 +106,12 @@ interface OnlinePreviewSnapshot {
     entityId: string;
     interpolationMode: AuthorityEvidencePresentation['remotes'][number]['mode'];
     position: Readonly<{ x: number; y: number; z: number }>;
+    grounded: boolean;
+    stance: 'standing' | 'crouched';
+    locomotion: 'grounded' | 'airborne' | 'sliding';
+    travelSector: AuthorityEvidencePresentation['remotes'][number]['state']['locomotionSignal']['sector'];
+    forwardSpeedMillimetersPerSecond: number;
+    rightSpeedMillimetersPerSecond: number;
   }>[];
   readonly remotePositions: readonly Readonly<{ x: number; y: number; z: number }>[];
   readonly lastError: string | null;
@@ -1203,7 +1209,6 @@ async function mountSession(
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
   let selectedWeaponSlot = 0;
-  let pointerLookResetTimeout = 0;
 
   type FeedbackCue = OnlinePreviewSnapshot['presentation']['lastCue'];
   let combatPresentationAdapter: CombatPresentationAdapterV1 | null = null;
@@ -1356,6 +1361,14 @@ async function mountSession(
         y: remote.state.feetPosition.y,
         z: remote.state.feetPosition.z,
       }),
+      grounded: remote.state.grounded,
+      stance: remote.state.stance,
+      locomotion: remote.state.locomotion,
+      travelSector: remote.state.locomotionSignal.sector,
+      forwardSpeedMillimetersPerSecond:
+        remote.state.locomotionSignal.forwardSpeedMillimetersPerSecond,
+      rightSpeedMillimetersPerSecond:
+        remote.state.locomotionSignal.rightSpeedMillimetersPerSecond,
     })));
     return Object.freeze({
       schemaVersion: 1,
@@ -1531,9 +1544,7 @@ async function mountSession(
     if (!inkfallRev4 || document.pointerLockElement !== canvas) return;
     const yaw = Math.max(-12_000, Math.min(12_000, Math.round(event.movementX * 110)));
     const pitch = Math.max(-12_000, Math.min(12_000, Math.round(-event.movementY * 110)));
-    client.setLookDeltas(yaw, pitch);
-    window.clearTimeout(pointerLookResetTimeout);
-    pointerLookResetTimeout = window.setTimeout(updateInput, 70);
+    client.addLookDeltas(yaw, pitch);
     canvas.dataset.pointerLock = 'active';
     renderRequested = true;
   };
@@ -1867,7 +1878,6 @@ async function mountSession(
     document.removeEventListener('mousemove', pointerLook);
     document.removeEventListener('pointerlockchange', pointerLockChange);
     window.clearTimeout(feedbackTimeout);
-    window.clearTimeout(pointerLookResetTimeout);
     if (audioContext !== null) void audioContext.close();
     client.dispose();
     threeRuntime?.dispose();

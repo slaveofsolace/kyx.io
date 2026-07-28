@@ -51,6 +51,15 @@ import {
   type AuthorityEvidenceAxes,
   type AuthorityEvidenceConfig,
 } from './authorityEvidenceModel';
+import {
+  accumulateAuthorityLookImpulse,
+  consumeAuthorityLookImpulse,
+  createAuthorityLookInputState,
+  neutralizeAuthorityLookInput,
+  sampleAuthorityLookDelta,
+  setAuthorityContinuousLook,
+  type AuthorityLookInputState,
+} from './authorityLookInput';
 import type {
   AuthorityEvidenceConnection,
   AuthorityEvidenceImpairmentDiagnostics,
@@ -437,8 +446,7 @@ export class AuthorityEvidenceClient {
   private lastSentCombatHeldButtons = 0;
   private pendingCombatPressedButtons = 0;
   private pendingCombatReleasedButtons = 0;
-  private lookYawDeltaMilliDegrees = 0;
-  private lookPitchDeltaMilliDegrees = 0;
+  private lookInput: AuthorityLookInputState = createAuthorityLookInputState();
   private selectedWeaponSlot = 0;
   private combatSnapshot: CombatSnapshotV1 | null = null;
   private readonly recentCombatEvents: ReliableEvent[] = [];
@@ -514,24 +522,28 @@ export class AuthorityEvidenceClient {
     this.combatHeldButtons = 0;
     this.pendingCombatPressedButtons = 0;
     this.pendingCombatReleasedButtons = this.lastSentCombatHeldButtons;
-    this.lookYawDeltaMilliDegrees = 0;
-    this.lookPitchDeltaMilliDegrees = 0;
+    this.lookInput = neutralizeAuthorityLookInput();
     this.emitChange();
   }
 
   setLookDeltas(yawMilliDegrees: number, pitchMilliDegrees = 0): boolean {
     if (!this.combatInputEnabled) return false;
-    for (const [label, value] of [
-      ['yaw', yawMilliDegrees],
-      ['pitch', pitchMilliDegrees],
-    ] as const) {
-      if (
-        !Number.isInteger(value)
-        || Math.abs(value) > PROTOCOL_LIMITS.maxLookDeltaMilliDegrees
-      ) throw new RangeError(`authority evidence look ${label} delta exceeds the protocol limit`);
-    }
-    this.lookYawDeltaMilliDegrees = yawMilliDegrees;
-    this.lookPitchDeltaMilliDegrees = pitchMilliDegrees;
+    this.lookInput = setAuthorityContinuousLook(
+      this.lookInput,
+      yawMilliDegrees,
+      pitchMilliDegrees,
+    );
+    this.emitChange();
+    return true;
+  }
+
+  addLookDeltas(yawMilliDegrees: number, pitchMilliDegrees = 0): boolean {
+    if (!this.combatInputEnabled) return false;
+    this.lookInput = accumulateAuthorityLookImpulse(
+      this.lookInput,
+      yawMilliDegrees,
+      pitchMilliDegrees,
+    );
     this.emitChange();
     return true;
   }
@@ -1243,6 +1255,7 @@ export class AuthorityEvidenceClient {
       (this.lastSentCombatHeldButtons & ~heldButtons)
       | this.pendingCombatReleasedButtons
     ) & ~heldButtons) >>> 0;
+    const lookDelta = sampleAuthorityLookDelta(this.lookInput);
     const wireCommand = createEvidenceInputCommand(
       this.nextSequence,
       this.nextClientTick,
@@ -1253,8 +1266,8 @@ export class AuthorityEvidenceClient {
             pressedButtons,
             releasedButtons,
             selectedSlot: this.selectedWeaponSlot,
-            lookYawDeltaMilliDegrees: this.lookYawDeltaMilliDegrees,
-            lookPitchDeltaMilliDegrees: this.lookPitchDeltaMilliDegrees,
+            lookYawDeltaMilliDegrees: lookDelta.yawMilliDegrees,
+            lookPitchDeltaMilliDegrees: lookDelta.pitchMilliDegrees,
           }
         : undefined,
     );
@@ -1274,6 +1287,7 @@ export class AuthorityEvidenceClient {
       this.lastSentCombatHeldButtons = heldButtons;
       this.pendingCombatPressedButtons = 0;
       this.pendingCombatReleasedButtons &= ~releasedButtons;
+      this.lookInput = consumeAuthorityLookImpulse(this.lookInput);
       this.nextSequence += 1;
       this.nextClientTick += 1;
       this.counters.commandsGenerated += 1;

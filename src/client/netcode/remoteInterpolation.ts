@@ -1,3 +1,8 @@
+import {
+  deriveLocomotionPresentationSignal,
+  type LocomotionPresentationSignal,
+} from './locomotionPresentation';
+
 const DEFAULT_BUFFER_CAPACITY = 32;
 const MAXIMUM_BUFFER_CAPACITY = 4_096;
 const DEFAULT_INTERPOLATION_DELAY_TICKS = 2;
@@ -113,6 +118,7 @@ export interface RemoteRenderState {
   readonly grounded: boolean;
   readonly stance: RemoteAuthoritativeSample['stance'];
   readonly locomotion: RemoteAuthoritativeSample['locomotion'];
+  readonly locomotionSignal: LocomotionPresentationSignal;
   readonly discontinuity?: RemoteSemanticDiscontinuity;
 }
 
@@ -527,6 +533,10 @@ function renderFromAuthoritative(sample: RemoteAuthoritativeSample): RemoteRende
     grounded: sample.grounded,
     stance: sample.stance,
     locomotion: sample.locomotion,
+    locomotionSignal: deriveLocomotionPresentationSignal(
+      sample.velocity,
+      sample.yawMilliDegrees,
+    ),
     ...(sample.discontinuity === undefined
       ? {}
       : { discontinuity: sample.discontinuity }),
@@ -595,6 +605,12 @@ export function sampleRemoteInterpolation(
     const upper = buffer.samples[upperIndex]!;
     const alpha = (targetServerTick - lower.serverTick)
       / (upper.serverTick - lower.serverTick);
+    const velocity = lerpVector(lower.velocity, upper.velocity, alpha);
+    const yawMilliDegrees = lerpYaw(
+      lower.yawMilliDegrees,
+      upper.yawMilliDegrees,
+      alpha,
+    );
     return freezeInterpolationResult({
       mode: 'interpolated',
       targetServerTick,
@@ -606,8 +622,8 @@ export function sampleRemoteInterpolation(
       renderState: Object.freeze({
         entityId: buffer.entityId,
         feetPosition: lerpVector(lower.feetPosition, upper.feetPosition, alpha),
-        velocity: lerpVector(lower.velocity, upper.velocity, alpha),
-        yawMilliDegrees: lerpYaw(lower.yawMilliDegrees, upper.yawMilliDegrees, alpha),
+        velocity,
+        yawMilliDegrees,
         pitchMilliDegrees: lerp(
           lower.pitchMilliDegrees,
           upper.pitchMilliDegrees,
@@ -616,6 +632,10 @@ export function sampleRemoteInterpolation(
         grounded: lower.grounded,
         stance: lower.stance,
         locomotion: lower.locomotion,
+        locomotionSignal: deriveLocomotionPresentationSignal(
+          velocity,
+          yawMilliDegrees,
+        ),
       }),
     });
   }

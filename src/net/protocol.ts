@@ -303,6 +303,18 @@ export interface JoinRejectedMessage extends ProtocolEnvelope {
 
 export type SnapshotEntityKind = 'player' | 'projectile' | 'deployable' | 'pickup';
 
+/**
+ * Additive protocol-v2 presentation facts copied from canonical authority
+ * state. They let remote interpolation preserve multi-level grounding,
+ * crouching, and sliding without inferring physics from a world coordinate.
+ */
+export interface SnapshotPlayerMovementV1 {
+  readonly schemaVersion: 1;
+  readonly grounded: boolean;
+  readonly stance: 'standing' | 'crouched';
+  readonly locomotion: 'grounded' | 'airborne' | 'sliding';
+}
+
 export interface SnapshotEntity {
   readonly id: string;
   readonly kind: SnapshotEntityKind;
@@ -316,6 +328,7 @@ export interface SnapshotEntity {
   readonly pitchMilliDegrees: number;
   readonly healthPoints: number | null;
   readonly shieldPoints: number | null;
+  readonly movement?: SnapshotPlayerMovementV1;
 }
 
 export interface CombatPlayerSnapshotV1 {
