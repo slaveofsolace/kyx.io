@@ -12,6 +12,8 @@ import {
   type AuthorityActiveMatchCheckpointV1,
   type AuthorityLoadoutSelectionV1,
   type AuthorityFullSnapshot,
+  type AuthoritySpawn,
+  type AuthoritySpawnSelectionResultV1,
 } from '../src/authority';
 import { hashRulesetContent, requireRuleset } from '../src/content';
 import {
@@ -33,6 +35,7 @@ import { RapierMovementWorld } from '../src/physics/rapier/world';
 import {
   PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
   hashMovementProfile,
+  lookDirectionQ15,
 } from '../src/sim';
 import type { KyxAuthorityEnv } from './env';
 import {
@@ -41,10 +44,12 @@ import {
 } from './allocationGuard';
 import {
   INTERNAL_ROOM_PROFILE_HEADER,
+  G5_INKFALL_REV4_COMBAT_PROFILE,
   createInkfallWorkerCombatOptions,
   combatSnapshotFromAuthority,
   createWorkerCombatOptions,
   inferWorkerRoomProfileFromIdentity,
+  inkfallRevision3WorkerSpawnAuthority,
   inkfallWorkerCombatSpawn,
   inkfallWorkerFixture,
   inkfallWorkerMapBinding,
@@ -107,6 +112,45 @@ const MAXIMUM_LOBBY_RELIABILITY_CHECKPOINT_BYTES = 1_000_000;
 const MAXIMUM_ACTIVE_MATCH_CHECKPOINT_BYTES = 4_000_000;
 const MAXIMUM_RETAINED_LOADOUT_REQUESTS = 512;
 const LOADOUT_ACCEPTED_OUTCOME = 'accepted';
+const INKFALL_SPAWN_SELECTION_SCHEMA_VERSION = 1 as const;
+const INKFALL_SPAWN_SELECTION_STRATEGY =
+  'rev3_authority_enemy_distance_fixture_occluded_los_v1' as const;
+const MAXIMUM_RETAINED_INKFALL_SPAWN_DECISIONS = 64;
+const INKFALL_RECENT_SPAWN_USE_WINDOW_TICKS = 160;
+
+type InkfallSpawnFallbackMode =
+  | 'none'
+  | 'scored_locked_candidate'
+  | 'locked_ordinal';
+
+interface InkfallSpawnDecisionDiagnostic {
+  readonly tick: number;
+  readonly requesterOrdinal: number;
+  readonly populationBeforeSpawn: number;
+  readonly status: AuthoritySpawnSelectionResultV1['status'];
+  readonly decisionHash: string;
+  readonly selectedSpawnId: string;
+  readonly selectedScore: number | null;
+  readonly fallbackMode: InkfallSpawnFallbackMode;
+  readonly eligibleCandidateCount: number;
+  readonly directLosRejectedCandidateCount: number;
+  readonly minimumEnemyDistanceMm: number | null;
+  readonly selectedStandingOccluded: boolean;
+  readonly selectedCrouchedOccluded: boolean;
+}
+
+function compareCodeUnits(left: string, right: string): number {
+  return left < right ? -1 : left > right ? 1 : 0;
+}
+
+function inkfallLivePlayerSemanticId(playerId: string): string {
+  let hash = 0xcbf29ce484222325n;
+  for (const byte of new TextEncoder().encode(playerId)) {
+    hash ^= BigInt(byte);
+    hash = BigInt.asUintN(64, hash * 0x100000001b3n);
+  }
+  return `live_${hash.toString(16).padStart(16, '0')}`;
+}
 
 interface RoomRuntimeRow {
   readonly [column: string]: string | number | ArrayBuffer | null;
@@ -456,6 +500,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private timerActive = false;
   private expiredMaintenanceTimerActive = false;
   private readonly restoredSpawnOrdinals = new Map<string, number>();
+  private readonly recentInkfallSpawnUses: { readonly spawnId: string; readonly tick: number }[] = [];
+  private readonly inkfallSpawnDecisions: InkfallSpawnDecisionDiagnostic[] = [];
+  private inkfallSpawnFallbacks = 0;
   private activeMatchCheckpointDirty = false;
   private lastActiveMatchCheckpointPersistedTick: number | null = null;
 
@@ -533,6 +580,20 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             : {}),
           ...(isInkfallWorkerRoomProfile(this.roomProfile)
             ? { mapBinding: inkfallWorkerMapBinding(this.roomProfile) }
+            : {}),
+          ...(this.roomProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+            ? {
+                spawnSelection: Object.freeze({
+                  schemaVersion: INKFALL_SPAWN_SELECTION_SCHEMA_VERSION,
+                  strategy: INKFALL_SPAWN_SELECTION_STRATEGY,
+                  authorityBoundary: 'server_state_and_authority_collision_only',
+                  clientPositionOrScoreAccepted: false,
+                  lockedSpawnIdentityCount: 12,
+                  decisionCount: this.inkfallSpawnDecisions.length,
+                  fallbackCount: this.inkfallSpawnFallbacks,
+                  decisions: Object.freeze([...this.inkfallSpawnDecisions]),
+                }),
+              }
             : {}),
           authorityTickExecution: this.authorityTickExecutionMetrics(),
           transport: Object.freeze({ ...this.transportMetrics }),
@@ -1153,6 +1214,125 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     await this.scheduleMaintenanceAlarm();
   }
 
+  private resolveLiveInkfallSpawn(playerId: string, ordinal: number): AuthoritySpawn {
+    const snapshot = this.authority?.fullSnapshot() ?? null;
+    const tick = snapshot?.serverTick ?? 0;
+    const requesterTeamId = ordinal % 2 === 0 ? 'team_blue' : 'team_red';
+    const requesterTerritory = ordinal % 2 === 0 ? 'west' : 'east';
+    const players = (snapshot?.players ?? [])
+      .filter((player) => (
+        player.playerId !== playerId
+        && player.combat?.life.phase === 'alive'
+      ))
+      .map((player) => {
+        const pose = player.movement.player;
+        return Object.freeze({
+          id: inkfallLivePlayerSemanticId(player.playerId),
+          teamId: player.combat?.life.teamId ?? null,
+          feetPositionMm: pose.feetPosition,
+          aimDirectionQ15: lookDirectionQ15(
+            pose.yawMilliDegrees,
+            pose.pitchMilliDegrees,
+          ),
+          aimSampleTick: tick,
+          authorityArrivalEstimates: Object.freeze([]),
+        });
+      });
+    const recentSpawnUses = this.recentInkfallSpawnUses.filter(
+      ({ tick: usedAtTick }) => tick - usedAtTick <= INKFALL_RECENT_SPAWN_USE_WINDOW_TICKS,
+    );
+    this.recentInkfallSpawnUses.splice(
+      0,
+      this.recentInkfallSpawnUses.length,
+      ...recentSpawnUses,
+    );
+    const result = inkfallRevision3WorkerSpawnAuthority().select({
+      schemaVersion: 1,
+      mapId: 'inkfall_foundry',
+      mapRevision: 3,
+      fixtureHash: '6cf785c5171f2ff5',
+      mode: 'team_deathmatch',
+      tick,
+      requester: Object.freeze({
+        id: inkfallLivePlayerSemanticId(playerId),
+        teamId: requesterTeamId,
+        territory: requesterTerritory,
+      }),
+      players: Object.freeze(players),
+      recentDeaths: Object.freeze([]),
+      recentSpawnUses: Object.freeze(recentSpawnUses),
+      objectives: Object.freeze([]),
+    });
+    const directLosFallback = [...result.evaluations]
+      .filter(({ rejectionReasons }) => (
+        rejectionReasons.length === 1
+        && rejectionReasons[0] === 'direct_enemy_line_of_sight'
+      ))
+      .sort((left, right) => (
+        right.score - left.score || compareCodeUnits(left.spawnId, right.spawnId)
+      ))[0] ?? null;
+    const selectedEvaluation = result.selected === null
+      ? directLosFallback
+      : result.evaluations.find(({ spawnId }) => spawnId === result.selected?.spawnId) ?? null;
+    let fallbackMode: InkfallSpawnFallbackMode = 'none';
+    let selected: AuthoritySpawn;
+    if (result.selected !== null) {
+      selected = Object.freeze({
+        spawnId: result.selected.spawnId,
+        feetPosition: result.selected.feetPositionMm,
+        yawMilliDegrees: result.selected.yawMilliDegrees,
+      });
+    } else if (directLosFallback !== null) {
+      fallbackMode = 'scored_locked_candidate';
+      selected = Object.freeze({
+        spawnId: directLosFallback.spawnId,
+        feetPosition: directLosFallback.feetPositionMm,
+        yawMilliDegrees: directLosFallback.yawMilliDegrees,
+      });
+    } else {
+      fallbackMode = 'locked_ordinal';
+      selected = inkfallWorkerCombatSpawn(ordinal, G5_INKFALL_REV4_COMBAT_PROFILE);
+    }
+    const selectedEnemies = selectedEvaluation?.enemies ?? [];
+    const enemyDistances = selectedEnemies.map(({ distanceMm }) => distanceMm);
+    const diagnostic: InkfallSpawnDecisionDiagnostic = Object.freeze({
+      tick,
+      requesterOrdinal: ordinal,
+      populationBeforeSpawn: players.length,
+      status: result.status,
+      decisionHash: result.decisionHash,
+      selectedSpawnId: selected.spawnId ?? 'spawn_identity_missing',
+      selectedScore: selectedEvaluation?.score ?? null,
+      fallbackMode,
+      eligibleCandidateCount: result.evaluations.filter(({ eligible }) => eligible).length,
+      directLosRejectedCandidateCount: result.evaluations.filter(
+        ({ rejectionReasons }) => rejectionReasons.includes('direct_enemy_line_of_sight'),
+      ).length,
+      minimumEnemyDistanceMm: enemyDistances.length === 0
+        ? null
+        : Math.min(...enemyDistances),
+      selectedStandingOccluded: selectedEnemies.every(
+        ({ standingLineOfSight }) => !standingLineOfSight,
+      ),
+      selectedCrouchedOccluded: selectedEnemies.every(
+        ({ crouchedLineOfSight }) => !crouchedLineOfSight,
+      ),
+    });
+    this.recentInkfallSpawnUses.push(Object.freeze({
+      spawnId: diagnostic.selectedSpawnId,
+      tick,
+    }));
+    this.inkfallSpawnDecisions.push(diagnostic);
+    if (this.inkfallSpawnDecisions.length > MAXIMUM_RETAINED_INKFALL_SPAWN_DECISIONS) {
+      this.inkfallSpawnDecisions.splice(
+        0,
+        this.inkfallSpawnDecisions.length - MAXIMUM_RETAINED_INKFALL_SPAWN_DECISIONS,
+      );
+    }
+    if (fallbackMode !== 'none') this.inkfallSpawnFallbacks += 1;
+    return selected;
+  }
+
   private async ensureInitialized(
     roomCode: string,
     requestedProfile: WorkerRoomProfile | undefined = undefined,
@@ -1444,6 +1624,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.roomProfile = selectedProfile;
         this.compatibilityIdentity = compatibilityIdentity;
         this.authoritativeLoadout = authorityLoadoutFromRuleset(ruleset);
+        if (inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE) {
+          inkfallRevision3WorkerSpawnAuthority();
+        }
         this.authority = new AuthoritativeRoom({
           identity: {
             roomId,
@@ -1460,12 +1643,17 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
           queries: world,
           spawnResolver: (playerId, ordinal) => {
-            const resolvedOrdinal = this.restoredSpawnOrdinals.get(playerId) ?? ordinal;
+            const restoredOrdinal = this.restoredSpawnOrdinals.get(playerId);
+            const resolvedOrdinal = restoredOrdinal ?? ordinal;
             return inkfallCombat
-              ? inkfallWorkerCombatSpawn(resolvedOrdinal, inkfallProfile)
+              ? restoredOrdinal !== undefined
+                ? inkfallWorkerCombatSpawn(restoredOrdinal, inkfallProfile)
+                : inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+                  ? this.resolveLiveInkfallSpawn(playerId, ordinal)
+                  : inkfallWorkerCombatSpawn(resolvedOrdinal, inkfallProfile)
               : revision3Combat
                 ? workerCombatSpawn(resolvedOrdinal)
-              : { feetPosition: this.spawnFor(resolvedOrdinal) };
+                : { feetPosition: this.spawnFor(resolvedOrdinal) };
           },
           ...(inkfallCombat ? { maximumPlayers: 8 } : {}),
           ...(revision3Combat

@@ -246,9 +246,10 @@ function onlineStyles(): HTMLStyleElement {
     .online-session__reticle::before, .online-session__reticle::after { position: absolute; background: rgba(235, 252, 255, .88); box-shadow: 0 0 5px rgba(71, 226, 243, .72); content: ''; }
     .online-session__reticle::before { top: 8px; left: 1px; width: 16px; height: 2px; }
     .online-session__reticle::after { top: 1px; left: 8px; width: 2px; height: 16px; }
-    .online-session__weapon-rail { position: absolute; right: 24px; bottom: 24px; z-index: 4; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; width: min(620px, calc(100% - 48px)); pointer-events: auto; }
-    .online-session__weapon-slot { min-width: 0; min-height: 42px; overflow: hidden; padding: 6px 5px; border: 1px solid rgba(73, 104, 113, .76); background: rgba(5, 12, 15, .84); color: #8ca0a8; cursor: pointer; font: 850 7px/1.25 ui-monospace, monospace; letter-spacing: .04em; overflow-wrap: anywhere; text-transform: uppercase; }
-    .online-session__weapon-slot strong { display: block; margin-bottom: 3px; color: #dbe9ed; font-size: 9px; }
+    .online-session__weapon-rail { position: absolute; bottom: 16px; left: 50%; z-index: 4; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; width: min(536px, calc(100% - 32px)); transform: translateX(-50%); pointer-events: auto; }
+    .online-session__weapon-slot { display: flex; align-items: center; justify-content: center; gap: 5px; min-width: 0; min-height: 32px; padding: 5px 7px; overflow: hidden; border: 1px solid rgba(73, 104, 113, .76); background: rgba(5, 12, 15, .9); color: #9aabb1; cursor: pointer; font: 850 7px/1 ui-monospace, monospace; letter-spacing: .045em; text-transform: uppercase; white-space: nowrap; }
+    .online-session__weapon-slot strong { flex: 0 0 auto; color: #e2edf0; font-size: 8px; }
+    .online-session__weapon-slot span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
     .online-session__weapon-slot[data-active='true'] { border-color: #68e9f3; background: rgba(12, 68, 76, .92); color: #c7fbff; box-shadow: inset 0 -2px #68e9f3; }
     .online-session__legend { display: flex; flex-wrap: wrap; gap: 16px; padding: 0 15px 15px; color: #74848e; font: 700 10px/1.4 ui-monospace, monospace; }
     .online-session__legend i { display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--legend-color); }
@@ -317,7 +318,8 @@ function onlineStyles(): HTMLStyleElement {
     @media (prefers-reduced-motion: reduce) { .online-session__feedback-glyph[data-active='true'] { animation: online-feedback-fade 260ms linear; } .online-session__feedback-hud[data-active='true'] { transform: translate(-50%, 0); transition: opacity 60ms linear; } }
     @keyframes online-feedback-fade { 0%, 70% { opacity: .92; transform: none; } 100% { opacity: 0; transform: none; } }
     @media (max-width: 1020px) { .online-preview__lobby, .online-session__grid { grid-template-columns: 1fr; } .online-session__facts { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 700px) { .online-preview__bar-meta > span:not(.online-preview__status-dot) { display: none; } .online-preview__content { width: min(100% - 24px, 1420px); padding-top: 30px; } .online-preview__lobby { grid-template-columns: 1fr; } .online-preview__join-row { grid-template-columns: 1fr; } .online-session__head { grid-template-columns: 1fr; } .online-session__room { text-align: left; } .online-session__facts { grid-template-columns: 1fr 1fr; } .online-session__combat-strip { grid-template-columns: 1fr; } .online-session__combat-player:last-child { text-align: left; } .online-session__combat-player:last-child .online-session__combat-name { flex-direction: row; } .online-session__weapon-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 700px) { .online-preview__bar-meta > span:not(.online-preview__status-dot) { display: none; } .online-preview__content { width: min(100% - 24px, 1420px); padding-top: 30px; } .online-preview__lobby { grid-template-columns: 1fr; } .online-preview__join-row { grid-template-columns: 1fr; } .online-session__head { grid-template-columns: 1fr; } .online-session__room { text-align: left; } .online-session__facts { grid-template-columns: 1fr 1fr; } .online-session__combat-strip { grid-template-columns: 1fr; } .online-session__combat-player:last-child { text-align: left; } .online-session__combat-player:last-child .online-session__combat-name { flex-direction: row; } .online-session__weapon-rail { bottom: 10px; width: calc(100% - 20px); gap: 2px; } .online-session__weapon-slot { min-height: 29px; padding: 4px; font-size: 6px; } }
+    @media (max-width: 520px) { .online-session__weapon-rail { width: min(330px, calc(100% - 16px)); } .online-session__weapon-slot { min-height: 28px; padding: 4px 2px; } .online-session__weapon-slot span { display: none; } .online-session__weapon-slot strong { font-size: 9px; } }
   `;
   return style;
 }
@@ -932,12 +934,12 @@ async function mountSession(
   const weaponRail = element('div', 'online-session__weapon-rail');
   weaponRail.dataset.testid = 'online-weapon-rail';
   const weaponSlotDefinitions = Object.freeze([
-    Object.freeze({ slot: 0, key: '1', label: 'Auto Rifle' }),
+    Object.freeze({ slot: 0, key: '1', label: 'Auto' }),
     Object.freeze({ slot: 1, key: '2', label: 'Sidearm' }),
-    Object.freeze({ slot: 2, key: '3', label: 'Scattergun' }),
+    Object.freeze({ slot: 2, key: '3', label: 'Scatter' }),
     Object.freeze({ slot: 3, key: '4', label: 'Longshot' }),
-    Object.freeze({ slot: 4, key: '5', label: 'Breach Rocket' }),
-    Object.freeze({ slot: 5, key: '6', label: 'Edge Blade' }),
+    Object.freeze({ slot: 4, key: '5', label: 'Rocket' }),
+    Object.freeze({ slot: 5, key: '6', label: 'Blade' }),
   ] as const);
   const weaponSlotButtons = weaponSlotDefinitions.map((definition) => {
     const button = element('button', 'online-session__weapon-slot');
@@ -946,9 +948,14 @@ async function mountSession(
     button.dataset.slot = String(definition.slot);
     button.dataset.active = String(definition.slot === 0);
     button.setAttribute('aria-pressed', String(definition.slot === 0));
+    button.setAttribute(
+      'aria-label',
+      `Weapon ${definition.key}: ${definition.label}`,
+    );
+    button.title = `${definition.key} · ${definition.label}`;
     button.append(
       element('strong', '', definition.key),
-      document.createTextNode(definition.label),
+      element('span', '', definition.label),
     );
     weaponRail.append(button);
     return button;

@@ -1,0 +1,5 @@
+{
+  "status": "G5_SPAWN_READABILITY_2_4_8_SENTINEL_FAIL",
+  "capturedAt": "2026-07-28T10:54:12.756Z",
+  "error": "Error: Timed out waiting for http://127.0.0.1:8937/health\n    at waitForHttp (file:///C:/AI%20Projects/Projects/Games/evio/evio-g5-spawn-readability-20260728/tools/evidence/capture-g5-spawn-readability-sentinel.mjs:71:9)\n    at async Promise.all (index 0)\n    at async file:///C:/AI%20Projects/Projects/Games/evio/evio-g5-spawn-readability-20260728/tools/evidence/capture-g5-spawn-readability-sentinel.mjs:313:3"
+}

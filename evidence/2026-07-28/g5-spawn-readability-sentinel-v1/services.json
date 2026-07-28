@@ -1,0 +1,24 @@
+{
+  "vite": [
+    "\u001b[2m5:53:12 AM\u001b[22m \u001b[36m\u001b[1m[vite]\u001b[22m\u001b[39m \u001b[90m\u001b[2m(client)\u001b[22m\u001b[39m Re-optimizing dependencies because vite config has changed",
+    "  \u001b[32m\u001b[1mVITE\u001b[22m v8.1.5\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m200\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m",
+    "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m6237\u001b[22m/\u001b[39m"
+  ],
+  "wrangler": [
+    " ⛅️ wrangler 4.112.0 (update available 4.114.0)",
+    "───────────────────────────────────────────────",
+    "Your Worker has access to the following bindings:",
+    "Binding                                                                 Resource                  Mode",
+    "env.KYX_ROOM (KyxRoom)                                                  Durable Object            local",
+    "env.KYX_ALLOCATION_GUARD (KyxAllocationGuard)                           Durable Object            local",
+    "env.ALLOWED_ORIGINS (\"(hidden)\")                                        Environment Variable      local",
+    "env.BUILD_ID (\"foundry-command-v2-g7-online-20260725\")                  Environment Variable      local",
+    "\u001b[31mX \u001b[41;31m[\u001b[41;97mERROR\u001b[41;31m]\u001b[0m \u001b[1mThe directory specified by the \"assets.directory\" field in your configuration file does not exist:\u001b[0m",
+    "  C:\\AI Projects\\Projects\\Games\\evio\\evio-g5-spawn-readability-20260728\\dist",
+    "🪵  Logs were written to \"C:\\Users\\suhai\\AppData\\Roaming\\xdg.config\\.wrangler\\logs\\wrangler-2026-07-28_10-53-13_141.log\"",
+    "Assertion failed: !(handle->flags & UV_HANDL",
+    "E_CLOSING), file src\\win\\async.c, line 76"
+  ],
+  "failed": true,
+  "passed": false
+}

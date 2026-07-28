@@ -10,12 +10,14 @@ import {
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
   KYX_ARMORY_CATALOG_ID,
   KYX_WEAPON_ID,
+  createInkfallSpawnAuthority,
   kyxWeaponProfile,
   type AuthorityFullSnapshot,
   type AuthorityRoomCombatOptions,
   type AuthorityRoomDamageResult,
   type AuthorityRoomTickResult,
   type AuthoritySpawn,
+  type InkfallSpawnAuthority,
   type ImpulseGrenadeCollisionSafeImpulseRequestV1,
 } from '../src/authority';
 import {
@@ -25,7 +27,11 @@ import {
   createInkfallRevision3RapierCombatWorldPorts,
 } from '../src/authority';
 import type { CombatSnapshotV1, SimulationIdentityV1 } from '../src/net';
-import type { PhysicsFixtureV1, RapierMovementWorld } from '../src/physics';
+import type {
+  LoadedRuntimeMapPackage,
+  PhysicsFixtureV1,
+  RapierMovementWorld,
+} from '../src/physics';
 import inkfallCombatFixtureSnapshot from '../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json';
 import inkfallRevision3CombatFixtureSnapshot from '../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
 import inkfallRevision2MapPackage from '../assets/source/maps/inkfall-foundry/runtime/map.package.v2.json';
@@ -563,6 +569,55 @@ export function inkfallRevision3WorkerFixture(): PhysicsFixtureV1 {
   return (inkfallRevision3CombatFixtureSnapshot as unknown as Readonly<{
     fixture: PhysicsFixtureV1;
   }>).fixture;
+}
+
+let inkfallRevision3SpawnAuthority: InkfallSpawnAuthority | null = null;
+
+export function inkfallRevision3WorkerSpawnAuthority(): InkfallSpawnAuthority {
+  if (inkfallRevision3SpawnAuthority !== null) {
+    return inkfallRevision3SpawnAuthority;
+  }
+  assertInkfallRevision3RuntimeArtifacts();
+  const manifest = inkfallRevision3MapPackage as unknown as
+    LoadedRuntimeMapPackage['manifest'];
+  const artifact = inkfallRevision3CombatFixtureSnapshot as unknown as Readonly<{
+    collisionPath: string;
+    collisionSha256: string;
+    collisionMeshNodeCount: number;
+    authorityVolumeCount: number;
+    fixtureHash: string;
+    fixture: PhysicsFixtureV1;
+  }>;
+  const loaded = Object.freeze({
+    schemaVersion: 1,
+    manifest,
+    identity: Object.freeze({
+      id: manifest.id,
+      revision: manifest.revision,
+      displayName: manifest.displayName,
+      packageDigest: manifest.identity.digest,
+      boundsMm: manifest.boundsMm,
+    }),
+    presentation: Object.freeze({
+      renderPath: manifest.artifacts.render.path,
+      renderSha256: manifest.artifacts.render.sha256,
+      renderMeshNodeCount: manifest.artifacts.render.expectedMeshNodeCount,
+    }),
+    authority: Object.freeze({
+      collisionPath: artifact.collisionPath,
+      collisionSha256: artifact.collisionSha256,
+      collisionMeshNodeCount: artifact.collisionMeshNodeCount,
+      authorityVolumeCount: artifact.authorityVolumeCount,
+      totalColliderCount: artifact.fixture.solids.length,
+      sourceKindCounts: Object.freeze({
+        authority_collision: artifact.fixture.solids.length,
+      }),
+      fixture: artifact.fixture,
+      fixtureHash: artifact.fixtureHash,
+    }),
+  }) satisfies LoadedRuntimeMapPackage;
+  inkfallRevision3SpawnAuthority = createInkfallSpawnAuthority(loaded);
+  return inkfallRevision3SpawnAuthority;
 }
 
 export function inkfallWorkerFixture(
