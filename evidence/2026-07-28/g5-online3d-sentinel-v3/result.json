@@ -1,0 +1,49 @@
+{
+  "status": "G5_ONLINE3D_FOCUSED_SENTINEL_PASS",
+  "capturedAt": "2026-07-28T10:30:13.870Z",
+  "head": "0f2d763857dfe4907a38617c37151d98861f0618",
+  "profile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+  "roomCode": "KYX-7Y9FN5",
+  "matchId": "match.f3f91ac373c14cc894a6a551be11ec2f",
+  "distinctPlayers": 2,
+  "map": {
+    "mapReference": "inkfall_foundry@3",
+    "presentationReference": "inkfall_foundry@3/press_archive/v4.1/spatial-material-joined",
+    "presentationSha256": "5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00",
+    "fixtureHash": "6cf785c5171f2ff5",
+    "renderMeshesMayBeAuthority": false,
+    "renderMeshCount": 45,
+    "authorityColliderCount": 339,
+    "spawnCount": 12,
+    "zoneCount": 9
+  },
+  "runtime": {
+    "isolatedChromeLaunches": 2,
+    "remoteAvatarCountPerClient": [
+      1,
+      1
+    ],
+    "uniqueSpawnPositions": 2,
+    "movementMillimeters": 3943,
+    "airborneHeightMillimeters": 950,
+    "landedHeightDeltaMillimeters": 0,
+    "selectedWeaponId": "kyx_sidearm_v1",
+    "selectedProceduralDefinitionId": "magnum",
+    "sidearmAcceptedAttackCount": 1,
+    "renderedReliableEventCount": 1,
+    "resumeSuccesses": 1,
+    "presentationHydrations": 2,
+    "samePlayerAfterResume": true,
+    "sameMatchAfterResume": true
+  },
+  "screenshots": [
+    "screenshots/g5-online3d-host-sidearm.png",
+    "screenshots/g5-online3d-guest-remote-avatar.png",
+    "screenshots/g5-online3d-host-resumed.png"
+  ],
+  "nonclaims": [
+    "Focused two-client sentinel only; no broad regression or performance qualification.",
+    "Rev4 render meshes remain presentation-only and cannot become collision authority.",
+    "No human visual, fun, spawn-safety, staging, deployment, release, or G5 acceptance claim."
+  ]
+}
