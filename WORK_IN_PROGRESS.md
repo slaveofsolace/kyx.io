@@ -11,16 +11,18 @@ appending prose to executable source files or binary assets.
   continuous knee/shin construction, grounded boots, and the unchanged Rev17
   66-bone / 16-action / weapon-socket contract. The source, provenance notice,
   reproducible Blender exporter, exact-reimport report, and four review renders
-  are committed. Runtime selection, shared low-poly loading, final weapon
-  attachment, and live animation review are still being integrated.
+  are committed. Rev30 is now the default third-person player/enemy asset with
+  one shared low-poly GLB; Rev17 remains the first-person viewmodel and explicit
+  third-person fallback. Live integrated animation/contact review remains open.
   *Currently being worked on.*
 
 - `src/app/weaponPresentationRuntime.ts` and the project-authored weapon model
   catalog now provide distinct rifle, sidearm, scattergun, sniper, rocket, and
   phase-saber presentation with authored muzzle/blade-tip nodes, event-driven
   muzzle flash, pellet/tracer/impact effects, rocket backblast/trail/detonation,
-  reload motion, and synthesized audio. Third-person socket/contact integration
-  with the accepted Rev30 character remains active.
+  reload motion, and synthesized audio. Third-person weapons now replace the
+  embedded diagnostic rifle, attach to the right-hand grip, drive the real
+  muzzle/nozzle, and use bounded support-hand contact. Live review remains open.
   *Currently being worked on.*
 
 - `worker/`, `tests/worker/authorityFullOccupancySoak.test.ts`, and the
@@ -64,9 +66,10 @@ appending prose to executable source files or binary assets.
   human-accepted final map.
   *Currently being worked on.*
 
-- G6: Rev30 model art is accepted for integration; runtime default selection,
-  directional/aim animation polish, final weapon contact, online 3D avatar
-  integration, and live visual review remain open.
+- G6: Rev30 model art, default selection, shared runtime loading,
+  directional/aim/action presentation, and external weapon contact are
+  integrated. Final online/offline runtime capture, performance evidence, and
+  human visual-animation acceptance remain open.
   *Currently being worked on.*
 
 - G7: the replacement arena-instrument source is integrated. Final capture,
@@ -83,8 +86,9 @@ appending prose to executable source files or binary assets.
 
 ## Validation cadence
 
-- Broad regression is intentionally deferred until the current model,
-  animation/contact, HUD/UI, and runtime-integration batch is assembled.
+- The model, animation/contact, HUD/UI, and runtime-integration batch is now
+  assembled. One consolidated regression/capture pass is active; no earlier
+  isolated sentinel is being promoted as proof of the integrated source.
 - Previously captured authority, reconnect, performance, and release evidence
   remains historical support only; it does not validate the new integrated
   source.
