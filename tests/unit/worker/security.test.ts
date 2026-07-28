@@ -25,9 +25,11 @@ import {
 
 function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment {
   return {
-    schemaVersion: 6,
+    schemaVersion: 7,
     roomCode: 'KYX-234567',
     connectionId: 'connection.TEST',
+    allocationLeaseId: null,
+    preJoinExpiresAt: null,
     playerId: null,
     sessionGeneration: 0,
     rateWindowStartedAt: 1_000,
@@ -50,7 +52,7 @@ function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment
 }
 
 describe('Worker socket security bounds', () => {
-  it('validates only complete version-6 bounded attachments', () => {
+  it('validates only complete version-7 bounded attachments', () => {
     expect(isSocketAttachment(attachment())).toBe(true);
     expect(isSocketAttachment({ ...attachment(), schemaVersion: 1 })).toBe(false);
     expect(isSocketAttachment({ ...attachment(), bytesInRateWindow: -1 })).toBe(false);
@@ -75,7 +77,7 @@ describe('Worker socket security bounds', () => {
     expect(isSocketAttachment({ ...attachment(), backpressureStartedAt: -1 })).toBe(false);
   });
 
-  it('migrates version-4 and version-5 attachments into bounded version-6 history', () => {
+  it('migrates versions 4, 5, and 6 into bounded version-7 attachments', () => {
     const version5 = {
       ...attachment({
         lastSentSnapshotTick: 20,
@@ -85,14 +87,34 @@ describe('Worker socket security bounds', () => {
     } as Record<string, unknown>;
     delete version5.sentSnapshotHistory;
     expect(normalizeSocketAttachment(version5)).toMatchObject({
-      schemaVersion: 6,
+      schemaVersion: 7,
+      allocationLeaseId: null,
+      preJoinExpiresAt: null,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
     const version4: Record<string, unknown> = { ...version5, schemaVersion: 4 };
     delete version4.snapshotAckDebtStartedAt;
     expect(normalizeSocketAttachment(version4)).toMatchObject({
-      schemaVersion: 6,
+      schemaVersion: 7,
+      allocationLeaseId: null,
+      preJoinExpiresAt: null,
       snapshotAckDebtStartedAt: null,
+      sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
+    });
+    const version6 = {
+      ...attachment({
+        lastSentSnapshotTick: 20,
+        lastSentSnapshotBaselineId: 'baseline.20',
+        sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
+      }),
+      schemaVersion: 6,
+    } as Record<string, unknown>;
+    delete version6.allocationLeaseId;
+    delete version6.preJoinExpiresAt;
+    expect(normalizeSocketAttachment(version6)).toMatchObject({
+      schemaVersion: 7,
+      allocationLeaseId: null,
+      preJoinExpiresAt: null,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
     expect(normalizeSocketAttachment({ ...version4, schemaVersion: 3 })).toBeNull();

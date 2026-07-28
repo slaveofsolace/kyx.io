@@ -13,13 +13,15 @@ interface OnlineSnapshot {
   readonly localAuthoritativeLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
   readonly inputBridge: Readonly<{
     readonly pressedKeys: readonly string[];
-    readonly moveX: number;
-    readonly moveY: number;
+    readonly axes: Readonly<{
+      readonly moveX: number;
+      readonly moveY: number;
+    }>;
     readonly heldButtons: number;
-    readonly crouchHeld: boolean;
-    readonly jumpHeld: boolean;
-    readonly sprintHeld: boolean;
-    readonly primaryFireHeld: boolean;
+    readonly crouch: boolean;
+    readonly jump: boolean;
+    readonly sprint: boolean;
+    readonly primaryFire: boolean;
   }>;
 }
 
@@ -75,11 +77,11 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     await page.keyboard.down('ShiftLeft');
     await page.keyboard.down('ShiftRight');
     await expect.poll(async () => (await snapshot(page))?.inputBridge).toMatchObject({
-      moveY: 127,
-      sprintHeld: true,
+      axes: { moveY: 127 },
+      sprint: true,
     });
     await page.keyboard.up('ShiftLeft');
-    await expect.poll(async () => (await snapshot(page))?.inputBridge.sprintHeld ?? false)
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.sprint ?? false)
       .toBe(true);
     await expect.poll(async () => {
       const velocity = (await snapshot(page))?.localAuthoritativeVelocity;
@@ -89,8 +91,8 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     }, { timeout: 10_000 }).toBeGreaterThanOrEqual(7_000);
     await page.keyboard.down('KeyC');
     await expect.poll(async () => (await snapshot(page))?.inputBridge).toMatchObject({
-      crouchHeld: true,
-      sprintHeld: true,
+      crouch: true,
+      sprint: true,
     });
     await expect.poll(async () => (
       await snapshot(page)
@@ -102,28 +104,27 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     )?.localAuthoritativeLocomotion ?? null, { timeout: 10_000 }).toBe('grounded');
     await page.keyboard.down('Space');
     await expect.poll(async () => (await snapshot(page))?.inputBridge).toMatchObject({
-      jumpHeld: true,
-      moveY: 127,
+      jump: true,
+      axes: { moveY: 127 },
     });
     await expect.poll(async () => (
       await snapshot(page)
     )?.localAuthoritativeLocomotion ?? null, { timeout: 10_000 }).toBe('airborne');
     const airborne = await snapshot(page);
-    if (airborne?.localAuthoritativePosition === null
-      || airborne?.localAuthoritativePosition === undefined) {
+    const airbornePosition = airborne?.localAuthoritativePosition;
+    if (airbornePosition === null || airbornePosition === undefined) {
       throw new Error('authoritative airborne position was unavailable');
     }
     await page.keyboard.down('KeyD');
     await expect.poll(async () => (await snapshot(page))?.inputBridge).toMatchObject({
-      moveX: 127,
-      moveY: 127,
-      jumpHeld: true,
+      axes: { moveX: 127, moveY: 127 },
+      jump: true,
     });
     await expect.poll(async () => {
       const state = await snapshot(page);
       return state?.localAuthoritativeLocomotion === 'airborne'
         && state.localAuthoritativePosition !== null
-        && state.localAuthoritativePosition.x > airborne.localAuthoritativePosition.x + 25;
+        && state.localAuthoritativePosition.x > airbornePosition.x + 25;
     }, { timeout: 10_000 }).toBe(true);
     await expect.poll(async () => (await snapshot(page))?.commandsGenerated ?? 0)
       .toBeGreaterThan(before.commandsGenerated + 5);
@@ -134,7 +135,9 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
       .toBeGreaterThan(before.commandsGenerated);
     await expect.poll(async () => {
       const position = (await snapshot(page))?.localPredictedPosition;
-      return position === null || before.localPredictedPosition === null
+      return position === null
+        || position === undefined
+        || before.localPredictedPosition === null
         ? false
         : position.x !== before.localPredictedPosition.x
           || position.y !== before.localPredictedPosition.y
@@ -144,22 +147,22 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     const fire = page.getByTestId('online-fire');
     await page.keyboard.down('KeyF');
     await fire.dispatchEvent('pointerdown');
-    await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFireHeld ?? false)
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? false)
       .toBe(true);
     await fire.dispatchEvent('pointerup');
-    await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFireHeld ?? false)
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? false)
       .toBe(true);
     await page.keyboard.up('KeyF');
-    await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFireHeld ?? true)
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? true)
       .toBe(false);
 
     const crouch = page.getByTestId('online-crouch');
     await crouch.dispatchEvent('pointerdown');
-    await expect.poll(async () => (await snapshot(page))?.inputBridge.crouchHeld ?? false)
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.crouch ?? false)
       .toBe(true);
     await expect(crouch).toHaveAttribute('aria-pressed', 'true');
     await crouch.dispatchEvent('pointerup');
-    await expect.poll(async () => (await snapshot(page))?.inputBridge.crouchHeld ?? true)
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.crouch ?? true)
       .toBe(false);
 
     const beforeResume = await waitForJoined(page);
