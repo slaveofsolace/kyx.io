@@ -52,7 +52,7 @@
       },
       "vars": {
         "ALLOWED_ORIGINS": "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8787,https://kyx-io-authority-staging.suhaibabdeljaber.workers.dev",
-        "BUILD_ID": "g9-staging-readiness-20260727"
+        "BUILD_ID": "kyx-main-db8efc8-staging-20260728"
       }
     }
   },
