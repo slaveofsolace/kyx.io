@@ -61,6 +61,7 @@ const downwardSpawnRay = Object.freeze({
   directionUnit: Object.freeze({ x: 0, y: -1, z: 0 }),
   maximumDistanceMillimeters: 120_000 as const,
   layer: 'authoritative_world' as const,
+  purpose: 'shot_path' as const,
 });
 
 const clearSkyRay = Object.freeze({
@@ -69,6 +70,7 @@ const clearSkyRay = Object.freeze({
   directionUnit: Object.freeze({ x: 0, y: 1, z: 0 }),
   maximumDistanceMillimeters: 120_000 as const,
   layer: 'authoritative_world' as const,
+  purpose: 'shot_path' as const,
 });
 
 const downwardSphereSweep = Object.freeze({
@@ -206,6 +208,7 @@ describe('Inkfall revision-2 Rapier combat world binding', () => {
           directionUnit: direction,
           maximumDistanceMillimeters: 120_000,
           layer: 'authoritative_world',
+          purpose: 'shot_path',
         }),
       };
     };

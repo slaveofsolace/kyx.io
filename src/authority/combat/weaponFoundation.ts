@@ -1094,7 +1094,7 @@ export function createAuthorityRocketProjectile(
       accepted: false,
       reason: 'barrel_obstructed',
       state: null,
-    });
+    } as const);
   }
   const speed = profileValue.projectileSpeedMillimetersPerSecond as number;
   const eyeDirection = directionFromLook(
@@ -1512,7 +1512,7 @@ export function resolveAuthorityMeleeContact(
       distanceMillimeters: null,
       damagePoints: 0,
       contactPointMillimeters: null,
-    });
+    } as const);
   }
   for (const candidate of candidates) {
     const delta = {
@@ -1560,5 +1560,5 @@ export function resolveAuthorityMeleeContact(
     distanceMillimeters: null,
     damagePoints: 0,
     contactPointMillimeters: null,
-  });
+  } as const);
 }
