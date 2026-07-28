@@ -19,7 +19,7 @@
     "test:browser": "playwright test tests/browser",
     "test:browser:g7-ui": "playwright test --config playwright.g7.config.js",
     "test:browser:install": "playwright install chromium",
-    "test:multiplayer": "playwright test tests/multiplayer --pass-with-no-tests",
+    "test:multiplayer": "playwright test --config playwright.multiplayer.config.js",
     "test:authority": "vitest run tests/unit/authority tests/integration/authority --passWithNoTests",
     "test:authority-soak": "vitest run --config vitest.worker.config.ts tests/worker/authorityFullOccupancySoak.test.ts --reporter=verbose",
     "test:worker": "vitest run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
