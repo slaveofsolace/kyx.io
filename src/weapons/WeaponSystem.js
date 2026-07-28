@@ -196,10 +196,14 @@ export class WeaponSystem {
   }
 
   _syncRev17ViewmodelVisibility() {
+    const isMelee = this.currentDef?.kind === 'melee';
+    // The blockout-era procedural arm does not have a valid melee grip and
+    // visibly intersects the blade. Keep it for the default rifle only; Rev17
+    // supplies its own rifle arms and has no accepted melee hand/socket yet.
+    if (this.armGroup) this.armGroup.visible = !isMelee && !this._rev17Viewmodel;
     if (!this._rev17Viewmodel) return;
-    const candidateVisible = this.currentDef?.kind !== 'melee';
+    const candidateVisible = !isMelee;
     this._rev17Viewmodel.visible = candidateVisible;
-    if (this.armGroup) this.armGroup.visible = !candidateVisible;
     if (!candidateVisible) return;
     for (const weapon of this.allWeapons) {
       if (weapon.kind === 'melee') continue;
@@ -251,6 +255,7 @@ export class WeaponSystem {
     };
 
     const arm = new THREE.Group();
+    arm.name = 'KYX_LEGACY_FIRST_PERSON_ARM';
 
     // Forearm — tapered sleeve
     const forearm = new THREE.Mesh(
