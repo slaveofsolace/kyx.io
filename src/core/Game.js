@@ -1113,6 +1113,21 @@ export class Game {
     if (!def || this._tpsWeaponId === def.id) return;
     this._tpsWeaponId = def.id;
     const built = buildWeaponModel(def, { procedural: true });
+    if (built?.group && built.muzzle) {
+      built.muzzle.name ||= `KYX_TPS_${def.id.toUpperCase()}_MUZZLE`;
+      built.group.userData.muzzleNodeName = built.muzzle.name;
+      built.group.userData.weaponFamily = def.kind === 'melee'
+        ? 'melee'
+        : /pistol|magnum|sidearm/i.test(def.id)
+          ? 'pistol'
+          : /shotgun|scatter/i.test(def.id)
+            ? 'shotgun'
+            : /sniper|longshot|dmr/i.test(def.id)
+              ? 'sniper'
+              : /rocket|rpg|fuelrod/i.test(def.id)
+                ? 'rocket'
+                : 'rifle';
+    }
     ud.attachWeapon(built?.group || null, def.kind === 'melee');
   }
 
@@ -1128,8 +1143,19 @@ export class Game {
       // Strafe input in the body's local frame — feeds the lean layer.
       const yaw = p.yaw;
       const cs = Math.cos(yaw), sn = Math.sin(yaw);
-      const strafe = -(p.velocity.x * cs - p.velocity.z * sn) / Math.max(1, speed);
-      if (ud.setLocomotion) ud.setLocomotion(speed, p.onGround, p.isSprinting, strafe);
+      const rightSpeed = p.velocity.x * cs - p.velocity.z * sn;
+      const forwardSpeed = p.velocity.x * sn + p.velocity.z * cs;
+      const denominator = Math.max(0.001, speed);
+      const strafe = -rightSpeed / denominator;
+      if (ud.setLocomotion) {
+        ud.setLocomotion(
+          speed,
+          p.onGround,
+          p.isSprinting,
+          strafe,
+          forwardSpeed / denominator,
+        );
+      }
       else ud.setMotion(speed > 0.6 && p.onGround ? (speed > 6.5 ? 'run' : 'walk') : 'idle');
       // Head/spine track the player's aim pitch (the whole body already yaws to
       // face the aim direction, so we only need pitch here).

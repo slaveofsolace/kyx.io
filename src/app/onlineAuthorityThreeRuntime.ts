@@ -105,6 +105,11 @@ interface PlayerAvatar {
   weapon: KyxWeaponPresentationModel | null;
   weaponId: string | null;
   recoil: number;
+  previousLifePhase: CombatPlayerSnapshotV1['lifePhase'] | null;
+  previousWeaponPhase: KyxWeaponPhase | null;
+  previousYawRadians: number | null;
+  smoothedTurnRateRadiansPerSecond: number;
+  deathPresentationUntilMilliseconds: number;
 }
 
 interface LoadedRev4Visual {
@@ -115,6 +120,8 @@ interface LoadedRev4Visual {
 }
 
 const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
+const AUTHORITY_SIMULATION_RATE_HZ = 20;
+const DEATH_PRESENTATION_DURATION_MILLISECONDS = 2_550;
 
 function mapMillimetersToScene(
   value: Readonly<{ x: number; y: number; z: number }>,
@@ -303,6 +310,11 @@ function createPlayerAvatar(teamId: string | null): PlayerAvatar {
     weapon: null,
     weaponId: null,
     recoil: 0,
+    previousLifePhase: null,
+    previousWeaponPhase: null,
+    previousYawRadians: null,
+    smoothedTurnRateRadiansPerSecond: 0,
+    deathPresentationUntilMilliseconds: 0,
   };
 }
 
@@ -335,9 +347,9 @@ function selectedWeaponPhase(
 function setAvatarWeapon(
   avatar: PlayerAvatar,
   selectedWeaponId: string | null | undefined,
-): void {
+): boolean {
   const normalized = normalizeKyxAuthorityWeaponId(selectedWeaponId);
-  if (avatar.weaponId === normalized) return;
+  if (avatar.weaponId === normalized) return false;
   if (avatar.weapon !== null) {
     avatar.root.userData.attachWeapon?.(null);
     avatar.weapon.group.parent?.remove(avatar.weapon.group);
@@ -355,6 +367,29 @@ function setAvatarWeapon(
     avatar.weapon.group.rotation.set(-0.35, Math.PI, 0.14);
     avatar.root.add(avatar.weapon.group);
   }
+  return true;
+}
+
+function shortestAngleDeltaRadians(current: number, previous: number): number {
+  return Math.atan2(
+    Math.sin(current - previous),
+    Math.cos(current - previous),
+  );
+}
+
+function remainingAuthorityPhaseSeconds(
+  completionTick: number | null | undefined,
+  estimatedServerTick: number,
+  fallbackSeconds: number,
+): number {
+  if (completionTick === null || completionTick === undefined) {
+    return fallbackSeconds;
+  }
+  return THREE.MathUtils.clamp(
+    (completionTick - estimatedServerTick) / AUTHORITY_SIMULATION_RATE_HZ,
+    0.12,
+    fallbackSeconds,
+  );
 }
 
 export async function createOnlineAuthorityThreeRuntime(
@@ -552,7 +587,11 @@ export async function createOnlineAuthorityThreeRuntime(
           const avatar = avatars.get(semantic.playerId);
           if (avatar !== undefined) {
             avatar.recoil = 1;
-            avatar.root.userData.triggerFire?.(1);
+            if (semantic.attackModel === 'melee_contact') {
+              avatar.root.userData.triggerMelee?.();
+            } else {
+              avatar.root.userData.triggerFire?.(1);
+            }
           }
         }
       } else if (semantic.kind === 'damage_applied') {
@@ -645,7 +684,10 @@ export async function createOnlineAuthorityThreeRuntime(
     }
   };
 
-  const syncAvatars = (frame: OnlineAuthorityThreeFrame): void => {
+  const syncAvatars = (
+    frame: OnlineAuthorityThreeFrame,
+    deltaSeconds: number,
+  ): void => {
     const activeIds = new Set<string>();
     for (const remote of frame.presentation.remotes) {
       activeIds.add(remote.entityId);
@@ -659,20 +701,84 @@ export async function createOnlineAuthorityThreeRuntime(
         avatars.set(remote.entityId, avatar);
         scene.add(avatar.root);
       }
-      avatar.root.visible = combatPlayer?.lifePhase !== 'dead';
+      const lifePhase = combatPlayer?.lifePhase ?? 'alive';
+      if (lifePhase === 'dead' && avatar.previousLifePhase !== 'dead') {
+        avatar.root.userData.triggerDeath?.();
+        avatar.deathPresentationUntilMilliseconds = (
+          frame.nowMilliseconds + DEATH_PRESENTATION_DURATION_MILLISECONDS
+        );
+      } else if (
+        lifePhase === 'alive'
+        && avatar.previousLifePhase === 'dead'
+      ) {
+        avatar.root.userData.resetPresentation?.();
+      }
+      avatar.root.visible = lifePhase === 'alive' || (
+        frame.nowMilliseconds < avatar.deathPresentationUntilMilliseconds
+      );
       avatar.root.position.copy(
         mapMillimetersToScene(remote.state.feetPosition),
       );
-      avatar.root.rotation.y = normalizedYawRadians(
+      const yawRadians = normalizedYawRadians(
         remote.state.yawMilliDegrees,
       );
+      const rawTurnRate = avatar.previousYawRadians === null
+        ? 0
+        : shortestAngleDeltaRadians(
+            yawRadians,
+            avatar.previousYawRadians,
+          ) / Math.max(deltaSeconds, 1 / 240);
+      avatar.smoothedTurnRateRadiansPerSecond += (
+        THREE.MathUtils.clamp(rawTurnRate, -8, 8)
+        - avatar.smoothedTurnRateRadiansPerSecond
+      ) * (1 - Math.exp(-deltaSeconds * 10));
+      avatar.previousYawRadians = yawRadians;
+      avatar.root.rotation.y = yawRadians;
       avatar.root.scale.y = remote.state.stance === 'crouched' ? 0.78 : 1;
-      setAvatarWeapon(avatar, combatPlayer?.selectedWeaponId);
+      const selectedState = selectedWeaponState(combatPlayer);
+      const weaponPhase = combatPlayer === null
+        ? 'ready'
+        : selectedWeaponPhase(combatPlayer, selectedState);
+      const weaponChanged = setAvatarWeapon(
+        avatar,
+        combatPlayer?.selectedWeaponId,
+      );
+      if (lifePhase === 'alive') {
+        if (
+          weaponPhase === 'reloading'
+          && avatar.previousWeaponPhase !== 'reloading'
+        ) {
+          avatar.root.userData.triggerReload?.(
+            remainingAuthorityPhaseSeconds(
+              selectedState?.reloadCompletesAtTick
+                ?? combatPlayer?.reloadCompletesAtTick,
+              frame.presentation.estimatedServerTick,
+              2.05,
+            ),
+          );
+        } else if (
+          weaponPhase === 'equipping'
+          && avatar.previousWeaponPhase !== 'equipping'
+        ) {
+          avatar.root.userData.triggerEquip?.(
+            remainingAuthorityPhaseSeconds(
+              selectedState?.readyAtTick,
+              frame.presentation.estimatedServerTick,
+              0.34,
+            ),
+          );
+        } else if (
+          weaponChanged
+          && avatar.previousWeaponPhase !== null
+        ) {
+          avatar.root.userData.triggerEquip?.(0.34);
+        }
+      }
       if (avatar.weapon !== null) {
         weaponPresentationFx.notifyWeaponPhase(
           remote.entityId,
           avatar.weapon,
-          selectedWeaponPhase(combatPlayer, selectedWeaponState(combatPlayer)),
+          weaponPhase,
           frame.nowMilliseconds,
           false,
         );
@@ -685,15 +791,22 @@ export async function createOnlineAuthorityThreeRuntime(
         speed,
         remote.state.grounded,
         speed > 5.4,
-        remote.state.locomotionSignal.strafeLean,
+        {
+          ...remote.state.locomotionSignal,
+          turnRateRadiansPerSecond:
+            avatar.smoothedTurnRateRadiansPerSecond,
+        },
       );
       avatar.root.userData.setAim?.(
         remote.state.pitchMilliDegrees * Math.PI / 180_000,
         0,
       );
       avatar.recoil *= 0.72;
-      avatar.root.userData.mixer?.update(1 / 60);
-      avatar.root.userData.armorTick?.(1 / 60);
+      avatar.root.userData.mixer?.update(deltaSeconds);
+      avatar.root.userData.actionTick?.(deltaSeconds);
+      avatar.root.userData.armorTick?.(deltaSeconds);
+      avatar.previousLifePhase = lifePhase;
+      avatar.previousWeaponPhase = weaponPhase;
     }
     for (const [playerId, avatar] of avatars) {
       if (activeIds.has(playerId)) continue;
@@ -755,7 +868,7 @@ export async function createOnlineAuthorityThreeRuntime(
     previousRenderMilliseconds = frame.nowMilliseconds;
     resize();
     syncFirstPersonWeapon(frame);
-    syncAvatars(frame);
+    syncAvatars(frame, deltaSeconds);
     syncGrenades(frame.combat.snapshot);
     weaponPresentationFx.syncAuthoritativeRockets(
       frame.combat.snapshot?.weaponProjectiles ?? [],

@@ -8,6 +8,11 @@ import {
   rev17SemanticActionProgress,
   startRev17SemanticAction,
 } from './rev17ActionContract.js';
+import {
+  fitRev17WeaponContact,
+  normalizeRev17LocomotionPresentation,
+  rev17GaitPlaybackRate,
+} from './rev17PresentationPolish.js';
 
 const TEMPLATES = {
   lod0: null,
@@ -20,18 +25,30 @@ const FIRST_PERSON_CALLBACKS = [];
 const RUNTIME_INSTANCES = new Map();
 const FALLBACK_WARNINGS = new Set();
 let runtimeInstanceSerial = 0;
+const CHARACTER_REVISION = G6_CHARACTER_CANDIDATE.revision ?? 'rev17';
+const CHARACTER_REVISION_TOKEN = String(CHARACTER_REVISION)
+  .replace(/[^a-z0-9]+/gi, '_')
+  .toUpperCase();
+const CHARACTER_IS_DEFAULT = G6_CHARACTER_CANDIDATE.default ?? false;
+const CHARACTER_RUNTIME_ACTIVE = (
+  G6_CHARACTER_CANDIDATE.enabled || CHARACTER_IS_DEFAULT
+);
+const CHARACTER_EVIDENCE_HOOK = (
+  `__KYX_G6_${CHARACTER_REVISION_TOKEN}_EVIDENCE__`
+);
 
 function registerRuntimeInstance(group, record) {
-  if (!G6_CHARACTER_CANDIDATE.enabled) return;
-  const id = `rev17-${++runtimeInstanceSerial}`;
+  if (!CHARACTER_RUNTIME_ACTIVE) return;
+  const id = `${CHARACTER_REVISION}-${++runtimeInstanceSerial}`;
   RUNTIME_INSTANCES.set(id, { group, ...record });
   group.userData.rev17RuntimeInstanceId = id;
+  group.userData.g6RuntimeInstanceId = id;
 }
 
-if (G6_CHARACTER_CANDIDATE.enabled && typeof window !== 'undefined') {
-  window.__KYX_G6_REV17_EVIDENCE__ = Object.freeze({
-    revision: 'rev17',
-    default: false,
+if (CHARACTER_RUNTIME_ACTIVE && typeof window !== 'undefined') {
+  const evidenceApi = Object.freeze({
+    revision: CHARACTER_REVISION,
+    default: CHARACTER_IS_DEFAULT,
     snapshot: () => {
       const instances = [...RUNTIME_INSTANCES.entries()].map(([id, entry]) => ({
         id,
@@ -43,8 +60,8 @@ if (G6_CHARACTER_CANDIDATE.enabled && typeof window !== 'undefined') {
         action: entry.group.userData.getActionState?.() ?? null,
       }));
       return {
-        revision: 'rev17',
-        default: false,
+        revision: CHARACTER_REVISION,
+        default: CHARACTER_IS_DEFAULT,
         instances,
         connectedByRole: instances
           .filter((instance) => instance.connectedToScene)
@@ -56,6 +73,8 @@ if (G6_CHARACTER_CANDIDATE.enabled && typeof window !== 'undefined') {
       };
     },
   });
+  window[CHARACTER_EVIDENCE_HOOK] = evidenceApi;
+  window.__KYX_G6_CHARACTER_EVIDENCE__ = evidenceApi;
 }
 
 const THIRD_PERSON_CLIPS = Object.freeze({
@@ -101,9 +120,18 @@ function notifyIfReady(kind) {
   callbacks.splice(0).forEach((callback) => callback());
 }
 
-function loadTemplate(kind, url) {
-  if (TEMPLATES[kind] || LOADING.has(kind)) return;
-  LOADING.add(kind);
+function loadTemplate(kind, url, aliases = []) {
+  const templateKeys = [kind, ...aliases];
+  const existing = templateKeys
+    .map((key) => TEMPLATES[key])
+    .find(Boolean);
+  if (existing) {
+    templateKeys.forEach((key) => { TEMPLATES[key] = existing; });
+    notifyIfReady(kind === 'firstPerson' ? 'firstPerson' : 'character');
+    return;
+  }
+  if (templateKeys.some((key) => LOADING.has(key))) return;
+  templateKeys.forEach((key) => LOADING.add(key));
   new GLTFLoader().load(
     url,
     (gltf) => {
@@ -113,17 +141,20 @@ function loadTemplate(kind, url) {
         object.receiveShadow = true;
         object.frustumCulled = false;
       });
-      TEMPLATES[kind] = {
+      const template = {
         scene: gltf.scene,
         animations: gltf.animations,
       };
-      LOADING.delete(kind);
+      templateKeys.forEach((key) => {
+        TEMPLATES[key] = template;
+        LOADING.delete(key);
+      });
       notifyIfReady(kind === 'firstPerson' ? 'firstPerson' : 'character');
     },
     undefined,
     (error) => {
       console.warn(`[Rev17Character] ${kind} load failed:`, error?.message);
-      LOADING.delete(kind);
+      templateKeys.forEach((key) => LOADING.delete(key));
     },
   );
 }
@@ -134,8 +165,16 @@ export function preloadRev17Character(onLoad) {
     return;
   }
   if (onLoad) CHARACTER_CALLBACKS.push(onLoad);
-  loadTemplate('lod0', G6_CHARACTER_CANDIDATE.assets.lod0);
-  loadTemplate('lod1', G6_CHARACTER_CANDIDATE.assets.lod1);
+  if (G6_CHARACTER_CANDIDATE.assets.lod0 === G6_CHARACTER_CANDIDATE.assets.lod1) {
+    loadTemplate(
+      'lod0',
+      G6_CHARACTER_CANDIDATE.assets.lod0,
+      ['lod1'],
+    );
+  } else {
+    loadTemplate('lod0', G6_CHARACTER_CANDIDATE.assets.lod0);
+    loadTemplate('lod1', G6_CHARACTER_CANDIDATE.assets.lod1);
+  }
 }
 
 export function isRev17CharacterReady() {
@@ -155,6 +194,7 @@ function cloneMaterials(root) {
   const materials = {
     body: [],
     armor: [],
+    visor: [],
     rifle: [],
   };
   root.traverse((object) => {
@@ -167,14 +207,22 @@ function cloneMaterials(root) {
     object.castShadow = true;
     object.receiveShadow = true;
     object.frustumCulled = false;
-    const label = `${object.name} ${cloned.map((material) => material.name).join(' ')}`;
-    const bucket = /RIFLE/i.test(label)
-      ? materials.rifle
-      : /ARMOR|SLEEVE/i.test(label)
-        ? materials.armor
-        : materials.body;
-    bucket.push(...cloned);
-    if (/RIFLE/i.test(label)) object.userData.noHit = true;
+    let includesRifleMaterial = false;
+    cloned.forEach((material) => {
+      const materialLabel = material.name ?? '';
+      const fallbackObjectLabel = materialLabel ? '' : object.name;
+      const label = `${materialLabel} ${fallbackObjectLabel}`;
+      const bucket = /RIFLE/i.test(label)
+        ? materials.rifle
+        : /VISOR/i.test(label)
+          ? materials.visor
+          : /ARMOR|SLEEVE|KNEE/i.test(label)
+            ? materials.armor
+            : materials.body;
+      bucket.push(material);
+      includesRifleMaterial ||= bucket === materials.rifle;
+    });
+    if (includesRifleMaterial) object.userData.noHit = true;
   });
   return materials;
 }
@@ -190,6 +238,39 @@ function tintMaterials(materials, skin, armorTypeId = 'assault', armorSkin = nul
   const secondary = armorSkin?.secondary ?? skin?.secondary ?? 0x303942;
   const armorTint = new THREE.Color(primary).lerp(new THREE.Color(0xffffff), 0.42);
   const bodyTint = new THREE.Color(secondary).lerp(new THREE.Color(0xffffff), 0.74);
+  const allCharacterMaterials = [
+    ...materials.body,
+    ...materials.armor,
+    ...materials.visor,
+  ];
+  const preservesAuthoredDarkBase = allCharacterMaterials.some(
+    (material) => /^KYX_REV30_/i.test(material.name ?? ''),
+  );
+
+  if (preservesAuthoredDarkBase) {
+    const teamPrimary = new THREE.Color(primary);
+    const teamSecondary = new THREE.Color(secondary);
+    const visorAccent = new THREE.Color(
+      armorSkin?.accent ?? skin?.accent ?? 0x2dcbff,
+    );
+    for (const material of materials.armor) {
+      material.color?.lerp(teamPrimary, 0.12);
+    }
+    for (const material of materials.body) {
+      material.color?.lerp(teamSecondary, 0.07);
+    }
+    for (const material of materials.visor) {
+      material.color?.lerp(visorAccent, 0.18);
+      if (material.emissive) {
+        material.emissive.copy(material.color).multiplyScalar(0.32);
+        material.emissiveIntensity = Math.max(
+          material.emissiveIntensity ?? 0,
+          0.42,
+        );
+      }
+    }
+    return;
+  }
 
   for (const material of materials.armor) {
     material.color?.copy(armorTint);
@@ -199,6 +280,9 @@ function tintMaterials(materials, skin, armorTypeId = 'assault', armorSkin = nul
   for (const material of materials.body) {
     material.color?.copy(bodyTint);
     material.roughness = Math.max(material.roughness ?? 0.72, 0.58);
+  }
+  for (const material of materials.visor) {
+    material.color?.copy(new THREE.Color(primary));
   }
 }
 
@@ -219,6 +303,7 @@ function createActionController(root, clips, clipNames) {
   let active = null;
   let activeKey = null;
   let playingOnce = false;
+  let desiredPlaybackRate = 1;
 
   const play = (
     key,
@@ -228,7 +313,11 @@ function createActionController(root, clips, clipNames) {
     if (!next || (next === active && !once)) return;
     next.enabled = true;
     next.reset();
-    next.setEffectiveTimeScale(1);
+    const playbackRate = once ? 1 : desiredPlaybackRate;
+    next.setEffectiveTimeScale(playbackRate);
+    if (!once && playbackRate < 0) {
+      next.time = Math.max(0, next.getClip().duration - Number.EPSILON);
+    }
     if (Number.isFinite(durationSeconds) && durationSeconds > 0) {
       next.setDuration(durationSeconds);
     }
@@ -251,6 +340,21 @@ function createActionController(root, clips, clipNames) {
     if (!actions[key]) return;
     desired = key;
     if (!playingOnce) play(key);
+  };
+
+  const setPlaybackRate = (rate) => {
+    if (!Number.isFinite(rate) || rate === 0) return;
+    const previousSign = Math.sign(desiredPlaybackRate);
+    desiredPlaybackRate = THREE.MathUtils.clamp(rate, -1.7, 1.7);
+    if (!active || playingOnce) return;
+    if (previousSign !== Math.sign(desiredPlaybackRate)) {
+      const duration = active.getClip().duration;
+      active.time = Math.max(
+        0,
+        Math.min(duration - Number.EPSILON, duration - active.time),
+      );
+    }
+    active.setEffectiveTimeScale(desiredPlaybackRate);
   };
 
   const playOnce = (key, fade = 0.08, durationSeconds = null) => {
@@ -278,7 +382,10 @@ function createActionController(root, clips, clipNames) {
     playOnce,
     cancelOnce,
     setDesired,
+    setPlaybackRate,
     get activeKey() { return activeKey; },
+    get playingOnce() { return playingOnce; },
+    get playbackRate() { return desiredPlaybackRate; },
   };
 }
 
@@ -310,8 +417,10 @@ function createSemanticActionDriver(
   let lastMarkers = Object.freeze([]);
   const bones = {
     chest: root.getObjectByName('chest'),
+    spine: root.getObjectByName('spine_02'),
     upperArmLeft: root.getObjectByName('upper_arm.L'),
     upperArmRight: root.getObjectByName('upper_arm.R'),
+    forearmLeft: root.getObjectByName('forearm.L'),
     forearmRight: root.getObjectByName('forearm.R'),
   };
   const offset = new THREE.Quaternion();
@@ -371,22 +480,53 @@ function createSemanticActionDriver(
     lastMarkers = advanced.markers;
     const progress = rev17SemanticActionProgress(action);
     const pulse = Math.sin(progress * Math.PI);
+    const smooth = (value) => value * value * (3 - 2 * value);
 
     // These bounded post-mixer accents make currently unsupported semantic
     // actions visible without pretending they are authored clips. Socketed
     // weapons remain children of the hand bones and retain their contact.
     if (action.kind === 'equip') {
-      applyOffset(bones.chest, 0.04 * pulse, 0, 0);
-      applyOffset(bones.upperArmLeft, -0.18 * pulse, 0, -0.12 * pulse);
-      applyOffset(bones.upperArmRight, -0.22 * pulse, 0, 0.16 * pulse);
+      const settle = smooth(Math.min(1, progress / 0.72))
+        * (1 - smooth(Math.max(0, (progress - 0.72) / 0.28)));
+      applyOffset(bones.chest, 0.035 * settle, 0, 0);
+      applyOffset(bones.upperArmLeft, -0.16 * settle, 0, -0.1 * settle);
+      applyOffset(bones.forearmLeft, -0.08 * settle, 0, -0.05 * settle);
+      applyOffset(bones.upperArmRight, -0.2 * settle, 0, 0.14 * settle);
     } else if (action.kind === 'melee') {
-      applyOffset(bones.chest, 0, -0.2 * pulse, 0.04 * pulse);
-      applyOffset(bones.upperArmRight, -0.82 * pulse, 0, -0.52 * pulse);
-      applyOffset(bones.forearmRight, -0.42 * pulse, 0, 0.24 * pulse);
+      const windup = smooth(Math.min(1, progress / 0.22));
+      const strike = smooth(Math.min(1, Math.max(0, (progress - 0.22) / 0.28)));
+      const recover = smooth(Math.min(1, Math.max(0, (progress - 0.5) / 0.5)));
+      const sweep = strike * (1 - recover);
+      const guard = windup * (1 - strike);
+      applyOffset(bones.spine, 0.02 * sweep, -0.18 * guard + 0.34 * sweep, 0);
+      applyOffset(bones.chest, 0, -0.22 * guard + 0.42 * sweep, 0.06 * sweep);
+      applyOffset(
+        bones.upperArmRight,
+        -0.48 * guard - 0.92 * sweep,
+        0.18 * sweep,
+        -0.28 * guard - 0.58 * sweep,
+      );
+      applyOffset(
+        bones.forearmRight,
+        -0.26 * guard - 0.38 * sweep,
+        0,
+        0.14 * guard + 0.3 * sweep,
+      );
     } else if (action.kind === 'ability') {
-      applyOffset(bones.chest, -0.04 * pulse, 0.18 * pulse, 0);
-      applyOffset(bones.upperArmRight, -1.02 * pulse, 0.12 * pulse, 0.26 * pulse);
-      applyOffset(bones.forearmRight, -0.3 * pulse, 0, -0.16 * pulse);
+      const commit = smooth(Math.min(1, progress / 0.44));
+      const recover = smooth(Math.min(1, Math.max(0, (progress - 0.44) / 0.56)));
+      const throwWeight = commit * (1 - recover);
+      applyOffset(bones.chest, -0.04 * throwWeight, 0.18 * throwWeight, 0);
+      applyOffset(
+        bones.upperArmRight,
+        -1.02 * throwWeight,
+        0.12 * throwWeight,
+        0.26 * throwWeight,
+      );
+      applyOffset(bones.forearmRight, -0.3 * throwWeight, 0, -0.16 * throwWeight);
+    } else if (action.kind === 'fire') {
+      applyOffset(bones.spine, -0.025 * pulse, 0, 0);
+      applyOffset(bones.chest, -0.04 * pulse, 0, 0);
     }
     if (action.completed) {
       action = null;
@@ -424,7 +564,7 @@ export function buildRev17Character(
   tintMaterials(materials, skin, armorTypeId);
 
   const group = new THREE.Group();
-  group.name = `KYX_REV17_${opts.runtimeRole === 'enemy' ? 'ENEMY_LOD1' : 'PLAYER_LOD0'}`;
+  group.name = `KYX_${CHARACTER_REVISION_TOKEN}_${opts.runtimeRole === 'enemy' ? 'ENEMY_LOD1' : 'PLAYER_LOD0'}`;
   group.add(root);
 
   const controller = createActionController(
@@ -438,53 +578,291 @@ export function buildRev17Character(
     opts.runtimeRole ?? 'preview',
   );
   let grounded = true;
-  let attachedMelee = null;
+  let locomotion = normalizeRev17LocomotionPresentation(0);
+  let targetAimPitch = 0;
+  let targetAimYaw = 0;
+  let smoothAimPitch = 0;
+  let smoothAimYaw = 0;
+  let smoothRightRatio = 0;
+  let smoothForwardRatio = 1;
+  let smoothStrafeLean = 0;
+  let smoothTurnRate = 0;
+  let locomotionClock = 0;
+  let attachedWeapon = null;
+  let weaponContact = null;
   const embeddedRifle = [];
   root.traverse((object) => {
     if (object.isMesh && /RIFLE/i.test(object.name)) embeddedRifle.push(object);
   });
+  const poseBones = {
+    root: root.getObjectByName('root'),
+    spine1: root.getObjectByName('spine_01'),
+    spine2: root.getObjectByName('spine_02'),
+    chest: root.getObjectByName('chest'),
+    neck: root.getObjectByName('neck'),
+    head: root.getObjectByName('head'),
+    thighLeft: root.getObjectByName('thigh_anchor.L'),
+    thighRight: root.getObjectByName('thigh_anchor.R'),
+    shinLeft: root.getObjectByName('shin_anchor.L'),
+    shinRight: root.getObjectByName('shin_anchor.R'),
+    upperArmLeft: root.getObjectByName('upper_arm.L'),
+    forearmLeft: root.getObjectByName('forearm.L'),
+    palmLeft: root.getObjectByName('palm.L'),
+  };
+  const poseEuler = new THREE.Euler();
+  const poseQuaternion = new THREE.Quaternion();
+  const ikBonePosition = new THREE.Vector3();
+  const ikEndPosition = new THREE.Vector3();
+  const ikTargetPosition = new THREE.Vector3();
+  const ikCurrentDirection = new THREE.Vector3();
+  const ikTargetDirection = new THREE.Vector3();
+  const ikBoneWorld = new THREE.Quaternion();
+  const ikParentWorld = new THREE.Quaternion();
+  const ikDeltaWorld = new THREE.Quaternion();
+  const ikLimitedWorld = new THREE.Quaternion();
+  const ikDesiredLocal = new THREE.Quaternion();
+  const ikIdentity = new THREE.Quaternion();
 
   const showEmbeddedRifle = (visible) => {
     embeddedRifle.forEach((object) => { object.visible = visible; });
   };
 
-  const setLocomotion = (speed, isGrounded = true, sprinting = false) => {
+  const setLocomotion = (
+    speed,
+    isGrounded = true,
+    sprinting = false,
+    signalOrStrafe = 0,
+    legacyForwardRatio = null,
+    legacyTurnRateRadiansPerSecond = 0,
+  ) => {
+    locomotion = normalizeRev17LocomotionPresentation(
+      speed,
+      signalOrStrafe,
+      legacyForwardRatio,
+      legacyTurnRateRadiansPerSecond,
+    );
     if (!isGrounded) {
       controller.setDesired('air');
+      controller.setPlaybackRate(1);
       if (grounded) controller.playOnce('jump');
     } else {
-      const key = sprinting || speed > 4.2
+      const key = sprinting || locomotion.planarSpeed > 4.2
         ? 'run'
-        : speed > 0.45
+        : locomotion.planarSpeed > 0.45
           ? 'walk'
           : 'idle';
+      controller.setPlaybackRate(rev17GaitPlaybackRate(key, locomotion));
       controller.setDesired(key);
       if (!grounded) controller.playOnce('land');
     }
     grounded = isGrounded;
   };
 
+  const setAim = (pitch = 0, yaw = 0) => {
+    targetAimPitch = THREE.MathUtils.clamp(
+      Number.isFinite(pitch) ? pitch : 0,
+      -1.15,
+      1.15,
+    );
+    targetAimYaw = THREE.MathUtils.clamp(
+      Number.isFinite(yaw) ? yaw : 0,
+      -0.95,
+      0.95,
+    );
+  };
+
+  const applyPoseOffset = (bone, x = 0, y = 0, z = 0) => {
+    if (!bone) return;
+    poseQuaternion.setFromEuler(poseEuler.set(x, y, z, 'XYZ'));
+    bone.quaternion.multiply(poseQuaternion);
+  };
+
+  const rotateBoneToward = (
+    bone,
+    end,
+    target,
+    weight,
+    maximumRadians,
+  ) => {
+    if (!bone || !end || !target || weight <= 0) return;
+    root.updateMatrixWorld(true);
+    bone.getWorldPosition(ikBonePosition);
+    end.getWorldPosition(ikEndPosition);
+    target.getWorldPosition(ikTargetPosition);
+    ikCurrentDirection.subVectors(ikEndPosition, ikBonePosition);
+    ikTargetDirection.subVectors(ikTargetPosition, ikBonePosition);
+    if (
+      ikCurrentDirection.lengthSq() < 1e-8
+      || ikTargetDirection.lengthSq() < 1e-8
+    ) return;
+    ikDeltaWorld.setFromUnitVectors(
+      ikCurrentDirection.normalize(),
+      ikTargetDirection.normalize(),
+    );
+    const angle = 2 * Math.acos(
+      THREE.MathUtils.clamp(Math.abs(ikDeltaWorld.w), 0, 1),
+    );
+    const limitedWeight = Math.min(
+      weight,
+      angle > 1e-5 ? maximumRadians / angle : weight,
+    );
+    ikLimitedWorld.slerpQuaternions(
+      ikIdentity.identity(),
+      ikDeltaWorld,
+      THREE.MathUtils.clamp(limitedWeight, 0, 1),
+    );
+    bone.getWorldQuaternion(ikBoneWorld);
+    ikLimitedWorld.multiply(ikBoneWorld);
+    ikParentWorld.identity();
+    bone.parent?.getWorldQuaternion(ikParentWorld);
+    ikDesiredLocal.copy(ikParentWorld).invert().multiply(ikLimitedWorld);
+    bone.quaternion.copy(ikDesiredLocal);
+  };
+
+  const armorTick = (deltaSeconds) => {
+    const dt = THREE.MathUtils.clamp(
+      Number.isFinite(deltaSeconds) ? deltaSeconds : 0,
+      0,
+      0.1,
+    );
+    locomotionClock += dt;
+    const fast = 1 - Math.exp(-dt * 12);
+    const medium = 1 - Math.exp(-dt * 8);
+    smoothAimPitch += (targetAimPitch - smoothAimPitch) * fast;
+    smoothAimYaw += (targetAimYaw - smoothAimYaw) * fast;
+    smoothRightRatio += (locomotion.rightRatio - smoothRightRatio) * medium;
+    smoothForwardRatio += (locomotion.forwardRatio - smoothForwardRatio) * medium;
+    smoothStrafeLean += (locomotion.strafeLean - smoothStrafeLean) * medium;
+    smoothTurnRate += (
+      locomotion.turnRateRadiansPerSecond - smoothTurnRate
+    ) * medium;
+
+    const moving = grounded && locomotion.planarSpeed > 0.35;
+    const backward = Math.max(0, -smoothForwardRatio);
+    const lateral = smoothRightRatio;
+    const cadence = controller.activeKey === 'run' ? 7.9 : 6.05;
+    const footPhase = Math.sin(locomotionClock * cadence);
+
+    // Keep the lower body biased toward measured travel while the shoulders and
+    // weapon remain aligned with authority yaw/aim. This is intentionally
+    // bounded: pure strafes reach about 10 degrees, not the prior 45-degree skid.
+    if (moving) {
+      applyPoseOffset(poseBones.root, 0, lateral * 0.17, 0);
+      applyPoseOffset(poseBones.spine1, 0, lateral * -0.12, smoothStrafeLean * 0.055);
+      applyPoseOffset(poseBones.spine2, backward * -0.045, lateral * -0.04, 0);
+      applyPoseOffset(
+        poseBones.thighLeft,
+        backward * 0.08,
+        lateral * 0.08,
+        lateral * footPhase * 0.045,
+      );
+      applyPoseOffset(
+        poseBones.thighRight,
+        backward * 0.08,
+        lateral * 0.08,
+        lateral * footPhase * -0.045,
+      );
+      applyPoseOffset(poseBones.shinLeft, backward * 0.07, 0, 0);
+      applyPoseOffset(poseBones.shinRight, backward * 0.07, 0, 0);
+    } else if (grounded && Math.abs(smoothTurnRate) > 0.12) {
+      const turn = THREE.MathUtils.clamp(smoothTurnRate / 4.5, -1, 1);
+      const turnStep = Math.sin(locomotionClock * 7 + turn * 0.7);
+      applyPoseOffset(poseBones.root, 0, turn * 0.12, 0);
+      applyPoseOffset(poseBones.spine1, 0, turn * -0.09, 0);
+      applyPoseOffset(poseBones.thighLeft, turnStep * 0.035, turn * -0.08, 0);
+      applyPoseOffset(poseBones.thighRight, turnStep * -0.035, turn * -0.08, 0);
+    }
+
+    // Aim is layered after locomotion so camera pitch/yaw remains legible while
+    // the authored fire/reload clips continue to own the arms.
+    applyPoseOffset(
+      poseBones.spine1,
+      smoothAimPitch * 0.14,
+      smoothAimYaw * 0.18,
+      0,
+    );
+    applyPoseOffset(
+      poseBones.spine2,
+      smoothAimPitch * 0.22,
+      smoothAimYaw * 0.27,
+      0,
+    );
+    applyPoseOffset(
+      poseBones.chest,
+      smoothAimPitch * 0.27,
+      smoothAimYaw * 0.3,
+      0,
+    );
+    applyPoseOffset(
+      poseBones.neck,
+      smoothAimPitch * 0.13,
+      smoothAimYaw * 0.13,
+      0,
+    );
+    applyPoseOffset(
+      poseBones.head,
+      smoothAimPitch * 0.18,
+      smoothAimYaw * 0.12,
+      0,
+    );
+
+    // Conservative two-bone support-hand contact. Reload/equip intentionally
+    // release most of the IK weight so authored hand separation is preserved.
+    const actionKind = semanticActions.snapshot().kind;
+    const supportWeight = actionKind === 'reload' || actionKind === 'equip'
+      ? 0.08
+      : actionKind === 'ability' || actionKind === 'melee'
+        ? 0
+        : grounded
+          ? 0.62
+          : 0.42;
+    if (weaponContact?.supportTarget && supportWeight > 0) {
+      for (let iteration = 0; iteration < 2; iteration += 1) {
+        rotateBoneToward(
+          poseBones.upperArmLeft,
+          poseBones.palmLeft,
+          weaponContact.supportTarget,
+          supportWeight * 0.55,
+          0.34,
+        );
+        rotateBoneToward(
+          poseBones.forearmLeft,
+          poseBones.palmLeft,
+          weaponContact.supportTarget,
+          supportWeight * 0.72,
+          0.42,
+        );
+      }
+    }
+  };
+
   const attachWeapon = (weapon, isMelee = false) => {
-    attachedMelee?.removeFromParent();
-    attachedMelee = null;
-    showEmbeddedRifle(!isMelee);
-    if (!isMelee || !weapon) return;
+    attachedWeapon?.removeFromParent();
+    attachedWeapon = null;
+    weaponContact = null;
+    showEmbeddedRifle(!weapon);
+    if (!weapon) return;
     const socket = root.getObjectByName('socket_weapon_r')
       || root.getObjectByName('palm.R');
     if (!socket) return;
-    const contact = getRev17MeleeSocketContactTransform();
-    attachedMelee = weapon;
-    weapon.position.set(...contact.position);
-    weapon.rotation.set(...contact.rotation);
-    weapon.scale.setScalar(contact.uniformScale);
+    const authoredMuzzle = root.getObjectByName('socket_muzzle');
     socket.add(weapon);
+    weaponContact = fitRev17WeaponContact(
+      weapon,
+      socket,
+      authoredMuzzle,
+      isMelee,
+    );
+    attachedWeapon = weapon;
   };
 
   group.userData = {
     ...group.userData,
     isHuman: true,
     isRev17Candidate: true,
-    candidateRevision: 'rev17',
+    isG6CharacterCandidate: true,
+    candidateRevision: CHARACTER_REVISION,
+    candidateDefault: CHARACTER_IS_DEFAULT,
     runtimeRole: opts.runtimeRole ?? 'preview',
     armorTypeId,
     primaryMat: materials.armor[0] ?? materials.body[0] ?? null,
@@ -492,11 +870,31 @@ export function buildRev17Character(
     mixer: controller.mixer,
     setMotion: (name) => controller.setDesired(name === 'airborne' ? 'air' : name),
     setLocomotion,
-    setAim: () => {},
-    armorTick: () => {},
+    setAim,
+    armorTick,
     triggerAction: (request) => semanticActions.trigger(request),
     getActionState: () => semanticActions.snapshot(),
+    getPresentationState: () => Object.freeze({
+      locomotion,
+      activeClipKey: controller.activeKey,
+      gaitPlaybackRate: controller.playbackRate,
+      grounded,
+      aimPitch: smoothAimPitch,
+      aimYaw: smoothAimYaw,
+      weaponContact: weaponContact
+        ? Object.freeze({
+            family: weaponContact.family,
+            socketName: weaponContact.socketName,
+            muzzleNodeName: weaponContact.muzzleNodeName,
+            supportHandContact: weaponContact.supportTarget !== null,
+          })
+        : null,
+    }),
     actionTick: (dt) => semanticActions.tick(dt),
+    triggerEquip: (durationSeconds) => semanticActions.trigger({
+      kind: 'equip',
+      durationSeconds,
+    }),
     triggerFire: () => semanticActions.trigger('fire'),
     triggerReload: (durationSeconds) => semanticActions.trigger({
       kind: 'reload',
@@ -517,6 +915,11 @@ export function buildRev17Character(
       controller.playOnce('jump');
     },
     triggerDeath: () => controller.playOnce('death', 0.12),
+    resetPresentation: () => {
+      controller.cancelOnce(0.06);
+      controller.setPlaybackRate(1);
+      controller.setDesired('idle');
+    },
     attachWeapon,
   };
   registerRuntimeInstance(group, {

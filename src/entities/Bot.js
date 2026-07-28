@@ -132,7 +132,23 @@ export class Bot {
     if (this._isHuman && this.mesh.userData.attachWeapon) {
       const def = getWeapon(weaponId);
       if (def) {
-        const { group: wm } = buildWeaponModel(def, { procedural: true });
+        const builtWeapon = buildWeaponModel(def, { procedural: true });
+        const wm = builtWeapon.group;
+        if (builtWeapon.muzzle) {
+          builtWeapon.muzzle.name ||= `KYX_BOT_${def.id.toUpperCase()}_MUZZLE`;
+          wm.userData.muzzleNodeName = builtWeapon.muzzle.name;
+        }
+        wm.userData.weaponFamily = this._isSwordBot || def.kind === 'melee'
+          ? 'melee'
+          : /pistol|magnum|sidearm/i.test(def.id)
+            ? 'pistol'
+            : /shotgun|scatter/i.test(def.id)
+              ? 'shotgun'
+              : /sniper|longshot|dmr/i.test(def.id)
+                ? 'sniper'
+                : /rocket|rpg|fuelrod/i.test(def.id)
+                  ? 'rocket'
+                  : 'rifle';
         wm.traverse(o => { if (o.isMesh) o.userData.noHit = true; });
         this.mesh.userData.attachWeapon(wm, this._isSwordBot);
         this._weaponMesh = null; // hand-held; no procedural weapon animation
@@ -390,12 +406,25 @@ export class Bot {
       // Strafe input: sign of lateral component of moveTarget in the bot's
       // local frame — feeds the strafe-lean layer.
       let strafe = 0;
+      let forwardRatio = 1;
       if (moveTarget) {
         const yaw = this.mesh.rotation.y;
         const cs = Math.cos(yaw), sn = Math.sin(yaw);
-        strafe = -(moveTarget.x * cs - moveTarget.z * sn);   // local X
+        const right = moveTarget.x * cs - moveTarget.z * sn;
+        const forward = moveTarget.x * sn + moveTarget.z * cs;
+        const length = Math.max(0.001, Math.hypot(moveTarget.x, moveTarget.z));
+        strafe = -right / length;
+        forwardRatio = forward / length;
       }
-      if (ud.setLocomotion) ud.setLocomotion(spd, true, this.speed > 3.4, strafe);
+      if (ud.setLocomotion) {
+        ud.setLocomotion(
+          spd,
+          true,
+          this.speed > 3.4,
+          strafe,
+          forwardRatio,
+        );
+      }
       else ud.setMotion(moving ? (this.speed > 3.4 ? 'run' : 'walk') : 'idle');
 
       // Aim: when engaged with the player, spine + head track them; otherwise
