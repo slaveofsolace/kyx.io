@@ -1,4 +1,5 @@
 import { hashRulesetContent, requireRuleset } from '../content';
+import { GameSettings } from '../core/GameSettings.js';
 import { UserAccount } from '../core/UserAccount.js';
 import {
   applyCombatPresentationReliableEvent,
@@ -1227,6 +1228,13 @@ async function mountSession(
   let presentationFailureDetail: string | null = null;
   let feedbackTimeout = 0;
   let audioContext: AudioContext | null = null;
+  let feedbackOutput: GainNode | null = null;
+  let feedbackNoise: AudioBuffer | null = null;
+  let feedbackVariationState = 0x4b595843;
+  let previousMovementGrounded: boolean | null = null;
+  let previousMovementVerticalSpeed = 0;
+  let lastMovementFootstepAt = 0;
+  let movementFoot = 0;
   const processedPresentationTransportIds = new Set<string>();
 
   const feedbackCue = (intent: CombatPresentationIntentV1): FeedbackCue => {
@@ -1256,32 +1264,290 @@ async function mountSession(
     if (cue === 'teleport') return 'TELEPORT · CONFIRMED';
     return 'TELEPORT · REJECTED';
   };
+  const feedbackVariation = (amount = 0.03): number => {
+    feedbackVariationState = (
+      Math.imul(feedbackVariationState, 1_664_525) + 1_013_904_223
+    ) >>> 0;
+    return 1 + (
+      feedbackVariationState / 0xffff_ffff * 2 - 1
+    ) * amount;
+  };
+  const createFeedbackNoise = (context: AudioContext): AudioBuffer => {
+    const buffer = context.createBuffer(
+      1,
+      Math.ceil(context.sampleRate * 1.2),
+      context.sampleRate,
+    );
+    const channel = buffer.getChannelData(0);
+    let state = 0x1f2e3d4c;
+    for (let index = 0; index < channel.length; index += 1) {
+      state = (Math.imul(state, 1_664_525) + 1_013_904_223) >>> 0;
+      channel[index] = state / 0xffff_ffff * 2 - 1;
+    }
+    return buffer;
+  };
+  const feedbackBurst = ({
+    delay = 0,
+    duration = 0.08,
+    level = 0.08,
+    type = 'bandpass',
+    frequency = 1_400,
+    endFrequency = 420,
+    resonance = 0.8,
+  }: Readonly<{
+    delay?: number;
+    duration?: number;
+    level?: number;
+    type?: BiquadFilterType;
+    frequency?: number;
+    endFrequency?: number;
+    resonance?: number;
+  }> = {}): void => {
+    if (
+      audioContext === null
+      || feedbackOutput === null
+      || feedbackNoise === null
+    ) return;
+    const start = audioContext.currentTime + delay;
+    const source = audioContext.createBufferSource();
+    const filter = audioContext.createBiquadFilter();
+    const gain = audioContext.createGain();
+    source.buffer = feedbackNoise;
+    source.playbackRate.value = feedbackVariation(0.025);
+    filter.type = type;
+    filter.Q.value = resonance;
+    filter.frequency.setValueAtTime(
+      frequency * feedbackVariation(0.02),
+      start,
+    );
+    filter.frequency.exponentialRampToValueAtTime(
+      Math.max(30, endFrequency * feedbackVariation(0.02)),
+      start + duration,
+    );
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(level, start + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    source.connect(filter).connect(gain).connect(feedbackOutput);
+    const maxOffset = Math.max(0, feedbackNoise.duration - duration - 0.02);
+    source.start(
+      start,
+      (feedbackVariationState / 0xffff_ffff) * maxOffset,
+      duration,
+    );
+  };
+  const feedbackBody = (
+    frequency: number,
+    endFrequency: number,
+    duration: number,
+    level: number,
+    delay = 0,
+  ): void => {
+    if (audioContext === null || feedbackOutput === null) return;
+    const start = audioContext.currentTime + delay;
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(
+      frequency * feedbackVariation(0.025),
+      start,
+    );
+    oscillator.frequency.exponentialRampToValueAtTime(
+      Math.max(24, endFrequency),
+      start + duration,
+    );
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(level, start + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    oscillator.connect(gain).connect(feedbackOutput);
+    oscillator.start(start);
+    oscillator.stop(start + duration + 0.01);
+  };
+  const ensureFeedbackAudio = async (): Promise<void> => {
+    if (audioContext === null) {
+      audioContext = new AudioContext({ latencyHint: 'interactive' });
+      feedbackOutput = audioContext.createGain();
+      const settingsVolume = Number(GameSettings.get('volume') ?? 0.5);
+      feedbackOutput.gain.value = Math.max(0, Math.min(1, settingsVolume)) * 0.38;
+      const limiter = audioContext.createDynamicsCompressor();
+      limiter.threshold.value = -9;
+      limiter.knee.value = 8;
+      limiter.ratio.value = 8;
+      limiter.attack.value = 0.002;
+      limiter.release.value = 0.12;
+      feedbackOutput.connect(limiter).connect(audioContext.destination);
+      feedbackNoise = createFeedbackNoise(audioContext);
+    }
+    if (audioContext.state === 'suspended') await audioContext.resume();
+  };
+  const playMovementFootstep = (sprinting: boolean): void => {
+    movementFoot ^= 1;
+    const side = movementFoot === 0 ? 0.96 : 1.04;
+    feedbackBurst({
+      duration: sprinting ? 0.085 : 0.06,
+      level: sprinting ? 0.095 : 0.06,
+      frequency: (sprinting ? 1_250 : 900) * side,
+      endFrequency: 280,
+      resonance: 0.62,
+    });
+    feedbackBody(
+      (sprinting ? 98 : 80) * side,
+      28,
+      sprinting ? 0.1 : 0.08,
+      sprinting ? 0.075 : 0.045,
+    );
+  };
+  const playMovementJump = (): void => {
+    feedbackBurst({
+      duration: 0.13,
+      level: 0.055,
+      frequency: 420,
+      endFrequency: 1_550,
+      resonance: 0.5,
+    });
+    feedbackBody(90, 44, 0.1, 0.04);
+  };
+  const playMovementLand = (hard: boolean): void => {
+    feedbackBurst({
+      duration: hard ? 0.17 : 0.1,
+      level: hard ? 0.17 : 0.1,
+      type: 'lowpass',
+      frequency: hard ? 1_250 : 850,
+      endFrequency: 110,
+      resonance: 0.48,
+    });
+    feedbackBody(
+      hard ? 108 : 82,
+      24,
+      hard ? 0.22 : 0.15,
+      hard ? 0.16 : 0.09,
+    );
+  };
   const playFeedbackTone = (cue: Exclude<FeedbackCue, 'snapshot' | null>): void => {
     presentationAudioCueAttempts += 1;
-    const frequencies: Readonly<Record<Exclude<FeedbackCue, 'snapshot' | null>, number>> = {
-      body: 640,
-      shield: 920,
-      kill: 420,
-      grenade_throw: 520,
-      grenade_collision: 260,
-      grenade_detonation: 140,
-      grenade_impulse: 360,
-      teleport: 780,
-      teleport_rejected: 180,
-    };
     void (async () => {
-      audioContext ??= new AudioContext();
-      if (audioContext.state === 'suspended') await audioContext.resume();
-      const oscillator = audioContext.createOscillator();
-      const gain = audioContext.createGain();
-      oscillator.type = cue === 'teleport' ? 'sine' : 'triangle';
-      oscillator.frequency.setValueAtTime(frequencies[cue], audioContext.currentTime);
-      gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.045, audioContext.currentTime + 0.012);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.13);
-      oscillator.connect(gain).connect(audioContext.destination);
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.14);
+      await ensureFeedbackAudio();
+      if (cue === 'body') {
+        feedbackBurst({
+          duration: 0.075,
+          level: 0.13,
+          frequency: 1_150,
+          endFrequency: 360,
+          resonance: 1.1,
+        });
+        feedbackBody(155, 64, 0.09, 0.065);
+      } else if (cue === 'shield') {
+        feedbackBurst({
+          duration: 0.12,
+          level: 0.16,
+          frequency: 3_800,
+          endFrequency: 680,
+          resonance: 2.6,
+        });
+        feedbackBurst({
+          delay: 0.018,
+          duration: 0.055,
+          level: 0.055,
+          type: 'highpass',
+          frequency: 5_200,
+          endFrequency: 2_200,
+        });
+        feedbackBody(360, 115, 0.14, 0.055);
+      } else if (cue === 'kill') {
+        feedbackBurst({
+          duration: 0.06,
+          level: 0.2,
+          frequency: 2_350,
+          endFrequency: 740,
+          resonance: 2.3,
+        });
+        feedbackBurst({
+          delay: 0.052,
+          duration: 0.075,
+          level: 0.12,
+          frequency: 1_650,
+          endFrequency: 430,
+          resonance: 1.6,
+        });
+        feedbackBody(145, 48, 0.17, 0.12);
+      } else if (cue === 'grenade_throw') {
+        feedbackBurst({
+          duration: 0.17,
+          level: 0.12,
+          frequency: 390,
+          endFrequency: 1_900,
+          resonance: 0.55,
+        });
+        feedbackBurst({
+          delay: 0.012,
+          duration: 0.028,
+          level: 0.08,
+          frequency: 2_100,
+          endFrequency: 950,
+          resonance: 4,
+        });
+      } else if (cue === 'grenade_collision') {
+        feedbackBurst({
+          duration: 0.05,
+          level: 0.12,
+          frequency: 1_850,
+          endFrequency: 720,
+          resonance: 3.2,
+        });
+        feedbackBody(225, 78, 0.06, 0.05);
+      } else if (cue === 'grenade_detonation') {
+        feedbackBurst({
+          duration: 0.035,
+          level: 0.34,
+          type: 'highpass',
+          frequency: 2_400,
+          endFrequency: 820,
+          resonance: 0.5,
+        });
+        feedbackBurst({
+          duration: 0.58,
+          level: 0.3,
+          type: 'lowpass',
+          frequency: 820,
+          endFrequency: 65,
+          resonance: 0.42,
+        });
+        feedbackBody(88, 24, 0.55, 0.24);
+      } else if (cue === 'grenade_impulse') {
+        feedbackBurst({
+          duration: 0.22,
+          level: 0.16,
+          frequency: 440,
+          endFrequency: 2_200,
+          resonance: 0.5,
+        });
+        feedbackBody(118, 38, 0.19, 0.1);
+      } else if (cue === 'teleport') {
+        feedbackBurst({
+          duration: 0.14,
+          level: 0.17,
+          frequency: 520,
+          endFrequency: 4_100,
+          resonance: 0.7,
+        });
+        feedbackBurst({
+          delay: 0.105,
+          duration: 0.24,
+          level: 0.2,
+          frequency: 4_000,
+          endFrequency: 300,
+          resonance: 0.65,
+        });
+        feedbackBody(145, 38, 0.21, 0.13, 0.11);
+      } else {
+        feedbackBurst({
+          duration: 0.1,
+          level: 0.1,
+          frequency: 640,
+          endFrequency: 170,
+          resonance: 0.9,
+        });
+        feedbackBody(105, 42, 0.12, 0.07);
+      }
       feedbackHud.dataset.audio = 'played';
     })().catch(() => {
       feedbackHud.dataset.audio = 'caption_only';
@@ -1483,6 +1749,11 @@ async function mountSession(
   const keyboardHandler = (event: KeyboardEvent): void => {
     if (!isOnlineAuthorityInputCode(event.code)) return;
     event.preventDefault();
+    if (event.type === 'keydown') {
+      void ensureFeedbackAudio().catch(() => {
+        feedbackHud.dataset.audio = 'caption_only';
+      });
+    }
     const weaponSlot = onlineAuthorityWeaponSlotFromCode(event.code);
     if (
       event.type === 'keydown'
@@ -1508,6 +1779,11 @@ async function mountSession(
     if (document.visibilityState === 'hidden') neutralizeRouteInput();
   };
   const holdPointerButton = (button: number): void => {
+    if (audioContext === null) {
+      void ensureFeedbackAudio().catch(() => {
+        feedbackHud.dataset.audio = 'caption_only';
+      });
+    }
     pointerHeldButtons = (pointerHeldButtons | button) >>> 0;
     updateInput();
   };
@@ -1529,6 +1805,9 @@ async function mountSession(
   const releaseFire = (): void => releasePointerButton(INTENT_BUTTON.primaryFire);
   const canvasFire = (event: PointerEvent): void => {
     if (event.button !== 0) return;
+    void ensureFeedbackAudio().catch(() => {
+      feedbackHud.dataset.audio = 'caption_only';
+    });
     canvas.focus();
     if (inkfallRev4 && document.pointerLockElement !== canvas) {
       const pointerLockRequest = canvas.requestPointerLock();
@@ -1707,15 +1986,37 @@ async function mountSession(
     if (threeRuntime !== null) {
       try {
         const velocity = diagnostics.local.predictedVelocity;
+        const grounded = diagnostics.local.predictedGrounded;
+        const horizontalSpeed = velocity === null
+          ? 0
+          : Math.hypot(velocity.x, velocity.z);
+        if (
+          previousMovementGrounded === true
+          && grounded === false
+          && velocity !== null
+          && velocity.y > 0
+        ) {
+          playMovementJump();
+        } else if (previousMovementGrounded === false && grounded === true) {
+          playMovementLand(Math.abs(previousMovementVerticalSpeed) > 9_000);
+        }
+        if (grounded === true && horizontalSpeed > 800) {
+          const sprinting = horizontalSpeed > 6_400;
+          const cadence = sprinting ? 310 : 440;
+          if (nowMilliseconds - lastMovementFootstepAt >= cadence) {
+            playMovementFootstep(sprinting);
+            lastMovementFootstepAt = nowMilliseconds;
+          }
+        }
+        previousMovementGrounded = grounded;
+        previousMovementVerticalSpeed = velocity?.y ?? 0;
         threeRuntime.render({
           nowMilliseconds,
           presentation,
           combat: combatView,
           localYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
           localPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
-          localSpeedMillimetersPerSecond: velocity === null
-            ? 0
-            : Math.hypot(velocity.x, velocity.z),
+          localSpeedMillimetersPerSecond: horizontalSpeed,
         });
       } catch (renderFailure) {
         const detail = renderFailure instanceof Error
@@ -1879,6 +2180,9 @@ async function mountSession(
     document.removeEventListener('pointerlockchange', pointerLockChange);
     window.clearTimeout(feedbackTimeout);
     if (audioContext !== null) void audioContext.close();
+    audioContext = null;
+    feedbackOutput = null;
+    feedbackNoise = null;
     client.dispose();
     threeRuntime?.dispose();
     world.dispose();

@@ -10,8 +10,9 @@ const FRAG_RADIUS = 5;
 const FRAG_DMG    = 80;
 
 export class GrenadeSystem {
-  constructor(scene) {
+  constructor(scene, audio = null) {
     this.scene       = scene;
+    this.audio       = audio;
     this.frags       = 2;
     this.smokes      = 2;
     this.throwables  = [];
@@ -25,6 +26,7 @@ export class GrenadeSystem {
     if (this.frags <= 0) return false;
     this.frags--;
     this._spawn(camera, 'frag');
+    this.audio?.playGrenadeThrow?.('frag');
     return true;
   }
 
@@ -32,6 +34,7 @@ export class GrenadeSystem {
     if (this.smokes <= 0) return false;
     this.smokes--;
     this._spawn(camera, 'smoke');
+    this.audio?.playGrenadeThrow?.('smoke');
     return true;
   }
 
@@ -50,7 +53,14 @@ export class GrenadeSystem {
     mesh.position.copy(pos);
     this.scene.add(mesh);
 
-    this.throwables.push({ mesh, pos: pos.clone(), vel, type, life: type === 'frag' ? FRAG_FUSE : SMOKE_FUSE });
+    this.throwables.push({
+      mesh,
+      pos: pos.clone(),
+      vel,
+      type,
+      life: type === 'frag' ? FRAG_FUSE : SMOKE_FUSE,
+      bounceSoundCooldown: 0,
+    });
   }
 
   _buildMesh(type) {
@@ -103,15 +113,24 @@ export class GrenadeSystem {
       t.vel.y += GRAVITY * dt;
       t.pos.addScaledVector(t.vel, dt);
       t.life -= dt;
+      t.bounceSoundCooldown = Math.max(0, t.bounceSoundCooldown - dt);
       t.mesh.position.copy(t.pos);
       t.mesh.rotation.x += dt * 5;
       t.mesh.rotation.z += dt * 3.5;
 
       if (t.pos.y <= 0.07 && t.vel.y < 0) {
+        const impactSpeed = Math.abs(t.vel.y);
         t.pos.y = 0.07;
         t.vel.y *= -BOUNCE_DAMP;
         t.vel.x *= 0.72;
         t.vel.z *= 0.72;
+        if (impactSpeed > 1.2 && t.bounceSoundCooldown <= 0) {
+          this.audio?.playGrenadeBounce?.(
+            THREE.MathUtils.clamp(impactSpeed / 9, 0.15, 1),
+            t.type,
+          );
+          t.bounceSoundCooldown = 0.08;
+        }
       }
 
       if (t.life <= 0) {
@@ -164,8 +183,13 @@ export class GrenadeSystem {
   }
 
   _detonate(t, player) {
-    if (t.type === 'frag') this._fragExplode(t.pos.clone(), player);
-    else                   this._smokeExplode(t.pos.clone());
+    if (t.type === 'frag') {
+      this.audio?.playExplosion?.();
+      this._fragExplode(t.pos.clone(), player);
+    } else {
+      this.audio?.playSmokeDeploy?.();
+      this._smokeExplode(t.pos.clone());
+    }
   }
 
   _fragExplode(point, player) {

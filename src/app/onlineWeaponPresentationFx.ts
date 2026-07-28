@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+import { GameSettings } from '../core/GameSettings.js';
 import type {
   CombatPresentationDamageEventV1,
   CombatPresentationWeaponAttackEventV1,
@@ -113,7 +114,10 @@ class AuthoredWeaponAudio {
   private context: AudioContext | null = null;
   private output: GainNode | null = null;
   private noise: AudioBuffer | null = null;
+  private roomInput: GainNode | null = null;
+  private room: ConvolverNode | null = null;
   private state: AuthoredAudioState = 'locked';
+  private variationState = 0x4b595857;
   private readonly unlock: () => void;
 
   constructor(target: HTMLElement) {
@@ -123,9 +127,22 @@ class AuthoredWeaponAudio {
         if (this.context === null) {
           this.context = new AudioContext({ latencyHint: 'interactive' });
           this.output = this.context.createGain();
-          this.output.gain.value = 0.42;
-          this.output.connect(this.context.destination);
+          const settingsVolume = Number(GameSettings.get('volume') ?? 0.5);
+          this.output.gain.value = Math.max(0, Math.min(1, settingsVolume)) * 0.68;
+          const limiter = this.context.createDynamicsCompressor();
+          limiter.threshold.value = -8;
+          limiter.knee.value = 8;
+          limiter.ratio.value = 10;
+          limiter.attack.value = 0.002;
+          limiter.release.value = 0.14;
+          this.output.connect(limiter).connect(this.context.destination);
           this.noise = this.createNoiseBuffer(this.context);
+          this.room = this.context.createConvolver();
+          this.room.buffer = this.createRoomImpulse(this.context);
+          this.roomInput = this.context.createGain();
+          const roomOutput = this.context.createGain();
+          roomOutput.gain.value = 0.2;
+          this.roomInput.connect(this.room).connect(roomOutput).connect(this.output);
         }
         void this.context.resume().then(() => {
           if (this.state !== 'disposed') this.state = 'ready';
@@ -140,7 +157,7 @@ class AuthoredWeaponAudio {
   }
 
   private createNoiseBuffer(context: AudioContext): AudioBuffer {
-    const durationSeconds = 0.72;
+    const durationSeconds = 1.4;
     const buffer = context.createBuffer(
       1,
       Math.ceil(context.sampleRate * durationSeconds),
@@ -150,11 +167,34 @@ class AuthoredWeaponAudio {
     let state = 0x1f2e3d4c;
     for (let index = 0; index < channel.length; index += 1) {
       state = (Math.imul(state, 1_664_525) + 1_013_904_223) >>> 0;
-      channel[index] = ((state / 0xffff_ffff) * 2 - 1) * (
-        1 - index / channel.length
-      );
+      channel[index] = (state / 0xffff_ffff) * 2 - 1;
     }
     return buffer;
+  }
+
+  private createRoomImpulse(context: AudioContext): AudioBuffer {
+    const length = Math.ceil(context.sampleRate * 0.72);
+    const impulse = context.createBuffer(2, length, context.sampleRate);
+    for (let channelIndex = 0; channelIndex < 2; channelIndex += 1) {
+      const channel = impulse.getChannelData(channelIndex);
+      let state = 0x1f2e3d4c ^ (channelIndex * 0x9e3779b9);
+      for (let index = 0; index < channel.length; index += 1) {
+        state = (Math.imul(state, 1_664_525) + 1_013_904_223) >>> 0;
+        channel[index] = ((state / 0xffff_ffff) * 2 - 1)
+          * Math.pow(1 - index / channel.length, 4)
+          * 0.36;
+      }
+    }
+    return impulse;
+  }
+
+  private variation(amount = 0.035): number {
+    this.variationState = (
+      Math.imul(this.variationState, 1_664_525) + 1_013_904_223
+    ) >>> 0;
+    return 1 + (
+      this.variationState / 0xffff_ffff * 2 - 1
+    ) * amount;
   }
 
   private oscillator(
@@ -173,10 +213,12 @@ class AuthoredWeaponAudio {
     const start = this.context.currentTime + delaySeconds;
     const oscillator = this.context.createOscillator();
     const envelope = this.context.createGain();
-    oscillator.type = type;
-    oscillator.frequency.setValueAtTime(frequencyStart, start);
+    // Oscillators are restricted to damped low-frequency body. Bright square
+    // and saw voices were the source of the old chiptune character.
+    oscillator.type = type === 'sine' ? 'sine' : 'triangle';
+    oscillator.frequency.setValueAtTime(frequencyStart * this.variation(0.025), start);
     oscillator.frequency.exponentialRampToValueAtTime(
-      Math.max(20, frequencyEnd),
+      Math.max(20, frequencyEnd * this.variation(0.02)),
       start + durationSeconds,
     );
     envelope.gain.setValueAtTime(0.0001, start);
@@ -197,6 +239,9 @@ class AuthoredWeaponAudio {
     filterFrequency: number,
     filterType: BiquadFilterType,
     delaySeconds = 0,
+    endFrequency = filterFrequency * 0.42,
+    resonance = 0.65,
+    roomAmount = 0,
   ): void {
     if (
       this.state !== 'ready'
@@ -209,8 +254,17 @@ class AuthoredWeaponAudio {
     const filter = this.context.createBiquadFilter();
     const envelope = this.context.createGain();
     source.buffer = this.noise;
+    source.playbackRate.value = this.variation(0.025);
     filter.type = filterType;
-    filter.frequency.setValueAtTime(filterFrequency, start);
+    filter.Q.value = resonance;
+    filter.frequency.setValueAtTime(
+      filterFrequency * this.variation(0.02),
+      start,
+    );
+    filter.frequency.exponentialRampToValueAtTime(
+      Math.max(30, endFrequency * this.variation(0.02)),
+      start + durationSeconds,
+    );
     envelope.gain.setValueAtTime(0.0001, start);
     envelope.gain.exponentialRampToValueAtTime(gain, start + 0.003);
     envelope.gain.exponentialRampToValueAtTime(
@@ -220,41 +274,56 @@ class AuthoredWeaponAudio {
     source.connect(filter);
     filter.connect(envelope);
     envelope.connect(this.output);
-    source.start(start, 0, durationSeconds);
+    if (this.roomInput !== null && roomAmount > 0) {
+      const send = this.context.createGain();
+      send.gain.value = roomAmount;
+      envelope.connect(send).connect(this.roomInput);
+    }
+    const maxOffset = Math.max(0, this.noise.duration - durationSeconds - 0.02);
+    source.start(
+      start,
+      (this.variationState / 0xffff_ffff) * maxOffset,
+      durationSeconds,
+    );
   }
 
   fire(family: KyxWeaponFamily, local: boolean): void {
-    const level = local ? 1 : 0.56;
+    const level = local ? 1 : 0.5;
     switch (family) {
       case 'rifle':
-        this.noiseBurst(0.085, 0.2 * level, 2_600, 'bandpass');
-        this.oscillator(185, 72, 0.09, 0.18 * level, 'square');
-        this.oscillator(1_250, 420, 0.035, 0.06 * level, 'triangle', 0.004);
+        this.noiseBurst(0.018, 0.31 * level, 5_800, 'highpass', 0, 2_500, 0.6, 0.1);
+        this.noiseBurst(0.14, 0.25 * level, 1_250, 'bandpass', 0, 280, 0.72, 0.22);
+        this.oscillator(132, 48, 0.13, 0.15 * level, 'sine');
+        this.noiseBurst(0.035, 0.065 * level, 2_800, 'bandpass', 0.016, 1_050, 4, 0.04);
         break;
       case 'pistol':
-        this.noiseBurst(0.075, 0.16 * level, 3_200, 'highpass');
-        this.oscillator(260, 95, 0.12, 0.22 * level, 'square');
-        this.oscillator(1_800, 520, 0.028, 0.07 * level, 'triangle', 0.003);
+        this.noiseBurst(0.016, 0.34 * level, 4_700, 'highpass', 0, 2_100, 0.65, 0.09);
+        this.noiseBurst(0.13, 0.22 * level, 1_450, 'bandpass', 0, 340, 0.8, 0.18);
+        this.oscillator(148, 58, 0.12, 0.14 * level, 'sine');
+        this.noiseBurst(0.03, 0.075 * level, 3_100, 'bandpass', 0.02, 1_300, 4.5, 0.04);
         break;
       case 'shotgun':
-        this.noiseBurst(0.24, 0.34 * level, 1_450, 'lowpass');
-        this.oscillator(118, 34, 0.22, 0.32 * level, 'sawtooth');
-        this.oscillator(740, 180, 0.055, 0.11 * level, 'square');
+        this.noiseBurst(0.026, 0.48 * level, 2_700, 'highpass', 0, 1_000, 0.52, 0.18);
+        this.noiseBurst(0.32, 0.46 * level, 940, 'lowpass', 0, 105, 0.42, 0.42);
+        this.oscillator(94, 29, 0.28, 0.28 * level, 'sine');
+        this.noiseBurst(0.075, 0.11 * level, 1_450, 'bandpass', 0.05, 540, 2.8, 0.15);
         break;
       case 'sniper':
-        this.noiseBurst(0.19, 0.31 * level, 4_500, 'bandpass');
-        this.oscillator(155, 38, 0.25, 0.28 * level, 'sawtooth');
-        this.oscillator(2_600, 650, 0.045, 0.09 * level, 'square');
+        this.noiseBurst(0.022, 0.52 * level, 6_800, 'highpass', 0, 2_400, 0.72, 0.22);
+        this.noiseBurst(0.42, 0.43 * level, 820, 'bandpass', 0, 110, 0.46, 0.58);
+        this.oscillator(80, 24, 0.38, 0.3 * level, 'sine');
+        this.noiseBurst(0.52, 0.15 * level, 2_200, 'bandpass', 0.055, 230, 0.3, 0.7);
         break;
       case 'rocket':
-        this.noiseBurst(0.42, 0.34 * level, 780, 'lowpass');
-        this.oscillator(92, 28, 0.44, 0.3 * level, 'sawtooth');
-        this.oscillator(510, 130, 0.1, 0.09 * level, 'square');
+        this.noiseBurst(0.045, 0.38 * level, 1_500, 'highpass', 0, 620, 0.5, 0.18);
+        this.noiseBurst(0.48, 0.47 * level, 720, 'lowpass', 0, 75, 0.38, 0.48);
+        this.oscillator(66, 22, 0.46, 0.32 * level, 'sine');
+        this.noiseBurst(0.28, 0.18 * level, 1_050, 'bandpass', 0.06, 180, 0.35, 0.35);
         break;
       case 'melee':
-        this.noiseBurst(0.2, 0.19 * level, 2_300, 'bandpass');
-        this.oscillator(680, 1_420, 0.19, 0.13 * level, 'sine');
-        this.oscillator(190, 88, 0.11, 0.08 * level, 'triangle');
+        this.noiseBurst(0.2, 0.3 * level, 520, 'bandpass', 0, 3_100, 0.58, 0.09);
+        this.noiseBurst(0.1, 0.11 * level, 2_800, 'highpass', 0.055, 1_200, 0.45, 0.06);
+        this.oscillator(178, 72, 0.13, 0.09 * level, 'sine');
         break;
     }
   }
@@ -263,40 +332,56 @@ class AuthoredWeaponAudio {
     const level = local ? 1 : 0.4;
     const heavy = family === 'shotgun' || family === 'rocket' || family === 'sniper';
     if (stage === 'start') {
-      this.noiseBurst(0.045, 0.055 * level, heavy ? 900 : 1_600, 'bandpass');
+      this.noiseBurst(
+        0.08,
+        0.09 * level,
+        heavy ? 820 : 1_450,
+        'bandpass',
+        0,
+        heavy ? 340 : 620,
+        1.4,
+        0.05,
+      );
+      this.noiseBurst(0.026, 0.07 * level, 2_100, 'bandpass', 0.035, 950, 4, 0.04);
       this.oscillator(
-        heavy ? 260 : 440,
-        heavy ? 150 : 240,
-        0.065,
-        0.055 * level,
-        'square',
+        heavy ? 170 : 215,
+        heavy ? 85 : 105,
+        0.08,
+        0.045 * level,
+        'sine',
       );
     } else {
-      this.oscillator(
-        heavy ? 190 : 330,
-        heavy ? 310 : 540,
-        0.08,
-        0.07 * level,
-        'triangle',
+      this.noiseBurst(
+        0.12,
+        0.09 * level,
+        heavy ? 620 : 780,
+        'bandpass',
+        0,
+        heavy ? 2_100 : 2_700,
+        1.1,
+        0.06,
       );
-      this.noiseBurst(0.032, 0.045 * level, 2_800, 'highpass', 0.025);
+      this.noiseBurst(0.032, 0.12 * level, 3_100, 'bandpass', 0.08, 1_250, 4.5, 0.06);
+      this.oscillator(heavy ? 155 : 190, 78, 0.09, 0.05 * level, 'sine', 0.075);
     }
   }
 
   impact(kind: 'shield' | 'health' | 'blast' | 'melee', local: boolean): void {
     const level = local ? 1 : 0.52;
     if (kind === 'shield') {
-      this.oscillator(1_150, 380, 0.16, 0.1 * level, 'sine');
-      this.oscillator(2_300, 1_050, 0.08, 0.045 * level, 'triangle');
+      this.noiseBurst(0.12, 0.17 * level, 3_800, 'bandpass', 0, 720, 2.4, 0.16);
+      this.oscillator(390, 118, 0.15, 0.075 * level, 'sine');
+      this.noiseBurst(0.055, 0.065 * level, 5_100, 'highpass', 0.018, 2_400, 0.7, 0.1);
     } else if (kind === 'health') {
-      this.noiseBurst(0.09, 0.08 * level, 1_100, 'lowpass');
-      this.oscillator(170, 75, 0.1, 0.07 * level, 'triangle');
+      this.noiseBurst(0.1, 0.14 * level, 1_250, 'lowpass', 0, 160, 0.52, 0.05);
+      this.oscillator(155, 58, 0.11, 0.085 * level, 'sine');
     } else if (kind === 'blast') {
-      this.noiseBurst(0.55, 0.32 * level, 650, 'lowpass');
-      this.oscillator(85, 24, 0.58, 0.28 * level, 'sawtooth');
+      this.noiseBurst(0.035, 0.48 * level, 2_300, 'highpass', 0, 820, 0.55, 0.2);
+      this.noiseBurst(0.62, 0.48 * level, 780, 'lowpass', 0, 65, 0.42, 0.55);
+      this.oscillator(86, 24, 0.58, 0.31 * level, 'sine');
     } else {
-      this.noiseBurst(0.11, 0.08 * level, 2_100, 'bandpass');
-      this.oscillator(720, 230, 0.12, 0.08 * level, 'triangle');
+      this.noiseBurst(0.12, 0.15 * level, 2_300, 'bandpass', 0, 510, 1.2, 0.08);
+      this.oscillator(205, 72, 0.12, 0.07 * level, 'sine');
     }
   }
 
@@ -314,6 +399,8 @@ class AuthoredWeaponAudio {
     this.context = null;
     this.output = null;
     this.noise = null;
+    this.roomInput = null;
+    this.room = null;
   }
 }
 

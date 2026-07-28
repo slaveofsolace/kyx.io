@@ -156,7 +156,7 @@ export class Game {
     this._scopeOverlay  = document.getElementById('scope-overlay');
     this._hudCrosshair  = document.getElementById('crosshair');
     this._menuOpen      = false; // in-match menu overlay (the match keeps running)
-    this.grenadeSystem  = new GrenadeSystem(this.world.scene);
+    this.grenadeSystem  = new GrenadeSystem(this.world.scene, this.audio);
     this.pickupSystem = null; // created on first play, cleared on restart
     this.menu           = new MenuUI();
 
@@ -396,7 +396,7 @@ export class Game {
 
     this.weaponSystem.onHitBot = (enemy, dmg, point, meta) => {
       const killed = enemy.takeDamage(dmg);
-      this.audio.playHit();
+      this.audio.playHit(Boolean(meta?.headshot));
       this.hud.flashHitmarker(meta?.headshot);
       this.damageNumbers.spawn(this.player.camera, point, dmg, { headshot: meta?.headshot, killed });
       if (meta?.headshot) this.hud.showHeadshotFlair?.();
@@ -410,7 +410,7 @@ export class Game {
           entry?.isSword ? entry?.skin?.id : null,
           isMelee
         );
-        this.audio.playKill();
+        this.audio.playKill(Boolean(meta?.headshot));
         const baseMult = meta?.rewardMult || 1;
         this._onEnemyKilled(enemy, entry, baseMult, meta?.headshot);
       }
@@ -444,14 +444,35 @@ export class Game {
   }
 
   _wireMenu() {
-    this.menu.onPlay = (name, skinId, modeId, armorTypeId) => this._startGame(name, skinId, modeId, armorTypeId);
-    this.menu.onResume        = () => this._resume();
-    this.menu.onQuit          = () => this._quitToMenu();
-    this.menu.onRestart       = () => this._restart();
-    this.menu.onBackToMenu    = () => this._quitToMenu();
-    this.menu.onArmorChanged  = (armorTypeId) => this._rebuildPreviewCharacter(armorTypeId, undefined);
+    this.menu.onPlay = (name, skinId, modeId, armorTypeId) => {
+      this._startGame(name, skinId, modeId, armorTypeId);
+      this.audio.playUiConfirm();
+    };
+    this.menu.onResume = () => {
+      this.audio.playUiConfirm();
+      this._resume();
+    };
+    this.menu.onQuit = () => {
+      this.audio.playUiCancel();
+      this._quitToMenu();
+    };
+    this.menu.onRestart = () => {
+      this.audio.playUiConfirm();
+      this._restart();
+    };
+    this.menu.onBackToMenu = () => {
+      this.audio.playUiCancel();
+      this._quitToMenu();
+    };
+    this.menu.onArmorChanged = (armorTypeId) => {
+      this.audio.resume();
+      this.audio.playUiHover();
+      this._rebuildPreviewCharacter(armorTypeId, undefined);
+    };
     this.menu.onSettingsSaved = (s) => {
+      this.audio.resume();
       this._applySettings(s);
+      this.audio.playUiConfirm();
       // The decorative light budget is baked at world build, so that part of a
       // quality change takes full effect on the next reload. Shadows stay off.
     };
