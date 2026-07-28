@@ -26,7 +26,10 @@ const COYOTE_TIME     = 0.14;
 
 export class Player {
   constructor(aspect) {
-    this.camera = new THREE.PerspectiveCamera(78, aspect, 0.05, 300);
+    // Keep the complete first-person weapon inside the camera frustum through
+    // recoil and reload rolls. The previous 5 cm near plane could cut through
+    // long receivers and rear stocks as they moved toward the eye.
+    this.camera = new THREE.PerspectiveCamera(78, aspect, 0.025, 300);
     this.baseFov = 78;
 
     this.position = new THREE.Vector3(0, 0, 8);

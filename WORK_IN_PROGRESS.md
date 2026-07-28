@@ -37,11 +37,12 @@ appending prose to executable source files or binary assets.
   fun, sightline, spawn-safety, and final visual acceptance remain open.
   *Currently being worked on.*
 
-- `docs/audits/NOTHEREBUTAFK_EVIO_AUDIT_2026-07-27.md` records the completed
-  targeted audit through upstream `92b9716`. The useful ideas are routed as
+- `docs/audits/NOTHEREBUTAFK_EVIO_FOLLOWUP_2026-07-28.md` extends the completed
+  read-only audit through upstream `8675cc8`, including its newly merged gait,
+  action, viewmodel, and HUD commits. The useful ideas are routed as
   independently implemented validation or visual-language references; no
-  upstream source, assets, spawn coordinates, or network implementation have
-  been merged. Upstream push remains disabled.
+  upstream source, CSS, assets, constants, spawn coordinates, or network
+  implementation have been merged. Upstream push remains disabled.
 
 - `src/ui/g7-arena-instrument.css` replaces the rejected card-heavy HUD with a
   compact edge-anchored arena instrument: cyan suit/team telemetry, amber

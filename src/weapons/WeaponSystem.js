@@ -15,6 +15,7 @@ import {
 
 const TRACER_LIFE = 0.07;
 const FLASH_LIFE = 0.05;
+const VIEWMODEL_DEPTH = -0.56;
 
 // Kawaii skins (anime pew, cat meow, uwu squeak, puppy yip, magic sparkle) all
 // get the pink muzzle flash + sparkle-heart burst treatment.
@@ -147,7 +148,7 @@ export class WeaponSystem {
 
   _buildViewmodels() {
     this.weaponMount = new THREE.Object3D();
-    this.weaponMount.position.set(0.32, -0.26, -0.5);
+    this.weaponMount.position.set(0.32, -0.26, VIEWMODEL_DEPTH);
     this.camera.add(this.weaponMount);
 
     // Dedicated viewmodel key light — a short-range light parented to the camera
@@ -1242,7 +1243,11 @@ export class WeaponSystem {
     // Sprint carry: raise gun and tilt to side like COD
     const sprintRaiseY = this._sprintT * 0.12 * presentationMotionScale;
     const sprintShiftX = -this._sprintT * 0.12 * presentationMotionScale;
-    this.weaponMount.position.set(0.32 + sprintShiftX + adsShiftX + bobH, -0.26 + sprintRaiseY + bobV, -0.5);
+    this.weaponMount.position.set(
+      0.32 + sprintShiftX + adsShiftX + bobH,
+      -0.26 + sprintRaiseY + bobV,
+      VIEWMODEL_DEPTH,
+    );
     this.weaponMount.rotation.x = this._sprintT * 0.22 * presentationMotionScale;
     this.weaponMount.rotation.z = this._sprintT * -1.0 * presentationMotionScale;
 
