@@ -1,0 +1,681 @@
+{
+  "schema": "kyx-g6-rev18-character-remediation-author-report-v1",
+  "generatedAt": "2026-07-27T19:15:04.423727+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "G6_REV18_CHARACTER_REMEDIATION_SLICE",
+  "status": "REV18_SUBSTANTIVE_FIRST_PASS_HUMAN_VISUAL_REVIEW_REQUIRED_NOT_G6",
+  "candidateDisposition": {
+    "default": false,
+    "releaseEligible": false,
+    "g6Accepted": false,
+    "humanVisualReviewRequired": true
+  },
+  "source": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\kyx-v6c-character-rev17-master.blend",
+    "sha256Before": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+    "sha256After": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+    "bytesBefore": 6031917,
+    "bytesAfter": 6031917,
+    "unchanged": true
+  },
+  "renamedContent": {
+    "objects": 13,
+    "meshes": 12,
+    "materials": 3,
+    "actions": 16,
+    "tracks": 16
+  },
+  "bodyReshape": [
+    {
+      "object": "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT",
+      "verticesMoved": 10266,
+      "maximumRestSpaceDeltaMeters": 0.030285,
+      "boundsBefore": [
+        [
+          -0.415344,
+          -0.169871,
+          0.0
+        ],
+        [
+          0.415194,
+          0.10361,
+          1.775
+        ]
+      ],
+      "boundsAfter": [
+        [
+          -0.415446,
+          -0.1721,
+          -0.000964
+        ],
+        [
+          0.415302,
+          0.112827,
+          1.775
+        ]
+      ]
+    },
+    {
+      "object": "KYX_REV18_LOD1_CONTINUOUS_HUMAN_UNDERSUIT",
+      "verticesMoved": 4113,
+      "maximumRestSpaceDeltaMeters": 0.030285,
+      "boundsBefore": [
+        [
+          -0.415449,
+          -0.169488,
+          -0.000254
+        ],
+        [
+          0.415368,
+          0.103275,
+          1.775161
+        ]
+      ],
+      "boundsAfter": [
+        [
+          -0.415449,
+          -0.171731,
+          -0.00122
+        ],
+        [
+          0.415368,
+          0.112454,
+          1.775161
+        ]
+      ]
+    },
+    {
+      "object": "KYX_REV18_LOD2_CONTINUOUS_HUMAN_UNDERSUIT",
+      "verticesMoved": 1554,
+      "maximumRestSpaceDeltaMeters": 0.030187,
+      "boundsBefore": [
+        [
+          -0.415543,
+          -0.170522,
+          -0.000459
+        ],
+        [
+          0.415665,
+          0.10497,
+          1.775639
+        ]
+      ],
+      "boundsAfter": [
+        [
+          -0.415557,
+          -0.172769,
+          -0.001352
+        ],
+        [
+          0.415665,
+          0.114235,
+          1.775639
+        ]
+      ]
+    },
+    {
+      "object": "KYX_REV18_FP_ARMS_GLOVES",
+      "verticesMoved": 9058,
+      "maximumRestSpaceDeltaMeters": 0.030285,
+      "boundsBefore": [
+        [
+          -0.415079,
+          -0.169632,
+          0.814216
+        ],
+        [
+          0.414972,
+          0.097271,
+          1.51256
+        ]
+      ],
+      "boundsAfter": [
+        [
+          -0.415446,
+          -0.171891,
+          0.814205
+        ],
+        [
+          0.415303,
+          0.083059,
+          1.51256
+        ]
+      ]
+    }
+  ],
+  "bodyColorRoles": {
+    "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT": {
+      "base": 659,
+      "glove": 316,
+      "helmet_underlay": 3880,
+      "limb": 4805,
+      "torso": 930
+    },
+    "KYX_REV18_LOD1_CONTINUOUS_HUMAN_UNDERSUIT": {
+      "base": 616,
+      "glove": 320,
+      "helmet_underlay": 2304,
+      "limb": 3971,
+      "torso": 1253
+    },
+    "KYX_REV18_LOD2_CONTINUOUS_HUMAN_UNDERSUIT": {
+      "base": 223,
+      "glove": 128,
+      "helmet_underlay": 765,
+      "limb": 1567,
+      "torso": 491
+    },
+    "KYX_REV18_FP_ARMS_GLOVES": {
+      "base": 1249,
+      "glove": 1973,
+      "helmet_underlay": 99,
+      "limb": 9575,
+      "torso": 4946
+    }
+  },
+  "removedFloatingLegArmor": [
+    {
+      "object": "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+      "groups": [
+        "chest",
+        "foot_anchor.L",
+        "foot_anchor.R",
+        "shin_anchor.L",
+        "shin_anchor.R",
+        "thigh_anchor.L",
+        "thigh_anchor.R"
+      ],
+      "verticesRemoved": 3991,
+      "trianglesBefore": 15412,
+      "trianglesAfter": 3311
+    },
+    {
+      "object": "KYX_REV18_LOD1_FITTED_ARMOR",
+      "groups": [
+        "foot_anchor.L",
+        "foot_anchor.R",
+        "shin_anchor.L",
+        "shin_anchor.R",
+        "thigh_anchor.L",
+        "thigh_anchor.R"
+      ],
+      "verticesRemoved": 1455,
+      "trianglesBefore": 6472,
+      "trianglesAfter": 1840
+    },
+    {
+      "object": "KYX_REV18_LOD2_FITTED_ARMOR",
+      "groups": [
+        "foot_anchor.L",
+        "foot_anchor.R",
+        "shin_anchor.L",
+        "shin_anchor.R",
+        "thigh_anchor.L",
+        "thigh_anchor.R"
+      ],
+      "verticesRemoved": 554,
+      "trianglesBefore": 2464,
+      "trianglesAfter": 539
+    }
+  ],
+  "armorReshape": [
+    {
+      "object": "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+      "verticesMoved": 1850,
+      "maximumRestSpaceDeltaMeters": 0.057954
+    },
+    {
+      "object": "KYX_REV18_LOD1_FITTED_ARMOR",
+      "verticesMoved": 1058,
+      "maximumRestSpaceDeltaMeters": 0.07431
+    },
+    {
+      "object": "KYX_REV18_LOD2_FITTED_ARMOR",
+      "verticesMoved": 346,
+      "maximumRestSpaceDeltaMeters": 0.073815
+    },
+    {
+      "object": "KYX_REV18_FP_ARMOR_SLEEVES",
+      "verticesMoved": 936,
+      "maximumRestSpaceDeltaMeters": 0.074554
+    }
+  ],
+  "armorColorRoles": {
+    "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR": {
+      "accent": 19,
+      "dark": 298,
+      "plate": 538,
+      "shell": 1312,
+      "visor": 502
+    },
+    "KYX_REV18_LOD1_FITTED_ARMOR": {
+      "accent": 28,
+      "dark": 309,
+      "plate": 489,
+      "shell": 922,
+      "visor": 92
+    },
+    "KYX_REV18_LOD2_FITTED_ARMOR": {
+      "accent": 10,
+      "dark": 81,
+      "plate": 157,
+      "shell": 259,
+      "visor": 32
+    },
+    "KYX_REV18_FP_ARMOR_SLEEVES": {
+      "accent": 19,
+      "dark": 225,
+      "plate": 277,
+      "shell": 369
+    }
+  },
+  "rifleColorRoles": {
+    "KYX_REV18_LOD0_COMPACT_RIFLE": {
+      "body": 4393,
+      "grip": 938,
+      "panel": 2025
+    },
+    "KYX_REV18_LOD1_COMPACT_RIFLE": {
+      "body": 2266,
+      "grip": 545,
+      "panel": 867
+    },
+    "KYX_REV18_LOD2_COMPACT_RIFLE": {
+      "body": 893,
+      "grip": 235,
+      "panel": 343
+    },
+    "KYX_REV18_FP_COMPACT_RIFLE": {
+      "body": 4393,
+      "grip": 938,
+      "panel": 2025
+    }
+  },
+  "compactArmorDetails": {
+    "sourceTriangles": {
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR": 3311,
+      "KYX_REV18_VISOR_CORE": 164,
+      "KYX_REV18_COMPACT_CHEST_SHELL": 220,
+      "KYX_REV18_CHEST_STERNUM": 132,
+      "KYX_REV18_CHEST_INDEX": 132,
+      "KYX_REV18_FITTED_THIGH_L": 528,
+      "KYX_REV18_FITTED_KNEE_L": 168,
+      "KYX_REV18_FITTED_SHIN_L": 1052,
+      "KYX_REV18_VOXEL_BOOT_L": 5236,
+      "KYX_REV18_FITTED_THIGH_R": 528,
+      "KYX_REV18_FITTED_KNEE_R": 168,
+      "KYX_REV18_FITTED_SHIN_R": 1052,
+      "KYX_REV18_VOXEL_BOOT_R": 5228
+    },
+    "joinedTriangles": 17919,
+    "additionCount": 12
+  },
+  "meleeSocket": {
+    "name": "socket_melee",
+    "created": true,
+    "parent": "palm.R",
+    "head": [
+      -0.405,
+      -0.09,
+      0.85
+    ],
+    "tail": [
+      -0.405,
+      -0.09,
+      0.96
+    ]
+  },
+  "meleeAction": {
+    "name": "KYX_REV18_TP_MELEE",
+    "frameRange": [
+      1.0,
+      24.0
+    ]
+  },
+  "meleeContact": {
+    "action": "KYX_REV18_TP_MELEE",
+    "clock": {
+      "source": "single NLA action frame",
+      "frames": [
+        1,
+        4,
+        7,
+        10,
+        13,
+        16,
+        19,
+        22,
+        24
+      ],
+      "fps": 24
+    },
+    "bladeTransformSource": "socket_melee child of palm.R",
+    "handVertexCount": 262,
+    "gripRadiusMeters": 0.022,
+    "samples": [
+      {
+        "frame": 1,
+        "socketHead": [
+          0.006247,
+          -0.613004,
+          1.366903
+        ],
+        "socketTail": [
+          -0.076612,
+          -0.574594,
+          1.305592
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.00291,
+        "nearestHandToGripSurfaceGapMeters": 0.01909
+      },
+      {
+        "frame": 4,
+        "socketHead": [
+          0.266416,
+          -0.565049,
+          1.492583
+        ],
+        "socketTail": [
+          0.166435,
+          -0.599485,
+          1.462285
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.002386,
+        "nearestHandToGripSurfaceGapMeters": 0.019614
+      },
+      {
+        "frame": 7,
+        "socketHead": [
+          0.434437,
+          -0.483623,
+          1.484545
+        ],
+        "socketTail": [
+          0.345257,
+          -0.547908,
+          1.488321
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.004735,
+        "nearestHandToGripSurfaceGapMeters": 0.017265
+      },
+      {
+        "frame": 10,
+        "socketHead": [
+          0.409392,
+          -0.516838,
+          1.452817
+        ],
+        "socketTail": [
+          0.313882,
+          -0.5714,
+          1.453701
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.004149,
+        "nearestHandToGripSurfaceGapMeters": 0.017851
+      },
+      {
+        "frame": 13,
+        "socketHead": [
+          0.167014,
+          -0.608853,
+          1.390097
+        ],
+        "socketTail": [
+          0.061561,
+          -0.599609,
+          1.360195
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.002695,
+        "nearestHandToGripSurfaceGapMeters": 0.019305
+      },
+      {
+        "frame": 16,
+        "socketHead": [
+          -0.156126,
+          -0.537915,
+          1.197281
+        ],
+        "socketTail": [
+          -0.204379,
+          -0.442336,
+          1.172057
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.001264,
+        "nearestHandToGripSurfaceGapMeters": 0.020736
+      },
+      {
+        "frame": 19,
+        "socketHead": [
+          -0.230229,
+          -0.453266,
+          1.108418
+        ],
+        "socketTail": [
+          -0.252906,
+          -0.345807,
+          1.114605
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.00291,
+        "nearestHandToGripSurfaceGapMeters": 0.01909
+      },
+      {
+        "frame": 22,
+        "socketHead": [
+          -0.186914,
+          -0.504837,
+          1.164645
+        ],
+        "socketTail": [
+          -0.22521,
+          -0.40232,
+          1.153524
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.001916,
+        "nearestHandToGripSurfaceGapMeters": 0.020084
+      },
+      {
+        "frame": 24,
+        "socketHead": [
+          -0.157784,
+          -0.529464,
+          1.19485
+        ],
+        "socketTail": [
+          -0.205472,
+          -0.432111,
+          1.176185
+        ],
+        "swordObjectTranslation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "nearestHandToGripCenterlineMeters": 0.001437,
+        "nearestHandToGripSurfaceGapMeters": 0.020563
+      }
+    ],
+    "worstHandToGripSurfaceGapMeters": 0.020736,
+    "thresholdMeters": 0.05,
+    "passesFiveCentimeterGate": true
+  },
+  "master": {
+    "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\kyx-v6c-character-rev18-master.blend",
+    "sha256": "7b22eee2f41d30ee633cb216e837d2c5101d14dac90a63d2f05452c4a8e81f37",
+    "bytes": 6204503
+  },
+  "exports": {
+    "lod0": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-lod0.runtime-candidate.glb",
+      "sha256": "50a958fcf24dbc2e840e41a9cad8923cb28e6a85a0d96bee55c52e2a182e4145",
+      "bytes": 4640744,
+      "triangles": 46435,
+      "meshes": [
+        "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT",
+        "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+        "KYX_REV18_LOD0_COMPACT_RIFLE"
+      ],
+      "operatorResult": [
+        "FINISHED"
+      ]
+    },
+    "lod1": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-lod1.runtime-candidate.glb",
+      "sha256": "05f8ba05ea214b3e9f6b6829272f5bd04753bc755699d670ac513c21b2c20582",
+      "bytes": 2677980,
+      "triangles": 13982,
+      "meshes": [
+        "KYX_REV18_LOD1_CONTINUOUS_HUMAN_UNDERSUIT",
+        "KYX_REV18_LOD1_FITTED_ARMOR",
+        "KYX_REV18_LOD1_COMPACT_RIFLE"
+      ],
+      "operatorResult": [
+        "FINISHED"
+      ]
+    },
+    "lod2": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-lod2.runtime-candidate.glb",
+      "sha256": "13c4af9608851a1cd7e6a7e884a33cfc860864c3b30dcad5b5cf1924e61c6cfe",
+      "bytes": 1928388,
+      "triangles": 5184,
+      "meshes": [
+        "KYX_REV18_LOD2_CONTINUOUS_HUMAN_UNDERSUIT",
+        "KYX_REV18_LOD2_FITTED_ARMOR",
+        "KYX_REV18_LOD2_COMPACT_RIFLE"
+      ],
+      "operatorResult": [
+        "FINISHED"
+      ]
+    },
+    "firstPerson": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-first-person.runtime-candidate.glb",
+      "sha256": "2b79ffe7470cfd9f8fab2228a644db58703262608d8e72d6ebe09237a28e9db0",
+      "bytes": 3586148,
+      "triangles": 27026,
+      "meshes": [
+        "KYX_REV18_FP_ARMS_GLOVES",
+        "KYX_REV18_FP_ARMOR_SLEEVES",
+        "KYX_REV18_FP_COMPACT_RIFLE"
+      ],
+      "operatorResult": [
+        "FINISHED"
+      ]
+    },
+    "meleeProof": {
+      "path": "C:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev18-model-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev18\\export\\kyx-v6c-character-rev18-melee-proof.runtime-candidate.glb",
+      "sha256": "3def1d370e6fabcf7e741f64920e110bc748955f5a4c52daddcb139525bf74bb",
+      "bytes": 3189852,
+      "triangles": 39399,
+      "meshes": [
+        "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT",
+        "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+        "KYX_REV18_MELEE_SOCKET_DERIVED_BLADE"
+      ],
+      "operatorResult": [
+        "FINISHED"
+      ]
+    }
+  },
+  "freshReimport": {
+    "operatorResult": [
+      "FINISHED"
+    ],
+    "sourceUnchanged": true,
+    "runtimeMeshes": [
+      "KYX_REV18_LOD0_AUTHORED_FITTED_ARMOR",
+      "KYX_REV18_LOD0_COMPACT_RIFLE",
+      "KYX_REV18_LOD0_CONTINUOUS_HUMAN_UNDERSUIT"
+    ],
+    "armature": "KYX_REV18_RIG_67_JOINT_WITH_SOCKETS",
+    "boneCount": 67,
+    "actions": [
+      "KYX_REV18_FP_AIRBORNE",
+      "KYX_REV18_FP_FIRE",
+      "KYX_REV18_FP_IDLE",
+      "KYX_REV18_FP_LAND",
+      "KYX_REV18_FP_RELOAD",
+      "KYX_REV18_FP_SPRINT",
+      "KYX_REV18_TP_AIRBORNE_LOOP",
+      "KYX_REV18_TP_DEATH_FRONT",
+      "KYX_REV18_TP_HIT_REACTION_FRONT",
+      "KYX_REV18_TP_IDLE",
+      "KYX_REV18_TP_JUMP_START",
+      "KYX_REV18_TP_LAND",
+      "KYX_REV18_TP_MELEE",
+      "KYX_REV18_TP_PRIMARY_FIRE",
+      "KYX_REV18_TP_RELOAD",
+      "KYX_REV18_TP_RUN",
+      "KYX_REV18_TP_WALK"
+    ],
+    "sockets": [
+      "socket_ability",
+      "socket_back",
+      "socket_casing",
+      "socket_chest",
+      "socket_foot_l",
+      "socket_foot_r",
+      "socket_hand_l",
+      "socket_hand_r",
+      "socket_head",
+      "socket_hips",
+      "socket_melee",
+      "socket_muzzle",
+      "socket_nozzle",
+      "socket_support_l",
+      "socket_weapon_r"
+    ]
+  },
+  "assertions": {
+    "rev17SourceUnchanged": true,
+    "lod0FreshReimportHasThreeMeshes": true,
+    "lod0FreshReimportHasRev18MeleeSocket": true,
+    "lod0FreshReimportHasMeleeClip": true,
+    "meleeGapBelowFiveCentimeters": true,
+    "noDefaultPromotion": true
+  },
+  "nonClaims": [
+    "This first remediation slice is not G6 acceptance.",
+    "A clean export and bounded contact metric do not grant human visual approval.",
+    "The melee proof asset is not a default/runtime equipment promotion.",
+    "Runtime integration, every-frame clipping review, and gameplay camera review remain separate."
+  ]
+}
