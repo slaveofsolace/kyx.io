@@ -24,8 +24,25 @@ function sectorForDirection(directionRadians, speed) {
 }
 
 /**
+ * @typedef {object} Rev17LocomotionAuthoritySignal
+ * @property {number} [planarSpeedMillimetersPerSecond]
+ * @property {number} [forwardSpeedMillimetersPerSecond]
+ * @property {number} [rightSpeedMillimetersPerSecond]
+ * @property {number} [travelDirectionRadians]
+ * @property {number} [strafeLean]
+ * @property {number} [gaitPlaybackDirection]
+ * @property {string} [sector]
+ * @property {number} [turnRateRadiansPerSecond]
+ */
+
+/**
  * Normalize both the legacy numeric strafe input and the newer measured
  * authority signal into one presentation-only locomotion contract.
+ *
+ * @param {number} speed
+ * @param {number | Rev17LocomotionAuthoritySignal} [signalOrStrafe=0]
+ * @param {number | null} [legacyForwardRatio=null]
+ * @param {number} [legacyTurnRateRadiansPerSecond=0]
  */
 export function normalizeRev17LocomotionPresentation(
   speed,
