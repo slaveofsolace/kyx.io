@@ -1,5 +1,7 @@
 import {
   INKFALL_AUTHORITY_MAP_IDENTITY_V2,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  type InkfallAuthorityMapIdentity,
 } from '../inkfallMapIdentity';
 import type { RapierMovementWorld } from '../../physics';
 import { asMillimeters } from '../../sim';
@@ -20,6 +22,8 @@ import type {
 
 export const INKFALL_REVISION_2_COMBAT_WORLD_CAPABILITY_ID =
   'authoritative_inkfall_revision_2_rapier_combat_v1' as const;
+export const INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID =
+  'authoritative_inkfall_revision_3_rapier_combat_v1' as const;
 
 const FIXED_AUTHORITY_HZ = 20;
 const INKFALL_REVISION_2_FIXTURE_ID = 'inkfall_foundry_map_collision';
@@ -141,16 +145,19 @@ function scaleTowardZero(value: number, permille: number): number {
   return Object.is(scaled, -0) ? 0 : scaled;
 }
 
-function assertInkfallRevision2World(world: RapierMovementWorld): void {
+function assertInkfallWorld(
+  world: RapierMovementWorld,
+  identity: InkfallAuthorityMapIdentity,
+): void {
   if (
     world.fixture.id !== INKFALL_REVISION_2_FIXTURE_ID
-    || world.fixture.revision !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.mapRevision
-    || world.fixtureHash !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.fixtureHash
-    || world.fixture.solids.length !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.colliderCardinality
+    || world.fixture.revision !== identity.mapRevision
+    || world.fixtureHash !== identity.fixtureHash
+    || world.fixture.solids.length !== identity.colliderCardinality
     || world.fixture.volumes.length !== 2
     || world.fixture.solids.some((solid) => solid.layer !== 'world_static')
   ) {
-    throw new Error('INKFALL_REVISION_2_COMBAT_WORLD_IDENTITY_MISMATCH');
+    throw new Error(`INKFALL_REVISION_${identity.mapRevision}_COMBAT_WORLD_IDENTITY_MISMATCH`);
   }
 }
 
@@ -275,10 +282,25 @@ export interface InkfallRevision2RapierCombatWorldPorts {
   readonly impulseGrenadeWorld: AuthorityImpulseGrenadeWorldPort;
 }
 
-export function createInkfallRevision2RapierCombatWorldPorts(
+export interface InkfallRevision3RapierCombatWorldPorts {
+  readonly capabilityId: typeof INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID;
+  readonly mapId: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapId;
+  readonly mapRevision: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapRevision;
+  readonly packageDigest: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V3.packageDigest;
+  readonly fixtureHash: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash;
+  readonly colliderCardinality: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V3.colliderCardinality;
+  readonly worldOcclusion: AuthorityWorldOcclusionPort;
+  readonly impulseGrenadeWorld: AuthorityImpulseGrenadeWorldPort;
+}
+
+function createInkfallRapierCombatWorldPorts(
   world: RapierMovementWorld,
-): InkfallRevision2RapierCombatWorldPorts {
-  assertInkfallRevision2World(world);
+  identity: InkfallAuthorityMapIdentity,
+  capabilityId:
+    | typeof INKFALL_REVISION_2_COMBAT_WORLD_CAPABILITY_ID
+    | typeof INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID,
+) {
+  assertInkfallWorld(world, identity);
 
   const worldOcclusion: AuthorityWorldOcclusionPort = (rawRay) => {
     const ray = validateHitscanRay(rawRay);
@@ -418,13 +440,33 @@ export function createInkfallRevision2RapierCombatWorldPorts(
   });
 
   return Object.freeze({
-    capabilityId: INKFALL_REVISION_2_COMBAT_WORLD_CAPABILITY_ID,
-    mapId: INKFALL_AUTHORITY_MAP_IDENTITY_V2.mapId,
-    mapRevision: INKFALL_AUTHORITY_MAP_IDENTITY_V2.mapRevision,
-    packageDigest: INKFALL_AUTHORITY_MAP_IDENTITY_V2.packageDigest,
-    fixtureHash: INKFALL_AUTHORITY_MAP_IDENTITY_V2.fixtureHash,
-    colliderCardinality: INKFALL_AUTHORITY_MAP_IDENTITY_V2.colliderCardinality,
+    capabilityId,
+    mapId: identity.mapId,
+    mapRevision: identity.mapRevision,
+    packageDigest: identity.packageDigest,
+    fixtureHash: identity.fixtureHash,
+    colliderCardinality: identity.colliderCardinality,
     worldOcclusion,
     impulseGrenadeWorld,
   });
+}
+
+export function createInkfallRevision2RapierCombatWorldPorts(
+  world: RapierMovementWorld,
+): InkfallRevision2RapierCombatWorldPorts {
+  return createInkfallRapierCombatWorldPorts(
+    world,
+    INKFALL_AUTHORITY_MAP_IDENTITY_V2,
+    INKFALL_REVISION_2_COMBAT_WORLD_CAPABILITY_ID,
+  ) as InkfallRevision2RapierCombatWorldPorts;
+}
+
+export function createInkfallRevision3RapierCombatWorldPorts(
+  world: RapierMovementWorld,
+): InkfallRevision3RapierCombatWorldPorts {
+  return createInkfallRapierCombatWorldPorts(
+    world,
+    INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+    INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID,
+  ) as InkfallRevision3RapierCombatWorldPorts;
 }

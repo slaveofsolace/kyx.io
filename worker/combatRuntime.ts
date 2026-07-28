@@ -16,17 +16,23 @@ import {
 } from '../src/authority';
 import {
   INKFALL_AUTHORITY_MAP_IDENTITY_V2,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V3,
   createInkfallRevision2RapierCombatWorldPorts,
+  createInkfallRevision3RapierCombatWorldPorts,
 } from '../src/authority';
 import type { CombatSnapshotV1, SimulationIdentityV1 } from '../src/net';
 import type { PhysicsFixtureV1, RapierMovementWorld } from '../src/physics';
 import inkfallCombatFixtureSnapshot from '../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json';
+import inkfallRevision3CombatFixtureSnapshot from '../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
 import inkfallRevision2MapPackage from '../assets/source/maps/inkfall-foundry/runtime/map.package.v2.json';
+import inkfallRevision3MapPackage from '../assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json';
 import type { ReliableEventInput } from './reliableEvents';
 
 export const P58D_REV3_COMBAT_PROFILE = 'p58d-rev3-combat-v1' as const;
 export const P511_INKFALL_REV2_COMBAT_PROFILE =
   'p511-inkfall-foundry-revision-2-combat-v1' as const;
+export const G5_INKFALL_REV4_COMBAT_PROFILE =
+  'g5-inkfall-foundry-rev4-revision-3-authority-v1' as const;
 export const P58D_COMBAT_PROFILE_HEADER = 'x-kyx-evidence-profile' as const;
 export const INTERNAL_ROOM_PROFILE_HEADER = 'x-kyx-room-profile' as const;
 export const DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID =
@@ -34,7 +40,8 @@ export const DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID =
 
 export type OptInWorkerRoomProfile =
   | typeof P58D_REV3_COMBAT_PROFILE
-  | typeof P511_INKFALL_REV2_COMBAT_PROFILE;
+  | typeof P511_INKFALL_REV2_COMBAT_PROFILE
+  | typeof G5_INKFALL_REV4_COMBAT_PROFILE;
 
 export type WorkerRoomProfile = OptInWorkerRoomProfile | null;
 
@@ -111,6 +118,193 @@ export const INKFALL_REVISION_2_WORKER_MAP_BINDING = Object.freeze({
   spawns: INKFALL_REVISION_2_LOCKED_SPAWNS,
 } as const);
 
+export const INKFALL_REVISION_3_PRESENTATION_COORDINATES = Object.freeze({
+  mapReference: 'inkfall_foundry@3',
+  presentationReference:
+    'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+  mapId: INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapId,
+  mapRevision: INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapRevision,
+  packageDigest: INKFALL_AUTHORITY_MAP_IDENTITY_V3.packageDigest,
+  fixtureId: 'inkfall_foundry_map_collision',
+  fixtureHash: INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash,
+  xAxis: 'east',
+  yAxis: 'up',
+  zAxis: 'north',
+  origin: 'press_core_floor_contact',
+  gltfToMap: 'x_y_negative_z',
+  distanceUnit: 'millimeters',
+  angleUnit: 'milli_degrees',
+} as const);
+
+const INKFALL_REVISION_3_LOCKED_SPAWNS = Object.freeze([
+  Object.freeze({
+    spawnId: 'spawn_w_press_a',
+    set: 'west_team',
+    feetPosition: Object.freeze({ x: -33_500, y: 0, z: -3_500 }),
+    yawMilliDegrees: 0,
+    escapeRouteFamilies: Object.freeze(['press_hall', 'ink_channel', 'archive_walk']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_e_press_a',
+    set: 'east_team',
+    feetPosition: Object.freeze({ x: 33_500, y: 0, z: 3_500 }),
+    yawMilliDegrees: 180_000,
+    escapeRouteFamilies: Object.freeze(['press_hall', 'ink_channel', 'archive_walk']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_w_press_b',
+    set: 'west_team',
+    feetPosition: Object.freeze({ x: -33_500, y: 0, z: 3_500 }),
+    yawMilliDegrees: 0,
+    escapeRouteFamilies: Object.freeze(['press_hall', 'ink_channel', 'archive_walk']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_e_press_b',
+    set: 'east_team',
+    feetPosition: Object.freeze({ x: 33_500, y: 0, z: -3_500 }),
+    yawMilliDegrees: 180_000,
+    escapeRouteFamilies: Object.freeze(['press_hall', 'ink_channel', 'archive_walk']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_w_ink',
+    set: 'west_team',
+    feetPosition: Object.freeze({ x: -30_500, y: 0, z: -7_000 }),
+    yawMilliDegrees: -25_000,
+    escapeRouteFamilies: Object.freeze(['ink_channel', 'press_hall']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_e_ink',
+    set: 'east_team',
+    feetPosition: Object.freeze({ x: 30_500, y: 0, z: -7_000 }),
+    yawMilliDegrees: -155_000,
+    escapeRouteFamilies: Object.freeze(['ink_channel', 'press_hall']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_w_archive',
+    set: 'west_team',
+    feetPosition: Object.freeze({ x: -30_500, y: 0, z: 7_000 }),
+    yawMilliDegrees: 25_000,
+    escapeRouteFamilies: Object.freeze(['archive_walk', 'press_hall']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_e_archive',
+    set: 'east_team',
+    feetPosition: Object.freeze({ x: 30_500, y: 0, z: 7_000 }),
+    yawMilliDegrees: 155_000,
+    escapeRouteFamilies: Object.freeze(['archive_walk', 'press_hall']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_dm_ink_w',
+    set: 'deathmatch_candidate',
+    feetPosition: Object.freeze({ x: -27_000, y: -3_000, z: -22_000 }),
+    yawMilliDegrees: 45_000,
+    escapeRouteFamilies: Object.freeze(['ink_channel', 'crosslink']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_dm_ink_e',
+    set: 'deathmatch_candidate',
+    feetPosition: Object.freeze({ x: 27_000, y: -3_000, z: -21_000 }),
+    yawMilliDegrees: 135_000,
+    escapeRouteFamilies: Object.freeze(['ink_channel', 'crosslink']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_dm_archive_w',
+    set: 'deathmatch_candidate',
+    feetPosition: Object.freeze({ x: -27_000, y: 6_000, z: 22_000 }),
+    yawMilliDegrees: -45_000,
+    escapeRouteFamilies: Object.freeze(['archive_walk', 'crosslink']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+  Object.freeze({
+    spawnId: 'spawn_dm_archive_e',
+    set: 'deathmatch_candidate',
+    feetPosition: Object.freeze({ x: 27_000, y: 6_000, z: 21_000 }),
+    yawMilliDegrees: -135_000,
+    escapeRouteFamilies: Object.freeze(['archive_walk', 'crosslink']),
+    validationStatus: 'capsule_clear_unscored',
+  }),
+] as const);
+
+const INKFALL_REVISION_3_ZONES = Object.freeze(
+  inkfallRevision3MapPackage.zones.map((zone) => Object.freeze({
+    zoneId: zone.id,
+    callout: zone.callout,
+    family: zone.family,
+    center: Object.freeze({ ...zone.centerMm }),
+    halfExtents: Object.freeze({ ...zone.halfExtentsMm }),
+  })),
+);
+
+export const INKFALL_REVISION_3_WORKER_MAP_BINDING = Object.freeze({
+  ...INKFALL_REVISION_3_PRESENTATION_COORDINATES,
+  colliderCardinality: INKFALL_AUTHORITY_MAP_IDENTITY_V3.colliderCardinality,
+  render: Object.freeze({
+    role: 'render_only',
+    path:
+      'art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
+    sha256: '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00',
+    bytes: 12_954_608,
+    renderMeshesMayBeAuthority: false,
+  }),
+  collision: Object.freeze({
+    role: 'authority_collision',
+    path: 'revisions/revision-3/export/collision.authority.glb',
+    sha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
+    bytes: 605_112,
+  }),
+  supportedModes: Object.freeze(['deathmatch', 'team_deathmatch']),
+  spawns: INKFALL_REVISION_3_LOCKED_SPAWNS,
+  zones: INKFALL_REVISION_3_ZONES,
+  pickups: Object.freeze([]),
+  triggers: Object.freeze(inkfallRevision3MapPackage.triggers.map((trigger) => Object.freeze({
+    ...trigger,
+    centerMm: Object.freeze({ ...trigger.centerMm }),
+    halfExtentsMm: Object.freeze({ ...trigger.halfExtentsMm }),
+    destinationFeetMm: Object.freeze({ ...trigger.destinationFeetMm }),
+  }))),
+  telemetry: Object.freeze({
+    schemaVersion: 1,
+    authoritySource: 'durable_object_room_metrics_v1',
+    counters: Object.freeze([
+      'connectedPlayers',
+      'receivedCommands',
+      'rejectedCommands',
+      'resumeSuccesses',
+      'authorityTickExecution',
+      'transport',
+    ]),
+    zoneCount: 9,
+    pickupCount: 0,
+  }),
+} as const);
+
+export type InkfallWorkerRoomProfile =
+  | typeof P511_INKFALL_REV2_COMBAT_PROFILE
+  | typeof G5_INKFALL_REV4_COMBAT_PROFILE;
+
+export function isInkfallWorkerRoomProfile(
+  value: WorkerRoomProfile,
+): value is InkfallWorkerRoomProfile {
+  return value === P511_INKFALL_REV2_COMBAT_PROFILE
+    || value === G5_INKFALL_REV4_COMBAT_PROFILE;
+}
+
+export function inkfallWorkerMapBinding(profile: InkfallWorkerRoomProfile) {
+  return profile === G5_INKFALL_REV4_COMBAT_PROFILE
+    ? INKFALL_REVISION_3_WORKER_MAP_BINDING
+    : INKFALL_REVISION_2_WORKER_MAP_BINDING;
+}
+
 export function isP58DCombatProfile(value: string | null): boolean {
   return value === P58D_REV3_COMBAT_PROFILE;
 }
@@ -119,7 +313,8 @@ export function isOptInWorkerRoomProfile(
   value: string | null,
 ): value is OptInWorkerRoomProfile {
   return value === P58D_REV3_COMBAT_PROFILE
-    || value === P511_INKFALL_REV2_COMBAT_PROFILE;
+    || value === P511_INKFALL_REV2_COMBAT_PROFILE
+    || value === G5_INKFALL_REV4_COMBAT_PROFILE;
 }
 
 export function workerRoomProfileStorageId(profile: WorkerRoomProfile): string {
@@ -138,6 +333,12 @@ export function inferWorkerRoomProfileFromIdentity(
   const revision3Combat = identity.rulesetId === G4_COMBAT_RULESET_ID
     && identity.rulesetRevision === G4_COMBAT_RULESET_REVISION
     && identity.rulesetHash === G4_COMBAT_RULESET_HASH;
+  if (
+    revision3Combat
+    && identity.mapId === INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapId
+    && identity.fixtureId === INKFALL_REVISION_3_PRESENTATION_COORDINATES.fixtureId
+    && identity.fixtureHash === INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash
+  ) return G5_INKFALL_REV4_COMBAT_PROFILE;
   if (
     revision3Combat
     && identity.mapId === INKFALL_AUTHORITY_MAP_IDENTITY_V2.mapId
@@ -280,6 +481,72 @@ function assertInkfallRevision2RuntimeArtifacts(): void {
   }
 }
 
+function assertInkfallRevision3RuntimeArtifacts(): void {
+  const snapshot = inkfallRevision3CombatFixtureSnapshot as unknown as Readonly<{
+    schemaVersion: number;
+    kind: string;
+    mapId: string;
+    mapRevision: number;
+    packageDigest: string;
+    collisionSha256: string;
+    fixtureHash: string;
+    collisionMeshNodeCount: number;
+    authorityVolumeCount: number;
+    fixture: PhysicsFixtureV1;
+  }>;
+  const mapPackage = inkfallRevision3MapPackage;
+  const coordinates = INKFALL_REVISION_3_PRESENTATION_COORDINATES;
+  const spawnsById = new Map(mapPackage.spawns.map((spawn) => [spawn.id, spawn]));
+  const lockedSpawnsMatch = INKFALL_REVISION_3_LOCKED_SPAWNS.every((locked) => {
+    const source = spawnsById.get(locked.spawnId);
+    return source !== undefined
+      && source.set === locked.set
+      && source.feetPositionMm.x === locked.feetPosition.x
+      && source.feetPositionMm.y === locked.feetPosition.y
+      && source.feetPositionMm.z === locked.feetPosition.z
+      && source.yawMilliDegrees === locked.yawMilliDegrees
+      && source.validationStatus === locked.validationStatus
+      && JSON.stringify(source.escapeRouteFamilies)
+        === JSON.stringify(locked.escapeRouteFamilies);
+  });
+  const runtimeSpawnsUnique = new Set(
+    INKFALL_REVISION_3_LOCKED_SPAWNS.slice(0, 8).map(({ feetPosition }) => (
+      `${feetPosition.x}:${feetPosition.y}:${feetPosition.z}`
+    )),
+  ).size === 8;
+  const snapshotMatches = snapshot.schemaVersion === 1
+    && snapshot.kind === 'inkfall_revision_3_combat_authority_fixture'
+    && snapshot.mapId === coordinates.mapId
+    && snapshot.mapRevision === coordinates.mapRevision
+    && snapshot.packageDigest === coordinates.packageDigest
+    && snapshot.fixtureHash === coordinates.fixtureHash
+    && snapshot.collisionSha256 === INKFALL_REVISION_3_WORKER_MAP_BINDING.collision.sha256
+    && snapshot.collisionMeshNodeCount === INKFALL_AUTHORITY_MAP_IDENTITY_V3.colliderCardinality
+    && snapshot.authorityVolumeCount === 2
+    && snapshot.fixture.id === coordinates.fixtureId
+    && snapshot.fixture.revision === coordinates.mapRevision
+    && snapshot.fixture.solids.length === INKFALL_AUTHORITY_MAP_IDENTITY_V3.colliderCardinality;
+  const packageMatches = mapPackage.id === coordinates.mapId
+    && mapPackage.revision === coordinates.mapRevision
+    && mapPackage.identity.digest === coordinates.packageDigest
+    && mapPackage.units.distance === coordinates.distanceUnit
+    && mapPackage.units.angle === coordinates.angleUnit
+    && mapPackage.coordinateSystem.xAxis === coordinates.xAxis
+    && mapPackage.coordinateSystem.yAxis === coordinates.yAxis
+    && mapPackage.coordinateSystem.zAxis === coordinates.zAxis
+    && mapPackage.coordinateSystem.origin === coordinates.origin
+    && mapPackage.coordinateSystem.gltfToMap === coordinates.gltfToMap
+    && mapPackage.artifacts.render.role === 'render_only'
+    && mapPackage.artifacts.collision.role === 'authority_collision'
+    && mapPackage.authority.renderMeshesMayBeAuthority === false
+    && mapPackage.zones.length === 9
+    && mapPackage.spawns.length === 12
+    && mapPackage.pickups.length === 0;
+  if (!snapshotMatches || !packageMatches || !lockedSpawnsMatch || !runtimeSpawnsUnique) {
+    throw new Error('INKFALL_REVISION_3_WORKER_PROFILE_ARTIFACT_MISMATCH');
+  }
+}
+
 export function inkfallRevision2WorkerFixture(): PhysicsFixtureV1 {
   assertInkfallRevision2RuntimeArtifacts();
   return (inkfallCombatFixtureSnapshot as unknown as Readonly<{
@@ -287,11 +554,28 @@ export function inkfallRevision2WorkerFixture(): PhysicsFixtureV1 {
   }>).fixture;
 }
 
+export function inkfallRevision3WorkerFixture(): PhysicsFixtureV1 {
+  assertInkfallRevision3RuntimeArtifacts();
+  return (inkfallRevision3CombatFixtureSnapshot as unknown as Readonly<{
+    fixture: PhysicsFixtureV1;
+  }>).fixture;
+}
+
+export function inkfallWorkerFixture(
+  profile: InkfallWorkerRoomProfile,
+): PhysicsFixtureV1 {
+  return profile === G5_INKFALL_REV4_COMBAT_PROFILE
+    ? inkfallRevision3WorkerFixture()
+    : inkfallRevision2WorkerFixture();
+}
+
 export function createInkfallWorkerCombatOptions(
   world: RapierMovementWorld,
+  profile: InkfallWorkerRoomProfile = P511_INKFALL_REV2_COMBAT_PROFILE,
 ): AuthorityRoomCombatOptions {
-  assertInkfallRevision2RuntimeArtifacts();
-  const ports = createInkfallRevision2RapierCombatWorldPorts(world);
+  const ports = profile === G5_INKFALL_REV4_COMBAT_PROFILE
+    ? (assertInkfallRevision3RuntimeArtifacts(), createInkfallRevision3RapierCombatWorldPorts(world))
+    : (assertInkfallRevision2RuntimeArtifacts(), createInkfallRevision2RapierCombatWorldPorts(world));
   return Object.freeze({
     profileId: G4_COMBAT_ROOM_PROFILE_ID,
     teamResolver: (_playerId: string, ordinal: number) => (
@@ -312,14 +596,18 @@ export function createInkfallWorkerCombatOptions(
   });
 }
 
-export function inkfallWorkerCombatSpawn(ordinal: number): AuthoritySpawn {
+export function inkfallWorkerCombatSpawn(
+  ordinal: number,
+  profile: InkfallWorkerRoomProfile = P511_INKFALL_REV2_COMBAT_PROFILE,
+): AuthoritySpawn {
   if (!Number.isSafeInteger(ordinal) || ordinal < 0) {
     throw new RangeError('Inkfall spawn ordinal must be a non-negative safe integer');
   }
-  const spawn = INKFALL_REVISION_2_LOCKED_SPAWNS[
-    ordinal % INKFALL_REVISION_2_LOCKED_SPAWNS.length
-  ];
-  if (spawn === undefined) throw new Error('INKFALL_REVISION_2_WORKER_SPAWN_MISSING');
+  const lockedSpawns = profile === G5_INKFALL_REV4_COMBAT_PROFILE
+    ? INKFALL_REVISION_3_LOCKED_SPAWNS.slice(0, 8)
+    : INKFALL_REVISION_2_LOCKED_SPAWNS;
+  const spawn = lockedSpawns[ordinal % lockedSpawns.length];
+  if (spawn === undefined) throw new Error('INKFALL_WORKER_SPAWN_MISSING');
   return Object.freeze({
     spawnId: spawn.spawnId,
     feetPosition: spawn.feetPosition,

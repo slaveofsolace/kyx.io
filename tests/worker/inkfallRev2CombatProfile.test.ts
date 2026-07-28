@@ -12,7 +12,9 @@ import {
   type ServerMessage,
 } from '../../src/net';
 import {
+  G5_INKFALL_REV4_COMBAT_PROFILE,
   INKFALL_REVISION_2_WORKER_MAP_BINDING,
+  INKFALL_REVISION_3_WORKER_MAP_BINDING,
   INTERNAL_ROOM_PROFILE_HEADER,
   P511_INKFALL_REV2_COMBAT_PROFILE,
   P58D_COMBAT_PROFILE_HEADER,
@@ -31,7 +33,9 @@ interface RoomCreated {
   readonly socketPath: string;
   readonly metricsPath: string;
   readonly roomProfile?: string;
-  readonly mapBinding?: typeof INKFALL_REVISION_2_WORKER_MAP_BINDING;
+  readonly mapBinding?:
+    | typeof INKFALL_REVISION_2_WORKER_MAP_BINDING
+    | typeof INKFALL_REVISION_3_WORKER_MAP_BINDING;
 }
 
 interface SocketProbe {
@@ -380,6 +384,124 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       },
     });
     expect(first.decodeErrors).toEqual([]);
+    expect(second.decodeErrors).toEqual([]);
+  }, 30_000);
+
+  it('binds the Rev4 / Revision 3 active checkpoint and resumes the same player', async () => {
+    const room = await createRoom(G5_INKFALL_REV4_COMBAT_PROFILE);
+    expect(room).toMatchObject({
+      roomProfile: G5_INKFALL_REV4_COMBAT_PROFILE,
+      mapBinding: INKFALL_REVISION_3_WORKER_MAP_BINDING,
+    });
+    const first = await connectSocket(room.socketPath);
+    const second = await connectSocket(room.socketPath);
+    const [firstWelcome, secondWelcome] = await Promise.all([
+      waitForType(first, 'welcome'),
+      waitForType(second, 'welcome'),
+    ]);
+    expect(firstWelcome.simulationIdentity).toMatchObject({
+      mapId: 'inkfall_foundry',
+      fixtureId: 'inkfall_foundry_map_collision',
+      fixtureHash: '6cf785c5171f2ff5',
+    });
+    expect(secondWelcome.simulationIdentity).toEqual(firstWelcome.simulationIdentity);
+
+    sendClient(first, joinMessage(room.roomCode, 'req.join.rev4.first', 'Rev4 First'));
+    const firstJoin = await waitForType(
+      first,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.rev4.first',
+    );
+    const firstSnapshot = await waitForType(
+      first,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === firstJoin.playerId,
+    );
+    expect(firstSnapshot.localReconciliation.player.feetPosition)
+      .toEqual({ x: -33_500, y: 0, z: -3_500 });
+    sendClient(second, joinMessage(room.roomCode, 'req.join.rev4.second', 'Rev4 Second'));
+    const secondJoin = await waitForType(
+      second,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.rev4.second',
+    );
+    const secondSnapshot = await waitForType(
+      second,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === secondJoin.playerId,
+    );
+    expect(secondSnapshot.localReconciliation.player.feetPosition)
+      .toEqual({ x: 33_500, y: 0, z: 3_500 });
+
+    await waitForMetrics(
+      room,
+      (metrics) => metrics.lifecycle === 'warmup'
+        && metrics.connectedPlayers === 2,
+      'Rev4 active checkpoint',
+    );
+    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
+    const stored = await runInDurableObject(stub, async (_instance, state) => (
+      [...state.storage.sql.exec<Record<string, string | number>>(
+        `SELECT profile_id, map_binding_json, checkpoint_hash
+         FROM room_active_checkpoint_v1 WHERE singleton = 1`,
+      )][0]
+    ));
+    expect(stored).toMatchObject({
+      profile_id: G5_INKFALL_REV4_COMBAT_PROFILE,
+      map_binding_json: JSON.stringify(INKFALL_REVISION_3_WORKER_MAP_BINDING),
+      checkpoint_hash: expect.stringMatching(/^[a-f0-9]{16}$/u),
+    });
+
+    first.socket.close(1000, 'Rev4 resume proof');
+    await waitForMetrics(
+      room,
+      (metrics) => metrics.connectedPlayers === 1,
+      'Rev4 first player disconnected',
+    );
+    const resumed = await connectSocket(room.socketPath);
+    const resumedWelcome = await waitForType(resumed, 'welcome');
+    expect(resumedWelcome.simulationIdentity).toEqual(firstWelcome.simulationIdentity);
+    sendClient(resumed, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'resumeRoom',
+      requestId: 'req.resume.rev4.first',
+      roomCode: room.roomCode,
+      resumeToken: firstJoin.resumeToken,
+    });
+    const resumedJoin = await waitForType(
+      resumed,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.resume.rev4.first',
+    );
+    const resumedSnapshot = await waitForType(
+      resumed,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === firstJoin.playerId,
+    );
+    expect(resumedJoin).toMatchObject({
+      connectionMode: 'resumed',
+      playerId: firstJoin.playerId,
+      matchId: firstJoin.matchId,
+    });
+    expect(resumedJoin.resumeToken).not.toBe(firstJoin.resumeToken);
+    expect(resumedSnapshot.simulationIdentity).toEqual(firstWelcome.simulationIdentity);
+    expect(resumedSnapshot.localReconciliation.player.id).toBe(firstJoin.playerId);
+    await expect(roomMetrics(room)).resolves.toMatchObject({
+      roomProfile: G5_INKFALL_REV4_COMBAT_PROFILE,
+      connectedPlayers: 2,
+      mapBinding: {
+        mapReference: 'inkfall_foundry@3',
+        presentationReference:
+          'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+        fixtureHash: '6cf785c5171f2ff5',
+        render: { renderMeshesMayBeAuthority: false },
+        zones: expect.arrayContaining([
+          expect.objectContaining({ zoneId: 'archive_walk_west' }),
+        ]),
+        pickups: [],
+      },
+    });
+    expect(resumed.decodeErrors).toEqual([]);
     expect(second.decodeErrors).toEqual([]);
   }, 30_000);
 

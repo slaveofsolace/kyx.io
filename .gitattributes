@@ -16,3 +16,14 @@ assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/*.md text eol=lf
 assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/*.py text eol=lf
 assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/**/*.json text eol=lf
 tools/evidence/verify-inkfall-g5-press-archive-rev4.py text eol=lf
+
+# The P6.7 graybox lock hashes these frozen text sources byte-for-byte.
+assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json text eol=lf
+assets/source/maps/inkfall-foundry/runtime/map.package.v2.json text eol=lf
+assets/source/maps/inkfall-foundry/runtime/spawn-fixtures.p6-4.v2.json text eol=lf
+assets/source/maps/inkfall-foundry/runtime/telemetry-fixtures.p6-5.v2.json text eol=lf
+assets/source/maps/inkfall-foundry/runtime/playtest-tapes.p6-6.v2.json text eol=lf
+assets/source/maps/inkfall-foundry/revisions/revision-2/validation/collision-revision2-build-report.json text eol=lf
+assets/source/maps/inkfall-foundry/revisions/revision-2/validation/playable-surface-validation.revision2.json text eol=lf
+evidence/2026-07-22/phase-6-p6-6b-residual-correction/corrected/p6-6b-verification.json text eol=lf
+assets/source/maps/inkfall-foundry/art-kit/graybox-dimensions.p6-7.v1.json text eol=lf

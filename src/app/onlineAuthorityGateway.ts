@@ -1,8 +1,11 @@
 import { normalizeAuthorityRoomCode } from '../dev/authorityEvidenceModel';
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
-  ONLINE_INKFALL_REV2_MAP_BINDING,
+  ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  onlineInkfallMapBinding,
+  type OnlineAuthorityProfileSelection,
   type OnlineInkfallRevision2MapBinding,
+  type OnlineInkfallRevision4MapBinding,
 } from './onlineAuthorityProfiles';
 
 interface RoomCreationPayload {
@@ -17,6 +20,21 @@ export interface OnlineInkfallRevision2RoomProof {
   readonly roomProfile: typeof ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
   readonly mapBinding: OnlineInkfallRevision2MapBinding;
 }
+
+export interface OnlineInkfallRevision4RoomProof {
+  readonly roomCode: string;
+  readonly roomProfile: typeof ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+  readonly mapBinding: OnlineInkfallRevision4MapBinding;
+}
+
+export type OnlineInkfallRoomProof =
+  | OnlineInkfallRevision2RoomProof
+  | OnlineInkfallRevision4RoomProof;
+
+type OnlineInkfallRoomProofFor<Profile extends OnlineAuthorityProfileSelection> =
+  Profile extends typeof ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    ? OnlineInkfallRevision4RoomProof
+    : OnlineInkfallRevision2RoomProof;
 
 export interface OnlineAuthorityFetchResponse {
   readonly ok: boolean;
@@ -42,7 +60,9 @@ function matchesExpected(candidate: unknown, expected: unknown): boolean {
   if (expected === null || typeof expected !== 'object') return false;
   if (candidate === null || typeof candidate !== 'object' || Array.isArray(candidate)) return false;
   const record = candidate as Readonly<Record<string, unknown>>;
-  return Object.entries(expected as Readonly<Record<string, unknown>>).every(
+  const expectedEntries = Object.entries(expected as Readonly<Record<string, unknown>>);
+  if (Object.keys(record).length !== expectedEntries.length) return false;
+  return expectedEntries.every(
     ([key, value]) => matchesExpected(record[key], value),
   );
 }
@@ -57,21 +77,22 @@ function roomFromPayload(payload: unknown): string | null {
 function inkfallRoomFromPayload(
   payload: unknown,
   expectedRoomCode: string | null,
-): OnlineInkfallRevision2RoomProof | null {
+  profile: OnlineAuthorityProfileSelection,
+): OnlineInkfallRoomProof | null {
   if (payload === null || typeof payload !== 'object' || Array.isArray(payload)) return null;
   const candidate = payload as RoomCreationPayload;
   const roomCode = roomFromPayload(payload);
   if (
     roomCode === null
     || (expectedRoomCode !== null && roomCode !== expectedRoomCode)
-    || candidate.roomProfile !== ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
-    || !matchesExpected(candidate.mapBinding, ONLINE_INKFALL_REV2_MAP_BINDING)
+    || candidate.roomProfile !== profile
+    || !matchesExpected(candidate.mapBinding, onlineInkfallMapBinding(profile))
   ) return null;
   return Object.freeze({
     roomCode,
-    roomProfile: ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
-    mapBinding: ONLINE_INKFALL_REV2_MAP_BINDING,
-  });
+    roomProfile: profile,
+    mapBinding: onlineInkfallMapBinding(profile),
+  }) as OnlineInkfallRoomProof;
 }
 
 async function createRoom(
@@ -129,28 +150,35 @@ export async function createOnlineCombatRoom(
   );
 }
 
-async function requestOnlineInkfallRevision2Room(
+async function requestOnlineInkfallRoom<
+  Profile extends OnlineAuthorityProfileSelection,
+>(
   endpoint: string,
   expectedRoomCode: string | null,
   operation: 'creation' | 'join verification',
   fetchRequest: OnlineAuthorityFetch,
-): Promise<OnlineInkfallRevision2RoomProof> {
+  profile: Profile,
+): Promise<OnlineInkfallRoomProofFor<Profile>> {
   let lastStatus: number | null = null;
   for (let attempt = 0; attempt < 2; attempt += 1) {
     const response = await fetchRequest(endpoint, {
       method: 'POST',
       headers: Object.freeze({
         Accept: 'application/json',
-        [ONLINE_COMBAT_PROFILE_HEADER]: ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
+        [ONLINE_COMBAT_PROFILE_HEADER]: profile,
       }),
     });
     lastStatus = response.status;
     if (response.ok) {
-      const room = inkfallRoomFromPayload(await response.json(), expectedRoomCode);
+      const room = inkfallRoomFromPayload(await response.json(), expectedRoomCode, profile);
       if (room === null) {
-        throw new Error('Authority returned an invalid Inkfall Foundry revision-2 room binding.');
+        throw new Error(
+          profile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
+            ? 'Authority returned an invalid Inkfall Foundry revision-2 room binding.'
+            : `Authority returned an invalid Inkfall Foundry room binding for ${profile}.`,
+        );
       }
-      return room;
+      return room as OnlineInkfallRoomProofFor<Profile>;
     }
     if (response.status < 500 || attempt > 0) break;
   }
@@ -166,11 +194,12 @@ export async function createOnlineInkfallRevision2CombatRoom(
   authorityOrigin: string,
   fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
 ): Promise<OnlineInkfallRevision2RoomProof> {
-  return await requestOnlineInkfallRevision2Room(
+  return await requestOnlineInkfallRoom(
     new URL('/api/rooms/create', authorityOrigin).toString(),
     null,
     'creation',
     fetchRequest,
+    ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   );
 }
 
@@ -185,10 +214,61 @@ export async function verifyOnlineInkfallRevision2CombatRoom(
 ): Promise<OnlineInkfallRevision2RoomProof> {
   const normalized = normalizeAuthorityRoomCode(roomCode);
   if (normalized === null) throw new RangeError('online room code is invalid');
-  return await requestOnlineInkfallRevision2Room(
+  return await requestOnlineInkfallRoom(
     new URL(`/api/rooms/${normalized}`, authorityOrigin).toString(),
     normalized,
     'join verification',
     fetchRequest,
+    ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   );
+}
+
+export async function createOnlineInkfallRevision4CombatRoom(
+  authorityOrigin: string,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineInkfallRevision4RoomProof> {
+  return await requestOnlineInkfallRoom(
+    new URL('/api/rooms/create', authorityOrigin).toString(),
+    null,
+    'creation',
+    fetchRequest,
+    ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  );
+}
+
+export async function verifyOnlineInkfallRevision4CombatRoom(
+  authorityOrigin: string,
+  roomCode: string,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineInkfallRevision4RoomProof> {
+  const normalized = normalizeAuthorityRoomCode(roomCode);
+  if (normalized === null) throw new RangeError('online room code is invalid');
+  return await requestOnlineInkfallRoom(
+    new URL(`/api/rooms/${normalized}`, authorityOrigin).toString(),
+    normalized,
+    'join verification',
+    fetchRequest,
+    ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  );
+}
+
+export async function createOnlineInkfallCombatRoom(
+  authorityOrigin: string,
+  profile: OnlineAuthorityProfileSelection,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineInkfallRoomProof> {
+  return profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    ? createOnlineInkfallRevision4CombatRoom(authorityOrigin, fetchRequest)
+    : createOnlineInkfallRevision2CombatRoom(authorityOrigin, fetchRequest);
+}
+
+export async function verifyOnlineInkfallCombatRoom(
+  authorityOrigin: string,
+  roomCode: string,
+  profile: OnlineAuthorityProfileSelection,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineInkfallRoomProof> {
+  return profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    ? verifyOnlineInkfallRevision4CombatRoom(authorityOrigin, roomCode, fetchRequest)
+    : verifyOnlineInkfallRevision2CombatRoom(authorityOrigin, roomCode, fetchRequest);
 }

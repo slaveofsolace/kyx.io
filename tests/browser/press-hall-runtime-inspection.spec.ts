@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 
 test.setTimeout(60_000);
+
+const rev4EvidenceDirectory = resolve(
+  process.env.KYX_REV4_EVIDENCE_DIR
+    ?? 'evidence/2026-07-27/g5-inkfall-rev4-runtime-candidate',
+);
 
 test('visible Press Hall inspection link targets v3.3 without changing Offline Practice', async ({
   page,
@@ -21,9 +28,132 @@ test('visible Press Hall inspection link targets v3.3 without changing Offline P
   );
 });
 
+test('Rev4.1 Press Archive art stays visual-only over executable Revision 3 authority', async ({
+  page,
+}) => {
+  test.setTimeout(120_000);
+  const consoleErrors: string[] = [];
+  const pageErrors: string[] = [];
+  const failedRequests: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text());
+  });
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+  page.on('requestfailed', (request) => {
+    failedRequests.push(`${request.method()} ${request.url()}: ${request.failure()?.errorText ?? 'failed'}`);
+  });
+
+  await page.goto(
+    '/?mapArt=inkfall_foundry%403%2Fpress_archive%2Fv4.1%2Fspatial-material-joined',
+    { waitUntil: 'networkidle' },
+  );
+  await expect(page.locator('body')).toHaveAttribute(
+    'data-launch-support',
+    'press-archive-rev4-1-rev3-authority-candidate',
+    { timeout: 45_000 },
+  );
+  await expect(page.locator('body')).toHaveAttribute('data-press-hall-status', 'ready');
+  await expect(page.locator('body')).toHaveAttribute('data-catalog-default', 'inkfall_foundry@1');
+  await expect(page.getByRole('heading', { name: 'Press Archive v4.1' })).toBeVisible();
+  await expect(page.getByLabel(
+    'Interactive Press Archive v4.1 joined-art runtime inspection viewport',
+  )).toBeVisible();
+  await expect(page.getByText(/presentation art \+ separate revision-3 authority overlay/iu))
+    .toBeVisible();
+
+  await page.evaluate(() => {
+    window.__KYX_PRESS_HALL_INSPECTION__?.selectView('archive_rise');
+    window.__KYX_PRESS_HALL_INSPECTION__?.setAuthorityOverlay(true);
+  });
+  await page.waitForTimeout(250);
+  const snapshot = await page.evaluate(
+    () => window.__KYX_PRESS_HALL_INSPECTION__?.getSnapshot(),
+  ) as {
+    status?: string;
+    selection?: { mapRevision?: number; artRevision?: string };
+    catalogDefault?: { mapRevision?: number; unchanged?: boolean };
+    art?: { sha256?: string; nodeCount?: number; triangleCount?: number };
+    authorityAlignment?: {
+      mapRevision?: number;
+      artGeometryMayBeAuthority?: boolean;
+      candidateContract?: { allChecksPassed?: boolean };
+      candidateScene?: {
+        riseMeshCount?: number;
+        landingMeshCount?: number;
+        decorativeVerticalOverhangMm?: number;
+        allChecksPassed?: boolean;
+      };
+      candidateTraversal?: {
+        routeId?: string;
+        totalTickCount?: number;
+        enteredZoneIds?: string[];
+        allChecksPassed?: boolean;
+      };
+      roleSeparation?: { presentationArtPassedToPackageLoader?: boolean };
+    };
+    browserRuntimeErrors?: string[];
+  };
+  expect(snapshot).toMatchObject({
+    status: 'PRESS_ARCHIVE_REV4_1_RUNTIME_CANDIDATE_READY_G5_OPEN',
+    selection: { mapRevision: 3, artRevision: '4.1' },
+    catalogDefault: { mapRevision: 1, unchanged: true },
+    art: {
+      sha256: '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00',
+      nodeCount: 45,
+      triangleCount: 190_788,
+    },
+    authorityAlignment: {
+      mapRevision: 3,
+      artGeometryMayBeAuthority: false,
+      candidateContract: { allChecksPassed: true },
+      candidateScene: {
+        riseMeshCount: 7,
+        landingMeshCount: 9,
+        decorativeVerticalOverhangMm: 755,
+        allChecksPassed: true,
+      },
+      candidateTraversal: {
+        routeId: 'press_west_archive',
+        totalTickCount: expect.any(Number),
+        enteredZoneIds: expect.arrayContaining(['press_hall', 'archive_walk_west']),
+        allChecksPassed: true,
+      },
+      roleSeparation: { presentationArtPassedToPackageLoader: false },
+    },
+    browserRuntimeErrors: [],
+  });
+  expect(snapshot.authorityAlignment?.candidateTraversal?.totalTickCount).toBeGreaterThan(40);
+  expect(consoleErrors).toEqual([]);
+  expect(pageErrors).toEqual([]);
+  expect(failedRequests).toEqual([]);
+
+  await mkdir(rev4EvidenceDirectory, { recursive: true });
+  await page.screenshot({
+    path: resolve(rev4EvidenceDirectory, 'press-archive-rev4-rev3-authority-overlay.png'),
+    animations: 'disabled',
+  });
+  await page.evaluate(() => {
+    window.__KYX_PRESS_HALL_INSPECTION__?.setAuthorityOverlay(false);
+  });
+  await page.waitForTimeout(100);
+  await page.screenshot({
+    path: resolve(rev4EvidenceDirectory, 'press-archive-rev4-clean-archive-rise.png'),
+    animations: 'disabled',
+  });
+  await page.evaluate(() => {
+    window.__KYX_PRESS_HALL_INSPECTION__?.selectView('archive_landing');
+  });
+  await page.waitForTimeout(100);
+  await page.screenshot({
+    path: resolve(rev4EvidenceDirectory, 'press-archive-rev4-clean-archive-landing.png'),
+    animations: 'disabled',
+  });
+});
+
 test('joined Press Hall v3.2 art loads through Three.js with separate locked authority', async ({
   page,
 }) => {
+  test.setTimeout(120_000);
   const consoleErrors: string[] = [];
   const pageErrors: string[] = [];
   const failedRequests: string[] = [];

@@ -35,13 +35,15 @@ import {
 } from '../dev/authorityEvidenceTransport';
 import {
   createOnlineCombatRoom,
-  createOnlineInkfallRevision2CombatRoom,
-  verifyOnlineInkfallRevision2CombatRoom,
-  type OnlineInkfallRevision2RoomProof,
+  createOnlineInkfallCombatRoom,
+  verifyOnlineInkfallCombatRoom,
+  type OnlineInkfallRoomProof,
 } from './onlineAuthorityGateway';
-import { createOnlineInkfallRevision2World } from './onlineAuthorityInkfallWorld';
+import { createOnlineInkfallWorld } from './onlineAuthorityInkfallWorld';
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
+  ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  isOnlineInkfallAuthorityProfile,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
 import {
@@ -117,8 +119,8 @@ interface OnlinePreviewSnapshot {
     }>[];
   }>;
   readonly roomVerification?: Readonly<{
-    roomProfile: typeof ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
-    mapBinding: OnlineInkfallRevision2RoomProof['mapBinding'];
+    roomProfile: OnlineAuthorityProfileSelection;
+    mapBinding: OnlineInkfallRoomProof['mapBinding'];
     simulationIdentity: SimulationIdentityV1;
     identityChecks: number;
   }>;
@@ -303,15 +305,20 @@ function createShell(): { readonly root: HTMLElement; readonly content: HTMLElem
   return { root, content };
 }
 
-function appendScopeNotice(parent: HTMLElement, inkfallRevision2 = false): void {
+function appendScopeNotice(
+  parent: HTMLElement,
+  inkfallProfile: OnlineAuthorityProfileSelection | null = null,
+): void {
   const notice = element('div', 'online-preview__scope');
   notice.append(
     element('strong', '', 'Current scope'),
     element(
       'span',
       '',
-      inkfallRevision2
-        ? 'Explicit Inkfall Foundry @2 integration preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. Final-map traversal, final visuals, matchmaking, progression, and release readiness remain open; G4 and G5 are not claimed.'
+      inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+        ? 'Inkfall Foundry Rev4 acceptance candidate: the Rev4.1 render-only presentation is identity-bound to the frozen Rev3 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Human visual approval and release deployment remain separate gates.'
+        : inkfallProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
+          ? 'Explicit Inkfall Foundry @2 integration preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. Final-map traversal, final visuals, matchmaking, progression, and release readiness remain open; G4 and G5 are not claimed.'
         : 'Authoritative revision-3 combat preview: movement, rifle, health, team score, feed, respawn, grenade state, remote interpolation, and secure resume. Matchmaking, progression, real-map grenade collision, and release readiness are not included yet.',
     ),
   );
@@ -372,10 +379,34 @@ function renderLanding(
     ),
   );
   profileOption.append(profileCheckbox, profileCopy);
-  content.append(profileOption);
-  const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => (
-    profileCheckbox.checked ? ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID : undefined
+  const rev4ProfileOption = element('label', 'online-preview__profile-option');
+  const rev4ProfileCheckbox = document.createElement('input');
+  rev4ProfileCheckbox.type = 'checkbox';
+  rev4ProfileCheckbox.checked = selectedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+  rev4ProfileCheckbox.disabled = !configured;
+  rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
+  const rev4ProfileCopy = element('span', '');
+  rev4ProfileCopy.append(
+    element('strong', '', 'Opt in · Inkfall Foundry Rev4 / Rev3 authority'),
+    element(
+      'span',
+      '',
+      `Sends and verifies ${ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID}. Rev4 presentation remains non-authoritative; the frozen Rev3 collision, spawn, zone, pickup, and telemetry binding owns play.`,
+    ),
   );
+  rev4ProfileOption.append(rev4ProfileCheckbox, rev4ProfileCopy);
+  profileCheckbox.addEventListener('change', () => {
+    if (profileCheckbox.checked) rev4ProfileCheckbox.checked = false;
+  });
+  rev4ProfileCheckbox.addEventListener('change', () => {
+    if (rev4ProfileCheckbox.checked) profileCheckbox.checked = false;
+  });
+  content.append(profileOption, rev4ProfileOption);
+  const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => {
+    if (rev4ProfileCheckbox.checked) return ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+    if (profileCheckbox.checked) return ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
+    return undefined;
+  };
   const lobby = element('section', 'online-preview__lobby');
   const createCard = element('article', 'online-preview__lobby-card');
   createCard.append(
@@ -717,8 +748,8 @@ function metric(label: string): { readonly root: HTMLElement; readonly value: HT
 type OnlineSessionBinding =
   | Readonly<{ kind: 'flat_run_revision_3' }>
   | Readonly<{
-      kind: 'inkfall_revision_2';
-      proof: OnlineInkfallRevision2RoomProof;
+      kind: 'inkfall';
+      proof: OnlineInkfallRoomProof;
     }>;
 
 async function mountSession(
@@ -730,14 +761,16 @@ async function mountSession(
   sessionBinding: OnlineSessionBinding,
 ): Promise<void> {
   const displayName = protocolDisplayName(UserAccount.getDisplayName());
-  const inkfallProof = sessionBinding.kind === 'inkfall_revision_2'
+  const inkfallProof = sessionBinding.kind === 'inkfall'
     ? sessionBinding.proof
     : null;
-  const inkfallRevision2 = inkfallProof !== null;
+  const inkfallProfile = inkfallProof?.roomProfile ?? null;
+  const inkfallRuntime = inkfallProof !== null;
+  const inkfallRev4 = inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
   const world = inkfallProof !== null
-    ? await createOnlineInkfallRevision2World(inkfallProof.mapBinding)
+    ? await createOnlineInkfallWorld(inkfallProof.mapBinding)
     : await createRapierMovementWorld(getPhysicsFixture('flat_run'));
-  const identity = expectedIdentity(world, inkfallRevision2 ? 'inkfall_foundry' : 'phase4_flat_run');
+  const identity = expectedIdentity(world, inkfallRuntime ? 'inkfall_foundry' : 'phase4_flat_run');
   const scheduler = createBrowserAuthorityEvidenceScheduler();
   const config: AuthorityEvidenceConfig = Object.freeze({
     authorityUrl: authorityOrigin,
@@ -753,20 +786,24 @@ async function mountSession(
     element(
       'p',
       'online-preview__eyebrow',
-      inkfallRevision2
-        ? 'AUTHORITATIVE COMBAT ROOM / INKFALL FOUNDRY @2'
+      inkfallRev4
+        ? 'AUTHORITATIVE COMBAT ROOM / INKFALL REV4 + REV3 AUTHORITY'
+        : inkfallRuntime
+          ? 'AUTHORITATIVE COMBAT ROOM / INKFALL FOUNDRY @2'
         : 'AUTHORITATIVE COMBAT ROOM',
     ),
     element(
       'h1',
       '',
-      inkfallRevision2 ? 'Fight in Inkfall. Resolve on the server.' : 'Fight locally. Resolve on the server.',
+      inkfallRuntime ? 'Fight in Inkfall. Resolve on the server.' : 'Fight locally. Resolve on the server.',
     ),
     element(
       'p',
       '',
-      inkfallRevision2
-        ? 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
+      inkfallRev4
+        ? 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the frozen Inkfall @3 Rapier world for movement, vertical routes, collision, combat, spawns, recovery, and resume; Rev4 art cannot become collision.'
+        : inkfallRuntime
+          ? 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. The authority uses the locked Inkfall @2 Rapier world for movement, hitscan occlusion, grenade collision, health, score, death, and respawn.'
         : 'Use W, A, S, and D to move, C to crouch, Q and E to turn, Up and Down to aim, Space to fire, R to reload, G to throw the Impulse Grenade, and T to teleport. Health, ammo, score, feed, death, respawn, teleport, and resume state come from the authority.',
     ),
   );
@@ -777,7 +814,7 @@ async function mountSession(
   );
   head.append(title, room);
 
-  const profileBanner = inkfallRevision2 ? element('section', 'online-session__profile') : null;
+  const profileBanner = inkfallRuntime ? element('section', 'online-session__profile') : null;
   if (profileBanner !== null && inkfallProof !== null) {
     profileBanner.dataset.testid = 'online-profile-binding';
     profileBanner.append(
@@ -815,7 +852,11 @@ async function mountSession(
   const arenaHead = element(
     'div',
     'online-session__panel-head',
-    inkfallRevision2 ? 'Live Inkfall Foundry @2 authority plane' : 'Live authority combat plane',
+    inkfallRev4
+      ? 'Live Inkfall Foundry Rev3 authority plane / Rev4 presentation binding'
+      : inkfallRuntime
+        ? 'Live Inkfall Foundry @2 authority plane'
+        : 'Live authority combat plane',
   );
   arenaHead.append(element('span', '', 'WASD · C crouch · Q/E turn · SPACE fire · R reload · G grenade · T teleport'));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
@@ -887,7 +928,7 @@ async function mountSession(
   const inviteUrl = new URL(
     onlineJoinPath(
       roomCode,
-      inkfallRevision2 ? ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID : undefined,
+      inkfallProfile ?? undefined,
     ),
     window.location.origin,
   ).toString();
@@ -947,8 +988,10 @@ async function mountSession(
   const limitation = element(
     'p',
     'online-session__limitation',
-    inkfallRevision2
-      ? 'INTEGRATION LIMIT: this room uses the real hash-locked P5.10 Inkfall @2 hitscan and grenade collision ports. Final-map traversal, final visuals, and human acceptance are still open; this preview does not claim G4 or G5.'
+    inkfallRev4
+      ? 'ACCEPTANCE CANDIDATE: this room uses the frozen Inkfall @3 collision, spawns, zones, combat ports, telemetry, and resume persistence. Rev4 render meshes are explicitly non-authoritative; human visual approval and deployment remain separate.'
+      : inkfallRuntime
+        ? 'INTEGRATION LIMIT: this room uses the real hash-locked P5.10 Inkfall @2 hitscan and grenade collision ports. Final-map traversal, final visuals, and human acceptance are still open; this preview does not claim G4 or G5.'
       : 'PRE-RELEASE LIMIT: movement uses the real flat-run Rapier fixture; grenade flight is authoritative, but this room still uses the deterministic empty combat-collision evidence port rather than accepted real-map grenade collision.',
   );
   const feedbackProof = element('div', 'online-session__feedback-proof');
@@ -988,7 +1031,7 @@ async function mountSession(
     grid,
     error,
   );
-  appendScopeNotice(content, inkfallRevision2);
+  appendScopeNotice(content, inkfallProfile);
 
   let renderRequested = true;
   const client = new AuthorityEvidenceClient({
@@ -1395,7 +1438,7 @@ async function mountSession(
       snapshot: diagnostics.combat.snapshot,
       recentEvents: diagnostics.combat.recentEvents,
       localPlayerId: diagnostics.authority.playerId,
-    }, inkfallRevision2);
+    }, inkfallRuntime);
     if (renderRequested || nowMilliseconds - lastDiagnosticsRefresh >= 100) {
       const combat = diagnostics.combat.snapshot;
       const localPlayer = combat?.players.find(({ playerId }) => (
@@ -1563,10 +1606,10 @@ export async function mountOnlineAuthorityRoute(
       'CANCEL',
     );
     try {
-      if (requestedProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID) {
-        const proof = await createOnlineInkfallRevision2CombatRoom(availability.origin);
+      if (requestedProfile !== undefined && isOnlineInkfallAuthorityProfile(requestedProfile)) {
+        const proof = await createOnlineInkfallCombatRoom(availability.origin, requestedProfile);
         roomCode = proof.roomCode;
-        sessionBinding = Object.freeze({ kind: 'inkfall_revision_2', proof });
+        sessionBinding = Object.freeze({ kind: 'inkfall', proof });
       } else {
         roomCode = await createOnlineCombatRoom(availability.origin);
         sessionBinding = Object.freeze({ kind: 'flat_run_revision_3' });
@@ -1587,20 +1630,23 @@ export async function mountOnlineAuthorityRoute(
   } else {
     roomCode = request.roomCode;
     mode = 'join';
-    if (requestedProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID) {
+    if (requestedProfile !== undefined && isOnlineInkfallAuthorityProfile(requestedProfile)) {
       body.dataset.onlinePreviewStatus = 'verifying-room-profile';
       renderNotice(
         content,
-        'Verifying Inkfall Foundry @2 room…',
+        requestedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+          ? 'Verifying Inkfall Foundry Rev4 / Rev3 authority room…'
+          : 'Verifying Inkfall Foundry @2 room…',
         'The profile and complete locked map binding must match before the socket can open.',
         'CANCEL',
       );
       try {
-        const proof = await verifyOnlineInkfallRevision2CombatRoom(
+        const proof = await verifyOnlineInkfallCombatRoom(
           availability.origin,
           roomCode,
+          requestedProfile,
         );
-        sessionBinding = Object.freeze({ kind: 'inkfall_revision_2', proof });
+        sessionBinding = Object.freeze({ kind: 'inkfall', proof });
       } catch (cause) {
         body.dataset.onlinePreviewStatus = 'room-profile-mismatch';
         renderNotice(

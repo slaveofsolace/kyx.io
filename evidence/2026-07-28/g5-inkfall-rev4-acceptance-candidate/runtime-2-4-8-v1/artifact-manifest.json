@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "files": {
+    "screenshots/p515-01-client-0-two-rendered.png": {
+      "sha256": "33843f02e4ab1a91b1ab8565120d5d0692ee928451d401521339e51886122ad0",
+      "bytes": 195643
+    },
+    "screenshots/p515-02-client-1-two-rendered.png": {
+      "sha256": "1abb0f56c5f4ce6f745d99e6e9ba330f9ec4af6c08a27451ebafedac12254f8c",
+      "bytes": 195752
+    },
+    "screenshots/p515-03-real-occlusion.png": {
+      "sha256": "a307d57e01ee608a4268980090290d42da8c15eed1ed34bf85faf98302ffc72d",
+      "bytes": 168922
+    },
+    "screenshots/p515-04-confirmed-body-hit.png": {
+      "sha256": "e5adff299349bf2ba9215563a45b63630e88567c964cb9b8fa6a1886217394d8",
+      "bytes": 269104
+    },
+    "screenshots/p515-04a-grenade-throw-accepted.png": {
+      "sha256": "0611184f5936cec1ce31f9fb9eec02b31eeb0bf75bdfa62bf74960e7a2e0ac6b",
+      "bytes": 187412
+    },
+    "screenshots/p515-04b-grenade-collision-fuse.png": {
+      "sha256": "275ae2daab2718ede54783c89e99b4ecaab08f98ef6e309db2b2d51cdc1fe266",
+      "bytes": 188323
+    },
+    "screenshots/p515-04c-grenade-impulse-confirmed.png": {
+      "sha256": "7c89fee7542745ed13ed950d189c39294f0b81755f93914996f5f4b0eb8e414b",
+      "bytes": 188959
+    },
+    "screenshots/p515-05-authoritative-death-score.png": {
+      "sha256": "4dc3759ab09c156065a864cddb7438838feca05ddc6a50c4ea3b769e80a79c15",
+      "bytes": 188422
+    },
+    "screenshots/p515-06-confirmed-teleport.png": {
+      "sha256": "e8e6f925780a186ce03514200bfc49bdea949301dc95af0d376f29b2574f60ce",
+      "bytes": 184075
+    },
+    "screenshots/p515-07-resume-preserved-state.png": {
+      "sha256": "6c0069adf2473a9336f578b733595fe85dd1f6fa0898d3f9e37a7eaaa3c0f48e",
+      "bytes": 184088
+    },
+    "screenshots/p515-08-four-product-clients.png": {
+      "sha256": "5da3d7ca2fef2649a9e7edc05b6c055909bf51f9d2bdd32c9bec6bdf2ba4caeb",
+      "bytes": 194482
+    },
+    "screenshots/p515-09-eight-product-clients.png": {
+      "sha256": "dc34d8ff9598f28cae594092ba4bee34aa1e1bd4942ae0e850c3002f91d1cdb6",
+      "bytes": 207381
+    },
+    "screenshots/p515-10-profile-mismatch-fails-closed.png": {
+      "sha256": "cc9e2e4c47a9f2a4129ec1584b14ccff99cb897c38641110356d119798dd11ef",
+      "bytes": 50308
+    },
+    "screenshots/p515-11-runtime-evidence-board.png": {
+      "sha256": "b1e68a9b51ff1b7c61ad331eb54aaf2752bdfaea5062d0746a318d89ccc263aa",
+      "bytes": 256331
+    },
+    "p515-normalized-wire-log.jsonl": {
+      "sha256": "762b5b9e6473abb24b1cf4ae1d46a69510bd9f1db25c00e31a5a09cb1b4f43b8",
+      "bytes": 15291441
+    },
+    "p515-product-population-proof.json": {
+      "sha256": "73d3efce34857a996c16d8426b36619675ab9cbf27f63a6e2450af5b7ba4cd47",
+      "bytes": 419666
+    }
+  }
+}

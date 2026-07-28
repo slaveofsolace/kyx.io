@@ -4,10 +4,25 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const PROFILE = 'p511-inkfall-foundry-revision-2-combat-v1';
+const REV2_PROFILE = 'p511-inkfall-foundry-revision-2-combat-v1';
+const REV4_PROFILE = 'g5-inkfall-foundry-rev4-revision-3-authority-v1';
+const requestedProfileArgument = process.argv.find((argument) => argument.startsWith('--profile='));
+const PROFILE = requestedProfileArgument?.slice('--profile='.length) ?? REV2_PROFILE;
+assert.ok(
+  PROFILE === REV2_PROFILE || PROFILE === REV4_PROFILE,
+  `Unsupported Inkfall evidence profile: ${PROFILE}`,
+);
+const REV4_ACCEPTANCE_CAPTURE = PROFILE === REV4_PROFILE;
 const FLAT_COMBAT_PROFILE = 'p58d-rev3-combat-v1';
 const AUTHORITY_WEBSOCKET_ORIGIN = 'ws://127.0.0.1:8787';
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const revision3Package = JSON.parse(await fs.readFile(
+  path.join(
+    repo,
+    'assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json',
+  ),
+  'utf8',
+));
 const output = path.resolve(
   repo,
   process.argv[2] ?? 'evidence/2026-07-22/phase-5-p5-15/runtime-v1',
@@ -22,7 +37,7 @@ const expectedBrowserLaunchArguments = [
   '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
 ];
 
-const expectedSpawns = [
+const rev2ExpectedSpawns = [
   { spawnId: 'spawn_w_press_a', set: 'west_team', feetPosition: { x: -33_500, y: 0, z: -3_500 }, yawMilliDegrees: 0 },
   { spawnId: 'spawn_e_press_a', set: 'east_team', feetPosition: { x: 33_500, y: 0, z: 3_500 }, yawMilliDegrees: 180_000 },
   { spawnId: 'spawn_w_press_b', set: 'west_team', feetPosition: { x: -33_500, y: 0, z: 3_500 }, yawMilliDegrees: 0 },
@@ -32,7 +47,7 @@ const expectedSpawns = [
   { spawnId: 'spawn_w_archive', set: 'west_team', feetPosition: { x: -30_500, y: 0, z: 7_000 }, yawMilliDegrees: 25_000 },
   { spawnId: 'spawn_e_archive', set: 'east_team', feetPosition: { x: 30_500, y: 0, z: 7_000 }, yawMilliDegrees: 155_000 },
 ];
-const expectedMapBinding = {
+const rev2ExpectedMapBinding = {
   mapReference: 'inkfall_foundry@2',
   mapId: 'inkfall_foundry',
   mapRevision: 2,
@@ -47,8 +62,85 @@ const expectedMapBinding = {
   distanceUnit: 'millimeters',
   angleUnit: 'milli_degrees',
   colliderCardinality: 339,
-  spawns: expectedSpawns,
+  spawns: rev2ExpectedSpawns,
 };
+const rev4SpawnOrder = [
+  'spawn_w_press_a', 'spawn_e_press_a', 'spawn_w_press_b', 'spawn_e_press_b',
+  'spawn_w_ink', 'spawn_e_ink', 'spawn_w_archive', 'spawn_e_archive',
+  'spawn_dm_ink_w', 'spawn_dm_ink_e', 'spawn_dm_archive_w', 'spawn_dm_archive_e',
+];
+const revision3SpawnsById = new Map(revision3Package.spawns.map((spawn) => [spawn.id, spawn]));
+const rev4ExpectedSpawns = rev4SpawnOrder.map((spawnId) => {
+  const spawn = revision3SpawnsById.get(spawnId);
+  assert.notEqual(spawn, undefined, `Revision 3 spawn ${spawnId}`);
+  return {
+    spawnId: spawn.id,
+    set: spawn.set,
+    feetPosition: { ...spawn.feetPositionMm },
+    yawMilliDegrees: spawn.yawMilliDegrees,
+    escapeRouteFamilies: [...spawn.escapeRouteFamilies],
+    validationStatus: spawn.validationStatus,
+  };
+});
+const rev4ExpectedMapBinding = {
+  mapReference: 'inkfall_foundry@3',
+  presentationReference:
+    'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+  mapId: 'inkfall_foundry',
+  mapRevision: 3,
+  packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+  fixtureId: 'inkfall_foundry_map_collision',
+  fixtureHash: '6cf785c5171f2ff5',
+  xAxis: 'east',
+  yAxis: 'up',
+  zAxis: 'north',
+  origin: 'press_core_floor_contact',
+  gltfToMap: 'x_y_negative_z',
+  distanceUnit: 'millimeters',
+  angleUnit: 'milli_degrees',
+  colliderCardinality: 339,
+  render: {
+    role: 'render_only',
+    path:
+      'art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
+    sha256: '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00',
+    bytes: 12_954_608,
+    renderMeshesMayBeAuthority: false,
+  },
+  collision: {
+    role: 'authority_collision',
+    path: 'revisions/revision-3/export/collision.authority.glb',
+    sha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
+    bytes: 605_112,
+  },
+  supportedModes: ['deathmatch', 'team_deathmatch'],
+  spawns: rev4ExpectedSpawns,
+  zones: revision3Package.zones.map((zone) => ({
+    zoneId: zone.id,
+    callout: zone.callout,
+    family: zone.family,
+    center: { ...zone.centerMm },
+    halfExtents: { ...zone.halfExtentsMm },
+  })),
+  pickups: [],
+  triggers: revision3Package.triggers,
+  telemetry: {
+    schemaVersion: 1,
+    authoritySource: 'durable_object_room_metrics_v1',
+    counters: [
+      'connectedPlayers', 'receivedCommands', 'rejectedCommands',
+      'resumeSuccesses', 'authorityTickExecution', 'transport',
+    ],
+    zoneCount: 9,
+    pickupCount: 0,
+  },
+};
+const expectedSpawns = REV4_ACCEPTANCE_CAPTURE
+  ? rev4ExpectedSpawns.slice(0, 8)
+  : rev2ExpectedSpawns;
+const expectedMapBinding = REV4_ACCEPTANCE_CAPTURE
+  ? rev4ExpectedMapBinding
+  : rev2ExpectedMapBinding;
 const expectedSimulationIdentity = {
   schemaVersion: 1,
   mapId: 'inkfall_foundry',
@@ -59,7 +151,7 @@ const expectedSimulationIdentity = {
   movementProfileRevision: 1,
   movementProfileHash: '8ab4ed437a4393c0',
   fixtureId: 'inkfall_foundry_map_collision',
-  fixtureHash: 'bf85e42731fd088e',
+  fixtureHash: expectedMapBinding.fixtureHash,
   physicsAdapterId: 'rapier3d_deterministic_compat',
   physicsAdapterVersion: '0.19.3',
 };
@@ -84,6 +176,9 @@ const expectedSourceFiles = [
   'src/app/onlineAuthorityGateway.ts',
   'src/app/onlineAuthorityInkfallWorld.ts',
   'src/app/onlineAuthorityRoute.ts',
+  'src/app/inkfallRev4CandidateBinding.ts',
+  'src/app/inkfallRev4CandidateTraversal.ts',
+  'src/app/inkfallRev3ReviewAudit.ts',
   'src/dev/authorityEvidenceClient.ts',
   'src/dev/authorityEvidenceModel.ts',
   'src/dev/authorityEvidenceTransport.ts',
@@ -132,6 +227,10 @@ const expectedSourceFiles = [
   'src/sim/movement/replay.ts',
   'src/sim/movement/state.ts',
   'assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json',
+  'assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json',
+  'assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json',
+  'assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
   'worker/combatRuntime.ts',
   'worker/env.ts',
   'worker/rapierRuntime.ts',
@@ -149,6 +248,9 @@ const expectedSourceFiles = [
   'tests/worker/combatPresentationProjection.test.ts',
   'tests/worker/combatRev3.test.ts',
   'tests/worker/inkfallRev2CombatProfile.test.ts',
+  'tests/integration/physics/inkfallRev4AuthorityProfile.test.ts',
+  'tests/integration/physics/inkfallRev4CandidateBinding.test.ts',
+  'tests/integration/movement/inkfallRev3ReviewAudit.test.ts',
   'tests/integration/authority/inkfallAuthorityPlaytest.test.ts',
   'tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts',
   'tests/unit/authority/combat/impulseGrenade.test.ts',
@@ -336,6 +438,30 @@ function assertPopulation(population, count, roomCode, matchId) {
     assert.equal(presentation.duplicateAuthorityEvents, 0);
     assert.equal(presentation.staleAuthorityEvents, 0);
   }
+  assert.equal(population.frameProfiles.length, count);
+  assert.equal(new Set(population.frameProfiles.map(({ clientId }) => clientId)).size, count);
+  for (const frameProfile of population.frameProfiles) {
+    assert.equal(frameProfile.population, count);
+    assert.equal(frameProfile.sampleCount, 120);
+    assert.ok(Number.isFinite(frameProfile.measurementDurationMilliseconds));
+    assert.ok(frameProfile.measurementDurationMilliseconds > 0);
+    for (const field of [
+      'meanFrameMilliseconds',
+      'p50FrameMilliseconds',
+      'p95FrameMilliseconds',
+      'p99FrameMilliseconds',
+      'maximumFrameMilliseconds',
+      'estimatedFramesPerSecond',
+    ]) {
+      assert.ok(Number.isFinite(frameProfile[field]), `${field} finite`);
+      assert.ok(frameProfile[field] > 0, `${field} positive`);
+    }
+    assert.ok(Number.isInteger(frameProfile.framesOver33Milliseconds));
+    assert.ok(Number.isInteger(frameProfile.framesOver50Milliseconds));
+    assert.ok(Array.isArray(frameProfile.longTasks));
+    assert.ok(Number.isInteger(frameProfile.hardwareConcurrency));
+    assert.ok(Date.parse(frameProfile.capturedAt) > 0);
+  }
   assert.equal(population.players.length, count);
   assert.equal(new Set(population.players.map(({ playerId }) => playerId)).size, count);
   assert.ok(population.players.every(({ shieldPoints }) => shieldPoints === 0));
@@ -391,8 +517,26 @@ const wire = wireLines.map((line) => JSON.parse(line));
 
 assert.equal(proof.schemaVersion, 1);
 assert.equal(proof.phase, 'P5.15');
-assert.equal(proof.status, 'BOUNDED_PASS');
-assert.equal(proof.gateClaim, 'G3_G4_ACCEPTANCE_CANDIDATE_G5_NOT_CLAIMED');
+const performanceChecksPassed = Object.values(proof.performance.checks).every(Boolean);
+const technicalAcceptanceChecksPassed =
+  Object.values(proof.technicalAcceptance.checks).every(Boolean);
+const expectedRev4Status = !performanceChecksPassed
+  ? 'RUNTIME_PERFORMANCE_BOUND_EXCEEDED'
+  : technicalAcceptanceChecksPassed
+    ? 'ACCEPTANCE_CANDIDATE'
+    : 'RUNTIME_TRAVERSAL_COLLISION_BLOCKED';
+const expectedRev4GateClaim = !performanceChecksPassed
+  ? 'G5_BLOCKED_BY_LOCAL_RUNTIME_PERFORMANCE'
+  : technicalAcceptanceChecksPassed
+    ? 'G5_TECHNICAL_ACCEPTANCE_CANDIDATE_HUMAN_REVIEW_PENDING'
+    : 'G5_BLOCKED_BY_RUNTIME_TRAVERSAL_COLLISION';
+assert.equal(proof.status, REV4_ACCEPTANCE_CAPTURE ? expectedRev4Status : 'BOUNDED_PASS');
+assert.equal(
+  proof.gateClaim,
+  REV4_ACCEPTANCE_CAPTURE
+    ? expectedRev4GateClaim
+    : 'G3_G4_ACCEPTANCE_CANDIDATE_G5_NOT_CLAIMED',
+);
 
 assert.equal(proof.topology.route, '/online');
 assert.equal(proof.topology.exactProfile, PROFILE);
@@ -458,6 +602,41 @@ assert.equal(proof.populations.four.tickStimulus.driverClientId, 'client-2');
 assert.equal(proof.populations.eight.tickStimulus.driverClientId, 'client-6');
 assert.ok(proof.populations.two.commonAuthorityTick < proof.populations.four.commonAuthorityTick);
 assert.ok(proof.populations.four.commonAuthorityTick < proof.populations.eight.commonAuthorityTick);
+assert.equal(proof.performance.scope, 'local_headless_system_chrome_active_client_capture_not_shipping_hardware');
+assert.equal(proof.performance.frameSamples, 1_680);
+assert.deepEqual(proof.performance.profiledClientPopulations, { two: 2, four: 4, eight: 8 });
+assert.equal(proof.performance.checks.frameSampleCardinality, true);
+assert.equal(
+  proof.performance.checks.p95WithinBound,
+  proof.performance.maximumP95FrameMilliseconds
+    <= proof.performance.thresholds.maximumP95FrameMilliseconds,
+);
+assert.equal(
+  proof.performance.checks.p99WithinBound,
+  proof.performance.maximumP99FrameMilliseconds
+    <= proof.performance.thresholds.maximumP99FrameMilliseconds,
+);
+assert.equal(
+  proof.performance.checks.maximumFrameWithinBound,
+  proof.performance.maximumObservedFrameMilliseconds
+    <= proof.performance.thresholds.maximumObservedFrameMilliseconds,
+);
+assert.equal(
+  proof.performance.checks.reliableDeliveryWithinBound,
+  proof.performance.maximumReliableDeliveryLatencyMilliseconds
+    <= proof.performance.thresholds.maximumReliableDeliveryLatencyMilliseconds,
+);
+assert.equal(proof.performance.allChecksPassed, performanceChecksPassed);
+assert.deepEqual(proof.technicalAcceptance.checks, {
+  ...proof.performance.checks,
+  traversalCompletedWithoutDriverRecovery:
+    proof.movementAndWorld.driverRecoveries.length === 0,
+});
+assert.equal(
+  proof.technicalAcceptance.allChecksPassed,
+  technicalAcceptanceChecksPassed,
+);
+assert.equal(proof.technicalAcceptance.humanReviewStillRequired, true);
 
 assert.equal(proof.movementAndWorld.routeId, 'alternate_ink_channel_after_press_cross_snag');
 assert.equal(proof.movementAndWorld.routeCheckpoints.length, 9);
@@ -927,10 +1106,20 @@ assert.ok(
       + 8,
 );
 assert.equal(proof.knownLimits.includes('This capture is bounded product/browser evidence, not broad playtest acceptance.'), true);
-assert.equal(proof.knownLimits.includes('This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.'), true);
-assert.equal(proof.knownLimits.includes('Inkfall revision-2 players begin with zero shield; no synthetic shield cue is manufactured.'), true);
+assert.equal(proof.knownLimits.includes(
+  REV4_ACCEPTANCE_CAPTURE
+    ? 'This capture supports a G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.'
+    : 'This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.',
+), true);
+assert.equal(proof.knownLimits.includes(
+  `Inkfall revision-${expectedMapBinding.mapRevision} players begin with zero shield; no synthetic shield cue is manufactured.`,
+), true);
 assert.equal(proof.knownLimits.includes('Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.'), true);
-assert.equal(proof.knownLimits.includes('Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.'), true);
+assert.equal(proof.knownLimits.includes(
+  REV4_ACCEPTANCE_CAPTURE
+    ? 'The separately executable Rev4 Press Hall to Paper Archive vertical route is deterministic automation evidence, not a human traversal review.'
+    : 'Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.',
+), true);
 assert.equal(proof.knownLimits.includes('Human visual approval remains separate.'), true);
 const traversalWarning = proof.movementAndWorld.traversalCollisionWarning
   ? await fs.readFile(path.join(output, 'p515-traversal-collision-warning.json'), 'utf8').then(JSON.parse)
@@ -1091,7 +1280,11 @@ const verification = {
   schemaVersion: 1,
   phase: 'P5.15',
   verifiedAt: new Date().toISOString(),
-  status: 'PASS',
+  status: proof.status === 'ACCEPTANCE_CANDIDATE'
+    ? 'EVIDENCE_INTEGRITY_VERIFIED_ACCEPTANCE_CANDIDATE'
+    : proof.status === 'BOUNDED_PASS'
+      ? 'EVIDENCE_INTEGRITY_VERIFIED_BOUNDED_EVIDENCE'
+      : 'EVIDENCE_INTEGRITY_VERIFIED_BLOCKER',
   runtime: path.relative(repo, output).replaceAll('\\', '/'),
   checks: {
     productClients: 8,
@@ -1100,6 +1293,12 @@ const verification = {
     exactProfile: PROFILE,
     exactMapReference: expectedMapBinding.mapReference,
     exactInitialSpawns: 8,
+    frameSamples: proof.performance.frameSamples,
+    maximumP95FrameMilliseconds: proof.performance.maximumP95FrameMilliseconds,
+    maximumP99FrameMilliseconds: proof.performance.maximumP99FrameMilliseconds,
+    maximumObservedFrameMilliseconds: proof.performance.maximumObservedFrameMilliseconds,
+    maximumReliableDeliveryLatencyMilliseconds:
+      proof.performance.maximumReliableDeliveryLatencyMilliseconds,
     commonPopulationAuthorityTicks: [
       proof.populations.two.commonAuthorityTick,
       proof.populations.four.commonAuthorityTick,
@@ -1126,6 +1325,8 @@ const verification = {
     canonicalTraversalRecoveries: proof.movementAndWorld.driverRecoveries.length,
     traversalCollisionWarning: traversalWarning !== null,
     supportsG5NoSnagAcceptance: false,
+    technicalAcceptanceCandidate: proof.technicalAcceptance.allChecksPassed,
+    gateClaim: proof.gateClaim,
     authoritativeDamageDeathScoreFeed: true,
     confirmedBodyAndKillPresentationMarkers: true,
     confirmedTeleportPresentationMarker: true,

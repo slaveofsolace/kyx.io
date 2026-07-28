@@ -1,9 +1,9 @@
 import { KyxRoom } from './room';
 import {
-  INKFALL_REVISION_2_WORKER_MAP_BINDING,
   INTERNAL_ROOM_PROFILE_HEADER,
-  P511_INKFALL_REV2_COMBAT_PROFILE,
   P58D_COMBAT_PROFILE_HEADER,
+  inkfallWorkerMapBinding,
+  isInkfallWorkerRoomProfile,
   isOptInWorkerRoomProfile,
 } from './combatRuntime';
 import type { KyxAuthorityEnv } from './env';
@@ -161,8 +161,8 @@ export default {
         ...(requestedProfile === null
           ? {}
           : { roomProfile: requestedProfile }),
-        ...(requestedProfile === P511_INKFALL_REV2_COMBAT_PROFILE
-          ? { mapBinding: INKFALL_REVISION_2_WORKER_MAP_BINDING }
+        ...(isInkfallWorkerRoomProfile(requestedProfile)
+          ? { mapBinding: inkfallWorkerMapBinding(requestedProfile) }
           : {}),
       }, 201, cors);
     }

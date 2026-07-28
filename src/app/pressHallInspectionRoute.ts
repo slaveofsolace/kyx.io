@@ -15,7 +15,20 @@ import {
   loadRuntimeMapPackage,
   type LoadedRuntimeMapPackage,
 } from '../physics';
-import { INKFALL_AUTHORITY_MAP_IDENTITY_V2 } from '../authority/inkfallMapIdentity';
+import {
+  INKFALL_AUTHORITY_MAP_IDENTITY_V2,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  type InkfallAuthorityMapIdentity,
+} from '../authority/inkfallMapIdentity';
+import {
+  INKFALL_REV4_ART_ROUTE_RUNTIME_METERS,
+  INKFALL_REV4_CANDIDATE_ART,
+  inspectInkfallRev4CandidateScene,
+  loadInkfallRev4CandidateAuthorityBinding,
+} from './inkfallRev4CandidateBinding';
+import {
+  runInkfallRev4PressArchiveTraversal,
+} from './inkfallRev4CandidateTraversal';
 import type {
   PressHallArtRevision,
   PressHallInspectionRequest,
@@ -29,6 +42,14 @@ interface ArtConfig {
   readonly sha256: string;
   readonly bytes: number;
   readonly explicitBaseColorFactorCount: number;
+  readonly nodeCount: number;
+  readonly meshCount: number;
+  readonly primitiveCount: number;
+  readonly triangleCount: number;
+  readonly packageRenderUrl: string;
+  readonly authorityCollisionUrl: string;
+  readonly authorityIdentity: InkfallAuthorityMapIdentity;
+  readonly presentationLabel: string;
 }
 
 const pressHallV32JoinedArtifactUrl = new URL(
@@ -37,6 +58,18 @@ const pressHallV32JoinedArtifactUrl = new URL(
 ).href;
 const pressHallV33JoinedArtifactUrl = new URL(
   '../../assets/source/maps/inkfall-foundry/art-kit/press-hall-final-art-v3/material-export-v3-3/export/inkfall_foundry_press_hall_material_export_v3_3.spatial-material-joined.glb',
+  import.meta.url,
+).href;
+const pressArchiveRev41JoinedArtifactUrl = new URL(
+  '../../assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
+  import.meta.url,
+).href;
+const revision3RenderArtifactUrl = new URL(
+  '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/render.graybox.glb',
+  import.meta.url,
+).href;
+const revision3CollisionArtifactUrl = new URL(
+  '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb',
   import.meta.url,
 ).href;
 
@@ -48,6 +81,14 @@ const ART_CONFIGS: Readonly<Record<PressHallArtRevision, ArtConfig>> = Object.fr
     sha256: '56cbd313e3fd2166c70ce6cca614e02f08fd027acf2b0a43749cf076c46f8119',
     bytes: 13_300_676,
     explicitBaseColorFactorCount: 0,
+    nodeCount: 29,
+    meshCount: 29,
+    primitiveCount: 29,
+    triangleCount: 188_576,
+    packageRenderUrl: lockedRenderArtifactUrl,
+    authorityCollisionUrl: lockedCollisionArtifactUrl,
+    authorityIdentity: INKFALL_AUTHORITY_MAP_IDENTITY_V2,
+    presentationLabel: 'Press Hall',
   }),
   '3.3': Object.freeze({
     revision: '3.3',
@@ -56,12 +97,32 @@ const ART_CONFIGS: Readonly<Record<PressHallArtRevision, ArtConfig>> = Object.fr
     sha256: '4ad11232074a794fd817114385f7256e286aefe810c76357a9b0103667874564',
     bytes: 13_301_752,
     explicitBaseColorFactorCount: 9,
+    nodeCount: 29,
+    meshCount: 29,
+    primitiveCount: 29,
+    triangleCount: 188_576,
+    packageRenderUrl: lockedRenderArtifactUrl,
+    authorityCollisionUrl: lockedCollisionArtifactUrl,
+    authorityIdentity: INKFALL_AUTHORITY_MAP_IDENTITY_V2,
+    presentationLabel: 'Press Hall',
+  }),
+  '4.1': Object.freeze({
+    revision: '4.1',
+    url: pressArchiveRev41JoinedArtifactUrl,
+    sourcePath: 'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
+    sha256: INKFALL_REV4_CANDIDATE_ART.sha256,
+    bytes: INKFALL_REV4_CANDIDATE_ART.bytes,
+    explicitBaseColorFactorCount: 9,
+    nodeCount: INKFALL_REV4_CANDIDATE_ART.nodeCount,
+    meshCount: INKFALL_REV4_CANDIDATE_ART.meshCount,
+    primitiveCount: INKFALL_REV4_CANDIDATE_ART.primitiveCount,
+    triangleCount: INKFALL_REV4_CANDIDATE_ART.triangleCount,
+    packageRenderUrl: revision3RenderArtifactUrl,
+    authorityCollisionUrl: revision3CollisionArtifactUrl,
+    authorityIdentity: INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+    presentationLabel: 'Press Archive',
   }),
 });
-const ART_NODE_COUNT = 29;
-const ART_MESH_COUNT = 29;
-const ART_PRIMITIVE_COUNT = 29;
-const ART_TRIANGLE_COUNT = 188_576;
 const ART_MATERIAL_COUNT = 9;
 const ART_MATERIAL_NAMES = Object.freeze([
   'V3_AQUA_INDICATOR',
@@ -77,7 +138,13 @@ const ART_MATERIAL_NAMES = Object.freeze([
 const WARMUP_FRAME_COUNT = 60;
 const PROFILE_FRAME_COUNT = 180;
 
-type InspectionView = 'gameplay' | 'north' | 'south' | 'overhead';
+type InspectionView =
+  | 'gameplay'
+  | 'north'
+  | 'south'
+  | 'overhead'
+  | 'archive_rise'
+  | 'archive_landing';
 
 interface RendererFacts {
   readonly calls: number;
@@ -177,6 +244,17 @@ interface RuntimeState {
   readonly host: ReturnType<typeof browserHostFacts>;
   readonly runtimeErrors: string[];
   readonly cameraSweep: CameraSweepState;
+  readonly candidateBinding: Awaited<ReturnType<
+    typeof loadInkfallRev4CandidateAuthorityBinding
+  >> | null;
+  readonly candidateSceneAlignment: ReturnType<typeof inspectInkfallRev4CandidateScene> | null;
+  readonly candidateTraversal: Awaited<ReturnType<
+    typeof runInkfallRev4PressArchiveTraversal
+  >> | null;
+  readonly activeViewPresets: Readonly<Partial<Record<InspectionView, {
+    readonly position: readonly [number, number, number];
+    readonly target: readonly [number, number, number];
+  }>>>;
   currentView: InspectionView;
   authorityOverlayVisible: boolean;
 }
@@ -195,15 +273,37 @@ declare global {
   }
 }
 
-const VIEW_PRESETS: Readonly<Record<InspectionView, {
+const VIEW_PRESETS: Readonly<Partial<Record<InspectionView, {
   readonly position: readonly [number, number, number];
   readonly target: readonly [number, number, number];
-}>> = Object.freeze({
+}>>> = Object.freeze({
   gameplay: Object.freeze({ position: [-15.8, 1.72, 0.8] as const, target: [0, 2.62, 0] as const }),
   north: Object.freeze({ position: [-11.8, 1.72, 1.3] as const, target: [0, 2.78, -6.55] as const }),
   south: Object.freeze({ position: [11.8, 1.72, -1] as const, target: [0, 2.78, 7.15] as const }),
   overhead: Object.freeze({ position: [-14, 6.35, 6.5] as const, target: [0, 2.2, 0.3] as const }),
 });
+const REV4_VIEW_PRESETS = Object.freeze({
+  ...VIEW_PRESETS,
+  gameplay: Object.freeze({
+    position: [16, 1.72, 7] as const,
+    target: [-18, 4.5, -11] as const,
+  }),
+  overhead: Object.freeze({
+    position: [-1.62, 42.76, -6.38] as const,
+    target: [-1.62, 0, -6.38] as const,
+  }),
+  archive_rise: Object.freeze({
+    position: [-12.8, 2.25, -1.1] as const,
+    target: [-19, 4.2, -12] as const,
+  }),
+  archive_landing: Object.freeze({
+    position: [-16.2, 7.2, -11.2] as const,
+    target: [-22, 6.8, -19] as const,
+  }),
+} satisfies Readonly<Partial<Record<InspectionView, {
+  readonly position: readonly [number, number, number];
+  readonly target: readonly [number, number, number];
+}>>>);
 
 function element<K extends keyof HTMLElementTagNameMap>(
   tagName: K,
@@ -399,7 +499,7 @@ function inspectGlbDocument(bytes: Uint8Array): GlbDocumentFacts {
   });
 }
 
-function inspectArt(root: THREE.Object3D): ArtInspectionFacts {
+function inspectArt(root: THREE.Object3D, artConfig: ArtConfig): ArtInspectionFacts {
   let nodeCount = 0;
   let meshCount = 0;
   let primitiveCount = 0;
@@ -436,10 +536,10 @@ function inspectArt(root: THREE.Object3D): ArtInspectionFacts {
       });
     }).sort((left, right) => left.name.localeCompare(right.name))),
   });
-  if (facts.nodeCount !== ART_NODE_COUNT
-    || facts.meshCount !== ART_MESH_COUNT
-    || facts.primitiveCount !== ART_PRIMITIVE_COUNT
-    || facts.triangleCount !== ART_TRIANGLE_COUNT
+  if (facts.nodeCount !== artConfig.nodeCount
+    || facts.meshCount !== artConfig.meshCount
+    || facts.primitiveCount !== artConfig.primitiveCount
+    || facts.triangleCount !== artConfig.triangleCount
     || facts.materialCount !== ART_MATERIAL_COUNT) {
     throw new Error(`PRESS_HALL_ART_STRUCTURE_MISMATCH ${JSON.stringify(facts)}`);
   }
@@ -531,9 +631,12 @@ function matrixForFixture(
   );
 }
 
-function createAuthorityOverlay(loaded: LoadedRuntimeMapPackage): THREE.Group {
+function createAuthorityOverlay(
+  loaded: LoadedRuntimeMapPackage,
+  includeZoneVolumes = false,
+): THREE.Group {
   const group = new THREE.Group();
-  group.name = 'REVISION_2_AUTHORITY_INSPECTION_OVERLAY_NOT_ART_AUTHORITY';
+  group.name = `REVISION_${loaded.identity.revision}_AUTHORITY_INSPECTION_OVERLAY_NOT_ART_AUTHORITY`;
 
   const unitBox = new THREE.BoxGeometry(1, 1, 1);
   const solidMaterial = new THREE.MeshBasicMaterial({
@@ -548,7 +651,7 @@ function createAuthorityOverlay(loaded: LoadedRuntimeMapPackage): THREE.Group {
     solidMaterial,
     loaded.authority.fixture.solids.length,
   );
-  solids.name = 'LOCKED_REVISION_2_AUTHORITY_SOLIDS';
+  solids.name = `LOCKED_REVISION_${loaded.identity.revision}_AUTHORITY_SOLIDS`;
   loaded.authority.fixture.solids.forEach((solid, index) => {
     if (solid.shape.type !== 'box') throw new Error('PRESS_HALL_AUTHORITY_NON_BOX_UNSUPPORTED');
     solids.setMatrixAt(index, matrixForFixture(
@@ -572,7 +675,7 @@ function createAuthorityOverlay(loaded: LoadedRuntimeMapPackage): THREE.Group {
     volumeMaterial,
     loaded.authority.fixture.volumes.length,
   );
-  volumes.name = 'LOCKED_REVISION_2_AUTHORITY_VOLUMES';
+  volumes.name = `LOCKED_REVISION_${loaded.identity.revision}_AUTHORITY_VOLUMES`;
   loaded.authority.fixture.volumes.forEach((volume, index) => {
     if (volume.shape.type !== 'box') throw new Error('PRESS_HALL_AUTHORITY_VOLUME_NON_BOX');
     volumes.setMatrixAt(index, matrixForFixture(
@@ -591,7 +694,7 @@ function createAuthorityOverlay(loaded: LoadedRuntimeMapPackage): THREE.Group {
     spawnMaterial,
     loaded.manifest.spawns.length,
   );
-  spawns.name = 'LOCKED_REVISION_2_SPAWN_MARKERS';
+  spawns.name = `LOCKED_REVISION_${loaded.identity.revision}_SPAWN_MARKERS`;
   loaded.manifest.spawns.forEach((spawn, index) => {
     spawns.setMatrixAt(index, new THREE.Matrix4().makeTranslation(
       spawn.feetPositionMm.x / 1_000,
@@ -601,6 +704,38 @@ function createAuthorityOverlay(loaded: LoadedRuntimeMapPackage): THREE.Group {
   });
   spawns.instanceMatrix.needsUpdate = true;
   group.add(spawns);
+  if (includeZoneVolumes) {
+    const zoneMaterial = new THREE.MeshBasicMaterial({
+      color: 0x53a7ff,
+      transparent: true,
+      opacity: 0.09,
+      wireframe: true,
+      depthWrite: false,
+    });
+    const zones = new THREE.InstancedMesh(
+      unitBox,
+      zoneMaterial,
+      loaded.manifest.zones.length,
+    );
+    zones.name = `LOCKED_REVISION_${loaded.identity.revision}_ZONE_DEBUG_VOLUMES`;
+    loaded.manifest.zones.forEach((zone, index) => {
+      zones.setMatrixAt(index, new THREE.Matrix4().compose(
+        new THREE.Vector3(
+          zone.centerMm.x / 1_000,
+          zone.centerMm.y / 1_000,
+          -zone.centerMm.z / 1_000,
+        ),
+        new THREE.Quaternion(),
+        new THREE.Vector3(
+          (zone.halfExtentsMm.x * 2) / 1_000,
+          (zone.halfExtentsMm.y * 2) / 1_000,
+          (zone.halfExtentsMm.z * 2) / 1_000,
+        ),
+      ));
+    });
+    zones.instanceMatrix.needsUpdate = true;
+    group.add(zones);
+  }
   return group;
 }
 
@@ -640,7 +775,9 @@ function buildSnapshot(state: RuntimeState) {
   const revisionToken = state.artConfig.revision.replace('.', '_');
   return Object.freeze({
     schemaVersion: 1,
-    status: `PRESS_HALL_V${revisionToken}_RUNTIME_INSPECTION_READY_G5_G8_OPEN`,
+    status: state.artConfig.revision === '4.1'
+      ? 'PRESS_ARCHIVE_REV4_1_RUNTIME_CANDIDATE_READY_G5_OPEN'
+      : `PRESS_HALL_V${revisionToken}_RUNTIME_INSPECTION_READY_G5_G8_OPEN`,
     selection: Object.freeze({
       source: state.selection.source,
       explicit: true,
@@ -704,9 +841,16 @@ function buildSnapshot(state: RuntimeState) {
       authorityVolumeCount: state.loadedMap.authority.fixture.volumes.length,
       spawnCount: state.loadedMap.manifest.spawns.length,
       zoneCount: state.loadedMap.manifest.zones.length,
+      pickupCount: state.loadedMap.manifest.pickups.length,
+      triggerCount: state.loadedMap.manifest.triggers.length,
+      supportedModes: Object.freeze([...state.loadedMap.manifest.supportedModes]),
       artGeometryMayBeAuthority: false,
       overlayVisible: state.authorityOverlayVisible,
       coordinateBinding: 'map X/Y/Z millimeters -> glTF X/Y/-Z meters',
+      candidateContract: state.candidateBinding?.authorityAlignment ?? null,
+      candidateScene: state.candidateSceneAlignment,
+      candidateTraversal: state.candidateTraversal,
+      roleSeparation: state.candidateBinding?.roleSeparation ?? null,
     }),
     renderer: Object.freeze({
       artOnly: state.artRendererFacts,
@@ -725,7 +869,7 @@ function buildSnapshot(state: RuntimeState) {
     }),
     camera: Object.freeze({
       currentView: state.currentView,
-      presetCount: Object.keys(VIEW_PRESETS).length,
+      presetCount: Object.keys(state.activeViewPresets).length,
       sweep: Object.freeze({
         kind: 'camera_only_visual_readability_sweep',
         status: state.cameraSweep.status,
@@ -737,6 +881,7 @@ function buildSnapshot(state: RuntimeState) {
     browserRuntimeErrors: Object.freeze([...state.runtimeErrors]),
     productBoundary: Object.freeze({
       explicitNonDefaultInspection: true,
+      rev4ArtRev3AuthorityCandidate: state.artConfig.revision === '4.1',
       loadedIntoOfflinePractice: false,
       playableMatch: false,
       shippingDefaultChanged: false,
@@ -797,12 +942,12 @@ export async function mountPressHallInspectionRoute(
   window.addEventListener('unhandledrejection', (event) => runtimeErrors.push(String(event.reason)), { passive: true });
 
   const source = getBundledMapPackageSource(request.mapId, request.mapRevision);
-  if (!source) throw new Error('PRESS_HALL_REVISION_2_PACKAGE_NOT_BUNDLED');
+  if (!source) throw new Error(`PRESS_HALL_AUTHORITY_PACKAGE_NOT_BUNDLED revision=${request.mapRevision}`);
   const fetchStartedAt = performance.now();
-  const [artBytes, lockedRenderBytes, lockedCollisionBytes] = await Promise.all([
-    fetchBytes(artConfig.url, `press_hall_v${artConfig.revision}_joined_art`),
-    fetchBytes(lockedRenderArtifactUrl, 'locked_revision_2_render'),
-    fetchBytes(lockedCollisionArtifactUrl, 'locked_revision_2_collision'),
+  const [artBytes, packageRenderBytes, authorityCollisionBytes] = await Promise.all([
+    fetchBytes(artConfig.url, `map_art_v${artConfig.revision}_joined_art`),
+    fetchBytes(artConfig.packageRenderUrl, `revision_${request.mapRevision}_package_render`),
+    fetchBytes(artConfig.authorityCollisionUrl, `revision_${request.mapRevision}_authority_collision`),
   ]);
   const fetchEndedAt = performance.now();
   if (artBytes.byteLength !== artConfig.bytes) {
@@ -825,30 +970,48 @@ export async function mountPressHallInspectionRoute(
   }
 
   const authorityStartedAt = performance.now();
-  const loadedMap = await loadRuntimeMapPackage(source, {
-    render: lockedRenderBytes,
-    collision: lockedCollisionBytes,
+  const candidateBinding = artConfig.revision === '4.1'
+    ? await loadInkfallRev4CandidateAuthorityBinding(source, {
+      presentationArt: artBytes,
+      packageRender: packageRenderBytes,
+      authorityCollision: authorityCollisionBytes,
+    })
+    : null;
+  const loadedMap = candidateBinding?.loaded ?? await loadRuntimeMapPackage(source, {
+    render: packageRenderBytes,
+    collision: authorityCollisionBytes,
   });
   const authorityEndedAt = performance.now();
-  if (loadedMap.identity.id !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.mapId
-    || loadedMap.identity.revision !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.mapRevision
-    || loadedMap.identity.packageDigest !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.packageDigest
-    || loadedMap.authority.fixtureHash !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.fixtureHash
-    || loadedMap.authority.fixture.solids.length !== INKFALL_AUTHORITY_MAP_IDENTITY_V2.colliderCardinality) {
-    throw new Error('PRESS_HALL_REVISION_2_AUTHORITY_IDENTITY_MISMATCH');
+  if (loadedMap.identity.id !== artConfig.authorityIdentity.mapId
+    || loadedMap.identity.revision !== artConfig.authorityIdentity.mapRevision
+    || loadedMap.identity.packageDigest !== artConfig.authorityIdentity.packageDigest
+    || loadedMap.authority.fixtureHash !== artConfig.authorityIdentity.fixtureHash
+    || loadedMap.authority.fixture.solids.length !== artConfig.authorityIdentity.colliderCardinality) {
+    throw new Error(`PRESS_HALL_AUTHORITY_IDENTITY_MISMATCH revision=${request.mapRevision}`);
   }
+  const candidateTraversal = artConfig.revision === '4.1'
+    ? await runInkfallRev4PressArchiveTraversal(loadedMap)
+    : null;
 
   const parseStartedAt = performance.now();
   const art = await parseGltf(artBytes);
-  const artFacts = inspectArt(art);
+  const artFacts = inspectArt(art, artConfig);
+  const candidateSceneAlignment = artConfig.revision === '4.1'
+    ? inspectInkfallRev4CandidateScene(art)
+    : null;
   const runtimeMaterialAudit = auditRuntimeMaterials(documentFacts, artFacts, artConfig);
   const parseEndedAt = performance.now();
-  art.name = `PRESS_HALL_V${artConfig.revision.replace('.', '_')}_PRESENTATION_ONLY`;
+  art.name = `${artConfig.presentationLabel.toUpperCase().replaceAll(' ', '_')}_V${
+    artConfig.revision.replace('.', '_')
+  }_PRESENTATION_ONLY`;
 
   const canvas = element('canvas', 'ph-runtime__canvas');
   canvas.id = 'press-hall-runtime-canvas';
   canvas.tabIndex = 0;
-  canvas.setAttribute('aria-label', `Interactive Press Hall v${artConfig.revision} joined-art runtime inspection viewport`);
+  canvas.setAttribute(
+    'aria-label',
+    `Interactive ${artConfig.presentationLabel} v${artConfig.revision} joined-art runtime inspection viewport`,
+  );
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
@@ -860,6 +1023,22 @@ export async function mountPressHallInspectionRoute(
   scene.background = new THREE.Color(0x0b1012);
   scene.fog = new THREE.Fog(0x0b1012, 35, 78);
   scene.add(art);
+  if (candidateTraversal) {
+    const guide = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(
+        INKFALL_REV4_ART_ROUTE_RUNTIME_METERS.map((point) => new THREE.Vector3(...point)),
+      ),
+      new THREE.LineBasicMaterial({
+        color: 0x50dfd2,
+        transparent: true,
+        opacity: 0.95,
+        depthTest: false,
+      }),
+    );
+    guide.name = 'REV4_PRESS_WEST_ARCHIVE_EXECUTABLE_TRAVERSAL_GUIDE_NOT_AUTHORITY';
+    guide.renderOrder = 50;
+    scene.add(guide);
+  }
   scene.add(new THREE.HemisphereLight(0xbfd8ff, 0x20150d, 1.85));
   const key = new THREE.DirectionalLight(0xffe1bd, 3.1);
   key.position.set(-12, 18, 11);
@@ -871,7 +1050,7 @@ export async function mountPressHallInspectionRoute(
   rim.position.set(0, 4, 13);
   scene.add(rim);
 
-  const authorityOverlay = createAuthorityOverlay(loadedMap);
+  const authorityOverlay = createAuthorityOverlay(loadedMap, artConfig.revision === '4.1');
   scene.add(authorityOverlay);
   const camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.05, 160);
   const controls = new OrbitControls(camera, canvas);
@@ -880,11 +1059,14 @@ export async function mountPressHallInspectionRoute(
   controls.minDistance = 0.5;
   controls.maxDistance = 80;
   controls.maxPolarAngle = Math.PI * 0.49;
+  const activeViewPresets = artConfig.revision === '4.1'
+    ? REV4_VIEW_PRESETS
+    : VIEW_PRESETS;
   let currentView: InspectionView = 'gameplay';
   let state: RuntimeState | null = null;
   function selectView(view: InspectionView): void {
-    if (!(view in VIEW_PRESETS)) throw new Error(`PRESS_HALL_UNKNOWN_VIEW ${view}`);
-    const preset = VIEW_PRESETS[view];
+    const preset = activeViewPresets[view];
+    if (!preset) throw new Error(`PRESS_HALL_UNKNOWN_VIEW ${view}`);
     camera.position.fromArray(preset.position);
     controls.target.fromArray(preset.target);
     controls.update();
@@ -899,7 +1081,13 @@ export async function mountPressHallInspectionRoute(
   const ui = element('main', 'ph-runtime__ui');
   ui.id = 'press-hall-inspection-result';
   const rail = element('div', 'ph-runtime__rail');
-  rail.append(element('div', 'ph-runtime__boundary', 'Explicit non-default runtime inspection · presentation art + separate revision-2 authority overlay · G5 / G8 open'));
+  rail.append(element(
+    'div',
+    'ph-runtime__boundary',
+    `Explicit non-default runtime inspection · presentation art + separate revision-${
+      loadedMap.identity.revision
+    } authority overlay · G5 / G8 open`,
+  ));
   const back = element('a', 'ph-runtime__return', '← Offline Practice');
   back.href = window.location.pathname;
   rail.append(back);
@@ -907,24 +1095,24 @@ export async function mountPressHallInspectionRoute(
 
   const panel = element('section', 'ph-runtime__panel');
   panel.append(
-    element('p', 'ph-runtime__kicker', 'Inkfall Foundry · Press Hall candidate'),
-    element('h1', '', `Press Hall v${artConfig.revision}`),
+    element('p', 'ph-runtime__kicker', `Inkfall Foundry · ${artConfig.presentationLabel} candidate`),
+    element('h1', '', `${artConfig.presentationLabel} v${artConfig.revision}`),
     element('p', 'ph-runtime__identity', `${request.reference}\nart ${artConfig.sha256}\nauthority ${loadedMap.identity.packageDigest}\nfixture ${loadedMap.authority.fixtureHash}`),
   );
   const facts = element('div', 'ph-runtime__facts');
   const callsFact = fact('art calls', 'profiling');
-  const frameFact = fact('frame p95', 'profiling');
+  const frameFact = fact('capture p95', 'profiling');
   facts.append(
     callsFact,
-    fact('triangles', ART_TRIANGLE_COUNT.toLocaleString('en-US')),
+    fact('triangles', artConfig.triangleCount.toLocaleString('en-US')),
     frameFact,
-    fact('primitives', String(ART_PRIMITIVE_COUNT)),
+    fact('primitives', String(artConfig.primitiveCount)),
     fact('colliders', String(loadedMap.authority.fixture.solids.length)),
     fact('payload', `${(artConfig.bytes / 1_000_000).toFixed(2)} MB`),
   );
   panel.append(facts);
   const controlsRow = element('div', 'ph-runtime__controls');
-  for (const view of Object.keys(VIEW_PRESETS) as InspectionView[]) {
+  for (const view of Object.keys(activeViewPresets) as InspectionView[]) {
     const button = element('button', '', view);
     button.type = 'button';
     button.dataset.pressHallView = view;
@@ -942,7 +1130,13 @@ export async function mountPressHallInspectionRoute(
   sweepButton.id = 'press-hall-camera-sweep';
   controlsRow.append(sweepButton);
   panel.append(controlsRow);
-  const profileText = element('p', 'ph-runtime__profile', `LOADING VERIFIED GLB · ${ART_NODE_COUNT} NODES · ${ART_PRIMITIVE_COUNT} PRIMITIVES\nAuthority boxes are inspection overlays only; render geometry is never authority.`);
+  const profileText = element(
+    'p',
+    'ph-runtime__profile',
+    `LOADING VERIFIED GLB · ${artConfig.nodeCount} NODES · ${
+      artConfig.primitiveCount
+    } PRIMITIVES\nAuthority boxes are inspection overlays only; render geometry is never authority.`,
+  );
   panel.append(profileText);
   ui.append(panel);
   ui.append(element('p', 'ph-runtime__footer', 'Camera sweep is visual-only · no collision/no-snag claim · not final art · no human acceptance · not shipping default · G5 and G8 remain open'));
@@ -978,9 +1172,9 @@ export async function mountPressHallInspectionRoute(
   const overlayRendererFacts = rendererFacts(renderer);
   authorityOverlay.visible = originalOverlayVisibility;
   if (artRendererFacts.calls < 1
-    || artRendererFacts.calls > ART_PRIMITIVE_COUNT
+    || artRendererFacts.calls > artConfig.primitiveCount
     || artRendererFacts.triangles < 1
-    || artRendererFacts.triangles > ART_TRIANGLE_COUNT) {
+    || artRendererFacts.triangles > artConfig.triangleCount) {
     throw new Error(`PRESS_HALL_RENDERER_FACT_MISMATCH ${JSON.stringify(artRendererFacts)}`);
   }
 
@@ -1019,6 +1213,10 @@ export async function mountPressHallInspectionRoute(
     host: browserHostFacts(renderer),
     runtimeErrors,
     cameraSweep,
+    candidateBinding,
+    candidateSceneAlignment,
+    candidateTraversal,
+    activeViewPresets,
     currentView,
     authorityOverlayVisible: authorityOverlay.visible,
   };
@@ -1038,7 +1236,9 @@ export async function mountPressHallInspectionRoute(
       cameraSweep.startedAtMs = performance.now();
       cameraSweep.completedSegments = 0;
       sweepButton.disabled = true;
-      const sequence: readonly InspectionView[] = ['gameplay', 'north', 'overhead', 'south', 'gameplay'];
+      const sequence: readonly InspectionView[] = artConfig.revision === '4.1'
+        ? ['gameplay', 'archive_rise', 'archive_landing', 'overhead', 'gameplay']
+        : ['gameplay', 'north', 'overhead', 'south', 'gameplay'];
       for (let index = 0; index < sequence.length; index += 1) {
         selectView(sequence[index]);
         const segmentStarted = performance.now();
@@ -1073,13 +1273,23 @@ export async function mountPressHallInspectionRoute(
     `VERIFIED + PARSED · ART ${artRendererFacts.calls} CALLS / ${artRendererFacts.triangles.toLocaleString('en-US')} TRIANGLES`,
     `WITH AUTHORITY OVERLAY · ${overlayRendererFacts.calls} CALLS / ${loadedMap.authority.fixture.solids.length} LOCKED SOLIDS`,
     `FRAME ${measuredFrameProfile.count} SAMPLES AFTER ${WARMUP_FRAME_COUNT} WARMUP · P50 ${measuredFrameProfile.p50Ms.toFixed(2)} · P95 ${measuredFrameProfile.p95Ms.toFixed(2)} · P99 ${measuredFrameProfile.p99Ms.toFixed(2)} MS`,
+    'CAPTURE PERF UNQUALIFIED · HEADLESS DEV/TEST ENVIRONMENT · NOT SHIPPING-HARDWARE ACCEPTANCE',
     artConfig.revision === '3.2'
       ? `RUNTIME MATERIAL BLOCKER · ${documentFacts.explicitBaseColorFactorCount}/${ART_MATERIAL_COUNT} EXPLICIT BASE COLORS · ${documentFacts.baseColorTextureReferenceCount} BASE-COLOR TEXTURES`
       : `RUNTIME MATERIAL VERIFIED · ${documentFacts.explicitBaseColorFactorCount}/${ART_MATERIAL_COUNT} EXPLICIT BASE COLORS · ${runtimeMaterialAudit.whiteFallbackMaterialCount} WHITE FALLBACKS · MAX COLOR DELTA ${runtimeMaterialAudit.maximumBaseColorDelta}`,
+    ...(candidateBinding
+      ? [
+        `REV4/REV3 BINDING · ROUTE Δ ${candidateBinding.authorityAlignment.maximumRoutePointPlanarDeltaMm} MM PLANAR / ${candidateBinding.authorityAlignment.maximumRoutePointVerticalDeltaMm} MM VERTICAL`,
+        `EXECUTABLE AUTHORITY ROUTE · ${candidateTraversal?.totalTickCount ?? 0} TICKS · PRESS HALL → WEST ASCENT → ARCHIVE PASS`,
+        `ZONE/SPAWN DEBUG · ${loadedMap.manifest.zones.length} ZONES / ${loadedMap.manifest.spawns.length} SPAWNS · ART NEVER ENTERS AUTHORITY LOADER`,
+      ]
+      : []),
     'Authority boxes are inspection overlays only; render geometry is never authority.',
   ].join('\n');
-  document.title = `Press Hall v${artConfig.revision} — Runtime Inspection`;
-  root.dataset.launchSupport = `press-hall-v${artConfig.revision.replace('.', '-')}-inspection`;
+  document.title = `${artConfig.presentationLabel} v${artConfig.revision} — Runtime Inspection`;
+  root.dataset.launchSupport = artConfig.revision === '4.1'
+    ? 'press-archive-rev4-1-rev3-authority-candidate'
+    : `press-hall-v${artConfig.revision.replace('.', '-')}-inspection`;
   root.dataset.pressHallStatus = 'ready';
   root.dataset.pressHallReference = request.reference;
   root.dataset.catalogDefault = `${DEFAULT_MAP_ID}@${DEFAULT_MAP_REVISION}`;

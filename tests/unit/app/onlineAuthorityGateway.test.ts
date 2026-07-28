@@ -6,12 +6,16 @@ import {
   createOnlineAuthorityRoom,
   createOnlineCombatRoom,
   createOnlineInkfallRevision2CombatRoom,
+  createOnlineInkfallRevision4CombatRoom,
   verifyOnlineInkfallRevision2CombatRoom,
+  verifyOnlineInkfallRevision4CombatRoom,
   type OnlineAuthorityFetch,
 } from '../../../src/app/onlineAuthorityGateway';
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV2_MAP_BINDING,
+  ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  ONLINE_INKFALL_REV4_MAP_BINDING,
 } from '../../../src/app/onlineAuthorityProfiles';
 
 function response(status: number, payload: unknown) {
@@ -123,6 +127,61 @@ describe('createOnlineAuthorityRoom', () => {
         },
       },
     );
+  });
+
+  it('creates and verifies the complete Rev4 presentation / Rev3 authority binding', async () => {
+    const payload = {
+      ok: true,
+      roomCode: 'KYX-RV4234',
+      roomProfile: ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_INKFALL_REV4_MAP_BINDING,
+    };
+    const createFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(createOnlineInkfallRevision4CombatRoom(
+      'https://authority.example.test',
+      createFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-RV4234',
+      roomProfile: ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_INKFALL_REV4_MAP_BINDING,
+    });
+    expect(createFetch).toHaveBeenCalledWith(
+      'https://authority.example.test/api/rooms/create',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          [ONLINE_COMBAT_PROFILE_HEADER]: ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+        },
+      },
+    );
+
+    const joinFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(verifyOnlineInkfallRevision4CombatRoom(
+      'https://authority.example.test',
+      'kyx-rv4234',
+      joinFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-RV4234',
+      roomProfile: ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_INKFALL_REV4_MAP_BINDING,
+    });
+
+    const drifted = vi.fn<OnlineAuthorityFetch>(async () => response(201, {
+      ...payload,
+      mapBinding: {
+        ...ONLINE_INKFALL_REV4_MAP_BINDING,
+        render: {
+          ...ONLINE_INKFALL_REV4_MAP_BINDING.render,
+          renderMeshesMayBeAuthority: true,
+        },
+      },
+    }));
+    await expect(verifyOnlineInkfallRevision4CombatRoom(
+      'https://authority.example.test',
+      'KYX-RV4234',
+      drifted,
+    )).rejects.toThrow(ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID);
   });
 
   it('fails closed on a missing profile, binding drift, or cross-room join response', async () => {

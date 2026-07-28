@@ -7,13 +7,28 @@ import { fileURLToPath } from 'node:url';
 
 import { chromium } from 'playwright';
 
-const PROFILE = 'p511-inkfall-foundry-revision-2-combat-v1';
+const REV2_PROFILE = 'p511-inkfall-foundry-revision-2-combat-v1';
+const REV4_PROFILE = 'g5-inkfall-foundry-rev4-revision-3-authority-v1';
+const requestedProfileArgument = process.argv.find((argument) => argument.startsWith('--profile='));
+const PROFILE = requestedProfileArgument?.slice('--profile='.length) ?? REV2_PROFILE;
+assert.ok(
+  PROFILE === REV2_PROFILE || PROFILE === REV4_PROFILE,
+  `Unsupported Inkfall evidence profile: ${PROFILE}`,
+);
+const REV4_ACCEPTANCE_CAPTURE = PROFILE === REV4_PROFILE;
 const FLAT_COMBAT_PROFILE = 'p58d-rev3-combat-v1';
 const PROFILE_HEADER = 'x-kyx-evidence-profile';
 const FRONTEND_ORIGIN = 'http://127.0.0.1:5173';
 const AUTHORITY_ORIGIN = 'http://127.0.0.1:8787';
 const AUTHORITY_WEBSOCKET_ORIGIN = AUTHORITY_ORIGIN.replace(/^http/u, 'ws');
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const revision3Package = JSON.parse(await fs.readFile(
+  path.join(
+    repo,
+    'assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json',
+  ),
+  'utf8',
+));
 const output = path.resolve(
   repo,
   process.argv[2] ?? 'evidence/2026-07-22/phase-5-p5-15/runtime-v1',
@@ -37,23 +52,15 @@ const ACCEPTABLE_REMOTE_INTERPOLATION_MODES = new Set([
   'held',
 ]);
 
-const expectedBinding = Object.freeze({
-  mapReference: 'inkfall_foundry@2',
-  mapId: 'inkfall_foundry',
-  mapRevision: 2,
+const rev2ExpectedBinding = Object.freeze({
+  mapReference: 'inkfall_foundry@2', mapId: 'inkfall_foundry', mapRevision: 2,
   packageDigest: '77a7b6c41416f9caaf615f3af5dacda1153cee65a239c04f2004e30fc1663520',
-  fixtureId: 'inkfall_foundry_map_collision',
-  fixtureHash: 'bf85e42731fd088e',
-  xAxis: 'east',
-  yAxis: 'up',
-  zAxis: 'north',
-  origin: 'press_core_floor_contact',
-  gltfToMap: 'x_y_negative_z',
-  distanceUnit: 'millimeters',
-  angleUnit: 'milli_degrees',
-  colliderCardinality: 339,
+  fixtureId: 'inkfall_foundry_map_collision', fixtureHash: 'bf85e42731fd088e',
+  xAxis: 'east', yAxis: 'up', zAxis: 'north', origin: 'press_core_floor_contact',
+  gltfToMap: 'x_y_negative_z', distanceUnit: 'millimeters',
+  angleUnit: 'milli_degrees', colliderCardinality: 339,
 });
-const expectedSpawns = Object.freeze([
+const rev2ExpectedSpawns = Object.freeze([
   Object.freeze({ spawnId: 'spawn_w_press_a', set: 'west_team', feetPosition: Object.freeze({ x: -33_500, y: 0, z: -3_500 }), yawMilliDegrees: 0 }),
   Object.freeze({ spawnId: 'spawn_e_press_a', set: 'east_team', feetPosition: Object.freeze({ x: 33_500, y: 0, z: 3_500 }), yawMilliDegrees: 180_000 }),
   Object.freeze({ spawnId: 'spawn_w_press_b', set: 'west_team', feetPosition: Object.freeze({ x: -33_500, y: 0, z: 3_500 }), yawMilliDegrees: 0 }),
@@ -63,13 +70,95 @@ const expectedSpawns = Object.freeze([
   Object.freeze({ spawnId: 'spawn_w_archive', set: 'west_team', feetPosition: Object.freeze({ x: -30_500, y: 0, z: 7_000 }), yawMilliDegrees: 25_000 }),
   Object.freeze({ spawnId: 'spawn_e_archive', set: 'east_team', feetPosition: Object.freeze({ x: 30_500, y: 0, z: 7_000 }), yawMilliDegrees: 155_000 }),
 ]);
+const rev4SpawnOrder = Object.freeze([
+  'spawn_w_press_a', 'spawn_e_press_a', 'spawn_w_press_b', 'spawn_e_press_b',
+  'spawn_w_ink', 'spawn_e_ink', 'spawn_w_archive', 'spawn_e_archive',
+  'spawn_dm_ink_w', 'spawn_dm_ink_e', 'spawn_dm_archive_w', 'spawn_dm_archive_e',
+]);
+const revision3SpawnsById = new Map(revision3Package.spawns.map((spawn) => [spawn.id, spawn]));
+const rev4ExpectedSpawns = Object.freeze(rev4SpawnOrder.map((spawnId) => {
+  const spawn = revision3SpawnsById.get(spawnId);
+  assert.notEqual(spawn, undefined, `Revision 3 spawn ${spawnId}`);
+  return Object.freeze({
+    spawnId: spawn.id,
+    set: spawn.set,
+    feetPosition: Object.freeze({ ...spawn.feetPositionMm }),
+    yawMilliDegrees: spawn.yawMilliDegrees,
+    escapeRouteFamilies: Object.freeze([...spawn.escapeRouteFamilies]),
+    validationStatus: spawn.validationStatus,
+  });
+}));
+const rev4ExpectedBinding = Object.freeze({
+  mapReference: 'inkfall_foundry@3',
+  presentationReference:
+    'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined',
+  mapId: 'inkfall_foundry',
+  mapRevision: 3,
+  packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+  fixtureId: 'inkfall_foundry_map_collision',
+  fixtureHash: '6cf785c5171f2ff5',
+  xAxis: 'east',
+  yAxis: 'up',
+  zAxis: 'north',
+  origin: 'press_core_floor_contact',
+  gltfToMap: 'x_y_negative_z',
+  distanceUnit: 'millimeters',
+  angleUnit: 'milli_degrees',
+  colliderCardinality: 339,
+  render: Object.freeze({
+    role: 'render_only',
+    path:
+      'art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
+    sha256: '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00',
+    bytes: 12_954_608,
+    renderMeshesMayBeAuthority: false,
+  }),
+  collision: Object.freeze({
+    role: 'authority_collision',
+    path: 'revisions/revision-3/export/collision.authority.glb',
+    sha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
+    bytes: 605_112,
+  }),
+  supportedModes: Object.freeze(['deathmatch', 'team_deathmatch']),
+  spawns: rev4ExpectedSpawns,
+  zones: Object.freeze(revision3Package.zones.map((zone) => Object.freeze({
+    zoneId: zone.id,
+    callout: zone.callout,
+    family: zone.family,
+    center: Object.freeze({ ...zone.centerMm }),
+    halfExtents: Object.freeze({ ...zone.halfExtentsMm }),
+  }))),
+  pickups: Object.freeze([]),
+  triggers: Object.freeze(revision3Package.triggers.map((trigger) => Object.freeze({
+    ...trigger,
+    centerMm: Object.freeze({ ...trigger.centerMm }),
+    halfExtentsMm: Object.freeze({ ...trigger.halfExtentsMm }),
+    destinationFeetMm: Object.freeze({ ...trigger.destinationFeetMm }),
+  }))),
+  telemetry: Object.freeze({
+    schemaVersion: 1,
+    authoritySource: 'durable_object_room_metrics_v1',
+    counters: Object.freeze([
+      'connectedPlayers', 'receivedCommands', 'rejectedCommands',
+      'resumeSuccesses', 'authorityTickExecution', 'transport',
+    ]),
+    zoneCount: 9,
+    pickupCount: 0,
+  }),
+});
+const expectedBinding = REV4_ACCEPTANCE_CAPTURE
+  ? rev4ExpectedBinding
+  : rev2ExpectedBinding;
+const expectedSpawns = REV4_ACCEPTANCE_CAPTURE
+  ? Object.freeze(rev4ExpectedSpawns.slice(0, 8))
+  : rev2ExpectedSpawns;
 const expectedIdentity = Object.freeze({
   mapId: 'inkfall_foundry',
   rulesetId: 'revamped_classic',
   rulesetRevision: 3,
   rulesetHash: 'd5f0418d1d927370',
   fixtureId: 'inkfall_foundry_map_collision',
-  fixtureHash: 'bf85e42731fd088e',
+  fixtureHash: expectedBinding.fixtureHash,
   physicsAdapterId: 'rapier3d_deterministic_compat',
   physicsAdapterVersion: '0.19.3',
 });
@@ -118,6 +207,9 @@ const sourceFiles = Object.freeze([
   'src/app/onlineAuthorityGateway.ts',
   'src/app/onlineAuthorityInkfallWorld.ts',
   'src/app/onlineAuthorityRoute.ts',
+  'src/app/inkfallRev4CandidateBinding.ts',
+  'src/app/inkfallRev4CandidateTraversal.ts',
+  'src/app/inkfallRev3ReviewAudit.ts',
   'src/dev/authorityEvidenceClient.ts',
   'src/dev/authorityEvidenceModel.ts',
   'src/dev/authorityEvidenceTransport.ts',
@@ -166,6 +258,10 @@ const sourceFiles = Object.freeze([
   'src/sim/movement/replay.ts',
   'src/sim/movement/state.ts',
   'assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json',
+  'assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json',
+  'assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json',
+  'assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
   'worker/combatRuntime.ts',
   'worker/env.ts',
   'worker/rapierRuntime.ts',
@@ -183,6 +279,9 @@ const sourceFiles = Object.freeze([
   'tests/worker/combatPresentationProjection.test.ts',
   'tests/worker/combatRev3.test.ts',
   'tests/worker/inkfallRev2CombatProfile.test.ts',
+  'tests/integration/physics/inkfallRev4AuthorityProfile.test.ts',
+  'tests/integration/physics/inkfallRev4CandidateBinding.test.ts',
+  'tests/integration/movement/inkfallRev3ReviewAudit.test.ts',
   'tests/integration/authority/inkfallAuthorityPlaytest.test.ts',
   'tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts',
   'tests/unit/authority/combat/impulseGrenade.test.ts',
@@ -213,6 +312,78 @@ const sourceFiles = Object.freeze([
 
 function delay(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function captureFrameProfile(client, population) {
+  const profile = await client.page.evaluate(async ({ samples }) => {
+    const longTasks = [];
+    let observer = null;
+    if ('PerformanceObserver' in window) {
+      try {
+        observer = new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            longTasks.push({
+              startTimeMilliseconds: Number(entry.startTime.toFixed(3)),
+              durationMilliseconds: Number(entry.duration.toFixed(3)),
+            });
+          }
+        });
+        observer.observe({ type: 'longtask' });
+      } catch {
+        observer = null;
+      }
+    }
+    const timestamps = [];
+    await new Promise((resolve) => {
+      const sample = (timestamp) => {
+        timestamps.push(timestamp);
+        if (timestamps.length >= samples + 1) {
+          resolve();
+          return;
+        }
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    observer?.disconnect();
+    const durations = timestamps.slice(1).map((timestamp, index) => (
+      timestamp - timestamps[index]
+    ));
+    const ordered = [...durations].sort((left, right) => left - right);
+    const percentile = (fraction) => ordered[
+      Math.min(ordered.length - 1, Math.ceil(ordered.length * fraction) - 1)
+    ];
+    const total = durations.reduce((sum, duration) => sum + duration, 0);
+    const mean = total / durations.length;
+    const memory = 'memory' in performance
+      ? {
+          usedJsHeapBytes: performance.memory.usedJSHeapSize,
+          totalJsHeapBytes: performance.memory.totalJSHeapSize,
+          jsHeapLimitBytes: performance.memory.jsHeapSizeLimit,
+        }
+      : null;
+    return {
+      sampleCount: durations.length,
+      measurementDurationMilliseconds: Number(total.toFixed(3)),
+      meanFrameMilliseconds: Number(mean.toFixed(3)),
+      p50FrameMilliseconds: Number(percentile(0.5).toFixed(3)),
+      p95FrameMilliseconds: Number(percentile(0.95).toFixed(3)),
+      p99FrameMilliseconds: Number(percentile(0.99).toFixed(3)),
+      maximumFrameMilliseconds: Number(Math.max(...durations).toFixed(3)),
+      estimatedFramesPerSecond: Number((1_000 / mean).toFixed(2)),
+      framesOver33Milliseconds: durations.filter((duration) => duration > 33.334).length,
+      framesOver50Milliseconds: durations.filter((duration) => duration > 50).length,
+      longTasks,
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      memory,
+    };
+  }, { samples: 120 });
+  return Object.freeze({
+    population,
+    clientId: client.clientId,
+    capturedAt: new Date().toISOString(),
+    ...profile,
+  });
 }
 
 function distanceXZ(left, right) {
@@ -1156,6 +1327,9 @@ async function capturePopulation(clients, count) {
     })))}`);
   }
   const values = await Promise.all(clients.map(({ page }) => productSnapshot(page)));
+  const frameProfiles = await Promise.all(clients.map((client) => (
+    captureFrameProfile(client, count)
+  )));
   const roomCodes = new Set(values.map(({ roomCode }) => roomCode));
   const matchIds = new Set(values.map(({ matchId }) => matchId));
   const playerIds = new Set(values.map(({ playerId }) => playerId));
@@ -1193,6 +1367,7 @@ async function capturePopulation(clients, count) {
     fullSnapshotsPerClient: values.map(({ fullSnapshots }) => fullSnapshots),
     deltaSnapshotsPerClient: values.map(({ deltaSnapshots }) => deltaSnapshots),
     inputAcksPerClient: values.map(({ inputAcks }) => inputAcks),
+    frameProfiles,
     identityChecksPerClient: values.map(({ roomVerification }) => roomVerification.identityChecks),
     presentationPerClient: values.map(({ playerId, presentation }) => ({
       playerId,
@@ -1892,10 +2067,11 @@ function boardHtml(board) {
     ['Prediction and interpolation', `4-client move ${Math.round(board.fourMove)} mm<br>peer error ${Math.round(board.fourPeer)} mm<br>8-client move ${Math.round(board.eightMove)} mm<br>peer error ${Math.round(board.eightPeer)} mm`],
     ['World and combat', `cross-map damage blocked: ${board.occluded}<br>death ${board.death}<br>score ${board.score}<br>feed sequence ${board.feedSequence}<br>confirmed cues ${board.presentationCues}`],
     ['Recovery and identity', `same player: ${board.samePlayer}<br>token rotated: ${board.tokenRotated}<br>state preserved: ${board.statePreserved}<br>profile alias: HTTP ${board.mismatchStatus}`],
+    ['Frame and latency', `${board.frameSamples} frame samples<br>max p95 ${board.maximumP95FrameMilliseconds} ms<br>max p99 ${board.maximumP99FrameMilliseconds} ms<br>max reliable delivery ${board.maximumReliableDeliveryLatencyMilliseconds} ms`],
   ];
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     *{box-sizing:border-box}body{margin:0;background:#070b0f;color:#eff8fa;font-family:Inter,Arial,sans-serif;padding:48px}h1{font:900 38px/1.05 ui-monospace,monospace;letter-spacing:-.04em;margin:0 0 10px}p{color:#97abb2;margin:0 0 34px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{min-height:180px;border:1px solid #26343a;background:linear-gradient(145deg,#11191e,#0b1014);padding:22px;border-radius:12px}.card h2{margin:0 0 16px;color:#69e5f4;font:800 15px/1.2 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em}.card div{font:700 19px/1.55 ui-monospace,monospace}.footer{margin-top:26px;border-top:1px solid #26343a;padding-top:18px;color:#e6b75c;font:700 14px/1.5 ui-monospace,monospace}</style></head><body>
-    <h1>P5.15 PRODUCT RUNTIME EVIDENCE</h1><p>Derived summary of the hashed product screenshots and normalized WebSocket log.</p>
+    <h1>${REV4_ACCEPTANCE_CAPTURE ? 'G5 INKFALL REV4 RUNTIME EVIDENCE' : 'P5.15 PRODUCT RUNTIME EVIDENCE'}</h1><p>Derived summary of the hashed product screenshots and normalized WebSocket log.</p>
     <div class="grid">${cards.map(([title, value]) => `<section class="card"><h2>${title}</h2><div>${value}</div></section>`).join('')}</div>
     <div class="footer">BOUNDED EVIDENCE ONLY · NO G3/G4/G5 OR HUMAN PLAYTEST ACCEPTANCE CLAIM</div>
   </body></html>`;
@@ -1993,7 +2169,11 @@ try {
   const second = clients[1];
   assert.notEqual(first, undefined);
   assert.notEqual(second, undefined);
-  const profileSelector = first.page.getByTestId('online-inkfall-profile');
+  const profileSelector = first.page.getByTestId(
+    REV4_ACCEPTANCE_CAPTURE
+      ? 'online-inkfall-rev4-profile'
+      : 'online-inkfall-profile',
+  );
   assert.equal(await profileSelector.isVisible(), true);
   assert.equal(await profileSelector.isChecked(), false);
   await profileSelector.check();
@@ -2599,12 +2779,83 @@ try {
   assert.equal(finalRoomMetrics.body.metrics.transport.snapshotAckDebtEvictions, 0);
   assert.equal(finalRoomMetrics.body.metrics.transport.reliableEventAcksRejected, 0);
 
+  const allFrameProfiles = [
+    ...twoPopulation.frameProfiles,
+    ...fourPopulation.frameProfiles,
+    ...eightPopulation.frameProfiles,
+  ];
+  const deliveryLatencies = [
+    twoPopulation.tickStimulus.maximumDeliveryLatencyMilliseconds,
+    fourPopulation.tickStimulus.maximumDeliveryLatencyMilliseconds,
+    eightPopulation.tickStimulus.maximumDeliveryLatencyMilliseconds,
+    Math.max(...teleportDeliveries.map(({ latencyMilliseconds }) => latencyMilliseconds)),
+  ];
+  const runtimePerformance = Object.freeze({
+    scope: 'local_headless_system_chrome_active_client_capture_not_shipping_hardware',
+    frameSamples: allFrameProfiles.reduce((sum, profile) => sum + profile.sampleCount, 0),
+    profiledClientPopulations: Object.freeze({ two: 2, four: 4, eight: 8 }),
+    maximumP95FrameMilliseconds: Math.max(
+      ...allFrameProfiles.map(({ p95FrameMilliseconds }) => p95FrameMilliseconds),
+    ),
+    maximumP99FrameMilliseconds: Math.max(
+      ...allFrameProfiles.map(({ p99FrameMilliseconds }) => p99FrameMilliseconds),
+    ),
+    maximumObservedFrameMilliseconds: Math.max(
+      ...allFrameProfiles.map(({ maximumFrameMilliseconds }) => maximumFrameMilliseconds),
+    ),
+    totalFramesOver50Milliseconds: allFrameProfiles.reduce(
+      (sum, profile) => sum + profile.framesOver50Milliseconds,
+      0,
+    ),
+    totalLongTasks: allFrameProfiles.reduce(
+      (sum, profile) => sum + profile.longTasks.length,
+      0,
+    ),
+    maximumReliableDeliveryLatencyMilliseconds: Math.max(...deliveryLatencies),
+    thresholds: Object.freeze({
+      maximumP95FrameMilliseconds: 50,
+      maximumP99FrameMilliseconds: 100,
+      maximumObservedFrameMilliseconds: 250,
+      maximumReliableDeliveryLatencyMilliseconds: 2_000,
+    }),
+  });
+  const runtimePerformanceChecks = Object.freeze({
+    frameSampleCardinality: runtimePerformance.frameSamples === 1_680,
+    p95WithinBound: runtimePerformance.maximumP95FrameMilliseconds
+      <= runtimePerformance.thresholds.maximumP95FrameMilliseconds,
+    p99WithinBound: runtimePerformance.maximumP99FrameMilliseconds
+      <= runtimePerformance.thresholds.maximumP99FrameMilliseconds,
+    maximumFrameWithinBound: runtimePerformance.maximumObservedFrameMilliseconds
+      <= runtimePerformance.thresholds.maximumObservedFrameMilliseconds,
+    reliableDeliveryWithinBound: runtimePerformance.maximumReliableDeliveryLatencyMilliseconds
+      <= runtimePerformance.thresholds.maximumReliableDeliveryLatencyMilliseconds,
+  });
+  const runtimePerformancePassed = Object.values(runtimePerformanceChecks).every(Boolean);
+  const technicalAcceptanceChecks = Object.freeze({
+    ...runtimePerformanceChecks,
+    traversalCompletedWithoutDriverRecovery: movementDriverRecoveries.length === 0,
+  });
+  const technicalAcceptanceCandidate =
+    Object.values(technicalAcceptanceChecks).every(Boolean);
+
   const proofCore = Object.freeze({
     schemaVersion: 1,
     phase: 'P5.15',
     capturedAt: new Date().toISOString(),
-    status: 'BOUNDED_PASS',
-    gateClaim: 'G3_G4_ACCEPTANCE_CANDIDATE_G5_NOT_CLAIMED',
+    status: REV4_ACCEPTANCE_CAPTURE
+      ? (!runtimePerformancePassed
+          ? 'RUNTIME_PERFORMANCE_BOUND_EXCEEDED'
+          : technicalAcceptanceCandidate
+            ? 'ACCEPTANCE_CANDIDATE'
+            : 'RUNTIME_TRAVERSAL_COLLISION_BLOCKED')
+      : 'BOUNDED_PASS',
+    gateClaim: REV4_ACCEPTANCE_CAPTURE
+      ? (!runtimePerformancePassed
+          ? 'G5_BLOCKED_BY_LOCAL_RUNTIME_PERFORMANCE'
+          : technicalAcceptanceCandidate
+            ? 'G5_TECHNICAL_ACCEPTANCE_CANDIDATE_HUMAN_REVIEW_PENDING'
+            : 'G5_BLOCKED_BY_RUNTIME_TRAVERSAL_COLLISION')
+      : 'G3_G4_ACCEPTANCE_CANDIDATE_G5_NOT_CLAIMED',
     topology: {
       route: '/online',
       frontendOrigin: FRONTEND_ORIGIN,
@@ -2649,6 +2900,16 @@ try {
       two: twoPopulation,
       four: fourPopulation,
       eight: eightPopulation,
+    },
+    performance: {
+      ...runtimePerformance,
+      checks: runtimePerformanceChecks,
+      allChecksPassed: runtimePerformancePassed,
+    },
+    technicalAcceptance: {
+      checks: technicalAcceptanceChecks,
+      allChecksPassed: technicalAcceptanceCandidate,
+      humanReviewStillRequired: true,
     },
     movementAndWorld: {
       routeId: 'alternate_ink_channel_after_press_cross_snag',
@@ -2789,10 +3050,14 @@ try {
     },
     knownLimits: [
       'This capture is bounded product/browser evidence, not broad playtest acceptance.',
-      'This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.',
-      'Inkfall revision-2 players begin with zero shield; no synthetic shield cue is manufactured.',
+      ...(REV4_ACCEPTANCE_CAPTURE
+        ? ['This capture supports a G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.']
+        : ['This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.']),
+      `Inkfall revision-${expectedBinding.mapRevision} players begin with zero shield; no synthetic shield cue is manufactured.`,
       'Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.',
-      'Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.',
+      ...(REV4_ACCEPTANCE_CAPTURE
+        ? ['The separately executable Rev4 Press Hall to Paper Archive vertical route is deterministic automation evidence, not a human traversal review.']
+        : ['Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.']),
       ...(movementDriverRecoveries.length > 0
         ? ['Alternate Ink-channel automation required bounded collision recovery; this run cannot support G5 no-snag acceptance.']
         : ['Alternate Ink-channel automation completed with zero additional collision recoveries.']),
@@ -2823,6 +3088,11 @@ try {
     tokenRotated: proofCore.resume.resumeTokenRotated,
     statePreserved: proofCore.resume.scorePreserved && proofCore.resume.feedSequencePreserved,
     mismatchStatus: proofCore.failClosed.httpStatus,
+    frameSamples: proofCore.performance.frameSamples,
+    maximumP95FrameMilliseconds: proofCore.performance.maximumP95FrameMilliseconds,
+    maximumP99FrameMilliseconds: proofCore.performance.maximumP99FrameMilliseconds,
+    maximumReliableDeliveryLatencyMilliseconds:
+      proofCore.performance.maximumReliableDeliveryLatencyMilliseconds,
   }), { waitUntil: 'load' });
   await boardPage.screenshot({ path: path.join(screenshotDirectory, 'p515-11-runtime-evidence-board.png'), fullPage: true });
   await boardPage.close();
