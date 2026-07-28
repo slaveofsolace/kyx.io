@@ -1,0 +1,53 @@
+{
+  "schema": "kyx-g6-rev30-runtime-default-manifest-v1",
+  "revision": "rev30",
+  "runtimeSelection": "accepted default third-person character",
+  "default": true,
+  "query": {
+    "key": "g6Candidate",
+    "defaultWhenAbsent": "rev30",
+    "explicitDefault": "?g6Candidate=rev30",
+    "legacyFallback": "?g6Candidate=rev17",
+    "unsupportedValueBehavior": "fall back to rev30 and expose the unsupported request in config"
+  },
+  "thirdPerson": {
+    "asset": "/candidates/g6-rev30-cc0-donor/character-lod0.glb",
+    "sha256": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
+    "bytes": 15025320,
+    "triangles": 10748,
+    "sourceLod": "lod0",
+    "runtimeRoles": [
+      "player",
+      "enemy"
+    ],
+    "physicalRuntimeFileCount": 1,
+    "distinctRev30Lod1Authored": false,
+    "distinctRev30Lod2Authored": false
+  },
+  "firstPerson": {
+    "revision": "rev17",
+    "asset": "/candidates/g6-rev17/first-person.glb",
+    "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+    "bytes": 2495708,
+    "reason": "Rev30 did not author a first-person derivative"
+  },
+  "provenance": {
+    "source": "Sci-fi Soldier by Irondust",
+    "sourceUrl": "https://opengameart.org/content/sci-fi-soldier",
+    "license": "CC0-1.0",
+    "notice": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/DONOR_NOTICE.md",
+    "assetManifest": "assets/manifests/g6-rev30-cc0-donor-character-lod0.asset.json"
+  },
+  "runtimeAttachmentStatus": {
+    "embeddedPaleRifle": "diagnostic only",
+    "finalPresentation": false,
+    "requiredFollowUp": "runtime attachment lane must hide or replace it with the equipped project-authored weapon"
+  },
+  "releaseEligible": false,
+  "nonClaims": [
+    "Third-person visual acceptance does not close the full G6 runtime, animation, first-person, performance, or release gates.",
+    "The single Rev30 LOD0 is intentionally reused for player and enemy; no distinct Rev30 LOD1 or LOD2 is claimed.",
+    "The Rev17 first-person asset is retained because no Rev30 first-person derivative was authored.",
+    "The embedded pale rifle is a diagnostic contact witness, not final weapon presentation."
+  ]
+}

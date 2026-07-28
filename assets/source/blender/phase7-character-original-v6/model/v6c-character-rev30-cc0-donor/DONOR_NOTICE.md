@@ -16,6 +16,10 @@ under **CC0 1.0** at <https://opengameart.org/content/sci-fi-soldier>.
   source yellow insignia and serial-number branding.
 - The original 59.6 MB archive remains outside Git.
 
-KYX.IO supplies the Rev17 66-bone rig, all 16 actions, sockets/nozzle, rifle,
-rest-pose retarget, fit corrections, charcoal/gunmetal/cyan material treatment,
-export integration and evidence.
+KYX.IO supplies the Rev17 66-bone rig, all 16 actions, sockets/nozzle, a
+diagnostic pale rifle contact witness, rest-pose retarget, fit corrections,
+charcoal/gunmetal/cyan material treatment, export integration and evidence.
+
+The embedded pale rifle is not final weapon presentation. The runtime attachment
+lane must hide or replace it with the player's equipped project-authored weapon
+before release presentation is claimed.

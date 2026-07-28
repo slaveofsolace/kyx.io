@@ -11,7 +11,7 @@
       ".png",
       ".webp"
     ],
-    "expectedAssetCount": 4
+    "expectedAssetCount": 5
   },
   "projectLicense": {
     "packageMetadata": "UNLICENSED",
@@ -20,10 +20,11 @@
   },
   "summary": {
     "clearedProjectOriginals": 4,
+    "clearedCc0DonorAdaptations": 1,
     "blockedLegacyAssets": 0,
     "quarantinedLegacyAssets": 6,
     "publicReleaseEligibleAssets": 0,
-    "releaseDecision": "BLOCKED_PROJECT_LICENSE_AND_G6_HUMAN_ACCEPTANCE"
+    "releaseDecision": "BLOCKED_PROJECT_LICENSE_RUNTIME_ATTACHMENT_FIRST_PERSON_AND_RELEASE_VALIDATION"
   },
   "assets": [
     {
@@ -32,7 +33,7 @@
       "format": "glb",
       "bytes": 3584252,
       "sha256": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
-      "runtimeDisposition": "provenance_safe_interim_default",
+      "runtimeDisposition": "explicit_rev17_query_fallback",
       "clearance": {
         "status": "CLEARED_PROJECT_ORIGINAL",
         "basis": "Procedurally authored for this repository; no downloaded meshes, external rigs, motion clips, marketplace assets, or ripped content entered this export.",
@@ -53,7 +54,7 @@
       "format": "glb",
       "bytes": 2558944,
       "sha256": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
-      "runtimeDisposition": "provenance_safe_runtime_lod_or_viewmodel",
+      "runtimeDisposition": "explicit_rev17_query_fallback",
       "clearance": {
         "status": "CLEARED_PROJECT_ORIGINAL",
         "basis": "Procedurally authored for this repository; no downloaded meshes, external rigs, motion clips, marketplace assets, or ripped content entered this export.",
@@ -74,7 +75,7 @@
       "format": "glb",
       "bytes": 1817156,
       "sha256": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
-      "runtimeDisposition": "provenance_safe_runtime_lod_or_viewmodel",
+      "runtimeDisposition": "preserved_rev17_fallback_and_evidence",
       "clearance": {
         "status": "CLEARED_PROJECT_ORIGINAL",
         "basis": "Procedurally authored for this repository; no downloaded meshes, external rigs, motion clips, marketplace assets, or ripped content entered this export.",
@@ -90,12 +91,35 @@
       ]
     },
     {
+      "assetId": "g6.rev30.cc0-donor-character-lod0",
+      "path": "public/candidates/g6-rev30-cc0-donor/character-lod0.glb",
+      "format": "glb",
+      "bytes": 15025320,
+      "sha256": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
+      "runtimeDisposition": "accepted_default_third_person_shared_player_enemy",
+      "clearance": {
+        "status": "CLEARED_CC0_DONOR_ADAPTATION",
+        "basis": "Body, HandSimple and Head2 geometry from Sci-fi Soldier by Irondust under CC0-1.0, adapted onto the project-authored Rev17 rig/actions/sockets. Donor Cannon, albedo and emission were not used.",
+        "evidence": [
+          "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/DONOR_NOTICE.md",
+          "assets/manifests/g6-rev30-cc0-donor-character-lod0.asset.json",
+          "evidence/2026-07-28/g6-rev30-cc0-donor/author-export-report.json"
+        ]
+      },
+      "releaseEligible": false,
+      "releaseBlockers": [
+        "PROJECT_LICENSE_SELECTION_REQUIRED",
+        "EXTERNAL_GLTF_VALIDATION_REQUIRED",
+        "RUNTIME_DIAGNOSTIC_RIFLE_REPLACEMENT_REQUIRED"
+      ]
+    },
+    {
       "assetId": "g6.rev17.first-person",
       "path": "public/candidates/g6-rev17/first-person.glb",
       "format": "glb",
       "bytes": 2495708,
       "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
-      "runtimeDisposition": "provenance_safe_runtime_lod_or_viewmodel",
+      "runtimeDisposition": "active_first_person_fallback_pending_rev30_derivative",
       "clearance": {
         "status": "CLEARED_PROJECT_ORIGINAL",
         "basis": "Procedurally authored for this repository; no downloaded meshes, external rigs, motion clips, marketplace assets, or ripped content entered this export.",
@@ -107,7 +131,8 @@
       "releaseEligible": false,
       "releaseBlockers": [
         "PROJECT_LICENSE_SELECTION_REQUIRED",
-        "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED"
+        "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED",
+        "DEDICATED_REV30_FIRST_PERSON_DERIVATIVE_NOT_AUTHORED"
       ]
     }
   ],
