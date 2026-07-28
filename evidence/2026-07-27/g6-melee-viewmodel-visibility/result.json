@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "capturedOn": "2026-07-27",
+  "baseCommit": "47aeec1fbbfe68c9130eb0fea344c845b0b05a3b",
+  "fixCommit": "730d4444bbb7884d56fff64b61ca94fad9fb8951",
+  "environment": {
+    "browser": "Google Chrome via repository Playwright",
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "defaultUrl": "http://127.0.0.1:6199/",
+    "rev17Url": "http://127.0.0.1:6199/?g6Candidate=rev17",
+    "pointerLockVerified": true,
+    "inAppBrowserAvailability": "discovery returned no available browser session"
+  },
+  "rootCause": {
+    "property": "WeaponSystem.armGroup",
+    "preFixName": "",
+    "postFixName": "KYX_LEGACY_FIRST_PERSON_ARM",
+    "type": "Group",
+    "childCount": 15,
+    "childGeometryTypes": [
+      "CylinderGeometry",
+      "BoxGeometry",
+      "SphereGeometry"
+    ],
+    "duplicateSwordModelObserved": false
+  },
+  "finalVisibilityMatrix": [
+    {
+      "route": "default",
+      "weapon": "m4",
+      "rev17Installed": false,
+      "legacyArmVisible": true,
+      "activeModels": [
+        {
+          "id": "m4",
+          "childCount": 39
+        }
+      ]
+    },
+    {
+      "route": "default",
+      "weapon": "sword",
+      "rev17Installed": false,
+      "legacyArmVisible": false,
+      "activeModels": [
+        {
+          "id": "sword",
+          "childCount": 20
+        }
+      ]
+    },
+    {
+      "route": "rev17",
+      "weapon": "m4",
+      "rev17Visible": true,
+      "legacyArmVisible": false,
+      "activeModels": []
+    },
+    {
+      "route": "rev17",
+      "weapon": "sword",
+      "rev17Visible": false,
+      "legacyArmVisible": false,
+      "activeModels": [
+        {
+          "id": "sword",
+          "childCount": 20
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "focusedTests": {
+      "passed": 13,
+      "failed": 0
+    },
+    "unitSuite": {
+      "filesPassed": 83,
+      "testsPassed": 587,
+      "failed": 0
+    },
+    "typecheck": "pass",
+    "focusedLint": "pass",
+    "productionBuild": "pass",
+    "completeVitest": {
+      "filesPassed": 98,
+      "filesFailed": 1,
+      "testsPassed": 771,
+      "testsFailed": 1,
+      "unrelatedFailure": "tests/integration/content/inkfallGrayboxLock.test.ts frozen-source hashes"
+    }
+  },
+  "screenshots": [
+    {
+      "file": "default-sword-before.png",
+      "sha256": "1343bfc45ea536050aefe0fbf4013e981f07da55bc03f99828e9a4055c4dca17"
+    },
+    {
+      "file": "default-sword-after.png",
+      "sha256": "395eb40684b1a0f3e508e5ce948ba7ddc2462656904728bf7558c3cac6a9e914"
+    },
+    {
+      "file": "rev17-sword-before.png",
+      "sha256": "9c9fa1f04dc26f5311d633ca14221204ff2adaf5bbe3af23857ff988c2334c5e"
+    },
+    {
+      "file": "rev17-rifle-after.png",
+      "sha256": "1e032355072fef141fe93e90c9706c9eaa4093125c76d950d1ce99159f786bde"
+    },
+    {
+      "file": "rev17-sword-after.png",
+      "sha256": "1832246774801a1fedfca23825ca675d9f977d22a644f53bb325ffc4d7843bb6"
+    }
+  ],
+  "limitations": [
+    "No authored first-person Rev17 melee hand or grip socket exists yet.",
+    "No authored first-person melee animation is claimed.",
+    "The Arc Blade remains the existing procedural model.",
+    "Third-person visual contact and G6 human acceptance remain open.",
+    "No deployment or release-default mutation was performed."
+  ]
+}
