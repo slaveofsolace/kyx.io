@@ -253,6 +253,7 @@ export interface AuthorityEvidenceDiagnostics {
     readonly predictedVelocity: Readonly<{ x: number; y: number; z: number }> | null;
     readonly authoritativeGrounded: boolean | null;
     readonly predictedGrounded: boolean | null;
+    readonly predictedStance: 'standing' | 'crouched' | null;
     readonly authoritativeLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
     readonly predictedLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
     readonly authoritativeYawMilliDegrees: number | null;
@@ -684,6 +685,7 @@ export class AuthorityEvidenceClient {
         predictedVelocity,
         authoritativeGrounded: this.authoritativeGrounded,
         predictedGrounded: this.prediction?.predictedState.player.grounded ?? null,
+        predictedStance: this.prediction?.predictedState.player.stance ?? null,
         authoritativeLocomotion: this.authoritativeLocomotion,
         predictedLocomotion: this.prediction?.predictedState.player.locomotion ?? null,
         authoritativeYawMilliDegrees: this.authoritativeYawMilliDegrees,

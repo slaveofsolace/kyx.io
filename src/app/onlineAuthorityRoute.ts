@@ -59,6 +59,10 @@ import {
 } from './onlineAuthorityInput';
 import { createOnlineInkfallWorld } from './onlineAuthorityInkfallWorld';
 import {
+  resolveOnlineBlinkPreview,
+  type OnlineBlinkPreview,
+} from './onlineBlinkPreview';
+import {
   createOnlineAuthorityThreeRuntime,
   type OnlineAuthorityThreeDiagnostics,
   type OnlineAuthorityThreeRuntime,
@@ -101,8 +105,10 @@ interface OnlinePreviewSnapshot {
     sprint: boolean;
     crouch: boolean;
     primaryFire: boolean;
+    blinkPreviewHeld: boolean;
     selectedWeaponSlot: number;
   }>;
+  readonly blinkPreview: OnlineBlinkPreview | null;
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localPredictedVelocity: Readonly<{ x: number; y: number; z: number }> | null;
@@ -1244,6 +1250,8 @@ async function mountSession(
   const pressedKeys = new Set<string>();
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
+  let blinkPreviewHeld = false;
+  let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let selectedWeaponSlot: number = selectedCombatPreset.authorityPrimaryWeaponSlot;
   let loadoutSubmittedForPlayerId: string | null = null;
 
@@ -1818,8 +1826,10 @@ async function mountSession(
         sprint: (heldInputButtons & INTENT_BUTTON.sprint) !== 0,
         crouch: (heldInputButtons & INTENT_BUTTON.crouch) !== 0,
         primaryFire: (heldInputButtons & INTENT_BUTTON.primaryFire) !== 0,
+        blinkPreviewHeld,
         selectedWeaponSlot,
       }),
+      blinkPreview: latestBlinkPreview,
       localPredictedPosition: diagnostics.local.predictedPosition,
       localAuthoritativePosition: diagnostics.local.authoritativePosition,
       localPredictedVelocity: diagnostics.local.predictedVelocity,
@@ -1872,7 +1882,10 @@ async function mountSession(
   const updateInput = (): void => {
     const axes = axesFromPressedKeys(pressedKeys);
     heldInputButtons = (
-      onlineAuthorityInputButtonsFromPressedKeys(pressedKeys)
+      (
+        onlineAuthorityInputButtonsFromPressedKeys(pressedKeys)
+        & ~INTENT_BUTTON.utility
+      )
       | pointerHeldButtons
     ) >>> 0;
     client.setAxes(axes);
@@ -1893,7 +1906,9 @@ async function mountSession(
       [abilityThreeButton, INTENT_BUTTON.abilityThree],
       [teleportButton, INTENT_BUTTON.utility],
     ] as const) {
-      const active = (heldInputButtons & mask) !== 0;
+      const active = mask === INTENT_BUTTON.utility
+        ? blinkPreviewHeld || (heldInputButtons & mask) !== 0
+        : (heldInputButtons & mask) !== 0;
       button.dataset.active = String(active);
       button.setAttribute('aria-pressed', String(active));
     }
@@ -1936,14 +1951,23 @@ async function mountSession(
       && !event.repeat
       && weaponSlot !== null
     ) selectWeaponSlot(weaponSlot);
-    if (event.type === 'keydown') pressedKeys.add(event.code);
-    else pressedKeys.delete(event.code);
+    if (event.type === 'keydown') {
+      pressedKeys.add(event.code);
+      if (event.code === 'KeyQ') blinkPreviewHeld = true;
+    } else {
+      const commitBlink = event.code === 'KeyQ' && blinkPreviewHeld;
+      pressedKeys.delete(event.code);
+      if (event.code === 'KeyQ') blinkPreviewHeld = false;
+      if (commitBlink) pulseButton(INTENT_BUTTON.utility);
+    }
     updateInput();
     renderRequested = true;
   };
   const neutralizeRouteInput = (): void => {
     pressedKeys.clear();
     pointerHeldButtons = 0;
+    blinkPreviewHeld = false;
+    latestBlinkPreview = null;
     client.neutralizeInput();
     updateInput();
     renderRequested = true;
@@ -1980,6 +2004,22 @@ async function mountSession(
   const releaseCrouch = (): void => releasePointerButton(INTENT_BUTTON.crouch);
   const holdFire = (): void => holdPointerButton(INTENT_BUTTON.primaryFire);
   const releaseFire = (): void => releasePointerButton(INTENT_BUTTON.primaryFire);
+  const startBlinkPreview = (): void => {
+    blinkPreviewHeld = true;
+    updateInput();
+    renderRequested = true;
+  };
+  const cancelBlinkPreview = (): void => {
+    blinkPreviewHeld = false;
+    latestBlinkPreview = null;
+    updateInput();
+    renderRequested = true;
+  };
+  const commitBlinkPreview = (): void => {
+    const shouldCommit = blinkPreviewHeld;
+    cancelBlinkPreview();
+    if (shouldCommit) pulseButton(INTENT_BUTTON.utility);
+  };
   const canvasFire = (event: PointerEvent): void => {
     if (event.button !== 0) return;
     void ensureFeedbackAudio().catch(() => {
@@ -2032,7 +2072,10 @@ async function mountSession(
   abilityOneButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityOne));
   abilityTwoButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityTwo));
   abilityThreeButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.abilityThree));
-  teleportButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.utility));
+  teleportButton.addEventListener('pointerdown', startBlinkPreview);
+  teleportButton.addEventListener('pointerup', commitBlinkPreview);
+  teleportButton.addEventListener('pointercancel', cancelBlinkPreview);
+  teleportButton.addEventListener('pointerleave', cancelBlinkPreview);
   for (const [slot, button] of weaponSlotButtons.entries()) {
     button.addEventListener('click', () => selectWeaponSlot(slot));
   }
@@ -2238,6 +2281,22 @@ async function mountSession(
         }
         previousMovementGrounded = grounded;
         previousMovementVerticalSpeed = velocity?.y ?? 0;
+        const predictedPosition = diagnostics.local.predictedPosition;
+        const predictedYaw = diagnostics.local.predictedYawMilliDegrees;
+        const predictedPitch = diagnostics.local.predictedPitchMilliDegrees;
+        latestBlinkPreview = predictedPosition === null
+          || predictedYaw === null
+          || predictedPitch === null
+          ? null
+          : resolveOnlineBlinkPreview({
+              active: blinkPreviewHeld,
+              feetPosition: predictedPosition,
+              yawMilliDegrees: predictedYaw,
+              pitchMilliDegrees: predictedPitch,
+              stance: diagnostics.local.predictedStance ?? 'standing',
+              cooldownTicksRemaining:
+                diagnostics.local.teleportCooldownTicksRemaining,
+            }, PHASE3_HYPOTHESIS_MOVEMENT_PROFILE, world);
         threeRuntime.render({
           nowMilliseconds,
           presentation,
@@ -2245,6 +2304,7 @@ async function mountSession(
           localYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
           localPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
           localSpeedMillimetersPerSecond: horizontalSpeed,
+          blinkPreview: latestBlinkPreview,
         });
       } catch (renderFailure) {
         const detail = renderFailure instanceof Error
@@ -2501,6 +2561,12 @@ async function mountSession(
         localPlayer?.selectedWeaponSlot ?? selectedWeaponSlot,
       );
       body.dataset.onlineSelectedWeaponId = localPlayer?.selectedWeaponId ?? 'waiting';
+      body.dataset.onlineBlinkPreview = latestBlinkPreview?.active === true
+        ? latestBlinkPreview.valid ? 'valid' : latestBlinkPreview.reason
+        : 'inactive';
+      body.dataset.onlineBlinkPreviewAuthorityBound = String(
+        latestBlinkPreview?.authorityBound === true,
+      );
       for (const [slot, button] of weaponSlotButtons.entries()) {
         const active = slot === (localPlayer?.selectedWeaponSlot ?? selectedWeaponSlot);
         button.dataset.active = String(active);

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
   vertical_rifle_v1: Object.freeze({
     family: 'rifle',
+    silhouette: 'standard_longarm',
     label: 'VLR-7 LINE RIFLE',
     accent: 0x55dcff,
     tracer: 0x9cecff,
@@ -14,57 +15,62 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
   }),
   kyx_sidearm_v1: Object.freeze({
     family: 'pistol',
+    silhouette: 'compact_sidearm',
     label: 'K-9 ARC SIDEARM',
     accent: 0xffca5c,
     tracer: 0xffe7a0,
     firstPerson: Object.freeze({
-      scale: 0.96,
-      position: Object.freeze([0.31, -0.31, -0.39] as const),
-      rotation: Object.freeze([-0.03, 0.025, -0.025] as const),
+      scale: 1.04,
+      position: Object.freeze([0.37, -0.335, -0.34] as const),
+      rotation: Object.freeze([-0.025, -0.025, -0.045] as const),
     }),
   }),
   kyx_scattergun_v1: Object.freeze({
     family: 'shotgun',
+    silhouette: 'wide_quad_barrel',
     label: 'SG-4 BREACH ARRAY',
     accent: 0xff8c5a,
     tracer: 0xffbb7d,
     firstPerson: Object.freeze({
-      scale: 0.76,
-      position: Object.freeze([0.3, -0.3, -0.48] as const),
-      rotation: Object.freeze([-0.055, 0.03, 0] as const),
+      scale: 0.82,
+      position: Object.freeze([0.285, -0.315, -0.46] as const),
+      rotation: Object.freeze([-0.065, 0.045, 0.012] as const),
     }),
   }),
   kyx_longshot_v1: Object.freeze({
     family: 'sniper',
+    silhouette: 'long_optic',
     label: 'LONGBOW-12',
     accent: 0xd5f4ff,
     tracer: 0xeafaff,
     firstPerson: Object.freeze({
-      scale: 0.66,
-      position: Object.freeze([0.285, -0.275, -0.52] as const),
-      rotation: Object.freeze([-0.035, 0.028, 0] as const),
+      scale: 0.7,
+      position: Object.freeze([0.255, -0.29, -0.53] as const),
+      rotation: Object.freeze([-0.028, 0.018, -0.008] as const),
     }),
   }),
   kyx_breach_rocket_v1: Object.freeze({
     family: 'rocket',
+    silhouette: 'heavy_tube',
     label: 'BR-6 SIEGE TUBE',
     accent: 0xff6042,
     tracer: 0xffa066,
     firstPerson: Object.freeze({
-      scale: 0.63,
-      position: Object.freeze([0.32, -0.32, -0.54] as const),
-      rotation: Object.freeze([-0.025, 0.02, 0.015] as const),
+      scale: 0.68,
+      position: Object.freeze([0.36, -0.36, -0.51] as const),
+      rotation: Object.freeze([-0.035, -0.025, 0.035] as const),
     }),
   }),
   kyx_edge_v1: Object.freeze({
     family: 'melee',
+    silhouette: 'energy_blade',
     label: 'EDGE-1 PHASE SABER',
     accent: 0x58f4ff,
     tracer: 0xb6fbff,
     firstPerson: Object.freeze({
-      scale: 0.9,
-      position: Object.freeze([0.34, -0.39, -0.37] as const),
-      rotation: Object.freeze([-0.14, -0.12, -0.1] as const),
+      scale: 0.96,
+      position: Object.freeze([0.41, -0.42, -0.32] as const),
+      rotation: Object.freeze([-0.2, -0.18, -0.16] as const),
     }),
   }),
 } as const);
@@ -74,6 +80,9 @@ export type KyxAuthorityWeaponId =
 
 export type KyxWeaponFamily =
   typeof KYX_AUTHORITY_WEAPON_PRESENTATION[KyxAuthorityWeaponId]['family'];
+
+export type KyxWeaponSilhouette =
+  typeof KYX_AUTHORITY_WEAPON_PRESENTATION[KyxAuthorityWeaponId]['silhouette'];
 
 export type KyxWeaponPhase =
   | 'holstered'
@@ -103,6 +112,7 @@ export interface KyxWeaponPresentationModel {
   readonly authorityWeaponId: KyxAuthorityWeaponId;
   readonly definitionId: string;
   readonly family: KyxWeaponFamily;
+  readonly silhouette: KyxWeaponSilhouette;
   readonly label: string;
   readonly accent: number;
   readonly tracer: number;
@@ -780,6 +790,7 @@ export function createKyxWeaponPresentationModel(
   group.userData.projectAuthoredPresentation = true;
   group.userData.authorityWeaponId = authorityWeaponId;
   group.userData.weaponFamily = spec.family;
+  group.userData.weaponSilhouette = spec.silhouette;
   group.userData.muzzleNodeName = built.muzzle.name;
   group.add(built.visual);
 
@@ -812,6 +823,7 @@ export function createKyxWeaponPresentationModel(
     authorityWeaponId,
     definitionId: DEFINITION_BY_AUTHORITY_ID[authorityWeaponId],
     family: spec.family,
+    silhouette: spec.silhouette,
     label: spec.label,
     accent: spec.accent,
     tracer: spec.tracer,

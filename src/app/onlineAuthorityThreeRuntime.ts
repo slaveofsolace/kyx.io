@@ -33,6 +33,10 @@ import {
 import {
   createInkfallRev5VisualContinuity,
 } from './inkfallRev5VisualContinuity';
+import type { OnlineBlinkPreview } from './onlineBlinkPreview';
+import {
+  createOnlineBlinkPreviewPresentation,
+} from './onlineBlinkPreviewPresentation';
 import {
   ONLINE_INKFALL_REV5_MAP_BINDING,
 } from './onlineAuthorityProfiles';
@@ -64,6 +68,7 @@ export interface OnlineAuthorityThreeFrame {
   readonly localYawMilliDegrees: number | null;
   readonly localPitchMilliDegrees: number | null;
   readonly localSpeedMillimetersPerSecond: number;
+  readonly blinkPreview: OnlineBlinkPreview | null;
 }
 
 export interface OnlineAuthorityThreeDiagnostics {
@@ -96,6 +101,14 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedWeaponId: string | null;
   readonly selectedProceduralDefinitionId: string | null;
   readonly selectedWeaponLabel: string | null;
+  readonly selectedWeaponFamily: string | null;
+  readonly selectedWeaponSilhouette: string | null;
+  readonly blinkPreviewActive: boolean;
+  readonly blinkPreviewValid: boolean;
+  readonly blinkPreviewAuthorityBound: boolean;
+  readonly blinkPreviewReason: string;
+  readonly blinkPreviewDistanceMillimeters: number;
+  readonly blinkPreviewMaximumRangeMillimeters: number;
   readonly pointerLocked: boolean;
   readonly canvasWidth: number;
   readonly canvasHeight: number;
@@ -141,13 +154,20 @@ function mapMillimetersToScene(
   return target.set(value.x / 1_000, value.y / 1_000, -value.z / 1_000);
 }
 
-function normalizedYawRadians(yawMilliDegrees: number): number {
-  // Authority yaw zero faces map-east (+X). Three cameras face -Z at zero
-  // rotation, so convert the map frame with a -90 degree basis offset.
+function avatarYawRadians(yawMilliDegrees: number): number {
+  // The humanoid source faces +X while the canonical authority look basis
+  // faces +Z, so remote bodies retain a model-only quarter-turn.
   return -yawMilliDegrees * Math.PI / 180_000 - Math.PI / 2;
 }
 
-function directionFromLook(
+export function authorityCameraYawRadians(
+  yawMilliDegrees: number,
+): number {
+  // Authority +Z maps to Three -Z; yaw zero therefore maps to camera yaw zero.
+  return -yawMilliDegrees * Math.PI / 180_000;
+}
+
+export function directionFromAuthorityLook(
   yawMilliDegrees: number,
   pitchMilliDegrees: number,
   target = new THREE.Vector3(),
@@ -156,9 +176,9 @@ function directionFromLook(
   const pitch = pitchMilliDegrees * Math.PI / 180_000;
   const horizontal = Math.cos(pitch);
   return target.set(
-    Math.cos(yaw) * horizontal,
+    Math.sin(yaw) * horizontal,
     Math.sin(pitch),
-    -Math.sin(yaw) * horizontal,
+    -Math.cos(yaw) * horizontal,
   ).normalize();
 }
 
@@ -441,6 +461,25 @@ export async function createOnlineAuthorityThreeRuntime(
   const firstPersonWeaponMount = new THREE.Group();
   firstPersonWeaponMount.name = 'ONLINE_FIRST_PERSON_WEAPON_ONLY';
   camera.add(firstPersonWeaponMount);
+  // Camera-space key/fill keeps the six authored silhouettes legible in dark
+  // Inkfall interiors without altering authority-owned world lighting.
+  const firstPersonWeaponKey = new THREE.PointLight(
+    0xd9f8ff,
+    5.2,
+    2.4,
+    1.65,
+  );
+  firstPersonWeaponKey.name = 'ONLINE_FIRST_PERSON_WEAPON_KEY';
+  firstPersonWeaponKey.position.set(0.42, 0.28, 0.06);
+  const firstPersonWeaponFill = new THREE.PointLight(
+    0xffbd78,
+    2.2,
+    2.1,
+    1.8,
+  );
+  firstPersonWeaponFill.name = 'ONLINE_FIRST_PERSON_WEAPON_FILL';
+  firstPersonWeaponFill.position.set(-0.34, -0.2, -0.08);
+  camera.add(firstPersonWeaponKey, firstPersonWeaponFill);
   let firstPersonWeapon: KyxWeaponPresentationModel | null = null;
   let selectedWeaponId: string | null = null;
   let firstPersonRecoil = 0;
@@ -456,6 +495,10 @@ export async function createOnlineAuthorityThreeRuntime(
   const portalPresentation = createInkfallRev5PortalPresentation(
     scene,
     options.onWorldPortalAudio,
+  );
+  const blinkPreviewPresentation = createOnlineBlinkPreviewPresentation(scene);
+  const reducedMotionQuery = window.matchMedia(
+    '(prefers-reduced-motion: reduce)',
   );
   let renderedReliableEventCount = 0;
   let disposed = false;
@@ -582,7 +625,7 @@ export async function createOnlineAuthorityThreeRuntime(
           event: semantic,
           weapon,
           muzzle,
-          direction: directionFromLook(look.yaw, look.pitch),
+          direction: directionFromAuthorityLook(look.yaw, look.pitch),
           actorPosition: actor,
           yawMilliDegrees: look.yaw,
           pitchMilliDegrees: look.pitch,
@@ -739,7 +782,7 @@ export async function createOnlineAuthorityThreeRuntime(
       avatar.root.position.copy(
         mapMillimetersToScene(remote.state.feetPosition),
       );
-      const yawRadians = normalizedYawRadians(
+      const yawRadians = avatarYawRadians(
         remote.state.yawMilliDegrees,
       );
       const rawTurnRate = avatar.previousYawRadians === null
@@ -992,6 +1035,11 @@ export async function createOnlineAuthorityThreeRuntime(
     previousRenderMilliseconds = frame.nowMilliseconds;
     resize();
     syncFirstPersonWeapon(frame);
+    blinkPreviewPresentation.update(
+      frame.blinkPreview,
+      frame.nowMilliseconds,
+      reducedMotionQuery.matches,
+    );
     syncAvatars(frame, deltaSeconds);
     syncGrenades(frame.combat.snapshot, frame.presentation.estimatedServerTick);
     weaponPresentationFx.syncAuthoritativeRockets(
@@ -1019,7 +1067,7 @@ export async function createOnlineAuthorityThreeRuntime(
         frame.presentation.localPredicted,
       ).add(new THREE.Vector3(0, 1.58, 0));
       camera.position.lerp(target, 0.42);
-      camera.rotation.y = normalizedYawRadians(
+      camera.rotation.y = authorityCameraYawRadians(
         frame.localYawMilliDegrees ?? 0,
       );
       camera.rotation.x = (
@@ -1063,6 +1111,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const diagnostics = (): OnlineAuthorityThreeDiagnostics => {
     const weaponDiagnostics = weaponPresentationFx.diagnostics();
     const portalDiagnostics = portalPresentation.diagnostics();
+    const blinkDiagnostics = blinkPreviewPresentation.diagnostics();
     return Object.freeze({
       status: disposed ? 'disposed' : 'ready',
       renderer: 'three_webgl',
@@ -1095,6 +1144,16 @@ export async function createOnlineAuthorityThreeRuntime(
       selectedWeaponId,
       selectedProceduralDefinitionId: firstPersonWeapon?.definitionId ?? null,
       selectedWeaponLabel: firstPersonWeapon?.label ?? null,
+      selectedWeaponFamily: firstPersonWeapon?.family ?? null,
+      selectedWeaponSilhouette: firstPersonWeapon?.silhouette ?? null,
+      blinkPreviewActive: blinkDiagnostics.active,
+      blinkPreviewValid: blinkDiagnostics.valid,
+      blinkPreviewAuthorityBound: blinkDiagnostics.authorityBound,
+      blinkPreviewReason: blinkDiagnostics.reason,
+      blinkPreviewDistanceMillimeters:
+        blinkDiagnostics.distanceMillimeters,
+      blinkPreviewMaximumRangeMillimeters:
+        blinkDiagnostics.maximumRangeMillimeters,
       pointerLocked,
       canvasWidth,
       canvasHeight,
@@ -1109,6 +1168,7 @@ export async function createOnlineAuthorityThreeRuntime(
     if (document.pointerLockElement === canvas) void document.exitPointerLock();
     portalPresentation.dispose();
     weaponPresentationFx.dispose();
+    blinkPreviewPresentation.dispose();
     processedReliableEvents.clear();
     processedReliableEventOrder.length = 0;
     renderer.dispose();
