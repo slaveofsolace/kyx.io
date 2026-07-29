@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "files": {
+    "screenshots/p515-01-client-0-two-rendered.png": {
+      "sha256": "acc958bb0f5bf8b76c0acf12ca457129640c654ed3ca61d7b379d92995347efb",
+      "bytes": 183695
+    },
+    "screenshots/p515-02-client-1-two-rendered.png": {
+      "sha256": "fa4305db3ac57dc47f6a37fae1cb466e0c4039845d257b1c0d7c96d819663ef0",
+      "bytes": 134431
+    },
+    "screenshots/p515-03-real-occlusion.png": {
+      "sha256": "8cc17a07d229510bdc4a194e70e6469b2d6f3eaad6e5564a506031ac87268aca",
+      "bytes": 297924
+    },
+    "screenshots/p515-03a-rev5-lower-portal-approach.png": {
+      "sha256": "7a725a4ca59cc7642c981cc62a5322d6621c78dc76245ea028bff6005ca28dcc",
+      "bytes": 256541
+    },
+    "screenshots/p515-03b-rev5-upper-portal-arrival.png": {
+      "sha256": "19898baa429b95745fe1b09091ed6443e0fd2a8e88fe755017a6bbde0beb9473",
+      "bytes": 265797
+    },
+    "screenshots/p515-04-confirmed-body-hit.png": {
+      "sha256": "d41650f23f4c4bdf5fcaec73112fcdd49db9f29db81509ad0d706447fb35c8e2",
+      "bytes": 334735
+    },
+    "screenshots/p515-04a-grenade-throw-accepted.png": {
+      "sha256": "6d6c35f9cb2d9c0a43eae9b9b4ec36dae2472b1d6b3e87b03546addf63787321",
+      "bytes": 272290
+    },
+    "screenshots/p515-04b-grenade-collision-fuse.png": {
+      "sha256": "5acc44d1c72fee81acc77dc30903f64e920cee15d1ec13cfd6373880be4acdfc",
+      "bytes": 272344
+    },
+    "screenshots/p515-04c-grenade-impulse-confirmed.png": {
+      "sha256": "05b425f7b20a5edcaa3a0388cbc28949a125c4a12330f0a53c0c2c480f19e580",
+      "bytes": 281802
+    },
+    "screenshots/p515-05-authoritative-death-score.png": {
+      "sha256": "1f6cb23be61562acf28825b707ad3945f541c06d40a21776a782de4b4ce83f7c",
+      "bytes": 327742
+    },
+    "screenshots/p515-06-confirmed-teleport.png": {
+      "sha256": "52dbf63e2fe0c864e5f4d327f3669f7aed308d89dfcef5247c9531471e58bb99",
+      "bytes": 308034
+    },
+    "screenshots/p515-07-resume-preserved-state.png": {
+      "sha256": "d42d870bad62009bf34d86eeeadf0e519b6b374c601d28647d3391df5834b27b",
+      "bytes": 262506
+    },
+    "screenshots/p515-08-four-product-clients.png": {
+      "sha256": "13c1b661757a882bf8e22e7bd4cff21f92a75f88bdbf6b8362ea21e7dc61ce76",
+      "bytes": 256411
+    },
+    "screenshots/p515-09-eight-product-clients.png": {
+      "sha256": "cf48fba6fe1aaf572ac2791456a5a449ff08b1edad23f6161a527f66160bf106",
+      "bytes": 258706
+    },
+    "screenshots/p515-10-profile-mismatch-fails-closed.png": {
+      "sha256": "ea63c8a35b46d28f8330c080a4da35e60b7521f6e35f156e445d49cd7c160dc3",
+      "bytes": 41838
+    },
+    "screenshots/p515-11-runtime-evidence-board.png": {
+      "sha256": "97dd67804a88716105572d63f3cd5af6d8d0a9d2bcf5bf85317c0b8aa5cdbc23",
+      "bytes": 267166
+    },
+    "p515-normalized-wire-log.jsonl": {
+      "sha256": "aaf7bc51b98c275957d09f90e48203331f1687d9daa85aadcfc840247f8ba7be",
+      "bytes": 21656513
+    },
+    "p515-product-population-proof.json": {
+      "sha256": "8d997d9a0d2b0d4d568e1fe2fea0bdc1f01aa81648543ccc65738cbe62341051",
+      "bytes": 459964
+    }
+  }
+}
