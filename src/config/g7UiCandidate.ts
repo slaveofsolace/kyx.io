@@ -1,18 +1,18 @@
 export const G7_PRESENTATION_QUERY_KEY = 'g7Presentation';
-export const G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE = 'tournament-instrument-rev2';
+export const G7_CUTLINE_QUERY_VALUE = 'cutline-v1';
 export const G7_LEGACY_FALLBACK_QUERY_VALUE = 'legacy';
 export const G7_COMPATIBILITY_QUERY_KEY = 'g7Candidate';
 export const G7_COMPATIBILITY_QUERY_VALUE = 'foundry-tactical';
-export const G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE = 'match-instrument-v1';
-export const G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN = 'match-instrument-v1';
+export const G7_CUTLINE_DATASET_VALUE = 'cutline-v1';
+export const G7_CUTLINE_STYLE_TOKEN = 'cutline-v1';
 
 export type G7UiCandidateResolution =
   | Readonly<{
-      kind: 'accepted';
+      kind: 'candidate';
       source: 'default' | 'query' | 'compatibility_query';
-      queryValue: typeof G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE | null;
-      datasetValue: typeof G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE;
-      styleToken: typeof G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN;
+      queryValue: typeof G7_CUTLINE_QUERY_VALUE | null;
+      datasetValue: typeof G7_CUTLINE_DATASET_VALUE;
+      styleToken: typeof G7_CUTLINE_STYLE_TOKEN;
     }>
   | Readonly<{
       kind: 'fallback';
@@ -20,12 +20,12 @@ export type G7UiCandidateResolution =
     }>
   | Readonly<{ kind: 'invalid'; reason: 'duplicate' | 'unknown' | 'conflicting' }>;
 
-const ACCEPTED_DEFAULT = Object.freeze({
-  kind: 'accepted',
+const CANDIDATE_DEFAULT = Object.freeze({
+  kind: 'candidate',
   source: 'default',
   queryValue: null,
-  datasetValue: G7_TOURNAMENT_INSTRUMENT_DATASET_VALUE,
-  styleToken: G7_TOURNAMENT_INSTRUMENT_STYLE_TOKEN,
+  datasetValue: G7_CUTLINE_DATASET_VALUE,
+  styleToken: G7_CUTLINE_STYLE_TOKEN,
 } as const);
 
 export function resolveG7UiCandidate(search: string): G7UiCandidateResolution {
@@ -40,7 +40,7 @@ export function resolveG7UiCandidate(search: string): G7UiCandidateResolution {
     return Object.freeze({ kind: 'invalid', reason: 'conflicting' } as const);
   }
   if (presentationReferences.length === 0 && compatibilityReferences.length === 0) {
-    return ACCEPTED_DEFAULT;
+    return CANDIDATE_DEFAULT;
   }
 
   if (presentationReferences.length === 1) {
@@ -51,11 +51,11 @@ export function resolveG7UiCandidate(search: string): G7UiCandidateResolution {
         queryValue: G7_LEGACY_FALLBACK_QUERY_VALUE,
       } as const);
     }
-    if (value === G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE) {
+    if (value === G7_CUTLINE_QUERY_VALUE) {
       return Object.freeze({
-        ...ACCEPTED_DEFAULT,
+        ...CANDIDATE_DEFAULT,
         source: 'query',
-        queryValue: G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE,
+        queryValue: G7_CUTLINE_QUERY_VALUE,
       } as const);
     }
     return Object.freeze({ kind: 'invalid', reason: 'unknown' } as const);
@@ -63,9 +63,9 @@ export function resolveG7UiCandidate(search: string): G7UiCandidateResolution {
 
   if (compatibilityReferences[0] === G7_COMPATIBILITY_QUERY_VALUE) {
     return Object.freeze({
-      ...ACCEPTED_DEFAULT,
+      ...CANDIDATE_DEFAULT,
       source: 'compatibility_query',
-      queryValue: G7_TOURNAMENT_INSTRUMENT_QUERY_VALUE,
+      queryValue: G7_CUTLINE_QUERY_VALUE,
     } as const);
   }
   return Object.freeze({ kind: 'invalid', reason: 'unknown' } as const);

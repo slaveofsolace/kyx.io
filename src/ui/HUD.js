@@ -1,5 +1,9 @@
 import { getWeaponThumb } from './WeaponThumbnails.js';
 import { isDamageDirection } from './DamageDirection.js';
+import {
+  abilityViewModel,
+  createPracticeHudViewModel,
+} from './hudViewModel.ts';
 
 function sentenceCaseHudText(value) {
   const normalized = String(value ?? '').replace(/\s+/gu, ' ').trim();
@@ -27,6 +31,8 @@ export class HUD {
     this.weaponName  = document.getElementById('weapon-name');
     this.weaponWrap  = document.getElementById('weapon-wrap');
     this.ammoText    = document.getElementById('ammo-text');
+    this.ammoMagazine = document.getElementById('ammo-magazine');
+    this.ammoReserve = document.getElementById('ammo-reserve');
     this.reloadText  = document.getElementById('reload-text');
     this.killCount   = document.getElementById('kill-count');
     this.scoreCount  = document.getElementById('score-count');
@@ -66,6 +72,13 @@ export class HUD {
     this._abilityReasonTimeout = null;
     this._killConfirmationTimeout = null;
     this._abilityFlashTimeout = null;
+    this._abilityInputs = [
+      { id: 'blink', name: 'Blink', key: 'Q', locked: true, readinessRatio: 1 },
+      { id: 'launch', name: 'Launch', key: 'E', charges: 1, maximumCharges: 1 },
+      { id: 'smoke', name: 'Smoke', key: 'F', charges: 2, maximumCharges: 2 },
+      { id: 'frag', name: 'Frag', key: 'Z', charges: 2, maximumCharges: 2 },
+    ];
+    this._lastViewModel = null;
   }
 
   show() { this.root?.classList.remove('hidden'); }
@@ -185,57 +198,130 @@ export class HUD {
   }
 
   update(player, weaponInfo, kills, score) {
-    const hpct = Math.max(0, (player.health / player.maxHealth) * 100);
-    const healthValue = Math.ceil(player.health);
-    this.healthBar.style.width  = `${hpct}%`;
-    this.healthText.textContent = healthValue;
-    const healthState = hpct <= 25 ? 'critical' : hpct <= 50 ? 'low' : 'stable';
-    this.healthWrap.dataset.state = healthState;
-    this.healthWrap.setAttribute(
-      'aria-label',
-      `Health ${healthValue} of ${Math.ceil(player.maxHealth)}${healthState === 'stable' ? '' : `, ${healthState}`}`,
-    );
-    this.healthState.textContent = healthState === 'critical' ? 'Critical' : 'Low';
-    this.healthState.classList.toggle('hidden', healthState === 'stable');
+    this.render(createPracticeHudViewModel({
+      player,
+      weapon: weaponInfo,
+      abilities: this._abilityInputs,
+      kills,
+      score,
+    }));
+  }
 
-    if (player.maxShield > 0) {
-      this.shieldWrap.classList.remove('hidden');
-      const spct = Math.max(0, (player.shield / player.maxShield) * 100);
-      this.shieldBar.style.width  = `${spct}%`;
-      this.shieldText.textContent = Math.ceil(player.shield);
-      this.shieldWrap.setAttribute(
-        'aria-label',
-        `Shield ${Math.ceil(player.shield)} of ${Math.ceil(player.maxShield)}`,
-      );
-    } else {
-      this.shieldWrap.classList.add('hidden');
+  render(viewModel) {
+    if (!viewModel || viewModel.schemaVersion !== 1) return false;
+    this._lastViewModel = viewModel;
+    if (this.root) {
+      this.root.dataset.hudViewModel = String(viewModel.schemaVersion);
+      this.root.dataset.hudMode = viewModel.mode;
     }
 
-    const spct = Math.max(0, (player.stamina / player.maxStamina) * 100);
-    this.staminaBar.style.width  = `${spct}%`;
-    this.staminaText.textContent = Math.ceil(player.stamina);
-    this.staminaBar.classList.toggle('stamina-low', player.stamina < 25);
-    this.staminaState.textContent = 'Low';
-    this.staminaState.classList.toggle('hidden', player.stamina >= 25);
-    this.staminaWrap?.setAttribute(
-      'aria-label',
-      `Energy ${Math.ceil(player.stamina)} of ${Math.ceil(player.maxStamina)}${player.stamina < 25 ? ', low' : ''}`,
+    const renderVital = (wrap, bar, text, stateElement, vital, label) => {
+      if (!wrap || !bar || !text) return;
+      wrap.classList.toggle('hidden', vital.visible !== true);
+      wrap.dataset.state = vital.state;
+      wrap.style.setProperty('--vital-ratio', String(vital.ratio));
+      bar.style.width = `${vital.ratio * 100}%`;
+      text.textContent = String(vital.value);
+      wrap.setAttribute(
+        'aria-label',
+        `${label} ${vital.value} of ${vital.maximum}${vital.state === 'stable' ? '' : `, ${vital.state}`}`,
+      );
+      if (stateElement) {
+        stateElement.textContent = vital.state === 'critical'
+          ? 'Critical'
+          : vital.state === 'low'
+            ? 'Low'
+            : vital.state === 'depleted'
+              ? 'Depleted'
+              : '';
+        stateElement.classList.toggle('hidden', vital.state === 'stable');
+      }
+    };
+
+    renderVital(
+      this.healthWrap,
+      this.healthBar,
+      this.healthText,
+      this.healthState,
+      viewModel.health,
+      'Health',
+    );
+    renderVital(
+      this.shieldWrap,
+      this.shieldBar,
+      this.shieldText,
+      null,
+      viewModel.shield,
+      'Shield',
+    );
+    renderVital(
+      this.staminaWrap,
+      this.staminaBar,
+      this.staminaText,
+      this.staminaState,
+      viewModel.energy,
+      'Energy',
+    );
+    this.staminaBar?.classList.toggle(
+      'stamina-low',
+      viewModel.energy.state === 'low' || viewModel.energy.state === 'critical',
     );
 
-    this.weaponName.textContent = weaponInfo.name;
-    this.ammoText.textContent = weaponInfo.isMelee
-      ? '∞'
-      : `${weaponInfo.magAmmo} / ${weaponInfo.reserveAmmo}`;
-    this.reloadText.classList.toggle('hidden', !weaponInfo.isReloading);
-    this.weaponWrap?.setAttribute(
-      'aria-label',
-      weaponInfo.isMelee
-        ? `${weaponInfo.name}, melee weapon`
-        : `${weaponInfo.name}, ${weaponInfo.magAmmo} rounds loaded, ${weaponInfo.reserveAmmo} reserve${weaponInfo.isReloading ? ', reloading' : ''}`,
-    );
+    if (this.weaponName) this.weaponName.textContent = viewModel.weapon.name;
+    if (this.ammoMagazine) {
+      this.ammoMagazine.textContent = viewModel.weapon.magazineLabel;
+      if (this.ammoReserve) this.ammoReserve.textContent = viewModel.weapon.reserveLabel;
+    } else if (this.ammoText) {
+      this.ammoText.textContent = viewModel.weapon.isMelee
+        ? viewModel.weapon.magazineLabel
+        : `${viewModel.weapon.magazineLabel} / ${viewModel.weapon.reserveLabel}`;
+    }
+    if (this.weaponWrap) {
+      this.weaponWrap.dataset.ammoState = viewModel.weapon.ammoState;
+      this.weaponWrap.dataset.ads = String(viewModel.weapon.isAds);
+      this.weaponWrap.setAttribute('aria-label', viewModel.weapon.ariaLabel);
+    }
+    if (this.reloadText) {
+      const weaponState = viewModel.weapon.isReloading
+        ? 'Reloading'
+        : viewModel.weapon.ammoState === 'empty'
+          ? 'Empty'
+          : viewModel.weapon.isAds
+            ? 'ADS'
+            : '';
+      this.reloadText.textContent = weaponState;
+      this.reloadText.classList.toggle('hidden', weaponState === '');
+    }
 
-    this.killCount.textContent  = kills;
-    this.scoreCount.textContent = score;
+    if (this.killCount) this.killCount.textContent = String(viewModel.score.leftScore);
+    if (this.scoreCount) this.scoreCount.textContent = String(viewModel.score.rightScore ?? 0);
+    for (const ability of viewModel.abilities) this._renderAbility(ability);
+    return true;
+  }
+
+  _renderAbility(ability) {
+    const slot = ability.slot === 0
+      ? this._abilityQ
+      : document.getElementById(`ability-slot-${ability.slot}`);
+    if (!slot) return;
+    const keyElement = slot.querySelector('.ability-key');
+    const nameElement = slot.querySelector('.ability-name');
+    const stateElement = slot.querySelector('.ability-state');
+    const countElement = slot.querySelector('.ability-count');
+    if (keyElement) keyElement.textContent = ability.key;
+    if (nameElement) nameElement.textContent = ability.name;
+    if (stateElement) stateElement.textContent = ability.stateLabel;
+    if (countElement) countElement.textContent = '';
+    slot.dataset.abilityId = ability.id;
+    slot.dataset.abilityKey = ability.key;
+    slot.dataset.state = ability.state;
+    slot.dataset.locked = String(ability.locked);
+    slot.style.setProperty('--ready-ratio', String(ability.readinessRatio));
+    slot.classList.toggle('ready', ability.state === 'ready');
+    slot.classList.toggle('charging', ability.state === 'charging');
+    slot.classList.toggle('empty', ability.state === 'empty');
+    slot.classList.toggle('unavailable', ability.state === 'unavailable');
+    slot.setAttribute('aria-label', ability.ariaLabel);
   }
 
   updateGrenades(frags, smokes) {
@@ -272,9 +358,14 @@ export class HUD {
   } = {}) {
     const safeId = String(abilityId ?? '').replace(/[^a-z0-9_-]/giu, '').slice(0, 32);
     if (!safeId) return false;
-    const slot = this.root?.querySelector?.(`[data-ability-id="${safeId}"]`);
-    if (!slot) return false;
-    const safeKey = String(key ?? slot.dataset.abilityKey ?? '')
+    const slotIndex = this._abilityInputs.findIndex((ability) => (
+      ability.id === safeId
+      || ability.id.startsWith(`${safeId}_`)
+      || safeId.startsWith(`${ability.id}_`)
+    ));
+    if (slotIndex < 0) return false;
+    const current = this._abilityInputs[slotIndex];
+    const safeKey = String(key ?? current.key ?? '')
       .replace(/[^A-Z0-9]/giu, '')
       .slice(0, 3)
       .toUpperCase();
@@ -283,56 +374,35 @@ export class HUD {
       .replace(/[^a-z0-9_-]/giu, '')
       .slice(0, 24) || 'assigned';
     const safeStateLabel = sentenceCaseHudText(stateLabel ?? safeState).slice(0, 28);
-    const keyElement = slot.querySelector?.('.ability-key');
-    const nameElement = slot.querySelector?.('.ability-name');
-    const stateElement = slot.querySelector?.('.ability-state');
-    const countElement = slot.querySelector?.('.ability-count');
-    if (keyElement && safeKey) keyElement.textContent = safeKey;
-    if (nameElement) nameElement.textContent = safeName;
-    if (stateElement) stateElement.textContent = safeStateLabel;
-    if (countElement) countElement.textContent = Number.isFinite(count) ? `${Math.max(0, Math.floor(count))}` : '';
-    slot.dataset.abilityId = safeId;
-    if (safeKey) slot.dataset.abilityKey = safeKey;
-    slot.dataset.state = safeState;
-    slot.classList.toggle('ready', ready === true);
-    slot.setAttribute(
-      'aria-label',
-      `${safeName}${safeKey ? `, ${safeKey}` : ''}, ${safeStateLabel.toLocaleLowerCase()}`,
-    );
+    const safeCount = Number.isFinite(count) ? Math.max(0, Math.floor(count)) : null;
+    const next = {
+      ...current,
+      id: safeId,
+      name: safeName,
+      key: safeKey || current.key,
+      available: safeState !== 'unavailable',
+      state: ['ready', 'charging', 'empty', 'unavailable'].includes(safeState)
+        ? safeState
+        : undefined,
+      charges: safeCount,
+      maximumCharges: safeCount === null ? current.maximumCharges : Math.max(1, safeCount),
+      cooldownSeconds: safeState === 'charging' ? current.cooldownSeconds ?? 0 : 0,
+      readinessRatio: ready === true ? 1 : 0,
+    };
+    this._abilityInputs[slotIndex] = next;
+    const model = abilityViewModel(next, slotIndex);
+    this._renderAbility({
+      ...model,
+      stateLabel: safeStateLabel || model.stateLabel,
+    });
     return true;
   }
 
   updateAbilities(info) {
     if (!Array.isArray(info?.slots)) return;
-    const slotElements = [
-      null,
-      {
-        root: document.getElementById('ability-slot-1'),
-        name: document.getElementById('ability-slot-1-name'),
-        count: document.getElementById('ability-slot-1-count'),
-        state: document.getElementById('ability-slot-1-state'),
-        key: 'E',
-      },
-      {
-        root: document.getElementById('ability-slot-2'),
-        name: document.getElementById('ability-slot-2-name'),
-        count: document.getElementById('ability-slot-2-count'),
-        state: document.getElementById('ability-slot-2-state'),
-        key: 'F',
-      },
-      {
-        root: document.getElementById('ability-slot-3'),
-        name: document.getElementById('ability-slot-3-name'),
-        count: document.getElementById('ability-slot-3-count'),
-        state: document.getElementById('ability-slot-3-state'),
-        key: 'Z',
-      },
-    ];
+    const nextAbilities = [this._abilityInputs[0]];
     for (const slot of info.slots.slice(1)) {
-      const elements = slotElements[slot.slot];
-      if (!elements?.root) continue;
       const count = Number.isFinite(slot.count) ? Math.max(0, Math.floor(slot.count)) : 0;
-      const ready = count > 0;
       const maximumCharges = Number.isFinite(slot.metadata?.charges)
         ? Math.max(1, Math.floor(slot.metadata.charges))
         : 1;
@@ -340,29 +410,22 @@ export class HUD {
         ? Math.max(0, slot.cooldownSeconds)
         : 0;
       const displayName = slot.metadata?.shortName || slot.metadata?.displayName || 'Ability';
-      elements.root.dataset.abilityId = slot.abilityId;
-      elements.root.dataset.state = ready ? 'ready' : 'empty';
-      elements.root.classList.toggle('ready', ready);
-      elements.root.classList.toggle('empty', !ready);
-      if (elements.name) elements.name.textContent = displayName;
-      if (elements.count) {
-        elements.count.textContent = String(count);
-        elements.count.classList.toggle('grenade-empty', !ready);
-      }
-      if (elements.state) {
-        elements.state.textContent = cooldownSeconds > 0 && count < maximumCharges
-          ? `${ready ? 'Ready' : 'Recharging'} · +1 ${cooldownSeconds.toFixed(1)}s`
-          : ready ? 'Ready' : 'Empty';
-      }
-      elements.root.setAttribute(
-        'aria-label',
-        `${slot.metadata?.displayName || displayName}, ${elements.key}, ${count} of ${maximumCharges} charges${
-          cooldownSeconds > 0 && count < maximumCharges
-            ? `, next charge in ${cooldownSeconds.toFixed(1)} seconds`
-            : ''
-        }`,
-      );
+      const key = ['Q', 'E', 'F', 'Z'][slot.slot] ?? String(slot.slot);
+      nextAbilities[slot.slot] = {
+        id: slot.abilityId,
+        name: displayName,
+        key,
+        charges: count,
+        maximumCharges,
+        cooldownSeconds,
+        readinessRatio: count > 0 ? 1 : 0,
+        state: count > 0 ? 'ready' : cooldownSeconds > 0 ? 'charging' : 'empty',
+      };
     }
+    this._abilityInputs = nextAbilities;
+    this._abilityInputs.forEach((ability, slot) => {
+      if (ability) this._renderAbility(abilityViewModel(ability, slot));
+    });
   }
 
   showFlashEffect(intensity, durationSeconds) {
@@ -411,12 +474,15 @@ export class HUD {
   updateTeleport(ratio) {
     if (!this._abilityQ) return;
     const safeRatio = Number.isFinite(ratio) ? Math.max(0, Math.min(1, ratio)) : 0;
-    const ready = safeRatio >= 1;
-    this._abilityQ.style.setProperty('--ratio', safeRatio);
-    this._abilityQ.classList.toggle('ready', ready);
-    this._abilityQ.dataset.state = ready ? 'ready' : 'charging';
-    if (this._abilityQState) this._abilityQState.textContent = ready ? 'Ready' : `Charging ${Math.round(safeRatio * 100)}%`;
-    this._abilityQ.setAttribute('aria-label', ready ? 'Blink, Q, ready' : `Blink, Q, charging ${Math.round(safeRatio * 100)} percent`);
+    const next = {
+      ...this._abilityInputs[0],
+      locked: true,
+      state: safeRatio >= 1 ? 'ready' : 'charging',
+      cooldownSeconds: 0,
+      readinessRatio: safeRatio,
+    };
+    this._abilityInputs[0] = next;
+    this._renderAbility(abilityViewModel(next, 0));
   }
 
   showAbilityUnavailable(key, reason, durationMs = 1_400) {

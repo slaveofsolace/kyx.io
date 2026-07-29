@@ -9,7 +9,7 @@
   <title>KYX.IO &mdash; Offline Practice</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body data-interface="kyx-field-ui-v3">
+<body data-interface="kyx-cutline-v1">
   <div id="app">
     <canvas
       id="game-canvas"
@@ -29,7 +29,6 @@
     <header id="top-nav" class="hidden">
       <div class="nav-brand-lockup">
         <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
-        <span class="local-build-chip">Local build</span>
       </div>
       <nav class="nav-items" aria-label="Practice menu">
         <button
@@ -55,36 +54,30 @@
       </aside>
     </header>
 
-    <!-- Primary mode card and explicit local population disclosure. -->
+    <!-- Primary local mode and explicit bot disclosure. -->
     <main id="center-play" class="hidden">
       <section class="practice-launch-card" aria-labelledby="practice-title">
         <header class="practice-card-head">
           <div>
-            <p class="practice-eyebrow">Offline practice</p>
+            <p class="practice-eyebrow">Practice</p>
             <h1 id="practice-title">Iron Bastion</h1>
-            <p class="practice-summary">A solo deathmatch drill against seven clearly labeled bots.</p>
-          </div>
-          <div class="practice-ready-state" aria-label="Simulation ready">
-            <span class="practice-ready-pulse" aria-hidden="true"></span>
-            Ready
+            <p class="practice-summary">Fast solo deathmatch against seven labeled bots.</p>
           </div>
         </header>
 
         <div class="practice-command-grid">
           <div class="map-preview-window" aria-label="Live map preview">
-            <span class="map-preview-kicker">Training ground</span>
             <strong>Bastion Sector</strong>
-            <span class="map-preview-coordinates">Local simulation</span>
+            <span class="map-preview-coordinates">Local arena</span>
           </div>
 
           <div class="practice-launch-rail">
             <div class="practice-stat-grid" aria-label="Offline practice details">
               <span><small>Mode</small>Deathmatch</span>
               <span><small>Roster</small>1 player + 7 bots</span>
-              <span><small>Authority</small>This device</span>
             </div>
             <button id="play-btn" type="button" class="click-to-play" aria-label="Start offline practice"><span>Start practice</span><b aria-hidden="true">Enter</b></button>
-            <p class="practice-footnote">Runs only on this device. Bots are never presented as online players.</p>
+            <p class="practice-footnote">Runs on this device. No online players.</p>
           </div>
         </div>
 
@@ -305,7 +298,7 @@
     </div>
 
     <!-- In-practice HUD: every population label identifies bots explicitly. -->
-    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="match-instrument-v1" data-ui-revision="match-instrument-v1" data-kyx-a11y="text-and-pattern-critical-states">
+    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="cutline-v1" data-ui-revision="cutline-v1" data-kyx-a11y="text-and-pattern-critical-states">
       <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div id="hitmarker" aria-hidden="true"></div>
       <div id="damage-flash" aria-hidden="true"></div>
@@ -336,15 +329,18 @@
       </div>
 
       <div id="weapon-wrap" class="hud-panel">
-        <div class="hud-weapon-head"><span>Active weapon</span></div>
+        <div class="hud-weapon-head"><span>Weapon</span></div>
         <div id="weapon-name">SIDEARM</div>
-        <div class="hud-ammo-row"><div id="ammo-text">12 / 60</div><span>mag / reserve</span></div>
+        <div class="hud-ammo-row">
+          <div id="ammo-text"><span id="ammo-magazine">12</span><span class="ammo-separator">/</span><span id="ammo-reserve">60</span></div>
+          <span>mag / reserve</span>
+        </div>
         <div id="reload-text" class="hidden">Reloading</div>
       </div>
 
       <div id="score-wrap" class="hud-panel">
-        <div class="hud-match-head"><div class="hud-practice-label">Offline practice</div><span>Local</span></div>
-        <div id="server-pop">1 player / 7 bots<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
+        <div class="hud-match-head"><div class="hud-practice-label">Practice</div></div>
+        <div id="server-pop" class="hidden">1 player / 7 bots<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
         <div class="hud-score-metrics">
           <div><small>Bots defeated</small><span id="kill-count">0</span></div>
           <div><small>Score</small><span id="score-count">0</span></div>
@@ -395,8 +391,6 @@
           <span class="ability-key">Z</span><span id="ability-slot-3-name" class="ability-name">Frag</span><span id="ability-slot-3-count" class="ability-count">2</span><span id="ability-slot-3-state" class="ability-state">Ready</span>
         </div>
       </div>
-      <div id="ability-flash-overlay" class="ability-flash-overlay" aria-hidden="true"></div>
-
       <div id="scope-overlay" aria-hidden="true">
         <div class="scope-ring">
           <div class="scope-ch-v"></div><div class="scope-ch-h"></div>
