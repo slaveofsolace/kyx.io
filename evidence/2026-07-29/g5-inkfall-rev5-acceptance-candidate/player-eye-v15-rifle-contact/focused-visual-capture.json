@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "status": "rev5_player_eye_capture_complete_human_review_open",
+  "profile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+  "mapReference": "inkfall_foundry@3",
+  "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+  "sourceFreeze": {
+    "repositoryHead": "8ce1cfdaf5d91de665550e42de4a43c190e7fe78",
+    "cleanAtStart": true,
+    "headUnchangedDuringCapture": true
+  },
+  "authority": {
+    "fixtureHash": "97eb7772ac59dc95",
+    "colliderCount": 339,
+    "spawnCount": 12,
+    "zoneCount": 9,
+    "renderMeshesMayBeAuthority": false,
+    "persistenceMode": "capture_owned_ephemeral_temp"
+  },
+  "presentation": {
+    "mode": "review_glb",
+    "sha256": "7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3",
+    "renderMeshCount": 24,
+    "renderOnlyVisualContinuityMeshCount": 302,
+    "spawnPocketCount": 2,
+    "portalTraversalPresentationCount": 1,
+    "isolatedPlayerContexts": 2,
+    "rendererMode": "hardware",
+    "graphics": {
+      "renderer": "WebKit WebGL",
+      "vendor": "WebKit",
+      "unmaskedRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "unmaskedVendor": "Google Inc. (NVIDIA)"
+    }
+  },
+  "player": {
+    "joinedSpawnId": "spawn_w_press_a",
+    "joinedYawMilliDegrees": 53000,
+    "joinedPositionMm": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    },
+    "pressApproachPositionMm": {
+      "x": -25372,
+      "y": -109,
+      "z": 3222
+    },
+    "pressApproachDeltaMm": {
+      "x": 8128,
+      "y": -109,
+      "z": 6722
+    },
+    "forwardAlignment": 0.9989774060650497,
+    "portalApproachPositionMm": {
+      "x": -4620,
+      "y": -2856,
+      "z": -12958
+    },
+    "portalExitPositionMm": {
+      "x": 1786,
+      "y": 1690,
+      "z": -4214
+    },
+    "finalPositionMm": {
+      "x": 1786,
+      "y": 1690,
+      "z": -4214
+    },
+    "cameraViews": {
+      "spawn": {
+        "yawMilliDegrees": 53000,
+        "pitchMilliDegrees": 0
+      },
+      "pressHall": {
+        "yawMilliDegrees": 53000,
+        "pitchMilliDegrees": 7500
+      },
+      "inkChannel": {
+        "yawMilliDegrees": 3500,
+        "pitchMilliDegrees": 0
+      },
+      "archive": {
+        "yawMilliDegrees": 102500,
+        "pitchMilliDegrees": 7500
+      },
+      "portalApproach": {
+        "yawMilliDegrees": 15500,
+        "pitchMilliDegrees": -3000
+      },
+      "portalExit": {
+        "yawMilliDegrees": 45000,
+        "pitchMilliDegrees": -3000
+      }
+    }
+  },
+  "screenshots": [
+    "screenshots/01-west-spawn-pocket-forward.png",
+    "screenshots/02-press-hall-approach.png",
+    "screenshots/03-ink-channel-and-red-fold.png",
+    "screenshots/04-archive-tier-and-paper-drop.png",
+    "screenshots/05-red-fold-portal-approach.png",
+    "screenshots/06-red-fold-linked-exit.png"
+  ],
+  "screenshotIntegrity": {
+    "screenshots/01-west-spawn-pocket-forward.png": {
+      "bytes": 338473,
+      "sha256": "6784040052fd1e12e8621199784724a94328041e943afc61e08c00f6de1d6366"
+    },
+    "screenshots/02-press-hall-approach.png": {
+      "bytes": 388551,
+      "sha256": "ad5e068b0afc5deba92fafd77a02a66d1eb79c4151bda7d1701e4d74f6dcae40"
+    },
+    "screenshots/03-ink-channel-and-red-fold.png": {
+      "bytes": 253713,
+      "sha256": "c2a6d569ad975c12ae957402ff4b5ea145178db1f4da8d369ab9ea6d4252f508"
+    },
+    "screenshots/04-archive-tier-and-paper-drop.png": {
+      "bytes": 363727,
+      "sha256": "76ac48e2113d34975f0fd7f4f5823f6245ff23e8225c4a180998e7a01c89a3fa"
+    },
+    "screenshots/05-red-fold-portal-approach.png": {
+      "bytes": 357560,
+      "sha256": "f1af5cb3437cc24fdaa3180b1015b3c986a516e034df14e1ebd778b294bb0e6c"
+    },
+    "screenshots/06-red-fold-linked-exit.png": {
+      "bytes": 269499,
+      "sha256": "77e4b710399694b6f9483a8c7db0a7ebc0b2dfe7afa6569b217615f3380c6da9"
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "nonClaims": [
+    "Focused visual capture only; no broad regression, performance, spawn-safety, fun, staging, deployment, release, or G5 acceptance claim.",
+    "All visual-continuity additions are render-only/noHit; Rev3 remains the sole authority fixture."
+  ]
+}
