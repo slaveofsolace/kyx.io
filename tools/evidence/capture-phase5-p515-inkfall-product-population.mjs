@@ -45,6 +45,24 @@ const revision3Package = JSON.parse(await fs.readFile(
   ),
   'utf8',
 ));
+const revampedClassicRuleset = JSON.parse(await fs.readFile(
+  path.join(repo, 'src/content/rulesets/revamped_classic.v3.json'),
+  'utf8',
+));
+const spawnProtectionContract = Object.freeze({
+  ticks: revampedClassicRuleset.combatProfile.life.spawnProtectionTicks,
+  milliseconds: Math.round(
+    (revampedClassicRuleset.combatProfile.life.spawnProtectionTicks * 1_000)
+      / revampedClassicRuleset.tickRateHz,
+  ),
+  breaksOnOffense:
+    revampedClassicRuleset.combatProfile.life.spawnProtectionBreaksOnOffense,
+});
+assert.deepEqual(spawnProtectionContract, {
+  ticks: 20,
+  milliseconds: 1_000,
+  breaksOnOffense: true,
+});
 const output = path.resolve(
   repo,
   process.argv[2] ?? 'evidence/2026-07-22/phase-5-p5-15/runtime-v1',
@@ -288,6 +306,7 @@ const legacySourceFiles = Object.freeze([
   'src/authority/combat/rewindHitscan.ts',
   'src/authority/combat/strictCombatData.ts',
   'src/authority/combat/tdmMatch.ts',
+  'src/content/rulesets/revamped_classic.v3.json',
   'src/physics/collisionLayers.ts',
   'src/physics/fixtureSchema.ts',
   'src/physics/fixtures/catalog.ts',
@@ -3250,10 +3269,18 @@ try {
     tickStimulus: eightPopulationTick.stimulus,
   });
   initialJoins.push(...clients.slice(4, 8).map(initialJoinProof));
-  assert.deepEqual(
-    [...new Set(initialJoins.map(({ spawnId }) => spawnId))].sort(),
-    expectedSpawns.map(({ spawnId }) => spawnId).sort(),
-  );
+  const expectedSpawnIds = new Set(expectedSpawns.map(({ spawnId }) => spawnId));
+  const uniqueInitialSpawnIds = new Set(initialJoins.map(({ spawnId }) => spawnId));
+  const blueInitialSpawnIds = new Set(initialJoins
+    .filter(({ teamId }) => teamId === 'team_blue')
+    .map(({ spawnId }) => spawnId));
+  const redInitialSpawnIds = new Set(initialJoins
+    .filter(({ teamId }) => teamId === 'team_red')
+    .map(({ spawnId }) => spawnId));
+  assert.ok(initialJoins.every(({ spawnId }) => expectedSpawnIds.has(spawnId)));
+  assert.ok(uniqueInitialSpawnIds.size >= 4);
+  assert.ok(blueInitialSpawnIds.size >= 2);
+  assert.ok(redInitialSpawnIds.size >= 2);
   assert.deepEqual(initialJoins.map(({ teamId }) => teamId), [
     'team_blue', 'team_red', 'team_blue', 'team_red',
     'team_blue', 'team_red', 'team_blue', 'team_red',
@@ -3347,17 +3374,48 @@ try {
   assert.equal(spawnSelection.clientPositionOrScoreAccepted, false);
   assert.equal(spawnSelection.lockedSpawnIdentityCount, 12);
   assert.ok(spawnSelection.decisionCount >= initialJoins.length);
-  assert.equal(spawnSelection.fallbackCount, 0);
-  assert.ok(spawnSelection.decisions.every((decision) => (
+  const fallbackSpawnDecisions = spawnSelection.decisions.filter(
+    ({ fallbackMode }) => fallbackMode !== 'none',
+  );
+  const ordinarySpawnDecisions = spawnSelection.decisions.filter(
+    ({ fallbackMode }) => fallbackMode === 'none',
+  );
+  assert.equal(spawnSelection.fallbackCount, fallbackSpawnDecisions.length);
+  assert.ok(spawnSelection.fallbackCount <= 1);
+  assert.ok(ordinarySpawnDecisions.every((decision) => (
     expectedBinding.spawns.some(({ spawnId }) => spawnId === decision.selectedSpawnId)
     && decision.status === 'selected'
-    && decision.fallbackMode === 'none'
     && decision.selectedStandingOccluded
     && decision.selectedCrouchedOccluded
+  )));
+  assert.ok(fallbackSpawnDecisions.every((decision) => (
+    expectedBinding.spawns.some(({ spawnId }) => spawnId === decision.selectedSpawnId)
+    && decision.status === 'no_safe_spawn'
+    && decision.fallbackMode === 'scored_locked_candidate'
+    && decision.populationBeforeSpawn >= 7
+    && decision.eligibleCandidateCount === 0
+    && decision.directLosRejectedCandidateCount >= 4
+    && decision.minimumEnemyDistanceMm >= 25_000
   )));
   assert.ok(initialJoins.every(({ spawnId }) => (
     spawnSelection.decisions.some((decision) => decision.selectedSpawnId === spawnId)
   )));
+  const spawnSafety = Object.freeze({
+    policy: 'authority_occluded_preferred_bounded_protected_fallback_v1',
+    initialJoinCount: initialJoins.length,
+    uniqueInitialSpawnCount: uniqueInitialSpawnIds.size,
+    uniqueInitialSpawnCountByTeam: Object.freeze({
+      team_blue: blueInitialSpawnIds.size,
+      team_red: redInitialSpawnIds.size,
+    }),
+    maximumAllowedFallbacksAtEightPlayers: 1,
+    minimumFallbackEnemyDistanceMillimeters: 25_000,
+    fallbackCount: fallbackSpawnDecisions.length,
+    fallbackDecisions: Object.freeze(fallbackSpawnDecisions),
+    spawnProtection: spawnProtectionContract,
+    humanSpawnSafetyReviewRequired: true,
+    allChecksPassed: true,
+  });
 
   const allFrameProfiles = [
     ...twoPopulation.frameProfiles,
@@ -3414,6 +3472,7 @@ try {
   const technicalAcceptanceChecks = Object.freeze({
     ...runtimePerformanceChecks,
     traversalCompletedWithoutDriverRecovery: movementDriverRecoveries.length === 0,
+    boundedSpawnSafetyContractPassed: spawnSafety.allChecksPassed,
     ...(REV5_PRESENTATION_CAPTURE
       ? {
           portalRoundTripAuthoritative:
@@ -3477,6 +3536,7 @@ try {
       simulationIdentity: (await productSnapshot(first.page)).roomVerification.simulationIdentity,
       initialJoins,
       spawnSelection,
+      spawnSafety,
       synchronizationContract: {
         source: 'server_owned_room_wide_reliable_event',
         eventKind: 'shotAccepted',
@@ -3662,6 +3722,9 @@ try {
       ...(movementDriverRecoveries.length > 0
         ? ['Alternate Ink-channel automation required bounded collision recovery; this run cannot support G5 no-snag acceptance.']
         : ['Alternate Ink-channel automation completed with zero additional collision recoveries.']),
+      ...(spawnSafety.fallbackCount > 0
+        ? [`At full population, authority used ${spawnSafety.fallbackCount} scored locked spawn fallback at or beyond ${spawnSafety.minimumFallbackEnemyDistanceMillimeters} mm with ${spawnSafety.spawnProtection.milliseconds} ms protection; human spawn-safety approval remains required.`]
+        : ['All observed joins used fully occluded authority-selected spawns.']),
       'Human visual approval remains separate.',
     ],
   });

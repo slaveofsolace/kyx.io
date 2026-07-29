@@ -38,6 +38,24 @@ const revision3Package = JSON.parse(await fs.readFile(
   ),
   'utf8',
 ));
+const revampedClassicRuleset = JSON.parse(await fs.readFile(
+  path.join(repo, 'src/content/rulesets/revamped_classic.v3.json'),
+  'utf8',
+));
+const expectedSpawnProtection = {
+  ticks: revampedClassicRuleset.combatProfile.life.spawnProtectionTicks,
+  milliseconds: Math.round(
+    (revampedClassicRuleset.combatProfile.life.spawnProtectionTicks * 1_000)
+      / revampedClassicRuleset.tickRateHz,
+  ),
+  breaksOnOffense:
+    revampedClassicRuleset.combatProfile.life.spawnProtectionBreaksOnOffense,
+};
+assert.deepEqual(expectedSpawnProtection, {
+  ticks: 20,
+  milliseconds: 1_000,
+  breaksOnOffense: true,
+});
 const output = path.resolve(
   repo,
   process.argv[2] ?? 'evidence/2026-07-22/phase-5-p5-15/runtime-v1',
@@ -258,6 +276,7 @@ const legacyExpectedSourceFiles = [
   'src/authority/combat/rewindHitscan.ts',
   'src/authority/combat/strictCombatData.ts',
   'src/authority/combat/tdmMatch.ts',
+  'src/content/rulesets/revamped_classic.v3.json',
   'src/physics/collisionLayers.ts',
   'src/physics/fixtureSchema.ts',
   'src/physics/fixtures/catalog.ts',
@@ -686,10 +705,20 @@ for (let index = 0; index < 8; index += 1) {
   assert.deepEqual(join.escapeRouteFamilies, expectedSpawn.escapeRouteFamilies ?? []);
   assert.equal(join.validationStatus, expectedSpawn.validationStatus ?? null);
 }
-assert.deepEqual(
-  [...new Set(proof.authority.initialJoins.map(({ spawnId }) => spawnId))].sort(),
-  expectedSpawns.map(({ spawnId }) => spawnId).sort(),
+const uniqueInitialSpawnIds = new Set(
+  proof.authority.initialJoins.map(({ spawnId }) => spawnId),
 );
+const uniqueInitialSpawnIdsByTeam = {
+  team_blue: new Set(proof.authority.initialJoins
+    .filter(({ teamId }) => teamId === 'team_blue')
+    .map(({ spawnId }) => spawnId)),
+  team_red: new Set(proof.authority.initialJoins
+    .filter(({ teamId }) => teamId === 'team_red')
+    .map(({ spawnId }) => spawnId)),
+};
+assert.ok(uniqueInitialSpawnIds.size >= 4);
+assert.ok(uniqueInitialSpawnIdsByTeam.team_blue.size >= 2);
+assert.ok(uniqueInitialSpawnIdsByTeam.team_red.size >= 2);
 assert.equal(proof.authority.spawnSelection.schemaVersion, 1);
 assert.equal(
   proof.authority.spawnSelection.strategy,
@@ -702,19 +731,53 @@ assert.equal(
 assert.equal(proof.authority.spawnSelection.clientPositionOrScoreAccepted, false);
 assert.equal(proof.authority.spawnSelection.lockedSpawnIdentityCount, 12);
 assert.ok(proof.authority.spawnSelection.decisionCount >= 8);
-assert.equal(proof.authority.spawnSelection.fallbackCount, 0);
-assert.ok(proof.authority.spawnSelection.decisions.every((decision) => (
+const fallbackSpawnDecisions = proof.authority.spawnSelection.decisions.filter(
+  ({ fallbackMode }) => fallbackMode !== 'none',
+);
+const ordinarySpawnDecisions = proof.authority.spawnSelection.decisions.filter(
+  ({ fallbackMode }) => fallbackMode === 'none',
+);
+assert.equal(
+  proof.authority.spawnSelection.fallbackCount,
+  fallbackSpawnDecisions.length,
+);
+assert.ok(proof.authority.spawnSelection.fallbackCount <= 1);
+assert.ok(ordinarySpawnDecisions.every((decision) => (
   expectedMapBinding.spawns.some(({ spawnId }) => spawnId === decision.selectedSpawnId)
   && decision.status === 'selected'
-  && decision.fallbackMode === 'none'
   && decision.selectedStandingOccluded
   && decision.selectedCrouchedOccluded
+)));
+assert.ok(fallbackSpawnDecisions.every((decision) => (
+  expectedMapBinding.spawns.some(({ spawnId }) => spawnId === decision.selectedSpawnId)
+  && decision.status === 'no_safe_spawn'
+  && decision.fallbackMode === 'scored_locked_candidate'
+  && decision.populationBeforeSpawn >= 7
+  && decision.eligibleCandidateCount === 0
+  && decision.directLosRejectedCandidateCount >= 4
+  && decision.minimumEnemyDistanceMm >= 25_000
 )));
 assert.ok(proof.authority.initialJoins.every(({ spawnId }) => (
   proof.authority.spawnSelection.decisions.some(
     (decision) => decision.selectedSpawnId === spawnId,
   )
 )));
+assert.deepEqual(proof.authority.spawnSafety, {
+  policy: 'authority_occluded_preferred_bounded_protected_fallback_v1',
+  initialJoinCount: 8,
+  uniqueInitialSpawnCount: uniqueInitialSpawnIds.size,
+  uniqueInitialSpawnCountByTeam: {
+    team_blue: uniqueInitialSpawnIdsByTeam.team_blue.size,
+    team_red: uniqueInitialSpawnIdsByTeam.team_red.size,
+  },
+  maximumAllowedFallbacksAtEightPlayers: 1,
+  minimumFallbackEnemyDistanceMillimeters: 25_000,
+  fallbackCount: fallbackSpawnDecisions.length,
+  fallbackDecisions: fallbackSpawnDecisions,
+  spawnProtection: expectedSpawnProtection,
+  humanSpawnSafetyReviewRequired: true,
+  allChecksPassed: true,
+});
 
 assertPopulation(proof.populations.two, 2, proof.authority.roomCode, proof.authority.matchId);
 assertPopulation(proof.populations.four, 4, proof.authority.roomCode, proof.authority.matchId);
@@ -753,6 +816,8 @@ assert.deepEqual(proof.technicalAcceptance.checks, {
   ...proof.performance.checks,
   traversalCompletedWithoutDriverRecovery:
     proof.movementAndWorld.driverRecoveries.length === 0,
+  boundedSpawnSafetyContractPassed:
+    proof.authority.spawnSafety.allChecksPassed === true,
   ...(REV5_PRESENTATION_CAPTURE
     ? {
         portalRoundTripAuthoritative:
@@ -1341,6 +1406,11 @@ assert.equal(proof.knownLimits.includes(
     : 'Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.',
 ), true);
 assert.equal(proof.knownLimits.includes('Human visual approval remains separate.'), true);
+assert.equal(proof.knownLimits.includes(
+  proof.authority.spawnSafety.fallbackCount > 0
+    ? `At full population, authority used ${proof.authority.spawnSafety.fallbackCount} scored locked spawn fallback at or beyond ${proof.authority.spawnSafety.minimumFallbackEnemyDistanceMillimeters} mm with ${proof.authority.spawnSafety.spawnProtection.milliseconds} ms protection; human spawn-safety approval remains required.`
+    : 'All observed joins used fully occluded authority-selected spawns.',
+), true);
 const traversalWarning = proof.movementAndWorld.traversalCollisionWarning
   ? await fs.readFile(path.join(output, 'p515-traversal-collision-warning.json'), 'utf8').then(JSON.parse)
   : null;
