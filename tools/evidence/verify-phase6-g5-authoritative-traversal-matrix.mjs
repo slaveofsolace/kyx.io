@@ -201,8 +201,8 @@ const checks = [
       && proof.bindings.revision2.fixtureHash === 'bf85e42731fd088e'
       && proof.bindings.revision3.mapRevision === 3
       && proof.bindings.revision3.packageDigest
-        === '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a'
-      && proof.bindings.revision3.fixtureHash === '6cf785c5171f2ff5'],
+        === '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a'
+      && proof.bindings.revision3.fixtureHash === '97eb7772ac59dc95'],
   ['all bound collision, fixture, manifest, and lock hashes recompute',
     sourceHashChecks.every(({ matches }) => matches)],
   ['deterministic core hash recomputes',

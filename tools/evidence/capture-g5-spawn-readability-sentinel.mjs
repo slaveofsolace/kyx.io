@@ -14,7 +14,7 @@ const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v4.1/spatial-material-joined';
 const PRESENTATION_SHA256 =
   '5e2aa22cc598f49181524ce78b481adf091f71a91a823171277963de11d4db00';
-const FIXTURE_HASH = '6cf785c5171f2ff5';
+const FIXTURE_HASH = '97eb7772ac59dc95';
 const SPAWN_STRATEGY = 'rev3_authority_enemy_distance_fixture_occluded_los_v1';
 const FRONTEND_PORT = 6_237;
 const AUTHORITY_PORT = 8_937;

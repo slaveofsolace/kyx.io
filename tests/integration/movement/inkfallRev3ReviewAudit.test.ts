@@ -40,8 +40,8 @@ describe('Inkfall Revision 3 open-mid product review audit', () => {
     expect(audit.identity).toEqual({
       mapId: 'inkfall_foundry',
       mapRevision: 3,
-      packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
-      fixtureHash: '6cf785c5171f2ff5',
+      packageDigest: '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a',
+      fixtureHash: '97eb7772ac59dc95',
       collisionSha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
       renderSha256: '19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6',
       colliderCount: 339,

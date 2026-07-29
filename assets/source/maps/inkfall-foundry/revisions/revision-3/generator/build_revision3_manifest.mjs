@@ -11,6 +11,24 @@ const EXPECTED_COLLISION_SHA256 =
   '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8';
 const EXPECTED_COLLIDER_COUNT = 339;
 const ZERO_DIGEST = '0'.repeat(64);
+// Revision 2 authored these headings against the old preview-camera basis.
+// Revision 3 is consumed by the canonical +Z authority look basis, so each
+// heading is corrected toward the first traversable waypoint in its declared
+// escape-route family. These values are intentionally part of package identity.
+const REVISION_3_SPAWN_FACING_MILLI_DEGREES = Object.freeze({
+  spawn_w_press_a: 53_000,
+  spawn_w_press_b: 113_000,
+  spawn_w_ink: 90_000,
+  spawn_w_archive: 90_000,
+  spawn_e_press_a: -127_000,
+  spawn_e_press_b: -67_000,
+  spawn_e_ink: -90_000,
+  spawn_e_archive: -90_000,
+  spawn_dm_ink_w: 45_000,
+  spawn_dm_ink_e: -51_000,
+  spawn_dm_archive_w: 135_000,
+  spawn_dm_archive_e: -129_000,
+});
 
 function sha256(bytes) {
   return createHash('sha256').update(bytes).digest('hex');
@@ -60,6 +78,23 @@ if (collisionSha256 !== EXPECTED_COLLISION_SHA256) throw new Error('REVISION_3_C
 const manifest = structuredClone(revision2Manifest);
 manifest.revision = 3;
 manifest.identity.digest = ZERO_DIGEST;
+manifest.spawns = manifest.spawns.map((spawn) => {
+  const yawMilliDegrees =
+    REVISION_3_SPAWN_FACING_MILLI_DEGREES[spawn.id];
+  if (!Number.isSafeInteger(yawMilliDegrees)) {
+    throw new Error(`REVISION_3_SPAWN_FACING_MISSING:${spawn.id}`);
+  }
+  return {
+    ...spawn,
+    yawMilliDegrees,
+  };
+});
+if (
+  manifest.spawns.length
+  !== Object.keys(REVISION_3_SPAWN_FACING_MILLI_DEGREES).length
+) {
+  throw new Error('REVISION_3_SPAWN_FACING_CARDINALITY_DRIFT');
+}
 manifest.artifacts.render = {
   ...manifest.artifacts.render,
   path: 'revisions/revision-3/export/render.graybox.glb',

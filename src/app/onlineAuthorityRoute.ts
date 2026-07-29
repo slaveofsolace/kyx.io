@@ -723,6 +723,8 @@ async function mountSession(
   ]);
   body.dataset.combatPresetId = selectedCombatPreset.id;
   body.dataset.helmetVariantId = selectedCombatPreset.helmetVariantId;
+  const developmentDiagnosticsVisible =
+    new URLSearchParams(window.location.search).get('debug') === '1';
   content.classList.add('online-preview__content--session');
   const displayName = protocolDisplayName(UserAccount.getDisplayName());
   const inkfallProof = sessionBinding.kind === 'inkfall'
@@ -1131,6 +1133,7 @@ async function mountSession(
   sessionDrawer.append(sessionSummary, playerPanel);
 
   const diagnostics = element('details', 'online-session__diagnostics');
+  diagnostics.hidden = !developmentDiagnosticsVisible;
   const diagnosticsSummary = element('summary', 'online-session__drawer-toggle', 'Diagnostics');
   diagnosticsSummary.setAttribute(
     'aria-label',
@@ -2514,40 +2517,22 @@ async function mountSession(
         if (playerId === diagnostics.authority.playerId) return 'YOU';
         return `PEER ${playerId.slice(-6)}`;
       };
-      const feedEntries = diagnostics.combat.recentEvents.slice(-7).reverse().map((event) => {
+      const feedEntries = diagnostics.combat.recentEvents
+        .filter((event) => event.kind === 'playerKilled')
+        .slice(-4)
+        .reverse()
+        .map((event) => {
         const entry = element('div', 'online-session__feed-entry');
         entry.dataset.kind = event.kind;
-        const tick = element('span', '', `T${event.serverTick}`);
         const description = element('span', '');
         const actor = playerLabel(event.actorId);
         const target = playerLabel(event.targetId);
-        const copy = event.kind === 'damageApplied'
-          ? `${actor} hit ${target} for ${event.amountHealthPoints ?? 0}`
-          : event.kind === 'playerKilled'
-            ? `${actor} eliminated ${target}`
-           : event.kind === 'shotAccepted'
-             ? `${actor} fired an accepted rifle shot`
-             : event.kind === 'weaponAttackAccepted'
-               ? `${actor} fired an accepted ${
-                   event.presentation?.kind === 'weapon_attack_accepted'
-                     ? event.presentation.family
-                     : 'weapon'
-                 } attack`
-               : event.kind === 'meleeContact'
-                 ? `${actor} resolved an authoritative melee contact`
-             : event.kind === 'projectileSpawned'
-                ? `${actor} deployed an Impulse Grenade`
-                : event.kind === 'projectileCollided'
-                  ? `${actor}'s Impulse Grenade made contact`
-                  : event.kind === 'projectileDetonated'
-                    ? `${actor}'s Impulse Grenade detonated`
-                    : event.kind === 'impulseApplied'
-                      ? `${actor}'s Impulse Grenade displaced ${target}`
-                : event.kind === 'abilityActivated'
-                  ? `${actor} ability confirmed`
-                  : `${actor} · ${event.kind}`;
-        description.append(element('strong', '', copy));
-        entry.append(tick, description);
+        description.append(
+          element('strong', '', actor),
+          document.createTextNode(' eliminated '),
+          element('strong', '', target),
+        );
+        entry.append(description);
         return entry;
       });
       feed.replaceChildren(...(feedEntries.length > 0

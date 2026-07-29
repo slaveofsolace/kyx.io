@@ -27,8 +27,8 @@ describe('Inkfall current authoritative traversal matrix', () => {
       },
       revision3: {
         mapRevision: 3,
-        packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
-        fixtureHash: '6cf785c5171f2ff5',
+        packageDigest: '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a',
+        fixtureHash: '97eb7772ac59dc95',
         collisionSha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
         collisionMeshNodeCount: 339,
       },

@@ -1267,7 +1267,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       schemaVersion: 1,
       mapId: 'inkfall_foundry',
       mapRevision: 3,
-      fixtureHash: '6cf785c5171f2ff5',
+      fixtureHash: '97eb7772ac59dc95',
       mode: 'team_deathmatch',
       tick,
       requester: Object.freeze({

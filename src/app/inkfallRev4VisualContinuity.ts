@@ -494,12 +494,14 @@ export function createInkfallRev4VisualContinuity(
       teamMaterial,
       'spawn_pocket_dressing',
     );
+    // A restrained rear-wall insignia keeps team identity readable without
+    // entering the standing camera frustum or resembling a traversal portal.
     addTorus(
       group,
       `INKFALL_${sideName}_SPAWN_TEAM_MEDALLION`,
-      2,
-      0.2,
-      [side * 35.2, 4.2, 0],
+      0.58,
+      0.09,
+      [side * 35.2, 2.2, 0],
       teamMaterial,
       'spawn_pocket_dressing',
       [0, Math.PI / 2, 0],
@@ -514,12 +516,12 @@ export function createInkfallRev4VisualContinuity(
       'spawn_pocket_dressing',
       Math.PI / 2,
     );
-    for (const z of [-7.6, -3.8, 0, 3.8, 7.6]) {
+    for (const z of [-6, 0, 6]) {
       addBox(
         group,
         `INKFALL_${sideName}_SPAWN_CEILING_RIB_${z}`,
-        [8.2, 0.16, 0.22],
-        [side * 32, 3.38, z],
+        [8.2, 0.1, 0.14],
+        [side * 32, 3.78, z],
         materials.steel,
         'spawn_pocket_dressing',
       );
@@ -557,9 +559,9 @@ export function createInkfallRev4VisualContinuity(
     addPointLight(
       `INKFALL_${sideName}_SPAWN_LIGHTING`,
       side < 0 ? 0x68e9f3 : 0xffa36d,
-      3.2,
-      24,
-      [side * 32.2, 2.8, 0],
+      1.7,
+      16,
+      [side * 32.2, 3.25, 0],
       'spawn_pocket_dressing',
     );
 

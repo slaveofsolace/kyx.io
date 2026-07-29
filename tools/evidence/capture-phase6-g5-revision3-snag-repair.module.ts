@@ -244,7 +244,7 @@ export async function capturePhase6G5Revision3SnagRepair() {
   requireCondition(revision2.mapRevision === 2, 'REVISION_2_FIXTURE_IDENTITY_DRIFT');
   requireCondition(revision3.mapRevision === 3, 'REVISION_3_FIXTURE_IDENTITY_DRIFT');
   requireCondition(revision2.fixtureHash === 'bf85e42731fd088e', 'REVISION_2_HASH_DRIFT');
-  requireCondition(revision3.fixtureHash === '6cf785c5171f2ff5', 'REVISION_3_HASH_DRIFT');
+  requireCondition(revision3.fixtureHash === '97eb7772ac59dc95', 'REVISION_3_HASH_DRIFT');
   requireCondition(revision2.fixture.solids.length === 339, 'REVISION_2_CARDINALITY_DRIFT');
   requireCondition(revision3.fixture.solids.length === 339, 'REVISION_3_CARDINALITY_DRIFT');
   requireCondition(

@@ -1,8 +1,8 @@
 {
   "binding": {
     "artRevision": "5.0",
-    "authorityFixtureHash": "6cf785c5171f2ff5",
-    "authorityPackageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+    "authorityFixtureHash": "97eb7772ac59dc95",
+    "authorityPackageDigest": "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a",
     "authorityRevision": 3,
     "catalogDefaultRevision": 1,
     "mapId": "inkfall_foundry",
@@ -17,6 +17,7 @@
     "REVISION_3_AUTHORITY_NOT_PROMOTED",
     "REVISION_5_ART_NOT_DEFAULT",
     "RENDER_GEOMETRY_NOT_COLLISION_AUTHORITY",
+    "REV5_ART_REBOUND_TO_SPAWN_FACING_PACKAGE_WITHOUT_GEOMETRY_REBUILD",
     "HUMAN_VISUAL_ACCEPTANCE_NOT_PASSED",
     "HUMAN_2_4_8_PLAYER_REVIEW_NOT_PASSED",
     "PORTAL_COMBAT_READABILITY_NOT_HUMAN_ACCEPTED",
@@ -129,9 +130,9 @@
   "scope": "G5_INKFALL_REV5_GEOMETRY_PORTAL_RENDER_ONLY_NON_DEFAULT",
   "source": {
     "builder": {
-      "bytes": 60290,
+      "bytes": 62013,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/build_press_archive_rev5.py",
-      "sha256": "015989a60d58542d0bd47fb26b28eebaec9a56cd648db82e0b94de15c7b332ee"
+      "sha256": "ff7a72ef9dbe28a147b0b9b24197ac51fa2fc9f441f92aa770c34c6bf508e988"
     },
     "reviewContextBlend": {
       "bytes": 1025474,

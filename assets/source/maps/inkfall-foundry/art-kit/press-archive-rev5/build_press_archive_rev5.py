@@ -1573,9 +1573,9 @@ def main() -> None:
             "mapId": "inkfall_foundry",
             "authorityRevision": 3,
             "authorityPackageDigest": (
-                "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a"
+                "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a"
             ),
-            "authorityFixtureHash": "6cf785c5171f2ff5",
+            "authorityFixtureHash": "97eb7772ac59dc95",
             "catalogDefaultRevision": 1,
             "artRevision": ART_REVISION,
             "productProfileRole": "non_default_inkfall_inspection_candidate",

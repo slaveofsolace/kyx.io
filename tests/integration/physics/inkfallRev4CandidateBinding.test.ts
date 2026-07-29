@@ -66,7 +66,7 @@ describe('Inkfall Rev4.1 art plus frozen Revision 3 authority candidate', () => 
       'a593ad82b2e9f713a4a8d775002c1583c0fb3dfd3acdf004ba7bd6b144173267',
     );
     expect(explicitRevision3.identity?.digest).toBe(
-      '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+      '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a',
     );
   });
 

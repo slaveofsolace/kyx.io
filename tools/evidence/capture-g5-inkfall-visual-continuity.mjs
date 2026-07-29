@@ -10,7 +10,7 @@ import { chromium } from 'playwright';
 
 const PROFILE = 'g5-inkfall-foundry-rev4-revision-3-authority-v1';
 const MAP_REFERENCE = 'inkfall_foundry@3';
-const FIXTURE_HASH = '6cf785c5171f2ff5';
+const FIXTURE_HASH = '97eb7772ac59dc95';
 const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
 const PRESENTATION_SHA256 =
@@ -20,9 +20,19 @@ const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
 const AUTHORITY_ORIGIN = `http://127.0.0.1:${AUTHORITY_PORT}`;
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const commandArguments = process.argv.slice(2);
+const outputArgument = commandArguments.find((argument) => !argument.startsWith('--'));
+const rendererArgument = commandArguments.find((argument) => (
+  argument.startsWith('--renderer=')
+));
+const rendererMode = rendererArgument?.slice('--renderer='.length) ?? 'hardware';
+assert.ok(
+  rendererMode === 'hardware' || rendererMode === 'swiftshader',
+  `Unsupported renderer mode: ${rendererMode}`,
+);
 const output = path.resolve(
   repo,
-  process.argv[2]
+  outputArgument
     ?? 'evidence/2026-07-29/g5-inkfall-rev5-player-eye-v1',
 );
 const screenshots = path.join(output, 'screenshots');
@@ -187,18 +197,28 @@ try {
     }
   }
   assert.notEqual(chromeExecutable, null, 'System Chrome is required');
+  const chromeArguments = [
+    '--disable-background-timer-throttling',
+    '--disable-backgrounding-occluded-windows',
+    '--disable-renderer-backgrounding',
+    '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
+    '--enable-webgl',
+    '--ignore-gpu-blocklist',
+  ];
+  if (rendererMode === 'swiftshader') {
+    chromeArguments.push('--use-angle=swiftshader');
+  } else {
+    chromeArguments.push(
+      '--enable-gpu',
+      '--enable-gpu-rasterization',
+      '--disable-software-rasterizer',
+      '--use-angle=d3d11',
+    );
+  }
   browser = await chromium.launch({
     executablePath: chromeExecutable,
     headless: true,
-    args: [
-      '--disable-background-timer-throttling',
-      '--disable-backgrounding-occluded-windows',
-      '--disable-renderer-backgrounding',
-      '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
-      '--enable-webgl',
-      '--ignore-gpu-blocklist',
-      '--use-angle=swiftshader',
-    ],
+    args: chromeArguments,
   });
   context = await browser.newContext({
     viewport: { width: 1_440, height: 900 },
@@ -277,6 +297,39 @@ try {
   }, undefined, { timeout: 90_000 });
 
   const joined = await snapshot(page);
+  const graphics = await page.evaluate(() => {
+    const canvas = document.querySelector('.online-session__canvas');
+    if (!(canvas instanceof HTMLCanvasElement)) return null;
+    const context =
+      canvas.getContext('webgl2')
+      ?? canvas.getContext('webgl')
+      ?? canvas.getContext('experimental-webgl');
+    if (!(context instanceof WebGLRenderingContext)
+      && !(context instanceof WebGL2RenderingContext)) return null;
+    const debug = context.getExtension('WEBGL_debug_renderer_info');
+    return {
+      renderer: context.getParameter(context.RENDERER),
+      vendor: context.getParameter(context.VENDOR),
+      unmaskedRenderer: debug === null
+        ? null
+        : context.getParameter(debug.UNMASKED_RENDERER_WEBGL),
+      unmaskedVendor: debug === null
+        ? null
+        : context.getParameter(debug.UNMASKED_VENDOR_WEBGL),
+    };
+  });
+  assert.notEqual(graphics, null, 'A WebGL context is required');
+  if (rendererMode === 'hardware') {
+    assert.ok(
+      typeof graphics.unmaskedRenderer === 'string'
+        && !/(?:swiftshader|llvmpipe|software|basic render)/iu.test(
+          graphics.unmaskedRenderer,
+        ),
+      `Hardware player-eye capture fell back to software: ${
+        graphics.unmaskedRenderer ?? 'unreported'
+      }`,
+    );
+  }
   assert.equal(joined.roomVerification.roomProfile, PROFILE);
   assert.equal(joined.roomVerification.mapBinding.mapReference, MAP_REFERENCE);
   assert.equal(
@@ -302,6 +355,12 @@ try {
   assert.equal(joined.render3d.authorityColliderCount, 339);
   assert.equal(joined.render3d.spawnCount, 12);
   assert.equal(joined.render3d.zoneCount, 9);
+  const joinedSpawn = joined.roomVerification.mapBinding.spawns.find((spawn) => (
+    spawn.feetPosition.x === joined.localAuthoritativePosition.x
+    && spawn.feetPosition.y === joined.localAuthoritativePosition.y
+    && spawn.feetPosition.z === joined.localAuthoritativePosition.z
+  ));
+  assert.notEqual(joinedSpawn, undefined, 'Joined position must match a bound spawn');
   assert.ok(
     joined.render3d.renderOnlyContainmentMeshCount > 200,
     'The continuity batch should contribute a major render-only dressing set.',
@@ -315,14 +374,32 @@ try {
   await page.keyboard.up('KeyW');
   await delay(800);
   const pressApproach = await snapshot(page);
+  const pressApproachDelta = Object.freeze({
+    x:
+      pressApproach.localAuthoritativePosition.x
+      - joined.localAuthoritativePosition.x,
+    y:
+      pressApproach.localAuthoritativePosition.y
+      - joined.localAuthoritativePosition.y,
+    z:
+      pressApproach.localAuthoritativePosition.z
+      - joined.localAuthoritativePosition.z,
+  });
   assert.ok(
     Math.hypot(
-      pressApproach.localAuthoritativePosition.x
-        - joined.localAuthoritativePosition.x,
-      pressApproach.localAuthoritativePosition.z
-        - joined.localAuthoritativePosition.z,
+      pressApproachDelta.x,
+      pressApproachDelta.z,
     ) > 2_000,
     'The host must advance far enough to provide a distinct Press Hall view.',
+  );
+  const joinedYawRadians = joinedSpawn.yawMilliDegrees * Math.PI / 180_000;
+  const forwardAlignment = (
+    Math.sin(joinedYawRadians) * pressApproachDelta.x
+    + Math.cos(joinedYawRadians) * pressApproachDelta.z
+  ) / Math.hypot(pressApproachDelta.x, pressApproachDelta.z);
+  assert.ok(
+    forwardAlignment > 0.97,
+    `Forward capture movement must follow spawn facing: ${forwardAlignment}`,
   );
   await tapLook(page, 'ArrowUp', 4);
   await captureArena(page, '02-press-hall-approach.png');
@@ -392,10 +469,16 @@ try {
         final.render3d.renderOnlyContainmentMeshCount,
       spawnPocketCount: final.render3d.spawnPocketContainmentCount,
       isolatedPlayerContexts: 2,
+      rendererMode,
+      graphics,
     }),
     player: Object.freeze({
+      joinedSpawnId: joinedSpawn.spawnId,
+      joinedYawMilliDegrees: joinedSpawn.yawMilliDegrees,
       joinedPositionMm: joined.localAuthoritativePosition,
       pressApproachPositionMm: pressApproach.localAuthoritativePosition,
+      pressApproachDeltaMm: pressApproachDelta,
+      forwardAlignment,
       finalPositionMm: final.localAuthoritativePosition,
     }),
     screenshots: screenshotFiles,

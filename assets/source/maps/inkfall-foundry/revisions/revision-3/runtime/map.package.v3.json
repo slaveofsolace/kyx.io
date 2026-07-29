@@ -7,7 +7,7 @@
   "implementationStatus": "runtime_fixture_only",
   "identity": {
     "algorithm": "sha256-canonical-json-zeroed-digest-v1",
-    "digest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a"
+    "digest": "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a"
   },
   "sourceSeed": {
     "path": "inkfall-foundry.layout-seed.v1.json",
@@ -207,7 +207,7 @@
         "y": 0,
         "z": -3500
       },
-      "yawMilliDegrees": 0,
+      "yawMilliDegrees": 53000,
       "escapeRouteFamilies": [
         "press_hall",
         "ink_channel",
@@ -223,7 +223,7 @@
         "y": 0,
         "z": 3500
       },
-      "yawMilliDegrees": 0,
+      "yawMilliDegrees": 113000,
       "escapeRouteFamilies": [
         "press_hall",
         "ink_channel",
@@ -239,7 +239,7 @@
         "y": 0,
         "z": -7000
       },
-      "yawMilliDegrees": -25000,
+      "yawMilliDegrees": 90000,
       "escapeRouteFamilies": [
         "ink_channel",
         "press_hall"
@@ -254,7 +254,7 @@
         "y": 0,
         "z": 7000
       },
-      "yawMilliDegrees": 25000,
+      "yawMilliDegrees": 90000,
       "escapeRouteFamilies": [
         "archive_walk",
         "press_hall"
@@ -269,7 +269,7 @@
         "y": 0,
         "z": 3500
       },
-      "yawMilliDegrees": 180000,
+      "yawMilliDegrees": -127000,
       "escapeRouteFamilies": [
         "press_hall",
         "ink_channel",
@@ -285,7 +285,7 @@
         "y": 0,
         "z": -3500
       },
-      "yawMilliDegrees": 180000,
+      "yawMilliDegrees": -67000,
       "escapeRouteFamilies": [
         "press_hall",
         "ink_channel",
@@ -301,7 +301,7 @@
         "y": 0,
         "z": -7000
       },
-      "yawMilliDegrees": -155000,
+      "yawMilliDegrees": -90000,
       "escapeRouteFamilies": [
         "ink_channel",
         "press_hall"
@@ -316,7 +316,7 @@
         "y": 0,
         "z": 7000
       },
-      "yawMilliDegrees": 155000,
+      "yawMilliDegrees": -90000,
       "escapeRouteFamilies": [
         "archive_walk",
         "press_hall"
@@ -346,7 +346,7 @@
         "y": -3000,
         "z": -21000
       },
-      "yawMilliDegrees": 135000,
+      "yawMilliDegrees": -51000,
       "escapeRouteFamilies": [
         "ink_channel",
         "crosslink"
@@ -361,7 +361,7 @@
         "y": 6000,
         "z": 22000
       },
-      "yawMilliDegrees": -45000,
+      "yawMilliDegrees": 135000,
       "escapeRouteFamilies": [
         "archive_walk",
         "crosslink"
@@ -376,7 +376,7 @@
         "y": 6000,
         "z": 21000
       },
-      "yawMilliDegrees": -135000,
+      "yawMilliDegrees": -129000,
       "escapeRouteFamilies": [
         "archive_walk",
         "crosslink"

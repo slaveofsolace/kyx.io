@@ -28,6 +28,21 @@ const SOLID_LAYERS = [
   'spawn_barrier',
 ] as const;
 
+const REV3_SPAWN_EGRESS_TARGETS = Object.freeze({
+  spawn_w_press_a: Object.freeze({ x: -27_500, z: 1_000 }),
+  spawn_w_press_b: Object.freeze({ x: -27_500, z: 1_000 }),
+  spawn_w_ink: Object.freeze({ x: -25_000, z: -7_000 }),
+  spawn_w_archive: Object.freeze({ x: -25_000, z: 7_000 }),
+  spawn_e_press_a: Object.freeze({ x: 27_500, z: -1_000 }),
+  spawn_e_press_b: Object.freeze({ x: 27_500, z: -1_000 }),
+  spawn_e_ink: Object.freeze({ x: 25_000, z: -7_000 }),
+  spawn_e_archive: Object.freeze({ x: 25_000, z: 7_000 }),
+  spawn_dm_ink_w: Object.freeze({ x: -22_000, z: -17_000 }),
+  spawn_dm_ink_e: Object.freeze({ x: 22_000, z: -17_000 }),
+  spawn_dm_archive_w: Object.freeze({ x: -22_000, z: 17_000 }),
+  spawn_dm_archive_e: Object.freeze({ x: 22_000, z: 17_000 }),
+} as const);
+
 let world: RapierMovementWorld;
 
 beforeAll(async () => {
@@ -45,7 +60,7 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
       presentationReference:
         'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
       mapRevision: 3,
-      fixtureHash: '6cf785c5171f2ff5',
+      fixtureHash: '97eb7772ac59dc95',
       colliderCardinality: 339,
       render: {
         role: 'render_only',
@@ -73,7 +88,7 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
       id: 'inkfall_foundry_map_collision',
       revision: 3,
     });
-    expect(world.fixtureHash).toBe('6cf785c5171f2ff5');
+    expect(world.fixtureHash).toBe('97eb7772ac59dc95');
     expect(world.fixture.solids).toHaveLength(339);
     expect(world.fixture.volumes).toHaveLength(2);
     expect(world.fixture.solids.every(({ layer }) => layer === 'world_static')).toBe(true);
@@ -115,6 +130,21 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
     expect(Math.min(...pairDistances)).toBeGreaterThanOrEqual(4_000);
   });
 
+  it('faces every Revision 3 spawn through its first traversable egress', () => {
+    for (const spawn of INKFALL_REVISION_3_WORKER_MAP_BINDING.spawns) {
+      const target = REV3_SPAWN_EGRESS_TARGETS[spawn.spawnId];
+      const deltaX = target.x - spawn.feetPosition.x;
+      const deltaZ = target.z - spawn.feetPosition.z;
+      const distance = Math.hypot(deltaX, deltaZ);
+      const yawRadians = spawn.yawMilliDegrees * Math.PI / 180_000;
+      const alignment = (
+        Math.sin(yawRadians) * deltaX
+        + Math.cos(yawRadians) * deltaZ
+      ) / distance;
+      expect(alignment, spawn.spawnId).toBeGreaterThan(0.9999);
+    }
+  });
+
   it('recovers the exact Rev4 profile from the persisted simulation identity', () => {
     expect(inferWorkerRoomProfileFromIdentity({
       mapId: 'inkfall_foundry',
@@ -122,7 +152,7 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
       rulesetRevision: 3,
       rulesetHash: '69b19f19a19de288',
       fixtureId: 'inkfall_foundry_map_collision',
-      fixtureHash: '6cf785c5171f2ff5',
+      fixtureHash: '97eb7772ac59dc95',
     })).toBe(G5_INKFALL_REV4_COMBAT_PROFILE);
   });
 });

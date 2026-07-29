@@ -66,6 +66,16 @@ let developmentMovementDriver = null;
 let stopDebugMetrics = null;
 let debugMetricsTeardownRequested = false;
 
+async function importDevelopmentModule(specifier) {
+  if (!import.meta.env.DEV) {
+    throw new Error('DEVELOPMENT_MODULE_NOT_PACKAGED');
+  }
+  // Keep review/test modules outside the production Rollup graph. A literal
+  // dynamic import causes Vite to package their unapproved binary assets even
+  // when the surrounding DEV branch is unreachable in a release build.
+  return import(/* @vite-ignore */ specifier);
+}
+
 function showDevelopmentMovementFailure(error, phase) {
   document.getElementById('dev-flat-run-movement-failure')?.remove();
   const failure = document.createElement('pre');
@@ -124,7 +134,7 @@ if (desktopSupported && !launchOverrideRoute) {
       const {
         DEVELOPMENT_FLAT_RUN_DRIVER_QUERY,
         createDevelopmentFlatRunMovementDriver,
-      } = await import('./dev/developmentFlatRunMovementDriver.ts');
+      } = await importDevelopmentModule('./dev/developmentFlatRunMovementDriver.ts');
       developmentMovementDriver = await createDevelopmentFlatRunMovementDriver({
         boundary: DEVELOPMENT_FLAT_RUN_DRIVER_QUERY,
         canvas,
@@ -159,7 +169,7 @@ if (pressHallInspectionRoute) {
     ? `press-hall-v${pressHallInspectionRequest.artRevision.replace('.', '-')}-inspection`
     : 'press-hall-inspection';
   document.body.dataset.pressHallStatus = 'loading';
-  import('./app/pressHallInspectionRoute.ts')
+  importDevelopmentModule('./app/pressHallInspectionRoute.ts')
     .then(({ mountPressHallInspectionRoute }) => (
       mountPressHallInspectionRoute(document.body, pressHallInspectionRequest)
     ))
@@ -174,7 +184,7 @@ if (pressHallInspectionRoute) {
 } else if (inkfallRev3ReviewRoute) {
   document.body.dataset.launchSupport = 'inkfall-rev3-explicit-review';
   document.body.dataset.inkfallRev3Status = 'loading';
-  import('./app/inkfallRev3ReviewRoute.ts')
+  importDevelopmentModule('./app/inkfallRev3ReviewRoute.ts')
     .then(({ mountInkfallRev3ReviewRoute }) => (
       mountInkfallRev3ReviewRoute(document.body, inkfallRev3ReviewRequest)
     ))
@@ -204,7 +214,7 @@ if (pressHallInspectionRoute) {
 } else if (lockedGrayboxPreviewRoute) {
   document.body.dataset.launchSupport = 'locked-graybox-preview';
   document.body.dataset.mapPreviewStatus = 'loading';
-  import('./app/lockedGrayboxPreviewRoute.ts')
+  importDevelopmentModule('./app/lockedGrayboxPreviewRoute.ts')
     .then(({ mountLockedGrayboxPreviewRoute }) => (
       mountLockedGrayboxPreviewRoute(document.body, lockedGrayboxPreviewRequest)
     ))
@@ -219,7 +229,7 @@ if (pressHallInspectionRoute) {
 } else if (mapTestRoute) {
   document.body.dataset.launchSupport = 'map-package-evidence';
   document.body.dataset.mapStatus = 'loading';
-  import('./dev/mapTestRoute.ts')
+  importDevelopmentModule('./dev/mapTestRoute.ts')
     .then(({ mountMapTestRoute }) => mountMapTestRoute(document.body))
     .catch((error) => {
       const failure = document.createElement('pre');
@@ -232,7 +242,7 @@ if (pressHallInspectionRoute) {
 } else if (authorityTestRoute) {
   document.body.dataset.launchSupport = 'authority-evidence';
   document.body.dataset.authorityStatus = 'loading';
-  import('./dev/authorityTestRoute.ts')
+  importDevelopmentModule('./dev/authorityTestRoute.ts')
     .then(({ mountAuthorityTestRoute }) => mountAuthorityTestRoute(document.body))
     .catch((error) => {
       const failure = document.createElement('pre');
@@ -245,7 +255,7 @@ if (pressHallInspectionRoute) {
 } else if (movementTestRoute) {
   document.body.dataset.launchSupport = 'movement-fixture-lab';
   document.body.dataset.movementStatus = 'loading';
-  import('./dev/movementTestRoute.ts')
+  importDevelopmentModule('./dev/movementTestRoute.ts')
     .then(({ mountMovementTestRoute }) => mountMovementTestRoute(document.body))
     .catch((error) => {
       const failure = document.createElement('pre');
@@ -256,7 +266,7 @@ if (pressHallInspectionRoute) {
     });
 } else if (deterministicTestRoute) {
   document.body.dataset.launchSupport = 'deterministic-test';
-  import('./dev/deterministicTestRoute.ts')
+  importDevelopmentModule('./dev/deterministicTestRoute.ts')
     .then(({ mountDeterministicTestRoute }) => mountDeterministicTestRoute(document.body))
     .catch((error) => {
       const failure = document.createElement('pre');
@@ -284,7 +294,7 @@ if (import.meta.env.DEV && desktopSupported && !launchOverrideRoute) {
 // expose only a serialized snapshot, never the mutable Game instance.
 if (import.meta.env.DEV && game) {
   const metricsGame = game;
-  import('./render/debugMetrics.ts').then(({ startRendererDebugMetrics }) => {
+  importDevelopmentModule('./render/debugMetrics.ts').then(({ startRendererDebugMetrics }) => {
     if (debugMetricsTeardownRequested || game !== metricsGame) return;
     stopDebugMetrics = startRendererDebugMetrics({
       canvas,

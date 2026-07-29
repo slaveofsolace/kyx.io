@@ -410,7 +410,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     expect(firstWelcome.simulationIdentity).toMatchObject({
       mapId: 'inkfall_foundry',
       fixtureId: 'inkfall_foundry_map_collision',
-      fixtureHash: '6cf785c5171f2ff5',
+      fixtureHash: '97eb7772ac59dc95',
     });
     expect(secondWelcome.simulationIdentity).toEqual(firstWelcome.simulationIdentity);
 
@@ -501,7 +501,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
         mapReference: 'inkfall_foundry@3',
         presentationReference:
           'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
-        fixtureHash: '6cf785c5171f2ff5',
+        fixtureHash: '97eb7772ac59dc95',
         render: { renderMeshesMayBeAuthority: false },
         zones: expect.arrayContaining([
           expect.objectContaining({ zoneId: 'archive_walk_west' }),

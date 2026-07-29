@@ -287,16 +287,16 @@ describe('Inkfall canonical west press traversal snag', () => {
     };
     expect(snapshot).toMatchObject({
       mapRevision: 3,
-      packageDigest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+      packageDigest: '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a',
       collisionSha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
-      fixtureHash: '6cf785c5171f2ff5',
+      fixtureHash: '97eb7772ac59dc95',
       collisionMeshNodeCount: 339,
     });
     expect(snapshot.fixture).toEqual(converted.fixture);
     const rail = converted.fixture.solids.find((solid) => (
       solid.id === OFFENDING_RAIL_ID
     ));
-    expect(converted.fixtureHash).toBe('6cf785c5171f2ff5');
+    expect(converted.fixtureHash).toBe('97eb7772ac59dc95');
     expect(converted.collisionMeshNodeCount).toBe(339);
     expect(rail).toMatchObject({
       centerMm: { x: -16_179, y: -68, z: -1_330 },
@@ -346,7 +346,7 @@ describe('Inkfall canonical west press traversal snag', () => {
     }
   });
 
-  it('changes only the rail repair and paired open-mid baffles while preserving cardinality', async () => {
+  it('preserves collision delta scope while binding the corrected Rev3 spawn facing', async () => {
     const revision2 = JSON.parse(
       await readFile(fixtureUrl, 'utf8'),
     ) as InkfallCombatFixtureSnapshot;
@@ -362,12 +362,16 @@ describe('Inkfall canonical west press traversal snag', () => {
     const revision3Rail = converted.fixture.solids.find((solid) => solid.id === OFFENDING_RAIL_ID);
 
     expect(manifest.identity.digest).toBe(
-      '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+      '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a',
     );
     expect(converted.fixtureHash).not.toBe('bf85e42731fd088e');
     expect(converted.fixture.solids).toHaveLength(revision2.fixture.solids.length);
     expect(converted.fixture.volumes).toEqual(revision2.fixture.volumes);
-    expect(converted.fixture.spawn).toEqual(revision2.fixture.spawn);
+    expect(converted.fixture.spawn.feetPositionMm).toEqual(
+      revision2.fixture.spawn.feetPositionMm,
+    );
+    expect(revision2.fixture.spawn.yawMilliDegrees).toBe(0);
+    expect(converted.fixture.spawn.yawMilliDegrees).toBe(53_000);
     expect(revision3Untouched).toEqual(revision2Untouched);
     expect(revision2Rail).toMatchObject({
       centerMm: { x: -16_151, y: -54, z: -1_235 },

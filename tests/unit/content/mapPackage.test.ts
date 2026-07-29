@@ -82,7 +82,7 @@ describe('runtime map package schema', () => {
       id: 'inkfall_foundry',
       revision: 3,
       identity: {
-        digest: '260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a',
+        digest: '4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a',
       },
       artifacts: {
         render: {
