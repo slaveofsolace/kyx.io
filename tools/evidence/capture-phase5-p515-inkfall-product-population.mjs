@@ -252,7 +252,7 @@ const rev5PortalRoute = Object.freeze({
   lowerEntryTarget: Object.freeze({ x: -4_000, z: -10_000 }),
   lowerExit: Object.freeze({ x: 1_539, y: 1_431, z: -4_461 }),
   upperEntryTarget: Object.freeze({ x: 1_000, z: -5_000 }),
-  upperExit: Object.freeze({ x: -4_500, y: -3_000, z: -12_500 }),
+  upperExit: Object.freeze({ x: -5_000, y: -3_000, z: -15_500 }),
   lowerEntryPulseMilliseconds: 650,
   arrivalToleranceMillimeters: 1_100,
   eventTimeoutMilliseconds: 8_000,

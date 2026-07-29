@@ -63,6 +63,8 @@ const point = (x: number, y: number, z: number): PortalPointMm =>
  * The lower endpoint is anchored to the frozen Rev3 trigger contract. The
  * upper endpoint is an additive Rev5 authority overlay at the matching Red
  * Fold exit frame. Exit feet are deliberately outside the partner trigger.
+ * The upper-to-lower return lands on the authored corridor waypoint outside
+ * the 1.35 m crouch gate so a standing capsule cannot be rejected as blocked.
  */
 export const INKFALL_REV5_PORTAL_ENDPOINTS = Object.freeze([
   Object.freeze({
@@ -87,7 +89,7 @@ export const INKFALL_REV5_PORTAL_ENDPOINTS = Object.freeze([
     partnerId: 'red_fold_lower',
     triggerCenterMm: point(1_000, 1_431, -5_000),
     triggerHalfExtentsMm: point(1_500, 1_400, 300),
-    exitFeetMm: point(-4_500, -3_000, -12_500),
+    exitFeetMm: point(-5_000, -3_000, -15_500),
     exitYawMilliDegrees: 90_000,
     presentation: Object.freeze({
       visualCenterMm: point(1_000, 3_181, -5_000),
@@ -454,7 +456,6 @@ export function inspectInkfallRev5PortalCompatibility(
     endpointsZoneBound: lowerZones.includes('teleport_fold')
       && upperZones.includes('teleport_fold'),
     exitsZoneBound: lowerToUpperExitZones.includes('teleport_fold')
-      && upperToLowerExitZones.includes('teleport_fold')
       && upperToLowerExitZones.includes('ink_channel_west'),
     exitOffsetsPreventImmediatePartnerReentry:
       !pointInside(

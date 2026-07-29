@@ -19,6 +19,7 @@ import {
   requireBundledMapPackageManifest,
 } from '../../../../src/content/maps';
 import {
+  createRapierMovementWorld,
   loadRuntimeMapPackage,
 } from '../../../../src/physics';
 import {
@@ -225,6 +226,38 @@ describe('Inkfall Rev5 world portal authority', () => {
     expect(queries.volumeRequests).toEqual([]);
   });
 
+  it('keeps the standing upper return exit clear in the frozen authority collision', async () => {
+    const manifest = await requireBundledMapPackageManifest('inkfall_foundry', 3);
+    const [render, collision] = await Promise.all([
+      readFile(new URL(manifest.artifacts.render.path, mapRoot)),
+      readFile(new URL(manifest.artifacts.collision.path, mapRoot)),
+    ]);
+    const loaded = await loadRuntimeMapPackage(manifest, { render, collision });
+    const world = await createRapierMovementWorld(loaded.authority.fixture);
+    const upper = INKFALL_REV5_PORTAL_ENDPOINTS[1];
+    try {
+      const port = createInkfallRev5PortalAuthorityPort(world);
+      const result = port.advance(advanceInput(
+        stateAt({
+          x: upper.triggerCenterMm.x + upper.triggerHalfExtentsMm.x + 1,
+          y: upper.triggerCenterMm.y,
+          z: upper.triggerCenterMm.z,
+        }, 0),
+        stateAt(upper.triggerCenterMm, 1),
+      ));
+
+      expect(result.events).toContainEqual(expect.objectContaining({
+        kind: 'teleport_succeeded',
+        outcome: 'full',
+        to: upper.exitFeetMm,
+      }));
+      expect(result.state.player.feetPosition).toEqual(upper.exitFeetMm);
+      expect(result.events.some(({ kind }) => kind === 'teleport_rejected')).toBe(false);
+    } finally {
+      world.dispose();
+    }
+  });
+
   it('passes compatibility without changing the frozen trigger, spawn, or zone contract', async () => {
     const manifest = await requireBundledMapPackageManifest('inkfall_foundry', 3);
     const [render, collision] = await Promise.all([
@@ -254,6 +287,7 @@ describe('Inkfall Rev5 world portal authority', () => {
         portalPairClearOfSpawns: true,
       },
     });
+    expect(compatibility.upperToLowerExitZones).toEqual(['ink_channel_west']);
     expect(loaded.manifest.triggers).toBe(frozenCollections.triggers);
     expect(loaded.manifest.spawns).toBe(frozenCollections.spawns);
     expect(loaded.manifest.zones).toBe(frozenCollections.zones);
