@@ -2885,6 +2885,12 @@ try {
       && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_detonation')
       && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_impulse');
   }, grenadeThrowProjectile.projectileId, { timeout: 10_000 });
+  const grenadePresentation = await presentationMarkerProof(first.page);
+  assertPresentationMarker(grenadePresentation, 'grenade_impulse', 4);
+  await first.page.screenshot({
+    path: path.join(screenshotDirectory, 'p515-04c-grenade-impulse-confirmed.png'),
+    fullPage: true,
+  });
   const grenadeDeliveryDeadline = Date.now() + 5_000;
   while (
     Date.now() < grenadeDeliveryDeadline
@@ -2990,12 +2996,6 @@ try {
     assert.equal(snapshot.presentation.staleAuthorityEvents, 0);
     return Object.freeze({ clientId: client.clientId, deliveries });
   }));
-  const grenadePresentation = await presentationMarkerProof(first.page);
-  assertPresentationMarker(grenadePresentation, 'grenade_impulse', 4);
-  await first.page.screenshot({
-    path: path.join(screenshotDirectory, 'p515-04c-grenade-impulse-confirmed.png'),
-    fullPage: true,
-  });
   await first.page.keyboard.up('KeyC');
   await delay(180);
   const grenadeStanceWireSequenceEnd = wireSequence;
