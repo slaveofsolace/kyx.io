@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "observations": [
+    {
+      "id": "OBS-001",
+      "component": "authoritative movement and match runtime",
+      "label": "OBSERVED",
+      "title": "Normal forward movement stops the room with a visible authority tick failure",
+      "context": "Two-player Rev5 online room after the host holds forward for three seconds from the west spawn",
+      "action": "Hold W from the authoritative spawn-facing camera",
+      "expectation": "Traverse into Press Hall while the 20 Hz room continues normally",
+      "actual": "Frames 02 through 04 display ROOM_TICK_FAILED because movement authority tick is outside the current authority tick range, and the arena state stops advancing.",
+      "playerConsequence": "A basic movement input can halt the match and replaces combat feedback with a developer error.",
+      "reproduction": [
+        "Run capture-g5-inkfall-visual-continuity.mjs with --renderer=hardware from clean commit 941a1f3",
+        "Join host and guest on the Rev5 profile",
+        "Hold KeyW for three seconds",
+        "Inspect screenshots 02 through 04"
+      ],
+      "frequency": 5,
+      "severity": 5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 5,
+      "blocker": true,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png",
+        "services.json"
+      ],
+      "hypotheses": [
+        "An earlier authority tick throws after mutating one player but before committing the room tick",
+        "A later timer restart exposes the partially advanced movement state as the visible secondary failure"
+      ],
+      "nextDiscriminatingTest": "Log the first runTimer exception with server tick and player movement ticks, then reproduce the same two-client three-second input.",
+      "recommendedOutcome": "One failed tick must never partially mutate the room, normal forward traversal must sustain the room, and raw authority errors must never appear in the player HUD.",
+      "status": "OPEN",
+      "priorityScore": 100,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-002",
+      "component": "map traversal and collision",
+      "label": "MEASURED",
+      "title": "The intended spawn egress loses more than three meters of elevation",
+      "context": "West spawn_w_press_a to the first Press Hall capture position",
+      "action": "Advance along the corrected 53 degree spawn yaw",
+      "expectation": "Remain on a clearly supported route toward the first egress waypoint",
+      "actual": "The authoritative position moves 8.789 m east and 8.023 m north but falls from y=0 to y=-3.259 m.",
+      "playerConsequence": "The route presented as the primary spawn exit behaves like an unsupported gap or mismatched visual/collision surface.",
+      "reproduction": [
+        "Read joinedPositionMm and pressApproachPositionMm in focused-visual-capture.json",
+        "Compare the y coordinates and frame 02"
+      ],
+      "frequency": 5,
+      "severity": 5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 5,
+      "blocker": true,
+      "confidence": "HIGH",
+      "evidence": [
+        "focused-visual-capture.json",
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png"
+      ],
+      "hypotheses": [
+        "The route waypoint is not backed by continuous authoritative floor collision",
+        "Render-only Press Hall surfaces do not align with the Rev3 collision fixture"
+      ],
+      "nextDiscriminatingTest": "Trace the exact capsule path against the 339 colliders and render a collision-versus-art overlay at the first drop.",
+      "recommendedOutcome": "A player can leave every spawn on continuous supported collision with visual surfaces aligned to authority.",
+      "status": "OPEN",
+      "priorityScore": 100,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-003",
+      "component": "map lighting and geometry readability",
+      "label": "OBSERVED",
+      "title": "Press Hall remains dominated by black crush and an overhead slab silhouette",
+      "context": "Hardware-rendered spawn and Press Hall frames at 1440x900",
+      "action": "Scan the center view for floor, ceiling, cover, and route hierarchy",
+      "expectation": "Readable industrial materials, deliberate ceiling clearance, and distinct combat lanes",
+      "actual": "Large connected regions render near-black, the upper half of frames 02 through 04 is a flat black mass, and thin hanging members visually collide with the ceiling field.",
+      "playerConsequence": "Depth, cover, head clearance, and enemy silhouettes cannot be read reliably.",
+      "reproduction": [
+        "Open all four hardware screenshots at native size",
+        "Compare foreground, midground, and ceiling value separation"
+      ],
+      "frequency": 5,
+      "severity": 4.5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4.5,
+      "blocker": true,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "The review GLB uses underlit or near-black material values without sufficient environment fill",
+        "One ceiling or containment mesh is oversized or placed below the intended player envelope"
+      ],
+      "nextDiscriminatingTest": "Capture material-ID, unlit, collision-overlay, and side-section views at the failed position.",
+      "recommendedOutcome": "Floors, cover, ceiling, portal, and character silhouettes remain immediately legible under normal hardware rendering.",
+      "status": "OPEN",
+      "priorityScore": 95,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-004",
+      "component": "first-person arms and weapon",
+      "label": "OBSERVED",
+      "title": "The live rifle is still a procedural blockout with no hands or arms",
+      "context": "All four normal player-eye frames with slot 1 equipped",
+      "action": "Inspect the weapon silhouette, grips, muzzle, and body contact",
+      "expectation": "Authored gloves and arms holding a proportioned rifle with a clear muzzle origin",
+      "actual": "Rectangular masses form the rifle, no hands or forearms are visible, and the lower-right silhouette reads as an unfinished prototype.",
+      "playerConsequence": "The most persistent first-person object lacks physical ownership and makes every combat action feel unfinished.",
+      "reproduction": [
+        "Join the Rev5 online profile",
+        "Keep slot 1 equipped",
+        "Inspect any v3 screenshot"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png"
+      ],
+      "hypotheses": [
+        "The production route still binds the procedural first-person weapon family",
+        "No accepted Assault arms-and-rifle package has been integrated"
+      ],
+      "nextDiscriminatingTest": "Inventory the live first-person scene graph and compare it with the earlier Blender weapon candidates.",
+      "recommendedOutcome": "Integrate one provenance-safe Assault rifle and gloved arm rig with grip, muzzle, recoil, reload, swap, and ADS contact.",
+      "status": "OPEN",
+      "priorityScore": 87,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-005",
+      "component": "HUD and evidence integrity",
+      "label": "OBSERVED",
+      "title": "Diagnostics are hidden, but a raw authority exception still becomes player-facing UI",
+      "context": "Normal online route without the debug query",
+      "action": "Play after the room tick fault",
+      "expectation": "A restrained recoverable connection state or match interruption message",
+      "actual": "The former diagnostics drawer is absent, but an internal ROOM_TICK_FAILED validation message appears in a large red banner across the combat view.",
+      "playerConsequence": "Implementation details break immersion and provide no actionable recovery path.",
+      "reproduction": [
+        "Open v3 frame 02",
+        "Read the red center-bottom error banner"
+      ],
+      "frequency": 5,
+      "severity": 3.5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/02-press-hall-approach.png"
+      ],
+      "hypotheses": [
+        "The client maps authority protocol errors directly to debug-oriented copy",
+        "No player-safe fatal room state exists"
+      ],
+      "nextDiscriminatingTest": "Inject each fatal room error in a UI harness and review the player-facing state and recovery action.",
+      "recommendedOutcome": "Log technical detail privately while showing concise player-safe reconnect or return-to-lobby guidance.",
+      "status": "OPEN",
+      "priorityScore": 86,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-006",
+      "component": "opponent model and animation",
+      "label": "UNKNOWN",
+      "title": "Enemy model, role silhouette, animation, and weapon contact remain unassessable",
+      "context": "Two isolated authoritative player contexts existed, but no opponent appears in the packet",
+      "action": "Look for the remote player at near, mid, and far distance",
+      "expectation": "Controlled enemy views showing locomotion and combat contact",
+      "actual": "No frame contains the remote player, and the room fault prevents the intended multi-angle traversal.",
+      "playerConsequence": "Third-person model and animation acceptance remain at zero human proof.",
+      "reproduction": [
+        "Confirm isolatedPlayerContexts=2 in focused-visual-capture.json",
+        "Inspect all four screenshots"
+      ],
+      "frequency": 1,
+      "severity": 4,
+      "reach": 5,
+      "trust": 4,
+      "friction": 2,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "focused-visual-capture.json",
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "The capture route does not stage the guest in the host camera envelope",
+        "The room fault prevents the later encounter setup"
+      ],
+      "nextDiscriminatingTest": "After movement stability, stage a live opponent at 5 m, 20 m, and 40 m and record locomotion, fire, hit, death, and respawn.",
+      "recommendedOutcome": "Provide player-eye opponent evidence before any model, helmet, role, or animation acceptance claim.",
+      "status": "OPEN",
+      "priorityScore": 65,
+      "priorityTier": "B"
+    }
+  ]
+}
