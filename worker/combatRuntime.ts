@@ -1011,13 +1011,38 @@ export function reliableCombatEvents(
   }
   for (const event of tick.combatEvents ?? []) {
     if (event.kind !== 'auto_rifle_shot_accepted') continue;
+    const attackEventId = combatWireId(event.eventId);
     events.push(Object.freeze({
       serverTick: event.authorityTick,
-      kind: 'shotAccepted',
-      subjectId: combatWireId(event.eventId),
+      kind: 'weaponAttackAccepted',
+      subjectId: attackEventId,
       actorId: event.playerId,
       targetId: null,
       amountHealthPoints: null,
+      presentation: Object.freeze({
+        schemaVersion: 1 as const,
+        kind: 'weapon_attack_accepted' as const,
+        eventId: attackEventId,
+        authorityTick: event.authorityTick,
+        playerId: event.playerId,
+        weaponId: event.weaponId,
+        family: 'rifle' as const,
+        attackModel: 'hitscan' as const,
+        attackOrdinal: event.shotOrdinal,
+        referenceDamagePoints: event.referenceDamagePoints,
+        magazineRoundsAfter: event.magazineRoundsAfter,
+        reserveRoundsAfter: event.reserveRoundsAfter,
+        nextAttackAtTick: event.nextShotAtTick,
+        ballistics: Object.freeze([Object.freeze({
+          pelletIndex: 0,
+          spreadRadiusMilliDegrees:
+            event.ballistics.spreadRadiusMilliDegrees,
+          spreadPitchMilliDegrees:
+            event.ballistics.spreadPitchMilliDegrees,
+          spreadYawMilliDegrees:
+            event.ballistics.spreadYawMilliDegrees,
+        })]),
+      }),
     }));
   }
   for (const result of tick.hitscanResults ?? []) {

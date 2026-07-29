@@ -522,7 +522,10 @@ function renderArena(
         context.stroke();
         context.shadowBlur = 0;
       }
-    } else if (event.kind === 'shotAccepted') {
+    } else if (
+      event.kind === 'shotAccepted'
+      || event.kind === 'weaponAttackAccepted'
+    ) {
       context.strokeStyle = '#f8ffff';
       context.lineWidth = 2;
       context.beginPath();

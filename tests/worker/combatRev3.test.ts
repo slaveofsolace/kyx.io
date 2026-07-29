@@ -329,7 +329,7 @@ async function runWorkerImpairmentProfile(profile: DeliveryProfile) {
   let tenthShotObserved = false;
   for (let sample = 0; sample < 120 && !tenthShotObserved; sample += 1) {
     tenthShotObserved = uniqueReliableEvents(first)
-      .filter(({ kind }) => kind === 'shotAccepted').length >= 10;
+      .filter(({ kind }) => kind === 'weaponAttackAccepted').length >= 10;
     if (tenthShotObserved) break;
     const current = latestSnapshot(first);
     if (current !== null) {
@@ -376,6 +376,17 @@ async function runWorkerImpairmentProfile(profile: DeliveryProfile) {
   const shooter = final.combat?.players.find(({ playerId }) => playerId === firstJoin.playerId);
   const target = final.combat?.players.find(({ playerId }) => playerId === secondJoin.playerId);
   const events = uniqueReliableEvents(first);
+  const acceptedWeaponEvents = events.filter(
+    ({ kind }) => kind === 'weaponAttackAccepted',
+  );
+  expect(acceptedWeaponEvents).toHaveLength(shooter?.acceptedShotCount ?? 0);
+  expect(acceptedWeaponEvents.every(({ presentation }) => (
+    presentation?.kind === 'weapon_attack_accepted'
+      && presentation.weaponId === 'vertical_rifle_v1'
+      && presentation.family === 'rifle'
+      && presentation.attackModel === 'hitscan'
+      && presentation.ballistics.length === 1
+  ))).toBe(true);
   const consequence = Object.freeze({
     acceptedShotCount: shooter?.acceptedShotCount ?? -1,
     magazineRounds: shooter?.magazineRounds ?? -1,
@@ -385,7 +396,8 @@ async function runWorkerImpairmentProfile(profile: DeliveryProfile) {
       .find(({ teamId }) => teamId === 'team_blue')?.score ?? -1,
     feedSequence: final.combat?.match.feedSequence ?? -1,
     eventCounts: Object.freeze({
-      shotAccepted: events.filter(({ kind }) => kind === 'shotAccepted').length,
+      shotAccepted:
+        acceptedWeaponEvents.length,
       damageApplied: events.filter(({ kind }) => kind === 'damageApplied').length,
       playerKilled: events.filter(({ kind }) => kind === 'playerKilled').length,
     }),
@@ -667,7 +679,8 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
     expect(eventCounts.playerKilled).toHaveLength(1);
     expect(eventCounts.projectileSpawned).toHaveLength(1);
     expect(eventCounts.cooldownStarted).toHaveLength(1);
-    expect(eventCounts.shotAccepted).toHaveLength(resumedShooter?.acceptedShotCount ?? 0);
+    expect(eventCounts.weaponAttackAccepted)
+      .toHaveLength(resumedShooter?.acceptedShotCount ?? 0);
     const respawned = await waitForMessage(
       second,
       (message) => {
