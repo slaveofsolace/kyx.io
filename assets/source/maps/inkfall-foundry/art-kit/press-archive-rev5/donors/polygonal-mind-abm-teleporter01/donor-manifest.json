@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "id": "polygonal-mind-abm-teleporter01-cc0",
+  "author": "Polygonal Mind",
+  "conversionRepositoryMaintainer": "ToxSam",
+  "license": {
+    "name": "CC0 1.0 Universal",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  "retrievedAt": "2026-07-29",
+  "source": {
+    "repository": "https://github.com/ToxSam/cc0-models-Polygonal-Mind",
+    "repositoryRevision": "56db2d4088512531a070d0bf3eb9d284d077528d",
+    "modelPath": "projects/abm/Teleporter01_Art.glb",
+    "modelUrl": "https://raw.githubusercontent.com/ToxSam/cc0-models-Polygonal-Mind/56db2d4088512531a070d0bf3eb9d284d077528d/projects/abm/Teleporter01_Art.glb",
+    "thumbnailUrl": "https://raw.githubusercontent.com/ToxSam/cc0-models-Polygonal-Mind/56db2d4088512531a070d0bf3eb9d284d077528d/projects/abm/Teleporter01_Art_thumbnail.png",
+    "originalInitiative": "https://github.com/PolygonalMind/initiative-opensource-release"
+  },
+  "files": [
+    {
+      "path": "original/Teleporter01_Art.original.glb",
+      "role": "original_model",
+      "bytes": 253020,
+      "sha256": "566822f43f2ca4c7cc435d7229f75878c2f33f69c31f3b1b6179fd9201918e5c"
+    },
+    {
+      "path": "reference/Teleporter01_Art.thumbnail.png",
+      "role": "source_thumbnail",
+      "bytes": 49949,
+      "sha256": "ee7effd57d0ec5888d144a4cbd559caec95a05323896527109d6382801fbd441"
+    },
+    {
+      "path": "LICENSE.md",
+      "role": "upstream_repository_license",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    }
+  ],
+  "geometry": {
+    "nodes": 1,
+    "meshes": 1,
+    "primitives": 1,
+    "triangles": 918,
+    "derivedFrameTriangles": 688,
+    "materials": 1,
+    "images": 1,
+    "textures": 1
+  },
+  "integrationBoundary": {
+    "role": "render_only_portal_gateway_frame_donor",
+    "sourceOrbRemoved": true,
+    "materialsReplaced": true,
+    "mayDefineCollision": false,
+    "mayDefineTriggers": false,
+    "mayDefineSpawns": false,
+    "mayDefineZones": false,
+    "mayDefineGameplayAuthority": false
+  }
+}

@@ -1,0 +1,17 @@
+This is the standard FREE version of the Modular SciFi MegaKit, which only contains
+a portion of the models. You can buy the PRO version which has all the models,
+or the SOURCE version which has all the models and also includes Unity (URP),
+Unreal Engine and Godot projects with custom shaders already set up.
+
+You can get the other versions from the website https://quaternius.com
+
+License:
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Models by @Quaternius
+https://www.patreon.com/quaternius
+
+This copy is preserved from License_Standard.txt in the downloaded Standard
+archive whose SHA-256 is recorded in PROVENANCE.md and the generated manifest.

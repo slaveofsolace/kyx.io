@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "quaternius-teleporter-base-poly-pizza-cc0",
+  "author": "Quaternius",
+  "license": {
+    "name": "CC0 1.0 Universal",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  "retrievedAt": "2026-07-29",
+  "source": {
+    "listingUrl": "https://poly.pizza/m/OIezStCmak",
+    "modelUrl": "https://static.poly.pizza/39432e22-8304-40c5-8fc6-0fdf2a19c7e1.glb",
+    "previewUrl": "https://static.poly.pizza/39432e22-8304-40c5-8fc6-0fdf2a19c7e1.jpg"
+  },
+  "files": [
+    {
+      "path": "original/Teleporter_Base.original.glb",
+      "role": "original_model",
+      "bytes": 30588,
+      "sha256": "29a296a33fc557c3765fec79cf06d6a262949b1fe6adca4c69ca7b2d3ecb2ac3"
+    },
+    {
+      "path": "reference/Teleporter_Base.preview.jpg",
+      "role": "source_preview",
+      "bytes": 374778,
+      "sha256": "deaa5fe4134cccbe6139d7c8a29d1d2bfa482f057ac5420c5f668ae9b8cbab88"
+    }
+  ],
+  "geometry": {
+    "nodes": 2,
+    "meshes": 1,
+    "primitives": 3,
+    "triangles": 556,
+    "materials": 3,
+    "images": 0,
+    "textures": 0
+  },
+  "integrationBoundary": {
+    "role": "render_only_portal_machine_donor",
+    "materialsReplaced": true,
+    "mayDefineCollision": false,
+    "mayDefineTriggers": false,
+    "mayDefineSpawns": false,
+    "mayDefineZones": false,
+    "mayDefineGameplayAuthority": false
+  }
+}

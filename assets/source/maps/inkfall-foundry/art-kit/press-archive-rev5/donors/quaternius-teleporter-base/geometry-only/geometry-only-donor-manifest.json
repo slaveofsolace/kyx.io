@@ -1,0 +1,71 @@
+{
+  "kind": "inkfall_rev5_cc0_portal_machine_geometry_only_manifest",
+  "model": {
+    "boundsMaximumMeters": [
+      1.198023,
+      1.198023,
+      0.320469
+    ],
+    "boundsMinimumMeters": [
+      -1.198023,
+      -1.198023,
+      0.000156
+    ],
+    "derivedGeometryOnlyGlb": {
+      "bytes": 31776,
+      "materialCount": 0,
+      "meshCount": 3,
+      "name": "Teleporter_Base.geometry-only.glb",
+      "sha256": "6af6e49c34fe4f75f93d928db2d43a6402609bbc8aa7b447d8d16e563b000391"
+    },
+    "dimensionsMeters": [
+      2.396047,
+      2.396047,
+      0.320313
+    ],
+    "id": "Teleporter_Base",
+    "parts": [
+      {
+        "id": "darkgrey",
+        "sourceMaterial": "DarkGrey",
+        "triangleCount": 222,
+        "vertexCount": 332
+      },
+      {
+        "id": "main",
+        "sourceMaterial": "Main",
+        "triangleCount": 238,
+        "vertexCount": 464
+      },
+      {
+        "id": "accent",
+        "sourceMaterial": "Accent",
+        "triangleCount": 96,
+        "vertexCount": 184
+      }
+    ],
+    "triangleCount": 556
+  },
+  "process": {
+    "animationsIncluded": false,
+    "geometryOnly": true,
+    "materialsIncluded": false,
+    "runtimeCollisionAuthority": false,
+    "script": "prepare_geometry_only_donor.py",
+    "sourceMaterialsReplacedAtRuntimeBuild": true,
+    "texturesIncluded": false
+  },
+  "source": {
+    "creator": "Quaternius",
+    "licenseId": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "model": "Teleporter Base",
+    "modelUrl": "https://static.poly.pizza/39432e22-8304-40c5-8fc6-0fdf2a19c7e1.glb",
+    "originalGlb": {
+      "bytes": 30588,
+      "name": "Teleporter_Base.original.glb",
+      "sha256": "29a296a33fc557c3765fec79cf06d6a262949b1fe6adca4c69ca7b2d3ecb2ac3"
+    },
+    "sourcePage": "https://poly.pizza/m/OIezStCmak"
+  }
+}

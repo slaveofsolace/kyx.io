@@ -13,14 +13,16 @@ used by this builder.
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import math
 from pathlib import Path
+import struct
 from typing import Any
 
 import bmesh
 import bpy
-from mathutils import Vector
+from mathutils import Euler, Matrix, Vector
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -41,6 +43,55 @@ SCOPE = "G5_INKFALL_REV5_GEOMETRY_PORTAL_RENDER_ONLY_NON_DEFAULT"
 GENERATOR_ID = "inkfall_foundry_press_archive_rev5"
 ART_REVISION = "5.0"
 AUTHORITY_PORTAL_CAPABILITY = "inkfall_rev5_linked_world_portal_v1"
+DONOR_ROOT = SCRIPT_DIR / "donors" / "quaternius-standard"
+DONOR_GEOMETRY_ROOT = DONOR_ROOT / "geometry-only"
+DONOR_MANIFEST_PATH = DONOR_GEOMETRY_ROOT / "geometry-only-donor-manifest.json"
+PORTAL_MACHINE_DONOR_ROOT = (
+    SCRIPT_DIR / "donors" / "quaternius-teleporter-base"
+)
+PORTAL_MACHINE_SOURCE_MANIFEST_PATH = (
+    PORTAL_MACHINE_DONOR_ROOT / "donor-manifest.json"
+)
+PORTAL_MACHINE_DONOR_MANIFEST_PATH = (
+    PORTAL_MACHINE_DONOR_ROOT
+    / "geometry-only"
+    / "geometry-only-donor-manifest.json"
+)
+PORTAL_MACHINE_DONOR_PATH = (
+    PORTAL_MACHINE_DONOR_ROOT
+    / "geometry-only"
+    / "Teleporter_Base.geometry-only.glb"
+)
+PORTAL_MACHINE_DONOR_ID = "Teleporter_Base"
+PORTAL_FRAME_DONOR_ROOT = (
+    SCRIPT_DIR / "donors" / "polygonal-mind-abm-teleporter01"
+)
+PORTAL_FRAME_SOURCE_MANIFEST_PATH = (
+    PORTAL_FRAME_DONOR_ROOT / "donor-manifest.json"
+)
+PORTAL_FRAME_DONOR_MANIFEST_PATH = (
+    PORTAL_FRAME_DONOR_ROOT
+    / "geometry-only"
+    / "geometry-only-donor-manifest.json"
+)
+PORTAL_FRAME_DONOR_PATH = (
+    PORTAL_FRAME_DONOR_ROOT
+    / "geometry-only"
+    / "Teleporter01_Art.frame.geometry-only.glb"
+)
+PORTAL_FRAME_DONOR_ID = "Teleporter01_Art_Frame"
+EXPECTED_DONOR_IDS = {
+    "Door_Frame_SquareTall",
+    "Platform_Metal2",
+    "Platform_Rails_4WideTall",
+    "Column_MetalSupport",
+    "Column_MetalSupport_Curve",
+    "Column_Pipes",
+    "Prop_AccessPoint",
+    "Prop_Light_Wide",
+    "Prop_PipeHolder",
+    "Prop_Vent_Wide",
+}
 
 ROUTE_POINTS = rev4.ROUTE_POINTS
 TRAVERSAL_CLEARANCE_POINTS = ROUTE_POINTS + ((-22.0, 21.5, 6.06),)
@@ -87,6 +138,23 @@ PORTAL_ENDPOINTS = (
 
 FROZEN_INPUTS = {
     **rev4.FROZEN_INPUTS,
+    # The accepted player-eye alignment checkpoint changed only committed
+    # spawn yaw values and the package's canonical digest. Collision geometry,
+    # spawn positions, zones, and the Revision 3 fixture remain unchanged.
+    "revision3Package": (
+        "assets/source/maps/inkfall-foundry/revisions/revision-3/"
+        "runtime/map.package.v3.json",
+        "14648737f7e511370e1136ac5150fa25b1ebfdc9bff2dd86ba7b2ce83e1c45b6",
+    ),
+    "revision3AuthorityFixture": (
+        "assets/source/maps/inkfall-foundry/runtime/"
+        "combat-authority-fixture.g5-revision3.v1.json",
+        "96cbe4c7317de489dcd8cc42ea3e37dc41f8157982db8c01094bd8bdaf1008a1",
+    ),
+    "catalogConstants": (
+        "src/content/maps/constants.ts",
+        "cc9b938ccfa0b9d2d8e7d6ac08baf8fb3fc014868bd630f05928513a25a2186f",
+    ),
     "rejectedRev4Builder": (
         "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/"
         "build_press_archive_rev4.py",
@@ -169,17 +237,666 @@ def point_inside(
     )
 
 
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def verify_geometry_donors(repo_root: Path) -> dict[str, Any]:
+    """Fail closed on the small CC0 geometry-only donor library."""
+
+    if not DONOR_MANIFEST_PATH.is_file():
+        raise RuntimeError(f"Missing donor manifest: {DONOR_MANIFEST_PATH}")
+    manifest = json.loads(DONOR_MANIFEST_PATH.read_text(encoding="utf-8"))
+    source = manifest.get("source", {})
+    process = manifest.get("process", {})
+    if source.get("licenseId") != "CC0-1.0":
+        raise RuntimeError("Inkfall donor set must remain CC0-1.0")
+    if process.get("geometryOnly") is not True:
+        raise RuntimeError("Inkfall donor set must remain geometry-only")
+    if process.get("materialsIncluded") is not False:
+        raise RuntimeError("Inkfall donor set unexpectedly contains materials")
+    if process.get("texturesIncluded") is not False:
+        raise RuntimeError("Inkfall donor set unexpectedly contains textures")
+    if process.get("runtimeCollisionAuthority") is not False:
+        raise RuntimeError("Inkfall donor set cannot become collision authority")
+
+    records = {
+        item["id"]: item
+        for item in manifest.get("models", [])
+        if isinstance(item, dict) and isinstance(item.get("id"), str)
+    }
+    if set(records) != EXPECTED_DONOR_IDS:
+        raise RuntimeError(
+            "Unexpected Inkfall donor inventory: "
+            f"{sorted(records)}"
+        )
+
+    verified: list[dict[str, Any]] = []
+    for model_id in sorted(EXPECTED_DONOR_IDS):
+        record = records[model_id]
+        derived = record.get("derivedGeometryOnlyGlb", {})
+        path = DONOR_GEOMETRY_ROOT / str(derived.get("name", ""))
+        if not path.is_file():
+            raise RuntimeError(f"Missing donor GLB for {model_id}: {path}")
+        actual_bytes = path.stat().st_size
+        actual_hash = sha256_file(path)
+        if actual_bytes != derived.get("bytes"):
+            raise RuntimeError(f"Donor byte count changed for {model_id}")
+        if actual_hash != derived.get("sha256"):
+            raise RuntimeError(f"Donor hash changed for {model_id}")
+        verified.append(
+            {
+                "id": model_id,
+                "path": path.relative_to(repo_root).as_posix(),
+                "bytes": actual_bytes,
+                "sha256": actual_hash,
+            }
+        )
+
+    for required in (DONOR_ROOT / "LICENSE.txt", DONOR_ROOT / "PROVENANCE.md"):
+        if not required.is_file():
+            raise RuntimeError(f"Missing donor provenance file: {required}")
+
+    return {
+        "manifestPath": DONOR_MANIFEST_PATH.relative_to(repo_root).as_posix(),
+        "manifestSha256": sha256_file(DONOR_MANIFEST_PATH),
+        "licenseId": source["licenseId"],
+        "sourcePage": source["sourcePage"],
+        "downloadedArchiveSha256": source["downloadedArchiveSha256"],
+        "geometryOnly": True,
+        "runtimeCollisionAuthority": False,
+        "modelCount": len(verified),
+        "totalDerivedBytes": sum(item["bytes"] for item in verified),
+        "models": verified,
+    }
+
+
+def verify_portal_machine_donor(repo_root: Path) -> dict[str, Any]:
+    """Fail closed on the dedicated CC0 teleporter-machine donor."""
+
+    if not PORTAL_MACHINE_SOURCE_MANIFEST_PATH.is_file():
+        raise RuntimeError(
+            "Missing portal-machine source manifest: "
+            f"{PORTAL_MACHINE_SOURCE_MANIFEST_PATH}"
+        )
+    if not PORTAL_MACHINE_DONOR_MANIFEST_PATH.is_file():
+        raise RuntimeError(
+            "Missing portal-machine donor manifest: "
+            f"{PORTAL_MACHINE_DONOR_MANIFEST_PATH}"
+        )
+    source_manifest = json.loads(
+        PORTAL_MACHINE_SOURCE_MANIFEST_PATH.read_text(encoding="utf-8")
+    )
+    donor_manifest = json.loads(
+        PORTAL_MACHINE_DONOR_MANIFEST_PATH.read_text(encoding="utf-8")
+    )
+    if source_manifest.get("id") != (
+        "quaternius-teleporter-base-poly-pizza-cc0"
+    ):
+        raise RuntimeError("Unexpected portal-machine donor identity")
+    license_record = source_manifest.get("license", {})
+    if license_record.get("name") != "CC0 1.0 Universal":
+        raise RuntimeError("Portal-machine donor must remain CC0-1.0")
+    source_geometry = source_manifest.get("geometry", {})
+    if source_geometry != {
+        "nodes": 2,
+        "meshes": 1,
+        "primitives": 3,
+        "triangles": 556,
+        "materials": 3,
+        "images": 0,
+        "textures": 0,
+    }:
+        raise RuntimeError("Portal-machine donor geometry contract changed")
+    boundary = source_manifest.get("integrationBoundary", {})
+    if boundary.get("role") != "render_only_portal_machine_donor":
+        raise RuntimeError("Unexpected portal-machine donor integration role")
+    if boundary.get("materialsReplaced") is not True:
+        raise RuntimeError("Portal-machine donor materials must be replaced")
+    for key in (
+        "mayDefineCollision",
+        "mayDefineTriggers",
+        "mayDefineSpawns",
+        "mayDefineZones",
+        "mayDefineGameplayAuthority",
+    ):
+        if boundary.get(key) is not False:
+            raise RuntimeError(
+                f"Portal-machine donor authority boundary changed: {key}"
+            )
+
+    expected_files = {
+        "original/Teleporter_Base.original.glb",
+        "reference/Teleporter_Base.preview.jpg",
+    }
+    records = {
+        item["path"]: item
+        for item in source_manifest.get("files", [])
+        if isinstance(item, dict) and isinstance(item.get("path"), str)
+    }
+    if set(records) != expected_files:
+        raise RuntimeError(
+            "Unexpected portal-machine donor file inventory: "
+            f"{sorted(records)}"
+        )
+    verified: list[dict[str, Any]] = []
+    for relative_path in sorted(expected_files):
+        record = records[relative_path]
+        path = PORTAL_MACHINE_DONOR_ROOT / relative_path
+        if not path.is_file():
+            raise RuntimeError(f"Missing portal-machine donor file: {path}")
+        actual_bytes = path.stat().st_size
+        actual_hash = sha256_file(path)
+        if actual_bytes != record.get("bytes"):
+            raise RuntimeError(
+                f"Portal-machine donor byte count changed: {relative_path}"
+            )
+        if actual_hash != record.get("sha256"):
+            raise RuntimeError(
+                f"Portal-machine donor hash changed: {relative_path}"
+            )
+        verified.append(
+            {
+                "path": path.relative_to(repo_root).as_posix(),
+                "role": record.get("role"),
+                "bytes": actual_bytes,
+                "sha256": actual_hash,
+            }
+        )
+
+    if donor_manifest.get("kind") != (
+        "inkfall_rev5_cc0_portal_machine_geometry_only_manifest"
+    ):
+        raise RuntimeError("Unexpected portal-machine geometry-only manifest")
+    donor_source = donor_manifest.get("source", {})
+    if donor_source.get("licenseId") != "CC0-1.0":
+        raise RuntimeError("Geometry-only portal donor must remain CC0-1.0")
+    if donor_source.get("sourcePage") != source_manifest["source"]["listingUrl"]:
+        raise RuntimeError("Portal-machine source page binding changed")
+    original = donor_source.get("originalGlb", {})
+    original_record = records["original/Teleporter_Base.original.glb"]
+    if (
+        original.get("bytes") != original_record.get("bytes")
+        or original.get("sha256") != original_record.get("sha256")
+    ):
+        raise RuntimeError("Geometry-only portal donor source binding changed")
+    process = donor_manifest.get("process", {})
+    if (
+        process.get("geometryOnly") is not True
+        or process.get("materialsIncluded") is not False
+        or process.get("texturesIncluded") is not False
+        or process.get("animationsIncluded") is not False
+        or process.get("runtimeCollisionAuthority") is not False
+        or process.get("sourceMaterialsReplacedAtRuntimeBuild") is not True
+    ):
+        raise RuntimeError("Portal-machine derivation boundary changed")
+    donor_model = donor_manifest.get("model", {})
+    expected_parts = {
+        "darkgrey": 222,
+        "main": 238,
+        "accent": 96,
+    }
+    actual_parts = {
+        part["id"]: part["triangleCount"]
+        for part in donor_model.get("parts", [])
+        if isinstance(part, dict)
+    }
+    if (
+        donor_model.get("id") != PORTAL_MACHINE_DONOR_ID
+        or donor_model.get("triangleCount") != 556
+        or actual_parts != expected_parts
+    ):
+        raise RuntimeError("Portal-machine geometry-only parts changed")
+    derived = donor_model.get("derivedGeometryOnlyGlb", {})
+    if (
+        derived.get("name") != PORTAL_MACHINE_DONOR_PATH.name
+        or derived.get("meshCount") != 3
+        or derived.get("materialCount") != 0
+    ):
+        raise RuntimeError("Unexpected portal-machine derived GLB contract")
+    if not PORTAL_MACHINE_DONOR_PATH.is_file():
+        raise RuntimeError(
+            f"Missing portal-machine donor GLB: {PORTAL_MACHINE_DONOR_PATH}"
+        )
+    actual_derived_bytes = PORTAL_MACHINE_DONOR_PATH.stat().st_size
+    actual_derived_hash = sha256_file(PORTAL_MACHINE_DONOR_PATH)
+    if (
+        actual_derived_bytes != derived.get("bytes")
+        or actual_derived_hash != derived.get("sha256")
+    ):
+        raise RuntimeError("Portal-machine derived GLB integrity changed")
+    for required in (
+        PORTAL_MACHINE_DONOR_ROOT / "LICENSE.txt",
+        PORTAL_MACHINE_DONOR_ROOT / "PROVENANCE.md",
+        PORTAL_MACHINE_DONOR_ROOT / "prepare_geometry_only_donor.py",
+    ):
+        if not required.is_file():
+            raise RuntimeError(
+                f"Missing portal-machine donor provenance file: {required}"
+            )
+
+    return {
+        "id": source_manifest["id"],
+        "sourceManifestPath": PORTAL_MACHINE_SOURCE_MANIFEST_PATH.relative_to(
+            repo_root
+        ).as_posix(),
+        "sourceManifestSha256": sha256_file(
+            PORTAL_MACHINE_SOURCE_MANIFEST_PATH
+        ),
+        "manifestPath": PORTAL_MACHINE_DONOR_MANIFEST_PATH.relative_to(
+            repo_root
+        ).as_posix(),
+        "manifestSha256": sha256_file(PORTAL_MACHINE_DONOR_MANIFEST_PATH),
+        "licenseId": "CC0-1.0",
+        "sourcePage": source_manifest["source"]["listingUrl"],
+        "modelCount": 1,
+        "triangleCount": donor_model["triangleCount"],
+        "derivedBytes": actual_derived_bytes,
+        "derivedSha256": actual_derived_hash,
+        "runtimeCollisionAuthority": False,
+        "sourceMaterialsReplaced": True,
+        "files": verified,
+    }
+
+
+def verify_portal_frame_donor(repo_root: Path) -> dict[str, Any]:
+    """Fail closed on the dedicated Polygonal Mind CC0 gateway frame."""
+
+    for manifest_path in (
+        PORTAL_FRAME_SOURCE_MANIFEST_PATH,
+        PORTAL_FRAME_DONOR_MANIFEST_PATH,
+    ):
+        if not manifest_path.is_file():
+            raise RuntimeError(f"Missing portal-frame manifest: {manifest_path}")
+    source_manifest = json.loads(
+        PORTAL_FRAME_SOURCE_MANIFEST_PATH.read_text(encoding="utf-8")
+    )
+    donor_manifest = json.loads(
+        PORTAL_FRAME_DONOR_MANIFEST_PATH.read_text(encoding="utf-8")
+    )
+    if source_manifest.get("id") != "polygonal-mind-abm-teleporter01-cc0":
+        raise RuntimeError("Unexpected portal-frame donor identity")
+    license_record = source_manifest.get("license", {})
+    if license_record.get("name") != "CC0 1.0 Universal":
+        raise RuntimeError("Portal-frame donor must remain CC0-1.0")
+    source = source_manifest.get("source", {})
+    if source.get("repositoryRevision") != (
+        "56db2d4088512531a070d0bf3eb9d284d077528d"
+    ):
+        raise RuntimeError("Portal-frame source revision changed")
+    if source_manifest.get("geometry") != {
+        "nodes": 1,
+        "meshes": 1,
+        "primitives": 1,
+        "triangles": 918,
+        "derivedFrameTriangles": 688,
+        "materials": 1,
+        "images": 1,
+        "textures": 1,
+    }:
+        raise RuntimeError("Portal-frame source geometry contract changed")
+    boundary = source_manifest.get("integrationBoundary", {})
+    if (
+        boundary.get("role")
+        != "render_only_portal_gateway_frame_donor"
+        or boundary.get("sourceOrbRemoved") is not True
+        or boundary.get("materialsReplaced") is not True
+    ):
+        raise RuntimeError("Unexpected portal-frame integration boundary")
+    for key in (
+        "mayDefineCollision",
+        "mayDefineTriggers",
+        "mayDefineSpawns",
+        "mayDefineZones",
+        "mayDefineGameplayAuthority",
+    ):
+        if boundary.get(key) is not False:
+            raise RuntimeError(
+                f"Portal-frame donor authority boundary changed: {key}"
+            )
+
+    expected_files = {
+        "original/Teleporter01_Art.original.glb",
+        "reference/Teleporter01_Art.thumbnail.png",
+        "LICENSE.md",
+    }
+    records = {
+        item["path"]: item
+        for item in source_manifest.get("files", [])
+        if isinstance(item, dict) and isinstance(item.get("path"), str)
+    }
+    if set(records) != expected_files:
+        raise RuntimeError(
+            "Unexpected portal-frame donor inventory: "
+            f"{sorted(records)}"
+        )
+    verified: list[dict[str, Any]] = []
+    for relative_path in sorted(expected_files):
+        record = records[relative_path]
+        path = PORTAL_FRAME_DONOR_ROOT / relative_path
+        if not path.is_file():
+            raise RuntimeError(f"Missing portal-frame donor file: {path}")
+        actual_bytes = path.stat().st_size
+        actual_hash = sha256_file(path)
+        if (
+            actual_bytes != record.get("bytes")
+            or actual_hash != record.get("sha256")
+        ):
+            raise RuntimeError(
+                f"Portal-frame donor integrity changed: {relative_path}"
+            )
+        verified.append(
+            {
+                "path": path.relative_to(repo_root).as_posix(),
+                "role": record.get("role"),
+                "bytes": actual_bytes,
+                "sha256": actual_hash,
+            }
+        )
+
+    if donor_manifest.get("kind") != (
+        "inkfall_rev5_cc0_portal_frame_geometry_only_manifest"
+    ):
+        raise RuntimeError("Unexpected portal-frame geometry-only manifest")
+    donor_source = donor_manifest.get("source", {})
+    if (
+        donor_source.get("licenseId") != "CC0-1.0"
+        or donor_source.get("repositoryRevision")
+        != source.get("repositoryRevision")
+    ):
+        raise RuntimeError("Portal-frame source binding changed")
+    original = donor_source.get("originalGlb", {})
+    original_record = records["original/Teleporter01_Art.original.glb"]
+    if (
+        original.get("bytes") != original_record.get("bytes")
+        or original.get("sha256") != original_record.get("sha256")
+    ):
+        raise RuntimeError("Portal-frame original GLB binding changed")
+    process = donor_manifest.get("process", {})
+    if (
+        process.get("geometryOnly") is not True
+        or process.get("sourceOrbRemoved") is not True
+        or process.get("sourceCenterPlateRemoved") is not True
+        or process.get("authoredLegsShortenedMeters") != 0.65
+        or process.get("materialsIncluded") is not False
+        or process.get("texturesIncluded") is not False
+        or process.get("animationsIncluded") is not False
+        or process.get("runtimeCollisionAuthority") is not False
+        or process.get("sourceMaterialsReplacedAtRuntimeBuild") is not True
+    ):
+        raise RuntimeError("Portal-frame derivation boundary changed")
+    donor_model = donor_manifest.get("model", {})
+    if (
+        donor_model.get("id") != PORTAL_FRAME_DONOR_ID
+        or donor_model.get("sourceTriangleCount") != 918
+        or donor_model.get("removedOrbTriangleCount") != 180
+        or donor_model.get("removedCenterPlateTriangleCount") != 50
+        or donor_model.get("triangleCount") != 688
+        or donor_model.get("dimensionsMeters")
+        != [1.177442, 0.175522, 2.523937]
+    ):
+        raise RuntimeError("Portal-frame derived geometry contract changed")
+    derived = donor_model.get("derivedGeometryOnlyGlb", {})
+    if (
+        derived.get("name") != PORTAL_FRAME_DONOR_PATH.name
+        or derived.get("meshCount") != 1
+        or derived.get("materialCount") != 0
+    ):
+        raise RuntimeError("Unexpected portal-frame derived GLB contract")
+    if not PORTAL_FRAME_DONOR_PATH.is_file():
+        raise RuntimeError(
+            f"Missing portal-frame donor GLB: {PORTAL_FRAME_DONOR_PATH}"
+        )
+    actual_derived_bytes = PORTAL_FRAME_DONOR_PATH.stat().st_size
+    actual_derived_hash = sha256_file(PORTAL_FRAME_DONOR_PATH)
+    if (
+        actual_derived_bytes != derived.get("bytes")
+        or actual_derived_hash != derived.get("sha256")
+    ):
+        raise RuntimeError("Portal-frame derived GLB integrity changed")
+    for required in (
+        PORTAL_FRAME_DONOR_ROOT / "PROVENANCE.md",
+        PORTAL_FRAME_DONOR_ROOT / "prepare_geometry_only_donor.py",
+    ):
+        if not required.is_file():
+            raise RuntimeError(
+                f"Missing portal-frame donor provenance file: {required}"
+            )
+
+    return {
+        "id": source_manifest["id"],
+        "sourceManifestPath": PORTAL_FRAME_SOURCE_MANIFEST_PATH.relative_to(
+            repo_root
+        ).as_posix(),
+        "sourceManifestSha256": sha256_file(
+            PORTAL_FRAME_SOURCE_MANIFEST_PATH
+        ),
+        "manifestPath": PORTAL_FRAME_DONOR_MANIFEST_PATH.relative_to(
+            repo_root
+        ).as_posix(),
+        "manifestSha256": sha256_file(PORTAL_FRAME_DONOR_MANIFEST_PATH),
+        "licenseId": "CC0-1.0",
+        "sourceRepository": source["repository"],
+        "sourceRevision": source["repositoryRevision"],
+        "modelCount": 1,
+        "triangleCount": donor_model["triangleCount"],
+        "derivedBytes": actual_derived_bytes,
+        "derivedSha256": actual_derived_hash,
+        "runtimeCollisionAuthority": False,
+        "sourceOrbRemoved": True,
+        "sourceCenterPlateRemoved": True,
+        "sourceMaterialsReplaced": True,
+        "files": verified,
+    }
+
+
+def import_geometry_donor(
+    model_id: str,
+    instance_name: str,
+    location: tuple[float, float, float],
+    scale: tuple[float, float, float],
+    rotation: tuple[float, float, float],
+    material: bpy.types.Material | dict[str, bpy.types.Material],
+    zone: str,
+    family: str,
+    instance_records: list[dict[str, Any]],
+    anchor: str = "base_center",
+) -> list[bpy.types.Object]:
+    """Import, place, re-material, and mark one non-authoritative donor."""
+
+    if model_id in EXPECTED_DONOR_IDS:
+        path = DONOR_GEOMETRY_ROOT / f"{model_id}.geometry-only.glb"
+        donor_set = "quaternius_modular_scifi_megakit_standard"
+        source_materials_removed = False
+        if isinstance(material, dict):
+            raise RuntimeError(
+                f"Standard donor {model_id} cannot use part materials"
+            )
+        part_materials: dict[str, bpy.types.Material] | None = None
+    elif model_id == PORTAL_MACHINE_DONOR_ID:
+        path = PORTAL_MACHINE_DONOR_PATH
+        donor_set = "quaternius_teleporter_base_poly_pizza"
+        source_materials_removed = True
+        if not isinstance(material, dict) or set(material) != {
+            "darkgrey",
+            "main",
+            "accent",
+        }:
+            raise RuntimeError(
+                "Teleporter Base requires darkgrey/main/accent materials"
+            )
+        part_materials = material
+    elif model_id == PORTAL_FRAME_DONOR_ID:
+        path = PORTAL_FRAME_DONOR_PATH
+        donor_set = "polygonal_mind_abm_teleporter01"
+        source_materials_removed = True
+        if isinstance(material, dict):
+            raise RuntimeError(
+                "Polygonal Mind portal frame requires one Inkfall material"
+            )
+        part_materials = None
+    else:
+        raise RuntimeError(f"Unapproved donor model requested: {model_id}")
+    before_materials = set(bpy.data.materials)
+    before = set(bpy.data.objects)
+    bpy.ops.import_scene.gltf(filepath=str(path))
+    imported = [obj for obj in bpy.data.objects if obj not in before]
+    meshes = [obj for obj in imported if obj.type == "MESH"]
+    if not meshes:
+        raise RuntimeError(f"Donor import produced no mesh: {model_id}")
+
+    points = [
+        obj.matrix_world @ Vector(corner)
+        for obj in meshes
+        for corner in obj.bound_box
+    ]
+    minimum = Vector(
+        (
+            min(point.x for point in points),
+            min(point.y for point in points),
+            min(point.z for point in points),
+        )
+    )
+    maximum = Vector(
+        (
+            max(point.x for point in points),
+            max(point.y for point in points),
+            max(point.z for point in points),
+        )
+    )
+    if anchor == "base_center":
+        source_anchor = Vector(
+            (
+                (minimum.x + maximum.x) * 0.5,
+                (minimum.y + maximum.y) * 0.5,
+                minimum.z,
+            )
+        )
+    elif anchor == "center":
+        source_anchor = (minimum + maximum) * 0.5
+    else:
+        raise RuntimeError(f"Unsupported donor anchor: {anchor}")
+
+    root = bpy.data.objects.new(f"{instance_name}_PLACEMENT", None)
+    bpy.context.scene.collection.objects.link(root)
+    imported_set = set(imported)
+    for obj in imported:
+        if obj.parent not in imported_set:
+            world = obj.matrix_world.copy()
+            obj.parent = root
+            obj.matrix_world = world
+
+    root.matrix_world = (
+        Matrix.Translation(Vector(location))
+        @ Euler(rotation, "XYZ").to_matrix().to_4x4()
+        @ Matrix.Diagonal((*scale, 1.0))
+        @ Matrix.Translation(-source_anchor)
+    )
+    # Imported glTFs commonly retain a root/child hierarchy. Force dependency
+    # graph evaluation before preserving child world matrices and removing the
+    # temporary placement root; otherwise Blender can return the stale
+    # pre-placement matrix and silently strand donor geometry at source origin.
+    bpy.context.view_layer.update()
+
+    imported_part_ids = {
+        str(obj.get("kyx_donor_part"))
+        for obj in meshes
+        if obj.get("kyx_donor_part") is not None
+    }
+    if part_materials is not None and imported_part_ids != set(part_materials):
+        raise RuntimeError(
+            f"Teleporter Base part inventory changed: {sorted(imported_part_ids)}"
+        )
+
+    for index, obj in enumerate(meshes):
+        world = obj.matrix_world.copy()
+        obj.parent = None
+        obj.matrix_world = world
+        obj.name = f"{instance_name}_{index:02d}"
+        obj.data.name = f"{instance_name}_MESH_{index:02d}"
+        obj.data.materials.clear()
+        if part_materials is None:
+            obj.data.materials.append(material)
+        else:
+            part_id = str(obj.get("kyx_donor_part"))
+            obj.data.materials.append(part_materials[part_id])
+        mark_render_only(obj, zone, family)
+        obj["kyx_donor_model"] = model_id
+        obj["kyx_donor_license"] = "CC0-1.0"
+        obj["kyx_donor_geometry_only"] = True
+        obj["kyx_donor_set"] = donor_set
+        obj["kyx_donor_source_materials_removed"] = source_materials_removed
+        obj["kyx_donor_instance"] = instance_name
+
+    for obj in imported:
+        if obj.type != "MESH" and obj.name in bpy.data.objects:
+            bpy.data.objects.remove(obj, do_unlink=True)
+    bpy.data.objects.remove(root, do_unlink=True)
+    for imported_material in set(bpy.data.materials) - before_materials:
+        if imported_material.users == 0:
+            bpy.data.materials.remove(imported_material)
+
+    final_points = [
+        obj.matrix_world @ Vector(corner)
+        for obj in meshes
+        for corner in obj.bound_box
+    ]
+    final_minimum = Vector(
+        (
+            min(point.x for point in final_points),
+            min(point.y for point in final_points),
+            min(point.z for point in final_points),
+        )
+    )
+    final_maximum = Vector(
+        (
+            max(point.x for point in final_points),
+            max(point.y for point in final_points),
+            max(point.z for point in final_points),
+        )
+    )
+    instance_records.append(
+        {
+            "instance": instance_name,
+            "modelId": model_id,
+            "donorSet": donor_set,
+            "zone": zone,
+            "family": family,
+            "meshCount": len(meshes),
+            "partIds": sorted(imported_part_ids),
+            "boundsMinimumMeters": [
+                round(final_minimum.x, 4),
+                round(final_minimum.y, 4),
+                round(final_minimum.z, 4),
+            ],
+            "boundsMaximumMeters": [
+                round(final_maximum.x, 4),
+                round(final_maximum.y, 4),
+                round(final_maximum.z, 4),
+            ],
+            "renderOnly": True,
+            "collisionAuthority": False,
+            "sourceMaterialsRemoved": source_materials_removed,
+        }
+    )
+    return meshes
+
+
 def tune_material_values(
     materials: dict[str, bpy.types.Material],
 ) -> dict[str, Any]:
     values = rev4.tune_rev4_material_values(materials)
     overrides = {
-        "V3_USED_CERAMIC": ((0.37, 0.405, 0.41, 1.0), 0.02, 0.68),
-        "V3_WORN_STEEL": ((0.15, 0.205, 0.215, 1.0), 0.42, 0.49),
-        "V3_CAST_IRON": ((0.042, 0.070, 0.078, 1.0), 0.28, 0.58),
-        "V3_INK_BLACK": ((0.014, 0.025, 0.032, 1.0), 0.08, 0.72),
-        "V3_AQUA_INDICATOR": ((0.018, 0.45, 0.53, 1.0), 0.12, 0.32),
-        "V3_WORN_AMBER": ((0.58, 0.265, 0.024, 1.0), 0.18, 0.44),
+        "V3_USED_CERAMIC": ((0.40, 0.435, 0.44, 1.0), 0.02, 0.66),
+        "V3_WORN_STEEL": ((0.19, 0.245, 0.255, 1.0), 0.42, 0.47),
+        "V3_CAST_IRON": ((0.082, 0.115, 0.125, 1.0), 0.31, 0.54),
+        "V3_INK_BLACK": ((0.036, 0.058, 0.068, 1.0), 0.10, 0.67),
+        "V3_AQUA_INDICATOR": ((0.024, 0.52, 0.61, 1.0), 0.12, 0.28),
+        "V3_WORN_AMBER": ((0.66, 0.315, 0.032, 1.0), 0.18, 0.40),
     }
     for name, (color, metallic, roughness) in overrides.items():
         material = materials[name]
@@ -408,52 +1125,35 @@ def add_support_pair(
         BRIDGE_SECTION["supportOffsetMeters"],
     )
     for side_token, point in (("L", left), ("R", right)):
-        add_beam(
-            f"V5_BRIDGE_{segment_token}_SUPPORT_{sample_token}_{side_token}",
-            (point[0], point[1], base_z),
-            (point[0], point[1], top_z),
-            0.09,
+        add_box(
+            f"V5_BRIDGE_{segment_token}_PIER_{sample_token}_{side_token}",
+            (0.26, 0.26, top_z - base_z),
+            (point[0], point[1], (base_z + top_z) * 0.5),
             cast,
             zone,
-            "load_support",
+            "load_pier",
+            bevel=0.025,
         )
         add_box(
             f"V5_BRIDGE_{segment_token}_FOOT_{sample_token}_{side_token}",
-            (0.48, 0.48, 0.14),
+            (0.56, 0.56, 0.16),
             (point[0], point[1], base_z + 0.07),
             steel,
             zone,
-            "load_support",
-            bevel=0.025,
+            "load_pier",
+            bevel=0.035,
         )
     add_beam(
         f"V5_BRIDGE_{segment_token}_SUPPORT_CROSS_{sample_token}",
-        (left[0], left[1], top_z - 0.02),
-        (right[0], right[1], top_z - 0.02),
-        0.085,
+        (left[0], left[1], top_z - 0.04),
+        (right[0], right[1], top_z - 0.04),
+        0.11,
         steel,
         zone,
-        "load_support",
+        "load_pier_cap",
+        vertices=12,
     )
-    add_beam(
-        f"V5_BRIDGE_{segment_token}_BRACE_A_{sample_token}",
-        (left[0], left[1], base_z + 0.12),
-        (right[0], right[1], top_z - 0.08),
-        0.055,
-        cast,
-        zone,
-        "load_support",
-    )
-    add_beam(
-        f"V5_BRIDGE_{segment_token}_BRACE_B_{sample_token}",
-        (right[0], right[1], base_z + 0.12),
-        (left[0], left[1], top_z - 0.08),
-        0.055,
-        cast,
-        zone,
-        "load_support",
-    )
-    return 7
+    return 5
 
 
 def build_connected_bridge(
@@ -581,43 +1281,35 @@ def build_connected_bridge(
             "miter_joint_collar",
         )
         for token, endpoint in (("L", left), ("R", right)):
-            add_beam(
-                f"V5_BRIDGE_JOINT_{joint_index}_TRUSS_POST_{token}",
-                (endpoint[0], endpoint[1], endpoint[2] - 0.08),
-                (endpoint[0], endpoint[1], endpoint[2] + 2.66),
-                0.072,
+            add_box(
+                f"V5_BRIDGE_JOINT_{joint_index}_FRAME_POST_{token}",
+                (0.24, 0.24, 2.78),
+                (endpoint[0], endpoint[1], endpoint[2] + 1.31),
                 cast,
                 zone,
-                "rooted_transition_truss",
+                "rooted_transition_frame",
+                bevel=0.024,
+            )
+            add_box(
+                f"V5_BRIDGE_JOINT_{joint_index}_FRAME_SHOE_{token}",
+                (0.52, 0.52, 0.16),
+                (endpoint[0], endpoint[1], endpoint[2] + 0.02),
+                steel,
+                zone,
+                "rooted_transition_frame",
+                bevel=0.032,
             )
         add_beam(
-            f"V5_BRIDGE_JOINT_{joint_index}_TRUSS_CROWN",
+            f"V5_BRIDGE_JOINT_{joint_index}_FRAME_CROWN",
             (left[0], left[1], left[2] + 2.62),
             (right[0], right[1], right[2] + 2.62),
-            0.082,
+            0.12,
             cast,
             zone,
-            "rooted_transition_truss",
+            "rooted_transition_frame",
+            vertices=14,
         )
-        add_beam(
-            f"V5_BRIDGE_JOINT_{joint_index}_TRUSS_LIGHT",
-            (
-                left[0] * 0.78 + right[0] * 0.22,
-                left[1] * 0.78 + right[1] * 0.22,
-                left[2] + 2.53,
-            ),
-            (
-                left[0] * 0.22 + right[0] * 0.78,
-                left[1] * 0.22 + right[1] * 0.78,
-                right[2] + 2.53,
-            ),
-            0.034,
-            amber,
-            zone,
-            "attached_route_light",
-            vertices=12,
-        )
-        joint_count += 4
+        joint_count += 6
 
     return {
         "segmentCount": len(ROUTE_POINTS) - 1,
@@ -625,7 +1317,7 @@ def build_connected_bridge(
         "jointComponentCount": joint_count,
         "continuousPrimaryDeck": True,
         "railsRootedToDeckGirders": True,
-        "transitionTrussesRootedToDeck": True,
+        "transitionFramesRootedToDeck": True,
     }
 
 
@@ -872,6 +1564,131 @@ def build_supported_landing(
     }
 
 
+def build_cc0_donor_service_language(
+    materials: dict[str, bpy.types.Material],
+    instance_records: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Add a restrained, re-materialed construction/detail vocabulary."""
+
+    start_count = len(instance_records)
+    steel = materials["V3_WORN_STEEL"]
+    cast = materials["V3_CAST_IRON"]
+    ceramic = materials["V3_USED_CERAMIC"]
+    aqua = materials["V3_AQUA_INDICATOR"]
+    amber = materials["V3_WORN_AMBER"]
+
+    import_geometry_donor(
+        "Platform_Metal2",
+        "V5_DONOR_ARCHIVE_FLOOR_INSERT",
+        (-22.0, 19.0, 6.022),
+        (1.62, 1.62, 1.62),
+        (0.0, 0.0, 0.0),
+        ceramic,
+        "archive_landing",
+        "donor_landing_floor_insert",
+        instance_records,
+    )
+
+    for joint_index, point in enumerate(ROUTE_POINTS[1:-1], start=1):
+        previous = ROUTE_POINTS[joint_index - 1]
+        following = ROUTE_POINTS[joint_index + 1]
+        tangent = Vector(
+            (
+                following[0] - previous[0],
+                following[1] - previous[1],
+                0.0,
+            )
+        ).normalized()
+        side = Vector((-tangent.y, tangent.x, 0.0))
+        tangent_angle = math.atan2(tangent.y, tangent.x)
+        for side_token, sign in (("L", -1.0), ("R", 1.0)):
+            origin = Vector(point) + side * (sign * 1.29)
+            import_geometry_donor(
+                "Column_MetalSupport",
+                (
+                    f"V5_DONOR_BRIDGE_JOINT_{joint_index}_"
+                    f"TRUSS_{side_token}"
+                ),
+                (origin.x, origin.y, point[2] - 0.13),
+                (0.78, 1.0, 0.69),
+                (0.0, 0.0, tangent_angle),
+                cast,
+                "archive_rise",
+                "donor_bridge_frame",
+                instance_records,
+            )
+        import_geometry_donor(
+            "Prop_Light_Wide",
+            f"V5_DONOR_BRIDGE_JOINT_{joint_index}_CROWN_LIGHT",
+            (point[0], point[1], point[2] + 2.48),
+            (1.1, 1.1, 1.1),
+            (0.0, 0.0, tangent_angle + math.pi / 2.0),
+            amber,
+            "archive_rise",
+            "donor_attached_route_light",
+            instance_records,
+            anchor="center",
+        )
+
+    for index, x in enumerate((-24.75, -19.25)):
+        import_geometry_donor(
+            "Column_Pipes",
+            f"V5_DONOR_ARCHIVE_PIPE_RISER_{index}",
+            (x, 22.12, 6.02),
+            (0.62, 0.62, 0.62),
+            (0.0, 0.0, 0.0),
+            steel,
+            "archive_landing",
+            "donor_rooted_service_riser",
+            instance_records,
+        )
+
+    import_geometry_donor(
+        "Prop_PipeHolder",
+        "V5_DONOR_ARCHIVE_PIPE_BANK",
+        (-24.0, 21.72, 6.025),
+        (0.72, 0.72, 0.72),
+        (0.0, 0.0, 0.0),
+        cast,
+        "archive_landing",
+        "donor_rooted_service_bank",
+        instance_records,
+    )
+    import_geometry_donor(
+        "Prop_AccessPoint",
+        "V5_DONOR_ARCHIVE_ACCESS_TERMINAL",
+        (-19.45, 21.35, 6.025),
+        (1.05, 1.05, 1.05),
+        (0.0, 0.0, math.pi),
+        aqua,
+        "archive_landing",
+        "donor_rooted_access_terminal",
+        instance_records,
+    )
+    import_geometry_donor(
+        "Prop_Vent_Wide",
+        "V5_DONOR_ARCHIVE_WALL_VENT",
+        (-22.0, 22.19, 8.55),
+        (1.35, 1.35, 1.35),
+        (math.pi / 2.0, 0.0, 0.0),
+        steel,
+        "archive_landing",
+        "donor_attached_wall_service",
+        instance_records,
+        anchor="center",
+    )
+
+    added = instance_records[start_count:]
+    return {
+        "instanceCount": len(added),
+        "modelIds": sorted({item["modelId"] for item in added}),
+        "zones": sorted({item["zone"] for item in added}),
+        "projectAuthoredMaterialsOnly": True,
+        "runtimeCollisionAuthority": False,
+        "instances": added,
+    }
+
+
 def portal_energy_material(
     endpoint_id: str,
     base: bpy.types.Material,
@@ -899,9 +1716,44 @@ def portal_energy_material(
     return material
 
 
+def add_portal_energy_curve(
+    name: str,
+    points: list[tuple[float, float, float]],
+    radius: float,
+    material: bpy.types.Material,
+    zone: str,
+) -> bpy.types.Object:
+    curve_data = bpy.data.curves.new(f"{name}_CURVE", type="CURVE")
+    curve_data.dimensions = "3D"
+    curve_data.resolution_u = 3
+    curve_data.bevel_depth = radius
+    curve_data.bevel_resolution = 3
+    spline = curve_data.splines.new(type="BEZIER")
+    spline.bezier_points.add(len(points) - 1)
+    for point, coordinate in zip(spline.bezier_points, points):
+        point.co = coordinate
+        point.handle_left_type = "AUTO"
+        point.handle_right_type = "AUTO"
+    obj = bpy.data.objects.new(name, curve_data)
+    bpy.context.scene.collection.objects.link(obj)
+    curve_data.materials.append(material)
+    bpy.ops.object.select_all(action="DESELECT")
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.convert(target="MESH")
+    mesh = bpy.context.object
+    mesh.name = name
+    return mark_render_only(
+        mesh,
+        zone,
+        "portal_energy_filament_vfx_hook",
+    )
+
+
 def build_portal_endpoint(
     endpoint: dict[str, Any],
     materials: dict[str, bpy.types.Material],
+    instance_records: list[dict[str, Any]],
 ) -> dict[str, Any]:
     zone = f"portal_{endpoint['id']}"
     center = Vector(endpoint["visualCenterBlenderMeters"])
@@ -913,108 +1765,151 @@ def build_portal_endpoint(
     safety = materials["V3_CHIPPED_SAFETY_RED"]
     energy = portal_energy_material(endpoint["id"], color)
 
-    outer = add_torus(
-        f"V5_PORTAL_{endpoint['id'].upper()}_OUTER_RING",
-        1.78,
-        0.18,
-        tuple(center),
-        cast,
+    endpoint_token = endpoint["id"].upper()
+    import_geometry_donor(
+        PORTAL_MACHINE_DONOR_ID,
+        f"V5_DONOR_PORTAL_{endpoint_token}_MACHINE_BASE",
+        (center.x, center.y, floor - 0.3023),
+        (1.35, 1.35, 1.0),
+        (0.0, 0.0, 0.0),
+        {
+            "darkgrey": cast,
+            "main": steel,
+            "accent": color,
+        },
         zone,
-        "authoritative_portal_landmark",
-        rotation=(math.pi / 2.0, 0.0, 0.0),
+        "donor_portal_teleporter_base",
+        instance_records,
     )
-    outer["kyx_portal_endpoint_id"] = endpoint["id"]
-    outer["kyx_portal_partner_id"] = endpoint["partnerId"]
-    outer["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
-    add_torus(
-        f"V5_PORTAL_{endpoint['id'].upper()}_INNER_RING",
-        1.48,
-        0.065,
-        tuple(center),
+    frame_meshes = import_geometry_donor(
+        PORTAL_FRAME_DONOR_ID,
+        f"V5_DONOR_PORTAL_{endpoint_token}_FRAME",
+        (center.x, center.y, floor - 1.293),
+        (2.48, 3.0, 1.65),
+        (0.0, 0.0, 0.0),
         steel,
         zone,
-        "portal_structural_ring",
-        rotation=(math.pi / 2.0, 0.0, 0.0),
+        "authoritative_portal_landmark",
+        instance_records,
     )
-    # The energized veil masks unrelated remote clutter but is presentation
-    # only: it has no collider, hit role, or authority. The authoritative
-    # trigger remains independently traversable in both directions.
-    surface = add_cylinder(
-        f"V5_PORTAL_{endpoint['id'].upper()}_ENERGY_SURFACE",
-        1.39,
-        0.018,
-        tuple(center),
-        energy,
-        zone,
-        "portal_energy_surface_vfx_hook",
-        rotation=(math.pi / 2.0, 0.0, 0.0),
-        vertices=64,
-        bevel=0.0,
-    )
-    surface["kyx_vfx_departure_hook"] = (
-        f"inkfall.portal.{endpoint['id']}.energy_departure"
-    )
-    surface["kyx_vfx_arrival_hook"] = (
-        f"inkfall.portal.{endpoint['id']}.energy_arrival"
-    )
-    surface["kyx_audio_departure_hook"] = (
-        f"inkfall.portal.{endpoint['id']}.departure"
-    )
-    surface["kyx_audio_arrival_hook"] = f"inkfall.portal.{endpoint['id']}.arrival"
+    for frame in frame_meshes:
+        frame["kyx_portal_endpoint_id"] = endpoint["id"]
+        frame["kyx_portal_partner_id"] = endpoint["partnerId"]
+        frame["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
 
-    for segment_index in range(12):
-        angle = math.tau * segment_index / 12.0
-        x = center.x + math.cos(angle) * 1.79
-        z = center.z + math.sin(angle) * 1.79
-        add_box(
-            f"V5_PORTAL_{endpoint['id'].upper()}_CLAMP_{segment_index}",
-            (0.24, 0.32, 0.16),
-            (x, center.y, z),
-            steel if segment_index % 2 else color,
-            zone,
-            "portal_ring_clamp",
-            rotation=(0.0, -angle, 0.0),
-            bevel=0.025,
+    import_geometry_donor(
+        "Prop_Light_Wide",
+        f"V5_DONOR_PORTAL_{endpoint_token}_HEADER_LIGHT",
+        (center.x, center.y - 0.31, floor + 2.58),
+        (1.12, 1.12, 1.12),
+        (0.0, 0.0, 0.0),
+        color,
+        zone,
+        "donor_portal_header_light",
+        instance_records,
+        anchor="center",
+    )
+    import_geometry_donor(
+        "Prop_AccessPoint",
+        f"V5_DONOR_PORTAL_{endpoint_token}_ACCESS",
+        (center.x + 2.05, center.y + 0.78, floor + 0.022),
+        (1.0, 1.0, 1.0),
+        (0.0, 0.0, math.pi),
+        color,
+        zone,
+        "donor_portal_access_terminal",
+        instance_records,
+    )
+
+    # A concentric turbine field replaces the rejected loose spiral/square
+    # construction. Every arm terminates on a guide ring, so there are no
+    # floating line ends or beam-joint spikes. It remains sparse render-only
+    # geometry rather than an opaque billboard.
+    energy_objects: list[bpy.types.Object] = []
+    guide_ring_specs = (
+        (1.10, 0.026),
+        (0.69, 0.014),
+        (0.28, 0.040),
+    )
+    for ring_index, (major_radius, minor_radius) in enumerate(guide_ring_specs):
+        energy_objects.append(
+            add_torus(
+                f"V5_PORTAL_{endpoint_token}_GUIDE_RING_{ring_index}",
+                major_radius,
+                minor_radius,
+                (center.x, center.y + 0.034, center.z),
+                energy,
+                zone,
+                "portal_energy_filament_vfx_hook",
+                rotation=(math.pi / 2.0, 0.0, 0.0),
+            )
+        )
+    for filament_index in range(6):
+        outer_angle = math.tau * filament_index / 6.0
+        curve_points: list[tuple[float, float, float]] = []
+        for step in range(6):
+            fraction = step / 5.0
+            radius = 1.08 * (1.0 - fraction) + 0.30 * fraction
+            angle = outer_angle + fraction * 0.72
+            curve_points.append(
+                (
+                    center.x + math.cos(angle) * radius,
+                    center.y + 0.026 + fraction * 0.014,
+                    center.z + math.sin(angle) * radius,
+                )
+            )
+        energy_objects.append(
+            add_portal_energy_curve(
+                f"V5_PORTAL_{endpoint_token}_VORTEX_ARM_{filament_index}",
+                curve_points,
+                0.018,
+                energy,
+                zone,
+            )
+        )
+
+    for surface in energy_objects:
+        surface["kyx_vfx_departure_hook"] = (
+            f"inkfall.portal.{endpoint['id']}.energy_departure"
+        )
+        surface["kyx_vfx_arrival_hook"] = (
+            f"inkfall.portal.{endpoint['id']}.energy_arrival"
+        )
+        surface["kyx_audio_departure_hook"] = (
+            f"inkfall.portal.{endpoint['id']}.departure"
+        )
+        surface["kyx_audio_arrival_hook"] = (
+            f"inkfall.portal.{endpoint['id']}.arrival"
         )
 
     for side_index, sign in enumerate((-1.0, 1.0)):
-        x = center.x + sign * 1.92
-        add_beam(
-            f"V5_PORTAL_{endpoint['id'].upper()}_PYLON_{side_index}",
-            (x, center.y, floor + 0.08),
-            (x, center.y, center.z + 0.75),
-            0.11,
-            cast,
-            zone,
-            "portal_load_support",
-        )
+        x = center.x + sign * 1.66
         add_box(
-            f"V5_PORTAL_{endpoint['id'].upper()}_FOOT_{side_index}",
-            (0.72, 0.86, 0.18),
-            (x, center.y, floor + 0.09),
+            f"V5_PORTAL_{endpoint_token}_PLINTH_{side_index}",
+            (0.68, 0.86, 0.20),
+            (x, center.y, floor + 0.10),
             steel,
             zone,
-            "portal_load_support",
-            bevel=0.04,
-        )
-        add_beam(
-            f"V5_PORTAL_{endpoint['id'].upper()}_BRACE_{side_index}",
-            (x + sign * 0.28, center.y, floor + 0.14),
-            (center.x + sign * 1.58, center.y, center.z - 0.55),
-            0.075,
-            cast,
-            zone,
-            "portal_load_support",
+            "portal_grounded_plinth",
+            bevel=0.045,
         )
         add_box(
-            f"V5_PORTAL_{endpoint['id'].upper()}_HAZARD_{side_index}",
-            (0.28, 0.88, 0.08),
-            (x, center.y - 0.01, floor + 0.19),
+            f"V5_PORTAL_{endpoint_token}_SIDE_PIER_{side_index}",
+            (0.34, 0.58, 1.28),
+            (x, center.y, floor + 0.72),
+            cast,
+            zone,
+            "portal_grounded_pier",
+            bevel=0.035,
+        )
+        add_box(
+            f"V5_PORTAL_{endpoint_token}_SIDE_DATUM_{side_index}",
+            (0.11, 0.60, 0.48),
+            (x - sign * 0.18, center.y - 0.01, floor + 0.78),
             safety,
             zone,
-            "portal_hazard_identifier",
-            rotation=(0.0, 0.0, sign * 0.36),
-            bevel=0.012,
+            "portal_attached_hazard_datum",
+            bevel=0.018,
         )
 
     # Exit-side chevrons make the intended arrival direction readable.
@@ -1030,7 +1925,7 @@ def build_portal_endpoint(
             right = origin - direction * 0.25 - side * 0.32
             tip = origin + direction * 0.28
             add_beam(
-                f"V5_PORTAL_{endpoint['id'].upper()}_EXIT_CHEVRON_{chevron_index}_L",
+                f"V5_PORTAL_{endpoint_token}_EXIT_CHEVRON_{chevron_index}_L",
                 tuple(left),
                 tuple(tip),
                 0.055,
@@ -1040,7 +1935,7 @@ def build_portal_endpoint(
                 vertices=12,
             )
             add_beam(
-                f"V5_PORTAL_{endpoint['id'].upper()}_EXIT_CHEVRON_{chevron_index}_R",
+                f"V5_PORTAL_{endpoint_token}_EXIT_CHEVRON_{chevron_index}_R",
                 tuple(right),
                 tuple(tip),
                 0.055,
@@ -1058,18 +1953,25 @@ def build_portal_endpoint(
         "exitFeetMapMm": list(endpoint["exitFeetMapMm"]),
         "exitYawMilliDegrees": endpoint["exitYawMilliDegrees"],
         "visualCenterBlenderMeters": list(endpoint["visualCenterBlenderMeters"]),
-        "loadSupportCount": 6,
-        "ringClampCount": 12,
+        "groundedSupportCount": 4,
+        "donorGatewayFrameCount": 1,
+        "donorTeleporterBaseCount": 1,
+        "energyGuideRingCount": len(guide_ring_specs),
+        "energyFilamentCount": len(energy_objects),
         "exitChevronCount": 3,
-        "energizedSurfaceRenderOnlyNoHit": True,
+        "noOpaqueEnergyBillboard": True,
         "renderOnly": True,
     }
 
 
 def build_portal_pair(
     materials: dict[str, bpy.types.Material],
+    instance_records: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    return [build_portal_endpoint(endpoint, materials) for endpoint in PORTAL_ENDPOINTS]
+    return [
+        build_portal_endpoint(endpoint, materials, instance_records)
+        for endpoint in PORTAL_ENDPOINTS
+    ]
 
 
 def join_rev5_meshes() -> list[dict[str, Any]]:
@@ -1105,6 +2007,10 @@ def add_point_light(
 
 def configure_review_scene() -> dict[str, bpy.types.Object]:
     cameras = rev4.configure_review_scene()
+    for light_name in ("V4_LIGHT_OVERHEAD_PLAN", "V4_LIGHT_PRESS_FILL"):
+        light_object = bpy.data.objects.get(light_name)
+        if light_object is not None and light_object.type == "LIGHT":
+            light_object.data.use_shadow = False
     cameras["archive_rise"].location = (-13.2, 2.4, 1.72)
     archive_target = Vector((-20.2, 14.0, 5.30))
     cameras["archive_rise"].rotation_euler = (
@@ -1120,9 +2026,9 @@ def configure_review_scene() -> dict[str, bpy.types.Object]:
     )
     cameras["portal_upper"] = rev4.add_camera(
         "CAM_V5_PORTAL_UPPER",
-        (2.2, -0.7, 3.6),
+        (1.75, 0.25, 3.58),
         (1.0, 5.0, 3.18),
-        34.0,
+        28.0,
     )
     cameras["bridge_support"] = rev4.add_camera(
         "CAM_V5_BRIDGE_SUPPORT",
@@ -1130,20 +2036,22 @@ def configure_review_scene() -> dict[str, bpy.types.Object]:
         (-18.0, 11.2, 2.7),
         42.0,
     )
-    add_point_light(
+    lower_glow = add_point_light(
         "V5_PORTAL_LOWER_REVIEW_GLOW",
         (-4.0, 9.4, -1.15),
         (0.08, 0.72, 0.85),
         720.0,
         2.2,
     )
-    add_point_light(
+    upper_glow = add_point_light(
         "V5_PORTAL_UPPER_REVIEW_GLOW",
         (1.0, 4.4, 3.28),
         (1.0, 0.38, 0.06),
         650.0,
         2.0,
     )
+    lower_glow.data.use_shadow = False
+    upper_glow.data.use_shadow = False
     return cameras
 
 
@@ -1159,6 +2067,8 @@ def render_views(
     scene.render.image_settings.color_depth = "8"
     scene.render.film_transparent = False
     scene.render.resolution_x = 1600
+    scene.view_settings.look = "AgX - Medium High Contrast"
+    scene.view_settings.exposure = -0.42
     render_dir = output_root / "renders"
     render_dir.mkdir(parents=True, exist_ok=True)
     results: list[dict[str, Any]] = []
@@ -1172,7 +2082,95 @@ def render_views(
     return results
 
 
-def export_modular_render_only(output_root: Path) -> tuple[Path, list[str]]:
+def canonicalize_glb_float_accessors(
+    path: Path,
+    decimal_places: int = 5,
+) -> dict[str, Any]:
+    """Remove sub-micrometer Blender float jitter from generated GLB data."""
+
+    raw = bytearray(path.read_bytes())
+    if raw[:4] != b"glTF" or len(raw) < 20:
+        raise RuntimeError(f"Invalid GLB export: {path}")
+    offset = 12
+    document: dict[str, Any] | None = None
+    binary_start: int | None = None
+    while offset < len(raw):
+        chunk_length, chunk_type = struct.unpack_from("<II", raw, offset)
+        chunk_start = offset + 8
+        chunk_end = chunk_start + chunk_length
+        if chunk_end > len(raw):
+            raise RuntimeError("GLB chunk exceeds exported file bounds")
+        if chunk_type == 0x4E4F534A:
+            document = json.loads(
+                bytes(raw[chunk_start:chunk_end])
+                .decode("utf-8")
+                .rstrip("\x00 \t\r\n")
+            )
+        elif chunk_type == 0x004E4942:
+            binary_start = chunk_start
+        offset = chunk_end
+    if document is None or binary_start is None:
+        raise RuntimeError("GLB export lacks JSON or BIN chunk")
+
+    component_counts = {
+        "SCALAR": 1,
+        "VEC2": 2,
+        "VEC3": 3,
+        "VEC4": 4,
+        "MAT2": 4,
+        "MAT3": 9,
+        "MAT4": 16,
+    }
+    changed = 0
+    visited = 0
+    for accessor in document.get("accessors", []):
+        if (
+            accessor.get("componentType") != 5126
+            or "bufferView" not in accessor
+        ):
+            continue
+        component_count = component_counts.get(accessor.get("type"))
+        if component_count is None:
+            raise RuntimeError(
+                f"Unsupported float accessor type: {accessor.get('type')}"
+            )
+        view = document["bufferViews"][accessor["bufferView"]]
+        if view.get("buffer", 0) != 0:
+            raise RuntimeError("Generated GLB accessor uses an external buffer")
+        element_size = component_count * 4
+        stride = view.get("byteStride", element_size)
+        base = (
+            binary_start
+            + view.get("byteOffset", 0)
+            + accessor.get("byteOffset", 0)
+        )
+        for element_index in range(accessor["count"]):
+            element_offset = base + element_index * stride
+            for component_index in range(component_count):
+                value_offset = element_offset + component_index * 4
+                value = struct.unpack_from("<f", raw, value_offset)[0]
+                if not math.isfinite(value):
+                    raise RuntimeError("Generated GLB contains a non-finite float")
+                canonical = round(value, decimal_places)
+                if canonical == 0.0:
+                    canonical = 0.0
+                canonical_bytes = struct.pack("<f", canonical)
+                if raw[value_offset : value_offset + 4] != canonical_bytes:
+                    raw[value_offset : value_offset + 4] = canonical_bytes
+                    changed += 1
+                visited += 1
+    path.write_bytes(raw)
+    return {
+        "kind": "canonical_float_accessor_postprocess",
+        "decimalPlaces": decimal_places,
+        "visitedFloatValues": visited,
+        "changedFloatValues": changed,
+    }
+
+
+def export_modular_render_only(
+    output_root: Path,
+) -> tuple[Path, list[str], dict[str, Any]]:
     bpy.ops.object.select_all(action="DESELECT")
     selected: list[str] = []
     for obj in bpy.context.scene.objects:
@@ -1203,7 +2201,8 @@ def export_modular_render_only(output_root: Path) -> tuple[Path, list[str]]:
         export_extras=True,
         export_materials="EXPORT",
     )
-    return export_path, sorted(selected)
+    canonicalization = canonicalize_glb_float_accessors(export_path)
+    return export_path, sorted(selected), canonicalization
 
 
 def scene_facts() -> dict[str, Any]:
@@ -1230,11 +2229,15 @@ def scene_facts() -> dict[str, Any]:
 
 def audit_new_support_bounds_against_travel_lane() -> dict[str, Any]:
     support_families = {
-        "load_support",
+        "load_pier",
+        "load_pier_cap",
         "landing_load_support",
         "rooted_archive_gantry",
         "rooted_archive_rack",
-        "rooted_transition_truss",
+        "rooted_transition_frame",
+        "donor_bridge_frame",
+        "donor_rooted_service_riser",
+        "donor_rooted_service_bank",
         "supported_context_wall",
     }
     inspected: list[dict[str, Any]] = []
@@ -1385,6 +2388,9 @@ def main() -> None:
     output_root = Path(args.output_root).resolve()
     output_root.mkdir(parents=True, exist_ok=True)
     frozen_before = rev4.verify_frozen_inputs(repo_root)
+    donor_inventory = verify_geometry_donors(repo_root)
+    portal_machine_donor_inventory = verify_portal_machine_donor(repo_root)
+    portal_frame_donor_inventory = verify_portal_frame_donor(repo_root)
 
     bpy.ops.wm.open_mainfile(
         filepath=str(repo_root / rev4.PARENT_SOURCE),
@@ -1411,9 +2417,14 @@ def main() -> None:
     material_hierarchy = tune_material_values(materials)
     clutter_cleanup = remove_low_orphan_parent_components(parent_meshes)
     clearance = carve_continuous_clearance(parent_meshes)
+    donor_instances: list[dict[str, Any]] = []
     bridge = build_connected_bridge(materials)
     landing = build_supported_landing(materials)
-    portals = build_portal_pair(materials)
+    donor_service_language = build_cc0_donor_service_language(
+        materials,
+        donor_instances,
+    )
+    portals = build_portal_pair(materials, donor_instances)
     traversal_audit = traversal_clearance_audit()
     support_lane_audit = audit_new_support_bounds_against_travel_lane()
     family_counts = rev4.family_counts()
@@ -1434,6 +2445,13 @@ def main() -> None:
     scene["kyx_g5_claimed"] = False
     scene["kyx_human_accepted"] = False
     scene["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
+    scene["kyx_cc0_donor_pack"] = (
+        "Quaternius Modular Sci-Fi MegaKit Standard + Teleporter Base "
+        "+ Polygonal Mind ABM Teleporter01"
+    )
+    scene["kyx_cc0_donor_license"] = "CC0-1.0"
+    scene["kyx_cc0_donor_geometry_only"] = True
+    scene["kyx_cc0_donor_instance_count"] = len(donor_instances)
 
     source_path = (
         output_root
@@ -1442,7 +2460,11 @@ def main() -> None:
     source_path.parent.mkdir(parents=True, exist_ok=True)
     bpy.ops.wm.save_as_mainfile(filepath=str(source_path), check_existing=False)
     renders = render_views(output_root, cameras)
-    export_path, selected_export_nodes = export_modular_render_only(output_root)
+    (
+        export_path,
+        selected_export_nodes,
+        export_canonicalization,
+    ) = export_modular_render_only(output_root)
     bpy.ops.wm.save_as_mainfile(filepath=str(source_path), check_existing=False)
 
     frozen_after = rev4.verify_frozen_inputs(repo_root)
@@ -1479,6 +2501,35 @@ def main() -> None:
         "parentPressHallRetainedForReviewContext": (
             facts["parentMeshCount"] == EXPECTED_PARENT_MESH_COUNT
         ),
+        "cc0DonorInventoryVerifiedAndBounded": (
+            donor_inventory["modelCount"] == len(EXPECTED_DONOR_IDS)
+            and donor_inventory["totalDerivedBytes"] < 1_000_000
+            and donor_inventory["runtimeCollisionAuthority"] is False
+        ),
+        "cc0PortalMachineDonorVerifiedAndBounded": (
+            portal_machine_donor_inventory["modelCount"] == 1
+            and portal_machine_donor_inventory["triangleCount"] == 556
+            and portal_machine_donor_inventory["runtimeCollisionAuthority"] is False
+            and portal_machine_donor_inventory["sourceMaterialsReplaced"]
+        ),
+        "cc0PortalFrameDonorVerifiedAndBounded": (
+            portal_frame_donor_inventory["modelCount"] == 1
+            and portal_frame_donor_inventory["triangleCount"] == 688
+            and portal_frame_donor_inventory["runtimeCollisionAuthority"] is False
+            and portal_frame_donor_inventory["sourceOrbRemoved"]
+            and portal_frame_donor_inventory["sourceCenterPlateRemoved"]
+            and portal_frame_donor_inventory["sourceMaterialsReplaced"]
+        ),
+        "cc0DonorInstancesRemainRenderOnly": (
+            donor_service_language["instanceCount"] >= 10
+            and len(donor_instances)
+            == donor_service_language["instanceCount"] + 8
+            and all(
+                item["renderOnly"]
+                and item["collisionAuthority"] is False
+                for item in donor_instances
+            )
+        ),
         "continuousRouteAndPortalClearanceOpened": (
             len(clearance["affectedParentMeshes"]) >= 1
             and clearance["routeCutterCount"] == 4
@@ -1502,7 +2553,7 @@ def main() -> None:
         ),
         "bridgeLoadsVisiblySupported": (
             bridge["supportComponentCount"] >= 14
-            and bridge["transitionTrussesRootedToDeck"]
+            and bridge["transitionFramesRootedToDeck"]
         ),
         "railsAttachedToGirders": bridge["railsRootedToDeckGirders"],
         "landingLoadsVisiblySupported": (
@@ -1515,16 +2566,16 @@ def main() -> None:
         ),
         "pairedPortalLandmarkPresent": (
             len(portals) == 2
-            and all(item["loadSupportCount"] >= 6 for item in portals)
-            and all(item["ringClampCount"] == 12 for item in portals)
-            and all(
-                item["energizedSurfaceRenderOnlyNoHit"]
-                for item in portals
-            )
+            and all(item["groundedSupportCount"] == 4 for item in portals)
+            and all(item["donorGatewayFrameCount"] == 1 for item in portals)
+            and all(item["donorTeleporterBaseCount"] == 1 for item in portals)
+            and all(item["energyGuideRingCount"] == 3 for item in portals)
+            and all(item["energyFilamentCount"] == 9 for item in portals)
+            and all(item["noOpaqueEnergyBillboard"] for item in portals)
         ),
         "portalExitOffsetsPreventPingPong": exit_offsets_safe,
         "portalPresentationHooksDeclared": (
-            family_counts.get("portal_energy_surface_vfx_hook", 0) == 2
+            family_counts.get("portal_energy_filament_vfx_hook", 0) == 18
         ),
         "modularExportExcludesParentMeshes": (
             len(selected_export_nodes) == facts["rev5JoinedMeshCount"]
@@ -1592,6 +2643,13 @@ def main() -> None:
                 repo_root,
             ),
         },
+        "cc0DonorGeometry": {
+            "inventory": donor_inventory,
+            "portalMachineInventory": portal_machine_donor_inventory,
+            "portalFrameInventory": portal_frame_donor_inventory,
+            "serviceLanguage": donor_service_language,
+            "allInstances": donor_instances,
+        },
         "beforeEvidence": {
             "classification": "rejected_rev4_reference_only",
             "gameplayContinuity": frozen_after["rejectedRev4GameplayEvidence"],
@@ -1658,6 +2716,7 @@ def main() -> None:
                 "selectedNodeCount": len(selected_export_nodes),
                 "selectedNodes": selected_export_nodes,
                 "containsParentPressHall": False,
+                "canonicalization": export_canonicalization,
             },
             "reviewRenders": render_artifacts,
         },

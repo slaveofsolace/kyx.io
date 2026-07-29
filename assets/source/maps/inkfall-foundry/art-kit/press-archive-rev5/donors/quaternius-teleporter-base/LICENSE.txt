@@ -1,0 +1,11 @@
+Teleporter Base by Quaternius
+
+License: CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The source listing declares the model Public Domain (CC0):
+https://poly.pizza/m/OIezStCmak
+
+Retrieved from the original Poly Pizza-hosted model file on 2026-07-29.
+Exact source and file hashes are preserved in donor-manifest.json.

@@ -1,0 +1,61 @@
+{
+  "kind": "inkfall_rev5_cc0_portal_frame_geometry_only_manifest",
+  "model": {
+    "boundsMaximumMeters": [
+      0.588721,
+      0.087761,
+      2.523937
+    ],
+    "boundsMinimumMeters": [
+      -0.588721,
+      -0.087761,
+      0.0
+    ],
+    "derivedGeometryOnlyGlb": {
+      "bytes": 35428,
+      "materialCount": 0,
+      "meshCount": 1,
+      "name": "Teleporter01_Art.frame.geometry-only.glb",
+      "sha256": "1d3be423843326698ff94822579981751b898309f1351049f694b7126fb6daed"
+    },
+    "dimensionsMeters": [
+      1.177442,
+      0.175522,
+      2.523937
+    ],
+    "id": "Teleporter01_Art_Frame",
+    "removedCenterPlateTriangleCount": 50,
+    "removedOrbTriangleCount": 180,
+    "sourceTriangleCount": 918,
+    "triangleCount": 688
+  },
+  "process": {
+    "animationsIncluded": false,
+    "authoredLegsShortenedMeters": 0.65,
+    "geometryOnly": true,
+    "materialsIncluded": false,
+    "runtimeCollisionAuthority": false,
+    "script": "prepare_geometry_only_donor.py",
+    "sourceCenterPlateRemoved": true,
+    "sourceMaterialsReplacedAtRuntimeBuild": true,
+    "sourceOrbRemoved": true,
+    "texturesIncluded": false
+  },
+  "source": {
+    "conversionRepositoryMaintainer": "ToxSam",
+    "creator": "Polygonal Mind",
+    "licenseId": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "model": "Teleporter01_Art",
+    "modelPath": "projects/abm/Teleporter01_Art.glb",
+    "modelUrl": "https://raw.githubusercontent.com/ToxSam/cc0-models-Polygonal-Mind/56db2d4088512531a070d0bf3eb9d284d077528d/projects/abm/Teleporter01_Art.glb",
+    "originalGlb": {
+      "bytes": 253020,
+      "name": "Teleporter01_Art.original.glb",
+      "sha256": "566822f43f2ca4c7cc435d7229f75878c2f33f69c31f3b1b6179fd9201918e5c"
+    },
+    "originalInitiative": "https://github.com/PolygonalMind/initiative-opensource-release",
+    "repository": "https://github.com/ToxSam/cc0-models-Polygonal-Mind",
+    "repositoryRevision": "56db2d4088512531a070d0bf3eb9d284d077528d"
+  }
+}
