@@ -880,53 +880,101 @@ async function productSnapshot(page) {
 }
 
 async function presentationMarkerProof(page, expectedCue) {
-  if (expectedCue !== undefined) {
-    await page.waitForFunction((cue) => {
+  return await page.evaluate(({ cue, timeoutMilliseconds }) => {
+    const capture = () => {
       const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+      const proof = document.querySelector('[data-testid="online-presentation-status"]');
       const hud = document.querySelector('[data-testid="online-confirmed-hud"]');
       const vfx = document.querySelector('[data-testid="online-confirmed-vfx"]');
-      return snapshot?.presentation.lastCue === cue
-        && hud instanceof HTMLElement
-        && vfx instanceof HTMLElement
-        && hud.dataset.cue === cue
-        && vfx.dataset.cue === cue
-        && hud.dataset.active === 'true'
-        && vfx.dataset.active === 'true';
-    }, expectedCue, { timeout: 2_000 });
-  }
-  return await page.evaluate(() => {
-    const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
-    const proof = document.querySelector('[data-testid="online-presentation-status"]');
-    const hud = document.querySelector('[data-testid="online-confirmed-hud"]');
-    const vfx = document.querySelector('[data-testid="online-confirmed-vfx"]');
-    if (!snapshot || !(proof instanceof HTMLElement) || !(hud instanceof HTMLElement) || !(vfx instanceof HTMLElement)) return null;
-    return {
-      diagnostics: snapshot.presentation,
-      body: {
-        status: document.body.dataset.onlinePresentationStatus ?? null,
-        lastCue: document.body.dataset.onlinePresentationLastCue ?? null,
-        confirmedIntents: document.body.dataset.onlinePresentationConfirmed ?? null,
-      },
-      proof: {
-        text: proof.textContent,
-        lastCue: proof.dataset.lastCue ?? null,
-        confirmedIntents: proof.dataset.confirmedIntents ?? null,
-        duplicateEvents: proof.dataset.duplicateEvents ?? null,
-      },
-      hud: {
-        text: hud.textContent,
-        cue: hud.dataset.cue ?? null,
-        authorityEventId: hud.dataset.authorityEventId ?? null,
-        active: hud.dataset.active ?? null,
-        audio: hud.dataset.audio ?? null,
-      },
-      vfx: {
-        cue: vfx.dataset.cue ?? null,
-        authorityEventId: vfx.dataset.authorityEventId ?? null,
-        active: vfx.dataset.active ?? null,
-        reducedMotion: vfx.dataset.reducedMotion ?? null,
-      },
+      if (
+        !snapshot
+        || !(proof instanceof HTMLElement)
+        || !(hud instanceof HTMLElement)
+        || !(vfx instanceof HTMLElement)
+      ) return null;
+      return {
+        diagnostics: snapshot.presentation,
+        body: {
+          status: document.body.dataset.onlinePresentationStatus ?? null,
+          lastCue: document.body.dataset.onlinePresentationLastCue ?? null,
+          confirmedIntents: document.body.dataset.onlinePresentationConfirmed ?? null,
+        },
+        proof: {
+          text: proof.textContent,
+          lastCue: proof.dataset.lastCue ?? null,
+          confirmedIntents: proof.dataset.confirmedIntents ?? null,
+          duplicateEvents: proof.dataset.duplicateEvents ?? null,
+        },
+        hud: {
+          text: hud.textContent,
+          cue: hud.dataset.cue ?? null,
+          authorityEventId: hud.dataset.authorityEventId ?? null,
+          active: hud.dataset.active ?? null,
+          audio: hud.dataset.audio ?? null,
+        },
+        vfx: {
+          cue: vfx.dataset.cue ?? null,
+          authorityEventId: vfx.dataset.authorityEventId ?? null,
+          active: vfx.dataset.active ?? null,
+          reducedMotion: vfx.dataset.reducedMotion ?? null,
+        },
+      };
     };
+    if (cue === null) return capture();
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      let interval = 0;
+      let timeout = 0;
+      const observer = new MutationObserver(() => {
+        const value = capture();
+        if (
+          value?.diagnostics.lastCue !== cue
+          || value.hud.cue !== cue
+          || value.vfx.cue !== cue
+          || value.hud.active !== 'true'
+          || value.vfx.active !== 'true'
+        ) return;
+        settled = true;
+        observer.disconnect();
+        window.clearInterval(interval);
+        window.clearTimeout(timeout);
+        resolve(value);
+      });
+      observer.observe(document.body, {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        subtree: true,
+      });
+      interval = window.setInterval(() => {
+        if (settled) return;
+        const value = capture();
+        if (
+          value?.diagnostics.lastCue !== cue
+          || value.hud.cue !== cue
+          || value.vfx.cue !== cue
+          || value.hud.active !== 'true'
+          || value.vfx.active !== 'true'
+        ) return;
+        settled = true;
+        observer.disconnect();
+        window.clearInterval(interval);
+        window.clearTimeout(timeout);
+        resolve(value);
+      }, 16);
+      timeout = window.setTimeout(() => {
+        if (settled) return;
+        settled = true;
+        observer.disconnect();
+        window.clearInterval(interval);
+        reject(new Error(
+          `PRESENTATION_MARKER_TIMEOUT:${cue}:${JSON.stringify(capture())}`,
+        ));
+      }, timeoutMilliseconds);
+    });
+  }, {
+    cue: expectedCue ?? null,
+    timeoutMilliseconds: 2_000,
   });
 }
 
