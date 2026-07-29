@@ -256,7 +256,8 @@ const rev5PortalRoute = Object.freeze({
   lowerEntryPulseMilliseconds: 650,
   arrivalToleranceMillimeters: 1_100,
   eventTimeoutMilliseconds: 8_000,
-  cooldownSettleMilliseconds: 3_200,
+  // The movement profile's 160 teleport-cooldown ticks run at 50 ms each.
+  cooldownSettleMilliseconds: 8_500,
 });
 const legacySourceFiles = Object.freeze([
   'src/app/onlineAuthorityProfiles.ts',
