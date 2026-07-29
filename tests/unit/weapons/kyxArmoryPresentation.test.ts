@@ -104,14 +104,48 @@ describe('KYX first-person armory presentation', () => {
       'KYX_VLR7_SUPPORT_GRIP_CONTACT',
     )).toBeDefined();
     expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_DOMINANT_ELBOW_BRIDGE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_SUPPORT_ELBOW_BRIDGE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_DOMINANT_GAUNTLET_CORE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_SUPPORT_GAUNTLET_CORE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_DOMINANT_WRIST_SEAL',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_SUPPORT_WRIST_SEAL',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_DOMINANT_GLOVE_BACKPLATE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_SUPPORT_GLOVE_BACKPLATE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_DOMINANT_GRIP_CONTACT',
+    )?.position.toArray()).toEqual([0, -0.115, 0.19]);
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_SUPPORT_GRIP_CONTACT',
+    )?.position.toArray()).toEqual([-0.02, -0.04, -0.36]);
+    expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_REFLEX_LENS',
     )).toBeDefined();
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_REFLEX_RETICLE_DOT',
     )).toBeDefined();
     expect(firstPersonRifle.group.userData).toMatchObject({
-      firstPersonContactMode: 'authored_two_hand_rifle_v1',
+      firstPersonContactMode: 'authored_two_hand_assault_suit_v2',
       firstPersonHandCount: 2,
+    });
+    expect(firstPersonRifle.firstPersonContactRig?.userData).toMatchObject({
+      presentationOnly: true,
+      noHit: true,
     });
 
     const worldRifle = createKyxWeaponPresentationModel(
