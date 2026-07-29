@@ -73,6 +73,7 @@ import {
   isOnlineInkfallAuthorityProfile,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
+import { classifyOnlineAuthorityPresentationEvent } from './onlineAuthorityPresentationRouting';
 import {
   ONLINE_AUTHORITY_PATH,
   onlineCreatePath,
@@ -2196,7 +2197,8 @@ async function mountSession(
         if (combatPresentationAdapter !== null) {
           for (const event of diagnostics.combat.recentEvents) {
             if (processedPresentationTransportIds.has(event.id)) continue;
-            if (event.presentation?.kind === 'throwable_ability_event') {
+            const presentationLane = classifyOnlineAuthorityPresentationEvent(event);
+            if (presentationLane === 'throwable') {
               consumeThrowableAbilityEvent(event as ReliableEvent & {
                 readonly presentation: Extract<
                   NonNullable<ReliableEvent['presentation']>,
@@ -2206,7 +2208,13 @@ async function mountSession(
               processedPresentationTransportIds.add(event.id);
               continue;
             }
-            if (event.presentation === undefined) continue;
+            if (presentationLane === 'world') {
+              // The Three runtime owns portal departure/arrival VFX and audio.
+              // Passing this semantic through the combat adapter fails closed.
+              processedPresentationTransportIds.add(event.id);
+              continue;
+            }
+            if (presentationLane === 'none') continue;
             const applied = applyCombatPresentationReliableEvent(
               combatPresentationAdapter,
               event,
