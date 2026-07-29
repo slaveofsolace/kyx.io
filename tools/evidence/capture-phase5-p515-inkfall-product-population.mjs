@@ -256,7 +256,7 @@ const rev5PortalRoute = Object.freeze({
   lowerEntryPulseMilliseconds: 650,
   arrivalToleranceMillimeters: 1_100,
   eventTimeoutMilliseconds: 8_000,
-  cooldownSettleMilliseconds: 1_500,
+  cooldownSettleMilliseconds: 3_200,
 });
 const legacySourceFiles = Object.freeze([
   'src/app/onlineAuthorityProfiles.ts',

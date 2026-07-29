@@ -204,7 +204,7 @@ const rev5PortalRoute = {
   lowerEntryPulseMilliseconds: 650,
   arrivalToleranceMillimeters: 1_100,
   eventTimeoutMilliseconds: 8_000,
-  cooldownSettleMilliseconds: 1_500,
+  cooldownSettleMilliseconds: 3_200,
 };
 const legacyExpectedScreenshots = [
   'screenshots/p515-01-client-0-two-rendered.png',
