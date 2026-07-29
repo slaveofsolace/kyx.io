@@ -2550,25 +2550,34 @@ try {
   };
 
   const browserPrewarmStartedAt = new Date().toISOString();
+  const prewarmProgressPath = path.join(output, 'prewarm-progress.json');
+  const recordPrewarmProgress = async (phase, clientIndex) => {
+    await fs.writeFile(prewarmProgressPath, `${JSON.stringify({
+      schemaVersion: 1,
+      phase,
+      clientIndex,
+      launchedClients: clients.length,
+      completedAt: new Date().toISOString(),
+    }, null, 2)}\n`);
+  };
   for (let index = 0; index < 8; index += 1) {
-    clients.push(await createClient(await launchProductBrowser(), index, wireRecords));
+    await recordPrewarmProgress('launching', index);
+    const client = await createClient(await launchProductBrowser(), index, wireRecords);
+    clients.push(client);
+    await recordPrewarmProgress('prewarming', index);
+    await prewarmClient(client);
+    await recordPrewarmProgress('ready', index);
   }
   assert.equal(browsers.length, 8);
   assert.equal(browserProcessIds.length, 8);
   assert.equal(new Set(browserProcessIds).size, 8);
   assert.equal(clients.length, 8);
-  // Let the first isolated client finish Vite's one-time optimization, then
-  // warm the remaining processes in bounded pairs. Fully sequential prewarm
-  // can turn one slow module graph into an opaque multi-minute startup.
-  await prewarmClient(clients[0]);
-  for (let index = 1; index < clients.length; index += 2) {
-    await Promise.all(clients.slice(index, index + 2).map(prewarmClient));
-  }
   const browserPrewarmCompletedAt = new Date().toISOString();
   const prewarmStatuses = await Promise.all(clients.map(({ page }) => (
     page.evaluate(() => document.body.dataset.onlinePreviewStatus)
   )));
   assert.deepEqual(prewarmStatuses, Array.from({ length: 8 }, () => 'lobby'));
+  await fs.rm(prewarmProgressPath);
 
   const first = clients[0];
   const second = clients[1];
