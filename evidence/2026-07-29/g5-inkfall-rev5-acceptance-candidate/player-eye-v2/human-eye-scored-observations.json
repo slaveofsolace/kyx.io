@@ -1,0 +1,229 @@
+{
+  "schemaVersion": 1,
+  "observations": [
+    {
+      "id": "OBS-001",
+      "component": "map geometry and spawn presentation",
+      "label": "OBSERVED",
+      "title": "West spawn view is obstructed by oversized and intersecting geometry",
+      "context": "First source-frozen player-eye frame immediately after the two-player authoritative join",
+      "action": "Spawn and look forward without movement",
+      "expectation": "A safe pocket, readable first route, landmark, and unobstructed center-screen combat view",
+      "actual": "A cyan loop fills the upper-left foreground, multiple black members cut horizontally across the view, and nearby dressing intersects or crowds the camera and weapon.",
+      "playerConsequence": "The player cannot quickly parse a route or trust that visible geometry matches a deliberate arena layout.",
+      "reproduction": [
+        "Run capture-g5-inkfall-visual-continuity.mjs from source-frozen build 3ee8d07",
+        "Join the Rev5 Inkfall profile with host and guest",
+        "Inspect screenshots/01-west-spawn-pocket-forward.png"
+      ],
+      "frequency": 5,
+      "severity": 5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 5,
+      "blocker": true,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "Render-only continuity modules intrude into the west spawn camera envelope",
+        "One or more decorative modules have incorrect scale, transform, or containment placement"
+      ],
+      "nextDiscriminatingTest": "Render a free-camera top, side, and player-eye overlay of the west spawn camera capsule against all 311 render-only continuity meshes.",
+      "recommendedOutcome": "Open a clean spawn sightline with one dominant route cue and no render mesh inside the player camera or weapon envelope.",
+      "status": "OPEN",
+      "priorityScore": 100,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-002",
+      "component": "map navigation and visual continuity",
+      "label": "MEASURED",
+      "title": "Three of four player-eye views contain no readable arena geometry",
+      "context": "Press Hall, Ink Channel, and Archive camera orientations after an 11.63 m authoritative forward traversal",
+      "action": "Move forward for three seconds, then inspect three deliberately different pitch and yaw directions",
+      "expectation": "Distinct routes, landmarks, cover, vertical connections, and portal or objective cues",
+      "actual": "Frames 02 through 04 show nearly the same blue-gray gradient and lower-left light bloom, with no legible floor, walls, cover, portal, landmark, or route.",
+      "playerConsequence": "Navigation, combat prediction, spatial memory, and map acceptance are impossible from the available player-eye presentation.",
+      "reproduction": [
+        "Run the v2 player-eye route",
+        "Advance from west spawn to x=-33500, y=50, z=8130",
+        "Compare screenshots 02, 03, and 04"
+      ],
+      "frequency": 5,
+      "severity": 5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 5,
+      "blocker": true,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png",
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "The camera is inside or immediately behind an oversized translucent or fog-like render surface",
+        "The render-only containment batch has incorrect transforms or camera-side culling",
+        "SwiftShader exposes a shader, depth, or material defect that must be separated from geometry placement"
+      ],
+      "nextDiscriminatingTest": "Repeat the exact positions in visible hardware-accelerated Chrome and capture depth, material ID, and free-camera views before changing map art.",
+      "recommendedOutcome": "Every cardinal player-eye direction must expose a readable floor, boundary, route hierarchy, and at least one unique landmark under both hardware GPU and fallback rendering.",
+      "status": "OPEN",
+      "priorityScore": 100,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-003",
+      "component": "first-person player and weapon model",
+      "label": "OBSERVED",
+      "title": "First-person presentation is still a blockout with no visible hands or arms",
+      "context": "All four normal combat HUD views with the rifle selected",
+      "action": "Observe the equipped rifle from the normal player camera",
+      "expectation": "Authored gloves and arms gripping a proportioned weapon with readable contact and muzzle origin",
+      "actual": "The rifle is composed of large rectangular masses, occupies a heavy lower-right silhouette, and has no visible hand, glove, forearm, or shoulder contact.",
+      "playerConsequence": "Weapon handling lacks physical ownership and the most persistent first-person surface reads as unfinished.",
+      "reproduction": [
+        "Join the Rev5 online profile",
+        "Keep weapon slot 1 selected",
+        "Inspect any v2 player-eye screenshot"
+      ],
+      "frequency": 5,
+      "severity": 3.5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 2.5,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png"
+      ],
+      "hypotheses": [
+        "The runtime still binds a procedural or placeholder first-person rifle instead of the authored weapon-and-arms package",
+        "First-person arms are absent from the selected role loadout runtime binding"
+      ],
+      "nextDiscriminatingTest": "Inspect the live first-person scene graph and capture muzzle, primary grip, support-hand, reload, swap, ADS, and recoil poses.",
+      "recommendedOutcome": "Ship one Assault first-person arms-and-rifle set with gloves, correct grips, muzzle alignment, authored silhouette, and full contact animation before propagating roles.",
+      "status": "OPEN",
+      "priorityScore": 82,
+      "priorityTier": "A"
+    },
+    {
+      "id": "OBS-004",
+      "component": "lighting and material readability",
+      "label": "OBSERVED",
+      "title": "Lighting collapses into black crush and cyan-white bloom",
+      "context": "Spawn frame and three traversal orientations",
+      "action": "Scan foreground, midground, and background for depth and material separation",
+      "expectation": "Readable combat silhouettes, cover edges, floor continuity, and a coherent industrial material hierarchy",
+      "actual": "The spawn frame loses large structures into near-black, while subsequent frames are dominated by a flat blue-gray field and overbright circular bloom.",
+      "playerConsequence": "Depth, cover, traversability, and threat silhouettes cannot be read reliably.",
+      "reproduction": [
+        "Open all four v2 screenshots at native 1440x900",
+        "Compare center-screen and peripheral luminance separation"
+      ],
+      "frequency": 5,
+      "severity": 4.5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4.5,
+      "blocker": true,
+      "confidence": "MEDIUM",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "Material exposure and emissive values are not calibrated to the runtime renderer",
+        "The player camera is sampling an unintended containment or fog surface",
+        "Fallback WebGL rendering differs materially from the intended hardware path"
+      ],
+      "nextDiscriminatingTest": "Capture the same four poses with material overrides, no post-processing, and hardware acceleration to isolate geometry, material, and renderer causes.",
+      "recommendedOutcome": "Establish a restrained value hierarchy where floors, cover, players, portals, and exits remain readable without crushing dark materials or blooming emissives.",
+      "status": "OPEN",
+      "priorityScore": 95,
+      "priorityTier": "S"
+    },
+    {
+      "id": "OBS-005",
+      "component": "HUD and normal-play interface",
+      "label": "OBSERVED",
+      "title": "Developer diagnostics remain exposed and compete with the match HUD",
+      "context": "Normal joined online play at 1440x900",
+      "action": "Read match state, health, ammo, abilities, and threat space",
+      "expectation": "A restrained competitive HUD with diagnostics hidden behind an explicit drawer",
+      "actual": "A multi-row Diagnostics and authority-event panel is permanently visible at upper right beside pre-release mode labels, while multiple typography sizes and boxed ability elements compete around the frame.",
+      "playerConsequence": "The screen reads as an internal test harness rather than one coherent competitive game and reduces peripheral clarity.",
+      "reproduction": [
+        "Join any Rev5 online room",
+        "Do not open a developer panel",
+        "Observe the always-visible upper-right diagnostics block"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4.5,
+      "friction": 3.5,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png"
+      ],
+      "hypotheses": [
+        "Evidence diagnostics are mounted by default on the normal product route",
+        "Legacy and newer HUD surfaces are both active"
+      ],
+      "nextDiscriminatingTest": "Inspect the default online HUD view model and verify diagnostics are absent until an explicit developer command opens them.",
+      "recommendedOutcome": "Hide diagnostics by default, unify match typography and spacing, preserve center-screen clearance, and expose technical state only in a deliberate developer drawer.",
+      "status": "OPEN",
+      "priorityScore": 80,
+      "priorityTier": "A"
+    },
+    {
+      "id": "OBS-006",
+      "component": "opponent model and animation",
+      "label": "UNKNOWN",
+      "title": "Opponent presentation cannot be assessed from the current packet",
+      "context": "Two authoritative player contexts were joined, but no opponent is visible in any of the four source-frozen frames",
+      "action": "Attempt to inspect enemy silhouette, armor, helmet, weapon contact, and locomotion",
+      "expectation": "Controlled near, mid, and far views of the live opponent package",
+      "actual": "The evidence proves one remote avatar existed in runtime but supplies no visible player-eye opponent frame or motion sequence.",
+      "playerConsequence": "Enemy model, role readability, animation, hit response, and weapon-contact acceptance remain unproven.",
+      "reproduction": [
+        "Review focused-visual-capture.json for isolatedPlayerContexts=2",
+        "Inspect all four screenshots for the remote avatar"
+      ],
+      "frequency": 1,
+      "severity": 4,
+      "reach": 5,
+      "trust": 4,
+      "friction": 2,
+      "blocker": false,
+      "confidence": "LOW",
+      "evidence": [
+        "focused-visual-capture.json",
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "The fixed visual route never placed the guest inside the host camera frustum",
+        "Map obstruction prevents the remote avatar from being seen",
+        "The remote runtime model may be present but still use a placeholder package"
+      ],
+      "nextDiscriminatingTest": "Stage the two players at fixed 5 m, 20 m, and 40 m separations and capture front, rear, strafe, jump, fire, reload, hit, death, and respawn sequences.",
+      "recommendedOutcome": "Provide a controlled live opponent acceptance reel before any third-person or role-family visual claim.",
+      "status": "OPEN",
+      "priorityScore": 65,
+      "priorityTier": "B"
+    }
+  ]
+}
