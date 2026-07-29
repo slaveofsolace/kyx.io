@@ -3122,6 +3122,10 @@ try {
   const beforeResume = await productSnapshot(first.page);
   const originalJoin = initialJoins[0];
   const wireBeforeResume = wireSequence;
+  const roomDrawerToggle = first.page.locator(
+    '.online-session__session-drawer > summary',
+  );
+  await roomDrawerToggle.click();
   await first.page.getByTestId('online-resume').click();
   await first.page.waitForFunction(() => {
     const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
@@ -3148,6 +3152,7 @@ try {
   assert.equal(afterResume.presentation.lastCue, 'snapshot');
   assert.equal(afterResume.presentation.confirmedIntentCount, beforeResume.presentation.confirmedIntentCount);
   assert.equal(afterResume.presentation.audioCueAttempts, beforeResume.presentation.audioCueAttempts);
+  await roomDrawerToggle.click();
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-07-resume-preserved-state.png'), fullPage: true });
 
   for (let index = 2; index < 4; index += 1) {
