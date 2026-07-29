@@ -543,10 +543,15 @@ try {
   });
   const aimed = await snapshot(page);
   assert.ok(
-    aimed.render3d.selectedFirstPersonFieldOfViewDegrees <= 58.75,
+    aimed.render3d.selectedFirstPersonFieldOfViewDegrees <= 60.75,
     `VLR-7 ADS must narrow the player field of view: ${
       aimed.render3d.selectedFirstPersonFieldOfViewDegrees
     }`,
+  );
+  assert.ok(
+    aimed.render3d.selectedFirstPersonScale
+      < joined.render3d.selectedFirstPersonScale,
+    'VLR-7 ADS must compensate for FOV narrowing with an authored viewmodel scale.',
   );
   await captureArena(page, '01b-vlr7-held-ads.png');
   await page.mouse.up({ button: 'right' });
@@ -571,22 +576,28 @@ try {
         && weapon?.phase === 'ready';
     })()
   ), undefined, { timeout: 20_000 });
+  let firing = null;
   await page.keyboard.down('Enter');
   try {
     await page.waitForFunction(() => (
       globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
         .inputBridge.primaryFire === true
     ));
-    await page.waitForFunction((previous) => (
-      (
-        globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
-          .render3d?.acceptedAttackPresentationCount
+    await page.waitForFunction((previous) => {
+      const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+      return (
+        value?.render3d?.acceptedAttackPresentationCount
         ?? 0
       ) > previous
-    ), acceptedAttackCountBefore, { timeout: 15_000 });
+        && (value?.render3d?.selectedFirstPersonFireImpulse ?? 0) > 0.02
+        && (value?.render3d?.activeWeaponEffectCount ?? 0) > 0;
+    }, acceptedAttackCountBefore, { timeout: 15_000 });
+    firing = await snapshot(page);
+    await captureArena(page, '01c-vlr7-authority-fire.png');
   } finally {
     await page.keyboard.up('Enter').catch(() => undefined);
   }
+  assert.notEqual(firing, null);
   const reloadPresentationCountBefore = (
     await snapshot(page)
   ).render3d.reloadPresentationCount;
@@ -599,12 +610,13 @@ try {
       value?.render3d?.reloadPresentationCount
       ?? 0
     ) > previous
-      && (value?.render3d?.selectedFirstPersonReloadPoseMix ?? 0) >= 0.35;
+      && (value?.render3d?.selectedFirstPersonReloadProgress ?? 0) >= 0.45
+      && (value?.render3d?.selectedFirstPersonReloadPoseMix ?? 0) >= 0.85;
   }, reloadPresentationCountBefore);
   const reloading = await snapshot(page);
   assert.equal(reloading.render3d.selectedFirstPersonAimRequested, false);
   assert.ok(reloading.render3d.selectedFirstPersonReloadProgress > 0);
-  await captureArena(page, '01c-vlr7-authority-reload.png');
+  await captureArena(page, '01d-vlr7-authority-reload.png');
   await page.waitForFunction(() => (
     (
       globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
@@ -818,7 +830,8 @@ try {
   const screenshotFiles = Object.freeze([
     'screenshots/01-west-spawn-pocket-forward.png',
     'screenshots/01b-vlr7-held-ads.png',
-    'screenshots/01c-vlr7-authority-reload.png',
+    'screenshots/01c-vlr7-authority-fire.png',
+    'screenshots/01d-vlr7-authority-reload.png',
     'screenshots/02-press-hall-approach.png',
     'screenshots/03-ink-channel-and-red-fold.png',
     'screenshots/04-archive-tier-and-paper-drop.png',
@@ -882,8 +895,14 @@ try {
       aimedFieldOfViewDegrees:
         aimed.render3d.selectedFirstPersonFieldOfViewDegrees,
       aimedMix: aimed.render3d.selectedFirstPersonAimMix,
+      hipScale: joined.render3d.selectedFirstPersonScale,
+      aimedScale: aimed.render3d.selectedFirstPersonScale,
       acceptedAttackPresentationCount:
         reloading.render3d.acceptedAttackPresentationCount,
+      activeWeaponEffectCountAtFireCapture:
+        firing.render3d.activeWeaponEffectCount,
+      fireImpulseAtCapture:
+        firing.render3d.selectedFirstPersonFireImpulse,
       reloadPresentationCount:
         reloading.render3d.reloadPresentationCount,
       reloadProgressAtCapture:

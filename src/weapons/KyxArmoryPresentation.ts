@@ -17,9 +17,10 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       rotation: Object.freeze([-0.06, 0.055, 0.008] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.292, 0.205, 0.105] as const),
+        offset: Object.freeze([-0.365, 0.115, -0.08] as const),
         rotation: Object.freeze([0.045, -0.055, -0.008] as const),
-        fieldOfViewDegrees: 58,
+        fieldOfViewDegrees: 60,
+        scaleMultiplier: 0.84,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.004, 0.07] as const),
@@ -47,6 +48,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
         offset: Object.freeze([-0.36, 0.22, 0.06] as const),
         rotation: Object.freeze([0.015, 0.025, 0.045] as const),
         fieldOfViewDegrees: 62,
+        scaleMultiplier: 0.9,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0.015, -0.005, 0.09] as const),
@@ -74,6 +76,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
         offset: Object.freeze([-0.275, 0.2, 0.08] as const),
         rotation: Object.freeze([0.045, -0.045, -0.012] as const),
         fieldOfViewDegrees: 60,
+        scaleMultiplier: 0.85,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.02, 0.14] as const),
@@ -101,6 +104,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
         offset: Object.freeze([-0.25, 0.205, 0.1] as const),
         rotation: Object.freeze([0.018, -0.018, 0.008] as const),
         fieldOfViewDegrees: 44,
+        scaleMultiplier: 0.78,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.025, 0.12] as const),
@@ -128,6 +132,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
         offset: Object.freeze([-0.345, 0.24, 0.08] as const),
         rotation: Object.freeze([0.025, 0.025, -0.035] as const),
         fieldOfViewDegrees: 56,
+        scaleMultiplier: 0.8,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.03, 0.18] as const),
@@ -155,6 +160,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
         offset: Object.freeze([0, 0, 0] as const),
         rotation: Object.freeze([0, 0, 0] as const),
         fieldOfViewDegrees: 72,
+        scaleMultiplier: 1,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, 0, 0] as const),
@@ -203,10 +209,12 @@ interface WeaponMovingParts {
 }
 
 export interface KyxFirstPersonWeaponPose {
+  readonly baseScale: number;
   readonly aimEnabled: boolean;
   readonly aimOffset: THREE.Vector3;
   readonly aimRotation: THREE.Euler;
   readonly aimFieldOfViewDegrees: number;
+  readonly aimScaleMultiplier: number;
   readonly recoilOffset: THREE.Vector3;
   readonly recoilRotation: THREE.Euler;
   readonly reloadDurationMilliseconds: number;
@@ -934,10 +942,12 @@ export function createKyxWeaponPresentationModel(
     spec.firstPerson.aim.fieldOfViewDegrees;
 
   const firstPersonPose: KyxFirstPersonWeaponPose = {
+    baseScale: spec.firstPerson.scale,
     aimEnabled: spec.firstPerson.aim.enabled,
     aimOffset: new THREE.Vector3(...spec.firstPerson.aim.offset),
     aimRotation: new THREE.Euler(...spec.firstPerson.aim.rotation),
     aimFieldOfViewDegrees: spec.firstPerson.aim.fieldOfViewDegrees,
+    aimScaleMultiplier: spec.firstPerson.aim.scaleMultiplier,
     recoilOffset: new THREE.Vector3(...spec.firstPerson.recoil.offset),
     recoilRotation: new THREE.Euler(...spec.firstPerson.recoil.rotation),
     reloadDurationMilliseconds:

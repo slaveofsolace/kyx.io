@@ -129,7 +129,8 @@ describe('KYX first-person armory presentation', () => {
     );
     expect(rifle.firstPersonPose).toMatchObject({
       aimEnabled: true,
-      aimFieldOfViewDegrees: 58,
+      aimFieldOfViewDegrees: 60,
+      aimScaleMultiplier: 0.84,
       reloadDurationMilliseconds: 3_000,
     });
 

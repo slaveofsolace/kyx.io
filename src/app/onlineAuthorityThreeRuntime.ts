@@ -99,6 +99,7 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedFirstPersonContactMode: string;
   readonly selectedFirstPersonAimRequested: boolean;
   readonly selectedFirstPersonAimMix: number;
+  readonly selectedFirstPersonScale: number;
   readonly selectedFirstPersonFieldOfViewDegrees: number;
   readonly selectedFirstPersonFireImpulse: number;
   readonly selectedFirstPersonReloadProgress: number;
@@ -1069,6 +1070,13 @@ export async function createOnlineAuthorityThreeRuntime(
       const pose = firstPersonWeapon.firstPersonPose;
       const aim = firstPersonWeapon.aimMix;
       const reload = firstPersonWeapon.reloadPoseMix;
+      firstPersonWeapon.group.scale.setScalar(
+        pose.baseScale * THREE.MathUtils.lerp(
+          1,
+          pose.aimScaleMultiplier,
+          aim,
+        ),
+      );
       const movementBob = Math.min(
         1,
         frame.localSpeedMillimetersPerSecond / 5_500,
@@ -1173,6 +1181,8 @@ export async function createOnlineAuthorityThreeRuntime(
         firstPersonWeapon?.aimRequested ?? false,
       selectedFirstPersonAimMix:
         firstPersonWeapon?.aimMix ?? 0,
+      selectedFirstPersonScale:
+        firstPersonWeapon?.group.scale.x ?? 0,
       selectedFirstPersonFieldOfViewDegrees: camera.fov,
       selectedFirstPersonFireImpulse:
         firstPersonWeapon?.fireImpulse ?? 0,
