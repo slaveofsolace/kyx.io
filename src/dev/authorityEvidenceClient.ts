@@ -247,6 +247,7 @@ export interface AuthorityEvidenceDiagnostics {
     };
   };
   readonly local: {
+    readonly authoritativePlayerId: string | null;
     readonly authoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
     readonly predictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
     readonly authoritativeVelocity: Readonly<{ x: number; y: number; z: number }> | null;
@@ -457,6 +458,7 @@ export class AuthorityEvidenceClient {
   private combatSnapshot: CombatSnapshotV1 | null = null;
   private readonly recentCombatEvents: ReliableEvent[] = [];
   private prediction: LocalPredictionState | null = null;
+  private authoritativePlayerId: string | null = null;
   private authoritativePosition: Readonly<{ x: number; y: number; z: number }> | null = null;
   private authoritativeVelocity: Readonly<{ x: number; y: number; z: number }> | null = null;
   private authoritativeGrounded: boolean | null = null;
@@ -683,6 +685,7 @@ export class AuthorityEvidenceClient {
         },
       },
       local: {
+        authoritativePlayerId: this.authoritativePlayerId,
         authoritativePosition: this.authoritativePosition === null
           ? null
           : copyPosition(this.authoritativePosition),
@@ -1175,6 +1178,15 @@ export class AuthorityEvidenceClient {
     assertAuthorityMovementIdentity(reconciliation, this.expectedIdentity, source);
     this.counters.identityChecks += 1;
     const state = movementStateFromReconciliation(reconciliation, this.profile);
+    if (this.playerId === null) {
+      throw new Error(`${source}: local reconciliation arrived before player identity`);
+    }
+    if (state.player.id !== this.playerId) {
+      throw new Error(
+        `${source}: local reconciliation player mismatch; expected ${this.playerId}, received ${state.player.id}`,
+      );
+    }
+    this.authoritativePlayerId = state.player.id;
     this.authoritativePosition = copyPosition(state.player.feetPosition);
     this.authoritativeVelocity = copyPosition(state.player.velocity);
     this.authoritativeGrounded = state.player.grounded;

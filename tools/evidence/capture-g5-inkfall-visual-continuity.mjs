@@ -368,9 +368,28 @@ try {
   assert.notEqual(joinedSpawn, undefined, 'Joined position must match a bound spawn');
   phaseDiagnostics.joined = {
     spawnId: joinedSpawn.spawnId,
-    yawMilliDegrees: joinedSpawn.yawMilliDegrees,
+    playerId: joined.playerId,
+    authoritativePlayerId: joined.localAuthoritativePlayerId,
+    spawnYawMilliDegrees: joinedSpawn.yawMilliDegrees,
+    authoritativeYawMilliDegrees: joined.localAuthoritativeYawMilliDegrees,
+    predictedYawMilliDegrees: joined.localPredictedYawMilliDegrees,
     positionMm: joined.localAuthoritativePosition,
   };
+  assert.equal(
+    joined.localAuthoritativePlayerId,
+    joined.playerId,
+    'Joined local reconciliation must belong to the accepted player identity',
+  );
+  assert.equal(
+    joined.localAuthoritativeYawMilliDegrees,
+    joinedSpawn.yawMilliDegrees,
+    'Joined authoritative yaw must match the bound spawn facing',
+  );
+  assert.equal(
+    joined.localPredictedYawMilliDegrees,
+    joined.localAuthoritativeYawMilliDegrees,
+    'Joined predicted yaw must begin from authoritative yaw',
+  );
   assert.ok(
     joined.render3d.renderOnlyContainmentMeshCount > 200,
     'The continuity batch should contribute a major render-only dressing set.',
@@ -415,11 +434,30 @@ try {
     + Math.cos(joinedYawRadians) * pressApproachDelta.z
   ) / Math.hypot(pressApproachDelta.x, pressApproachDelta.z);
   phaseDiagnostics.pressApproach = {
+    playerId: pressApproach.playerId,
+    authoritativePlayerId: pressApproach.localAuthoritativePlayerId,
+    authoritativeYawMilliDegrees: pressApproach.localAuthoritativeYawMilliDegrees,
+    predictedYawMilliDegrees: pressApproach.localPredictedYawMilliDegrees,
     positionMm: pressApproach.localAuthoritativePosition,
     deltaMm: pressApproachDelta,
     forwardAlignment,
     lastError: pressApproach.lastError,
   };
+  assert.equal(
+    pressApproach.playerId,
+    joined.playerId,
+    'First-egress traversal must retain the accepted player identity',
+  );
+  assert.equal(
+    pressApproach.localAuthoritativePlayerId,
+    joined.localAuthoritativePlayerId,
+    'First-egress local reconciliation must retain the same player identity',
+  );
+  assert.equal(
+    pressApproach.localAuthoritativeYawMilliDegrees,
+    joined.localAuthoritativeYawMilliDegrees,
+    'Forward movement without look input must preserve authoritative yaw',
+  );
   assert.ok(
     forwardAlignment > 0.97,
     `First-egress movement must follow spawn facing: ${forwardAlignment}`,
