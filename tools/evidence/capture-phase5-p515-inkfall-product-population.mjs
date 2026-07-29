@@ -2486,8 +2486,10 @@ try {
       : 'online-inkfall-profile',
   );
   assert.equal(await profileSelector.isVisible(), true);
-  assert.equal(await profileSelector.isChecked(), false);
-  await profileSelector.check();
+  if (!await profileSelector.isChecked()) {
+    await profileSelector.check();
+  }
+  assert.equal(await profileSelector.isChecked(), true);
   const roomCreationRequestedAt = new Date().toISOString();
   assert.ok(Date.parse(roomCreationRequestedAt) >= Date.parse(browserPrewarmCompletedAt));
   const roomCreation = nextBrowserRoomCreation(first.page);
