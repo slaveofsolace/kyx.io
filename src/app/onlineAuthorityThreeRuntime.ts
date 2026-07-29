@@ -93,6 +93,8 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedWeaponLabel: string | null;
   readonly selectedWeaponFamily: string | null;
   readonly selectedWeaponSilhouette: string | null;
+  readonly selectedFirstPersonHandCount: number;
+  readonly selectedFirstPersonContactMode: string;
   readonly blinkPreviewActive: boolean;
   readonly blinkPreviewValid: boolean;
   readonly blinkPreviewAuthorityBound: boolean;
@@ -1114,6 +1116,12 @@ export async function createOnlineAuthorityThreeRuntime(
       selectedWeaponLabel: firstPersonWeapon?.label ?? null,
       selectedWeaponFamily: firstPersonWeapon?.family ?? null,
       selectedWeaponSilhouette: firstPersonWeapon?.silhouette ?? null,
+      selectedFirstPersonHandCount:
+        firstPersonWeapon?.firstPersonHandCount ?? 0,
+      selectedFirstPersonContactMode:
+        String(
+          firstPersonWeapon?.group.userData.firstPersonContactMode ?? 'none',
+        ),
       blinkPreviewActive: blinkDiagnostics.active,
       blinkPreviewValid: blinkDiagnostics.valid,
       blinkPreviewAuthorityBound: blinkDiagnostics.authorityBound,

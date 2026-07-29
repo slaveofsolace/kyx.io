@@ -84,4 +84,38 @@ describe('KYX first-person armory presentation', () => {
 
     expect(new Set(poses).size).toBe(WEAPON_IDS.length);
   });
+
+  it('gives the VLR-7 a two-hand first-person contact rig without polluting world or blade presentation', () => {
+    const firstPersonRifle = createKyxWeaponPresentationModel(
+      'vertical_rifle_v1',
+      'first_person',
+    );
+    expect(firstPersonRifle.firstPersonHandCount).toBe(2);
+    expect(firstPersonRifle.firstPersonContactRig?.name).toBe(
+      'KYX_VLR7_FIRST_PERSON_CONTACT_RIG',
+    );
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_DOMINANT_GRIP_CONTACT',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_SUPPORT_GRIP_CONTACT',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.userData).toMatchObject({
+      firstPersonContactMode: 'authored_two_hand_rifle_v1',
+      firstPersonHandCount: 2,
+    });
+
+    const worldRifle = createKyxWeaponPresentationModel(
+      'vertical_rifle_v1',
+      'world',
+    );
+    const firstPersonBlade = createKyxWeaponPresentationModel(
+      'kyx_edge_v1',
+      'first_person',
+    );
+    expect(worldRifle.firstPersonContactRig).toBeNull();
+    expect(worldRifle.firstPersonHandCount).toBe(0);
+    expect(firstPersonBlade.firstPersonContactRig).toBeNull();
+    expect(firstPersonBlade.firstPersonHandCount).toBe(0);
+  });
 });

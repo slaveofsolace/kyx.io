@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 
+import {
+  createKyxFirstPersonContactRig,
+} from './KyxFirstPersonContactRig';
+
 export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
   vertical_rifle_v1: Object.freeze({
     family: 'rifle',
@@ -8,9 +12,9 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0x55dcff,
     tracer: 0x9cecff,
     firstPerson: Object.freeze({
-      scale: 0.82,
-      position: Object.freeze([0.29, -0.285, -0.46] as const),
-      rotation: Object.freeze([-0.045, 0.035, 0] as const),
+      scale: 0.72,
+      position: Object.freeze([0.3, -0.31, -0.55] as const),
+      rotation: Object.freeze([-0.06, 0.055, 0.008] as const),
     }),
   }),
   kyx_sidearm_v1: Object.freeze({
@@ -120,6 +124,8 @@ export interface KyxWeaponPresentationModel {
   readonly group: THREE.Group;
   readonly muzzle: THREE.Object3D;
   readonly backblast: THREE.Object3D | null;
+  readonly firstPersonContactRig: THREE.Group | null;
+  readonly firstPersonHandCount: number;
   readonly movingParts: WeaponMovingParts;
   fireImpulse: number;
   reloadMix: number;
@@ -163,7 +169,7 @@ function standardMaterials(
       roughness: 0.3,
     }),
     dark: new THREE.MeshStandardMaterial({
-      color: 0x0b1115,
+      color: 0x111b21,
       metalness: 0.62,
       roughness: 0.42,
     }),
@@ -316,16 +322,28 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   visual.name = 'KYX_VLR7_LINE_RIFLE_VISUAL';
 
   visual.add(
-    box(0.12, 0.13, 0.36, materials.armor, [0, 0.045, 0.04]),
-    box(0.1, 0.065, 0.42, materials.dark, [0, 0.14, -0.02]),
-    box(0.105, 0.11, 0.34, materials.dark, [0, 0.075, -0.34]),
+    box(0.13, 0.13, 0.36, materials.armor, [0, 0.045, 0.04]),
+    box(0.095, 0.052, 0.42, materials.dark, [0, 0.145, -0.02]),
+    cylinderZ(0.072, 0.064, 0.36, materials.armor, [0, 0.075, -0.34], 10),
     box(0.07, 0.028, 0.68, materials.metal, [0, 0.19, -0.14]),
     box(0.1, 0.105, 0.2, materials.armor, [0, 0.045, 0.31], [0.08, 0, 0]),
     box(0.075, 0.14, 0.12, materials.rubber, [0, 0.025, 0.44]),
+    box(0.052, 0.12, 0.07, materials.rubber, [0, -0.025, -0.36], [-0.08, 0, 0]),
+    box(0.012, 0.078, 0.18, materials.metal, [0.071, 0.078, 0.03], [0.02, 0, 0]),
+    box(0.012, 0.078, 0.18, materials.metal, [-0.071, 0.078, 0.03], [0.02, 0, 0]),
+    box(0.018, 0.024, 0.28, materials.dark, [0.075, 0.085, -0.35]),
+    box(0.018, 0.024, 0.28, materials.dark, [-0.075, 0.085, -0.35]),
+    box(0.065, 0.018, 0.14, materials.accent, [0.071, 0.035, -0.14]),
   );
   finPair(visual, materials.armor, -0.31, 0.072, 0.1, 0.24);
   ventBank(visual, materials.accent, -0.22, 4, 0.078, -0.059, 0.105);
   ventBank(visual, materials.accent, -0.22, 4, 0.078, 0.059, 0.105);
+  for (const z of [-0.22, -0.34, -0.46]) {
+    visual.add(torusZ(0.069, 0.008, materials.dark, [0, 0.075, z]));
+  }
+  for (const z of [-0.14, -0.04, 0.06, 0.16]) {
+    visual.add(box(0.075, 0.012, 0.045, materials.metal, [0, 0.181, z]));
+  }
 
   visual.add(
     cylinderZ(0.021, 0.021, 0.29, materials.metal, [0, 0.105, -0.64]),
@@ -776,7 +794,9 @@ export function createKyxWeaponPresentationModel(
   const spec = KYX_AUTHORITY_WEAPON_PRESENTATION[authorityWeaponId];
   const materials = standardMaterials(
     spec.accent,
-    authorityWeaponId === 'kyx_sidearm_v1'
+    authorityWeaponId === 'vertical_rifle_v1'
+      ? 0x3a515b
+      : authorityWeaponId === 'kyx_sidearm_v1'
       ? 0x303941
       : authorityWeaponId === 'kyx_longshot_v1'
         ? 0x33434b
@@ -793,6 +813,15 @@ export function createKyxWeaponPresentationModel(
   group.userData.weaponSilhouette = spec.silhouette;
   group.userData.muzzleNodeName = built.muzzle.name;
   group.add(built.visual);
+  const firstPersonContact = presentation === 'first_person'
+    ? createKyxFirstPersonContactRig(authorityWeaponId)
+    : null;
+  if (firstPersonContact !== null) {
+    group.add(firstPersonContact.root);
+  }
+  group.userData.firstPersonContactMode =
+    firstPersonContact?.root.userData.contactMode ?? 'none';
+  group.userData.firstPersonHandCount = firstPersonContact?.handCount ?? 0;
 
   group.traverse((object) => {
     if (!(object as THREE.Mesh).isMesh) return;
@@ -831,6 +860,8 @@ export function createKyxWeaponPresentationModel(
     group,
     muzzle: built.muzzle,
     backblast: built.backblast ?? null,
+    firstPersonContactRig: firstPersonContact?.root ?? null,
+    firstPersonHandCount: firstPersonContact?.handCount ?? 0,
     movingParts: built.movingParts,
     fireImpulse: 0,
     reloadMix: 0,
