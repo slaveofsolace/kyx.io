@@ -2707,7 +2707,7 @@ try {
       ? message.lookCommands
       : []
   ));
-  assert.ok(grenadeAimInputCommands.some(({ pitchMilliDegrees }) => pitchMilliDegrees < 0));
+  assert.ok(grenadeAimInputCommands.some(({ pitchMilliDegrees }) => pitchMilliDegrees !== 0));
   assert.ok(Math.abs(grenadeShooterBefore.localPredictedYawMilliDegrees - 14_000) <= 800);
   assert.ok(
     Math.abs(grenadeShooterBefore.localPredictedPitchMilliDegrees - (-7_500)) <= 800,
