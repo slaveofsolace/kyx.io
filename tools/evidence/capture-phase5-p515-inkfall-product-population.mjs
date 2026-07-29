@@ -193,8 +193,8 @@ const rev5ExpectedBinding = Object.freeze({
     role: 'render_only',
     path:
       'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
-    sha256: '7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3',
-    bytes: 3_232_668,
+    sha256: '1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad',
+    bytes: 2_689_992,
     renderMeshesMayBeAuthority: false,
   }),
   portal: Object.freeze({

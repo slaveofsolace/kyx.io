@@ -2621,6 +2621,7 @@ body[data-ui-system="cutline-v1"] .online-session__reticle {
   width: 19px;
   height: 19px;
   transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 body[data-ui-system="cutline-v1"] .online-session__reticle::before,

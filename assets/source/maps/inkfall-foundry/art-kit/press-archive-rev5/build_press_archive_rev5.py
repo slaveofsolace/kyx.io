@@ -893,10 +893,10 @@ def tune_material_values(
 ) -> dict[str, Any]:
     values = rev4.tune_rev4_material_values(materials)
     overrides = {
-        "V3_USED_CERAMIC": ((0.50, 0.52, 0.52, 1.0), 0.02, 0.62),
-        "V3_WORN_STEEL": ((0.26, 0.315, 0.325, 1.0), 0.46, 0.43),
-        "V3_CAST_IRON": ((0.13, 0.17, 0.18, 1.0), 0.34, 0.50),
-        "V3_INK_BLACK": ((0.055, 0.08, 0.09, 1.0), 0.10, 0.63),
+        "V3_USED_CERAMIC": ((0.56, 0.58, 0.59, 1.0), 0.02, 0.62),
+        "V3_WORN_STEEL": ((0.32, 0.38, 0.40, 1.0), 0.46, 0.43),
+        "V3_CAST_IRON": ((0.18, 0.23, 0.24, 1.0), 0.34, 0.50),
+        "V3_INK_BLACK": ((0.08, 0.115, 0.125, 1.0), 0.10, 0.63),
         "V3_AQUA_INDICATOR": ((0.05, 0.62, 0.69, 1.0), 0.12, 0.25),
         "V3_WORN_AMBER": ((0.76, 0.40, 0.07, 1.0), 0.18, 0.36),
     }
@@ -1169,6 +1169,7 @@ def build_connected_bridge(
     aqua = materials["V3_AQUA_INDICATOR"]
     zone = "archive_rise"
     support_count = 0
+    support_pair_count = 0
     joint_count = 0
     rail_post_count = 0
 
@@ -1246,9 +1247,11 @@ def build_connected_bridge(
             # Posts only at structural segment boundaries keep the continuous
             # rails safe while opening combat sightlines. Mid-span pickets read
             # as construction scaffold rather than finished bridge hardware.
-            fractions = (0.0, 1.0)
-            if segment_index > 0:
-                fractions = fractions[1:]
+            fractions: tuple[float, ...] = ()
+            if segment_index == 0:
+                fractions += (0.0,)
+            if segment_index == len(ROUTE_POINTS) - 2:
+                fractions += (1.0,)
             for post_index, fraction in enumerate(fractions):
                 sample = interpolate(edge_start, edge_end, fraction)
                 add_beam(
@@ -1274,6 +1277,7 @@ def build_connected_bridge(
                 materials,
                 f"P{support_index}",
             )
+            support_pair_count += 1
 
     for joint_index, point in enumerate(ROUTE_POINTS[1:-1], start=1):
         incoming = path_side(ROUTE_POINTS[joint_index - 1], point)
@@ -1290,45 +1294,17 @@ def build_connected_bridge(
             zone,
             "miter_joint_collar",
         )
-        for token, endpoint in (("L", left), ("R", right)):
-            add_box(
-                f"V5_BRIDGE_JOINT_{joint_index}_FRAME_POST_{token}",
-                (0.36, 0.36, 2.78),
-                (endpoint[0], endpoint[1], endpoint[2] + 1.31),
-                cast,
-                zone,
-                "rooted_transition_frame",
-                bevel=0.045,
-            )
-            add_box(
-                f"V5_BRIDGE_JOINT_{joint_index}_FRAME_SHOE_{token}",
-                (0.78, 0.78, 0.20),
-                (endpoint[0], endpoint[1], endpoint[2] + 0.02),
-                steel,
-                zone,
-                "rooted_transition_frame",
-                bevel=0.055,
-            )
-        add_beam(
-            f"V5_BRIDGE_JOINT_{joint_index}_FRAME_CROWN",
-            (left[0], left[1], left[2] + 2.62),
-            (right[0], right[1], right[2] + 2.62),
-            0.17,
-            cast,
-            zone,
-            "rooted_transition_frame",
-            vertices=14,
-        )
-        joint_count += 6
+        joint_count += 1
 
     return {
         "segmentCount": len(ROUTE_POINTS) - 1,
         "supportComponentCount": support_count,
+        "supportPairCount": support_pair_count,
         "jointComponentCount": joint_count,
         "railPostCount": rail_post_count,
         "continuousPrimaryDeck": True,
         "railsRootedToDeckGirders": True,
-        "transitionFramesRootedToDeck": True,
+        "jointSillsRootedToDeck": True,
     }
 
 
@@ -1384,8 +1360,8 @@ def build_supported_landing(
         add_beam(
             f"V5_ARCHIVE_SUPPORT_COLUMN_{index}",
             (x, y, 0.02),
-            (x, y, 5.42),
-            0.12,
+            (x, y, 10.35),
+            0.14,
             cast,
             zone,
             "landing_load_support",
@@ -1434,54 +1410,19 @@ def build_supported_landing(
             bevel=0.006,
         )
 
-    # A rooted overhead service gantry replaces the Rev4 floating trim.
-    gantry_points = (
-        (-25.45, 16.1),
-        (-18.55, 16.1),
-        (-25.45, 21.9),
-        (-18.55, 21.9),
+    # The four continuous load columns now carry the restrained overhead pair;
+    # no second post/shoe/crown cage competes with the combat route.
+    gantry_bars = (
+        ("S", (-25.35, 16.2, 10.3), (-18.65, 16.2, 10.3)),
+        ("N", (-25.35, 21.8, 10.3), (-18.65, 21.8, 10.3)),
     )
-    for index, (x, y) in enumerate(gantry_points):
+    for token, start, end in gantry_bars:
         add_beam(
-            f"V5_ARCHIVE_GANTRY_POST_{index}",
-            (x, y, 6.0),
-            (x, y, 10.35),
-            0.10,
-            cast,
-            zone,
-            "rooted_archive_gantry",
-        )
-        add_box(
-            f"V5_ARCHIVE_GANTRY_SHOE_{index}",
-            (0.5, 0.5, 0.17),
-            (x, y, 6.085),
-            steel,
-            zone,
-            "rooted_archive_gantry",
-            bevel=0.03,
-        )
-    for token, start, end in (
-        ("S", (-25.45, 16.1, 10.3), (-18.55, 16.1, 10.3)),
-        ("N", (-25.45, 21.9, 10.3), (-18.55, 21.9, 10.3)),
-        ("W", (-25.45, 16.1, 10.3), (-25.45, 21.9, 10.3)),
-        ("E", (-18.55, 16.1, 10.3), (-18.55, 21.9, 10.3)),
-    ):
-        add_beam(
-            f"V5_ARCHIVE_GANTRY_CROWN_{token}",
+            f"V5_ARCHIVE_GANTRY_BAR_{token}",
             start,
             end,
-            0.105,
+            0.13,
             cast,
-            zone,
-            "rooted_archive_gantry",
-        )
-    for x in (-24.2, -19.7):
-        add_beam(
-            f"V5_ARCHIVE_GANTRY_CROSS_{x}",
-            (x, 16.1, 10.23),
-            (x, 21.9, 10.23),
-            0.062,
-            steel,
             zone,
             "rooted_archive_gantry",
         )
@@ -1564,7 +1505,7 @@ def build_supported_landing(
     return {
         "supportColumnCount": len(support_points),
         "underdeckBraceCount": 2,
-        "gantryPostCount": len(gantry_points),
+        "gantryBarCount": len(gantry_bars),
         "contextWallBaseMeters": 6.0,
         "landingFloorTopMeters": 6.0,
         "allPrimaryLoadsReachFoundationOrDeck": True,
@@ -1607,18 +1548,17 @@ def build_cc0_donor_service_language(
             )
         ).normalized()
         tangent_angle = math.atan2(tangent.y, tangent.x)
-        # The rooted procedural joint frame already carries this load. The
-        # former four donor trusses duplicated its silhouette and read as
-        # detached scaffold clutter from the player route.
+        # Keep one small service light physically attached below each joint
+        # sill. The former overhead frame/light stack read as floating scaffold.
         import_geometry_donor(
             "Prop_Light_Wide",
-            f"V5_DONOR_BRIDGE_JOINT_{joint_index}_CROWN_LIGHT",
-            (point[0], point[1], point[2] + 2.48),
-            (1.1, 1.1, 1.1),
+            f"V5_DONOR_BRIDGE_JOINT_{joint_index}_SILL_LIGHT",
+            (point[0], point[1], point[2] - 0.24),
+            (0.72, 0.72, 0.72),
             (0.0, 0.0, tangent_angle + math.pi / 2.0),
             amber,
             "archive_rise",
-            "donor_attached_route_light",
+            "donor_attached_joint_sill_light",
             instance_records,
             anchor="center",
         )
@@ -1688,19 +1628,19 @@ def portal_energy_material(
 ) -> bpy.types.Material:
     material = base.copy()
     material.name = f"V5_PORTAL_ENERGY_{endpoint_id.upper()}"
-    color = tuple(base.diffuse_color[:3]) + (0.30,)
+    color = tuple(base.diffuse_color[:3]) + (0.46,)
     material.diffuse_color = color
     if material.use_nodes:
         principled = material.node_tree.nodes.get("Principled BSDF")
         if principled is not None:
             principled.inputs["Base Color"].default_value = color
-            principled.inputs["Alpha"].default_value = 0.30
+            principled.inputs["Alpha"].default_value = 0.46
             emission_color = principled.inputs.get("Emission Color")
             if emission_color is not None:
                 emission_color.default_value = tuple(color[:3]) + (1.0,)
             emission_strength = principled.inputs.get("Emission Strength")
             if emission_strength is not None:
-                emission_strength.default_value = 1.40
+                emission_strength.default_value = 1.85
     if hasattr(material, "surface_render_method"):
         material.surface_render_method = "DITHERED"
     material.use_backface_culling = False
@@ -1813,22 +1753,6 @@ def build_portal_endpoint(
         "donor_portal_teleporter_base",
         instance_records,
     )
-    frame_meshes = import_geometry_donor(
-        PORTAL_FRAME_DONOR_ID,
-        f"V5_DONOR_PORTAL_{endpoint_token}_FRAME",
-        (center.x, center.y, floor - 1.293),
-        (2.48, 3.0, 1.65),
-        (0.0, 0.0, 0.0),
-        steel,
-        zone,
-        "authoritative_portal_landmark",
-        instance_records,
-    )
-    for frame in frame_meshes:
-        frame["kyx_portal_endpoint_id"] = endpoint["id"]
-        frame["kyx_portal_partner_id"] = endpoint["partnerId"]
-        frame["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
-
     import_geometry_donor(
         "Prop_Light_Wide",
         f"V5_DONOR_PORTAL_{endpoint_token}_HEADER_LIGHT",
@@ -1853,75 +1777,65 @@ def build_portal_endpoint(
         instance_records,
     )
 
-    # The field, guide rings, and turbine arms form one connected aperture.
-    # The translucent dodecagonal field eliminates the black-center/floating
-    # ring reading without becoming an opaque billboard.
-    energy_objects: list[bpy.types.Object] = [
-        add_portal_energy_field(
-            f"V5_PORTAL_{endpoint_token}_ACTIVE_FIELD",
-            center,
-            1.04,
-            energy,
-            zone,
-        )
-    ]
-    guide_ring_specs = (
-        (1.10, 0.045),
-        (0.69, 0.022),
+    # One translucent field and one attached six-piece collar replace the
+    # donor gateway, nested rings, and turbine filaments. This keeps the linked
+    # destination readable without producing a flat fan or stacked-logo shape.
+    energy_field = add_portal_energy_field(
+        f"V5_PORTAL_{endpoint_token}_ACTIVE_FIELD",
+        center,
+        1.04,
+        energy,
+        zone,
     )
-    for ring_index, (major_radius, minor_radius) in enumerate(guide_ring_specs):
-        energy_objects.append(
-            add_torus(
-                f"V5_PORTAL_{endpoint_token}_GUIDE_RING_{ring_index}",
-                major_radius,
-                minor_radius,
-                (center.x, center.y + 0.034, center.z),
-                energy,
-                zone,
-                "portal_energy_filament_vfx_hook",
-                rotation=(math.pi / 2.0, 0.0, 0.0),
-            )
+    collar_segments: list[bpy.types.Object] = []
+    collar_radius = 1.22
+    for segment_index in range(6):
+        start_angle = math.tau * segment_index / 6.0
+        end_angle = math.tau * (segment_index + 1) / 6.0
+        start = (
+            center.x + math.cos(start_angle) * collar_radius,
+            center.y,
+            center.z + math.sin(start_angle) * collar_radius,
         )
-    for filament_index in range(6):
-        outer_angle = math.tau * filament_index / 6.0
-        curve_points: list[tuple[float, float, float]] = []
-        for step in range(6):
-            fraction = step / 5.0
-            radius = 1.08 * (1.0 - fraction) + 0.30 * fraction
-            angle = outer_angle + fraction * 0.72
-            curve_points.append(
-                (
-                    center.x + math.cos(angle) * radius,
-                    center.y + 0.026 + fraction * 0.014,
-                    center.z + math.sin(angle) * radius,
-                )
-            )
-        energy_objects.append(
-            add_portal_energy_curve(
-                f"V5_PORTAL_{endpoint_token}_VORTEX_ARM_{filament_index}",
-                curve_points,
-                0.018,
-                energy,
+        end = (
+            center.x + math.cos(end_angle) * collar_radius,
+            center.y,
+            center.z + math.sin(end_angle) * collar_radius,
+        )
+        collar_segments.append(
+            add_beam(
+                f"V5_PORTAL_{endpoint_token}_COLLAR_{segment_index}",
+                start,
+                end,
+                0.11,
+                steel if segment_index in (0, 3) else cast,
                 zone,
+                "portal_attached_collar",
+                vertices=12,
             )
         )
 
-    for surface in energy_objects:
-        surface["kyx_vfx_departure_hook"] = (
-            f"inkfall.portal.{endpoint['id']}.energy_departure"
-        )
-        surface["kyx_vfx_arrival_hook"] = (
-            f"inkfall.portal.{endpoint['id']}.energy_arrival"
-        )
-        surface["kyx_audio_departure_hook"] = (
-            f"inkfall.portal.{endpoint['id']}.departure"
-        )
-        surface["kyx_audio_arrival_hook"] = (
-            f"inkfall.portal.{endpoint['id']}.arrival"
-        )
+    for surface in [energy_field, *collar_segments]:
+        surface["kyx_portal_endpoint_id"] = endpoint["id"]
+        surface["kyx_portal_partner_id"] = endpoint["partnerId"]
+        surface["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
+    energy_field["kyx_vfx_departure_hook"] = (
+        f"inkfall.portal.{endpoint['id']}.energy_departure"
+    )
+    energy_field["kyx_vfx_arrival_hook"] = (
+        f"inkfall.portal.{endpoint['id']}.energy_arrival"
+    )
+    energy_field["kyx_audio_departure_hook"] = (
+        f"inkfall.portal.{endpoint['id']}.departure"
+    )
+    energy_field["kyx_audio_arrival_hook"] = (
+        f"inkfall.portal.{endpoint['id']}.arrival"
+    )
 
     for side_index, sign in enumerate((-1.0, 1.0)):
-        x = center.x + sign * 1.66
+        # These piers overlap the collar at its widest point and continue into
+        # the floor plinths, so the portal reads as one load-bearing machine.
+        x = center.x + sign * 1.32
         add_box(
             f"V5_PORTAL_{endpoint_token}_PLINTH_{side_index}",
             (0.68, 0.86, 0.20),
@@ -1933,8 +1847,8 @@ def build_portal_endpoint(
         )
         add_box(
             f"V5_PORTAL_{endpoint_token}_SIDE_PIER_{side_index}",
-            (0.34, 0.58, 1.28),
-            (x, center.y, floor + 0.72),
+            (0.38, 0.58, 1.76),
+            (x, center.y, floor + 0.88),
             cast,
             zone,
             "portal_grounded_pier",
@@ -1992,11 +1906,11 @@ def build_portal_endpoint(
         "exitYawMilliDegrees": endpoint["exitYawMilliDegrees"],
         "visualCenterBlenderMeters": list(endpoint["visualCenterBlenderMeters"]),
         "groundedSupportCount": 4,
-        "donorGatewayFrameCount": 1,
+        "donorGatewayFrameCount": 0,
         "donorTeleporterBaseCount": 1,
-        "energyGuideRingCount": len(guide_ring_specs),
+        "authoredCollarSegmentCount": len(collar_segments),
         "translucentEnergyFieldCount": 1,
-        "energyFilamentCount": len(energy_objects),
+        "energySurfaceCount": 1,
         "exitChevronCount": 3,
         "noOpaqueEnergyBillboard": True,
         "renderOnly": True,
@@ -2274,7 +2188,6 @@ def audit_new_support_bounds_against_travel_lane() -> dict[str, Any]:
         "rooted_archive_gantry",
         "rooted_archive_rack",
         "rooted_transition_frame",
-        "donor_bridge_frame",
         "donor_rooted_service_riser",
         "donor_rooted_service_bank",
         "supported_context_wall",
@@ -2562,7 +2475,7 @@ def main() -> None:
         "cc0DonorInstancesRemainRenderOnly": (
             donor_service_language["instanceCount"] == 8
             and len(donor_instances)
-            == donor_service_language["instanceCount"] + 8
+            == donor_service_language["instanceCount"] + 6
             and all(
                 item["renderOnly"]
                 and item["collisionAuthority"] is False
@@ -2592,14 +2505,16 @@ def main() -> None:
         ),
         "bridgeLoadsVisiblySupported": (
             bridge["supportComponentCount"] == 15
-            and bridge["jointComponentCount"] == 12
-            and bridge["railPostCount"] == 8
-            and bridge["transitionFramesRootedToDeck"]
+            and bridge["supportPairCount"] == 3
+            and bridge["jointComponentCount"] == 2
+            and bridge["railPostCount"] == 4
+            and bridge["jointSillsRootedToDeck"]
         ),
         "railsAttachedToGirders": bridge["railsRootedToDeckGirders"],
         "landingLoadsVisiblySupported": (
             landing["supportColumnCount"] == 4
             and landing["underdeckBraceCount"] == 2
+            and landing["gantryBarCount"] == 2
             and landing["allPrimaryLoadsReachFoundationOrDeck"]
         ),
         "landingTopPreservesAuthorityAlignment": (
@@ -2608,16 +2523,16 @@ def main() -> None:
         "pairedPortalLandmarkPresent": (
             len(portals) == 2
             and all(item["groundedSupportCount"] == 4 for item in portals)
-            and all(item["donorGatewayFrameCount"] == 1 for item in portals)
+            and all(item["donorGatewayFrameCount"] == 0 for item in portals)
             and all(item["donorTeleporterBaseCount"] == 1 for item in portals)
-            and all(item["energyGuideRingCount"] == 2 for item in portals)
+            and all(item["authoredCollarSegmentCount"] == 6 for item in portals)
             and all(item["translucentEnergyFieldCount"] == 1 for item in portals)
-            and all(item["energyFilamentCount"] == 9 for item in portals)
+            and all(item["energySurfaceCount"] == 1 for item in portals)
             and all(item["noOpaqueEnergyBillboard"] for item in portals)
         ),
         "portalExitOffsetsPreventPingPong": exit_offsets_safe,
         "portalPresentationHooksDeclared": (
-            family_counts.get("portal_energy_filament_vfx_hook", 0) == 18
+            family_counts.get("portal_energy_filament_vfx_hook", 0) == 2
         ),
         "modularExportExcludesParentMeshes": (
             len(selected_export_nodes) == facts["rev5JoinedMeshCount"]

@@ -41,10 +41,11 @@ The portal authority overlay uses the existing movement-state teleport
 cooldown, collision/volume checks, and semantic teleport events. Its exits are
 outside the partner trigger, destination blockage fails closed, and the
 reliable `world_portal_traversed` event carries arrival/departure audio and VFX
-hooks. The render-only portal presentation is an open hexagonal authored frame
-on a grounded machine pad, with a contained concentric turbine field rather
-than the rejected oversized hanging ring or loose-ended spiral. Rev5 does not
-create an independent audio context.
+hooks. The render-only portal presentation is one translucent field inside a
+six-piece authored collar on a grounded CC0 machine pad. The oversized donor
+gateway, nested guide rings, and loose-ended turbine spiral remain in the
+provenance inventory but are not instantiated. Rev5 does not create an
+independent audio context.
 
 Build from the repository root:
 

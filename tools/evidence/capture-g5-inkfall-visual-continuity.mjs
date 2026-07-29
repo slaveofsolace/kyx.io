@@ -14,7 +14,7 @@ const FIXTURE_HASH = '97eb7772ac59dc95';
 const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
 const PRESENTATION_SHA256 =
-  '7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3';
+  '1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad';
 const FRONTEND_PORT = 6_247;
 const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
@@ -598,6 +598,17 @@ try {
     await page.keyboard.up('Enter').catch(() => undefined);
   }
   assert.notEqual(firing, null);
+  await page.waitForFunction(() => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    const local = value?.combat.snapshot?.players.find(
+      ({ playerId }) => playerId === value.playerId,
+    );
+    const weapon = local?.weapons?.find(
+      ({ weaponId }) => weaponId === local.selectedWeaponId,
+    );
+    return weapon?.phase === 'ready'
+      && (weapon.magazineRounds ?? 50) < 50;
+  }, undefined, { timeout: 15_000 });
   const reloadPresentationCountBefore = (
     await snapshot(page)
   ).render3d.reloadPresentationCount;

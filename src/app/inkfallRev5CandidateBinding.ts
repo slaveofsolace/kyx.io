@@ -17,12 +17,12 @@ import {
 
 export const INKFALL_REV5_CANDIDATE_ART = Object.freeze({
   revision: '5.0',
-  bytes: 3_232_668,
-  sha256: '7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3',
+  bytes: 2_689_992,
+  sha256: '1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad',
   nodeCount: 24,
   meshCount: 24,
   primitiveCount: 24,
-  triangleCount: 55_252,
+  triangleCount: 44_748,
   materialCount: 11,
 } as const);
 

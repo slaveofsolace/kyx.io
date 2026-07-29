@@ -61,13 +61,14 @@ function standardMaterial(
     emissiveIntensity?: number;
   }> = {},
 ): THREE.MeshStandardMaterial {
-  return new THREE.MeshStandardMaterial({
+  const parameters: THREE.MeshStandardMaterialParameters = {
     color,
     metalness,
     roughness,
-    emissive,
     emissiveIntensity,
-  });
+  };
+  if (emissive !== undefined) parameters.emissive = emissive;
+  return new THREE.MeshStandardMaterial(parameters);
 }
 
 /**
