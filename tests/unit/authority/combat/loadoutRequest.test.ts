@@ -57,14 +57,18 @@ function parityTrace() {
 }
 
 describe('P5.8C authoritative loadout request boundary', () => {
-  it('derives one recursively frozen selection from the active ruleset vertical slice', () => {
+  it('derives the recursively frozen default Assault preset from the active ruleset', () => {
     expect(authoritativeLoadout).toEqual({
       schemaVersion: 1,
       rulesetId: 'revamped_classic',
       rulesetRevision: 2,
+      presetId: 'assault',
+      helmetVariantId: 'assault',
       primaryWeaponId: 'vertical_rifle_v1',
+      primaryWeaponFamily: 'rifle',
+      primaryWeaponSlot: 0,
       secondaryWeaponId: null,
-      meleeWeaponId: 'vertical_melee_v1',
+      meleeWeaponId: 'kyx_edge_v1',
       damageAbilityIds: [
         'vertical_impulse_grenade_v1',
         'smoke_grenade_v1',
@@ -97,7 +101,7 @@ describe('P5.8C authoritative loadout request boundary', () => {
   });
 
   it('pins the same canonical decision hash for Node and the Worker isolate', () => {
-    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('8d0719d26ae027c2');
+    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('0d1aec7c4c6c46ca');
   });
 
   it('uses payload-only idempotency fingerprints and keeps schema abuse outside authority state', () => {

@@ -3,6 +3,7 @@ import { loadArmorType } from '../player/ArmorTypes.js';
 import { GameSettings } from '../core/GameSettings.js';
 import { GAME_MODES } from '../core/GameModes.js';
 import { GUNS, MELEE, Loadout } from '../core/Loadout.js';
+import { COMBAT_PRESETS } from '../loadouts/combatPresets.ts';
 import { ControllerMenuNavigator } from './ControllerNavigation.js';
 import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
 
@@ -378,19 +379,28 @@ export class MenuUI {
     grid?.replaceChildren();
     if (!grid) return;
 
+    const currentPreset = Loadout.getCombatPreset();
     const currentGun = Loadout.getGun();
     const currentMelee = Loadout.getMelee();
     const abilitySlots = Loadout.getAbilityUiSlots();
-    const selectableAbilities = Loadout.getSelectableAbilities();
     if (equipped) {
       const gun = GUNS.find((weapon) => weapon.id === currentGun);
       const melee = MELEE.find((weapon) => weapon.id === currentMelee);
+      const roleChip = document.createElement('div');
+      roleChip.className = 'local-loadout-chip';
+      roleChip.dataset.combatPresetId = currentPreset.id;
+      roleChip.textContent = `${currentPreset.displayName} · ${currentPreset.roleLabel}`;
+      equipped.appendChild(roleChip);
       for (const [label, weapon] of [['Primary', gun], ['Melee', melee]]) {
         const chip = document.createElement('div');
         chip.className = 'local-loadout-chip';
         chip.textContent = `${label} · ${weapon?.name ?? 'Default'}`;
         equipped.appendChild(chip);
       }
+      const helmetChip = document.createElement('div');
+      helmetChip.className = 'local-loadout-chip';
+      helmetChip.textContent = `Helmet · ${currentPreset.helmetVariantId}`;
+      equipped.appendChild(helmetChip);
       for (const slot of abilitySlots) {
         const chip = document.createElement('div');
         chip.className = 'local-loadout-chip';
@@ -399,24 +409,30 @@ export class MenuUI {
       }
     }
 
-    const renderGroup = (heading, weapons, selectedId, select) => {
-      const headingNode = document.createElement('div');
-      headingNode.className = 'inv-section-label';
-      headingNode.textContent = heading;
-      grid.appendChild(headingNode);
-      for (const weapon of weapons) {
-        const button = document.createElement('button');
-        button.className = `local-loadout-option${weapon.id === selectedId ? ' equipped' : ''}`;
-        button.textContent = `${weapon.name}${weapon.id === selectedId ? ' · Equipped' : ''}`;
-        button.addEventListener('click', () => {
-          select(weapon.id);
-          this._renderLocalLoadout();
-        });
-        grid.appendChild(button);
-      }
-    };
-    renderGroup('Primary weapon', GUNS, currentGun, (id) => Loadout.setGun(id));
-    renderGroup('Melee weapon', MELEE, currentMelee, (id) => Loadout.setMelee(id));
+    const presetHeading = document.createElement('div');
+    presetHeading.className = 'inv-section-label';
+    presetHeading.textContent = 'Combat preset · weapon, abilities, and helmet';
+    grid.appendChild(presetHeading);
+    for (const preset of COMBAT_PRESETS) {
+      const selected = preset.id === currentPreset.id;
+      const primary = GUNS.find((weapon) => weapon.id === preset.offlinePrimaryWeaponId);
+      const button = document.createElement('button');
+      button.className = `local-loadout-option${selected ? ' equipped' : ''}`;
+      button.dataset.combatPresetId = preset.id;
+      button.setAttribute('aria-pressed', String(selected));
+      button.title = preset.description;
+      button.textContent = [
+        `${preset.displayName} / ${preset.roleLabel}`,
+        primary?.name ?? preset.offlinePrimaryWeaponId,
+        `${preset.helmetVariantId} helmet`,
+        selected ? 'Equipped' : null,
+      ].filter(Boolean).join(' · ');
+      button.addEventListener('click', () => {
+        Loadout.setCombatPreset(preset.id);
+        this._renderLocalLoadout();
+      });
+      grid.appendChild(button);
+    }
 
     const blinkHeading = document.createElement('div');
     blinkHeading.className = 'inv-section-label';
@@ -433,23 +449,16 @@ export class MenuUI {
     for (const slot of abilitySlots.slice(1)) {
       const heading = document.createElement('div');
       heading.className = 'inv-section-label';
-      heading.textContent = `Ability slot ${slot.slot} · ${slot.inputLabel}`;
+      heading.textContent = `Preset ability · ${slot.inputLabel}`;
       grid.appendChild(heading);
-      for (const ability of selectableAbilities) {
-        const selected = ability.id === slot.ability.id;
-        const button = document.createElement('button');
-        button.className = `local-loadout-option${selected ? ' equipped' : ''}`;
-        button.dataset.abilitySlot = String(slot.slot);
-        button.dataset.abilityId = ability.id;
-        button.setAttribute('aria-pressed', String(selected));
-        button.title = ability.description;
-        button.textContent = `${ability.displayName}${selected ? ' · Equipped' : ''}`;
-        button.addEventListener('click', () => {
-          Loadout.setAbilitySlot(slot.slot, ability.id);
-          this._renderLocalLoadout();
-        });
-        grid.appendChild(button);
-      }
+      const button = document.createElement('button');
+      button.className = 'local-loadout-option equipped';
+      button.disabled = true;
+      button.dataset.abilitySlot = String(slot.slot);
+      button.dataset.abilityId = slot.ability.id;
+      button.title = `${slot.ability.description} Change combat preset to change this slot.`;
+      button.textContent = `${slot.ability.displayName} · ${currentPreset.displayName}`;
+      grid.appendChild(button);
     }
   }
 

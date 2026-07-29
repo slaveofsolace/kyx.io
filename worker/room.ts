@@ -6,6 +6,7 @@ import {
   G4_COMBAT_RULESET_HASH,
   G4_COMBAT_RULESET_ID,
   G4_COMBAT_RULESET_REVISION,
+  assertAuthorityLoadoutSelection,
   authorityLoadoutFromRuleset,
   authorityLoadoutRequestFingerprint,
   createInkfallRev5PortalAuthorityPort,
@@ -25,6 +26,7 @@ import {
   decodeClientMessage,
   encodeServerMessage,
   type ErrorMessage,
+  type InputBatchMessage,
   type LoadoutRequestMessage,
   type LocalReconciliationStateV1,
   type MatchPhase,
@@ -1057,6 +1059,17 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           || !this.isCurrentSessionAttachment(rate.attachment, now)
         ) {
           safeSocketSend(webSocket, errorMessage('JOIN_REQUIRED'));
+          return;
+        }
+        const rejectedWeaponSlot = this.rejectedPresetWeaponSlot(
+          rate.attachment.playerId,
+          clientMessage,
+        );
+        if (rejectedWeaponSlot !== null) {
+          safeSocketSend(webSocket, errorMessage(
+            'INPUT_REJECTED',
+            `${rejectedWeaponSlot.sequence}:weapon_slot_not_in_preset`,
+          ));
           return;
         }
         try {
@@ -2735,6 +2748,16 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   }
 
   private applyPersistedPlayerLoadout(playerId: string): void {
+    const selection = this.persistedPlayerLoadout(playerId);
+    if (selection === null) return;
+    this.requireAuthority().setPlayerCombatLoadout(
+      playerId,
+      selection.damageAbilityIds,
+      selection.primaryWeaponSlot,
+    );
+  }
+
+  private persistedPlayerLoadout(playerId: string): AuthorityLoadoutSelectionV1 | null {
     const row = [...this.ctx.storage.sql.exec<PlayerLoadoutRow>(
       `SELECT selection_json
        FROM room_player_loadouts_v1
@@ -2742,26 +2765,43 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
        LIMIT 1`,
       playerId,
     )][0] ?? null;
-    if (row === null) return;
-    let selection: AuthorityLoadoutSelectionV1;
+    if (row === null) return null;
+    let parsed: unknown;
     try {
-      selection = JSON.parse(row.selection_json) as AuthorityLoadoutSelectionV1;
+      parsed = JSON.parse(row.selection_json);
     } catch {
       throw new Error('PERSISTED_LOADOUT_JSON_INVALID');
     }
     const authoritative = this.requireAuthoritativeLoadout();
-    if (
-      selection === null
-      || typeof selection !== 'object'
-      || selection.schemaVersion !== 1
-      || selection.rulesetId !== authoritative.rulesetId
-      || selection.rulesetRevision !== authoritative.rulesetRevision
-      || !Array.isArray(selection.damageAbilityIds)
-      || selection.damageAbilityIds.length !== 3
-    ) {
+    try {
+      return assertAuthorityLoadoutSelection(parsed, {
+        id: authoritative.rulesetId,
+        revision: authoritative.rulesetRevision,
+      });
+    } catch {
       throw new Error('PERSISTED_LOADOUT_SELECTION_INVALID');
     }
-    this.requireAuthority().setPlayerAbilityLoadout(playerId, selection.damageAbilityIds);
+  }
+
+  private rejectedPresetWeaponSlot(
+    playerId: string,
+    message: InputBatchMessage,
+  ): { readonly sequence: number; readonly slot: number } | null {
+    const selection = this.persistedPlayerLoadout(playerId)
+      ?? this.requireAuthoritativeLoadout();
+    for (const command of message.commands) {
+      if (
+        command.selectedSlot !== undefined
+        && command.selectedSlot !== selection.primaryWeaponSlot
+        && command.selectedSlot !== 5
+      ) {
+        return Object.freeze({
+          sequence: command.sequence,
+          slot: command.selectedSlot,
+        });
+      }
+    }
+    return null;
   }
 
   private loadoutRequestLedgerEntry(
@@ -2904,9 +2944,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         acceptedLoadout: decision.loadout,
       });
       if (decision.accepted) {
-        authority.setPlayerAbilityLoadout(
+        authority.setPlayerCombatLoadout(
           attachment.playerId,
           decision.loadout.damageAbilityIds,
+          decision.loadout.primaryWeaponSlot,
         );
       }
     } catch {

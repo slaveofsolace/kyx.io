@@ -46,6 +46,7 @@ export class WeaponSystem {
     this.keyMap = new Map();
     this._rebuildKeyMap();
     this.currentIndex = 0;
+    this.defaultIndex = 0;
     this.state = new Map();
     for (const w of this.allWeapons) {
       this.state.set(w.id, {
@@ -379,16 +380,22 @@ export class WeaponSystem {
     this.loadout.forEach((w, i) => this.keyMap.set(`Digit${i + 1}`, i));
   }
 
-  /** Set the active loadout to a single gun + single melee weapon. */
-  setLoadout(gunId, meleeId) {
+  /**
+   * Set the active loadout to one gun and one melee weapon. The optional
+   * opening weapon lets the Duelist spawn blade-first without reordering the
+   * stable keyboard slots (Digit1 gun, Digit2 melee).
+   */
+  setLoadout(gunId, meleeId, initialWeaponId = gunId) {
     const gun = this.allWeapons.find((w) => w.id === gunId && w.kind !== 'melee')
              || this.allWeapons.find((w) => w.kind !== 'melee');
     const melee = this.allWeapons.find((w) => w.id === meleeId && w.kind === 'melee')
                || this.allWeapons.find((w) => w.kind === 'melee');
     this.loadout = [gun, melee].filter(Boolean);
-    this.currentIndex = 0;
+    const initialIndex = this.loadout.findIndex((weapon) => weapon.id === initialWeaponId);
+    this.defaultIndex = initialIndex >= 0 ? initialIndex : 0;
+    this.currentIndex = this.defaultIndex;
     this._rebuildKeyMap();
-    this._setActiveModel(0);
+    this._setActiveModel(this.currentIndex);
   }
 
   // Swap the primary gun to a map-collected weapon, keeping the current melee,
@@ -397,7 +404,7 @@ export class WeaponSystem {
     const def = this.allWeapons.find((w) => w.id === gunId && w.kind !== 'melee');
     if (!def) return null;
     const melee = this.loadout.find((w) => w.kind === 'melee');
-    this.setLoadout(gunId, melee?.id);
+    this.setLoadout(gunId, melee?.id, gunId);
     const st = this.state.get(gunId);
     if (st) {
       st.magAmmo = def.magSize;
@@ -460,8 +467,8 @@ export class WeaponSystem {
   }
 
   resetState(baseFov) {
-    this.currentIndex = 0;
-    this._setActiveModel(0);
+    this.currentIndex = this.defaultIndex;
+    this._setActiveModel(this.currentIndex);
     for (const w of this.allWeapons) {
       const st = this.state.get(w.id);
       st.magAmmo = w.kind === 'melee' ? 0 : w.magSize;

@@ -549,7 +549,11 @@ export class Game {
     this.weaponSystem.setSkin(this.selectedSkin);
 
     // Equip exactly the chosen gun + melee for this match.
-    this.weaponSystem.setLoadout(Loadout.getGun(), Loadout.getMelee());
+    this.weaponSystem.setLoadout(
+      Loadout.getGun(),
+      Loadout.getMelee(),
+      Loadout.getInitialWeaponId(),
+    );
 
     this.player.name = name;
     this.player.skin = this.selectedSkin;

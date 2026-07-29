@@ -9,6 +9,7 @@ import {
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  authorityLoadoutForCombatPreset,
   authorityLoadoutFromRuleset,
   authorityLoadoutRequestFingerprint,
   createAuthorityLoadoutRequestMessage,
@@ -28,6 +29,10 @@ import {
   type LoadoutRequestMessage,
   type ServerMessage,
 } from '../../src/net';
+import {
+  G5_INKFALL_REV4_COMBAT_PROFILE,
+  P58D_COMBAT_PROFILE_HEADER,
+} from '../../worker/combatRuntime';
 import type { KyxAuthorityEnv } from '../../worker/env';
 
 const ALLOWED_ORIGIN = 'http://127.0.0.1:5173';
@@ -133,7 +138,11 @@ function waitForMessage(
     timeout = setTimeout(() => {
       cleanup();
       reject(new Error(
-        `Timed out waiting for ${label}; received ${probe.messages.map(({ type }) => type).join(', ')}`,
+        `Timed out waiting for ${label}; received ${probe.messages.map((message) => (
+          message.type === 'error'
+            ? `${message.type}:${message.code}:${message.detail ?? 'null'}`
+            : message.type
+        )).join(', ')}`,
       ));
     }, timeoutMilliseconds);
     probe.waiters.add(check);
@@ -178,10 +187,13 @@ function waitForProbe(
   });
 }
 
-async function createRoom(): Promise<RoomCreated> {
+async function createRoom(profile: string | null = null): Promise<RoomCreated> {
   const response = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
     method: 'POST',
-    headers: { Origin: ALLOWED_ORIGIN },
+    headers: {
+      Origin: ALLOWED_ORIGIN,
+      ...(profile === null ? {} : { [P58D_COMBAT_PROFILE_HEADER]: profile }),
+    },
   });
   if (response.status !== 201) throw new Error(`Room creation failed: ${response.status}`);
   return await response.json() as RoomCreated;
@@ -453,7 +465,79 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
     expect(stored).toEqual({ selections: 1, outcome: 'accepted' });
   });
 
+  it('accepts and persists the Breacher weapon slot on the Inkfall generalized armory', async () => {
+    const room = await createRoom(G5_INKFALL_REV4_COMBAT_PROFILE);
+    const probe = await connectSocket(room.socketPath);
+    await waitForType(probe, 'welcome');
+    sendClient(probe, joinMessage(room.roomCode, 'req.join.breacher', 'Breacher'));
+    const joined = await waitForType(
+      probe,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.breacher',
+    );
+
+    const breacher = authorityLoadoutForCombatPreset(
+      requireRuleset('revamped_classic', 3),
+      'breacher',
+    );
+    const request = createAuthorityLoadoutRequestMessage({
+      requestId: 'req.loadout.breacher',
+      loadout: breacher,
+    });
+    sendClient(probe, request);
+    expect(await waitForType(
+      probe,
+      'serverNotice',
+      ({ code, message }) => code === 'LOADOUT_ACCEPTED' && message === request.requestId,
+    )).toMatchObject({ code: 'LOADOUT_ACCEPTED' });
+
+    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
+    const stored = await runInDurableObject(stub, async (_instance, state) => (
+      [...state.storage.sql.exec<{ player_id: string; selection_json: string }>(
+        'SELECT player_id, selection_json FROM room_player_loadouts_v1',
+      )]
+    ));
+    expect(stored).toEqual([{
+      player_id: joined.playerId,
+      selection_json: JSON.stringify(breacher),
+    }]);
+
+    const second = await connectSocket(room.socketPath);
+    await waitForType(second, 'welcome');
+    sendClient(second, joinMessage(room.roomCode, 'req.join.breacher.peer', 'Peer'));
+    await waitForType(
+      second,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.breacher.peer',
+    );
+    sendClient(probe, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'inputBatch',
+      commands: [{
+        type: 'input',
+        sequence: 0,
+        clientTick: 0,
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 3,
+      }],
+    });
+    expect(await waitForType(
+      probe,
+      'error',
+      ({ code, detail }) => (
+        code === 'INPUT_REJECTED'
+        && detail === '0:weapon_slot_not_in_preset'
+      ),
+    )).toMatchObject({ code: 'INPUT_REJECTED' });
+  });
+
   it('matches the Node decision-trace pin inside the Worker isolate', () => {
-    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('8d0719d26ae027c2');
+    expect(hashAuthorityLoadoutDecisionTrace(parityTrace())).toBe('0d1aec7c4c6c46ca');
   });
 });

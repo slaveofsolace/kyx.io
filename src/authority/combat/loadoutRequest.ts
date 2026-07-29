@@ -5,10 +5,17 @@ import {
 } from '../../net';
 import {
   ABILITY_ID,
-  DEFAULT_ABILITY_LOADOUT,
-  SELECTABLE_ABILITY_IDS,
   type SelectableAbilityId,
 } from '../../abilities/abilityLoadout';
+import {
+  DEFAULT_COMBAT_PRESET,
+  combatPresetById,
+  combatPresetForAuthorityPrimaryWeapon,
+  type CombatHelmetVariantId,
+  type CombatPresetId,
+  type CombatPresetV1,
+  type CombatPresetWeaponFamily,
+} from '../../loadouts';
 
 export const AUTHORITY_LOADOUT_REQUEST_SCHEMA_VERSION = 1 as const;
 
@@ -25,7 +32,11 @@ export interface AuthorityLoadoutSelectionV1 {
   readonly schemaVersion: 1;
   readonly rulesetId: string;
   readonly rulesetRevision: number;
+  readonly presetId: CombatPresetId;
+  readonly helmetVariantId: CombatHelmetVariantId;
   readonly primaryWeaponId: string;
+  readonly primaryWeaponFamily: CombatPresetWeaponFamily;
+  readonly primaryWeaponSlot: 0 | 2 | 3 | 5;
   readonly secondaryWeaponId: null;
   readonly meleeWeaponId: string;
   readonly damageAbilityIds: readonly [
@@ -66,21 +77,90 @@ export type AuthorityLoadoutRequestDecisionV1 =
 export function authorityLoadoutFromRuleset(
   ruleset: Pick<RulesetContentV1, 'id' | 'revision' | 'verticalSlice'>,
 ): AuthorityLoadoutSelectionV1 {
-  const damageAbilityIds = Object.freeze([
-    DEFAULT_ABILITY_LOADOUT.slots[1],
-    DEFAULT_ABILITY_LOADOUT.slots[2],
-    DEFAULT_ABILITY_LOADOUT.slots[3],
-  ]) as readonly [SelectableAbilityId, SelectableAbilityId, SelectableAbilityId];
+  return authorityLoadoutForCombatPreset(ruleset, DEFAULT_COMBAT_PRESET.id);
+}
+
+function selectionForPreset(
+  ruleset: Pick<RulesetContentV1, 'id' | 'revision'>,
+  preset: CombatPresetV1,
+): AuthorityLoadoutSelectionV1 {
   return Object.freeze({
     schemaVersion: AUTHORITY_LOADOUT_REQUEST_SCHEMA_VERSION,
     rulesetId: ruleset.id,
     rulesetRevision: ruleset.revision,
-    primaryWeaponId: ruleset.verticalSlice.primaryWeaponId,
+    presetId: preset.id,
+    helmetVariantId: preset.helmetVariantId,
+    primaryWeaponId: preset.authorityPrimaryWeaponId,
+    primaryWeaponFamily: preset.weaponFamily,
+    primaryWeaponSlot: preset.authorityPrimaryWeaponSlot,
     secondaryWeaponId: null,
-    meleeWeaponId: ruleset.verticalSlice.meleeWeaponId,
-    damageAbilityIds,
+    meleeWeaponId: preset.authorityMeleeWeaponId,
+    damageAbilityIds: preset.selectableAbilityIds,
     utilityAbilityId: ABILITY_ID.blink,
   });
+}
+
+export function authorityLoadoutForCombatPreset(
+  ruleset: Pick<RulesetContentV1, 'id' | 'revision'>,
+  presetId: CombatPresetId,
+): AuthorityLoadoutSelectionV1 {
+  return selectionForPreset(ruleset, combatPresetById(presetId));
+}
+
+export function assertAuthorityLoadoutSelection(
+  value: unknown,
+  ruleset: Pick<RulesetContentV1, 'id' | 'revision'>,
+): AuthorityLoadoutSelectionV1 {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+    throw new TypeError('authority loadout selection must be an object');
+  }
+  const item = value as Readonly<Record<string, unknown>>;
+  const expectedKeys = [
+    'schemaVersion',
+    'rulesetId',
+    'rulesetRevision',
+    'presetId',
+    'helmetVariantId',
+    'primaryWeaponId',
+    'primaryWeaponFamily',
+    'primaryWeaponSlot',
+    'secondaryWeaponId',
+    'meleeWeaponId',
+    'damageAbilityIds',
+    'utilityAbilityId',
+  ].sort();
+  const keys = Object.keys(item).sort();
+  if (
+    keys.length !== expectedKeys.length
+    || keys.some((key, index) => key !== expectedKeys[index])
+  ) {
+    throw new TypeError('authority loadout selection contains unsupported or missing fields');
+  }
+  const preset = combatPresetById(item.presetId);
+  const expected = selectionForPreset(ruleset, preset);
+  const scalarKeys = [
+    'schemaVersion',
+    'rulesetId',
+    'rulesetRevision',
+    'presetId',
+    'helmetVariantId',
+    'primaryWeaponId',
+    'primaryWeaponFamily',
+    'primaryWeaponSlot',
+    'secondaryWeaponId',
+    'meleeWeaponId',
+    'utilityAbilityId',
+  ] as const;
+  const damageAbilityIds = item.damageAbilityIds;
+  if (
+    scalarKeys.some((key) => item[key] !== expected[key])
+    || !Array.isArray(damageAbilityIds)
+    || damageAbilityIds.length !== expected.damageAbilityIds.length
+    || expected.damageAbilityIds.some((id, index) => damageAbilityIds[index] !== id)
+  ) {
+    throw new RangeError('authority loadout selection does not match its combat preset');
+  }
+  return expected;
 }
 
 export function authorityLoadoutRequestFingerprint(
@@ -108,19 +188,12 @@ function normalizedRequestedAbilities(
     request.damageAbilityIds[0] === ABILITY_ID.launch
     && request.damageAbilityIds[1] === 'vertical_deployable_v1'
   ) {
-    return DEFAULT_ABILITY_LOADOUT.slots.slice(1) as [
-      SelectableAbilityId,
-      SelectableAbilityId,
-      SelectableAbilityId,
-    ];
+    return DEFAULT_COMBAT_PRESET.selectableAbilityIds;
   }
-  const fallback = DEFAULT_ABILITY_LOADOUT.slots
-    .slice(1)
-    .find((id) => !request.damageAbilityIds.includes(id));
   return Object.freeze([
     request.damageAbilityIds[0],
     request.damageAbilityIds[1],
-    fallback ?? ABILITY_ID.frag,
+    '__unsupported_legacy_ability_tuple__',
   ]);
 }
 
@@ -142,23 +215,30 @@ export function evaluateAuthorityLoadoutRequest(options: Readonly<{
   if (options.lifecycle !== 'lobby' && options.lifecycle !== 'warmup') {
     return reject('loadout_locked');
   }
-  if (options.request.primaryWeaponId !== options.authoritativeLoadout.primaryWeaponId) {
+  const requestedPreset = combatPresetForAuthorityPrimaryWeapon(
+    options.request.primaryWeaponId,
+  );
+  if (requestedPreset === null) {
     return reject('primary_weapon_not_allowed');
   }
-  if (options.request.secondaryWeaponId !== options.authoritativeLoadout.secondaryWeaponId) {
+  const candidate = selectionForPreset({
+    id: options.authoritativeLoadout.rulesetId,
+    revision: options.authoritativeLoadout.rulesetRevision,
+  }, requestedPreset);
+  if (options.request.secondaryWeaponId !== candidate.secondaryWeaponId) {
     return reject('secondary_weapon_not_allowed');
   }
-  if (options.request.meleeWeaponId !== options.authoritativeLoadout.meleeWeaponId) {
+  if (options.request.meleeWeaponId !== candidate.meleeWeaponId) {
     return reject('melee_weapon_not_allowed');
   }
   const requestedAbilityIds = normalizedRequestedAbilities(options.request);
-  if (!SELECTABLE_ABILITY_IDS.includes(requestedAbilityIds[0] as SelectableAbilityId)) {
+  if (requestedAbilityIds[0] !== candidate.damageAbilityIds[0]) {
     return reject('damage_ability_one_not_allowed');
   }
-  if (!SELECTABLE_ABILITY_IDS.includes(requestedAbilityIds[1] as SelectableAbilityId)) {
+  if (requestedAbilityIds[1] !== candidate.damageAbilityIds[1]) {
     return reject('damage_ability_two_not_allowed');
   }
-  if (!SELECTABLE_ABILITY_IDS.includes(requestedAbilityIds[2] as SelectableAbilityId)) {
+  if (requestedAbilityIds[2] !== candidate.damageAbilityIds[2]) {
     return reject('damage_ability_three_not_allowed');
   }
   if (new Set(requestedAbilityIds).size !== requestedAbilityIds.length) {
@@ -167,17 +247,12 @@ export function evaluateAuthorityLoadoutRequest(options: Readonly<{
   if (options.request.utilityAbilityId !== ABILITY_ID.blink) {
     return reject('utility_ability_not_allowed');
   }
-  const loadout: AuthorityLoadoutSelectionV1 = Object.freeze({
-    ...options.authoritativeLoadout,
-    damageAbilityIds: Object.freeze(requestedAbilityIds) as AuthorityLoadoutSelectionV1['damageAbilityIds'],
-    utilityAbilityId: ABILITY_ID.blink,
-  });
   return Object.freeze({
     schemaVersion: AUTHORITY_LOADOUT_REQUEST_SCHEMA_VERSION,
     accepted: true,
     requestId: options.request.requestId,
     reason: null,
-    loadout,
+    loadout: candidate,
   });
 }
 

@@ -18,15 +18,14 @@ import { Shop } from '../core/Shop.js';
 import { UserAccount } from '../core/UserAccount.js';
 import { warmWeaponThumbs, getWeaponThumb, renderWeaponSkinned } from './WeaponThumbnails.js';
 
-// The 5 main-weapon slots offered in the inventory (with ev.io-style labels).
-// If the saved loadout points to a gun that isn't here, we snap it to the
-// first entry when the panel opens so EQUIPPED matches an actual tab.
+// The four browser-first spawn weapons are coupled to combat presets. Weapon
+// skins remain independently selectable, while equipping one of these exact
+// primaries deterministically selects its Assault/Breacher/Recon/Duelist kit.
 export const MAIN_GUNS = [
   { id: 'm4',            label: 'Auto Rifle' },
-  { id: 'magnum',        label: 'Hand Cannon' },
-  { id: 'battlerifle',   label: 'Burst Rifle' },
   { id: 'energyshotgun', label: 'Sweeper' },
-  { id: 'plasmarifle',   label: 'Laser Rifle' },
+  { id: 'boltsniper',    label: 'Rail Driver' },
+  { id: 'sidearm',       label: 'Duelist Sidearm' },
 ];
 const MAIN_GUN_IDS = new Set(MAIN_GUNS.map((g) => g.id));
 

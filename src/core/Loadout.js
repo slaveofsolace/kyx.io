@@ -2,59 +2,109 @@
 // match. Backed by localStorage so the choice persists between sessions.
 import { WEAPONS } from '../weapons/weaponDefs.js';
 import {
-  DEFAULT_ABILITY_LOADOUT,
   abilityLoadoutUiSlots,
-  createAbilityLoadout,
-  deserializeAbilityLoadout,
-  replaceSelectableAbility,
   selectableAbilityMetadata,
   serializeAbilityLoadout,
 } from '../abilities/abilityLoadout.ts';
+import {
+  COMBAT_PRESETS,
+  DEFAULT_COMBAT_PRESET,
+  combatPresetAbilityLoadout,
+  combatPresetById,
+  combatPresetForOfflinePrimaryWeapon,
+  combatPresetForSelectableAbilities,
+  isCombatPresetId,
+} from '../loadouts/combatPresets.ts';
 
 const _KEY = 'sio_loadout';
 const _ABILITY_KEY = 'kyx_ability_loadout_v1';
 
-export const GUNS  = WEAPONS.filter((w) => w.kind !== 'melee');
+const PRESET_PRIMARY_IDS = new Set(COMBAT_PRESETS.map(({ offlinePrimaryWeaponId }) => (
+  offlinePrimaryWeaponId
+)));
+export const GUNS = WEAPONS.filter((weapon) => PRESET_PRIMARY_IDS.has(weapon.id));
 // Only the Arc Blade is available in the standard loadout melee slot
 export const MELEE = WEAPONS.filter((w) => w.id === 'sword');
 
-const DEFAULTS = { gun: 'm4', melee: 'sword' };
-
-function _load() {
-  try { return { ...DEFAULTS, ...JSON.parse(localStorage.getItem(_KEY) || '{}') }; }
-  catch { return { ...DEFAULTS }; }
-}
-function _save(d) { localStorage.setItem(_KEY, JSON.stringify(d)); }
-
-function _loadAbilities() {
+function _readStored() {
   try {
-    return deserializeAbilityLoadout(localStorage.getItem(_ABILITY_KEY));
+    const value = JSON.parse(localStorage.getItem(_KEY) || '{}');
+    return value !== null && typeof value === 'object' && !Array.isArray(value) ? value : {};
   } catch {
-    return DEFAULT_ABILITY_LOADOUT;
+    return {};
   }
 }
 
-function _saveAbilities(loadout) {
-  localStorage.setItem(_ABILITY_KEY, serializeAbilityLoadout(loadout));
+function _storedPreset() {
+  const stored = _readStored();
+  if (isCombatPresetId(stored.presetId)) return combatPresetById(stored.presetId);
+  // One-time migration from the legacy loose { gun, melee } record. Only exact
+  // product-supported primaries migrate to a role; everything else fails back
+  // to the reviewed Assault preset.
+  return combatPresetForOfflinePrimaryWeapon(stored.gun) ?? DEFAULT_COMBAT_PRESET;
 }
 
-// Any gun may be equipped from the loadout.
-function _validGun(id) { return GUNS.some((w) => w.id === id) ? id : DEFAULTS.gun; }
-function _validMelee(id) { return MELEE.some((w) => w.id === id) ? id : DEFAULTS.melee; }
+function _savePreset(presetValue) {
+  const preset = combatPresetById(presetValue.id);
+  localStorage.setItem(_KEY, JSON.stringify({
+    schemaVersion: 1,
+    presetId: preset.id,
+    gun: preset.offlinePrimaryWeaponId,
+    melee: preset.offlineMeleeWeaponId,
+    helmetVariantId: preset.helmetVariantId,
+  }));
+  localStorage.setItem(
+    _ABILITY_KEY,
+    serializeAbilityLoadout(combatPresetAbilityLoadout(preset)),
+  );
+  return preset;
+}
+
+function _loadAbilities() {
+  return combatPresetAbilityLoadout(_storedPreset());
+}
 
 export const Loadout = {
-  getGun()   { return _validGun(_load().gun); },
-  getMelee() { return _validMelee(_load().melee); },
+  getCombatPreset() {
+    return _storedPreset();
+  },
+  getCombatPresetId() {
+    return _storedPreset().id;
+  },
+  getHelmetVariantId() {
+    return _storedPreset().helmetVariantId;
+  },
+  getAuthorityPrimaryWeaponId() {
+    return _storedPreset().authorityPrimaryWeaponId;
+  },
+  getAuthorityPrimaryWeaponSlot() {
+    return _storedPreset().authorityPrimaryWeaponSlot;
+  },
+  getInitialWeaponId() {
+    return _storedPreset().initialOfflineWeaponId;
+  },
+  getGun() {
+    return _storedPreset().offlinePrimaryWeaponId;
+  },
+  getMelee() {
+    return _storedPreset().offlineMeleeWeaponId;
+  },
 
-  setGun(id) {
-    const d = _load();
-    d.gun = _validGun(id);
-    _save(d);
+  setCombatPreset(id) {
+    return _savePreset(combatPresetById(id));
+  },
+  setGun(weaponId) {
+    const preset = combatPresetForOfflinePrimaryWeapon(weaponId);
+    if (preset === null) {
+      throw new RangeError('primary weapon is not owned by a supported combat preset');
+    }
+    return _savePreset(preset);
   },
   setMelee(id) {
-    const d = _load();
-    d.melee = _validMelee(id);
-    _save(d);
+    if (!MELEE.some((weapon) => weapon.id === id)) {
+      throw new RangeError('melee weapon is not supported by combat presets');
+    }
+    return _savePreset(_storedPreset());
   },
 
   getAbilities() {
@@ -67,14 +117,15 @@ export const Loadout = {
     return selectableAbilityMetadata();
   },
   setAbilities(selectableAbilityIds) {
-    const loadout = createAbilityLoadout(selectableAbilityIds);
-    _saveAbilities(loadout);
-    return loadout;
+    const preset = combatPresetForSelectableAbilities(selectableAbilityIds);
+    if (preset === null) {
+      throw new RangeError('ability trio is not owned by a supported combat preset');
+    }
+    _savePreset(preset);
+    return combatPresetAbilityLoadout(preset);
   },
-  setAbilitySlot(slot, abilityId) {
+  setAbilitySlot(slot, _abilityId) {
     if (slot === 0) throw new RangeError('Blink is locked and cannot be removed');
-    const loadout = replaceSelectableAbility(_loadAbilities(), slot, abilityId);
-    _saveAbilities(loadout);
-    return loadout;
+    throw new RangeError('ability slots are fixed by the selected combat preset');
   },
 };

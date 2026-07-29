@@ -2,14 +2,13 @@ import { hashRulesetContent, requireRuleset } from '../content';
 import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
 import {
-  authorityLoadoutFromRuleset,
+  authorityLoadoutForCombatPreset,
   createAuthorityLoadoutRequestMessage,
 } from '../authority';
 import {
   ABILITY_ID,
   ABILITY_PRESENTATION,
   type AbilityId,
-  type SelectableAbilityId,
 } from '../abilities/abilityLoadout';
 import { Loadout } from '../core/Loadout.js';
 import { UserAccount } from '../core/UserAccount.js';
@@ -710,6 +709,13 @@ async function mountSession(
   sessionBinding: OnlineSessionBinding,
 ): Promise<void> {
   body.dataset.onlineHud = 'arena-visor-v1';
+  const selectedCombatPreset = Loadout.getCombatPreset();
+  const allowedAuthorityWeaponSlots = new Set([
+    selectedCombatPreset.authorityPrimaryWeaponSlot,
+    5,
+  ]);
+  body.dataset.combatPresetId = selectedCombatPreset.id;
+  body.dataset.helmetVariantId = selectedCombatPreset.helmetVariantId;
   content.classList.add('online-preview__content--session');
   const displayName = protocolDisplayName(UserAccount.getDisplayName());
   const inkfallProof = sessionBinding.kind === 'inkfall'
@@ -813,7 +819,7 @@ async function mountSession(
     'span',
     '',
     inkfallRev4
-      ? 'CLICK FOR MOUSE LOOK · WASD · 1–6 EQUIP · M1/ENTER FIRE · R RELOAD · E/F/Z ABILITIES · Q BLINK'
+      ? `CLICK FOR MOUSE LOOK · WASD · ${selectedCombatPreset.roleLabel.toUpperCase()} + BLADE · M1/ENTER FIRE · R RELOAD · E/F/Z PRESET ABILITIES · Q BLINK`
       : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · ARROWS aim · M1/ENTER fire · R reload · E/F/Z abilities · Q Blink',
   ));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
@@ -858,13 +864,21 @@ async function mountSession(
     button.type = 'button';
     button.dataset.testid = `online-weapon-slot-${definition.slot}`;
     button.dataset.slot = String(definition.slot);
-    button.dataset.active = String(definition.slot === 0);
-    button.setAttribute('aria-pressed', String(definition.slot === 0));
+    const allowed = allowedAuthorityWeaponSlots.has(definition.slot);
+    const active = definition.slot === selectedCombatPreset.authorityPrimaryWeaponSlot;
+    button.dataset.active = String(active);
+    button.dataset.presetAllowed = String(allowed);
+    button.disabled = !allowed;
+    button.setAttribute('aria-pressed', String(active));
     button.setAttribute(
       'aria-label',
-      `Weapon ${definition.key}: ${definition.label}`,
+      allowed
+        ? `Weapon ${definition.key}: ${definition.label}`
+        : `Weapon ${definition.key}: ${definition.label}, unavailable for ${selectedCombatPreset.displayName}`,
     );
-    button.title = `${definition.key} · ${definition.label}`;
+    button.title = allowed
+      ? `${definition.key} · ${definition.label}`
+      : `${definition.label} is not in the ${selectedCombatPreset.displayName} preset`;
     button.append(
       element('strong', '', definition.key),
       element('span', '', definition.label),
@@ -1230,7 +1244,7 @@ async function mountSession(
   const pressedKeys = new Set<string>();
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
-  let selectedWeaponSlot = 0;
+  let selectedWeaponSlot: number = selectedCombatPreset.authorityPrimaryWeaponSlot;
   let loadoutSubmittedForPlayerId: string | null = null;
 
   type FeedbackCue = OnlinePreviewSnapshot['presentation']['lastCue'];
@@ -1885,6 +1899,7 @@ async function mountSession(
     }
   };
   const selectWeaponSlot = (slot: number): void => {
+    if (!allowedAuthorityWeaponSlots.has(slot)) return;
     selectedWeaponSlot = slot;
     client.setSelectedWeaponSlot(slot);
     for (const [index, button] of weaponSlotButtons.entries()) {
@@ -2021,6 +2036,7 @@ async function mountSession(
   for (const [slot, button] of weaponSlotButtons.entries()) {
     button.addEventListener('click', () => selectWeaponSlot(slot));
   }
+  selectWeaponSlot(selectedCombatPreset.authorityPrimaryWeaponSlot);
   window.addEventListener('keydown', keyboardHandler);
   window.addEventListener('keyup', keyboardHandler);
   window.addEventListener('keydown', scoreboardKeyboardHandler);
@@ -2046,19 +2062,13 @@ async function mountSession(
       && joinedPlayerId !== null
       && loadoutSubmittedForPlayerId !== joinedPlayerId
     ) {
-      const localAbilities = Loadout.getAbilities();
-      const baseLoadout = authorityLoadoutFromRuleset(requireRuleset('revamped_classic', 3));
-      const damageAbilityIds = Object.freeze([
-        localAbilities.slots[1],
-        localAbilities.slots[2],
-        localAbilities.slots[3],
-      ]) as readonly [SelectableAbilityId, SelectableAbilityId, SelectableAbilityId];
+      const selectedLoadout = authorityLoadoutForCombatPreset(
+        requireRuleset('revamped_classic', 3),
+        selectedCombatPreset.id,
+      );
       const submitted = client.requestLoadout(createAuthorityLoadoutRequestMessage({
         requestId: `loadout.${crypto.randomUUID()}`,
-        loadout: Object.freeze({
-          ...baseLoadout,
-          damageAbilityIds,
-        }),
+        loadout: selectedLoadout,
       }));
       if (submitted) loadoutSubmittedForPlayerId = joinedPlayerId;
     }

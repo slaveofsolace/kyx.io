@@ -1914,6 +1914,44 @@ export class AuthoritativeRoom {
     return loadout;
   }
 
+  setPlayerCombatLoadout(
+    playerIdValue: string,
+    selectableAbilityIds: readonly [string, string, string],
+    primaryWeaponSlot: 0 | 2 | 3 | 5,
+  ): AbilityLoadoutV1 {
+    const loadout = this.setPlayerAbilityLoadout(playerIdValue, selectableAbilityIds);
+    const playerId = stableId(playerIdValue, 'combat loadout player id');
+    const player = this.players.get(playerId);
+    if (!player) {
+      throw new Error('AUTHORITY_COMBAT_LOADOUT_PLAYER_NOT_FOUND');
+    }
+    // The legacy flat-run worker profile exposes only the dedicated slot-zero
+    // rifle runtime. Keep its existing Assault request path compatible while
+    // failing closed if a non-rifle preset is requested without the generalized
+    // authoritative armory used by the browser-first Inkfall profile.
+    if (player.armory === null) {
+      if (primaryWeaponSlot === 0) return loadout;
+      throw new Error('AUTHORITY_COMBAT_PRESET_WEAPON_UNAVAILABLE');
+    }
+    player.state = {
+      ...player.state,
+      player: {
+        ...player.state.player,
+        intent: {
+          ...player.state.player.intent,
+          selectedSlot: primaryWeaponSlot,
+        },
+      },
+    };
+    player.armory = Object.freeze({
+      ...player.armory,
+      selectedSlot: primaryWeaponSlot,
+    });
+    assertMovementSimulationState(player.state, this.profile);
+    assertAuthorityWeaponLoadoutState(player.armory);
+    return loadout;
+  }
+
   applyCombatDamage(request: AuthorityRoomDamageRequest): AuthorityRoomDamageResult {
     return this.applyCombatDamageInternal(request, true);
   }
