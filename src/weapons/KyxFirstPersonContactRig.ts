@@ -120,30 +120,38 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   root.userData.noHit = true;
   root.userData.contactMode = 'authored_two_hand_rifle_v1';
 
-  const dominantShoulder = new THREE.Vector3(0.43, -0.49, 0.57);
-  const dominantWrist = new THREE.Vector3(0.115, -0.255, 0.3);
-  const dominantPalm = new THREE.Vector3(0.018, -0.12, 0.19);
+  const dominantShoulder = new THREE.Vector3(0.52, -0.42, 0.26);
+  const dominantElbow = new THREE.Vector3(0.33, -0.3, 0.235);
+  const dominantWrist = new THREE.Vector3(0.135, -0.18, 0.22);
+  const dominantPalm = new THREE.Vector3(0.018, -0.105, 0.19);
   root.add(
     capsuleBetween(
-      'KYX_VLR7_DOMINANT_SLEEVE',
+      'KYX_VLR7_DOMINANT_SLEEVE_UPPER',
       dominantShoulder,
+      dominantElbow,
+      0.048,
+      suit,
+    ),
+    capsuleBetween(
+      'KYX_VLR7_DOMINANT_SLEEVE_LOWER',
+      dominantElbow,
       dominantWrist,
-      0.058,
+      0.044,
       suit,
     ),
     plateBetween(
       'KYX_VLR7_DOMINANT_FOREARM_PLATE',
-      new THREE.Vector3(0.36, -0.435, 0.51),
-      new THREE.Vector3(0.17, -0.295, 0.35),
-      0.092,
-      0.024,
+      new THREE.Vector3(0.305, -0.285, 0.235),
+      new THREE.Vector3(0.16, -0.195, 0.22),
+      0.078,
+      0.02,
       plate,
     ),
     capsuleBetween(
       'KYX_VLR7_DOMINANT_WRIST',
       dominantWrist,
       dominantPalm,
-      0.044,
+      0.038,
       glove,
     ),
   );
@@ -175,30 +183,38 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   );
   root.add(dominantHand);
 
-  const supportShoulder = new THREE.Vector3(-0.38, -0.47, 0.31);
-  const supportWrist = new THREE.Vector3(-0.15, -0.24, -0.08);
-  const supportPalm = new THREE.Vector3(-0.025, -0.075, -0.34);
+  const supportShoulder = new THREE.Vector3(-0.3, -0.4, 0.12);
+  const supportElbow = new THREE.Vector3(-0.21, -0.28, -0.02);
+  const supportWrist = new THREE.Vector3(-0.105, -0.15, -0.16);
+  const supportPalm = new THREE.Vector3(-0.02, -0.045, -0.34);
   root.add(
     capsuleBetween(
-      'KYX_VLR7_SUPPORT_SLEEVE',
+      'KYX_VLR7_SUPPORT_SLEEVE_UPPER',
       supportShoulder,
+      supportElbow,
+      0.048,
+      suit,
+    ),
+    capsuleBetween(
+      'KYX_VLR7_SUPPORT_SLEEVE_LOWER',
+      supportElbow,
       supportWrist,
-      0.058,
+      0.044,
       suit,
     ),
     plateBetween(
       'KYX_VLR7_SUPPORT_FOREARM_PLATE',
-      new THREE.Vector3(-0.32, -0.415, 0.22),
-      new THREE.Vector3(-0.19, -0.285, -0.005),
-      0.092,
-      0.024,
+      new THREE.Vector3(-0.2, -0.27, -0.03),
+      new THREE.Vector3(-0.115, -0.16, -0.145),
+      0.078,
+      0.02,
       plate,
     ),
     capsuleBetween(
       'KYX_VLR7_SUPPORT_WRIST',
       supportWrist,
       supportPalm,
-      0.044,
+      0.038,
       glove,
     ),
   );
@@ -208,8 +224,8 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   supportHand.add(
     capsuleBetween(
       'KYX_VLR7_SUPPORT_PALM',
-      new THREE.Vector3(-0.065, -0.11, -0.29),
-      new THREE.Vector3(-0.012, -0.025, -0.365),
+      new THREE.Vector3(-0.06, -0.075, -0.29),
+      new THREE.Vector3(-0.01, 0, -0.365),
       0.041,
       glove,
     ),
@@ -225,13 +241,13 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   addWrappedFingers(
     supportHand,
     'KYX_VLR7_SUPPORT',
-    [-0.02, -0.07, -0.36],
+    [-0.02, -0.04, -0.36],
     glove,
   );
   root.add(supportHand);
 
   const dominantCuff = new THREE.Mesh(
-    new THREE.TorusGeometry(0.052, 0.008, 8, 16),
+    new THREE.TorusGeometry(0.046, 0.007, 8, 16),
     accent,
   );
   dominantCuff.name = 'KYX_VLR7_DOMINANT_CUFF_ACCENT';
@@ -249,7 +265,7 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   );
   const supportGrip = gripMarker(
     'KYX_VLR7_SUPPORT_GRIP_CONTACT',
-    [-0.02, -0.07, -0.36],
+    [-0.02, -0.04, -0.36],
   );
   root.add(dominantGrip, supportGrip);
 
