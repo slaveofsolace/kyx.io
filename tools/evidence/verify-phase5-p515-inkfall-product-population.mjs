@@ -8,11 +8,26 @@ const REV2_PROFILE = 'p511-inkfall-foundry-revision-2-combat-v1';
 const REV4_PROFILE = 'g5-inkfall-foundry-rev4-revision-3-authority-v1';
 const requestedProfileArgument = process.argv.find((argument) => argument.startsWith('--profile='));
 const PROFILE = requestedProfileArgument?.slice('--profile='.length) ?? REV2_PROFILE;
+const requestedPresentationArgument = process.argv.find(
+  (argument) => argument.startsWith('--presentation='),
+);
+const PRESENTATION = requestedPresentationArgument?.slice('--presentation='.length)
+  ?? 'rev4';
 assert.ok(
   PROFILE === REV2_PROFILE || PROFILE === REV4_PROFILE,
   `Unsupported Inkfall evidence profile: ${PROFILE}`,
 );
+assert.ok(
+  PRESENTATION === 'rev4' || PRESENTATION === 'rev5',
+  `Unsupported Inkfall evidence presentation: ${PRESENTATION}`,
+);
+assert.ok(
+  PRESENTATION !== 'rev5' || PROFILE === REV4_PROFILE,
+  'Rev5 presentation evidence requires the Revision 3 G5 authority profile',
+);
 const REV4_ACCEPTANCE_CAPTURE = PROFILE === REV4_PROFILE;
+const REV5_PRESENTATION_CAPTURE =
+  REV4_ACCEPTANCE_CAPTURE && PRESENTATION === 'rev5';
 const FLAT_COMBAT_PROFILE = 'p58d-rev3-combat-v1';
 const AUTHORITY_WEBSOCKET_ORIGIN = 'ws://127.0.0.1:8787';
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -135,12 +150,33 @@ const rev4ExpectedMapBinding = {
     pickupCount: 0,
   },
 };
+const rev5ExpectedMapBinding = {
+  ...rev4ExpectedMapBinding,
+  presentationReference:
+    'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
+  render: {
+    role: 'render_only',
+    path:
+      'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
+    sha256: '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676',
+    bytes: 2_803_128,
+    renderMeshesMayBeAuthority: false,
+  },
+  portal: {
+    capabilityId: 'inkfall_rev5_linked_world_portal_v1',
+    authorityRole: 'additive_server_authority',
+    renderRole: 'rev5_render_only_no_hit',
+    endpointCount: 2,
+  },
+};
 const expectedSpawns = REV4_ACCEPTANCE_CAPTURE
   ? rev4ExpectedSpawns.slice(0, 8)
   : rev2ExpectedSpawns;
-const expectedMapBinding = REV4_ACCEPTANCE_CAPTURE
-  ? rev4ExpectedMapBinding
-  : rev2ExpectedMapBinding;
+const expectedMapBinding = REV5_PRESENTATION_CAPTURE
+  ? rev5ExpectedMapBinding
+  : REV4_ACCEPTANCE_CAPTURE
+    ? rev4ExpectedMapBinding
+    : rev2ExpectedMapBinding;
 const expectedSimulationIdentity = {
   schemaVersion: 1,
   mapId: 'inkfall_foundry',
@@ -155,7 +191,17 @@ const expectedSimulationIdentity = {
   physicsAdapterId: 'rapier3d_deterministic_compat',
   physicsAdapterVersion: '0.19.3',
 };
-const expectedScreenshots = [
+const rev5PortalRoute = {
+  lowerApproach: { x: -4_500, z: -12_500 },
+  lowerEntryTarget: { x: -4_000, z: -10_000 },
+  lowerExit: { x: 1_539, y: 1_431, z: -4_461 },
+  upperEntryTarget: { x: 1_000, z: -5_000 },
+  upperExit: { x: -4_500, y: -3_000, z: -12_500 },
+  arrivalToleranceMillimeters: 1_100,
+  eventTimeoutMilliseconds: 8_000,
+  cooldownSettleMilliseconds: 1_500,
+};
+const legacyExpectedScreenshots = [
   'screenshots/p515-01-client-0-two-rendered.png',
   'screenshots/p515-02-client-1-two-rendered.png',
   'screenshots/p515-03-real-occlusion.png',
@@ -171,7 +217,14 @@ const expectedScreenshots = [
   'screenshots/p515-10-profile-mismatch-fails-closed.png',
   'screenshots/p515-11-runtime-evidence-board.png',
 ];
-const expectedSourceFiles = [
+const expectedScreenshots = REV5_PRESENTATION_CAPTURE
+  ? [
+      ...legacyExpectedScreenshots,
+      'screenshots/p515-03a-rev5-lower-portal-approach.png',
+      'screenshots/p515-03b-rev5-upper-portal-arrival.png',
+    ]
+  : legacyExpectedScreenshots;
+const legacyExpectedSourceFiles = [
   'src/app/onlineAuthorityProfiles.ts',
   'src/app/onlineAuthorityGateway.ts',
   'src/app/onlineAuthorityInkfallWorld.ts',
@@ -278,6 +331,26 @@ const expectedSourceFiles = [
   'tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs',
   'tools/evidence/verify-phase5-p515-inkfall-product-population.mjs',
 ];
+const rev5ExpectedSourceFiles = [
+  ...legacyExpectedSourceFiles.filter((relative) => (
+    relative
+      !== 'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb'
+  )),
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/build_press_archive_rev5.py',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/manifest.inkfall-rev5-geometry-portal.json',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/validation/inkfall-rev5-geometry-portal-build-report.json',
+  'src/app/inkfallRev5CandidateBinding.ts',
+  'src/app/inkfallRev5PortalPresentation.ts',
+  'src/app/inkfallRev5VisualContinuity.ts',
+  'src/app/onlineAuthorityThreeRuntime.ts',
+  'src/authority/portal/inkfallRev5PortalAuthority.ts',
+  'src/dev/loadInkfallRev5ReviewVisual.ts',
+  'tests/unit/authority/portal/inkfallRev5PortalAuthority.test.ts',
+].sort();
+const expectedSourceFiles = REV5_PRESENTATION_CAPTURE
+  ? rev5ExpectedSourceFiles
+  : legacyExpectedSourceFiles;
 
 async function sha256(file) {
   return createHash('sha256').update(await fs.readFile(file)).digest('hex');
@@ -540,6 +613,14 @@ assert.equal(
 
 assert.equal(proof.topology.route, '/online');
 assert.equal(proof.topology.exactProfile, PROFILE);
+if (REV5_PRESENTATION_CAPTURE) {
+  assert.equal(proof.topology.exactPresentation, PRESENTATION);
+} else {
+  assert.ok(
+    proof.topology.exactPresentation === undefined
+      || proof.topology.exactPresentation === PRESENTATION,
+  );
+}
 assert.equal(proof.topology.productClients, 8);
 assert.equal(proof.topology.isolatedBrowserContexts, 8);
 assert.equal(proof.topology.browserLaunches, 8);
@@ -631,6 +712,12 @@ assert.deepEqual(proof.technicalAcceptance.checks, {
   ...proof.performance.checks,
   traversalCompletedWithoutDriverRecovery:
     proof.movementAndWorld.driverRecoveries.length === 0,
+  ...(REV5_PRESENTATION_CAPTURE
+    ? {
+        portalRoundTripAuthoritative:
+          proof.movementAndWorld.portalRoundTrip?.allChecksPassed === true,
+      }
+    : {}),
 });
 assert.equal(
   proof.technicalAcceptance.allChecksPassed,
@@ -641,6 +728,71 @@ assert.equal(proof.technicalAcceptance.humanReviewStillRequired, true);
 assert.equal(proof.movementAndWorld.routeId, 'alternate_ink_channel_after_press_cross_snag');
 assert.equal(proof.movementAndWorld.routeCheckpoints.length, 9);
 assert.equal(proof.movementAndWorld.spawnProtectionExpiryWaitMilliseconds, 1_500);
+if (REV5_PRESENTATION_CAPTURE) {
+  const portalRoundTrip = proof.movementAndWorld.portalRoundTrip;
+  assert.notEqual(portalRoundTrip, null);
+  assert.deepEqual(portalRoundTrip.route, rev5PortalRoute);
+  assert.equal(portalRoundTrip.actorId, proof.authority.initialJoins[0].playerId);
+  assert.equal(portalRoundTrip.exactCapability, true);
+  assert.equal(portalRoundTrip.exactHooks, true);
+  assert.equal(portalRoundTrip.allChecksPassed, true);
+  assert.ok(
+    portalRoundTrip.lower.landing.distanceMillimeters
+      <= rev5PortalRoute.arrivalToleranceMillimeters,
+  );
+  assert.ok(
+    portalRoundTrip.upper.landing.distanceMillimeters
+      <= rev5PortalRoute.arrivalToleranceMillimeters,
+  );
+  for (const [leg, endpointId, partnerEndpointId] of [
+    [portalRoundTrip.lower, 'red_fold_lower', 'red_fold_upper'],
+    [portalRoundTrip.upper, 'red_fold_upper', 'red_fold_lower'],
+  ]) {
+    assert.equal(leg.deliveries.length, 2);
+    assert.deepEqual(
+      leg.deliveries.map(({ clientId }) => clientId),
+      ['client-0', 'client-1'],
+    );
+    for (const delivery of leg.deliveries) {
+      assert.ok(
+        delivery.latencyMilliseconds >= 0
+          && delivery.latencyMilliseconds
+            <= rev5PortalRoute.eventTimeoutMilliseconds,
+      );
+      assert.ok(delivery.rawOccurrenceCount >= 1);
+      assert.equal(delivery.logicalApplicationCount, 1);
+      assert.equal(delivery.event.kind, 'worldPortalTraversed');
+      assert.equal(delivery.event.actorId, portalRoundTrip.actorId);
+      assert.equal(
+        delivery.event.presentation.kind,
+        'world_portal_traversed',
+      );
+      assert.equal(delivery.event.presentation.endpointId, endpointId);
+      assert.equal(
+        delivery.event.presentation.partnerEndpointId,
+        partnerEndpointId,
+      );
+      assert.equal(
+        delivery.event.presentation.capabilityId,
+        'inkfall_rev5_linked_world_portal_v1',
+      );
+      for (const hook of [
+        'departureAudioHook',
+        'arrivalAudioHook',
+        'departureVfxHook',
+        'arrivalVfxHook',
+      ]) {
+        assert.equal(typeof delivery.event.presentation[hook], 'string');
+        assert.ok(delivery.event.presentation[hook].length > 0);
+      }
+    }
+  }
+} else {
+  assert.ok(
+    proof.movementAndWorld.portalRoundTrip === undefined
+      || proof.movementAndWorld.portalRoundTrip === null,
+  );
+}
 assert.ok(Array.isArray(proof.movementAndWorld.driverRecoveries));
 assert.ok(proof.movementAndWorld.driverRecoveries.length <= 40);
 for (const recovery of proof.movementAndWorld.driverRecoveries) {
@@ -1108,7 +1260,9 @@ assert.ok(
 assert.equal(proof.knownLimits.includes('This capture is bounded product/browser evidence, not broad playtest acceptance.'), true);
 assert.equal(proof.knownLimits.includes(
   REV4_ACCEPTANCE_CAPTURE
-    ? 'This capture supports a G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.'
+    ? REV5_PRESENTATION_CAPTURE
+      ? 'This capture supports a Rev5 G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.'
+      : 'This capture supports a G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.'
     : 'This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.',
 ), true);
 assert.equal(proof.knownLimits.includes(
@@ -1117,7 +1271,9 @@ assert.equal(proof.knownLimits.includes(
 assert.equal(proof.knownLimits.includes('Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.'), true);
 assert.equal(proof.knownLimits.includes(
   REV4_ACCEPTANCE_CAPTURE
-    ? 'The separately executable Rev4 Press Hall to Paper Archive vertical route is deterministic automation evidence, not a human traversal review.'
+    ? REV5_PRESENTATION_CAPTURE
+      ? 'The Rev5 Ink Channel route and portal round trip are deterministic automation evidence, not a human traversal review.'
+      : 'The separately executable Rev4 Press Hall to Paper Archive vertical route is deterministic automation evidence, not a human traversal review.'
     : 'Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.',
 ), true);
 assert.equal(proof.knownLimits.includes('Human visual approval remains separate.'), true);

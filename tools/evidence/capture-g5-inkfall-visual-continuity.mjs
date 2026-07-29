@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
+import { spawn, execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +10,10 @@ import { chromium } from 'playwright';
 const PROFILE = 'g5-inkfall-foundry-rev4-revision-3-authority-v1';
 const MAP_REFERENCE = 'inkfall_foundry@3';
 const FIXTURE_HASH = '6cf785c5171f2ff5';
+const PRESENTATION_REFERENCE =
+  'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
+const PRESENTATION_SHA256 =
+  '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676';
 const FRONTEND_PORT = 6_247;
 const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
@@ -17,12 +22,16 @@ const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const output = path.resolve(
   repo,
   process.argv[2]
-    ?? 'evidence/2026-07-28/g5-inkfall-visual-continuity-v1',
+    ?? 'evidence/2026-07-29/g5-inkfall-rev5-player-eye-v1',
 );
 const screenshots = path.join(output, 'screenshots');
 const delay = (milliseconds) => new Promise((resolve) => {
   setTimeout(resolve, milliseconds);
 });
+
+async function sha256(file) {
+  return createHash('sha256').update(await fs.readFile(file)).digest('hex');
+}
 
 function service(args, environment = process.env) {
   const lines = [];
@@ -85,6 +94,17 @@ async function tapLook(page, code, count) {
   await delay(350);
 }
 
+const repositoryHeadAtStart = execFileSync(
+  'git',
+  ['rev-parse', 'HEAD'],
+  { cwd: repo, encoding: 'utf8' },
+).trim();
+const repositoryStatusAtStart = execFileSync(
+  'git',
+  ['status', '--short', '--untracked-files=all'],
+  { cwd: repo, encoding: 'utf8' },
+).trim();
+
 await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.mkdir(output, { recursive: false });
 await fs.mkdir(screenshots);
@@ -98,6 +118,12 @@ let result = null;
 let failure = null;
 const consoleErrors = [];
 const pageErrors = [];
+
+assert.equal(
+  repositoryStatusAtStart,
+  '',
+  'Player-eye capture requires a clean source-frozen worktree',
+);
 
 try {
   wrangler = service([
@@ -235,11 +261,26 @@ try {
   const joined = await snapshot(page);
   assert.equal(joined.roomVerification.roomProfile, PROFILE);
   assert.equal(joined.roomVerification.mapBinding.mapReference, MAP_REFERENCE);
+  assert.equal(
+    joined.roomVerification.mapBinding.presentationReference,
+    PRESENTATION_REFERENCE,
+  );
+  assert.equal(
+    joined.roomVerification.mapBinding.render.sha256,
+    PRESENTATION_SHA256,
+  );
+  assert.equal(
+    joined.roomVerification.mapBinding.portal.capabilityId,
+    'inkfall_rev5_linked_world_portal_v1',
+  );
   assert.equal(joined.roomVerification.mapBinding.fixtureHash, FIXTURE_HASH);
   assert.equal(joined.roomVerification.mapBinding.colliderCardinality, 339);
   assert.equal(joined.roomVerification.mapBinding.spawns.length, 12);
   assert.equal(joined.roomVerification.mapBinding.zones.length, 9);
   assert.equal(joined.render3d.renderMeshesMayBeAuthority, false);
+  assert.equal(joined.render3d.presentationMode, 'review_glb');
+  assert.equal(joined.render3d.presentationSha256, PRESENTATION_SHA256);
+  assert.equal(joined.render3d.renderMeshCount, 23);
   assert.equal(joined.render3d.authorityColliderCount, 339);
   assert.equal(joined.render3d.spawnCount, 12);
   assert.equal(joined.render3d.zoneCount, 9);
@@ -277,13 +318,45 @@ try {
   await captureArena(page, '04-archive-tier-and-paper-drop.png');
 
   const final = await snapshot(page);
+  const repositoryHeadAtEnd = execFileSync(
+    'git',
+    ['rev-parse', 'HEAD'],
+    { cwd: repo, encoding: 'utf8' },
+  ).trim();
+  assert.equal(
+    repositoryHeadAtEnd,
+    repositoryHeadAtStart,
+    'Repository HEAD changed during player-eye capture',
+  );
   assert.deepEqual(consoleErrors, []);
   assert.deepEqual(pageErrors, []);
+  const screenshotFiles = Object.freeze([
+    'screenshots/01-west-spawn-pocket-forward.png',
+    'screenshots/02-press-hall-approach.png',
+    'screenshots/03-ink-channel-and-red-fold.png',
+    'screenshots/04-archive-tier-and-paper-drop.png',
+  ]);
+  const screenshotIntegrity = Object.freeze(Object.fromEntries(
+    await Promise.all(screenshotFiles.map(async (relative) => {
+      const absolute = path.join(output, relative);
+      return [relative, Object.freeze({
+        bytes: (await fs.stat(absolute)).size,
+        sha256: await sha256(absolute),
+      })];
+    })),
+  ));
   result = Object.freeze({
     schemaVersion: 1,
-    status: 'focused_visual_capture_complete',
+    status: 'rev5_player_eye_capture_complete_human_review_open',
     profile: PROFILE,
     mapReference: MAP_REFERENCE,
+    presentationReference: PRESENTATION_REFERENCE,
+    sourceFreeze: Object.freeze({
+      repositoryHead: repositoryHeadAtStart,
+      cleanAtStart: repositoryStatusAtStart === '',
+      headUnchangedDuringCapture:
+        repositoryHeadAtEnd === repositoryHeadAtStart,
+    }),
     authority: Object.freeze({
       fixtureHash: FIXTURE_HASH,
       colliderCount: final.render3d.authorityColliderCount,
@@ -293,6 +366,8 @@ try {
         final.render3d.renderMeshesMayBeAuthority,
     }),
     presentation: Object.freeze({
+      mode: final.render3d.presentationMode,
+      sha256: final.render3d.presentationSha256,
       renderMeshCount: final.render3d.renderMeshCount,
       renderOnlyVisualContinuityMeshCount:
         final.render3d.renderOnlyContainmentMeshCount,
@@ -304,12 +379,8 @@ try {
       pressApproachPositionMm: pressApproach.localAuthoritativePosition,
       finalPositionMm: final.localAuthoritativePosition,
     }),
-    screenshots: Object.freeze([
-      'screenshots/01-west-spawn-pocket-forward.png',
-      'screenshots/02-press-hall-approach.png',
-      'screenshots/03-ink-channel-and-red-fold.png',
-      'screenshots/04-archive-tier-and-paper-drop.png',
-    ]),
+    screenshots: screenshotFiles,
+    screenshotIntegrity,
     consoleErrors: Object.freeze(consoleErrors),
     pageErrors: Object.freeze(pageErrors),
     nonClaims: Object.freeze([

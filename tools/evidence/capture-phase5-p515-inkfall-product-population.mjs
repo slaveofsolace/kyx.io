@@ -11,11 +11,26 @@ const REV2_PROFILE = 'p511-inkfall-foundry-revision-2-combat-v1';
 const REV4_PROFILE = 'g5-inkfall-foundry-rev4-revision-3-authority-v1';
 const requestedProfileArgument = process.argv.find((argument) => argument.startsWith('--profile='));
 const PROFILE = requestedProfileArgument?.slice('--profile='.length) ?? REV2_PROFILE;
+const requestedPresentationArgument = process.argv.find(
+  (argument) => argument.startsWith('--presentation='),
+);
+const PRESENTATION = requestedPresentationArgument?.slice('--presentation='.length)
+  ?? 'rev4';
 assert.ok(
   PROFILE === REV2_PROFILE || PROFILE === REV4_PROFILE,
   `Unsupported Inkfall evidence profile: ${PROFILE}`,
 );
+assert.ok(
+  PRESENTATION === 'rev4' || PRESENTATION === 'rev5',
+  `Unsupported Inkfall evidence presentation: ${PRESENTATION}`,
+);
+assert.ok(
+  PRESENTATION !== 'rev5' || PROFILE === REV4_PROFILE,
+  'Rev5 presentation evidence requires the Revision 3 G5 authority profile',
+);
 const REV4_ACCEPTANCE_CAPTURE = PROFILE === REV4_PROFILE;
+const REV5_PRESENTATION_CAPTURE =
+  REV4_ACCEPTANCE_CAPTURE && PRESENTATION === 'rev5';
 const FLAT_COMBAT_PROFILE = 'p58d-rev3-combat-v1';
 const PROFILE_HEADER = 'x-kyx-evidence-profile';
 const FRONTEND_ORIGIN = 'http://127.0.0.1:5173';
@@ -146,9 +161,30 @@ const rev4ExpectedBinding = Object.freeze({
     pickupCount: 0,
   }),
 });
-const expectedBinding = REV4_ACCEPTANCE_CAPTURE
-  ? rev4ExpectedBinding
-  : rev2ExpectedBinding;
+const rev5ExpectedBinding = Object.freeze({
+  ...rev4ExpectedBinding,
+  presentationReference:
+    'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular',
+  render: Object.freeze({
+    role: 'render_only',
+    path:
+      'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
+    sha256: '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676',
+    bytes: 2_803_128,
+    renderMeshesMayBeAuthority: false,
+  }),
+  portal: Object.freeze({
+    capabilityId: 'inkfall_rev5_linked_world_portal_v1',
+    authorityRole: 'additive_server_authority',
+    renderRole: 'rev5_render_only_no_hit',
+    endpointCount: 2,
+  }),
+});
+const expectedBinding = REV5_PRESENTATION_CAPTURE
+  ? rev5ExpectedBinding
+  : REV4_ACCEPTANCE_CAPTURE
+    ? rev4ExpectedBinding
+    : rev2ExpectedBinding;
 const expectedSpawns = REV4_ACCEPTANCE_CAPTURE
   ? Object.freeze(rev4ExpectedSpawns.slice(0, 8))
   : rev2ExpectedSpawns;
@@ -202,7 +238,17 @@ const verifiedInkChannelGrenadePair = Object.freeze({
   maximumSeparationMillimeters: 2_000,
   rationale: 'Both players remain on the supported south Ink bridge centerline while the shooter holds the authority crouch stance and throws at -7.5 degrees on the bridge-aligned 14 degree yaw, trapping the projectile between the opposing guard rails so it detonates inside the 11 m radial impulse.',
 });
-const sourceFiles = Object.freeze([
+const rev5PortalRoute = Object.freeze({
+  lowerApproach: Object.freeze({ x: -4_500, z: -12_500 }),
+  lowerEntryTarget: Object.freeze({ x: -4_000, z: -10_000 }),
+  lowerExit: Object.freeze({ x: 1_539, y: 1_431, z: -4_461 }),
+  upperEntryTarget: Object.freeze({ x: 1_000, z: -5_000 }),
+  upperExit: Object.freeze({ x: -4_500, y: -3_000, z: -12_500 }),
+  arrivalToleranceMillimeters: 1_100,
+  eventTimeoutMilliseconds: 8_000,
+  cooldownSettleMilliseconds: 1_500,
+});
+const legacySourceFiles = Object.freeze([
   'src/app/onlineAuthorityProfiles.ts',
   'src/app/onlineAuthorityGateway.ts',
   'src/app/onlineAuthorityInkfallWorld.ts',
@@ -310,6 +356,26 @@ const sourceFiles = Object.freeze([
   'tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs',
   'tools/evidence/verify-phase5-p515-inkfall-product-population.mjs',
 ]);
+const rev5SourceFiles = Object.freeze([
+  ...legacySourceFiles.filter((relative) => (
+    relative
+      !== 'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb'
+  )),
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/build_press_archive_rev5.py',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/manifest.inkfall-rev5-geometry-portal.json',
+  'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/validation/inkfall-rev5-geometry-portal-build-report.json',
+  'src/app/inkfallRev5CandidateBinding.ts',
+  'src/app/inkfallRev5PortalPresentation.ts',
+  'src/app/inkfallRev5VisualContinuity.ts',
+  'src/app/onlineAuthorityThreeRuntime.ts',
+  'src/authority/portal/inkfallRev5PortalAuthority.ts',
+  'src/dev/loadInkfallRev5ReviewVisual.ts',
+  'tests/unit/authority/portal/inkfallRev5PortalAuthority.test.ts',
+].sort());
+const sourceFiles = REV5_PRESENTATION_CAPTURE
+  ? rev5SourceFiles
+  : legacySourceFiles;
 
 function delay(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -1148,6 +1214,220 @@ async function routePair(westPage, eastPage) {
     }));
   }
   return Object.freeze(checkpoints);
+}
+
+function portalEventOccurrences(
+  client,
+  minimumSequence,
+  actorId,
+  endpointId,
+) {
+  return client.wire.flatMap((record) => {
+    if (
+      record.sequence < minimumSequence
+      || record.direction !== 'received'
+      || record.message.type !== 'reliableEventBatch'
+    ) return [];
+    return record.message.events.filter((event) => (
+      event.kind === 'worldPortalTraversed'
+      && event.actorId === actorId
+      && event.presentation?.kind === 'world_portal_traversed'
+      && event.presentation.endpointId === endpointId
+    )).map((event) => Object.freeze({ record, event }));
+  });
+}
+
+async function awaitPortalDeliveries(
+  participants,
+  minimumSequence,
+  actorId,
+  endpointId,
+  requestedAtMilliseconds,
+) {
+  const deadline = Date.now() + rev5PortalRoute.eventTimeoutMilliseconds;
+  while (
+    Date.now() < deadline
+    && participants.some((client) => (
+      portalEventOccurrences(
+        client,
+        minimumSequence,
+        actorId,
+        endpointId,
+      ).length < 1
+    ))
+  ) await delay(50);
+  return Object.freeze(await Promise.all(participants.map(async (client) => {
+    const occurrences = portalEventOccurrences(
+      client,
+      minimumSequence,
+      actorId,
+      endpointId,
+    );
+    assert.ok(
+      occurrences.length >= 1,
+      `${endpointId} ${client.clientId} reliable portal occurrence`,
+    );
+    const [{ record, event }] = occurrences;
+    const snapshot = await productSnapshot(client.page);
+    const logicalApplicationCount = snapshot.combat.recentEvents.filter(
+      (candidate) => (
+        candidate.id === event.id
+        && candidate.kind === event.kind
+        && candidate.serverTick === event.serverTick
+      ),
+    ).length;
+    assert.equal(
+      logicalApplicationCount,
+      1,
+      `${endpointId} ${client.clientId} logical portal application`,
+    );
+    const latencyMilliseconds =
+      record.observedAtMilliseconds - requestedAtMilliseconds;
+    assert.ok(
+      latencyMilliseconds >= 0
+        && latencyMilliseconds <= rev5PortalRoute.eventTimeoutMilliseconds,
+      `${endpointId} ${client.clientId} portal delivery latency`,
+    );
+    return Object.freeze({
+      clientId: client.clientId,
+      observedAt: record.observedAt,
+      latencyMilliseconds,
+      rawOccurrenceCount: occurrences.length,
+      logicalApplicationCount,
+      event,
+    });
+  })));
+}
+
+function assertPortalLanding(snapshot, expected, label) {
+  const position = routeAuthorityPosition(snapshot);
+  assert.notEqual(position, null, `${label} authoritative position`);
+  const distanceMillimeters = Math.hypot(
+    position.x - expected.x,
+    position.y - expected.y,
+    position.z - expected.z,
+  );
+  assert.ok(
+    distanceMillimeters <= rev5PortalRoute.arrivalToleranceMillimeters,
+    `${label} landing distance ${distanceMillimeters}`,
+  );
+  return Object.freeze({ position, distanceMillimeters });
+}
+
+async function exerciseRev5PortalRoundTrip(participants, driver) {
+  const before = await moveTo(
+    driver.page,
+    rev5PortalRoute.lowerApproach,
+    'Rev5 lower portal approach',
+    500,
+    45,
+  );
+  await face(
+    driver.page,
+    Math.round(Math.atan2(
+      rev5PortalRoute.lowerEntryTarget.x
+        - before.localPredictedPosition.x,
+      rev5PortalRoute.lowerEntryTarget.z
+        - before.localPredictedPosition.z,
+    ) * 180_000 / Math.PI),
+    800,
+  );
+  await driver.page.screenshot({
+    path: path.join(
+      screenshotDirectory,
+      'p515-03a-rev5-lower-portal-approach.png',
+    ),
+    fullPage: true,
+  });
+  const actorId = before.playerId;
+  const lowerMinimumSequence = wireSequence;
+  const lowerRequestedAtMilliseconds = Date.now();
+  await pulseKey(driver.page, 'w', 260);
+  const lowerDeliveries = await awaitPortalDeliveries(
+    participants,
+    lowerMinimumSequence,
+    actorId,
+    'red_fold_lower',
+    lowerRequestedAtMilliseconds,
+  );
+  await delay(300);
+  const lowerArrival = await productSnapshot(driver.page);
+  const lowerLanding = assertPortalLanding(
+    lowerArrival,
+    rev5PortalRoute.lowerExit,
+    'Rev5 lower-to-upper portal',
+  );
+  await driver.page.screenshot({
+    path: path.join(
+      screenshotDirectory,
+      'p515-03b-rev5-upper-portal-arrival.png',
+    ),
+    fullPage: true,
+  });
+
+  await delay(rev5PortalRoute.cooldownSettleMilliseconds);
+  const upperBefore = await productSnapshot(driver.page);
+  await face(
+    driver.page,
+    Math.round(Math.atan2(
+      rev5PortalRoute.upperEntryTarget.x
+        - upperBefore.localPredictedPosition.x,
+      rev5PortalRoute.upperEntryTarget.z
+        - upperBefore.localPredictedPosition.z,
+    ) * 180_000 / Math.PI),
+    800,
+  );
+  const upperMinimumSequence = wireSequence;
+  const upperRequestedAtMilliseconds = Date.now();
+  await pulseKey(driver.page, 'w', 220);
+  const upperDeliveries = await awaitPortalDeliveries(
+    participants,
+    upperMinimumSequence,
+    actorId,
+    'red_fold_upper',
+    upperRequestedAtMilliseconds,
+  );
+  await delay(300);
+  const upperArrival = await productSnapshot(driver.page);
+  const upperLanding = assertPortalLanding(
+    upperArrival,
+    rev5PortalRoute.upperExit,
+    'Rev5 upper-to-lower portal',
+  );
+  const allEvents = [...lowerDeliveries, ...upperDeliveries]
+    .map(({ event }) => event);
+  const exactCapability = allEvents.every(({ presentation }) => (
+    presentation.capabilityId === 'inkfall_rev5_linked_world_portal_v1'
+  ));
+  const exactHooks = allEvents.every(({ presentation }) => (
+    typeof presentation.departureAudioHook === 'string'
+    && presentation.departureAudioHook.length > 0
+    && typeof presentation.arrivalAudioHook === 'string'
+    && presentation.arrivalAudioHook.length > 0
+    && typeof presentation.departureVfxHook === 'string'
+    && presentation.departureVfxHook.length > 0
+    && typeof presentation.arrivalVfxHook === 'string'
+    && presentation.arrivalVfxHook.length > 0
+  ));
+  assert.equal(exactCapability, true);
+  assert.equal(exactHooks, true);
+  return Object.freeze({
+    route: rev5PortalRoute,
+    actorId,
+    lower: Object.freeze({
+      beforePosition: routeAuthorityPosition(before),
+      landing: lowerLanding,
+      deliveries: lowerDeliveries,
+    }),
+    upper: Object.freeze({
+      beforePosition: routeAuthorityPosition(upperBefore),
+      landing: upperLanding,
+      deliveries: upperDeliveries,
+    }),
+    exactCapability,
+    exactHooks,
+    allChecksPassed: true,
+  });
 }
 
 async function faceEachOther(westPage, eastPage) {
@@ -2095,13 +2375,13 @@ function boardHtml(board) {
     ['Shared authority events', `2 clients @ tick ${board.ticks.two}<br>4 clients @ tick ${board.ticks.four}<br>8 clients @ tick ${board.ticks.eight}`],
     ['Spawns and teams', `${board.uniqueSpawns}/8 locked spawns<br>${board.blue} blue / ${board.red} red`],
     ['Prediction and interpolation', `4-client move ${Math.round(board.fourMove)} mm<br>peer error ${Math.round(board.fourPeer)} mm<br>8-client move ${Math.round(board.eightMove)} mm<br>peer error ${Math.round(board.eightPeer)} mm`],
-    ['World and combat', `cross-map damage blocked: ${board.occluded}<br>death ${board.death}<br>score ${board.score}<br>feed sequence ${board.feedSequence}<br>confirmed cues ${board.presentationCues}`],
+    ['World and combat', `cross-map damage blocked: ${board.occluded}<br>portal round trip: ${board.portal}<br>death ${board.death}<br>score ${board.score}<br>feed sequence ${board.feedSequence}<br>confirmed cues ${board.presentationCues}`],
     ['Recovery and identity', `same player: ${board.samePlayer}<br>token rotated: ${board.tokenRotated}<br>state preserved: ${board.statePreserved}<br>profile alias: HTTP ${board.mismatchStatus}`],
     ['Frame and latency', `${board.frameSamples} frame samples<br>max p95 ${board.maximumP95FrameMilliseconds} ms<br>max p99 ${board.maximumP99FrameMilliseconds} ms<br>max reliable delivery ${board.maximumReliableDeliveryLatencyMilliseconds} ms`],
   ];
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     *{box-sizing:border-box}body{margin:0;background:#070b0f;color:#eff8fa;font-family:Inter,Arial,sans-serif;padding:48px}h1{font:900 38px/1.05 ui-monospace,monospace;letter-spacing:-.04em;margin:0 0 10px}p{color:#97abb2;margin:0 0 34px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{min-height:180px;border:1px solid #26343a;background:linear-gradient(145deg,#11191e,#0b1014);padding:22px;border-radius:12px}.card h2{margin:0 0 16px;color:#69e5f4;font:800 15px/1.2 ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em}.card div{font:700 19px/1.55 ui-monospace,monospace}.footer{margin-top:26px;border-top:1px solid #26343a;padding-top:18px;color:#e6b75c;font:700 14px/1.5 ui-monospace,monospace}</style></head><body>
-    <h1>${REV4_ACCEPTANCE_CAPTURE ? 'G5 INKFALL REV4 RUNTIME EVIDENCE' : 'P5.15 PRODUCT RUNTIME EVIDENCE'}</h1><p>Derived summary of the hashed product screenshots and normalized WebSocket log.</p>
+    <h1>${REV5_PRESENTATION_CAPTURE ? 'G5 INKFALL REV5 RUNTIME EVIDENCE' : REV4_ACCEPTANCE_CAPTURE ? 'G5 INKFALL REV4 RUNTIME EVIDENCE' : 'P5.15 PRODUCT RUNTIME EVIDENCE'}</h1><p>Derived summary of the hashed product screenshots and normalized WebSocket log.</p>
     <div class="grid">${cards.map(([title, value]) => `<section class="card"><h2>${title}</h2><div>${value}</div></section>`).join('')}</div>
     <div class="footer">BOUNDED EVIDENCE ONLY · NO G3/G4/G5 OR HUMAN PLAYTEST ACCEPTANCE CLAIM</div>
   </body></html>`;
@@ -2266,6 +2546,9 @@ try {
     return local?.magazineRounds === 50 && local.reserveRounds < 150;
   }, undefined, { timeout: 8_000 });
   const routeCheckpoints = await routePair(first.page, second.page);
+  const portalRoundTrip = REV5_PRESENTATION_CAPTURE
+    ? await exerciseRev5PortalRoundTrip(twoClients, first)
+    : null;
   const bodyHitConvergence = await stageVerifiedInkChannelCombatPair(
     first.page,
     second.page,
@@ -2867,6 +3150,12 @@ try {
   const technicalAcceptanceChecks = Object.freeze({
     ...runtimePerformanceChecks,
     traversalCompletedWithoutDriverRecovery: movementDriverRecoveries.length === 0,
+    ...(REV5_PRESENTATION_CAPTURE
+      ? {
+          portalRoundTripAuthoritative:
+            portalRoundTrip?.allChecksPassed === true,
+        }
+      : {}),
   });
   const technicalAcceptanceCandidate =
     Object.values(technicalAcceptanceChecks).every(Boolean);
@@ -2894,6 +3183,7 @@ try {
       frontendOrigin: FRONTEND_ORIGIN,
       authorityOrigin: AUTHORITY_ORIGIN,
       exactProfile: PROFILE,
+      exactPresentation: PRESENTATION,
       productClients: 8,
       isolatedBrowserContexts: 8,
       browserLaunches: 8,
@@ -2947,6 +3237,7 @@ try {
     movementAndWorld: {
       routeId: 'alternate_ink_channel_after_press_cross_snag',
       routeCheckpoints,
+      portalRoundTrip,
       crossAim,
       crossAcceptedShotsBefore: crossShooterBefore.acceptedShotCount,
       crossAcceptedShotsAfter: crossShooterAfter.acceptedShotCount,
@@ -3084,12 +3375,20 @@ try {
     knownLimits: [
       'This capture is bounded product/browser evidence, not broad playtest acceptance.',
       ...(REV4_ACCEPTANCE_CAPTURE
-        ? ['This capture supports a G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.']
+        ? [
+            REV5_PRESENTATION_CAPTURE
+              ? 'This capture supports a Rev5 G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.'
+              : 'This capture supports a G5 technical acceptance candidate; human visual and multiplayer review remain separate and G5 acceptance is not self-granted.',
+          ]
         : ['This capture supports a bounded G3/G4 acceptance candidate; human acceptance remains separate and G5 is not claimed.']),
       `Inkfall revision-${expectedBinding.mapRevision} players begin with zero shield; no synthetic shield cue is manufactured.`,
       'Reliable event transport is at least once; raw retransmissions are disclosed and client dedupe is required for exactly-once logical application.',
       ...(REV4_ACCEPTANCE_CAPTURE
-        ? ['The separately executable Rev4 Press Hall to Paper Archive vertical route is deterministic automation evidence, not a human traversal review.']
+        ? [
+            REV5_PRESENTATION_CAPTURE
+              ? 'The Rev5 Ink Channel route and portal round trip are deterministic automation evidence, not a human traversal review.'
+              : 'The separately executable Rev4 Press Hall to Paper Archive vertical route is deterministic automation evidence, not a human traversal review.',
+          ]
         : ['Canonical press-cross traversal snag is retained in runtime-v10; this alternate route does not support G5 no-snag acceptance.']),
       ...(movementDriverRecoveries.length > 0
         ? ['Alternate Ink-channel automation required bounded collision recovery; this run cannot support G5 no-snag acceptance.']
@@ -3113,6 +3412,7 @@ try {
     eightMove: eightInterpolation.movementMillimeters,
     eightPeer: eightInterpolation.peerDistanceMillimeters,
     occluded: proofCore.movementAndWorld.realOcclusionBlockedCrossMapDamage,
+    portal: portalRoundTrip?.allChecksPassed ?? 'not exercised',
     death: `${victimAtDeath.lifePhase} / ${victimAtDeath.healthPoints} HP`,
     score: deathShooter.combat.snapshot.match.teamScores.map(({ teamId, score }) => `${teamId} ${score}`).join(' · '),
     feedSequence: deathShooter.combat.snapshot.match.feedSequence,
