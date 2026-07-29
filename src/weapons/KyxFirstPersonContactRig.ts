@@ -105,15 +105,6 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
     metalness: 0.08,
     roughness: 0.82,
   });
-  const accent = new THREE.MeshStandardMaterial({
-    name: 'KYX_FP_SUIT_ACCENT',
-    color: 0x55dcff,
-    emissive: 0x123a44,
-    emissiveIntensity: 0.72,
-    metalness: 0.2,
-    roughness: 0.38,
-  });
-
   const root = new THREE.Group();
   root.name = 'KYX_VLR7_FIRST_PERSON_CONTACT_RIG';
   root.userData.presentationOnly = true;
@@ -183,9 +174,9 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   );
   root.add(dominantHand);
 
-  const supportShoulder = new THREE.Vector3(-0.3, -0.4, 0.12);
-  const supportElbow = new THREE.Vector3(-0.21, -0.28, -0.02);
-  const supportWrist = new THREE.Vector3(-0.105, -0.15, -0.16);
+  const supportShoulder = new THREE.Vector3(-0.62, -0.42, 0.05);
+  const supportElbow = new THREE.Vector3(-0.4, -0.28, -0.08);
+  const supportWrist = new THREE.Vector3(-0.16, -0.14, -0.2);
   const supportPalm = new THREE.Vector3(-0.02, -0.045, -0.34);
   root.add(
     capsuleBetween(
@@ -204,8 +195,8 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
     ),
     plateBetween(
       'KYX_VLR7_SUPPORT_FOREARM_PLATE',
-      new THREE.Vector3(-0.2, -0.27, -0.03),
-      new THREE.Vector3(-0.115, -0.16, -0.145),
+      new THREE.Vector3(-0.385, -0.27, -0.085),
+      new THREE.Vector3(-0.18, -0.15, -0.19),
       0.078,
       0.02,
       plate,
@@ -245,19 +236,6 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
     glove,
   );
   root.add(supportHand);
-
-  const dominantCuff = new THREE.Mesh(
-    new THREE.TorusGeometry(0.046, 0.007, 8, 16),
-    accent,
-  );
-  dominantCuff.name = 'KYX_VLR7_DOMINANT_CUFF_ACCENT';
-  dominantCuff.position.copy(dominantWrist);
-  dominantCuff.rotation.set(1.05, 0.52, -0.52);
-  const supportCuff = dominantCuff.clone();
-  supportCuff.name = 'KYX_VLR7_SUPPORT_CUFF_ACCENT';
-  supportCuff.position.copy(supportWrist);
-  supportCuff.rotation.set(0.95, -0.38, 0.34);
-  root.add(dominantCuff, supportCuff);
 
   const dominantGrip = gripMarker(
     'KYX_VLR7_DOMINANT_GRIP_CONTACT',
