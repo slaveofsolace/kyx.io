@@ -879,7 +879,19 @@ async function productSnapshot(page) {
   return await page.evaluate(() => globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot() ?? null);
 }
 
-async function presentationMarkerProof(page) {
+async function presentationMarkerProof(page, expectedCue) {
+  await page.waitForFunction((cue) => {
+    const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    const hud = document.querySelector('[data-testid="online-confirmed-hud"]');
+    const vfx = document.querySelector('[data-testid="online-confirmed-vfx"]');
+    return snapshot?.presentation.lastCue === cue
+      && hud instanceof HTMLElement
+      && vfx instanceof HTMLElement
+      && hud.dataset.cue === cue
+      && vfx.dataset.cue === cue
+      && hud.dataset.active === 'true'
+      && vfx.dataset.active === 'true';
+  }, expectedCue, { timeout: 2_000 });
   return await page.evaluate(() => {
     const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
     const proof = document.querySelector('[data-testid="online-presentation-status"]');
@@ -2743,7 +2755,7 @@ try {
   await first.page.waitForFunction(() => (
     globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot().presentation.lastCue === 'body'
   ), undefined, { timeout: 5_000 });
-  const presentationAtDamage = await presentationMarkerProof(first.page);
+  const presentationAtDamage = await presentationMarkerProof(first.page, 'body');
   assertPresentationMarker(presentationAtDamage, 'body', 1);
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-04-confirmed-body-hit.png'), fullPage: true });
 
@@ -2885,7 +2897,7 @@ try {
       && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_detonation')
       && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_impulse');
   }, grenadeThrowProjectile.projectileId, { timeout: 10_000 });
-  const grenadePresentation = await presentationMarkerProof(first.page);
+  const grenadePresentation = await presentationMarkerProof(first.page, 'grenade_impulse');
   assertPresentationMarker(grenadePresentation, 'grenade_impulse', 4);
   await first.page.screenshot({
     path: path.join(screenshotDirectory, 'p515-04c-grenade-impulse-confirmed.png'),
@@ -3037,7 +3049,7 @@ try {
   const victimAtDeath = localCombatPlayer(deathVictim);
   assert.deepEqual({ lifePhase: victimAtDeath.lifePhase, healthPoints: victimAtDeath.healthPoints }, { lifePhase: 'dead', healthPoints: 0 });
   assert.ok(deathShooter.combat.recentEvents.some(({ kind }) => kind === 'playerKilled'));
-  const presentationAtDeath = await presentationMarkerProof(first.page);
+  const presentationAtDeath = await presentationMarkerProof(first.page, 'head_kill');
   assertPresentationMarker(presentationAtDeath, 'head_kill', 2);
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-05-authoritative-death-score.png'), fullPage: true });
 
@@ -3059,7 +3071,7 @@ try {
   await delay(500);
   const teleportAfter = await productSnapshot(first.page);
   assert.ok(teleportAfter.localPredictedPosition.y > -10_000);
-  const teleportPresentation = await presentationMarkerProof(first.page);
+  const teleportPresentation = await presentationMarkerProof(first.page, 'teleport');
   assertPresentationMarker(teleportPresentation, 'teleport', 3);
   const teleportDistanceMillimeters = distanceXZ(
     teleportBefore.localPredictedPosition,
