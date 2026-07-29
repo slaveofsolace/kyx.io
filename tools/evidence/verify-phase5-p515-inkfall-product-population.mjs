@@ -204,7 +204,9 @@ const rev5PortalRoute = {
   lowerEntryPulseMilliseconds: 650,
   arrivalToleranceMillimeters: 1_100,
   eventTimeoutMilliseconds: 8_000,
-  cooldownSettleMilliseconds: 8_500,
+  cooldownTicks: 160,
+  cooldownSafetyTicks: 2,
+  cooldownWaitTimeoutMilliseconds: 20_000,
 };
 const legacyExpectedScreenshots = [
   'screenshots/p515-01-client-0-two-rendered.png',
@@ -775,6 +777,20 @@ if (REV5_PRESENTATION_CAPTURE) {
   assert.equal(portalRoundTrip.exactCapability, true);
   assert.equal(portalRoundTrip.exactHooks, true);
   assert.equal(portalRoundTrip.allChecksPassed, true);
+  assert.equal(
+    portalRoundTrip.returnCooldown.lowerAuthorityTick,
+    portalRoundTrip.lower.deliveries[0].event.serverTick,
+  );
+  assert.equal(
+    portalRoundTrip.returnCooldown.returnReadyTick,
+    portalRoundTrip.returnCooldown.lowerAuthorityTick
+      + rev5PortalRoute.cooldownTicks
+      + rev5PortalRoute.cooldownSafetyTicks,
+  );
+  assert.ok(
+    portalRoundTrip.returnCooldown.returnObservedTick
+      >= portalRoundTrip.returnCooldown.returnReadyTick,
+  );
   assert.equal(portalRoundTrip.lower.transitStance, 'crouched');
   assert.ok(
     Math.hypot(

@@ -256,8 +256,9 @@ const rev5PortalRoute = Object.freeze({
   lowerEntryPulseMilliseconds: 650,
   arrivalToleranceMillimeters: 1_100,
   eventTimeoutMilliseconds: 8_000,
-  // The movement profile's 160 teleport-cooldown ticks run at 50 ms each.
-  cooldownSettleMilliseconds: 8_500,
+  cooldownTicks: 160,
+  cooldownSafetyTicks: 2,
+  cooldownWaitTimeoutMilliseconds: 20_000,
 });
 const legacySourceFiles = Object.freeze([
   'src/app/onlineAuthorityProfiles.ts',
@@ -1395,7 +1396,42 @@ async function exerciseRev5PortalRoundTrip(participants, driver) {
     fullPage: true,
   });
 
-  await delay(rev5PortalRoute.cooldownSettleMilliseconds);
+  const lowerAuthorityTick = Math.max(
+    ...lowerDeliveries.map(({ event }) => event.serverTick),
+  );
+  const returnReadyTick = lowerAuthorityTick
+    + rev5PortalRoute.cooldownTicks
+    + rev5PortalRoute.cooldownSafetyTicks;
+  const cooldownDeadline = Date.now()
+    + rev5PortalRoute.cooldownWaitTimeoutMilliseconds;
+  let returnObservedTick = -1;
+  while (Date.now() < cooldownDeadline && returnObservedTick < returnReadyTick) {
+    returnObservedTick = driver.wire.reduce((latest, record) => (
+      record.direction === 'received'
+        && (
+          record.message.type === 'fullSnapshot'
+          || record.message.type === 'deltaSnapshot'
+        )
+        ? Math.max(latest, record.message.serverTick)
+        : latest
+    ), -1);
+    if (returnObservedTick < returnReadyTick) await delay(25);
+  }
+  assert.ok(
+    returnObservedTick >= returnReadyTick,
+    `Rev5 portal return cooldown did not clear: ${JSON.stringify({
+      lowerAuthorityTick,
+      returnReadyTick,
+      returnObservedTick,
+    })}`,
+  );
+  const returnCooldown = Object.freeze({
+    lowerAuthorityTick,
+    cooldownTicks: rev5PortalRoute.cooldownTicks,
+    safetyTicks: rev5PortalRoute.cooldownSafetyTicks,
+    returnReadyTick,
+    returnObservedTick,
+  });
   const upperBefore = await productSnapshot(driver.page);
   await face(
     driver.page,
@@ -1444,6 +1480,7 @@ async function exerciseRev5PortalRoundTrip(participants, driver) {
   return Object.freeze({
     route: rev5PortalRoute,
     actorId,
+    returnCooldown,
     lower: Object.freeze({
       transitStance: 'crouched',
       corridorEntryPosition: routeAuthorityPosition(lowerCorridorEntry),
