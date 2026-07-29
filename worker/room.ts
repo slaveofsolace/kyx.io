@@ -3189,6 +3189,16 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     } catch (error) {
       this.timerActive = false;
       this.lastTickFailure = error instanceof Error ? error.message.slice(0, 256) : 'UNKNOWN';
+      console.error(
+        '[KYX_AUTHORITY_TICK_FAILED]',
+        Object.freeze({
+          roomCode: this.roomCode,
+          roomProfile: this.roomProfile,
+          serverTick: authority.serverTick,
+          failure: this.lastTickFailure,
+        }),
+        error,
+      );
       this.broadcast(errorMessage(
         'ROOM_TICK_FAILED',
         this.revision3CombatEnabled

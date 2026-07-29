@@ -374,6 +374,13 @@ try {
   await page.keyboard.up('KeyW');
   await delay(800);
   const pressApproach = await snapshot(page);
+  assert.equal(
+    pressApproach.lastError,
+    null,
+    `Authority failed during forward traversal: ${JSON.stringify(
+      pressApproach.lastError,
+    )}`,
+  );
   const pressApproachDelta = Object.freeze({
     x:
       pressApproach.localAuthoritativePosition.x
@@ -413,6 +420,11 @@ try {
   await captureArena(page, '04-archive-tier-and-paper-drop.png');
 
   const final = await snapshot(page);
+  assert.equal(
+    final.lastError,
+    null,
+    `Authority failed during player-eye capture: ${JSON.stringify(final.lastError)}`,
+  );
   const repositoryHeadAtEnd = execFileSync(
     'git',
     ['rev-parse', 'HEAD'],
