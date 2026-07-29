@@ -56,6 +56,11 @@ assert.deepEqual(expectedSpawnProtection, {
   milliseconds: 1_000,
   breaksOnOffense: true,
 });
+const expectedFrameProfileContract = Object.freeze({
+  minimumSamplesPerClient: 240,
+  minimumDurationMilliseconds: 2_000,
+  expectedProfileCount: 14,
+});
 const output = path.resolve(
   repo,
   process.argv[2] ?? 'evidence/2026-07-22/phase-5-p5-15/runtime-v1',
@@ -542,9 +547,15 @@ function assertPopulation(population, count, roomCode, matchId) {
   assert.equal(new Set(population.frameProfiles.map(({ clientId }) => clientId)).size, count);
   for (const frameProfile of population.frameProfiles) {
     assert.equal(frameProfile.population, count);
-    assert.equal(frameProfile.sampleCount, 120);
+    assert.ok(
+      frameProfile.sampleCount
+        >= expectedFrameProfileContract.minimumSamplesPerClient,
+    );
     assert.ok(Number.isFinite(frameProfile.measurementDurationMilliseconds));
-    assert.ok(frameProfile.measurementDurationMilliseconds > 0);
+    assert.ok(
+      frameProfile.measurementDurationMilliseconds
+        >= expectedFrameProfileContract.minimumDurationMilliseconds,
+    );
     for (const field of [
       'meanFrameMilliseconds',
       'p50FrameMilliseconds',
@@ -790,7 +801,23 @@ assert.equal(proof.populations.eight.tickStimulus.driverClientId, 'client-6');
 assert.ok(proof.populations.two.commonAuthorityTick < proof.populations.four.commonAuthorityTick);
 assert.ok(proof.populations.four.commonAuthorityTick < proof.populations.eight.commonAuthorityTick);
 assert.equal(proof.performance.scope, 'local_headless_system_chrome_active_client_capture_not_shipping_hardware');
-assert.equal(proof.performance.frameSamples, 1_680);
+assert.deepEqual(proof.performance.frameProfileContract, expectedFrameProfileContract);
+assert.equal(proof.performance.frameProfiles, expectedFrameProfileContract.expectedProfileCount);
+const verifiedFrameProfiles = [
+  ...proof.populations.two.frameProfiles,
+  ...proof.populations.four.frameProfiles,
+  ...proof.populations.eight.frameProfiles,
+];
+assert.equal(verifiedFrameProfiles.length, expectedFrameProfileContract.expectedProfileCount);
+assert.equal(
+  proof.performance.frameSamples,
+  verifiedFrameProfiles.reduce((sum, profile) => sum + profile.sampleCount, 0),
+);
+assert.ok(
+  proof.performance.frameSamples
+    >= expectedFrameProfileContract.expectedProfileCount
+      * expectedFrameProfileContract.minimumSamplesPerClient,
+);
 assert.deepEqual(proof.performance.profiledClientPopulations, { two: 2, four: 4, eight: 8 });
 assert.equal(proof.performance.checks.frameSampleCardinality, true);
 assert.equal(

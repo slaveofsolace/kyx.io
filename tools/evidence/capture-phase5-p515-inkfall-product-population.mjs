@@ -75,6 +75,11 @@ const browserLaunchArguments = Object.freeze([
   '--disable-renderer-backgrounding',
   '--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion',
 ]);
+const FRAME_PROFILE_CONTRACT = Object.freeze({
+  minimumSamplesPerClient: 240,
+  minimumDurationMilliseconds: 2_000,
+  expectedProfileCount: 14,
+});
 const SHARED_AUTHORITY_SHOT_PULSE_MILLISECONDS = 0;
 const CROUCH_BUTTON_MASK = 1 << 2;
 const PRIMARY_FIRE_BUTTON_MASK = 1 << 3;
@@ -414,7 +419,10 @@ function delay(milliseconds) {
 }
 
 async function captureFrameProfile(client, population) {
-  const profile = await client.page.evaluate(async ({ samples }) => {
+  const profile = await client.page.evaluate(async ({
+    minimumSamples,
+    minimumDurationMilliseconds,
+  }) => {
     const longTasks = [];
     let observer = null;
     if ('PerformanceObserver' in window) {
@@ -436,7 +444,11 @@ async function captureFrameProfile(client, population) {
     await new Promise((resolve) => {
       const sample = (timestamp) => {
         timestamps.push(timestamp);
-        if (timestamps.length >= samples + 1) {
+        const elapsedMilliseconds = timestamp - timestamps[0];
+        if (
+          timestamps.length >= minimumSamples + 1
+          && elapsedMilliseconds >= minimumDurationMilliseconds
+        ) {
           resolve();
           return;
         }
@@ -476,7 +488,10 @@ async function captureFrameProfile(client, population) {
       hardwareConcurrency: navigator.hardwareConcurrency,
       memory,
     };
-  }, { samples: 120 });
+  }, {
+    minimumSamples: FRAME_PROFILE_CONTRACT.minimumSamplesPerClient,
+    minimumDurationMilliseconds: FRAME_PROFILE_CONTRACT.minimumDurationMilliseconds,
+  });
   return Object.freeze({
     population,
     clientId: client.clientId,
@@ -3523,6 +3538,8 @@ try {
   ];
   const runtimePerformance = Object.freeze({
     scope: 'local_headless_system_chrome_active_client_capture_not_shipping_hardware',
+    frameProfileContract: FRAME_PROFILE_CONTRACT,
+    frameProfiles: allFrameProfiles.length,
     frameSamples: allFrameProfiles.reduce((sum, profile) => sum + profile.sampleCount, 0),
     profiledClientPopulations: Object.freeze({ two: 2, four: 4, eight: 8 }),
     maximumP95FrameMilliseconds: Math.max(
@@ -3551,7 +3568,13 @@ try {
     }),
   });
   const runtimePerformanceChecks = Object.freeze({
-    frameSampleCardinality: runtimePerformance.frameSamples === 1_680,
+    frameSampleCardinality:
+      runtimePerformance.frameProfiles === FRAME_PROFILE_CONTRACT.expectedProfileCount
+      && allFrameProfiles.every((profile) => (
+        profile.sampleCount >= FRAME_PROFILE_CONTRACT.minimumSamplesPerClient
+        && profile.measurementDurationMilliseconds
+          >= FRAME_PROFILE_CONTRACT.minimumDurationMilliseconds
+      )),
     p95WithinBound: runtimePerformance.maximumP95FrameMilliseconds
       <= runtimePerformance.thresholds.maximumP95FrameMilliseconds,
     p99WithinBound: runtimePerformance.maximumP99FrameMilliseconds
