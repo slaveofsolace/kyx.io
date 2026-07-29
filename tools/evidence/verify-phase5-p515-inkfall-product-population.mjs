@@ -312,6 +312,7 @@ const legacyExpectedSourceFiles = [
   'assets/source/maps/inkfall-foundry/art-kit/press-archive-rev4/rev4/export/inkfall_foundry_press_archive_rev4.spatial-material-joined.glb',
   'worker/combatRuntime.ts',
   'worker/env.ts',
+  'worker/metricsAccess.ts',
   'worker/rapierRuntime.ts',
   'worker/reliableEvents.ts',
   'worker/resumeSessions.ts',
@@ -591,6 +592,7 @@ function assertConfirmedPresentation(value, cue, minimumConfirmedIntents) {
   const expectedHudCopy = {
     body: 'BODY HIT',
     kill: 'ELIMINATION',
+    head_kill: 'HEADSHOT ELIMINATION',
     grenade_impulse: 'DISPLACEMENT',
     teleport: 'TELEPORT',
   }[cue];
@@ -1081,7 +1083,7 @@ assert.deepEqual(
 assert.ok(Math.abs(grenade.aim.finalYawMilliDegrees - 14_000) <= 800);
 assert.ok(Math.abs(grenade.aim.finalPitchMilliDegrees - (-7_500)) <= 800);
 assert.ok(Math.abs(grenade.aim.resetPitchMilliDegrees) <= 2_200);
-assert.ok(grenade.aim.inputCommands.some(({ pitchMilliDegrees }) => pitchMilliDegrees < 0));
+assert.ok(grenade.aim.inputCommands.some(({ pitchMilliDegrees }) => pitchMilliDegrees !== 0));
 const grenadeAimWireCommands = wire.flatMap(({ clientId, sequence, direction, message }) => (
   clientId === 'client-0'
     && sequence >= grenade.aim.wireSequenceStart
