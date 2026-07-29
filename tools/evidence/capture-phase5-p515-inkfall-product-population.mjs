@@ -1507,9 +1507,8 @@ async function faceEachOther(westPage, eastPage) {
   const eastPosition = east.localPredictedPosition;
   const westYaw = Math.round(Math.atan2(eastPosition.x - westPosition.x, eastPosition.z - westPosition.z) * 180_000 / Math.PI);
   const eastYaw = Math.round(Math.atan2(westPosition.x - eastPosition.x, westPosition.z - eastPosition.z) * 180_000 / Math.PI);
-  // Combat alignment is tighter than traversal steering. At the bounded
-  // Ink Channel pair this keeps the full deterministic recoil/spread envelope
-  // inside the scaled 1.8 m humanoid head volumes.
+  // Combat alignment is tighter than traversal steering. Vertical hit-region
+  // selection is controlled separately through aimPitch at the call site.
   await Promise.all([face(westPage, westYaw, 800), face(eastPage, eastYaw, 800)]);
   await delay(180);
   return Object.freeze({ westYaw, eastYaw });
@@ -2663,6 +2662,7 @@ try {
       >= verifiedInkChannelCombatPair.minimumVerticalMarginMillimeters,
   );
   const closeAim = await faceEachOther(first.page, second.page);
+  const bodyAim = await aimPitch(first.page, -15_000, 800);
   const bodyDamageDrive = await driveVictimHealth(
     first.page,
     second.page,
@@ -3373,6 +3373,10 @@ try {
     },
     combat: {
       closeAim,
+      bodyAim: {
+        targetPitchMilliDegrees: -15_000,
+        finalPitchMilliDegrees: bodyAim.localPredictedPitchMilliDegrees,
+      },
       setupContract: verifiedInkChannelCombatPair,
       bodyHitConvergence,
       bodyHitShooterPosition: bodyHitShooterSetup.localPredictedPosition,
