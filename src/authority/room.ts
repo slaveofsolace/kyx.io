@@ -385,6 +385,7 @@ export interface AuthorityRoomTickResult {
   )[];
   readonly abilityEffectResults?: readonly AuthorityRoomAbilityEffectTickResult[];
   readonly abilityResourceEvents?: readonly AuthorityTeleportResourceEvent[];
+  readonly volumeDamageResults?: readonly AuthorityRoomVolumeDamageTickResult[];
   readonly matchEvents?: readonly AuthorityTdmMatchEvent[];
 }
 
@@ -399,6 +400,13 @@ export type AuthorityRoomRespawnResult =
       readonly matchEvents?: readonly AuthorityTdmMatchEvent[];
     })
   | Extract<ApplyAuthoritativeRespawnResult, { readonly accepted: false }>;
+
+export interface AuthorityRoomVolumeDamageTickResult {
+  readonly playerId: string;
+  readonly colliderId: string;
+  readonly volumeKind: 'kill';
+  readonly damage: AuthorityRoomDamageResult;
+}
 
 export type AuthorityRoomHitscanRejectionReason = 'server_rtt_history_unavailable';
 
@@ -514,6 +522,8 @@ const EMPTY_QUERY_METRICS: MovementQueryMetrics = Object.freeze({
 const ROOM_HITSCAN_RTT_HISTORY_CAPACITY = 16;
 const ROOM_HITSCAN_MAX_RTT_MILLISECONDS = 20_000;
 const STANDARD_HUMANOID_VOLUME_TOP_MILLIMETERS = 1_940;
+const WORLD_KILL_VOLUME_CAUSE_ID = 'world.kill_volume';
+const WORLD_KILL_VOLUME_DAMAGE_POINTS = 1_000_000;
 
 function signedYawMilliDegrees(value: number): number {
   return value > 180_000 ? value - 360_000 : value;
@@ -1959,6 +1969,7 @@ export class AuthoritativeRoom {
   private applyCombatDamageInternal(
     request: AuthorityRoomDamageRequest,
     exposeMatchEvents: boolean,
+    bypassSpawnProtection = false,
   ): AuthorityRoomDamageResult {
     if (this.combatProfileId === null) throw new Error('AUTHORITY_COMBAT_NOT_ENABLED');
     if (this.phase !== 'warmup' && this.phase !== 'active') {
@@ -1994,9 +2005,22 @@ export class AuthoritativeRoom {
     if (sourcePlayerId !== null && (!source || source.life === null)) {
       throw new Error('AUTHORITY_COMBAT_SOURCE_NOT_FOUND');
     }
+    if (
+      bypassSpawnProtection
+      && (sourcePlayerId !== null || causeId !== WORLD_KILL_VOLUME_CAUSE_ID)
+    ) {
+      throw new Error('AUTHORITY_WORLD_HAZARD_BYPASS_SCOPE_VIOLATION');
+    }
     const eventSequence = this.nextCombatEventSequence;
     this.nextCombatEventSequence += 1;
-    const result = applyAuthoritativeDamage(target.life, {
+    const targetLife = bypassSpawnProtection
+      && target.life.protectedUntilTickExclusive > this.tick
+      ? Object.freeze({
+          ...target.life,
+          protectedUntilTickExclusive: this.tick,
+        })
+      : target.life;
+    const result = applyAuthoritativeDamage(targetLife, {
       eventSequence,
       authorityTick: this.tick,
       targetPlayerId,
@@ -2137,6 +2161,50 @@ export class AuthoritativeRoom {
     return result;
   }
 
+  private recoverMovementPlayer(
+    player: AuthorityPlayerRecord,
+    authorityTick: number,
+  ): void {
+    const spawn = this.spawnResolver(player.playerId, player.playerOrdinal);
+    if (spawn === null || typeof spawn !== 'object') {
+      throw new TypeError('spawn resolver must return a spawn');
+    }
+    const previous = player.state.player;
+    const initial = createMovementSimulationState(this.profile, {
+      rulesetId: this.identity.rulesetId,
+      rulesetRevision: this.identity.rulesetRevision,
+      rulesetHash: this.identity.rulesetHash,
+      fixtureId: this.identity.fixtureId,
+      fixtureHash: this.identity.fixtureHash,
+      physicsAdapterId: this.identity.physicsAdapterId,
+      physicsAdapterVersion: this.identity.physicsAdapterVersion,
+      playerId: asEntityId(player.playerId),
+      feetPosition: {
+        x: asMillimeters(spawn.feetPosition.x),
+        y: asMillimeters(spawn.feetPosition.y),
+        z: asMillimeters(spawn.feetPosition.z),
+      },
+      yawMilliDegrees: spawn.yawMilliDegrees ?? 0,
+      selectedSlot: previous.intent.selectedSlot,
+    });
+    player.state = {
+      ...initial,
+      tick: asSimulationTick(authorityTick),
+      player: {
+        ...initial.player,
+        lastProcessedSequence: previous.lastProcessedSequence,
+        ticksSinceAcceptedCommand: previous.ticksSinceAcceptedCommand,
+        slideCooldownTicksRemaining: previous.slideCooldownTicksRemaining,
+        teleportCooldownTicksRemaining: previous.teleportCooldownTicksRemaining,
+      },
+    };
+    assertMovementSimulationState(player.state, this.profile);
+    player.queue.clear();
+    if (this.hitscanCapabilityId !== null) {
+      player.poseHistory = createTargetPoseHistory(player.playerId);
+    }
+  }
+
   /**
    * Trusted transport adapters call this with a server-measured RTT. The room
    * owns the observation tick; there is intentionally no client timestamp.
@@ -2188,6 +2256,10 @@ export class AuthoritativeRoom {
     const acceptedShots: PendingAcceptedRoomShot[] = [];
     const acceptedWeaponAttacks: PendingAcceptedWeaponAttack[] = [];
     const weaponProjectileDetonations: AuthorityRocketDetonationV1[] = [];
+    const pendingKillVolumes: {
+      readonly playerId: string;
+      readonly colliderId: string;
+    }[] = [];
     const lifecycleTransitions: RoomLifecycle[] = [];
     const matchEvents = this.tdmMatchCapabilityId === null
       ? []
@@ -2238,6 +2310,20 @@ export class AuthoritativeRoom {
         }
         player.state = nextState;
         movementEvents.push(...nextEvents);
+        const killVolume = [...nextState.player.activeVolumes]
+          .filter((volume) => volume.kind === 'kill')
+          .sort((left, right) => left.colliderId.localeCompare(right.colliderId))[0];
+        const recoveryVolume = [...nextState.player.activeVolumes]
+          .filter((volume) => volume.kind === 'recovery')
+          .sort((left, right) => left.colliderId.localeCompare(right.colliderId))[0];
+        if (killVolume !== undefined && player.life !== null) {
+          pendingKillVolumes.push({
+            playerId: player.playerId,
+            colliderId: killVolume.colliderId,
+          });
+        } else if (recoveryVolume !== undefined) {
+          this.recoverMovementPlayer(player, nextTick);
+        }
       } else if (player.connected && player.life?.phase === 'dead') {
         player.queue.drain(this.commandsPerPlayerPerTick);
         player.state = {
@@ -2534,7 +2620,30 @@ export class AuthoritativeRoom {
     let hitscanResults: readonly AuthorityRoomHitscanTickResult[];
     let weaponAttackResults: readonly AuthorityRoomWeaponAttackTickResult[];
     let weaponProjectileResults: readonly AuthorityRoomWeaponProjectileTickResult[];
+    const volumeDamageResults: AuthorityRoomVolumeDamageTickResult[] = [];
     try {
+      for (const hazard of pendingKillVolumes) {
+        const damage = this.applyCombatDamageInternal({
+          targetPlayerId: hazard.playerId,
+          sourcePlayerId: null,
+          damagePoints: WORLD_KILL_VOLUME_DAMAGE_POINTS,
+          causeId: WORLD_KILL_VOLUME_CAUSE_ID,
+          hitRegion: null,
+        }, false, true);
+        if (!damage.accepted || damage.death === null) {
+          throw new Error(
+            `AUTHORITY_KILL_VOLUME_DAMAGE_REJECTED:${
+              damage.accepted ? 'non_lethal' : damage.reason
+            }`,
+          );
+        }
+        volumeDamageResults.push(Object.freeze({
+          playerId: hazard.playerId,
+          colliderId: hazard.colliderId,
+          volumeKind: 'kill',
+          damage,
+        }));
+      }
       hitscanResults = this.resolvePendingHitscanResolutions(pendingHitscanResolutions);
       weaponAttackResults = this.resolveAcceptedWeaponAttacks(
         acceptedWeaponAttacks,
@@ -2625,6 +2734,9 @@ export class AuthoritativeRoom {
       ...(this.abilityResourceCapabilityId === null
         ? {}
         : { abilityResourceEvents: deepFreeze(abilityResourceEvents) }),
+      ...(volumeDamageResults.length === 0
+        ? {}
+        : { volumeDamageResults: deepFreeze(volumeDamageResults) }),
       ...(this.tdmMatchCapabilityId === null
         ? {}
         : { matchEvents: deepFreeze(matchEvents) }),

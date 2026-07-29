@@ -975,6 +975,7 @@ export function reliableCombatEvents(
       }));
     }
   };
+  for (const result of tick.volumeDamageResults ?? []) appendDamage(result.damage);
   for (const event of tick.movementEvents ?? []) {
     if (event.kind !== 'teleport_succeeded' || event.worldPortal === undefined) {
       continue;

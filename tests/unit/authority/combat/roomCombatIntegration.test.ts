@@ -14,6 +14,7 @@ import { FakeMovementQueryPort } from '../../sim/movement/fakeQueryPort';
 
 function combatRoom(options: {
   readonly sameTeam?: boolean;
+  readonly queries?: FakeMovementQueryPort;
 } = {}): AuthoritativeRoom {
   const content = requireRuleset(G4_COMBAT_RULESET_ID, G4_COMBAT_RULESET_REVISION);
   expect(hashRulesetContent(content)).toBe(G4_COMBAT_RULESET_HASH);
@@ -31,7 +32,7 @@ function combatRoom(options: {
       physicsAdapterVersion: '1.0.0',
     },
     profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
-    queries: new FakeMovementQueryPort(),
+    queries: options.queries ?? new FakeMovementQueryPort(),
     warmupTicks: 1,
     activeTicks: 1_000,
     postmatchTicks: 2,
@@ -133,6 +134,110 @@ describe('P5.1/P5.2 authoritative room combat integration', () => {
       damagePoints: 10,
       causeId: 'test',
     })).toThrow('AUTHORITY_COMBAT_NOT_ENABLED');
+  });
+
+  it('recovers an alive player from an authority recovery volume without resetting input continuity', () => {
+    const authority = combatRoom({
+      queries: new FakeMovementQueryPort({
+        floorY: -10_000,
+        volumes: ({ feetPosition }) => feetPosition.x < 5_000
+          ? [{ colliderId: 'lower_void_recovery', kind: 'recovery' }]
+          : [],
+      }),
+    });
+    join(authority, 'A');
+    join(authority, 'B');
+    expect(authority.startMatch()).toBe(true);
+    authority.enqueueInputBatch('connection_A', batch(0, 0, 0, 3));
+
+    const tick = authority.advanceOneTick();
+    const player = authority.fullSnapshot().players.find(({ playerId }) => playerId === 'player_A');
+    expect(tick.movementEvents).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        kind: 'movement_volume_entered',
+        entityId: 'player_A',
+        colliderId: 'lower_void_recovery',
+        volumeKind: 'recovery',
+      }),
+    ]));
+    expect(player).toMatchObject({
+      lastProcessedInputSequence: 0,
+      movement: {
+        tick: 1,
+        player: {
+          feetPosition: { x: 0, y: 0, z: -5_000 },
+          velocity: { x: 0, y: 0, z: 0 },
+          lastProcessedSequence: 0,
+          intent: { selectedSlot: 3 },
+          activeVolumes: [],
+        },
+      },
+      combat: {
+        life: {
+          phase: 'alive',
+          healthPoints: 100,
+          protectedUntilTickExclusive: 20,
+        },
+      },
+    });
+  });
+
+  it('gives kill volumes priority over recovery and bypasses only world-hazard spawn protection', () => {
+    const authority = combatRoom({
+      queries: new FakeMovementQueryPort({
+        volumes: ({ feetPosition }) => feetPosition.x < 5_000
+          ? [
+              { colliderId: 'lower_void_recovery', kind: 'recovery' },
+              { colliderId: 'lower_void_kill', kind: 'kill' },
+            ]
+          : [],
+      }),
+    });
+    join(authority, 'A');
+    join(authority, 'B');
+    expect(authority.startMatch()).toBe(true);
+
+    const tick = authority.advanceOneTick();
+    expect(tick.volumeDamageResults).toEqual([
+      expect.objectContaining({
+        playerId: 'player_A',
+        colliderId: 'lower_void_kill',
+        volumeKind: 'kill',
+        damage: expect.objectContaining({
+          accepted: true,
+          damage: expect.objectContaining({
+            authorityTick: 1,
+            causeId: 'world.kill_volume',
+            sourcePlayerId: null,
+            targetPlayerId: 'player_A',
+            healthPointsAfter: 0,
+          }),
+          death: expect.objectContaining({
+            authorityTick: 1,
+            victimPlayerId: 'player_A',
+            killerPlayerId: null,
+          }),
+        }),
+      }),
+    ]);
+    const player = authority.fullSnapshot().players.find(({ playerId }) => playerId === 'player_A');
+    expect(player).toMatchObject({
+      movement: {
+        player: {
+          activeVolumes: expect.arrayContaining([
+            { colliderId: 'lower_void_recovery', kind: 'recovery' },
+            { colliderId: 'lower_void_kill', kind: 'kill' },
+          ]),
+        },
+      },
+      combat: {
+        life: {
+          phase: 'dead',
+          healthPoints: 0,
+          protectedUntilTickExclusive: 1,
+        },
+      },
+    });
   });
 
   it('creates frozen life and Auto Rifle state and derives fire from validated input buttons', () => {

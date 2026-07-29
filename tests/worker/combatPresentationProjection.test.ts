@@ -103,6 +103,61 @@ describe('Worker explicit combat presentation projection', () => {
     });
   });
 
+  it('projects an authority kill-volume death through the reliable event stream', () => {
+    const inputs = reliableCombatEvents(tick({
+      volumeDamageResults: [{
+        playerId: 'player_A',
+        colliderId: 'lower_void_kill',
+        volumeKind: 'kill',
+        damage: {
+          accepted: true,
+          damage: {
+            kind: 'damage_applied',
+            eventId: 'combat.damage.10',
+            eventSequence: 10,
+            authorityTick: 82,
+            causeId: 'world.kill_volume',
+            sourcePlayerId: null,
+            targetPlayerId: 'player_A',
+            shieldDamagePoints: 0,
+            healthDamagePoints: 100,
+            shieldPointsAfter: 0,
+            healthPointsAfter: 0,
+            hitRegion: null,
+          },
+          death: {
+            kind: 'death',
+            eventId: 'combat.death.10',
+            authorityTick: 82,
+            victimPlayerId: 'player_A',
+            killerPlayerId: null,
+            assistPlayerIds: [],
+            deathOrdinal: 1,
+            respawnEligibleAtTick: 122,
+            discontinuitySequence: 2,
+          },
+        },
+      }] as AuthorityRoomTickResult['volumeDamageResults'],
+    }));
+    expect(inputs).toEqual([
+      expect.objectContaining({
+        kind: 'damageApplied',
+        actorId: null,
+        targetId: 'player_A',
+        presentation: expect.objectContaining({
+          kind: 'damage_applied',
+          causeId: 'world.kill_volume',
+          healthPointsAfter: 0,
+        }),
+      }),
+      expect.objectContaining({
+        kind: 'playerKilled',
+        actorId: null,
+        targetId: 'player_A',
+      }),
+    ]);
+  });
+
   it('retains the complete Impulse Grenade lifecycle through the reliable store', () => {
     const inputs = reliableCombatEvents(tick({
       combatEvents: [],

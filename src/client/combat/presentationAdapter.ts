@@ -1270,7 +1270,8 @@ function parseAuthorityFrame(value: unknown): ParsedAuthorityFrameV1 {
     'serverTick', 'lifecycle', 'lifecycleTransitions', 'movementEvents', 'queryMetrics',
     'prunedPlayerIds', 'combatEvents', 'hitscanResults', 'impulseGrenadeEvents',
     'impulseGrenadeResults', 'weaponAttackResults', 'weaponProjectileResults',
-    'abilityLoadoutEvents', 'abilityEffectResults', 'abilityResourceEvents', 'matchEvents',
+    'abilityLoadoutEvents', 'abilityEffectResults', 'abilityResourceEvents',
+    'volumeDamageResults', 'matchEvents',
   ], 'authority presentation frame');
   requireKeys(item, ['serverTick', 'lifecycle'], 'authority presentation frame');
   const serverTick = integer(item.serverTick, 0, MAX_AUTHORITY_TICK, 'authority frame tick');
@@ -1286,6 +1287,7 @@ function parseAuthorityFrame(value: unknown): ParsedAuthorityFrameV1 {
   array(item.weaponProjectileResults ?? [], 2_048, 'weapon projectile results');
   array(item.abilityLoadoutEvents ?? [], 2_048, 'ability loadout events');
   array(item.abilityEffectResults ?? [], 2_048, 'ability effect results');
+  array(item.volumeDamageResults ?? [], 512, 'volume damage results');
   for (const event of array(item.matchEvents ?? [], 2_048, 'match events')) parsed.push(parseMatchEvent(event));
   for (const event of parsed) {
     if (event.authorityTick > serverTick) {
