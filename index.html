@@ -9,7 +9,7 @@
   <title>KYX.IO &mdash; Offline Practice</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
-<body data-interface="kyx-field-ui-v3">
+<body data-interface="kyx-cutline-v1">
   <div id="app">
     <canvas
       id="game-canvas"
@@ -29,7 +29,6 @@
     <header id="top-nav" class="hidden">
       <div class="nav-brand-lockup">
         <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
-        <span class="local-build-chip">Local build</span>
       </div>
       <nav class="nav-items" aria-label="Practice menu">
         <button
@@ -55,36 +54,30 @@
       </aside>
     </header>
 
-    <!-- Primary mode card and explicit local population disclosure. -->
+    <!-- Primary local mode and explicit bot disclosure. -->
     <main id="center-play" class="hidden">
       <section class="practice-launch-card" aria-labelledby="practice-title">
         <header class="practice-card-head">
           <div>
-            <p class="practice-eyebrow">Offline practice</p>
+            <p class="practice-eyebrow">Practice</p>
             <h1 id="practice-title">Iron Bastion</h1>
-            <p class="practice-summary">A solo deathmatch drill against seven clearly labeled bots.</p>
-          </div>
-          <div class="practice-ready-state" aria-label="Simulation ready">
-            <span class="practice-ready-pulse" aria-hidden="true"></span>
-            Ready
+            <p class="practice-summary">Fast solo deathmatch against seven labeled bots.</p>
           </div>
         </header>
 
         <div class="practice-command-grid">
           <div class="map-preview-window" aria-label="Live map preview">
-            <span class="map-preview-kicker">Training ground</span>
             <strong>Bastion Sector</strong>
-            <span class="map-preview-coordinates">Local simulation</span>
+            <span class="map-preview-coordinates">Local arena</span>
           </div>
 
           <div class="practice-launch-rail">
             <div class="practice-stat-grid" aria-label="Offline practice details">
               <span><small>Mode</small>Deathmatch</span>
               <span><small>Roster</small>1 player + 7 bots</span>
-              <span><small>Authority</small>This device</span>
             </div>
             <button id="play-btn" type="button" class="click-to-play" aria-label="Start offline practice"><span>Start practice</span><b aria-hidden="true">Enter</b></button>
-            <p class="practice-footnote">Runs only on this device. Bots are never presented as online players.</p>
+            <p class="practice-footnote">Runs on this device. No online players.</p>
           </div>
         </div>
 
@@ -121,7 +114,7 @@
         </div>
         <div class="inv-id">
           <div class="local-panel-kicker">Local loadout</div>
-          <div class="inv-username" id="inv-username">Recruit</div>
+          <div class="inv-username" id="inv-username">Loadout</div>
           <input id="player-name" type="hidden" value="Recruit" />
           <div class="inv-meta local-only-note">Changes are stored on this device.</div>
         </div>
@@ -305,7 +298,7 @@
     </div>
 
     <!-- In-practice HUD: every population label identifies bots explicitly. -->
-    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="match-instrument-v1" data-ui-revision="match-instrument-v1" data-kyx-a11y="text-and-pattern-critical-states">
+    <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="cutline-v1" data-ui-revision="cutline-v1" data-kyx-a11y="text-and-pattern-critical-states">
       <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div id="hitmarker" aria-hidden="true"></div>
       <div id="damage-flash" aria-hidden="true"></div>
@@ -336,15 +329,18 @@
       </div>
 
       <div id="weapon-wrap" class="hud-panel">
-        <div class="hud-weapon-head"><span>Active weapon</span></div>
+        <div class="hud-weapon-head"><span>Weapon</span></div>
         <div id="weapon-name">SIDEARM</div>
-        <div class="hud-ammo-row"><div id="ammo-text">12 / 60</div><span>mag / reserve</span></div>
+        <div class="hud-ammo-row">
+          <div id="ammo-text"><span id="ammo-magazine">12</span><span class="ammo-separator">/</span><span id="ammo-reserve">60</span></div>
+          <span>mag / reserve</span>
+        </div>
         <div id="reload-text" class="hidden">Reloading</div>
       </div>
 
       <div id="score-wrap" class="hud-panel">
-        <div class="hud-match-head"><div class="hud-practice-label">Offline practice</div><span>Local</span></div>
-        <div id="server-pop">1 player / 7 bots<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
+        <div class="hud-match-head"><div class="hud-practice-label">Practice</div></div>
+        <div id="server-pop" class="hidden">1 player / 7 bots<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
         <div class="hud-score-metrics">
           <div><small>Bots defeated</small><span id="kill-count">0</span></div>
           <div><small>Score</small><span id="score-count">0</span></div>
@@ -383,20 +379,18 @@
       <div id="teleport-flash"></div>
       <div id="ability-rack" role="group" aria-label="Selected abilities" data-ability-contract="blink-locked-plus-three" data-ability-count="4" data-fixed-slot-id="blink" data-selectable-slot-count="3" data-selectable-keys="E,F,Z">
         <div id="ability-q" class="ability-indicator ability-slot ability-slot--fixed ready" data-state="ready" data-slot-role="fixed" data-loadout-slot="blink" data-ability-id="blink" data-ability-key="Q" aria-label="Blink, Q, locked ability, ready">
-          <span class="ability-key">Q</span><span class="ability-name">Blink</span><span class="ability-lock">Fixed</span><span id="ability-q-state" class="ability-state">Ready</span>
+          <span class="ability-glyph-slot" aria-hidden="true"></span><span class="ability-key">Q</span><span class="ability-name">Blink</span><span class="ability-lock">Fixed</span><span id="ability-q-state" class="ability-state">Ready</span><span class="ability-progress" aria-hidden="true"><span class="ability-progress__fill"></span></span>
         </div>
         <div id="ability-slot-1" class="ability-indicator ability-slot ability-slot--selectable" data-state="assigned" data-slot-role="selectable" data-loadout-slot="1" data-selectable-index="0" data-ability-id="launch" data-ability-key="E" aria-label="Launch, E, assigned ability">
-          <span class="ability-key">E</span><span id="ability-slot-1-name" class="ability-name">Launch</span><span id="ability-slot-1-count" class="ability-count"></span><span id="ability-slot-1-state" class="ability-state">Assigned</span>
+          <span class="ability-glyph-slot" aria-hidden="true"></span><span class="ability-key">E</span><span id="ability-slot-1-name" class="ability-name">Launch</span><span id="ability-slot-1-count" class="ability-count"></span><span id="ability-slot-1-state" class="ability-state">Assigned</span><span class="ability-progress" aria-hidden="true"><span class="ability-progress__fill"></span></span>
         </div>
         <div id="ability-slot-2" class="ability-indicator ability-slot ability-slot--selectable ready" data-state="ready" data-slot-role="selectable" data-loadout-slot="2" data-selectable-index="1" data-ability-id="smoke" data-ability-key="F" aria-label="Smoke grenade, F, 2 available">
-          <span class="ability-key">F</span><span id="ability-slot-2-name" class="ability-name">Smoke</span><span id="ability-slot-2-count" class="ability-count">2</span><span id="ability-slot-2-state" class="ability-state">Ready</span>
+          <span class="ability-glyph-slot" aria-hidden="true"></span><span class="ability-key">F</span><span id="ability-slot-2-name" class="ability-name">Smoke</span><span id="ability-slot-2-count" class="ability-count">2</span><span id="ability-slot-2-state" class="ability-state">Ready</span><span class="ability-progress" aria-hidden="true"><span class="ability-progress__fill"></span></span>
         </div>
         <div id="ability-slot-3" class="ability-indicator ability-slot ability-slot--selectable ready" data-state="ready" data-slot-role="selectable" data-loadout-slot="3" data-selectable-index="2" data-ability-id="frag" data-ability-key="Z" aria-label="Frag grenade, Z, 2 available">
-          <span class="ability-key">Z</span><span id="ability-slot-3-name" class="ability-name">Frag</span><span id="ability-slot-3-count" class="ability-count">2</span><span id="ability-slot-3-state" class="ability-state">Ready</span>
+          <span class="ability-glyph-slot" aria-hidden="true"></span><span class="ability-key">Z</span><span id="ability-slot-3-name" class="ability-name">Frag</span><span id="ability-slot-3-count" class="ability-count">2</span><span id="ability-slot-3-state" class="ability-state">Ready</span><span class="ability-progress" aria-hidden="true"><span class="ability-progress__fill"></span></span>
         </div>
       </div>
-      <div id="ability-flash-overlay" class="ability-flash-overlay" aria-hidden="true"></div>
-
       <div id="scope-overlay" aria-hidden="true">
         <div class="scope-ring">
           <div class="scope-ch-v"></div><div class="scope-ch-h"></div>

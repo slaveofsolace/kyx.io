@@ -1,0 +1,197 @@
+{
+  "capturedAt": "2026-07-29T17:17:15.095Z",
+  "frontendOrigin": "http://127.0.0.1:6323",
+  "authorityOrigin": "http://127.0.0.1:8323",
+  "prohibitedPortsUntouched": [
+    5173,
+    8787
+  ],
+  "browserChannel": "chrome",
+  "captures": [
+    {
+      "file": "online-lobby-configured-1440x900.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "url": "http://127.0.0.1:6323/online",
+      "notes": null
+    },
+    {
+      "file": "online-hud-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:6323/online?mode=join&room=KYX-TRA8D9&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "notes": null
+    },
+    {
+      "file": "online-hud-ability-cooldown-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:6323/online?mode=join&room=KYX-TRA8D9&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "notes": "Real two-player local authority room after exhausting the Frag charges; readiness is between empty and ready."
+    },
+    {
+      "file": "online-scoreboard-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:6323/online?mode=join&room=KYX-TRA8D9&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "notes": null
+    },
+    {
+      "file": "online-hud-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "http://127.0.0.1:6323/online?mode=join&room=KYX-TRA8D9&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "notes": null
+    },
+    {
+      "file": "online-hud-ultrawide-3440x1440.png",
+      "viewport": {
+        "width": 3440,
+        "height": 1440
+      },
+      "url": "http://127.0.0.1:6323/online?mode=join&room=KYX-TRA8D9&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "notes": null
+    }
+  ],
+  "joinedSummary": {
+    "connection": "joined",
+    "roomCode": "KYX-TRA8D9",
+    "playerId": "player.c517e256-56d4-46f5-97ba-ec768dd573fc",
+    "remotePlayers": 1,
+    "render3dStatus": "ready",
+    "renderer": "three_webgl",
+    "mapReference": "inkfall_foundry@3",
+    "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+    "matchPhase": "active",
+    "onlinePreviewStatus": "joined",
+    "online3dStatus": "ready"
+  },
+  "peerSummary": {
+    "connection": "joined",
+    "roomCode": "KYX-TRA8D9",
+    "playerId": "player.631d854f-7a92-417a-b11b-20e760175cbf",
+    "remotePlayers": 1,
+    "matchPhase": "active"
+  },
+  "cooldownProof": {
+    "abilityId": "frag_grenade_v1",
+    "state": "charging",
+    "readinessPercent": 18,
+    "rechargeSeconds": 7,
+    "fillTransform": "scaleX(0.18125)"
+  },
+  "authorityInputProof": [
+    {
+      "activation": 1,
+      "stage": "held",
+      "heldButtons": 1024,
+      "matchPhase": "active",
+      "currentCharges": [
+        2,
+        2,
+        1
+      ],
+      "acceptedActivationCounts": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "activation": 1,
+      "stage": "released",
+      "heldButtons": 0,
+      "matchPhase": "active",
+      "currentCharges": [
+        2,
+        2,
+        1
+      ],
+      "acceptedActivationCounts": [
+        0,
+        0,
+        1
+      ],
+      "hudState": "ready",
+      "readinessPercent": 100,
+      "fillTransform": "scaleX(1)"
+    },
+    {
+      "activation": 2,
+      "stage": "held",
+      "heldButtons": 1024,
+      "matchPhase": "active",
+      "currentCharges": [
+        2,
+        2,
+        0
+      ],
+      "acceptedActivationCounts": [
+        0,
+        0,
+        2
+      ]
+    },
+    {
+      "activation": 2,
+      "stage": "released",
+      "heldButtons": 0,
+      "matchPhase": "active",
+      "currentCharges": [
+        2,
+        2,
+        0
+      ],
+      "acceptedActivationCounts": [
+        0,
+        0,
+        2
+      ],
+      "hudState": "charging",
+      "readinessPercent": 18,
+      "fillTransform": "scaleX(0.18125)"
+    }
+  ],
+  "runtimeErrors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "serviceLogs": {
+    "vite": [
+      "  \u001b[32m\u001b[1mVITE\u001b[22m v8.1.5\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m337\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m",
+      "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m6323\u001b[22m/\u001b[39m"
+    ],
+    "wrangler": [
+      " ⛅️ wrangler 4.112.0 (update available 4.115.0)",
+      "───────────────────────────────────────────────",
+      "Your Worker has access to the following bindings:",
+      "Binding                                                                 Resource                  Mode",
+      "env.KYX_ROOM (KyxRoom)                                                  Durable Object            local",
+      "env.KYX_ALLOCATION_GUARD (KyxAllocationGuard)                           Durable Object            local",
+      "env.ALLOWED_ORIGINS (\"(hidden)\")                                        Environment Variable      local",
+      "env.BUILD_ID (\"foundry-command-v2-g7-online-20260725\")                  Environment Variable      local",
+      "⎔ Starting local server...",
+      "[wrangler:info] ✨ Parsed 2 valid header rules.",
+      "[wrangler:info] Ready on http://127.0.0.1:8323",
+      "[wrangler:info] GET /health 200 OK (170ms)",
+      "[wrangler:info] OPTIONS /api/rooms/create 204 No Content (3ms)",
+      "[wrangler:info] POST /api/rooms/create 201 Created (90ms)",
+      "[wrangler:info] GET /api/rooms/KYX-TRA8D9/socket 101 Switching Protocols (14ms)",
+      "[wrangler:info] OPTIONS /api/rooms/KYX-TRA8D9 204 No Content (4ms)",
+      "[wrangler:info] POST /api/rooms/KYX-TRA8D9 201 Created (6ms)",
+      "[wrangler:info] GET /api/rooms/KYX-TRA8D9/socket 101 Switching Protocols (10ms)"
+    ]
+  },
+  "failure": null
+}

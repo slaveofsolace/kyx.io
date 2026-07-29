@@ -77,14 +77,14 @@ describe('HUD event and ability semantics', () => {
       ],
     });
     hud.updateTeleport(0.42);
-    expect(elements.get('ability-slot-1')?.dataset.state).toBe('empty');
-    expect(elements.get('ability-slot-1-state')?.textContent).toBe('Recharging · +1 2.0s');
+    expect(elements.get('ability-slot-1')?.dataset.state).toBe('charging');
+    expect(elements.get('ability-slot-1-state')?.textContent).toBe('2.0s');
     expect(elements.get('ability-slot-2')?.dataset.state).toBe('ready');
-    expect(elements.get('ability-slot-2-state')?.textContent).toBe('Ready');
+    expect(elements.get('ability-slot-2-state')?.textContent).toBe('2/2');
     expect(elements.get('ability-slot-3')?.dataset.state).toBe('ready');
-    expect(elements.get('ability-slot-3-state')?.textContent).toBe('Ready · +1 1.3s');
+    expect(elements.get('ability-slot-3-state')?.textContent).toBe('1/2');
     expect(elements.get('ability-q')?.dataset.state).toBe('charging');
-    expect(elements.get('ability-q-state')?.textContent).toBe('Charging 42%');
+    expect(elements.get('ability-q-state')?.textContent).toBe('42%');
 
     expect(hud.showAbilityUnavailable('Q', 'blink recharging 2.9s')).toBe(true);
     expect(elements.get('ability-reason')?.textContent).toBe('Q: Blink recharging 2.9s');

@@ -436,11 +436,36 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_VLR7_LINE_RIFLE_VISUAL';
 
+  const receiverCore = box(
+    0.13,
+    0.13,
+    0.36,
+    materials.armor,
+    [0, 0.045, 0.04],
+  );
+  receiverCore.name = 'KYX_VLR7_RECEIVER_CORE';
+  const upperShroud = box(
+    0.088,
+    0.05,
+    0.24,
+    materials.dark,
+    [0, 0.134, -0.1],
+  );
+  upperShroud.name = 'KYX_VLR7_UPPER_SHROUD';
+  const opticRail = box(
+    0.056,
+    0.018,
+    0.44,
+    materials.metal,
+    [0, 0.166, -0.09],
+  );
+  opticRail.name = 'KYX_VLR7_OPTIC_RAIL';
+
   visual.add(
-    box(0.13, 0.13, 0.36, materials.armor, [0, 0.045, 0.04]),
-    box(0.095, 0.052, 0.42, materials.dark, [0, 0.145, -0.02]),
+    receiverCore,
+    upperShroud,
     cylinderZ(0.072, 0.064, 0.36, materials.armor, [0, 0.075, -0.34], 10),
-    box(0.07, 0.028, 0.68, materials.metal, [0, 0.19, -0.14]),
+    opticRail,
     box(0.1, 0.105, 0.2, materials.armor, [0, 0.045, 0.31], [0.08, 0, 0]),
     box(0.075, 0.14, 0.12, materials.rubber, [0, 0.025, 0.44]),
     box(0.052, 0.12, 0.07, materials.rubber, [0, -0.025, -0.36], [-0.08, 0, 0]),

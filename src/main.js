@@ -1,5 +1,5 @@
 import './style.css';
-import './ui/kyx-match-instrument.css';
+import './ui/kyx-cutline.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
@@ -20,9 +20,13 @@ import {
 
 const canvas = document.getElementById('game-canvas');
 const g7UiCandidate = resolveG7UiCandidate(window.location.search);
-const uiSystem = 'match-instrument-v1';
+const uiSystem = 'cutline-v1';
+const developmentUiVisible = import.meta.env.DEV
+  && new URLSearchParams(window.location.search).get('debug') === '1';
 document.body.dataset.g7Presentation = uiSystem;
 document.body.dataset.uiSystem = uiSystem;
+document.body.dataset.g7Review = 'human-required';
+document.body.dataset.developmentUi = developmentUiVisible ? 'visible' : 'hidden';
 document.getElementById('hud')?.setAttribute('data-ui-system', uiSystem);
 if (g7UiCandidate.kind === 'invalid') {
   document.body.dataset.g7PresentationQuery = `invalid-${g7UiCandidate.reason}`;
@@ -286,7 +290,7 @@ if (import.meta.env.DEV && desktopSupported && !launchOverrideRoute) {
   const diagnostics = document.getElementById('dev-build-diagnostics');
   if (diagnostics) {
     diagnostics.textContent = `${PRODUCT_CONFIG.product} ${PRODUCT_CONFIG.version} · LOCAL DEV · OFFLINE PRACTICE`;
-    diagnostics.classList.remove('hidden');
+    diagnostics.classList.toggle('hidden', !developmentUiVisible);
   }
 }
 

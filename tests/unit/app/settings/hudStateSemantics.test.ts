@@ -59,9 +59,9 @@ describe('HUD non-color critical-state semantics', () => {
     expect(elements.get('health-state')?.textContent).toBe('Critical');
     expect(elements.get('health-state')?.classList.contains('hidden')).toBe(false);
     expect(elements.get('health-wrap')?.attributes.get('aria-label')).toBe('Health 18 of 100, critical');
-    expect(elements.get('stamina-state')?.textContent).toBe('Low');
+    expect(elements.get('stamina-state')?.textContent).toBe('Critical');
     expect(elements.get('stamina-state')?.classList.contains('hidden')).toBe(false);
-    expect(elements.get('stamina-wrap')?.attributes.get('aria-label')).toBe('Energy 12 of 100, low');
+    expect(elements.get('stamina-wrap')?.attributes.get('aria-label')).toBe('Energy 12 of 100, critical');
     expect(elements.get('weapon-wrap')?.attributes.get('aria-label')).toContain('reloading');
   });
 });

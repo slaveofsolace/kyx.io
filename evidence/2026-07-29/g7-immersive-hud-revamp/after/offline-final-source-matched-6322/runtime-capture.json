@@ -1,0 +1,186 @@
+{
+  "capturedAt": "2026-07-29T17:17:45.248Z",
+  "baseURL": "http://127.0.0.1:6322",
+  "browserChannel": "chrome",
+  "prohibitedPortsUntouched": [
+    5173,
+    8787
+  ],
+  "captures": [
+    {
+      "file": "menu-1440x900.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "settings-1440x900.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "loadout-1440x900.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "menu-1920x1080.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "menu-ultrawide-3440x1440.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 3440,
+        "height": 1440
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "menu-narrow-768x900.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "settings-narrow-768x900.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 768,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "online-lobby-1440x900.png",
+      "url": "http://127.0.0.1:6322/online",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixture": null,
+      "notes": "Development route with no room action taken; authority behavior is not exercised."
+    },
+    {
+      "file": "hud-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "hud-killfeed-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live runtime DOM populated through HUD.addKillFeed for visual-state review only.",
+      "notes": null
+    },
+    {
+      "file": "hud-ability-cooldown-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live HUD renderer populated with 35% Blink and 58% Smoke readiness to verify partial cooldown bar geometry; no gameplay outcome claim.",
+      "notes": null
+    },
+    {
+      "file": "pause-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "scoreboard-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live runtime DOM populated through HUD.showScoreboard for visual-state review only. The browser smoke test separately verifies the hold-Tab flow.",
+      "notes": null
+    },
+    {
+      "file": "death-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live runtime death dialog populated for presentation review; no gameplay outcome claim.",
+      "notes": null
+    },
+    {
+      "file": "postmatch-presentation-fixture-1280x720.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fixture": "Live runtime populated through HUD.showLeaderboard for layout review only.",
+      "notes": null
+    },
+    {
+      "file": "settings-high-contrast-reduced-motion-1440x1080.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "fixture": null,
+      "notes": null
+    },
+    {
+      "file": "menu-high-contrast-reduced-motion-1440x1080.png",
+      "url": "http://127.0.0.1:6322/",
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "fixture": null,
+      "notes": null
+    }
+  ],
+  "runtimeErrors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  }
+}

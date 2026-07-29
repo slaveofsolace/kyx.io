@@ -134,6 +134,26 @@ try {
     fixture: 'Live runtime DOM populated through HUD.addKillFeed for visual-state review only.',
   });
 
+  await page.evaluate(async () => {
+    window.requestAnimationFrame = () => 0;
+    await new Promise((resolve) => window.setTimeout(resolve, 50));
+    document.getElementById('killfeed')?.replaceChildren();
+    const { HUD } = await import('/src/ui/HUD.js');
+    const hud = new HUD();
+    hud.updateTeleport(0.35);
+    hud.updateAbilitySlot('smoke_grenade_v1', {
+      name: 'Smoke',
+      key: 'F',
+      state: 'charging',
+      stateLabel: '4.2s',
+      count: 0,
+      readinessRatio: 0.58,
+    });
+  });
+  await capture('hud-ability-cooldown-presentation-fixture-1280x720.png', {
+    fixture: 'Live HUD renderer populated with 35% Blink and 58% Smoke readiness to verify partial cooldown bar geometry; no gameplay outcome claim.',
+  });
+
   await page.keyboard.press('Escape');
   await page.getByRole('dialog', { name: 'Paused' }).waitFor({ state: 'visible' });
   await capture('pause-1280x720.png');

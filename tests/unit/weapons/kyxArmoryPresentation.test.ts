@@ -139,6 +139,19 @@ describe('KYX first-person armory presentation', () => {
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_REFLEX_RETICLE_DOT',
     )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_RECEIVER_CORE',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_UPPER_SHROUD',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_OPTIC_RAIL',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectsByProperty(
+      'name',
+      'KYX_VLR7_LINE_RIFLE_VISUAL',
+    )).toHaveLength(1);
     expect(firstPersonRifle.group.userData).toMatchObject({
       firstPersonContactMode: 'authored_two_hand_assault_suit_v2',
       firstPersonHandCount: 2,

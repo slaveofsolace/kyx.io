@@ -29,6 +29,11 @@ import type { CombatSnapshotV1, ReliableEvent } from '../net';
 import { deriveRev17AuthorityAction } from '../player/rev17ActionContract.js';
 import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
 import {
+  createOnlineHudViewModel,
+  type HudAbilityInput,
+} from '../ui/hudViewModel';
+import { createAbilityGlyph } from '../ui/abilityGlyph';
+import {
   INTENT_BUTTON,
   PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
   hashMovementProfile,
@@ -214,8 +219,8 @@ function createShell(): { readonly root: HTMLElement; readonly content: HTMLElem
   brand.append(document.createTextNode('KYX'), element('span', '', '.IO'));
   const meta = element('div', 'online-preview__bar-meta');
   meta.append(
-    element('span', 'online-preview__status-dot', 'Pre-release online'),
-    element('span', '', 'Local guest identity'),
+    element('span', 'online-preview__status-dot', 'Online'),
+    element('span', '', 'Guest session'),
   );
   const back = element('a', 'online-preview__back', 'Offline practice');
   back.href = '/';
@@ -230,9 +235,9 @@ function appendScopeNotice(
   parent: HTMLElement,
   inkfallProfile: OnlineAuthorityProfileSelection | null = null,
 ): void {
-  const notice = element('div', 'online-preview__scope');
+  const notice = element('details', 'online-preview__scope');
   notice.append(
-    element('strong', '', 'Current scope'),
+    element('summary', '', 'Technical scope'),
     element(
       'span',
       '',
@@ -250,12 +255,12 @@ function renderNotice(
   content: HTMLElement,
   title: string,
   copy: string,
-  actionLabel = 'BACK TO ONLINE LOBBY',
+  actionLabel = 'Back to online',
   actionPath: string = ONLINE_AUTHORITY_PATH,
 ): void {
   content.replaceChildren(
-    element('p', 'online-preview__eyebrow', 'KYX.IO / NETWORK PREVIEW'),
-    element('h1', 'online-preview__title', 'Online authority, visibly in progress.'),
+    element('p', 'online-preview__eyebrow', 'Online'),
+    element('h1', 'online-preview__title', 'Room unavailable.'),
   );
   appendScopeNotice(content);
   const notice = element('section', 'online-preview__notice');
@@ -273,16 +278,14 @@ function renderLanding(
   selectedProfile?: OnlineAuthorityProfileSelection,
 ): void {
   content.replaceChildren(
-    element('p', 'online-preview__eyebrow', 'KYX.IO / NETWORK PREVIEW'),
-    element('h1', 'online-preview__title', 'A real room. Server-owned combat.'),
+    element('p', 'online-preview__eyebrow', 'Online'),
+    element('h1', 'online-preview__title', 'Create or join a room.'),
     element(
       'p',
       'online-preview__intro',
-      'Create a room or join a friend using the local guest name already stored on this device. The server owns movement, weapons, health, score, feed, respawn, and room state; no password or account data is collected by this preview.',
+      'Guest sessions use server-owned movement, combat, score, and respawn.',
     ),
   );
-  appendScopeNotice(content);
-
   const configured = availability.kind === 'configured';
   const profileOption = element('label', 'online-preview__profile-option');
   const profileCheckbox = document.createElement('input');
@@ -292,11 +295,11 @@ function renderLanding(
   profileCheckbox.dataset.testid = 'online-inkfall-profile';
   const profileCopy = element('span', '');
   profileCopy.append(
-    element('strong', '', 'Legacy preview · Inkfall Foundry @2 authority plane'),
+    element('strong', '', 'Legacy arena'),
     element(
       'span',
       '',
-      `Sends and verifies ${ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID}. This is an integration preview, not an accepted final-map or release-readiness claim.`,
+      'Older Inkfall collision preview.',
     ),
   );
   profileOption.append(profileCheckbox, profileCopy);
@@ -309,11 +312,11 @@ function renderLanding(
   rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
   const rev4ProfileCopy = element('span', '');
   rev4ProfileCopy.append(
-    element('strong', '', 'Default · Inkfall Foundry Rev5 playable 3D / Rev3 authority'),
+    element('strong', '', 'Inkfall Foundry'),
     element(
       'span',
       '',
-      `Creates the current playable 3D route with ${ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID}. Rev5 modular art and portal effects are visual only; frozen Rev3 collision plus the server portal capability, spawns, zones, combat, checkpoints, and resume remain authoritative.`,
+      'Current arena and linked portals.',
     ),
   );
   rev4ProfileOption.append(rev4ProfileCheckbox, rev4ProfileCopy);
@@ -323,7 +326,14 @@ function renderLanding(
   rev4ProfileCheckbox.addEventListener('change', () => {
     if (rev4ProfileCheckbox.checked) profileCheckbox.checked = false;
   });
-  content.append(profileOption, rev4ProfileOption);
+  const profilePicker = element('details', 'online-preview__profile-picker');
+  profilePicker.hidden = !configured;
+  profilePicker.append(
+    element('summary', '', 'Arena profile'),
+    rev4ProfileOption,
+    profileOption,
+  );
+  content.append(profilePicker);
   const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => {
     if (rev4ProfileCheckbox.checked) return ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
     if (profileCheckbox.checked) return ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
@@ -332,15 +342,15 @@ function renderLanding(
   const lobby = element('section', 'online-preview__lobby');
   const createCard = element('article', 'online-preview__lobby-card');
   createCard.append(
-    element('span', 'online-preview__card-number', '01 / HOST'),
-    element('h2', 'online-preview__card-title', 'Create authority room'),
+    element('span', 'online-preview__card-number', 'Host'),
+    element('h2', 'online-preview__card-title', 'Create room'),
     element(
       'p',
       'online-preview__card-copy',
-      'Ask the configured authority to create a new room, then share its short room code with a second browser.',
+      'Start a new arena and share its short room code.',
     ),
   );
-  const createButton = element('button', 'online-preview__primary', 'CREATE COMBAT ROOM');
+  const createButton = element('button', 'online-preview__primary', 'Create room');
   createButton.type = 'button';
   createButton.disabled = !configured;
   createButton.dataset.testid = 'online-create-room';
@@ -349,12 +359,12 @@ function renderLanding(
 
   const joinCard = element('article', 'online-preview__lobby-card');
   joinCard.append(
-    element('span', 'online-preview__card-number', '02 / JOIN'),
-    element('h2', 'online-preview__card-title', 'Join with a room code'),
+    element('span', 'online-preview__card-number', 'Join'),
+    element('h2', 'online-preview__card-title', 'Join room'),
     element(
       'p',
       'online-preview__card-copy',
-      'Enter a KYX room code from another player. Your existing local guest name is sent only as the room display name.',
+      'Enter the room code shared by another player.',
     ),
   );
   const form = element('form', '');
@@ -369,7 +379,7 @@ function renderLanding(
   input.setAttribute('aria-label', 'Room code');
   input.disabled = !configured;
   input.dataset.testid = 'online-room-code';
-  const joinButton = element('button', 'online-preview__secondary', 'JOIN ROOM');
+  const joinButton = element('button', 'online-preview__secondary', 'Join room');
   joinButton.type = 'submit';
   joinButton.disabled = !configured;
   joinButton.dataset.testid = 'online-join-room';
@@ -397,13 +407,16 @@ function renderLanding(
 
   const endpoint = element('p', 'online-preview__endpoint');
   if (availability.kind === 'configured') {
-    endpoint.textContent = `Authority configured: ${new URL(availability.origin).host} · guest ${protocolDisplayName(UserAccount.getDisplayName())}`;
+    endpoint.textContent = `Ready as ${protocolDisplayName(UserAccount.getDisplayName())}`;
   } else if (availability.kind === 'invalid') {
-    endpoint.textContent = `Online disabled: ${availability.reason}`;
+    endpoint.textContent = 'Online is unavailable in this build.';
+    endpoint.title = availability.reason;
   } else {
-    endpoint.textContent = 'Online disabled in this build: no VITE_KYX_AUTHORITY_ORIGIN is configured.';
+    endpoint.textContent = 'Online is unavailable in this build.';
+    endpoint.title = 'VITE_KYX_AUTHORITY_ORIGIN is not configured.';
   }
   content.append(endpoint);
+  appendScopeNotice(content);
 }
 
 function expectedIdentity(
@@ -729,6 +742,7 @@ async function mountSession(
   ]);
   body.dataset.combatPresetId = selectedCombatPreset.id;
   body.dataset.helmetVariantId = selectedCombatPreset.helmetVariantId;
+  body.dataset.onlineHud = 'cutline-v1';
   const developmentDiagnosticsVisible =
     new URLSearchParams(window.location.search).get('debug') === '1';
   content.classList.add('online-preview__content--session');
@@ -825,17 +839,17 @@ async function mountSession(
     'div',
     'online-session__panel-head',
     inkfallRev4
-      ? 'Playable Inkfall Foundry Rev5 3D / frozen Rev3 authority'
+      ? 'Inkfall Foundry'
       : inkfallRuntime
-        ? 'Live Inkfall Foundry @2 authority plane'
-        : 'Live authority combat plane',
+        ? 'Inkfall Foundry'
+        : 'Online arena',
   );
   arenaHead.append(element(
     'span',
     '',
     inkfallRev4
-      ? `CLICK FOR MOUSE LOOK · WASD · ${selectedCombatPreset.roleLabel.toUpperCase()} + BLADE · M1/ENTER FIRE · R RELOAD · E/F/Z PRESET ABILITIES · Q BLINK`
-      : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · MOUSE/ARROWS look · M1 fire · M2 ADS · R reload · E/F/Z abilities · Q Blink',
+      ? `Click for mouse look · WASD · ${selectedCombatPreset.roleLabel} + blade · M1 fire · M2 ADS · R reload · E/F/Z abilities · Q Blink`
+      : 'WASD + air steer · Shift sprint · Space jump · C/Ctrl crouch + slide · Mouse/Arrows look · M1 fire · M2 ADS · R reload · E/F/Z abilities · Q Blink',
   ));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
@@ -854,8 +868,8 @@ async function mountSession(
     'div',
     'online-session__map-status',
     inkfallRev4
-      ? 'VERIFYING REV5 ART + REV3 AUTHORITY BINDING…'
-      : '2D AUTHORITY PRESENTATION',
+      ? 'Loading arena…'
+      : 'Arena ready',
   );
   mapStatus.dataset.testid = 'online-map-load-status';
   mapStatus.dataset.state = inkfallRev4 ? 'loading' : 'ready';
@@ -989,17 +1003,17 @@ async function mountSession(
   const invite = element('code', 'online-session__invite', inviteUrl);
   invite.dataset.testid = 'online-invite';
   const actions = element('div', 'online-session__actions');
-  const copyButton = element('button', 'online-preview__primary', 'COPY INVITE LINK');
+  const copyButton = element('button', 'online-preview__primary', 'Copy invite link');
   copyButton.type = 'button';
   copyButton.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(inviteUrl);
-      copyButton.textContent = 'INVITE COPIED';
+      copyButton.textContent = 'Invite copied';
     } catch {
-      copyButton.textContent = 'COPY UNAVAILABLE — SELECT LINK';
+      copyButton.textContent = 'Copy unavailable — select link';
     }
   });
-  const resumeButton = element('button', 'online-preview__secondary', 'DISCONNECT + RESUME');
+  const resumeButton = element('button', 'online-preview__secondary', 'Reconnect session');
   resumeButton.type = 'button';
   resumeButton.disabled = true;
   resumeButton.dataset.testid = 'online-resume';
@@ -1127,7 +1141,12 @@ async function mountSession(
   const scoreboardScore = element('strong', 'online-session__scoreboard-score', '0 — 0');
   const scoreboardPlayers = element('div', 'online-session__scoreboard-players');
   scoreboard.append(scoreboardHeader, scoreboardScore, scoreboardPlayers);
-  canvasWrap.append(combatStrip, combatStats, controls, feed, scoreboard);
+  const lifeBanner = element('div', 'online-session__life-banner');
+  lifeBanner.dataset.testid = 'online-life-banner';
+  lifeBanner.setAttribute('role', 'status');
+  lifeBanner.setAttribute('aria-live', 'polite');
+  lifeBanner.hidden = true;
+  canvasWrap.append(combatStrip, combatStats, controls, feed, lifeBanner, scoreboard);
   arenaPanel.replaceChildren(canvasWrap);
 
   const sessionDrawer = element('details', 'online-session__session-drawer');
@@ -1154,12 +1173,39 @@ async function mountSession(
     metricsPanel,
   );
   appendScopeNotice(side, inkfallProfile);
-  diagnostics.append(diagnosticsSummary, side);
+  const technicalError = element('pre', 'online-session__technical-error');
+  technicalError.dataset.testid = 'online-technical-error';
+  technicalError.setAttribute('aria-label', 'Technical error details');
+  diagnostics.append(diagnosticsSummary, side, technicalError);
   grid.append(arenaPanel);
 
-  const error = element('pre', 'online-session__error');
+  const error = element('section', 'online-session__error');
   error.setAttribute('role', 'alert');
   error.dataset.testid = 'online-error';
+  error.hidden = true;
+  const errorMessage = element('p', 'online-session__error-message');
+  const errorActions = element('div', 'online-session__error-actions');
+  const retryRoomButton = element('button', 'online-preview__primary', 'Retry room');
+  retryRoomButton.type = 'button';
+  retryRoomButton.addEventListener('click', () => window.location.reload());
+  const returnToLobbyButton = element('button', 'online-preview__secondary', 'Return to online');
+  returnToLobbyButton.type = 'button';
+  returnToLobbyButton.addEventListener('click', () => window.location.assign(ONLINE_AUTHORITY_PATH));
+  errorActions.append(retryRoomButton, returnToLobbyButton);
+  error.append(errorMessage, errorActions);
+  const showPlayerError = (
+    message: string,
+    canRetry: boolean,
+    detail = '',
+    state: 'quiet' | 'connecting' | 'reconnecting' | 'fatal' = 'fatal',
+  ): void => {
+    errorMessage.textContent = message;
+    retryRoomButton.hidden = !canRetry;
+    errorActions.hidden = !canRetry;
+    error.hidden = message.length === 0;
+    error.dataset.state = state;
+    technicalError.textContent = detail;
+  };
   content.replaceChildren(
     head,
     grid,
@@ -1210,7 +1256,8 @@ async function mountSession(
         },
       });
       const sceneFacts = threeRuntime.diagnostics();
-      mapStatus.textContent = `3D READY · REV5 ${sceneFacts.renderMeshCount} RENDER MESHES · REV3 ${sceneFacts.authorityColliderCount} AUTHORITY COLLIDERS`;
+      mapStatus.textContent = 'Arena ready';
+      mapStatus.title = `Rev5 presentation: ${sceneFacts.renderMeshCount} render meshes · Rev3 authority: ${sceneFacts.authorityColliderCount} colliders`;
       mapStatus.dataset.state = 'ready';
       body.dataset.online3dStatus = 'ready';
       body.dataset.online3dRenderer = sceneFacts.renderer;
@@ -1220,9 +1267,14 @@ async function mountSession(
       }, 2_200);
     } catch (cause) {
       const detail = cause instanceof Error ? cause.message : String(cause);
-      mapStatus.textContent = `MAP LOAD FAILED CLOSED · ${detail}`;
+      const technicalDetail = `ONLINE_REV5_3D_INITIALIZATION_FAILED: ${detail}`;
+      mapStatus.textContent = 'Arena unavailable';
       mapStatus.dataset.state = 'failed';
-      error.textContent = `ONLINE_REV5_3D_INITIALIZATION_FAILED: ${detail}`;
+      showPlayerError(
+        'The arena presentation could not start. Retry the room or return to the online lobby.',
+        true,
+        technicalDetail,
+      );
       body.dataset.onlinePreviewStatus = 'map-load-failed';
       body.dataset.online3dStatus = 'failed';
       for (const button of [
@@ -1310,18 +1362,18 @@ async function mountSession(
     return null;
   };
   const feedbackCopy = (cue: Exclude<FeedbackCue, null>): string => {
-    if (cue === 'snapshot') return 'AUTHORITY STATE SYNCHRONIZED';
-    if (cue === 'body') return 'BODY HIT · CONFIRMED';
-    if (cue === 'head') return 'HEADSHOT · CONFIRMED';
-    if (cue === 'head_kill') return 'HEADSHOT ELIMINATION · CONFIRMED';
-    if (cue === 'shield') return 'SHIELD HIT · CONFIRMED';
-    if (cue === 'kill') return 'ELIMINATION · CONFIRMED';
-    if (cue === 'grenade_throw') return 'IMPULSE GRENADE · ACCEPTED';
-    if (cue === 'grenade_collision') return 'GRENADE CONTACT · CONFIRMED';
-    if (cue === 'grenade_detonation') return 'GRENADE DETONATION · CONFIRMED';
-    if (cue === 'grenade_impulse') return 'DISPLACEMENT · CONFIRMED';
-    if (cue === 'teleport') return 'TELEPORT · CONFIRMED';
-    return 'TELEPORT · REJECTED';
+    if (cue === 'snapshot') return '';
+    if (cue === 'body') return 'Hit';
+    if (cue === 'head') return 'Headshot';
+    if (cue === 'head_kill') return 'Headshot · Target down';
+    if (cue === 'shield') return 'Shield hit';
+    if (cue === 'kill') return 'Target down';
+    if (cue === 'grenade_throw') return 'Launch thrown';
+    if (cue === 'grenade_collision') return 'Grenade contact';
+    if (cue === 'grenade_detonation') return 'Grenade detonated';
+    if (cue === 'grenade_impulse') return 'Target displaced';
+    if (cue === 'teleport') return 'Blink complete';
+    return 'Blink blocked';
   };
   const feedbackVariation = (amount = 0.03): number => {
     feedbackVariationState = (
@@ -1662,7 +1714,7 @@ async function mountSession(
       feedbackHud.textContent = feedbackCopy(cue);
       feedbackHud.dataset.cue = cue;
       feedbackHud.dataset.authorityEventId = intent.authorityEventId ?? '';
-      feedbackHud.dataset.active = 'true';
+      feedbackHud.dataset.active = String(cue !== 'snapshot');
       if (cue === 'snapshot') {
         feedbackHud.dataset.audio = 'not_played';
         feedbackGlyph.dataset.cue = 'snapshot';
@@ -1766,15 +1818,15 @@ async function mountSession(
     ) return;
     const ability = ABILITY_PRESENTATION[event.presentation.abilityId];
     const phaseCopy = event.presentation.phase === 'activated'
-      ? 'ACCEPTED'
+      ? 'deployed'
       : event.presentation.phase === 'rejected'
-        ? 'NOT READY'
+        ? 'not ready'
         : event.presentation.phase === 'collision'
-          ? event.presentation.reason === 'attached' ? 'ADHERED' : 'CONTACT'
+          ? event.presentation.reason === 'attached' ? 'stuck' : 'contact'
           : event.presentation.phase === 'detonated'
-            ? 'DETONATED'
-            : 'FLASHED';
-    feedbackHud.textContent = `${ability.shortName.toUpperCase()} · ${phaseCopy}`;
+            ? 'detonated'
+            : 'flashed';
+    feedbackHud.textContent = `${ability.shortName} ${phaseCopy}`;
     feedbackHud.dataset.cue = `ability_${event.presentation.phase}`;
     feedbackHud.dataset.authorityEventId = event.presentation.eventId;
     feedbackHud.dataset.active = 'true';
@@ -2273,7 +2325,11 @@ async function mountSession(
           ? presentationFailure.message
           : 'UNKNOWN_PRESENTATION_FAILURE';
         presentationFailureDetail = `COMBAT_PRESENTATION_FAIL_CLOSED: ${detail}`;
-        error.textContent = presentationFailureDetail;
+        showPlayerError(
+          'Combat feedback stopped. Retry the room or return to the online lobby.',
+          true,
+          presentationFailureDetail,
+        );
       }
     }
     const combatView = {
@@ -2359,7 +2415,7 @@ async function mountSession(
           ? renderFailure.message
           : String(renderFailure);
         presentationFailureDetail = `ONLINE_REV5_3D_RENDER_FAILED_CLOSED: ${detail}`;
-        mapStatus.textContent = `3D RENDER FAILED CLOSED · ${detail}`;
+        mapStatus.textContent = 'Arena presentation stopped';
         mapStatus.dataset.state = 'failed';
         body.dataset.online3dStatus = 'failed';
         threeRuntime.dispose();
@@ -2387,16 +2443,103 @@ async function mountSession(
       peersFact.value.textContent = String(diagnostics.remote.playerCount);
       phaseFact.value.textContent = combat?.match.phase ?? diagnostics.authority.matchPhase ?? 'WAITING';
       tickFact.value.textContent = String(diagnostics.authority.serverTick);
-      scoreValue.textContent = `${blueScore} — ${redScore}`;
       const remainingSeconds = combat === null
         ? 0
         : Math.max(0, Math.ceil(combat.match.activeTicksRemaining / 20));
-      scorePhase.textContent = combat === null
-        ? 'Waiting'
-        : `${combat.match.phase} · ${Math.floor(remainingSeconds / 60)}:${String(
-            remainingSeconds % 60,
-          ).padStart(2, '0')}`;
-      scoreboardScore.textContent = `${blueScore} — ${redScore}`;
+      const selectedAbilities = localPlayer?.abilityLoadout?.slots.slice(1) ?? [];
+      const blinkReadyIn = Math.max(
+        0,
+        diagnostics.local.teleportCooldownTicksRemaining ?? 0,
+      );
+      const blinkCooldownTicks = ABILITY_PRESENTATION[ABILITY_ID.blink].cooldownSeconds * 20;
+      const hudAbilities: HudAbilityInput[] = [
+        {
+          id: ABILITY_ID.blink,
+          name: ABILITY_PRESENTATION[ABILITY_ID.blink].shortName,
+          key: 'Q',
+          locked: true,
+          state: blinkReadyIn === 0 ? 'ready' : 'charging',
+          cooldownSeconds: blinkReadyIn / 20,
+          readinessRatio: blinkReadyIn === 0
+            ? 1
+            : 1 - Math.min(1, blinkReadyIn / blinkCooldownTicks),
+        },
+        ...(['E', 'F', 'Z'] as const).map((key, index): HudAbilityInput => {
+          const abilityId = selectedAbilities[index] as AbilityId | undefined;
+          const ability = abilityId === undefined ? null : ABILITY_PRESENTATION[abilityId];
+          const readyIn = localPlayer?.abilityLoadout === undefined
+            ? 0
+            : Math.max(
+                0,
+                localPlayer.abilityLoadout.cooldownEndsAtTicks[index]
+                  - diagnostics.authority.serverTick,
+              );
+          const charges = localPlayer?.abilityLoadout?.currentCharges[index] ?? 0;
+          const maximumCharges = localPlayer?.abilityLoadout?.maximumCharges[index] ?? 0;
+          const cooldownTicks = (ability?.cooldownSeconds ?? 0) * 20;
+          return {
+            id: abilityId ?? `empty-${key.toLocaleLowerCase()}`,
+            name: ability?.shortName ?? 'Empty',
+            key,
+            available: ability !== null,
+            state: ability === null
+              ? 'unavailable'
+              : charges > 0
+                ? 'ready'
+                : readyIn > 0
+                  ? 'charging'
+                  : 'empty',
+            charges: ability === null ? null : charges,
+            maximumCharges: ability === null ? null : maximumCharges,
+            cooldownSeconds: readyIn / 20,
+            readinessRatio: charges > 0
+              ? 1
+              : cooldownTicks > 0
+                ? 1 - Math.min(1, readyIn / cooldownTicks)
+                : 0,
+          };
+        }),
+      ];
+      const hudView = createOnlineHudViewModel({
+        health: localPlayer?.healthPoints ?? 0,
+        maximumHealth: 100,
+        weapon: {
+          name: selectedWeapon?.family.replace(/_/gu, ' ') ?? 'Auto rifle',
+          magazineRounds: selectedWeapon === undefined
+            ? localPlayer?.magazineRounds ?? 0
+            : selectedWeapon.magazineRounds,
+          reserveRounds: selectedWeapon === undefined
+            ? localPlayer?.reserveRounds ?? 0
+            : selectedWeapon.reserveRounds,
+          isMelee: selectedWeapon?.magazineRounds === null,
+          isReloading: selectedWeapon?.phase === 'reloading',
+        },
+        abilities: hudAbilities,
+        blueScore,
+        redScore,
+        remainingSeconds,
+        phase: combat?.match.phase ?? diagnostics.authority.matchPhase ?? 'Waiting',
+        objective: 'Team score',
+        connectionPhase: diagnostics.connection.phase,
+        connectionError: presentationFailureDetail ?? diagnostics.lastError,
+        lifeState: localPlayer?.lifePhase === 'dead'
+          ? 'dead'
+          : localPlayer?.lifePhase === 'alive'
+            ? 'alive'
+            : 'waiting',
+        respawnTicks: localPlayer?.lifePhase === 'dead'
+          ? Math.max(
+              0,
+              (localPlayer.respawnEligibleAtTick ?? diagnostics.authority.serverTick)
+                - diagnostics.authority.serverTick,
+            )
+          : null,
+        tickRateHz: 20,
+      });
+      body.dataset.hudViewModel = String(hudView.schemaVersion);
+      scoreValue.textContent = `${hudView.score.leftScore} — ${hudView.score.rightScore ?? 0}`;
+      scorePhase.textContent = `${hudView.score.phaseLabel} · ${hudView.score.timerLabel}`;
+      scoreboardScore.textContent = scoreValue.textContent;
       const scoreboardRows = combat === null
         ? []
         : [...combat.players]
@@ -2452,96 +2595,61 @@ async function mountSession(
       };
       applyTeam(bluePlayer, blueState, blueHealthText, blueHealthFill, 'BLUE');
       applyTeam(redPlayer, redState, redHealthText, redHealthFill, 'RED');
-      localHealth.value.textContent = localPlayer === undefined
-        ? 'WAITING'
-        : localPlayer.lifePhase === 'dead'
-          ? `DEAD · ${Math.max(0, (localPlayer.respawnEligibleAtTick ?? 0) - diagnostics.authority.serverTick)}T`
-          : `${localPlayer.healthPoints} HP · ALIVE`;
-      localAmmo.value.textContent = localPlayer === undefined
-        ? '—'
-        : selectedWeapon === undefined
-          ? `${localPlayer.magazineRounds} / ${localPlayer.reserveRounds}`
-          : selectedWeapon.magazineRounds === null
-            ? 'UNLIMITED'
-            : `${selectedWeapon.magazineRounds} / ${selectedWeapon.reserveRounds ?? 0}`;
-      localRifle.value.textContent = selectedWeapon === undefined
-        ? localPlayer?.riflePhase ?? 'WAITING'
-        : `${selectedWeapon.family.toUpperCase()} · ${selectedWeapon.phase.toUpperCase()}`;
-      localGrenade.value.textContent = localPlayer === undefined
-        ? 'WAITING'
-        : localPlayer.abilityLoadout === undefined
-          ? `${localPlayer.grenadePhase} · ${localPlayer.activeProjectileCount} ACTIVE`
-          : localPlayer.abilityLoadout.slots.slice(1).map((abilityId, index) => {
-              const ability = ABILITY_PRESENTATION[abilityId as AbilityId];
-               const readyIn = Math.max(
-                 0,
-                 localPlayer.abilityLoadout!.cooldownEndsAtTicks[index]
-                   - diagnostics.authority.serverTick,
-               );
-               const charges = localPlayer.abilityLoadout!.currentCharges[index];
-               const maximum = localPlayer.abilityLoadout!.maximumCharges[index];
-               return `${ability.shortName} ${charges}/${maximum}${
-                 charges < maximum && readyIn > 0 ? ` · +1 ${readyIn}T` : ''
-               }`;
-            }).join(' · ');
-      const selectedAbilities = localPlayer?.abilityLoadout?.slots.slice(1) ?? [];
-      for (const [index, button, inputLabel] of [
-        [0, abilityOneButton, 'E'],
-        [1, abilityTwoButton, 'F'],
-        [2, abilityThreeButton, 'Z'],
-      ] as const) {
-        const abilityId = selectedAbilities[index] as AbilityId | undefined;
-        const ability = abilityId === undefined ? null : ABILITY_PRESENTATION[abilityId];
-         const readyIn = localPlayer?.abilityLoadout === undefined
-           ? 0
-          : Math.max(
-              0,
-              localPlayer.abilityLoadout.cooldownEndsAtTicks[index]
-                 - diagnostics.authority.serverTick,
-             );
-         const charges = localPlayer?.abilityLoadout?.currentCharges[index] ?? 0;
-         const maximumCharges = localPlayer?.abilityLoadout?.maximumCharges[index] ?? 0;
-         const ready = charges > 0;
-         button.replaceChildren(
-           element('kbd', 'online-session__ability-key', inputLabel),
-           element(
-             'span',
-             'online-session__ability-name',
-             ability?.shortName ?? `Slot ${index + 1}`,
-           ),
-           element(
-             'strong',
-             'online-session__ability-charge',
-             ability === null ? '—' : `${charges}/${maximumCharges}`,
-           ),
-         );
-        button.setAttribute(
-          'aria-label',
-          ability === null
-            ? `Ability slot ${index + 1}, key ${inputLabel}`
-             : `${ability.displayName}, key ${inputLabel}, ${charges} of ${maximumCharges} charges${
-                 charges < maximumCharges && readyIn > 0
-                   ? `, next charge in ${readyIn} ticks`
-                   : ''
-               }`,
-         );
-         button.dataset.ready = String(ready);
-         button.dataset.rechargeSeconds = String(Math.ceil(readyIn / 20));
+      localHealth.value.textContent = hudView.life.state === 'dead'
+        ? `Respawn ${hudView.life.respawnSeconds ?? 0}s`
+        : String(hudView.health.value);
+      localHealth.root.dataset.state = hudView.life.state === 'dead'
+        ? 'dead'
+        : hudView.health.state;
+      localAmmo.value.textContent = hudView.weapon.isMelee
+        ? hudView.weapon.magazineLabel
+        : `${hudView.weapon.magazineLabel} / ${hudView.weapon.reserveLabel}`;
+      localAmmo.root.dataset.state = hudView.weapon.ammoState;
+      localRifle.value.textContent = hudView.weapon.isReloading
+        ? `${hudView.weapon.name} · Reloading`
+        : hudView.weapon.name;
+      localGrenade.value.textContent = hudView.abilities
+        .slice(1)
+        .map((ability) => `${ability.name} ${ability.stateLabel}`)
+        .join(' · ');
+      const abilityButtons = [
+        teleportButton,
+        abilityOneButton,
+        abilityTwoButton,
+        abilityThreeButton,
+      ] as const;
+      for (const [index, ability] of hudView.abilities.entries()) {
+        const button = abilityButtons[index];
+        if (button === undefined) continue;
+        const glyphRoot = element('span', 'ability-glyph-slot');
+        glyphRoot.setAttribute('aria-hidden', 'true');
+        glyphRoot.append(createAbilityGlyph(ability.id));
+        const progress = element('span', 'ability-progress');
+        progress.setAttribute('aria-hidden', 'true');
+        const progressFill = element('span', 'ability-progress__fill');
+        progressFill.style.transform = `scaleX(${ability.readinessRatio})`;
+        progress.append(progressFill);
+        button.replaceChildren(
+          glyphRoot,
+          element('kbd', 'online-session__ability-key', ability.key),
+          element('span', 'online-session__ability-name', ability.name),
+          element('strong', 'online-session__ability-charge', ability.stateLabel),
+          progress,
+        );
+        button.setAttribute('aria-label', ability.ariaLabel);
+        button.dataset.abilityId = ability.id;
+        button.dataset.state = ability.state;
+        button.dataset.ready = String(ability.state === 'ready');
+        button.dataset.locked = String(ability.locked);
+        button.dataset.rechargeSeconds = String(Math.ceil(ability.cooldownSeconds));
+        button.dataset.readinessPercent = String(Math.round(ability.readinessRatio * 100));
+        button.style.setProperty(
+          '--ability-ready-ratio',
+          `${Math.round(ability.readinessRatio * 100)}%`,
+        );
       }
-      const blinkReadyIn = Math.max(
-        0,
-        diagnostics.local.teleportCooldownTicksRemaining ?? 0,
-      );
-      teleportButton.replaceChildren(
-        element('kbd', 'online-session__ability-key', 'Q'),
-        element('span', 'online-session__ability-name', 'Blink'),
-        element(
-          'strong',
-          'online-session__ability-charge',
-          blinkReadyIn === 0 ? 'Ready' : `${Math.ceil(blinkReadyIn / 20)}s`,
-        ),
-      );
-      teleportButton.dataset.ready = String(blinkReadyIn === 0);
+      lifeBanner.textContent = hudView.life.message;
+      lifeBanner.hidden = hudView.life.message.length === 0;
       const playerLabel = (playerId: string | null): string => {
         if (playerId === null) return 'AUTHORITY';
         if (playerId === diagnostics.authority.playerId) return 'YOU';
@@ -2575,7 +2683,16 @@ async function mountSession(
         : `${diagnostics.local.lastPositionErrorMillimeters.toFixed(1)} mm`;
       resumeMetric.value.textContent = String(diagnostics.counters.resumeSuccesses);
       resumeButton.disabled = !diagnostics.resume.available;
-      error.textContent = presentationFailureDetail ?? diagnostics.lastError ?? '';
+      const technicalDetail = presentationFailureDetail ?? diagnostics.lastError ?? '';
+      const playerMessage = presentationFailureDetail === null
+        ? hudView.connection.message
+        : 'Combat feedback stopped. Retry the room or return to the online lobby.';
+      showPlayerError(
+        playerMessage,
+        presentationFailureDetail !== null || hudView.connection.canRetry,
+        technicalDetail,
+        presentationFailureDetail === null ? hudView.connection.state : 'fatal',
+      );
       body.dataset.onlinePreviewStatus = diagnostics.connection.phase;
       body.dataset.onlineCombatPhase = combat?.match.phase ?? 'waiting';
       body.dataset.onlineLocalLife = localPlayer?.lifePhase ?? 'waiting';
