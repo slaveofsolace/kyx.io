@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "session": {
+    "buildId": "272d9dff7f18cef155c72a53a45226707896084f",
+    "mode": "comparative gray-box",
+    "platform": "Windows 11, Chromium, RTX 4090 D3D11 hardware WebGL",
+    "input": "deterministic Playwright keyboard and mouse",
+    "resolution": "1440x900",
+    "observedAt": "2026-07-29T18:35:11.545Z",
+    "evidenceRoot": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v19-assault-arms"
+  },
+  "observations": [
+    {
+      "id": "V19-ARM-001",
+      "component": "first-person arms",
+      "label": "OBSERVED",
+      "title": "Gauntlets remain planar and procedurally assembled",
+      "context": "Hip, held ADS, and peak authority-reload frames on Inkfall Rev5",
+      "action": "Hold the VLR-7 at hip, hold ADS, then trigger an authority reload",
+      "expectation": "A continuous authored Assault sleeve, gauntlet, wrist seal, and glove silhouette",
+      "actual": "The v19 arm is connected and tapered, but the bright rectangular dorsal plate and simple cylindrical sleeve remain visibly procedural",
+      "playerConsequence": "The contact no longer looks broken, but the arm still lowers trust in the intended polished sci-fi presentation",
+      "reproduction": [
+        "Open the source-frozen v19 online capture",
+        "Compare screenshots 01-west-spawn-pocket-forward, 01b-vlr7-held-ads, and 01d-vlr7-authority-reload with the same v18 frames"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 4,
+      "friction": 2,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/01b-vlr7-held-ads.png",
+        "screenshots/01d-vlr7-authority-reload.png"
+      ],
+      "hypotheses": [
+        "Primitive-only geometry cannot supply the authored curvature and panel transitions expected from a final first-person arm",
+        "The dorsal armor is too broad and reflective under Inkfall's cyan lighting"
+      ],
+      "nextDiscriminatingTest": "Replace only the visible dorsal shell with one authored low-poly forearm and glove mesh while preserving the proven markers and rerun the same three frames",
+      "recommendedOutcome": "Keep the v19 connected contact skeleton but replace the visible primitive shells with an authored Assault first-person arm mesh",
+      "status": "OPEN"
+    },
+    {
+      "id": "V19-ARM-002",
+      "component": "first-person animation",
+      "label": "OBSERVED",
+      "title": "Both arms still move as one rigid weapon presentation assembly",
+      "context": "Peak authority reload at 45 percent progress",
+      "action": "Trigger reload and observe the hand, wrist, elbow, and weapon relationship",
+      "expectation": "The support hand releases or shifts while the trigger hand retains a credible grip and the forearm articulates",
+      "actual": "The connected arm geometry follows the weapon pose without independent hand release, elbow articulation, or magazine interaction",
+      "playerConsequence": "Reload state is readable, but it lacks believable body mechanics and will look synthetic in motion",
+      "reproduction": [
+        "Enter the v19 two-player online route with the VLR-7 selected",
+        "Fire to reduce ammunition and press R",
+        "Inspect the arm chain near 45 percent reload progress"
+      ],
+      "frequency": 3,
+      "severity": 4,
+      "reach": 5,
+      "trust": 4,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01d-vlr7-authority-reload.png",
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "The contact rig is parented to the weapon presentation and has no independent skeletal or procedural limb solver"
+      ],
+      "nextDiscriminatingTest": "Add one authored support-hand release and return curve around the existing authority reload phase, then capture a short motion sequence rather than a still",
+      "recommendedOutcome": "Provide independent dominant/support hand animation while retaining authority-driven reload timing",
+      "status": "OPEN"
+    },
+    {
+      "id": "V19-ARM-003",
+      "component": "first-person contact",
+      "label": "MEASURED",
+      "title": "Contact continuity and weapon-state integration improved without changing authority",
+      "context": "Source-frozen v19 hardware capture compared with v18",
+      "action": "Exercise hip, held ADS, authority fire, authority reload, and linked portal traversal",
+      "expectation": "Two connected hands remain on the proven VLR-7 contacts through all captured states",
+      "actual": "The capture reports two hands, the v2 Assault contact mode, held ADS, two accepted attack presentations, one reload presentation, and one linked portal traversal with zero console or page errors",
+      "playerConsequence": "The revision preserves the working combat loop while removing the most obvious elbow and wrist gaps",
+      "reproduction": [
+        "Run the v19 capture command against clean commit 272d9df",
+        "Inspect focused-visual-capture.json and the four weapon-state frames"
+      ],
+      "frequency": 5,
+      "severity": 1,
+      "reach": 5,
+      "trust": 1,
+      "friction": 0,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "focused-visual-capture.json",
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/01b-vlr7-held-ads.png",
+        "screenshots/01c-vlr7-authority-fire.png",
+        "screenshots/01d-vlr7-authority-reload.png"
+      ],
+      "hypotheses": [
+        "Overlapping elbow bridges and wrist seals removed the prior single-point discontinuities without altering grip markers"
+      ],
+      "nextDiscriminatingTest": "Run the final authored-mesh replacement through the same paired capture",
+      "recommendedOutcome": "Retain the v19 contact coordinates and authority binding as the animation and mesh foundation",
+      "status": "KEEP"
+    }
+  ]
+}

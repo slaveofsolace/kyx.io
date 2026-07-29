@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "status": "rev5_player_eye_capture_complete_human_review_open",
+  "profile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+  "mapReference": "inkfall_foundry@3",
+  "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+  "sourceFreeze": {
+    "repositoryHead": "272d9dff7f18cef155c72a53a45226707896084f",
+    "cleanAtStart": true,
+    "headUnchangedDuringCapture": true
+  },
+  "authority": {
+    "fixtureHash": "97eb7772ac59dc95",
+    "colliderCount": 339,
+    "spawnCount": 12,
+    "zoneCount": 9,
+    "renderMeshesMayBeAuthority": false,
+    "persistenceMode": "capture_owned_ephemeral_temp"
+  },
+  "presentation": {
+    "mode": "review_glb",
+    "sha256": "7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3",
+    "renderMeshCount": 24,
+    "renderOnlyVisualContinuityMeshCount": 302,
+    "spawnPocketCount": 2,
+    "portalTraversalPresentationCount": 1,
+    "isolatedPlayerContexts": 2,
+    "rendererMode": "hardware",
+    "graphics": {
+      "renderer": "WebKit WebGL",
+      "vendor": "WebKit",
+      "unmaskedRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "unmaskedVendor": "Google Inc. (NVIDIA)"
+    }
+  },
+  "weaponPresentation": {
+    "authorityWeaponId": "vertical_rifle_v1",
+    "contactMode": "authored_two_hand_assault_suit_v2",
+    "handCount": 2,
+    "hipFieldOfViewDegrees": 72,
+    "aimedFieldOfViewDegrees": 60.54160794505804,
+    "aimedMix": 0.9548660045784966,
+    "hipScale": 0.72,
+    "aimedScale": 0.6099994362725571,
+    "acceptedAttackPresentationCount": 2,
+    "activeWeaponEffectCountAtFireCapture": 0,
+    "fireImpulseAtCapture": 0.4627231751639768,
+    "reloadPresentationCount": 1,
+    "reloadProgressAtCapture": 0.45166666666666666,
+    "reloadPoseMixAtCapture": 0.9884938867335252,
+    "presentationOnlyAimInput": true
+  },
+  "player": {
+    "joinedSpawnId": "spawn_w_press_a",
+    "joinedYawMilliDegrees": 53000,
+    "joinedPositionMm": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    },
+    "pressApproachPositionMm": {
+      "x": -25372,
+      "y": -109,
+      "z": 3222
+    },
+    "pressApproachDeltaMm": {
+      "x": 8128,
+      "y": -109,
+      "z": 6722
+    },
+    "forwardAlignment": 0.9989774060650497,
+    "portalApproachPositionMm": {
+      "x": -4606,
+      "y": -2822,
+      "z": -12964
+    },
+    "portalExitPositionMm": {
+      "x": 1914,
+      "y": 1830,
+      "z": -4086
+    },
+    "finalPositionMm": {
+      "x": 1914,
+      "y": 1830,
+      "z": -4086
+    },
+    "cameraViews": {
+      "spawn": {
+        "yawMilliDegrees": 53000,
+        "pitchMilliDegrees": 0
+      },
+      "pressHall": {
+        "yawMilliDegrees": 53000,
+        "pitchMilliDegrees": 6000
+      },
+      "inkChannel": {
+        "yawMilliDegrees": 3500,
+        "pitchMilliDegrees": -1500
+      },
+      "archive": {
+        "yawMilliDegrees": 102500,
+        "pitchMilliDegrees": 7500
+      },
+      "portalApproach": {
+        "yawMilliDegrees": 11000,
+        "pitchMilliDegrees": -1500
+      },
+      "portalExit": {
+        "yawMilliDegrees": 45000,
+        "pitchMilliDegrees": -1500
+      }
+    }
+  },
+  "screenshots": [
+    "screenshots/01-west-spawn-pocket-forward.png",
+    "screenshots/01b-vlr7-held-ads.png",
+    "screenshots/01c-vlr7-authority-fire.png",
+    "screenshots/01d-vlr7-authority-reload.png",
+    "screenshots/02-press-hall-approach.png",
+    "screenshots/03-ink-channel-and-red-fold.png",
+    "screenshots/04-archive-tier-and-paper-drop.png",
+    "screenshots/05-red-fold-portal-approach.png",
+    "screenshots/06-red-fold-linked-exit.png"
+  ],
+  "screenshotIntegrity": {
+    "screenshots/01-west-spawn-pocket-forward.png": {
+      "bytes": 338511,
+      "sha256": "f99cbb4fa2d2b981c64132743ba684cc587403c5f17f69a52e7532acbbf5ff65"
+    },
+    "screenshots/01b-vlr7-held-ads.png": {
+      "bytes": 325058,
+      "sha256": "4fc6ec38473dec249542886dba9e8b3c80c8cc9c393e6fdc8c5727fd66219943"
+    },
+    "screenshots/01c-vlr7-authority-fire.png": {
+      "bytes": 337773,
+      "sha256": "0bec0f6f199454e257ce89077306898f7f379a2c3d044f5e832317c5ba4fcc16"
+    },
+    "screenshots/01d-vlr7-authority-reload.png": {
+      "bytes": 364390,
+      "sha256": "62b0f1a71a5cb9c50515fb5397146d19164d38ba161ab0660dcb5825305432dc"
+    },
+    "screenshots/02-press-hall-approach.png": {
+      "bytes": 394905,
+      "sha256": "4793f0abd3a743e52b94a7e7957443373a49f77876fd8e450b561d483f41d8bb"
+    },
+    "screenshots/03-ink-channel-and-red-fold.png": {
+      "bytes": 252427,
+      "sha256": "93e39818d561f3bb312e5471f803e753d6e466b180c0983f249d15ede8ca82af"
+    },
+    "screenshots/04-archive-tier-and-paper-drop.png": {
+      "bytes": 380266,
+      "sha256": "46facd05f860970f2514c902a3d3e127eba8bccf01e8a9779f709d38072af14f"
+    },
+    "screenshots/05-red-fold-portal-approach.png": {
+      "bytes": 352785,
+      "sha256": "0dc1b3f796f43959a7ac239deb0c7ff6328dba8516b1127e10e3e322f165af3c"
+    },
+    "screenshots/06-red-fold-linked-exit.png": {
+      "bytes": 269680,
+      "sha256": "d93d2224acb2e84e434ba1dc6c4dbdc23b1ad458b0ab9931d6cbd5dfb3fb92db"
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "nonClaims": [
+    "Focused visual capture only; no broad regression, performance, spawn-safety, fun, staging, deployment, release, or G5 acceptance claim.",
+    "All visual-continuity additions are render-only/noHit; Rev3 remains the sole authority fixture."
+  ]
+}
