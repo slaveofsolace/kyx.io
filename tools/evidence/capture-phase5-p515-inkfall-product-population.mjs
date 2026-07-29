@@ -2881,25 +2881,28 @@ try {
     globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot().presentation.recentCues
       .some((cue) => cue.cue === 'grenade_collision' && cue.authorityEventId === eventId)
   ), grenadeCollisionReliableEvent.presentation.eventId, { timeout: 5_000 });
-  await first.page.screenshot({
-    path: path.join(screenshotDirectory, 'p515-04b-grenade-collision-fuse.png'),
-    fullPage: true,
-  });
-
-  await first.page.waitForFunction((projectileId) => {
-    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
-    const recentKinds = new Set(value?.combat.recentEvents.flatMap(({ presentation }) => (
-      presentation === undefined ? [] : [presentation.kind]
-    )));
-    return !value?.combat.snapshot?.projectiles.some((projectile) => (
-      projectile.projectileId === projectileId
-    ))
-      && recentKinds.has('impulse_grenade_detonated')
-      && recentKinds.has('impulse_grenade_impulse_applied')
-      && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_detonation')
-      && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_impulse');
-  }, grenadeThrowProjectile.projectileId, { timeout: 10_000 });
-  const grenadePresentation = await presentationMarkerProof(first.page, 'grenade_impulse');
+  const [grenadePresentation] = await Promise.all([
+    presentationMarkerProof(first.page, 'grenade_impulse'),
+    (async () => {
+      await first.page.screenshot({
+        path: path.join(screenshotDirectory, 'p515-04b-grenade-collision-fuse.png'),
+        fullPage: true,
+      });
+      await first.page.waitForFunction((projectileId) => {
+        const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+        const recentKinds = new Set(value?.combat.recentEvents.flatMap(({ presentation }) => (
+          presentation === undefined ? [] : [presentation.kind]
+        )));
+        return !value?.combat.snapshot?.projectiles.some((projectile) => (
+          projectile.projectileId === projectileId
+        ))
+          && recentKinds.has('impulse_grenade_detonated')
+          && recentKinds.has('impulse_grenade_impulse_applied')
+          && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_detonation')
+          && value?.presentation.recentCues.some(({ cue }) => cue === 'grenade_impulse');
+      }, grenadeThrowProjectile.projectileId, { timeout: 10_000 });
+    })(),
+  ]);
   assertPresentationMarker(grenadePresentation, 'grenade_impulse', 4);
   await first.page.screenshot({
     path: path.join(screenshotDirectory, 'p515-04c-grenade-impulse-confirmed.png'),
