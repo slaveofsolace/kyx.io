@@ -140,8 +140,8 @@ export const ONLINE_INKFALL_REV5_MAP_BINDING = Object.freeze({
     role: 'render_only',
     path:
       'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
-    sha256: 'b7ca109de054b56c8c9692e507942b27f5b64e46a60a6cdf140972910b48586f',
-    bytes: 3_805_416,
+    sha256: '569dcec0f06395c2e5f8419e48c86545b03c2155f6aa778c72fa1f335bc066d3',
+    bytes: 3_307_028,
     renderMeshesMayBeAuthority: false,
   }),
   collision: Object.freeze({

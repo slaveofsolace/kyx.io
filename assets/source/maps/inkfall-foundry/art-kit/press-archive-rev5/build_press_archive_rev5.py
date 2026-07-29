@@ -119,7 +119,7 @@ PORTAL_ENDPOINTS = (
         "triggerHalfExtentsMapMm": (1_500, 1_000, 1_500),
         "exitFeetMapMm": (1_539, 1_431, -4_461),
         "exitYawMilliDegrees": 45_000,
-        "visualCenterBlenderMeters": (-4.0, 10.0, -1.25),
+        "visualCenterBlenderMeters": (-4.0, -10.0, -1.25),
         "floorTopBlenderMeters": -3.0,
         "colorMaterial": "V3_AQUA_INDICATOR",
     },
@@ -130,7 +130,7 @@ PORTAL_ENDPOINTS = (
         "triggerHalfExtentsMapMm": (1_500, 1_400, 300),
         "exitFeetMapMm": (-4_500, -3_000, -12_500),
         "exitYawMilliDegrees": 90_000,
-        "visualCenterBlenderMeters": (1.0, 5.0, 3.181),
+        "visualCenterBlenderMeters": (1.0, -5.0, 3.181),
         "floorTopBlenderMeters": 1.431,
         "colorMaterial": "V3_WORN_AMBER",
     },
@@ -223,7 +223,9 @@ offset_point = rev4.offset_point
 
 
 def map_mm_to_blender(value: tuple[int, int, int]) -> tuple[float, float, float]:
-    return (value[0] / 1_000.0, -value[2] / 1_000.0, value[1] / 1_000.0)
+    # Blender +Y exports to glTF/Three -Z. Authority +Z also maps to Three -Z,
+    # so the Blender Y coordinate must preserve (not negate) map Z.
+    return (value[0] / 1_000.0, value[2] / 1_000.0, value[1] / 1_000.0)
 
 
 def point_inside(
@@ -891,12 +893,12 @@ def tune_material_values(
 ) -> dict[str, Any]:
     values = rev4.tune_rev4_material_values(materials)
     overrides = {
-        "V3_USED_CERAMIC": ((0.40, 0.435, 0.44, 1.0), 0.02, 0.66),
-        "V3_WORN_STEEL": ((0.19, 0.245, 0.255, 1.0), 0.42, 0.47),
-        "V3_CAST_IRON": ((0.082, 0.115, 0.125, 1.0), 0.31, 0.54),
-        "V3_INK_BLACK": ((0.036, 0.058, 0.068, 1.0), 0.10, 0.67),
-        "V3_AQUA_INDICATOR": ((0.024, 0.52, 0.61, 1.0), 0.12, 0.28),
-        "V3_WORN_AMBER": ((0.66, 0.315, 0.032, 1.0), 0.18, 0.40),
+        "V3_USED_CERAMIC": ((0.50, 0.52, 0.52, 1.0), 0.02, 0.62),
+        "V3_WORN_STEEL": ((0.26, 0.315, 0.325, 1.0), 0.46, 0.43),
+        "V3_CAST_IRON": ((0.13, 0.17, 0.18, 1.0), 0.34, 0.50),
+        "V3_INK_BLACK": ((0.055, 0.08, 0.09, 1.0), 0.10, 0.63),
+        "V3_AQUA_INDICATOR": ((0.05, 0.62, 0.69, 1.0), 0.12, 0.25),
+        "V3_WORN_AMBER": ((0.76, 0.40, 0.07, 1.0), 0.18, 0.36),
     }
     for name, (color, metallic, roughness) in overrides.items():
         material = materials[name]
@@ -1127,27 +1129,27 @@ def add_support_pair(
     for side_token, point in (("L", left), ("R", right)):
         add_box(
             f"V5_BRIDGE_{segment_token}_PIER_{sample_token}_{side_token}",
-            (0.26, 0.26, top_z - base_z),
+            (0.38, 0.38, top_z - base_z),
             (point[0], point[1], (base_z + top_z) * 0.5),
             cast,
             zone,
             "load_pier",
-            bevel=0.025,
+            bevel=0.035,
         )
         add_box(
             f"V5_BRIDGE_{segment_token}_FOOT_{sample_token}_{side_token}",
-            (0.56, 0.56, 0.16),
-            (point[0], point[1], base_z + 0.07),
+            (0.72, 0.72, 0.18),
+            (point[0], point[1], base_z + 0.08),
             steel,
             zone,
             "load_pier",
-            bevel=0.035,
+            bevel=0.045,
         )
     add_beam(
         f"V5_BRIDGE_{segment_token}_SUPPORT_CROSS_{sample_token}",
         (left[0], left[1], top_z - 0.04),
         (right[0], right[1], top_z - 0.04),
-        0.11,
+        0.15,
         steel,
         zone,
         "load_pier_cap",
@@ -1240,7 +1242,9 @@ def build_connected_bridge(
                     "attached_guard_rail",
                     vertices=14,
                 )
-            fractions = (0.0, 0.33, 0.67, 1.0)
+            # Three deliberate bays per segment read as a guard system instead
+            # of the rejected picket/scaffold rhythm.
+            fractions = (0.0, 0.5, 1.0)
             if segment_index > 0:
                 fractions = fractions[1:]
             for post_index, fraction in enumerate(fractions):
@@ -1255,7 +1259,10 @@ def build_connected_bridge(
                     "attached_guard_post",
                 )
 
-        for support_index, fraction in enumerate((0.28, 0.72)):
+        # One centered load frame per span is enough to show a credible load
+        # path. The previous two-pair cadence filled combat lanes with a forest
+        # of thin posts and repeated feet.
+        for support_index, fraction in enumerate((0.5,)):
             sample = interpolate(start, end, fraction)
             support_count += add_support_pair(
                 token,
@@ -1365,10 +1372,8 @@ def build_supported_landing(
 
     support_points = (
         (-25.35, 16.2),
-        (-22.0, 16.2),
         (-18.65, 16.2),
         (-25.35, 21.8),
-        (-22.0, 21.8),
         (-18.65, 21.8),
     )
     for index, (x, y) in enumerate(support_points):
@@ -1391,16 +1396,14 @@ def build_supported_landing(
             bevel=0.03,
         )
     for token, start, end in (
-        ("SW_NE", (-25.35, 16.2, 0.18), (-22.0, 21.8, 5.25)),
-        ("SE_NW", (-18.65, 16.2, 0.18), (-22.0, 21.8, 5.25)),
-        ("NW_SE", (-25.35, 21.8, 0.18), (-22.0, 16.2, 5.25)),
-        ("NE_SW", (-18.65, 21.8, 0.18), (-22.0, 16.2, 5.25)),
+        ("SW_NE", (-25.35, 16.2, 0.18), (-18.65, 21.8, 5.25)),
+        ("SE_NW", (-18.65, 16.2, 0.18), (-25.35, 21.8, 5.25)),
     ):
         add_beam(
             f"V5_ARCHIVE_UNDERDECK_BRACE_{token}",
             start,
             end,
-            0.068,
+            0.085,
             cast,
             zone,
             "landing_load_support",
@@ -1468,7 +1471,7 @@ def build_supported_landing(
             zone,
             "rooted_archive_gantry",
         )
-    for x in (-24.2, -22.7, -21.2, -19.7):
+    for x in (-24.2, -19.7):
         add_beam(
             f"V5_ARCHIVE_GANTRY_CROSS_{x}",
             (x, 16.1, 10.23),
@@ -1556,7 +1559,7 @@ def build_supported_landing(
 
     return {
         "supportColumnCount": len(support_points),
-        "underdeckBraceCount": 4,
+        "underdeckBraceCount": 2,
         "gantryPostCount": len(gantry_points),
         "contextWallBaseMeters": 6.0,
         "landingFloorTopMeters": 6.0,
@@ -1599,24 +1602,10 @@ def build_cc0_donor_service_language(
                 0.0,
             )
         ).normalized()
-        side = Vector((-tangent.y, tangent.x, 0.0))
         tangent_angle = math.atan2(tangent.y, tangent.x)
-        for side_token, sign in (("L", -1.0), ("R", 1.0)):
-            origin = Vector(point) + side * (sign * 1.29)
-            import_geometry_donor(
-                "Column_MetalSupport",
-                (
-                    f"V5_DONOR_BRIDGE_JOINT_{joint_index}_"
-                    f"TRUSS_{side_token}"
-                ),
-                (origin.x, origin.y, point[2] - 0.13),
-                (0.78, 1.0, 0.69),
-                (0.0, 0.0, tangent_angle),
-                cast,
-                "archive_rise",
-                "donor_bridge_frame",
-                instance_records,
-            )
+        # The rooted procedural joint frame already carries this load. The
+        # former four donor trusses duplicated its silhouette and read as
+        # detached scaffold clutter from the player route.
         import_geometry_donor(
             "Prop_Light_Wide",
             f"V5_DONOR_BRIDGE_JOINT_{joint_index}_CROWN_LIGHT",
@@ -1695,25 +1684,64 @@ def portal_energy_material(
 ) -> bpy.types.Material:
     material = base.copy()
     material.name = f"V5_PORTAL_ENERGY_{endpoint_id.upper()}"
-    color = tuple(base.diffuse_color[:3]) + (0.72,)
+    color = tuple(base.diffuse_color[:3]) + (0.30,)
     material.diffuse_color = color
     if material.use_nodes:
         principled = material.node_tree.nodes.get("Principled BSDF")
         if principled is not None:
             principled.inputs["Base Color"].default_value = color
-            principled.inputs["Alpha"].default_value = 0.72
+            principled.inputs["Alpha"].default_value = 0.30
             emission_color = principled.inputs.get("Emission Color")
             if emission_color is not None:
                 emission_color.default_value = tuple(color[:3]) + (1.0,)
             emission_strength = principled.inputs.get("Emission Strength")
             if emission_strength is not None:
-                emission_strength.default_value = 1.8
+                emission_strength.default_value = 1.40
     if hasattr(material, "surface_render_method"):
         material.surface_render_method = "DITHERED"
+    material.use_backface_culling = False
     material["kyx_role"] = "translucent_energy_surface_render_only"
     material["kyx_collision"] = False
     material["kyx_authority"] = False
     return material
+
+
+def add_portal_energy_field(
+    name: str,
+    center: Vector,
+    radius: float,
+    material: bpy.types.Material,
+    zone: str,
+) -> bpy.types.Object:
+    """Create one connected translucent field inside the authored gateway."""
+
+    segment_count = 12
+    vertices = [(center.x, center.y + 0.018, center.z)]
+    vertices.extend(
+        (
+            center.x + math.cos(math.tau * index / segment_count) * radius,
+            center.y + 0.018,
+            center.z + math.sin(math.tau * index / segment_count) * radius,
+        )
+        for index in range(segment_count)
+    )
+    faces = [
+        (0, index + 1, ((index + 1) % segment_count) + 1)
+        for index in range(segment_count)
+    ]
+    mesh_data = bpy.data.meshes.new(f"{name}_MESH")
+    mesh_data.from_pydata(vertices, [], faces)
+    mesh_data.update()
+    mesh_data.materials.append(material)
+    field = bpy.data.objects.new(name, mesh_data)
+    bpy.context.scene.collection.objects.link(field)
+    field["kyx_translucent_field"] = True
+    field["kyx_field_segment_count"] = segment_count
+    return mark_render_only(
+        field,
+        zone,
+        "portal_energy_filament_vfx_hook",
+    )
 
 
 def add_portal_energy_curve(
@@ -1821,15 +1849,21 @@ def build_portal_endpoint(
         instance_records,
     )
 
-    # A concentric turbine field replaces the rejected loose spiral/square
-    # construction. Every arm terminates on a guide ring, so there are no
-    # floating line ends or beam-joint spikes. It remains sparse render-only
-    # geometry rather than an opaque billboard.
-    energy_objects: list[bpy.types.Object] = []
+    # The field, guide rings, and turbine arms form one connected aperture.
+    # The translucent dodecagonal field eliminates the black-center/floating
+    # ring reading without becoming an opaque billboard.
+    energy_objects: list[bpy.types.Object] = [
+        add_portal_energy_field(
+            f"V5_PORTAL_{endpoint_token}_ACTIVE_FIELD",
+            center,
+            1.04,
+            energy,
+            zone,
+        )
+    ]
     guide_ring_specs = (
-        (1.10, 0.026),
-        (0.69, 0.014),
-        (0.28, 0.040),
+        (1.10, 0.045),
+        (0.69, 0.022),
     )
     for ring_index, (major_radius, minor_radius) in enumerate(guide_ring_specs):
         energy_objects.append(
@@ -1957,6 +1991,7 @@ def build_portal_endpoint(
         "donorGatewayFrameCount": 1,
         "donorTeleporterBaseCount": 1,
         "energyGuideRingCount": len(guide_ring_specs),
+        "translucentEnergyFieldCount": 1,
         "energyFilamentCount": len(energy_objects),
         "exitChevronCount": 3,
         "noOpaqueEnergyBillboard": True,
@@ -2020,14 +2055,14 @@ def configure_review_scene() -> dict[str, bpy.types.Object]:
     cameras["archive_rise"].data.lens = 40.0
     cameras["portal_lower"] = rev4.add_camera(
         "CAM_V5_PORTAL_LOWER",
-        (-4.0, 15.5, -0.7),
-        (-4.0, 10.0, -1.25),
+        (-4.0, -15.5, -0.7),
+        (-4.0, -10.0, -1.25),
         32.0,
     )
     cameras["portal_upper"] = rev4.add_camera(
         "CAM_V5_PORTAL_UPPER",
         (1.75, 0.25, 3.58),
-        (1.0, 5.0, 3.18),
+        (1.0, -5.0, 3.18),
         28.0,
     )
     cameras["bridge_support"] = rev4.add_camera(
@@ -2038,16 +2073,16 @@ def configure_review_scene() -> dict[str, bpy.types.Object]:
     )
     lower_glow = add_point_light(
         "V5_PORTAL_LOWER_REVIEW_GLOW",
-        (-4.0, 9.4, -1.15),
+        (-4.0, -9.4, -1.15),
         (0.08, 0.72, 0.85),
-        720.0,
+        220.0,
         2.2,
     )
     upper_glow = add_point_light(
         "V5_PORTAL_UPPER_REVIEW_GLOW",
-        (1.0, 4.4, 3.28),
+        (1.0, -4.4, 3.28),
         (1.0, 0.38, 0.06),
-        650.0,
+        140.0,
         2.0,
     )
     lower_glow.data.use_shadow = False
@@ -2521,7 +2556,7 @@ def main() -> None:
             and portal_frame_donor_inventory["sourceMaterialsReplaced"]
         ),
         "cc0DonorInstancesRemainRenderOnly": (
-            donor_service_language["instanceCount"] >= 10
+            donor_service_language["instanceCount"] == 8
             and len(donor_instances)
             == donor_service_language["instanceCount"] + 8
             and all(
@@ -2552,13 +2587,13 @@ def main() -> None:
             and bridge["segmentCount"] == 3
         ),
         "bridgeLoadsVisiblySupported": (
-            bridge["supportComponentCount"] >= 14
+            bridge["supportComponentCount"] == 15
             and bridge["transitionFramesRootedToDeck"]
         ),
         "railsAttachedToGirders": bridge["railsRootedToDeckGirders"],
         "landingLoadsVisiblySupported": (
-            landing["supportColumnCount"] == 6
-            and landing["underdeckBraceCount"] == 4
+            landing["supportColumnCount"] == 4
+            and landing["underdeckBraceCount"] == 2
             and landing["allPrimaryLoadsReachFoundationOrDeck"]
         ),
         "landingTopPreservesAuthorityAlignment": (
@@ -2569,7 +2604,8 @@ def main() -> None:
             and all(item["groundedSupportCount"] == 4 for item in portals)
             and all(item["donorGatewayFrameCount"] == 1 for item in portals)
             and all(item["donorTeleporterBaseCount"] == 1 for item in portals)
-            and all(item["energyGuideRingCount"] == 3 for item in portals)
+            and all(item["energyGuideRingCount"] == 2 for item in portals)
+            and all(item["translucentEnergyFieldCount"] == 1 for item in portals)
             and all(item["energyFilamentCount"] == 9 for item in portals)
             and all(item["noOpaqueEnergyBillboard"] for item in portals)
         ),

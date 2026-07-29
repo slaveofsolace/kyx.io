@@ -14,7 +14,7 @@ const FIXTURE_HASH = '97eb7772ac59dc95';
 const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
 const PRESENTATION_SHA256 =
-  'b7ca109de054b56c8c9692e507942b27f5b64e46a60a6cdf140972910b48586f';
+  '569dcec0f06395c2e5f8419e48c86545b03c2155f6aa778c72fa1f335bc066d3';
 const FRONTEND_PORT = 6_247;
 const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;

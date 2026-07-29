@@ -20,6 +20,19 @@ interface PortalTransient {
   readonly lifetimeMilliseconds: number;
 }
 
+const STATIC_PORTAL_LIGHTS = Object.freeze([
+  Object.freeze({
+    id: 'red_fold_lower',
+    position: Object.freeze([-4, -1.1, 10] as const),
+    color: 0x6ff3ff,
+  }),
+  Object.freeze({
+    id: 'red_fold_upper',
+    position: Object.freeze([1, 3.35, 5] as const),
+    color: 0xffa53b,
+  }),
+]);
+
 function mapMillimetersToScene(
   value: Readonly<{ x: number; y: number; z: number }>,
 ): THREE.Vector3 {
@@ -80,6 +93,21 @@ export function createInkfallRev5PortalPresentation(
   playAudio: InkfallRev5PortalAudioCallback = () => {},
 ) {
   const transients: PortalTransient[] = [];
+  const staticLights = STATIC_PORTAL_LIGHTS.map((definition) => {
+    const light = new THREE.PointLight(definition.color, 2.4, 10, 2);
+    light.name =
+      `INKFALL_PORTAL_${definition.id.toUpperCase()}_PRESENTATION_LIGHT`;
+    light.position.set(
+      definition.position[0],
+      definition.position[1],
+      definition.position[2],
+    );
+    light.userData.presentationRole = 'world_portal_static_light_only';
+    light.userData.renderMeshesMayBeAuthority = false;
+    light.userData.noHit = true;
+    scene.add(light);
+    return light;
+  });
   let cueCount = 0;
   let disposed = false;
 
@@ -158,6 +186,7 @@ export function createInkfallRev5PortalPresentation(
       return Object.freeze({
         cueCount,
         activeTransientCount: transients.length,
+        staticLightCount: staticLights.length,
         audioDelegation: 'shared_callback' as const,
       });
     },
@@ -167,6 +196,7 @@ export function createInkfallRev5PortalPresentation(
       for (const transient of transients.splice(0)) {
         scene.remove(transient.root);
       }
+      for (const light of staticLights) scene.remove(light);
     },
   });
 }
