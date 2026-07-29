@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "status": "ABORTED_BEFORE_ROOM_CREATION",
+  "startedFromHead": "f503c0b1efca485d3fc0e50434742ca91009e3bf",
+  "captureRootProcessId": 14960,
+  "lastObservedPhase": "creating_room",
+  "lastObservedAt": "2026-07-29T04:10:53.853Z",
+  "abortedAt": "2026-07-29T04:14:31.245Z",
+  "reason": "The product create-room control remained inside Playwright navigation waiting for more than 150 seconds despite healthy local Vite and Worker services. The exact capture process tree was terminated before gameplay began so the harness could be changed to dispatch without waiting for navigation and to enforce an independent response deadline.",
+  "claims": {
+    "lobbiesReady": true,
+    "roomCreated": false,
+    "gameplayBegan": false,
+    "runtimeAcceptance": false
+  }
+}
