@@ -2,6 +2,7 @@
 
 Date: 2026-07-29
 Review status: implementation candidate; **human visual acceptance still required**
+Captured source commit: `3d835d094c80480df0b7a120102464d4d5c4a4ec`
 
 ## Outcome
 
@@ -20,9 +21,9 @@ integrated.
 ### Offline and menu packet
 
 Path:
-`after/offline-final-source-matched-6320`
+`after/offline-final-source-matched-6322`
 
-- Local origin: `http://127.0.0.1:6320`
+- Local origin: `http://127.0.0.1:6322`
 - Captures: 17
 - Runtime errors: 0 console, 0 page, 0 failed requests
 - Prohibited coordinated ports untouched: `5173`, `8787`
@@ -36,10 +37,10 @@ The partial-cooldown frame uses the live `HUD` renderer with Blink at 35% and Sm
 ### Configured online authority packet
 
 Path:
-`after/online-final-source-matched-6319-8319`
+`after/online-final-source-matched-6323-8323`
 
-- Frontend origin: `http://127.0.0.1:6319`
-- Local authority origin: `http://127.0.0.1:8319`
+- Frontend origin: `http://127.0.0.1:6323`
+- Local authority origin: `http://127.0.0.1:8323`
 - Captures: 6
 - Runtime errors: 0 console, 0 page, 0 failed requests
 - Two distinct local clients joined the same real room.
@@ -52,8 +53,8 @@ Path:
 
 The online cooldown frame is authority-driven rather than staged. Two held `Z` inputs
 were accepted, Frag charges moved from 2 to 1 to 0, and accepted activation count moved
-from 0 to 1 to 2. The captured HUD state was `charging`, readiness was 19%, the visible
-state read 6.2 seconds, and the fill was `scaleX(0.1875)`.
+from 0 to 1 to 2. The captured HUD state was `charging`, readiness was 18%, the visible
+state read 6.2 seconds, and the fill was `scaleX(0.18125)`.
 
 ## Human-eye findings
 
