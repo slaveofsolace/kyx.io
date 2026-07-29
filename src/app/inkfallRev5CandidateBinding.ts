@@ -17,12 +17,12 @@ import {
 
 export const INKFALL_REV5_CANDIDATE_ART = Object.freeze({
   revision: '5.0',
-  bytes: 2_803_128,
-  sha256: '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676',
-  nodeCount: 23,
-  meshCount: 23,
-  primitiveCount: 23,
-  triangleCount: 41_780,
+  bytes: 3_805_416,
+  sha256: 'b7ca109de054b56c8c9692e507942b27f5b64e46a60a6cdf140972910b48586f',
+  nodeCount: 24,
+  meshCount: 24,
+  primitiveCount: 24,
+  triangleCount: 65_520,
   materialCount: 11,
 } as const);
 
@@ -88,7 +88,7 @@ export function inspectInkfallRev5CandidateScene(scene: THREE.Object3D) {
     )),
     expectedStructuralFamilies:
       riseMeshCount === 6
-      && landingMeshCount === 7
+      && landingMeshCount === 8
       && lowerPortalMeshCount === 5
       && upperPortalMeshCount === 5,
     pairedEnergizedSurfaces: energySurfaceMeshCount === 2,

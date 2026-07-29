@@ -14,7 +14,7 @@ const FIXTURE_HASH = '97eb7772ac59dc95';
 const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
 const PRESENTATION_SHA256 =
-  '7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676';
+  'b7ca109de054b56c8c9692e507942b27f5b64e46a60a6cdf140972910b48586f';
 const FRONTEND_PORT = 6_247;
 const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
@@ -356,7 +356,7 @@ try {
   assert.equal(joined.render3d.renderMeshesMayBeAuthority, false);
   assert.equal(joined.render3d.presentationMode, 'review_glb');
   assert.equal(joined.render3d.presentationSha256, PRESENTATION_SHA256);
-  assert.equal(joined.render3d.renderMeshCount, 23);
+  assert.equal(joined.render3d.renderMeshCount, 24);
   assert.equal(joined.render3d.authorityColliderCount, 339);
   assert.equal(joined.render3d.spawnCount, 12);
   assert.equal(joined.render3d.zoneCount, 9);

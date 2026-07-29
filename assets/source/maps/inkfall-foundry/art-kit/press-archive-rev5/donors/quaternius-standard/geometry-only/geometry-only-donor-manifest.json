@@ -1,0 +1,232 @@
+{
+  "kind": "inkfall_rev5_cc0_geometry_only_donor_manifest",
+  "models": [
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 15256,
+        "meshCount": 1,
+        "name": "Door_Frame_SquareTall.geometry-only.glb",
+        "sha256": "2e88737286ca3e128ace9495de4bff8167d0ed4b53003b5872980cbf79fc6fc3"
+      },
+      "id": "Door_Frame_SquareTall",
+      "sourceFiles": [
+        {
+          "bytes": 2405,
+          "name": "Door_Frame_SquareTall.gltf",
+          "sha256": "f1251e11edcef8ecb5e186b4868304c618cfa34bb9ae9d4f643bab07240bb15d"
+        },
+        {
+          "bytes": 13984,
+          "name": "Door_Frame_SquareTall.bin",
+          "sha256": "806f763b95a30b57eb7dd52197d743cbb1fa5b101b02450ace23dfe2ea9ed8a6"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 2352,
+        "meshCount": 1,
+        "name": "Platform_Metal2.geometry-only.glb",
+        "sha256": "4fd02c68ce51950eaa97bcd59ff77b61590b04c4d94416dedc84e702a45624aa"
+      },
+      "id": "Platform_Metal2",
+      "sourceFiles": [
+        {
+          "bytes": 2070,
+          "name": "Platform_Metal2.gltf",
+          "sha256": "5cf0b1fd6b3ff948bbcefa733fa39f6024dc494acdf4c58a27518208338ad24f"
+        },
+        {
+          "bytes": 1200,
+          "name": "Platform_Metal2.bin",
+          "sha256": "29d1a4f2bdedd915a284f74cba49a5309fbab00e232609b545b32aaa37d09a61"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 32744,
+        "meshCount": 1,
+        "name": "Platform_Rails_4WideTall.geometry-only.glb",
+        "sha256": "62e0d61b53ee8bca0a9b8ee33b382557ffe6c21eb0ad7dff5fac7a4f7afe0a04"
+      },
+      "id": "Platform_Rails_4WideTall",
+      "sourceFiles": [
+        {
+          "bytes": 2193,
+          "name": "Platform_Rails_4WideTall.gltf",
+          "sha256": "9f7d7caead5da097511c8f580a9c90fe171ba76b19ebef520ae04d564891b359"
+        },
+        {
+          "bytes": 31472,
+          "name": "Platform_Rails_4WideTall.bin",
+          "sha256": "cf840c26c0015f0c3c4d6878f01b0436b6754184ec6a97c49d673c8683e5cd1e"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 29612,
+        "meshCount": 1,
+        "name": "Column_MetalSupport.geometry-only.glb",
+        "sha256": "7f31378c7eb66d35777ff5ef3fe5fc39c9e6d4e9152fbf46030a60fc420d3b85"
+      },
+      "id": "Column_MetalSupport",
+      "sourceFiles": [
+        {
+          "bytes": 4033,
+          "name": "Column_MetalSupport.gltf",
+          "sha256": "749f009007a20928a0f2596e19e79d4dcdd79f9545bcfd48b7dfaf602521c405"
+        },
+        {
+          "bytes": 28296,
+          "name": "Column_MetalSupport.bin",
+          "sha256": "e7d613d9ce8c5c035a7e219eceeecd17d90f79cb8f5ee0b62fe0c6b809aa2865"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 55184,
+        "meshCount": 1,
+        "name": "Column_MetalSupport_Curve.geometry-only.glb",
+        "sha256": "3dfd36c9beb789bb6954301163d667f81885d95a4aaeea471269e951a736fbff"
+      },
+      "id": "Column_MetalSupport_Curve",
+      "sourceFiles": [
+        {
+          "bytes": 4120,
+          "name": "Column_MetalSupport_Curve.gltf",
+          "sha256": "1fff25d6ad341884ddffa5e506850de25bcc9ef3522983bc76fc077fcb97ac6b"
+        },
+        {
+          "bytes": 53456,
+          "name": "Column_MetalSupport_Curve.bin",
+          "sha256": "6879dd250902ff807e3e59118a8d87c72a6b5eec2dbbc456af9866d6ff527805"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 300684,
+        "meshCount": 1,
+        "name": "Column_Pipes.geometry-only.glb",
+        "sha256": "4665062a894e34a596f72e6084994c7d207fe769d164542f6908071df9d9e798"
+      },
+      "id": "Column_Pipes",
+      "sourceFiles": [
+        {
+          "bytes": 5890,
+          "name": "Column_Pipes.gltf",
+          "sha256": "7b5a852e82ae98fdb717a878372b1fa70a4efedc354ad9ac8cc106171d7e97b5"
+        },
+        {
+          "bytes": 248160,
+          "name": "Column_Pipes.bin",
+          "sha256": "e44dc8fc69a124e983dcb6c9b11a4d7e27300ae699fd6584224c2e00a450dd2d"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 38056,
+        "meshCount": 1,
+        "name": "Prop_AccessPoint.geometry-only.glb",
+        "sha256": "a9a23239a6f64abaef6b61d1d10761510f08ceeb4cc9850d155d42b7677f8f18"
+      },
+      "id": "Prop_AccessPoint",
+      "sourceFiles": [
+        {
+          "bytes": 7110,
+          "name": "Prop_AccessPoint.gltf",
+          "sha256": "23281aebdf5904403c71217c5ca45c4e901b978b452ddfba9e968fd01b0aac77"
+        },
+        {
+          "bytes": 34588,
+          "name": "Prop_AccessPoint.bin",
+          "sha256": "b490a23edf6226c5c699376d8368bb4a86d30381ca95a1950264bc922143b5e8"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 9760,
+        "meshCount": 1,
+        "name": "Prop_Light_Wide.geometry-only.glb",
+        "sha256": "ad77d6ba2725e531900703915b83caf630dd32e95bdfffeecbd6d717a5afa424"
+      },
+      "id": "Prop_Light_Wide",
+      "sourceFiles": [
+        {
+          "bytes": 3568,
+          "name": "Prop_Light_Wide.gltf",
+          "sha256": "bad2b6ffc330aaa185700edb7487f4c8315291fd23d834844f68d6c1695fff40"
+        },
+        {
+          "bytes": 8512,
+          "name": "Prop_Light_Wide.bin",
+          "sha256": "2ec8fa4cbe5d26f208a1b3a4a20635d1524359bbacdfed282ddc90e2358aa96c"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 165540,
+        "meshCount": 1,
+        "name": "Prop_PipeHolder.geometry-only.glb",
+        "sha256": "171eecb0323b8ebccb013fcd404f52db51c009ca52df273d549c839cb5642aee"
+      },
+      "id": "Prop_PipeHolder",
+      "sourceFiles": [
+        {
+          "bytes": 5911,
+          "name": "Prop_PipeHolder.gltf",
+          "sha256": "897b39476c08efa9f7f118d36e2bf89a3493bb4caf9bdf50190ad5f43f286cfe"
+        },
+        {
+          "bytes": 163492,
+          "name": "Prop_PipeHolder.bin",
+          "sha256": "a86f4a0c1e4fb91e456af2542fc520c4dbc99245212ad1dae5c1308550038c3d"
+        }
+      ]
+    },
+    {
+      "derivedGeometryOnlyGlb": {
+        "bytes": 15340,
+        "meshCount": 1,
+        "name": "Prop_Vent_Wide.geometry-only.glb",
+        "sha256": "92685cd1913491b788705061ae36c7c68c77d21338e97b4174a92e0919562e43"
+      },
+      "id": "Prop_Vent_Wide",
+      "sourceFiles": [
+        {
+          "bytes": 5374,
+          "name": "Prop_Vent_Wide.gltf",
+          "sha256": "eb5501d4e1254f75268679f57a1c1b68e11fb47d26557159be4385399b2ea4f6"
+        },
+        {
+          "bytes": 14048,
+          "name": "Prop_Vent_Wide.bin",
+          "sha256": "20bdac5e69a095731643b34d37a31363a44dddb54d83baae92e5bd0dfa24dea7"
+        }
+      ]
+    }
+  ],
+  "process": {
+    "animationsIncluded": false,
+    "geometryOnly": true,
+    "materialsIncluded": false,
+    "runtimeCollisionAuthority": false,
+    "script": "prepare_geometry_only_donors.py",
+    "texturesIncluded": false
+  },
+  "source": {
+    "creator": "Quaternius",
+    "downloadPage": "https://quaternius.itch.io/modular-sci-fi-megakit",
+    "downloadedArchiveSha256": "4ca9acbc7a13e7baa48e24c4853b779889b7ab21587004c36668826e705c8a10",
+    "licenseId": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "pack": "Modular Sci-Fi MegaKit Standard",
+    "sourcePage": "https://quaternius.com/packs/modularscifimegakit.html"
+  }
+}
