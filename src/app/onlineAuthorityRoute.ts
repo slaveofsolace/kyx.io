@@ -32,6 +32,7 @@ import {
   createOnlineHudViewModel,
   type HudAbilityInput,
 } from '../ui/hudViewModel';
+import { createAbilityGlyph } from '../ui/abilityGlyph';
 import {
   INTENT_BUTTON,
   PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
@@ -1354,18 +1355,18 @@ async function mountSession(
     return null;
   };
   const feedbackCopy = (cue: Exclude<FeedbackCue, null>): string => {
-    if (cue === 'snapshot') return 'AUTHORITY STATE SYNCHRONIZED';
-    if (cue === 'body') return 'BODY HIT · CONFIRMED';
-    if (cue === 'head') return 'HEADSHOT · CONFIRMED';
-    if (cue === 'head_kill') return 'HEADSHOT ELIMINATION · CONFIRMED';
-    if (cue === 'shield') return 'SHIELD HIT · CONFIRMED';
-    if (cue === 'kill') return 'ELIMINATION · CONFIRMED';
-    if (cue === 'grenade_throw') return 'IMPULSE GRENADE · ACCEPTED';
-    if (cue === 'grenade_collision') return 'GRENADE CONTACT · CONFIRMED';
-    if (cue === 'grenade_detonation') return 'GRENADE DETONATION · CONFIRMED';
-    if (cue === 'grenade_impulse') return 'DISPLACEMENT · CONFIRMED';
-    if (cue === 'teleport') return 'TELEPORT · CONFIRMED';
-    return 'TELEPORT · REJECTED';
+    if (cue === 'snapshot') return '';
+    if (cue === 'body') return 'Hit';
+    if (cue === 'head') return 'Headshot';
+    if (cue === 'head_kill') return 'Headshot · Target down';
+    if (cue === 'shield') return 'Shield hit';
+    if (cue === 'kill') return 'Target down';
+    if (cue === 'grenade_throw') return 'Launch thrown';
+    if (cue === 'grenade_collision') return 'Grenade contact';
+    if (cue === 'grenade_detonation') return 'Grenade detonated';
+    if (cue === 'grenade_impulse') return 'Target displaced';
+    if (cue === 'teleport') return 'Blink complete';
+    return 'Blink blocked';
   };
   const feedbackVariation = (amount = 0.03): number => {
     feedbackVariationState = (
@@ -1706,7 +1707,7 @@ async function mountSession(
       feedbackHud.textContent = feedbackCopy(cue);
       feedbackHud.dataset.cue = cue;
       feedbackHud.dataset.authorityEventId = intent.authorityEventId ?? '';
-      feedbackHud.dataset.active = 'true';
+      feedbackHud.dataset.active = String(cue !== 'snapshot');
       if (cue === 'snapshot') {
         feedbackHud.dataset.audio = 'not_played';
         feedbackGlyph.dataset.cue = 'snapshot';
@@ -1810,15 +1811,15 @@ async function mountSession(
     ) return;
     const ability = ABILITY_PRESENTATION[event.presentation.abilityId];
     const phaseCopy = event.presentation.phase === 'activated'
-      ? 'ACCEPTED'
+      ? 'deployed'
       : event.presentation.phase === 'rejected'
-        ? 'NOT READY'
+        ? 'not ready'
         : event.presentation.phase === 'collision'
-          ? event.presentation.reason === 'attached' ? 'ADHERED' : 'CONTACT'
+          ? event.presentation.reason === 'attached' ? 'stuck' : 'contact'
           : event.presentation.phase === 'detonated'
-            ? 'DETONATED'
-            : 'FLASHED';
-    feedbackHud.textContent = `${ability.shortName.toUpperCase()} · ${phaseCopy}`;
+            ? 'detonated'
+            : 'flashed';
+    feedbackHud.textContent = `${ability.shortName} ${phaseCopy}`;
     feedbackHud.dataset.cue = `ability_${event.presentation.phase}`;
     feedbackHud.dataset.authorityEventId = event.presentation.eventId;
     feedbackHud.dataset.active = 'true';
@@ -2420,6 +2421,7 @@ async function mountSession(
         0,
         diagnostics.local.teleportCooldownTicksRemaining ?? 0,
       );
+      const blinkCooldownTicks = ABILITY_PRESENTATION[ABILITY_ID.blink].cooldownSeconds * 20;
       const hudAbilities: HudAbilityInput[] = [
         {
           id: ABILITY_ID.blink,
@@ -2428,7 +2430,9 @@ async function mountSession(
           locked: true,
           state: blinkReadyIn === 0 ? 'ready' : 'charging',
           cooldownSeconds: blinkReadyIn / 20,
-          readinessRatio: blinkReadyIn === 0 ? 1 : 0,
+          readinessRatio: blinkReadyIn === 0
+            ? 1
+            : 1 - Math.min(1, blinkReadyIn / blinkCooldownTicks),
         },
         ...(['E', 'F', 'Z'] as const).map((key, index): HudAbilityInput => {
           const abilityId = selectedAbilities[index] as AbilityId | undefined;
@@ -2442,6 +2446,7 @@ async function mountSession(
               );
           const charges = localPlayer?.abilityLoadout?.currentCharges[index] ?? 0;
           const maximumCharges = localPlayer?.abilityLoadout?.maximumCharges[index] ?? 0;
+          const cooldownTicks = (ability?.cooldownSeconds ?? 0) * 20;
           return {
             id: abilityId ?? `empty-${key.toLocaleLowerCase()}`,
             name: ability?.shortName ?? 'Empty',
@@ -2457,7 +2462,11 @@ async function mountSession(
             charges: ability === null ? null : charges,
             maximumCharges: ability === null ? null : maximumCharges,
             cooldownSeconds: readyIn / 20,
-            readinessRatio: charges > 0 ? 1 : 0,
+            readinessRatio: charges > 0
+              ? 1
+              : cooldownTicks > 0
+                ? 1 - Math.min(1, readyIn / cooldownTicks)
+                : 0,
           };
         }),
       ];
@@ -2582,10 +2591,20 @@ async function mountSession(
       for (const [index, ability] of hudView.abilities.entries()) {
         const button = abilityButtons[index];
         if (button === undefined) continue;
+        const glyphRoot = element('span', 'ability-glyph-slot');
+        glyphRoot.setAttribute('aria-hidden', 'true');
+        glyphRoot.append(createAbilityGlyph(ability.id));
+        const progress = element('span', 'ability-progress');
+        progress.setAttribute('aria-hidden', 'true');
+        const progressFill = element('span', 'ability-progress__fill');
+        progressFill.style.transform = `scaleX(${ability.readinessRatio})`;
+        progress.append(progressFill);
         button.replaceChildren(
+          glyphRoot,
           element('kbd', 'online-session__ability-key', ability.key),
           element('span', 'online-session__ability-name', ability.name),
           element('strong', 'online-session__ability-charge', ability.stateLabel),
+          progress,
         );
         button.setAttribute('aria-label', ability.ariaLabel);
         button.dataset.abilityId = ability.id;
@@ -2593,6 +2612,7 @@ async function mountSession(
         button.dataset.ready = String(ability.state === 'ready');
         button.dataset.locked = String(ability.locked);
         button.dataset.rechargeSeconds = String(Math.ceil(ability.cooldownSeconds));
+        button.dataset.readinessPercent = String(Math.round(ability.readinessRatio * 100));
         button.style.setProperty(
           '--ability-ready-ratio',
           `${Math.round(ability.readinessRatio * 100)}%`,

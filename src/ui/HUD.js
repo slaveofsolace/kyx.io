@@ -4,6 +4,10 @@ import {
   abilityViewModel,
   createPracticeHudViewModel,
 } from './hudViewModel.ts';
+import {
+  abilityGlyphKind,
+  createAbilityGlyph,
+} from './abilityGlyph.ts';
 
 function sentenceCaseHudText(value) {
   const normalized = String(value ?? '').replace(/\s+/gu, ' ').trim();
@@ -308,15 +312,28 @@ export class HUD {
     const nameElement = slot.querySelector('.ability-name');
     const stateElement = slot.querySelector('.ability-state');
     const countElement = slot.querySelector('.ability-count');
+    const glyphRoot = slot.querySelector('.ability-glyph-slot');
+    const progressFill = slot.querySelector('.ability-progress__fill');
+    const readinessRatio = Math.max(0, Math.min(1, Number(ability.readinessRatio) || 0));
     if (keyElement) keyElement.textContent = ability.key;
     if (nameElement) nameElement.textContent = ability.name;
     if (stateElement) stateElement.textContent = ability.stateLabel;
     if (countElement) countElement.textContent = '';
+    if (glyphRoot) {
+      const glyphKind = abilityGlyphKind(ability.id);
+      if (glyphRoot.dataset.abilityGlyph !== glyphKind) {
+        glyphRoot.replaceChildren(createAbilityGlyph(ability.id));
+        glyphRoot.dataset.abilityGlyph = glyphKind;
+      }
+    }
+    if (progressFill) progressFill.style.transform = `scaleX(${readinessRatio})`;
     slot.dataset.abilityId = ability.id;
     slot.dataset.abilityKey = ability.key;
     slot.dataset.state = ability.state;
     slot.dataset.locked = String(ability.locked);
-    slot.style.setProperty('--ready-ratio', String(ability.readinessRatio));
+    slot.dataset.readinessPercent = String(Math.round(readinessRatio * 100));
+    slot.style.setProperty('--ready-ratio', String(readinessRatio));
+    slot.style.setProperty('--ability-ready-ratio', `${readinessRatio * 100}%`);
     slot.classList.toggle('ready', ability.state === 'ready');
     slot.classList.toggle('charging', ability.state === 'charging');
     slot.classList.toggle('empty', ability.state === 'empty');
@@ -355,6 +372,7 @@ export class HUD {
     stateLabel = 'Assigned',
     count = null,
     ready = state === 'ready',
+    readinessRatio = ready ? 1 : 0,
   } = {}) {
     const safeId = String(abilityId ?? '').replace(/[^a-z0-9_-]/giu, '').slice(0, 32);
     if (!safeId) return false;
@@ -387,7 +405,11 @@ export class HUD {
       charges: safeCount,
       maximumCharges: safeCount === null ? current.maximumCharges : Math.max(1, safeCount),
       cooldownSeconds: safeState === 'charging' ? current.cooldownSeconds ?? 0 : 0,
-      readinessRatio: ready === true ? 1 : 0,
+      readinessRatio: Number.isFinite(readinessRatio)
+        ? Math.max(0, Math.min(1, readinessRatio))
+        : ready === true
+          ? 1
+          : 0,
     };
     this._abilityInputs[slotIndex] = next;
     const model = abilityViewModel(next, slotIndex);
@@ -409,6 +431,9 @@ export class HUD {
       const cooldownSeconds = Number.isFinite(slot.cooldownSeconds)
         ? Math.max(0, slot.cooldownSeconds)
         : 0;
+      const totalCooldownSeconds = Number.isFinite(slot.metadata?.cooldownSeconds)
+        ? Math.max(0, slot.metadata.cooldownSeconds)
+        : 0;
       const displayName = slot.metadata?.shortName || slot.metadata?.displayName || 'Ability';
       const key = ['Q', 'E', 'F', 'Z'][slot.slot] ?? String(slot.slot);
       nextAbilities[slot.slot] = {
@@ -418,7 +443,11 @@ export class HUD {
         charges: count,
         maximumCharges,
         cooldownSeconds,
-        readinessRatio: count > 0 ? 1 : 0,
+        readinessRatio: count > 0
+          ? 1
+          : totalCooldownSeconds > 0
+            ? 1 - Math.min(1, cooldownSeconds / totalCooldownSeconds)
+            : 0,
         state: count > 0 ? 'ready' : cooldownSeconds > 0 ? 'charging' : 'empty',
       };
     }

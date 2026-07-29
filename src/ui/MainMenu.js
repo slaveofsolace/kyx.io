@@ -4,6 +4,7 @@ import { GameSettings } from '../core/GameSettings.js';
 import { GAME_MODES } from '../core/GameModes.js';
 import { GUNS, MELEE, Loadout } from '../core/Loadout.js';
 import { ABILITY_PRESENTATION } from '../abilities/abilityLoadout.ts';
+import { createAbilityGlyph } from './abilityGlyph.ts';
 import { COMBAT_PRESETS } from '../loadouts/combatPresets.ts';
 import { ControllerMenuNavigator } from './ControllerNavigation.js';
 import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
@@ -374,7 +375,7 @@ export class MenuUI {
     const grid = document.getElementById('inv-grid');
     const tabs = document.getElementById('inv-tabs');
     const title = document.getElementById('inv-username');
-    if (title) title.textContent = `${this._displayName} · Local practice`;
+    if (title) title.textContent = 'Loadout';
     tabs?.replaceChildren();
     equipped?.replaceChildren();
     grid?.replaceChildren();
@@ -437,7 +438,12 @@ export class MenuUI {
     blinkButton.className = 'local-loadout-ability equipped';
     blinkButton.disabled = true;
     blinkButton.setAttribute('aria-label', `${blink.ability.displayName}, fixed to ${blink.inputLabel}`);
-    blinkButton.textContent = `${blink.ability.displayName} · Fixed`;
+    blinkButton.replaceChildren(
+      createAbilityGlyph(blink.ability.id, 'ability-glyph ability-glyph--loadout'),
+      Object.assign(document.createElement('span'), {
+        textContent: `${blink.ability.displayName} · Fixed`,
+      }),
+    );
     blinkSlot.appendChild(blinkButton);
     slotGrid.appendChild(blinkSlot);
 
@@ -480,7 +486,12 @@ export class MenuUI {
           `${ability.displayName}, key ${slot.inputLabel}. Equips the linked ${candidatePreset.displayName} combat package.`,
         );
         button.title = `${ability.description} Linked package: ${candidatePreset.displayName}.`;
-        button.textContent = `${ability.shortName} · ${candidatePreset.displayName}`;
+        button.replaceChildren(
+          createAbilityGlyph(abilityId, 'ability-glyph ability-glyph--loadout'),
+          Object.assign(document.createElement('span'), {
+            textContent: `${ability.shortName} · ${candidatePreset.displayName}`,
+          }),
+        );
         button.addEventListener('click', () => {
           Loadout.setCombatPreset(candidatePreset.id);
           this._renderLocalLoadout();
@@ -492,14 +503,14 @@ export class MenuUI {
     grid.appendChild(slotGrid);
     const packageNote = document.createElement('p');
     packageNote.className = 'local-loadout-note';
-    packageNote.textContent = 'Ability choices equip their authority-safe weapon, helmet, and three-slot package together.';
+    packageNote.textContent = 'Ability choices equip the compatible combat package.';
     grid.appendChild(packageNote);
   }
 
   setUsername(displayName) {
     this._displayName = displayName || 'Recruit';
     if (this.nameInput) this.nameInput.value = this._displayName;
-    for (const id of ['nav-username', 'inv-username', 'profile-username']) {
+    for (const id of ['nav-username', 'profile-username']) {
       const element = document.getElementById(id);
       if (element) element.textContent = this._displayName;
     }

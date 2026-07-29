@@ -85,6 +85,7 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
   await expect(page.locator('#map-loading')).toHaveClass(/hidden/u, { timeout: 15_000 });
   await expect(page.locator('#hud')).toHaveAttribute('data-hud-view-model', '1');
   await expect(page.locator('#ability-rack .ability-slot')).toHaveCount(4);
+  await expect(page.locator('#ability-rack .ability-glyph')).toHaveCount(4);
   await expect(page.locator('#ability-q')).toHaveAttribute('data-locked', 'true');
   expect(await gameplayLayout(page)).toEqual({
     overflowX: 0,
@@ -119,13 +120,27 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
       3,
       450,
     );
-    hud.updateTeleport(0);
+    hud.updateTeleport(0.35);
+    hud.updateAbilitySlot('smoke_grenade_v1', {
+      name: 'Smoke',
+      key: 'F',
+      state: 'charging',
+      stateLabel: '4.2s',
+      count: 0,
+      readinessRatio: 0.58,
+    });
   });
   await expect(page.locator('#health-wrap')).toHaveAttribute('data-state', 'critical');
   await expect(page.locator('#weapon-wrap')).toHaveAttribute('data-ammo-state', 'reloading');
   await expect(page.locator('#reload-text')).toHaveText('Reloading');
   await expect(page.locator('#ability-q')).toHaveAttribute('data-state', 'charging');
-  await expect(page.locator('#ability-q-state')).toHaveText('0%');
+  await expect(page.locator('#ability-q')).toHaveAttribute('data-readiness-percent', '35');
+  await expect(page.locator('#ability-q-state')).toHaveText('35%');
+  expect(await page.locator('#ability-q .ability-progress__fill').evaluate(
+    (element) => (element as HTMLElement).style.transform,
+  )).toBe('scaleX(0.35)');
+  await expect(page.locator('#ability-slot-2')).toHaveAttribute('data-readiness-percent', '58');
+  await expect(page.locator('#ability-slot-2-state')).toHaveText('4.2s');
 
   await page.setViewportSize({ width: 1024, height: 576 });
   expect(await gameplayLayout(page)).toEqual({
