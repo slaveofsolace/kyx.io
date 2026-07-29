@@ -1,7 +1,7 @@
 {
   "schema": "kyx-g6-rev30-runtime-default-manifest-v1",
   "revision": "rev30",
-  "runtimeSelection": "accepted default third-person character",
+  "runtimeSelection": "temporary technical default third-person fallback",
   "default": true,
   "query": {
     "key": "g6Candidate",
@@ -45,7 +45,7 @@
   },
   "releaseEligible": false,
   "nonClaims": [
-    "Third-person visual acceptance does not close the full G6 runtime, animation, first-person, performance, or release gates.",
+    "Rev30 is not the accepted final third-person visual direction; it remains loaded only as the current technical fallback while the role-driven replacement is integrated.",
     "The single Rev30 LOD0 is intentionally reused for player and enemy; no distinct Rev30 LOD1 or LOD2 is claimed.",
     "The Rev17 first-person asset is retained because no Rev30 first-person derivative was authored.",
     "The embedded pale rifle is a diagnostic contact witness, not final weapon presentation."

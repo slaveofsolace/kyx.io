@@ -42,7 +42,7 @@
     "licenseSnapshot": "assets/source/blender/phase7-character-original-v6/LICENSES/CC0-1.0.txt",
     "attribution": "Sci-fi Soldier by Irondust (https://opengameart.org/content/sci-fi-soldier), CC0. Body, HandSimple and Head2 geometry; Federal Soldier normal/spec/occlusion detail. KYX Rev17 rig/actions/sockets.",
     "reviewer": "G6 Rev30 donor adaptation audit",
-    "notes": "Project owner accepted the Rev30 third-person visual on 2026-07-28. Exact donor selection and archive hash are in DONOR_NOTICE.md; structural reimport evidence is in evidence/2026-07-28/g6-rev30-cc0-donor/author-export-report.json. The embedded pale rifle remains a diagnostic contact witness pending runtime attachment replacement; no full G6 or release claim."
+    "notes": "Rev30 remains a provenance-safe technical third-person fallback, but the project owner later rejected it as the final visual direction on 2026-07-28. Exact donor selection and archive hash are in DONOR_NOTICE.md; structural reimport evidence is in evidence/2026-07-28/g6-rev30-cc0-donor/author-export-report.json. The active replacement is a slimmer shared armor body with four loadout-driven closed helmets. The embedded pale rifle remains a diagnostic contact witness pending runtime attachment replacement; no visual, G6, or release acceptance claim."
   },
-  "disposition": "approved"
+  "disposition": "candidate"
 }
