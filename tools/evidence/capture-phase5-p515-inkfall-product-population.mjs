@@ -1509,11 +1509,11 @@ async function driveVictimHealth(shooterPage, victimPage, predicate, label) {
     const victimBefore = localCombatPlayer(lastVictim);
     if (predicate(victimBefore)) return Object.freeze({ shooter: lastShooter, victim: victimBefore, pulses: Object.freeze(pulses) });
     await faceEachOther(shooterPage, victimPage);
-    await shooterPage.keyboard.down(' ');
+    await shooterPage.keyboard.down('Enter');
     try {
       await delay(90);
     } finally {
-      await shooterPage.keyboard.up(' ');
+      await shooterPage.keyboard.up('Enter');
     }
     await delay(140);
     const [shooterAfterSnapshot, victimAfterSnapshot] = await Promise.all([
@@ -1547,7 +1547,7 @@ async function driveVictimHealth(shooterPage, victimPage, predicate, label) {
       });
     }
   }
-  await shooterPage.keyboard.up(' ').catch(() => undefined);
+  await shooterPage.keyboard.up('Enter').catch(() => undefined);
   throw new Error(`${label} timed out: ${JSON.stringify({
     shooter: lastShooter === null ? null : localCombatPlayer(lastShooter),
     victim: lastVictim === null ? null : localCombatPlayer(lastVictim),
@@ -1817,7 +1817,7 @@ async function establishSharedAuthorityTick(clients, driver, label) {
   // one held authority command, whether the fixed tick lands before, during,
   // or after the browser events. A wall-clock hold can stretch beyond the
   // rifle cadence under eight-browser contention and enqueue duplicate shots.
-  await tapKey(driver.page, ' ');
+  await tapKey(driver.page, 'Enter');
   const inputEdgeDeadline = Date.now() + 5_000;
   let inputEdges = uniquePrimaryFireEdgeCommands(
     driver,
@@ -2530,9 +2530,9 @@ try {
   const crossBefore = await productSnapshot(first.page);
   const crossVictimBefore = peerCombatPlayer(crossBefore);
   const crossShooterBefore = localCombatPlayer(crossBefore);
-  await first.page.keyboard.down(' ');
+  await first.page.keyboard.down('Enter');
   await delay(650);
-  await first.page.keyboard.up(' ');
+  await first.page.keyboard.up('Enter');
   await delay(350);
   const crossAfter = await productSnapshot(first.page);
   const crossVictimAfter = peerCombatPlayer(crossAfter);
