@@ -2557,9 +2557,13 @@ try {
   assert.equal(browserProcessIds.length, 8);
   assert.equal(new Set(browserProcessIds).size, 8);
   assert.equal(clients.length, 8);
-  // Let Vite finish any one-time dependency optimization before the next
-  // isolated Chrome process requests the module graph.
-  for (const client of clients) await prewarmClient(client);
+  // Let the first isolated client finish Vite's one-time optimization, then
+  // warm the remaining processes in bounded pairs. Fully sequential prewarm
+  // can turn one slow module graph into an opaque multi-minute startup.
+  await prewarmClient(clients[0]);
+  for (let index = 1; index < clients.length; index += 2) {
+    await Promise.all(clients.slice(index, index + 2).map(prewarmClient));
+  }
   const browserPrewarmCompletedAt = new Date().toISOString();
   const prewarmStatuses = await Promise.all(clients.map(({ page }) => (
     page.evaluate(() => document.body.dataset.onlinePreviewStatus)
