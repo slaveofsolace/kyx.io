@@ -2397,6 +2397,8 @@ async function createClient(browser, index, wireRecords) {
     JSON.stringify({ kind: 'local_guest', version: 1, displayName: profile }),
   ), displayName);
   const page = await context.newPage();
+  page.setDefaultTimeout(15_000);
+  page.setDefaultNavigationTimeout(20_000);
   const clientId = `client-${index}`;
   const wire = [];
   wireRecords.push(wire);
@@ -2492,6 +2494,16 @@ let lastRoomMetricsAt = 0;
 await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.mkdir(output, { recursive: false });
 await fs.mkdir(screenshotDirectory);
+const captureProgressPath = path.join(output, 'capture-progress.json');
+const recordCaptureProgress = async (phase, detail = {}) => {
+  await fs.writeFile(captureProgressPath, `${JSON.stringify({
+    schemaVersion: 1,
+    phase,
+    detail,
+    observedAt: new Date().toISOString(),
+  }, null, 2)}\n`);
+};
+await recordCaptureProgress('source_freeze');
 const sourceSha256AtStart = Object.fromEntries(await Promise.all(sourceFiles.map(async (relative) => [
   relative,
   await sha256(path.join(repo, relative)),
@@ -2550,15 +2562,11 @@ try {
   };
 
   const browserPrewarmStartedAt = new Date().toISOString();
-  const prewarmProgressPath = path.join(output, 'prewarm-progress.json');
   const recordPrewarmProgress = async (phase, clientIndex) => {
-    await fs.writeFile(prewarmProgressPath, `${JSON.stringify({
-      schemaVersion: 1,
-      phase,
+    await recordCaptureProgress(`prewarm_${phase}`, {
       clientIndex,
       launchedClients: clients.length,
-      completedAt: new Date().toISOString(),
-    }, null, 2)}\n`);
+    });
   };
   for (let index = 0; index < 8; index += 1) {
     await recordPrewarmProgress('launching', index);
@@ -2577,12 +2585,13 @@ try {
     page.evaluate(() => document.body.dataset.onlinePreviewStatus)
   )));
   assert.deepEqual(prewarmStatuses, Array.from({ length: 8 }, () => 'lobby'));
-  await fs.rm(prewarmProgressPath);
+  await recordCaptureProgress('lobbies_ready', { clients: clients.length });
 
   const first = clients[0];
   const second = clients[1];
   assert.notEqual(first, undefined);
   assert.notEqual(second, undefined);
+  await recordCaptureProgress('selecting_profile');
   const profileSelector = first.page.getByTestId(
     REV4_ACCEPTANCE_CAPTURE
       ? 'online-inkfall-rev4-profile'
@@ -2593,23 +2602,31 @@ try {
     await profileSelector.check();
   }
   assert.equal(await profileSelector.isChecked(), true);
+  await recordCaptureProgress('profile_selected', { profile: PROFILE });
   const roomCreationRequestedAt = new Date().toISOString();
   assert.ok(Date.parse(roomCreationRequestedAt) >= Date.parse(browserPrewarmCompletedAt));
   const roomCreation = nextBrowserRoomCreation(first.page);
+  await recordCaptureProgress('creating_room');
   await first.page.getByTestId('online-create-room').click();
   await roomCreation;
+  await recordCaptureProgress('room_created');
   await first.page.waitForFunction(
     () => document.body.dataset.onlinePreviewStatus === 'joined',
     undefined,
     { timeout: 45_000 },
   );
+  await recordCaptureProgress('host_joined');
   const joinUrl = first.page.url();
   assert.equal(new URL(joinUrl).searchParams.get('profile'), PROFILE);
 
+  await recordCaptureProgress('joining_second_client');
   await joinPrewarmedClient(second, joinUrl);
+  await recordCaptureProgress('second_client_joined');
   const twoClients = clients.slice(0, 2);
   assert.equal(twoClients.length, 2);
+  await recordCaptureProgress('population_two_readiness');
   const twoPopulationReadiness = await capturePopulation(twoClients, 2);
+  await recordCaptureProgress('population_two_ready');
   const twoPopulationTick = await establishSharedAuthorityTick(
     twoClients,
     first,
@@ -3622,6 +3639,7 @@ try {
   });
   const proofPath = path.join(output, 'p515-product-population-proof.json');
   await fs.writeFile(proofPath, `${JSON.stringify(proof, null, 2)}\n`, 'utf8');
+  await fs.rm(captureProgressPath);
 
   const screenshotNames = (await fs.readdir(screenshotDirectory)).sort();
   const artifactFiles = [
