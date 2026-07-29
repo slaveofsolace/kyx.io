@@ -247,6 +247,7 @@ const verifiedInkChannelGrenadePair = Object.freeze({
   rationale: 'Both players remain on the supported south Ink bridge centerline while the shooter holds the authority crouch stance and throws at -7.5 degrees on the bridge-aligned 14 degree yaw, trapping the projectile between the opposing guard rails so it detonates inside the 11 m radial impulse.',
 });
 const rev5PortalRoute = Object.freeze({
+  lowerCorridorEntry: Object.freeze({ x: -5_000, z: -15_000 }),
   lowerApproach: Object.freeze({ x: -4_500, z: -12_500 }),
   lowerEntryTarget: Object.freeze({ x: -4_000, z: -10_000 }),
   lowerExit: Object.freeze({ x: 1_539, y: 1_431, z: -4_461 }),
@@ -1323,6 +1324,13 @@ function assertPortalLanding(snapshot, expected, label) {
 }
 
 async function exerciseRev5PortalRoundTrip(participants, driver) {
+  const lowerCorridorEntry = await moveTo(
+    driver.page,
+    rev5PortalRoute.lowerCorridorEntry,
+    'Rev5 lower portal corridor entry',
+    500,
+    45,
+  );
   const before = await moveTo(
     driver.page,
     rev5PortalRoute.lowerApproach,
@@ -1423,6 +1431,7 @@ async function exerciseRev5PortalRoundTrip(participants, driver) {
     route: rev5PortalRoute,
     actorId,
     lower: Object.freeze({
+      corridorEntryPosition: routeAuthorityPosition(lowerCorridorEntry),
       beforePosition: routeAuthorityPosition(before),
       landing: lowerLanding,
       deliveries: lowerDeliveries,

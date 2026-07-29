@@ -195,6 +195,7 @@ const expectedSimulationIdentity = {
   physicsAdapterVersion: '0.19.3',
 };
 const rev5PortalRoute = {
+  lowerCorridorEntry: { x: -5_000, z: -15_000 },
   lowerApproach: { x: -4_500, z: -12_500 },
   lowerEntryTarget: { x: -4_000, z: -10_000 },
   lowerExit: { x: 1_539, y: 1_431, z: -4_461 },
@@ -773,6 +774,14 @@ if (REV5_PRESENTATION_CAPTURE) {
   assert.equal(portalRoundTrip.exactCapability, true);
   assert.equal(portalRoundTrip.exactHooks, true);
   assert.equal(portalRoundTrip.allChecksPassed, true);
+  assert.ok(
+    Math.hypot(
+      portalRoundTrip.lower.corridorEntryPosition.x
+        - rev5PortalRoute.lowerCorridorEntry.x,
+      portalRoundTrip.lower.corridorEntryPosition.z
+        - rev5PortalRoute.lowerCorridorEntry.z,
+    ) <= 500,
+  );
   assert.ok(
     portalRoundTrip.lower.landing.distanceMillimeters
       <= rev5PortalRoute.arrivalToleranceMillimeters,
