@@ -558,8 +558,12 @@ try {
 
   const acceptedAttackCountBefore =
     aimed.render3d.acceptedAttackPresentationCount;
+  await page.waitForFunction(() => (
+    globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
+      .combat.snapshot?.match.phase === 'active'
+  ), undefined, { timeout: 20_000 });
   await page.keyboard.down('Enter');
-  await delay(180);
+  await delay(450);
   await page.keyboard.up('Enter');
   await page.waitForFunction((previous) => (
     (
@@ -567,7 +571,7 @@ try {
         .render3d?.acceptedAttackPresentationCount
       ?? 0
     ) > previous
-  ), acceptedAttackCountBefore);
+  ), acceptedAttackCountBefore, { timeout: 15_000 });
   const reloadPresentationCountBefore = (
     await snapshot(page)
   ).render3d.reloadPresentationCount;
