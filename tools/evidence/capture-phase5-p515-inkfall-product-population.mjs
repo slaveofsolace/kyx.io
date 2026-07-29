@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -2494,6 +2495,21 @@ let lastRoomMetricsAt = 0;
 await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.mkdir(output, { recursive: false });
 await fs.mkdir(screenshotDirectory);
+const temporaryRoot = path.resolve(os.tmpdir());
+const localAuthorityStatePath = await fs.mkdtemp(path.join(
+  temporaryRoot,
+  'kyx-p515-authority-',
+));
+const localAuthorityStateRelative = path.relative(
+  temporaryRoot,
+  localAuthorityStatePath,
+);
+assert.ok(
+  localAuthorityStateRelative.length > 0
+    && !localAuthorityStateRelative.startsWith('..')
+    && !path.isAbsolute(localAuthorityStateRelative),
+  'capture-owned Wrangler state must remain inside the OS temporary directory',
+);
 const captureProgressPath = path.join(output, 'capture-progress.json');
 const recordCaptureProgress = async (phase, detail = {}) => {
   await fs.writeFile(captureProgressPath, `${JSON.stringify({
@@ -2515,10 +2531,19 @@ const runtimeEnvironment = Object.freeze({
   architecture: process.arch,
   nodeExecutable,
   browserLaunchArguments,
+  authorityPersistenceMode: 'capture_owned_ephemeral_temp',
 });
 
 try {
-  wrangler = service(nodeExecutable, ['node_modules/wrangler/bin/wrangler.js', 'dev', '--local', '--port', '8787']);
+  wrangler = service(nodeExecutable, [
+    'node_modules/wrangler/bin/wrangler.js',
+    'dev',
+    '--local',
+    '--port',
+    '8787',
+    '--persist-to',
+    localAuthorityStatePath,
+  ]);
   vite = service(nodeExecutable, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', '5173', '--strictPort'], {
     ...process.env,
     VITE_KYX_AUTHORITY_ORIGIN: AUTHORITY_ORIGIN,
@@ -3767,4 +3792,5 @@ try {
   await Promise.allSettled(clients.map(({ context }) => context.close()));
   await Promise.allSettled(browsers.map((browser) => browser.close()));
   await Promise.allSettled([stopService(vite), stopService(wrangler)]);
+  await fs.rm(localAuthorityStatePath, { recursive: true, force: true });
 }
