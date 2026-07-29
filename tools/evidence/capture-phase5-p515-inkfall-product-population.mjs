@@ -2712,10 +2712,15 @@ try {
   assert.ok(
     Math.abs(grenadeShooterBefore.localPredictedPitchMilliDegrees - (-7_500)) <= 800,
   );
-  const grenadeThrowCountBefore = localCombatPlayer(grenadeShooterBefore).acceptedThrowCount;
+  const grenadeShooterCombatBefore = localCombatPlayer(grenadeShooterBefore);
+  assert.equal(
+    grenadeShooterCombatBefore.abilityLoadout?.slots[1],
+    'vertical_impulse_grenade_v1',
+  );
+  const grenadeThrowCountBefore = grenadeShooterCombatBefore.acceptedThrowCount;
   const grenadeWireSequence = wireSequence;
   const grenadeRequestedAtMilliseconds = Date.now();
-  await first.page.getByTestId('online-grenade').click();
+  await first.page.getByTestId('online-ability-one').click();
   await first.page.waitForFunction((acceptedThrowCount) => {
     const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
     const local = value?.combat.snapshot?.players.find(({ playerId }) => (
