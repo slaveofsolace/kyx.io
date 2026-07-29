@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { spawn, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -108,6 +109,21 @@ const repositoryStatusAtStart = execFileSync(
 await fs.mkdir(path.dirname(output), { recursive: true });
 await fs.mkdir(output, { recursive: false });
 await fs.mkdir(screenshots);
+const temporaryRoot = path.resolve(os.tmpdir());
+const localAuthorityStatePath = await fs.mkdtemp(path.join(
+  temporaryRoot,
+  'kyx-g5-player-eye-authority-',
+));
+const localAuthorityStateRelative = path.relative(
+  temporaryRoot,
+  localAuthorityStatePath,
+);
+assert.ok(
+  localAuthorityStateRelative.length > 0
+    && !localAuthorityStateRelative.startsWith('..')
+    && !path.isAbsolute(localAuthorityStateRelative),
+  'capture-owned Wrangler state must remain inside the OS temporary directory',
+);
 
 let wrangler = null;
 let vite = null;
@@ -132,6 +148,8 @@ try {
     '--local',
     '--port',
     String(AUTHORITY_PORT),
+    '--persist-to',
+    localAuthorityStatePath,
     '--var',
     `ALLOWED_ORIGINS:${FRONTEND_ORIGIN}`,
   ]);
@@ -364,6 +382,7 @@ try {
       zoneCount: final.render3d.zoneCount,
       renderMeshesMayBeAuthority:
         final.render3d.renderMeshesMayBeAuthority,
+      persistenceMode: 'capture_owned_ephemeral_temp',
     }),
     presentation: Object.freeze({
       mode: final.render3d.presentationMode,
@@ -419,6 +438,7 @@ try {
     }, null, 2)}\n`,
     'utf8',
   );
+  await fs.rm(localAuthorityStatePath, { recursive: true, force: true });
 }
 
 if (failure !== null) throw failure;
