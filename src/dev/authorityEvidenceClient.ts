@@ -374,6 +374,7 @@ export class AuthorityEvidenceClient {
   private readonly onChange: () => void;
   private readonly remoteBuffers = new Map<string, RemoteInterpolationBuffer>();
   private readonly entities = new Map<string, SnapshotEntity>();
+  private readonly pendingLoadoutRequestIds = new Set<string>();
   private readonly counters: MutableAuthorityEvidenceCounters = {
     connectionAttempts: 0,
     socketOpens: 0,
@@ -567,8 +568,15 @@ export class AuthorityEvidenceClient {
     if (
       this.phase !== 'joined'
       || this.connection?.state() !== 'open'
+      || (this.matchPhase !== 'lobby' && this.matchPhase !== 'warmup')
     ) return false;
-    this.send(message);
+    this.pendingLoadoutRequestIds.add(message.requestId);
+    try {
+      this.send(message);
+    } catch (error) {
+      this.pendingLoadoutRequestIds.delete(message.requestId);
+      throw error;
+    }
     return true;
   }
 
@@ -760,6 +768,7 @@ export class AuthorityEvidenceClient {
     this.connectionIntent = intent;
     this.joinDispatched = false;
     this.pendingJoinRequestId = null;
+    this.pendingLoadoutRequestIds.clear();
     this.connectionId = null;
     this.lastAppliedSnapshotTick = null;
     this.lastAppliedSnapshotBaselineId = null;
@@ -916,10 +925,14 @@ export class AuthorityEvidenceClient {
         this.sendTransportAcknowledgement();
         return;
       case 'serverNotice':
+        if (message.code === 'LOADOUT_ACCEPTED') {
+          this.pendingLoadoutRequestIds.delete(message.message);
+        }
         this.lastNotice = `${message.code}: ${message.message}`;
         return;
       case 'error':
         if (this.applyRecoverableInputRejection(message)) return;
+        if (this.applyRecoverableLoadoutLockRejection(message)) return;
         throw new Error(
           `authority error ${message.code}${message.detail === null ? '' : `: ${message.detail}`}`,
         );
@@ -947,6 +960,21 @@ export class AuthorityEvidenceClient {
     this.staleSequenceInputRejections += parsed.staleSequence;
     this.lastInputRejectionCategory = parsed.category;
     this.lastNotice = `INPUT_REJECTED: authority ignored ${rejectedCommands} duplicate or stale input command${rejectedCommands === 1 ? '' : 's'}`;
+    return true;
+  }
+
+  private applyRecoverableLoadoutLockRejection(message: ErrorMessage): boolean {
+    if (
+      this.phase !== 'joined'
+      || (this.matchPhase !== 'active' && this.matchPhase !== 'postmatch')
+      || this.playerId === null
+      || this.matchId === null
+      || message.code !== 'LOADOUT_REJECTED'
+      || message.detail !== 'loadout_locked'
+      || message.requestId === null
+      || !this.pendingLoadoutRequestIds.delete(message.requestId)
+    ) return false;
+    this.lastNotice = 'LOADOUT_LOCKED: using the authoritative in-match loadout until the next selection window';
     return true;
   }
 

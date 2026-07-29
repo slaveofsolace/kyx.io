@@ -2106,15 +2106,22 @@ async function mountSession(
       && joinedPlayerId !== null
       && loadoutSubmittedForPlayerId !== joinedPlayerId
     ) {
-      const selectedLoadout = authorityLoadoutForCombatPreset(
-        requireRuleset('revamped_classic', 3),
-        selectedCombatPreset.id,
-      );
-      const submitted = client.requestLoadout(createAuthorityLoadoutRequestMessage({
-        requestId: `loadout.${crypto.randomUUID()}`,
-        loadout: selectedLoadout,
-      }));
-      if (submitted) loadoutSubmittedForPlayerId = joinedPlayerId;
+      const matchPhase = diagnostics.authority.matchPhase;
+      if (matchPhase === 'lobby' || matchPhase === 'warmup') {
+        const selectedLoadout = authorityLoadoutForCombatPreset(
+          requireRuleset('revamped_classic', 3),
+          selectedCombatPreset.id,
+        );
+        const submitted = client.requestLoadout(createAuthorityLoadoutRequestMessage({
+          requestId: `loadout.${crypto.randomUUID()}`,
+          loadout: selectedLoadout,
+        }));
+        if (submitted) loadoutSubmittedForPlayerId = joinedPlayerId;
+      } else if (matchPhase === 'active' || matchPhase === 'postmatch') {
+        // A late join is already provisioned with the authority-owned default
+        // loadout. Do not turn the expected selection lock into a disconnect.
+        loadoutSubmittedForPlayerId = joinedPlayerId;
+      }
     }
     if (presentationStatus !== 'failed') {
       try {

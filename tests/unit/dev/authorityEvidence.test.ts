@@ -976,6 +976,50 @@ describe('authority evidence transport state', () => {
     expect(client.diagnostics().authority.lastReliableEventId).toBe('event.22');
     expect(client.diagnostics().connection.phase).toBe('joined');
 
+    const loadoutRequestId = 'loadout.warmup-race';
+    expect(client.requestLoadout({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'loadoutRequest',
+      requestId: loadoutRequestId,
+      primaryWeaponId: 'weapon.primary',
+      secondaryWeaponId: null,
+      meleeWeaponId: 'weapon.melee',
+      damageAbilityIds: ['ability.one', 'ability.two', 'ability.three'],
+      utilityAbilityId: 'ability.utility',
+    })).toBe(true);
+    first.receive({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'matchState',
+      matchId: 'match.1',
+      serverTick: state.tick,
+      phase: 'active',
+      phaseEndsAtTick: 400,
+      simulationIdentity: EXPECTED_IDENTITY,
+    });
+    first.receive({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'error',
+      code: 'LOADOUT_REJECTED',
+      detail: 'loadout_locked',
+      requestId: loadoutRequestId,
+    });
+    expect(client.diagnostics()).toMatchObject({
+      connection: { phase: 'joined' },
+      authority: { matchPhase: 'active' },
+      lastNotice: 'LOADOUT_LOCKED: using the authoritative in-match loadout until the next selection window',
+      counters: { applicationErrors: 0 },
+    });
+    expect(client.requestLoadout({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'loadoutRequest',
+      requestId: 'loadout.active',
+      primaryWeaponId: 'weapon.primary',
+      secondaryWeaponId: null,
+      meleeWeaponId: 'weapon.melee',
+      damageAbilityIds: ['ability.one', 'ability.two', 'ability.three'],
+      utilityAbilityId: 'ability.utility',
+    })).toBe(false);
+
     const heldBeforeResume = (
       INTENT_BUTTON.jump
       | INTENT_BUTTON.sprint
@@ -1139,6 +1183,13 @@ describe('authority evidence transport state', () => {
         code: 'INPUT_CONNECTION_INVALID',
         detail: null,
         requestId: null,
+      },
+      {
+        protocolVersion: PROTOCOL_VERSION,
+        type: 'error',
+        code: 'LOADOUT_REJECTED',
+        detail: 'loadout_locked',
+        requestId: 'loadout.not-pending',
       },
     ];
 
