@@ -880,18 +880,20 @@ async function productSnapshot(page) {
 }
 
 async function presentationMarkerProof(page, expectedCue) {
-  await page.waitForFunction((cue) => {
-    const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
-    const hud = document.querySelector('[data-testid="online-confirmed-hud"]');
-    const vfx = document.querySelector('[data-testid="online-confirmed-vfx"]');
-    return snapshot?.presentation.lastCue === cue
-      && hud instanceof HTMLElement
-      && vfx instanceof HTMLElement
-      && hud.dataset.cue === cue
-      && vfx.dataset.cue === cue
-      && hud.dataset.active === 'true'
-      && vfx.dataset.active === 'true';
-  }, expectedCue, { timeout: 2_000 });
+  if (expectedCue !== undefined) {
+    await page.waitForFunction((cue) => {
+      const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+      const hud = document.querySelector('[data-testid="online-confirmed-hud"]');
+      const vfx = document.querySelector('[data-testid="online-confirmed-vfx"]');
+      return snapshot?.presentation.lastCue === cue
+        && hud instanceof HTMLElement
+        && vfx instanceof HTMLElement
+        && hud.dataset.cue === cue
+        && vfx.dataset.cue === cue
+        && hud.dataset.active === 'true'
+        && vfx.dataset.active === 'true';
+    }, expectedCue, { timeout: 2_000 });
+  }
   return await page.evaluate(() => {
     const snapshot = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
     const proof = document.querySelector('[data-testid="online-presentation-status"]');
