@@ -201,6 +201,9 @@ const expectedIdentity = Object.freeze({
   physicsAdapterVersion: '0.19.3',
 });
 const westRoute = Object.freeze([
+  // Live spawn scoring may select either press pad. Stage through the authored
+  // spawn-pocket center node before entering the guarded choice corridor.
+  Object.freeze({ x: -33_000, z: 0 }),
   Object.freeze({ x: -27_500, z: 1_000 }),
   Object.freeze({ x: -22_000, z: 0 }),
   Object.freeze({ x: -25_000, z: -7_000 }),
@@ -212,6 +215,9 @@ const westRoute = Object.freeze([
   Object.freeze({ x: -3_000, z: -16_000 }),
 ]);
 const eastRoute = Object.freeze([
+  // Mirror the center-node egress so the east sight blocker is never treated
+  // as a direct diagonal shortcut from the dynamically selected press pad.
+  Object.freeze({ x: 33_000, z: 0 }),
   Object.freeze({ x: 27_500, z: -1_000 }),
   Object.freeze({ x: 22_000, z: 0 }),
   Object.freeze({ x: 25_000, z: -7_000 }),

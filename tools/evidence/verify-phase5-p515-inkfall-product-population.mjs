@@ -763,7 +763,7 @@ assert.equal(
 assert.equal(proof.technicalAcceptance.humanReviewStillRequired, true);
 
 assert.equal(proof.movementAndWorld.routeId, 'alternate_ink_channel_after_press_cross_snag');
-assert.equal(proof.movementAndWorld.routeCheckpoints.length, 9);
+assert.equal(proof.movementAndWorld.routeCheckpoints.length, 10);
 assert.equal(proof.movementAndWorld.spawnProtectionExpiryWaitMilliseconds, 1_500);
 if (REV5_PRESENTATION_CAPTURE) {
   const portalRoundTrip = proof.movementAndWorld.portalRoundTrip;
