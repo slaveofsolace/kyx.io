@@ -774,6 +774,7 @@ if (REV5_PRESENTATION_CAPTURE) {
   assert.equal(portalRoundTrip.exactCapability, true);
   assert.equal(portalRoundTrip.exactHooks, true);
   assert.equal(portalRoundTrip.allChecksPassed, true);
+  assert.equal(portalRoundTrip.lower.transitStance, 'crouched');
   assert.ok(
     Math.hypot(
       portalRoundTrip.lower.corridorEntryPosition.x

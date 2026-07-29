@@ -1,0 +1,3253 @@
+{
+  "capturedAt": "2026-07-29T02:57:17.842Z",
+  "error": {
+    "message": "Rev5 lower portal approach recovery authority pacing did not settle: {\"inputAcksBefore\":1989,\"timeoutMilliseconds\":2500,\"last\":{\"inputAcks\":2042,\"localPredictionHistoryCommands\":1,\"elapsedMilliseconds\":2482,\"predictionErrorMillimeters\":172,\"authorityDriftMillimeters\":343,\"stableAuthoritySamples\":0,\"predicted\":{\"x\":5984,\"y\":-60886,\"z\":-12303},\"authoritative\":{\"x\":5812,\"y\":-59386,\"z\":-12303}}}",
+    "stack": "Error: Rev5 lower portal approach recovery authority pacing did not settle: {\"inputAcksBefore\":1989,\"timeoutMilliseconds\":2500,\"last\":{\"inputAcks\":2042,\"localPredictionHistoryCommands\":1,\"elapsedMilliseconds\":2482,\"predictionErrorMillimeters\":172,\"authorityDriftMillimeters\":343,\"stableAuthoritySamples\":0,\"predicted\":{\"x\":5984,\"y\":-60886,\"z\":-12303},\"authoritative\":{\"x\":5812,\"y\":-59386,\"z\":-12303}}}\n    at waitForRouteAuthorityPacing (file:///E:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:1017:9)\n    at async moveTo (file:///E:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:1159:7)\n    at async exerciseRev5PortalRoundTrip (file:///E:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:1334:18)\n    at async file:///E:/AI%20Projects/Projects/Games/evio/evio-repo/tools/evidence/capture-phase5-p515-inkfall-product-population.mjs:2591:7"
+  },
+  "sourceFreeze": {
+    "status": "UNCHANGED",
+    "files": 116,
+    "sourceSha256AtStart": {
+      ".env.production": "a346ec1cebcbc58395603e0f14c5dbb155036278c6c3b7fa96d2e1df084af008",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/build_press_archive_rev5.py": "9998f9e6bf27cdd8ba76f99549ed2811121aac02fa7e049d43b6674b9120b93d",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/manifest.inkfall-rev5-geometry-portal.json": "2a89a520585a52053e6a4e612eea31ce6c96f17f1300153033ef565c347ec24c",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/validation/inkfall-rev5-geometry-portal-build-report.json": "3f857855b3a11fddaabd093f25132f7f858de38d57ff963a7bbe639481dffad0",
+      "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+      "assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json": "53eaa6dd91fa407cdaf5738e0fe9193c72a20e209a412258dd01083c2b6fd67b",
+      "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json": "dbdb5cfca1ea9aa1088457c89e1d269e9020b2ca3a67cb9ae1cc586703ed95ca",
+      "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json": "d04669cc6efbc3970d21572e6d06b009416558a4475ea1744d862b70b1cd9a83",
+      "evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json": "0c15b72e9161f6a7c12064e01bcca62059b6fe28f173eb81f69e8db0434e952e",
+      "package-lock.json": "c01208a4892cbfe0ac398889a885eff9a7b29ada941885e37b6be292b6f582e4",
+      "package.json": "306bf85df8164c9386b6d0c2557c83d823bcb84bf2fc375f9371980680fb7c10",
+      "pnpm-lock.yaml": "b5d6f9f1d639ae68ffaeefa5baf5991ec00116320ffbef49b5a19216803cce1d",
+      "public/_headers": "ba3e915e1527b9a04224a2c0ca1bd2d320c645afa4a66467821bc89ad3bddf4e",
+      "src/app/inkfallRev3ReviewAudit.ts": "c80cd5c7e371521c5c179b21f9f76689e2ccfdc95be0149bf8a518bcbe2709ac",
+      "src/app/inkfallRev4CandidateBinding.ts": "b870927aeac8a2328dc2c557f445f216dd778f0bc6b9a03baa5473da31b4d19e",
+      "src/app/inkfallRev4CandidateTraversal.ts": "46d3ce042f3309d4df6a4dd24768745bd3e157c9bf46a496c6e3e768a59230fe",
+      "src/app/inkfallRev5CandidateBinding.ts": "035691a48d9cb67a1463835438e1f66a73f7d5c0553703f139548e5f1529a19f",
+      "src/app/inkfallRev5PortalPresentation.ts": "b6e14fa395761b804009c1952f0b42e0ab28e73bea642bbf39a60d59092cf06b",
+      "src/app/inkfallRev5VisualContinuity.ts": "644b5f2b1814a7972ba5f1323f9c2716de43364965b3ef52014c1189e309d430",
+      "src/app/onlineAuthorityGateway.ts": "93994cc9ff0b2bdb572e3c70b39efa6db9ea3651850788a1efbf96fb84b0014f",
+      "src/app/onlineAuthorityInkfallWorld.ts": "10adfa102ceb935e3b610cabdf1e6d972e6f873921f00420c72e5ebd7b5ea22d",
+      "src/app/onlineAuthorityProfiles.ts": "4b3f0bbf6e5806f532763b06375840735e5b80c24ea6420896bf3323e15192c3",
+      "src/app/onlineAuthorityRoute.ts": "75b71aac53e47961395d90b972f669fbdc95a137d1e88602b1ba7eb7597f5726",
+      "src/app/onlineAuthorityThreeRuntime.ts": "68222c4273f7703598b7e975621b5ccc68e1161fde9e62fab6794ed772d72dd9",
+      "src/authority/combat/abilityResources.ts": "e822a858c342a5493a16f9e3af81abc271f9b44a1addfcd1a5fe43073b8c2a3d",
+      "src/authority/combat/autoRifle.ts": "f1e4b21e6560bf22ff1e9268b9175e3221bf2c28225d69a38fd459a935b2b5f2",
+      "src/authority/combat/impulseGrenade.ts": "a9ef7836524561f2c5343b905df5de19d7ba32f5888ac6219db0f221daa3ce1d",
+      "src/authority/combat/index.ts": "a62609a37b92a649ec1641dd4488eeb1a71e18b43d59f671c075e4b316cb065e",
+      "src/authority/combat/inkfallRapierCombatWorld.ts": "d1e308372fe651eb876d6b6348648fb747399db760e91fb58ce7f8a224e60dc5",
+      "src/authority/combat/life.ts": "eca12653229281c15019bc604e58c18b51623e04177f39a3855b48a761364155",
+      "src/authority/combat/loadoutRequest.ts": "ab62baa90db888c64d6f6890fce307e55c831107fa5c43fe0b2b02a7921f3154",
+      "src/authority/combat/poseHistory.ts": "df1f7a94dba4a68abfde2040a9bffc5b735bd114d70c274333c25a17825a659f",
+      "src/authority/combat/rewindHitscan.ts": "da12e10894035828f68ff0f06b73c5c8bd8276773ebf584050476eb7e5091920",
+      "src/authority/combat/strictCombatData.ts": "ad2e83ce14d98b9f828dbdeb549505667867cd30708b9fa25da931dbdc584cca",
+      "src/authority/combat/tdmMatch.ts": "53be9387429c5618446e01fa046d2cbe6ca67358c7a5f1972115694c9e648021",
+      "src/authority/fixedTickScheduler.ts": "658bde5ddd9b32d8f6f084f876d72f7a70436e125806cf09a7485c9ffbc99b09",
+      "src/authority/portal/inkfallRev5PortalAuthority.ts": "d8adc8d1e6841c7b1784eed0bc85d53269c968856d0231b0102418996b5b30e8",
+      "src/authority/room.ts": "a017bceb46e17962c13c6adf7c821c6521991d413387671465064ff733166c79",
+      "src/client/combat/presentationAdapter.ts": "aa9edd160be10aee09ef6c8b847ec717ccc6cfe635b72640e770d80805320bad",
+      "src/client/netcode/localPrediction.ts": "c4c94a51cd25e04e0bd64312b3a87ae345cb4e02bee8564ffc7c955400c9754a",
+      "src/client/netcode/remoteInterpolation.ts": "22e13b64c4e03abbc465676a9d76a0cb711f80a03cfcae6fe30cac4392df1ffe",
+      "src/dev/authorityEvidenceClient.ts": "4ac591b799cf3d719b05bc2a5d46702a69794d235e07c5a5e3461cedb017bef5",
+      "src/dev/authorityEvidenceModel.ts": "b773cad0c3f235f18b05c86997c55149479edbff42636f517811af8a58a9a4ab",
+      "src/dev/authorityEvidenceTransport.ts": "018f283b2d0e99de8e6aa1aac5465b642258d22b44fdd914fe5a68923b93878d",
+      "src/dev/loadInkfallRev5ReviewVisual.ts": "50b8e4744d36d9c78e310c89395c7890b07b4347525dcbc8355ff8e30ab6e705",
+      "src/net/protocol.ts": "c220fb26ea00555c79b62eeae5464ff4f5b9f216e73fbefc4a4034959d3ef146",
+      "src/net/schemas.ts": "a9ad05012905a2ee1c0e70cf71ebacccc94a42c523fe0708e309de3c71d8ea03",
+      "src/physics/collisionLayers.ts": "ba5ebdf1daceb014f35b5a9b42f957758fd291491e972d0691308ebcbfc3536b",
+      "src/physics/fixtureSchema.ts": "7616b0521db7fe8ad9588c7320212bb3a0fa8515d1f75e177c52a69a56612cf6",
+      "src/physics/fixtures/catalog.ts": "6806358d3e16521c6eefe6cb9800ac4c2fd060ba09224fbcd51a2fff1cb63596",
+      "src/physics/fixtures/flatRun.ts": "ce84e218243c7aa4628f133e6f7a257e42aaa957afe6cf1b68cbb0f347884c02",
+      "src/physics/rapier/contracts.ts": "272be1858a826c16cb0243d669df5832f76a334e44699298d6e4c80d74f3c0a0",
+      "src/physics/rapier/runtime.ts": "e7874adfc21f2c83338491a6b4c9b335f0872b2bbc5eb5fd7eb3f2c58dd628a7",
+      "src/physics/rapier/world.ts": "440c138f2130d04cf034f52a3981d6b1b5c8863b7a361cea60b5ea85b5f9d045",
+      "src/sim/canonical.ts": "59bdd53d0376cb72828f00923c16c610c082a40d9886b3a276cd5b6638adb6ec",
+      "src/sim/commands.ts": "2b26617eca9391250d4e15ed40c041b40c0fa89b979dc39b294f24d2fd6b4475",
+      "src/sim/index.ts": "fdb0fd4cc1ddd61f28ff00b4c2b93a39d6d5b6d736068a047e2862e2078b2cbc",
+      "src/sim/movement/canonical.ts": "8ce1716ebb640d2f616663ff80c20b4d8eeacf4b89162b6d37c08588fc03d57e",
+      "src/sim/movement/controller.ts": "358e44d3671eefaf58f1ad64496b861b181e253e777e445db5f13e6662fb6679",
+      "src/sim/movement/events.ts": "2e43f52833d1a256319766983048492ba8371658891ce7e96a91b6eb0a3f8bb8",
+      "src/sim/movement/fixedMath.ts": "f289c6a269b2e62241bfbd9619b514e56df86455eb4de892dff011e83a50d039",
+      "src/sim/movement/hash.ts": "23f9fd3b2f2f3e3e641cc62e2c94dcc1660e3d430a2e69a513573ee9776afef0",
+      "src/sim/movement/index.ts": "5eb3107f918556e4d2eb87b49268cee9253ca44a549b883d96a6acf24aadc2c2",
+      "src/sim/movement/profile.ts": "43187e16f51985c024ed5cff90349e8e2a233d9632da90308006faaa44c8c41f",
+      "src/sim/movement/profileIdentity.ts": "6cffd0f76524bf7e733aad8c0eb1504d2c3ca0bcddc2c26c427be91550695728",
+      "src/sim/movement/queryPort.ts": "a0cf9f87a8f66a581c704e9f7d03923a47d62b0fac5718d97c91fdae9f5546ee",
+      "src/sim/movement/replay.ts": "8781d88db5ba23327dac212d4125f494d96ca769a393dcf16a4eb6029c088175",
+      "src/sim/movement/state.ts": "ee0f90e02a304786ea5faae37439e71e07f3d7eafa767c0e5d394da1b1de523b",
+      "src/sim/rng.ts": "e79ff9732c38f89a67bd1943e7843723ce6359a149427efe54e422004f222284",
+      "src/sim/state.ts": "77a01adc8eb840d8d8dce9bc94034cec59f30ff50cd7598a743b4169a0fff9dc",
+      "src/sim/step.ts": "298e1b53db86e9386237fca4dcd4e35400c2a7bc3d695ea4846244ce4c906517",
+      "src/sim/tickClock.ts": "97c6d37f577c9649c2b216397cacc3674fe5405ef50ebb38f1fa9c818efb1ed0",
+      "src/sim/units.ts": "2f03a84a2ce5818bb25d87337a85103f3810ef919da59192f25ea198b4e01c4a",
+      "tests/integration/authority/inkfallAuthorityPlaytest.test.ts": "9e546d42bf47ab67041c9eff1663bb91957793cfb60272f1e186227c5c3f1171",
+      "tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts": "04dd6f4f73cf8f35f51b07dd4f4203c7a630ae36d4efb5a8ef5cff144348bb6b",
+      "tests/integration/movement/inkfallRev3ReviewAudit.test.ts": "a85b307c7c91aa76b29c5b529f5a3734f413058acdfaa276e5b9a80ee8513306",
+      "tests/integration/physics/inkfallRev4AuthorityProfile.test.ts": "f671b45da8dafb8075c95582c53568c70317d19bd17845ff4b212eb6fb0bb75f",
+      "tests/integration/physics/inkfallRev4CandidateBinding.test.ts": "47e35db2e05f4a6136f231e2428646b1d69e953a6edf4b69a64179435a5f9565",
+      "tests/unit/authority/combat/impulseGrenade.test.ts": "56f1246104d7594713d9129d9c3529e91da9da91438edfc6cfb8b14ef342c67b",
+      "tests/unit/authority/combat/roomCombatIntegration.test.ts": "71fa7950951b2a19db1a18ef4e186b57e7355383a824cc4a4afd42ff4715a6ed",
+      "tests/unit/authority/combat/roomImpulseGrenadeIntegration.test.ts": "20c2b0a8c96ecbafb640df7f83c3c912bdd5f96c6615395372f6cd5e34434256",
+      "tests/unit/authority/fixedTickScheduler.test.ts": "943e3ad586cf247335c0f2f132aa654e24de38f00061a650407ed88b94d90b42",
+      "tests/unit/authority/portal/inkfallRev5PortalAuthority.test.ts": "24a8ef9f418a8f1c7636063571c427c9d3cb710641a7e81239f9931b9f65fed3",
+      "tests/unit/client/combat/presentationWireBridge.test.ts": "c5416dd88db4d28c5afd197c7cac366519b672f7131179dbf0cda5a9b4456e64",
+      "tests/unit/dev/authorityEvidence.test.ts": "17c5ac6df41c4321e66ffe5d10240fdda047ea446915be93eae2009486e44d7d",
+      "tests/unit/net/combatPresentationReliableEvent.test.ts": "206a4552a6f13567a38742eae9a8ae1c5157b855b2e4168e3be1aa162e96e20d",
+      "tests/unit/net/protocol-v2.test.ts": "dd0a4dac3bce85315ef53526e1c8c8e47aa21f6f2e0dc48dcd6e5c336997ab23",
+      "tests/unit/worker/reliableEvents.test.ts": "19d712eb856d7e64fd4f6908ca922e1cd77ea9c5346c7f3f390d8e78df02ad1c",
+      "tests/unit/worker/security.test.ts": "9f256874c6748ad338ba2e3a09ea8ebf2c83c2ebdf634e40802ef38c00db76e4",
+      "tests/worker/combatPresentationProjection.test.ts": "fee88c2c2c0c04e88da9adb4698963f8dd19ec3dd6e03f22ddd5d0162fdad240",
+      "tests/worker/combatRev3.test.ts": "a1d4e11837f6b836597a82942b92b5f8cd8a1fb321edf7d40f21e610947fab2f",
+      "tests/worker/inkfallPopulation.test.ts": "5f870cee5a801ec407b8c4fa1eb10587019ce724340fece27ffe96090b3d4e6c",
+      "tests/worker/inkfallRev2CombatProfile.test.ts": "b70c146f7b0c8c3d838ac7a04c5fa087efe0dd273230c6eddb21c6cd27feb28b",
+      "tests/worker/protocolV2Socket.test.ts": "0b45cc782b42db9f592b53ccc4910abb778cf30f42ac636a4523ad8bf0ab64c9",
+      "tests/worker/slowConsumerBackpressure.test.ts": "6a034be96cc3ffb18c90a37174978b3e63de5d252e62ab526d1025d44a92bd54",
+      "tests/worker/socketAttachmentCache.test.ts": "6667ea70ee9debe3b47d759572f044df2f6a52311d638f1f3e98b4dcee274a9a",
+      "tools/evidence/capture-phase5-p515-inkfall-product-population.mjs": "df1ec9ae9f812e7d1febaa20ded3eb1b3130f0e31bb0e4b0fb41fc7d4dd63e6e",
+      "tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs": "631fe346c7d9c31be6159c141359662d59bcd047e53a709a7f111b569cd452fe",
+      "tools/evidence/verify-phase5-p515-inkfall-product-population.mjs": "beac49f7ae1bcc359e3f5a1b06b7b73f0fd5e64e5564794e4c913ba55bc8af57",
+      "tsconfig.json": "b73a181df0544588797689f66da92b43279c8e5f8b052dea30f13fde911a0399",
+      "tsconfig.worker.json": "f8fff93d8ebc29324e22dd842c7f235f318791c0b119e0562dc6df43bc40c78c",
+      "vite.config.js": "e6e53135376143542dd375243f50a3493483a0f347db80f9cd251beeaed74b83",
+      "worker/combatRuntime.ts": "d6278f75d0fe2ff8d15911973c5c32d33af705b1550e0e3b82138dde36856268",
+      "worker/env.ts": "3fa64c13ceaf5280a97fac3a50e409cfeacad7eb4da6118023bc4fe5551cd6d9",
+      "worker/metricsAccess.ts": "ef323d59d4dba66e68bff2f1671380742b202dab02779579bdd6e55c37ee97f4",
+      "worker/rapierRuntime.ts": "68aa21b90af788f62dd0b0cdb5b2687ba0794ca01f5e3e5688880e1e288c8334",
+      "worker/reliableEvents.ts": "90eb88455e604de7693800b1557ad26d8784058fa61aa9f9cd3838adb501108c",
+      "worker/resumeSessions.ts": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3",
+      "worker/room.ts": "4dc5738eace66b0cbd69b8ff26c5fa84481306470bdd0f0f1e110714e26bdbd3",
+      "worker/routes.ts": "c97f037617435f8541e4b8beb45c4668208b82f6de815bea194ea6e7b808194b",
+      "worker/security.ts": "06140af2aed7e50672a1e9e91322b9fdc27a574fe196aad17678e30f8aced03a",
+      "worker/snapshotBaselines.ts": "d6c4ec7b49c356d827f819dc2f6108e7844ae25106b7229e4b5df8d7cfccc965",
+      "worker/worker.ts": "b509e83b8096f6f32e91e7ecadeea87c35a72513e6829eb350189f499a2a5681",
+      "wrangler.jsonc": "ee23cf1e7082cad9632979d931266b59b7674b0b2a67dab22b8751d056b19775"
+    },
+    "sourceSha256AtFailure": {
+      ".env.production": "a346ec1cebcbc58395603e0f14c5dbb155036278c6c3b7fa96d2e1df084af008",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/build_press_archive_rev5.py": "9998f9e6bf27cdd8ba76f99549ed2811121aac02fa7e049d43b6674b9120b93d",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/manifest.inkfall-rev5-geometry-portal.json": "2a89a520585a52053e6a4e612eea31ce6c96f17f1300153033ef565c347ec24c",
+      "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/validation/inkfall-rev5-geometry-portal-build-report.json": "3f857855b3a11fddaabd093f25132f7f858de38d57ff963a7bbe639481dffad0",
+      "assets/source/maps/inkfall-foundry/inkfall-foundry.layout-seed.v1.json": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+      "assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+      "assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json": "53eaa6dd91fa407cdaf5738e0fe9193c72a20e209a412258dd01083c2b6fd67b",
+      "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json": "dbdb5cfca1ea9aa1088457c89e1d269e9020b2ca3a67cb9ae1cc586703ed95ca",
+      "assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json": "d04669cc6efbc3970d21572e6d06b009416558a4475ea1744d862b70b1cd9a83",
+      "evidence/2026-07-22/phase-5-p5-15/runtime-v10/p515-canonical-traversal-defect.json": "0c15b72e9161f6a7c12064e01bcca62059b6fe28f173eb81f69e8db0434e952e",
+      "package-lock.json": "c01208a4892cbfe0ac398889a885eff9a7b29ada941885e37b6be292b6f582e4",
+      "package.json": "306bf85df8164c9386b6d0c2557c83d823bcb84bf2fc375f9371980680fb7c10",
+      "pnpm-lock.yaml": "b5d6f9f1d639ae68ffaeefa5baf5991ec00116320ffbef49b5a19216803cce1d",
+      "public/_headers": "ba3e915e1527b9a04224a2c0ca1bd2d320c645afa4a66467821bc89ad3bddf4e",
+      "src/app/inkfallRev3ReviewAudit.ts": "c80cd5c7e371521c5c179b21f9f76689e2ccfdc95be0149bf8a518bcbe2709ac",
+      "src/app/inkfallRev4CandidateBinding.ts": "b870927aeac8a2328dc2c557f445f216dd778f0bc6b9a03baa5473da31b4d19e",
+      "src/app/inkfallRev4CandidateTraversal.ts": "46d3ce042f3309d4df6a4dd24768745bd3e157c9bf46a496c6e3e768a59230fe",
+      "src/app/inkfallRev5CandidateBinding.ts": "035691a48d9cb67a1463835438e1f66a73f7d5c0553703f139548e5f1529a19f",
+      "src/app/inkfallRev5PortalPresentation.ts": "b6e14fa395761b804009c1952f0b42e0ab28e73bea642bbf39a60d59092cf06b",
+      "src/app/inkfallRev5VisualContinuity.ts": "644b5f2b1814a7972ba5f1323f9c2716de43364965b3ef52014c1189e309d430",
+      "src/app/onlineAuthorityGateway.ts": "93994cc9ff0b2bdb572e3c70b39efa6db9ea3651850788a1efbf96fb84b0014f",
+      "src/app/onlineAuthorityInkfallWorld.ts": "10adfa102ceb935e3b610cabdf1e6d972e6f873921f00420c72e5ebd7b5ea22d",
+      "src/app/onlineAuthorityProfiles.ts": "4b3f0bbf6e5806f532763b06375840735e5b80c24ea6420896bf3323e15192c3",
+      "src/app/onlineAuthorityRoute.ts": "75b71aac53e47961395d90b972f669fbdc95a137d1e88602b1ba7eb7597f5726",
+      "src/app/onlineAuthorityThreeRuntime.ts": "68222c4273f7703598b7e975621b5ccc68e1161fde9e62fab6794ed772d72dd9",
+      "src/authority/combat/abilityResources.ts": "e822a858c342a5493a16f9e3af81abc271f9b44a1addfcd1a5fe43073b8c2a3d",
+      "src/authority/combat/autoRifle.ts": "f1e4b21e6560bf22ff1e9268b9175e3221bf2c28225d69a38fd459a935b2b5f2",
+      "src/authority/combat/impulseGrenade.ts": "a9ef7836524561f2c5343b905df5de19d7ba32f5888ac6219db0f221daa3ce1d",
+      "src/authority/combat/index.ts": "a62609a37b92a649ec1641dd4488eeb1a71e18b43d59f671c075e4b316cb065e",
+      "src/authority/combat/inkfallRapierCombatWorld.ts": "d1e308372fe651eb876d6b6348648fb747399db760e91fb58ce7f8a224e60dc5",
+      "src/authority/combat/life.ts": "eca12653229281c15019bc604e58c18b51623e04177f39a3855b48a761364155",
+      "src/authority/combat/loadoutRequest.ts": "ab62baa90db888c64d6f6890fce307e55c831107fa5c43fe0b2b02a7921f3154",
+      "src/authority/combat/poseHistory.ts": "df1f7a94dba4a68abfde2040a9bffc5b735bd114d70c274333c25a17825a659f",
+      "src/authority/combat/rewindHitscan.ts": "da12e10894035828f68ff0f06b73c5c8bd8276773ebf584050476eb7e5091920",
+      "src/authority/combat/strictCombatData.ts": "ad2e83ce14d98b9f828dbdeb549505667867cd30708b9fa25da931dbdc584cca",
+      "src/authority/combat/tdmMatch.ts": "53be9387429c5618446e01fa046d2cbe6ca67358c7a5f1972115694c9e648021",
+      "src/authority/fixedTickScheduler.ts": "658bde5ddd9b32d8f6f084f876d72f7a70436e125806cf09a7485c9ffbc99b09",
+      "src/authority/portal/inkfallRev5PortalAuthority.ts": "d8adc8d1e6841c7b1784eed0bc85d53269c968856d0231b0102418996b5b30e8",
+      "src/authority/room.ts": "a017bceb46e17962c13c6adf7c821c6521991d413387671465064ff733166c79",
+      "src/client/combat/presentationAdapter.ts": "aa9edd160be10aee09ef6c8b847ec717ccc6cfe635b72640e770d80805320bad",
+      "src/client/netcode/localPrediction.ts": "c4c94a51cd25e04e0bd64312b3a87ae345cb4e02bee8564ffc7c955400c9754a",
+      "src/client/netcode/remoteInterpolation.ts": "22e13b64c4e03abbc465676a9d76a0cb711f80a03cfcae6fe30cac4392df1ffe",
+      "src/dev/authorityEvidenceClient.ts": "4ac591b799cf3d719b05bc2a5d46702a69794d235e07c5a5e3461cedb017bef5",
+      "src/dev/authorityEvidenceModel.ts": "b773cad0c3f235f18b05c86997c55149479edbff42636f517811af8a58a9a4ab",
+      "src/dev/authorityEvidenceTransport.ts": "018f283b2d0e99de8e6aa1aac5465b642258d22b44fdd914fe5a68923b93878d",
+      "src/dev/loadInkfallRev5ReviewVisual.ts": "50b8e4744d36d9c78e310c89395c7890b07b4347525dcbc8355ff8e30ab6e705",
+      "src/net/protocol.ts": "c220fb26ea00555c79b62eeae5464ff4f5b9f216e73fbefc4a4034959d3ef146",
+      "src/net/schemas.ts": "a9ad05012905a2ee1c0e70cf71ebacccc94a42c523fe0708e309de3c71d8ea03",
+      "src/physics/collisionLayers.ts": "ba5ebdf1daceb014f35b5a9b42f957758fd291491e972d0691308ebcbfc3536b",
+      "src/physics/fixtureSchema.ts": "7616b0521db7fe8ad9588c7320212bb3a0fa8515d1f75e177c52a69a56612cf6",
+      "src/physics/fixtures/catalog.ts": "6806358d3e16521c6eefe6cb9800ac4c2fd060ba09224fbcd51a2fff1cb63596",
+      "src/physics/fixtures/flatRun.ts": "ce84e218243c7aa4628f133e6f7a257e42aaa957afe6cf1b68cbb0f347884c02",
+      "src/physics/rapier/contracts.ts": "272be1858a826c16cb0243d669df5832f76a334e44699298d6e4c80d74f3c0a0",
+      "src/physics/rapier/runtime.ts": "e7874adfc21f2c83338491a6b4c9b335f0872b2bbc5eb5fd7eb3f2c58dd628a7",
+      "src/physics/rapier/world.ts": "440c138f2130d04cf034f52a3981d6b1b5c8863b7a361cea60b5ea85b5f9d045",
+      "src/sim/canonical.ts": "59bdd53d0376cb72828f00923c16c610c082a40d9886b3a276cd5b6638adb6ec",
+      "src/sim/commands.ts": "2b26617eca9391250d4e15ed40c041b40c0fa89b979dc39b294f24d2fd6b4475",
+      "src/sim/index.ts": "fdb0fd4cc1ddd61f28ff00b4c2b93a39d6d5b6d736068a047e2862e2078b2cbc",
+      "src/sim/movement/canonical.ts": "8ce1716ebb640d2f616663ff80c20b4d8eeacf4b89162b6d37c08588fc03d57e",
+      "src/sim/movement/controller.ts": "358e44d3671eefaf58f1ad64496b861b181e253e777e445db5f13e6662fb6679",
+      "src/sim/movement/events.ts": "2e43f52833d1a256319766983048492ba8371658891ce7e96a91b6eb0a3f8bb8",
+      "src/sim/movement/fixedMath.ts": "f289c6a269b2e62241bfbd9619b514e56df86455eb4de892dff011e83a50d039",
+      "src/sim/movement/hash.ts": "23f9fd3b2f2f3e3e641cc62e2c94dcc1660e3d430a2e69a513573ee9776afef0",
+      "src/sim/movement/index.ts": "5eb3107f918556e4d2eb87b49268cee9253ca44a549b883d96a6acf24aadc2c2",
+      "src/sim/movement/profile.ts": "43187e16f51985c024ed5cff90349e8e2a233d9632da90308006faaa44c8c41f",
+      "src/sim/movement/profileIdentity.ts": "6cffd0f76524bf7e733aad8c0eb1504d2c3ca0bcddc2c26c427be91550695728",
+      "src/sim/movement/queryPort.ts": "a0cf9f87a8f66a581c704e9f7d03923a47d62b0fac5718d97c91fdae9f5546ee",
+      "src/sim/movement/replay.ts": "8781d88db5ba23327dac212d4125f494d96ca769a393dcf16a4eb6029c088175",
+      "src/sim/movement/state.ts": "ee0f90e02a304786ea5faae37439e71e07f3d7eafa767c0e5d394da1b1de523b",
+      "src/sim/rng.ts": "e79ff9732c38f89a67bd1943e7843723ce6359a149427efe54e422004f222284",
+      "src/sim/state.ts": "77a01adc8eb840d8d8dce9bc94034cec59f30ff50cd7598a743b4169a0fff9dc",
+      "src/sim/step.ts": "298e1b53db86e9386237fca4dcd4e35400c2a7bc3d695ea4846244ce4c906517",
+      "src/sim/tickClock.ts": "97c6d37f577c9649c2b216397cacc3674fe5405ef50ebb38f1fa9c818efb1ed0",
+      "src/sim/units.ts": "2f03a84a2ce5818bb25d87337a85103f3810ef919da59192f25ea198b4e01c4a",
+      "tests/integration/authority/inkfallAuthorityPlaytest.test.ts": "9e546d42bf47ab67041c9eff1663bb91957793cfb60272f1e186227c5c3f1171",
+      "tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts": "04dd6f4f73cf8f35f51b07dd4f4203c7a630ae36d4efb5a8ef5cff144348bb6b",
+      "tests/integration/movement/inkfallRev3ReviewAudit.test.ts": "a85b307c7c91aa76b29c5b529f5a3734f413058acdfaa276e5b9a80ee8513306",
+      "tests/integration/physics/inkfallRev4AuthorityProfile.test.ts": "f671b45da8dafb8075c95582c53568c70317d19bd17845ff4b212eb6fb0bb75f",
+      "tests/integration/physics/inkfallRev4CandidateBinding.test.ts": "47e35db2e05f4a6136f231e2428646b1d69e953a6edf4b69a64179435a5f9565",
+      "tests/unit/authority/combat/impulseGrenade.test.ts": "56f1246104d7594713d9129d9c3529e91da9da91438edfc6cfb8b14ef342c67b",
+      "tests/unit/authority/combat/roomCombatIntegration.test.ts": "71fa7950951b2a19db1a18ef4e186b57e7355383a824cc4a4afd42ff4715a6ed",
+      "tests/unit/authority/combat/roomImpulseGrenadeIntegration.test.ts": "20c2b0a8c96ecbafb640df7f83c3c912bdd5f96c6615395372f6cd5e34434256",
+      "tests/unit/authority/fixedTickScheduler.test.ts": "943e3ad586cf247335c0f2f132aa654e24de38f00061a650407ed88b94d90b42",
+      "tests/unit/authority/portal/inkfallRev5PortalAuthority.test.ts": "24a8ef9f418a8f1c7636063571c427c9d3cb710641a7e81239f9931b9f65fed3",
+      "tests/unit/client/combat/presentationWireBridge.test.ts": "c5416dd88db4d28c5afd197c7cac366519b672f7131179dbf0cda5a9b4456e64",
+      "tests/unit/dev/authorityEvidence.test.ts": "17c5ac6df41c4321e66ffe5d10240fdda047ea446915be93eae2009486e44d7d",
+      "tests/unit/net/combatPresentationReliableEvent.test.ts": "206a4552a6f13567a38742eae9a8ae1c5157b855b2e4168e3be1aa162e96e20d",
+      "tests/unit/net/protocol-v2.test.ts": "dd0a4dac3bce85315ef53526e1c8c8e47aa21f6f2e0dc48dcd6e5c336997ab23",
+      "tests/unit/worker/reliableEvents.test.ts": "19d712eb856d7e64fd4f6908ca922e1cd77ea9c5346c7f3f390d8e78df02ad1c",
+      "tests/unit/worker/security.test.ts": "9f256874c6748ad338ba2e3a09ea8ebf2c83c2ebdf634e40802ef38c00db76e4",
+      "tests/worker/combatPresentationProjection.test.ts": "fee88c2c2c0c04e88da9adb4698963f8dd19ec3dd6e03f22ddd5d0162fdad240",
+      "tests/worker/combatRev3.test.ts": "a1d4e11837f6b836597a82942b92b5f8cd8a1fb321edf7d40f21e610947fab2f",
+      "tests/worker/inkfallPopulation.test.ts": "5f870cee5a801ec407b8c4fa1eb10587019ce724340fece27ffe96090b3d4e6c",
+      "tests/worker/inkfallRev2CombatProfile.test.ts": "b70c146f7b0c8c3d838ac7a04c5fa087efe0dd273230c6eddb21c6cd27feb28b",
+      "tests/worker/protocolV2Socket.test.ts": "0b45cc782b42db9f592b53ccc4910abb778cf30f42ac636a4523ad8bf0ab64c9",
+      "tests/worker/slowConsumerBackpressure.test.ts": "6a034be96cc3ffb18c90a37174978b3e63de5d252e62ab526d1025d44a92bd54",
+      "tests/worker/socketAttachmentCache.test.ts": "6667ea70ee9debe3b47d759572f044df2f6a52311d638f1f3e98b4dcee274a9a",
+      "tools/evidence/capture-phase5-p515-inkfall-product-population.mjs": "df1ec9ae9f812e7d1febaa20ded3eb1b3130f0e31bb0e4b0fb41fc7d4dd63e6e",
+      "tools/evidence/verify-phase5-p515-inkfall-product-population-failure.mjs": "631fe346c7d9c31be6159c141359662d59bcd047e53a709a7f111b569cd452fe",
+      "tools/evidence/verify-phase5-p515-inkfall-product-population.mjs": "beac49f7ae1bcc359e3f5a1b06b7b73f0fd5e64e5564794e4c913ba55bc8af57",
+      "tsconfig.json": "b73a181df0544588797689f66da92b43279c8e5f8b052dea30f13fde911a0399",
+      "tsconfig.worker.json": "f8fff93d8ebc29324e22dd842c7f235f318791c0b119e0562dc6df43bc40c78c",
+      "vite.config.js": "e6e53135376143542dd375243f50a3493483a0f347db80f9cd251beeaed74b83",
+      "worker/combatRuntime.ts": "d6278f75d0fe2ff8d15911973c5c32d33af705b1550e0e3b82138dde36856268",
+      "worker/env.ts": "3fa64c13ceaf5280a97fac3a50e409cfeacad7eb4da6118023bc4fe5551cd6d9",
+      "worker/metricsAccess.ts": "ef323d59d4dba66e68bff2f1671380742b202dab02779579bdd6e55c37ee97f4",
+      "worker/rapierRuntime.ts": "68aa21b90af788f62dd0b0cdb5b2687ba0794ca01f5e3e5688880e1e288c8334",
+      "worker/reliableEvents.ts": "90eb88455e604de7693800b1557ad26d8784058fa61aa9f9cd3838adb501108c",
+      "worker/resumeSessions.ts": "6d630beafddaa5a901f05d64f0182046b355a6159dfb1bb0c660e011c2e95da3",
+      "worker/room.ts": "4dc5738eace66b0cbd69b8ff26c5fa84481306470bdd0f0f1e110714e26bdbd3",
+      "worker/routes.ts": "c97f037617435f8541e4b8beb45c4668208b82f6de815bea194ea6e7b808194b",
+      "worker/security.ts": "06140af2aed7e50672a1e9e91322b9fdc27a574fe196aad17678e30f8aced03a",
+      "worker/snapshotBaselines.ts": "d6c4ec7b49c356d827f819dc2f6108e7844ae25106b7229e4b5df8d7cfccc965",
+      "worker/worker.ts": "b509e83b8096f6f32e91e7ecadeea87c35a72513e6829eb350189f499a2a5681",
+      "wrangler.jsonc": "ee23cf1e7082cad9632979d931266b59b7674b0b2a67dab22b8751d056b19775"
+    }
+  },
+  "repositoryState": {
+    "unchangedDuringCapture": true,
+    "start": {
+      "head": "d2c3be2b0ca2636e35e2f9873492a4b94237320c",
+      "status": "",
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "excludedGeneratedOutput": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/runtime-2-4-8-v9"
+    },
+    "failure": {
+      "head": "d2c3be2b0ca2636e35e2f9873492a4b94237320c",
+      "status": "",
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "excludedGeneratedOutput": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/runtime-2-4-8-v9"
+    }
+  },
+  "runtimeEnvironment": {
+    "nodeVersion": "v24.14.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "nodeExecutable": "C:\\Users\\suhai\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+    "browserLaunchArguments": [
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-renderer-backgrounding",
+      "--disable-features=IntensiveWakeUpThrottling,CalculateNativeWinOcclusion"
+    ]
+  },
+  "wireDiagnostics": {
+    "file": "p515-failure-normalized-wire-log.jsonl",
+    "entries": 12399,
+    "sha256": "a4efb761b24d56747b42c5ee38aa2689665646b71815dc4e55c2aa12135cbcb1",
+    "receivedSnapshots": 2048,
+    "sentSnapshotAcknowledgements": 2070,
+    "acknowledgementRejections": 0,
+    "socketClosures": []
+  },
+  "clients": [
+    {
+      "clientId": "client-0",
+      "snapshot": {
+        "schemaVersion": 1,
+        "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+        "roomCode": "KYX-LD3PY2",
+        "connection": "joined",
+        "matchId": "match.be98a9c5a2d348ada2defbcb17d6e482",
+        "playerId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+        "remotePlayers": 1,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 1024,
+        "commandsGenerated": 2046,
+        "inputAcks": 2048,
+        "reconciliations": 1024,
+        "resumeSuccesses": 0,
+        "combat": {
+          "enabled": true,
+          "snapshot": {
+            "schemaVersion": 1,
+            "players": [
+              {
+                "playerId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 0,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "selectedWeaponSlot": 0,
+                "selectedWeaponId": "vertical_rifle_v1",
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              },
+              {
+                "playerId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 142,
+                "nextShotAtTick": 300,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 8,
+                "selectedWeaponSlot": 0,
+                "selectedWeaponId": "vertical_rifle_v1",
+                "weaponCatalogId": "kyx_authoritative_armory_v1",
+                "weapons": [
+                  {
+                    "weaponId": "vertical_rifle_v1",
+                    "slot": 0,
+                    "family": "rifle",
+                    "attackModel": "hitscan",
+                    "phase": "ready",
+                    "magazineRounds": 50,
+                    "reserveRounds": 142,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 300,
+                    "acceptedAttackCount": 8
+                  },
+                  {
+                    "weaponId": "kyx_sidearm_v1",
+                    "slot": 1,
+                    "family": "pistol",
+                    "attackModel": "hitscan",
+                    "phase": "holstered",
+                    "magazineRounds": 12,
+                    "reserveRounds": 72,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_scattergun_v1",
+                    "slot": 2,
+                    "family": "shotgun",
+                    "attackModel": "pellet_hitscan",
+                    "phase": "holstered",
+                    "magazineRounds": 6,
+                    "reserveRounds": 30,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_longshot_v1",
+                    "slot": 3,
+                    "family": "sniper",
+                    "attackModel": "hitscan",
+                    "phase": "holstered",
+                    "magazineRounds": 4,
+                    "reserveRounds": 20,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_breach_rocket_v1",
+                    "slot": 4,
+                    "family": "rocket",
+                    "attackModel": "projectile",
+                    "phase": "holstered",
+                    "magazineRounds": 1,
+                    "reserveRounds": 5,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_edge_v1",
+                    "slot": 5,
+                    "family": "melee",
+                    "attackModel": "melee_contact",
+                    "phase": "holstered",
+                    "magazineRounds": null,
+                    "reserveRounds": null,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  }
+                ],
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0,
+                "abilityLoadout": {
+                  "slots": [
+                    "vertical_teleport_v1",
+                    "vertical_impulse_grenade_v1",
+                    "smoke_grenade_v1",
+                    "frag_grenade_v1"
+                  ],
+                  "cooldownEndsAtTicks": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "currentCharges": [
+                    2,
+                    2,
+                    2
+                  ],
+                  "maximumCharges": [
+                    2,
+                    2,
+                    2
+                  ],
+                  "acceptedActivationCounts": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "flashImpairedUntilTick": 0
+                }
+              }
+            ],
+            "projectiles": [],
+            "match": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 7592,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 0
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 0,
+              "result": null
+            }
+          },
+          "recentEvents": [
+            {
+              "id": "event.1",
+              "serverTick": 0,
+              "kind": "playerJoined",
+              "subjectId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.2",
+              "serverTick": 0,
+              "kind": "loadoutAccepted",
+              "subjectId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.3",
+              "serverTick": 0,
+              "kind": "playerJoined",
+              "subjectId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.4",
+              "serverTick": 0,
+              "kind": "loadoutAccepted",
+              "subjectId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+              "actorId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.5",
+              "serverTick": 88,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.1",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.6",
+              "serverTick": 286,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.2",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.7",
+              "serverTick": 288,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.3",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.8",
+              "serverTick": 290,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.4",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.9",
+              "serverTick": 292,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.5",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.10",
+              "serverTick": 294,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.6",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.11",
+              "serverTick": 296,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.7",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.12",
+              "serverTick": 298,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.8",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            }
+          ]
+        },
+        "inputBridge": {
+          "pressedKeys": [],
+          "axes": {
+            "moveX": 0,
+            "moveY": 0
+          },
+          "heldButtons": 0,
+          "jump": false,
+          "sprint": false,
+          "crouch": false,
+          "primaryFire": false,
+          "blinkPreviewHeld": false,
+          "selectedWeaponSlot": 0
+        },
+        "blinkPreview": {
+          "schemaVersion": 1,
+          "active": false,
+          "valid": false,
+          "authorityBound": true,
+          "reason": "blocked",
+          "outcome": null,
+          "maximumRangeMillimeters": 9000,
+          "distanceMillimeters": 0,
+          "originFeetMillimeters": {
+            "x": 7012,
+            "y": -69886,
+            "z": -12303
+          },
+          "destinationFeetMillimeters": {
+            "x": 7012,
+            "y": -69886,
+            "z": -12303
+          }
+        },
+        "localPredictedPosition": {
+          "x": 7012,
+          "y": -69886,
+          "z": -12303
+        },
+        "localAuthoritativePosition": {
+          "x": 6841,
+          "y": -68386,
+          "z": -12303
+        },
+        "localPredictedVelocity": {
+          "x": 3428,
+          "y": -30000,
+          "z": 0
+        },
+        "localAuthoritativeVelocity": {
+          "x": 3428,
+          "y": -30000,
+          "z": 0
+        },
+        "localPredictedGrounded": false,
+        "localAuthoritativeGrounded": false,
+        "localPredictedLocomotion": "airborne",
+        "localAuthoritativeLocomotion": "airborne",
+        "localPredictedYawMilliDegrees": 307500,
+        "localPredictedPitchMilliDegrees": 0,
+        "localPredictionErrorMillimeters": 0,
+        "localPredictionHistoryCommands": 1,
+        "remoteEntities": [
+          {
+            "entityId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+            "interpolationMode": "stale",
+            "position": {
+              "x": 3249,
+              "y": -2904,
+              "z": -15023
+            },
+            "grounded": true,
+            "stance": "standing",
+            "locomotion": "grounded",
+            "travelSector": "idle",
+            "forwardSpeedMillimetersPerSecond": 0,
+            "rightSpeedMillimetersPerSecond": 0
+          }
+        ],
+        "remotePositions": [
+          {
+            "x": 3249,
+            "y": -2904,
+            "z": -15023
+          }
+        ],
+        "lastError": null,
+        "render3d": {
+          "status": "ready",
+          "renderer": "three_webgl",
+          "mapReference": "inkfall_foundry@3",
+          "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+          "presentationMode": "review_glb",
+          "presentationSha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+          "authorityFixtureHash": "6cf785c5171f2ff5",
+          "renderMeshesMayBeAuthority": false,
+          "renderMeshCount": 23,
+          "renderOnlyContainmentMeshCount": 311,
+          "spawnPocketContainmentCount": 2,
+          "authorityColliderCount": 339,
+          "spawnCount": 12,
+          "zoneCount": 9,
+          "remoteAvatarCount": 1,
+          "grenadeProjectileCount": 0,
+          "weaponProjectileCount": 0,
+          "activeWeaponEffectCount": 0,
+          "renderedReliableEventCount": 0,
+          "acceptedAttackPresentationCount": 0,
+          "confirmedDamagePresentationCount": 0,
+          "reloadPresentationCount": 2,
+          "portalTraversalPresentationCount": 0,
+          "activePortalEffectCount": 0,
+          "portalAudioDelegation": "shared_callback",
+          "authoredWeaponAudio": "ready",
+          "selectedWeaponId": "vertical_rifle_v1",
+          "selectedProceduralDefinitionId": "kyx_vlr7",
+          "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+          "selectedWeaponFamily": "rifle",
+          "selectedWeaponSilhouette": "standard_longarm",
+          "blinkPreviewActive": false,
+          "blinkPreviewValid": false,
+          "blinkPreviewAuthorityBound": false,
+          "blinkPreviewReason": "inactive",
+          "blinkPreviewDistanceMillimeters": 0,
+          "blinkPreviewMaximumRangeMillimeters": 0,
+          "pointerLocked": false,
+          "canvasWidth": 1440,
+          "canvasHeight": 900
+        },
+        "presentation": {
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0,
+          "recentCues": [
+            {
+              "cue": "snapshot",
+              "source": "snapshot",
+              "authorityEventId": null,
+              "authorityTick": 0,
+              "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+              "vfxMarker": null,
+              "audioMarker": null,
+              "renderedHud": true,
+              "renderedVfx": false,
+              "audioAttempted": false
+            }
+          ]
+        },
+        "roomVerification": {
+          "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@3",
+            "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 3,
+            "packageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "6cf785c5171f2ff5",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "render": {
+              "role": "render_only",
+              "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+              "sha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+              "bytes": 2803128,
+              "renderMeshesMayBeAuthority": false
+            },
+            "collision": {
+              "role": "authority_collision",
+              "path": "revisions/revision-3/export/collision.authority.glb",
+              "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+              "bytes": 605112
+            },
+            "supportedModes": [
+              "deathmatch",
+              "team_deathmatch"
+            ],
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": -3000,
+                  "z": -22000
+                },
+                "yawMilliDegrees": 45000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": -3000,
+                  "z": -21000
+                },
+                "yawMilliDegrees": 135000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": 6000,
+                  "z": 22000
+                },
+                "yawMilliDegrees": -45000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": 6000,
+                  "z": 21000
+                },
+                "yawMilliDegrees": -135000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              }
+            ],
+            "zones": [
+              {
+                "zoneId": "west_gallery",
+                "callout": "West Galley",
+                "family": "spawn",
+                "center": {
+                  "x": -30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "east_gallery",
+                "callout": "East Galley",
+                "family": "spawn",
+                "center": {
+                  "x": 30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "press_hall",
+                "callout": "Press Hall",
+                "family": "press_hall",
+                "center": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 22000,
+                  "y": 4500,
+                  "z": 10000
+                }
+              },
+              {
+                "zoneId": "ink_channel_west",
+                "callout": "Ink Sump",
+                "family": "ink_channel",
+                "center": {
+                  "x": -15000,
+                  "y": -3000,
+                  "z": -18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "ink_channel_east",
+                "callout": "Cistern Fold",
+                "family": "ink_channel",
+                "center": {
+                  "x": 15000,
+                  "y": -3000,
+                  "z": -17500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_west",
+                "callout": "Paper Archive",
+                "family": "archive_walk",
+                "center": {
+                  "x": -15000,
+                  "y": 6000,
+                  "z": 18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_east",
+                "callout": "Ledger Bridge",
+                "family": "archive_walk",
+                "center": {
+                  "x": 15000,
+                  "y": 6000,
+                  "z": 18000
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "teleport_fold",
+                "callout": "Red Fold",
+                "family": "crosslink",
+                "center": {
+                  "x": -1500,
+                  "y": -1000,
+                  "z": -7500
+                },
+                "halfExtents": {
+                  "x": 6500,
+                  "y": 4500,
+                  "z": 6000
+                }
+              },
+              {
+                "zoneId": "paper_drop",
+                "callout": "Paper Drop",
+                "family": "crosslink",
+                "center": {
+                  "x": -4000,
+                  "y": 3000,
+                  "z": 8000
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 5000,
+                  "z": 6000
+                }
+              }
+            ],
+            "pickups": [],
+            "triggers": [
+              {
+                "id": "red_fold_teleport_entry",
+                "kind": "teleport",
+                "centerMm": {
+                  "x": -4000,
+                  "y": -3000,
+                  "z": -10000
+                },
+                "halfExtentsMm": {
+                  "x": 1500,
+                  "y": 1000,
+                  "z": 1500
+                },
+                "destinationFeetMm": {
+                  "x": 1539,
+                  "y": 1431,
+                  "z": -4461
+                },
+                "destinationYawMilliDegrees": 45000,
+                "implementationStatus": "contract_only"
+              }
+            ],
+            "portal": {
+              "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+              "authorityRole": "additive_server_authority",
+              "renderRole": "rev5_render_only_no_hit",
+              "endpointCount": 2
+            },
+            "telemetry": {
+              "schemaVersion": 1,
+              "authoritySource": "durable_object_room_metrics_v1",
+              "counters": [
+                "connectedPlayers",
+                "receivedCommands",
+                "rejectedCommands",
+                "resumeSuccesses",
+                "authorityTickExecution",
+                "transport"
+              ],
+              "zoneCount": 9,
+              "pickupCount": 0
+            }
+          },
+          "simulationIdentity": {
+            "schemaVersion": 1,
+            "mapId": "inkfall_foundry",
+            "rulesetId": "revamped_classic",
+            "rulesetRevision": 3,
+            "rulesetHash": "69b19f19a19de288",
+            "movementProfileId": "phase3_hypothesis_v1",
+            "movementProfileRevision": 1,
+            "movementProfileHash": "8ab4ed437a4393c0",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "6cf785c5171f2ff5",
+            "physicsAdapterId": "rapier3d_deterministic_compat",
+            "physicsAdapterVersion": "0.19.3"
+          },
+          "identityChecks": 2053
+        }
+      },
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead",
+        "THREE.Material: parameter 'emissive' has value of undefined.",
+        "THREE.Material: parameter 'emissive' has value of undefined.",
+        "THREE.Material: parameter 'emissive' has value of undefined.",
+        "THREE.Material: parameter 'emissive' has value of undefined."
+      ],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-1",
+      "snapshot": {
+        "schemaVersion": 1,
+        "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+        "roomCode": "KYX-LD3PY2",
+        "connection": "joined",
+        "matchId": "match.be98a9c5a2d348ada2defbcb17d6e482",
+        "playerId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+        "remotePlayers": 1,
+        "fullSnapshots": 1,
+        "deltaSnapshots": 1024,
+        "commandsGenerated": 2048,
+        "inputAcks": 2048,
+        "reconciliations": 1024,
+        "resumeSuccesses": 0,
+        "combat": {
+          "enabled": true,
+          "snapshot": {
+            "schemaVersion": 1,
+            "players": [
+              {
+                "playerId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+                "connected": true,
+                "teamId": "team_red",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "nextShotAtTick": 0,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 0,
+                "selectedWeaponSlot": 0,
+                "selectedWeaponId": "vertical_rifle_v1",
+                "weaponCatalogId": "kyx_authoritative_armory_v1",
+                "weapons": [
+                  {
+                    "weaponId": "vertical_rifle_v1",
+                    "slot": 0,
+                    "family": "rifle",
+                    "attackModel": "hitscan",
+                    "phase": "ready",
+                    "magazineRounds": 50,
+                    "reserveRounds": 150,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_sidearm_v1",
+                    "slot": 1,
+                    "family": "pistol",
+                    "attackModel": "hitscan",
+                    "phase": "holstered",
+                    "magazineRounds": 12,
+                    "reserveRounds": 72,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_scattergun_v1",
+                    "slot": 2,
+                    "family": "shotgun",
+                    "attackModel": "pellet_hitscan",
+                    "phase": "holstered",
+                    "magazineRounds": 6,
+                    "reserveRounds": 30,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_longshot_v1",
+                    "slot": 3,
+                    "family": "sniper",
+                    "attackModel": "hitscan",
+                    "phase": "holstered",
+                    "magazineRounds": 4,
+                    "reserveRounds": 20,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_breach_rocket_v1",
+                    "slot": 4,
+                    "family": "rocket",
+                    "attackModel": "projectile",
+                    "phase": "holstered",
+                    "magazineRounds": 1,
+                    "reserveRounds": 5,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  },
+                  {
+                    "weaponId": "kyx_edge_v1",
+                    "slot": 5,
+                    "family": "melee",
+                    "attackModel": "melee_contact",
+                    "phase": "holstered",
+                    "magazineRounds": null,
+                    "reserveRounds": null,
+                    "readyAtTick": null,
+                    "reloadCompletesAtTick": null,
+                    "nextAttackAtTick": 0,
+                    "acceptedAttackCount": 0
+                  }
+                ],
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0,
+                "abilityLoadout": {
+                  "slots": [
+                    "vertical_teleport_v1",
+                    "vertical_impulse_grenade_v1",
+                    "smoke_grenade_v1",
+                    "frag_grenade_v1"
+                  ],
+                  "cooldownEndsAtTicks": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "currentCharges": [
+                    2,
+                    2,
+                    2
+                  ],
+                  "maximumCharges": [
+                    2,
+                    2,
+                    2
+                  ],
+                  "acceptedActivationCounts": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "flashImpairedUntilTick": 0
+                }
+              },
+              {
+                "playerId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+                "connected": true,
+                "teamId": "team_blue",
+                "lifePhase": "alive",
+                "healthPoints": 100,
+                "shieldPoints": 0,
+                "deathOrdinal": 0,
+                "respawnEligibleAtTick": null,
+                "riflePhase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 142,
+                "nextShotAtTick": 300,
+                "reloadCompletesAtTick": null,
+                "acceptedShotCount": 8,
+                "selectedWeaponSlot": 0,
+                "selectedWeaponId": "vertical_rifle_v1",
+                "grenadePhase": "ready",
+                "grenadeCooldownEndsAtTick": 0,
+                "acceptedThrowCount": 0,
+                "activeProjectileCount": 0
+              }
+            ],
+            "projectiles": [],
+            "match": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 7592,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 0
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 0,
+              "result": null
+            }
+          },
+          "recentEvents": [
+            {
+              "id": "event.3",
+              "serverTick": 0,
+              "kind": "playerJoined",
+              "subjectId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+              "actorId": null,
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.4",
+              "serverTick": 0,
+              "kind": "loadoutAccepted",
+              "subjectId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+              "actorId": "player.68c833e2-cf2c-43ef-acd2-86df3f5a71cb",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.5",
+              "serverTick": 88,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.1",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.6",
+              "serverTick": 286,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.2",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.7",
+              "serverTick": 288,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.3",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.8",
+              "serverTick": 290,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.4",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.9",
+              "serverTick": 292,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.5",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.10",
+              "serverTick": 294,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.6",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.11",
+              "serverTick": 296,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.7",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            },
+            {
+              "id": "event.12",
+              "serverTick": 298,
+              "kind": "shotAccepted",
+              "subjectId": "combat.auto_rifle.shot.e32b161bfed116c2.8",
+              "actorId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+              "targetId": null,
+              "amountHealthPoints": null
+            }
+          ]
+        },
+        "inputBridge": {
+          "pressedKeys": [],
+          "axes": {
+            "moveX": 0,
+            "moveY": 0
+          },
+          "heldButtons": 0,
+          "jump": false,
+          "sprint": false,
+          "crouch": false,
+          "primaryFire": false,
+          "blinkPreviewHeld": false,
+          "selectedWeaponSlot": 0
+        },
+        "blinkPreview": {
+          "schemaVersion": 1,
+          "active": false,
+          "valid": false,
+          "authorityBound": true,
+          "reason": "blocked",
+          "outcome": null,
+          "maximumRangeMillimeters": 9000,
+          "distanceMillimeters": 0,
+          "originFeetMillimeters": {
+            "x": 3249,
+            "y": -2904,
+            "z": -15023
+          },
+          "destinationFeetMillimeters": {
+            "x": 3249,
+            "y": -2904,
+            "z": -15023
+          }
+        },
+        "localPredictedPosition": {
+          "x": 3249,
+          "y": -2904,
+          "z": -15023
+        },
+        "localAuthoritativePosition": {
+          "x": 3249,
+          "y": -2904,
+          "z": -15023
+        },
+        "localPredictedVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "localAuthoritativeVelocity": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "localPredictedGrounded": true,
+        "localAuthoritativeGrounded": true,
+        "localPredictedLocomotion": "grounded",
+        "localAuthoritativeLocomotion": "grounded",
+        "localPredictedYawMilliDegrees": 271500,
+        "localPredictedPitchMilliDegrees": 0,
+        "localPredictionErrorMillimeters": 0,
+        "localPredictionHistoryCommands": 1,
+        "remoteEntities": [
+          {
+            "entityId": "player.a19c1389-3d40-4178-9a00-cca6a986376a",
+            "interpolationMode": "interpolated",
+            "position": {
+              "x": 6553.565999997438,
+              "y": -65871.99999997759,
+              "z": -12303
+            },
+            "grounded": false,
+            "stance": "standing",
+            "locomotion": "airborne",
+            "travelSector": "backward_right",
+            "forwardSpeedMillimetersPerSecond": -2719.615250518354,
+            "rightSpeedMillimetersPerSecond": 2086.834178641894
+          }
+        ],
+        "remotePositions": [
+          {
+            "x": 6553.565999997438,
+            "y": -65871.99999997759,
+            "z": -12303
+          }
+        ],
+        "lastError": null,
+        "render3d": {
+          "status": "ready",
+          "renderer": "three_webgl",
+          "mapReference": "inkfall_foundry@3",
+          "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+          "presentationMode": "review_glb",
+          "presentationSha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+          "authorityFixtureHash": "6cf785c5171f2ff5",
+          "renderMeshesMayBeAuthority": false,
+          "renderMeshCount": 23,
+          "renderOnlyContainmentMeshCount": 311,
+          "spawnPocketContainmentCount": 2,
+          "authorityColliderCount": 339,
+          "spawnCount": 12,
+          "zoneCount": 9,
+          "remoteAvatarCount": 1,
+          "grenadeProjectileCount": 0,
+          "weaponProjectileCount": 0,
+          "activeWeaponEffectCount": 0,
+          "renderedReliableEventCount": 0,
+          "acceptedAttackPresentationCount": 0,
+          "confirmedDamagePresentationCount": 0,
+          "reloadPresentationCount": 2,
+          "portalTraversalPresentationCount": 0,
+          "activePortalEffectCount": 0,
+          "portalAudioDelegation": "shared_callback",
+          "authoredWeaponAudio": "ready",
+          "selectedWeaponId": "vertical_rifle_v1",
+          "selectedProceduralDefinitionId": "kyx_vlr7",
+          "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+          "selectedWeaponFamily": "rifle",
+          "selectedWeaponSilhouette": "standard_longarm",
+          "blinkPreviewActive": false,
+          "blinkPreviewValid": false,
+          "blinkPreviewAuthorityBound": false,
+          "blinkPreviewReason": "inactive",
+          "blinkPreviewDistanceMillimeters": 0,
+          "blinkPreviewMaximumRangeMillimeters": 0,
+          "pointerLocked": false,
+          "canvasWidth": 1440,
+          "canvasHeight": 900
+        },
+        "presentation": {
+          "status": "ready",
+          "hydrationCount": 1,
+          "intentCount": 1,
+          "confirmedIntentCount": 0,
+          "rejectedIntentCount": 0,
+          "duplicateAuthorityEvents": 0,
+          "staleAuthorityEvents": 0,
+          "lastCue": "snapshot",
+          "lastAuthorityEventId": null,
+          "audioCueAttempts": 0,
+          "recentCues": [
+            {
+              "cue": "snapshot",
+              "source": "snapshot",
+              "authorityEventId": null,
+              "authorityTick": 0,
+              "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+              "vfxMarker": null,
+              "audioMarker": null,
+              "renderedHud": true,
+              "renderedVfx": false,
+              "audioAttempted": false
+            }
+          ]
+        },
+        "roomVerification": {
+          "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@3",
+            "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 3,
+            "packageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "6cf785c5171f2ff5",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "render": {
+              "role": "render_only",
+              "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+              "sha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+              "bytes": 2803128,
+              "renderMeshesMayBeAuthority": false
+            },
+            "collision": {
+              "role": "authority_collision",
+              "path": "revisions/revision-3/export/collision.authority.glb",
+              "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+              "bytes": 605112
+            },
+            "supportedModes": [
+              "deathmatch",
+              "team_deathmatch"
+            ],
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": -3000,
+                  "z": -22000
+                },
+                "yawMilliDegrees": 45000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": -3000,
+                  "z": -21000
+                },
+                "yawMilliDegrees": 135000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": 6000,
+                  "z": 22000
+                },
+                "yawMilliDegrees": -45000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": 6000,
+                  "z": 21000
+                },
+                "yawMilliDegrees": -135000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              }
+            ],
+            "zones": [
+              {
+                "zoneId": "west_gallery",
+                "callout": "West Galley",
+                "family": "spawn",
+                "center": {
+                  "x": -30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "east_gallery",
+                "callout": "East Galley",
+                "family": "spawn",
+                "center": {
+                  "x": 30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "press_hall",
+                "callout": "Press Hall",
+                "family": "press_hall",
+                "center": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 22000,
+                  "y": 4500,
+                  "z": 10000
+                }
+              },
+              {
+                "zoneId": "ink_channel_west",
+                "callout": "Ink Sump",
+                "family": "ink_channel",
+                "center": {
+                  "x": -15000,
+                  "y": -3000,
+                  "z": -18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "ink_channel_east",
+                "callout": "Cistern Fold",
+                "family": "ink_channel",
+                "center": {
+                  "x": 15000,
+                  "y": -3000,
+                  "z": -17500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_west",
+                "callout": "Paper Archive",
+                "family": "archive_walk",
+                "center": {
+                  "x": -15000,
+                  "y": 6000,
+                  "z": 18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_east",
+                "callout": "Ledger Bridge",
+                "family": "archive_walk",
+                "center": {
+                  "x": 15000,
+                  "y": 6000,
+                  "z": 18000
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "teleport_fold",
+                "callout": "Red Fold",
+                "family": "crosslink",
+                "center": {
+                  "x": -1500,
+                  "y": -1000,
+                  "z": -7500
+                },
+                "halfExtents": {
+                  "x": 6500,
+                  "y": 4500,
+                  "z": 6000
+                }
+              },
+              {
+                "zoneId": "paper_drop",
+                "callout": "Paper Drop",
+                "family": "crosslink",
+                "center": {
+                  "x": -4000,
+                  "y": 3000,
+                  "z": 8000
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 5000,
+                  "z": 6000
+                }
+              }
+            ],
+            "pickups": [],
+            "triggers": [
+              {
+                "id": "red_fold_teleport_entry",
+                "kind": "teleport",
+                "centerMm": {
+                  "x": -4000,
+                  "y": -3000,
+                  "z": -10000
+                },
+                "halfExtentsMm": {
+                  "x": 1500,
+                  "y": 1000,
+                  "z": 1500
+                },
+                "destinationFeetMm": {
+                  "x": 1539,
+                  "y": 1431,
+                  "z": -4461
+                },
+                "destinationYawMilliDegrees": 45000,
+                "implementationStatus": "contract_only"
+              }
+            ],
+            "portal": {
+              "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+              "authorityRole": "additive_server_authority",
+              "renderRole": "rev5_render_only_no_hit",
+              "endpointCount": 2
+            },
+            "telemetry": {
+              "schemaVersion": 1,
+              "authoritySource": "durable_object_room_metrics_v1",
+              "counters": [
+                "connectedPlayers",
+                "receivedCommands",
+                "rejectedCommands",
+                "resumeSuccesses",
+                "authorityTickExecution",
+                "transport"
+              ],
+              "zoneCount": 9,
+              "pickupCount": 0
+            }
+          },
+          "simulationIdentity": {
+            "schemaVersion": 1,
+            "mapId": "inkfall_foundry",
+            "rulesetId": "revamped_classic",
+            "rulesetRevision": 3,
+            "rulesetHash": "69b19f19a19de288",
+            "movementProfileId": "phase3_hypothesis_v1",
+            "movementProfileRevision": 1,
+            "movementProfileHash": "8ab4ed437a4393c0",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "6cf785c5171f2ff5",
+            "physicsAdapterId": "rapier3d_deterministic_compat",
+            "physicsAdapterVersion": "0.19.3"
+          },
+          "identityChecks": 2053
+        }
+      },
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [
+        "using deprecated parameters for the initialization function; pass a single object instead",
+        "THREE.Material: parameter 'emissive' has value of undefined.",
+        "THREE.Material: parameter 'emissive' has value of undefined.",
+        "THREE.Material: parameter 'emissive' has value of undefined.",
+        "THREE.Material: parameter 'emissive' has value of undefined."
+      ],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-2",
+      "snapshot": null,
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-3",
+      "snapshot": null,
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-4",
+      "snapshot": null,
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-5",
+      "snapshot": null,
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-6",
+      "snapshot": null,
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": []
+    },
+    {
+      "clientId": "client-7",
+      "snapshot": null,
+      "consoleErrors": [],
+      "transientOptimizerErrors": [],
+      "consoleWarnings": [],
+      "pageErrors": []
+    }
+  ],
+  "movementDriverRecoveries": [
+    {
+      "label": "Rev5 lower portal approach",
+      "attempt": 3,
+      "recoveryKey": "d",
+      "recoveryPolicy": "strafe_toward_map_centerline_with_target_bias",
+      "recoveryScores": {
+        "d": 1.957614232010852,
+        "a": -1.957614232010852
+      },
+      "distanceBeforeMillimeters": 2920.6261314998874,
+      "positionBefore": {
+        "x": -5111,
+        "y": -2836,
+        "z": -15356
+      },
+      "yawBeforeMilliDegrees": 12000,
+      "target": {
+        "x": -4500,
+        "z": -12500
+      }
+    },
+    {
+      "label": "Rev5 lower portal approach",
+      "attempt": 9,
+      "recoveryKey": "d",
+      "recoveryPolicy": "strafe_toward_map_centerline_with_target_bias",
+      "recoveryScores": {
+        "d": 1.2057902922518362,
+        "a": -1.2057902922518362
+      },
+      "distanceBeforeMillimeters": 1631.600441284569,
+      "positionBefore": {
+        "x": -3194,
+        "y": -3136,
+        "z": -13478
+      },
+      "yawBeforeMilliDegrees": 307500,
+      "target": {
+        "x": -4500,
+        "z": -12500
+      }
+    }
+  ],
+  "connectionTimeline": [
+    {
+      "observedAt": "2026-07-29T02:55:33.326Z",
+      "observedAtMilliseconds": 1785293733326,
+      "label": "population-2",
+      "clientId": "client-0",
+      "connection": "joined",
+      "lastError": null,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 0,
+      "inputAcks": 0,
+      "snapshotAcksSent": null
+    },
+    {
+      "observedAt": "2026-07-29T02:55:33.326Z",
+      "observedAtMilliseconds": 1785293733326,
+      "label": "population-2",
+      "clientId": "client-1",
+      "connection": "joined",
+      "lastError": null,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 0,
+      "inputAcks": 0,
+      "snapshotAcksSent": null
+    }
+  ],
+  "roomMetricsTimeline": [
+    {
+      "observedAt": "2026-07-29T02:55:33.339Z",
+      "observedAtMilliseconds": 1785293733339,
+      "label": "population-2",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "metrics": {
+          "serverTick": 1,
+          "lifecycle": "warmup",
+          "players": 2,
+          "connectedPlayers": 2,
+          "ticks": 1,
+          "acceptedInputs": 0,
+          "inputRejections": {
+            "duplicate_sequence": 0,
+            "stale_sequence": 0,
+            "sequence_too_far_ahead": 0,
+            "client_tick_too_far_ahead": 0,
+            "client_tick_too_old": 0,
+            "queue_full": 0
+          },
+          "maximumObservedQueueDepth": 0,
+          "missedSchedulerTicks": 0,
+          "queryMetrics": {
+            "moveCapsuleCalls": 2,
+            "overlapCapsuleCalls": 0,
+            "castCapsuleCalls": 0,
+            "volumeCalls": 2,
+            "shapeCasts": 4,
+            "overlapTests": 6,
+            "contacts": 0
+          },
+          "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+          "lastTickFailure": null,
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@3",
+            "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 3,
+            "packageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "6cf785c5171f2ff5",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "render": {
+              "role": "render_only",
+              "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+              "sha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+              "bytes": 2803128,
+              "renderMeshesMayBeAuthority": false
+            },
+            "collision": {
+              "role": "authority_collision",
+              "path": "revisions/revision-3/export/collision.authority.glb",
+              "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+              "bytes": 605112
+            },
+            "supportedModes": [
+              "deathmatch",
+              "team_deathmatch"
+            ],
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": -3000,
+                  "z": -22000
+                },
+                "yawMilliDegrees": 45000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": -3000,
+                  "z": -21000
+                },
+                "yawMilliDegrees": 135000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": 6000,
+                  "z": 22000
+                },
+                "yawMilliDegrees": -45000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": 6000,
+                  "z": 21000
+                },
+                "yawMilliDegrees": -135000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              }
+            ],
+            "zones": [
+              {
+                "zoneId": "west_gallery",
+                "callout": "West Galley",
+                "family": "spawn",
+                "center": {
+                  "x": -30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "east_gallery",
+                "callout": "East Galley",
+                "family": "spawn",
+                "center": {
+                  "x": 30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "press_hall",
+                "callout": "Press Hall",
+                "family": "press_hall",
+                "center": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 22000,
+                  "y": 4500,
+                  "z": 10000
+                }
+              },
+              {
+                "zoneId": "ink_channel_west",
+                "callout": "Ink Sump",
+                "family": "ink_channel",
+                "center": {
+                  "x": -15000,
+                  "y": -3000,
+                  "z": -18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "ink_channel_east",
+                "callout": "Cistern Fold",
+                "family": "ink_channel",
+                "center": {
+                  "x": 15000,
+                  "y": -3000,
+                  "z": -17500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_west",
+                "callout": "Paper Archive",
+                "family": "archive_walk",
+                "center": {
+                  "x": -15000,
+                  "y": 6000,
+                  "z": 18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_east",
+                "callout": "Ledger Bridge",
+                "family": "archive_walk",
+                "center": {
+                  "x": 15000,
+                  "y": 6000,
+                  "z": 18000
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "teleport_fold",
+                "callout": "Red Fold",
+                "family": "crosslink",
+                "center": {
+                  "x": -1500,
+                  "y": -1000,
+                  "z": -7500
+                },
+                "halfExtents": {
+                  "x": 6500,
+                  "y": 4500,
+                  "z": 6000
+                }
+              },
+              {
+                "zoneId": "paper_drop",
+                "callout": "Paper Drop",
+                "family": "crosslink",
+                "center": {
+                  "x": -4000,
+                  "y": 3000,
+                  "z": 8000
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 5000,
+                  "z": 6000
+                }
+              }
+            ],
+            "pickups": [],
+            "triggers": [
+              {
+                "id": "red_fold_teleport_entry",
+                "kind": "teleport",
+                "centerMm": {
+                  "x": -4000,
+                  "y": -3000,
+                  "z": -10000
+                },
+                "halfExtentsMm": {
+                  "x": 1500,
+                  "y": 1000,
+                  "z": 1500
+                },
+                "destinationFeetMm": {
+                  "x": 1539,
+                  "y": 1431,
+                  "z": -4461
+                },
+                "destinationYawMilliDegrees": 45000,
+                "implementationStatus": "contract_only"
+              }
+            ],
+            "portal": {
+              "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+              "authorityRole": "additive_server_authority",
+              "renderRole": "rev5_render_only_no_hit",
+              "endpointCount": 2
+            },
+            "telemetry": {
+              "schemaVersion": 1,
+              "authoritySource": "durable_object_room_metrics_v1",
+              "counters": [
+                "connectedPlayers",
+                "receivedCommands",
+                "rejectedCommands",
+                "resumeSuccesses",
+                "authorityTickExecution",
+                "transport"
+              ],
+              "zoneCount": 9,
+              "pickupCount": 0
+            }
+          },
+          "spawnSelection": {
+            "schemaVersion": 1,
+            "strategy": "rev3_authority_enemy_distance_fixture_occluded_los_v1",
+            "authorityBoundary": "server_state_and_authority_collision_only",
+            "clientPositionOrScoreAccepted": false,
+            "lockedSpawnIdentityCount": 12,
+            "decisionCount": 2,
+            "fallbackCount": 0,
+            "decisions": [
+              {
+                "tick": 0,
+                "requesterOrdinal": 0,
+                "populationBeforeSpawn": 0,
+                "status": "selected",
+                "decisionHash": "baefec618197fea1",
+                "selectedSpawnId": "spawn_w_press_a",
+                "selectedScore": 640,
+                "fallbackMode": "none",
+                "eligibleCandidateCount": 4,
+                "directLosRejectedCandidateCount": 0,
+                "minimumEnemyDistanceMm": null,
+                "selectedStandingOccluded": true,
+                "selectedCrouchedOccluded": true
+              },
+              {
+                "tick": 0,
+                "requesterOrdinal": 1,
+                "populationBeforeSpawn": 1,
+                "status": "selected",
+                "decisionHash": "c80b80b0d7e983a7",
+                "selectedSpawnId": "spawn_e_press_b",
+                "selectedScore": 1040,
+                "fallbackMode": "none",
+                "eligibleCandidateCount": 4,
+                "directLosRejectedCandidateCount": 5,
+                "minimumEnemyDistanceMm": 67000,
+                "selectedStandingOccluded": true,
+                "selectedCrouchedOccluded": true
+              }
+            ]
+          },
+          "authorityTickExecution": {
+            "sampleCapacity": 4096,
+            "samples": 1,
+            "p50Milliseconds": 26,
+            "p95Milliseconds": 26,
+            "p99Milliseconds": 26,
+            "maximumMilliseconds": 26
+          },
+          "transport": {
+            "inboundMessagesReceived": 14,
+            "inboundMessagesRateAccepted": 14,
+            "inboundMessagesRateRejected": 0,
+            "fullSnapshotsSent": 2,
+            "deltaSnapshotsSent": 0,
+            "snapshotAcksAccepted": 8,
+            "snapshotAcksRejected": 0,
+            "snapshotAckTimeoutFallbacks": 0,
+            "snapshotAckDebtEpisodes": 2,
+            "snapshotAckDebtSnapshotsCoalesced": 0,
+            "snapshotAckDebtReliableBatchesCoalesced": 0,
+            "snapshotAckDebtRecoveries": 2,
+            "snapshotAckDebtEvictions": 0,
+            "maximumSnapshotAckDebtMilliseconds": 1,
+            "snapshotHistoryFallbacks": 0,
+            "reliableEventsRecorded": 4,
+            "reliableEventBatchesSent": 6,
+            "reliableEventResendBatches": 0,
+            "reliableEventAcksAccepted": 8,
+            "reliableEventAcksRejected": 0,
+            "reliableEventHistoryFallbacks": 0,
+            "backpressureEpisodes": 0,
+            "backpressureMessagesCoalesced": 0,
+            "slowConsumerRecoveries": 2,
+            "slowConsumerEvictions": 0,
+            "maximumObservedSocketBufferedBytes": 0,
+            "lobbyCheckpointRehydrates": 0,
+            "lobbyCheckpointPlayersRestored": 0,
+            "durableAlarmRuns": 0,
+            "expiredResumeSessionsPruned": 0,
+            "loadoutRequestsAccepted": 2,
+            "loadoutRequestsRejected": 0,
+            "loadoutRequestsReplayed": 0,
+            "loadoutRequestIdConflicts": 0,
+            "activeMatchCheckpointDirtyMarks": 6,
+            "activeMatchCheckpointCoalescedMarks": 6,
+            "activeMatchCheckpointWrites": 2
+          }
+        }
+      }
+    },
+    {
+      "observedAt": "2026-07-29T02:57:17.842Z",
+      "observedAtMilliseconds": 1785293837842,
+      "label": "capture-failure",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "metrics": {
+          "serverTick": 2049,
+          "lifecycle": "active",
+          "players": 2,
+          "connectedPlayers": 2,
+          "ticks": 2049,
+          "acceptedInputs": 4094,
+          "inputRejections": {
+            "duplicate_sequence": 0,
+            "stale_sequence": 0,
+            "sequence_too_far_ahead": 0,
+            "client_tick_too_far_ahead": 0,
+            "client_tick_too_old": 0,
+            "queue_full": 0
+          },
+          "maximumObservedQueueDepth": 2,
+          "missedSchedulerTicks": 42,
+          "queryMetrics": {
+            "moveCapsuleCalls": 4098,
+            "overlapCapsuleCalls": 0,
+            "castCapsuleCalls": 0,
+            "volumeCalls": 4098,
+            "shapeCasts": 9398,
+            "overlapTests": 14533,
+            "contacts": 63
+          },
+          "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+          "lastTickFailure": null,
+          "mapBinding": {
+            "mapReference": "inkfall_foundry@3",
+            "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+            "mapId": "inkfall_foundry",
+            "mapRevision": 3,
+            "packageDigest": "260b90de2e0c2d51fa01e166d11401a04a1cb76943042de9993e85560e37f39a",
+            "fixtureId": "inkfall_foundry_map_collision",
+            "fixtureHash": "6cf785c5171f2ff5",
+            "xAxis": "east",
+            "yAxis": "up",
+            "zAxis": "north",
+            "origin": "press_core_floor_contact",
+            "gltfToMap": "x_y_negative_z",
+            "distanceUnit": "millimeters",
+            "angleUnit": "milli_degrees",
+            "colliderCardinality": 339,
+            "render": {
+              "role": "render_only",
+              "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+              "sha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+              "bytes": 2803128,
+              "renderMeshesMayBeAuthority": false
+            },
+            "collision": {
+              "role": "authority_collision",
+              "path": "revisions/revision-3/export/collision.authority.glb",
+              "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+              "bytes": 605112
+            },
+            "supportedModes": [
+              "deathmatch",
+              "team_deathmatch"
+            ],
+            "spawns": [
+              {
+                "spawnId": "spawn_w_press_a",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_a",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_press_b",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -33500,
+                  "y": 0,
+                  "z": 3500
+                },
+                "yawMilliDegrees": 0,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_press_b",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 33500,
+                  "y": 0,
+                  "z": -3500
+                },
+                "yawMilliDegrees": 180000,
+                "escapeRouteFamilies": [
+                  "press_hall",
+                  "ink_channel",
+                  "archive_walk"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_ink",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -25000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_ink",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": -7000
+                },
+                "yawMilliDegrees": -155000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_w_archive",
+                "set": "west_team",
+                "feetPosition": {
+                  "x": -30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 25000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_e_archive",
+                "set": "east_team",
+                "feetPosition": {
+                  "x": 30500,
+                  "y": 0,
+                  "z": 7000
+                },
+                "yawMilliDegrees": 155000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "press_hall"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": -3000,
+                  "z": -22000
+                },
+                "yawMilliDegrees": 45000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_ink_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": -3000,
+                  "z": -21000
+                },
+                "yawMilliDegrees": 135000,
+                "escapeRouteFamilies": [
+                  "ink_channel",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_w",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": -27000,
+                  "y": 6000,
+                  "z": 22000
+                },
+                "yawMilliDegrees": -45000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              },
+              {
+                "spawnId": "spawn_dm_archive_e",
+                "set": "deathmatch_candidate",
+                "feetPosition": {
+                  "x": 27000,
+                  "y": 6000,
+                  "z": 21000
+                },
+                "yawMilliDegrees": -135000,
+                "escapeRouteFamilies": [
+                  "archive_walk",
+                  "crosslink"
+                ],
+                "validationStatus": "capsule_clear_unscored"
+              }
+            ],
+            "zones": [
+              {
+                "zoneId": "west_gallery",
+                "callout": "West Galley",
+                "family": "spawn",
+                "center": {
+                  "x": -30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "east_gallery",
+                "callout": "East Galley",
+                "family": "spawn",
+                "center": {
+                  "x": 30000,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 4000,
+                  "z": 9000
+                }
+              },
+              {
+                "zoneId": "press_hall",
+                "callout": "Press Hall",
+                "family": "press_hall",
+                "center": {
+                  "x": 0,
+                  "y": 0,
+                  "z": 0
+                },
+                "halfExtents": {
+                  "x": 22000,
+                  "y": 4500,
+                  "z": 10000
+                }
+              },
+              {
+                "zoneId": "ink_channel_west",
+                "callout": "Ink Sump",
+                "family": "ink_channel",
+                "center": {
+                  "x": -15000,
+                  "y": -3000,
+                  "z": -18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "ink_channel_east",
+                "callout": "Cistern Fold",
+                "family": "ink_channel",
+                "center": {
+                  "x": 15000,
+                  "y": -3000,
+                  "z": -17500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3000,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_west",
+                "callout": "Paper Archive",
+                "family": "archive_walk",
+                "center": {
+                  "x": -15000,
+                  "y": 6000,
+                  "z": 18500
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "archive_walk_east",
+                "callout": "Ledger Bridge",
+                "family": "archive_walk",
+                "center": {
+                  "x": 15000,
+                  "y": 6000,
+                  "z": 18000
+                },
+                "halfExtents": {
+                  "x": 11000,
+                  "y": 3500,
+                  "z": 7000
+                }
+              },
+              {
+                "zoneId": "teleport_fold",
+                "callout": "Red Fold",
+                "family": "crosslink",
+                "center": {
+                  "x": -1500,
+                  "y": -1000,
+                  "z": -7500
+                },
+                "halfExtents": {
+                  "x": 6500,
+                  "y": 4500,
+                  "z": 6000
+                }
+              },
+              {
+                "zoneId": "paper_drop",
+                "callout": "Paper Drop",
+                "family": "crosslink",
+                "center": {
+                  "x": -4000,
+                  "y": 3000,
+                  "z": 8000
+                },
+                "halfExtents": {
+                  "x": 6000,
+                  "y": 5000,
+                  "z": 6000
+                }
+              }
+            ],
+            "pickups": [],
+            "triggers": [
+              {
+                "id": "red_fold_teleport_entry",
+                "kind": "teleport",
+                "centerMm": {
+                  "x": -4000,
+                  "y": -3000,
+                  "z": -10000
+                },
+                "halfExtentsMm": {
+                  "x": 1500,
+                  "y": 1000,
+                  "z": 1500
+                },
+                "destinationFeetMm": {
+                  "x": 1539,
+                  "y": 1431,
+                  "z": -4461
+                },
+                "destinationYawMilliDegrees": 45000,
+                "implementationStatus": "contract_only"
+              }
+            ],
+            "portal": {
+              "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+              "authorityRole": "additive_server_authority",
+              "renderRole": "rev5_render_only_no_hit",
+              "endpointCount": 2
+            },
+            "telemetry": {
+              "schemaVersion": 1,
+              "authoritySource": "durable_object_room_metrics_v1",
+              "counters": [
+                "connectedPlayers",
+                "receivedCommands",
+                "rejectedCommands",
+                "resumeSuccesses",
+                "authorityTickExecution",
+                "transport"
+              ],
+              "zoneCount": 9,
+              "pickupCount": 0
+            }
+          },
+          "spawnSelection": {
+            "schemaVersion": 1,
+            "strategy": "rev3_authority_enemy_distance_fixture_occluded_los_v1",
+            "authorityBoundary": "server_state_and_authority_collision_only",
+            "clientPositionOrScoreAccepted": false,
+            "lockedSpawnIdentityCount": 12,
+            "decisionCount": 2,
+            "fallbackCount": 0,
+            "decisions": [
+              {
+                "tick": 0,
+                "requesterOrdinal": 0,
+                "populationBeforeSpawn": 0,
+                "status": "selected",
+                "decisionHash": "baefec618197fea1",
+                "selectedSpawnId": "spawn_w_press_a",
+                "selectedScore": 640,
+                "fallbackMode": "none",
+                "eligibleCandidateCount": 4,
+                "directLosRejectedCandidateCount": 0,
+                "minimumEnemyDistanceMm": null,
+                "selectedStandingOccluded": true,
+                "selectedCrouchedOccluded": true
+              },
+              {
+                "tick": 0,
+                "requesterOrdinal": 1,
+                "populationBeforeSpawn": 1,
+                "status": "selected",
+                "decisionHash": "c80b80b0d7e983a7",
+                "selectedSpawnId": "spawn_e_press_b",
+                "selectedScore": 1040,
+                "fallbackMode": "none",
+                "eligibleCandidateCount": 4,
+                "directLosRejectedCandidateCount": 5,
+                "minimumEnemyDistanceMm": 67000,
+                "selectedStandingOccluded": true,
+                "selectedCrouchedOccluded": true
+              }
+            ]
+          },
+          "authorityTickExecution": {
+            "sampleCapacity": 4096,
+            "samples": 2049,
+            "p50Milliseconds": 6,
+            "p95Milliseconds": 10,
+            "p99Milliseconds": 13,
+            "maximumMilliseconds": 1429
+          },
+          "transport": {
+            "inboundMessagesReceived": 6192,
+            "inboundMessagesRateAccepted": 6192,
+            "inboundMessagesRateRejected": 0,
+            "fullSnapshotsSent": 2,
+            "deltaSnapshotsSent": 2048,
+            "snapshotAcksAccepted": 2072,
+            "snapshotAcksRejected": 0,
+            "snapshotAckTimeoutFallbacks": 0,
+            "snapshotAckDebtEpisodes": 18,
+            "snapshotAckDebtSnapshotsCoalesced": 0,
+            "snapshotAckDebtReliableBatchesCoalesced": 0,
+            "snapshotAckDebtRecoveries": 18,
+            "snapshotAckDebtEvictions": 0,
+            "maximumSnapshotAckDebtMilliseconds": 1,
+            "snapshotHistoryFallbacks": 0,
+            "reliableEventsRecorded": 12,
+            "reliableEventBatchesSent": 22,
+            "reliableEventResendBatches": 0,
+            "reliableEventAcksAccepted": 2072,
+            "reliableEventAcksRejected": 0,
+            "reliableEventHistoryFallbacks": 0,
+            "backpressureEpisodes": 0,
+            "backpressureMessagesCoalesced": 0,
+            "slowConsumerRecoveries": 18,
+            "slowConsumerEvictions": 0,
+            "maximumObservedSocketBufferedBytes": 0,
+            "lobbyCheckpointRehydrates": 0,
+            "lobbyCheckpointPlayersRestored": 0,
+            "durableAlarmRuns": 0,
+            "expiredResumeSessionsPruned": 0,
+            "loadoutRequestsAccepted": 2,
+            "loadoutRequestsRejected": 0,
+            "loadoutRequestsReplayed": 0,
+            "loadoutRequestIdConflicts": 0,
+            "activeMatchCheckpointDirtyMarks": 8212,
+            "activeMatchCheckpointCoalescedMarks": 8212,
+            "activeMatchCheckpointWrites": 212
+          }
+        }
+      }
+    }
+  ],
+  "vite": [
+    "  \u001b[32m\u001b[1mVITE\u001b[22m v8.1.5\u001b[39m  \u001b[2mready in \u001b[0m\u001b[1m199\u001b[22m\u001b[2m\u001b[0m ms\u001b[22m",
+    "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m5173\u001b[22m/\u001b[39m"
+  ],
+  "wrangler": [
+    " ⛅️ wrangler 4.112.0 (update available 4.115.0)",
+    "───────────────────────────────────────────────",
+    "Using secrets defined in .env.local",
+    "Your Worker has access to the following bindings:",
+    "Binding                                                                         Resource                  Mode",
+    "env.KYX_ROOM (KyxRoom)                                                          Durable Object            local",
+    "env.KYX_ALLOCATION_GUARD (KyxAllocationGuard)                                   Durable Object            local",
+    "env.ALLOWED_ORIGINS (\"http://127.0.0.1:5173,http://localhos...\")                Environment Variable      local",
+    "env.BUILD_ID (\"foundry-command-v2-g7-online-20260725\")                          Environment Variable      local",
+    "env.VITE_KYX_AUTHORITY_ORIGIN (\"(hidden)\")                                      Environment Variable      local",
+    "⎔ Starting local server...",
+    "[wrangler:info] ✨ Parsed 2 valid header rules.",
+    "[wrangler:info] Ready on http://127.0.0.1:8787",
+    "[wrangler:info] GET /health 200 OK (237ms)",
+    "[wrangler:info] OPTIONS /api/rooms/create 204 No Content (4ms)",
+    "[wrangler:info] POST /api/rooms/create 201 Created (112ms)",
+    "[wrangler:info] GET /api/rooms/KYX-LD3PY2/socket 101 Switching Protocols (15ms)",
+    "[wrangler:info] OPTIONS /api/rooms/KYX-LD3PY2 204 No Content (4ms)",
+    "[wrangler:info] POST /api/rooms/KYX-LD3PY2 201 Created (6ms)",
+    "[wrangler:info] GET /api/rooms/KYX-LD3PY2/socket 101 Switching Protocols (10ms)",
+    "[wrangler:info] GET /api/rooms/KYX-LD3PY2/metrics 200 OK (7ms)",
+    "[wrangler:info] GET /api/rooms/KYX-LD3PY2/metrics 200 OK (17ms)"
+  ]
+}

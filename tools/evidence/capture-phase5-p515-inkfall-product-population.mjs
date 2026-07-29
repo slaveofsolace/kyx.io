@@ -1331,41 +1331,49 @@ async function exerciseRev5PortalRoundTrip(participants, driver) {
     500,
     45,
   );
-  const before = await moveTo(
-    driver.page,
-    rev5PortalRoute.lowerApproach,
-    'Rev5 lower portal approach',
-    500,
-    45,
-  );
-  await face(
-    driver.page,
-    Math.round(Math.atan2(
-      rev5PortalRoute.lowerEntryTarget.x
-        - before.localPredictedPosition.x,
-      rev5PortalRoute.lowerEntryTarget.z
-        - before.localPredictedPosition.z,
-    ) * 180_000 / Math.PI),
-    800,
-  );
-  await driver.page.screenshot({
-    path: path.join(
-      screenshotDirectory,
-      'p515-03a-rev5-lower-portal-approach.png',
-    ),
-    fullPage: true,
-  });
-  const actorId = before.playerId;
-  const lowerMinimumSequence = wireSequence;
-  const lowerRequestedAtMilliseconds = Date.now();
-  await pulseKey(driver.page, 'w', 260);
-  const lowerDeliveries = await awaitPortalDeliveries(
-    participants,
-    lowerMinimumSequence,
-    actorId,
-    'red_fold_lower',
-    lowerRequestedAtMilliseconds,
-  );
+  let before;
+  let actorId;
+  let lowerDeliveries;
+  await driver.page.keyboard.down('c');
+  try {
+    before = await moveTo(
+      driver.page,
+      rev5PortalRoute.lowerApproach,
+      'Rev5 lower portal approach',
+      500,
+      45,
+    );
+    await face(
+      driver.page,
+      Math.round(Math.atan2(
+        rev5PortalRoute.lowerEntryTarget.x
+          - before.localPredictedPosition.x,
+        rev5PortalRoute.lowerEntryTarget.z
+          - before.localPredictedPosition.z,
+      ) * 180_000 / Math.PI),
+      800,
+    );
+    await driver.page.screenshot({
+      path: path.join(
+        screenshotDirectory,
+        'p515-03a-rev5-lower-portal-approach.png',
+      ),
+      fullPage: true,
+    });
+    actorId = before.playerId;
+    const lowerMinimumSequence = wireSequence;
+    const lowerRequestedAtMilliseconds = Date.now();
+    await pulseKey(driver.page, 'w', 260);
+    lowerDeliveries = await awaitPortalDeliveries(
+      participants,
+      lowerMinimumSequence,
+      actorId,
+      'red_fold_lower',
+      lowerRequestedAtMilliseconds,
+    );
+  } finally {
+    await driver.page.keyboard.up('c').catch(() => undefined);
+  }
   await delay(300);
   const lowerArrival = await productSnapshot(driver.page);
   const lowerLanding = assertPortalLanding(
@@ -1431,6 +1439,7 @@ async function exerciseRev5PortalRoundTrip(participants, driver) {
     route: rev5PortalRoute,
     actorId,
     lower: Object.freeze({
+      transitStance: 'crouched',
       corridorEntryPosition: routeAuthorityPosition(lowerCorridorEntry),
       beforePosition: routeAuthorityPosition(before),
       landing: lowerLanding,
