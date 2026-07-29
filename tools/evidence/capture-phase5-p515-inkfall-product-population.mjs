@@ -1020,7 +1020,7 @@ async function face(page, targetYawMilliDegrees, toleranceMilliDegrees = 2_200) 
     assert.notEqual(current, null);
     const delta = normalizedYawDelta(current.localPredictedYawMilliDegrees, targetYawMilliDegrees);
     if (Math.abs(delta) <= toleranceMilliDegrees) return current;
-    const key = delta > 0 ? 'e' : 'q';
+    const key = delta > 0 ? 'ArrowRight' : 'ArrowLeft';
     // Below three discrete 1.5-degree input steps, use a sub-sample pulse and
     // bounded retries so tight combat alignment can land one step instead of
     // oscillating by two steps around an otherwise unreachable target angle.

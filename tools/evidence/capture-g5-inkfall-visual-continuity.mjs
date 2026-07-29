@@ -310,10 +310,10 @@ try {
   await captureArena(page, '02-press-hall-approach.png');
 
   await tapLook(page, 'ArrowDown', 4);
-  await tapLook(page, 'KeyQ', 30);
+  await tapLook(page, 'ArrowLeft', 30);
   await captureArena(page, '03-ink-channel-and-red-fold.png');
 
-  await tapLook(page, 'KeyE', 60);
+  await tapLook(page, 'ArrowRight', 60);
   await tapLook(page, 'ArrowUp', 5);
   await captureArena(page, '04-archive-tier-and-paper-drop.png');
 
