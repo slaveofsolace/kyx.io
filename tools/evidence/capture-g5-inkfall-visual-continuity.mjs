@@ -144,6 +144,7 @@ let result = null;
 let failure = null;
 const consoleErrors = [];
 const pageErrors = [];
+const phaseDiagnostics = {};
 
 assert.equal(
   repositoryStatusAtStart,
@@ -361,6 +362,11 @@ try {
     && spawn.feetPosition.z === joined.localAuthoritativePosition.z
   ));
   assert.notEqual(joinedSpawn, undefined, 'Joined position must match a bound spawn');
+  phaseDiagnostics.joined = {
+    spawnId: joinedSpawn.spawnId,
+    yawMilliDegrees: joinedSpawn.yawMilliDegrees,
+    positionMm: joined.localAuthoritativePosition,
+  };
   assert.ok(
     joined.render3d.renderOnlyContainmentMeshCount > 200,
     'The continuity batch should contribute a major render-only dressing set.',
@@ -370,7 +376,7 @@ try {
   await captureArena(page, '01-west-spawn-pocket-forward.png');
 
   await page.keyboard.down('KeyW');
-  await delay(3_000);
+  await delay(1_600);
   await page.keyboard.up('KeyW');
   await delay(800);
   const pressApproach = await snapshot(page);
@@ -404,9 +410,19 @@ try {
     Math.sin(joinedYawRadians) * pressApproachDelta.x
     + Math.cos(joinedYawRadians) * pressApproachDelta.z
   ) / Math.hypot(pressApproachDelta.x, pressApproachDelta.z);
+  phaseDiagnostics.pressApproach = {
+    positionMm: pressApproach.localAuthoritativePosition,
+    deltaMm: pressApproachDelta,
+    forwardAlignment,
+    lastError: pressApproach.lastError,
+  };
   assert.ok(
     forwardAlignment > 0.97,
-    `Forward capture movement must follow spawn facing: ${forwardAlignment}`,
+    `First-egress movement must follow spawn facing: ${forwardAlignment}`,
+  );
+  assert.ok(
+    Math.abs(pressApproachDelta.y) <= 250,
+    `First-egress traversal must remain supported: ${pressApproachDelta.y} mm`,
   );
   await tapLook(page, 'ArrowUp', 4);
   await captureArena(page, '02-press-hall-approach.png');
@@ -515,6 +531,7 @@ try {
       message: error instanceof Error ? error.stack : String(error),
       consoleErrors,
       pageErrors,
+      phaseDiagnostics,
       vite: vite?.lines ?? [],
       wrangler: wrangler?.lines ?? [],
     }, null, 2)}\n`,
