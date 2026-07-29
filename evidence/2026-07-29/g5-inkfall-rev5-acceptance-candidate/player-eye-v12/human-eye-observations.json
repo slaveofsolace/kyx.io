@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "session": {
+    "buildId": "91f61acb8c5fd4348df2ae18812f9080883478cf",
+    "mode": "black-box comparative player-eye review",
+    "platform": "Windows 11 / Chrome / NVIDIA RTX 4090 / D3D11",
+    "input": "Playwright keyboard traversal through authored topology",
+    "resolution": "1440x900",
+    "observedAt": "2026-07-29T17:18:51.403Z",
+    "evidenceRoot": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v12",
+    "comparisonRoots": [
+      "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v10",
+      "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v11"
+    ]
+  },
+  "observations": [
+    {
+      "id": "OBS-001",
+      "component": "map lighting and landmark readability",
+      "label": "OBSERVED",
+      "title": "Raised material separation helps navigation, but dark machinery still loses authored form",
+      "context": "All six v12 player-eye views compared with the same first four v10 views",
+      "action": "Traverse from west spawn through Press Hall, Ink Channel, lower portal, and linked upper exit",
+      "expectation": "Playable planes, hazards, machinery bodies, and traversal choices remain legible while preserving the dark foundry mood",
+      "actual": "The cyan deck, bridge load path, steel supports, portal frame, and brown shell family separate more clearly than v10. The press roller body is now visible between its brass collars, but it still reads as an oversized near-black ceiling tube and large ceiling and wall regions continue to collapse into empty black fields.",
+      "playerConsequence": "Route finding is improving, but enemy silhouettes and collision depth could still disappear against the darkest machine and ceiling regions.",
+      "reproduction": [
+        "Compare v10 and v12 screenshots 01, 02, and 04 at normal viewing size",
+        "Trace the large roller from its front collar to the rear collar and inspect the surrounding ceiling"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/04-archive-tier-and-paper-drop.png",
+        "screenshots/06-red-fold-linked-exit.png"
+      ],
+      "hypotheses": [
+        "The roller needs an authored mount, end-cap hierarchy, and local fill rather than another global exposure increase",
+        "The darkest structural family remains too close to the background value"
+      ],
+      "nextDiscriminatingTest": "Give the roller one visibly load-bearing mount and controlled edge light, then test opponent silhouettes across the same sightline.",
+      "recommendedOutcome": "Preserve the atmosphere while making every major landmark read as a connected object rather than a silhouette or void.",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-002",
+      "component": "portal function and affordance",
+      "label": "OBSERVED",
+      "title": "The portal is now findable and functionally proven, but its visual treatment is not final",
+      "context": "Close lower approach and authoritative linked-exit frames",
+      "action": "Crouch through the authored lower corridor, face the portal, cross its trigger, and observe the upper arrival",
+      "expectation": "The entry reads instantly as an active spatial portal, crossing it produces a coherent transition, and the exit preserves orientation and destination awareness.",
+      "actual": "The lower frame dominates the approach and is unmistakably traversable; one authority-owned lower-to-upper traversal moved the player from (-4621,-2863,-12808) to (1786,1690,-4214) and produced one local presentation event. Visually, the pale field resembles a flat turbine/fan, the bright top strip clips across the frame, there is little depth or destination preview, and the upper frame is mostly off-screen at arrival.",
+      "playerConsequence": "Players can discover and use the shortcut, but the interaction does not yet feel like the polished ev.io-style teleport requested by the owner.",
+      "reproduction": [
+        "Open screenshots 05 and 06 in sequence",
+        "Compare the lower portal field, frame silhouette, transition feedback, and arrival framing"
+      ],
+      "frequency": 4,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/05-red-fold-portal-approach.png",
+        "screenshots/06-red-fold-linked-exit.png",
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "A layered energy membrane, visible destination distortion, and a shorter activation cue would communicate teleportation better than the current radial fan motif",
+        "Arrival camera framing should deliberately reveal the linked exit and next combat choice"
+      ],
+      "nextDiscriminatingTest": "Add an authored energy membrane and arrival orientation cue, then capture entry, transition frames, exit, and reconnect through the portal.",
+      "recommendedOutcome": "Keep the proven authority contract and replace only the presentation layer with a deeper, more spatial portal treatment.",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-003",
+      "component": "map structural art",
+      "label": "OBSERVED",
+      "title": "Fewer, thicker bridge members improve the load path, but the assembly still reads as scaffold",
+      "context": "Press Hall and Ink Channel bridge views",
+      "action": "Inspect the ramp from the spawn approach, below the span, and beside the guard line",
+      "expectation": "A few designed bridge bays, connection plates, and deliberate negative spaces communicate a finished industrial assembly.",
+      "actual": "Eight boundary posts, thicker piers, larger feet, stronger edge girders, and larger joint frames are clearer than v10. Repeated rails, narrow cross braces, exposed independent feet, ceiling bars, and minimally detailed joints still compete at similar visual weight.",
+      "playerConsequence": "The route is readable, but it still looks constructed from primitives rather than like a shipped arena landmark.",
+      "reproduction": [
+        "Inspect screenshots 01 through 04",
+        "Follow each pier from floor foot through deck connection and rail"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png"
+      ],
+      "hypotheses": [
+        "One authored connection kit shared across the bridge would group the current loose members into believable bays",
+        "Secondary ceiling and rail lines need stronger distance hierarchy"
+      ],
+      "nextDiscriminatingTest": "Replace one representative bay with a finished modular assembly and compare its silhouette at 5 m, 20 m, and during target tracking.",
+      "recommendedOutcome": "Keep the authority geometry and replace the visual scaffold rhythm with two or three recognizable structural modules.",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-004",
+      "component": "first-person weapon and HUD",
+      "label": "OBSERVED",
+      "title": "The integrated VLR-7 and current HUD remain the strongest rejection signals",
+      "context": "Every v12 player-eye frame plus source-identity audit",
+      "action": "Read the combat view at normal size while moving through the arena",
+      "expectation": "A convincing held rifle with hands, contact, ADS-ready alignment, and one restrained competitive HUD support the world without dominating it.",
+      "actual": "The visible rifle is the integrated VLR-7, not a missing placeholder binding. It remains a large black cuboid with no visible arms, weak grip contact, little material breakup, and no player-eye mechanical depth. The boxed abilities, oversized health and ammo, tiny top typography, room chrome, and mixed line weights still look like separate UI generations.",
+      "playerConsequence": "These always-visible surfaces make the entire build feel unfinished even when the map and authority runtime are functioning correctly.",
+      "reproduction": [
+        "Open any v12 screenshot",
+        "Inspect the weapon silhouette, empty hand contact area, lower HUD, top score strip, and room label"
+      ],
+      "frequency": 5,
+      "severity": 5,
+      "reach": 5,
+      "trust": 5,
+      "friction": 5,
+      "blocker": true,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/05-red-fold-portal-approach.png",
+        "screenshots/06-red-fold-linked-exit.png"
+      ],
+      "hypotheses": [
+        "The weapon regression is primarily first-person scale, contact, lighting, and animation rather than selection of the wrong weapon family",
+        "The strongest Cutline HUD candidate has not yet been safely checkpointed and integrated into canonical main"
+      ],
+      "nextDiscriminatingTest": "Recover one VLR-7 viewmodel end to end with authored arms, two-hand contact, ADS, recoil, reload, muzzle alignment, and the Cutline HUD in the same capture.",
+      "recommendedOutcome": "Replace both continuous rejection surfaces before another owner map/play acceptance request.",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-005",
+      "component": "acceptance evidence coverage",
+      "label": "UNKNOWN",
+      "title": "Portal traversal is proven, but the actual combat game loop is still outside this packet",
+      "context": "Six-view v12 screenshot packet and focused capture record",
+      "action": "Attempt to judge opponent readability, locomotion, weapon animation, abilities, audio, death, respawn, reconnect, and sustained encounter flow",
+      "expectation": "A vertical-slice acceptance packet covers representative movement, combat, abilities, portal use, recovery, and sound with real opponents.",
+      "actual": "The packet now proves a hardware-rendered authored route and one authority-owned linked portal traversal. It still contains no enemy combat, animation sequence, ADS or reload, ability use, audio judgment, death/respawn, portal reconnect, or sustained player decision loop.",
+      "playerConsequence": "Human map/play acceptance and whole-game quality remain unearned even though the portal runtime is no longer an unknown.",
+      "reproduction": [
+        "Review all v12 screenshots and focused-visual-capture.json",
+        "Look for time-based proof beyond movement and one portal event"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "This packet was intentionally scoped to map and portal recovery rather than full vertical-slice acceptance"
+      ],
+      "nextDiscriminatingTest": "After the rifle and HUD recovery, record one bounded real-play sequence covering movement, opponents, all equipped abilities, portal traversal, death, respawn, and reconnect.",
+      "recommendedOutcome": "Use one integrated combat capture for the next owner decision instead of another static map-only pass.",
+      "status": "OPEN"
+    }
+  ]
+}
