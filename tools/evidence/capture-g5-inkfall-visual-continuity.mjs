@@ -98,11 +98,15 @@ async function captureArena(page, filename) {
 }
 
 async function tapLook(page, code, count) {
-  for (let index = 0; index < count; index += 1) {
-    await page.keyboard.press(code);
-    await delay(38);
-  }
+  await page.keyboard.down(code);
+  await delay(Math.max(80, count * 55));
+  await page.keyboard.up(code);
   await delay(350);
+}
+
+function angularDistanceMilliDegrees(left, right) {
+  const delta = Math.abs(left - right) % 360_000;
+  return Math.min(delta, 360_000 - delta);
 }
 
 const repositoryHeadAtStart = execFileSync(
@@ -425,14 +429,38 @@ try {
     `First-egress traversal must remain supported: ${pressApproachDelta.y} mm`,
   );
   await tapLook(page, 'ArrowUp', 4);
+  const pressHallView = await snapshot(page);
+  assert.ok(
+    Math.abs(
+      pressHallView.localPredictedPitchMilliDegrees
+        - pressApproach.localPredictedPitchMilliDegrees,
+    ) >= 3_000,
+    'Press Hall capture must apply a visible pitch change',
+  );
   await captureArena(page, '02-press-hall-approach.png');
 
   await tapLook(page, 'ArrowDown', 4);
   await tapLook(page, 'ArrowLeft', 30);
+  const inkChannelView = await snapshot(page);
+  assert.ok(
+    angularDistanceMilliDegrees(
+      pressHallView.localPredictedYawMilliDegrees,
+      inkChannelView.localPredictedYawMilliDegrees,
+    ) >= 25_000,
+    'Ink Channel capture must apply a distinct left-facing camera yaw',
+  );
   await captureArena(page, '03-ink-channel-and-red-fold.png');
 
   await tapLook(page, 'ArrowRight', 60);
   await tapLook(page, 'ArrowUp', 5);
+  const archiveView = await snapshot(page);
+  assert.ok(
+    angularDistanceMilliDegrees(
+      inkChannelView.localPredictedYawMilliDegrees,
+      archiveView.localPredictedYawMilliDegrees,
+    ) >= 50_000,
+    'Archive capture must apply a distinct right-facing camera yaw',
+  );
   await captureArena(page, '04-archive-tier-and-paper-drop.png');
 
   const final = await snapshot(page);
@@ -468,6 +496,11 @@ try {
       })];
     })),
   ));
+  assert.equal(
+    new Set(Object.values(screenshotIntegrity).map(({ sha256 }) => sha256)).size,
+    screenshotFiles.length,
+    'Every player-eye screenshot must contain a distinct view',
+  );
   result = Object.freeze({
     schemaVersion: 1,
     status: 'rev5_player_eye_capture_complete_human_review_open',
@@ -508,6 +541,24 @@ try {
       pressApproachDeltaMm: pressApproachDelta,
       forwardAlignment,
       finalPositionMm: final.localAuthoritativePosition,
+      cameraViews: Object.freeze({
+        spawn: Object.freeze({
+          yawMilliDegrees: joined.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: joined.localPredictedPitchMilliDegrees,
+        }),
+        pressHall: Object.freeze({
+          yawMilliDegrees: pressHallView.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: pressHallView.localPredictedPitchMilliDegrees,
+        }),
+        inkChannel: Object.freeze({
+          yawMilliDegrees: inkChannelView.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: inkChannelView.localPredictedPitchMilliDegrees,
+        }),
+        archive: Object.freeze({
+          yawMilliDegrees: archiveView.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: archiveView.localPredictedPitchMilliDegrees,
+        }),
+      }),
     }),
     screenshots: screenshotFiles,
     screenshotIntegrity,
