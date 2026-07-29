@@ -14,7 +14,7 @@ const FIXTURE_HASH = '97eb7772ac59dc95';
 const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
 const PRESENTATION_SHA256 =
-  '569dcec0f06395c2e5f8419e48c86545b03c2155f6aa778c72fa1f335bc066d3';
+  '7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3';
 const FRONTEND_PORT = 6_247;
 const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
@@ -107,6 +107,89 @@ async function tapLook(page, code, count) {
 function angularDistanceMilliDegrees(left, right) {
   const delta = Math.abs(left - right) % 360_000;
   return Math.min(delta, 360_000 - delta);
+}
+
+function signedAngularDeltaMilliDegrees(target, current) {
+  return ((target - current + 540_000) % 360_000) - 180_000;
+}
+
+function headingToMapTarget(position, target) {
+  const deltaX = target.x - position.x;
+  const deltaZ = target.z - position.z;
+  return (
+    Math.atan2(deltaX, deltaZ) * 180_000 / Math.PI
+    + 360_000
+  ) % 360_000;
+}
+
+async function rotateToYaw(page, targetYawMilliDegrees) {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const value = await snapshot(page);
+    assert.notEqual(value?.localPredictedYawMilliDegrees, null);
+    const delta = signedAngularDeltaMilliDegrees(
+      targetYawMilliDegrees,
+      value.localPredictedYawMilliDegrees,
+    );
+    if (Math.abs(delta) <= 4_500) return value;
+    const count = Math.max(1, Math.min(24, Math.ceil(Math.abs(delta) / 1_700)));
+    await tapLook(page, delta > 0 ? 'ArrowRight' : 'ArrowLeft', count);
+  }
+  const value = await snapshot(page);
+  throw new Error(
+    `Unable to rotate to ${targetYawMilliDegrees}: ${
+      value?.localPredictedYawMilliDegrees ?? 'missing yaw'
+    }`,
+  );
+}
+
+async function navigateToMapTarget(page, target) {
+  const route = [];
+  let previousDistance = Number.POSITIVE_INFINITY;
+  let stalledPulses = 0;
+  for (let pulse = 0; pulse < 24; pulse += 1) {
+    const before = await snapshot(page);
+    assert.notEqual(before?.localAuthoritativePosition, null);
+    const deltaX = target.x - before.localAuthoritativePosition.x;
+    const deltaZ = target.z - before.localAuthoritativePosition.z;
+    const distance = Math.hypot(deltaX, deltaZ);
+    route.push({
+      pulse,
+      position: before.localAuthoritativePosition,
+      distance,
+      yawMilliDegrees: before.localPredictedYawMilliDegrees,
+    });
+    if (distance <= 2_400) {
+      return Object.freeze({ route: Object.freeze(route), snapshot: before });
+    }
+    await rotateToYaw(
+      page,
+      headingToMapTarget(before.localAuthoritativePosition, target),
+    );
+    const duration = Math.max(240, Math.min(620, (distance - 1_800) / 8));
+    await page.keyboard.down('KeyW');
+    await delay(duration);
+    await page.keyboard.up('KeyW');
+    await delay(320);
+    if (previousDistance - distance < 180) {
+      stalledPulses += 1;
+    } else {
+      stalledPulses = 0;
+    }
+    if (stalledPulses >= 2) {
+      await page.keyboard.press('Space');
+      await delay(220);
+      stalledPulses = 0;
+    }
+    previousDistance = distance;
+  }
+  const value = await snapshot(page);
+  throw new Error(
+    `Unable to reach portal approach: ${JSON.stringify({
+      target,
+      position: value?.localAuthoritativePosition ?? null,
+      route,
+    })}`,
+  );
 }
 
 const repositoryHeadAtStart = execFileSync(
@@ -501,6 +584,56 @@ try {
   );
   await captureArena(page, '04-archive-tier-and-paper-drop.png');
 
+  await tapLook(page, 'ArrowDown', 6);
+  const portalNavigation = await navigateToMapTarget(page, {
+    x: -4_000,
+    z: -6_000,
+  });
+  await rotateToYaw(page, 180_000);
+  const portalApproach = await snapshot(page);
+  const portalPresentationCountBefore =
+    portalApproach.render3d.portalTraversalPresentationCount;
+  await captureArena(page, '05-red-fold-portal-approach.png');
+  await page.keyboard.down('KeyW');
+  await delay(1_200);
+  await page.keyboard.up('KeyW');
+  await page.waitForFunction((expectedCount) => (
+    (
+      globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
+        .render3d?.portalTraversalPresentationCount
+      ?? 0
+    ) > expectedCount
+  ), portalPresentationCountBefore, { timeout: 15_000 });
+  await delay(500);
+  const portalExit = await snapshot(page);
+  assert.ok(
+    portalExit.render3d.portalTraversalPresentationCount
+      > portalPresentationCountBefore,
+    'Portal traversal must produce a local presentation cue',
+  );
+  assert.ok(
+    Math.hypot(
+      portalExit.localAuthoritativePosition.x
+        - portalApproach.localAuthoritativePosition.x,
+      portalExit.localAuthoritativePosition.y
+        - portalApproach.localAuthoritativePosition.y,
+      portalExit.localAuthoritativePosition.z
+        - portalApproach.localAuthoritativePosition.z,
+    ) >= 4_000,
+    'Portal traversal must produce a distinct authoritative exit position',
+  );
+  await captureArena(page, '06-red-fold-linked-exit.png');
+  phaseDiagnostics.portal = {
+    navigation: portalNavigation.route,
+    approachPositionMm: portalApproach.localAuthoritativePosition,
+    approachYawMilliDegrees: portalApproach.localPredictedYawMilliDegrees,
+    exitPositionMm: portalExit.localAuthoritativePosition,
+    exitYawMilliDegrees: portalExit.localPredictedYawMilliDegrees,
+    presentationCountBefore: portalPresentationCountBefore,
+    presentationCountAfter:
+      portalExit.render3d.portalTraversalPresentationCount,
+  };
+
   const final = await snapshot(page);
   assert.equal(
     final.lastError,
@@ -524,6 +657,8 @@ try {
     'screenshots/02-press-hall-approach.png',
     'screenshots/03-ink-channel-and-red-fold.png',
     'screenshots/04-archive-tier-and-paper-drop.png',
+    'screenshots/05-red-fold-portal-approach.png',
+    'screenshots/06-red-fold-linked-exit.png',
   ]);
   const screenshotIntegrity = Object.freeze(Object.fromEntries(
     await Promise.all(screenshotFiles.map(async (relative) => {
@@ -567,6 +702,8 @@ try {
       renderOnlyVisualContinuityMeshCount:
         final.render3d.renderOnlyContainmentMeshCount,
       spawnPocketCount: final.render3d.spawnPocketContainmentCount,
+      portalTraversalPresentationCount:
+        final.render3d.portalTraversalPresentationCount,
       isolatedPlayerContexts: 2,
       rendererMode,
       graphics,
@@ -578,6 +715,8 @@ try {
       pressApproachPositionMm: pressApproach.localAuthoritativePosition,
       pressApproachDeltaMm: pressApproachDelta,
       forwardAlignment,
+      portalApproachPositionMm: portalApproach.localAuthoritativePosition,
+      portalExitPositionMm: portalExit.localAuthoritativePosition,
       finalPositionMm: final.localAuthoritativePosition,
       cameraViews: Object.freeze({
         spawn: Object.freeze({
@@ -595,6 +734,14 @@ try {
         archive: Object.freeze({
           yawMilliDegrees: archiveView.localPredictedYawMilliDegrees,
           pitchMilliDegrees: archiveView.localPredictedPitchMilliDegrees,
+        }),
+        portalApproach: Object.freeze({
+          yawMilliDegrees: portalApproach.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: portalApproach.localPredictedPitchMilliDegrees,
+        }),
+        portalExit: Object.freeze({
+          yawMilliDegrees: portalExit.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: portalExit.localPredictedPitchMilliDegrees,
         }),
       }),
     }),

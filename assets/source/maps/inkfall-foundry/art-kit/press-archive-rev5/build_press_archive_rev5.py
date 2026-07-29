@@ -1129,21 +1129,21 @@ def add_support_pair(
     for side_token, point in (("L", left), ("R", right)):
         add_box(
             f"V5_BRIDGE_{segment_token}_PIER_{sample_token}_{side_token}",
-            (0.38, 0.38, top_z - base_z),
+            (0.52, 0.52, top_z - base_z),
             (point[0], point[1], (base_z + top_z) * 0.5),
             cast,
             zone,
             "load_pier",
-            bevel=0.035,
+            bevel=0.055,
         )
         add_box(
             f"V5_BRIDGE_{segment_token}_FOOT_{sample_token}_{side_token}",
-            (0.72, 0.72, 0.18),
+            (0.90, 0.90, 0.20),
             (point[0], point[1], base_z + 0.08),
             steel,
             zone,
             "load_pier",
-            bevel=0.045,
+            bevel=0.065,
         )
     add_beam(
         f"V5_BRIDGE_{segment_token}_SUPPORT_CROSS_{sample_token}",
@@ -1170,6 +1170,7 @@ def build_connected_bridge(
     zone = "archive_rise"
     support_count = 0
     joint_count = 0
+    rail_post_count = 0
 
     for segment_index, (start, end) in enumerate(zip(ROUTE_POINTS, ROUTE_POINTS[1:])):
         side = path_side(start, end)
@@ -1221,8 +1222,8 @@ def build_connected_bridge(
                 f"V5_BRIDGE_{token}_EDGE_GIRDER_{side_index}",
                 (edge_start[0], edge_start[1], edge_start[2] - 0.06),
                 (edge_end[0], edge_end[1], edge_end[2] - 0.06),
-                0.18,
-                0.38,
+                0.24,
+                0.46,
                 steel,
                 zone,
                 "edge_girder",
@@ -1242,9 +1243,10 @@ def build_connected_bridge(
                     "attached_guard_rail",
                     vertices=14,
                 )
-            # Three deliberate bays per segment read as a guard system instead
-            # of the rejected picket/scaffold rhythm.
-            fractions = (0.0, 0.5, 1.0)
+            # Posts only at structural segment boundaries keep the continuous
+            # rails safe while opening combat sightlines. Mid-span pickets read
+            # as construction scaffold rather than finished bridge hardware.
+            fractions = (0.0, 1.0)
             if segment_index > 0:
                 fractions = fractions[1:]
             for post_index, fraction in enumerate(fractions):
@@ -1253,11 +1255,12 @@ def build_connected_bridge(
                     f"V5_BRIDGE_{token}_RAIL_POST_{side_index}_{post_index}",
                     (sample[0], sample[1], sample[2] - 0.08),
                     (sample[0], sample[1], sample[2] + 1.08),
-                    0.052,
+                    0.065,
                     cast,
                     zone,
                     "attached_guard_post",
                 )
+                rail_post_count += 1
 
         # One centered load frame per span is enough to show a credible load
         # path. The previous two-pair cadence filled combat lanes with a forest
@@ -1290,27 +1293,27 @@ def build_connected_bridge(
         for token, endpoint in (("L", left), ("R", right)):
             add_box(
                 f"V5_BRIDGE_JOINT_{joint_index}_FRAME_POST_{token}",
-                (0.24, 0.24, 2.78),
+                (0.36, 0.36, 2.78),
                 (endpoint[0], endpoint[1], endpoint[2] + 1.31),
                 cast,
                 zone,
                 "rooted_transition_frame",
-                bevel=0.024,
+                bevel=0.045,
             )
             add_box(
                 f"V5_BRIDGE_JOINT_{joint_index}_FRAME_SHOE_{token}",
-                (0.52, 0.52, 0.16),
+                (0.78, 0.78, 0.20),
                 (endpoint[0], endpoint[1], endpoint[2] + 0.02),
                 steel,
                 zone,
                 "rooted_transition_frame",
-                bevel=0.032,
+                bevel=0.055,
             )
         add_beam(
             f"V5_BRIDGE_JOINT_{joint_index}_FRAME_CROWN",
             (left[0], left[1], left[2] + 2.62),
             (right[0], right[1], right[2] + 2.62),
-            0.12,
+            0.17,
             cast,
             zone,
             "rooted_transition_frame",
@@ -1322,6 +1325,7 @@ def build_connected_bridge(
         "segmentCount": len(ROUTE_POINTS) - 1,
         "supportComponentCount": support_count,
         "jointComponentCount": joint_count,
+        "railPostCount": rail_post_count,
         "continuousPrimaryDeck": True,
         "railsRootedToDeckGirders": True,
         "transitionFramesRootedToDeck": True,
@@ -2588,6 +2592,8 @@ def main() -> None:
         ),
         "bridgeLoadsVisiblySupported": (
             bridge["supportComponentCount"] == 15
+            and bridge["jointComponentCount"] == 12
+            and bridge["railPostCount"] == 8
             and bridge["transitionFramesRootedToDeck"]
         ),
         "railsAttachedToGirders": bridge["railsRootedToDeckGirders"],
