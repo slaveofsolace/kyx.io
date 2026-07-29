@@ -559,19 +559,34 @@ try {
   const acceptedAttackCountBefore =
     aimed.render3d.acceptedAttackPresentationCount;
   await page.waitForFunction(() => (
-    globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
-      .combat.snapshot?.match.phase === 'active'
+    (() => {
+      const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+      const local = value?.combat.snapshot?.players.find(
+        ({ playerId }) => playerId === value.playerId,
+      );
+      const weapon = local?.weapons?.find(
+        ({ weaponId }) => weaponId === local.selectedWeaponId,
+      );
+      return value?.combat.snapshot?.match.phase === 'active'
+        && weapon?.phase === 'ready';
+    })()
   ), undefined, { timeout: 20_000 });
   await page.keyboard.down('Enter');
-  await delay(450);
-  await page.keyboard.up('Enter');
-  await page.waitForFunction((previous) => (
-    (
+  try {
+    await page.waitForFunction(() => (
       globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
-        .render3d?.acceptedAttackPresentationCount
-      ?? 0
-    ) > previous
-  ), acceptedAttackCountBefore, { timeout: 15_000 });
+        .inputBridge.primaryFire === true
+    ));
+    await page.waitForFunction((previous) => (
+      (
+        globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
+          .render3d?.acceptedAttackPresentationCount
+        ?? 0
+      ) > previous
+    ), acceptedAttackCountBefore, { timeout: 15_000 });
+  } finally {
+    await page.keyboard.up('Enter').catch(() => undefined);
+  }
   const reloadPresentationCountBefore = (
     await snapshot(page)
   ).render3d.reloadPresentationCount;
