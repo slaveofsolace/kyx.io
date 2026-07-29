@@ -182,7 +182,9 @@ const expectedSimulationIdentity = {
   mapId: 'inkfall_foundry',
   rulesetId: 'revamped_classic',
   rulesetRevision: 3,
-  rulesetHash: 'd5f0418d1d927370',
+  rulesetHash: REV5_PRESENTATION_CAPTURE
+    ? '69b19f19a19de288'
+    : 'd5f0418d1d927370',
   movementProfileId: 'phase3_hypothesis_v1',
   movementProfileRevision: 1,
   movementProfileHash: '8ab4ed437a4393c0',

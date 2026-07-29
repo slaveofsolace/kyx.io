@@ -192,7 +192,9 @@ const expectedIdentity = Object.freeze({
   mapId: 'inkfall_foundry',
   rulesetId: 'revamped_classic',
   rulesetRevision: 3,
-  rulesetHash: 'd5f0418d1d927370',
+  rulesetHash: REV5_PRESENTATION_CAPTURE
+    ? '69b19f19a19de288'
+    : 'd5f0418d1d927370',
   fixtureId: 'inkfall_foundry_map_collision',
   fixtureHash: expectedBinding.fixtureHash,
   physicsAdapterId: 'rapier3d_deterministic_compat',
