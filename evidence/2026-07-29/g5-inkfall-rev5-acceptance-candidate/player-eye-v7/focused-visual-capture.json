@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "status": "rev5_player_eye_capture_complete_human_review_open",
+  "profile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+  "mapReference": "inkfall_foundry@3",
+  "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+  "sourceFreeze": {
+    "repositoryHead": "d69cdef739dab8249ab3533f8ad90eb5c21cd067",
+    "cleanAtStart": true,
+    "headUnchangedDuringCapture": true
+  },
+  "authority": {
+    "fixtureHash": "97eb7772ac59dc95",
+    "colliderCount": 339,
+    "spawnCount": 12,
+    "zoneCount": 9,
+    "renderMeshesMayBeAuthority": false,
+    "persistenceMode": "capture_owned_ephemeral_temp"
+  },
+  "presentation": {
+    "mode": "review_glb",
+    "sha256": "7bd3d5be1ca8019492b58c2dff92a307d30ec77996e978e662bac85dbec0d676",
+    "renderMeshCount": 23,
+    "renderOnlyVisualContinuityMeshCount": 307,
+    "spawnPocketCount": 2,
+    "isolatedPlayerContexts": 2,
+    "rendererMode": "hardware",
+    "graphics": {
+      "renderer": "WebKit WebGL",
+      "vendor": "WebKit",
+      "unmaskedRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "unmaskedVendor": "Google Inc. (NVIDIA)"
+    }
+  },
+  "player": {
+    "joinedSpawnId": "spawn_w_press_a",
+    "joinedYawMilliDegrees": 53000,
+    "joinedPositionMm": {
+      "x": -33500,
+      "y": 0,
+      "z": -3500
+    },
+    "pressApproachPositionMm": {
+      "x": -25372,
+      "y": -109,
+      "z": 3222
+    },
+    "pressApproachDeltaMm": {
+      "x": 8128,
+      "y": -109,
+      "z": 6722
+    },
+    "forwardAlignment": 0.9989774060650497,
+    "finalPositionMm": {
+      "x": -25372,
+      "y": -109,
+      "z": 3222
+    },
+    "cameraViews": {
+      "spawn": {
+        "yawMilliDegrees": 53000,
+        "pitchMilliDegrees": 0
+      },
+      "pressHall": {
+        "yawMilliDegrees": 53000,
+        "pitchMilliDegrees": 7500
+      },
+      "inkChannel": {
+        "yawMilliDegrees": 3500,
+        "pitchMilliDegrees": 0
+      },
+      "archive": {
+        "yawMilliDegrees": 102500,
+        "pitchMilliDegrees": 9000
+      }
+    }
+  },
+  "screenshots": [
+    "screenshots/01-west-spawn-pocket-forward.png",
+    "screenshots/02-press-hall-approach.png",
+    "screenshots/03-ink-channel-and-red-fold.png",
+    "screenshots/04-archive-tier-and-paper-drop.png"
+  ],
+  "screenshotIntegrity": {
+    "screenshots/01-west-spawn-pocket-forward.png": {
+      "bytes": 276419,
+      "sha256": "2b08fd9e3367dc0bfe7dae6740ed8636b192ae6dbe0cabd748d395850b28c9bc"
+    },
+    "screenshots/02-press-hall-approach.png": {
+      "bytes": 352760,
+      "sha256": "de5f741b35ebe7f9da0b8935e5114bfddf81360f7311f2059339ec3599fe3247"
+    },
+    "screenshots/03-ink-channel-and-red-fold.png": {
+      "bytes": 220529,
+      "sha256": "18f14b310580241a69b1af59dbdb4bb66a31cbda1258d5920de0a1a8f21f4f0d"
+    },
+    "screenshots/04-archive-tier-and-paper-drop.png": {
+      "bytes": 327896,
+      "sha256": "41870db0c652d43de57016ea955f7ee9ce1a878361cd3ad14657bcbe24925768"
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": [],
+  "nonClaims": [
+    "Focused visual capture only; no broad regression, performance, spawn-safety, fun, staging, deployment, release, or G5 acceptance claim.",
+    "All visual-continuity additions are render-only/noHit; Rev3 remains the sole authority fixture."
+  ]
+}
