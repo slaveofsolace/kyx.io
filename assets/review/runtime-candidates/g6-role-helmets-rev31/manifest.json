@@ -1,23 +1,25 @@
 {
-  "schema": "kyx-g6-rev31-role-helmet-runtime-manifest-v1",
+  "schema": "kyx-g6-rev31-role-helmet-review-manifest-v2",
   "revision": "rev31-role-helmets",
   "default": false,
-  "status": "runtime candidate; human visual and in-game acceptance pending",
+  "status": "review-only asset batch; owner visual decision rejected",
+  "runtimeIntegrated": false,
+  "ownerVisualDecision": "rejected",
   "lookupContract": {
-    "key": "helmetVariantId",
+    "key": "reviewMetadataOnly",
     "allowedIds": [
       "assault",
       "breacher",
       "recon",
       "duelist"
     ],
-    "unsupportedValueBehavior": "fail closed to assault in the integration layer"
+    "unsupportedValueBehavior": "no browser selection layer exists"
   },
   "variants": {
     "assault": {
       "displayName": "Assault / Rifle",
       "weaponFamily": "rifle",
-      "asset": "/candidates/g6-role-helmets-rev31/character-assault-lod0.glb",
+      "asset": "assets/review/runtime-candidates/g6-role-helmets-rev31/character-assault-lod0.glb",
       "sha256": "bc6864ed63ffe444f530c8914f3a23ec4a0217d39498e314169b886288013239",
       "bytes": 3182164,
       "triangles": 35262,
@@ -27,7 +29,7 @@
     "breacher": {
       "displayName": "Breacher / Shotgun",
       "weaponFamily": "shotgun",
-      "asset": "/candidates/g6-role-helmets-rev31/character-breacher-lod0.glb",
+      "asset": "assets/review/runtime-candidates/g6-role-helmets-rev31/character-breacher-lod0.glb",
       "sha256": "166937add8bc2d01d61ca941bd47630fbff3e0bac7fcef60459b61d08ceda508",
       "bytes": 3214600,
       "triangles": 35478,
@@ -37,7 +39,7 @@
     "recon": {
       "displayName": "Recon / Sniper",
       "weaponFamily": "sniper",
-      "asset": "/candidates/g6-role-helmets-rev31/character-recon-lod0.glb",
+      "asset": "assets/review/runtime-candidates/g6-role-helmets-rev31/character-recon-lod0.glb",
       "sha256": "379267d700fedffbba584675979445c03bc002abcc6b629af84e5c7c9b6f4ef1",
       "bytes": 3198128,
       "triangles": 35370,
@@ -47,7 +49,7 @@
     "duelist": {
       "displayName": "Duelist / Melee",
       "weaponFamily": "melee",
-      "asset": "/candidates/g6-role-helmets-rev31/character-duelist-lod0.glb",
+      "asset": "assets/review/runtime-candidates/g6-role-helmets-rev31/character-duelist-lod0.glb",
       "sha256": "31763a0a33371f807fc2091bcc352acf09869d7831e5be6e30bf77a7748f8bc7",
       "bytes": 3199164,
       "triangles": 35370,
@@ -79,6 +81,8 @@
   },
   "releaseEligible": false,
   "nonClaims": [
+    "Rev31 is not a runtime family and its role IDs are review metadata only.",
+    "The owner rejected the blocky stacked-plate visual direction on 2026-07-28.",
     "This machine-readable mapping does not grant human visual acceptance.",
     "Static views and structural reimport do not prove every-frame clipping freedom.",
     "The four exports are LOD0 candidates; distinct Rev31 LOD1 and LOD2 exports do not exist.",

@@ -1,17 +1,12 @@
 {
-  "schema": "kyx-g6-rev30-runtime-default-manifest-v1",
+  "schema": "kyx-g6-rev30-review-candidate-manifest-v2",
   "revision": "rev30",
-  "runtimeSelection": "temporary technical default third-person fallback",
-  "default": true,
-  "query": {
-    "key": "g6Candidate",
-    "defaultWhenAbsent": "rev30",
-    "explicitDefault": "?g6Candidate=rev30",
-    "legacyFallback": "?g6Candidate=rev17",
-    "unsupportedValueBehavior": "fall back to rev30 and expose the unsupported request in config"
-  },
+  "runtimeSelection": "review only; rejected as a shipped runtime default",
+  "default": false,
+  "runtimeIntegrated": false,
+  "ownerVisualDecision": "rejected",
   "thirdPerson": {
-    "asset": "/candidates/g6-rev30-cc0-donor/character-lod0.glb",
+    "asset": "assets/review/runtime-candidates/g6-rev30-cc0-donor/character-lod0.glb",
     "sha256": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
     "bytes": 15025320,
     "triangles": 10748,
@@ -25,8 +20,8 @@
     "distinctRev30Lod2Authored": false
   },
   "firstPerson": {
-    "revision": "rev17",
-    "asset": "/candidates/g6-rev17/first-person.glb",
+    "revision": "rev17-review-only",
+    "asset": "assets/review/runtime-candidates/g6-rev17/first-person.glb",
     "sha256": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
     "bytes": 2495708,
     "reason": "Rev30 did not author a first-person derivative"
@@ -36,7 +31,7 @@
     "sourceUrl": "https://opengameart.org/content/sci-fi-soldier",
     "license": "CC0-1.0",
     "notice": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/DONOR_NOTICE.md",
-    "assetManifest": "assets/manifests/g6-rev30-cc0-donor-character-lod0.asset.json"
+    "assetManifest": "assets/review/manifests/g6-rev30-cc0-donor-character-lod0.asset.json"
   },
   "runtimeAttachmentStatus": {
     "embeddedPaleRifle": "diagnostic only",
@@ -45,9 +40,9 @@
   },
   "releaseEligible": false,
   "nonClaims": [
-    "Rev30 is not the accepted final third-person visual direction; it remains loaded only as the current technical fallback while the role-driven replacement is integrated.",
+    "Rev30 is not the accepted final third-person visual direction and is not loaded by the browser runtime.",
     "The single Rev30 LOD0 is intentionally reused for player and enemy; no distinct Rev30 LOD1 or LOD2 is claimed.",
-    "The Rev17 first-person asset is retained because no Rev30 first-person derivative was authored.",
+    "The Rev17 first-person asset is retained only as non-shipped review evidence because no Rev30 first-person derivative was authored.",
     "The embedded pale rifle is a diagnostic contact witness, not final weapon presentation."
   ]
 }

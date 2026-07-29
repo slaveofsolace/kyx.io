@@ -6,6 +6,7 @@ import {
   preloadRev17Character,
   tintRev17Character,
 } from './Rev17Character.js';
+import { isG6CharacterCandidateEnabled } from '../config/g6CharacterCandidate.js';
 
 // ───────────────────────────────────────────────────────────────────────────
 // Provenance-safe project-authored runtime character.
@@ -15,15 +16,18 @@ import {
 // scaffolding while the accepted project-authored character revision is wired
 // in. It cannot be selected or fetched by the runtime.
 // ───────────────────────────────────────────────────────────────────────────
-const DEFAULT_CHARACTER_SOURCE = 'project-authored-rev17';
 let _template = null;
 
 export function preloadHumanSoldier(onLoad) {
+  if (!isG6CharacterCandidateEnabled()) {
+    queueMicrotask(() => onLoad?.());
+    return;
+  }
   preloadRev17Character(onLoad);
 }
 
 export function isHumanSoldierReady() {
-  return isRev17CharacterReady();
+  return isG6CharacterCandidateEnabled() && isRev17CharacterReady();
 }
 
 // The Vanguard model is authored ~1.8 world units tall already, but the game's
@@ -78,7 +82,7 @@ function findBone(root, name) {
  * type previews as a distinct super-soldier.
  */
 export function buildHumanSoldier(skin = null, armorTypeId = 'assault', opts = {}) {
-  if (DEFAULT_CHARACTER_SOURCE === 'project-authored-rev17') {
+  if (isG6CharacterCandidateEnabled()) {
     return buildRev17Character(skin, armorTypeId, opts);
   }
   if (!_template) return null;

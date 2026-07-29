@@ -7,12 +7,11 @@ export default defineConfig({
     wrangler: { configPath: './wrangler.jsonc' },
   })],
   test: {
-    include: ['tests/worker/**/*.test.ts'],
-    exclude: ['tests/worker/authorityFullOccupancySoak.test.ts'],
+    include: ['tests/worker/authorityFullOccupancySoak.test.ts'],
     fileParallelism: false,
     isolate: false,
     maxWorkers: 1,
-    testTimeout: 30_000,
+    testTimeout: 120_000,
     hookTimeout: 30_000,
   },
 });

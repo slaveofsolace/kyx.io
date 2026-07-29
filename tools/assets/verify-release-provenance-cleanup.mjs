@@ -124,6 +124,10 @@ const activeManifests = await Promise.all(activeManifestFiles.map(async (name) =
   JSON.parse(await readFile(path.join(root, 'assets/manifests', name), 'utf8'))
 )));
 const activeManifestPaths = activeManifests.map((manifest) => manifest.runtime?.uri).sort();
+const allowedReleaseClearances = new Set([
+  'CLEARED_PROJECT_ORIGINAL',
+  'CLEARED_CC0_DONOR_ADAPTATION',
+]);
 
 const runtimeScanRoots = [
   'src',
@@ -206,10 +210,18 @@ const checks = {
     && JSON.stringify(publicBinaryPaths) === JSON.stringify(ledgerPaths),
   activeManifestInventoryMatchesShippedLedger:
     activeManifests.length === ledger.assets.length
-    && activeManifests.every((manifest) => manifest.releaseEligible === false)
+    && activeManifests.every((manifest) => (
+      manifest.releaseEligible === true
+      && manifest.disposition === 'approved'
+      && manifest.provenance?.status === 'verified'
+      && manifest.validation?.structuralStatus === 'passed'
+    ))
     && JSON.stringify(activeManifestPaths) === JSON.stringify(ledgerPaths),
   shippedLedgerContainsNoBlockedClearance:
-    ledger.assets.every((asset) => asset.clearance?.status === 'CLEARED_PROJECT_ORIGINAL')
+    ledger.assets.every((asset) => (
+      asset.releaseEligible === true
+      && allowedReleaseClearances.has(asset.clearance?.status)
+    ))
     && ledger.summary?.blockedLegacyAssets === 0
     && ledger.summary?.quarantinedLegacyAssets === blockedAssets.length,
 };

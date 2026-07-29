@@ -1,12 +1,14 @@
 {
-  "schema": "kyx-g6-rev17-runtime-candidate-manifest-v1",
+  "schema": "kyx-g6-rev17-review-candidate-manifest-v2",
   "revision": "rev17",
-  "runtimeSelection": "explicit third-person fallback and active first-person fallback",
+  "runtimeSelection": "review only; excluded from browser runtime and release package",
   "default": false,
+  "runtimeIntegrated": false,
+  "ownerVisualDecision": "superseded and not accepted",
   "defaultAsset": null,
-  "thirdPersonFallbackQuery": "?g6Candidate=rev17",
-  "thirdPersonFallbackAsset": "/candidates/g6-rev17/character-lod0.glb",
-  "activeFirstPersonAsset": "/candidates/g6-rev17/first-person.glb",
+  "thirdPersonFallbackQuery": null,
+  "thirdPersonFallbackAsset": "assets/review/runtime-candidates/g6-rev17/character-lod0.glb",
+  "activeFirstPersonAsset": null,
   "humanVisualReviewRequired": true,
   "assets": {
     "lod0": {
@@ -35,8 +37,8 @@
     }
   },
   "nonClaims": [
-    "Rev17 remains provenance-safe but is no longer the default third-person character.",
-    "Rev17 first person remains active because Rev30 did not author a dedicated viewmodel.",
+    "Rev17 remains provenance-safe but is not a shipped or browser-selectable character.",
+    "Rev17 first person is preserved as review evidence and is not active.",
     "Runtime screenshots do not grant G6.",
     "Human visual acceptance remains required."
   ]

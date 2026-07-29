@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-import { getBundledMapPackageSource } from '../content/maps';
+import combatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
+import { validateBundledMapPackage } from '../content/maps';
 import type { AuthorityEvidencePresentation } from '../dev/authorityEvidenceClient';
 import type {
   CombatPlayerSnapshotV1,
@@ -14,6 +14,11 @@ import {
   isHumanSoldierReady,
   preloadHumanSoldier,
 } from '../player/HumanSoldier.js';
+import { buildPreviewCharacter } from '../player/PreviewCharacter.js';
+import {
+  hashPhysicsFixture,
+  loadPhysicsFixture,
+} from '../physics';
 import {
   createKyxWeaponPresentationModel,
   normalizeKyxAuthorityWeaponId,
@@ -21,11 +26,6 @@ import {
   type KyxWeaponPhase,
   type KyxWeaponPresentationModel,
 } from '../weapons/KyxArmoryPresentation';
-import {
-  INKFALL_REV5_CANDIDATE_ART,
-  inspectInkfallRev5CandidateScene,
-  loadInkfallRev5CandidateAuthorityBinding,
-} from './inkfallRev5CandidateBinding';
 import {
   createInkfallRev5PortalPresentation,
   type InkfallRev5PortalAudioCallback,
@@ -41,19 +41,6 @@ import {
   ONLINE_INKFALL_REV5_MAP_BINDING,
 } from './onlineAuthorityProfiles';
 import { createOnlineWeaponPresentationFx } from './onlineWeaponPresentationFx';
-
-const rev5PresentationArtifactUrl = new URL(
-  '../../assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
-  import.meta.url,
-).href;
-const revision3RenderArtifactUrl = new URL(
-  '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/render.graybox.glb',
-  import.meta.url,
-).href;
-const revision3CollisionArtifactUrl = new URL(
-  '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb',
-  import.meta.url,
-).href;
 
 interface OnlineCombatView {
   readonly snapshot: CombatSnapshotV1 | null;
@@ -77,7 +64,10 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly mapReference: typeof ONLINE_INKFALL_REV5_MAP_BINDING.mapReference;
   readonly presentationReference:
     typeof ONLINE_INKFALL_REV5_MAP_BINDING.presentationReference;
-  readonly presentationSha256: typeof INKFALL_REV5_CANDIDATE_ART.sha256;
+  readonly presentationMode:
+    | 'review_glb'
+    | 'procedural_authority_containment';
+  readonly presentationSha256: string | null;
   readonly authorityFixtureHash: typeof ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash;
   readonly renderMeshesMayBeAuthority: false;
   readonly renderMeshCount: number;
@@ -141,6 +131,10 @@ interface LoadedRev5Visual {
   readonly containment: THREE.Group;
   readonly meshCount: number;
   readonly containmentMeshCount: number;
+  readonly presentationMode:
+    | 'review_glb'
+    | 'procedural_authority_containment';
+  readonly presentationSha256: string | null;
 }
 
 const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
@@ -182,96 +176,59 @@ export function directionFromAuthorityLook(
   ).normalize();
 }
 
-async function fetchArtifact(url: string, role: string): Promise<Uint8Array> {
-  const response = await fetch(url, { cache: 'force-cache' });
-  if (!response.ok) {
-    throw new Error(
-      `ONLINE_REV4_ARTIFACT_FETCH_FAILED role=${role} status=${response.status}`,
-    );
+function loadReleaseRev5Visual(): LoadedRev5Visual {
+  const validated = validateBundledMapPackage('inkfall_foundry', 3);
+  if (!validated.ok) {
+    throw new Error('ONLINE_REV5_AUTHORITY_PACKAGE_NOT_BUNDLED');
   }
-  return new Uint8Array(await response.arrayBuffer());
-}
-
-function parseGltf(bytes: Uint8Array): Promise<THREE.Group> {
-  const buffer = bytes.buffer.slice(
-    bytes.byteOffset,
-    bytes.byteOffset + bytes.byteLength,
-  ) as ArrayBuffer;
-  return new Promise((resolve, reject) => {
-    new GLTFLoader().parse(
-      buffer,
-      '',
-      ({ scene }) => resolve(scene),
-      (cause) => reject(
-        cause instanceof Error
-          ? cause
-          : new Error('ONLINE_REV4_PRESENTATION_GLTF_PARSE_FAILED'),
-      ),
-    );
+  const loaded = validated.value;
+  const fixtureRecord = combatAuthorityFixtureSource;
+  const fixture = loadPhysicsFixture(fixtureRecord.fixture);
+  const fixtureHash = hashPhysicsFixture(fixture);
+  if (
+    loaded.id !== ONLINE_INKFALL_REV5_MAP_BINDING.mapId
+    || loaded.revision !== ONLINE_INKFALL_REV5_MAP_BINDING.mapRevision
+    || loaded.identity.digest
+      !== ONLINE_INKFALL_REV5_MAP_BINDING.packageDigest
+    || fixture.id !== ONLINE_INKFALL_REV5_MAP_BINDING.fixtureId
+    || fixtureHash
+      !== ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash
+    || fixtureRecord.fixtureHash !== fixtureHash
+    || fixtureRecord.mapId !== loaded.id
+    || fixtureRecord.mapRevision !== loaded.revision
+    || fixtureRecord.packageDigest !== loaded.identity.digest
+    || fixtureRecord.collisionSha256 !== loaded.artifacts.collision.sha256
+    || fixture.solids.length
+      !== ONLINE_INKFALL_REV5_MAP_BINDING.colliderCardinality
+    || loaded.spawns.length !== 12
+    || loaded.zones.length !== 9
+    || loaded.pickups.length !== 0
+    || loaded.authority.renderMeshesMayBeAuthority !== false
+  ) {
+    throw new Error('ONLINE_REV5_AUTHORITY_BINDING_MISMATCH');
+  }
+  const containment = createInkfallRev5VisualContinuity(fixture);
+  const art = new THREE.Group();
+  art.name = 'INKFALL_RELEASE_PROCEDURAL_PRESENTATION_FALLBACK';
+  art.userData.presentationRole = 'rev5_modular_render_only_no_hit';
+  art.userData.renderMeshesMayBeAuthority = false;
+  art.userData.noHit = true;
+  return Object.freeze({
+    art,
+    containment: containment.group,
+    meshCount: 0,
+    containmentMeshCount: containment.meshCount,
+    presentationMode: 'procedural_authority_containment',
+    presentationSha256: null,
   });
 }
 
 async function loadRev5Visual(): Promise<LoadedRev5Visual> {
-  const source = getBundledMapPackageSource('inkfall_foundry', 3);
-  if (source === undefined || source === null) {
-    throw new Error('ONLINE_REV5_AUTHORITY_PACKAGE_NOT_BUNDLED');
-  }
-  const [
-    presentationArt,
-    packageRender,
-    authorityCollision,
-  ] = await Promise.all([
-    fetchArtifact(rev5PresentationArtifactUrl, 'rev5_modular_presentation'),
-    fetchArtifact(revision3RenderArtifactUrl, 'revision3_render_verification'),
-    fetchArtifact(revision3CollisionArtifactUrl, 'revision3_authority_collision'),
-  ]);
-  const binding = await loadInkfallRev5CandidateAuthorityBinding(source, {
-    presentationArt,
-    packageRender,
-    authorityCollision,
-  });
-  const loaded = binding.loaded;
-  if (
-    loaded.identity.id !== ONLINE_INKFALL_REV5_MAP_BINDING.mapId
-    || loaded.identity.revision !== ONLINE_INKFALL_REV5_MAP_BINDING.mapRevision
-    || loaded.identity.packageDigest
-      !== ONLINE_INKFALL_REV5_MAP_BINDING.packageDigest
-    || loaded.authority.fixture.id !== ONLINE_INKFALL_REV5_MAP_BINDING.fixtureId
-    || loaded.authority.fixtureHash
-      !== ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash
-    || loaded.authority.fixture.solids.length
-      !== ONLINE_INKFALL_REV5_MAP_BINDING.colliderCardinality
-    || loaded.manifest.spawns.length !== 12
-    || loaded.manifest.zones.length !== 9
-    || loaded.manifest.pickups.length !== 0
-    || loaded.manifest.authority.renderMeshesMayBeAuthority !== false
-  ) {
-    throw new Error('ONLINE_REV5_AUTHORITY_BINDING_MISMATCH');
-  }
-  const art = await parseGltf(binding.presentationArt);
-  const sceneFacts = inspectInkfallRev5CandidateScene(art);
-  const containment = createInkfallRev5VisualContinuity(
-    loaded.authority.fixture,
+  if (!import.meta.env.DEV) return loadReleaseRev5Visual();
+  const { loadInkfallRev5ReviewVisual } = await import(
+    '../dev/loadInkfallRev5ReviewVisual'
   );
-  art.name = 'INKFALL_REV5_MODULAR_PRESENTATION_ONLY_NOT_AUTHORITY';
-  art.userData.presentationRole = 'rev5_modular_render_only_no_hit';
-  art.userData.renderMeshesMayBeAuthority = false;
-  art.userData.noHit = true;
-  art.traverse((object) => {
-    if (!(object as THREE.Mesh).isMesh) return;
-    const mesh = object as THREE.Mesh;
-    mesh.castShadow = false;
-    mesh.receiveShadow = true;
-    mesh.userData.presentationRole = 'rev5_modular_render_only_no_hit';
-    mesh.userData.renderMeshesMayBeAuthority = false;
-    mesh.userData.noHit = true;
-  });
-  return Object.freeze({
-    art,
-    containment: containment.group,
-    meshCount: sceneFacts.meshCount,
-    containmentMeshCount: containment.meshCount,
-  });
+  return loadInkfallRev5ReviewVisual();
 }
 
 function disposeObject(root: THREE.Object3D): void {
@@ -312,18 +269,25 @@ async function ensureHumanSoldierReady(): Promise<void> {
 }
 
 function createPlayerAvatar(teamId: string | null): PlayerAvatar {
-  const root = buildHumanSoldier(
+  const armorTypeId = teamId === 'team_red' ? 'heavy' : 'recon';
+  const root = (buildHumanSoldier(
     null,
-    teamId === 'team_red' ? 'heavy' : 'recon',
+    armorTypeId,
     {
       runtimeRole: 'online_remote',
       presentationOnly: true,
     },
-  ) as THREE.Group | null;
-  if (root === null) {
-    throw new Error('ONLINE_HUMAN_SOLDIER_MODEL_NOT_READY');
-  }
-  root.name = 'ONLINE_AUTHORITY_HUMAN_SOLDIER';
+  ) ?? buildPreviewCharacter(
+    teamId === 'team_red'
+      ? { primary: 0x9a4a1f, secondary: 0x171c26 }
+      : { primary: 0x2f6fae, secondary: 0x151c27 },
+    armorTypeId,
+    null,
+    { allowHuman: false },
+  )) as THREE.Group;
+  root.name = isHumanSoldierReady()
+    ? 'ONLINE_AUTHORITY_HUMAN_SOLDIER'
+    : 'ONLINE_AUTHORITY_PROCEDURAL_SOLDIER';
   root.traverse((object) => {
     object.userData.onlinePresentationOnly = true;
     if (!(object as THREE.Mesh).isMesh) return;
@@ -1118,7 +1082,8 @@ export async function createOnlineAuthorityThreeRuntime(
       mapReference: ONLINE_INKFALL_REV5_MAP_BINDING.mapReference,
       presentationReference:
         ONLINE_INKFALL_REV5_MAP_BINDING.presentationReference,
-      presentationSha256: INKFALL_REV5_CANDIDATE_ART.sha256,
+      presentationMode: loadedVisual.presentationMode,
+      presentationSha256: loadedVisual.presentationSha256,
       authorityFixtureHash: ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash,
       renderMeshesMayBeAuthority: false,
       renderMeshCount: loadedVisual.meshCount,

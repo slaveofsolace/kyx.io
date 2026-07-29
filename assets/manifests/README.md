@@ -1,18 +1,14 @@
-# Runtime asset manifests
+# Active release asset manifests
 
-Each `*.asset.json` file records exact runtime bytes currently present in
-`public/`. The default third-person runtime is the accepted Rev30 adaptation of
-Irondust's CC0 **Sci-fi Soldier**. Its one low-poly LOD0 file is shared by the
-player and enemy loader slots; no duplicate Rev30 LOD1/LOD2 binary is stored or
-claimed. The project-authored Rev17 character files remain available as the
-explicit `?g6Candidate=rev17` fallback and as historical evidence. Rev17 also
-remains the active first-person asset because Rev30 did not author a dedicated
-first-person derivative.
+This directory is the closed-world manifest inventory for supported binary
+files shipped from `public/`. It is intentionally empty while no character or
+other binary asset has both release approval and human visual acceptance.
 
-Runtime selection does not make the inventory release-ready. The embedded pale
-Rev30 rifle is a diagnostic contact witness pending replacement by the runtime
-weapon-attachment lane, external glTF validation is still open, and the project
-distribution license remains undecided.
+Rev17, Rev30, and Rev31 records and exact bytes are preserved under
+`assets/review/`; they are review-only, excluded from the browser runtime, and
+not copied by Vite. Rev30 and Rev31 are rejected visual candidates. A commit
+title or structural validator result cannot make them runtime-integrated or
+human-approved.
 
 The six unresolved-rights legacy binaries and their historical records are
 preserved under `assets/quarantine/legacy-unverified/`. Quarantined files are
@@ -27,22 +23,21 @@ the active runtime validator.
   verified provenance, an approved disposition, release eligibility, and the
   initial per-asset primitive/triangle budgets. An arbitrary or unsupported
   file cannot become eligible merely by recording its hash.
+- `node tools/assets/verify-release-package.mjs` scans the built `dist/`
+  directory, allowlists known text/build outputs, and treats every other file
+  as provenance-bearing. Audio, fonts, WASM, video, archives, and unknown
+  extensions therefore require exact agreement among the package, active
+  manifests, and `assets/provenance/shipped-assets.g9.json`.
 
-The current active files bind runtime hashes to either a canonical
-project-authored Blender source or the canonical Rev30 CC0 adaptation source.
-Release validation still fails until every active asset has a reviewed external
-glTF receipt in the active manifest format, runtime presentation blockers are
-closed, and the project owner selects a distribution license. Missing records
-must never be guessed.
+Zero active manifests is valid only while the supported binary inventory in
+both `public/` and `dist/` is also empty. The moment a supported binary is
+added, missing or ineligible records fail closed.
 
-`structuralInspector: "kyx_binary_inspector_v1"` means the project parsed the
-GLB/PNG container and remeasured the recorded counts. It is not the Khronos
-glTF Validator. All current GLBs explicitly record
-`externalGltfValidator: "not_run"`; release mode requires that status to become
-`passed` and requires an `externalGltfReport` receipt bound to both the report
-bytes and runtime asset hash. The report must be a complete, non-truncated
-official-shape result whose declared error/warning/info/hint counts exactly
-match its message severities. A status string by itself is not evidence.
+For a future GLB, `structuralInspector: "kyx_binary_inspector_v1"` means the
+project parsed the container and remeasured the recorded counts. It is not the
+Khronos glTF Validator. Release mode separately requires a passing external
+validator and a hashed `externalGltfReport` receipt bound to the runtime asset.
+A status string by itself is not evidence.
 
 Runtime assets and validator reports are resolved through the filesystem before
 their containment is trusted. Direct symlink files are rejected, and a public

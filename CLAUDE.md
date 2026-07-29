@@ -1,83 +1,102 @@
-# KYX.IO — project notes (for Claude / new sessions)
+# KYX.IO project notes for new sessions
 
-A Three.js browser FPS (an **ev.io**-style arena shooter), built with **Vite**.
-The repository currently has no authorized automatic production-deployment
-path. Treat public builds as historical baselines until release gates pass.
+Canonical repository:
+`E:\AI Projects\Projects\Games\evio\evio-repo`
 
-## How to run / build
-- Dev: `npx vite --port 5999 --host`
-- Build: `npm run build` → outputs to `dist/` (Vite `base: './'`, works from any web root)
-- Headless screenshots for verification: Playwright + swiftshader; GLBs take
-  ~30s to load. Log in via `#auth-guest-btn`, start a match via `#play-btn`.
+KYX.IO is a Three.js/Vite desktop-browser arena FPS with a Cloudflare
+Worker/Durable Object authority layer. The current product target is one
+polished Inkfall Foundry Rev5 team-deathmatch vertical slice that behaves
+consistently in Practice and online at 2/4/8 players.
 
-## Deployment authorization gate
-- `kyrx.live` is a historical public baseline, not evidence that the current
-  repository is approved for another production release.
-- `.github/workflows/deploy-vps.yml` is now a manual static-build verification
-  workflow. It does not use VPS secrets, transfer files, or deploy on pushes.
-- Local and staging validation are implementation work. Production deployment,
-  paid services, DNS changes, and other external mutations require explicit
-  user authorization after security, rollback, provenance, and release gates.
+Read `WORK_IN_PROGRESS.md` and
+`docs/audits/KYX_CANONICAL_ACCEPTANCE_MATRIX_2026-07-28.md` before changing
+code. Newer executed evidence wins over older work-log prose.
 
-## Legacy relay (comparison only)
-- `server/` preserves the original client-trusting WebSocket relay solely as a
-  local comparison fixture. It is **not an online or authoritative multiplayer
-  server**: clients can claim kills and it simulates no movement, collision,
-  combat, damage, or score authority.
-- It always binds to `127.0.0.1`, has no client build-time endpoint, and must not
-  be proxied, tunneled, deployed, or described as a live match server.
-- Run it only when comparison work requires it: `cd server`, `npm ci`, then
-  `npm run legacy:relay`. See `server/README.md` for the containment contract.
+## Safety and deployment
 
-## Working branch
-- Use the task's current worktree/branch. A merge or push does not authorize a
-  production deployment.
+- Production deployment is not authorized.
+- A merge or push does not authorize deployment.
+- Staging follows green local gates and isolation/secrets checks.
+- Production requires explicit owner authorization and a rehearsed rollback.
+- Preserve dirty feature worktrees. Do not reset, clean, delete, or merge them
+  without proving their relationship to canonical main.
+- Keep all KYX writes on E. Do not recreate C/D project copies.
 
-## Layout
-- `src/core/Game.js` — main loop, state, match flow, HUD wiring, map-loading card.
-- `src/world/World.js` — the map. Currently the **Winter-Bishop town**: textured
-  building blocks in 3 rings, avenues/plaza, walkable snowy rooftops, ramps +
-  rooftop bridges, grav-lifts, central pavilion, snow drifts, string lights.
-  Collision via `colliders[]` (boxes) + `platforms[]` (walkable tops) +
-  `groundHeightAt()`. Snowy overcast palette, no neon.
-- `src/player/` — `HumanSoldier.js` selects the project-authored Rev17 interim
-  character; `PreviewCharacter.js` falls back to project-authored procedural
-  armor; `skins.js` and `Player.js` own local presentation/gameplay.
-- `src/weapons/` — WeaponSystem, weapon defs, skins, and project-authored
-  procedural models in `WeaponModels.js`.
-- `src/ui/` — `MainMenu.js` (truthful offline-practice, local loadout, and
-  settings panels), `HUD.js` (health, ammo, local practice score, scoreboard,
-  and measured post-run results), `Nameplates.js`, `DamageNumbers.js`, and
-  `WeaponThumbnails.js` (renders local weapon thumbnails).
-- `public/candidates/g6-rev17/*.glb` — provenance-cleared project-authored
-  character candidates. Human visual acceptance and the project license remain
-  open.
-- `assets/quarantine/legacy-unverified/` — six preserved, unresolved-rights
-  snapshots. Never import, serve, package, or treat these as cleared assets.
-- The old `src/core/NetClient.js` and `src/core/ServerSim.js` launch paths are
-  removed. `server/` is a loopback-only historical relay used for protocol
-  comparison, never production multiplayer.
+## Current product truth
 
-## Design system (CSS in `src/style.css`)
-- ev.io-inspired: dark translucent glass panels, **cyan** accent (`--kx-cyan`),
-  consistent section labels w/ accent bars. Big appended sections at the end of
-  the file: "PAGE UI OVERHAUL", "IN-GAME HUD OVERHAUL", inventory cards,
-  scoreboard, achievements, map loading screen, inventory v2 toolbar.
+- Map: Inkfall Foundry Rev5 Geometry Portal is a development-only review
+  candidate over the frozen Revision 3 authority package (339 colliders,
+  12 spawns, 9 zones). Production uses the hash-checked procedural containment
+  fallback until the GLB art is human-accepted and release-approved.
+- Online: Worker-authoritative room allocation, movement/combat, score, and
+  reconnect/resume. Prior Rev4 2/4/8 proof is historical; final Rev5 proof is
+  still required.
+- Character: Rev17/Rev30/Rev31 are review-only and excluded from `public/`.
+  Rev30 and Rev31 are owner-rejected visuals; Rev31 was never a live role
+  runtime family. The browser uses the project-authored procedural fallback.
+- HUD: Arena Instrument is an integrated candidate, not human-accepted.
+- Desktop browser is the acceptance target. Mobile-specific polish is deferred.
+- Project metadata is `UNLICENSED`; source/artifact distribution mode is not
+  yet selected.
 
-## Done this project (high level)
-- Full menu/page restyle; in-game HUD restyle; floating damage numbers;
-  ev.io post-match leaderboard; PROFILE nav dropdown (Inventory/Career/Achievements);
-  Achievements page; hold-TAB in-game scoreboard; survival wave HUD + wave bonus
-  + best time; **1:1 inventory** (per-gun tabs, no main/map split);
-  vertical weapon wheel; enemy nameplates; coin-earn popups; Winter-Bishop
-  map + map loading screen; Esc opens the full nav GUI mid-match;
-  fixed false-positive mobile controls on desktop (pointer-lock now works);
-  **Inventory v2** = real skinned-weapon renders + search + rarity filter chips.
+## Architecture
 
-## Known constraints / notes
-- Character replacements must be project-authored or arrive with verifiable
-  creator/source/license evidence, then pass the human visual gate before
-  default promotion.
-- Keep chat sessions from getting huge (lots of embedded video/screenshots) — it
-  can trip a 32MB request limit. Prefer short clips + fresh sessions.
-</content>
+- `src/core/Game.js`: Practice loop and product wiring.
+- `src/app/onlineAuthorityRoute.ts`: online route; split future work by
+  transport/session, command adapter, prediction/reconciliation, presentation
+  state, and HUD binding rather than appending more overrides.
+- `src/app/onlineAuthorityThreeRuntime.ts`: online Three.js map/player/weapon
+  presentation.
+- `worker/`: authoritative match runtime and Durable Objects.
+- `src/abilities/`, `src/weapons/`: ability and weapon contracts/presentation.
+- `src/ui/` and `src/style.css`: HUD/menu surfaces. Decompose CSS into tokens,
+  base shell, match HUD, menus, and accessibility; remove superseded rules.
+- `assets/manifests/`: active release binary manifests only.
+- `assets/review/`: non-shipped candidates and provenance-preserving records.
+- `assets/quarantine/legacy-unverified/`: never import, serve, or package.
+
+Practice and online should consume one role/loadout schema and one typed HUD
+view model. The Worker owns authoritative results; clients predict/present only
+within explicit contracts.
+
+## Character recovery direction
+
+Use the V6-A anatomy and shared 66-bone rig as a foundation, not final art.
+Complete Assault end to end before other roles: continuous cyber-suit/armor,
+integrated cowl and neck seal, believable material transitions, first-person
+arms, locomotion/contact, weapon alignment, damage readability, LODs,
+compression/package budget, provenance, runtime selection, and real player-eye
+evidence. Role differences must read by silhouette at 5/20/40 m, not only color.
+
+Candidate GLBs never belong in `public/`. Structural validation is not human
+visual approval.
+
+## Run and validate
+
+```powershell
+npm ci
+npm run dev
+npm run dev:authority
+```
+
+After a coherent implementation batch:
+
+```powershell
+npm run typecheck
+npm run typecheck:worker
+npm run typecheck:sim
+npm run lint
+npm run test
+npm run test:worker
+npm run build
+npm run validate:assets:release
+npm run verify:release-provenance
+npm run verify:release-package
+npm run audit:g9
+```
+
+The package gate allowlists known text/build outputs and treats every other
+emitted file—including unknown extensions—as provenance-bearing. Such files
+need exact ledger coverage, an active approved manifest, provenance, and
+validation. Automated PASS, runtime proof, and human visual acceptance are
+separate claims.

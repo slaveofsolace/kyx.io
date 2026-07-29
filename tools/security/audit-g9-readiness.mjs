@@ -222,20 +222,31 @@ record(
   },
 );
 
+const allowedReleaseClearances = new Set([
+  'CLEARED_PROJECT_ORIGINAL',
+  'CLEARED_CC0_DONOR_ADAPTATION',
+]);
 const clearedAssets = ledger.assets.filter(
-  (asset) => asset.clearance.status === 'CLEARED_PROJECT_ORIGINAL',
+  (asset) => allowedReleaseClearances.has(asset.clearance?.status),
 );
 const blockedAssets = ledger.assets.filter(
-  (asset) => asset.clearance.status === 'BLOCKED_OWNER_ATTESTATION_OR_LICENSE',
+  (asset) => asset.clearance?.status === 'BLOCKED_OWNER_ATTESTATION_OR_LICENSE',
 );
 record(
   'asset_clearance_classification',
-  clearedAssets.length === 4
+  clearedAssets.length === ledger.assets.length
     && blockedAssets.length === 0
+    && ledger.summary?.clearedProjectOriginals === ledger.assets.filter(
+      (asset) => asset.clearance?.status === 'CLEARED_PROJECT_ORIGINAL',
+    ).length
+    && ledger.summary?.clearedCc0DonorAdaptations === ledger.assets.filter(
+      (asset) => asset.clearance?.status === 'CLEARED_CC0_DONOR_ADAPTATION',
+    ).length
     && ledger.summary?.quarantinedLegacyAssets === 6
-    && ledger.assets.every((asset) => asset.releaseEligible === false),
+    && ledger.assets.every((asset) => asset.releaseEligible === true),
   {
-    clearedProjectOriginals: clearedAssets.length,
+    releasePackagedAssetCount: ledger.assets.length,
+    clearedReleaseAssets: clearedAssets.length,
     blockedLegacyAssets: blockedAssets.length,
     quarantinedLegacyAssets: ledger.summary?.quarantinedLegacyAssets ?? null,
     publicReleaseEligibleAssets: ledger.assets.filter((asset) => asset.releaseEligible).length,
@@ -243,7 +254,7 @@ record(
 );
 
 const missingEvidence = ledger.assets.flatMap((asset) => (
-  asset.clearance.evidence
+  (asset.clearance?.evidence ?? [])
     .filter((path) => !trackedSet.has(path))
     .map((path) => ({ assetId: asset.assetId, path }))
 ));
@@ -320,18 +331,38 @@ record(
 const staging = wrangler.env?.staging;
 const stagingOrigins = (staging?.vars?.ALLOWED_ORIGINS ?? '').split(',');
 const stagingBindings = staging?.durable_objects?.bindings ?? [];
+const expectedStagingBindings = new Map([
+  ['KYX_ROOM', 'KyxRoom'],
+  ['KYX_ALLOCATION_GUARD', 'KyxAllocationGuard'],
+]);
+const exactStagingBindings = stagingBindings.length === expectedStagingBindings.size
+  && stagingBindings.every((binding) => (
+    expectedStagingBindings.get(binding.name) === binding.class_name
+  ))
+  && new Set(stagingBindings.map((binding) => binding.name)).size
+    === expectedStagingBindings.size;
+const productionNamespaceReuseAbsent = stagingBindings.every(
+  (binding) => binding.script_name === undefined,
+);
 record(
   'cloudflare_staging_environment_isolated',
   staging?.name === 'kyx-io-authority-staging'
-    && stagingBindings.length === 1
-    && stagingBindings[0]?.name === 'KYX_ROOM'
-    && stagingBindings[0]?.class_name === 'KyxRoom'
+    && staging?.name !== wrangler.name
+    && exactStagingBindings
+    && productionNamespaceReuseAbsent
     && stagingOrigins.includes(expectedStagingOrigin)
     && !stagingOrigins.includes(expectedProductionOrigin),
   {
     productionWorkerName: wrangler.name,
     stagingWorkerName: staging?.name ?? null,
     stagingDurableObjectBindingCount: stagingBindings.length,
+    stagingDurableObjectBindings: stagingBindings.map((binding) => ({
+      name: binding.name,
+      className: binding.class_name,
+      scriptName: binding.script_name ?? null,
+    })),
+    exactIntendedBindingsPresent: exactStagingBindings,
+    productionNamespaceReuseAbsent,
     stagingOriginPresent: stagingOrigins.includes(expectedStagingOrigin),
     productionOriginExcludedFromStagingAllowlist: !stagingOrigins.includes(expectedProductionOrigin),
   },
@@ -368,9 +399,12 @@ const report = {
       affectedAssetIds: blockedAssets.map((asset) => asset.assetId),
     }]),
     {
-      code: 'G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED',
-      affectedAssetCount: clearedAssets.length,
-      affectedAssetIds: clearedAssets.map((asset) => asset.assetId),
+      code: 'G6_ACCEPTED_RUNTIME_CHARACTER_REQUIRED',
+      affectedAssetCount: 1,
+    },
+    {
+      code: 'DISTRIBUTION_MODE_DECISION_REQUIRED',
+      affectedAssetCount: ledger.assets.length,
     },
   ],
   checks,

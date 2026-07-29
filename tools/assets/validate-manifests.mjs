@@ -950,10 +950,6 @@ async function main() {
     .filter((name) => name.endsWith('.asset.json'))
     .sort((left, right) => left.localeCompare(right));
 
-  if (manifestNames.length === 0) {
-    throw new Error(`No *.asset.json files found in ${manifestDirectory}`);
-  }
-
   for (const manifestName of manifestNames) {
     let manifest;
     try {

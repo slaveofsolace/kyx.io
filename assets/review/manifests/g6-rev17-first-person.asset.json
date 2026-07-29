@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "assetId": "g6.rev17.character-lod0",
-  "kind": "character",
+  "assetId": "g6.rev17.first-person",
+  "kind": "first_person_arms",
   "releaseEligible": false,
   "sourceHash": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
   "sourceHashKind": "canonical_source",
   "runtime": {
-    "uri": "public/candidates/g6-rev17/character-lod0.glb",
-    "hash": "a138d9322cb6386713077cce1628c92a934ccf13421e7f2d11459ef215b738e1",
-    "bytes": 3584252
+    "uri": "assets/review/runtime-candidates/g6-rev17/first-person.glb",
+    "hash": "bfa8af298998fa1d5e5067403ca1e00b4d48a539d7112b8f42fe0a848c28c2d6",
+    "bytes": 2495708
   },
   "budgets": {
-    "triangles": 43928,
+    "triangles": 27026,
     "primitives": 3,
     "materials": 3,
     "nodes": 70,
@@ -40,7 +40,7 @@
     "licenseSnapshot": null,
     "attribution": "No third-party mesh, rig, animation, or downloaded runtime content",
     "reviewer": "G6 Rev17 author/export audit",
-    "notes": "Provenance-cleared interim runtime candidate. Human visual acceptance and project license selection remain open."
+    "notes": "Provenance-cleared interim first-person candidate. Human visual acceptance and project license selection remain open."
   },
   "disposition": "candidate"
 }

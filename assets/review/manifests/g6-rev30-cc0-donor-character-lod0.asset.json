@@ -6,7 +6,7 @@
   "sourceHash": "ebfc91e9918a1d48fa1dd6330387debdf2f4c1aa0d08fbcf743071023a5f0a2a",
   "sourceHashKind": "canonical_source",
   "runtime": {
-    "uri": "public/candidates/g6-rev30-cc0-donor/character-lod0.glb",
+    "uri": "assets/review/runtime-candidates/g6-rev30-cc0-donor/character-lod0.glb",
     "hash": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
     "bytes": 15025320
   },

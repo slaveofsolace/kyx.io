@@ -5,76 +5,81 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
+  isG6CharacterCandidateEnabled,
   isG6Rev17CharacterCandidateEnabled,
   isG6Rev17ThirdPersonFallbackSelected,
   resolveG6CharacterCandidate,
 } from '../../../src/config/g6CharacterCandidate';
 
-const REV30 = '/candidates/g6-rev30-cc0-donor/character-lod0.glb';
-const REV17_FIRST_PERSON = '/candidates/g6-rev17/first-person.glb';
+const REV30_REVIEW_PATH =
+  'assets/review/runtime-candidates/g6-rev30-cc0-donor/character-lod0.glb';
 const REV30_SHA256 =
   '24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed';
 
 describe('G6 character runtime selection', () => {
-  it('uses one Rev30 LOD0 file for default player and enemy slots', () => {
+  it('uses the shipped procedural character while visual candidates remain rejected', () => {
     const candidate = resolveG6CharacterCandidate('');
 
     expect(candidate).toMatchObject({
-      enabled: true,
-      revision: 'rev30',
-      defaultRevision: 'rev30',
+      enabled: false,
+      default: false,
+      revision: null,
+      defaultRevision: null,
       requestedRevision: null,
-      selection: 'default',
-      firstPersonRevision: 'rev17',
+      selection: 'project-authored-procedural-fallback',
+      firstPersonRevision: null,
+      thirdPersonAssetPolicy: 'project-authored-procedural-fallback',
+      releasePackagePolicy: 'accepted-ledgered-assets-only',
     });
-    expect(candidate.assets.lod0).toBe(REV30);
-    expect(candidate.assets.lod1).toBe(REV30);
-    expect(candidate.assets.lod2).toBeNull();
-    expect(candidate.assets.firstPerson).toBe(REV17_FIRST_PERSON);
+    expect(candidate.assets).toEqual({
+      lod0: null,
+      lod1: null,
+      lod2: null,
+      firstPerson: null,
+    });
+    expect(isG6CharacterCandidateEnabled()).toBe(false);
   });
 
-  it('preserves the exact Rev17 query fallback and review population', () => {
+  it('does not allow a legacy query to reactivate non-shipped review bytes', () => {
     const candidate = resolveG6CharacterCandidate(
       '?g6Candidate=rev17&g6Population=8',
     );
 
     expect(candidate).toMatchObject({
-      revision: 'rev17',
+      enabled: false,
+      revision: null,
       requestedRevision: 'rev17',
-      selection: 'legacy-query-fallback',
+      selection: 'review-only-request-rejected',
       population: 8,
     });
     expect(candidate.assets).toEqual({
-      lod0: '/candidates/g6-rev17/character-lod0.glb',
-      lod1: '/candidates/g6-rev17/character-lod1.glb',
-      lod2: '/candidates/g6-rev17/character-lod2.glb',
-      firstPerson: REV17_FIRST_PERSON,
+      lod0: null,
+      lod1: null,
+      lod2: null,
+      firstPerson: null,
     });
   });
 
-  it('falls unsupported revisions back to Rev30 without hiding the request', () => {
+  it('records unsupported requests without selecting a rejected candidate', () => {
     expect(resolveG6CharacterCandidate('?g6Candidate=rev99')).toMatchObject({
-      revision: 'rev30',
+      enabled: false,
+      revision: null,
       requestedRevision: 'rev99',
-      selection: 'unsupported-query-fell-back-to-default',
+      selection: 'review-only-request-rejected',
     });
-    // Historical helper remains the candidate-pipeline gate used by
-    // WeaponSystem, so the retained Rev17 first-person viewmodel stays active.
-    expect(isG6Rev17CharacterCandidateEnabled()).toBe(true);
+    expect(isG6Rev17CharacterCandidateEnabled()).toBe(false);
     expect(isG6Rev17ThirdPersonFallbackSelected()).toBe(false);
   });
 
-  it('binds the single physical Rev30 file to truthful public and provenance records', async () => {
-    const runtimePath = resolve(
-      'public/candidates/g6-rev30-cc0-donor/character-lod0.glb',
-    );
-    const runtimeBytes = await readFile(runtimePath);
-    const publicManifest = JSON.parse(await readFile(
-      resolve('public/candidates/g6-rev30-cc0-donor/manifest.json'),
+  it('preserves exact Rev30 review bytes while excluding them from release inventory', async () => {
+    const reviewPath = resolve(REV30_REVIEW_PATH);
+    const reviewBytes = await readFile(reviewPath);
+    const reviewManifest = JSON.parse(await readFile(
+      resolve('assets/review/runtime-candidates/g6-rev30-cc0-donor/manifest.json'),
       'utf8',
     ));
     const assetManifest = JSON.parse(await readFile(
-      resolve('assets/manifests/g6-rev30-cc0-donor-character-lod0.asset.json'),
+      resolve('assets/review/manifests/g6-rev30-cc0-donor-character-lod0.asset.json'),
       'utf8',
     ));
     const shippedAssets = JSON.parse(await readFile(
@@ -82,11 +87,16 @@ describe('G6 character runtime selection', () => {
       'utf8',
     ));
 
-    expect((await stat(runtimePath)).size).toBe(15025320);
-    expect(createHash('sha256').update(runtimeBytes).digest('hex'))
+    expect((await stat(reviewPath)).size).toBe(15025320);
+    expect(createHash('sha256').update(reviewBytes).digest('hex'))
       .toBe(REV30_SHA256);
-    expect(publicManifest.thirdPerson).toMatchObject({
-      asset: REV30,
+    expect(reviewManifest).toMatchObject({
+      default: false,
+      runtimeSelection: 'review only; rejected as a shipped runtime default',
+      releaseEligible: false,
+    });
+    expect(reviewManifest.thirdPerson).toMatchObject({
+      asset: REV30_REVIEW_PATH,
       physicalRuntimeFileCount: 1,
       runtimeRoles: ['player', 'enemy'],
       distinctRev30Lod1Authored: false,
@@ -94,16 +104,12 @@ describe('G6 character runtime selection', () => {
     });
     expect(assetManifest).toMatchObject({
       releaseEligible: false,
-      disposition: 'approved',
+      disposition: 'candidate',
       runtime: { hash: REV30_SHA256, bytes: 15025320 },
       budgets: { triangles: 10748, bones: 66, clips: 16 },
       provenance: { status: 'verified', license: 'CC0-1.0' },
     });
-    expect(shippedAssets.scope.expectedAssetCount).toBe(5);
-    expect(shippedAssets.assets).toContainEqual(expect.objectContaining({
-      assetId: 'g6.rev30.cc0-donor-character-lod0',
-      path: 'public/candidates/g6-rev30-cc0-donor/character-lod0.glb',
-      sha256: REV30_SHA256,
-    }));
+    expect(shippedAssets.scope.expectedAssetCount).toBe(0);
+    expect(shippedAssets.assets).toEqual([]);
   });
 });

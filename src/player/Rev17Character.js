@@ -121,6 +121,9 @@ function notifyIfReady(kind) {
 }
 
 function loadTemplate(kind, url, aliases = []) {
+  if (!CHARACTER_RUNTIME_ACTIVE || typeof url !== 'string' || url.length === 0) {
+    return;
+  }
   const templateKeys = [kind, ...aliases];
   const existing = templateKeys
     .map((key) => TEMPLATES[key])
@@ -160,6 +163,10 @@ function loadTemplate(kind, url, aliases = []) {
 }
 
 export function preloadRev17Character(onLoad) {
+  if (!CHARACTER_RUNTIME_ACTIVE) {
+    queueMicrotask(() => onLoad?.());
+    return;
+  }
   if (isRev17CharacterReady()) {
     onLoad?.();
     return;
@@ -182,6 +189,10 @@ export function isRev17CharacterReady() {
 }
 
 export function preloadRev17FirstPerson(onLoad) {
+  if (!CHARACTER_RUNTIME_ACTIVE) {
+    queueMicrotask(() => onLoad?.());
+    return;
+  }
   if (TEMPLATES.firstPerson) {
     onLoad?.();
     return;

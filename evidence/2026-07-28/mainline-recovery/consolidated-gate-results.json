@@ -1,0 +1,105 @@
+{
+  "schema": "kyx-canonical-mainline-recovery-gates-v1",
+  "generatedAt": "2026-07-29T01:52:21.961Z",
+  "repository": "E:/AI Projects/Projects/Games/evio/evio-repo",
+  "recoveryBase": "12bfd882ae9ac43bd95905e0ce6c2b7c5aee77da",
+  "status": "PASS",
+  "gates": [
+    {
+      "name": "app_typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "name": "worker_typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.worker.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "name": "simulation_source_typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.sim-source.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "name": "simulation_compiled_typecheck",
+      "command": "node node_modules/typescript/bin/tsc -p tsconfig.sim.json --noEmit",
+      "status": "PASS"
+    },
+    {
+      "name": "eslint",
+      "command": "node node_modules/eslint/bin/eslint.js \"src/**/*.ts\" \"worker/**/*.ts\" \"tests/**/*.ts\" \"tools/**/*.mjs\" vitest.worker.config.ts vitest.authority-soak.config.ts --no-error-on-unmatched-pattern",
+      "status": "PASS"
+    },
+    {
+      "name": "app_vitest",
+      "command": "node node_modules/vitest/vitest.mjs run",
+      "status": "PASS",
+      "testFiles": 116,
+      "tests": 867,
+      "durationSeconds": 27.9,
+      "advisories": [
+        "Existing Rapier initialization deprecation messages were emitted by Inkfall integration tests."
+      ]
+    },
+    {
+      "name": "routine_worker_vitest",
+      "command": "node node_modules/vitest/vitest.mjs run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
+      "status": "PASS",
+      "testFiles": 12,
+      "tests": 49,
+      "durationSeconds": 58.77,
+      "excludedEvidenceGate": "tests/worker/authorityFullOccupancySoak.test.ts"
+    },
+    {
+      "name": "production_vite_build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "status": "PASS",
+      "durationMilliseconds": 255,
+      "advisories": [
+        "Existing chunk-size warning remains."
+      ]
+    },
+    {
+      "name": "release_asset_validation",
+      "command": "node tools/assets/validate-manifests.mjs --release",
+      "status": "PASS",
+      "manifests": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "name": "provenance_sentinel",
+      "command": "node tools/assets/verify-release-provenance-cleanup.mjs",
+      "status": "PASS"
+    },
+    {
+      "name": "closed_world_package_verifier",
+      "command": "node tools/assets/verify-release-package.mjs",
+      "status": "PASS",
+      "provenanceBearingArtifacts": 0,
+      "ledgerAssets": 0,
+      "activeManifests": 0,
+      "policy": "Known text/build files are allowlisted; every other dist file requires provenance."
+    },
+    {
+      "name": "g9_audit",
+      "command": "node tools/security/audit-g9-readiness.mjs",
+      "status": "PASS",
+      "controlChecksPassed": 9,
+      "controlChecksTotal": 9,
+      "releaseStatus": "BLOCKED",
+      "knownReleaseBlockers": [
+        "PROJECT_LICENSE_SELECTION_REQUIRED",
+        "G6_ACCEPTED_RUNTIME_CHARACTER_REQUIRED",
+        "DISTRIBUTION_MODE_DECISION_REQUIRED"
+      ]
+    }
+  ],
+  "humanAcceptanceNonClaims": [
+    "This gate result does not approve Rev30 or Rev31 character visuals.",
+    "This gate result does not approve Inkfall Rev5 map art or play.",
+    "This gate result does not approve the Arena Instrument HUD.",
+    "The dedicated final authority soak was not part of the routine recovery gate.",
+    "No staging or production deployment was performed."
+  ]
+}

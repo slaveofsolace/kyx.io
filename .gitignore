@@ -3,8 +3,9 @@ dist
 .DS_Store
 .claude/
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!.env.*.example
 .wrangler/
 coverage/
 playwright-report/

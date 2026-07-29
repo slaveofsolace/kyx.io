@@ -40,11 +40,14 @@ const mapTestRoute = import.meta.env.DEV
   && window.location.pathname === '/__test__/map';
 const developmentTestRoute = deterministicTestRoute || movementTestRoute || authorityTestRoute || mapTestRoute;
 const lockedGrayboxPreviewRequest = resolveLockedGrayboxPreviewRequest(window.location.search);
-const lockedGrayboxPreviewRoute = lockedGrayboxPreviewRequest.kind !== 'none';
+const lockedGrayboxPreviewRoute = import.meta.env.DEV
+  && lockedGrayboxPreviewRequest.kind !== 'none';
 const pressHallInspectionRequest = resolvePressHallInspectionRequest(window.location.search);
-const pressHallInspectionRoute = pressHallInspectionRequest.kind !== 'none';
+const pressHallInspectionRoute = import.meta.env.DEV
+  && pressHallInspectionRequest.kind !== 'none';
 const inkfallRev3ReviewRequest = resolveInkfallRev3ReviewRequest(window.location.search);
-const inkfallRev3ReviewRoute = inkfallRev3ReviewRequest.kind !== 'none';
+const inkfallRev3ReviewRoute = import.meta.env.DEV
+  && inkfallRev3ReviewRequest.kind !== 'none';
 const onlineAuthorityRoute = window.location.pathname === ONLINE_AUTHORITY_PATH;
 const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
   import.meta.env.VITE_KYX_AUTHORITY_ORIGIN,
@@ -94,10 +97,15 @@ function showDevelopmentMovementFailure(error, phase) {
   document.body.append(failure);
 }
 
-document.getElementById('locked-graybox-preview-link')
-  ?.setAttribute('href', LOCKED_GRAYBOX_PREVIEW_SEARCH);
-document.getElementById('press-hall-inspection-link')
-  ?.setAttribute('href', PRESS_HALL_INSPECTION_SEARCH);
+if (import.meta.env.DEV) {
+  document.getElementById('locked-graybox-preview-link')
+    ?.setAttribute('href', LOCKED_GRAYBOX_PREVIEW_SEARCH);
+  document.getElementById('press-hall-inspection-link')
+    ?.setAttribute('href', PRESS_HALL_INSPECTION_SEARCH);
+} else {
+  document.getElementById('locked-graybox-preview-link')?.remove();
+  document.getElementById('press-hall-inspection-link')?.remove();
+}
 
 const onlineMatchButton = document.getElementById('online-match-button');
 if (onlineMatchButton instanceof HTMLButtonElement && onlineAuthorityAvailability.kind === 'configured') {

@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "assetId": "g6.rev17.character-lod1",
+  "assetId": "g6.rev17.character-lod2",
   "kind": "character",
   "releaseEligible": false,
   "sourceHash": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
   "sourceHashKind": "canonical_source",
   "runtime": {
-    "uri": "public/candidates/g6-rev17/character-lod1.glb",
-    "hash": "4862b0a0794e0ecd1c61a5151f478faa34d84dedb89c137d997f50cd6b6d24cc",
-    "bytes": 2558944
+    "uri": "assets/review/runtime-candidates/g6-rev17/character-lod2.glb",
+    "hash": "dbf6be634674c2af1eb0f45f757f44784a1fb634c4ca0d509d66b42a423d4086",
+    "bytes": 1817156
   },
   "budgets": {
-    "triangles": 18614,
+    "triangles": 7109,
     "primitives": 3,
     "materials": 3,
     "nodes": 70,
