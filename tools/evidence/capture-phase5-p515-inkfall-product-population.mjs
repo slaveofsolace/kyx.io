@@ -1586,6 +1586,24 @@ function initialJoinProof(client) {
     playerId === join.message.playerId
   ));
   assert.notEqual(localCombat, undefined, `${client.clientId} initial combat player`);
+  const expectedSpawnSet = localCombat.teamId === 'team_blue'
+    ? 'west_team'
+    : 'east_team';
+  const expectedSpawn = expectedSpawns.find((spawn) => (
+    spawn.set === expectedSpawnSet
+    && spawn.feetPosition.x === snapshot.message.localReconciliation.feetPosition.x
+    && spawn.feetPosition.y === snapshot.message.localReconciliation.feetPosition.y
+    && spawn.feetPosition.z === snapshot.message.localReconciliation.feetPosition.z
+    && normalizedYawDelta(
+      snapshot.message.localReconciliation.yawMilliDegrees,
+      spawn.yawMilliDegrees,
+    ) === 0
+  ));
+  assert.notEqual(
+    expectedSpawn,
+    undefined,
+    `${client.clientId} must join on an exact locked ${expectedSpawnSet} spawn`,
+  );
   return Object.freeze({
     clientId: client.clientId,
     playerId: join.message.playerId,
@@ -1595,6 +1613,10 @@ function initialJoinProof(client) {
     feetPosition: snapshot.message.localReconciliation.feetPosition,
     yawMilliDegrees: snapshot.message.localReconciliation.yawMilliDegrees,
     teamId: localCombat.teamId,
+    spawnId: expectedSpawn.spawnId,
+    spawnSet: expectedSpawn.set,
+    escapeRouteFamilies: expectedSpawn.escapeRouteFamilies ?? Object.freeze([]),
+    validationStatus: expectedSpawn.validationStatus ?? null,
   });
 }
 
@@ -2520,7 +2542,7 @@ try {
     tickStimulus: twoPopulationTick.stimulus,
   });
   const initialJoins = twoClients.map(initialJoinProof);
-  assert.deepEqual(initialJoins.map(({ feetPosition }) => feetPosition), expectedSpawns.slice(0, 2).map(({ feetPosition }) => feetPosition));
+  assert.equal(new Set(initialJoins.map(({ spawnId }) => spawnId)).size, 2);
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-01-client-0-two-rendered.png'), fullPage: true });
   await second.page.screenshot({ path: path.join(screenshotDirectory, 'p515-02-client-1-two-rendered.png'), fullPage: true });
 
@@ -3017,7 +3039,10 @@ try {
     tickStimulus: eightPopulationTick.stimulus,
   });
   initialJoins.push(...clients.slice(4, 8).map(initialJoinProof));
-  assert.deepEqual(initialJoins.map(({ feetPosition }) => feetPosition), expectedSpawns.map(({ feetPosition }) => feetPosition));
+  assert.deepEqual(
+    [...new Set(initialJoins.map(({ spawnId }) => spawnId))].sort(),
+    expectedSpawns.map(({ spawnId }) => spawnId).sort(),
+  );
   assert.deepEqual(initialJoins.map(({ teamId }) => teamId), [
     'team_blue', 'team_red', 'team_blue', 'team_red',
     'team_blue', 'team_red', 'team_blue', 'team_red',
@@ -3098,6 +3123,30 @@ try {
   assert.equal(finalRoomMetrics.body.metrics.transport.snapshotAcksRejected, 0);
   assert.equal(finalRoomMetrics.body.metrics.transport.snapshotAckDebtEvictions, 0);
   assert.equal(finalRoomMetrics.body.metrics.transport.reliableEventAcksRejected, 0);
+  const spawnSelection = finalRoomMetrics.body.metrics.spawnSelection;
+  assert.equal(spawnSelection.schemaVersion, 1);
+  assert.equal(
+    spawnSelection.strategy,
+    'rev3_authority_enemy_distance_fixture_occluded_los_v1',
+  );
+  assert.equal(
+    spawnSelection.authorityBoundary,
+    'server_state_and_authority_collision_only',
+  );
+  assert.equal(spawnSelection.clientPositionOrScoreAccepted, false);
+  assert.equal(spawnSelection.lockedSpawnIdentityCount, 12);
+  assert.ok(spawnSelection.decisionCount >= initialJoins.length);
+  assert.equal(spawnSelection.fallbackCount, 0);
+  assert.ok(spawnSelection.decisions.every((decision) => (
+    expectedBinding.spawns.some(({ spawnId }) => spawnId === decision.selectedSpawnId)
+    && decision.status === 'selected'
+    && decision.fallbackMode === 'none'
+    && decision.selectedStandingOccluded
+    && decision.selectedCrouchedOccluded
+  )));
+  assert.ok(initialJoins.every(({ spawnId }) => (
+    spawnSelection.decisions.some((decision) => decision.selectedSpawnId === spawnId)
+  )));
 
   const allFrameProfiles = [
     ...twoPopulation.frameProfiles,
@@ -3216,6 +3265,7 @@ try {
       mapBinding: (await productSnapshot(first.page)).roomVerification.mapBinding,
       simulationIdentity: (await productSnapshot(first.page)).roomVerification.simulationIdentity,
       initialJoins,
+      spawnSelection,
       synchronizationContract: {
         source: 'server_owned_room_wide_reliable_event',
         eventKind: 'shotAccepted',

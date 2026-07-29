@@ -172,6 +172,7 @@ const rev5ExpectedMapBinding = {
 const expectedSpawns = REV4_ACCEPTANCE_CAPTURE
   ? rev4ExpectedSpawns.slice(0, 8)
   : rev2ExpectedSpawns;
+const expectedSpawnsById = new Map(expectedSpawns.map((spawn) => [spawn.spawnId, spawn]));
 const expectedMapBinding = REV5_PRESENTATION_CAPTURE
   ? rev5ExpectedMapBinding
   : REV4_ACCEPTANCE_CAPTURE
@@ -666,16 +667,50 @@ assert.equal(new Set(proof.authority.initialJoins.map(({ playerId }) => playerId
 assert.ok(proof.authority.initialJoins.every(({ matchId }) => matchId === proof.authority.matchId));
 for (let index = 0; index < 8; index += 1) {
   const join = proof.authority.initialJoins[index];
+  const expectedSpawn = expectedSpawnsById.get(join.spawnId);
+  assert.notEqual(expectedSpawn, undefined, `${join.clientId} locked spawn identity`);
   assert.equal(join.clientId, `client-${index}`);
   assertSha256(join.resumeTokenSha256, `${join.clientId} token digest`);
   assert.ok(Number.isInteger(join.serverTick) && join.serverTick >= 0);
-  assert.deepEqual(join.feetPosition, expectedSpawns[index].feetPosition);
+  assert.deepEqual(join.feetPosition, expectedSpawn.feetPosition);
   assert.equal(
     normalizeYawMilliDegrees(join.yawMilliDegrees),
-    normalizeYawMilliDegrees(expectedSpawns[index].yawMilliDegrees),
+    normalizeYawMilliDegrees(expectedSpawn.yawMilliDegrees),
   );
   assert.equal(join.teamId, index % 2 === 0 ? 'team_blue' : 'team_red');
+  assert.equal(join.spawnSet, join.teamId === 'team_blue' ? 'west_team' : 'east_team');
+  assert.deepEqual(join.escapeRouteFamilies, expectedSpawn.escapeRouteFamilies ?? []);
+  assert.equal(join.validationStatus, expectedSpawn.validationStatus ?? null);
 }
+assert.deepEqual(
+  [...new Set(proof.authority.initialJoins.map(({ spawnId }) => spawnId))].sort(),
+  expectedSpawns.map(({ spawnId }) => spawnId).sort(),
+);
+assert.equal(proof.authority.spawnSelection.schemaVersion, 1);
+assert.equal(
+  proof.authority.spawnSelection.strategy,
+  'rev3_authority_enemy_distance_fixture_occluded_los_v1',
+);
+assert.equal(
+  proof.authority.spawnSelection.authorityBoundary,
+  'server_state_and_authority_collision_only',
+);
+assert.equal(proof.authority.spawnSelection.clientPositionOrScoreAccepted, false);
+assert.equal(proof.authority.spawnSelection.lockedSpawnIdentityCount, 12);
+assert.ok(proof.authority.spawnSelection.decisionCount >= 8);
+assert.equal(proof.authority.spawnSelection.fallbackCount, 0);
+assert.ok(proof.authority.spawnSelection.decisions.every((decision) => (
+  expectedMapBinding.spawns.some(({ spawnId }) => spawnId === decision.selectedSpawnId)
+  && decision.status === 'selected'
+  && decision.fallbackMode === 'none'
+  && decision.selectedStandingOccluded
+  && decision.selectedCrouchedOccluded
+)));
+assert.ok(proof.authority.initialJoins.every(({ spawnId }) => (
+  proof.authority.spawnSelection.decisions.some(
+    (decision) => decision.selectedSpawnId === spawnId,
+  )
+)));
 
 assertPopulation(proof.populations.two, 2, proof.authority.roomCode, proof.authority.matchId);
 assertPopulation(proof.populations.four, 4, proof.authority.roomCode, proof.authority.matchId);
