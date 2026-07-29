@@ -22,6 +22,7 @@ interface OnlineSnapshot {
     readonly jump: boolean;
     readonly sprint: boolean;
     readonly primaryFire: boolean;
+    readonly aimHeld: boolean;
   }>;
 }
 
@@ -154,6 +155,16 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
       .toBe(true);
     await page.keyboard.up('KeyF');
     await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? true)
+      .toBe(false);
+
+    const canvas = page.locator('.online-session__canvas');
+    await canvas.dispatchEvent('pointerdown', { button: 2 });
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.aimHeld ?? false)
+      .toBe(true);
+    await page.evaluate(() => {
+      window.dispatchEvent(new PointerEvent('pointerup', { button: 2 }));
+    });
+    await expect.poll(async () => (await snapshot(page))?.inputBridge.aimHeld ?? true)
       .toBe(false);
 
     const crouch = page.getByTestId('online-crouch');

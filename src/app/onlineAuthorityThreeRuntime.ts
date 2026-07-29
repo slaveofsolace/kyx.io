@@ -22,6 +22,7 @@ import {
 import {
   createKyxWeaponPresentationModel,
   normalizeKyxAuthorityWeaponId,
+  setKyxWeaponAim,
   updateKyxWeaponPresentation,
   type KyxWeaponPhase,
   type KyxWeaponPresentationModel,
@@ -55,6 +56,7 @@ export interface OnlineAuthorityThreeFrame {
   readonly localYawMilliDegrees: number | null;
   readonly localPitchMilliDegrees: number | null;
   readonly localSpeedMillimetersPerSecond: number;
+  readonly aimHeld: boolean;
   readonly blinkPreview: OnlineBlinkPreview | null;
 }
 
@@ -95,6 +97,12 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedWeaponSilhouette: string | null;
   readonly selectedFirstPersonHandCount: number;
   readonly selectedFirstPersonContactMode: string;
+  readonly selectedFirstPersonAimRequested: boolean;
+  readonly selectedFirstPersonAimMix: number;
+  readonly selectedFirstPersonFieldOfViewDegrees: number;
+  readonly selectedFirstPersonFireImpulse: number;
+  readonly selectedFirstPersonReloadProgress: number;
+  readonly selectedFirstPersonReloadPoseMix: number;
   readonly blinkPreviewActive: boolean;
   readonly blinkPreviewValid: boolean;
   readonly blinkPreviewAuthorityBound: boolean;
@@ -142,6 +150,7 @@ interface LoadedRev5Visual {
 const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
 const AUTHORITY_SIMULATION_RATE_HZ = 20;
 const DEATH_PRESENTATION_DURATION_MILLISECONDS = 2_550;
+const BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES = 72;
 
 function mapMillimetersToScene(
   value: Readonly<{ x: number; y: number; z: number }>,
@@ -423,7 +432,12 @@ export async function createOnlineAuthorityThreeRuntime(
   archiveGlow.position.set(-20, 6, -14);
   scene.add(archiveGlow);
 
-  const camera = new THREE.PerspectiveCamera(72, 16 / 9, 0.025, 150);
+  const camera = new THREE.PerspectiveCamera(
+    BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES,
+    16 / 9,
+    0.025,
+    150,
+  );
   camera.rotation.order = 'YXZ';
   scene.add(camera);
 
@@ -1016,6 +1030,7 @@ export async function createOnlineAuthorityThreeRuntime(
       frame.nowMilliseconds,
     );
     if (firstPersonWeapon !== null) {
+      setKyxWeaponAim(firstPersonWeapon, frame.aimHeld);
       updateKyxWeaponPresentation(
         firstPersonWeapon,
         frame.nowMilliseconds,
@@ -1051,22 +1066,54 @@ export async function createOnlineAuthorityThreeRuntime(
     firstPersonRecoil *= Math.pow(0.72, deltaSeconds * 60);
     firstPersonMelee *= Math.pow(0.82, deltaSeconds * 60);
     if (firstPersonWeapon !== null) {
+      const pose = firstPersonWeapon.firstPersonPose;
+      const aim = firstPersonWeapon.aimMix;
+      const reload = firstPersonWeapon.reloadPoseMix;
       const movementBob = Math.min(
         1,
         frame.localSpeedMillimetersPerSecond / 5_500,
       );
       const bobPhase = frame.nowMilliseconds * 0.012;
       firstPersonWeaponMount.position.set(
-        Math.sin(bobPhase) * 0.008 * movementBob,
+        Math.sin(bobPhase) * 0.008 * movementBob
+          + pose.aimOffset.x * aim
+          + pose.recoilOffset.x * firstPersonRecoil
+          + pose.reloadOffset.x * reload,
         Math.abs(Math.cos(bobPhase)) * -0.008 * movementBob
-          - firstPersonWeapon.reloadMix * 0.045,
-        firstPersonRecoil * 0.055,
+          + pose.aimOffset.y * aim
+          + pose.recoilOffset.y * firstPersonRecoil
+          + pose.reloadOffset.y * reload,
+        pose.aimOffset.z * aim
+          + pose.recoilOffset.z * firstPersonRecoil
+          + pose.reloadOffset.z * reload,
       );
       firstPersonWeaponMount.rotation.set(
-        firstPersonRecoil * -0.08 + firstPersonWeapon.reloadMix * 0.18,
-        firstPersonMelee * -0.52,
-        firstPersonMelee * -0.26 + firstPersonWeapon.reloadMix * 0.24,
+        pose.aimRotation.x * aim
+          + pose.recoilRotation.x * firstPersonRecoil
+          + pose.reloadRotation.x * reload,
+        pose.aimRotation.y * aim
+          + pose.recoilRotation.y * firstPersonRecoil
+          + pose.reloadRotation.y * reload
+          + firstPersonMelee * -0.52,
+        pose.aimRotation.z * aim
+          + pose.recoilRotation.z * firstPersonRecoil
+          + pose.reloadRotation.z * reload
+          + firstPersonMelee * -0.26,
       );
+      const targetFieldOfView = THREE.MathUtils.lerp(
+        BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES,
+        pose.aimFieldOfViewDegrees,
+        aim,
+      );
+      if (Math.abs(camera.fov - targetFieldOfView) > 0.005) {
+        camera.fov = targetFieldOfView;
+        camera.updateProjectionMatrix();
+      }
+    } else if (
+      camera.fov !== BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES
+    ) {
+      camera.fov = BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES;
+      camera.updateProjectionMatrix();
     }
     // Reliable presentation resolves from the current camera, hand socket, and
     // authored muzzle matrices. Combat results still come only from the event.
@@ -1122,6 +1169,17 @@ export async function createOnlineAuthorityThreeRuntime(
         String(
           firstPersonWeapon?.group.userData.firstPersonContactMode ?? 'none',
         ),
+      selectedFirstPersonAimRequested:
+        firstPersonWeapon?.aimRequested ?? false,
+      selectedFirstPersonAimMix:
+        firstPersonWeapon?.aimMix ?? 0,
+      selectedFirstPersonFieldOfViewDegrees: camera.fov,
+      selectedFirstPersonFireImpulse:
+        firstPersonWeapon?.fireImpulse ?? 0,
+      selectedFirstPersonReloadProgress:
+        firstPersonWeapon?.reloadProgress ?? 0,
+      selectedFirstPersonReloadPoseMix:
+        firstPersonWeapon?.reloadPoseMix ?? 0,
       blinkPreviewActive: blinkDiagnostics.active,
       blinkPreviewValid: blinkDiagnostics.valid,
       blinkPreviewAuthorityBound: blinkDiagnostics.authorityBound,

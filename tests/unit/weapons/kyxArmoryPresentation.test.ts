@@ -4,6 +4,9 @@ import { describe, expect, it } from 'vitest';
 import {
   KYX_AUTHORITY_WEAPON_PRESENTATION,
   createKyxWeaponPresentationModel,
+  setKyxWeaponAim,
+  setKyxWeaponPhase,
+  updateKyxWeaponPresentation,
   type KyxAuthorityWeaponId,
 } from '../../../src/weapons/KyxArmoryPresentation';
 
@@ -117,5 +120,51 @@ describe('KYX first-person armory presentation', () => {
     expect(worldRifle.firstPersonHandCount).toBe(0);
     expect(firstPersonBlade.firstPersonContactRig).toBeNull();
     expect(firstPersonBlade.firstPersonHandCount).toBe(0);
+  });
+
+  it('blends a family-authored ADS pose and exits it for an authority reload', () => {
+    const rifle = createKyxWeaponPresentationModel(
+      'vertical_rifle_v1',
+      'first_person',
+    );
+    expect(rifle.firstPersonPose).toMatchObject({
+      aimEnabled: true,
+      aimFieldOfViewDegrees: 58,
+      reloadDurationMilliseconds: 3_000,
+    });
+
+    setKyxWeaponAim(rifle, true);
+    updateKyxWeaponPresentation(rifle, 1_000, 0.1);
+    expect(rifle.aimRequested).toBe(true);
+    expect(rifle.aimMix).toBeCloseTo(1, 5);
+
+    setKyxWeaponPhase(rifle, 'reloading', 1_000);
+    updateKyxWeaponPresentation(rifle, 1_750, 0.1);
+    expect(rifle.aimMix).toBeCloseTo(0, 5);
+    expect(rifle.reloadProgress).toBeCloseTo(0.25, 5);
+    expect(rifle.reloadPoseMix).toBeGreaterThan(0.5);
+
+    setKyxWeaponPhase(rifle, 'ready', 4_000);
+    updateKyxWeaponPresentation(rifle, 4_000, 0.1);
+    expect(rifle.reloadPoseMix).toBe(0);
+    expect(rifle.aimMix).toBeCloseTo(1, 5);
+  });
+
+  it('keeps ADS presentation-only and disabled for world weapons and melee', () => {
+    const worldRifle = createKyxWeaponPresentationModel(
+      'vertical_rifle_v1',
+      'world',
+    );
+    const blade = createKyxWeaponPresentationModel(
+      'kyx_edge_v1',
+      'first_person',
+    );
+    setKyxWeaponAim(worldRifle, true);
+    setKyxWeaponAim(blade, true);
+    updateKyxWeaponPresentation(worldRifle, 1_000, 0.1);
+    updateKyxWeaponPresentation(blade, 1_000, 0.1);
+    expect(worldRifle.aimMix).toBe(0);
+    expect(blade.aimMix).toBe(0);
+    expect(blade.firstPersonPose.aimEnabled).toBe(false);
   });
 });

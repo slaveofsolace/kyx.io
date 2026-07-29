@@ -524,6 +524,75 @@ try {
 
   await delay(800);
   await captureArena(page, '01-west-spawn-pocket-forward.png');
+  assert.equal(joined.inputBridge.aimHeld, false);
+  assert.equal(joined.render3d.selectedFirstPersonAimRequested, false);
+  assert.ok(joined.render3d.selectedFirstPersonAimMix <= 0.01);
+  assert.equal(
+    joined.render3d.selectedFirstPersonFieldOfViewDegrees,
+    72,
+  );
+
+  const canvas = page.locator('.online-session__canvas');
+  await canvas.hover();
+  await page.mouse.down({ button: 'right' });
+  await page.waitForFunction(() => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    return value?.inputBridge.aimHeld === true
+      && value.render3d?.selectedFirstPersonAimRequested === true
+      && value.render3d.selectedFirstPersonAimMix >= 0.95;
+  });
+  const aimed = await snapshot(page);
+  assert.ok(
+    aimed.render3d.selectedFirstPersonFieldOfViewDegrees <= 58.75,
+    `VLR-7 ADS must narrow the player field of view: ${
+      aimed.render3d.selectedFirstPersonFieldOfViewDegrees
+    }`,
+  );
+  await captureArena(page, '01b-vlr7-held-ads.png');
+  await page.mouse.up({ button: 'right' });
+  await page.waitForFunction(() => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    return value?.inputBridge.aimHeld === false
+      && value.render3d?.selectedFirstPersonAimMix <= 0.05;
+  });
+
+  const acceptedAttackCountBefore =
+    aimed.render3d.acceptedAttackPresentationCount;
+  await page.keyboard.down('Enter');
+  await delay(180);
+  await page.keyboard.up('Enter');
+  await page.waitForFunction((previous) => (
+    (
+      globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
+        .render3d?.acceptedAttackPresentationCount
+      ?? 0
+    ) > previous
+  ), acceptedAttackCountBefore);
+  const reloadPresentationCountBefore = (
+    await snapshot(page)
+  ).render3d.reloadPresentationCount;
+  await page.keyboard.down('KeyR');
+  await delay(180);
+  await page.keyboard.up('KeyR');
+  await page.waitForFunction((previous) => {
+    const value = globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot();
+    return (
+      value?.render3d?.reloadPresentationCount
+      ?? 0
+    ) > previous
+      && (value?.render3d?.selectedFirstPersonReloadPoseMix ?? 0) >= 0.35;
+  }, reloadPresentationCountBefore);
+  const reloading = await snapshot(page);
+  assert.equal(reloading.render3d.selectedFirstPersonAimRequested, false);
+  assert.ok(reloading.render3d.selectedFirstPersonReloadProgress > 0);
+  await captureArena(page, '01c-vlr7-authority-reload.png');
+  await page.waitForFunction(() => (
+    (
+      globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
+        .render3d?.selectedFirstPersonReloadPoseMix
+      ?? 1
+    ) <= 0.02
+  ), undefined, { timeout: 8_000 });
 
   await page.keyboard.down('KeyW');
   await delay(1_600);
@@ -729,6 +798,8 @@ try {
   assert.deepEqual(pageErrors, []);
   const screenshotFiles = Object.freeze([
     'screenshots/01-west-spawn-pocket-forward.png',
+    'screenshots/01b-vlr7-held-ads.png',
+    'screenshots/01c-vlr7-authority-reload.png',
     'screenshots/02-press-hall-approach.png',
     'screenshots/03-ink-channel-and-red-fold.png',
     'screenshots/04-archive-tier-and-paper-drop.png',
@@ -782,6 +853,25 @@ try {
       isolatedPlayerContexts: 2,
       rendererMode,
       graphics,
+    }),
+    weaponPresentation: Object.freeze({
+      authorityWeaponId: aimed.render3d.selectedWeaponId,
+      contactMode: aimed.render3d.selectedFirstPersonContactMode,
+      handCount: aimed.render3d.selectedFirstPersonHandCount,
+      hipFieldOfViewDegrees:
+        joined.render3d.selectedFirstPersonFieldOfViewDegrees,
+      aimedFieldOfViewDegrees:
+        aimed.render3d.selectedFirstPersonFieldOfViewDegrees,
+      aimedMix: aimed.render3d.selectedFirstPersonAimMix,
+      acceptedAttackPresentationCount:
+        reloading.render3d.acceptedAttackPresentationCount,
+      reloadPresentationCount:
+        reloading.render3d.reloadPresentationCount,
+      reloadProgressAtCapture:
+        reloading.render3d.selectedFirstPersonReloadProgress,
+      reloadPoseMixAtCapture:
+        reloading.render3d.selectedFirstPersonReloadPoseMix,
+      presentationOnlyAimInput: true,
     }),
     player: Object.freeze({
       joinedSpawnId: joinedSpawn.spawnId,

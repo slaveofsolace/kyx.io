@@ -15,6 +15,21 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       scale: 0.72,
       position: Object.freeze([0.3, -0.31, -0.55] as const),
       rotation: Object.freeze([-0.06, 0.055, 0.008] as const),
+      aim: Object.freeze({
+        enabled: true,
+        offset: Object.freeze([-0.292, 0.205, 0.105] as const),
+        rotation: Object.freeze([0.045, -0.055, -0.008] as const),
+        fieldOfViewDegrees: 58,
+      }),
+      recoil: Object.freeze({
+        offset: Object.freeze([0, -0.004, 0.07] as const),
+        rotation: Object.freeze([-0.095, 0, 0.01] as const),
+      }),
+      reload: Object.freeze({
+        durationMilliseconds: 3_000,
+        offset: Object.freeze([-0.08, -0.1, 0.13] as const),
+        rotation: Object.freeze([0.22, -0.12, 0.35] as const),
+      }),
     }),
   }),
   kyx_sidearm_v1: Object.freeze({
@@ -27,6 +42,21 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       scale: 1.04,
       position: Object.freeze([0.37, -0.335, -0.34] as const),
       rotation: Object.freeze([-0.025, -0.025, -0.045] as const),
+      aim: Object.freeze({
+        enabled: true,
+        offset: Object.freeze([-0.36, 0.22, 0.06] as const),
+        rotation: Object.freeze([0.015, 0.025, 0.045] as const),
+        fieldOfViewDegrees: 62,
+      }),
+      recoil: Object.freeze({
+        offset: Object.freeze([0.015, -0.005, 0.09] as const),
+        rotation: Object.freeze([-0.13, 0, 0.035] as const),
+      }),
+      reload: Object.freeze({
+        durationMilliseconds: 1_500,
+        offset: Object.freeze([-0.1, -0.13, 0.12] as const),
+        rotation: Object.freeze([0.28, -0.1, 0.42] as const),
+      }),
     }),
   }),
   kyx_scattergun_v1: Object.freeze({
@@ -39,6 +69,21 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       scale: 0.82,
       position: Object.freeze([0.285, -0.315, -0.46] as const),
       rotation: Object.freeze([-0.065, 0.045, 0.012] as const),
+      aim: Object.freeze({
+        enabled: true,
+        offset: Object.freeze([-0.275, 0.2, 0.08] as const),
+        rotation: Object.freeze([0.045, -0.045, -0.012] as const),
+        fieldOfViewDegrees: 60,
+      }),
+      recoil: Object.freeze({
+        offset: Object.freeze([0, -0.02, 0.14] as const),
+        rotation: Object.freeze([-0.18, 0.02, 0.03] as const),
+      }),
+      reload: Object.freeze({
+        durationMilliseconds: 1_800,
+        offset: Object.freeze([-0.14, -0.16, 0.18] as const),
+        rotation: Object.freeze([0.32, -0.18, 0.45] as const),
+      }),
     }),
   }),
   kyx_longshot_v1: Object.freeze({
@@ -51,6 +96,21 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       scale: 0.7,
       position: Object.freeze([0.255, -0.29, -0.53] as const),
       rotation: Object.freeze([-0.028, 0.018, -0.008] as const),
+      aim: Object.freeze({
+        enabled: true,
+        offset: Object.freeze([-0.25, 0.205, 0.1] as const),
+        rotation: Object.freeze([0.018, -0.018, 0.008] as const),
+        fieldOfViewDegrees: 44,
+      }),
+      recoil: Object.freeze({
+        offset: Object.freeze([0, -0.025, 0.12] as const),
+        rotation: Object.freeze([-0.16, 0.02, 0.02] as const),
+      }),
+      reload: Object.freeze({
+        durationMilliseconds: 2_500,
+        offset: Object.freeze([-0.12, -0.14, 0.2] as const),
+        rotation: Object.freeze([0.3, -0.1, 0.38] as const),
+      }),
     }),
   }),
   kyx_breach_rocket_v1: Object.freeze({
@@ -63,6 +123,21 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       scale: 0.68,
       position: Object.freeze([0.36, -0.36, -0.51] as const),
       rotation: Object.freeze([-0.035, -0.025, 0.035] as const),
+      aim: Object.freeze({
+        enabled: true,
+        offset: Object.freeze([-0.345, 0.24, 0.08] as const),
+        rotation: Object.freeze([0.025, 0.025, -0.035] as const),
+        fieldOfViewDegrees: 56,
+      }),
+      recoil: Object.freeze({
+        offset: Object.freeze([0, -0.03, 0.18] as const),
+        rotation: Object.freeze([-0.2, 0.035, 0.04] as const),
+      }),
+      reload: Object.freeze({
+        durationMilliseconds: 2_500,
+        offset: Object.freeze([-0.18, -0.18, 0.22] as const),
+        rotation: Object.freeze([0.35, -0.22, 0.5] as const),
+      }),
     }),
   }),
   kyx_edge_v1: Object.freeze({
@@ -75,6 +150,21 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       scale: 0.96,
       position: Object.freeze([0.41, -0.42, -0.32] as const),
       rotation: Object.freeze([-0.2, -0.18, -0.16] as const),
+      aim: Object.freeze({
+        enabled: false,
+        offset: Object.freeze([0, 0, 0] as const),
+        rotation: Object.freeze([0, 0, 0] as const),
+        fieldOfViewDegrees: 72,
+      }),
+      recoil: Object.freeze({
+        offset: Object.freeze([0, 0, 0] as const),
+        rotation: Object.freeze([0, 0, 0] as const),
+      }),
+      reload: Object.freeze({
+        durationMilliseconds: 1,
+        offset: Object.freeze([0, 0, 0] as const),
+        rotation: Object.freeze([0, 0, 0] as const),
+      }),
     }),
   }),
 } as const);
@@ -112,6 +202,18 @@ interface WeaponMovingParts {
   readonly blade?: MovingPart;
 }
 
+export interface KyxFirstPersonWeaponPose {
+  readonly aimEnabled: boolean;
+  readonly aimOffset: THREE.Vector3;
+  readonly aimRotation: THREE.Euler;
+  readonly aimFieldOfViewDegrees: number;
+  readonly recoilOffset: THREE.Vector3;
+  readonly recoilRotation: THREE.Euler;
+  readonly reloadDurationMilliseconds: number;
+  readonly reloadOffset: THREE.Vector3;
+  readonly reloadRotation: THREE.Euler;
+}
+
 export interface KyxWeaponPresentationModel {
   readonly authorityWeaponId: KyxAuthorityWeaponId;
   readonly definitionId: string;
@@ -126,9 +228,14 @@ export interface KyxWeaponPresentationModel {
   readonly backblast: THREE.Object3D | null;
   readonly firstPersonContactRig: THREE.Group | null;
   readonly firstPersonHandCount: number;
+  readonly firstPersonPose: KyxFirstPersonWeaponPose;
   readonly movingParts: WeaponMovingParts;
   fireImpulse: number;
+  aimRequested: boolean;
+  aimMix: number;
   reloadMix: number;
+  reloadPoseMix: number;
+  reloadProgress: number;
   reloadStartedAtMilliseconds: number | null;
   phase: KyxWeaponPhase;
 }
@@ -822,6 +929,22 @@ export function createKyxWeaponPresentationModel(
   group.userData.firstPersonContactMode =
     firstPersonContact?.root.userData.contactMode ?? 'none';
   group.userData.firstPersonHandCount = firstPersonContact?.handCount ?? 0;
+  group.userData.firstPersonAimEnabled = spec.firstPerson.aim.enabled;
+  group.userData.firstPersonAimFieldOfViewDegrees =
+    spec.firstPerson.aim.fieldOfViewDegrees;
+
+  const firstPersonPose: KyxFirstPersonWeaponPose = {
+    aimEnabled: spec.firstPerson.aim.enabled,
+    aimOffset: new THREE.Vector3(...spec.firstPerson.aim.offset),
+    aimRotation: new THREE.Euler(...spec.firstPerson.aim.rotation),
+    aimFieldOfViewDegrees: spec.firstPerson.aim.fieldOfViewDegrees,
+    recoilOffset: new THREE.Vector3(...spec.firstPerson.recoil.offset),
+    recoilRotation: new THREE.Euler(...spec.firstPerson.recoil.rotation),
+    reloadDurationMilliseconds:
+      spec.firstPerson.reload.durationMilliseconds,
+    reloadOffset: new THREE.Vector3(...spec.firstPerson.reload.offset),
+    reloadRotation: new THREE.Euler(...spec.firstPerson.reload.rotation),
+  };
 
   group.traverse((object) => {
     if (!(object as THREE.Mesh).isMesh) return;
@@ -862,9 +985,14 @@ export function createKyxWeaponPresentationModel(
     backblast: built.backblast ?? null,
     firstPersonContactRig: firstPersonContact?.root ?? null,
     firstPersonHandCount: firstPersonContact?.handCount ?? 0,
+    firstPersonPose,
     movingParts: built.movingParts,
     fireImpulse: 0,
+    aimRequested: false,
+    aimMix: 0,
     reloadMix: 0,
+    reloadPoseMix: 0,
+    reloadProgress: 0,
     reloadStartedAtMilliseconds: null,
     phase: 'ready',
   };
@@ -874,6 +1002,17 @@ export function triggerKyxWeaponFire(
   weapon: KyxWeaponPresentationModel,
 ): void {
   weapon.fireImpulse = 1;
+}
+
+export function setKyxWeaponAim(
+  weapon: KyxWeaponPresentationModel,
+  aiming: boolean,
+): void {
+  weapon.aimRequested = (
+    weapon.presentation === 'first_person'
+    && weapon.firstPersonPose.aimEnabled
+    && aiming
+  );
 }
 
 export function setKyxWeaponPhase(
@@ -903,10 +1042,33 @@ export function updateKyxWeaponPresentation(
 ): void {
   const decay = Math.pow(0.00045, Math.max(0, deltaSeconds));
   weapon.fireImpulse *= decay;
+  const aimAllowed = weapon.presentation === 'first_person'
+    && weapon.firstPersonPose.aimEnabled
+    && weapon.phase !== 'holstered'
+    && weapon.phase !== 'equipping'
+    && weapon.phase !== 'reloading'
+    && weapon.phase !== 'sprinting'
+    && weapon.phase !== 'dead';
+  const aimTarget = weapon.aimRequested && aimAllowed ? 1 : 0;
+  weapon.aimMix += (
+    aimTarget - weapon.aimMix
+  ) * Math.min(1, deltaSeconds * (aimTarget > weapon.aimMix ? 13 : 18));
   const reloadTarget = weapon.phase === 'reloading' ? 1 : 0;
   weapon.reloadMix += (
     reloadTarget - weapon.reloadMix
   ) * Math.min(1, deltaSeconds * (reloadTarget > weapon.reloadMix ? 8 : 13));
+  weapon.reloadProgress = weapon.reloadStartedAtMilliseconds === null
+    ? 0
+    : Math.min(
+        1,
+        Math.max(
+          0,
+          (nowMilliseconds - weapon.reloadStartedAtMilliseconds)
+            / weapon.firstPersonPose.reloadDurationMilliseconds,
+        ),
+      );
+  weapon.reloadPoseMix = weapon.reloadMix
+    * Math.sin(weapon.reloadProgress * Math.PI);
 
   const action = weapon.movingParts.action;
   const magazine = weapon.movingParts.magazine;
@@ -919,32 +1081,29 @@ export function updateKyxWeaponPresentation(
 
   const fire = weapon.fireImpulse;
   const reload = weapon.reloadMix;
-  const reloadCycle = weapon.reloadStartedAtMilliseconds === null
-    ? 0
-    : Math.max(0, (nowMilliseconds - weapon.reloadStartedAtMilliseconds) / 820);
-  const reloadLift = Math.sin(Math.min(1, reloadCycle) * Math.PI);
+  const reloadLift = weapon.reloadPoseMix;
 
   switch (weapon.family) {
     case 'rifle':
       if (action !== undefined) action.object.position.z += fire * 0.105;
       if (magazine !== undefined) {
-        magazine.object.position.y -= reload * (0.18 + reloadLift * 0.08);
-        magazine.object.rotation.z += reload * 0.16;
+        magazine.object.position.y -= reload * 0.04 + reloadLift * 0.22;
+        magazine.object.rotation.z += reloadLift * 0.24;
       }
       break;
     case 'pistol':
       if (action !== undefined) action.object.position.z += fire * 0.115;
       if (auxiliary !== undefined) auxiliary.object.rotation.z += fire * 0.42;
       if (magazine !== undefined) {
-        magazine.object.position.y -= reload * (0.2 + reloadLift * 0.06);
-        magazine.object.rotation.z -= reload * 0.14;
+        magazine.object.position.y -= reload * 0.035 + reloadLift * 0.2;
+        magazine.object.rotation.z -= reloadLift * 0.2;
       }
       break;
     case 'shotgun':
       if (action !== undefined) action.object.position.z += fire * 0.19;
       if (magazine !== undefined) {
-        magazine.object.rotation.z += reload * Math.PI * 0.75;
-        magazine.object.position.y -= reloadLift * 0.04;
+        magazine.object.rotation.z += reloadLift * Math.PI * 0.75;
+        magazine.object.position.y -= reloadLift * 0.07;
       }
       break;
     case 'sniper':
@@ -953,13 +1112,13 @@ export function updateKyxWeaponPresentation(
         action.object.rotation.z += fire * 0.52;
       }
       if (magazine !== undefined) {
-        magazine.object.position.y -= reload * (0.23 + reloadLift * 0.08);
-        magazine.object.rotation.x += reload * 0.18;
+        magazine.object.position.y -= reload * 0.045 + reloadLift * 0.25;
+        magazine.object.rotation.x += reloadLift * 0.2;
       }
       break;
     case 'rocket':
       if (magazine !== undefined) {
-        magazine.object.rotation.z += reload * Math.PI * 0.64;
+        magazine.object.rotation.z += reloadLift * Math.PI * 0.64;
         magazine.object.position.z += reloadLift * 0.08;
       }
       if (auxiliary !== undefined) auxiliary.object.rotation.y += fire * 0.08;

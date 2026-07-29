@@ -106,6 +106,7 @@ interface OnlinePreviewSnapshot {
     sprint: boolean;
     crouch: boolean;
     primaryFire: boolean;
+    aimHeld: boolean;
     blinkPreviewHeld: boolean;
     selectedWeaponSlot: number;
   }>;
@@ -831,7 +832,7 @@ async function mountSession(
     '',
     inkfallRev4
       ? `CLICK FOR MOUSE LOOK · WASD · ${selectedCombatPreset.roleLabel.toUpperCase()} + BLADE · M1/ENTER FIRE · R RELOAD · E/F/Z PRESET ABILITIES · Q BLINK`
-      : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · ARROWS aim · M1/ENTER fire · R reload · E/F/Z abilities · Q Blink',
+      : 'WASD + AIR STEER · SHIFT sprint · SPACE jump · C/CTRL crouch + slide · MOUSE/ARROWS look · M1 fire · M2 ADS · R reload · E/F/Z abilities · Q Blink',
   ));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
@@ -843,8 +844,8 @@ async function mountSession(
   canvas.setAttribute(
     'aria-label',
     inkfallRev4
-      ? 'Playable Inkfall Foundry Rev5 3D online combat arena with linked portals. Click for pointer lock and mouse look; Mouse 1 fires.'
-      : 'Online authoritative combat arena. Click to focus; Mouse 1 fires.',
+      ? 'Playable Inkfall Foundry Rev5 3D online combat arena with linked portals. Click for pointer lock and mouse look; Mouse 1 fires and Mouse 2 aims.'
+      : 'Online authoritative combat arena. Click to focus; Mouse 1 fires and Mouse 2 aims.',
   );
   const mapStatus = element(
     'div',
@@ -1256,6 +1257,7 @@ async function mountSession(
   const pressedKeys = new Set<string>();
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
+  let aimHeld = false;
   let blinkPreviewHeld = false;
   let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let selectedWeaponSlot: number = selectedCombatPreset.authorityPrimaryWeaponSlot;
@@ -1832,6 +1834,7 @@ async function mountSession(
         sprint: (heldInputButtons & INTENT_BUTTON.sprint) !== 0,
         crouch: (heldInputButtons & INTENT_BUTTON.crouch) !== 0,
         primaryFire: (heldInputButtons & INTENT_BUTTON.primaryFire) !== 0,
+        aimHeld,
         blinkPreviewHeld,
         selectedWeaponSlot,
       }),
@@ -1974,6 +1977,7 @@ async function mountSession(
   const neutralizeRouteInput = (): void => {
     pressedKeys.clear();
     pointerHeldButtons = 0;
+    aimHeld = false;
     blinkPreviewHeld = false;
     latestBlinkPreview = null;
     client.neutralizeInput();
@@ -2012,6 +2016,11 @@ async function mountSession(
   const releaseCrouch = (): void => releasePointerButton(INTENT_BUTTON.crouch);
   const holdFire = (): void => holdPointerButton(INTENT_BUTTON.primaryFire);
   const releaseFire = (): void => releasePointerButton(INTENT_BUTTON.primaryFire);
+  const releaseAim = (event: PointerEvent): void => {
+    if (event.type === 'pointerup' && event.button !== 2) return;
+    aimHeld = false;
+    renderRequested = true;
+  };
   const startBlinkPreview = (): void => {
     blinkPreviewHeld = true;
     updateInput();
@@ -2028,8 +2037,9 @@ async function mountSession(
     cancelBlinkPreview();
     if (shouldCommit) pulseButton(INTENT_BUTTON.utility);
   };
-  const canvasFire = (event: PointerEvent): void => {
-    if (event.button !== 0) return;
+  const canvasPointerDown = (event: PointerEvent): void => {
+    if (event.button !== 0 && event.button !== 2) return;
+    event.preventDefault();
     void ensureFeedbackAudio().catch(() => {
       feedbackHud.dataset.audio = 'caption_only';
     });
@@ -2042,7 +2052,15 @@ async function mountSession(
         });
       }
     }
-    holdFire();
+    if (event.button === 0) {
+      holdFire();
+    } else {
+      aimHeld = true;
+      renderRequested = true;
+    }
+  };
+  const preventCanvasContextMenu = (event: MouseEvent): void => {
+    event.preventDefault();
   };
   const pointerLook = (event: MouseEvent): void => {
     if (!inkfallRev4 || document.pointerLockElement !== canvas) return;
@@ -2057,6 +2075,7 @@ async function mountSession(
     canvas.dataset.pointerLock = active ? 'active' : 'inactive';
     if (!active) {
       pointerHeldButtons = 0;
+      aimHeld = false;
       updateInput();
     }
   };
@@ -2073,7 +2092,8 @@ async function mountSession(
   fireButton.addEventListener('pointerup', releaseFire);
   fireButton.addEventListener('pointercancel', releaseFire);
   fireButton.addEventListener('pointerleave', releaseFire);
-  canvas.addEventListener('pointerdown', canvasFire);
+  canvas.addEventListener('pointerdown', canvasPointerDown);
+  canvas.addEventListener('contextmenu', preventCanvasContextMenu);
   document.addEventListener('mousemove', pointerLook);
   document.addEventListener('pointerlockchange', pointerLockChange);
   reloadButton.addEventListener('click', () => pulseButton(INTENT_BUTTON.reload));
@@ -2094,7 +2114,9 @@ async function mountSession(
   window.addEventListener('keyup', scoreboardKeyboardHandler);
   window.addEventListener('blur', blurHandler);
   window.addEventListener('pointerup', releaseFire);
+  window.addEventListener('pointerup', releaseAim);
   window.addEventListener('pointercancel', releaseFire);
+  window.addEventListener('pointercancel', releaseAim);
   document.addEventListener('visibilitychange', visibilityHandler);
   resumeButton.addEventListener('click', () => {
     neutralizeRouteInput();
@@ -2326,6 +2348,7 @@ async function mountSession(
           localYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
           localPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
           localSpeedMillimetersPerSecond: horizontalSpeed,
+          aimHeld,
           blinkPreview: latestBlinkPreview,
         });
       } catch (renderFailure) {
@@ -2561,6 +2584,7 @@ async function mountSession(
       body.dataset.onlinePresentationLastCue = presentationLastCue ?? 'none';
       body.dataset.onlinePresentationConfirmed = String(presentationConfirmedIntentCount);
       body.dataset.onlineInputHeldButtons = String(heldInputButtons);
+      body.dataset.onlineAimHeld = String(aimHeld);
       body.dataset.onlineSelectedWeaponSlot = String(
         localPlayer?.selectedWeaponSlot ?? selectedWeaponSlot,
       );
@@ -2593,10 +2617,14 @@ async function mountSession(
     window.removeEventListener('keyup', scoreboardKeyboardHandler);
     window.removeEventListener('blur', blurHandler);
     window.removeEventListener('pointerup', releaseFire);
+    window.removeEventListener('pointerup', releaseAim);
     window.removeEventListener('pointercancel', releaseFire);
+    window.removeEventListener('pointercancel', releaseAim);
     document.removeEventListener('visibilitychange', visibilityHandler);
     document.removeEventListener('mousemove', pointerLook);
     document.removeEventListener('pointerlockchange', pointerLockChange);
+    canvas.removeEventListener('pointerdown', canvasPointerDown);
+    canvas.removeEventListener('contextmenu', preventCanvasContextMenu);
     window.clearTimeout(feedbackTimeout);
     if (audioContext !== null) void audioContext.close();
     audioContext = null;
