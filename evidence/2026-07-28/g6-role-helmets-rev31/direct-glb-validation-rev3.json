@@ -1,0 +1,775 @@
+{
+  "schema": "kyx-g6-rev31-role-helmet-direct-glb-validation-v1",
+  "checkpoint": "G6_REV31_ROLE_HELMET_FAMILY",
+  "status": "DIRECT_GLB_STRUCTURE_AND_VISUAL_PACKET_COMPLETE_HUMAN_REVIEW_REQUIRED",
+  "generatedAt": "2026-07-29T00:35:56.240849+00:00",
+  "roles": [
+    {
+      "role": "assault",
+      "glb": {
+        "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-assault-lod0.glb",
+        "bytes": 3182164,
+        "sha256": "bc6864ed63ffe444f530c8914f3a23ec4a0217d39498e314169b886288013239"
+      },
+      "directImport": {
+        "armature": "KYX_REV24_RIG_66_JOINT_WITH_SOCKETS",
+        "bones": 66,
+        "actions": [
+          "KYX_REV17_FP_AIRBORNE",
+          "KYX_REV17_FP_FIRE",
+          "KYX_REV17_FP_IDLE",
+          "KYX_REV17_FP_LAND",
+          "KYX_REV17_FP_RELOAD",
+          "KYX_REV17_FP_SPRINT",
+          "KYX_REV17_TP_AIRBORNE_LOOP",
+          "KYX_REV17_TP_DEATH_FRONT",
+          "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "KYX_REV17_TP_IDLE",
+          "KYX_REV17_TP_JUMP_START",
+          "KYX_REV17_TP_LAND",
+          "KYX_REV17_TP_PRIMARY_FIRE",
+          "KYX_REV17_TP_RELOAD",
+          "KYX_REV17_TP_RUN",
+          "KYX_REV17_TP_WALK"
+        ],
+        "missingRequiredActions": [],
+        "helmetPartCount": 14,
+        "helmetVertexCount": 3821,
+        "helmetTriangleCount": 1984,
+        "armatureBinding": {
+          "KYX_REV31_ASSAULT_Cheek_L": true,
+          "KYX_REV31_ASSAULT_Cheek_R": true,
+          "KYX_REV31_ASSAULT_Chin": true,
+          "KYX_REV31_ASSAULT_ContinuousCyberCowl": true,
+          "KYX_REV31_ASSAULT_Crown": true,
+          "KYX_REV31_ASSAULT_CrownRail": true,
+          "KYX_REV31_ASSAULT_Faceplate": true,
+          "KYX_REV31_ASSAULT_MouthVent": true,
+          "KYX_REV31_ASSAULT_NeckSeal": true,
+          "KYX_REV31_ASSAULT_RearShell": true,
+          "KYX_REV31_ASSAULT_Temple_L": true,
+          "KYX_REV31_ASSAULT_Temple_R": true,
+          "KYX_REV31_ASSAULT_Visor": true,
+          "KYX_REV31_ASSAULT_VisorBrow": true
+        },
+        "headWeightFractions": {
+          "KYX_REV31_ASSAULT_Cheek_L": 1.0,
+          "KYX_REV31_ASSAULT_Cheek_R": 1.0,
+          "KYX_REV31_ASSAULT_Chin": 1.0,
+          "KYX_REV31_ASSAULT_ContinuousCyberCowl": 1.0,
+          "KYX_REV31_ASSAULT_Crown": 1.0,
+          "KYX_REV31_ASSAULT_CrownRail": 1.0,
+          "KYX_REV31_ASSAULT_Faceplate": 1.0,
+          "KYX_REV31_ASSAULT_MouthVent": 1.0,
+          "KYX_REV31_ASSAULT_NeckSeal": 1.0,
+          "KYX_REV31_ASSAULT_RearShell": 1.0,
+          "KYX_REV31_ASSAULT_Temple_L": 1.0,
+          "KYX_REV31_ASSAULT_Temple_R": 1.0,
+          "KYX_REV31_ASSAULT_Visor": 1.0,
+          "KYX_REV31_ASSAULT_VisorBrow": 1.0
+        },
+        "requiredClosedCoverageParts": {
+          "cowl": true,
+          "rearShell": true,
+          "crown": true,
+          "faceplate": true,
+          "visor": true,
+          "chin": true,
+          "neckSeal": true,
+          "leftTemple": true,
+          "rightTemple": true,
+          "leftCheek": true,
+          "rightCheek": true
+        }
+      },
+      "renders": [
+        {
+          "view": "front",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\assault\\rev31-assault-neutral-front.png",
+          "bytes": 1034453,
+          "sha256": "19ed6d8d62bfd912757fba9947c49715f8863ccfc6414d88ca7661895ac2ee2a",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              0.0,
+              -4.2,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "side",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\assault\\rev31-assault-neutral-side.png",
+          "bytes": 1001387,
+          "sha256": "22bfae0071a49f60791a6dd8d65ac81af7ba36fab5998701f75125010b6f0d67",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              4.2,
+              0.0,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\assault\\rev31-assault-neutral-three-quarter.png",
+          "bytes": 1059841,
+          "sha256": "a597dbb3ed0681fd813afcfbcdf7fc9c36f5e9994f137999bc18cada0a426961",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "inherited-rifle-contact-witness",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\assault\\rev31-assault-weapon-contact-three-quarter.png",
+          "bytes": 1046157,
+          "sha256": "b65fd0cb35cb2fef0270e5932400bc0b9fecb0c16e582ae0d60a288b439d26bc",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        }
+      ],
+      "assertions": {
+        "oneArmature": true,
+        "boneContract66": true,
+        "allRequiredActionsPresent": true,
+        "allHelmetPartsArmatureBound": true,
+        "allHelmetVerticesRigidHeadWeighted": true,
+        "closedCoveragePartsPresent": true,
+        "frontSideThreeQuarterNeutralRendered": true,
+        "weaponContactRenderedSeparately": true
+      }
+    },
+    {
+      "role": "breacher",
+      "glb": {
+        "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-breacher-lod0.glb",
+        "bytes": 3214600,
+        "sha256": "166937add8bc2d01d61ca941bd47630fbff3e0bac7fcef60459b61d08ceda508"
+      },
+      "directImport": {
+        "armature": "KYX_REV24_RIG_66_JOINT_WITH_SOCKETS",
+        "bones": 66,
+        "actions": [
+          "KYX_REV17_FP_AIRBORNE",
+          "KYX_REV17_FP_FIRE",
+          "KYX_REV17_FP_IDLE",
+          "KYX_REV17_FP_LAND",
+          "KYX_REV17_FP_RELOAD",
+          "KYX_REV17_FP_SPRINT",
+          "KYX_REV17_TP_AIRBORNE_LOOP",
+          "KYX_REV17_TP_DEATH_FRONT",
+          "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "KYX_REV17_TP_IDLE",
+          "KYX_REV17_TP_JUMP_START",
+          "KYX_REV17_TP_LAND",
+          "KYX_REV17_TP_PRIMARY_FIRE",
+          "KYX_REV17_TP_RELOAD",
+          "KYX_REV17_TP_RUN",
+          "KYX_REV17_TP_WALK"
+        ],
+        "missingRequiredActions": [],
+        "helmetPartCount": 16,
+        "helmetVertexCount": 4253,
+        "helmetTriangleCount": 2200,
+        "armatureBinding": {
+          "KYX_REV31_BREACHER_Cheek_L": true,
+          "KYX_REV31_BREACHER_Cheek_R": true,
+          "KYX_REV31_BREACHER_Chin": true,
+          "KYX_REV31_BREACHER_ContinuousCyberCowl": true,
+          "KYX_REV31_BREACHER_Crown": true,
+          "KYX_REV31_BREACHER_Faceplate": true,
+          "KYX_REV31_BREACHER_JawReinforcement_L": true,
+          "KYX_REV31_BREACHER_JawReinforcement_R": true,
+          "KYX_REV31_BREACHER_MouthVent": true,
+          "KYX_REV31_BREACHER_NeckSeal": true,
+          "KYX_REV31_BREACHER_RearShell": true,
+          "KYX_REV31_BREACHER_ReinforcedBrow": true,
+          "KYX_REV31_BREACHER_Temple_L": true,
+          "KYX_REV31_BREACHER_Temple_R": true,
+          "KYX_REV31_BREACHER_Visor": true,
+          "KYX_REV31_BREACHER_VisorBrow": true
+        },
+        "headWeightFractions": {
+          "KYX_REV31_BREACHER_Cheek_L": 1.0,
+          "KYX_REV31_BREACHER_Cheek_R": 1.0,
+          "KYX_REV31_BREACHER_Chin": 1.0,
+          "KYX_REV31_BREACHER_ContinuousCyberCowl": 1.0,
+          "KYX_REV31_BREACHER_Crown": 1.0,
+          "KYX_REV31_BREACHER_Faceplate": 1.0,
+          "KYX_REV31_BREACHER_JawReinforcement_L": 1.0,
+          "KYX_REV31_BREACHER_JawReinforcement_R": 1.0,
+          "KYX_REV31_BREACHER_MouthVent": 1.0,
+          "KYX_REV31_BREACHER_NeckSeal": 1.0,
+          "KYX_REV31_BREACHER_RearShell": 1.0,
+          "KYX_REV31_BREACHER_ReinforcedBrow": 1.0,
+          "KYX_REV31_BREACHER_Temple_L": 1.0,
+          "KYX_REV31_BREACHER_Temple_R": 1.0,
+          "KYX_REV31_BREACHER_Visor": 1.0,
+          "KYX_REV31_BREACHER_VisorBrow": 1.0
+        },
+        "requiredClosedCoverageParts": {
+          "cowl": true,
+          "rearShell": true,
+          "crown": true,
+          "faceplate": true,
+          "visor": true,
+          "chin": true,
+          "neckSeal": true,
+          "leftTemple": true,
+          "rightTemple": true,
+          "leftCheek": true,
+          "rightCheek": true
+        }
+      },
+      "renders": [
+        {
+          "view": "front",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\breacher\\rev31-breacher-neutral-front.png",
+          "bytes": 1036376,
+          "sha256": "f54f4b8fdc1b371f8f9eb9d0ed8f31da235e7fc2f0a575e513de6a7dac696bed",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              0.0,
+              -4.2,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "side",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\breacher\\rev31-breacher-neutral-side.png",
+          "bytes": 1002719,
+          "sha256": "1b6691e70e0f00e709a57aada3b3d2d6ae729612737cf8270809d32d2bd88864",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              4.2,
+              0.0,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\breacher\\rev31-breacher-neutral-three-quarter.png",
+          "bytes": 1062127,
+          "sha256": "82ecff19c0f02ac26501666a3899bebbf11dda8bb0fafe591a67afa606203e96",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "inherited-rifle-contact-witness",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\breacher\\rev31-breacher-weapon-contact-three-quarter.png",
+          "bytes": 1048855,
+          "sha256": "5f8f4891b44fb33a82ce983377a68727b7babe6931ada9c6c68cfc55a047b45b",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        }
+      ],
+      "assertions": {
+        "oneArmature": true,
+        "boneContract66": true,
+        "allRequiredActionsPresent": true,
+        "allHelmetPartsArmatureBound": true,
+        "allHelmetVerticesRigidHeadWeighted": true,
+        "closedCoveragePartsPresent": true,
+        "frontSideThreeQuarterNeutralRendered": true,
+        "weaponContactRenderedSeparately": true
+      }
+    },
+    {
+      "role": "recon",
+      "glb": {
+        "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-recon-lod0.glb",
+        "bytes": 3198128,
+        "sha256": "379267d700fedffbba584675979445c03bc002abcc6b629af84e5c7c9b6f4ef1"
+      },
+      "directImport": {
+        "armature": "KYX_REV24_RIG_66_JOINT_WITH_SOCKETS",
+        "bones": 66,
+        "actions": [
+          "KYX_REV17_FP_AIRBORNE",
+          "KYX_REV17_FP_FIRE",
+          "KYX_REV17_FP_IDLE",
+          "KYX_REV17_FP_LAND",
+          "KYX_REV17_FP_RELOAD",
+          "KYX_REV17_FP_SPRINT",
+          "KYX_REV17_TP_AIRBORNE_LOOP",
+          "KYX_REV17_TP_DEATH_FRONT",
+          "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "KYX_REV17_TP_IDLE",
+          "KYX_REV17_TP_JUMP_START",
+          "KYX_REV17_TP_LAND",
+          "KYX_REV17_TP_PRIMARY_FIRE",
+          "KYX_REV17_TP_RELOAD",
+          "KYX_REV17_TP_RUN",
+          "KYX_REV17_TP_WALK"
+        ],
+        "missingRequiredActions": [],
+        "helmetPartCount": 15,
+        "helmetVertexCount": 4037,
+        "helmetTriangleCount": 2092,
+        "armatureBinding": {
+          "KYX_REV31_RECON_Cheek_L": true,
+          "KYX_REV31_RECON_Cheek_R": true,
+          "KYX_REV31_RECON_Chin": true,
+          "KYX_REV31_RECON_ContinuousCyberCowl": true,
+          "KYX_REV31_RECON_Crown": true,
+          "KYX_REV31_RECON_Faceplate": true,
+          "KYX_REV31_RECON_FlushOptic_L": true,
+          "KYX_REV31_RECON_MouthVent": true,
+          "KYX_REV31_RECON_NeckSeal": true,
+          "KYX_REV31_RECON_RearShell": true,
+          "KYX_REV31_RECON_SensorBrow": true,
+          "KYX_REV31_RECON_Temple_L": true,
+          "KYX_REV31_RECON_Temple_R": true,
+          "KYX_REV31_RECON_Visor": true,
+          "KYX_REV31_RECON_VisorBrow": true
+        },
+        "headWeightFractions": {
+          "KYX_REV31_RECON_Cheek_L": 1.0,
+          "KYX_REV31_RECON_Cheek_R": 1.0,
+          "KYX_REV31_RECON_Chin": 1.0,
+          "KYX_REV31_RECON_ContinuousCyberCowl": 1.0,
+          "KYX_REV31_RECON_Crown": 1.0,
+          "KYX_REV31_RECON_Faceplate": 1.0,
+          "KYX_REV31_RECON_FlushOptic_L": 1.0,
+          "KYX_REV31_RECON_MouthVent": 1.0,
+          "KYX_REV31_RECON_NeckSeal": 1.0,
+          "KYX_REV31_RECON_RearShell": 1.0,
+          "KYX_REV31_RECON_SensorBrow": 1.0,
+          "KYX_REV31_RECON_Temple_L": 1.0,
+          "KYX_REV31_RECON_Temple_R": 1.0,
+          "KYX_REV31_RECON_Visor": 1.0,
+          "KYX_REV31_RECON_VisorBrow": 1.0
+        },
+        "requiredClosedCoverageParts": {
+          "cowl": true,
+          "rearShell": true,
+          "crown": true,
+          "faceplate": true,
+          "visor": true,
+          "chin": true,
+          "neckSeal": true,
+          "leftTemple": true,
+          "rightTemple": true,
+          "leftCheek": true,
+          "rightCheek": true
+        }
+      },
+      "renders": [
+        {
+          "view": "front",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\recon\\rev31-recon-neutral-front.png",
+          "bytes": 1035889,
+          "sha256": "25f999f75ccccee879a1721937b9983c2849c2b52c5cf296de05b2350b2587ad",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              0.0,
+              -4.2,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "side",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\recon\\rev31-recon-neutral-side.png",
+          "bytes": 1001016,
+          "sha256": "eee5416b9897a7e166584df9d218a10b9f69bf269b8e81a43529fcfbe3ab11fc",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              4.2,
+              0.0,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\recon\\rev31-recon-neutral-three-quarter.png",
+          "bytes": 1060706,
+          "sha256": "59f5b68a7b63f25fad8149693feac3aecfad9f54320bd69a92b40419550688b4",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "inherited-rifle-contact-witness",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\recon\\rev31-recon-weapon-contact-three-quarter.png",
+          "bytes": 1046257,
+          "sha256": "0f428e8ab5da1a0294c469fe95d0e8f5250527d0f9049d8fffb432e8c581d8e7",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        }
+      ],
+      "assertions": {
+        "oneArmature": true,
+        "boneContract66": true,
+        "allRequiredActionsPresent": true,
+        "allHelmetPartsArmatureBound": true,
+        "allHelmetVerticesRigidHeadWeighted": true,
+        "closedCoveragePartsPresent": true,
+        "frontSideThreeQuarterNeutralRendered": true,
+        "weaponContactRenderedSeparately": true
+      }
+    },
+    {
+      "role": "duelist",
+      "glb": {
+        "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-duelist-lod0.glb",
+        "bytes": 3199164,
+        "sha256": "31763a0a33371f807fc2091bcc352acf09869d7831e5be6e30bf77a7748f8bc7"
+      },
+      "directImport": {
+        "armature": "KYX_REV24_RIG_66_JOINT_WITH_SOCKETS",
+        "bones": 66,
+        "actions": [
+          "KYX_REV17_FP_AIRBORNE",
+          "KYX_REV17_FP_FIRE",
+          "KYX_REV17_FP_IDLE",
+          "KYX_REV17_FP_LAND",
+          "KYX_REV17_FP_RELOAD",
+          "KYX_REV17_FP_SPRINT",
+          "KYX_REV17_TP_AIRBORNE_LOOP",
+          "KYX_REV17_TP_DEATH_FRONT",
+          "KYX_REV17_TP_HIT_REACTION_FRONT",
+          "KYX_REV17_TP_IDLE",
+          "KYX_REV17_TP_JUMP_START",
+          "KYX_REV17_TP_LAND",
+          "KYX_REV17_TP_PRIMARY_FIRE",
+          "KYX_REV17_TP_RELOAD",
+          "KYX_REV17_TP_RUN",
+          "KYX_REV17_TP_WALK"
+        ],
+        "missingRequiredActions": [],
+        "helmetPartCount": 15,
+        "helmetVertexCount": 4037,
+        "helmetTriangleCount": 2092,
+        "armatureBinding": {
+          "KYX_REV31_DUELIST_Cheek_L": true,
+          "KYX_REV31_DUELIST_Cheek_R": true,
+          "KYX_REV31_DUELIST_Chin": true,
+          "KYX_REV31_DUELIST_ContinuousCyberCowl": true,
+          "KYX_REV31_DUELIST_Crown": true,
+          "KYX_REV31_DUELIST_Faceplate": true,
+          "KYX_REV31_DUELIST_FaceSpine": true,
+          "KYX_REV31_DUELIST_LowerGuard": true,
+          "KYX_REV31_DUELIST_MouthVent": true,
+          "KYX_REV31_DUELIST_NeckSeal": true,
+          "KYX_REV31_DUELIST_RearShell": true,
+          "KYX_REV31_DUELIST_Temple_L": true,
+          "KYX_REV31_DUELIST_Temple_R": true,
+          "KYX_REV31_DUELIST_Visor": true,
+          "KYX_REV31_DUELIST_VisorBrow": true
+        },
+        "headWeightFractions": {
+          "KYX_REV31_DUELIST_Cheek_L": 1.0,
+          "KYX_REV31_DUELIST_Cheek_R": 1.0,
+          "KYX_REV31_DUELIST_Chin": 1.0,
+          "KYX_REV31_DUELIST_ContinuousCyberCowl": 1.0,
+          "KYX_REV31_DUELIST_Crown": 1.0,
+          "KYX_REV31_DUELIST_Faceplate": 1.0,
+          "KYX_REV31_DUELIST_FaceSpine": 1.0,
+          "KYX_REV31_DUELIST_LowerGuard": 1.0,
+          "KYX_REV31_DUELIST_MouthVent": 1.0,
+          "KYX_REV31_DUELIST_NeckSeal": 1.0,
+          "KYX_REV31_DUELIST_RearShell": 1.0,
+          "KYX_REV31_DUELIST_Temple_L": 1.0,
+          "KYX_REV31_DUELIST_Temple_R": 1.0,
+          "KYX_REV31_DUELIST_Visor": 1.0,
+          "KYX_REV31_DUELIST_VisorBrow": 1.0
+        },
+        "requiredClosedCoverageParts": {
+          "cowl": true,
+          "rearShell": true,
+          "crown": true,
+          "faceplate": true,
+          "visor": true,
+          "chin": true,
+          "neckSeal": true,
+          "leftTemple": true,
+          "rightTemple": true,
+          "leftCheek": true,
+          "rightCheek": true
+        }
+      },
+      "renders": [
+        {
+          "view": "front",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\duelist\\rev31-duelist-neutral-front.png",
+          "bytes": 1035894,
+          "sha256": "6e18cb7416ce9cbe2a72da902c8b1bfc4e9e0a060ecbb6776945fc81eac76ac7",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              0.0,
+              -4.2,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "side",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\duelist\\rev31-duelist-neutral-side.png",
+          "bytes": 1001597,
+          "sha256": "da69113fa45a2601994ea94494ba4ce8da1683895a0874ad963758e1c83c7b6e",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              4.2,
+              0.0,
+              1.08
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.92
+            ],
+            "orthographicScale": 2.03
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "neutral-rest-pose",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\duelist\\rev31-duelist-neutral-three-quarter.png",
+          "bytes": 1061136,
+          "sha256": "b8348f541b2bf202c83ad92bfda3ba87437f52d6a5aedca17433c8e0e056c302",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        },
+        {
+          "view": "three-quarter",
+          "presentation": "inherited-rifle-contact-witness",
+          "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\evidence\\2026-07-28\\g6-role-helmets-rev31\\renders-rev3\\duelist\\rev31-duelist-weapon-contact-three-quarter.png",
+          "bytes": 1045485,
+          "sha256": "6ad8c8a5f443dd714ef061e70269f7668efa7347e6b157890248e8aea8cdb0e6",
+          "resolution": [
+            900,
+            1100
+          ],
+          "camera": {
+            "location": [
+              3.2,
+              -3.2,
+              1.18
+            ],
+            "target": [
+              0.0,
+              -0.02,
+              0.97
+            ],
+            "orthographicScale": 2.05
+          }
+        }
+      ],
+      "assertions": {
+        "oneArmature": true,
+        "boneContract66": true,
+        "allRequiredActionsPresent": true,
+        "allHelmetPartsArmatureBound": true,
+        "allHelmetVerticesRigidHeadWeighted": true,
+        "closedCoveragePartsPresent": true,
+        "frontSideThreeQuarterNeutralRendered": true,
+        "weaponContactRenderedSeparately": true
+      }
+    }
+  ],
+  "assertions": {
+    "fourRolesReimported": true,
+    "allRoleAssertionsPass": true,
+    "sixteenVisualViewsRendered": true,
+    "fourDistinctRuntimeHashes": true
+  },
+  "nonClaims": [
+    "The direct GLB validation proves structure and sampled presentation, not human visual acceptance.",
+    "The static front/side/three-quarter packet does not prove every-frame interpenetration freedom across all actions.",
+    "Role-to-loadout selection remains a separate integration lane."
+  ]
+}

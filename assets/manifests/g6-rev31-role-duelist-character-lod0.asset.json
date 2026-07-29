@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "assetId": "g6.rev31.role-duelist-character-lod0",
+  "kind": "character",
+  "releaseEligible": false,
+  "sourceHash": "77a1a0699290db16ff10fb4918d58a2eac7468514efc80ca1e4509a991d87115",
+  "sourceHashKind": "canonical_source",
+  "runtime": {
+    "uri": "public/candidates/g6-role-helmets-rev31/character-duelist-lod0.glb",
+    "hash": "31763a0a33371f807fc2091bcc352acf09869d7831e5be6e30bf77a7748f8bc7",
+    "bytes": 3199164
+  },
+  "budgets": {
+    "triangles": 35370,
+    "primitives": 26,
+    "materials": 11,
+    "nodes": 89,
+    "bones": 66,
+    "clips": 16,
+    "textures": 0,
+    "estimatedTextureBytes": null,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": [
+      "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED",
+      "EVERY_FRAME_CLIPPING_REVIEW_REQUIRED",
+      "DISTINCT_REV31_LOD1_LOD2_NOT_AUTHORED"
+    ]
+  },
+  "provenance": {
+    "status": "verified",
+    "creator": "KYX.IO project-authored armor, helmet, rig and animation pipeline over a CC0 anatomy seed",
+    "source": "assets/source/blender/phase7-character-original-v6/model/v6b-role-helmets-rev31/kyx-v6b-role-helmets-rev31-master.blend",
+    "acquiredAt": "2026-07-28",
+    "license": "CC0-1.0 anatomy seed; project-authored derivative candidate",
+    "licenseSnapshot": "assets/source/blender/phase7-character-original-v6/LICENSES/CC0-1.0.txt",
+    "attribution": "Blender Human Base Meshes v1.4.1 anatomy seed, Blender Studio and community contributors, CC0",
+    "reviewer": "G6 Rev31 direct-GLB structural and visual candidate audit",
+    "notes": "helmetVariantId=duelist; weaponFamily=melee; human visual acceptance pending."
+  },
+  "disposition": "candidate"
+}

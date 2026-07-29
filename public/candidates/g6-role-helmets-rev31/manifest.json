@@ -1,0 +1,87 @@
+{
+  "schema": "kyx-g6-rev31-role-helmet-runtime-manifest-v1",
+  "revision": "rev31-role-helmets",
+  "default": false,
+  "status": "runtime candidate; human visual and in-game acceptance pending",
+  "lookupContract": {
+    "key": "helmetVariantId",
+    "allowedIds": [
+      "assault",
+      "breacher",
+      "recon",
+      "duelist"
+    ],
+    "unsupportedValueBehavior": "fail closed to assault in the integration layer"
+  },
+  "variants": {
+    "assault": {
+      "displayName": "Assault / Rifle",
+      "weaponFamily": "rifle",
+      "asset": "/candidates/g6-role-helmets-rev31/character-assault-lod0.glb",
+      "sha256": "bc6864ed63ffe444f530c8914f3a23ec4a0217d39498e314169b886288013239",
+      "bytes": 3182164,
+      "triangles": 35262,
+      "bones": 66,
+      "clips": 16
+    },
+    "breacher": {
+      "displayName": "Breacher / Shotgun",
+      "weaponFamily": "shotgun",
+      "asset": "/candidates/g6-role-helmets-rev31/character-breacher-lod0.glb",
+      "sha256": "166937add8bc2d01d61ca941bd47630fbff3e0bac7fcef60459b61d08ceda508",
+      "bytes": 3214600,
+      "triangles": 35478,
+      "bones": 66,
+      "clips": 16
+    },
+    "recon": {
+      "displayName": "Recon / Sniper",
+      "weaponFamily": "sniper",
+      "asset": "/candidates/g6-role-helmets-rev31/character-recon-lod0.glb",
+      "sha256": "379267d700fedffbba584675979445c03bc002abcc6b629af84e5c7c9b6f4ef1",
+      "bytes": 3198128,
+      "triangles": 35370,
+      "bones": 66,
+      "clips": 16
+    },
+    "duelist": {
+      "displayName": "Duelist / Melee",
+      "weaponFamily": "melee",
+      "asset": "/candidates/g6-role-helmets-rev31/character-duelist-lod0.glb",
+      "sha256": "31763a0a33371f807fc2091bcc352acf09869d7831e5be6e30bf77a7748f8bc7",
+      "bytes": 3199164,
+      "triangles": 35370,
+      "bones": 66,
+      "clips": 16
+    }
+  },
+  "sharedBody": {
+    "lineage": "Material Flow v9 presentation to Rev24 runtime rig to Rev31 role family",
+    "rig": "KYX_REV24_RIG_66_JOINT_WITH_SOCKETS",
+    "helmetCoverage": "closed cowl, crown, faceplate, visor, chin, temples, cheeks and neck seal",
+    "waistContinuity": "fitted flex gasket plus three overlapping articulated abdomen bands",
+    "footwear": "Rev24 footwear tightened 6 percent in width and 9 percent fore-aft",
+    "embeddedRifle": "contact witness only; browser runtime attachment must hide or replace it"
+  },
+  "source": {
+    "master": "assets/source/blender/phase7-character-original-v6/model/v6b-role-helmets-rev31/kyx-v6b-role-helmets-rev31-master.blend",
+    "sha256": "77a1a0699290db16ff10fb4918d58a2eac7468514efc80ca1e4509a991d87115",
+    "authorScript": "assets/source/blender/phase7-character-original-v6/scripts/author_role_helmet_variants_rev31.py",
+    "provenance": "assets/source/blender/phase7-character-original-v6/model/v6b-role-helmets-rev31/PROVENANCE.md"
+  },
+  "validation": {
+    "authorReport": "evidence/2026-07-28/g6-role-helmets-rev31/author-export-report.json",
+    "directGlbReport": "evidence/2026-07-28/g6-role-helmets-rev31/direct-glb-validation-rev3.json",
+    "visualEvidence": "evidence/2026-07-28/g6-role-helmets-rev31/renders-rev3",
+    "directReimport": true,
+    "frontSideThreeQuarterNeutralViewsPerRole": true,
+    "weaponContactViewPerRole": true
+  },
+  "releaseEligible": false,
+  "nonClaims": [
+    "This machine-readable mapping does not grant human visual acceptance.",
+    "Static views and structural reimport do not prove every-frame clipping freedom.",
+    "The four exports are LOD0 candidates; distinct Rev31 LOD1 and LOD2 exports do not exist.",
+    "Role loadout selection, first-person arms and final weapon attachment are separate integration lanes."
+  ]
+}

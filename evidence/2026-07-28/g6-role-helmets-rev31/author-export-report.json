@@ -1,0 +1,194 @@
+{
+  "schema": "kyx-g6-rev31-role-helmet-author-report-v1",
+  "checkpoint": "G6_REV31_ROLE_HELMET_FAMILY",
+  "status": "AUTHORED_EXPORTED_RUNTIME_CANDIDATE_HUMAN_REVIEW_REQUIRED",
+  "generatedAt": "2026-07-29T00:35:21.881913+00:00",
+  "source": {
+    "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-g6-rev19-remodel-20260727\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-runtime-rev24\\kyx-v6b-runtime-rev24-master.blend",
+    "sha256Before": "1d891ff9ddcfef400a812f030c1a7283af5c866e3cd72a17d5b341b6f9bafbfe",
+    "sha256After": "1d891ff9ddcfef400a812f030c1a7283af5c866e3cd72a17d5b341b6f9bafbfe",
+    "sourceUnchanged": true,
+    "lineage": "Material Flow v9 presentation -> Rev24 66-bone runtime character -> Rev31 role helmet family"
+  },
+  "master": {
+    "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-role-helmets-rev31\\kyx-v6b-role-helmets-rev31-master.blend",
+    "bytes": 30951470,
+    "sha256": "77a1a0699290db16ff10fb4918d58a2eac7468514efc80ca1e4509a991d87115"
+  },
+  "rig": {
+    "name": "KYX_REV24_RIG_66_JOINT_WITH_SOCKETS",
+    "bones": 66,
+    "actions": [
+      "KYX_REV17_FP_AIRBORNE",
+      "KYX_REV17_FP_FIRE",
+      "KYX_REV17_FP_IDLE",
+      "KYX_REV17_FP_LAND",
+      "KYX_REV17_FP_RELOAD",
+      "KYX_REV17_FP_SPRINT",
+      "KYX_REV17_TP_AIRBORNE_LOOP",
+      "KYX_REV17_TP_DEATH_FRONT",
+      "KYX_REV17_TP_HIT_REACTION_FRONT",
+      "KYX_REV17_TP_IDLE",
+      "KYX_REV17_TP_JUMP_START",
+      "KYX_REV17_TP_LAND",
+      "KYX_REV17_TP_PRIMARY_FIRE",
+      "KYX_REV17_TP_RELOAD",
+      "KYX_REV17_TP_RUN",
+      "KYX_REV17_TP_WALK"
+    ],
+    "requiredActions": [
+      "KYX_REV17_TP_IDLE",
+      "KYX_REV17_TP_WALK",
+      "KYX_REV17_TP_RUN",
+      "KYX_REV17_TP_JUMP_START",
+      "KYX_REV17_TP_AIRBORNE_LOOP",
+      "KYX_REV17_TP_LAND",
+      "KYX_REV17_TP_PRIMARY_FIRE",
+      "KYX_REV17_TP_RELOAD",
+      "KYX_REV17_TP_HIT_REACTION_FRONT",
+      "KYX_REV17_TP_DEATH_FRONT"
+    ],
+    "missingRequiredActions": []
+  },
+  "body": {
+    "name": "KYX_REV24_LOD0_CONTINUOUS_CYBERSUIT",
+    "vertices": 10582,
+    "triangles": 8964,
+    "lineage": "Rev24 rigged descendant of Material Flow v9",
+    "segmentedTorsoPreserved": true,
+    "gloveGeometryPreserved": true,
+    "continuityBridgeParts": [
+      "KYX_REV31_COMMON_WaistFlexGasket",
+      "KYX_REV31_COMMON_ArticulatedAbdomenBand_1",
+      "KYX_REV31_COMMON_ArticulatedAbdomenBand_2",
+      "KYX_REV31_COMMON_ArticulatedAbdomenBand_3"
+    ]
+  },
+  "armor": {
+    "name": "KYX_REV24_LOD0_CONNECTED_ARMOR_NO_HELMET",
+    "vertices": 11546,
+    "triangles": 22838,
+    "rejectedHelmetRemoval": {
+      "KYX_REV24_LOD0_CONNECTED_ARMOR_NO_HELMET": {
+        "verticesBefore": 19036,
+        "verticesAfter": 11546,
+        "trianglesBefore": 37864,
+        "trianglesAfter": 22838
+      },
+      "KYX_REV24_LOD1_CONNECTED_ARMOR_NO_HELMET": {
+        "verticesBefore": 9191,
+        "verticesAfter": 5465,
+        "trianglesBefore": 18174,
+        "trianglesAfter": 10711
+      },
+      "KYX_REV24_LOD2_CONNECTED_ARMOR_NO_HELMET": {
+        "verticesBefore": 3890,
+        "verticesAfter": 2113,
+        "trianglesBefore": 7572,
+        "trianglesAfter": 4049
+      }
+    },
+    "floorWitnessRemoval": {
+      "KYX_REV24_LOD0_CONNECTED_ARMOR_NO_HELMET": {
+        "verticesBefore": 11546,
+        "verticesAfter": 11546,
+        "verticesRemoved": 0,
+        "trianglesBefore": 22838,
+        "trianglesAfter": 22838
+      },
+      "KYX_REV24_LOD0_CONTINUOUS_CYBERSUIT": {
+        "verticesBefore": 11674,
+        "verticesAfter": 10582,
+        "verticesRemoved": 1092,
+        "trianglesBefore": 11140,
+        "trianglesAfter": 8964
+      }
+    },
+    "footwearPass": [
+      {
+        "object": "KYX_REV24_LOD0_CONNECTED_ARMOR_NO_HELMET",
+        "affectedVertices": 3840,
+        "widthScale": 0.94,
+        "foreAftScale": 0.91,
+        "floorZPreserved": true
+      },
+      {
+        "object": "KYX_REV24_LOD0_CONTINUOUS_CYBERSUIT",
+        "affectedVertices": 3746,
+        "widthScale": 0.94,
+        "foreAftScale": 0.91,
+        "floorZPreserved": true
+      }
+    ]
+  },
+  "roles": [
+    {
+      "role": "assault",
+      "displayName": "Assault / Rifle",
+      "helmetVariant": "assault",
+      "weaponFamily": "rifle",
+      "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-assault-lod0.glb",
+      "bytes": 3182164,
+      "sha256": "bc6864ed63ffe444f530c8914f3a23ec4a0217d39498e314169b886288013239",
+      "meshCount": 21,
+      "helmetPartCount": 14,
+      "helmetVertices": 1020,
+      "helmetTriangles": 1984
+    },
+    {
+      "role": "breacher",
+      "displayName": "Breacher / Shotgun",
+      "helmetVariant": "breacher",
+      "weaponFamily": "shotgun",
+      "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-breacher-lod0.glb",
+      "bytes": 3214600,
+      "sha256": "166937add8bc2d01d61ca941bd47630fbff3e0bac7fcef60459b61d08ceda508",
+      "meshCount": 23,
+      "helmetPartCount": 16,
+      "helmetVertices": 1132,
+      "helmetTriangles": 2200
+    },
+    {
+      "role": "recon",
+      "displayName": "Recon / Sniper",
+      "helmetVariant": "recon",
+      "weaponFamily": "sniper",
+      "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-recon-lod0.glb",
+      "bytes": 3198128,
+      "sha256": "379267d700fedffbba584675979445c03bc002abcc6b629af84e5c7c9b6f4ef1",
+      "meshCount": 22,
+      "helmetPartCount": 15,
+      "helmetVertices": 1076,
+      "helmetTriangles": 2092
+    },
+    {
+      "role": "duelist",
+      "displayName": "Duelist / Melee",
+      "helmetVariant": "duelist",
+      "weaponFamily": "melee",
+      "path": "E:\\AI Projects\\Projects\\Games\\evio\\evio-role-helmet-variants-20260728\\public\\candidates\\g6-role-helmets-rev31\\character-duelist-lod0.glb",
+      "bytes": 3199164,
+      "sha256": "31763a0a33371f807fc2091bcc352acf09869d7831e5be6e30bf77a7748f8bc7",
+      "meshCount": 22,
+      "helmetPartCount": 15,
+      "helmetVertices": 1076,
+      "helmetTriangles": 2092
+    }
+  ],
+  "assertions": {
+    "sourceUnchanged": true,
+    "boneContract66": true,
+    "allRequiredActionsInherited": true,
+    "fourRoleVariantsExported": true,
+    "allHelmetPartsHeadBound": true,
+    "allHelmetFamiliesClosedByConstruction": true,
+    "noSpikesOrDetachedAntennaeAuthored": true,
+    "footwearFurtherReduced": true
+  },
+  "nonClaims": [
+    "Author/export assertions do not grant human visual acceptance.",
+    "Static construction checks do not prove every-frame clipping freedom.",
+    "The inherited compact rifle remains a contact witness and is hidden when the browser attaches the selected runtime weapon.",
+    "Role loadout selection and HUD integration are separate lanes."
+  ]
+}
