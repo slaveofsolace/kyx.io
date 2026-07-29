@@ -115,6 +115,7 @@ interface OnlinePreviewSnapshot {
     selectedWeaponSlot: number;
   }>;
   readonly blinkPreview: OnlineBlinkPreview | null;
+  readonly localAuthoritativePlayerId: string | null;
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localPredictedVelocity: Readonly<{ x: number; y: number; z: number }> | null;
@@ -123,6 +124,7 @@ interface OnlinePreviewSnapshot {
   readonly localAuthoritativeGrounded: boolean | null;
   readonly localPredictedLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
   readonly localAuthoritativeLocomotion: 'grounded' | 'airborne' | 'sliding' | null;
+  readonly localAuthoritativeYawMilliDegrees: number | null;
   readonly localPredictedYawMilliDegrees: number | null;
   readonly localPredictedPitchMilliDegrees: number | null;
   readonly localPredictionErrorMillimeters: number | null;
@@ -1886,6 +1888,7 @@ async function mountSession(
         selectedWeaponSlot,
       }),
       blinkPreview: latestBlinkPreview,
+      localAuthoritativePlayerId: diagnostics.local.authoritativePlayerId,
       localPredictedPosition: diagnostics.local.predictedPosition,
       localAuthoritativePosition: diagnostics.local.authoritativePosition,
       localPredictedVelocity: diagnostics.local.predictedVelocity,
@@ -1894,6 +1897,7 @@ async function mountSession(
       localAuthoritativeGrounded: diagnostics.local.authoritativeGrounded,
       localPredictedLocomotion: diagnostics.local.predictedLocomotion,
       localAuthoritativeLocomotion: diagnostics.local.authoritativeLocomotion,
+      localAuthoritativeYawMilliDegrees: diagnostics.local.authoritativeYawMilliDegrees,
       localPredictedYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
       localPredictedPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
       localPredictionErrorMillimeters: diagnostics.local.lastPositionErrorMillimeters,

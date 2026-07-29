@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "session": {
+    "buildId": "c33cccf8ba0a0aec62d9a821d7df81ef631a3774",
+    "mode": "black-box",
+    "platform": "Windows 11 / Chrome / NVIDIA RTX 4090 / D3D11",
+    "input": "Playwright keyboard and camera taps",
+    "resolution": "1440x900",
+    "observedAt": "2026-07-29T16:15:49.512Z",
+    "evidenceRoot": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v9"
+  },
+  "observations": [
+    {
+      "id": "OBS-001",
+      "component": "map lighting and readability",
+      "label": "OBSERVED",
+      "title": "Underexposure collapses major arena surfaces into black shapes",
+      "context": "All four Inkfall Rev5 player-eye views",
+      "action": "Traverse forward from the west spawn and rotate through the Press Hall, Ink Channel, and archive views",
+      "expectation": "Routes, cover, vertical connections, and material boundaries remain readable while retaining a dark industrial mood",
+      "actual": "Large floor, wall, ceiling, and weapon regions lose surface information; silhouettes merge and depth cues depend heavily on cyan strips",
+      "playerConsequence": "Navigation, enemy spotting, cover reading, and confidence in collision truth are weakened",
+      "reproduction": [
+        "Open the v9 screenshot set",
+        "Inspect the center and lower half at normal viewing size"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "Ambient and fill contribution is too low for the current dark albedo palette",
+        "Material roughness and value separation are insufficient at gameplay distance"
+      ],
+      "nextDiscriminatingTest": "Capture the same route with a bounded lighting/material-value revision and compare cropped route silhouettes",
+      "recommendedOutcome": "Retain the nocturnal foundry tone while making navigable planes, cover, and vertical links legible without relying on emissive strips",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-002",
+      "component": "portal affordance",
+      "label": "OBSERVED",
+      "title": "Portal presentation does not yet read as one intentional traversable machine",
+      "context": "Press Hall and archive views",
+      "action": "Look toward the orange rings and red fold from ordinary combat distance",
+      "expectation": "A unique framed gateway, active field, entry plane, and destination behavior read immediately",
+      "actual": "The visible orange forms read as disconnected floating rings with black centers, while the red rectangle competes as a separate portal-like object",
+      "playerConsequence": "Players cannot confidently predict which object is usable, where to enter, or what visual language identifies linked travel",
+      "reproduction": [
+        "Open screenshots 02 and 04",
+        "Compare the orange ring group with the red rectangular fold"
+      ],
+      "frequency": 4,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "The imported frame is not presented close enough to its energy field in the runtime composition",
+        "The field lacks a luminous surface, depth distortion, or directional destination cue"
+      ],
+      "nextDiscriminatingTest": "Capture a close frontal approach, activation, traversal, and exit sequence for both linked endpoints",
+      "recommendedOutcome": "Unify frame, pad, field, and destination cue into one unmistakable portal with a single visual grammar",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-003",
+      "component": "map structural art",
+      "label": "OBSERVED",
+      "title": "Repeated thin supports and rails make the hall look scaffolded and machine-assembled",
+      "context": "Press Hall ramp and Ink Channel side view",
+      "action": "View the ramp and bridge supports from below and beside the traversal route",
+      "expectation": "Structural elements communicate believable load paths and reinforce route hierarchy",
+      "actual": "Closely repeated posts, dangling feet, diagonal braces, rails, and ceiling bars compete at similar visual weight and sometimes appear detached",
+      "playerConsequence": "The map reads as an unfinished construction kit and produces unnecessary target-lane noise",
+      "reproduction": [
+        "Open screenshots 02 and 03",
+        "Follow the ramp support rhythm from foreground to background"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png"
+      ],
+      "hypotheses": [
+        "Donor truss repetition was optimized for coverage rather than authored structural grouping",
+        "Secondary detail has not been culled by combat-distance importance"
+      ],
+      "nextDiscriminatingTest": "Author one cleaned structural bay with fewer thicker load-bearing members and compare route readability",
+      "recommendedOutcome": "Use fewer, stronger structural groups with credible connections and deliberate negative space",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-004",
+      "component": "first-person weapon and HUD",
+      "label": "OBSERVED",
+      "title": "Blocky rifle and flat HUD remain the strongest unfinished signals",
+      "context": "All four player-eye views",
+      "action": "Read the combat view at normal size",
+      "expectation": "Weapon, HUD, and arena share a polished restrained industrial-sci-fi language while preserving a clear center",
+      "actual": "The rifle is a large near-black angular placeholder with little material or mechanical definition; the HUD uses thin boxed strips and mismatched typography that sit apart from the world",
+      "playerConsequence": "The two surfaces seen continuously make the entire build feel earlier and more synthetic than the map implementation actually is",
+      "reproduction": [
+        "Open any v9 screenshot",
+        "Compare the lower-right weapon and bottom HUD with the arena geometry"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "The accepted gun-pack presentation has not replaced the current first-person runtime mesh",
+        "HUD layers are still transitional implementations from different revision lanes"
+      ],
+      "nextDiscriminatingTest": "Bind one accepted rifle and one unified match HUD view model, then recapture the identical route",
+      "recommendedOutcome": "Replace the placeholder first-person rifle and converge the HUD into one restrained, authored, high-legibility system",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-005",
+      "component": "portal acceptance evidence",
+      "label": "UNKNOWN",
+      "title": "Current packet cannot establish portal traversal quality",
+      "context": "Static v9 screenshot packet",
+      "action": "Attempt to judge approach, activation, traversal, exit, and reconnect behavior",
+      "expectation": "Evidence shows the complete notice-to-entry-to-exit loop from player eye",
+      "actual": "The packet contains distant static views and movement-state proof but no close frontal portal sequence, transition frames, audio, or exit confirmation",
+      "playerConsequence": "Portal usability, motion quality, destination comprehension, and comfort remain unreviewed",
+      "reproduction": [
+        "Review the four v9 screenshots",
+        "Look for a complete portal entry and exit sequence"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "The visual continuity script was designed for route coverage rather than portal acceptance"
+      ],
+      "nextDiscriminatingTest": "Add a bounded portal-focused video or frame sequence including approach, preview, entry, exit, and reconnect",
+      "recommendedOutcome": "Provide a player-eye portal packet that proves clear affordance, smooth travel, destination readability, and authority continuity",
+      "status": "OPEN"
+    }
+  ]
+}

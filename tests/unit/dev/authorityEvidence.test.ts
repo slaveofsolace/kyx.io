@@ -372,7 +372,10 @@ describe('authority evidence transport state', () => {
   it('keeps a joined lobby socket alive without manufacturing movement input', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();
-    const initialState = stateAtTick(createTestMovementState(), 10);
+    const initialState = stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    );
     const client = new AuthorityEvidenceClient({
       config: {
         authorityUrl: 'http://127.0.0.1:8787',
@@ -404,6 +407,11 @@ describe('authority evidence transport state', () => {
       ...fullSnapshot(initialState),
       phase: 'lobby',
     } as ServerMessage);
+    expect(client.diagnostics().local).toMatchObject({
+      authoritativePlayerId: 'player.1',
+      authoritativeYawMilliDegrees: initialState.player.yawMilliDegrees,
+      predictedYawMilliDegrees: initialState.player.yawMilliDegrees,
+    });
 
     for (let tick = 0; tick < 200; tick += 1) scheduler.runTick();
 
@@ -420,7 +428,10 @@ describe('authority evidence transport state', () => {
   it('keeps button input opt-in and exposes authoritative combat snapshots and events', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();
-    const initialState = stateAtTick(createTestMovementState(), 10);
+    const initialState = stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    );
     const client = new AuthorityEvidenceClient({
       config: {
         authorityUrl: 'http://127.0.0.1:8787',
@@ -565,7 +576,10 @@ describe('authority evidence transport state', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();
     let requestSequence = 0;
-    const initialState = stateAtTick(createTestMovementState(), 10);
+    const initialState = stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    );
     const client = new AuthorityEvidenceClient({
       config: {
         authorityUrl: 'http://127.0.0.1:8787',
@@ -807,7 +821,10 @@ describe('authority evidence transport state', () => {
   it('preserves monotonic input sequences across a history-gap full snapshot and in-flight ack', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();
-    const initialState = stateAtTick(createTestMovementState(), 10);
+    const initialState = stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    );
     const client = new AuthorityEvidenceClient({
       config: {
         authorityUrl: 'http://127.0.0.1:8787',
@@ -916,7 +933,7 @@ describe('authority evidence transport state', () => {
       policy: 'nominal',
     });
     let requestSequence = 0;
-    const state = createTestMovementState();
+    const state = createTestMovementState({ playerId: 'player.1' });
     const client = new AuthorityEvidenceClient({
       config: {
         authorityUrl: 'http://127.0.0.1:8787',
@@ -1197,7 +1214,7 @@ describe('authority evidence transport state', () => {
       const transport = new FakeTransport();
       const scheduler = new FakeScheduler();
       let requestSequence = 0;
-      const state = createTestMovementState();
+      const state = createTestMovementState({ playerId: 'player.1' });
       const client = new AuthorityEvidenceClient({
         config: {
           authorityUrl: 'http://127.0.0.1:8787',

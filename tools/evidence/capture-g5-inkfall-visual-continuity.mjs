@@ -14,7 +14,7 @@ const FIXTURE_HASH = '97eb7772ac59dc95';
 const PRESENTATION_REFERENCE =
   'inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular';
 const PRESENTATION_SHA256 =
-  'b7ca109de054b56c8c9692e507942b27f5b64e46a60a6cdf140972910b48586f';
+  '7f9fb6064b514bcfc1ce962357c30eaa71e6539a5aa3dc5115cc73f1bba927d3';
 const FRONTEND_PORT = 6_247;
 const AUTHORITY_PORT = 8_947;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
@@ -108,6 +108,133 @@ function angularDistanceMilliDegrees(left, right) {
   const delta = Math.abs(left - right) % 360_000;
   return Math.min(delta, 360_000 - delta);
 }
+
+function signedAngularDeltaMilliDegrees(target, current) {
+  return ((target - current + 540_000) % 360_000) - 180_000;
+}
+
+function headingToMapTarget(position, target) {
+  const deltaX = target.x - position.x;
+  const deltaZ = target.z - position.z;
+  return (
+    Math.atan2(deltaX, deltaZ) * 180_000 / Math.PI
+    + 360_000
+  ) % 360_000;
+}
+
+async function rotateToYaw(page, targetYawMilliDegrees) {
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const value = await snapshot(page);
+    assert.notEqual(value?.localPredictedYawMilliDegrees, null);
+    const delta = signedAngularDeltaMilliDegrees(
+      targetYawMilliDegrees,
+      value.localPredictedYawMilliDegrees,
+    );
+    if (Math.abs(delta) <= 4_500) return value;
+    const count = Math.max(1, Math.min(24, Math.ceil(Math.abs(delta) / 1_700)));
+    await tapLook(page, delta > 0 ? 'ArrowRight' : 'ArrowLeft', count);
+  }
+  const value = await snapshot(page);
+  throw new Error(
+    `Unable to rotate to ${targetYawMilliDegrees}: ${
+      value?.localPredictedYawMilliDegrees ?? 'missing yaw'
+    }`,
+  );
+}
+
+async function navigateToMapTarget(
+  page,
+  target,
+  label,
+  arrivalToleranceMillimeters = 850,
+) {
+  const route = [];
+  let bestDistance = Number.POSITIVE_INFINITY;
+  let stalledPulses = 0;
+  for (let pulse = 0; pulse < 48; pulse += 1) {
+    const before = await snapshot(page);
+    assert.notEqual(before?.localAuthoritativePosition, null);
+    const deltaX = target.x - before.localAuthoritativePosition.x;
+    const deltaZ = target.z - before.localAuthoritativePosition.z;
+    const distance = Math.hypot(deltaX, deltaZ);
+    route.push({
+      pulse,
+      position: before.localAuthoritativePosition,
+      distance,
+      yawMilliDegrees: before.localPredictedYawMilliDegrees,
+    });
+    if (distance <= arrivalToleranceMillimeters) {
+      return Object.freeze({ route: Object.freeze(route), snapshot: before });
+    }
+    const nearTargetConvergenceBandMillimeters =
+      arrivalToleranceMillimeters + 500;
+    if (
+      distance <= nearTargetConvergenceBandMillimeters
+      || distance <= bestDistance - 120
+    ) {
+      bestDistance = Math.min(bestDistance, distance);
+      stalledPulses = 0;
+    } else {
+      stalledPulses += 1;
+    }
+    if (stalledPulses >= 3) {
+      const yawRadians =
+        before.localPredictedYawMilliDegrees * Math.PI / 180_000;
+      const sine = Math.sin(yawRadians);
+      const cosine = Math.cos(yawRadians);
+      const targetUnitX = deltaX / distance;
+      const targetUnitZ = deltaZ / distance;
+      const centerlineUnitX =
+        -Math.sign(before.localAuthoritativePosition.x || 1);
+      const scoreRecoveryDirection = (worldX, worldZ) => (
+        centerlineUnitX * worldX * 2
+        + targetUnitX * worldX
+        + targetUnitZ * worldZ
+      );
+      const recoveryKey =
+        scoreRecoveryDirection(cosine, -sine)
+          >= scoreRecoveryDirection(-cosine, sine)
+          ? 'KeyD'
+          : 'KeyA';
+      await page.keyboard.down(recoveryKey);
+      await delay(180);
+      await page.keyboard.up(recoveryKey);
+      await delay(420);
+      stalledPulses = 0;
+      continue;
+    }
+    await rotateToYaw(
+      page,
+      headingToMapTarget(before.localAuthoritativePosition, target),
+    );
+    const duration = distance <= nearTargetConvergenceBandMillimeters
+      ? 35
+      : Math.max(80, Math.min(140, distance / 6_500 * 1_000));
+    await page.keyboard.down('KeyW');
+    await delay(duration);
+    await page.keyboard.up('KeyW');
+    await delay(420);
+  }
+  const value = await snapshot(page);
+  throw new Error(
+    `Unable to reach ${label}: ${JSON.stringify({
+      target,
+      position: value?.localAuthoritativePosition ?? null,
+      bestDistance,
+      route,
+    })}`,
+  );
+}
+
+const PORTAL_LOWER_ROUTE = Object.freeze([
+  Object.freeze({ label: 'west choice', x: -22_000, z: 0 }),
+  Object.freeze({ label: 'west ink ramp north', x: -25_000, z: -7_000 }),
+  Object.freeze({ label: 'west ink ramp south', x: -25_000, z: -12_000 }),
+  Object.freeze({ label: 'west ink landing', x: -22_000, z: -17_000 }),
+  Object.freeze({ label: 'west ink bridge mid', x: -15_000, z: -21_000 }),
+  Object.freeze({ label: 'ink mid west', x: -8_000, z: -20_000 }),
+  Object.freeze({ label: 'lower portal corridor entry', x: -5_000, z: -15_000 }),
+]);
 
 const repositoryHeadAtStart = execFileSync(
   'git',
@@ -368,9 +495,28 @@ try {
   assert.notEqual(joinedSpawn, undefined, 'Joined position must match a bound spawn');
   phaseDiagnostics.joined = {
     spawnId: joinedSpawn.spawnId,
-    yawMilliDegrees: joinedSpawn.yawMilliDegrees,
+    playerId: joined.playerId,
+    authoritativePlayerId: joined.localAuthoritativePlayerId,
+    spawnYawMilliDegrees: joinedSpawn.yawMilliDegrees,
+    authoritativeYawMilliDegrees: joined.localAuthoritativeYawMilliDegrees,
+    predictedYawMilliDegrees: joined.localPredictedYawMilliDegrees,
     positionMm: joined.localAuthoritativePosition,
   };
+  assert.equal(
+    joined.localAuthoritativePlayerId,
+    joined.playerId,
+    'Joined local reconciliation must belong to the accepted player identity',
+  );
+  assert.equal(
+    joined.localAuthoritativeYawMilliDegrees,
+    joinedSpawn.yawMilliDegrees,
+    'Joined authoritative yaw must match the bound spawn facing',
+  );
+  assert.equal(
+    joined.localPredictedYawMilliDegrees,
+    joined.localAuthoritativeYawMilliDegrees,
+    'Joined predicted yaw must begin from authoritative yaw',
+  );
   assert.ok(
     joined.render3d.renderOnlyContainmentMeshCount > 200,
     'The continuity batch should contribute a major render-only dressing set.',
@@ -415,11 +561,30 @@ try {
     + Math.cos(joinedYawRadians) * pressApproachDelta.z
   ) / Math.hypot(pressApproachDelta.x, pressApproachDelta.z);
   phaseDiagnostics.pressApproach = {
+    playerId: pressApproach.playerId,
+    authoritativePlayerId: pressApproach.localAuthoritativePlayerId,
+    authoritativeYawMilliDegrees: pressApproach.localAuthoritativeYawMilliDegrees,
+    predictedYawMilliDegrees: pressApproach.localPredictedYawMilliDegrees,
     positionMm: pressApproach.localAuthoritativePosition,
     deltaMm: pressApproachDelta,
     forwardAlignment,
     lastError: pressApproach.lastError,
   };
+  assert.equal(
+    pressApproach.playerId,
+    joined.playerId,
+    'First-egress traversal must retain the accepted player identity',
+  );
+  assert.equal(
+    pressApproach.localAuthoritativePlayerId,
+    joined.localAuthoritativePlayerId,
+    'First-egress local reconciliation must retain the same player identity',
+  );
+  assert.equal(
+    pressApproach.localAuthoritativeYawMilliDegrees,
+    joined.localAuthoritativeYawMilliDegrees,
+    'Forward movement without look input must preserve authoritative yaw',
+  );
   assert.ok(
     forwardAlignment > 0.97,
     `First-egress movement must follow spawn facing: ${forwardAlignment}`,
@@ -463,6 +628,87 @@ try {
   );
   await captureArena(page, '04-archive-tier-and-paper-drop.png');
 
+  await tapLook(page, 'ArrowDown', 6);
+  const portalNavigation = [];
+  for (const target of PORTAL_LOWER_ROUTE) {
+    const leg = await navigateToMapTarget(page, target, target.label);
+    portalNavigation.push(Object.freeze({
+      label: target.label,
+      target: Object.freeze({ x: target.x, z: target.z }),
+      route: leg.route,
+      arrival: leg.snapshot.localAuthoritativePosition,
+    }));
+  }
+  let portalApproach;
+  let portalPresentationCountBefore;
+  await page.keyboard.down('KeyC');
+  try {
+    const lowerApproach = await navigateToMapTarget(
+      page,
+      { x: -4_500, z: -12_500 },
+      'lower portal crouch approach',
+      500,
+    );
+    portalNavigation.push(Object.freeze({
+      label: 'lower portal crouch approach',
+      target: Object.freeze({ x: -4_500, z: -12_500 }),
+      route: lowerApproach.route,
+      arrival: lowerApproach.snapshot.localAuthoritativePosition,
+    }));
+    await rotateToYaw(
+      page,
+      headingToMapTarget(
+        lowerApproach.snapshot.localAuthoritativePosition,
+        { x: -4_000, z: -10_000 },
+      ),
+    );
+    portalApproach = await snapshot(page);
+    portalPresentationCountBefore =
+      portalApproach.render3d.portalTraversalPresentationCount;
+    await captureArena(page, '05-red-fold-portal-approach.png');
+    await page.keyboard.down('KeyW');
+    await delay(650);
+    await page.keyboard.up('KeyW');
+  } finally {
+    await page.keyboard.up('KeyC').catch(() => undefined);
+  }
+  await page.waitForFunction((expectedCount) => (
+    (
+      globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot()
+        .render3d?.portalTraversalPresentationCount
+      ?? 0
+    ) > expectedCount
+  ), portalPresentationCountBefore, { timeout: 15_000 });
+  await delay(500);
+  const portalExit = await snapshot(page);
+  assert.ok(
+    portalExit.render3d.portalTraversalPresentationCount
+      > portalPresentationCountBefore,
+    'Portal traversal must produce a local presentation cue',
+  );
+  assert.ok(
+    Math.hypot(
+      portalExit.localAuthoritativePosition.x
+        - portalApproach.localAuthoritativePosition.x,
+      portalExit.localAuthoritativePosition.y
+        - portalApproach.localAuthoritativePosition.y,
+      portalExit.localAuthoritativePosition.z
+        - portalApproach.localAuthoritativePosition.z,
+    ) >= 4_000,
+    'Portal traversal must produce a distinct authoritative exit position',
+  );
+  await captureArena(page, '06-red-fold-linked-exit.png');
+  phaseDiagnostics.portal = {
+    navigation: portalNavigation,
+    approachPositionMm: portalApproach.localAuthoritativePosition,
+    approachYawMilliDegrees: portalApproach.localPredictedYawMilliDegrees,
+    exitPositionMm: portalExit.localAuthoritativePosition,
+    exitYawMilliDegrees: portalExit.localPredictedYawMilliDegrees,
+    presentationCountBefore: portalPresentationCountBefore,
+    presentationCountAfter:
+      portalExit.render3d.portalTraversalPresentationCount,
+  };
+
   const final = await snapshot(page);
   assert.equal(
     final.lastError,
@@ -486,6 +732,8 @@ try {
     'screenshots/02-press-hall-approach.png',
     'screenshots/03-ink-channel-and-red-fold.png',
     'screenshots/04-archive-tier-and-paper-drop.png',
+    'screenshots/05-red-fold-portal-approach.png',
+    'screenshots/06-red-fold-linked-exit.png',
   ]);
   const screenshotIntegrity = Object.freeze(Object.fromEntries(
     await Promise.all(screenshotFiles.map(async (relative) => {
@@ -529,6 +777,8 @@ try {
       renderOnlyVisualContinuityMeshCount:
         final.render3d.renderOnlyContainmentMeshCount,
       spawnPocketCount: final.render3d.spawnPocketContainmentCount,
+      portalTraversalPresentationCount:
+        final.render3d.portalTraversalPresentationCount,
       isolatedPlayerContexts: 2,
       rendererMode,
       graphics,
@@ -540,6 +790,8 @@ try {
       pressApproachPositionMm: pressApproach.localAuthoritativePosition,
       pressApproachDeltaMm: pressApproachDelta,
       forwardAlignment,
+      portalApproachPositionMm: portalApproach.localAuthoritativePosition,
+      portalExitPositionMm: portalExit.localAuthoritativePosition,
       finalPositionMm: final.localAuthoritativePosition,
       cameraViews: Object.freeze({
         spawn: Object.freeze({
@@ -557,6 +809,14 @@ try {
         archive: Object.freeze({
           yawMilliDegrees: archiveView.localPredictedYawMilliDegrees,
           pitchMilliDegrees: archiveView.localPredictedPitchMilliDegrees,
+        }),
+        portalApproach: Object.freeze({
+          yawMilliDegrees: portalApproach.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: portalApproach.localPredictedPitchMilliDegrees,
+        }),
+        portalExit: Object.freeze({
+          yawMilliDegrees: portalExit.localPredictedYawMilliDegrees,
+          pitchMilliDegrees: portalExit.localPredictedPitchMilliDegrees,
         }),
       }),
     }),

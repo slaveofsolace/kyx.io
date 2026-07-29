@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "session": {
+    "buildId": "6b4a95db1d48b759c87165158207f0181caa7656",
+    "mode": "black-box comparative player-eye review",
+    "platform": "Windows 11 / Chrome / NVIDIA RTX 4090 / D3D11",
+    "input": "Playwright keyboard traversal and camera taps",
+    "resolution": "1440x900",
+    "observedAt": "2026-07-29T16:51:26.361Z",
+    "evidenceRoot": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v10",
+    "comparisonRoot": "evidence/2026-07-29/g5-inkfall-rev5-acceptance-candidate/player-eye-v9"
+  },
+  "observations": [
+    {
+      "id": "OBS-001",
+      "component": "map lighting and readability",
+      "label": "OBSERVED",
+      "title": "Route surfaces are clearer than v9, but the arena still collapses into dark voids",
+      "context": "All four v10 player-eye views compared with the same v9 route",
+      "action": "Traverse from west spawn through the Press Hall and rotate across the Ink Channel and archive tier",
+      "expectation": "Playable planes, cover edges, material groups, and distant traversal choices remain legible without flattening the industrial mood",
+      "actual": "The floor, ramp, rails, and cyan route accents are more readable than v9, but large ceiling, wall, machine, and weapon regions still lose surface information against black negative space",
+      "playerConsequence": "Navigation is improved but enemy spotting, depth estimation, and confidence in collision edges would remain inconsistent during combat",
+      "reproduction": [
+        "Compare v9 and v10 screenshots 01 through 04 at normal viewing size",
+        "Inspect the ceiling, brown press shell, and black machinery behind the ramp"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "Black-steel and shell materials remain too close in value at gameplay distance",
+        "Large industrial landmarks need localized fill and authored surface breakup rather than more global exposure"
+      ],
+      "nextDiscriminatingTest": "Brighten only the black-steel structural family and make the press roller body readable, then repeat the identical source-frozen route",
+      "recommendedOutcome": "Keep the dark foundry atmosphere while preserving clear combat silhouettes and visible machinery bodies",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-002",
+      "component": "portal placement and affordance",
+      "label": "OBSERVED",
+      "title": "The corrected portal is present at the authority side, but the route packet does not make it a clear traversal target",
+      "context": "Archive-facing view and generated lower/upper portal source renders",
+      "action": "Look toward Red Fold from the west approach and archive-facing camera",
+      "expectation": "One grounded frame, active field, entry plane, and destination language read immediately as a usable linked portal",
+      "actual": "The small framed field is visible in the distance in screenshot 04 and the obsolete red rectangle is gone, but it is visually subordinate to two large orange roller collars that still read as floating rings",
+      "playerConsequence": "A first-time player could still approach the wrong landmark or fail to identify the portal during a fight",
+      "reproduction": [
+        "Open screenshot 04",
+        "Compare the small framed portal near center with the two large orange rings overhead"
+      ],
+      "frequency": 4,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/04-archive-tier-and-paper-drop.png",
+        "../../../../../../assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-portal_lower.png",
+        "../../../../../../assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-portal_upper.png"
+      ],
+      "hypotheses": [
+        "The press roller body is too dark to visually connect its orange collars",
+        "The player-eye route is not close enough to prove portal entry-plane readability"
+      ],
+      "nextDiscriminatingTest": "Reveal the roller body and capture a close frontal portal approach, entry, linked exit, and reconnect sequence",
+      "recommendedOutcome": "Make the actual portal the only portal-like landmark and prove the full interaction loop from player eye",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-003",
+      "component": "map structural art",
+      "label": "OBSERVED",
+      "title": "Support clutter is reduced, but the Press Hall still reads as scaffold construction",
+      "context": "Press Hall ramp and Ink Channel side views",
+      "action": "Inspect the ramp from below and beside its traversal lane",
+      "expectation": "A few strong load paths, joined beams, and deliberate negative space communicate a finished industrial structure",
+      "actual": "The redundant donor trusses and half of the procedural support cadence are gone, yet repeated rails, upright posts, exposed feet, ceiling bars, and diagonal braces still compete at similar visual weight",
+      "playerConsequence": "Target lanes remain noisy and the map still looks assembled from construction primitives instead of authored architectural groups",
+      "reproduction": [
+        "Compare v9 and v10 screenshots 02 and 03",
+        "Follow the remaining supports from floor feet through deck and rail"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/02-press-hall-approach.png",
+        "screenshots/03-ink-channel-and-red-fold.png"
+      ],
+      "hypotheses": [
+        "The remaining support language still lacks large authored connection plates and grouped bays",
+        "Secondary rails and ceiling members need distance-based hierarchy"
+      ],
+      "nextDiscriminatingTest": "Author one finished bridge bay with fewer thicker members, visible joints, and a clear silhouette, then compare it at 5 m and 20 m",
+      "recommendedOutcome": "Replace the scaffold rhythm with two or three recognizable structural assemblies and open combat sightlines",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-004",
+      "component": "first-person weapon and HUD",
+      "label": "OBSERVED",
+      "title": "The placeholder rifle and transitional HUD remain the strongest unfinished signals",
+      "context": "All four v10 player-eye views",
+      "action": "Read the combat view at normal size",
+      "expectation": "The accepted gun-pack presentation and one restrained match HUD share a coherent industrial visual language",
+      "actual": "The rifle remains a large near-black block with minimal mechanical detail; the bottom boxed abilities, oversized health/ammo typography, top score bar, and diagnostic labels still look like separate UI generations",
+      "playerConsequence": "The two always-visible surfaces make the entire build feel substantially less complete than its authority and networking implementation",
+      "reproduction": [
+        "Open any v10 screenshot",
+        "Inspect the lower-right weapon and all four HUD edges"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 4,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "screenshots/01-west-spawn-pocket-forward.png",
+        "screenshots/04-archive-tier-and-paper-drop.png"
+      ],
+      "hypotheses": [
+        "The accepted gun pack has not yet replaced the online first-person placeholder",
+        "HUD implementations from multiple lanes have not been reduced to one typed presentation system"
+      ],
+      "nextDiscriminatingTest": "Bind one accepted rifle with correct hands, muzzle, ADS, and recoil contact, then recapture with the unified HUD candidate",
+      "recommendedOutcome": "Replace both continuous unfinished signals before requesting owner map/play acceptance",
+      "status": "OPEN"
+    },
+    {
+      "id": "OBS-005",
+      "component": "acceptance evidence coverage",
+      "label": "UNKNOWN",
+      "title": "Static route evidence still cannot establish combat, portal, animation, or fun quality",
+      "context": "Four-view v10 screenshot packet",
+      "action": "Attempt to judge opponent readability, locomotion, weapon contact, ability VFX/audio, portal travel, and encounter flow",
+      "expectation": "An acceptance packet covers the complete play loop with representative opponents, actions, transitions, and sound",
+      "actual": "The packet proves a source-frozen hardware route and correct authority identity, but contains no close portal traversal, enemy animation, combat exchange, weapon animation, audio, or sustained player decision loop",
+      "playerConsequence": "Human map/play acceptance and the broader vertical-slice verdict remain unearned",
+      "reproduction": [
+        "Review all v10 screenshots and focused-visual-capture.json",
+        "Look for interaction and time-based proof beyond camera movement"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "focused-visual-capture.json"
+      ],
+      "hypotheses": [
+        "This capture was intentionally scoped to visual continuity rather than whole-game acceptance"
+      ],
+      "nextDiscriminatingTest": "Record a bounded real-play sequence covering spawn, movement, combat, all equipped abilities, portal traversal, death, respawn, and reconnect",
+      "recommendedOutcome": "Use that sequence for owner review only after the rifle, HUD, map landmarks, and opponent presentation are integrated",
+      "status": "OPEN"
+    }
+  ]
+}

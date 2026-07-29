@@ -402,22 +402,22 @@ export async function createOnlineAuthorityThreeRuntime(
   });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.16;
+  renderer.toneMappingExposure = 1.28;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.shadowMap.enabled = false;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0a151b);
-  scene.fog = new THREE.FogExp2(0x111e23, 0.0095);
+  scene.background = new THREE.Color(0x0d1b22);
+  scene.fog = new THREE.FogExp2(0x16272d, 0.0075);
   scene.add(loadedVisual.art, loadedVisual.containment);
-  scene.add(new THREE.HemisphereLight(0xc4e6ef, 0x182126, 1.38));
-  const key = new THREE.DirectionalLight(0xffd7af, 1.9);
+  scene.add(new THREE.HemisphereLight(0xd7eef3, 0x26353a, 1.72));
+  const key = new THREE.DirectionalLight(0xffd7af, 2.25);
   key.position.set(-14, 22, 12);
   scene.add(key);
-  const fill = new THREE.DirectionalLight(0x70dbe8, 0.92);
+  const fill = new THREE.DirectionalLight(0x70dbe8, 1.2);
   fill.position.set(18, 12, -16);
   scene.add(fill);
-  const archiveGlow = new THREE.PointLight(0xffad55, 3.6, 26, 1.8);
+  const archiveGlow = new THREE.PointLight(0xffad55, 4.2, 28, 1.8);
   archiveGlow.position.set(-20, 6, -14);
   scene.add(archiveGlow);
 
