@@ -1192,7 +1192,7 @@ for (const cue of grenade.presentationHistory) {
   );
 }
 assertConfirmedPresentation(grenade.confirmedPresentation, 'grenade_impulse', 4);
-assertConfirmedPresentation(proof.combat.confirmedPresentationAtDeath, 'kill', 2);
+assertConfirmedPresentation(proof.combat.confirmedPresentationAtDeath, 'head_kill', 2);
 assert.ok(proof.combat.teleport.distanceMillimeters >= 500);
 assert.ok(proof.combat.teleport.afterPosition.y > -10_000);
 assert.notDeepEqual(proof.combat.teleport.beforePosition, proof.combat.teleport.afterPosition);

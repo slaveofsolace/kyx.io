@@ -3028,7 +3028,7 @@ try {
     'close lethal damage',
   );
   await first.page.waitForFunction(() => (
-    globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot().presentation.lastCue === 'kill'
+    globalThis.__KYX_ONLINE_PREVIEW__?.getSnapshot().presentation.lastCue === 'head_kill'
   ), undefined, { timeout: 5_000 });
   const [deathShooter, deathVictim] = await Promise.all([
     productSnapshot(first.page),
@@ -3038,7 +3038,7 @@ try {
   assert.deepEqual({ lifePhase: victimAtDeath.lifePhase, healthPoints: victimAtDeath.healthPoints }, { lifePhase: 'dead', healthPoints: 0 });
   assert.ok(deathShooter.combat.recentEvents.some(({ kind }) => kind === 'playerKilled'));
   const presentationAtDeath = await presentationMarkerProof(first.page);
-  assertPresentationMarker(presentationAtDeath, 'kill', 2);
+  assertPresentationMarker(presentationAtDeath, 'head_kill', 2);
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-05-authoritative-death-score.png'), fullPage: true });
 
   // Teleport east onto either the route rail (partial) or the large Ink-mid
