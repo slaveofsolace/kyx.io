@@ -6,6 +6,8 @@ import {
   G4_COMBAT_RULESET_HASH,
   G4_COMBAT_RULESET_ID,
   G4_COMBAT_RULESET_REVISION,
+  type AuthoritySpawnResolutionContext,
+  type AuthoritySpawnResolver,
 } from '../../../../src/authority';
 import { hashRulesetContent, requireRuleset } from '../../../../src/content';
 import { PROTOCOL_VERSION, type InputBatchMessage } from '../../../../src/net';
@@ -15,6 +17,7 @@ import { FakeMovementQueryPort } from '../../sim/movement/fakeQueryPort';
 function combatRoom(options: {
   readonly sameTeam?: boolean;
   readonly queries?: FakeMovementQueryPort;
+  readonly spawnResolver?: AuthoritySpawnResolver;
 } = {}): AuthoritativeRoom {
   const content = requireRuleset(G4_COMBAT_RULESET_ID, G4_COMBAT_RULESET_REVISION);
   expect(hashRulesetContent(content)).toBe(G4_COMBAT_RULESET_HASH);
@@ -38,11 +41,11 @@ function combatRoom(options: {
     postmatchTicks: 2,
     reconnectGraceTicks: 200,
     minimumConnectedPlayersToStart: 2,
-    spawnResolver: (playerId, ordinal) => ({
+    spawnResolver: options.spawnResolver ?? ((playerId, ordinal) => ({
       spawnId: `spawn_authority_${playerId}`,
       feetPosition: { x: ordinal * 10_000, y: 0, z: -5_000 },
       yawMilliDegrees: ordinal === 0 ? 0 : 180_000,
-    }),
+    })),
     combat: {
       profileId: G4_COMBAT_ROOM_PROFILE_ID,
       teamResolver: (_playerId, ordinal) => options.sameTeam
@@ -137,6 +140,7 @@ describe('P5.1/P5.2 authoritative room combat integration', () => {
   });
 
   it('recovers an alive player from an authority recovery volume without resetting input continuity', () => {
+    const recoveryContexts: AuthoritySpawnResolutionContext[] = [];
     const authority = combatRoom({
       queries: new FakeMovementQueryPort({
         floorY: -10_000,
@@ -144,6 +148,14 @@ describe('P5.1/P5.2 authoritative room combat integration', () => {
           ? [{ colliderId: 'lower_void_recovery', kind: 'recovery' }]
           : [],
       }),
+      spawnResolver: (playerId, ordinal, context) => {
+        if (context.authorityTick > 0) recoveryContexts.push(context);
+        return {
+          spawnId: `spawn_authority_${playerId}`,
+          feetPosition: { x: ordinal * 10_000, y: 0, z: -5_000 },
+          yawMilliDegrees: ordinal === 0 ? 0 : 180_000,
+        };
+      },
     });
     join(authority, 'A');
     join(authority, 'B');
@@ -180,6 +192,25 @@ describe('P5.1/P5.2 authoritative room combat integration', () => {
         },
       },
     });
+    expect(recoveryContexts).toHaveLength(1);
+    expect(recoveryContexts[0]).toMatchObject({
+      schemaVersion: 1,
+      authorityTick: 1,
+      players: [
+        {
+          playerId: 'player_A',
+          lifePhase: 'alive',
+          movementTick: 1,
+        },
+        {
+          playerId: 'player_B',
+          lifePhase: 'alive',
+          movementTick: 0,
+        },
+      ],
+    });
+    expect(Object.isFrozen(recoveryContexts[0])).toBe(true);
+    expect(Object.isFrozen(recoveryContexts[0]?.players)).toBe(true);
   });
 
   it('gives kill volumes priority over recovery and bypasses only world-hazard spawn protection', () => {

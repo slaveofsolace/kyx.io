@@ -243,7 +243,32 @@ export interface AuthoritySpawn {
   readonly yawMilliDegrees?: number;
 }
 
-export type AuthoritySpawnResolver = (playerId: string, playerOrdinal: number) => AuthoritySpawn;
+export interface AuthoritySpawnResolutionPlayer {
+  readonly playerId: string;
+  readonly connected: boolean;
+  readonly lifePhase: 'alive' | 'dead' | null;
+  readonly teamId: string | null;
+  readonly movementTick: number;
+  readonly feetPosition: Readonly<{
+    readonly x: number;
+    readonly y: number;
+    readonly z: number;
+  }>;
+  readonly yawMilliDegrees: number;
+  readonly pitchMilliDegrees: number;
+}
+
+export interface AuthoritySpawnResolutionContext {
+  readonly schemaVersion: 1;
+  readonly authorityTick: number;
+  readonly players: readonly AuthoritySpawnResolutionPlayer[];
+}
+
+export type AuthoritySpawnResolver = (
+  playerId: string,
+  playerOrdinal: number,
+  context: AuthoritySpawnResolutionContext,
+) => AuthoritySpawn;
 export type AuthorityTeamResolver = (playerId: string, playerOrdinal: number) => string | null;
 
 export interface AuthorityRoomDamageRequest {
@@ -1681,7 +1706,11 @@ export class AuthoritativeRoom {
     );
     let playerOrdinal = 0;
     while (occupiedOrdinals.has(playerOrdinal)) playerOrdinal += 1;
-    const spawn = this.spawnResolver(playerId, playerOrdinal);
+    const spawn = this.spawnResolver(
+      playerId,
+      playerOrdinal,
+      this.spawnResolutionContext(this.tick),
+    );
     if (spawn === null || typeof spawn !== 'object') throw new TypeError('spawn resolver must return a spawn');
     const spawnId = stableId(spawn.spawnId ?? `spawn.room.${playerOrdinal}`, 'authority spawn id');
     const initial = createMovementSimulationState(this.profile, {
@@ -2102,7 +2131,11 @@ export class AuthoritativeRoom {
     const player = this.players.get(playerId);
     if (!player || player.life === null) throw new Error('AUTHORITY_COMBAT_TARGET_NOT_FOUND');
     const playerOrdinal = player.playerOrdinal;
-    const spawn = this.spawnResolver(playerId, playerOrdinal);
+    const spawn = this.spawnResolver(
+      playerId,
+      playerOrdinal,
+      this.spawnResolutionContext(this.tick),
+    );
     if (spawn === null || typeof spawn !== 'object') throw new TypeError('spawn resolver must return a spawn');
     const spawnId = stableId(spawn.spawnId ?? `spawn.room.${playerOrdinal}`, 'authority spawn id');
     const eventSequence = this.nextCombatEventSequence;
@@ -2165,7 +2198,11 @@ export class AuthoritativeRoom {
     player: AuthorityPlayerRecord,
     authorityTick: number,
   ): void {
-    const spawn = this.spawnResolver(player.playerId, player.playerOrdinal);
+    const spawn = this.spawnResolver(
+      player.playerId,
+      player.playerOrdinal,
+      this.spawnResolutionContext(authorityTick),
+    );
     if (spawn === null || typeof spawn !== 'object') {
       throw new TypeError('spawn resolver must return a spawn');
     }
@@ -3426,6 +3463,35 @@ export class AuthoritativeRoom {
       impulseGrenade: player.impulseGrenade,
       activeImpulseGrenadeCount,
     }, G4_ABILITY_RESOURCE_INTEGRATION_RULES);
+  }
+
+  private spawnResolutionContext(authorityTickValue: number): AuthoritySpawnResolutionContext {
+    const authorityTick = boundedInteger(
+      authorityTickValue,
+      0,
+      Number.MAX_SAFE_INTEGER,
+      'spawn resolution authority tick',
+    );
+    return deepFreeze({
+      schemaVersion: 1,
+      authorityTick,
+      players: [...this.players.values()]
+        .sort((left, right) => left.playerId.localeCompare(right.playerId))
+        .map((player) => ({
+          playerId: player.playerId,
+          connected: player.connected,
+          lifePhase: player.life?.phase ?? null,
+          teamId: player.life?.teamId ?? null,
+          movementTick: player.state.tick,
+          feetPosition: {
+            x: player.state.player.feetPosition.x,
+            y: player.state.player.feetPosition.y,
+            z: player.state.player.feetPosition.z,
+          },
+          yawMilliDegrees: player.state.player.yawMilliDegrees,
+          pitchMilliDegrees: player.state.player.pitchMilliDegrees,
+        })),
+    });
   }
 
   private activeMatchCheckpointIdentity(): AuthorityFullSnapshot['identity'] {

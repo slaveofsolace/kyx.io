@@ -15,6 +15,7 @@ import {
   type AuthorityLoadoutSelectionV1,
   type AuthorityFullSnapshot,
   type AuthoritySpawn,
+  type AuthoritySpawnResolutionContext,
   type AuthoritySpawnSelectionResultV1,
 } from '../src/authority';
 import { hashRulesetContent, requireRuleset } from '../src/content';
@@ -1231,25 +1232,27 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     await this.scheduleMaintenanceAlarm();
   }
 
-  private resolveLiveInkfallSpawn(playerId: string, ordinal: number): AuthoritySpawn {
-    const snapshot = this.authority?.fullSnapshot() ?? null;
-    const tick = snapshot?.serverTick ?? 0;
+  private resolveLiveInkfallSpawn(
+    playerId: string,
+    ordinal: number,
+    context: AuthoritySpawnResolutionContext,
+  ): AuthoritySpawn {
+    const tick = context.authorityTick;
     const requesterTeamId = ordinal % 2 === 0 ? 'team_blue' : 'team_red';
     const requesterTerritory = ordinal % 2 === 0 ? 'west' : 'east';
-    const players = (snapshot?.players ?? [])
+    const players = context.players
       .filter((player) => (
         player.playerId !== playerId
-        && player.combat?.life.phase === 'alive'
+        && player.lifePhase === 'alive'
       ))
       .map((player) => {
-        const pose = player.movement.player;
         return Object.freeze({
           id: inkfallLivePlayerSemanticId(player.playerId),
-          teamId: player.combat?.life.teamId ?? null,
-          feetPositionMm: pose.feetPosition,
+          teamId: player.teamId,
+          feetPositionMm: player.feetPosition,
           aimDirectionQ15: lookDirectionQ15(
-            pose.yawMilliDegrees,
-            pose.pitchMilliDegrees,
+            player.yawMilliDegrees,
+            player.pitchMilliDegrees,
           ),
           aimSampleTick: tick,
           authorityArrivalEstimates: Object.freeze([]),
@@ -1662,14 +1665,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           ...(inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
             ? { worldPortal: createInkfallRev5PortalAuthorityPort(world) }
             : {}),
-          spawnResolver: (playerId, ordinal) => {
+          spawnResolver: (playerId, ordinal, context) => {
             const restoredOrdinal = this.restoredSpawnOrdinals.get(playerId);
             const resolvedOrdinal = restoredOrdinal ?? ordinal;
             return inkfallCombat
               ? restoredOrdinal !== undefined
                 ? inkfallWorkerCombatSpawn(restoredOrdinal, inkfallProfile)
                 : inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
-                  ? this.resolveLiveInkfallSpawn(playerId, ordinal)
+                  ? this.resolveLiveInkfallSpawn(playerId, ordinal, context)
                   : inkfallWorkerCombatSpawn(resolvedOrdinal, inkfallProfile)
               : revision3Combat
                 ? workerCombatSpawn(resolvedOrdinal)
