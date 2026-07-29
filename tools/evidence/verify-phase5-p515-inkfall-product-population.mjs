@@ -1035,6 +1035,78 @@ assert.equal(
   proof.combat.bodyHitVerticalMarginMillimeters,
 );
 assert.ok(proof.combat.lethalConvergence.afterSeparationMillimeters <= 2_200);
+const lethalHeadAim = proof.combat.lethalHeadAim;
+assert.equal(lethalHeadAim.contract, 'standing_head_only_vertical_band_v1');
+assert.equal(lethalHeadAim.standingShapeHeightMillimeters, 1_800);
+assert.equal(lethalHeadAim.standardHumanoidVolumeTopMillimeters, 1_940);
+assert.equal(lethalHeadAim.shooterEyeOffsetMillimeters, 1_700);
+assert.equal(
+  lethalHeadAim.headCenterOffsetMillimeters,
+  Math.round(1_700 * 1_800 / 1_940),
+);
+assert.equal(
+  lethalHeadAim.headHalfExtentMillimeters,
+  Math.round(240 * 1_800 / 1_940),
+);
+assert.equal(
+  lethalHeadAim.torsoUpperCenterOffsetMillimeters,
+  Math.round(1_250 * 1_800 / 1_940),
+);
+assert.equal(
+  lethalHeadAim.torsoUpperHalfExtentMillimeters,
+  Math.round(420 * 1_800 / 1_940),
+);
+assert.equal(
+  lethalHeadAim.headTopOffsetMillimeters,
+  lethalHeadAim.headCenterOffsetMillimeters
+    + lethalHeadAim.headHalfExtentMillimeters,
+);
+assert.equal(
+  lethalHeadAim.torsoTopOffsetMillimeters,
+  lethalHeadAim.torsoUpperCenterOffsetMillimeters
+    + lethalHeadAim.torsoUpperHalfExtentMillimeters,
+);
+assert.ok(lethalHeadAim.targetOffsetMillimeters > lethalHeadAim.torsoTopOffsetMillimeters);
+assert.ok(lethalHeadAim.targetOffsetMillimeters <= lethalHeadAim.headTopOffsetMillimeters);
+assert.equal(lethalHeadAim.shooterCrouchInputHeld, false);
+assert.equal(lethalHeadAim.victimCrouchInputHeld, false);
+assert.ok(Math.hypot(
+  lethalHeadAim.shooterPosition.x - proof.combat.lethalConvergence.westPosition.x,
+  lethalHeadAim.shooterPosition.y - proof.combat.lethalConvergence.westPosition.y,
+  lethalHeadAim.shooterPosition.z - proof.combat.lethalConvergence.westPosition.z,
+) <= 100);
+assert.ok(Math.hypot(
+  lethalHeadAim.victimPosition.x - proof.combat.lethalConvergence.eastPosition.x,
+  lethalHeadAim.victimPosition.y - proof.combat.lethalConvergence.eastPosition.y,
+  lethalHeadAim.victimPosition.z - proof.combat.lethalConvergence.eastPosition.z,
+) <= 100);
+assert.equal(
+  lethalHeadAim.shooterEyeYMillimeters,
+  lethalHeadAim.shooterPosition.y + lethalHeadAim.shooterEyeOffsetMillimeters,
+);
+assert.equal(
+  lethalHeadAim.targetHeadYMillimeters,
+  lethalHeadAim.victimPosition.y + lethalHeadAim.targetOffsetMillimeters,
+);
+assert.equal(
+  lethalHeadAim.horizontalDistanceMillimeters,
+  Math.hypot(
+    lethalHeadAim.victimPosition.x - lethalHeadAim.shooterPosition.x,
+    lethalHeadAim.victimPosition.z - lethalHeadAim.shooterPosition.z,
+  ),
+);
+assert.equal(
+  lethalHeadAim.targetPitchMilliDegrees,
+  Math.round(
+    Math.atan2(
+      lethalHeadAim.targetHeadYMillimeters - lethalHeadAim.shooterEyeYMillimeters,
+      lethalHeadAim.horizontalDistanceMillimeters,
+    ) * 180_000 / Math.PI,
+  ),
+);
+assert.ok(
+  Math.abs(lethalHeadAim.finalPitchMilliDegrees - lethalHeadAim.targetPitchMilliDegrees) <= 800,
+);
 for (const [drive, label] of [
   [proof.combat.bodyDamageDrive, 'body'],
   [proof.combat.lethalDamageDrive, 'lethal'],
@@ -1053,6 +1125,15 @@ for (const [drive, label] of [
 assert.ok(proof.combat.bodyDamageDrive.at(-1).victimHealthAfter > 0);
 assert.ok(proof.combat.bodyDamageDrive.at(-1).victimHealthAfter <= 70);
 assert.equal(proof.combat.lethalDamageDrive.at(-1).victimHealthAfter, 0);
+assert.ok(proof.combat.lethalDamageEvents.length >= 1);
+assert.ok(proof.combat.lethalDamageEvents.every(({ kind, targetId, presentation }) => (
+  kind === 'damageApplied'
+  && targetId === proof.authority.initialJoins[1].playerId
+  && presentation.kind === 'damage_applied'
+  && presentation.eventSequence > lethalHeadAim.damageEventSequenceStart
+  && presentation.hitRegion === 'head'
+)));
+assert.equal(proof.combat.lethalDamageEvents.at(-1).presentation.healthPointsAfter, 0);
 assert.deepEqual(
   { lifePhase: proof.combat.death.lifePhase, healthPoints: proof.combat.death.healthPoints },
   { lifePhase: 'dead', healthPoints: 0 },

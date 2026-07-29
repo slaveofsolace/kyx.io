@@ -1166,6 +1166,64 @@ async function aimPitch(page, targetPitchMilliDegrees, toleranceMilliDegrees = 2
   })}`);
 }
 
+function standingHeadOnlyAim(shooterPosition, victimPosition) {
+  const standingShapeHeightMillimeters = 1_800;
+  const standardHumanoidVolumeTopMillimeters = 1_940;
+  const shooterEyeOffsetMillimeters = standingShapeHeightMillimeters - 100;
+  const scaledOffset = (value) => Math.round(
+    value
+      * standingShapeHeightMillimeters
+      / standardHumanoidVolumeTopMillimeters,
+  );
+  const headCenterOffsetMillimeters = scaledOffset(1_700);
+  const headHalfExtentMillimeters = scaledOffset(240);
+  const torsoUpperCenterOffsetMillimeters = scaledOffset(1_250);
+  const torsoUpperHalfExtentMillimeters = scaledOffset(420);
+  const headTopOffsetMillimeters =
+    headCenterOffsetMillimeters + headHalfExtentMillimeters;
+  const torsoTopOffsetMillimeters =
+    torsoUpperCenterOffsetMillimeters + torsoUpperHalfExtentMillimeters;
+  const targetOffsetMillimeters = Math.round(
+    (torsoTopOffsetMillimeters + 1 + headTopOffsetMillimeters) / 2,
+  );
+  const shooterEyeYMillimeters =
+    shooterPosition.y + shooterEyeOffsetMillimeters;
+  const targetHeadYMillimeters =
+    victimPosition.y + targetOffsetMillimeters;
+  const horizontalDistanceMillimeters = Math.hypot(
+    victimPosition.x - shooterPosition.x,
+    victimPosition.z - shooterPosition.z,
+  );
+  assert.ok(horizontalDistanceMillimeters > 0);
+  assert.ok(targetOffsetMillimeters > torsoTopOffsetMillimeters);
+  assert.ok(targetOffsetMillimeters <= headTopOffsetMillimeters);
+  const targetPitchMilliDegrees = Math.round(
+    Math.atan2(
+      targetHeadYMillimeters - shooterEyeYMillimeters,
+      horizontalDistanceMillimeters,
+    ) * 180_000 / Math.PI,
+  );
+  return Object.freeze({
+    contract: 'standing_head_only_vertical_band_v1',
+    standingShapeHeightMillimeters,
+    standardHumanoidVolumeTopMillimeters,
+    shooterEyeOffsetMillimeters,
+    headCenterOffsetMillimeters,
+    headHalfExtentMillimeters,
+    headTopOffsetMillimeters,
+    torsoUpperCenterOffsetMillimeters,
+    torsoUpperHalfExtentMillimeters,
+    torsoTopOffsetMillimeters,
+    targetOffsetMillimeters,
+    shooterPosition,
+    victimPosition,
+    shooterEyeYMillimeters,
+    targetHeadYMillimeters,
+    horizontalDistanceMillimeters,
+    targetPitchMilliDegrees,
+  });
+}
+
 async function moveTo(
   page,
   target,
@@ -3105,6 +3163,28 @@ try {
     lethalConvergence.afterSeparationMillimeters
       <= verifiedInkChannelCombatPair.maximumSeparationMillimeters,
   );
+  const lethalShooterBefore = await productSnapshot(first.page);
+  const lethalVictimBefore = await productSnapshot(second.page);
+  const lethalDamageEventSequenceStart = Math.max(
+    0,
+    ...lethalShooterBefore.combat.recentEvents
+      .filter(({ kind, presentation }) => (
+        kind === 'damageApplied'
+        && presentation?.kind === 'damage_applied'
+      ))
+      .map(({ presentation }) => presentation.eventSequence),
+  );
+  const lethalHeadAimContract = standingHeadOnlyAim(
+    lethalShooterBefore.localPredictedPosition,
+    lethalVictimBefore.localPredictedPosition,
+  );
+  assert.equal(lethalShooterBefore.inputBridge.crouch, false);
+  assert.equal(lethalVictimBefore.inputBridge.crouch, false);
+  const lethalHeadAim = await aimPitch(
+    first.page,
+    lethalHeadAimContract.targetPitchMilliDegrees,
+    800,
+  );
   const lethalDamageDrive = await driveVictimHealth(
     first.page,
     second.page,
@@ -3121,6 +3201,19 @@ try {
   const victimAtDeath = localCombatPlayer(deathVictim);
   assert.deepEqual({ lifePhase: victimAtDeath.lifePhase, healthPoints: victimAtDeath.healthPoints }, { lifePhase: 'dead', healthPoints: 0 });
   assert.ok(deathShooter.combat.recentEvents.some(({ kind }) => kind === 'playerKilled'));
+  const lethalDamageEvents = deathShooter.combat.recentEvents.filter(({
+    kind,
+    targetId,
+    presentation,
+  }) => (
+    kind === 'damageApplied'
+    && targetId === deathVictim.playerId
+    && presentation?.kind === 'damage_applied'
+    && presentation.eventSequence > lethalDamageEventSequenceStart
+  ));
+  assert.ok(lethalDamageEvents.length >= 1);
+  assert.ok(lethalDamageEvents.every(({ presentation }) => presentation.hitRegion === 'head'));
+  assert.equal(lethalDamageEvents.at(-1).presentation.healthPointsAfter, 0);
   const presentationAtDeath = await presentationMarkerProof(first.page, 'head_kill');
   assertPresentationMarker(presentationAtDeath, 'head_kill', 2);
   await first.page.screenshot({ path: path.join(screenshotDirectory, 'p515-05-authoritative-death-score.png'), fullPage: true });
@@ -3587,9 +3680,17 @@ try {
       bodyHitVictimPosition: bodyHitVictimSetup.localPredictedPosition,
       bodyHitVerticalMarginMillimeters,
       lethalConvergence,
+      lethalHeadAim: {
+        ...lethalHeadAimContract,
+        shooterCrouchInputHeld: lethalShooterBefore.inputBridge.crouch,
+        victimCrouchInputHeld: lethalVictimBefore.inputBridge.crouch,
+        finalPitchMilliDegrees: lethalHeadAim.localPredictedPitchMilliDegrees,
+        damageEventSequenceStart: lethalDamageEventSequenceStart,
+      },
       damageEventObserved: true,
       bodyDamageDrive: bodyDamageDrive.pulses,
       lethalDamageDrive: lethalDamageDrive.pulses,
+      lethalDamageEvents,
       death: {
         lifePhase: victimAtDeath.lifePhase,
         healthPoints: victimAtDeath.healthPoints,
