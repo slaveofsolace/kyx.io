@@ -5,6 +5,14 @@ appending prose to executable source files or binary assets.
 
 ## Active now
 
+- The complete KYX/evio project family was migrated from
+  `C:\AI Projects\Projects\Games\evio` to
+  `E:\AI Projects\Projects\Games\evio` on 2026-07-28. The move preserved all
+  30 Git worktrees, branch/HEAD state, untracked Blender sources and runtime
+  evidence, and rebuilt package junctions against E. C retains only empty
+  directory stubs held open by the current Codex task; no duplicate project
+  payload remains there, and no evio/KYX copy was found on D.
+
 - `public/candidates/g6-rev30-cc0-donor/` remains the current runtime
   third-person player/enemy asset, but the project owner rejected Rev30 as the
   final visual direction on 2026-07-28. Its legal source, reproducible Blender

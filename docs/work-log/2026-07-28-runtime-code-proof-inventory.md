@@ -55,8 +55,8 @@ Disposition: active integration checkpoint, not a release or visual acceptance
 | Smoke grenade | Smooth offline expansion, 5.88 m radius, ten-second lifetime; online field presentation | Smoke charge/reconnect test | Online smoke is not consulted by hitscan authority, so it does not physically block shots; live smoothness and sound are unaccepted |
 | Sticky grenade | Surface/player attachment, follows player, fuse and falloff damage | Authority implementation | No direct focused resolution test or current live capture |
 | Flash grenade | LOS/occlusion calculation and impairment timer; local overlay | Authority implementation | Offline suppresses bots, but online authority does not suppress input/aim/fire; no current live capture |
-| Player model | Rev30 CC0-donor cyber-suit is the default third-person player asset; 66-bone rig, 16 clips, weapon socket; Rev17 is first-person/fallback | Exact GLB reimport/structure report and four accepted-direction Blender renders | Static render direction only was accepted; no current in-game animation/contact/performance acceptance; no distinct LOD1/LOD2 or Rev30 first-person model |
-| Enemy models | Practice bots and online remotes reuse Rev30 with tint/armor variants | Runtime selection/config tests | Not a separately authored enemy silhouette; survival zombies still use an unaccepted procedural primitive rig |
+| Player model | Rev30 CC0-donor cyber-suit is the current third-person runtime fallback; 66-bone rig, 16 clips, weapon socket; Rev17 is first-person/fallback | Exact GLB reimport/structure report and four historical Blender renders | Rev30 was rejected as the final visual direction. A recovered slimmer body plus assault, breacher, recon, and duelist closed helmets is in active integration; live animation/contact/performance and LOD acceptance remain open |
+| Enemy models | Practice bots and online remotes currently reuse the temporary Rev30 fallback with tint/armor variants | Runtime selection/config tests | Final enemy presentation must inherit the accepted role-driven body/helmet system or gain a separately authored silhouette; survival zombies still use an unaccepted procedural primitive rig |
 | Animation | Authored idle/walk/run/jump/air/land/fire/reload/hit/death plus first-person clips; directional movement, backpedal, strafe lean, turn/aim layering, support-hand IK | Action-contract and presentation tests; Blender action renders | Equip, melee, and throws use procedural accents; first-person reload authored clip is disabled; bot death uses tilt/fade; no complete in-game animation sequence is human accepted |
 | Weapon contact | Third-person weapon attaches at right-hand socket, real muzzle points forward, non-melee support hand is bounded | Matrix/contract tests and static weapon-ready render | Live clipping, hand placement, nozzle alignment, and animation contact on Rev30 remain unproven |
 | Audio | Tactical synthesized cues for weapon/reload/movement/jump/land/throw/bounce/detonation/smoke/teleport/hit/headshot/kill/UI/enemies; prior timed siren removed | Source/tests verify cue routing and visual alternatives | Still oscillator/noise synthesis, not recorded sound assets; offline and online engines differ; no recording, mix/loudness report, or human listening acceptance |
@@ -71,7 +71,9 @@ Disposition: active integration checkpoint, not a release or visual acceptance
 ## Current visual acceptance truth
 
 - **Map:** structurally improved and runtime-loadable, but not final accepted art.
-- **Character:** Rev30 static render direction accepted; in-game presentation not accepted.
+- **Character:** Rev30 remains a technically integrated fallback but is visually
+  rejected as final; the slimmer four-helmet role direction is not yet
+  integrated or accepted.
 - **Animations/contact:** implemented contracts and actions, not visually accepted in the
   current runtime.
 - **Weapons:** six online silhouettes exist; full in-game family presentation not accepted.
@@ -89,8 +91,9 @@ Disposition: active integration checkpoint, not a release or visual acceptance
    cooldown contract.
 4. Complete online smoke/flash gameplay authority and add direct Frag/Sticky/Flash
    resolution coverage.
-5. Capture Rev30 live animation/contact and repair only the clipping/contact
-   failures that the capture demonstrates.
+5. Integrate the recovered slimmer body and four role helmets, then capture live
+   animation/contact and repair the clipping/contact failures shown by that
+   runtime proof. Do not spend additional visual-polish passes on Rev30.
 6. Exercise the Rev5 portal end to end, then run one final source-frozen Rev5
    2/4/8 product/performance pass.
 7. Commit/push, deploy to staging, request human visual/play/audio acceptance,

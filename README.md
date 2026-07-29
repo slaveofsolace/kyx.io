@@ -7,9 +7,11 @@ authority layer.
 > [!IMPORTANT]
 > This is a playable development integration, not a promoted public release.
 > Offline Practice is the easiest path to load today. Online authority,
-> reconnect/resume, six weapon families, Inkfall Foundry Rev5, the Rev30
-> character direction, and the replacement arena HUD are integrated or in their
-> final integration lane. Human map/HUD/runtime-model acceptance, final
+> reconnect/resume, six weapon families, Inkfall Foundry Rev5, the temporary
+> Rev30 runtime character, and the replacement arena HUD are integrated or in
+> their final integration lane. The final character direction is now a slimmer
+> shared cyber-suit with assault, breacher, recon, and duelist helmet variants
+> bound to browser-first combat presets. Human map/HUD/runtime-model acceptance, final
 > source-frozen regression, public licensing, and provenance cleanup still gate
 > release promotion.
 
@@ -18,17 +20,18 @@ being changed now.
 
 ## Current visual direction
 
-### Rev30 player / enemy character
+### Role-driven player / enemy character
 
-![Rev30 CC0 donor character, neutral three-quarter view](./evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-neutral-full-body-three-quarter.png)
+![Temporary Rev30 runtime fallback, neutral three-quarter view](./evidence/2026-07-28/g6-rev30-cc0-donor/kyx-rev30-cc0-donor-neutral-full-body-three-quarter.png)
 
-Rev30 replaces the rejected blocky character direction with a compact
-charcoal/gunmetal cyber-suit, broad cyan visor, fitted gloves, continuous
-knee/shin construction, and grounded boots. It adapts Irondust's CC0
-“Sci-fi Soldier” donor while preserving KYX's 66-bone rig, 16-action contract,
-and authored weapon sockets. The accepted asset render is shown above; live
-runtime animation, external weapon contact, and final in-game visual review are
-still explicit gates.
+Rev30 is the currently integrated third-person fallback, not the accepted final
+character. The project owner rejected its overall revision after preferring an
+earlier, slimmer armor silhouette and several prior closed-helmet studies. The
+active replacement keeps the proven 66-bone rig, 16-action contract, and weapon
+sockets while building four readable helmet identities: assault/rifle,
+breacher/shotgun, recon/sniper, and duelist/melee. The image above documents the
+temporary runtime state only. New source renders, in-game animation/contact,
+clipping review, and explicit human visual acceptance remain required.
 
 ### Inkfall Foundry Rev5 / Geometry Portal
 
@@ -105,12 +108,18 @@ npm run test
   integrated over the unchanged Revision 3 collision authority. The earlier
   bridge/wall interpenetration and loose floating geometry are removed; human
   map acceptance and fresh Rev5 2/4/8 runtime proof remain open.
-- Rev30 is the accepted third-person art direction. Rev17 remains the retained
-  first-person viewmodel and explicit legacy fallback while Rev30 runtime
-  selection, animation, weapon contact, and live capture are finalized.
+- Rev30 remains the temporary third-person runtime fallback and is not the
+  accepted final art direction. The active replacement uses the recovered
+  slimmer armor body with four loadout-driven closed helmets; Rev17 remains the
+  retained first-person fallback until the replacement passes live animation,
+  weapon-contact, clipping, and visual review.
 - Arena Instrument v3 replaces the rejected floating-card HUD/menu with compact
   edge-anchored vitals, abilities, ammo, timer/objective, and command-bay
   navigation. Responsive/accessibility capture and human acceptance remain open.
+- Desktop browser play is the current product acceptance target. The existing
+  mobile-responsive base remains functional, but dedicated mobile arena,
+  control, model, and layout polish is deferred until the browser game is
+  complete and accepted.
 - A durable Cloudflare staging Worker is available at
   [kyx-io-authority-staging.suhaibabdeljaber.workers.dev](https://kyx-io-authority-staging.suhaibabdeljaber.workers.dev).
   It is intentionally not production promotion; see `WORK_IN_PROGRESS.md` for
