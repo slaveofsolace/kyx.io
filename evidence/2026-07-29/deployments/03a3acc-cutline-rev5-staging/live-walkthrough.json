@@ -1,0 +1,2562 @@
+{
+  "schemaVersion": 1,
+  "status": "STAGING_TWO_PLAYER_WALKTHROUGH_PASS",
+  "sourceCommit": "03a3accc775593c374a0e38720e97f992c470ff4",
+  "workerVersion": "c1558355-ab53-4d81-8e3f-9538a22659fc",
+  "origin": "https://kyx-io-authority-staging.suhaibabdeljaber.workers.dev",
+  "roomCode": "KYX-G9NBRT",
+  "joinPath": "/online?mode=join&room=KYX-G9NBRT&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+  "buildId": "kyx-main-cutline-rev5-review-20260729",
+  "host": {
+    "before": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+      "roomCode": "KYX-G9NBRT",
+      "connection": "joined",
+      "matchId": "match.238123d97ecd42ee8888d40b806c8650",
+      "playerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+      "remotePlayers": 1,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 1,
+      "commandsGenerated": 0,
+      "inputAcks": 2,
+      "reconciliations": 1,
+      "resumeSuccesses": 0,
+      "combat": {
+        "enabled": true,
+        "snapshot": {
+          "schemaVersion": 1,
+          "players": [
+            {
+              "playerId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+              "connected": true,
+              "teamId": "team_red",
+              "lifePhase": "alive",
+              "healthPoints": 100,
+              "shieldPoints": 0,
+              "deathOrdinal": 0,
+              "respawnEligibleAtTick": null,
+              "riflePhase": "equipping",
+              "magazineRounds": 50,
+              "reserveRounds": 150,
+              "nextShotAtTick": 0,
+              "reloadCompletesAtTick": null,
+              "acceptedShotCount": 0,
+              "selectedWeaponSlot": 0,
+              "selectedWeaponId": "vertical_rifle_v1",
+              "grenadePhase": "equipping",
+              "grenadeCooldownEndsAtTick": 0,
+              "acceptedThrowCount": 0,
+              "activeProjectileCount": 0
+            },
+            {
+              "playerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+              "connected": true,
+              "teamId": "team_blue",
+              "lifePhase": "alive",
+              "healthPoints": 100,
+              "shieldPoints": 0,
+              "deathOrdinal": 0,
+              "respawnEligibleAtTick": null,
+              "riflePhase": "equipping",
+              "magazineRounds": 50,
+              "reserveRounds": 150,
+              "nextShotAtTick": 0,
+              "reloadCompletesAtTick": null,
+              "acceptedShotCount": 0,
+              "selectedWeaponSlot": 0,
+              "selectedWeaponId": "vertical_rifle_v1",
+              "weaponCatalogId": "kyx_authoritative_armory_v1",
+              "weapons": [
+                {
+                  "weaponId": "vertical_rifle_v1",
+                  "slot": 0,
+                  "family": "rifle",
+                  "attackModel": "hitscan",
+                  "phase": "equipping",
+                  "magazineRounds": 50,
+                  "reserveRounds": 150,
+                  "readyAtTick": 5,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_sidearm_v1",
+                  "slot": 1,
+                  "family": "pistol",
+                  "attackModel": "hitscan",
+                  "phase": "holstered",
+                  "magazineRounds": 12,
+                  "reserveRounds": 72,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_scattergun_v1",
+                  "slot": 2,
+                  "family": "shotgun",
+                  "attackModel": "pellet_hitscan",
+                  "phase": "holstered",
+                  "magazineRounds": 6,
+                  "reserveRounds": 30,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_longshot_v1",
+                  "slot": 3,
+                  "family": "sniper",
+                  "attackModel": "hitscan",
+                  "phase": "holstered",
+                  "magazineRounds": 4,
+                  "reserveRounds": 20,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_breach_rocket_v1",
+                  "slot": 4,
+                  "family": "rocket",
+                  "attackModel": "projectile",
+                  "phase": "holstered",
+                  "magazineRounds": 1,
+                  "reserveRounds": 5,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_edge_v1",
+                  "slot": 5,
+                  "family": "melee",
+                  "attackModel": "melee_contact",
+                  "phase": "holstered",
+                  "magazineRounds": null,
+                  "reserveRounds": null,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                }
+              ],
+              "grenadePhase": "equipping",
+              "grenadeCooldownEndsAtTick": 0,
+              "acceptedThrowCount": 0,
+              "activeProjectileCount": 0,
+              "abilityLoadout": {
+                "slots": [
+                  "vertical_teleport_v1",
+                  "vertical_impulse_grenade_v1",
+                  "smoke_grenade_v1",
+                  "frag_grenade_v1"
+                ],
+                "cooldownEndsAtTicks": [
+                  0,
+                  0,
+                  0
+                ],
+                "currentCharges": [
+                  2,
+                  2,
+                  2
+                ],
+                "maximumCharges": [
+                  2,
+                  2,
+                  2
+                ],
+                "acceptedActivationCounts": [
+                  0,
+                  0,
+                  0
+                ],
+                "flashImpairedUntilTick": 0
+              }
+            }
+          ],
+          "projectiles": [],
+          "match": {
+            "phase": "warmup",
+            "phaseEndsAtTick": 40,
+            "activeTicksRemaining": 9600,
+            "teamScores": [
+              {
+                "teamId": "team_blue",
+                "score": 0
+              },
+              {
+                "teamId": "team_red",
+                "score": 0
+              }
+            ],
+            "feedSequence": 0,
+            "result": null
+          }
+        },
+        "recentEvents": [
+          {
+            "id": "event.1",
+            "serverTick": 0,
+            "kind": "playerJoined",
+            "subjectId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "actorId": null,
+            "targetId": null,
+            "amountHealthPoints": null
+          },
+          {
+            "id": "event.2",
+            "serverTick": 0,
+            "kind": "loadoutAccepted",
+            "subjectId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "actorId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "targetId": null,
+            "amountHealthPoints": null
+          },
+          {
+            "id": "event.3",
+            "serverTick": 0,
+            "kind": "playerJoined",
+            "subjectId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "actorId": null,
+            "targetId": null,
+            "amountHealthPoints": null
+          },
+          {
+            "id": "event.4",
+            "serverTick": 1,
+            "kind": "loadoutAccepted",
+            "subjectId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "actorId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "targetId": null,
+            "amountHealthPoints": null
+          }
+        ]
+      },
+      "inputBridge": {
+        "pressedKeys": [],
+        "axes": {
+          "moveX": 0,
+          "moveY": 0
+        },
+        "heldButtons": 0,
+        "jump": false,
+        "sprint": false,
+        "crouch": false,
+        "primaryFire": false,
+        "aimHeld": false,
+        "blinkPreviewHeld": false,
+        "selectedWeaponSlot": 0
+      },
+      "blinkPreview": {
+        "schemaVersion": 1,
+        "active": false,
+        "valid": false,
+        "authorityBound": true,
+        "reason": "blocked",
+        "outcome": null,
+        "maximumRangeMillimeters": 9000,
+        "distanceMillimeters": 0,
+        "originFeetMillimeters": {
+          "x": -33500,
+          "y": 0,
+          "z": -3500
+        },
+        "destinationFeetMillimeters": {
+          "x": -33500,
+          "y": 0,
+          "z": -3500
+        }
+      },
+      "localAuthoritativePlayerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+      "localPredictedPosition": {
+        "x": -33500,
+        "y": 0,
+        "z": -3500
+      },
+      "localAuthoritativePosition": {
+        "x": -33500,
+        "y": 0,
+        "z": -3500
+      },
+      "localPredictedVelocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "localAuthoritativeVelocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "localPredictedGrounded": true,
+      "localAuthoritativeGrounded": true,
+      "localPredictedLocomotion": "grounded",
+      "localAuthoritativeLocomotion": "grounded",
+      "localAuthoritativeYawMilliDegrees": 53000,
+      "localPredictedYawMilliDegrees": 53000,
+      "localPredictedPitchMilliDegrees": 0,
+      "localPredictionErrorMillimeters": 0,
+      "localPredictionHistoryCommands": 0,
+      "remoteEntities": [
+        {
+          "entityId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+          "interpolationMode": "held",
+          "position": {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          },
+          "grounded": true,
+          "stance": "standing",
+          "locomotion": "grounded",
+          "travelSector": "idle",
+          "forwardSpeedMillimetersPerSecond": 0,
+          "rightSpeedMillimetersPerSecond": 0
+        }
+      ],
+      "remotePositions": [
+        {
+          "x": 33500,
+          "y": 0,
+          "z": -3500
+        }
+      ],
+      "lastError": null,
+      "render3d": {
+        "status": "ready",
+        "renderer": "three_webgl",
+        "mapReference": "inkfall_foundry@3",
+        "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+        "presentationMode": "procedural_authority_containment",
+        "presentationSha256": null,
+        "authorityFixtureHash": "97eb7772ac59dc95",
+        "renderMeshesMayBeAuthority": false,
+        "renderMeshCount": 0,
+        "renderOnlyContainmentMeshCount": 290,
+        "spawnPocketContainmentCount": 2,
+        "authorityColliderCount": 339,
+        "spawnCount": 12,
+        "zoneCount": 9,
+        "remoteAvatarCount": 1,
+        "grenadeProjectileCount": 0,
+        "weaponProjectileCount": 0,
+        "activeWeaponEffectCount": 0,
+        "renderedReliableEventCount": 0,
+        "acceptedAttackPresentationCount": 0,
+        "confirmedDamagePresentationCount": 0,
+        "reloadPresentationCount": 0,
+        "portalTraversalPresentationCount": 0,
+        "activePortalEffectCount": 0,
+        "portalAudioDelegation": "shared_callback",
+        "authoredWeaponAudio": "locked",
+        "selectedWeaponId": "vertical_rifle_v1",
+        "selectedProceduralDefinitionId": "kyx_vlr7",
+        "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+        "selectedWeaponFamily": "rifle",
+        "selectedWeaponSilhouette": "standard_longarm",
+        "selectedFirstPersonHandCount": 2,
+        "selectedFirstPersonContactMode": "authored_two_hand_assault_suit_v2",
+        "selectedFirstPersonAimRequested": false,
+        "selectedFirstPersonAimMix": 0,
+        "selectedFirstPersonScale": 0.72,
+        "selectedFirstPersonFieldOfViewDegrees": 72,
+        "selectedFirstPersonFireImpulse": 0,
+        "selectedFirstPersonReloadProgress": 0,
+        "selectedFirstPersonReloadPoseMix": 0,
+        "blinkPreviewActive": false,
+        "blinkPreviewValid": false,
+        "blinkPreviewAuthorityBound": false,
+        "blinkPreviewReason": "inactive",
+        "blinkPreviewDistanceMillimeters": 0,
+        "blinkPreviewMaximumRangeMillimeters": 0,
+        "pointerLocked": false,
+        "canvasWidth": 1440,
+        "canvasHeight": 842
+      },
+      "presentation": {
+        "status": "ready",
+        "hydrationCount": 1,
+        "intentCount": 1,
+        "confirmedIntentCount": 0,
+        "rejectedIntentCount": 0,
+        "duplicateAuthorityEvents": 0,
+        "staleAuthorityEvents": 0,
+        "lastCue": "snapshot",
+        "lastAuthorityEventId": null,
+        "audioCueAttempts": 0,
+        "recentCues": [
+          {
+            "cue": "snapshot",
+            "source": "snapshot",
+            "authorityEventId": null,
+            "authorityTick": 0,
+            "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+            "vfxMarker": null,
+            "audioMarker": null,
+            "renderedHud": true,
+            "renderedVfx": false,
+            "audioAttempted": false
+          }
+        ]
+      },
+      "roomVerification": {
+        "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+        "mapBinding": {
+          "mapReference": "inkfall_foundry@3",
+          "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+          "mapId": "inkfall_foundry",
+          "mapRevision": 3,
+          "packageDigest": "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a",
+          "fixtureId": "inkfall_foundry_map_collision",
+          "fixtureHash": "97eb7772ac59dc95",
+          "xAxis": "east",
+          "yAxis": "up",
+          "zAxis": "north",
+          "origin": "press_core_floor_contact",
+          "gltfToMap": "x_y_negative_z",
+          "distanceUnit": "millimeters",
+          "angleUnit": "milli_degrees",
+          "colliderCardinality": 339,
+          "render": {
+            "role": "render_only",
+            "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+            "sha256": "1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad",
+            "bytes": 2689992,
+            "renderMeshesMayBeAuthority": false
+          },
+          "collision": {
+            "role": "authority_collision",
+            "path": "revisions/revision-3/export/collision.authority.glb",
+            "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+            "bytes": 605112
+          },
+          "supportedModes": [
+            "deathmatch",
+            "team_deathmatch"
+          ],
+          "spawns": [
+            {
+              "spawnId": "spawn_w_press_a",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -33500,
+                "y": 0,
+                "z": -3500
+              },
+              "yawMilliDegrees": 53000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_press_a",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 33500,
+                "y": 0,
+                "z": 3500
+              },
+              "yawMilliDegrees": -127000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_w_press_b",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -33500,
+                "y": 0,
+                "z": 3500
+              },
+              "yawMilliDegrees": 113000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_press_b",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 33500,
+                "y": 0,
+                "z": -3500
+              },
+              "yawMilliDegrees": -67000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_w_ink",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -30500,
+                "y": 0,
+                "z": -7000
+              },
+              "yawMilliDegrees": 90000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_ink",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 30500,
+                "y": 0,
+                "z": -7000
+              },
+              "yawMilliDegrees": -90000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_w_archive",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -30500,
+                "y": 0,
+                "z": 7000
+              },
+              "yawMilliDegrees": 90000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_archive",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 30500,
+                "y": 0,
+                "z": 7000
+              },
+              "yawMilliDegrees": -90000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_ink_w",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": -27000,
+                "y": -3000,
+                "z": -22000
+              },
+              "yawMilliDegrees": 45000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_ink_e",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": 27000,
+                "y": -3000,
+                "z": -21000
+              },
+              "yawMilliDegrees": -51000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_archive_w",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": -27000,
+                "y": 6000,
+                "z": 22000
+              },
+              "yawMilliDegrees": 135000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_archive_e",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": 27000,
+                "y": 6000,
+                "z": 21000
+              },
+              "yawMilliDegrees": -129000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            }
+          ],
+          "zones": [
+            {
+              "zoneId": "west_gallery",
+              "callout": "West Galley",
+              "family": "spawn",
+              "center": {
+                "x": -30000,
+                "y": 0,
+                "z": 0
+              },
+              "halfExtents": {
+                "x": 6000,
+                "y": 4000,
+                "z": 9000
+              }
+            },
+            {
+              "zoneId": "east_gallery",
+              "callout": "East Galley",
+              "family": "spawn",
+              "center": {
+                "x": 30000,
+                "y": 0,
+                "z": 0
+              },
+              "halfExtents": {
+                "x": 6000,
+                "y": 4000,
+                "z": 9000
+              }
+            },
+            {
+              "zoneId": "press_hall",
+              "callout": "Press Hall",
+              "family": "press_hall",
+              "center": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "halfExtents": {
+                "x": 22000,
+                "y": 4500,
+                "z": 10000
+              }
+            },
+            {
+              "zoneId": "ink_channel_west",
+              "callout": "Ink Sump",
+              "family": "ink_channel",
+              "center": {
+                "x": -15000,
+                "y": -3000,
+                "z": -18500
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3000,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "ink_channel_east",
+              "callout": "Cistern Fold",
+              "family": "ink_channel",
+              "center": {
+                "x": 15000,
+                "y": -3000,
+                "z": -17500
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3000,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "archive_walk_west",
+              "callout": "Paper Archive",
+              "family": "archive_walk",
+              "center": {
+                "x": -15000,
+                "y": 6000,
+                "z": 18500
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3500,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "archive_walk_east",
+              "callout": "Ledger Bridge",
+              "family": "archive_walk",
+              "center": {
+                "x": 15000,
+                "y": 6000,
+                "z": 18000
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3500,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "teleport_fold",
+              "callout": "Red Fold",
+              "family": "crosslink",
+              "center": {
+                "x": -1500,
+                "y": -1000,
+                "z": -7500
+              },
+              "halfExtents": {
+                "x": 6500,
+                "y": 4500,
+                "z": 6000
+              }
+            },
+            {
+              "zoneId": "paper_drop",
+              "callout": "Paper Drop",
+              "family": "crosslink",
+              "center": {
+                "x": -4000,
+                "y": 3000,
+                "z": 8000
+              },
+              "halfExtents": {
+                "x": 6000,
+                "y": 5000,
+                "z": 6000
+              }
+            }
+          ],
+          "pickups": [],
+          "triggers": [
+            {
+              "id": "red_fold_teleport_entry",
+              "kind": "teleport",
+              "centerMm": {
+                "x": -4000,
+                "y": -3000,
+                "z": -10000
+              },
+              "halfExtentsMm": {
+                "x": 1500,
+                "y": 1000,
+                "z": 1500
+              },
+              "destinationFeetMm": {
+                "x": 1539,
+                "y": 1431,
+                "z": -4461
+              },
+              "destinationYawMilliDegrees": 45000,
+              "implementationStatus": "contract_only"
+            }
+          ],
+          "portal": {
+            "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+            "authorityRole": "additive_server_authority",
+            "renderRole": "rev5_render_only_no_hit",
+            "endpointCount": 2
+          },
+          "telemetry": {
+            "schemaVersion": 1,
+            "authoritySource": "durable_object_room_metrics_v1",
+            "counters": [
+              "connectedPlayers",
+              "receivedCommands",
+              "rejectedCommands",
+              "resumeSuccesses",
+              "authorityTickExecution",
+              "transport"
+            ],
+            "zoneCount": 9,
+            "pickupCount": 0
+          }
+        },
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "inkfall_foundry",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 3,
+          "rulesetHash": "69b19f19a19de288",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "inkfall_foundry_map_collision",
+          "fixtureHash": "97eb7772ac59dc95",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "identityChecks": 7
+      }
+    },
+    "after": {
+      "schemaVersion": 1,
+      "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+      "roomCode": "KYX-G9NBRT",
+      "connection": "joined",
+      "matchId": "match.238123d97ecd42ee8888d40b806c8650",
+      "playerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+      "remotePlayers": 1,
+      "fullSnapshots": 1,
+      "deltaSnapshots": 25,
+      "commandsGenerated": 54,
+      "inputAcks": 50,
+      "reconciliations": 25,
+      "resumeSuccesses": 0,
+      "combat": {
+        "enabled": true,
+        "snapshot": {
+          "schemaVersion": 1,
+          "players": [
+            {
+              "playerId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+              "connected": true,
+              "teamId": "team_red",
+              "lifePhase": "alive",
+              "healthPoints": 100,
+              "shieldPoints": 0,
+              "deathOrdinal": 0,
+              "respawnEligibleAtTick": null,
+              "riflePhase": "ready",
+              "magazineRounds": 50,
+              "reserveRounds": 150,
+              "nextShotAtTick": 0,
+              "reloadCompletesAtTick": null,
+              "acceptedShotCount": 0,
+              "selectedWeaponSlot": 0,
+              "selectedWeaponId": "vertical_rifle_v1",
+              "grenadePhase": "ready",
+              "grenadeCooldownEndsAtTick": 0,
+              "acceptedThrowCount": 0,
+              "activeProjectileCount": 0
+            },
+            {
+              "playerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+              "connected": true,
+              "teamId": "team_blue",
+              "lifePhase": "alive",
+              "healthPoints": 100,
+              "shieldPoints": 0,
+              "deathOrdinal": 0,
+              "respawnEligibleAtTick": null,
+              "riflePhase": "ready",
+              "magazineRounds": 50,
+              "reserveRounds": 150,
+              "nextShotAtTick": 0,
+              "reloadCompletesAtTick": null,
+              "acceptedShotCount": 0,
+              "selectedWeaponSlot": 0,
+              "selectedWeaponId": "vertical_rifle_v1",
+              "weaponCatalogId": "kyx_authoritative_armory_v1",
+              "weapons": [
+                {
+                  "weaponId": "vertical_rifle_v1",
+                  "slot": 0,
+                  "family": "rifle",
+                  "attackModel": "hitscan",
+                  "phase": "ready",
+                  "magazineRounds": 50,
+                  "reserveRounds": 150,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_sidearm_v1",
+                  "slot": 1,
+                  "family": "pistol",
+                  "attackModel": "hitscan",
+                  "phase": "holstered",
+                  "magazineRounds": 12,
+                  "reserveRounds": 72,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_scattergun_v1",
+                  "slot": 2,
+                  "family": "shotgun",
+                  "attackModel": "pellet_hitscan",
+                  "phase": "holstered",
+                  "magazineRounds": 6,
+                  "reserveRounds": 30,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_longshot_v1",
+                  "slot": 3,
+                  "family": "sniper",
+                  "attackModel": "hitscan",
+                  "phase": "holstered",
+                  "magazineRounds": 4,
+                  "reserveRounds": 20,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_breach_rocket_v1",
+                  "slot": 4,
+                  "family": "rocket",
+                  "attackModel": "projectile",
+                  "phase": "holstered",
+                  "magazineRounds": 1,
+                  "reserveRounds": 5,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                },
+                {
+                  "weaponId": "kyx_edge_v1",
+                  "slot": 5,
+                  "family": "melee",
+                  "attackModel": "melee_contact",
+                  "phase": "holstered",
+                  "magazineRounds": null,
+                  "reserveRounds": null,
+                  "readyAtTick": null,
+                  "reloadCompletesAtTick": null,
+                  "nextAttackAtTick": 0,
+                  "acceptedAttackCount": 0
+                }
+              ],
+              "grenadePhase": "ready",
+              "grenadeCooldownEndsAtTick": 0,
+              "acceptedThrowCount": 0,
+              "activeProjectileCount": 0,
+              "abilityLoadout": {
+                "slots": [
+                  "vertical_teleport_v1",
+                  "vertical_impulse_grenade_v1",
+                  "smoke_grenade_v1",
+                  "frag_grenade_v1"
+                ],
+                "cooldownEndsAtTicks": [
+                  0,
+                  0,
+                  0
+                ],
+                "currentCharges": [
+                  2,
+                  2,
+                  2
+                ],
+                "maximumCharges": [
+                  2,
+                  2,
+                  2
+                ],
+                "acceptedActivationCounts": [
+                  0,
+                  0,
+                  0
+                ],
+                "flashImpairedUntilTick": 0
+              }
+            }
+          ],
+          "projectiles": [],
+          "match": {
+            "phase": "active",
+            "phaseEndsAtTick": 9640,
+            "activeTicksRemaining": 9590,
+            "teamScores": [
+              {
+                "teamId": "team_blue",
+                "score": 0
+              },
+              {
+                "teamId": "team_red",
+                "score": 0
+              }
+            ],
+            "feedSequence": 0,
+            "result": null
+          }
+        },
+        "recentEvents": [
+          {
+            "id": "event.1",
+            "serverTick": 0,
+            "kind": "playerJoined",
+            "subjectId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "actorId": null,
+            "targetId": null,
+            "amountHealthPoints": null
+          },
+          {
+            "id": "event.2",
+            "serverTick": 0,
+            "kind": "loadoutAccepted",
+            "subjectId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "actorId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "targetId": null,
+            "amountHealthPoints": null
+          },
+          {
+            "id": "event.3",
+            "serverTick": 0,
+            "kind": "playerJoined",
+            "subjectId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "actorId": null,
+            "targetId": null,
+            "amountHealthPoints": null
+          },
+          {
+            "id": "event.4",
+            "serverTick": 1,
+            "kind": "loadoutAccepted",
+            "subjectId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "actorId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "targetId": null,
+            "amountHealthPoints": null
+          }
+        ]
+      },
+      "inputBridge": {
+        "pressedKeys": [],
+        "axes": {
+          "moveX": 0,
+          "moveY": 0
+        },
+        "heldButtons": 0,
+        "jump": false,
+        "sprint": false,
+        "crouch": false,
+        "primaryFire": false,
+        "aimHeld": false,
+        "blinkPreviewHeld": false,
+        "selectedWeaponSlot": 0
+      },
+      "blinkPreview": {
+        "schemaVersion": 1,
+        "active": false,
+        "valid": false,
+        "authorityBound": true,
+        "reason": "blocked",
+        "outcome": null,
+        "maximumRangeMillimeters": 9000,
+        "distanceMillimeters": 0,
+        "originFeetMillimeters": {
+          "x": -33500,
+          "y": 0,
+          "z": 3500
+        },
+        "destinationFeetMillimeters": {
+          "x": -33500,
+          "y": 0,
+          "z": 3500
+        }
+      },
+      "localAuthoritativePlayerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+      "localPredictedPosition": {
+        "x": -33500,
+        "y": 0,
+        "z": 3500
+      },
+      "localAuthoritativePosition": {
+        "x": -33500,
+        "y": 0,
+        "z": 3500
+      },
+      "localPredictedVelocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "localAuthoritativeVelocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "localPredictedGrounded": true,
+      "localAuthoritativeGrounded": true,
+      "localPredictedLocomotion": "grounded",
+      "localAuthoritativeLocomotion": "grounded",
+      "localAuthoritativeYawMilliDegrees": 113000,
+      "localPredictedYawMilliDegrees": 113000,
+      "localPredictedPitchMilliDegrees": 0,
+      "localPredictionErrorMillimeters": 0,
+      "localPredictionHistoryCommands": 3,
+      "remoteEntities": [
+        {
+          "entityId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+          "interpolationMode": "stale",
+          "position": {
+            "x": 33500,
+            "y": 0,
+            "z": -3500
+          },
+          "grounded": true,
+          "stance": "standing",
+          "locomotion": "grounded",
+          "travelSector": "idle",
+          "forwardSpeedMillimetersPerSecond": 0,
+          "rightSpeedMillimetersPerSecond": 0
+        }
+      ],
+      "remotePositions": [
+        {
+          "x": 33500,
+          "y": 0,
+          "z": -3500
+        }
+      ],
+      "lastError": null,
+      "render3d": {
+        "status": "ready",
+        "renderer": "three_webgl",
+        "mapReference": "inkfall_foundry@3",
+        "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+        "presentationMode": "procedural_authority_containment",
+        "presentationSha256": null,
+        "authorityFixtureHash": "97eb7772ac59dc95",
+        "renderMeshesMayBeAuthority": false,
+        "renderMeshCount": 0,
+        "renderOnlyContainmentMeshCount": 290,
+        "spawnPocketContainmentCount": 2,
+        "authorityColliderCount": 339,
+        "spawnCount": 12,
+        "zoneCount": 9,
+        "remoteAvatarCount": 1,
+        "grenadeProjectileCount": 0,
+        "weaponProjectileCount": 0,
+        "activeWeaponEffectCount": 0,
+        "renderedReliableEventCount": 0,
+        "acceptedAttackPresentationCount": 0,
+        "confirmedDamagePresentationCount": 0,
+        "reloadPresentationCount": 0,
+        "portalTraversalPresentationCount": 0,
+        "activePortalEffectCount": 0,
+        "portalAudioDelegation": "shared_callback",
+        "authoredWeaponAudio": "ready",
+        "selectedWeaponId": "vertical_rifle_v1",
+        "selectedProceduralDefinitionId": "kyx_vlr7",
+        "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+        "selectedWeaponFamily": "rifle",
+        "selectedWeaponSilhouette": "standard_longarm",
+        "selectedFirstPersonHandCount": 2,
+        "selectedFirstPersonContactMode": "authored_two_hand_assault_suit_v2",
+        "selectedFirstPersonAimRequested": false,
+        "selectedFirstPersonAimMix": 5.833885884280311e-42,
+        "selectedFirstPersonScale": 0.72,
+        "selectedFirstPersonFieldOfViewDegrees": 71.99563079399537,
+        "selectedFirstPersonFireImpulse": 0,
+        "selectedFirstPersonReloadProgress": 0,
+        "selectedFirstPersonReloadPoseMix": 0,
+        "blinkPreviewActive": false,
+        "blinkPreviewValid": false,
+        "blinkPreviewAuthorityBound": false,
+        "blinkPreviewReason": "inactive",
+        "blinkPreviewDistanceMillimeters": 0,
+        "blinkPreviewMaximumRangeMillimeters": 0,
+        "pointerLocked": true,
+        "canvasWidth": 1440,
+        "canvasHeight": 842
+      },
+      "presentation": {
+        "status": "ready",
+        "hydrationCount": 1,
+        "intentCount": 1,
+        "confirmedIntentCount": 0,
+        "rejectedIntentCount": 0,
+        "duplicateAuthorityEvents": 0,
+        "staleAuthorityEvents": 0,
+        "lastCue": "snapshot",
+        "lastAuthorityEventId": null,
+        "audioCueAttempts": 0,
+        "recentCues": [
+          {
+            "cue": "snapshot",
+            "source": "snapshot",
+            "authorityEventId": null,
+            "authorityTick": 0,
+            "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+            "vfxMarker": null,
+            "audioMarker": null,
+            "renderedHud": true,
+            "renderedVfx": false,
+            "audioAttempted": false
+          }
+        ]
+      },
+      "roomVerification": {
+        "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+        "mapBinding": {
+          "mapReference": "inkfall_foundry@3",
+          "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+          "mapId": "inkfall_foundry",
+          "mapRevision": 3,
+          "packageDigest": "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a",
+          "fixtureId": "inkfall_foundry_map_collision",
+          "fixtureHash": "97eb7772ac59dc95",
+          "xAxis": "east",
+          "yAxis": "up",
+          "zAxis": "north",
+          "origin": "press_core_floor_contact",
+          "gltfToMap": "x_y_negative_z",
+          "distanceUnit": "millimeters",
+          "angleUnit": "milli_degrees",
+          "colliderCardinality": 339,
+          "render": {
+            "role": "render_only",
+            "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+            "sha256": "1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad",
+            "bytes": 2689992,
+            "renderMeshesMayBeAuthority": false
+          },
+          "collision": {
+            "role": "authority_collision",
+            "path": "revisions/revision-3/export/collision.authority.glb",
+            "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+            "bytes": 605112
+          },
+          "supportedModes": [
+            "deathmatch",
+            "team_deathmatch"
+          ],
+          "spawns": [
+            {
+              "spawnId": "spawn_w_press_a",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -33500,
+                "y": 0,
+                "z": -3500
+              },
+              "yawMilliDegrees": 53000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_press_a",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 33500,
+                "y": 0,
+                "z": 3500
+              },
+              "yawMilliDegrees": -127000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_w_press_b",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -33500,
+                "y": 0,
+                "z": 3500
+              },
+              "yawMilliDegrees": 113000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_press_b",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 33500,
+                "y": 0,
+                "z": -3500
+              },
+              "yawMilliDegrees": -67000,
+              "escapeRouteFamilies": [
+                "press_hall",
+                "ink_channel",
+                "archive_walk"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_w_ink",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -30500,
+                "y": 0,
+                "z": -7000
+              },
+              "yawMilliDegrees": 90000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_ink",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 30500,
+                "y": 0,
+                "z": -7000
+              },
+              "yawMilliDegrees": -90000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_w_archive",
+              "set": "west_team",
+              "feetPosition": {
+                "x": -30500,
+                "y": 0,
+                "z": 7000
+              },
+              "yawMilliDegrees": 90000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_e_archive",
+              "set": "east_team",
+              "feetPosition": {
+                "x": 30500,
+                "y": 0,
+                "z": 7000
+              },
+              "yawMilliDegrees": -90000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "press_hall"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_ink_w",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": -27000,
+                "y": -3000,
+                "z": -22000
+              },
+              "yawMilliDegrees": 45000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_ink_e",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": 27000,
+                "y": -3000,
+                "z": -21000
+              },
+              "yawMilliDegrees": -51000,
+              "escapeRouteFamilies": [
+                "ink_channel",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_archive_w",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": -27000,
+                "y": 6000,
+                "z": 22000
+              },
+              "yawMilliDegrees": 135000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            },
+            {
+              "spawnId": "spawn_dm_archive_e",
+              "set": "deathmatch_candidate",
+              "feetPosition": {
+                "x": 27000,
+                "y": 6000,
+                "z": 21000
+              },
+              "yawMilliDegrees": -129000,
+              "escapeRouteFamilies": [
+                "archive_walk",
+                "crosslink"
+              ],
+              "validationStatus": "capsule_clear_unscored"
+            }
+          ],
+          "zones": [
+            {
+              "zoneId": "west_gallery",
+              "callout": "West Galley",
+              "family": "spawn",
+              "center": {
+                "x": -30000,
+                "y": 0,
+                "z": 0
+              },
+              "halfExtents": {
+                "x": 6000,
+                "y": 4000,
+                "z": 9000
+              }
+            },
+            {
+              "zoneId": "east_gallery",
+              "callout": "East Galley",
+              "family": "spawn",
+              "center": {
+                "x": 30000,
+                "y": 0,
+                "z": 0
+              },
+              "halfExtents": {
+                "x": 6000,
+                "y": 4000,
+                "z": 9000
+              }
+            },
+            {
+              "zoneId": "press_hall",
+              "callout": "Press Hall",
+              "family": "press_hall",
+              "center": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "halfExtents": {
+                "x": 22000,
+                "y": 4500,
+                "z": 10000
+              }
+            },
+            {
+              "zoneId": "ink_channel_west",
+              "callout": "Ink Sump",
+              "family": "ink_channel",
+              "center": {
+                "x": -15000,
+                "y": -3000,
+                "z": -18500
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3000,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "ink_channel_east",
+              "callout": "Cistern Fold",
+              "family": "ink_channel",
+              "center": {
+                "x": 15000,
+                "y": -3000,
+                "z": -17500
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3000,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "archive_walk_west",
+              "callout": "Paper Archive",
+              "family": "archive_walk",
+              "center": {
+                "x": -15000,
+                "y": 6000,
+                "z": 18500
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3500,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "archive_walk_east",
+              "callout": "Ledger Bridge",
+              "family": "archive_walk",
+              "center": {
+                "x": 15000,
+                "y": 6000,
+                "z": 18000
+              },
+              "halfExtents": {
+                "x": 11000,
+                "y": 3500,
+                "z": 7000
+              }
+            },
+            {
+              "zoneId": "teleport_fold",
+              "callout": "Red Fold",
+              "family": "crosslink",
+              "center": {
+                "x": -1500,
+                "y": -1000,
+                "z": -7500
+              },
+              "halfExtents": {
+                "x": 6500,
+                "y": 4500,
+                "z": 6000
+              }
+            },
+            {
+              "zoneId": "paper_drop",
+              "callout": "Paper Drop",
+              "family": "crosslink",
+              "center": {
+                "x": -4000,
+                "y": 3000,
+                "z": 8000
+              },
+              "halfExtents": {
+                "x": 6000,
+                "y": 5000,
+                "z": 6000
+              }
+            }
+          ],
+          "pickups": [],
+          "triggers": [
+            {
+              "id": "red_fold_teleport_entry",
+              "kind": "teleport",
+              "centerMm": {
+                "x": -4000,
+                "y": -3000,
+                "z": -10000
+              },
+              "halfExtentsMm": {
+                "x": 1500,
+                "y": 1000,
+                "z": 1500
+              },
+              "destinationFeetMm": {
+                "x": 1539,
+                "y": 1431,
+                "z": -4461
+              },
+              "destinationYawMilliDegrees": 45000,
+              "implementationStatus": "contract_only"
+            }
+          ],
+          "portal": {
+            "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+            "authorityRole": "additive_server_authority",
+            "renderRole": "rev5_render_only_no_hit",
+            "endpointCount": 2
+          },
+          "telemetry": {
+            "schemaVersion": 1,
+            "authoritySource": "durable_object_room_metrics_v1",
+            "counters": [
+              "connectedPlayers",
+              "receivedCommands",
+              "rejectedCommands",
+              "resumeSuccesses",
+              "authorityTickExecution",
+              "transport"
+            ],
+            "zoneCount": 9,
+            "pickupCount": 0
+          }
+        },
+        "simulationIdentity": {
+          "schemaVersion": 1,
+          "mapId": "inkfall_foundry",
+          "rulesetId": "revamped_classic",
+          "rulesetRevision": 3,
+          "rulesetHash": "69b19f19a19de288",
+          "movementProfileId": "phase3_hypothesis_v1",
+          "movementProfileRevision": 1,
+          "movementProfileHash": "8ab4ed437a4393c0",
+          "fixtureId": "inkfall_foundry_map_collision",
+          "fixtureHash": "97eb7772ac59dc95",
+          "physicsAdapterId": "rapier3d_deterministic_compat",
+          "physicsAdapterVersion": "0.19.3"
+        },
+        "identityChecks": 55
+      }
+    }
+  },
+  "peer": {
+    "schemaVersion": 1,
+    "productStatus": "PRE_RELEASE_COMBAT_PREVIEW",
+    "roomCode": "KYX-G9NBRT",
+    "connection": "joined",
+    "matchId": "match.238123d97ecd42ee8888d40b806c8650",
+    "playerId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+    "remotePlayers": 1,
+    "fullSnapshots": 1,
+    "deltaSnapshots": 25,
+    "commandsGenerated": 53,
+    "inputAcks": 50,
+    "reconciliations": 25,
+    "resumeSuccesses": 0,
+    "combat": {
+      "enabled": true,
+      "snapshot": {
+        "schemaVersion": 1,
+        "players": [
+          {
+            "playerId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+            "connected": true,
+            "teamId": "team_red",
+            "lifePhase": "alive",
+            "healthPoints": 100,
+            "shieldPoints": 0,
+            "deathOrdinal": 0,
+            "respawnEligibleAtTick": null,
+            "riflePhase": "ready",
+            "magazineRounds": 50,
+            "reserveRounds": 150,
+            "nextShotAtTick": 0,
+            "reloadCompletesAtTick": null,
+            "acceptedShotCount": 0,
+            "selectedWeaponSlot": 0,
+            "selectedWeaponId": "vertical_rifle_v1",
+            "weaponCatalogId": "kyx_authoritative_armory_v1",
+            "weapons": [
+              {
+                "weaponId": "vertical_rifle_v1",
+                "slot": 0,
+                "family": "rifle",
+                "attackModel": "hitscan",
+                "phase": "ready",
+                "magazineRounds": 50,
+                "reserveRounds": 150,
+                "readyAtTick": null,
+                "reloadCompletesAtTick": null,
+                "nextAttackAtTick": 0,
+                "acceptedAttackCount": 0
+              },
+              {
+                "weaponId": "kyx_sidearm_v1",
+                "slot": 1,
+                "family": "pistol",
+                "attackModel": "hitscan",
+                "phase": "holstered",
+                "magazineRounds": 12,
+                "reserveRounds": 72,
+                "readyAtTick": null,
+                "reloadCompletesAtTick": null,
+                "nextAttackAtTick": 0,
+                "acceptedAttackCount": 0
+              },
+              {
+                "weaponId": "kyx_scattergun_v1",
+                "slot": 2,
+                "family": "shotgun",
+                "attackModel": "pellet_hitscan",
+                "phase": "holstered",
+                "magazineRounds": 6,
+                "reserveRounds": 30,
+                "readyAtTick": null,
+                "reloadCompletesAtTick": null,
+                "nextAttackAtTick": 0,
+                "acceptedAttackCount": 0
+              },
+              {
+                "weaponId": "kyx_longshot_v1",
+                "slot": 3,
+                "family": "sniper",
+                "attackModel": "hitscan",
+                "phase": "holstered",
+                "magazineRounds": 4,
+                "reserveRounds": 20,
+                "readyAtTick": null,
+                "reloadCompletesAtTick": null,
+                "nextAttackAtTick": 0,
+                "acceptedAttackCount": 0
+              },
+              {
+                "weaponId": "kyx_breach_rocket_v1",
+                "slot": 4,
+                "family": "rocket",
+                "attackModel": "projectile",
+                "phase": "holstered",
+                "magazineRounds": 1,
+                "reserveRounds": 5,
+                "readyAtTick": null,
+                "reloadCompletesAtTick": null,
+                "nextAttackAtTick": 0,
+                "acceptedAttackCount": 0
+              },
+              {
+                "weaponId": "kyx_edge_v1",
+                "slot": 5,
+                "family": "melee",
+                "attackModel": "melee_contact",
+                "phase": "holstered",
+                "magazineRounds": null,
+                "reserveRounds": null,
+                "readyAtTick": null,
+                "reloadCompletesAtTick": null,
+                "nextAttackAtTick": 0,
+                "acceptedAttackCount": 0
+              }
+            ],
+            "grenadePhase": "ready",
+            "grenadeCooldownEndsAtTick": 0,
+            "acceptedThrowCount": 0,
+            "activeProjectileCount": 0,
+            "abilityLoadout": {
+              "slots": [
+                "vertical_teleport_v1",
+                "vertical_impulse_grenade_v1",
+                "smoke_grenade_v1",
+                "frag_grenade_v1"
+              ],
+              "cooldownEndsAtTicks": [
+                0,
+                1,
+                1
+              ],
+              "currentCharges": [
+                2,
+                2,
+                2
+              ],
+              "maximumCharges": [
+                2,
+                2,
+                2
+              ],
+              "acceptedActivationCounts": [
+                0,
+                0,
+                0
+              ],
+              "flashImpairedUntilTick": 0
+            }
+          },
+          {
+            "playerId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+            "connected": true,
+            "teamId": "team_blue",
+            "lifePhase": "alive",
+            "healthPoints": 100,
+            "shieldPoints": 0,
+            "deathOrdinal": 0,
+            "respawnEligibleAtTick": null,
+            "riflePhase": "ready",
+            "magazineRounds": 50,
+            "reserveRounds": 150,
+            "nextShotAtTick": 0,
+            "reloadCompletesAtTick": null,
+            "acceptedShotCount": 0,
+            "selectedWeaponSlot": 0,
+            "selectedWeaponId": "vertical_rifle_v1",
+            "grenadePhase": "ready",
+            "grenadeCooldownEndsAtTick": 0,
+            "acceptedThrowCount": 0,
+            "activeProjectileCount": 0
+          }
+        ],
+        "projectiles": [],
+        "match": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 9590,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 0
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 0,
+          "result": null
+        }
+      },
+      "recentEvents": [
+        {
+          "id": "event.3",
+          "serverTick": 0,
+          "kind": "playerJoined",
+          "subjectId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+          "actorId": null,
+          "targetId": null,
+          "amountHealthPoints": null
+        },
+        {
+          "id": "event.4",
+          "serverTick": 1,
+          "kind": "loadoutAccepted",
+          "subjectId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+          "actorId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+          "targetId": null,
+          "amountHealthPoints": null
+        }
+      ]
+    },
+    "inputBridge": {
+      "pressedKeys": [],
+      "axes": {
+        "moveX": 0,
+        "moveY": 0
+      },
+      "heldButtons": 0,
+      "jump": false,
+      "sprint": false,
+      "crouch": false,
+      "primaryFire": false,
+      "aimHeld": false,
+      "blinkPreviewHeld": false,
+      "selectedWeaponSlot": 0
+    },
+    "blinkPreview": {
+      "schemaVersion": 1,
+      "active": false,
+      "valid": false,
+      "authorityBound": true,
+      "reason": "blocked",
+      "outcome": null,
+      "maximumRangeMillimeters": 9000,
+      "distanceMillimeters": 0,
+      "originFeetMillimeters": {
+        "x": 33500,
+        "y": 0,
+        "z": -3500
+      },
+      "destinationFeetMillimeters": {
+        "x": 33500,
+        "y": 0,
+        "z": -3500
+      }
+    },
+    "localAuthoritativePlayerId": "player.00926945-fd6a-41e3-89a7-09645a0a96c1",
+    "localPredictedPosition": {
+      "x": 33500,
+      "y": 0,
+      "z": -3500
+    },
+    "localAuthoritativePosition": {
+      "x": 33500,
+      "y": 0,
+      "z": -3500
+    },
+    "localPredictedVelocity": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "localAuthoritativeVelocity": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "localPredictedGrounded": true,
+    "localAuthoritativeGrounded": true,
+    "localPredictedLocomotion": "grounded",
+    "localAuthoritativeLocomotion": "grounded",
+    "localAuthoritativeYawMilliDegrees": 293000,
+    "localPredictedYawMilliDegrees": 293000,
+    "localPredictedPitchMilliDegrees": 0,
+    "localPredictionErrorMillimeters": 0,
+    "localPredictionHistoryCommands": 3,
+    "remoteEntities": [
+      {
+        "entityId": "player.f67e8d48-e55a-46ee-8e06-47ba35054a9e",
+        "interpolationMode": "stale",
+        "position": {
+          "x": -33500,
+          "y": 0,
+          "z": 3500
+        },
+        "grounded": true,
+        "stance": "standing",
+        "locomotion": "grounded",
+        "travelSector": "idle",
+        "forwardSpeedMillimetersPerSecond": 0,
+        "rightSpeedMillimetersPerSecond": 0
+      }
+    ],
+    "remotePositions": [
+      {
+        "x": -33500,
+        "y": 0,
+        "z": 3500
+      }
+    ],
+    "lastError": null,
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "inkfall_foundry@3",
+      "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+      "presentationMode": "procedural_authority_containment",
+      "presentationSha256": null,
+      "authorityFixtureHash": "97eb7772ac59dc95",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 0,
+      "renderOnlyContainmentMeshCount": 290,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 339,
+      "spawnCount": 12,
+      "zoneCount": 9,
+      "remoteAvatarCount": 1,
+      "grenadeProjectileCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "locked",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "authored_two_hand_assault_suit_v2",
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.72,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": false,
+      "canvasWidth": 1440,
+      "canvasHeight": 842
+    },
+    "presentation": {
+      "status": "ready",
+      "hydrationCount": 1,
+      "intentCount": 1,
+      "confirmedIntentCount": 0,
+      "rejectedIntentCount": 0,
+      "duplicateAuthorityEvents": 0,
+      "staleAuthorityEvents": 0,
+      "lastCue": "snapshot",
+      "lastAuthorityEventId": null,
+      "audioCueAttempts": 0,
+      "recentCues": [
+        {
+          "cue": "snapshot",
+          "source": "snapshot",
+          "authorityEventId": null,
+          "authorityTick": 0,
+          "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+          "vfxMarker": null,
+          "audioMarker": null,
+          "renderedHud": true,
+          "renderedVfx": false,
+          "audioAttempted": false
+        }
+      ]
+    },
+    "roomVerification": {
+      "roomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "mapBinding": {
+        "mapReference": "inkfall_foundry@3",
+        "presentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+        "mapId": "inkfall_foundry",
+        "mapRevision": 3,
+        "packageDigest": "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a",
+        "fixtureId": "inkfall_foundry_map_collision",
+        "fixtureHash": "97eb7772ac59dc95",
+        "xAxis": "east",
+        "yAxis": "up",
+        "zAxis": "north",
+        "origin": "press_core_floor_contact",
+        "gltfToMap": "x_y_negative_z",
+        "distanceUnit": "millimeters",
+        "angleUnit": "milli_degrees",
+        "colliderCardinality": 339,
+        "render": {
+          "role": "render_only",
+          "path": "art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
+          "sha256": "1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad",
+          "bytes": 2689992,
+          "renderMeshesMayBeAuthority": false
+        },
+        "collision": {
+          "role": "authority_collision",
+          "path": "revisions/revision-3/export/collision.authority.glb",
+          "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8",
+          "bytes": 605112
+        },
+        "supportedModes": [
+          "deathmatch",
+          "team_deathmatch"
+        ],
+        "spawns": [
+          {
+            "spawnId": "spawn_w_press_a",
+            "set": "west_team",
+            "feetPosition": {
+              "x": -33500,
+              "y": 0,
+              "z": -3500
+            },
+            "yawMilliDegrees": 53000,
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_e_press_a",
+            "set": "east_team",
+            "feetPosition": {
+              "x": 33500,
+              "y": 0,
+              "z": 3500
+            },
+            "yawMilliDegrees": -127000,
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_w_press_b",
+            "set": "west_team",
+            "feetPosition": {
+              "x": -33500,
+              "y": 0,
+              "z": 3500
+            },
+            "yawMilliDegrees": 113000,
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_e_press_b",
+            "set": "east_team",
+            "feetPosition": {
+              "x": 33500,
+              "y": 0,
+              "z": -3500
+            },
+            "yawMilliDegrees": -67000,
+            "escapeRouteFamilies": [
+              "press_hall",
+              "ink_channel",
+              "archive_walk"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_w_ink",
+            "set": "west_team",
+            "feetPosition": {
+              "x": -30500,
+              "y": 0,
+              "z": -7000
+            },
+            "yawMilliDegrees": 90000,
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "press_hall"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_e_ink",
+            "set": "east_team",
+            "feetPosition": {
+              "x": 30500,
+              "y": 0,
+              "z": -7000
+            },
+            "yawMilliDegrees": -90000,
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "press_hall"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_w_archive",
+            "set": "west_team",
+            "feetPosition": {
+              "x": -30500,
+              "y": 0,
+              "z": 7000
+            },
+            "yawMilliDegrees": 90000,
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "press_hall"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_e_archive",
+            "set": "east_team",
+            "feetPosition": {
+              "x": 30500,
+              "y": 0,
+              "z": 7000
+            },
+            "yawMilliDegrees": -90000,
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "press_hall"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_dm_ink_w",
+            "set": "deathmatch_candidate",
+            "feetPosition": {
+              "x": -27000,
+              "y": -3000,
+              "z": -22000
+            },
+            "yawMilliDegrees": 45000,
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "crosslink"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_dm_ink_e",
+            "set": "deathmatch_candidate",
+            "feetPosition": {
+              "x": 27000,
+              "y": -3000,
+              "z": -21000
+            },
+            "yawMilliDegrees": -51000,
+            "escapeRouteFamilies": [
+              "ink_channel",
+              "crosslink"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_dm_archive_w",
+            "set": "deathmatch_candidate",
+            "feetPosition": {
+              "x": -27000,
+              "y": 6000,
+              "z": 22000
+            },
+            "yawMilliDegrees": 135000,
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "crosslink"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          },
+          {
+            "spawnId": "spawn_dm_archive_e",
+            "set": "deathmatch_candidate",
+            "feetPosition": {
+              "x": 27000,
+              "y": 6000,
+              "z": 21000
+            },
+            "yawMilliDegrees": -129000,
+            "escapeRouteFamilies": [
+              "archive_walk",
+              "crosslink"
+            ],
+            "validationStatus": "capsule_clear_unscored"
+          }
+        ],
+        "zones": [
+          {
+            "zoneId": "west_gallery",
+            "callout": "West Galley",
+            "family": "spawn",
+            "center": {
+              "x": -30000,
+              "y": 0,
+              "z": 0
+            },
+            "halfExtents": {
+              "x": 6000,
+              "y": 4000,
+              "z": 9000
+            }
+          },
+          {
+            "zoneId": "east_gallery",
+            "callout": "East Galley",
+            "family": "spawn",
+            "center": {
+              "x": 30000,
+              "y": 0,
+              "z": 0
+            },
+            "halfExtents": {
+              "x": 6000,
+              "y": 4000,
+              "z": 9000
+            }
+          },
+          {
+            "zoneId": "press_hall",
+            "callout": "Press Hall",
+            "family": "press_hall",
+            "center": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "halfExtents": {
+              "x": 22000,
+              "y": 4500,
+              "z": 10000
+            }
+          },
+          {
+            "zoneId": "ink_channel_west",
+            "callout": "Ink Sump",
+            "family": "ink_channel",
+            "center": {
+              "x": -15000,
+              "y": -3000,
+              "z": -18500
+            },
+            "halfExtents": {
+              "x": 11000,
+              "y": 3000,
+              "z": 7000
+            }
+          },
+          {
+            "zoneId": "ink_channel_east",
+            "callout": "Cistern Fold",
+            "family": "ink_channel",
+            "center": {
+              "x": 15000,
+              "y": -3000,
+              "z": -17500
+            },
+            "halfExtents": {
+              "x": 11000,
+              "y": 3000,
+              "z": 7000
+            }
+          },
+          {
+            "zoneId": "archive_walk_west",
+            "callout": "Paper Archive",
+            "family": "archive_walk",
+            "center": {
+              "x": -15000,
+              "y": 6000,
+              "z": 18500
+            },
+            "halfExtents": {
+              "x": 11000,
+              "y": 3500,
+              "z": 7000
+            }
+          },
+          {
+            "zoneId": "archive_walk_east",
+            "callout": "Ledger Bridge",
+            "family": "archive_walk",
+            "center": {
+              "x": 15000,
+              "y": 6000,
+              "z": 18000
+            },
+            "halfExtents": {
+              "x": 11000,
+              "y": 3500,
+              "z": 7000
+            }
+          },
+          {
+            "zoneId": "teleport_fold",
+            "callout": "Red Fold",
+            "family": "crosslink",
+            "center": {
+              "x": -1500,
+              "y": -1000,
+              "z": -7500
+            },
+            "halfExtents": {
+              "x": 6500,
+              "y": 4500,
+              "z": 6000
+            }
+          },
+          {
+            "zoneId": "paper_drop",
+            "callout": "Paper Drop",
+            "family": "crosslink",
+            "center": {
+              "x": -4000,
+              "y": 3000,
+              "z": 8000
+            },
+            "halfExtents": {
+              "x": 6000,
+              "y": 5000,
+              "z": 6000
+            }
+          }
+        ],
+        "pickups": [],
+        "triggers": [
+          {
+            "id": "red_fold_teleport_entry",
+            "kind": "teleport",
+            "centerMm": {
+              "x": -4000,
+              "y": -3000,
+              "z": -10000
+            },
+            "halfExtentsMm": {
+              "x": 1500,
+              "y": 1000,
+              "z": 1500
+            },
+            "destinationFeetMm": {
+              "x": 1539,
+              "y": 1431,
+              "z": -4461
+            },
+            "destinationYawMilliDegrees": 45000,
+            "implementationStatus": "contract_only"
+          }
+        ],
+        "portal": {
+          "capabilityId": "inkfall_rev5_linked_world_portal_v1",
+          "authorityRole": "additive_server_authority",
+          "renderRole": "rev5_render_only_no_hit",
+          "endpointCount": 2
+        },
+        "telemetry": {
+          "schemaVersion": 1,
+          "authoritySource": "durable_object_room_metrics_v1",
+          "counters": [
+            "connectedPlayers",
+            "receivedCommands",
+            "rejectedCommands",
+            "resumeSuccesses",
+            "authorityTickExecution",
+            "transport"
+          ],
+          "zoneCount": 9,
+          "pickupCount": 0
+        }
+      },
+      "simulationIdentity": {
+        "schemaVersion": 1,
+        "mapId": "inkfall_foundry",
+        "rulesetId": "revamped_classic",
+        "rulesetRevision": 3,
+        "rulesetHash": "69b19f19a19de288",
+        "movementProfileId": "phase3_hypothesis_v1",
+        "movementProfileRevision": 1,
+        "movementProfileHash": "8ab4ed437a4393c0",
+        "fixtureId": "inkfall_foundry_map_collision",
+        "fixtureHash": "97eb7772ac59dc95",
+        "physicsAdapterId": "rapier3d_deterministic_compat",
+        "physicsAdapterVersion": "0.19.3"
+      },
+      "identityChecks": 55
+    }
+  },
+  "movementMillimeters": 7000,
+  "dom": {
+    "bodyData": {
+      "interface": "kyx-cutline-v1",
+      "g7Presentation": "cutline-v1",
+      "uiSystem": "cutline-v1",
+      "g7Review": "human-required",
+      "developmentUi": "hidden",
+      "launchSupport": "online-authority-preview",
+      "onlinePreviewStatus": "joined",
+      "onlineHud": "cutline-v1",
+      "combatPresetId": "assault",
+      "helmetVariantId": "assault",
+      "online3dStatus": "ready",
+      "online3dRenderer": "three_webgl",
+      "online3dPresentationReference": "inkfall_foundry@3/press_archive/v5.0/geometry-portal-modular",
+      "hudViewModel": "1",
+      "onlineCombatPhase": "warmup",
+      "onlineLocalLife": "alive",
+      "onlineCombatFeedSequence": "0",
+      "onlineRoomProfile": "g5-inkfall-foundry-rev4-revision-3-authority-v1",
+      "onlineMapReference": "inkfall_foundry@3",
+      "onlineFixtureHash": "97eb7772ac59dc95",
+      "onlinePresentationStatus": "ready",
+      "onlinePresentationLastCue": "snapshot",
+      "onlinePresentationConfirmed": "0",
+      "onlineInputHeldButtons": "0",
+      "onlineAimHeld": "false",
+      "onlineSelectedWeaponSlot": "0",
+      "onlineSelectedWeaponId": "vertical_rifle_v1",
+      "onlineBlinkPreview": "inactive",
+      "onlineBlinkPreviewAuthorityBound": "true"
+    },
+    "canvasRenderer": "three",
+    "centerHitClass": "online-session__canvas",
+    "centerHitTag": "CANVAS",
+    "reticlePointerEvents": "none",
+    "onlineHudCount": 0,
+    "visibleCanvas": true,
+    "pageText": "KYX.IO\nOnline\nGuest session\nOffline practice\nArena ready\n1\nAuto\n6\nBlade\n0 — 0\nwarmup · 8:00\nHealth\n100\nAmmo\n50 / 150\nrifle\nE\nLaunch\n2/2\nF\nSmoke\n2/2\nZ\nFrag\n2/2\nQ\nBlink\nReady\nRoom"
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "failedRequests": []
+  },
+  "checks": {
+    "validRoom": true,
+    "bothJoined": true,
+    "eachSeesOneRemote": true,
+    "movementAdvanced": true,
+    "threeRendererReady": true,
+    "cutlineUi": true,
+    "centerInputReachesCanvas": true,
+    "reticleDoesNotInterceptInput": true,
+    "zeroConsoleErrors": true,
+    "zeroPageErrors": true,
+    "zeroFailedRequests": true,
+    "cutlineHudViewModelMounted": true
+  },
+  "nonClaims": [
+    "Staging review deployment only; not production promotion or human visual acceptance.",
+    "Release uses the approved procedural visual-continuity fallback; the authored Rev5 GLB remains review-only outside public packaging."
+  ],
+  "evidenceNormalization": "The retired .online-session__hud selector was replaced by the live Cutline body data contract (onlineHud=cutline-v1, hudViewModel=1).",
+  "screenshot": {
+    "path": "live-two-player-walkthrough.png",
+    "bytes": 262598,
+    "sha256": "12a555d02a7ad2ebf4c80dc52fdf2db2f9b0b3501a6b9696bda904ec495203c8"
+  },
+  "endpointChecks": [
+    {
+      "path": "/health",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 106,
+      "location": null
+    },
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 27641,
+      "location": null
+    },
+    {
+      "path": "/online",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 27641,
+      "location": null
+    }
+  ],
+  "dryRun": {
+    "assets": 17,
+    "totalUploadKiB": 3407.89,
+    "gzipKiB": 849.32,
+    "bindings": [
+      "KyxRoom",
+      "KyxAllocationGuard"
+    ],
+    "environment": "staging"
+  },
+  "releaseGates": {
+    "stagingBuildModules": 201,
+    "releaseAssets": "PASS",
+    "releaseProvenance": "PASS",
+    "packageClosure": "PASS",
+    "g9Controls": "PASS",
+    "g9Release": "BLOCKED_OWNER_DECISIONS_AND_G6_CHARACTER"
+  }
+}
