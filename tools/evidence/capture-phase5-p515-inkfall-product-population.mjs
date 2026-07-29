@@ -2607,8 +2607,22 @@ try {
   assert.ok(Date.parse(roomCreationRequestedAt) >= Date.parse(browserPrewarmCompletedAt));
   const roomCreation = nextBrowserRoomCreation(first.page);
   await recordCaptureProgress('creating_room');
-  await first.page.getByTestId('online-create-room').click();
-  await roomCreation;
+  await Promise.race([
+    first.page.getByTestId('online-create-room').click({
+      noWaitAfter: true,
+      timeout: 15_000,
+    }),
+    delay(20_000).then(() => {
+      throw new Error('Room create control did not dispatch inside 20 seconds');
+    }),
+  ]);
+  await recordCaptureProgress('room_create_dispatched');
+  await Promise.race([
+    roomCreation,
+    delay(50_000).then(() => {
+      throw new Error('Room creation response was not observed inside 50 seconds');
+    }),
+  ]);
   await recordCaptureProgress('room_created');
   await first.page.waitForFunction(
     () => document.body.dataset.onlinePreviewStatus === 'joined',
