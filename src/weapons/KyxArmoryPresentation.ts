@@ -17,7 +17,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       rotation: Object.freeze([-0.06, 0.055, 0.008] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.365, 0.115, -0.08] as const),
+        offset: Object.freeze([-0.35, 0.162, -0.08] as const),
         rotation: Object.freeze([0.045, -0.055, -0.008] as const),
         fieldOfViewDegrees: 60,
         scaleMultiplier: 0.84,
@@ -507,9 +507,35 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   const optic = new THREE.Group();
   optic.name = 'KYX_VLR7_REFLEX_OPTIC';
   optic.position.set(0, 0.235, 0.01);
+  const reflexLensMaterial = materials.lens.clone();
+  reflexLensMaterial.name = 'KYX_VLR7_REFLEX_GLASS';
+  reflexLensMaterial.opacity = 0.28;
+  reflexLensMaterial.depthWrite = false;
+  reflexLensMaterial.side = THREE.DoubleSide;
+  const reticleMaterial = materials.lens.clone();
+  reticleMaterial.name = 'KYX_VLR7_REFLEX_RETICLE';
+  reticleMaterial.opacity = 1;
+  reticleMaterial.depthWrite = false;
+  reticleMaterial.blending = THREE.AdditiveBlending;
+  const lens = new THREE.Mesh(
+    new THREE.CircleGeometry(0.038, 24),
+    reflexLensMaterial,
+  );
+  lens.name = 'KYX_VLR7_REFLEX_LENS';
+  lens.position.set(0, 0, -0.045);
+  const reticle = new THREE.Mesh(
+    new THREE.SphereGeometry(0.0055, 10, 6),
+    reticleMaterial,
+  );
+  reticle.name = 'KYX_VLR7_REFLEX_RETICLE_DOT';
+  reticle.position.set(0, 0, -0.052);
   optic.add(
-    box(0.072, 0.055, 0.085, materials.dark, [0, 0, 0]),
-    box(0.05, 0.037, 0.012, materials.lens, [0, 0.008, -0.048]),
+    torusZ(0.045, 0.007, materials.dark, [0, 0, -0.038], 12),
+    box(0.012, 0.045, 0.075, materials.dark, [-0.047, -0.025, 0]),
+    box(0.012, 0.045, 0.075, materials.dark, [0.047, -0.025, 0]),
+    box(0.105, 0.014, 0.09, materials.dark, [0, -0.055, 0]),
+    lens,
+    reticle,
   );
   visual.add(optic);
 

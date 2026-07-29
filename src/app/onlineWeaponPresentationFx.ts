@@ -646,7 +646,7 @@ export function createOnlineWeaponPresentationFx(
           ? 0.23
           : family === 'pistol'
             ? 0.17
-            : 0.15;
+            : 0.18;
     const coreMaterial = new THREE.MeshBasicMaterial({
       color: 0xfff1c4,
       transparent: true,
@@ -683,7 +683,7 @@ export function createOnlineWeaponPresentationFx(
       group,
       'flash',
       nowMilliseconds,
-      family === 'rocket' ? 135 : 85,
+      family === 'rocket' ? 160 : 145,
     );
   };
 
@@ -718,7 +718,7 @@ export function createOnlineWeaponPresentationFx(
       mesh,
       'tracer',
       nowMilliseconds,
-      family === 'sniper' ? 180 : 115,
+      family === 'sniper' ? 210 : 175,
     );
   };
 

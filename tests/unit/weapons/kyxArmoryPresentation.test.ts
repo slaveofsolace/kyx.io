@@ -103,6 +103,12 @@ describe('KYX first-person armory presentation', () => {
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_SUPPORT_GRIP_CONTACT',
     )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_REFLEX_LENS',
+    )).toBeDefined();
+    expect(firstPersonRifle.group.getObjectByName(
+      'KYX_VLR7_REFLEX_RETICLE_DOT',
+    )).toBeDefined();
     expect(firstPersonRifle.group.userData).toMatchObject({
       firstPersonContactMode: 'authored_two_hand_rifle_v1',
       firstPersonHandCount: 2,
