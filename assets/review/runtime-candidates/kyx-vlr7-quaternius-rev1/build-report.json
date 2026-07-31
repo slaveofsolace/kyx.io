@@ -13,7 +13,7 @@
     "blend": {
       "path": "assets/source/blender/kyx-weapons/vlr7-quaternius-rev1/kyx-vlr7-quaternius-rev1.blend",
       "bytes": 1064593,
-      "sha256": "8bff161af4dd6eb4b60f97dd3f4c0579be244e6803a17412720f1fd7eefcf75d"
+      "sha256": "79e7e94af59303c7028fcb3c851ad7b514007a155880abd96910d06b8ec2c139"
     },
     "glb": {
       "path": "assets/review/runtime-candidates/kyx-vlr7-quaternius-rev1/kyx-vlr7-quaternius-rev1.glb",
@@ -22,8 +22,16 @@
     }
   },
   "structure": {
-    "meshCount": 24,
+    "meshObjectCount": 24,
+    "runtimePrimitiveCount": 28,
     "triangleCount": 2384,
+    "requiredNodes": [
+      "KYX_VLR7_QUATERNIUS_REV1",
+      "KYX_VLR7_REVIEW_BARREL",
+      "KYX_VLR7_REVIEW_MAGAZINE",
+      "KYX_VLR7_REVIEW_RECEIVER_HANDGUARD",
+      "KYX_VLR7_REVIEW_STOCK_GRIP"
+    ],
     "magazineNode": "KYX_VLR7_REVIEW_MAGAZINE",
     "scopePolicy": "donor_scope_removed_runtime_reflex_retained",
     "rootScale": [

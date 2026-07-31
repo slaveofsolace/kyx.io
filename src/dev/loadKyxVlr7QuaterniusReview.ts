@@ -9,7 +9,8 @@ export const KYX_VLR7_QUATERNIUS_REVIEW = Object.freeze({
   candidateId: 'kyx-vlr7-quaternius-rev1',
   bytes: 132_052,
   sha256: '46de2380ac08810524d7bb4bb67d8621bb436a4f559b4d672d5c2026a075dd79',
-  meshCount: 24,
+  meshObjectCount: 24,
+  runtimeMeshCount: 28,
   triangleCount: 2_384,
   rootNode: 'KYX_VLR7_QUATERNIUS_REV1',
   magazineNode: 'KYX_VLR7_REVIEW_MAGAZINE',
@@ -150,7 +151,7 @@ async function loadReviewShell() {
   }
   const structure = countTriangles(candidateRoot);
   if (
-    structure.meshCount !== KYX_VLR7_QUATERNIUS_REVIEW.meshCount
+    structure.meshCount !== KYX_VLR7_QUATERNIUS_REVIEW.runtimeMeshCount
     || structure.triangleCount !== KYX_VLR7_QUATERNIUS_REVIEW.triangleCount
   ) {
     throw new Error(

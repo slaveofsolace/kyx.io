@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import struct
 from pathlib import Path
 
 import bpy
@@ -298,6 +299,58 @@ def triangulated_face_count(objects: list[bpy.types.Object]) -> int:
     return total
 
 
+def inspect_glb_structure(path: Path) -> dict[str, object]:
+    bytes_value = path.read_bytes()
+    if len(bytes_value) < 20 or bytes_value[:4] != b"glTF":
+        fail("VLR7_GLB_HEADER_INVALID")
+    version, total_length = struct.unpack_from("<II", bytes_value, 4)
+    json_length = struct.unpack_from("<I", bytes_value, 12)[0]
+    json_type = bytes_value[16:20]
+    if version != 2 or total_length != len(bytes_value) or json_type != b"JSON":
+        fail(
+            "VLR7_GLB_CONTAINER_MISMATCH "
+            f"version={version} total={total_length} bytes={len(bytes_value)}"
+        )
+    document = json.loads(
+        bytes_value[20:20 + json_length].decode("utf-8").rstrip(" \t\r\n\0")
+    )
+    meshes = document.get("meshes", [])
+    nodes = document.get("nodes", [])
+    mesh_object_count = len(meshes)
+    runtime_primitive_count = sum(
+        len(mesh.get("primitives", []))
+        for mesh in meshes
+    )
+    node_names = {
+        node.get("name")
+        for node in nodes
+        if isinstance(node.get("name"), str)
+    }
+    required_nodes = {
+        ROOT_NAME,
+        MAGAZINE_NAME,
+        RECEIVER_NAME,
+        STOCK_NAME,
+        BARREL_NAME,
+    }
+    if (
+        mesh_object_count != 24
+        or runtime_primitive_count != 28
+        or not required_nodes.issubset(node_names)
+    ):
+        fail(
+            "VLR7_GLB_STRUCTURE_MISMATCH "
+            f"meshObjects={mesh_object_count} "
+            f"runtimePrimitives={runtime_primitive_count} "
+            f"missingNodes={sorted(required_nodes - node_names)}"
+        )
+    return {
+        "meshObjectCount": mesh_object_count,
+        "runtimePrimitiveCount": runtime_primitive_count,
+        "requiredNodes": sorted(required_nodes),
+    }
+
+
 def build() -> dict[str, object]:
     if not DONOR_BLEND.is_file():
         fail(f"VLR7_DONOR_MISSING path={DONOR_BLEND}")
@@ -392,6 +445,7 @@ def build() -> dict[str, object]:
     )
 
     glb_sha256 = sha256(OUTPUT_GLB)
+    glb_structure = inspect_glb_structure(OUTPUT_GLB)
     report = {
         "schemaVersion": 1,
         "status": "review_only_candidate",
@@ -416,8 +470,10 @@ def build() -> dict[str, object]:
             },
         },
         "structure": {
-            "meshCount": len(final_parts),
+            "meshObjectCount": glb_structure["meshObjectCount"],
+            "runtimePrimitiveCount": glb_structure["runtimePrimitiveCount"],
             "triangleCount": triangulated_face_count(final_parts),
+            "requiredNodes": glb_structure["requiredNodes"],
             "magazineNode": MAGAZINE_NAME,
             "scopePolicy": "donor_scope_removed_runtime_reflex_retained",
             "rootScale": list(root.scale),

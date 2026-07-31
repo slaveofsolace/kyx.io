@@ -13,7 +13,9 @@ The build:
 - aligns to the existing muzzle, dominant-hand, and support-hand contacts;
 - changes no weapon authority, damage, cadence, ammo, ADS, or hit semantics.
 
-`build-report.json` records the exact source/output hashes and topology.
+`build-report.json` records the exact source/output hashes and topology,
+including 24 authored mesh objects and the 28 render meshes produced when
+Three separates their material primitives.
 `tools/art/build-vlr7-quaternius-candidate.py` is the fail-closed rebuild
 script.
 
