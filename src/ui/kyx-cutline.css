@@ -2590,6 +2590,17 @@ body[data-ui-system="cutline-v1"] .online-preview__content--session > .online-se
   display: none;
 }
 
+/* While pointer lock is active the match owns the full viewport; releasing
+   pointer lock (Esc) restores the app bar, which carries the back/leave
+   affordance. */
+body[data-ui-system="cutline-v1"] .online-preview:has(.online-session__canvas[data-pointer-lock="active"]) .online-preview__bar {
+  display: none;
+}
+
+body[data-ui-system="cutline-v1"] .online-preview:has(.online-session__canvas[data-pointer-lock="active"]) .online-preview__content--session {
+  height: 100vh;
+}
+
 body[data-ui-system="cutline-v1"] .online-session__grid,
 body[data-ui-system="cutline-v1"] .online-session__panel,
 body[data-ui-system="cutline-v1"] .online-session__canvas-wrap {
@@ -3064,18 +3075,18 @@ body[data-ui-system="cutline-v1"] .online-session__weapon-rail {
 }
 
 body[data-ui-system="cutline-v1"] .online-session__weapon-slot {
-  min-width: 38px;
-  height: 22px;
-  padding: 0 5px;
+  min-width: 44px;
+  height: 24px;
+  padding: 0 6px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   border: 0;
   border-bottom: 1px solid var(--cut-line);
-  color: var(--cut-dim);
+  color: var(--cut-muted);
   background: transparent;
   box-shadow: none;
-  font-size: 9px;
+  font-size: 11px;
 }
 
 body[data-ui-system="cutline-v1"] .online-session__weapon-slot:not([data-preset-allowed="true"]) {
@@ -3084,6 +3095,7 @@ body[data-ui-system="cutline-v1"] .online-session__weapon-slot:not([data-preset-
 
 body[data-ui-system="cutline-v1"] .online-session__weapon-slot[data-active="true"] {
   color: var(--cut-ink);
+  border-bottom-width: 2px;
   border-bottom-color: var(--cut-cyan);
 }
 
