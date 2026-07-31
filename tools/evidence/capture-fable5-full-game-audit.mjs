@@ -252,6 +252,18 @@ async function rotateToYaw(page, targetYawMilliDegrees) {
   }
 }
 
+async function rotateToPitch(page, targetPitchMilliDegrees) {
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const value = await snapshot(page);
+    const current = value?.localPredictedPitchMilliDegrees;
+    if (current === null || current === undefined) break;
+    const delta = targetPitchMilliDegrees - current;
+    if (Math.abs(delta) <= 2_000) return;
+    const count = Math.max(1, Math.min(12, Math.ceil(Math.abs(delta) / 1_500)));
+    await tapLook(page, delta > 0 ? 'ArrowUp' : 'ArrowDown', count);
+  }
+}
+
 function headingToMapTarget(position, target) {
   const deltaX = target.x - position.x;
   const deltaZ = target.z - position.z;
@@ -952,13 +964,13 @@ try {
         if (enemy === null || enemyAt === null || self === null) break;
         const distance = horizontalDistance(self, enemyAt);
         await rotateToYaw(hostPage, headingToMapTarget(self, enemyAt));
-        if ((distance ?? Infinity) > 8_000) {
-          await hostPage.keyboard.down('KeyW');
-          await delay(Math.min(650, (distance ?? 0) / 16));
-          await hostPage.keyboard.up('KeyW');
-          await delay(260);
-          continue;
-        }
+        const targetPitchMilliDegrees = Math.round(
+          Math.atan2(
+            (enemyAt.y + 1_150) - (self.y + 1_600),
+            Math.max(1, distance ?? 1),
+          ) * 180_000 / Math.PI,
+        );
+        await rotateToPitch(hostPage, targetPitchMilliDegrees);
 
         const healthBefore = enemy.healthPoints;
         const shieldBefore = enemy.shieldPoints;
@@ -999,6 +1011,7 @@ try {
         result.engagements.push({
           attempt,
           distanceMillimeters: distance === null ? null : Math.round(distance),
+          targetPitchMilliDegrees,
           attackerWeaponId: attackerAfter?.selectedWeaponId ?? null,
           attackCountBefore,
           attackCountAfter,
@@ -1043,6 +1056,34 @@ try {
             guestLifePhase: localPlayer(respawned)?.lifePhase ?? null,
           };
           break;
+        }
+        const selectedAfter = attackerAfter?.weapons?.find(
+          ({ weaponId }) => weaponId === attackerAfter.selectedWeaponId,
+        ) ?? null;
+        if (selectedAfter?.phase === 'empty') {
+          await hostPage.keyboard.press('KeyR');
+          await delay(2_700);
+        }
+        if (!damaged && (distance ?? 0) > 5_500) {
+          const approachBefore = after?.localAuthoritativePosition ?? null;
+          const targetBefore = remoteEntity(after)?.position ?? enemyAt;
+          await hostPage.keyboard.down('KeyW');
+          await delay(Math.min(600, Math.max(240, (distance ?? 0) / 20)));
+          await hostPage.keyboard.up('KeyW');
+          await delay(240);
+          const afterApproach = await snapshot(hostPage);
+          const approachAfter = afterApproach?.localAuthoritativePosition ?? null;
+          const targetAfter = remoteEntity(afterApproach)?.position ?? targetBefore;
+          result.engagements.at(-1).approach = {
+            distanceBeforeMillimeters: horizontalDistance(
+              approachBefore,
+              targetBefore,
+            ),
+            distanceAfterMillimeters: horizontalDistance(
+              approachAfter,
+              targetAfter,
+            ),
+          };
         }
       }
       const final = await snapshot(hostPage);
