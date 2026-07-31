@@ -445,19 +445,19 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   );
   receiverCore.name = 'KYX_VLR7_RECEIVER_CORE';
   const upperShroud = box(
-    0.088,
-    0.05,
-    0.24,
+    0.095,
+    0.052,
+    0.42,
     materials.dark,
-    [0, 0.134, -0.1],
+    [0, 0.145, -0.02],
   );
   upperShroud.name = 'KYX_VLR7_UPPER_SHROUD';
   const opticRail = box(
-    0.056,
-    0.018,
-    0.44,
+    0.07,
+    0.028,
+    0.68,
     materials.metal,
-    [0, 0.166, -0.09],
+    [0, 0.19, -0.14],
   );
   opticRail.name = 'KYX_VLR7_OPTIC_RAIL';
 

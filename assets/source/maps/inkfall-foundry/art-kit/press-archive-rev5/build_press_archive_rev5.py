@@ -1765,34 +1765,37 @@ def build_foundry_environment_layer(
     amber = materials["V3_WORN_AMBER"]
     safety = materials["V3_CHIPPED_SAFETY_RED"]
 
-    # The north shell deliberately leaves the archive-rise approach
-    # (x < -10.5) open. All other wall plates sit just beyond the inherited
-    # Press Hall bounds instead of pretending to be new collision.
+    # The shell follows the frozen Revision 3 authority envelope, not the much
+    # smaller inherited Press Hall footprint. West/east spawns reach x=+/-33.5
+    # metres and deathmatch routes reach y=+/-22 metres, so presentation walls
+    # inside those coordinates would visibly partition valid traversal even
+    # though they are marked noHit. The north shell still leaves the
+    # archive-rise approach (x < -10.5) open.
     shell_panels = (
-        ("NORTH_0", (5.8, 0.32, 8.4), (-7.45, 10.80, 4.12)),
-        ("NORTH_1", (6.6, 0.32, 8.4), (-0.95, 10.80, 4.12)),
-        ("NORTH_2", (6.6, 0.32, 8.4), (6.25, 10.80, 4.12)),
-        ("NORTH_3", (6.6, 0.32, 8.4), (13.45, 10.80, 4.12)),
-        ("NORTH_4", (2.2, 0.32, 8.4), (21.10, 10.80, 4.12)),
-        ("SOUTH_0", (10.2, 0.32, 8.4), (-17.15, -11.98, 4.12)),
-        ("SOUTH_1", (5.0, 0.32, 8.4), (-9.35, -11.98, 4.12)),
-        ("SOUTH_2", (10.8, 0.32, 8.4), (4.05, -11.98, 4.12)),
-        ("SOUTH_3", (12.0, 0.32, 8.4), (16.40, -11.98, 4.12)),
-        ("EAST_0", (0.32, 5.2, 8.4), (22.94, -8.60, 4.12)),
-        ("EAST_1", (0.32, 5.2, 8.4), (22.94, -2.90, 4.12)),
-        ("EAST_2", (0.32, 5.2, 8.4), (22.94, 2.80, 4.12)),
-        ("EAST_3", (0.32, 5.2, 8.4), (22.94, 8.50, 4.12)),
-        ("WEST_0", (0.32, 5.2, 8.4), (-22.94, -8.60, 4.12)),
-        ("WEST_1", (0.32, 5.2, 8.4), (-22.94, -2.90, 4.12)),
-        ("WEST_2", (0.32, 5.2, 8.4), (-22.94, 2.80, 4.12)),
-        ("WEST_3", (0.32, 5.2, 8.4), (-22.94, 8.50, 4.12)),
+        ("NORTH_0", (5.8, 0.24, 8.4), (-7.45, 27.82, 4.12)),
+        ("NORTH_1", (6.6, 0.24, 8.4), (-0.95, 27.82, 4.12)),
+        ("NORTH_2", (6.6, 0.24, 8.4), (6.25, 27.82, 4.12)),
+        ("NORTH_3", (6.6, 0.24, 8.4), (13.45, 27.82, 4.12)),
+        ("NORTH_4", (2.2, 0.24, 8.4), (21.10, 27.82, 4.12)),
+        ("SOUTH_0", (10.2, 0.24, 8.4), (-17.15, -27.82, 4.12)),
+        ("SOUTH_1", (5.0, 0.24, 8.4), (-9.35, -27.82, 4.12)),
+        ("SOUTH_2", (10.8, 0.24, 8.4), (4.05, -27.82, 4.12)),
+        ("SOUTH_3", (12.0, 0.24, 8.4), (16.40, -27.82, 4.12)),
+        ("EAST_0", (0.24, 13.0, 8.4), (35.82, -20.40, 4.12)),
+        ("EAST_1", (0.24, 13.0, 8.4), (35.82, -6.80, 4.12)),
+        ("EAST_2", (0.24, 13.0, 8.4), (35.82, 6.80, 4.12)),
+        ("EAST_3", (0.24, 13.0, 8.4), (35.82, 20.40, 4.12)),
+        ("WEST_0", (0.24, 13.0, 8.4), (-35.82, -20.40, 4.12)),
+        ("WEST_1", (0.24, 13.0, 8.4), (-35.82, -6.80, 4.12)),
+        ("WEST_2", (0.24, 13.0, 8.4), (-35.82, 6.80, 4.12)),
+        ("WEST_3", (0.24, 13.0, 8.4), (-35.82, 20.40, 4.12)),
     )
     for index, (token, dimensions, location) in enumerate(shell_panels):
         add_box(
             f"V5_FOUNDRY_SHELL_{token}",
             dimensions,
             location,
-            cast if index % 3 else ink,
+            steel if index % 3 else cast,
             zone,
             "foundry_enclosure_panel",
             bevel=0.035,
@@ -1827,7 +1830,7 @@ def build_foundry_environment_layer(
             (
                 f"NORTH_{index}",
                 (0.20, 0.48, 8.72),
-                (x, 10.62, 4.12),
+                (x, 27.58, 4.12),
             )
         )
     for index, x in enumerate((-22.35, -12.02, -6.62, -1.57, 9.62, 22.35)):
@@ -1835,11 +1838,11 @@ def build_foundry_environment_layer(
             (
                 f"SOUTH_{index}",
                 (0.20, 0.48, 8.72),
-                (x, -11.80, 4.12),
+                (x, -27.58, 4.12),
             )
         )
-    for side, x in (("EAST", 22.76), ("WEST", -22.76)):
-        for index, y in enumerate((-11.20, -5.75, -0.05, 5.65, 11.15)):
+    for side, x in (("EAST", 35.58), ("WEST", -35.58)):
+        for index, y in enumerate((-27.10, -13.55, 0.0, 13.55, 27.10)):
             wall_ribs.append(
                 (
                     f"{side}_{index}",
@@ -1859,13 +1862,13 @@ def build_foundry_environment_layer(
         )
 
     ceiling_zone = "foundry_environment_ceiling"
-    ceiling_y = (-9.55, -5.75, -1.95, 1.85, 5.65, 9.45)
+    ceiling_y = (-24.0, -14.4, -4.8, 4.8, 14.4, 24.0)
     for index, y in enumerate(ceiling_y):
         coffer = add_box(
             f"V5_FOUNDRY_CEILING_COFFER_{index}",
-            (44.6, 2.70, 0.18),
-            (0.0, y, 9.22),
-            ink,
+            (71.2, 2.20, 0.12),
+            (0.0, y, 9.56),
+            ceramic if index in (1, 4) else cast,
             ceiling_zone,
             "foundry_ceiling_coffer",
             bevel=0.025,
@@ -1873,19 +1876,19 @@ def build_foundry_environment_layer(
         coffer["kyx_hide_in_overhead_review"] = True
         cross_truss = add_box(
             f"V5_FOUNDRY_CEILING_CROSS_TRUSS_{index}",
-            (44.8, 0.24, 0.34),
-            (0.0, y - 1.48, 8.93),
+            (71.4, 0.18, 0.24),
+            (0.0, y - 1.55, 9.34),
             steel,
             ceiling_zone,
             "foundry_ceiling_cross_truss",
             bevel=0.025,
         )
         cross_truss["kyx_hide_in_overhead_review"] = True
-    for index, x in enumerate((-14.8, 0.0, 14.8)):
+    for index, x in enumerate((-24.0, 0.0, 24.0)):
         longitudinal = add_box(
             f"V5_FOUNDRY_CEILING_LONGITUDINAL_{index}",
-            (0.28, 21.4, 0.34),
-            (x, -0.15, 8.93),
+            (0.20, 55.4, 0.24),
+            (x, 0.0, 9.34),
             cast,
             ceiling_zone,
             "foundry_ceiling_longitudinal",
@@ -1901,7 +1904,7 @@ def build_foundry_environment_layer(
             f"V5_FOUNDRY_NORTH_RISER_{index}",
             0.085,
             6.55,
-            (x, 10.46, 4.18),
+            (x, 27.46, 4.18),
             grease,
             zone,
             "foundry_attached_service_conduit",
@@ -1912,8 +1915,8 @@ def build_foundry_environment_layer(
     for index, z in enumerate((1.34, 7.36)):
         add_beam(
             f"V5_FOUNDRY_NORTH_PIPE_HEADER_{index}",
-            (4.62, 10.46, z),
-            (11.40, 10.46, z),
+            (4.62, 27.46, z),
+            (11.40, 27.46, z),
             0.095,
             grease,
             zone,
@@ -1921,11 +1924,11 @@ def build_foundry_environment_layer(
             vertices=12,
         )
         conduit_count += 1
-    for side_index, x in enumerate((-22.62, 22.62)):
+    for side_index, x in enumerate((-35.46, 35.46)):
         add_beam(
             f"V5_FOUNDRY_SIDE_CABLE_TRUNK_{side_index}",
-            (x, -9.80, 7.18),
-            (x, 8.90, 7.18),
+            (x, -24.80, 7.18),
+            (x, 24.80, 7.18),
             0.12,
             steel,
             zone,
@@ -1939,7 +1942,7 @@ def build_foundry_environment_layer(
     add_box(
         "V5_FOUNDRY_PRESSURE_MANIFOLD_HOUSING",
         (5.25, 0.42, 2.52),
-        (14.25, 10.43, 3.42),
+        (14.25, 27.43, 3.42),
         cast,
         zone,
         "foundry_pressure_control_assembly",
@@ -1948,7 +1951,7 @@ def build_foundry_environment_layer(
     add_box(
         "V5_FOUNDRY_PRESSURE_MANIFOLD_FACE",
         (4.65, 0.10, 1.88),
-        (14.25, 10.17, 3.42),
+        (14.25, 27.17, 3.42),
         steel,
         zone,
         "foundry_pressure_control_assembly",
@@ -1959,7 +1962,7 @@ def build_foundry_environment_layer(
             f"V5_FOUNDRY_PRESSURE_DRUM_{index}",
             0.31,
             0.24,
-            (x, 10.02, 3.52),
+            (x, 27.02, 3.52),
             grease,
             zone,
             "foundry_pressure_control_assembly",
@@ -1970,7 +1973,7 @@ def build_foundry_environment_layer(
         add_box(
             f"V5_FOUNDRY_PRESSURE_DATUM_{index}",
             (0.56, 0.07, 0.075),
-            (x, 9.88, 2.76),
+            (x, 26.88, 2.76),
             amber if index == 1 else steel,
             zone,
             "foundry_pressure_control_datum",
@@ -1979,7 +1982,7 @@ def build_foundry_environment_layer(
     add_box(
         "V5_FOUNDRY_REPAIRED_ACCESS_PLATE",
         (0.08, 3.30, 2.45),
-        (22.67, 3.05, 3.95),
+        (35.47, 3.05, 3.95),
         ceramic,
         zone,
         "foundry_repaired_service_plate",
@@ -1989,7 +1992,7 @@ def build_foundry_environment_layer(
         add_box(
             f"V5_FOUNDRY_REPAIRED_ACCESS_SEAM_{index}",
             (0.055, 2.86, 0.09),
-            (22.61, 3.05, z),
+            (35.41, 3.05, z),
             safety if index == 0 else grease,
             zone,
             "foundry_repair_seam",
@@ -1997,14 +2000,14 @@ def build_foundry_environment_layer(
         )
 
     service_wear_traces = (
-        ("NORTH_RISER_0", (0.10, 0.045, 2.20), (4.90, 10.095, 1.58)),
-        ("NORTH_RISER_1", (0.13, 0.045, 1.48), (5.94, 10.095, 1.92)),
-        ("NORTH_RISER_2", (0.09, 0.045, 2.72), (6.46, 10.095, 1.30)),
-        ("MANIFOLD_0", (0.15, 0.045, 1.22), (12.82, 9.925, 1.88)),
-        ("MANIFOLD_1", (0.10, 0.045, 1.68), (14.25, 9.925, 1.62)),
-        ("MANIFOLD_2", (0.12, 0.045, 1.32), (15.68, 9.925, 1.82)),
-        ("REPAIR_DRAIN", (0.045, 0.16, 1.42), (22.585, 2.28, 2.18)),
-        ("SOUTH_PRESS", (0.13, 0.045, 2.36), (7.15, -11.595, 1.46)),
+        ("NORTH_RISER_0", (0.10, 0.045, 2.20), (4.90, 27.095, 1.58)),
+        ("NORTH_RISER_1", (0.13, 0.045, 1.48), (5.94, 27.095, 1.92)),
+        ("NORTH_RISER_2", (0.09, 0.045, 2.72), (6.46, 27.095, 1.30)),
+        ("MANIFOLD_0", (0.15, 0.045, 1.22), (12.82, 26.925, 1.88)),
+        ("MANIFOLD_1", (0.10, 0.045, 1.68), (14.25, 26.925, 1.62)),
+        ("MANIFOLD_2", (0.12, 0.045, 1.32), (15.68, 26.925, 1.82)),
+        ("REPAIR_DRAIN", (0.045, 0.16, 1.42), (35.385, 2.28, 2.18)),
+        ("SOUTH_PRESS", (0.13, 0.045, 2.36), (7.15, -27.595, 1.46)),
     )
     for token, dimensions, location in service_wear_traces:
         add_box(

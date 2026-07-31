@@ -142,12 +142,24 @@ describe('KYX first-person armory presentation', () => {
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_RECEIVER_CORE',
     )).toBeDefined();
-    expect(firstPersonRifle.group.getObjectByName(
+    const upperShroud = firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_UPPER_SHROUD',
-    )).toBeDefined();
-    expect(firstPersonRifle.group.getObjectByName(
+    ) as THREE.Mesh<THREE.BoxGeometry> | undefined;
+    const opticRail = firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_OPTIC_RAIL',
-    )).toBeDefined();
+    ) as THREE.Mesh<THREE.BoxGeometry> | undefined;
+    expect(upperShroud?.geometry.parameters).toMatchObject({
+      width: 0.095,
+      height: 0.052,
+      depth: 0.42,
+    });
+    expect(upperShroud?.position.toArray()).toEqual([0, 0.145, -0.02]);
+    expect(opticRail?.geometry.parameters).toMatchObject({
+      width: 0.07,
+      height: 0.028,
+      depth: 0.68,
+    });
+    expect(opticRail?.position.toArray()).toEqual([0, 0.19, -0.14]);
     expect(firstPersonRifle.group.getObjectsByProperty(
       'name',
       'KYX_VLR7_LINE_RIFLE_VISUAL',
