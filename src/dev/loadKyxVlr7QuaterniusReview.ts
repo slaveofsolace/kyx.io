@@ -84,6 +84,42 @@ function countTriangles(root: THREE.Object3D): Readonly<{
   return Object.freeze({ meshCount, triangleCount });
 }
 
+const REVIEW_RETONE_VERSION = 'kyx_dark_alloy_retone_v1';
+
+// The raw donor palette exposes broad bright receiver planes and saturated
+// warning-red accents in first person; retoning keeps donor geometry and
+// provenance intact while joining the KYX dark-alloy/cyan service language.
+function retoneReviewMaterial(material: THREE.Material): THREE.Material {
+  const clone = material.clone();
+  if (!(clone instanceof THREE.MeshStandardMaterial)) return clone;
+  const hsl = { h: 0, s: 0, l: 0 };
+  clone.color.getHSL(hsl);
+  if (hsl.s > 0.45 && (hsl.h <= 0.09 || hsl.h >= 0.9)) {
+    clone.color.setHex(0x18292e);
+    clone.emissive.setHex(0x07191d);
+    clone.emissiveIntensity = 0.12;
+    clone.metalness = 0.36;
+    clone.roughness = 0.54;
+  } else if (hsl.l > 0.62) {
+    clone.color.setHex(0x3d474f);
+    clone.metalness = 0.6;
+    clone.roughness = 0.44;
+  } else if (hsl.l > 0.34) {
+    clone.color.setHex(0x2b353d);
+    clone.metalness = 0.52;
+    clone.roughness = 0.52;
+  }
+  // The adapted donor ships hot PBR values (metalness up to 0.92, roughness
+  // 0.2, boosted emissive strength); under the close camera-space weapon key
+  // those bloom into blank white planes, so clamp them into the suit range.
+  clone.metalness = Math.min(clone.metalness, 0.5);
+  clone.roughness = Math.max(clone.roughness, 0.48);
+  clone.emissiveIntensity = Math.min(clone.emissiveIntensity, 0.18);
+  clone.name =
+    `${material.name || 'KYX_VLR7_REVIEW_MATERIAL'}_${REVIEW_RETONE_VERSION}`;
+  return clone;
+}
+
 function cloneOwnedReviewShell(source: THREE.Object3D): THREE.Group {
   const clone = new THREE.Group();
   clone.name = `${KYX_VLR7_QUATERNIUS_REVIEW.rootNode}_OWNED_CLONE`;
@@ -96,14 +132,15 @@ function cloneOwnedReviewShell(source: THREE.Object3D): THREE.Group {
     const mesh = object as THREE.Mesh;
     mesh.geometry = mesh.geometry.clone();
     mesh.material = Array.isArray(mesh.material)
-      ? mesh.material.map((material) => material.clone())
-      : mesh.material.clone();
+      ? mesh.material.map((material) => retoneReviewMaterial(material))
+      : retoneReviewMaterial(mesh.material);
     mesh.castShadow = false;
     mesh.receiveShadow = true;
     mesh.frustumCulled = false;
   });
   clone.userData.reviewCandidateId =
     KYX_VLR7_QUATERNIUS_REVIEW.candidateId;
+  clone.userData.reviewMaterialRetone = REVIEW_RETONE_VERSION;
   clone.userData.sourceCredit = KYX_VLR7_QUATERNIUS_REVIEW.sourceCredit;
   clone.userData.sourceLicense = KYX_VLR7_QUATERNIUS_REVIEW.license;
   clone.userData.releaseEligible = false;

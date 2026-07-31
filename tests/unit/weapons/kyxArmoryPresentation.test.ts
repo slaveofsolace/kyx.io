@@ -133,7 +133,7 @@ describe('KYX first-person armory presentation', () => {
     )?.position.toArray()).toEqual([0, -0.115, 0.19]);
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_SUPPORT_GRIP_CONTACT',
-    )?.position.toArray()).toEqual([-0.02, -0.04, -0.36]);
+    )?.position.toArray()).toEqual([-0.024, -0.066, -0.338]);
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_REFLEX_LENS',
     )).toBeDefined();
@@ -166,7 +166,7 @@ describe('KYX first-person armory presentation', () => {
       'KYX_VLR7_LINE_RIFLE_VISUAL',
     )).toHaveLength(1);
     expect(firstPersonRifle.group.userData).toMatchObject({
-      firstPersonContactMode: 'authored_two_hand_assault_suit_v2',
+      firstPersonContactMode: 'authored_two_hand_assault_suit_v4',
       firstPersonHandCount: 2,
     });
     expect(firstPersonRifle.firstPersonContactRig?.userData).toMatchObject({
@@ -242,7 +242,7 @@ describe('KYX first-person armory presentation', () => {
     expect(rifle.firstPersonPose).toMatchObject({
       aimEnabled: true,
       aimFieldOfViewDegrees: 60,
-      aimScaleMultiplier: 0.84,
+      aimScaleMultiplier: 0.74,
       reloadDurationMilliseconds: 3_000,
     });
 

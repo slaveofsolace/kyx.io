@@ -8,6 +8,9 @@ import {
   loadInkfallRev5CandidateAuthorityBinding,
 } from '../app/inkfallRev5CandidateBinding';
 import {
+  applyInkfallRev5OverheadReadability,
+} from '../app/inkfallRev5OverheadReadability';
+import {
   createInkfallRev5VisualContinuity,
 } from '../app/inkfallRev5VisualContinuity';
 import {
@@ -119,7 +122,12 @@ export async function loadInkfallRev5ReviewVisual() {
     mesh.userData.renderMeshesMayBeAuthority = false;
     mesh.userData.noHit = true;
   });
+  const overheadReadability = applyInkfallRev5OverheadReadability(
+    art,
+    containment.group,
+  );
   return Object.freeze({
+    overheadReadability,
     art,
     containment: containment.group,
     meshCount: sceneFacts.meshCount,
