@@ -13,6 +13,9 @@ import {
   ONLINE_INKFALL_REV4_MAP_BINDING,
 } from '../../../src/app/onlineAuthorityProfiles';
 import {
+  INKFALL_REV5_CANDIDATE_ART,
+} from '../../../src/app/inkfallRev5CandidateBinding';
+import {
   G5_INKFALL_REV4_COMBAT_PROFILE,
   INKFALL_REVISION_3_WORKER_MAP_BINDING,
   inferWorkerRoomProfileFromIdentity,
@@ -55,6 +58,10 @@ describe('Inkfall Rev4 presentation / Revision 3 authoritative profile', () => {
   it('keeps the browser and Worker on one exact complete authority binding', () => {
     expect(ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID).toBe(G5_INKFALL_REV4_COMBAT_PROFILE);
     expect(ONLINE_INKFALL_REV4_MAP_BINDING).toEqual(INKFALL_REVISION_3_WORKER_MAP_BINDING);
+    expect(INKFALL_REVISION_3_WORKER_MAP_BINDING.render).toMatchObject({
+      sha256: INKFALL_REV5_CANDIDATE_ART.sha256,
+      bytes: INKFALL_REV5_CANDIDATE_ART.bytes,
+    });
     expect(INKFALL_REVISION_3_WORKER_MAP_BINDING).toMatchObject({
       mapReference: 'inkfall_foundry@3',
       presentationReference:

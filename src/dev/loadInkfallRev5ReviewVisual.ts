@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import { getBundledMapPackageSource } from '../content/maps';
 import {
+  INKFALL_REV5_CANDIDATE_ART,
   inspectInkfallRev5CandidateScene,
   loadInkfallRev5CandidateAuthorityBinding,
 } from '../app/inkfallRev5CandidateBinding';
@@ -56,6 +57,14 @@ function parseGltf(bytes: Uint8Array): Promise<THREE.Group> {
 }
 
 export async function loadInkfallRev5ReviewVisual() {
+  if (
+    ONLINE_INKFALL_REV5_MAP_BINDING.render.sha256
+      !== INKFALL_REV5_CANDIDATE_ART.sha256
+    || ONLINE_INKFALL_REV5_MAP_BINDING.render.bytes
+      !== INKFALL_REV5_CANDIDATE_ART.bytes
+  ) {
+    throw new Error('ONLINE_REV5_PRESENTATION_PROFILE_MISMATCH');
+  }
   const source = getBundledMapPackageSource('inkfall_foundry', 3);
   if (source === undefined || source === null) {
     throw new Error('ONLINE_REV5_AUTHORITY_PACKAGE_NOT_BUNDLED');

@@ -181,8 +181,8 @@ const rev5ExpectedMapBinding = {
     role: 'render_only',
     path:
       'art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb',
-    sha256: '1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad',
-    bytes: 2_689_992,
+    sha256: 'e48b0b16083da337c71ed9ba8af3a244a0d5b613e0dcaed13857ba8f89cd4ae2',
+    bytes: 5_093_108,
     renderMeshesMayBeAuthority: false,
   },
   portal: {
