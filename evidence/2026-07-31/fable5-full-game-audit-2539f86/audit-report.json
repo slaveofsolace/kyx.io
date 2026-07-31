@@ -1,0 +1,2676 @@
+{
+  "harness": "fable5-full-game-audit-v2",
+  "harnessSha256": "8305da85ea7decc5fde674150c3e25d2c92393a4482e4903a608efb52ec6b2db",
+  "startedAtIso": "2026-07-31T15:06:12.194Z",
+  "finishedAtIso": "2026-07-31T15:07:48.444Z",
+  "repository": {
+    "head": "2539f861e134aacea133773b863508d680d61901",
+    "branch": "claude/fable5-kyx-full-audit-20260730",
+    "statusShort": "clean"
+  },
+  "coverage": [
+    {
+      "id": "boot",
+      "label": "Local services and browser boot",
+      "stage": "boot_services",
+      "automationStatus": "passed",
+      "humanStatus": "not_required",
+      "nonclaim": "Local boot is not deployed-build identity proof."
+    },
+    {
+      "id": "lobby",
+      "label": "Lobby, room create, and two-client join",
+      "stage": "create_and_join_two_clients",
+      "automationStatus": "passed",
+      "humanStatus": "required",
+      "nonclaim": "First-use clarity and polish are not automated."
+    },
+    {
+      "id": "input",
+      "label": "Keyboard, mouse, pointer-lock, and blur release",
+      "stage": "movement_probe",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Only the exercised keys are sampled; controller is not covered."
+    },
+    {
+      "id": "movement",
+      "label": "Walk, strafe reversal, jump, and landing",
+      "stage": "movement_probe",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Mechanics do not approve acceleration, weight, camera coupling, or fun."
+    },
+    {
+      "id": "camera",
+      "label": "Mouse look, pitch/yaw, FOV, and lock recovery",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "Pointer-lock entry is observed; full camera-feel coverage is absent."
+    },
+    {
+      "id": "practice_parity",
+      "label": "Practice and online parity",
+      "stage": "practice_parity_probe",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "A shared HUD shell does not prove a shared arena or authority model."
+    },
+    {
+      "id": "role_presets",
+      "label": "Assault, Breacher, Recon, and Duelist presets",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "The current run uses one selected preset; four fresh-room runs are owed."
+    },
+    {
+      "id": "weapons",
+      "label": "Rifle, pistol, shotgun, sniper, rocket, and melee",
+      "stage": "weapon_roster_composition",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Only weapons exposed by the active preset are exercised."
+    },
+    {
+      "id": "first_person_model",
+      "label": "First-person weapon and hands",
+      "stage": "weapon_roster_composition",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Diagnostics and screenshots do not approve scale, grip, clipping, or recoil feel."
+    },
+    {
+      "id": "third_person_model",
+      "label": "Opponent body and armor",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "No authored-character runtime predicate is exercised."
+    },
+    {
+      "id": "skins",
+      "label": "Selectable skins and replication",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "No complete independent skin-selection runtime was found or exercised."
+    },
+    {
+      "id": "helmets",
+      "label": "Role-driven helmet modules",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "Helmet IDs may persist without a matching live rendered module."
+    },
+    {
+      "id": "animations",
+      "label": "Locomotion and combat animation state machine",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "No active-clip, foot-contact, transition, or remote-pose proof is captured."
+    },
+    {
+      "id": "blink",
+      "label": "Blink preview, eligibility, and commit",
+      "stage": "abilities",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Collision, counterplay, sound, and exact cross-layer range parity remain separate."
+    },
+    {
+      "id": "throwables",
+      "label": "Launch, smoke, frag, flash, and sticky",
+      "stage": "abilities",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Counters do not prove identity, bounce, radius, damage, impairment, or victim readability."
+    },
+    {
+      "id": "combat",
+      "label": "Damage, headshot, kill, death, and respawn",
+      "stage": "combat_damage_kill_respawn",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Accepted attacks alone are never treated as hits."
+    },
+    {
+      "id": "scoreboard",
+      "label": "Hold-Tab scoreboard and match flow",
+      "stage": "scoreboard_probe",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Presence does not approve opacity, density, hierarchy, or obstruction."
+    },
+    {
+      "id": "secure_resume",
+      "label": "Token-rotating secure reconnect",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "Browser refresh/rejoin is not secure resume."
+    },
+    {
+      "id": "refresh_rejoin",
+      "label": "Browser refresh/rejoin behavior",
+      "stage": "refresh_rejoin",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "This stage makes no secure-resume claim."
+    },
+    {
+      "id": "map_identity",
+      "label": "Inkfall profile, package, collider, spawn, and zone identity",
+      "stage": "create_and_join_two_clients",
+      "automationStatus": "passed",
+      "humanStatus": "required",
+      "nonclaim": "Identity and cardinality do not approve map art or play quality."
+    },
+    {
+      "id": "map_geometry",
+      "label": "Routes, collision, bridge, bounds, and supports",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "No full player-driven traversal or geometry defect sweep is captured."
+    },
+    {
+      "id": "spawns",
+      "label": "2/4/8 spawn safety and fairness",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "Capsule clearance does not prove live LOS safety or fairness."
+    },
+    {
+      "id": "portal",
+      "label": "Two-way portal traversal and reconnect continuity",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "Portal presence is not traversal proof."
+    },
+    {
+      "id": "hud",
+      "label": "Authority-driven HUD and representative viewports",
+      "stage": "hud_viewport_matrix",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Layout measurement does not approve the visual language."
+    },
+    {
+      "id": "menus",
+      "label": "Settings, loadout, maps, pause, death, and result UI",
+      "stage": "practice_parity_probe",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "The run samples only a subset of menu flows."
+    },
+    {
+      "id": "accessibility",
+      "label": "Keyboard focus, controller, captions, contrast, and reduced motion",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "No WCAG or disabled-player acceptance claim is made."
+    },
+    {
+      "id": "audio",
+      "label": "Weapon, movement, ability, portal, and ambient audio",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "Automated event counts cannot judge timbre, fatigue, mix, or the retro/siren complaint."
+    },
+    {
+      "id": "vfx",
+      "label": "Muzzle, hit, headshot, smoke, flash, kill, and portal VFX",
+      "stage": "abilities",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Event correlation does not approve visual quality or clarity."
+    },
+    {
+      "id": "performance_2_client",
+      "label": "Two-client headless performance sample",
+      "stage": "performance_sample",
+      "automationStatus": "partial",
+      "humanStatus": "required",
+      "nonclaim": "Headless results do not represent owner hardware or dense combat."
+    },
+    {
+      "id": "occupancy_2_4_8",
+      "label": "Source-frozen 2/4/8 runtime matrix",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "This harness creates two clients only."
+    },
+    {
+      "id": "soak",
+      "label": "Final 30-minute eight-client soak",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "No final-source soak is run by this harness."
+    },
+    {
+      "id": "package",
+      "label": "Release package closure and provenance",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "owner_decision_required",
+      "nonclaim": "Runtime play does not validate package ledgers, license, or distribution mode."
+    },
+    {
+      "id": "staging",
+      "label": "Staging build identity, isolation, and rollback",
+      "stage": null,
+      "automationStatus": "unknown",
+      "humanStatus": "required",
+      "nonclaim": "This local harness does not deploy or validate staging."
+    }
+  ],
+  "stages": {
+    "boot_services": {
+      "status": "passed",
+      "milliseconds": 1218,
+      "detail": {
+        "authorityOrigin": "http://127.0.0.1:8951",
+        "frontendOrigin": "http://127.0.0.1:6351"
+      }
+    },
+    "boot_browser": {
+      "status": "passed",
+      "milliseconds": 253,
+      "detail": {
+        "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe"
+      }
+    },
+    "lobby_cold_eye": {
+      "status": "partial",
+      "milliseconds": 7942,
+      "detail": {
+        "lobbyShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/00-lobby-cold-eye.png",
+        "inventory": {
+          "testids": [
+            "online-preview-route",
+            "online-inkfall-rev4-profile",
+            "online-inkfall-profile",
+            "online-create-room",
+            "online-room-code",
+            "online-join-room"
+          ],
+          "buttons": [
+            "KYX.IO",
+            "Offline practice",
+            "Create room",
+            "Join room"
+          ]
+        },
+        "reachabilityVerified": true
+      }
+    },
+    "create_and_join_two_clients": {
+      "status": "passed",
+      "milliseconds": 3591,
+      "detail": {
+        "inviteUrl": "(recorded-local-only)",
+        "pointerLockState": {
+          "locked": true,
+          "canvasFlag": "active",
+          "appBarVisible": false
+        },
+        "immersionShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/01c-hud-pointer-locked.png",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "presentationSha256": "88bc45a6735256dcffb5735f3d466840f362e9ece9d02a52a9f1c8a082b395e0",
+        "renderMeshCount": 36,
+        "colliders": 339,
+        "weaponVisualSource": "quaternius_cc0_review_rev1",
+        "spawnShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/01-two-client-spawn.png",
+        "hudShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/01b-hud-full-1440x900.png"
+      }
+    },
+    "movement_probe": {
+      "status": "partial",
+      "milliseconds": 5902,
+      "detail": {
+        "forwardDisplacementMillimeters": 10781.322785261556,
+        "leftDisplacementMillimeters": 2799.210245765759,
+        "rightDisplacementMillimeters": 2648.2069405543066,
+        "leftLocalDelta": {
+          "forwardMillimeters": -0.8023132933407169,
+          "rightMillimeters": -2799.2101307857147
+        },
+        "rightLocalDelta": {
+          "forwardMillimeters": 0.8004727870256829,
+          "rightMillimeters": 2648.2068195749584
+        },
+        "samples": [
+          {
+            "t": 220,
+            "position": {
+              "x": -32582,
+              "y": 0,
+              "z": -2808
+            },
+            "velocity": {
+              "x": 5590,
+              "y": 0,
+              "z": 4213
+            },
+            "horizontalSpeedMillimetersPerSecond": 6999.8192119511195
+          },
+          {
+            "t": 440,
+            "position": {
+              "x": -31464,
+              "y": 0,
+              "z": -1966
+            },
+            "velocity": {
+              "x": 5590,
+              "y": 0,
+              "z": 4213
+            },
+            "horizontalSpeedMillimetersPerSecond": 6999.8192119511195
+          },
+          {
+            "t": 660,
+            "position": {
+              "x": -30729,
+              "y": 1,
+              "z": -1260
+            },
+            "velocity": {
+              "x": -563,
+              "y": 0,
+              "z": 3094
+            },
+            "horizontalSpeedMillimetersPerSecond": 3144.806035354168
+          },
+          {
+            "t": 880,
+            "position": {
+              "x": -30381,
+              "y": 41,
+              "z": -573
+            },
+            "velocity": {
+              "x": 5341,
+              "y": 0,
+              "z": 4168
+            },
+            "horizontalSpeedMillimetersPerSecond": 6774.843540628816
+          },
+          {
+            "t": 1100,
+            "position": {
+              "x": -28704,
+              "y": 41,
+              "z": 691
+            },
+            "velocity": {
+              "x": 5590,
+              "y": 0,
+              "z": 4213
+            },
+            "horizontalSpeedMillimetersPerSecond": 6999.8192119511195
+          },
+          {
+            "t": 1320,
+            "position": {
+              "x": -27586,
+              "y": 41,
+              "z": 1534
+            },
+            "velocity": {
+              "x": 5590,
+              "y": 0,
+              "z": 4213
+            },
+            "horizontalSpeedMillimetersPerSecond": 6999.8192119511195
+          },
+          {
+            "t": 1540,
+            "position": {
+              "x": -26468,
+              "y": 41,
+              "z": 2377
+            },
+            "velocity": {
+              "x": 5590,
+              "y": 0,
+              "z": 4213
+            },
+            "horizontalSpeedMillimetersPerSecond": 6999.8192119511195
+          },
+          {
+            "t": 1760,
+            "position": {
+              "x": -25444,
+              "y": -259,
+              "z": 3390
+            },
+            "velocity": {
+              "x": -737,
+              "y": -3000,
+              "z": 1719
+            },
+            "horizontalSpeedMillimetersPerSecond": 1870.328848090624
+          }
+        ],
+        "jump": {
+          "groundedBefore": true,
+          "airborneObserved": true,
+          "landedAfterAirborne": true,
+          "samples": [
+            {
+              "t": 60,
+              "grounded": false,
+              "y": 500,
+              "verticalSpeedMillimetersPerSecond": 10000
+            },
+            {
+              "t": 120,
+              "grounded": false,
+              "y": 500,
+              "verticalSpeedMillimetersPerSecond": 10000
+            },
+            {
+              "t": 180,
+              "grounded": false,
+              "y": 1350,
+              "verticalSpeedMillimetersPerSecond": 8000
+            },
+            {
+              "t": 240,
+              "grounded": false,
+              "y": 2000,
+              "verticalSpeedMillimetersPerSecond": 6000
+            },
+            {
+              "t": 300,
+              "grounded": false,
+              "y": 2000,
+              "verticalSpeedMillimetersPerSecond": 6000
+            },
+            {
+              "t": 360,
+              "grounded": false,
+              "y": 2450,
+              "verticalSpeedMillimetersPerSecond": 4000
+            },
+            {
+              "t": 420,
+              "grounded": false,
+              "y": 2700,
+              "verticalSpeedMillimetersPerSecond": 2000
+            },
+            {
+              "t": 480,
+              "grounded": false,
+              "y": 2750,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 540,
+              "grounded": false,
+              "y": 2600,
+              "verticalSpeedMillimetersPerSecond": -2000
+            },
+            {
+              "t": 600,
+              "grounded": false,
+              "y": 2600,
+              "verticalSpeedMillimetersPerSecond": -2000
+            },
+            {
+              "t": 660,
+              "grounded": false,
+              "y": 2250,
+              "verticalSpeedMillimetersPerSecond": -4000
+            },
+            {
+              "t": 720,
+              "grounded": false,
+              "y": 1700,
+              "verticalSpeedMillimetersPerSecond": -6000
+            },
+            {
+              "t": 780,
+              "grounded": false,
+              "y": 1700,
+              "verticalSpeedMillimetersPerSecond": -6000
+            },
+            {
+              "t": 840,
+              "grounded": false,
+              "y": 950,
+              "verticalSpeedMillimetersPerSecond": -8000
+            },
+            {
+              "t": 900,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 960,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1020,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1080,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1140,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1200,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1260,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1320,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1380,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1440,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1500,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1560,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1620,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1680,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1740,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1800,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1860,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            },
+            {
+              "t": 1920,
+              "grounded": true,
+              "y": 20,
+              "verticalSpeedMillimetersPerSecond": 0
+            }
+          ]
+        }
+      }
+    },
+    "weapon_roster_composition": {
+      "status": "partial",
+      "milliseconds": 14278,
+      "detail": {
+        "selectedLoadout": {
+          "stored": null,
+          "presetId": "assault",
+          "helmetVariantId": "assault"
+        },
+        "rail": [
+          {
+            "slot": "0",
+            "active": "true",
+            "allowed": "true",
+            "disabled": false,
+            "label": "1Auto"
+          },
+          {
+            "slot": "1",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "2Sidearm"
+          },
+          {
+            "slot": "2",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "3Scatter"
+          },
+          {
+            "slot": "3",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "4Longshot"
+          },
+          {
+            "slot": "4",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "5Rocket"
+          },
+          {
+            "slot": "5",
+            "active": "false",
+            "allowed": "true",
+            "disabled": false,
+            "label": "6Blade"
+          }
+        ],
+        "perWeapon": [
+          {
+            "slot": 0,
+            "label": "1Auto",
+            "selectedWeaponId": "vertical_rifle_v1",
+            "weaponFamily": "rifle",
+            "attackModel": "hitscan",
+            "acceptedAttackCountBefore": 1,
+            "acceptedAttackCountAfter": 5,
+            "visualSource": "quaternius_cc0_review_rev1",
+            "contactMode": "authored_two_hand_assault_suit_v4",
+            "handCount": 2,
+            "adsMix": 0.9999999853405306,
+            "adsFov": 60.00428651776256,
+            "shots": {
+              "hip": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot0-hip.png",
+              "ads": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot0-ads.png",
+              "fire": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot0-fire.png",
+              "reload": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot0-reload.png"
+            }
+          },
+          {
+            "slot": 5,
+            "label": "6Blade",
+            "selectedWeaponId": "kyx_edge_v1",
+            "weaponFamily": "melee",
+            "attackModel": "melee_contact",
+            "acceptedAttackCountBefore": 0,
+            "acceptedAttackCountAfter": 1,
+            "visualSource": "project_authored_procedural",
+            "contactMode": "none",
+            "handCount": 0,
+            "adsMix": 0,
+            "adsFov": 71.99630105957876,
+            "shots": {
+              "hip": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot5-hip.png",
+              "ads": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot5-ads.png",
+              "fire": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot5-fire.png",
+              "reload": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/02-weapon-slot5-reload.png"
+            }
+          }
+        ]
+      }
+    },
+    "abilities": {
+      "status": "partial",
+      "milliseconds": 5333,
+      "detail": {
+        "blinkPreviewShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03-blink-preview.png",
+        "blinkPreview": {
+          "active": true,
+          "valid": true,
+          "reason": "ready",
+          "authorityBound": true,
+          "distanceMillimeters": 2890,
+          "maximumRangeMillimeters": 9000
+        },
+        "blinkPreviewPitchedDown": {
+          "sampled": false,
+          "valid": null,
+          "reason": null,
+          "distanceMillimeters": null
+        },
+        "blinkCommit": {
+          "positionBefore": {
+            "x": -33460,
+            "y": 20,
+            "z": 3593
+          },
+          "positionAfter": {
+            "x": -30799,
+            "y": 20,
+            "z": 2464
+          },
+          "distanceMillimeters": 2890.598899882168
+        },
+        "blinkArrivalShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03b-blink-arrival.png",
+        "launchObservedShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03c-launch-observation.png",
+        "smokeAcceptedShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03d-smoke-accepted.png",
+        "smokeLaterShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03e-smoke-later.png",
+        "fragObservationA": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03f-frag-observation-a.png",
+        "fragObservationB": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/03g-frag-observation-b.png",
+        "abilityDiagnostics": {
+          "grenades": 2,
+          "effects": 0
+        },
+        "activationCounts": {
+          "before": [
+            0,
+            0,
+            0
+          ],
+          "afterLaunch": [
+            1,
+            0,
+            0
+          ],
+          "afterSmoke": [
+            1,
+            1,
+            0
+          ],
+          "afterFrag": [
+            1,
+            1,
+            1
+          ],
+          "final": [
+            1,
+            1,
+            1
+          ]
+        },
+        "presentationCues": [
+          {
+            "cue": "snapshot",
+            "source": "snapshot",
+            "authorityEventId": null,
+            "authorityTick": 0,
+            "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+            "vfxMarker": null,
+            "audioMarker": null,
+            "renderedHud": true,
+            "renderedVfx": false,
+            "audioAttempted": false
+          },
+          {
+            "cue": "teleport",
+            "source": "confirmed",
+            "authorityEventId": "combat.45f7d2407966e76b",
+            "authorityTick": 455,
+            "hudMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "grenade_throw",
+            "source": "accepted",
+            "authorityEventId": "combat.1cf46a9d67232257",
+            "authorityTick": 461,
+            "hudMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          }
+        ]
+      }
+    },
+    "combat_damage_kill_respawn": {
+      "status": "partial",
+      "milliseconds": 31344,
+      "detail": {
+        "engagements": [
+          {
+            "attempt": 0,
+            "distanceMillimeters": 9292,
+            "targetPitchMilliDegrees": -2840,
+            "attackerWeaponId": "vertical_rifle_v1",
+            "attackCountBefore": 6,
+            "attackCountAfter": 13,
+            "enemyWeaponIdBefore": "vertical_rifle_v1",
+            "enemyHealthBefore": 100,
+            "enemyHealthAfter": 30,
+            "enemyShieldBefore": 0,
+            "enemyShieldAfter": 0,
+            "enemyLifePhase": "alive",
+            "damaged": true,
+            "killed": false,
+            "recentCues": [
+              {
+                "cue": "snapshot",
+                "source": "snapshot",
+                "authorityEventId": null,
+                "authorityTick": 0,
+                "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+                "vfxMarker": null,
+                "audioMarker": null,
+                "renderedHud": true,
+                "renderedVfx": false,
+                "audioAttempted": false
+              },
+              {
+                "cue": "teleport",
+                "source": "confirmed",
+                "authorityEventId": "combat.45f7d2407966e76b",
+                "authorityTick": 455,
+                "hudMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "grenade_throw",
+                "source": "accepted",
+                "authorityEventId": "combat.1cf46a9d67232257",
+                "authorityTick": 461,
+                "hudMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "grenade_detonation",
+                "source": "confirmed",
+                "authorityEventId": "combat.777919eceb97587d",
+                "authorityTick": 581,
+                "hudMarker": null,
+                "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.projectile.detonation.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.grenade.projectile.detonation.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.0",
+                "authorityTick": 982,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.1",
+                "authorityTick": 984,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.2",
+                "authorityTick": 986,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.3",
+                "authorityTick": 988,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.4",
+                "authorityTick": 990,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.5",
+                "authorityTick": 992,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.6",
+                "authorityTick": 994,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              }
+            ],
+            "hostScore": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 8646,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 0
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 0,
+              "result": null
+            }
+          },
+          {
+            "attempt": 1,
+            "distanceMillimeters": 9265,
+            "targetPitchMilliDegrees": -2848,
+            "attackerWeaponId": "vertical_rifle_v1",
+            "attackCountBefore": 13,
+            "attackCountAfter": 20,
+            "enemyWeaponIdBefore": "vertical_rifle_v1",
+            "enemyHealthBefore": 30,
+            "enemyHealthAfter": 0,
+            "enemyShieldBefore": 0,
+            "enemyShieldAfter": 0,
+            "enemyLifePhase": "dead",
+            "damaged": true,
+            "killed": true,
+            "recentCues": [
+              {
+                "cue": "snapshot",
+                "source": "snapshot",
+                "authorityEventId": null,
+                "authorityTick": 0,
+                "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+                "vfxMarker": null,
+                "audioMarker": null,
+                "renderedHud": true,
+                "renderedVfx": false,
+                "audioAttempted": false
+              },
+              {
+                "cue": "teleport",
+                "source": "confirmed",
+                "authorityEventId": "combat.45f7d2407966e76b",
+                "authorityTick": 455,
+                "hudMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "grenade_throw",
+                "source": "accepted",
+                "authorityEventId": "combat.1cf46a9d67232257",
+                "authorityTick": 461,
+                "hudMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "grenade_detonation",
+                "source": "confirmed",
+                "authorityEventId": "combat.777919eceb97587d",
+                "authorityTick": 581,
+                "hudMarker": null,
+                "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.projectile.detonation.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.grenade.projectile.detonation.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.0",
+                "authorityTick": 982,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.1",
+                "authorityTick": 984,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.2",
+                "authorityTick": 986,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.3",
+                "authorityTick": 988,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.4",
+                "authorityTick": 990,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.5",
+                "authorityTick": 992,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.6",
+                "authorityTick": 994,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.7",
+                "authorityTick": 1002,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "body",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.8",
+                "authorityTick": 1004,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              },
+              {
+                "cue": "kill",
+                "source": "confirmed",
+                "authorityEventId": "combat.damage.9",
+                "authorityTick": 1006,
+                "hudMarker": "kyx.combat.presentation.markers.v1.hit.kill.confirmed.hud",
+                "vfxMarker": "kyx.combat.presentation.markers.v1.hit.kill.confirmed.vfx",
+                "audioMarker": "kyx.combat.presentation.markers.v1.hit.kill.confirmed.audio",
+                "renderedHud": true,
+                "renderedVfx": true,
+                "audioAttempted": true
+              }
+            ],
+            "hostScore": {
+              "phase": "active",
+              "phaseEndsAtTick": 9640,
+              "activeTicksRemaining": 8626,
+              "teamScores": [
+                {
+                  "teamId": "team_blue",
+                  "score": 1
+                },
+                {
+                  "teamId": "team_red",
+                  "score": 0
+                }
+              ],
+              "feedSequence": 1,
+              "result": null
+            }
+          }
+        ],
+        "damageObserved": true,
+        "killObserved": true,
+        "respawnObserved": true,
+        "headshotCueObserved": false,
+        "remotePlayerKeys": [
+          "playerId",
+          "connected",
+          "teamId",
+          "lifePhase",
+          "healthPoints",
+          "shieldPoints",
+          "deathOrdinal",
+          "respawnEligibleAtTick",
+          "riflePhase",
+          "magazineRounds",
+          "reserveRounds",
+          "nextShotAtTick",
+          "reloadCompletesAtTick",
+          "acceptedShotCount",
+          "selectedWeaponSlot",
+          "selectedWeaponId",
+          "grenadePhase",
+          "grenadeCooldownEndsAtTick",
+          "acceptedThrowCount",
+          "activeProjectileCount"
+        ],
+        "remoteEntityKeys": [
+          "entityId",
+          "interpolationMode",
+          "position",
+          "grounded",
+          "stance",
+          "locomotion",
+          "travelSector",
+          "forwardSpeedMillimetersPerSecond",
+          "rightSpeedMillimetersPerSecond"
+        ],
+        "presentationCueCountBefore": 3,
+        "hostRouteApproach": {
+          "reachedWaypoints": 4,
+          "requestedWaypoints": 4,
+          "samples": [
+            {
+              "waypointIndex": 0,
+              "step": 0,
+              "target": {
+                "x": -27500,
+                "z": 1000
+              },
+              "position": {
+                "x": -29957,
+                "y": 24,
+                "z": 2622
+              },
+              "distance": 2944.1013909170993,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 1,
+              "target": {
+                "x": -27500,
+                "z": 1000
+              },
+              "position": {
+                "x": -29956,
+                "y": 20,
+                "z": 2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 2,
+              "target": {
+                "x": -27500,
+                "z": 1000
+              },
+              "position": {
+                "x": -29956,
+                "y": 20,
+                "z": 2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 3,
+              "target": {
+                "x": -27500,
+                "z": 1000
+              },
+              "position": {
+                "x": -29956,
+                "y": 20,
+                "z": 2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 4,
+              "target": {
+                "x": -27500,
+                "z": 1000
+              },
+              "position": {
+                "x": -29872,
+                "y": 2270,
+                "z": 2053
+              },
+              "distance": 2595.225038411891,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 5,
+              "target": {
+                "x": -27500,
+                "z": 1000
+              },
+              "position": {
+                "x": -28333,
+                "y": 21,
+                "z": 828
+              },
+              "distance": 850.5721603720639,
+              "reached": true
+            },
+            {
+              "waypointIndex": 1,
+              "step": 0,
+              "target": {
+                "x": -18000,
+                "z": -1500
+              },
+              "position": {
+                "x": -25342,
+                "y": 21,
+                "z": 236
+              },
+              "distance": 7544.445639011523,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 1,
+              "target": {
+                "x": -18000,
+                "z": -1500
+              },
+              "position": {
+                "x": -23498,
+                "y": 27,
+                "z": -360
+              },
+              "distance": 5614.944701419597,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 2,
+              "target": {
+                "x": -18000,
+                "z": -1500
+              },
+              "position": {
+                "x": -21184,
+                "y": 142,
+                "z": -848
+              },
+              "distance": 3250.0707684602803,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 3,
+              "target": {
+                "x": -18000,
+                "z": -1500
+              },
+              "position": {
+                "x": -19869,
+                "y": 142,
+                "z": -1103
+              },
+              "distance": 1910.6988250375828,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 4,
+              "target": {
+                "x": -18000,
+                "z": -1500
+              },
+              "position": {
+                "x": -18642,
+                "y": 142,
+                "z": -1342
+              },
+              "distance": 661.1565623965325,
+              "reached": true
+            },
+            {
+              "waypointIndex": 2,
+              "step": 0,
+              "target": {
+                "x": -9000,
+                "z": 4500
+              },
+              "position": {
+                "x": -15684,
+                "y": 142,
+                "z": 230
+              },
+              "distance": 7931.504018784835,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 1,
+              "target": {
+                "x": -9000,
+                "z": 4500
+              },
+              "position": {
+                "x": -13528,
+                "y": 142,
+                "z": 1684
+              },
+              "distance": 5332.226551826169,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 2,
+              "target": {
+                "x": -9000,
+                "z": 4500
+              },
+              "position": {
+                "x": -11870,
+                "y": 142,
+                "z": 2802
+              },
+              "distance": 3334.681993833895,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 3,
+              "target": {
+                "x": -9000,
+                "z": 4500
+              },
+              "position": {
+                "x": -10709,
+                "y": 142,
+                "z": 3584
+              },
+              "distance": 1939.0041258336714,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 4,
+              "target": {
+                "x": -9000,
+                "z": 4500
+              },
+              "position": {
+                "x": -10543,
+                "y": 142,
+                "z": 3696
+              },
+              "distance": 1739.9037329691546,
+              "reached": true
+            },
+            {
+              "waypointIndex": 3,
+              "step": 0,
+              "target": {
+                "x": -4000,
+                "z": -2500
+              },
+              "position": {
+                "x": -8626,
+                "y": 142,
+                "z": 1941
+              },
+              "distance": 6412.671596144621,
+              "reached": false
+            },
+            {
+              "waypointIndex": 3,
+              "step": 1,
+              "target": {
+                "x": -4000,
+                "z": -2500
+              },
+              "position": {
+                "x": -7188,
+                "y": 142,
+                "z": 624
+              },
+              "distance": 4463.487425769227,
+              "reached": false
+            },
+            {
+              "waypointIndex": 3,
+              "step": 2,
+              "target": {
+                "x": -4000,
+                "z": -2500
+              },
+              "position": {
+                "x": -6008,
+                "y": 142,
+                "z": -457
+              },
+              "distance": 2864.5964811819485,
+              "reached": false
+            },
+            {
+              "waypointIndex": 3,
+              "step": 3,
+              "target": {
+                "x": -4000,
+                "z": -2500
+              },
+              "position": {
+                "x": -4939,
+                "y": 142,
+                "z": -1436
+              },
+              "distance": 1419.0902015023569,
+              "reached": true
+            }
+          ],
+          "finalPosition": {
+            "x": -4791,
+            "y": 142,
+            "z": -1571
+          }
+        },
+        "guestRouteApproach": {
+          "reachedWaypoints": 4,
+          "requestedWaypoints": 4,
+          "samples": [
+            {
+              "waypointIndex": 0,
+              "step": 0,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 31567,
+                "y": 0,
+                "z": -2680
+              },
+              "distance": 4400.328283207969,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 1,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 30432,
+                "y": 0,
+                "z": -2531
+              },
+              "distance": 3307.655514106631,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 2,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 29956,
+                "y": 1,
+                "z": -2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 3,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 29956,
+                "y": 1,
+                "z": -2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 4,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 29956,
+                "y": 1,
+                "z": -2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 5,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 29956,
+                "y": 1,
+                "z": -2518
+              },
+              "distance": 2887.2582149852824,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 6,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 29890,
+                "y": 2001,
+                "z": -2145
+              },
+              "distance": 2650.1179219046085,
+              "reached": false
+            },
+            {
+              "waypointIndex": 0,
+              "step": 7,
+              "target": {
+                "x": 27500,
+                "z": -1000
+              },
+              "position": {
+                "x": 29011,
+                "y": 451,
+                "z": -1386
+              },
+              "distance": 1559.524607051777,
+              "reached": true
+            },
+            {
+              "waypointIndex": 1,
+              "step": 0,
+              "target": {
+                "x": 18000,
+                "z": 1500
+              },
+              "position": {
+                "x": 25245,
+                "y": 20,
+                "z": -346
+              },
+              "distance": 7476.479184749998,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 1,
+              "target": {
+                "x": 18000,
+                "z": 1500
+              },
+              "position": {
+                "x": 23404,
+                "y": 166,
+                "z": -29
+              },
+              "distance": 5616.142537364948,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 2,
+              "target": {
+                "x": 18000,
+                "z": 1500
+              },
+              "position": {
+                "x": 21414,
+                "y": 20,
+                "z": 172
+              },
+              "distance": 3663.1925966293393,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 3,
+              "target": {
+                "x": 18000,
+                "z": 1500
+              },
+              "position": {
+                "x": 19987,
+                "y": 20,
+                "z": 778
+              },
+              "distance": 2114.1080861677815,
+              "reached": false
+            },
+            {
+              "waypointIndex": 1,
+              "step": 4,
+              "target": {
+                "x": 18000,
+                "z": 1500
+              },
+              "position": {
+                "x": 18514,
+                "y": 20,
+                "z": 1403
+              },
+              "distance": 523.0726526975005,
+              "reached": true
+            },
+            {
+              "waypointIndex": 2,
+              "step": 0,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 16765,
+                "y": 31,
+                "z": 1963
+              },
+              "distance": 8168.94081261457,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 1,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 16775,
+                "y": 20,
+                "z": 1997
+              },
+              "distance": 8167.963883367751,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 2,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 16779,
+                "y": 20,
+                "z": 2013
+              },
+              "distance": 8166.884963068845,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 3,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 16786,
+                "y": 20,
+                "z": 2037
+              },
+              "distance": 8166.282201834565,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 4,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 15527,
+                "y": 1370,
+                "z": 2422
+              },
+              "distance": 6849.803865805211,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 5,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 12582,
+                "y": 1070,
+                "z": 3322
+              },
+              "distance": 3770.7304332184763,
+              "reached": false
+            },
+            {
+              "waypointIndex": 2,
+              "step": 6,
+              "target": {
+                "x": 9000,
+                "z": 4500
+              },
+              "position": {
+                "x": 10390,
+                "y": 381,
+                "z": 3994
+              },
+              "distance": 1479.2349373916236,
+              "reached": true
+            },
+            {
+              "waypointIndex": 3,
+              "step": 0,
+              "target": {
+                "x": 4000,
+                "z": -2500
+              },
+              "position": {
+                "x": 7780,
+                "y": 131,
+                "z": 2280
+              },
+              "distance": 6093.997046274309,
+              "reached": false
+            },
+            {
+              "waypointIndex": 3,
+              "step": 1,
+              "target": {
+                "x": 4000,
+                "z": -2500
+              },
+              "position": {
+                "x": 6540,
+                "y": 131,
+                "z": 775
+              },
+              "distance": 4144.5415910568445,
+              "reached": false
+            },
+            {
+              "waypointIndex": 3,
+              "step": 2,
+              "target": {
+                "x": 4000,
+                "z": -2500
+              },
+              "position": {
+                "x": 5522,
+                "y": 131,
+                "z": -459
+              },
+              "distance": 2546.009622919756,
+              "reached": false
+            },
+            {
+              "waypointIndex": 3,
+              "step": 3,
+              "target": {
+                "x": 4000,
+                "z": -2500
+              },
+              "position": {
+                "x": 4505,
+                "y": 131,
+                "z": -1694
+              },
+              "distance": 951.1366883892135,
+              "reached": true
+            }
+          ],
+          "finalPosition": {
+            "x": 4473,
+            "y": 131,
+            "z": -1733
+          }
+        },
+        "damageShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/04-damage-confirmed.png",
+        "guestDamageShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/04b-guest-damage-received.png",
+        "killShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/04c-kill-confirmed.png",
+        "guestDeathShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/04d-guest-death.png",
+        "guestRespawnShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/04e-guest-respawn-observation.png",
+        "respawn": {
+          "guestPosition": {
+            "x": 33500,
+            "y": 0,
+            "z": 3500
+          },
+          "guestHealthPoints": 100,
+          "guestShieldPoints": 0,
+          "guestLifePhase": "alive"
+        },
+        "finalMatch": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 8472,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1,
+          "result": null
+        },
+        "presentationCues": [
+          {
+            "cue": "snapshot",
+            "source": "snapshot",
+            "authorityEventId": null,
+            "authorityTick": 0,
+            "hudMarker": "kyx.combat.presentation.markers.v1.snapshot.sync.hud",
+            "vfxMarker": null,
+            "audioMarker": null,
+            "renderedHud": true,
+            "renderedVfx": false,
+            "audioAttempted": false
+          },
+          {
+            "cue": "teleport",
+            "source": "confirmed",
+            "authorityEventId": "combat.45f7d2407966e76b",
+            "authorityTick": 455,
+            "hudMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.teleport.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "grenade_throw",
+            "source": "accepted",
+            "authorityEventId": "combat.1cf46a9d67232257",
+            "authorityTick": 461,
+            "hudMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.grenade.throw.accepted.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "grenade_detonation",
+            "source": "confirmed",
+            "authorityEventId": "combat.777919eceb97587d",
+            "authorityTick": 581,
+            "hudMarker": null,
+            "vfxMarker": "kyx.combat.presentation.markers.v1.grenade.projectile.detonation.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.grenade.projectile.detonation.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.0",
+            "authorityTick": 982,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.1",
+            "authorityTick": 984,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.2",
+            "authorityTick": 986,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.3",
+            "authorityTick": 988,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.4",
+            "authorityTick": 990,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.5",
+            "authorityTick": 992,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.6",
+            "authorityTick": 994,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.7",
+            "authorityTick": 1002,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "body",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.8",
+            "authorityTick": 1004,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.body.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          },
+          {
+            "cue": "kill",
+            "source": "confirmed",
+            "authorityEventId": "combat.damage.9",
+            "authorityTick": 1006,
+            "hudMarker": "kyx.combat.presentation.markers.v1.hit.kill.confirmed.hud",
+            "vfxMarker": "kyx.combat.presentation.markers.v1.hit.kill.confirmed.vfx",
+            "audioMarker": "kyx.combat.presentation.markers.v1.hit.kill.confirmed.audio",
+            "renderedHud": true,
+            "renderedVfx": true,
+            "audioAttempted": true
+          }
+        ]
+      }
+    },
+    "scoreboard_probe": {
+      "status": "partial",
+      "milliseconds": 587,
+      "detail": {
+        "domScoreboard": [
+          "online-session__scoreboard",
+          "online-session__scoreboard-head",
+          "online-session__scoreboard-score",
+          "online-session__scoreboard-players",
+          "online-session__scoreboard-player"
+        ],
+        "shot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/05-tab-scoreboard.png",
+        "present": true
+      }
+    },
+    "refresh_rejoin": {
+      "status": "partial",
+      "milliseconds": 1483,
+      "detail": {
+        "bannerShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/06-reconnect-inflight.png",
+        "resumedShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/06b-reconnect-resumed.png",
+        "playerIdPreserved": false,
+        "scoreBefore": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 8460,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1,
+          "result": null
+        },
+        "scoreAfter": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 8432,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 1
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 1,
+          "result": null
+        },
+        "hostRemoteAvatarCount": 2,
+        "guestPlayersSeen": 3
+      }
+    },
+    "performance_sample": {
+      "status": "partial",
+      "milliseconds": 9840,
+      "detail": {
+        "sampleCount": 3768,
+        "p50": 1.9,
+        "p95": 3.8,
+        "p99": 5.6,
+        "worst": 1034.7,
+        "longTasks": [
+          1036
+        ],
+        "durationMilliseconds": 9830.5,
+        "memory": {
+          "usedJsHeapMb": 80,
+          "totalJsHeapMb": 138
+        }
+      }
+    },
+    "hud_viewport_matrix": {
+      "status": "partial",
+      "milliseconds": 2930,
+      "detail": {
+        "samples": {
+          "fullHd": {
+            "width": 1920,
+            "height": 1080,
+            "shot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/07-hud-1920x1080.png",
+            "layout": {
+              "abilityLabels": [
+                {
+                  "text": "Launch",
+                  "clientWidth": 62,
+                  "scrollWidth": 62,
+                  "clipped": false
+                },
+                {
+                  "text": "Smoke",
+                  "clientWidth": 63,
+                  "scrollWidth": 63,
+                  "clipped": false
+                },
+                {
+                  "text": "Frag",
+                  "clientWidth": 63,
+                  "scrollWidth": 63,
+                  "clipped": false
+                },
+                {
+                  "text": "Blink",
+                  "clientWidth": 61,
+                  "scrollWidth": 61,
+                  "clipped": false
+                }
+              ],
+              "horizontalOverflow": false,
+              "hudContract": "cutline-v1",
+              "uiSystem": "cutline-v1"
+            }
+          },
+          "narrow": {
+            "width": 1024,
+            "height": 640,
+            "shot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/07b-hud-1024x640.png",
+            "layout": {
+              "abilityLabels": [
+                {
+                  "text": "Launch",
+                  "clientWidth": 28,
+                  "scrollWidth": 42,
+                  "clipped": true
+                },
+                {
+                  "text": "Smoke",
+                  "clientWidth": 29,
+                  "scrollWidth": 40,
+                  "clipped": true
+                },
+                {
+                  "text": "Frag",
+                  "clientWidth": 29,
+                  "scrollWidth": 29,
+                  "clipped": false
+                },
+                {
+                  "text": "Blink",
+                  "clientWidth": 27,
+                  "scrollWidth": 30,
+                  "clipped": true
+                }
+              ],
+              "horizontalOverflow": false,
+              "hudContract": "cutline-v1",
+              "uiSystem": "cutline-v1"
+            }
+          },
+          "ultrawide": {
+            "width": 2560,
+            "height": 1080,
+            "shot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/07c-hud-2560x1080.png",
+            "layout": {
+              "abilityLabels": [
+                {
+                  "text": "Launch",
+                  "clientWidth": 62,
+                  "scrollWidth": 62,
+                  "clipped": false
+                },
+                {
+                  "text": "Smoke",
+                  "clientWidth": 63,
+                  "scrollWidth": 63,
+                  "clipped": false
+                },
+                {
+                  "text": "Frag",
+                  "clientWidth": 63,
+                  "scrollWidth": 63,
+                  "clipped": false
+                },
+                {
+                  "text": "Blink",
+                  "clientWidth": 61,
+                  "scrollWidth": 61,
+                  "clipped": false
+                }
+              ],
+              "horizontalOverflow": false,
+              "hudContract": "cutline-v1",
+              "uiSystem": "cutline-v1"
+            }
+          }
+        },
+        "clippedAbilityLabels": [
+          {
+            "text": "Launch",
+            "clientWidth": 28,
+            "scrollWidth": 42,
+            "clipped": true
+          },
+          {
+            "text": "Smoke",
+            "clientWidth": 29,
+            "scrollWidth": 40,
+            "clipped": true
+          },
+          {
+            "text": "Blink",
+            "clientWidth": 27,
+            "scrollWidth": 30,
+            "clipped": true
+          }
+        ]
+      }
+    },
+    "practice_parity_probe": {
+      "status": "partial",
+      "milliseconds": 11431,
+      "detail": {
+        "practiceMapTitle": "Iron Bastion",
+        "onlineMapReference": "inkfall_foundry@3",
+        "landingLinks": [
+          {
+            "text": "Practice",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Maps",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Loadout",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Settings",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "ONLINE COMBAT PREVIEW",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Start practiceEnter",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Inkfall Foundry @2",
+            "href": "?mapPackage=inkfall_foundry%402",
+            "testid": null
+          },
+          {
+            "text": "Press Hall v3.3",
+            "href": "?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined",
+            "testid": null
+          },
+          {
+            "text": "Close",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Open review arena",
+            "href": "/online?mode=create&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+            "testid": null
+          },
+          {
+            "text": "Play offline",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "View official library",
+            "href": "https://ev.io/maps",
+            "testid": null
+          },
+          {
+            "text": "Close",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Close",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Normal",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Inverted",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Off",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "On",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Off",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "On",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Low",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Medium",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "High",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Aqua",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "White",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Amber",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Standard",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "High",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Full",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Reduced",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Full",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Reduced",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Save settings",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "OFFLINE PRACTICEOne local player versus seven explicitly labeled practice bots for eight minutes.",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "SOLO WAVE PRACTICELocal solo wave defense with automatic recovery. No teammates or online session.",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "RESET LOCAL PROFILE",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Resume practice",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Quit to practice menu",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Respawn offline",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Practice menu",
+            "href": null,
+            "testid": null
+          }
+        ],
+        "landingShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/08-landing.png",
+        "settingsShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/08c-settings-panel.png",
+        "practiceShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/08b-practice-entry.png",
+        "practiceHud": {
+          "weaponRailSlots": 2,
+          "abilityRack": true,
+          "abilitySlots": 4,
+          "hudVisible": true,
+          "weaponName": "AR-9 Assault",
+          "hudRoot": "cutline-v1"
+        },
+        "practiceLateShot": "evidence/2026-07-31/fable5-full-game-audit-2539f86/screenshots/08d-practice-30s-later.png",
+        "mapConverged": false
+      }
+    }
+  },
+  "findings": [
+    {
+      "stage": "lobby_cold_eye",
+      "severity": "human-review-required",
+      "summary": "Lobby reachability is automated; composition and visual quality are not approved.",
+      "detail": null
+    },
+    {
+      "stage": "movement_probe",
+      "severity": "human-review-required",
+      "summary": "Authoritative forward, strafe, jump, and landing mechanics were observed; cadence, weight, animation, and feel still require human play.",
+      "detail": null
+    },
+    {
+      "stage": "weapon_roster_composition",
+      "severity": "coverage-gap",
+      "summary": "This live room covers only the selected preset roster; the four role presets and every weapon family still require parameterized runtime coverage and human weapon-contact review.",
+      "detail": null
+    },
+    {
+      "stage": "abilities",
+      "severity": "coverage-gap",
+      "summary": "Authority activation counters and Blink displacement are observed, but bounce/weight, smoke radius and smoothness, victim readability, damage, and each role-specific ability set still require dedicated proof and human play.",
+      "detail": null
+    },
+    {
+      "stage": "combat_damage_kill_respawn",
+      "severity": "human-review-required",
+      "summary": "Authority damage, kill, and respawn were observed; headshot readability, kill-banner quality, animation, audio, and feel remain human-review items.",
+      "detail": null
+    },
+    {
+      "stage": "scoreboard_probe",
+      "severity": "human-review-required",
+      "summary": "The hold-Tab scoreboard is present; opacity, density, scale, and visual fit still require human review.",
+      "detail": null
+    },
+    {
+      "stage": "refresh_rejoin",
+      "severity": "scope-limit",
+      "summary": "This stage observes browser refresh/rejoin only. It does not exercise or judge the product secure-resume path.",
+      "detail": null
+    },
+    {
+      "stage": "performance_sample",
+      "severity": "scope-limit",
+      "summary": "Performance sampling spans the scripted load, but remains headless two-client evidence and cannot stand in for the required 2/4/8 combat matrix or human hardware experience.",
+      "detail": null
+    },
+    {
+      "stage": "hud_viewport_matrix",
+      "severity": "layout-defect",
+      "summary": "HUD ability text clips in 3 measured viewport occurrences.",
+      "detail": null
+    },
+    {
+      "stage": "practice_parity_probe",
+      "severity": "product-divergence",
+      "summary": "Practice launches, but it still identifies as Iron Bastion while online uses Inkfall Foundry; Practice/online convergence is not complete.",
+      "detail": null
+    }
+  ],
+  "consoleErrors": [],
+  "pageErrors": []
+}

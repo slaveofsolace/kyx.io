@@ -106,18 +106,36 @@ resume, remote presentation, map identity/geometry/spawns/portal/library,
 HUD/UI, accessibility, audio/VFX, viewports, 2/4/8 occupancy, soak,
 package/provenance, and staging.
 
+## Recovered v2 audit result
+
+The repaired harness was committed at
+`2539f861e134aacea133773b863508d680d61901` and run once from a clean source
+state. Its final packet is:
+
+`evidence/2026-07-31/fable5-full-game-audit-2539f86`
+
+The run recorded three passed stages, ten partial stages, no failed stages, no
+browser console errors, and no uncaught page errors. It genuinely observed
+two-client movement, weapon selection/accepted attacks, Blink and three
+throwable activations, authority damage, kill, score, death, respawn,
+scoreboard, refresh/rejoin, three HUD viewports, and Practice launch.
+
+The evidence README contains the exact metrics and Human Brain / Human Eye
+verdicts. Important rejects remain: procedural opponent, missing animation and
+role-helmet proof, ADS arm/contact pose, primitive smoke/frag VFX, weak
+damage/death feedback, narrow-HUD clipping, Practice/online divergence, a
+one-second performance hitch, and no human-ear audio verdict.
+
 ## Required next order
 
-1. Commit the repaired harness and documentation from a clean source state.
-2. Run the v2 harness once into a new SHA-named evidence directory.
-3. Inspect its JSON and player-eye frames; commit/push the truthful evidence.
-4. Merge the bounded Fable branch into canonical main only after the branch is
-   clean and the CSS delta remains desired.
-5. Continue one desktop Inkfall slice: real Assault body/runtime animation,
+1. Commit and push the final SHA-named evidence packet.
+2. Merge the bounded Fable branch into canonical main after confirming the
+   branch is clean and the pointer-lock CSS delta remains desired.
+3. Continue one desktop Inkfall slice: real Assault body/runtime animation,
    shared Practice/online HUD and arena, then complete combat/ability/audio/VFX.
-6. Run genuine final-source 2/4/8 evidence and the 30-minute soak only after
+4. Run genuine final-source 2/4/8 evidence and the 30-minute soak only after
    those large changes stop.
-7. Close owner license/distribution decisions and staging readiness. Production
+5. Close owner license/distribution decisions and staging readiness. Production
    remains separately authorized.
 
 ## Owner-only decisions still open
