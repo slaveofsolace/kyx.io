@@ -83,8 +83,10 @@ function countTriangles(root: THREE.Object3D): Readonly<{
   return Object.freeze({ meshCount, triangleCount });
 }
 
-function cloneOwnedReviewShell(source: THREE.Group): THREE.Group {
-  const clone = source.clone(true);
+function cloneOwnedReviewShell(source: THREE.Object3D): THREE.Group {
+  const clone = new THREE.Group();
+  clone.name = `${KYX_VLR7_QUATERNIUS_REVIEW.rootNode}_OWNED_CLONE`;
+  clone.add(source.clone(true));
   clone.traverse((object) => {
     object.userData.presentationOnly = true;
     object.userData.noHit = true;
@@ -131,7 +133,7 @@ async function loadReviewShell() {
   const candidateRoot = loaded.getObjectByName(
     KYX_VLR7_QUATERNIUS_REVIEW.rootNode,
   );
-  if (!(candidateRoot instanceof THREE.Group)) {
+  if (candidateRoot === undefined) {
     throw new Error(
       `KYX_VLR7_REVIEW_ROOT_MISSING node=${KYX_VLR7_QUATERNIUS_REVIEW.rootNode}`,
     );
