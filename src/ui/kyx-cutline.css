@@ -2781,26 +2781,7 @@ body[data-ui-system="cutline-v1"] .online-session__combat-stat--ammo > strong {
 }
 
 body[data-ui-system="cutline-v1"] .online-session__combat-stat--weapon {
-  right: var(--cut-safe-x);
-  bottom: calc(var(--cut-safe-y) + 39px);
-  width: 190px;
-  max-width: 190px;
-  text-align: right;
-}
-
-body[data-ui-system="cutline-v1"] .online-session__combat-stat--weapon > span {
   display: none;
-}
-
-body[data-ui-system="cutline-v1"] .online-session__combat-stat--weapon > strong {
-  width: 100%;
-  display: block;
-  overflow: hidden;
-  color: var(--cut-muted);
-  font-size: 11px;
-  font-weight: 650;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 body[data-ui-system="cutline-v1"] .online-session__combat-stat--abilities {
