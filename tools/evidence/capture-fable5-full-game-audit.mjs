@@ -1,4 +1,5 @@
 import { spawn, execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -18,12 +19,6 @@ const AUTHORITY_PORT = 8_951;
 const FRONTEND_ORIGIN = `http://127.0.0.1:${FRONTEND_PORT}`;
 const AUTHORITY_ORIGIN = `http://127.0.0.1:${AUTHORITY_PORT}`;
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const outputArgument = process.argv[2];
-const output = path.resolve(
-  repo,
-  outputArgument ?? 'evidence/2026-07-31/fable5-full-game-audit',
-);
-const screenshots = path.join(output, 'screenshots');
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const startedAtIso = new Date().toISOString();
@@ -41,6 +36,16 @@ const repositoryStatus = execFileSync(
   ['status', '--short', '--untracked-files=all'],
   { cwd: repo, encoding: 'utf8' },
 ).trim();
+const outputArgument = process.argv[2];
+const output = path.resolve(
+  repo,
+  outputArgument
+    ?? `evidence/2026-07-31/fable5-full-game-audit-${repositoryHead.slice(0, 7)}`,
+);
+const screenshots = path.join(output, 'screenshots');
+const harnessSha256 = createHash('sha256')
+  .update(await fs.readFile(fileURLToPath(import.meta.url)))
+  .digest('hex');
 
 await fs.mkdir(screenshots, { recursive: true });
 
@@ -53,15 +58,103 @@ function recordFinding(stage, severity, summary, detail = null) {
   findings.push({ stage, severity, summary, detail });
 }
 
+const AUDIT_STATUSES = new Set([
+  'passed',
+  'partial',
+  'skipped',
+  'unknown',
+  'tool_limited',
+]);
+
+function auditResult(status, detail, finding = null) {
+  if (!AUDIT_STATUSES.has(status)) {
+    throw new Error(`Unsupported audit status: ${status}`);
+  }
+  return { __auditStatus: status, detail, finding };
+}
+
+function coverageEntry(
+  id,
+  label,
+  stageName,
+  humanStatus,
+  nonclaim,
+) {
+  return {
+    id,
+    label,
+    stage: stageName,
+    automationStatus: stageName === null
+      ? 'unknown'
+      : stages[stageName]?.status ?? 'unknown',
+    humanStatus,
+    nonclaim,
+  };
+}
+
+function auditCoverageLedger() {
+  return [
+    coverageEntry('boot', 'Local services and browser boot', 'boot_services', 'not_required', 'Local boot is not deployed-build identity proof.'),
+    coverageEntry('lobby', 'Lobby, room create, and two-client join', 'create_and_join_two_clients', 'required', 'First-use clarity and polish are not automated.'),
+    coverageEntry('input', 'Keyboard, mouse, pointer-lock, and blur release', 'movement_probe', 'required', 'Only the exercised keys are sampled; controller is not covered.'),
+    coverageEntry('movement', 'Walk, strafe reversal, jump, and landing', 'movement_probe', 'required', 'Mechanics do not approve acceleration, weight, camera coupling, or fun.'),
+    coverageEntry('camera', 'Mouse look, pitch/yaw, FOV, and lock recovery', null, 'required', 'Pointer-lock entry is observed; full camera-feel coverage is absent.'),
+    coverageEntry('practice_parity', 'Practice and online parity', 'practice_parity_probe', 'required', 'A shared HUD shell does not prove a shared arena or authority model.'),
+    coverageEntry('role_presets', 'Assault, Breacher, Recon, and Duelist presets', null, 'required', 'The current run uses one selected preset; four fresh-room runs are owed.'),
+    coverageEntry('weapons', 'Rifle, pistol, shotgun, sniper, rocket, and melee', 'weapon_roster_composition', 'required', 'Only weapons exposed by the active preset are exercised.'),
+    coverageEntry('first_person_model', 'First-person weapon and hands', 'weapon_roster_composition', 'required', 'Diagnostics and screenshots do not approve scale, grip, clipping, or recoil feel.'),
+    coverageEntry('third_person_model', 'Opponent body and armor', null, 'required', 'No authored-character runtime predicate is exercised.'),
+    coverageEntry('skins', 'Selectable skins and replication', null, 'required', 'No complete independent skin-selection runtime was found or exercised.'),
+    coverageEntry('helmets', 'Role-driven helmet modules', null, 'required', 'Helmet IDs may persist without a matching live rendered module.'),
+    coverageEntry('animations', 'Locomotion and combat animation state machine', null, 'required', 'No active-clip, foot-contact, transition, or remote-pose proof is captured.'),
+    coverageEntry('blink', 'Blink preview, eligibility, and commit', 'abilities', 'required', 'Collision, counterplay, sound, and exact cross-layer range parity remain separate.'),
+    coverageEntry('throwables', 'Launch, smoke, frag, flash, and sticky', 'abilities', 'required', 'Counters do not prove identity, bounce, radius, damage, impairment, or victim readability.'),
+    coverageEntry('combat', 'Damage, headshot, kill, death, and respawn', 'combat_damage_kill_respawn', 'required', 'Accepted attacks alone are never treated as hits.'),
+    coverageEntry('scoreboard', 'Hold-Tab scoreboard and match flow', 'scoreboard_probe', 'required', 'Presence does not approve opacity, density, hierarchy, or obstruction.'),
+    coverageEntry('secure_resume', 'Token-rotating secure reconnect', null, 'required', 'Browser refresh/rejoin is not secure resume.'),
+    coverageEntry('refresh_rejoin', 'Browser refresh/rejoin behavior', 'refresh_rejoin', 'required', 'This stage makes no secure-resume claim.'),
+    coverageEntry('map_identity', 'Inkfall profile, package, collider, spawn, and zone identity', 'create_and_join_two_clients', 'required', 'Identity and cardinality do not approve map art or play quality.'),
+    coverageEntry('map_geometry', 'Routes, collision, bridge, bounds, and supports', null, 'required', 'No full player-driven traversal or geometry defect sweep is captured.'),
+    coverageEntry('spawns', '2/4/8 spawn safety and fairness', null, 'required', 'Capsule clearance does not prove live LOS safety or fairness.'),
+    coverageEntry('portal', 'Two-way portal traversal and reconnect continuity', null, 'required', 'Portal presence is not traversal proof.'),
+    coverageEntry('hud', 'Authority-driven HUD and representative viewports', 'hud_viewport_matrix', 'required', 'Layout measurement does not approve the visual language.'),
+    coverageEntry('menus', 'Settings, loadout, maps, pause, death, and result UI', 'practice_parity_probe', 'required', 'The run samples only a subset of menu flows.'),
+    coverageEntry('accessibility', 'Keyboard focus, controller, captions, contrast, and reduced motion', null, 'required', 'No WCAG or disabled-player acceptance claim is made.'),
+    coverageEntry('audio', 'Weapon, movement, ability, portal, and ambient audio', null, 'required', 'Automated event counts cannot judge timbre, fatigue, mix, or the retro/siren complaint.'),
+    coverageEntry('vfx', 'Muzzle, hit, headshot, smoke, flash, kill, and portal VFX', 'abilities', 'required', 'Event correlation does not approve visual quality or clarity.'),
+    coverageEntry('performance_2_client', 'Two-client headless performance sample', 'performance_sample', 'required', 'Headless results do not represent owner hardware or dense combat.'),
+    coverageEntry('occupancy_2_4_8', 'Source-frozen 2/4/8 runtime matrix', null, 'required', 'This harness creates two clients only.'),
+    coverageEntry('soak', 'Final 30-minute eight-client soak', null, 'required', 'No final-source soak is run by this harness.'),
+    coverageEntry('package', 'Release package closure and provenance', null, 'owner_decision_required', 'Runtime play does not validate package ledgers, license, or distribution mode.'),
+    coverageEntry('staging', 'Staging build identity, isolation, and rollback', null, 'required', 'This local harness does not deploy or validate staging.'),
+  ];
+}
+
 async function stage(name, run) {
   const startedAt = Date.now();
   try {
-    const detail = await run();
+    const returned = await run();
+    const wrapped = returned?.__auditStatus !== undefined;
+    const skipped = !wrapped && returned?.skipped !== undefined;
+    const status = wrapped
+      ? returned.__auditStatus
+      : skipped
+        ? 'skipped'
+        : 'unknown';
+    const detail = wrapped ? returned.detail : returned;
     stages[name] = {
-      status: 'completed',
+      status,
       milliseconds: Date.now() - startedAt,
       detail: detail ?? null,
     };
+    if (wrapped && returned.finding !== null) {
+      recordFinding(
+        name,
+        returned.finding.severity,
+        returned.finding.summary,
+        returned.finding.detail ?? null,
+      );
+    }
   } catch (error) {
     stages[name] = {
       status: 'failed',
@@ -180,6 +273,82 @@ function remotePlayer(value) {
   ) ?? null;
 }
 
+function remoteEntity(value) {
+  return value?.remoteEntities?.find(
+    ({ entityId }) => entityId !== value.playerId,
+  ) ?? value?.remoteEntities?.[0] ?? null;
+}
+
+function horizontalDistance(a, b) {
+  if (a === null || a === undefined || b === null || b === undefined) {
+    return null;
+  }
+  return Math.hypot(b.x - a.x, b.z - a.z);
+}
+
+function horizontalSpeed(velocity) {
+  if (velocity === null || velocity === undefined) return null;
+  return Math.hypot(velocity.x, velocity.z);
+}
+
+function localPlanarDelta(before, after, yawMilliDegrees) {
+  if (before === null || before === undefined
+    || after === null || after === undefined
+    || yawMilliDegrees === null || yawMilliDegrees === undefined) {
+    return null;
+  }
+  const yaw = yawMilliDegrees * Math.PI / 180_000;
+  const deltaX = after.x - before.x;
+  const deltaZ = after.z - before.z;
+  return {
+    forwardMillimeters: deltaX * Math.sin(yaw) + deltaZ * Math.cos(yaw),
+    rightMillimeters: deltaX * Math.cos(yaw) - deltaZ * Math.sin(yaw),
+  };
+}
+
+async function waitForGrounded(page, timeoutMilliseconds = 4_000) {
+  const deadline = Date.now() + timeoutMilliseconds;
+  while (Date.now() < deadline) {
+    const value = await snapshot(page);
+    if (value?.localAuthoritativeGrounded === true) return value;
+    await delay(60);
+  }
+  return await snapshot(page);
+}
+
+async function waitForSnapshotPredicate(
+  page,
+  predicate,
+  timeoutMilliseconds = 5_000,
+) {
+  const deadline = Date.now() + timeoutMilliseconds;
+  let latest = await snapshot(page);
+  while (Date.now() < deadline) {
+    if (predicate(latest)) return latest;
+    await delay(60);
+    latest = await snapshot(page);
+  }
+  return latest;
+}
+
+async function releaseGameplayInputs(page) {
+  for (const code of [
+    'KeyW',
+    'KeyA',
+    'KeyS',
+    'KeyD',
+    'KeyQ',
+    'ShiftLeft',
+    'ControlLeft',
+    'Enter',
+    'Tab',
+  ]) {
+    await page?.keyboard.up(code).catch(() => undefined);
+  }
+  await page?.mouse.up({ button: 'left' }).catch(() => undefined);
+  await page?.mouse.up({ button: 'right' }).catch(() => undefined);
+}
+
 let wrangler = null;
 let vite = null;
 let browser = null;
@@ -187,6 +356,7 @@ let hostContext = null;
 let guestContext = null;
 let hostPage = null;
 let guestPage = null;
+let createdDistPlaceholder = false;
 
 const temporaryRoot = path.resolve(os.tmpdir());
 const authorityState = await fs.mkdtemp(
@@ -209,6 +379,7 @@ try {
         'Created by capture-fable5-full-game-audit.mjs for wrangler dev only.\n',
         'utf8',
       );
+      createdDistPlaceholder = true;
     }
     wrangler = service([
       'node_modules/wrangler/bin/wrangler.js',
@@ -229,6 +400,8 @@ try {
         '--port',
         String(FRONTEND_PORT),
         '--strictPort',
+        '--mode',
+        'staging-review',
       ],
       { ...process.env, VITE_KYX_AUTHORITY_ORIGIN: AUTHORITY_ORIGIN },
     );
@@ -244,7 +417,10 @@ try {
         }\nvite tail: ${vite?.lines.slice(-6).join(' | ') ?? 'none'}`,
       );
     }
-    return { authorityOrigin: AUTHORITY_ORIGIN, frontendOrigin: FRONTEND_ORIGIN };
+    return auditResult('passed', {
+      authorityOrigin: AUTHORITY_ORIGIN,
+      frontendOrigin: FRONTEND_ORIGIN,
+    });
   });
 
   await stage('boot_browser', async () => {
@@ -311,7 +487,9 @@ try {
         pageErrors.push(`${label}: ${error.message}`);
       });
     }
-    return { executable: chromeExecutable ?? 'playwright-bundled' };
+    return auditResult('passed', {
+      executable: chromeExecutable ?? 'playwright-bundled',
+    });
   });
 
   await stage('lobby_cold_eye', async () => {
@@ -333,7 +511,14 @@ try {
         .slice(0, 60);
       return { testids: [...new Set(ids)].slice(0, 120), buttons };
     });
-    return { lobbyShot, inventory };
+    return auditResult(
+      'partial',
+      { lobbyShot, inventory, reachabilityVerified: true },
+      {
+        severity: 'human-review-required',
+        summary: 'Lobby reachability is automated; composition and visual quality are not approved.',
+      },
+    );
   });
 
   await stage('create_and_join_two_clients', async () => {
@@ -391,7 +576,7 @@ try {
       true,
     );
     matchJoined = true;
-    return {
+    return auditResult('passed', {
       inviteUrl: '(recorded-local-only)',
       pointerLockState,
       immersionShot,
@@ -403,64 +588,132 @@ try {
         joined?.render3d?.selectedWeaponVisualSource ?? null,
       spawnShot,
       hudShot,
-    };
+    });
   });
 
   await stage('movement_probe', async () => {
     if (!matchJoined) return { skipped: 'no active match' };
     const samples = [];
-    const before = await snapshot(hostPage);
     const canvas = hostPage.locator('.online-session__canvas');
     await canvas.hover().catch(() => undefined);
-    await hostPage.keyboard.down('KeyW');
-    for (let index = 0; index < 8; index += 1) {
-      await delay(220);
-      const value = await snapshot(hostPage);
-      samples.push({
-        t: index * 220,
-        position: value?.localAuthoritativePosition ?? null,
-        speed: value?.localSpeedMillimetersPerSecond
-          ?? value?.presentation?.localSpeedMillimetersPerSecond
-          ?? null,
-      });
+    try {
+      const before = await waitForGrounded(hostPage);
+      await hostPage.keyboard.down('KeyW');
+      for (let index = 0; index < 8; index += 1) {
+        await delay(220);
+        const value = await snapshot(hostPage);
+        samples.push({
+          t: (index + 1) * 220,
+          position: value?.localAuthoritativePosition ?? null,
+          velocity: value?.localAuthoritativeVelocity ?? null,
+          horizontalSpeedMillimetersPerSecond: horizontalSpeed(
+            value?.localAuthoritativeVelocity,
+          ),
+        });
+      }
+      await hostPage.keyboard.up('KeyW');
+      await delay(350);
+      const afterForward = await snapshot(hostPage);
+
+      const grounded = await waitForGrounded(hostPage);
+      const jumpSamples = [];
+      await hostPage.keyboard.press('Space');
+      for (let index = 0; index < 32; index += 1) {
+        await delay(60);
+        const value = await snapshot(hostPage);
+        jumpSamples.push({
+          t: (index + 1) * 60,
+          grounded: value?.localAuthoritativeGrounded ?? null,
+          y: value?.localAuthoritativePosition?.y ?? null,
+          verticalSpeedMillimetersPerSecond:
+            value?.localAuthoritativeVelocity?.y ?? null,
+        });
+      }
+
+      const beforeLeft = await snapshot(hostPage);
+      await hostPage.keyboard.down('KeyA');
+      await delay(420);
+      await hostPage.keyboard.up('KeyA');
+      await delay(120);
+      const afterLeft = await snapshot(hostPage);
+      const beforeRight = afterLeft;
+      await hostPage.keyboard.down('KeyD');
+      await delay(420);
+      await hostPage.keyboard.up('KeyD');
+      await delay(120);
+      const afterRight = await snapshot(hostPage);
+
+      const forwardDisplacement = horizontalDistance(
+        before?.localAuthoritativePosition,
+        afterForward?.localAuthoritativePosition,
+      );
+      const leftDisplacement = horizontalDistance(
+        beforeLeft?.localAuthoritativePosition,
+        afterLeft?.localAuthoritativePosition,
+      );
+      const rightDisplacement = horizontalDistance(
+        beforeRight?.localAuthoritativePosition,
+        afterRight?.localAuthoritativePosition,
+      );
+      const leftLocalDelta = localPlanarDelta(
+        beforeLeft?.localAuthoritativePosition,
+        afterLeft?.localAuthoritativePosition,
+        beforeLeft?.localAuthoritativeYawMilliDegrees,
+      );
+      const rightLocalDelta = localPlanarDelta(
+        beforeRight?.localAuthoritativePosition,
+        afterRight?.localAuthoritativePosition,
+        beforeRight?.localAuthoritativeYawMilliDegrees,
+      );
+      const airborneObserved = jumpSamples.some(({ grounded: value }) => value === false);
+      const landedAfterAirborne = airborneObserved
+        && jumpSamples.slice(
+          jumpSamples.findIndex(({ grounded: value }) => value === false) + 1,
+        ).some(({ grounded: value }) => value === true);
+      const mechanicsObserved = (forwardDisplacement ?? 0) > 0
+        && (leftDisplacement ?? 0) > 0
+        && (rightDisplacement ?? 0) > 0
+        && (leftLocalDelta?.rightMillimeters ?? 0) < 0
+        && (rightLocalDelta?.rightMillimeters ?? 0) > 0
+        && grounded?.localAuthoritativeGrounded === true
+        && airborneObserved
+        && landedAfterAirborne;
+      const detail = {
+        forwardDisplacementMillimeters: forwardDisplacement,
+        leftDisplacementMillimeters: leftDisplacement,
+        rightDisplacementMillimeters: rightDisplacement,
+        leftLocalDelta,
+        rightLocalDelta,
+        samples,
+        jump: {
+          groundedBefore: grounded?.localAuthoritativeGrounded ?? null,
+          airborneObserved,
+          landedAfterAirborne,
+          samples: jumpSamples,
+        },
+      };
+      return auditResult(
+        mechanicsObserved ? 'partial' : 'unknown',
+        detail,
+        {
+          severity: mechanicsObserved ? 'human-review-required' : 'mechanics-unproven',
+          summary: mechanicsObserved
+            ? 'Authoritative forward, strafe, jump, and landing mechanics were observed; cadence, weight, animation, and feel still require human play.'
+            : 'The movement probe did not observe the complete forward/strafe/jump/land sequence.',
+        },
+      );
+    } finally {
+      await releaseGameplayInputs(hostPage);
     }
-    await hostPage.keyboard.up('KeyW');
-    await delay(350);
-    // Jump probe.
-    const groundedBefore = (await snapshot(hostPage))
-      ?.localAuthoritativeGrounded ?? null;
-    await hostPage.keyboard.press('Space');
-    await delay(260);
-    const midAir = await snapshot(hostPage);
-    await delay(900);
-    const landed = await snapshot(hostPage);
-    // Strafe reversal probe.
-    await hostPage.keyboard.down('KeyA');
-    await delay(300);
-    await hostPage.keyboard.up('KeyA');
-    await hostPage.keyboard.down('KeyD');
-    await delay(300);
-    await hostPage.keyboard.up('KeyD');
-    const after = await snapshot(hostPage);
-    const moved = before?.localAuthoritativePosition && after?.localAuthoritativePosition
-      ? Math.hypot(
-          after.localAuthoritativePosition.x - before.localAuthoritativePosition.x,
-          after.localAuthoritativePosition.z - before.localAuthoritativePosition.z,
-        )
-      : null;
-    return {
-      movedMillimeters: moved,
-      samples,
-      jump: {
-        groundedBefore,
-        airborneObserved: midAir?.localAuthoritativeGrounded === false,
-        groundedAfter: landed?.localAuthoritativeGrounded ?? null,
-      },
-    };
   });
 
   await stage('weapon_roster_composition', async () => {
     if (!matchJoined) return { skipped: 'no active match' };
+    const selectedLoadout = await hostPage.evaluate(() => ({
+      stored: localStorage.getItem('sio_loadout'),
+      presetId: document.body.dataset.combatPresetId ?? null,
+      helmetVariantId: document.body.dataset.helmetVariantId ?? null,
+    }));
     const rail = await hostPage.evaluate(() => (
       [...document.querySelectorAll('.online-session__weapon-slot')].map(
         (button) => ({
@@ -473,62 +726,81 @@ try {
       )
     ));
     const perWeapon = [];
-    for (const entry of rail) {
-      if (entry.disabled) continue;
-      const slot = Number(entry.slot);
-      await hostPage.keyboard.press(`Digit${slot + 1}`);
-      await delay(950);
-      const value = await snapshot(hostPage);
-      const local = localPlayer(value);
-      const hip = await shoot(
-        hostPage,
-        `02-weapon-slot${slot}-hip.png`,
+    try {
+      for (const entry of rail) {
+        if (entry.disabled) continue;
+        const slot = Number(entry.slot);
+        await hostPage.keyboard.press(`Digit${slot + 1}`);
+        await delay(950);
+        const value = await snapshot(hostPage);
+        const local = localPlayer(value);
+        const weaponBefore = local?.weapons?.find(
+          ({ weaponId }) => weaponId === local.selectedWeaponId,
+        ) ?? null;
+        const hip = await shoot(
+          hostPage,
+          `02-weapon-slot${slot}-hip.png`,
+        );
+        await hostPage.mouse.move(720, 450);
+        await hostPage.mouse.down({ button: 'right' });
+        await delay(650);
+        const ads = await shoot(
+          hostPage,
+          `02-weapon-slot${slot}-ads.png`,
+        );
+        const adsValue = await snapshot(hostPage);
+        await hostPage.mouse.up({ button: 'right' });
+        await delay(350);
+        await hostPage.keyboard.down('Enter');
+        await delay(420);
+        const fire = await shoot(
+          hostPage,
+          `02-weapon-slot${slot}-fire.png`,
+        );
+        await hostPage.keyboard.up('Enter');
+        await delay(300);
+        const afterFire = await snapshot(hostPage);
+        const localAfterFire = localPlayer(afterFire);
+        const weaponAfter = localAfterFire?.weapons?.find(
+          ({ weaponId }) => weaponId === localAfterFire.selectedWeaponId,
+        ) ?? null;
+        await hostPage.keyboard.press('KeyR');
+        await delay(700);
+        const reload = await shoot(
+          hostPage,
+          `02-weapon-slot${slot}-reload.png`,
+        );
+        await delay(2_600);
+        perWeapon.push({
+          slot,
+          label: entry.label,
+          selectedWeaponId: local?.selectedWeaponId ?? null,
+          weaponFamily: weaponBefore?.family ?? null,
+          attackModel: weaponBefore?.attackModel ?? null,
+          acceptedAttackCountBefore: weaponBefore?.acceptedAttackCount ?? null,
+          acceptedAttackCountAfter: weaponAfter?.acceptedAttackCount ?? null,
+          visualSource: value?.render3d?.selectedWeaponVisualSource ?? null,
+          contactMode: value?.render3d?.selectedFirstPersonContactMode ?? null,
+          handCount: value?.render3d?.selectedFirstPersonHandCount ?? null,
+          adsMix: adsValue?.render3d?.selectedFirstPersonAimMix ?? null,
+          adsFov: adsValue?.render3d?.selectedFirstPersonFieldOfViewDegrees
+            ?? null,
+          shots: { hip, ads, fire, reload },
+        });
+      }
+      await hostPage.keyboard.press('Digit1');
+      await delay(600);
+      return auditResult(
+        'partial',
+        { selectedLoadout, rail, perWeapon },
+        {
+          severity: 'coverage-gap',
+          summary: 'This live room covers only the selected preset roster; the four role presets and every weapon family still require parameterized runtime coverage and human weapon-contact review.',
+        },
       );
-      // ADS probe for aim-enabled weapons.
-      await hostPage.mouse.move(720, 450);
-      await hostPage.mouse.down({ button: 'right' });
-      await delay(650);
-      const ads = await shoot(
-        hostPage,
-        `02-weapon-slot${slot}-ads.png`,
-      );
-      const adsValue = await snapshot(hostPage);
-      await hostPage.mouse.up({ button: 'right' });
-      await delay(350);
-      // Fire probe.
-      await hostPage.keyboard.down('Enter');
-      await delay(420);
-      const fire = await shoot(
-        hostPage,
-        `02-weapon-slot${slot}-fire.png`,
-      );
-      await hostPage.keyboard.up('Enter');
-      await delay(300);
-      // Reload probe.
-      await hostPage.keyboard.press('KeyR');
-      await delay(700);
-      const reload = await shoot(
-        hostPage,
-        `02-weapon-slot${slot}-reload.png`,
-      );
-      await delay(2_600);
-      perWeapon.push({
-        slot,
-        label: entry.label,
-        selectedWeaponId: local?.selectedWeaponId ?? null,
-        visualSource: value?.render3d?.selectedWeaponVisualSource ?? null,
-        contactMode: value?.render3d?.selectedFirstPersonContactMode ?? null,
-        handCount: value?.render3d?.selectedFirstPersonHandCount ?? null,
-        adsMix: adsValue?.render3d?.selectedFirstPersonAimMix ?? null,
-        adsFov: adsValue?.render3d?.selectedFirstPersonFieldOfViewDegrees
-          ?? null,
-        shots: { hip, ads, fire, reload },
-      });
+    } finally {
+      await releaseGameplayInputs(hostPage);
     }
-    // Return to slot 0.
-    await hostPage.keyboard.press('Digit1');
-    await delay(600);
-    return { rail, perWeapon };
   });
 
   await stage('abilities', async () => {
@@ -536,11 +808,15 @@ try {
     const canvas = hostPage.locator('.online-session__canvas');
     await canvas.hover().catch(() => undefined);
     const result = {};
-    // Blink preview hold (Q), capture preview, then commit.
-    await hostPage.keyboard.down('KeyQ');
-    await delay(650);
-    result.blinkPreviewShot = await shoot(hostPage, '03-blink-preview.png');
-    const preview = await snapshot(hostPage);
+    try {
+      const activationCounts = (value) => localPlayer(value)
+        ?.abilityLoadout?.acceptedActivationCounts ?? null;
+      const beforeAbilities = await snapshot(hostPage);
+      // Blink preview hold (Q), capture preview, then commit.
+      await hostPage.keyboard.down('KeyQ');
+      await delay(650);
+      result.blinkPreviewShot = await shoot(hostPage, '03-blink-preview.png');
+      const preview = await snapshot(hostPage);
     result.blinkPreview = {
       active: preview?.render3d?.blinkPreviewActive ?? null,
       valid: preview?.render3d?.blinkPreviewValid ?? null,
@@ -551,14 +827,12 @@ try {
       maximumRangeMillimeters:
         preview?.render3d?.blinkPreviewMaximumRangeMillimeters ?? null,
     };
-    // Second variant: pitch down toward the floor ahead, which is the
-    // grounded-destination-friendly case, and record the reason again.
-    await hostPage.keyboard.up('KeyQ');
-    await delay(600);
-    await tapLook(hostPage, 'ArrowDown', 6);
-    await hostPage.keyboard.down('KeyQ');
-    await delay(650);
-    const pitched = await snapshot(hostPage);
+      // While the same preview remains held, pitch toward the floor ahead and
+      // record the grounded-destination-friendly variant. Releasing Q only
+      // once avoids accidentally consuming Blink before the second sample.
+      await tapLook(hostPage, 'ArrowDown', 6);
+      await delay(650);
+      const pitched = await snapshot(hostPage);
     result.blinkPreviewPitchedDown = {
       valid: pitched?.render3d?.blinkPreviewValid ?? null,
       reason: pitched?.render3d?.blinkPreviewReason ?? null,
@@ -569,119 +843,231 @@ try {
       hostPage,
       '03-blink-preview-pitched.png',
     );
-    await tapLook(hostPage, 'ArrowUp', 6);
-    const positionBefore = preview?.localAuthoritativePosition ?? null;
-    await hostPage.keyboard.up('KeyQ');
-    await delay(900);
-    const afterBlink = await snapshot(hostPage);
+      if (pitched?.render3d?.blinkPreviewValid !== true
+        && preview?.render3d?.blinkPreviewValid === true) {
+        await tapLook(hostPage, 'ArrowUp', 6);
+      }
+      const positionBefore = (await snapshot(hostPage))
+        ?.localAuthoritativePosition ?? null;
+      await hostPage.keyboard.up('KeyQ');
+      const afterBlink = await waitForSnapshotPredicate(
+        hostPage,
+        (value) => horizontalDistance(
+          positionBefore,
+          value?.localAuthoritativePosition,
+        ) > 250,
+        2_000,
+      );
+      if (pitched?.render3d?.blinkPreviewValid === true) {
+        await tapLook(hostPage, 'ArrowUp', 6);
+      }
     result.blinkCommit = {
       positionBefore,
       positionAfter: afterBlink?.localAuthoritativePosition ?? null,
     };
-    result.blinkArrivalShot = await shoot(hostPage, '03b-blink-arrival.png');
-    // Launch (E).
-    await hostPage.keyboard.press('KeyE');
-    await delay(500);
-    result.launchShot = await shoot(hostPage, '03c-ability-launch.png');
-    await delay(700);
-    // Smoke (F): capture start and expansion.
-    await hostPage.keyboard.press('KeyF');
-    await delay(500);
-    result.smokeStartShot = await shoot(hostPage, '03d-smoke-early.png');
-    await delay(1_600);
-    result.smokeFullShot = await shoot(hostPage, '03e-smoke-expanded.png');
-    // Frag (Z): arc + detonation window.
-    await hostPage.keyboard.press('KeyZ');
-    await delay(450);
-    result.fragFlightShot = await shoot(hostPage, '03f-frag-flight.png');
-    await delay(1_500);
-    result.fragAfterShot = await shoot(hostPage, '03g-frag-after.png');
-    const abilityState = await snapshot(hostPage);
+      result.blinkArrivalShot = await shoot(hostPage, '03b-blink-arrival.png');
+      // Launch (E).
+      const beforeLaunch = activationCounts(afterBlink);
+      await hostPage.keyboard.press('KeyE');
+      const afterLaunch = await waitForSnapshotPredicate(
+        hostPage,
+        (value) => (activationCounts(value)?.[0] ?? -1) > (beforeLaunch?.[0] ?? -1),
+      );
+      result.launchObservedShot = await shoot(hostPage, '03c-launch-observation.png');
+      // Smoke (F): capture an accepted observation and later expansion state.
+      const beforeSmoke = activationCounts(afterLaunch);
+      await hostPage.keyboard.press('KeyF');
+      const afterSmoke = await waitForSnapshotPredicate(
+        hostPage,
+        (value) => (activationCounts(value)?.[1] ?? -1) > (beforeSmoke?.[1] ?? -1),
+      );
+      result.smokeAcceptedShot = await shoot(hostPage, '03d-smoke-accepted.png');
+      await delay(1_600);
+      result.smokeLaterShot = await shoot(hostPage, '03e-smoke-later.png');
+      // Frag (Z): record observations without assuming flight/detonation timing.
+      const beforeFrag = activationCounts(await snapshot(hostPage));
+      await hostPage.keyboard.press('KeyZ');
+      const afterFrag = await waitForSnapshotPredicate(
+        hostPage,
+        (value) => (activationCounts(value)?.[2] ?? -1) > (beforeFrag?.[2] ?? -1),
+      );
+      result.fragObservationA = await shoot(hostPage, '03f-frag-observation-a.png');
+      await delay(1_500);
+      result.fragObservationB = await shoot(hostPage, '03g-frag-observation-b.png');
+      const abilityState = await snapshot(hostPage);
     result.abilityDiagnostics = {
       grenades: abilityState?.render3d?.grenadeProjectileCount ?? null,
       effects: abilityState?.render3d?.activeWeaponEffectCount ?? null,
     };
-    return result;
+      result.activationCounts = {
+        before: activationCounts(beforeAbilities),
+        afterLaunch: activationCounts(afterLaunch),
+        afterSmoke: activationCounts(afterSmoke),
+        afterFrag: activationCounts(afterFrag),
+        final: activationCounts(abilityState),
+      };
+      result.presentationCues = abilityState?.presentation?.recentCues ?? [];
+      result.blinkCommit.distanceMillimeters = horizontalDistance(
+        positionBefore,
+        afterBlink?.localAuthoritativePosition,
+      );
+      return auditResult(
+        'partial',
+        result,
+        {
+          severity: 'coverage-gap',
+          summary: 'Authority counters and Blink displacement are sampled, but bounce/weight, smoke radius and smoothness, victim readability, damage, and each role-specific ability set still require dedicated proof and human play.',
+        },
+      );
+    } finally {
+      await releaseGameplayInputs(hostPage);
+    }
   });
 
   await stage('combat_damage_kill_respawn', async () => {
     if (!matchJoined) return { skipped: 'no active match' };
-    const result = { engagements: [] };
-    // Drive the host toward the guest, then fire until damage registers.
-    const enemyPosition = (player) => player?.position
-      ?? player?.feetPosition
-      ?? player?.feetPositionMm
-      ?? null;
-    {
+    const result = {
+      engagements: [],
+      damageObserved: false,
+      killObserved: false,
+      respawnObserved: false,
+      headshotCueObserved: false,
+    };
+    const durability = (player) => player === null || player === undefined
+      ? null
+      : player.healthPoints + player.shieldPoints;
+    try {
+      await hostPage.keyboard.press('Digit1');
+      await delay(700);
       const first = await snapshot(hostPage);
       result.remotePlayerKeys = Object.keys(remotePlayer(first) ?? {});
-    }
-    for (let attempt = 0; attempt < 30; attempt += 1) {
-      const value = await snapshot(hostPage);
-      const enemy = remotePlayer(value);
-      const enemyAt = enemyPosition(enemy);
-      const self = value?.localAuthoritativePosition;
-      if (!enemyAt || !self) break;
-      const distance = Math.hypot(
-        enemyAt.x - self.x,
-        enemyAt.z - self.z,
-      );
-      await rotateToYaw(
-        hostPage,
-        headingToMapTarget(self, enemyAt),
-      );
-      if (distance > 9_000) {
-        await hostPage.keyboard.down('KeyW');
-        await delay(Math.min(700, distance / 14));
-        await hostPage.keyboard.up('KeyW');
-        await delay(320);
-        continue;
-      }
-      const healthBefore = enemy.health ?? null;
-      await hostPage.keyboard.down('Enter');
-      await delay(1_100);
-      await hostPage.keyboard.up('Enter');
-      await delay(450);
-      const after = await snapshot(hostPage);
-      const enemyAfter = remotePlayer(after);
-      result.engagements.push({
-        attempt,
-        distanceMillimeters: Math.round(distance),
-        enemyHealthBefore: healthBefore,
-        enemyHealthAfter: enemyAfter?.health ?? null,
-        enemyLifeState: enemyAfter?.lifeState ?? enemyAfter?.phase ?? null,
-        hostScore: after?.combat?.snapshot?.match ?? null,
-      });
-      if ((enemyAfter?.health ?? 100) < (healthBefore ?? 100)) {
-        result.damageShot = await shoot(hostPage, '04-damage-confirmed.png');
-        result.guestDamageShot = await shoot(
-          guestPage,
-          '04b-guest-damage-received.png',
+      result.remoteEntityKeys = Object.keys(remoteEntity(first) ?? {});
+      result.presentationCueCountBefore = first?.presentation?.recentCues?.length ?? 0;
+
+      for (let attempt = 0; attempt < 36; attempt += 1) {
+        const value = await snapshot(hostPage);
+        const enemy = remotePlayer(value);
+        const enemyAt = remoteEntity(value)?.position ?? null;
+        const self = value?.localAuthoritativePosition ?? null;
+        if (enemy === null || enemyAt === null || self === null) break;
+        const distance = horizontalDistance(self, enemyAt);
+        await rotateToYaw(hostPage, headingToMapTarget(self, enemyAt));
+        if ((distance ?? Infinity) > 8_000) {
+          await hostPage.keyboard.down('KeyW');
+          await delay(Math.min(650, (distance ?? 0) / 16));
+          await hostPage.keyboard.up('KeyW');
+          await delay(260);
+          continue;
+        }
+
+        const healthBefore = enemy.healthPoints;
+        const shieldBefore = enemy.shieldPoints;
+        const durabilityBefore = durability(enemy);
+        const selectedBefore = enemy.selectedWeaponId;
+        const attackerBefore = localPlayer(value);
+        const attackCountBefore = attackerBefore?.weapons?.find(
+          ({ weaponId }) => weaponId === attackerBefore.selectedWeaponId,
+        )?.acceptedAttackCount ?? null;
+        await hostPage.keyboard.down('Enter');
+        await delay(720);
+        await hostPage.keyboard.up('Enter');
+        const after = await waitForSnapshotPredicate(
+          hostPage,
+          (candidate) => {
+            const remote = remotePlayer(candidate);
+            const attacker = localPlayer(candidate);
+            const attackCount = attacker?.weapons?.find(
+              ({ weaponId }) => weaponId === attacker.selectedWeaponId,
+            )?.acceptedAttackCount ?? null;
+            return (durability(remote) ?? Infinity) < (durabilityBefore ?? -Infinity)
+              || (attackCount ?? -1) > (attackCountBefore ?? -1);
+          },
+          1_800,
         );
-      }
-      if (
-        (enemyAfter?.health ?? 100) <= 0
-        || enemyAfter?.lifeState === 'dead'
-        || enemyAfter?.alive === false
-      ) {
-        result.killShot = await shoot(hostPage, '04c-kill-confirmed.png');
-        result.guestDeathShot = await shoot(guestPage, '04d-guest-death.png');
-        await delay(3_800);
-        result.guestRespawnShot = await shoot(
-          guestPage,
-          '04e-guest-respawn.png',
+        const enemyAfter = remotePlayer(after);
+        const attackerAfter = localPlayer(after);
+        const attackCountAfter = attackerAfter?.weapons?.find(
+          ({ weaponId }) => weaponId === attackerAfter.selectedWeaponId,
+        )?.acceptedAttackCount ?? null;
+        const cues = after?.presentation?.recentCues ?? [];
+        const damaged = (durability(enemyAfter) ?? Infinity)
+          < (durabilityBefore ?? -Infinity);
+        const killed = enemyAfter?.lifePhase === 'dead';
+        result.headshotCueObserved ||= cues.some(
+          ({ cue }) => cue === 'head' || cue === 'head_kill',
         );
-        const respawned = await snapshot(guestPage);
-        result.respawn = {
-          guestPosition: respawned?.localAuthoritativePosition ?? null,
-          guestHealth: localPlayer(respawned)?.health ?? null,
-        };
-        break;
+        result.engagements.push({
+          attempt,
+          distanceMillimeters: distance === null ? null : Math.round(distance),
+          attackerWeaponId: attackerAfter?.selectedWeaponId ?? null,
+          attackCountBefore,
+          attackCountAfter,
+          enemyWeaponIdBefore: selectedBefore ?? null,
+          enemyHealthBefore: healthBefore,
+          enemyHealthAfter: enemyAfter?.healthPoints ?? null,
+          enemyShieldBefore: shieldBefore,
+          enemyShieldAfter: enemyAfter?.shieldPoints ?? null,
+          enemyLifePhase: enemyAfter?.lifePhase ?? null,
+          damaged,
+          killed,
+          recentCues: cues,
+          hostScore: after?.combat?.snapshot?.match ?? null,
+        });
+        if (damaged && !result.damageObserved) {
+          result.damageObserved = true;
+          result.damageShot = await shoot(hostPage, '04-damage-confirmed.png');
+          result.guestDamageShot = await shoot(
+            guestPage,
+            '04b-guest-damage-received.png',
+          );
+        }
+        if (killed) {
+          result.killObserved = true;
+          result.killShot = await shoot(hostPage, '04c-kill-confirmed.png');
+          result.guestDeathShot = await shoot(guestPage, '04d-guest-death.png');
+          const respawned = await waitForSnapshotPredicate(
+            guestPage,
+            (candidate) => localPlayer(candidate)?.lifePhase === 'alive'
+              && (localPlayer(candidate)?.healthPoints ?? 0) > 0,
+            8_000,
+          );
+          result.respawnObserved = localPlayer(respawned)?.lifePhase === 'alive';
+          result.guestRespawnShot = await shoot(
+            guestPage,
+            '04e-guest-respawn-observation.png',
+          );
+          result.respawn = {
+            guestPosition: respawned?.localAuthoritativePosition ?? null,
+            guestHealthPoints: localPlayer(respawned)?.healthPoints ?? null,
+            guestShieldPoints: localPlayer(respawned)?.shieldPoints ?? null,
+            guestLifePhase: localPlayer(respawned)?.lifePhase ?? null,
+          };
+          break;
+        }
       }
+      const final = await snapshot(hostPage);
+      result.finalMatch = final?.combat?.snapshot?.match ?? null;
+      result.presentationCues = final?.presentation?.recentCues ?? [];
+      const completeSequence = result.damageObserved
+        && result.killObserved
+        && result.respawnObserved;
+      return auditResult(
+        completeSequence || result.damageObserved ? 'partial' : 'unknown',
+        result,
+        {
+          severity: completeSequence
+            ? 'human-review-required'
+            : 'combat-proof-incomplete',
+          summary: completeSequence
+            ? 'Authority damage, kill, and respawn were observed; headshot readability, kill-banner quality, animation, audio, and feel remain human-review items.'
+            : result.damageObserved
+              ? 'Damage was observed, but the full kill/death/respawn sequence was not completed.'
+              : 'No authoritative victim damage was observed; weapon input alone is not combat proof.',
+        },
+      );
+    } finally {
+      await releaseGameplayInputs(hostPage);
     }
-    const final = await snapshot(hostPage);
-    result.finalMatch = final?.combat?.snapshot?.match ?? null;
-    return result;
   });
 
   await stage('scoreboard_probe', async () => {
@@ -694,10 +1080,20 @@ try {
     });
     const shot = await shoot(hostPage, '05-tab-scoreboard.png', true);
     await hostPage.keyboard.up('Tab');
-    return { domScoreboard, shot, present: domScoreboard.length > 0 };
+    const detail = { domScoreboard, shot, present: domScoreboard.length > 0 };
+    return auditResult(
+      detail.present ? 'partial' : 'unknown',
+      detail,
+      {
+        severity: detail.present ? 'human-review-required' : 'hud-unproven',
+        summary: detail.present
+          ? 'The hold-Tab scoreboard is present; opacity, density, scale, and visual fit still require human review.'
+          : 'The hold-Tab scoreboard was not found.',
+      },
+    );
   });
 
-  await stage('reconnect_resume', async () => {
+  await stage('refresh_rejoin', async () => {
     if (!matchJoined) return { skipped: 'no active match' };
     const before = await snapshot(guestPage);
     const playerIdBefore = before?.playerId ?? null;
@@ -715,7 +1111,7 @@ try {
     await delay(900);
     const after = await snapshot(guestPage);
     const resumedShot = await shoot(guestPage, '06b-reconnect-resumed.png');
-    return {
+    const detail = {
       bannerShot,
       resumedShot,
       playerIdPreserved: playerIdBefore !== null
@@ -727,18 +1123,33 @@ try {
       guestPlayersSeen:
         after?.combat?.snapshot?.players?.length ?? null,
     };
+    return auditResult(
+      'partial',
+      detail,
+      {
+        severity: 'scope-limit',
+        summary: 'This stage observes browser refresh/rejoin only. It does not exercise or judge the product secure-resume path.',
+      },
+    );
   });
 
   await stage('performance_sample', async () => {
     if (!matchJoined) return { skipped: 'no active match' };
     await hostPage.evaluate(() => {
-      const state = { frames: [], longTasks: [] };
+      const state = {
+        frames: [],
+        longTasks: [],
+        running: true,
+        startedAt: performance.now(),
+        stoppedAt: null,
+      };
       globalThis.__FABLE5_PERF__ = state;
       let previous = performance.now();
       const tick = (now) => {
+        if (!state.running) return;
         state.frames.push(now - previous);
         previous = now;
-        if (state.frames.length < 900) requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
       try {
@@ -752,16 +1163,28 @@ try {
         state.longTasks = null;
       }
     });
-    // Generate representative load: strafe + fire bursts.
-    for (let index = 0; index < 4; index += 1) {
-      await hostPage.keyboard.down(index % 2 === 0 ? 'KeyA' : 'KeyD');
-      await hostPage.keyboard.down('Enter');
-      await delay(900);
-      await hostPage.keyboard.up('Enter');
-      await hostPage.keyboard.up(index % 2 === 0 ? 'KeyA' : 'KeyD');
-      await delay(250);
+    try {
+      // Generate bounded two-client load: strafe + fire bursts. The sampler
+      // remains active until all scripted load and the settle window finish.
+      for (let index = 0; index < 4; index += 1) {
+        await hostPage.keyboard.down(index % 2 === 0 ? 'KeyA' : 'KeyD');
+        await hostPage.keyboard.down('Enter');
+        await delay(900);
+        await hostPage.keyboard.up('Enter');
+        await hostPage.keyboard.up(index % 2 === 0 ? 'KeyA' : 'KeyD');
+        await delay(250);
+      }
+      await delay(4_500);
+    } finally {
+      await releaseGameplayInputs(hostPage);
+      await hostPage.evaluate(() => {
+        const state = globalThis.__FABLE5_PERF__;
+        if (state !== undefined) {
+          state.running = false;
+          state.stoppedAt = performance.now();
+        }
+      });
     }
-    await delay(4_500);
     const perf = await hostPage.evaluate(() => {
       const state = globalThis.__FABLE5_PERF__;
       const frames = [...(state?.frames ?? [])].sort((a, b) => a - b);
@@ -792,27 +1215,62 @@ try {
           ? null
           : Number(frames[frames.length - 1].toFixed(2)),
         longTasks: state?.longTasks ?? null,
+        durationMilliseconds: state?.stoppedAt === null
+          ? null
+          : Number((state.stoppedAt - state.startedAt).toFixed(2)),
         memory,
       };
     });
-    return perf;
+    return auditResult(
+      'partial',
+      perf,
+      {
+        severity: 'scope-limit',
+        summary: 'Performance sampling spans the scripted load, but remains headless two-client evidence and cannot stand in for the required 2/4/8 combat matrix or human hardware experience.',
+      },
+    );
   });
 
   await stage('hud_viewport_matrix', async () => {
     if (!matchJoined) return { skipped: 'no active match' };
-    const shots = {};
-    await hostPage.setViewportSize({ width: 1_920, height: 1_080 });
-    await delay(700);
-    shots.fullHd = await shoot(hostPage, '07-hud-1920x1080.png', true);
-    await hostPage.setViewportSize({ width: 1_024, height: 640 });
-    await delay(700);
-    shots.narrow = await shoot(hostPage, '07b-hud-1024x640.png', true);
-    await hostPage.setViewportSize({ width: 2_560, height: 1_080 });
-    await delay(700);
-    shots.ultrawide = await shoot(hostPage, '07c-hud-2560x1080.png', true);
+    const samples = {};
+    const sampleViewport = async (name, width, height, filename) => {
+      await hostPage.setViewportSize({ width, height });
+      await delay(700);
+      const shot = await shoot(hostPage, filename, true);
+      const layout = await hostPage.evaluate(() => ({
+        abilityLabels: [...document.querySelectorAll('.online-session__ability-name')]
+          .map((node) => ({
+            text: node.textContent?.trim() ?? '',
+            clientWidth: node.clientWidth,
+            scrollWidth: node.scrollWidth,
+            clipped: node.scrollWidth > node.clientWidth + 1,
+          })),
+        horizontalOverflow: document.documentElement.scrollWidth
+          > document.documentElement.clientWidth + 1,
+        hudContract: document.body.dataset.onlineHud ?? null,
+        uiSystem: document.body.dataset.uiSystem ?? null,
+      }));
+      samples[name] = { width, height, shot, layout };
+    };
+    await sampleViewport('fullHd', 1_920, 1_080, '07-hud-1920x1080.png');
+    await sampleViewport('narrow', 1_024, 640, '07b-hud-1024x640.png');
+    await sampleViewport('ultrawide', 2_560, 1_080, '07c-hud-2560x1080.png');
     await hostPage.setViewportSize({ width: 1_440, height: 900 });
     await delay(500);
-    return shots;
+    const clipped = Object.values(samples).flatMap(
+      ({ layout }) => layout.abilityLabels.filter(({ clipped: value }) => value),
+    );
+    return auditResult(
+      'partial',
+      { samples, clippedAbilityLabels: clipped },
+      {
+        severity: clipped.length === 0 ? 'human-review-required' : 'layout-defect',
+        summary: clipped.length === 0
+          ? 'Representative desktop HUD viewports fit mechanically; hierarchy, density, consistency, and style still require human review.'
+          : `HUD ability text clips in ${clipped.length} measured viewport occurrences.`,
+      },
+    );
   });
 
   await stage('practice_parity_probe', async () => {
@@ -823,6 +1281,11 @@ try {
         waitUntil: 'domcontentloaded',
       });
       await delay(1_200);
+      result.practiceMapTitle = await practicePage.locator('#practice-title')
+        .textContent().catch(() => null);
+      result.onlineMapReference = await hostPage.evaluate(
+        () => document.body.dataset.onlineMapReference ?? null,
+      );
       const links = await practicePage.evaluate(() => (
         [...document.querySelectorAll('a, button')]
           .map((node) => ({
@@ -849,21 +1312,24 @@ try {
         await practicePage.keyboard.press('Escape').catch(() => undefined);
         await delay(400);
       }
-      const startPractice = practicePage.getByRole('button', {
-        name: /start practice/iu,
-      });
+      const startPractice = practicePage.locator('#play-btn');
       if (await startPractice.count() > 0) {
         await startPractice.first().click();
-        await delay(4_000);
+        await practicePage.locator('#hud:not(.hidden)')
+          .waitFor({ state: 'visible', timeout: 15_000 });
+        await delay(1_500);
         result.practiceShot = await shoot(
           practicePage,
           '08b-practice-entry.png',
           true,
         );
         const practiceHud = await practicePage.evaluate(() => ({
-          weaponRailSlots: document
-            .querySelectorAll('.online-session__weapon-slot').length,
+          weaponRailSlots: document.querySelector('#weapon-slots')
+            ?.children.length ?? 0,
           abilityRack: document.querySelector('#ability-rack') !== null,
+          abilitySlots: document.querySelectorAll('#ability-rack .ability-slot').length,
+          hudVisible: !document.querySelector('#hud')?.classList.contains('hidden'),
+          weaponName: document.querySelector('#weapon-name')?.textContent?.trim() ?? null,
           hudRoot: document.body.dataset.uiSystem ?? null,
         }));
         result.practiceHud = practiceHud;
@@ -875,16 +1341,44 @@ try {
         );
       } else {
         result.practiceShot = null;
-        result.practiceNote = 'No Start practice button discovered.';
+        result.practiceNote = 'No #play-btn practice entry was discovered.';
       }
     } finally {
       await practicePage.close().catch(() => undefined);
     }
-    return result;
+    const practiceStarted = result.practiceHud?.hudVisible === true;
+    const mapConverged = /inkfall/iu.test(result.practiceMapTitle ?? '');
+    return auditResult(
+      practiceStarted ? 'partial' : 'unknown',
+      { ...result, mapConverged },
+      {
+        severity: mapConverged ? 'human-review-required' : 'product-divergence',
+        summary: mapConverged
+          ? 'Practice launched on the same named map family; full gameplay/HUD parity still requires review.'
+          : 'Practice launches, but it still identifies as Iron Bastion while online uses Inkfall Foundry; Practice/online convergence is not complete.',
+      },
+    );
   });
 } finally {
+  if (consoleErrors.length > 0) {
+    recordFinding(
+      'runtime_errors',
+      'console-error',
+      `${consoleErrors.length} browser console error(s) were captured.`,
+      consoleErrors.slice(0, 20),
+    );
+  }
+  if (pageErrors.length > 0) {
+    recordFinding(
+      'runtime_errors',
+      'page-error',
+      `${pageErrors.length} uncaught page error(s) were captured.`,
+      pageErrors.slice(0, 20),
+    );
+  }
   const report = {
-    harness: 'fable5-full-game-audit-v1',
+    harness: 'fable5-full-game-audit-v2',
+    harnessSha256,
     startedAtIso,
     finishedAtIso: new Date().toISOString(),
     repository: {
@@ -892,6 +1386,7 @@ try {
       branch: repositoryBranch,
       statusShort: repositoryStatus === '' ? 'clean' : repositoryStatus,
     },
+    coverage: auditCoverageLedger(),
     stages,
     findings,
     consoleErrors: consoleErrors.slice(0, 60),
@@ -911,9 +1406,19 @@ try {
   ]);
   await stopService(vite);
   await stopService(wrangler);
+  await fs.rm(authorityState, { recursive: true, force: true });
+  if (createdDistPlaceholder) {
+    await fs.rm(path.join(repo, 'dist', 'audit-placeholder.txt'), {
+      force: true,
+    });
+  }
   process.stdout.write(`AUDIT_REPORT ${path.join(output, 'audit-report.json')}\n`);
   const failedStages = Object.entries(stages)
     .filter(([, value]) => value.status === 'failed')
     .map(([name]) => name);
   process.stdout.write(`AUDIT_STAGES_FAILED ${JSON.stringify(failedStages)}\n`);
+  const nonPassedStages = Object.entries(stages)
+    .filter(([, value]) => value.status !== 'passed')
+    .map(([name, value]) => ({ name, status: value.status }));
+  process.stdout.write(`AUDIT_STAGES_NON_PASS ${JSON.stringify(nonPassedStages)}\n`);
 }
