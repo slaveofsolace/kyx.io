@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kyx-io-preview",
+  "pages_build_output_dir": "../../dist",
+  "compatibility_date": "2026-07-30",
+  "services": [
+    {
+      "binding": "KYX_AUTHORITY",
+      "service": "kyx-io-authority-staging"
+    }
+  ]
+}

@@ -7,12 +7,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:staging": "vite build --mode staging",
+    "build:staging": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:worker": "tsc -p tsconfig.worker.json --noEmit",
+    "typecheck:pages": "tsc -p tsconfig.pages.json --noEmit",
     "typecheck:sim": "tsc -p tsconfig.sim-source.json --noEmit && tsc -p tsconfig.sim.json --noEmit",
-    "lint": "eslint \"src/**/*.ts\" \"worker/**/*.ts\" \"tests/**/*.ts\" \"tools/**/*.mjs\" \"vitest.worker.config.ts\" \"vitest.authority-soak.config.ts\" --no-error-on-unmatched-pattern",
+    "lint": "eslint \"src/**/*.ts\" \"worker/**/*.ts\" \"cloudflare/pages-preview/functions/**/*.ts\" \"tests/**/*.ts\" \"tools/**/*.mjs\" \"vitest.worker.config.ts\" \"vitest.authority-soak.config.ts\" --no-error-on-unmatched-pattern",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:unit": "vitest run tests/unit",
@@ -27,6 +28,8 @@
     "test:worker": "vitest run --config vitest.worker.config.ts --maxWorkers=1 --no-isolate",
     "dev:authority": "wrangler dev --local --port 8787",
     "check:worker": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env=\"\"",
+    "deploy:staging:authority": "wrangler deploy --env staging",
+    "deploy:staging:pages": "wrangler pages deploy ../../dist --project-name kyx-io-preview --branch main --cwd cloudflare/pages-preview",
     "validate:assets": "node tools/assets/validate-manifests.mjs",
     "validate:assets:release": "node tools/assets/validate-manifests.mjs --release",
     "verify:release-package": "node tools/assets/verify-release-package.mjs",
@@ -52,7 +55,7 @@
   "license": "UNLICENSED",
   "packageManager": "npm@11.18.0",
   "engines": {
-    "node": ">=20.19.0 <25",
+    "node": ">=22 <25",
     "npm": ">=11 <12"
   },
   "dependencies": {

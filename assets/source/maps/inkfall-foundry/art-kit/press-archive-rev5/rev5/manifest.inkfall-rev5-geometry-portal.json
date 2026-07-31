@@ -25,123 +25,123 @@
   ],
   "reviewRenders": [
     {
-      "bytes": 1378802,
+      "bytes": 1471224,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-gameplay_continuity.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "4ae15a5e175cc7d49568345abbc3dcfebe3c17be9f3d578964e30fcfad035fcf",
+      "sha256": "7db59ef7f5e494d7787f2eea7c81410101c629f135716846ff761e5ddc55a76f",
       "view": "gameplay_continuity"
     },
     {
-      "bytes": 1402123,
+      "bytes": 1368842,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-press_entry.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "64aa3c4d96f0ddfd94a79ef84c943f0f9a137a7b503f5ed2bfec998a8bf99e10",
+      "sha256": "a078fff43610bdd5d1e12262c01dae72e7ee3156054f081ba015f3dd3f7f3007",
       "view": "press_entry"
     },
     {
-      "bytes": 1436018,
+      "bytes": 1381981,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-archive_rise.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "7024ba87c267bb4923a8afa600f774a4dc01f79623a728e500f21b4df72f31b3",
+      "sha256": "d619c56cba4313033a731e16fd6d2cf828b493e40bdd4b7997f4bc310fa76355",
       "view": "archive_rise"
     },
     {
-      "bytes": 1329914,
+      "bytes": 1340154,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-landing_arrival.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "d7125440cff0bdcb42adce551bd99401d41e77836882c7a9475fc62189595b0e",
+      "sha256": "6057395ef01b97c396b2d126926af9c4669dc680bf423074455e78a9521f7d23",
       "view": "landing_arrival"
     },
     {
-      "bytes": 1303605,
+      "bytes": 1152872,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-index_wheel.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "4e64e70da35d1fcbd28803a1b1590e36d2233a8a6457f3a8a500e493f5d151c5",
+      "sha256": "86690772baf8c2e6d6df2518fe71a387e6f3a3f18e77219e8841fcebebe2b700",
       "view": "index_wheel"
     },
     {
-      "bytes": 1489296,
+      "bytes": 1307350,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-press_return.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "14d4d3a8286f23086d52fda37109fefc1633a9da59490cd201a03e0154e8cceb",
+      "sha256": "89b59fec723372240f67d5cbf74055207ff3d4a9ba945bf3280fedb80b4bd323",
       "view": "press_return"
     },
     {
-      "bytes": 1454133,
+      "bytes": 1286018,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-overhead_context.png",
       "resolution": [
         1600,
         1200
       ],
-      "sha256": "a0234cbf449fe1b62f8119e04df78da931bc63d5aa408e6de9578457b2365bfe",
+      "sha256": "ce247c637382bf125d8e1cdc18576cf495d0378ed26d25dcfe51a58730c321f3",
       "view": "overhead_context"
     },
     {
-      "bytes": 1377395,
+      "bytes": 1269197,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-portal_lower.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "2d2cd453e813d7e7c360a081665ff4d9b1a5c51a71e3744e4566cfce24d1d66d",
+      "sha256": "2c9b10339f456ae31ac5534e3a066d0c49a3086062d8298adaa1f71b9f0155da",
       "view": "portal_lower"
     },
     {
-      "bytes": 1484773,
+      "bytes": 1392626,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-portal_upper.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "59a97e492419ffb0a298d705580e3e4f46caa2955580e03a6c0876d0231b7b96",
+      "sha256": "6ad7be8a98e11228efdbc1ba20a83094951468cbe6d5d6bf1fd9c60977428249",
       "view": "portal_upper"
     },
     {
-      "bytes": 1252157,
+      "bytes": 1156386,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-bridge_support.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "211eff9ae534af61984f42acc319a2b6ecc0e7c875daacf8f70d0bd497b9e423",
+      "sha256": "c1fdb05c0ed6f6f64acc92d31910c393df8c1aa6d4bfcd40d885419203b7aac0",
       "view": "bridge_support"
     },
     {
-      "bytes": 786365,
+      "bytes": 1051346,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-bridge_foundation_contact.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "72d693f8560e4798d3a2f3da4f0fb5708851fb33326c0470d1e57bbc92900df4",
+      "sha256": "9c4d6211e813e1b4c316ea765727678087884874bda47bf4b63d28e9f2a07b58",
       "view": "bridge_foundation_contact"
     },
     {
-      "bytes": 1157696,
+      "bytes": 1222487,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/renders/inkfall-rev5-geometry-portal-landing_foundation_contact.png",
       "resolution": [
         1600,
         900
       ],
-      "sha256": "cce7c2271f585827f17d99620001aab2190077db951d9c5cca11e9ae5a7b7e9e",
+      "sha256": "ce884754bbb2e2942b475110b0e22b8dd8c5c3b421e200117f076ca0b38d80d8",
       "view": "landing_foundation_contact"
     }
   ],
@@ -149,27 +149,27 @@
   "scope": "G5_INKFALL_REV5_GEOMETRY_PORTAL_RENDER_ONLY_NON_DEFAULT",
   "source": {
     "builder": {
-      "bytes": 118038,
+      "bytes": 139838,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/build_press_archive_rev5.py",
-      "sha256": "05929c1cd4936fe3684c135fec9d1ea105f897da00eff069fae0757c8032687a"
+      "sha256": "e32829f1e0ca8896827681c3449bb26323e64a7736fa063d38daee480c77ca29"
     },
     "reviewContextBlend": {
-      "bytes": 1393103,
+      "bytes": 1662453,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/source/inkfall_foundry_rev5_geometry_portal.review-context.blend",
-      "sha256": "fd374207a49f1a16e5a2d46d69277805cef7100a7af6ac86745cddc27ce93353"
+      "sha256": "1fb0ccdf43eb0d391e5310b3376540414ee99c813df5539f7fd28b6c4fcc4a15"
     }
   },
   "stagedRenderExport": {
-    "bytes": 2983004,
+    "bytes": 5093108,
     "canonicalization": {
-      "changedFloatValues": 559655,
+      "changedFloatValues": 970520,
       "decimalPlaces": 5,
       "kind": "canonical_float_accessor_postprocess",
-      "visitedFloatValues": 658388
+      "visitedFloatValues": 1135412
     },
     "containsParentPressHall": false,
     "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/inkfall_foundry_rev5_geometry_portal.render-only-modules.glb",
-    "selectedNodeCount": 26,
+    "selectedNodeCount": 36,
     "selectedNodes": [
       "V5OPT_ARCHIVE_LANDING_V3_AQUA_INDICATOR",
       "V5OPT_ARCHIVE_LANDING_V3_CAST_IRON",
@@ -185,6 +185,16 @@
       "V5OPT_ARCHIVE_RISE_V3_USED_CERAMIC",
       "V5OPT_ARCHIVE_RISE_V3_WORN_AMBER",
       "V5OPT_ARCHIVE_RISE_V3_WORN_STEEL",
+      "V5OPT_FOUNDRY_ENVIRONMENT_CEILING_V3_CAST_IRON",
+      "V5OPT_FOUNDRY_ENVIRONMENT_CEILING_V3_INK_BLACK",
+      "V5OPT_FOUNDRY_ENVIRONMENT_CEILING_V3_WORN_STEEL",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_CAST_IRON",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_CHIPPED_SAFETY_RED",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_GREASED_LINKAGE",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_INK_BLACK",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_USED_CERAMIC",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_WORN_AMBER",
+      "V5OPT_FOUNDRY_ENVIRONMENT_V3_WORN_STEEL",
       "V5OPT_PORTAL_RED_FOLD_LOWER_V3_AQUA_INDICATOR",
       "V5OPT_PORTAL_RED_FOLD_LOWER_V3_CAST_IRON",
       "V5OPT_PORTAL_RED_FOLD_LOWER_V3_CHIPPED_SAFETY_RED",
@@ -198,14 +208,14 @@
       "V5OPT_PORTAL_RED_FOLD_UPPER_V5_PORTAL_ENERGY_RED_FOLD_UPPER",
       "V5OPT_PORTAL_RED_FOLD_UPPER_V5_PORTAL_FILAMENT_RED_FOLD_UPPER"
     ],
-    "sha256": "1f8c556e3d8c0127933332bf1dbc19e585f050c7df3f10405db2b103ab307f27"
+    "sha256": "e48b0b16083da337c71ed9ba8af3a244a0d5b613e0dcaed13857ba8f89cd4ae2"
   },
   "status": "ready_for_human_visual_and_play_readability_review",
   "validation": {
     "buildReport": {
-      "bytes": 241020,
+      "bytes": 245609,
       "path": "assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/validation/inkfall-rev5-geometry-portal-build-report.json",
-      "sha256": "8c2dcb5ab8f1299d2872ff8cccc584dde9ccd69006c92ac2cdf61cd511020927",
+      "sha256": "6e3a81b57695b583a57d0c641ceda18fbe183927edb922eb6ddac03525c3e333",
       "status": "INKFALL_REV5_GEOMETRY_PORTAL_BUILD_PASS_HUMAN_REVIEW_OPEN"
     }
   }

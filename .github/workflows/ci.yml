@@ -20,9 +20,15 @@ jobs:
     timeout-minutes: 35
     env:
       CI: true
+      GIT_LFS_SKIP_SMUDGE: 1
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Hydrate runtime-critical LFS fixtures
+        run: |
+          git lfs install --local
+          git lfs pull --include="assets/review/runtime-candidates/g6-rev30-cc0-donor/character-lod0.glb,assets/source/maps/inkfall-foundry/export/*.glb,assets/source/maps/inkfall-foundry/revisions/revision-2/export/*.glb,assets/source/maps/inkfall-foundry/revisions/revision-2/source/inkfall_foundry.blend,assets/source/maps/inkfall-foundry/revisions/revision-3/export/*.glb,assets/source/maps/inkfall-foundry/art-kit/press-archive-rev5/rev5/export/*.glb" --exclude=""
 
       - uses: actions/setup-node@v4
         with:
@@ -40,6 +46,9 @@ jobs:
 
       - name: Typecheck Worker
         run: npm run typecheck:worker
+
+      - name: Typecheck Pages staging proxy
+        run: npm run typecheck:pages
 
       - name: Typecheck deterministic simulation
         run: npm run typecheck:sim

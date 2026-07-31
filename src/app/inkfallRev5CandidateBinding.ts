@@ -17,12 +17,12 @@ import {
 
 export const INKFALL_REV5_CANDIDATE_ART = Object.freeze({
   revision: '5.0',
-  bytes: 2_983_004,
-  sha256: '1f8c556e3d8c0127933332bf1dbc19e585f050c7df3f10405db2b103ab307f27',
-  nodeCount: 26,
-  meshCount: 26,
-  primitiveCount: 26,
-  triangleCount: 50_620,
+  bytes: 5_093_108,
+  sha256: 'e48b0b16083da337c71ed9ba8af3a244a0d5b613e0dcaed13857ba8f89cd4ae2',
+  nodeCount: 36,
+  meshCount: 36,
+  primitiveCount: 36,
+  triangleCount: 81_412,
   materialCount: 13,
 } as const);
 
@@ -61,7 +61,9 @@ export function inspectInkfallRev5CandidateScene(scene: THREE.Object3D) {
   let landingMeshCount = 0;
   let lowerPortalMeshCount = 0;
   let upperPortalMeshCount = 0;
+  let environmentMeshCount = 0;
   let energySurfaceMeshCount = 0;
+  let filamentSurfaceMeshCount = 0;
 
   scene.traverse((object) => {
     if (!(object as THREE.Mesh).isMesh) return;
@@ -75,8 +77,14 @@ export function inspectInkfallRev5CandidateScene(scene: THREE.Object3D) {
     } else if (object.name.startsWith('V5OPT_PORTAL_RED_FOLD_UPPER_')) {
       upperPortalMeshCount += 1;
     }
+    if (object.name.startsWith('V5OPT_FOUNDRY_ENVIRONMENT_')) {
+      environmentMeshCount += 1;
+    }
     if (object.name.includes('_V5_PORTAL_ENERGY_')) {
       energySurfaceMeshCount += 1;
+    }
+    if (object.name.includes('_V5_PORTAL_FILAMENT_')) {
+      filamentSurfaceMeshCount += 1;
     }
   });
 
@@ -90,8 +98,10 @@ export function inspectInkfallRev5CandidateScene(scene: THREE.Object3D) {
       riseMeshCount === 6
       && landingMeshCount === 8
       && lowerPortalMeshCount === 6
-      && upperPortalMeshCount === 6,
+      && upperPortalMeshCount === 6
+      && environmentMeshCount === 10,
     pairedEnergizedSurfaces: energySurfaceMeshCount === 2,
+    pairedDirectionalFilamentSurfaces: filamentSurfaceMeshCount === 2,
     horizontalBoundsInsideAuthorityPackage:
       overall.min.x >= -36
       && overall.max.x <= 36
@@ -110,7 +120,9 @@ export function inspectInkfallRev5CandidateScene(scene: THREE.Object3D) {
     landingMeshCount,
     lowerPortalMeshCount,
     upperPortalMeshCount,
+    environmentMeshCount,
     energySurfaceMeshCount,
+    filamentSurfaceMeshCount,
     checks,
     allChecksPassed: true,
   });

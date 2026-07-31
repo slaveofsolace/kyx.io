@@ -181,6 +181,10 @@ const ledger = JSON.parse(readFileSync(ledgerPath, 'utf8'));
 const packageManifest = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
 const packageLock = JSON.parse(readFileSync(join(root, 'package-lock.json'), 'utf8'));
 const wrangler = JSON.parse(readFileSync(join(root, 'wrangler.jsonc'), 'utf8'));
+const pagesWrangler = JSON.parse(
+  readFileSync(join(root, 'cloudflare/pages-preview/wrangler.jsonc'), 'utf8'),
+);
+const pagesRoutes = JSON.parse(readFileSync(join(root, 'public/_routes.json'), 'utf8'));
 const publicHeaders = readFileSync(join(root, 'public/_headers'), 'utf8');
 const tracked = trackedPaths();
 const trackedSet = new Set(tracked);
@@ -371,6 +375,31 @@ record(
     productionNamespaceReuseAbsent,
     configuredStagingOriginsAreLoopback,
     sameOriginDeploymentAccess: 'validated by Worker CORS tests',
+  },
+);
+
+const pagesServiceBindings = pagesWrangler.services ?? [];
+const exactPagesAuthorityBinding = pagesServiceBindings.length === 1
+  && pagesServiceBindings[0]?.binding === 'KYX_AUTHORITY'
+  && pagesServiceBindings[0]?.service === 'kyx-io-authority-staging'
+  && pagesServiceBindings[0]?.environment === undefined;
+const exactPagesFunctionRoutes = pagesRoutes.version === 1
+  && JSON.stringify(pagesRoutes.include) === JSON.stringify(['/api/*', '/health'])
+  && Array.isArray(pagesRoutes.exclude)
+  && pagesRoutes.exclude.length === 0;
+record(
+  'cloudflare_pages_preview_is_staging_only_same_origin',
+  pagesWrangler.name === 'kyx-io-preview'
+    && pagesWrangler.pages_build_output_dir === '../../dist'
+    && pagesWrangler.account_id === undefined
+    && exactPagesAuthorityBinding
+    && exactPagesFunctionRoutes,
+  {
+    pagesProjectName: pagesWrangler.name ?? null,
+    pagesBuildOutputDirectory: pagesWrangler.pages_build_output_dir ?? null,
+    accountIdAbsent: pagesWrangler.account_id === undefined,
+    exactPrivateStagingAuthorityBinding: exactPagesAuthorityBinding,
+    exactFunctionRoutes: exactPagesFunctionRoutes,
   },
 );
 

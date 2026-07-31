@@ -1,9 +1,11 @@
-"""Build the Inkfall Foundry Rev5 structural/portal correction.
+"""Build the Inkfall Foundry Rev5 structural/environment/portal candidate.
 
 Rev5 is a derivative presentation pass over the frozen KYX.IO Press Hall
-source. It corrects the rejected Rev4 bridge construction and authors a paired
-Red Fold portal landmark. Exported meshes are render-only; Revision 3 collision,
-spawns, zones, package identity, and catalog default remain immutable.
+source. It preserves the accepted bridge/landing support correction, replaces
+the rejected flat Red Fold field with a paired destination tunnel, and adds one
+worn production-line enclosure/detail layer. Exported meshes are render-only;
+Revision 3 collision, spawns, zones, package identity, and catalog default
+remain immutable.
 
 The upstream NotHereButAfk/Ev.io ref was inspected only for abstract layout
 principles. No upstream code, assets, constants, coordinates, or wording are
@@ -905,12 +907,15 @@ def tune_material_values(
 ) -> dict[str, Any]:
     values = rev4.tune_rev4_material_values(materials)
     overrides = {
-        "V3_USED_CERAMIC": ((0.56, 0.58, 0.59, 1.0), 0.02, 0.62),
-        "V3_WORN_STEEL": ((0.32, 0.38, 0.40, 1.0), 0.46, 0.43),
-        "V3_CAST_IRON": ((0.18, 0.23, 0.24, 1.0), 0.34, 0.50),
-        "V3_INK_BLACK": ((0.08, 0.115, 0.125, 1.0), 0.10, 0.63),
-        "V3_AQUA_INDICATOR": ((0.05, 0.62, 0.69, 1.0), 0.12, 0.25),
-        "V3_WORN_AMBER": ((0.76, 0.40, 0.07, 1.0), 0.18, 0.36),
+        # A worn production-line hierarchy replaces the bright graybox read:
+        # warm oxide-coated panels over dark steel/cast structure, with aqua
+        # and amber reserved for navigation and active machinery.
+        "V3_USED_CERAMIC": ((0.070, 0.064, 0.055, 1.0), 0.06, 0.78),
+        "V3_WORN_STEEL": ((0.040, 0.052, 0.055, 1.0), 0.56, 0.52),
+        "V3_CAST_IRON": ((0.018, 0.024, 0.026, 1.0), 0.44, 0.64),
+        "V3_INK_BLACK": ((0.005, 0.008, 0.010, 1.0), 0.16, 0.76),
+        "V3_AQUA_INDICATOR": ((0.018, 0.39, 0.45, 1.0), 0.18, 0.29),
+        "V3_WORN_AMBER": ((0.60, 0.245, 0.028, 1.0), 0.22, 0.40),
     }
     for name, (color, metallic, roughness) in overrides.items():
         material = materials[name]
@@ -1741,6 +1746,359 @@ def build_cc0_donor_service_language(
     }
 
 
+def build_foundry_environment_layer(
+    materials: dict[str, bpy.types.Material],
+) -> dict[str, Any]:
+    """Enclose the hall with one restrained, authored production-line language.
+
+    Every piece stays outside the center combat floor or above the inherited
+    shell. It is presentation-only: the frozen Revision 3 collision/spawn/zone
+    package remains the sole gameplay authority.
+    """
+
+    zone = "foundry_environment"
+    cast = materials["V3_CAST_IRON"]
+    steel = materials["V3_WORN_STEEL"]
+    ceramic = materials["V3_USED_CERAMIC"]
+    ink = materials["V3_INK_BLACK"]
+    grease = materials["V3_GREASED_LINKAGE"]
+    amber = materials["V3_WORN_AMBER"]
+    safety = materials["V3_CHIPPED_SAFETY_RED"]
+
+    # The north shell deliberately leaves the archive-rise approach
+    # (x < -10.5) open. All other wall plates sit just beyond the inherited
+    # Press Hall bounds instead of pretending to be new collision.
+    shell_panels = (
+        ("NORTH_0", (5.8, 0.32, 8.4), (-7.45, 10.80, 4.12)),
+        ("NORTH_1", (6.6, 0.32, 8.4), (-0.95, 10.80, 4.12)),
+        ("NORTH_2", (6.6, 0.32, 8.4), (6.25, 10.80, 4.12)),
+        ("NORTH_3", (6.6, 0.32, 8.4), (13.45, 10.80, 4.12)),
+        ("NORTH_4", (2.2, 0.32, 8.4), (21.10, 10.80, 4.12)),
+        ("SOUTH_0", (10.2, 0.32, 8.4), (-17.15, -11.98, 4.12)),
+        ("SOUTH_1", (5.0, 0.32, 8.4), (-9.35, -11.98, 4.12)),
+        ("SOUTH_2", (10.8, 0.32, 8.4), (4.05, -11.98, 4.12)),
+        ("SOUTH_3", (12.0, 0.32, 8.4), (16.40, -11.98, 4.12)),
+        ("EAST_0", (0.32, 5.2, 8.4), (22.94, -8.60, 4.12)),
+        ("EAST_1", (0.32, 5.2, 8.4), (22.94, -2.90, 4.12)),
+        ("EAST_2", (0.32, 5.2, 8.4), (22.94, 2.80, 4.12)),
+        ("EAST_3", (0.32, 5.2, 8.4), (22.94, 8.50, 4.12)),
+        ("WEST_0", (0.32, 5.2, 8.4), (-22.94, -8.60, 4.12)),
+        ("WEST_1", (0.32, 5.2, 8.4), (-22.94, -2.90, 4.12)),
+        ("WEST_2", (0.32, 5.2, 8.4), (-22.94, 2.80, 4.12)),
+        ("WEST_3", (0.32, 5.2, 8.4), (-22.94, 8.50, 4.12)),
+    )
+    for index, (token, dimensions, location) in enumerate(shell_panels):
+        add_box(
+            f"V5_FOUNDRY_SHELL_{token}",
+            dimensions,
+            location,
+            cast if index % 3 else ink,
+            zone,
+            "foundry_enclosure_panel",
+            bevel=0.035,
+        )
+
+        width_x, width_y, _ = dimensions
+        if token.startswith("NORTH"):
+            inset_dimensions = (max(0.8, width_x - 0.46), 0.08, 2.45)
+            inset_location = (location[0], location[1] - 0.20, 4.34)
+        elif token.startswith("SOUTH"):
+            inset_dimensions = (max(0.8, width_x - 0.46), 0.08, 2.45)
+            inset_location = (location[0], location[1] + 0.20, 4.34)
+        elif token.startswith("EAST"):
+            inset_dimensions = (0.08, max(0.8, width_y - 0.46), 2.45)
+            inset_location = (location[0] - 0.20, location[1], 4.34)
+        else:
+            inset_dimensions = (0.08, max(0.8, width_y - 0.46), 2.45)
+            inset_location = (location[0] + 0.20, location[1], 4.34)
+        add_box(
+            f"V5_FOUNDRY_SHELL_{token}_RECESSED_SKIN",
+            inset_dimensions,
+            inset_location,
+            ceramic if index % 4 in (1, 2) else steel,
+            zone,
+            "foundry_recessed_wall_skin",
+            bevel=0.025,
+        )
+
+    wall_ribs: list[tuple[str, tuple[float, float, float], tuple[float, float, float]]] = []
+    for index, x in enumerate((-10.45, -4.28, 2.48, 9.68, 16.88, 22.35)):
+        wall_ribs.append(
+            (
+                f"NORTH_{index}",
+                (0.20, 0.48, 8.72),
+                (x, 10.62, 4.12),
+            )
+        )
+    for index, x in enumerate((-22.35, -12.02, -6.62, -1.57, 9.62, 22.35)):
+        wall_ribs.append(
+            (
+                f"SOUTH_{index}",
+                (0.20, 0.48, 8.72),
+                (x, -11.80, 4.12),
+            )
+        )
+    for side, x in (("EAST", 22.76), ("WEST", -22.76)):
+        for index, y in enumerate((-11.20, -5.75, -0.05, 5.65, 11.15)):
+            wall_ribs.append(
+                (
+                    f"{side}_{index}",
+                    (0.48, 0.20, 8.72),
+                    (x, y, 4.12),
+                )
+            )
+    for token, dimensions, location in wall_ribs:
+        add_box(
+            f"V5_FOUNDRY_WALL_RIB_{token}",
+            dimensions,
+            location,
+            steel,
+            zone,
+            "foundry_structural_wall_rib",
+            bevel=0.025,
+        )
+
+    ceiling_zone = "foundry_environment_ceiling"
+    ceiling_y = (-9.55, -5.75, -1.95, 1.85, 5.65, 9.45)
+    for index, y in enumerate(ceiling_y):
+        coffer = add_box(
+            f"V5_FOUNDRY_CEILING_COFFER_{index}",
+            (44.6, 2.70, 0.18),
+            (0.0, y, 9.22),
+            ink,
+            ceiling_zone,
+            "foundry_ceiling_coffer",
+            bevel=0.025,
+        )
+        coffer["kyx_hide_in_overhead_review"] = True
+        cross_truss = add_box(
+            f"V5_FOUNDRY_CEILING_CROSS_TRUSS_{index}",
+            (44.8, 0.24, 0.34),
+            (0.0, y - 1.48, 8.93),
+            steel,
+            ceiling_zone,
+            "foundry_ceiling_cross_truss",
+            bevel=0.025,
+        )
+        cross_truss["kyx_hide_in_overhead_review"] = True
+    for index, x in enumerate((-14.8, 0.0, 14.8)):
+        longitudinal = add_box(
+            f"V5_FOUNDRY_CEILING_LONGITUDINAL_{index}",
+            (0.28, 21.4, 0.34),
+            (x, -0.15, 8.93),
+            cast,
+            ceiling_zone,
+            "foundry_ceiling_longitudinal",
+            bevel=0.025,
+        )
+        longitudinal["kyx_hide_in_overhead_review"] = True
+
+    # A repeated pipe/manifold vocabulary makes the shell feel serviced,
+    # without scattering freestanding props through the combat read.
+    conduit_count = 0
+    for index, x in enumerate((4.90, 5.42, 5.94, 6.46)):
+        add_cylinder(
+            f"V5_FOUNDRY_NORTH_RISER_{index}",
+            0.085,
+            6.55,
+            (x, 10.46, 4.18),
+            grease,
+            zone,
+            "foundry_attached_service_conduit",
+            vertices=12,
+            bevel=0.012,
+        )
+        conduit_count += 1
+    for index, z in enumerate((1.34, 7.36)):
+        add_beam(
+            f"V5_FOUNDRY_NORTH_PIPE_HEADER_{index}",
+            (4.62, 10.46, z),
+            (11.40, 10.46, z),
+            0.095,
+            grease,
+            zone,
+            "foundry_attached_service_conduit",
+            vertices=12,
+        )
+        conduit_count += 1
+    for side_index, x in enumerate((-22.62, 22.62)):
+        add_beam(
+            f"V5_FOUNDRY_SIDE_CABLE_TRUNK_{side_index}",
+            (x, -9.80, 7.18),
+            (x, 8.90, 7.18),
+            0.12,
+            steel,
+            zone,
+            "foundry_attached_service_conduit",
+            vertices=12,
+        )
+        conduit_count += 1
+
+    # A single pressure-control assembly tells the hall's production story.
+    # It is attached to the north-east shell, visually secondary to the route.
+    add_box(
+        "V5_FOUNDRY_PRESSURE_MANIFOLD_HOUSING",
+        (5.25, 0.42, 2.52),
+        (14.25, 10.43, 3.42),
+        cast,
+        zone,
+        "foundry_pressure_control_assembly",
+        bevel=0.055,
+    )
+    add_box(
+        "V5_FOUNDRY_PRESSURE_MANIFOLD_FACE",
+        (4.65, 0.10, 1.88),
+        (14.25, 10.17, 3.42),
+        steel,
+        zone,
+        "foundry_pressure_control_assembly",
+        bevel=0.035,
+    )
+    for index, x in enumerate((12.82, 14.25, 15.68)):
+        add_cylinder(
+            f"V5_FOUNDRY_PRESSURE_DRUM_{index}",
+            0.31,
+            0.24,
+            (x, 10.02, 3.52),
+            grease,
+            zone,
+            "foundry_pressure_control_assembly",
+            rotation=(math.pi / 2.0, 0.0, 0.0),
+            vertices=18,
+            bevel=0.018,
+        )
+        add_box(
+            f"V5_FOUNDRY_PRESSURE_DATUM_{index}",
+            (0.56, 0.07, 0.075),
+            (x, 9.88, 2.76),
+            amber if index == 1 else steel,
+            zone,
+            "foundry_pressure_control_datum",
+            bevel=0.012,
+        )
+    add_box(
+        "V5_FOUNDRY_REPAIRED_ACCESS_PLATE",
+        (0.08, 3.30, 2.45),
+        (22.67, 3.05, 3.95),
+        ceramic,
+        zone,
+        "foundry_repaired_service_plate",
+        bevel=0.030,
+    )
+    for index, z in enumerate((3.22, 4.68)):
+        add_box(
+            f"V5_FOUNDRY_REPAIRED_ACCESS_SEAM_{index}",
+            (0.055, 2.86, 0.09),
+            (22.61, 3.05, z),
+            safety if index == 0 else grease,
+            zone,
+            "foundry_repair_seam",
+            bevel=0.012,
+        )
+
+    service_wear_traces = (
+        ("NORTH_RISER_0", (0.10, 0.045, 2.20), (4.90, 10.095, 1.58)),
+        ("NORTH_RISER_1", (0.13, 0.045, 1.48), (5.94, 10.095, 1.92)),
+        ("NORTH_RISER_2", (0.09, 0.045, 2.72), (6.46, 10.095, 1.30)),
+        ("MANIFOLD_0", (0.15, 0.045, 1.22), (12.82, 9.925, 1.88)),
+        ("MANIFOLD_1", (0.10, 0.045, 1.68), (14.25, 9.925, 1.62)),
+        ("MANIFOLD_2", (0.12, 0.045, 1.32), (15.68, 9.925, 1.82)),
+        ("REPAIR_DRAIN", (0.045, 0.16, 1.42), (22.585, 2.28, 2.18)),
+        ("SOUTH_PRESS", (0.13, 0.045, 2.36), (7.15, -11.595, 1.46)),
+    )
+    for token, dimensions, location in service_wear_traces:
+        add_box(
+            f"V5_FOUNDRY_SERVICE_WEAR_{token}",
+            dimensions,
+            location,
+            grease,
+            zone,
+            "foundry_service_wear_trace",
+            bevel=0.006,
+        )
+
+    # One flush maintenance spine connects the pressure wall to service access
+    # plates. It breaks the inherited tile repetition without placing cover,
+    # clutter, or implied collision in the combat lane.
+    floor_service_spines = (
+        ("LONGITUDINAL", (0.34, 18.50, 0.052), (9.35, -0.10, 0.054)),
+        ("NORTH_FEED", (12.15, 0.34, 0.052), (15.25, 4.62, 0.054)),
+    )
+    for token, dimensions, location in floor_service_spines:
+        add_box(
+            f"V5_FOUNDRY_FLOOR_SERVICE_SPINE_{token}",
+            dimensions,
+            location,
+            ink,
+            zone,
+            "foundry_flush_floor_service_spine",
+            bevel=0.008,
+        )
+    floor_access_points = (-5.05, -0.10, 4.62)
+    for index, y in enumerate(floor_access_points):
+        add_box(
+            f"V5_FOUNDRY_FLOOR_ACCESS_PLATE_{index}",
+            (1.82, 1.10, 0.060),
+            (9.35, y, 0.066),
+            steel if index != 1 else cast,
+            zone,
+            "foundry_flush_floor_access_plate",
+            bevel=0.035,
+        )
+        add_box(
+            f"V5_FOUNDRY_FLOOR_ACCESS_DATUM_{index}",
+            (0.86, 0.065, 0.022),
+            (9.35, y, 0.110),
+            amber if index == 2 else grease,
+            zone,
+            "foundry_floor_access_datum",
+            bevel=0.008,
+        )
+
+    floor_wear_bands = (
+        ("NORTH", (43.0, 0.42, 0.07), (0.0, 9.72, 0.025)),
+        ("SOUTH", (43.0, 0.42, 0.07), (0.0, -9.72, 0.025)),
+        ("EAST", (0.42, 18.9, 0.07), (21.72, 0.0, 0.025)),
+        ("WEST", (0.42, 18.9, 0.07), (-21.72, 0.0, 0.025)),
+    )
+    for token, dimensions, location in floor_wear_bands:
+        add_box(
+            f"V5_FOUNDRY_PERIMETER_DRAIN_{token}",
+            dimensions,
+            location,
+            ink,
+            zone,
+            "foundry_perimeter_drain_wear",
+            bevel=0.012,
+        )
+
+    return {
+        "designDirection": "worn_production_line_foundry_palimpsest",
+        "shellPanelCount": len(shell_panels),
+        "recessedSkinCount": len(shell_panels),
+        "wallRibCount": len(wall_ribs),
+        "ceilingCofferCount": len(ceiling_y),
+        "ceilingCrossTrussCount": len(ceiling_y),
+        "ceilingLongitudinalCount": 3,
+        "ceilingHiddenInOverheadEvidenceOnly": True,
+        "ceilingIncludedInGameplayAndExport": True,
+        "attachedServiceConduitCount": conduit_count,
+        "pressureControlAssemblyPieceCount": 8,
+        "repairedAccessPieceCount": 3,
+        "serviceWearTraceCount": len(service_wear_traces),
+        "floorServiceSpineCount": len(floor_service_spines),
+        "flushFloorAccessPlateCount": len(floor_access_points),
+        "floorAccessDatumCount": len(floor_access_points),
+        "perimeterDrainWearCount": len(floor_wear_bands),
+        "northArchiveRouteOpeningPreserved": True,
+        "centerCombatFloorFreestandingPropCount": 0,
+        "projectAuthoredMaterialsOnly": True,
+        "renderOnly": True,
+        "collisionAuthority": False,
+        "authorityGeometryModified": False,
+    }
+
+
 def portal_energy_material(
     endpoint_id: str,
     base: bpy.types.Material,
@@ -1758,6 +2116,7 @@ def portal_energy_material(
         if principled is not None:
             principled.inputs["Base Color"].default_value = color
             principled.inputs["Alpha"].default_value = alpha
+            principled.inputs["Roughness"].default_value = 0.24
             emission_color = principled.inputs.get("Emission Color")
             if emission_color is not None:
                 emission_color.default_value = tuple(color[:3]) + (1.0,)
@@ -1765,7 +2124,9 @@ def portal_energy_material(
             if emission_input is not None:
                 emission_input.default_value = emission_value
     if hasattr(material, "surface_render_method"):
-        material.surface_render_method = "DITHERED"
+        # A blended surface avoids the screen-door/noise read that made the
+        # previous amber field look like a flat stippled disk.
+        material.surface_render_method = "BLENDED"
     material.use_backface_culling = False
     material["kyx_role"] = "translucent_energy_surface_render_only"
     material["kyx_collision"] = False
@@ -1849,6 +2210,183 @@ def add_portal_energy_curve(
     )
 
 
+def add_portal_energy_hex_ring(
+    name: str,
+    center: Vector,
+    radius: float,
+    depth_offset: float,
+    rotation: float,
+    material: bpy.types.Material,
+    zone: str,
+    *,
+    tube_radius: float,
+) -> list[bpy.types.Object]:
+    """Build one open hex filament ring; never a filled billboard."""
+
+    segments: list[bpy.types.Object] = []
+    ring_y = center.y + depth_offset
+    points = [
+        (
+            center.x + math.cos(rotation + math.tau * index / 6.0) * radius,
+            ring_y,
+            center.z + math.sin(rotation + math.tau * index / 6.0) * radius,
+        )
+        for index in range(6)
+    ]
+    for index, (start, end) in enumerate(zip(points, points[1:] + points[:1])):
+        segment = add_beam(
+            f"{name}_{index}",
+            start,
+            end,
+            tube_radius,
+            material,
+            zone,
+            "portal_energy_filament_vfx_hook",
+            vertices=10,
+        )
+        segment["kyx_portal_energy_layer"] = "receding_hex_ring"
+        segment["kyx_portal_depth_offset_meters"] = depth_offset
+        segments.append(segment)
+    return segments
+
+
+def build_portal_energy_volume(
+    endpoint: dict[str, Any],
+    center: Vector,
+    energy: bpy.types.Material,
+    filament: bpy.types.Material,
+    zone: str,
+) -> dict[str, Any]:
+    """Author a readable destination tunnel from one continuous aperture.
+
+    Receding rings, six converging flow rails, and a small doorway/horizon cue
+    communicate direction and destination depth without obscuring combat
+    silhouettes behind the portal.
+    """
+
+    endpoint_token = endpoint["id"].upper()
+    depth_sign = 1.0 if endpoint["id"].endswith("lower") else -1.0
+    ring_specs = (
+        (0.94, 0.035, 0.000, 0.020),
+        (0.80, 0.270, 0.035, 0.017),
+        (0.66, 0.510, -0.045, 0.014),
+        (0.52, 0.760, 0.025, 0.012),
+    )
+    ring_segments: list[bpy.types.Object] = []
+    for ring_index, (radius, depth, rotation, tube_radius) in enumerate(
+        ring_specs
+    ):
+        ring_segments.extend(
+            add_portal_energy_hex_ring(
+                f"V5_PORTAL_{endpoint_token}_TUNNEL_RING_{ring_index}",
+                center,
+                radius,
+                depth * depth_sign,
+                rotation,
+                filament,
+                zone,
+                tube_radius=tube_radius,
+            )
+        )
+
+    flow_filaments: list[bpy.types.Object] = []
+    for index in range(6):
+        angle = math.tau * index / 6.0
+        points: list[tuple[float, float, float]] = []
+        for fraction, radius, depth in (
+            (0.00, 0.90, 0.055),
+            (0.33, 0.78, 0.285),
+            (0.67, 0.61, 0.535),
+            (1.00, 0.44, 0.790),
+        ):
+            twisted_angle = angle + fraction * 0.12 * depth_sign
+            points.append(
+                (
+                    center.x + math.cos(twisted_angle) * radius,
+                    center.y + depth * depth_sign,
+                    center.z + math.sin(twisted_angle) * radius,
+                )
+            )
+        filament_curve = add_portal_energy_curve(
+            f"V5_PORTAL_{endpoint_token}_FLOW_FILAMENT_{index}",
+            points,
+            0.0075,
+            filament,
+            zone,
+        )
+        filament_curve["kyx_portal_energy_layer"] = "directional_flow_rail"
+        filament_curve["kyx_portal_flow_direction"] = "inward_to_destination"
+        flow_filaments.append(filament_curve)
+
+    destination_depth = 0.940 * depth_sign
+    destination_y = center.y + destination_depth
+    destination_pairs = (
+        ((-0.28, -0.31), (-0.28, 0.30)),
+        ((0.28, -0.31), (0.28, 0.30)),
+        ((-0.28, 0.30), (0.28, 0.30)),
+        ((-0.38, -0.035), (0.38, -0.035)),
+        ((-0.34, -0.31), (-0.10, -0.035)),
+        ((0.34, -0.31), (0.10, -0.035)),
+        ((-0.34, -0.31), (0.34, -0.31)),
+    )
+    destination_cues: list[bpy.types.Object] = []
+    for index, (start_local, end_local) in enumerate(destination_pairs):
+        cue = add_beam(
+            f"V5_PORTAL_{endpoint_token}_DESTINATION_CUE_{index}",
+            (
+                center.x + start_local[0],
+                destination_y,
+                center.z + start_local[1],
+            ),
+            (
+                center.x + end_local[0],
+                destination_y,
+                center.z + end_local[1],
+            ),
+            0.0085,
+            filament,
+            zone,
+            "portal_energy_filament_vfx_hook",
+            vertices=10,
+        )
+        cue["kyx_portal_energy_layer"] = "destination_doorway_horizon"
+        cue["kyx_portal_destination_depth_cue"] = True
+        destination_cues.append(cue)
+
+    destination_veil = add_portal_energy_field(
+        f"V5_PORTAL_{endpoint_token}_DESTINATION_VEIL",
+        center,
+        0.39,
+        energy,
+        zone,
+        depth_offset=1.005 * depth_sign,
+    )
+    destination_veil["kyx_portal_energy_layer"] = "deep_destination_veil"
+    destination_veil["kyx_portal_flow_direction"] = (
+        "inward_to_destination"
+    )
+
+    surfaces = [
+        destination_veil,
+        *ring_segments,
+        *flow_filaments,
+        *destination_cues,
+    ]
+    return {
+        "surfaces": surfaces,
+        "destinationVeil": destination_veil,
+        "depthSign": depth_sign,
+        "tunnelRingCount": len(ring_specs),
+        "tunnelRingSegmentCount": len(ring_segments),
+        "directionalFlowFilamentCount": len(flow_filaments),
+        "destinationCueCount": len(destination_cues),
+        "translucentEnergyFieldCount": 1,
+        "energySurfaceCount": len(surfaces),
+        "maximumDepthMeters": 1.005,
+        "fullApertureOpaqueDiskCount": 0,
+    }
+
+
 def build_portal_endpoint(
     endpoint: dict[str, Any],
     materials: dict[str, bpy.types.Material],
@@ -1866,15 +2404,15 @@ def build_portal_endpoint(
         endpoint["id"],
         color,
         role="energy",
-        alpha=0.065,
-        emission_value=0.30,
+        alpha=0.105,
+        emission_value=0.42,
     )
     filament = portal_energy_material(
         endpoint["id"],
         color,
         role="filament",
-        alpha=0.22,
-        emission_value=0.82,
+        alpha=0.72,
+        emission_value=1.45,
     )
 
     endpoint_token = endpoint["id"].upper()
@@ -1915,17 +2453,8 @@ def build_portal_endpoint(
         bevel=0.025,
     )
 
-    # One authored collar owns the silhouette. A low-alpha veil preserves the
-    # destination view, while six short ties and one shallow depth-varying
-    # S-wisp give the aperture volume without stacking another frame or logo.
-    energy_field = add_portal_energy_field(
-        f"V5_PORTAL_{endpoint_token}_ACTIVE_FIELD",
-        center,
-        0.98,
-        energy,
-        zone,
-        depth_offset=0.12,
-    )
+    # One authored collar continues to own the metal silhouette. The active
+    # volume is an open, receding tunnel rather than a flat full-aperture disk.
     collar_segments: list[bpy.types.Object] = []
     connector_segments: list[bpy.types.Object] = []
     collar_radius = 1.22
@@ -1971,48 +2500,33 @@ def build_portal_endpoint(
             )
         )
 
-    wisp_points: list[tuple[float, float, float]] = []
-    for index in range(13):
-        fraction = index / 12.0
-        wisp_points.append(
-            (
-                center.x - 0.56 + fraction * 1.02,
-                center.y - 0.12 + fraction * 0.25,
-                (
-                    center.z
-                    + 0.16
-                    - fraction * 0.24
-                    + math.sin(fraction * 1.35 * math.pi) * 0.13
-                ),
-            )
-        )
-    energy_wisp = add_portal_energy_curve(
-        f"V5_PORTAL_{endpoint_token}_DEPTH_WISP",
-        wisp_points,
-        0.008,
+    energy_volume = build_portal_energy_volume(
+        endpoint,
+        center,
+        energy,
         filament,
         zone,
     )
 
     for surface in [
-        energy_field,
-        energy_wisp,
+        *energy_volume["surfaces"],
         *collar_segments,
         *connector_segments,
     ]:
         surface["kyx_portal_endpoint_id"] = endpoint["id"]
         surface["kyx_portal_partner_id"] = endpoint["partnerId"]
         surface["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
-    energy_field["kyx_vfx_departure_hook"] = (
+    destination_veil = energy_volume["destinationVeil"]
+    destination_veil["kyx_vfx_departure_hook"] = (
         f"inkfall.portal.{endpoint['id']}.energy_departure"
     )
-    energy_field["kyx_vfx_arrival_hook"] = (
+    destination_veil["kyx_vfx_arrival_hook"] = (
         f"inkfall.portal.{endpoint['id']}.energy_arrival"
     )
-    energy_field["kyx_audio_departure_hook"] = (
+    destination_veil["kyx_audio_departure_hook"] = (
         f"inkfall.portal.{endpoint['id']}.departure"
     )
-    energy_field["kyx_audio_arrival_hook"] = (
+    destination_veil["kyx_audio_arrival_hook"] = (
         f"inkfall.portal.{endpoint['id']}.arrival"
     )
 
@@ -2094,8 +2608,20 @@ def build_portal_endpoint(
         "donorTeleporterBaseCount": 1,
         "authoredCollarSegmentCount": len(collar_segments),
         "depthTieSegmentCount": len(connector_segments),
-        "translucentEnergyFieldCount": 1,
-        "energySurfaceCount": 2,
+        "tunnelRingCount": energy_volume["tunnelRingCount"],
+        "tunnelRingSegmentCount": energy_volume["tunnelRingSegmentCount"],
+        "directionalFlowFilamentCount": (
+            energy_volume["directionalFlowFilamentCount"]
+        ),
+        "destinationCueCount": energy_volume["destinationCueCount"],
+        "translucentEnergyFieldCount": (
+            energy_volume["translucentEnergyFieldCount"]
+        ),
+        "energySurfaceCount": energy_volume["energySurfaceCount"],
+        "maximumEnergyDepthMeters": energy_volume["maximumDepthMeters"],
+        "fullApertureOpaqueDiskCount": (
+            energy_volume["fullApertureOpaqueDiskCount"]
+        ),
         "exitChevronCount": 3,
         "noOpaqueEnergyBillboard": True,
         "renderOnly": True,
@@ -2303,12 +2829,16 @@ def render_views(
     scene.render.film_transparent = False
     scene.render.resolution_x = 1600
     scene.view_settings.look = "AgX - Medium High Contrast"
-    scene.view_settings.exposure = -0.42
+    # Keep the darker worn hierarchy readable without returning the ceramic
+    # shell to the prior overexposed white-slab presentation.
+    scene.view_settings.exposure = -0.10
     render_dir = output_root / "renders"
     render_dir.mkdir(parents=True, exist_ok=True)
     results: list[dict[str, Any]] = []
     for view_id, camera in cameras.items():
-        scene.render.resolution_y = 1200 if view_id == "overhead_context" else 900
+        scene.render.resolution_y = (
+            1200 if view_id == "overhead_context" else 900
+        )
         path = render_dir / f"inkfall-rev5-geometry-portal-{view_id}.png"
         scene.camera = camera
         scene.render.filepath = str(path)
@@ -2316,6 +2846,9 @@ def render_views(
             "bridge_foundation_contact",
             "landing_foundation_contact",
         }
+        scene.view_settings.exposure = (
+            2.40 if isolated_contact_view else -0.10
+        )
         hidden_context: list[tuple[bpy.types.Object, bool]] = []
         if isolated_contact_view:
             for obj in scene.objects:
@@ -2324,6 +2857,11 @@ def render_views(
                     and obj.get("kyx_scope") != SCOPE
                     and not obj.get("kyx_review_reference", False)
                 ):
+                    hidden_context.append((obj, obj.hide_render))
+                    obj.hide_render = True
+        if view_id == "overhead_context":
+            for obj in scene.objects:
+                if obj.get("kyx_hide_in_overhead_review", False):
                     hidden_context.append((obj, obj.hide_render))
                     obj.hide_render = True
         try:
@@ -2850,6 +3388,7 @@ def main() -> None:
         materials,
         donor_instances,
     )
+    environment_layer = build_foundry_environment_layer(materials)
     portals = build_portal_pair(materials, donor_instances)
     traversal_audit = traversal_clearance_audit()
     support_lane_audit = audit_new_support_bounds_against_travel_lane()
@@ -2875,6 +3414,13 @@ def main() -> None:
     scene["kyx_g5_claimed"] = False
     scene["kyx_human_accepted"] = False
     scene["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
+    scene["kyx_environment_art_direction"] = (
+        "worn_production_line_foundry_palimpsest"
+    )
+    scene["kyx_environment_shell_render_only"] = True
+    scene["kyx_portal_energy_construction"] = (
+        "layered_hex_tunnel_with_directional_flow_and_destination_depth_cue"
+    )
     scene["kyx_cc0_donor_pack"] = (
         "Quaternius Modular Sci-Fi MegaKit Standard + Teleporter Base "
         "+ Polygonal Mind ABM Teleporter01"
@@ -3020,6 +3566,33 @@ def main() -> None:
         "landingTopPreservesAuthorityAlignment": (
             abs(landing["landingFloorTopMeters"] - 6.0) <= 1e-6
         ),
+        "foundryEnvironmentLayerIsCoherentAndNonAuthority": (
+            environment_layer["shellPanelCount"] == 17
+            and environment_layer["recessedSkinCount"] == 17
+            and environment_layer["wallRibCount"] == 22
+            and environment_layer["ceilingCofferCount"] == 6
+            and environment_layer["ceilingCrossTrussCount"] == 6
+            and environment_layer["ceilingLongitudinalCount"] == 3
+            and environment_layer["ceilingHiddenInOverheadEvidenceOnly"]
+            and environment_layer["ceilingIncludedInGameplayAndExport"]
+            and environment_layer["attachedServiceConduitCount"] == 8
+            and environment_layer["pressureControlAssemblyPieceCount"] == 8
+            and environment_layer["repairedAccessPieceCount"] == 3
+            and environment_layer["serviceWearTraceCount"] == 8
+            and environment_layer["floorServiceSpineCount"] == 2
+            and environment_layer["flushFloorAccessPlateCount"] == 3
+            and environment_layer["floorAccessDatumCount"] == 3
+            and environment_layer["perimeterDrainWearCount"] == 4
+            and environment_layer["northArchiveRouteOpeningPreserved"]
+            and (
+                environment_layer["centerCombatFloorFreestandingPropCount"]
+                == 0
+            )
+            and environment_layer["projectAuthoredMaterialsOnly"]
+            and environment_layer["renderOnly"]
+            and environment_layer["collisionAuthority"] is False
+            and environment_layer["authorityGeometryModified"] is False
+        ),
         "pairedPortalLandmarkPresent": (
             len(portals) == 2
             and all(item["groundedSupportCount"] == 4 for item in portals)
@@ -3027,13 +3600,23 @@ def main() -> None:
             and all(item["donorTeleporterBaseCount"] == 1 for item in portals)
             and all(item["authoredCollarSegmentCount"] == 6 for item in portals)
             and all(item["depthTieSegmentCount"] == 6 for item in portals)
+            and all(item["tunnelRingCount"] == 4 for item in portals)
+            and all(item["tunnelRingSegmentCount"] == 24 for item in portals)
+            and all(
+                item["directionalFlowFilamentCount"] == 6
+                for item in portals
+            )
+            and all(item["destinationCueCount"] == 7 for item in portals)
             and all(item["translucentEnergyFieldCount"] == 1 for item in portals)
-            and all(item["energySurfaceCount"] == 2 for item in portals)
+            and all(item["energySurfaceCount"] == 38 for item in portals)
+            and all(item["maximumEnergyDepthMeters"] >= 1.0 for item in portals)
+            and all(item["fullApertureOpaqueDiskCount"] == 0 for item in portals)
             and all(item["noOpaqueEnergyBillboard"] for item in portals)
         ),
         "portalExitOffsetsPreventPingPong": exit_offsets_safe,
         "portalPresentationHooksDeclared": (
-            family_counts.get("portal_energy_filament_vfx_hook", 0) == 4
+            family_counts.get("portal_energy_filament_vfx_hook", 0)
+            == sum(item["energySurfaceCount"] for item in portals)
         ),
         "modularExportExcludesParentMeshes": (
             len(selected_export_nodes) == facts["rev5JoinedMeshCount"]
@@ -3126,6 +3709,7 @@ def main() -> None:
         "structuralCorrection": {
             "bridge": bridge,
             "landing": landing,
+            "foundryEnvironmentLayer": environment_layer,
             "familyCountsBeforeJoin": family_counts,
             "joinedMeshes": joined,
         },

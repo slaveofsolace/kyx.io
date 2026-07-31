@@ -31,7 +31,7 @@ This is a development build, not a promoted release. See
 
 Requirements:
 
-- Node.js 20.19 or newer, below Node 25
+- Node.js 22 or newer, below Node 25
 - npm 11
 - Git LFS for authored art and evidence media
 
@@ -55,6 +55,7 @@ The routine repository gate runs the following consolidated suite:
 ```powershell
 npm run typecheck
 npm run typecheck:worker
+npm run typecheck:pages
 npm run typecheck:sim
 npm run lint
 npm run test
@@ -76,6 +77,7 @@ visual/playtest review are reported as distinct results.
 | --- | --- |
 | `src/` | Client, Practice simulation, presentation, HUD/UI, weapons, abilities, and maps |
 | `worker/` | Authoritative match runtime and Durable Objects |
+| `cloudflare/pages-preview/` | Neutral-name, staging-only Pages frontend and private authority proxy |
 | `tests/` | Unit, contract, integration, Worker, multiplayer, and browser tests |
 | `assets/manifests/` | Active release-asset manifests |
 | `assets/review/` | Preserved, non-release visual candidates |
