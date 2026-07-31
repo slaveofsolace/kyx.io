@@ -27,6 +27,7 @@ const bindingSource = path.join(
   'app',
   'inkfallRev5CandidateBinding.ts',
 );
+const localStagingEnvironment = path.join(repositoryRoot, '.env.staging');
 
 function sha256(bytes) {
   return createHash('sha256').update(bytes).digest('hex');
@@ -63,12 +64,39 @@ if (
 
 const distributedFiles = await walkFiles(distributionRoot);
 const matches = [];
+let usesSameOriginAuthority = false;
+const forbiddenAuthorityOriginFiles = [];
+let localStagingAuthorityOrigin = '';
+try {
+  const localEnvironment = await readFile(localStagingEnvironment, 'utf8');
+  localStagingAuthorityOrigin = localEnvironment
+    .split(/\r?\n/u)
+    .map((line) => line.trim())
+    .find((line) => line.startsWith('VITE_KYX_AUTHORITY_ORIGIN='))
+    ?.slice('VITE_KYX_AUTHORITY_ORIGIN='.length) ?? '';
+} catch {
+  // Local staging configuration is optional and never part of the package.
+}
 for (const file of distributedFiles) {
   const fileStat = await stat(file);
-  if (fileStat.size !== expectedBytes) continue;
   const bytes = await readFile(file);
-  if (sha256(bytes) === expectedSha256) {
+  if (fileStat.size === expectedBytes && sha256(bytes) === expectedSha256) {
     matches.push(path.relative(distributionRoot, file).replaceAll('\\', '/'));
+  }
+  if (path.extname(file).toLowerCase() !== '.js') continue;
+  const script = bytes.toString('utf8');
+  if (script.includes('location.origin')) usesSameOriginAuthority = true;
+  if (
+    /https?:\/\/(?:127\.0\.0\.1|localhost|\[::1\])(?::\d+)?/iu.test(script)
+    || /\.workers\.dev/iu.test(script)
+    || (
+      localStagingAuthorityOrigin.length > 0
+      && script.includes(localStagingAuthorityOrigin)
+    )
+  ) {
+    forbiddenAuthorityOriginFiles.push(
+      path.relative(distributionRoot, file).replaceAll('\\', '/'),
+    );
   }
 }
 
@@ -77,10 +105,18 @@ if (matches.length !== 1) {
     `STAGING_REVIEW_PACKAGE_MISMATCH expected=1 actual=${matches.length}`,
   );
 }
+if (!usesSameOriginAuthority || forbiddenAuthorityOriginFiles.length > 0) {
+  throw new Error(
+    'STAGING_REVIEW_AUTHORITY_ORIGIN_MISMATCH '
+      + `sameOrigin=${usesSameOriginAuthority} `
+      + `forbiddenFiles=${forbiddenAuthorityOriginFiles.length}`,
+  );
+}
 
 console.log(JSON.stringify({
   status: 'STAGING_REVIEW_PACKAGE_VERIFIED',
   artifact: matches[0],
   bytes: expectedBytes,
   sha256: expectedSha256,
+  authorityTransport: 'same_origin_pages_service_binding',
 }, null, 2));

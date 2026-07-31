@@ -55,7 +55,11 @@ const inkfallRev3ReviewRoute = import.meta.env.DEV
   && inkfallRev3ReviewRequest.kind !== 'none';
 const onlineAuthorityRoute = window.location.pathname === ONLINE_AUTHORITY_PATH;
 const authorityOriginCandidate = import.meta.env.VITE_KYX_AUTHORITY_ORIGIN
-  || (import.meta.env.PROD ? window.location.origin : undefined);
+  || (
+    import.meta.env.PROD || import.meta.env.MODE === 'staging-review'
+      ? window.location.origin
+      : undefined
+  );
 const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
   authorityOriginCandidate,
   { isDevelopment: import.meta.env.DEV },

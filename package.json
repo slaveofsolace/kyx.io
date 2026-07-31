@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:staging": "vite build --mode staging-review && node tools/assets/verify-staging-review-package.mjs",
+    "build:staging": "node tools/build/build-staging-review.mjs && node tools/assets/verify-staging-review-package.mjs",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:worker": "tsc -p tsconfig.worker.json --noEmit",

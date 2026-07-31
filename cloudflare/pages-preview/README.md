@@ -18,9 +18,10 @@ npm run deploy:staging:pages
 
 `build:staging` uses the dedicated `staging-review` Vite mode. That mode
 includes the exact current Inkfall review GLB and verifies its digest before
-deployment. The normal `build` command remains the release package: it excludes
-unapproved review art and continues through the fail-closed release-package
-gate.
+deployment. Its build wrapper also clears ambient authority-origin overrides so
+the browser always uses the Pages origin and private service binding. The normal
+`build` command remains the release package: it excludes unapproved review art
+and continues through the fail-closed release-package gate.
 
 Cloudflare account selection is supplied by the operator environment and is
 never committed. This project is staging-only, is marked `noindex`, and does
