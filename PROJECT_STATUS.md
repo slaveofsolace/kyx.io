@@ -10,8 +10,8 @@ in Practice and online at 2, 4, and 8 players.
 
 | Component | Current state | Next acceptance step |
 | --- | --- | --- |
-| Offline Practice | Playable on Iron Bastion with bots, movement, weapons, abilities, scoring, and HUD | Converge presentation and loadout behavior with online play |
-| Online authority | Worker-authoritative room allocation, movement/combat state, scoring, and reconnect/resume are implemented | Repeat the final 2/4/8 matrix on the source-frozen vertical slice |
+| Offline Practice | Playable on Iron Bastion with legacy-local bots, movement, weapons, abilities, scoring, and HUD. The browser-safe Inkfall profile/fixture/combat factory is now shared with online, but Practice does not consume it yet | Add the local fixed-20-Hz authority host, then move Practice presentation and bots onto it |
+| Online authority | Worker-authoritative room allocation, movement/combat state, scoring, and reconnect/resume are implemented. Worker and browser now consume one hash-locked Inkfall identity, binding, fixture, spawn, zone, portal, and combat contract | Preserve parity while wiring the same factory into Practice; repeat the final 2/4/8 matrix only on the source-frozen vertical slice |
 | Inkfall Foundry | Rev5 render-art review candidate over the frozen Revision 3 authority package: 339 colliders, 12 spawns, and 9 zones. Bridge/landing grounding, the enclosed foundry treatment, and paired depth-tunnel portals are implemented; the art remains non-release | Capture real browser player-eye evidence, then complete manual collision, sightline, spawn, combat-readability, performance, and play review |
 | Map library | Original, KYX legacy, and rights-blocked external reference categories are implemented | Verify the runtime panel and add only licensed/importable maps |
 | Character | Procedural fallback is playable; earlier visual batches are preserved outside the release package | Complete one Assault role end to end on the shared anatomy/rig foundation |
