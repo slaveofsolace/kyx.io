@@ -434,15 +434,17 @@ export async function createOnlineAuthorityThreeRuntime(
   });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.28;
+  renderer.toneMappingExposure = 1.24;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.shadowMap.enabled = false;
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0d1b22);
-  scene.fog = new THREE.FogExp2(0x16272d, 0.0075);
+  scene.fog = new THREE.FogExp2(0x16272d, 0.0068);
   scene.add(loadedVisual.art, loadedVisual.containment);
-  scene.add(new THREE.HemisphereLight(0xd7eef3, 0x26353a, 1.72));
+  // Ground bounce is the only light reaching downward-facing overhead
+  // surfaces (both directionals point down), so it owns the darkness floor.
+  scene.add(new THREE.HemisphereLight(0xd7eef3, 0x36454d, 1.62));
   const key = new THREE.DirectionalLight(0xffd7af, 2.25);
   key.position.set(-14, 22, 12);
   scene.add(key);
@@ -469,15 +471,15 @@ export async function createOnlineAuthorityThreeRuntime(
   // Inkfall interiors without altering authority-owned world lighting.
   const firstPersonWeaponKey = new THREE.PointLight(
     0xd9f8ff,
-    5.2,
-    2.4,
+    1.65,
+    2.2,
     1.65,
   );
   firstPersonWeaponKey.name = 'ONLINE_FIRST_PERSON_WEAPON_KEY';
   firstPersonWeaponKey.position.set(0.42, 0.28, 0.06);
   const firstPersonWeaponFill = new THREE.PointLight(
     0xffbd78,
-    2.2,
+    0.72,
     2.1,
     1.8,
   );

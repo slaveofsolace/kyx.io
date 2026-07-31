@@ -12,15 +12,15 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0x55dcff,
     tracer: 0x9cecff,
     firstPerson: Object.freeze({
-      scale: 0.72,
-      position: Object.freeze([0.3, -0.31, -0.55] as const),
-      rotation: Object.freeze([-0.06, 0.055, 0.008] as const),
+      scale: 0.585,
+      position: Object.freeze([0.255, -0.34, -0.6] as const),
+      rotation: Object.freeze([-0.052, 0.05, 0.006] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.35, 0.162, -0.08] as const),
-        rotation: Object.freeze([0.045, -0.055, -0.008] as const),
+        offset: Object.freeze([-0.255, 0.212, 0.06] as const),
+        rotation: Object.freeze([0.052, -0.05, -0.006] as const),
         fieldOfViewDegrees: 60,
-        scaleMultiplier: 0.84,
+        scaleMultiplier: 0.74,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.004, 0.07] as const),
@@ -29,7 +29,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
       reload: Object.freeze({
         durationMilliseconds: 3_000,
         offset: Object.freeze([-0.08, -0.1, 0.13] as const),
-        rotation: Object.freeze([0.22, -0.12, 0.35] as const),
+        rotation: Object.freeze([0.2, -0.1, 0.3] as const),
       }),
     }),
   }),
@@ -559,6 +559,9 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
     [0, 0.155, 0.08],
   );
   action.name = 'KYX_VLR7_RECIPROCATING_ACTION';
+  // The bare reciprocating block reads as detached floating metal over the
+  // donor shell, so it stays procedural-only while remaining a moving part.
+  action.visible = reviewShell === null;
   visual.add(action);
 
   const grip = new THREE.Group();

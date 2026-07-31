@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>KYX first-person and Inkfall composition evidence</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0d1b22;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="stage"></canvas>
+    <script type="module">
+      import * as THREE from 'three';
+      import {
+        loadKyxVlr7QuaterniusReview,
+      } from '/src/dev/loadKyxVlr7QuaterniusReview.ts';
+      import {
+        loadInkfallRev5ReviewVisual,
+      } from '/src/dev/loadInkfallRev5ReviewVisual.ts';
+      import {
+        createInkfallRev5PortalPresentation,
+      } from '/src/app/inkfallRev5PortalPresentation.ts';
+      import {
+        createKyxWeaponPresentationModel,
+        setKyxWeaponAim,
+        setKyxWeaponPhase,
+        updateKyxWeaponPresentation,
+      } from '/src/weapons/KyxArmoryPresentation.ts';
+
+      // Evidence-only mirror of the online runtime's environment and
+      // first-person mount math so captures match live presentation.
+      const params = new URLSearchParams(window.location.search);
+      const cameraId = params.get('cam') ?? 'press';
+      const weaponState = params.get('weapon') ?? 'hip';
+
+      const CAMERA_VIEWS = {
+        spawn: { position: [-30, 1.7, 10], target: [0, 3.2, -2] },
+        press: { position: [-7, 1.7, 14.5], target: [0, 5.2, -4] },
+        portal: { position: [-4, 0.4, 13.4], target: [-4, -0.6, 10] },
+        overhead: { position: [6, 1.7, 8], target: [-2, 9.2, -8] },
+      };
+      const view = CAMERA_VIEWS[cameraId] ?? CAMERA_VIEWS.press;
+
+      const canvas = document.querySelector('#stage');
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: false,
+        powerPreference: 'high-performance',
+      });
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.24;
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
+      renderer.setSize(innerWidth, innerHeight, false);
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0d1b22);
+      scene.fog = new THREE.FogExp2(0x16272d, 0.0068);
+      scene.add(new THREE.HemisphereLight(0xd7eef3, 0x36454d, 1.62));
+      const key = new THREE.DirectionalLight(0xffd7af, 2.25);
+      key.position.set(-14, 22, 12);
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0x70dbe8, 1.2);
+      fill.position.set(18, 12, -16);
+      scene.add(fill);
+      const archiveGlow = new THREE.PointLight(0xffad55, 4.2, 28, 1.8);
+      archiveGlow.position.set(-20, 6, -14);
+      scene.add(archiveGlow);
+
+      const camera = new THREE.PerspectiveCamera(
+        72,
+        innerWidth / innerHeight,
+        0.025,
+        150,
+      );
+      camera.rotation.order = 'YXZ';
+      camera.position.set(...view.position);
+      camera.lookAt(...view.target);
+      scene.add(camera);
+
+      const run = async () => {
+        const [visual] = await Promise.all([
+          loadInkfallRev5ReviewVisual(),
+          loadKyxVlr7QuaterniusReview(),
+        ]);
+        scene.add(visual.art, visual.containment);
+        const portal = createInkfallRev5PortalPresentation(scene);
+
+        let weapon = null;
+        if (weaponState !== 'none') {
+          weapon = createKyxWeaponPresentationModel(
+            'vertical_rifle_v1',
+            'first_person',
+          );
+          const mount = new THREE.Group();
+          mount.name = 'EVIDENCE_FIRST_PERSON_WEAPON_MOUNT';
+          camera.add(mount);
+          mount.add(weapon.group);
+          const weaponKey = new THREE.PointLight(0xd9f8ff, 1.65, 2.2, 1.65);
+          weaponKey.position.set(0.42, 0.28, 0.06);
+          const weaponFill = new THREE.PointLight(0xffbd78, 0.72, 2.1, 1.8);
+          weaponFill.position.set(-0.34, -0.2, -0.08);
+          camera.add(weaponKey, weaponFill);
+
+          if (weaponState === 'ads') setKyxWeaponAim(weapon, true);
+          if (weaponState === 'reload') {
+            setKyxWeaponPhase(weapon, 'reloading', 0);
+          }
+          let simulatedMilliseconds = 0;
+          for (let step = 0; step < 40; step += 1) {
+            simulatedMilliseconds += 50;
+            updateKyxWeaponPresentation(weapon, simulatedMilliseconds, 0.05);
+            if (weaponState === 'reload' && simulatedMilliseconds >= 1_400) {
+              break;
+            }
+          }
+
+          const pose = weapon.firstPersonPose;
+          const aim = weapon.aimMix;
+          const reload = weapon.reloadPoseMix;
+          weapon.group.scale.setScalar(
+            pose.baseScale * THREE.MathUtils.lerp(
+              1,
+              pose.aimScaleMultiplier,
+              aim,
+            ),
+          );
+          mount.position.set(
+            pose.aimOffset.x * aim + pose.reloadOffset.x * reload,
+            pose.aimOffset.y * aim + pose.reloadOffset.y * reload,
+            pose.aimOffset.z * aim + pose.reloadOffset.z * reload,
+          );
+          mount.rotation.set(
+            pose.aimRotation.x * aim + pose.reloadRotation.x * reload,
+            pose.aimRotation.y * aim + pose.reloadRotation.y * reload,
+            pose.aimRotation.z * aim + pose.reloadRotation.z * reload,
+          );
+          camera.fov = THREE.MathUtils.lerp(
+            72,
+            pose.aimFieldOfViewDegrees,
+            aim,
+          );
+          camera.updateProjectionMatrix();
+        }
+
+        scene.updateMatrixWorld(true);
+        for (let frame = 0; frame < 3; frame += 1) {
+          portal.update(1_000 + frame * 16);
+          renderer.render(scene, camera);
+        }
+
+        const weaponMaterials = [];
+        weapon?.group.traverse((object) => {
+          if (!object.isMesh) return;
+          const material = Array.isArray(object.material)
+            ? object.material[0]
+            : object.material;
+          if (material === undefined
+            || weaponMaterials.some(({ name }) => name === material.name)) {
+            return;
+          }
+          weaponMaterials.push({
+            name: material.name,
+            metalness: material.metalness,
+            roughness: material.roughness,
+            emissiveIntensity: material.emissiveIntensity,
+            visible: object.visible !== false,
+          });
+        });
+        window.__compositionEvidence = {
+          weaponMaterials: weaponMaterials.slice(0, 14),
+          cameraId,
+          weaponState,
+          weaponVisualSource:
+            weapon?.group.userData.weaponVisualSource ?? 'none',
+          contactMode:
+            weapon?.group.userData.firstPersonContactMode ?? 'none',
+          aimMix: weapon?.aimMix ?? 0,
+          reloadPoseMix: weapon?.reloadPoseMix ?? 0,
+          weaponScale: weapon?.group.scale.x ?? 0,
+          fieldOfViewDegrees: camera.fov,
+          renderMeshCount: visual.meshCount,
+          overheadReadability: visual.overheadReadability,
+        };
+        document.body.dataset.compositionReady = 'true';
+      };
+
+      run().catch((error) => {
+        document.body.dataset.compositionError = String(
+          error instanceof Error ? error.message : error,
+        );
+      });
+    </script>
+  </body>
+</html>

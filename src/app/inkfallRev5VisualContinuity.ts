@@ -6,7 +6,7 @@ import {
 } from './inkfallRev4VisualContinuity';
 
 export const INKFALL_REV5_VISUAL_CONTINUITY_VERSION =
-  'inkfall_rev5_online_visual_continuity_v5' as const;
+  'inkfall_rev5_online_visual_continuity_v6' as const;
 
 const SUPERSEDED_RED_FOLD_OBJECTS = Object.freeze([
   'INKFALL_RED_FOLD_FRAME',
@@ -287,29 +287,55 @@ function mountPressRollerLandmark(group: THREE.Group): Readonly<{
     group.add(mesh);
   };
 
-  addMountBox(
+  const addMountRoller = (
+    name: string,
+    radius: number,
+    length: number,
+    position: readonly [number, number, number],
+    material = coreMaterial,
+  ): void => {
+    const mesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(radius, radius, length, 24, 1, false),
+      material,
+    );
+    mesh.name = name;
+    mesh.position.set(position[0], position[1], position[2]);
+    mesh.rotation.z = Math.PI * 0.5;
+    mesh.receiveShadow = true;
+    mesh.castShadow = false;
+    mesh.userData.presentationRole = 'render_only';
+    mesh.userData.renderMeshesMayBeAuthority = false;
+    mesh.userData.onlineAuthoritySource = 'industrial_landmark';
+    mesh.userData.noHit = true;
+    mesh.userData.pressRollerMount = true;
+    group.add(mesh);
+  };
+
+  addMountRoller(
     'INKFALL_REV5_PRESS_CROSSHEAD_CORE',
-    [11.8, 3.1, 3.1],
-    [0, 6.9, 0],
+    1.12,
+    9.4,
+    [0, 5.95, 0],
     coreMaterial,
   );
-  addMountBox(
+  addMountRoller(
     'INKFALL_REV5_PRESS_COMPRESSION_BAND',
-    [2.2, 3.36, 3.36],
-    [0, 6.9, 0],
+    1.22,
+    1.12,
+    [0, 5.95, 0],
     bandMaterial,
   );
-  for (const x of [-5.9, 5.9]) {
+  for (const x of [-5.25, 5.25]) {
     const token = x < 0 ? 'WEST' : 'EAST';
     addMountBox(
       `INKFALL_REV5_PRESS_ROLLER_BEARING_${token}`,
-      [1.6, 1.45, 1.2],
-      [x, 6.9, 0],
+      [1.18, 1.64, 1.82],
+      [x, 5.95, 0],
     );
     addMountBox(
       `INKFALL_REV5_PRESS_ROLLER_HANGER_${token}`,
-      [1.08, 2.35, 0.72],
-      [x, 8.35, 0],
+      [0.72, 2.65, 0.72],
+      [x, 7.78, 0],
     );
   }
   return Object.freeze({ meshCount: 6 });
@@ -434,7 +460,7 @@ export function createInkfallRev5VisualContinuity(
     retunedMaterialCount: readabilityRetune.materialCount,
     routeDepthLighting: 'three_bounded_landmark_fill_pools_v1',
     routeDepthLightCount: routeDepthLighting.lightCount,
-    pressRollerLandmarkRetune: 'connected_press_crosshead_no-floating-cylinders_v3',
+    pressRollerLandmarkRetune: 'connected_cylindrical_press_roller_v4',
     retunedPressRollerMeshCount: readabilityRetune.landmarkMeshCount,
     supersededPressRollerObjectsRemoved: true,
     removedPressRollerObjectMeshCount: removedPressRollerObjects.meshCount,
