@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   KYX_AUTHORITY_WEAPON_PRESENTATION,
   createKyxWeaponPresentationModel,
+  installKyxLineRifleReviewShellFactory,
   setKyxWeaponAim,
   setKyxWeaponPhase,
   updateKyxWeaponPresentation,
@@ -185,6 +186,52 @@ describe('KYX first-person armory presentation', () => {
     expect(worldRifle.firstPersonHandCount).toBe(0);
     expect(firstPersonBlade.firstPersonContactRig).toBeNull();
     expect(firstPersonBlade.firstPersonHandCount).toBe(0);
+  });
+
+  it('mounts an isolated review shell while preserving optic, hands, muzzle, and reload motion', () => {
+    const source = new THREE.Group();
+    source.name = 'KYX_VLR7_QUATERNIUS_REV1';
+    source.add(new THREE.Mesh(
+      new THREE.BoxGeometry(0.1, 0.1, 0.8),
+      new THREE.MeshStandardMaterial(),
+    ));
+    const magazine = new THREE.Group();
+    magazine.name = 'KYX_VLR7_REVIEW_MAGAZINE';
+    source.add(magazine);
+    const restore = installKyxLineRifleReviewShellFactory(
+      () => source.clone(true),
+    );
+    try {
+      const rifle = createKyxWeaponPresentationModel(
+        'vertical_rifle_v1',
+        'first_person',
+      );
+      expect(rifle.group.userData.weaponVisualSource).toBe(
+        'quaternius_cc0_review_rev1',
+      );
+      expect(rifle.group.getObjectByName(
+        'KYX_VLR7_DEFAULT_PROCEDURAL_SHELL',
+      )?.visible).toBe(false);
+      expect(rifle.group.getObjectByName(
+        'KYX_VLR7_REVIEW_SHELL_MOUNT',
+      )).toBeDefined();
+      expect(rifle.group.getObjectByName(
+        'KYX_VLR7_REFLEX_OPTIC',
+      )).toBeDefined();
+      expect(rifle.firstPersonHandCount).toBe(2);
+      expect(rifle.muzzle.name).toBe('KYX_VLR7_MUZZLE');
+
+      const mountedMagazine = rifle.group.getObjectByName(
+        'KYX_VLR7_REVIEW_MAGAZINE',
+      );
+      expect(mountedMagazine).toBeDefined();
+      const restY = mountedMagazine?.position.y ?? 0;
+      setKyxWeaponPhase(rifle, 'reloading', 1_000);
+      updateKyxWeaponPresentation(rifle, 1_750, 0.1);
+      expect(mountedMagazine?.position.y).toBeLessThan(restY);
+    } finally {
+      restore();
+    }
   });
 
   it('blends a family-authored ADS pose and exits it for an authority reload', () => {

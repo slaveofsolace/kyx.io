@@ -273,6 +273,42 @@ interface BuiltWeapon {
   readonly movingParts: WeaponMovingParts;
 }
 
+export type KyxLineRifleReviewShellFactory = () => THREE.Group;
+
+const KYX_VLR7_REVIEW_MAGAZINE_NODE = 'KYX_VLR7_REVIEW_MAGAZINE';
+let lineRifleReviewShellFactory: KyxLineRifleReviewShellFactory | null = null;
+
+export function installKyxLineRifleReviewShellFactory(
+  factory: KyxLineRifleReviewShellFactory,
+): () => void {
+  const previous = lineRifleReviewShellFactory;
+  lineRifleReviewShellFactory = factory;
+  return () => {
+    if (lineRifleReviewShellFactory === factory) {
+      lineRifleReviewShellFactory = previous;
+    }
+  };
+}
+
+function createLineRifleReviewShell(): Readonly<{
+  root: THREE.Group;
+  magazine: THREE.Object3D;
+}> | null {
+  if (lineRifleReviewShellFactory === null) return null;
+  const root = lineRifleReviewShellFactory();
+  const magazine = root.getObjectByName(KYX_VLR7_REVIEW_MAGAZINE_NODE);
+  if (magazine === undefined) {
+    throw new Error(
+      `KYX_VLR7_REVIEW_MAGAZINE_MISSING node=${KYX_VLR7_REVIEW_MAGAZINE_NODE}`,
+    );
+  }
+  root.name = 'KYX_VLR7_REVIEW_SHELL_MOUNT';
+  root.userData.presentationOnly = true;
+  root.userData.noHit = true;
+  root.userData.authorityUnchanged = true;
+  return Object.freeze({ root, magazine });
+}
+
 function standardMaterials(
   accentColor: number,
   armorColor = 0x27333a,
@@ -435,6 +471,9 @@ function marker(
 function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_VLR7_LINE_RIFLE_VISUAL';
+  const defaultShell = new THREE.Group();
+  defaultShell.name = 'KYX_VLR7_DEFAULT_PROCEDURAL_SHELL';
+  const reviewShell = createLineRifleReviewShell();
 
   const receiverCore = box(
     0.13,
@@ -461,7 +500,7 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   );
   opticRail.name = 'KYX_VLR7_OPTIC_RAIL';
 
-  visual.add(
+  defaultShell.add(
     receiverCore,
     upperShroud,
     cylinderZ(0.072, 0.064, 0.36, materials.armor, [0, 0.075, -0.34], 10),
@@ -475,23 +514,25 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
     box(0.018, 0.024, 0.28, materials.dark, [-0.075, 0.085, -0.35]),
     box(0.065, 0.018, 0.14, materials.accent, [0.071, 0.035, -0.14]),
   );
-  finPair(visual, materials.armor, -0.31, 0.072, 0.1, 0.24);
-  ventBank(visual, materials.accent, -0.22, 4, 0.078, -0.059, 0.105);
-  ventBank(visual, materials.accent, -0.22, 4, 0.078, 0.059, 0.105);
+  finPair(defaultShell, materials.armor, -0.31, 0.072, 0.1, 0.24);
+  ventBank(defaultShell, materials.accent, -0.22, 4, 0.078, -0.059, 0.105);
+  ventBank(defaultShell, materials.accent, -0.22, 4, 0.078, 0.059, 0.105);
   for (const z of [-0.22, -0.34, -0.46]) {
-    visual.add(torusZ(0.069, 0.008, materials.dark, [0, 0.075, z]));
+    defaultShell.add(torusZ(0.069, 0.008, materials.dark, [0, 0.075, z]));
   }
   for (const z of [-0.14, -0.04, 0.06, 0.16]) {
-    visual.add(box(0.075, 0.012, 0.045, materials.metal, [0, 0.181, z]));
+    defaultShell.add(
+      box(0.075, 0.012, 0.045, materials.metal, [0, 0.181, z]),
+    );
   }
 
-  visual.add(
+  defaultShell.add(
     cylinderZ(0.021, 0.021, 0.29, materials.metal, [0, 0.105, -0.64]),
     cylinderZ(0.04, 0.045, 0.075, materials.dark, [0, 0.105, -0.8]),
     torusZ(0.031, 0.008, materials.accent, [0, 0.105, -0.84]),
   );
   for (const [width, height] of [[0.076, 0.026], [0.026, 0.076]] as const) {
-    visual.add(box(
+    defaultShell.add(box(
       width,
       height,
       0.06,
@@ -527,7 +568,7 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
     box(0.075, 0.17, 0.075, materials.rubber, [0, -0.055, 0]),
     box(0.083, 0.025, 0.082, materials.metal, [0, -0.14, 0]),
   );
-  visual.add(grip);
+  defaultShell.add(grip);
 
   const optic = new THREE.Group();
   optic.name = 'KYX_VLR7_REFLEX_OPTIC';
@@ -563,13 +604,22 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
     reticle,
   );
   visual.add(optic);
+  visual.add(defaultShell);
+  if (reviewShell !== null) {
+    defaultShell.visible = false;
+    magazine.visible = false;
+    visual.add(reviewShell.root);
+    visual.userData.weaponVisualSource = 'quaternius_cc0_review_rev1';
+  } else {
+    visual.userData.weaponVisualSource = 'project_authored_procedural';
+  }
 
   return {
     visual,
     muzzle: marker(visual, 'KYX_VLR7_MUZZLE', [0, 0.105, -0.89]),
     movingParts: {
       action: movingPart(action),
-      magazine: movingPart(magazine),
+      magazine: movingPart(reviewShell?.magazine ?? magazine),
     },
   };
 }
@@ -977,6 +1027,8 @@ export function createKyxWeaponPresentationModel(
   group.userData.authorityWeaponId = authorityWeaponId;
   group.userData.weaponFamily = spec.family;
   group.userData.weaponSilhouette = spec.silhouette;
+  group.userData.weaponVisualSource =
+    built.visual.userData.weaponVisualSource ?? 'project_authored_procedural';
   group.userData.muzzleNodeName = built.muzzle.name;
   group.add(built.visual);
   const firstPersonContact = presentation === 'first_person'

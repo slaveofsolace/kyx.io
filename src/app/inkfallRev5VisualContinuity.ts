@@ -6,7 +6,7 @@ import {
 } from './inkfallRev4VisualContinuity';
 
 export const INKFALL_REV5_VISUAL_CONTINUITY_VERSION =
-  'inkfall_rev5_online_visual_continuity_v4' as const;
+  'inkfall_rev5_online_visual_continuity_v5' as const;
 
 const SUPERSEDED_RED_FOLD_OBJECTS = Object.freeze([
   'INKFALL_RED_FOLD_FRAME',
@@ -44,17 +44,118 @@ const REV5_READABILITY_PALETTE = new Map<number, Readonly<{
   color: number;
   emissive?: number;
   emissiveIntensity?: number;
+  metalness?: number;
+  roughness?: number;
 }>>([
-  [0x1b2a30, { color: 0x3a5158, emissive: 0x10242b, emissiveIntensity: 0.34 }],
-  [0x2a3b41, { color: 0x486269, emissive: 0x142b31, emissiveIntensity: 0.32 }],
-  [0x111b20, { color: 0x32464d, emissive: 0x0d1b21, emissiveIntensity: 0.28 }],
-  [0x31464a, { color: 0x50696e, emissive: 0x142a30, emissiveIntensity: 0.28 }],
-  [0x213238, { color: 0x3a5057, emissive: 0x0f2228, emissiveIntensity: 0.25 }],
-  [0x64767a, { color: 0x789094 }],
-  [0x384c4e, { color: 0x52686b }],
-  [0x765b3e, { color: 0x8f704f }],
-  [0x0b4c55, { color: 0x167987, emissive: 0x08434d, emissiveIntensity: 0.64 }],
+  [0x1b2a30, {
+    color: 0x3a5158,
+    emissive: 0x10242b,
+    emissiveIntensity: 0.34,
+    metalness: 0.62,
+    roughness: 0.46,
+  }],
+  [0x2a3b41, {
+    color: 0x486269,
+    emissive: 0x142b31,
+    emissiveIntensity: 0.32,
+    metalness: 0.54,
+    roughness: 0.52,
+  }],
+  [0x111b20, {
+    color: 0x32464d,
+    emissive: 0x0d1b21,
+    emissiveIntensity: 0.28,
+    metalness: 0.42,
+    roughness: 0.63,
+  }],
+  [0x31464a, {
+    color: 0x50696e,
+    emissive: 0x142a30,
+    emissiveIntensity: 0.28,
+    metalness: 0.5,
+    roughness: 0.55,
+  }],
+  [0x213238, {
+    color: 0x3a5057,
+    emissive: 0x0f2228,
+    emissiveIntensity: 0.25,
+    metalness: 0.38,
+    roughness: 0.66,
+  }],
+  [0x64767a, {
+    color: 0x789094,
+    metalness: 0.68,
+    roughness: 0.38,
+  }],
+  [0x384c4e, {
+    color: 0x52686b,
+    metalness: 0.57,
+    roughness: 0.5,
+  }],
+  [0x765b3e, {
+    color: 0x8f704f,
+    metalness: 0.61,
+    roughness: 0.43,
+  }],
+  [0x0b4c55, {
+    color: 0x167987,
+    emissive: 0x08434d,
+    emissiveIntensity: 0.64,
+    metalness: 0.28,
+    roughness: 0.34,
+  }],
 ]);
+
+const REV5_ROUTE_DEPTH_LIGHTS = Object.freeze([
+  Object.freeze({
+    id: 'press_crosslink',
+    color: 0xb8e3e5,
+    intensity: 1.35,
+    distance: 26,
+    position: Object.freeze([0, 5.8, 5.5] as const),
+  }),
+  Object.freeze({
+    id: 'archive_walk',
+    color: 0xffd09a,
+    intensity: 1.25,
+    distance: 25,
+    position: Object.freeze([0, 8.6, -18] as const),
+  }),
+  Object.freeze({
+    id: 'ink_channel',
+    color: 0x86e8e2,
+    intensity: 1.2,
+    distance: 28,
+    position: Object.freeze([0, 4.5, 19] as const),
+  }),
+]);
+
+function mountRev5RouteDepthLighting(group: THREE.Group): Readonly<{
+  lightCount: number;
+}> {
+  for (const definition of REV5_ROUTE_DEPTH_LIGHTS) {
+    const light = new THREE.PointLight(
+      definition.color,
+      definition.intensity,
+      definition.distance,
+      1.85,
+    );
+    light.name =
+      `INKFALL_REV5_ROUTE_DEPTH_${definition.id.toUpperCase()}`;
+    light.position.set(
+      definition.position[0],
+      definition.position[1],
+      definition.position[2],
+    );
+    light.userData.presentationRole = 'route_depth_fill_only';
+    light.userData.renderMeshesMayBeAuthority = false;
+    light.userData.onlineAuthoritySource = 'route_readability';
+    light.userData.noHit = true;
+    light.userData.authorityFixtureUnchanged = true;
+    group.add(light);
+  }
+  return Object.freeze({ lightCount: REV5_ROUTE_DEPTH_LIGHTS.length });
+}
 
 function removeSupersededRedFoldLandmark(group: THREE.Group): Readonly<{
   meshCount: number;
@@ -267,6 +368,12 @@ function retuneRev5Readability(group: THREE.Group): Readonly<{
       if (replacement.emissiveIntensity !== undefined) {
         material.emissiveIntensity = replacement.emissiveIntensity;
       }
+      if (replacement.metalness !== undefined) {
+        material.metalness = replacement.metalness;
+      }
+      if (replacement.roughness !== undefined) {
+        material.roughness = replacement.roughness;
+      }
       material.needsUpdate = true;
       tuned.add(material);
     }
@@ -295,6 +402,7 @@ export function createInkfallRev5VisualContinuity(
   const removedArchiveBraces = removeSupersededArchiveBraces(continuity.group);
   const readabilityRetune = retuneRev5Readability(continuity.group);
   const pressRollerMount = mountPressRollerLandmark(continuity.group);
+  const routeDepthLighting = mountRev5RouteDepthLighting(continuity.group);
   const meshCount = (
     continuity.meshCount
     - removedRedFold.meshCount
@@ -304,7 +412,11 @@ export function createInkfallRev5VisualContinuity(
     - removedArchiveBraces.meshCount
     + pressRollerMount.meshCount
   );
-  const lightCount = continuity.lightCount - removedRedFold.lightCount;
+  const lightCount = (
+    continuity.lightCount
+    - removedRedFold.lightCount
+    + routeDepthLighting.lightCount
+  );
   continuity.group.name =
     'INKFALL_REV5_AUTHORITY_ALIGNED_RENDER_ONLY_VISUAL_CONTINUITY';
   continuity.group.userData.meshCount = meshCount;
@@ -318,8 +430,10 @@ export function createInkfallRev5VisualContinuity(
     redundantSpawnExitFramesRemoved: true,
     removedSpawnExitFrameObjectCount: removedSpawnFrames.objectCount,
     modularRenderOnlyArtAddedSeparately: true,
-    readabilityMaterialRetune: 'rev5_dark-surface-separation_v2',
+    readabilityMaterialRetune: 'rev5_surface-response-and-separation_v3',
     retunedMaterialCount: readabilityRetune.materialCount,
+    routeDepthLighting: 'three_bounded_landmark_fill_pools_v1',
+    routeDepthLightCount: routeDepthLighting.lightCount,
     pressRollerLandmarkRetune: 'connected_press_crosshead_no-floating-cylinders_v3',
     retunedPressRollerMeshCount: readabilityRetune.landmarkMeshCount,
     supersededPressRollerObjectsRemoved: true,

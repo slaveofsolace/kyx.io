@@ -1192,8 +1192,8 @@ body[data-ui-system="cutline-v1"] .hud-score-metrics > div {
 
 body[data-ui-system="cutline-v1"] .hud-score-metrics small {
   color: var(--cut-dim);
-  font-size: 8px;
-  font-weight: 550;
+  font-size: 10px;
+  font-weight: 650;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -1201,7 +1201,7 @@ body[data-ui-system="cutline-v1"] .hud-score-metrics small {
 body[data-ui-system="cutline-v1"] #kill-count,
 body[data-ui-system="cutline-v1"] #score-count {
   color: var(--cut-ink);
-  font: 690 22px/1 var(--cut-numeral);
+  font: 720 25px/0.95 var(--cut-numeral);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1274,8 +1274,8 @@ body[data-ui-system="cutline-v1"] .ability-slot::after {
 body[data-ui-system="cutline-v1"] .hud-readout-label {
   align-self: center;
   color: var(--cut-muted);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 650;
   letter-spacing: 0.02em;
   text-transform: none;
 }
@@ -1354,7 +1354,7 @@ body[data-ui-system="cutline-v1"] #stamina-wrap {
 }
 
 body[data-ui-system="cutline-v1"] #stamina-wrap .hud-readout-label {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 body[data-ui-system="cutline-v1"] #stamina-wrap .bar-bg {
@@ -1402,8 +1402,8 @@ body[data-ui-system="cutline-v1"] #weapon-name {
   align-self: end;
   overflow: hidden;
   color: var(--cut-muted);
-  font-size: 10px;
-  font-weight: 620;
+  font-size: 11px;
+  font-weight: 650;
   letter-spacing: 0.02em;
   text-overflow: ellipsis;
   text-transform: none;
@@ -1635,9 +1635,9 @@ body[data-ui-system="cutline-v1"] #game-canvas:focus-visible {
 
 body[data-ui-system="cutline-v1"] #score-wrap {
   top: 16px;
-  width: 208px;
-  min-height: 36px;
-  padding: 3px 4px 5px !important;
+  width: 224px;
+  min-height: 41px;
+  padding: 3px 4px 7px !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
@@ -1646,7 +1646,7 @@ body[data-ui-system="cutline-v1"] #score-wrap {
 
 body[data-ui-system="cutline-v1"] #score-wrap::before,
 body[data-ui-system="cutline-v1"] #score-wrap::after {
-  width: 54px;
+  width: 60px;
 }
 
 body[data-ui-system="cutline-v1"] .hud-score-metrics > div {
@@ -1685,7 +1685,7 @@ body[data-ui-system="cutline-v1"] #score-count {
 }
 
 body[data-ui-system="cutline-v1"] #dm-timer {
-  top: 24px !important;
+  top: 25px !important;
   min-width: 0 !important;
   min-height: 0 !important;
   padding: 0 !important;
@@ -1695,7 +1695,7 @@ body[data-ui-system="cutline-v1"] #dm-timer {
   background: transparent !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
-  font: 680 20px/1 var(--cut-numeral) !important;
+  font: 720 22px/1 var(--cut-numeral) !important;
   letter-spacing: 0 !important;
   text-shadow: 0 1px 2px #000 !important;
   scale: 1 !important;
@@ -2677,10 +2677,10 @@ body[data-ui-system="cutline-v1"] .online-session__flash-overlay {
 body[data-ui-system="cutline-v1"] .online-session__combat-strip {
   position: absolute;
   z-index: 5;
-  top: 17px;
+  top: 15px;
   left: 50%;
-  width: 236px;
-  height: 39px;
+  width: 264px;
+  height: 46px;
   transform: translateX(-50%);
 }
 
@@ -2714,16 +2714,16 @@ body[data-ui-system="cutline-v1"] .online-session__score strong {
   grid-column: 1 / -1;
   grid-row: 1;
   color: var(--cut-ink);
-  font: 690 22px/1 var(--cut-numeral);
+  font: 720 27px/0.95 var(--cut-numeral);
   font-variant-numeric: tabular-nums;
 }
 
 body[data-ui-system="cutline-v1"] .online-session__score span {
   grid-column: 1 / -1;
   grid-row: 1;
-  margin-top: 25px;
-  color: var(--cut-muted);
-  font: 560 9px/1 var(--cut-font);
+  margin-top: 29px;
+  color: var(--cut-ink);
+  font: 650 11px/1 var(--cut-font);
   letter-spacing: 0;
   text-transform: none;
 }
@@ -2743,7 +2743,8 @@ body[data-ui-system="cutline-v1"] .online-session__combat-stat {
 
 body[data-ui-system="cutline-v1"] .online-session__combat-stat > span {
   color: var(--cut-muted);
-  font-size: 9px;
+  font-size: 11px;
+  font-weight: 650;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -2796,7 +2797,8 @@ body[data-ui-system="cutline-v1"] .online-session__combat-stat--weapon > strong 
   display: block;
   overflow: hidden;
   color: var(--cut-muted);
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -2899,9 +2901,9 @@ body[data-ui-system="cutline-v1"] .online-session__ability-charge {
 /* One ability instrument shared by practice, online, and loadout. */
 body[data-ui-system="cutline-v1"] #ability-rack,
 body[data-ui-system="cutline-v1"] .online-session__controls {
-  width: min(400px, calc(100vw - 430px)) !important;
-  min-width: 344px !important;
-  gap: 10px !important;
+  width: clamp(420px, 31vw, 520px) !important;
+  min-width: 420px !important;
+  gap: 12px !important;
 }
 
 body[data-ui-system="cutline-v1"] #ability-rack .ability-slot,
@@ -2910,14 +2912,14 @@ body[data-ui-system="cutline-v1"] .online-session__control--ability {
   position: relative !important;
   width: auto !important;
   min-width: 0 !important;
-  height: 54px !important;
-  padding: 5px 4px 7px !important;
+  height: 60px !important;
+  padding: 6px 5px 8px !important;
   display: grid !important;
-  grid-template-columns: 24px minmax(0, 1fr) auto !important;
-  grid-template-rows: 18px 15px !important;
+  grid-template-columns: 28px minmax(0, 1fr) auto !important;
+  grid-template-rows: 20px 17px !important;
   align-content: center !important;
   align-items: center !important;
-  column-gap: 6px !important;
+  column-gap: 7px !important;
   row-gap: 0 !important;
   border: 0 !important;
   border-bottom: 2px solid var(--cut-line) !important;
@@ -2938,16 +2940,16 @@ body[data-ui-system="cutline-v1"] .ability-glyph-slot {
   position: relative;
   grid-column: 1;
   grid-row: 1 / 3;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   display: grid;
   place-items: center;
   color: currentColor;
 }
 
 body[data-ui-system="cutline-v1"] .ability-glyph {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   display: block;
   overflow: visible;
   vector-effect: non-scaling-stroke;
@@ -2978,7 +2980,7 @@ body[data-ui-system="cutline-v1"] .online-session__ability-key {
   border: 0 !important;
   color: var(--cut-ink) !important;
   background: transparent !important;
-  font: 700 10.5px/1 var(--cut-numeral) !important;
+  font: 740 11.5px/1 var(--cut-numeral) !important;
   transform: none !important;
 }
 
@@ -2994,7 +2996,7 @@ body[data-ui-system="cutline-v1"] .online-session__ability-name {
   min-width: 0 !important;
   overflow: hidden !important;
   color: var(--cut-ink) !important;
-  font: 660 11.5px/1 var(--cut-font) !important;
+  font: 680 12.5px/1 var(--cut-font) !important;
   letter-spacing: 0 !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -3008,7 +3010,7 @@ body[data-ui-system="cutline-v1"] .online-session__ability-charge {
   min-width: 0 !important;
   overflow: hidden !important;
   color: var(--cut-muted) !important;
-  font: 600 10px/1 var(--cut-numeral) !important;
+  font: 650 11.5px/1 var(--cut-numeral) !important;
   letter-spacing: 0 !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -3019,7 +3021,7 @@ body[data-ui-system="cutline-v1"] .ability-progress {
   right: 0;
   bottom: -2px;
   left: 0;
-  height: 2px;
+  height: 3px;
   display: block;
   overflow: hidden;
   background: var(--cut-line);
@@ -3045,7 +3047,7 @@ body[data-ui-system="cutline-v1"] #ability-rack [data-state="unavailable"],
 body[data-ui-system="cutline-v1"] .online-session__control--ability[data-state="empty"],
 body[data-ui-system="cutline-v1"] .online-session__control--ability[data-state="unavailable"] {
   color: var(--cut-red) !important;
-  opacity: 0.76 !important;
+  opacity: 0.88 !important;
 }
 
 body[data-ui-system="cutline-v1"] .local-loadout-ability {
@@ -3423,9 +3425,9 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
 
   body[data-ui-system="cutline-v1"] #ability-rack,
   body[data-ui-system="cutline-v1"] .online-session__controls {
-    width: 310px;
-    min-width: 310px;
-    gap: 7px;
+    width: 372px !important;
+    min-width: 372px !important;
+    gap: 8px !important;
   }
 
   body[data-ui-system="cutline-v1"] #hud-vitals,
@@ -3444,6 +3446,38 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
 }
 
 @media (max-width: 900px) {
+  body[data-ui-system="cutline-v1"] #ability-rack,
+  body[data-ui-system="cutline-v1"] .online-session__controls {
+    width: 340px !important;
+    min-width: 340px !important;
+    gap: 7px !important;
+  }
+
+  body[data-ui-system="cutline-v1"] #ability-rack .ability-slot,
+  body[data-ui-system="cutline-v1"] #ability-rack #ability-q,
+  body[data-ui-system="cutline-v1"] .online-session__control--ability {
+    height: 56px !important;
+    padding: 5px 3px 7px !important;
+    grid-template-columns: 24px minmax(0, 1fr) auto !important;
+    column-gap: 5px !important;
+  }
+
+  body[data-ui-system="cutline-v1"] .ability-glyph-slot,
+  body[data-ui-system="cutline-v1"] .ability-glyph {
+    width: 23px;
+    height: 23px;
+  }
+
+  body[data-ui-system="cutline-v1"] #ability-rack .ability-name,
+  body[data-ui-system="cutline-v1"] .online-session__ability-name {
+    font-size: 11.5px !important;
+  }
+
+  body[data-ui-system="cutline-v1"] #ability-rack .ability-state,
+  body[data-ui-system="cutline-v1"] .online-session__ability-charge {
+    font-size: 10.5px !important;
+  }
+
   body[data-ui-system="cutline-v1"] #top-nav {
     grid-template-columns: auto 1fr;
     gap: 12px;

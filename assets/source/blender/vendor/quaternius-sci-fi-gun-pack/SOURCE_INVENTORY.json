@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "status": "review_only_source",
+  "creator": "Quaternius",
+  "pack": "Sci-Fi Gun Pack",
+  "license": {
+    "spdx": "CC0-1.0",
+    "name": "CC0 1.0 Universal",
+    "sourceDocumentId": "1VIUy4y7T_QtA1keiKLwGfU8Wa9nnarTaHnKWFeo6Q0o",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  "officialPage": "https://quaternius.com/packs/scifigun.html",
+  "officialFolder": "https://drive.google.com/drive/folders/1jaszGQ7QN2KIWFFoOVYy8y8qFe27yVL2",
+  "acquiredAt": "2026-07-31T03:28:33.578Z",
+  "files": [
+    {
+      "path": "blends/LightningGun.blend",
+      "sourceId": "1NqlVjgf8b-fbUzfP_YrB8_MvV5XYZ3Cx",
+      "bytes": 732892,
+      "sha256": "b6d11f21670dece36cc8319d3f93722e39b2c7fa547ed007fd801db9437df343"
+    },
+    {
+      "path": "blends/LongPistol_small.blend",
+      "sourceId": "10sn4KWPpREdtYn2xZq5W8quoTtaU8_AE",
+      "bytes": 687840,
+      "sha256": "34cab82197d7896cefb6e6a56c74c9dda9aa0154dcc3c58afa243b14a9fbcc4c"
+    },
+    {
+      "path": "blends/LongPistol.blend",
+      "sourceId": "1EBYKFTYaD_nzB1tgrgBUjGw2Pd0bCpKu",
+      "bytes": 690720,
+      "sha256": "e091af6e5658e369e27bd0852ed635591b7c936017bf214cfa26da3be3225922"
+    },
+    {
+      "path": "blends/Pistol.blend",
+      "sourceId": "1laQPZCUEJT-k7krZvSshJr8l7tx20LOt",
+      "bytes": 642168,
+      "sha256": "c02dceeddd52545f09346ccddf94014d5ff158954c30ef432b10b0a0c1dd3445"
+    },
+    {
+      "path": "blends/Ray Gun.blend",
+      "sourceId": "1mfD3T3Ss2itBsy8Sjp5TyJyuhhU4ccyN",
+      "bytes": 736464,
+      "sha256": "b3c9fc210844a24a7266918fcde494a43f4d1ce9f02c6f262a86b0298bb8b10b"
+    },
+    {
+      "path": "blends/Rifle.blend",
+      "sourceId": "1yBDMB5D-EPyYjtWpyhQv4RgOzk-EUREe",
+      "bytes": 662440,
+      "sha256": "793c4abfb9135d9d11ff1efe065ad28a9ade55330547d612d98efd5bfb23d13a"
+    },
+    {
+      "path": "blends/Sniper rifle.blend",
+      "sourceId": "1FxqzOLFw2lNUvYCP9UU7WdRCKrpODGTb",
+      "bytes": 665376,
+      "sha256": "62e97d85a907caf10aa84777ab328e18e91464d65330f865b5742987ce3fe040"
+    },
+    {
+      "path": "Preview.png",
+      "sourceId": "15MaRoFrwDp-Vew0rDbFxvRgIuYRq_7-Y",
+      "bytes": 572694,
+      "sha256": "76a8b99eccf5979f2c0cebf32a324c7609f5c091229d731195510afbc925c0bc"
+    }
+  ]
+}

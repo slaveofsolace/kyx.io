@@ -67,18 +67,37 @@ describe('Inkfall Rev5 release visual continuity', () => {
       ).toBeDefined();
     }
 
+    for (const route of ['PRESS_CROSSLINK', 'ARCHIVE_WALK', 'INK_CHANNEL']) {
+      const light = continuity.group.getObjectByName(
+        `INKFALL_REV5_ROUTE_DEPTH_${route}`,
+      );
+      expect(light).toBeDefined();
+      expect(light?.userData).toMatchObject({
+        presentationRole: 'route_depth_fill_only',
+        renderMeshesMayBeAuthority: false,
+        noHit: true,
+        authorityFixtureUnchanged: true,
+      });
+    }
+
     let actualMeshCount = 0;
+    let actualLightCount = 0;
     continuity.group.traverse((object) => {
       if ('isMesh' in object && object.isMesh === true) actualMeshCount += 1;
+      if ('isLight' in object && object.isLight === true) actualLightCount += 1;
       expect(object.userData.renderMeshesMayBeAuthority).toBe(false);
     });
     expect(continuity.meshCount).toBe(actualMeshCount);
+    expect(continuity.lightCount).toBe(actualLightCount);
     expect(continuity.group.userData.rev5GeometryCorrection).toMatchObject({
       redundantSpawnExitFramesRemoved: true,
       removedSpawnExitFrameObjectCount: 8,
       removedPressRollerObjectMeshCount: 3,
       removedIndexWheelMeshCount: 9,
       pressRollerMountMeshCount: 6,
+      routeDepthLighting: 'three_bounded_landmark_fill_pools_v1',
+      routeDepthLightCount: 3,
+      authorityFixtureUnchanged: true,
     });
   });
 });

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "status": "review_only_candidate",
+  "candidateId": "kyx-vlr7-quaternius-rev1",
+  "source": {
+    "pack": "Quaternius Sci-Fi Gun Pack",
+    "asset": "Rifle.blend",
+    "license": "CC0-1.0",
+    "bytes": 662440,
+    "sha256": "793c4abfb9135d9d11ff1efe065ad28a9ade55330547d612d98efd5bfb23d13a"
+  },
+  "outputs": {
+    "blend": {
+      "path": "assets/source/blender/kyx-weapons/vlr7-quaternius-rev1/kyx-vlr7-quaternius-rev1.blend",
+      "bytes": 1064593,
+      "sha256": "8bff161af4dd6eb4b60f97dd3f4c0579be244e6803a17412720f1fd7eefcf75d"
+    },
+    "glb": {
+      "path": "assets/review/runtime-candidates/kyx-vlr7-quaternius-rev1/kyx-vlr7-quaternius-rev1.glb",
+      "bytes": 132052,
+      "sha256": "46de2380ac08810524d7bb4bb67d8621bb436a4f559b4d672d5c2026a075dd79"
+    }
+  },
+  "structure": {
+    "meshCount": 24,
+    "triangleCount": 2384,
+    "magazineNode": "KYX_VLR7_REVIEW_MAGAZINE",
+    "scopePolicy": "donor_scope_removed_runtime_reflex_retained",
+    "rootScale": [
+      0.1599999964237213,
+      0.1599999964237213,
+      0.1599999964237213
+    ],
+    "rootLocation": [
+      0.0,
+      -0.1599999964237213,
+      -0.04800000041723251
+    ]
+  },
+  "claims": {
+    "presentationOnly": true,
+    "authorityUnchanged": true,
+    "releaseEligible": false,
+    "humanAccepted": false
+  }
+}

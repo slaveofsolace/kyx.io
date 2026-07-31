@@ -95,6 +95,7 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedWeaponLabel: string | null;
   readonly selectedWeaponFamily: string | null;
   readonly selectedWeaponSilhouette: string | null;
+  readonly selectedWeaponVisualSource: string;
   readonly selectedFirstPersonHandCount: number;
   readonly selectedFirstPersonContactMode: string;
   readonly selectedFirstPersonAimRequested: boolean;
@@ -256,6 +257,14 @@ async function loadRev5Visual(): Promise<LoadedRev5Visual> {
   return loadInkfallRev5ReviewVisual();
 }
 
+async function loadStagingWeaponReview(): Promise<void> {
+  if (import.meta.env.MODE !== 'staging-review') return;
+  const { loadKyxVlr7QuaterniusReview } = await import(
+    '../dev/loadKyxVlr7QuaterniusReview'
+  );
+  await loadKyxVlr7QuaterniusReview();
+}
+
 function disposeObject(root: THREE.Object3D): void {
   root.traverse((object) => {
     if (!(object as THREE.Mesh).isMesh) return;
@@ -415,6 +424,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const [loadedVisual] = await Promise.all([
     loadRev5Visual(),
     ensureHumanSoldierReady(),
+    loadStagingWeaponReview(),
   ]);
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -1181,6 +1191,9 @@ export async function createOnlineAuthorityThreeRuntime(
       selectedWeaponLabel: firstPersonWeapon?.label ?? null,
       selectedWeaponFamily: firstPersonWeapon?.family ?? null,
       selectedWeaponSilhouette: firstPersonWeapon?.silhouette ?? null,
+      selectedWeaponVisualSource: String(
+        firstPersonWeapon?.group.userData.weaponVisualSource ?? 'none',
+      ),
       selectedFirstPersonHandCount:
         firstPersonWeapon?.firstPersonHandCount ?? 0,
       selectedFirstPersonContactMode:

@@ -27,6 +27,20 @@ const bindingSource = path.join(
   'app',
   'inkfallRev5CandidateBinding.ts',
 );
+const weaponReviewArtifact = path.join(
+  repositoryRoot,
+  'assets',
+  'review',
+  'runtime-candidates',
+  'kyx-vlr7-quaternius-rev1',
+  'kyx-vlr7-quaternius-rev1.glb',
+);
+const weaponBindingSource = path.join(
+  repositoryRoot,
+  'src',
+  'dev',
+  'loadKyxVlr7QuaterniusReview.ts',
+);
 const localStagingEnvironment = path.join(repositoryRoot, '.env.staging');
 
 function sha256(bytes) {
@@ -61,9 +75,25 @@ if (
       + 'INKFALL_REV5_CANDIDATE_ART',
   );
 }
+const weaponSourceBytes = await readFile(weaponReviewArtifact);
+const expectedWeaponBytes = weaponSourceBytes.byteLength;
+const expectedWeaponSha256 = sha256(weaponSourceBytes);
+const weaponBindingText = await readFile(weaponBindingSource, 'utf8');
+if (
+  !weaponBindingText.includes(
+    `bytes: ${expectedWeaponBytes.toLocaleString('en-US').replaceAll(',', '_')}`,
+  )
+  || !weaponBindingText.includes(`sha256: '${expectedWeaponSha256}'`)
+) {
+  throw new Error(
+    'STAGING_REVIEW_WEAPON_BINDING_MISMATCH: generated GLB does not match '
+      + 'KYX_VLR7_QUATERNIUS_REVIEW',
+  );
+}
 
 const distributedFiles = await walkFiles(distributionRoot);
 const matches = [];
+const weaponMatches = [];
 let usesSameOriginAuthority = false;
 const forbiddenAuthorityOriginFiles = [];
 let localStagingAuthorityOrigin = '';
@@ -82,6 +112,14 @@ for (const file of distributedFiles) {
   const bytes = await readFile(file);
   if (fileStat.size === expectedBytes && sha256(bytes) === expectedSha256) {
     matches.push(path.relative(distributionRoot, file).replaceAll('\\', '/'));
+  }
+  if (
+    fileStat.size === expectedWeaponBytes
+    && sha256(bytes) === expectedWeaponSha256
+  ) {
+    weaponMatches.push(
+      path.relative(distributionRoot, file).replaceAll('\\', '/'),
+    );
   }
   if (path.extname(file).toLowerCase() !== '.js') continue;
   const script = bytes.toString('utf8');
@@ -105,6 +143,11 @@ if (matches.length !== 1) {
     `STAGING_REVIEW_PACKAGE_MISMATCH expected=1 actual=${matches.length}`,
   );
 }
+if (weaponMatches.length !== 1) {
+  throw new Error(
+    `STAGING_REVIEW_WEAPON_PACKAGE_MISMATCH expected=1 actual=${weaponMatches.length}`,
+  );
+}
 if (!usesSameOriginAuthority || forbiddenAuthorityOriginFiles.length > 0) {
   throw new Error(
     'STAGING_REVIEW_AUTHORITY_ORIGIN_MISMATCH '
@@ -118,5 +161,8 @@ console.log(JSON.stringify({
   artifact: matches[0],
   bytes: expectedBytes,
   sha256: expectedSha256,
+  weaponArtifact: weaponMatches[0],
+  weaponBytes: expectedWeaponBytes,
+  weaponSha256: expectedWeaponSha256,
   authorityTransport: 'same_origin_pages_service_binding',
 }, null, 2));
