@@ -1,6 +1,6 @@
 # Project status
 
-Last updated: 2026-07-30
+Last updated: 2026-07-31
 
 KYX.IO is in pre-release development. The active target is a coherent
 desktop-browser team-deathmatch slice on Inkfall Foundry that works consistently
@@ -16,9 +16,9 @@ in Practice and online at 2, 4, and 8 players.
 | Map library | Original, KYX legacy, and rights-blocked external reference categories are implemented | Verify the runtime panel and add only licensed/importable maps |
 | Character | Procedural fallback is playable; earlier visual batches are preserved outside the release package | Complete one Assault role end to end on the shared anatomy/rig foundation |
 | Animation | Core technical clips and procedural contact systems exist | Add complete directional locomotion, air/slide/action/hit/death coverage and first-person contact proof |
-| Weapons | Six online weapon families and the broader Practice arsenal have procedural models | Converge Practice/online presentation and integrate any selected asset pack only after provenance and runtime review |
+| Weapons | Six online weapon families and the broader Practice arsenal have procedural models. VLR-7 contact v5 narrows the ADS arm silhouette and preserves one weapon/two grip contacts, but remains procedural review art | Converge Practice/online presentation and integrate any selected asset pack only after provenance and runtime review |
 | Abilities | Blink and five grenade-family contracts exist with authority resources and reconnect persistence | Finish Blink preview parity, smoke/flash behavior, portal traversal, and cohesive physics/audio/VFX |
-| HUD/UI | Cutline menu and match HUD are integrated | Complete representative desktop, reduced-motion, high-contrast, Practice, and online visual review |
+| HUD/UI | Cutline menu and match HUD are integrated. Standard/narrow desktop ability-label clipping is fixed and guarded by rendered-text measurement; visual language remains unaccepted | Complete representative desktop, reduced-motion, high-contrast, Practice, and online visual review |
 | Audio/VFX | Functional feedback exists | Replace placeholder/retro-feeling cues and complete weapon, movement, ability, hit, headshot, and kill feedback |
 | Mobile | A preliminary base exists | Deferred until the desktop arena, character, animation, and gameplay slice are accepted |
 

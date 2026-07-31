@@ -2893,9 +2893,9 @@ body[data-ui-system="cutline-v1"] .online-session__ability-charge {
 /* One ability instrument shared by practice, online, and loadout. */
 body[data-ui-system="cutline-v1"] #ability-rack,
 body[data-ui-system="cutline-v1"] .online-session__controls {
-  width: clamp(420px, 31vw, 520px) !important;
-  min-width: 420px !important;
-  gap: 12px !important;
+  width: clamp(452px, 34vw, 540px) !important;
+  min-width: 452px !important;
+  gap: 10px !important;
 }
 
 body[data-ui-system="cutline-v1"] #ability-rack .ability-slot,
@@ -3418,9 +3418,9 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
 
   body[data-ui-system="cutline-v1"] #ability-rack,
   body[data-ui-system="cutline-v1"] .online-session__controls {
-    width: 372px !important;
-    min-width: 372px !important;
-    gap: 8px !important;
+    width: clamp(410px, 43vw, 440px) !important;
+    min-width: 410px !important;
+    gap: 7px !important;
   }
 
   body[data-ui-system="cutline-v1"] #hud-vitals,
@@ -3441,9 +3441,9 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
 @media (max-width: 900px) {
   body[data-ui-system="cutline-v1"] #ability-rack,
   body[data-ui-system="cutline-v1"] .online-session__controls {
-    width: 340px !important;
-    min-width: 340px !important;
-    gap: 7px !important;
+    width: min(400px, calc(100vw - 32px)) !important;
+    min-width: 0 !important;
+    gap: 6px !important;
   }
 
   body[data-ui-system="cutline-v1"] #ability-rack .ability-slot,
@@ -3451,14 +3451,14 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
   body[data-ui-system="cutline-v1"] .online-session__control--ability {
     height: 56px !important;
     padding: 5px 3px 7px !important;
-    grid-template-columns: 24px minmax(0, 1fr) auto !important;
-    column-gap: 5px !important;
+    grid-template-columns: 22px minmax(0, 1fr) auto !important;
+    column-gap: 4px !important;
   }
 
   body[data-ui-system="cutline-v1"] .ability-glyph-slot,
   body[data-ui-system="cutline-v1"] .ability-glyph {
-    width: 23px;
-    height: 23px;
+    width: 21px;
+    height: 21px;
   }
 
   body[data-ui-system="cutline-v1"] #ability-rack .ability-name,

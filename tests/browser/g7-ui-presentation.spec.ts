@@ -39,6 +39,11 @@ async function gameplayLayout(page: Page) {
         } : null] as const;
       });
     const boxes = Object.fromEntries(entries);
+    const clippedAbilityLabels = Array.from(
+      document.querySelectorAll<HTMLElement>('#ability-rack .ability-name'),
+    ).filter((element) => element.scrollWidth > element.clientWidth)
+      .map((element) => element.textContent?.trim() ?? '');
+    const weaponLabel = document.querySelector<HTMLElement>('#weapon-name');
     const overlaps = (
       left: { left: number; right: number; top: number; bottom: number },
       right: { left: number; right: number; top: number; bottom: number },
@@ -51,6 +56,9 @@ async function gameplayLayout(page: Page) {
       overflowY: Math.max(0, document.documentElement.scrollHeight - window.innerHeight),
       vitalsAbilities: overlaps(boxes['hud-vitals']!, boxes['ability-rack']!),
       weaponAbilities: overlaps(boxes['weapon-wrap']!, boxes['ability-rack']!),
+      clippedAbilityLabels,
+      clippedWeaponLabel: weaponLabel !== null
+        && weaponLabel.scrollWidth > weaponLabel.clientWidth,
       outside: entries
         .filter(([, box]) => box !== null && box.width > 0 && box.height > 0 && (
           box.left < 0
@@ -92,6 +100,8 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
     overflowY: 0,
     vitalsAbilities: false,
     weaponAbilities: false,
+    clippedAbilityLabels: [],
+    clippedWeaponLabel: false,
     outside: [],
   });
 
@@ -148,6 +158,8 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
     overflowY: 0,
     vitalsAbilities: false,
     weaponAbilities: false,
+    clippedAbilityLabels: [],
+    clippedWeaponLabel: false,
     outside: [],
   });
   expect(errors).toEqual({ console: [], page: [], requests: [] });

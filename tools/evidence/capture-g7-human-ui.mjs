@@ -124,6 +124,12 @@ try {
   await page.locator('#map-loading.hidden').waitFor({ state: 'attached', timeout: 15_000 });
   await capture('hud-1280x720.png');
 
+  await setViewport(1024, 640);
+  await capture('hud-1024x640.png', {
+    notes: 'Representative narrow desktop HUD; ability names must remain complete and must not overlap vitals or weapon telemetry.',
+  });
+  await setViewport(1280, 720);
+
   await page.evaluate(async () => {
     const { HUD } = await import('/src/ui/HUD.js');
     const hud = new HUD();

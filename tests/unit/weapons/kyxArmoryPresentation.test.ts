@@ -166,13 +166,25 @@ describe('KYX first-person armory presentation', () => {
       'KYX_VLR7_LINE_RIFLE_VISUAL',
     )).toHaveLength(1);
     expect(firstPersonRifle.group.userData).toMatchObject({
-      firstPersonContactMode: 'authored_two_hand_assault_suit_v4',
+      firstPersonContactMode: 'authored_two_hand_assault_suit_v5',
       firstPersonHandCount: 2,
     });
     expect(firstPersonRifle.firstPersonContactRig?.userData).toMatchObject({
       presentationOnly: true,
       noHit: true,
     });
+    for (const prefix of ['DOMINANT', 'SUPPORT']) {
+      expect(firstPersonRifle.group.getObjectByName(
+        `KYX_VLR7_${prefix}_SLEEVE_UPPER`,
+      )?.visible).toBe(false);
+      expect(firstPersonRifle.group.getObjectByName(
+        `KYX_VLR7_${prefix}_ELBOW_BRIDGE`,
+      )?.visible).toBe(false);
+      const gauntlet = firstPersonRifle.group.getObjectByName(
+        `KYX_VLR7_${prefix}_GAUNTLET_DORSAL_PLATE`,
+      ) as THREE.Mesh<THREE.BoxGeometry> | undefined;
+      expect(gauntlet?.geometry.parameters.width).toBe(0.068);
+    }
 
     const worldRifle = createKyxWeaponPresentationModel(
       'vertical_rifle_v1',

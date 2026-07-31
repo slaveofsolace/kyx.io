@@ -143,21 +143,21 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   root.name = 'KYX_VLR7_FIRST_PERSON_CONTACT_RIG';
   root.userData.presentationOnly = true;
   root.userData.noHit = true;
-  root.userData.contactMode = 'authored_two_hand_assault_suit_v4';
+  root.userData.contactMode = 'authored_two_hand_assault_suit_v5';
 
   const dominantShoulder = new THREE.Vector3(0.46, -1.02, 0.74);
-  const dominantElbow = new THREE.Vector3(0.29, -0.58, 0.43);
+  const dominantElbow = new THREE.Vector3(0.22, -0.7, 0.36);
   const dominantWrist = new THREE.Vector3(0.115, -0.205, 0.235);
   const dominantPalm = new THREE.Vector3(0.018, -0.105, 0.19);
   const dominantGauntletStart = pointBetween(
     dominantElbow,
     dominantWrist,
-    0.44,
+    0.62,
   );
   const dominantGauntletEnd = pointBetween(
     dominantElbow,
     dominantWrist,
-    0.94,
+    0.96,
   );
   const dominantElbowBridgeStart = pointBetween(
     dominantElbow,
@@ -192,8 +192,8 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
       'KYX_VLR7_DOMINANT_SLEEVE_LOWER',
       dominantElbow,
       dominantWrist,
-      0.052,
-      0.041,
+      0.043,
+      0.036,
       suit,
     ),
     taperedLimbBetween(
@@ -208,16 +208,16 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
       'KYX_VLR7_DOMINANT_GAUNTLET_CORE',
       dominantGauntletStart,
       dominantGauntletEnd,
-      0.05,
-      0.042,
+      0.044,
+      0.037,
       plate,
     ),
     plateBetween(
       'KYX_VLR7_DOMINANT_GAUNTLET_DORSAL_PLATE',
       dominantGauntletStart.clone().add(new THREE.Vector3(0, 0, 0.044)),
       dominantGauntletEnd.clone().add(new THREE.Vector3(0, 0, 0.04)),
-      0.082,
-      0.016,
+      0.068,
+      0.014,
       plate,
     ),
     taperedLimbBetween(
@@ -266,18 +266,18 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   root.add(dominantHand);
 
   const supportShoulder = new THREE.Vector3(-0.5, -1.02, 0.66);
-  const supportElbow = new THREE.Vector3(-0.33, -0.58, 0.08);
+  const supportElbow = new THREE.Vector3(-0.22, -0.7, -0.05);
   const supportWrist = new THREE.Vector3(-0.14, -0.205, -0.18);
   const supportPalm = new THREE.Vector3(-0.028, -0.085, -0.325);
   const supportGauntletStart = pointBetween(
     supportElbow,
     supportWrist,
-    0.44,
+    0.62,
   );
   const supportGauntletEnd = pointBetween(
     supportElbow,
     supportWrist,
-    0.94,
+    0.96,
   );
   const supportElbowBridgeStart = pointBetween(
     supportElbow,
@@ -312,8 +312,8 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
       'KYX_VLR7_SUPPORT_SLEEVE_LOWER',
       supportElbow,
       supportWrist,
-      0.052,
-      0.041,
+      0.043,
+      0.036,
       suit,
     ),
     taperedLimbBetween(
@@ -328,16 +328,16 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
       'KYX_VLR7_SUPPORT_GAUNTLET_CORE',
       supportGauntletStart,
       supportGauntletEnd,
-      0.05,
-      0.042,
+      0.044,
+      0.037,
       plate,
     ),
     plateBetween(
       'KYX_VLR7_SUPPORT_GAUNTLET_DORSAL_PLATE',
       supportGauntletStart.clone().add(new THREE.Vector3(0, 0, 0.048)),
       supportGauntletEnd.clone().add(new THREE.Vector3(0, 0, 0.04)),
-      0.082,
-      0.016,
+      0.068,
+      0.014,
       plate,
     ),
     taperedLimbBetween(
