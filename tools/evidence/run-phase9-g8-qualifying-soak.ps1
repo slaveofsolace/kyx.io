@@ -4,7 +4,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
-$node = 'C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe'
+$node = (Get-Command node -ErrorAction Stop).Source
 $resolvedOutputDirectory = Join-Path $repositoryRoot $OutputDirectory
 $statePath = Join-Path $resolvedOutputDirectory 'launch-state.json'
 $serverStdoutPath = Join-Path $resolvedOutputDirectory 'vite.stdout.log'
@@ -99,7 +99,7 @@ try {
     '--display-refresh-hz=540',
     '--machine-id=sol',
     '--gpu-driver=NVIDIA_610.62_Windows_32.0.16.1062',
-    '--power-mode=Ultimate_Performance_Codex_Tuned',
+    '--power-mode=Ultimate_Performance',
     '--thermal-state=unavailable_no_sensor',
     '--scenario=offline-practice-eight-character-traversal',
     '--match-seed=offline-practice-default',

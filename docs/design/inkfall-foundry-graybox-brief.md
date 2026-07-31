@@ -170,11 +170,8 @@ G5 is not assessed: there is no loading map package, separate collision artifact
 
 ## Source anchors
 
-- `C:/AI Projects/Projects/Games/evio/codex_handoff_pack_20260719_v2/08_MAP_LEVEL_DESIGN.md`
-- `C:/AI Projects/Projects/Games/evio/codex_handoff_pack_20260719_v2/14_PERFORMANCE_ASSET_BUDGETS.md`
-- `C:/AI Projects/Projects/Games/evio/codex_handoff_pack_20260719_v2/15_QA_EVIDENCE_GATES.md`
-- `C:/AI Projects/Projects/Games/evio/codex_handoff_pack_20260719_v2/17_EXECUTION_BACKLOG.md`
+- Archived project handoff: map design, performance budgets, QA evidence gates,
+  and execution backlog documents (not part of this repository)
 - `src/sim/movement/profile.ts` and sealed `evidence/2026-07-20/phase-3-movement-collision/movement-tapes.json`
 - `docs/adr/ADR-003-character-controller-and-collision-queries.md`
-
 

@@ -20,6 +20,7 @@ Coordinate mapping (Three.js Y-up → Blender Z-up):
 import bpy
 import math
 import os
+from pathlib import Path
 
 C = bpy.context
 D = bpy.data
@@ -455,9 +456,17 @@ build_stealth()
 print(f"Built {len([o for o in D.objects if o.type == 'MESH'])} mesh objects")
 
 # ── Export GLB ─────────────────────────────────────────────────────────────────
-out = '/home/user/Ev.io/assets/quarantine/legacy-unverified/runtime-snapshots/player.glb'
+out = (
+    Path(__file__).resolve().parent
+    / 'assets'
+    / 'quarantine'
+    / 'legacy-unverified'
+    / 'runtime-snapshots'
+    / 'player.glb'
+)
+out.parent.mkdir(parents=True, exist_ok=True)
 bpy.ops.export_scene.gltf(
-    filepath=out,
+    filepath=str(out),
     export_format='GLB',
     use_selection=False,
     export_apply=True,          # apply any remaining modifiers

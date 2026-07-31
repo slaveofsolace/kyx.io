@@ -237,8 +237,8 @@ function loadReleaseRev5Visual(): LoadedRev5Visual {
 
 async function loadRev5Visual(): Promise<LoadedRev5Visual> {
   if (!import.meta.env.DEV) return loadReleaseRev5Visual();
-  // Runtime resolution preserves the local review visual without allowing
-  // Rollup to discover and package its unapproved GLBs in production.
+  // Resolve the development-only visual without allowing Rollup to discover
+  // or package non-release GLBs.
   const reviewVisualModulePath = '../dev/loadInkfallRev5ReviewVisual.ts';
   const { loadInkfallRev5ReviewVisual } = await import(
     /* @vite-ignore */ reviewVisualModulePath

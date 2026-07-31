@@ -58,12 +58,10 @@ The final evidence summary and manifest are authoritative if a narrative count e
 
 ## Reproduction
 
-The evidence harness uses the bundled Node runtime and invokes the exact pinned npm version through the bundled package runner:
+The evidence harness uses the repository-supported Node runtime:
 
 ```powershell
-$node = 'C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe'
-$env:KYX_PNPM_CLI = 'C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\pnpm\bin\pnpm.mjs'
-& $node tools/evidence/capture-phase2-check.mjs
+node tools/evidence/capture-phase2-check.mjs
 ```
 
 The harness performs the clean install, `npm run check:full`, expected release-asset rejection, and a fresh browser recapture. The browser evidence server binds only to `127.0.0.1:4176` and the harness terminates the exact child process.

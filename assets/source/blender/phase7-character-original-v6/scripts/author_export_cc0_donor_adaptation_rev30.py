@@ -5,6 +5,7 @@ import bmesh
 import hashlib
 import json
 import math
+import os
 import struct
 from pathlib import Path
 from mathutils import Matrix, Vector
@@ -23,13 +24,18 @@ SOURCE_MASTER = (
     / "v6c-character-rev17"
     / "kyx-v6c-character-rev17-master.blend"
 )
-DONOR_ROOT = Path(
-    r"C:\Users\suhai\.codex\tmp\kyx-cc0-model-audit-20260728\extracted\Sci-fi Soldiers 2"
-)
+def required_external_path(environment_name: str) -> Path:
+    value = os.environ.get(environment_name, "").strip()
+    if not value:
+        raise RuntimeError(
+            f"{environment_name} must point to the audited external donor input"
+        )
+    return Path(value).expanduser().resolve()
+
+
+DONOR_ROOT = required_external_path("KYX_REV30_DONOR_ROOT")
 DONOR_BLEND = DONOR_ROOT / "Mesh.blend"
-DONOR_ARCHIVE = Path(
-    r"C:\Users\suhai\.codex\tmp\kyx-cc0-model-audit-20260728\Sci-fi-Soldiers-OpenGameArt-CC0.zip"
-)
+DONOR_ARCHIVE = required_external_path("KYX_REV30_DONOR_ARCHIVE")
 
 CANDIDATE_ID = "g6-rev30-cc0-donor"
 MODEL_DIR = (

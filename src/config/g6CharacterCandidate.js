@@ -52,9 +52,8 @@ export function isG6CharacterCandidateEnabled() {
   return false;
 }
 
-// Backward-compatible pipeline helper retained while callers migrate away from
-// the rejected Rev17/Rev30 review assets. Review-only files must never be
-// fetched by the browser or copied into a release package.
+// Compatibility helper for the legacy selection API. Non-release files must
+// never be fetched by the browser or copied into a release package.
 export function isG6Rev17CharacterCandidateEnabled() {
   return false;
 }

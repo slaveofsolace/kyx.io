@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { buildHumanSoldier, isHumanSoldierReady, tintHumanSoldier } from './HumanSoldier.js';
 
-// Compatibility hooks retained for menu callers. The unresolved legacy static
-// models are quarantined and cannot be fetched; previews use the project-authored
-// human candidate when ready and the procedural builders below otherwise.
+// Compatibility hooks retained for menu callers. Quarantined static models
+// cannot be fetched; previews use the project-authored runtime when available
+// and the procedural builders below otherwise.
 export function preloadSpartanModel(onLoad) {
   onLoad?.();
 }

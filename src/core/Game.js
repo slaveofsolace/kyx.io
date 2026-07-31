@@ -381,8 +381,7 @@ export class Game {
       if (body?.triggerAction) {
         body.triggerAction(event);
       } else if (event.kind === 'fire') {
-        // Preserve the legacy procedural soldier recoil while Rev17 remains
-        // an opt-in candidate.
+        // Retain procedural recoil when no skeletal presentation hook exists.
         body?.triggerFire?.(1);
       }
     };

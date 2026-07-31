@@ -6,10 +6,11 @@ import { GUNS, MELEE, Loadout } from '../core/Loadout.js';
 import { ABILITY_PRESENTATION } from '../abilities/abilityLoadout.ts';
 import { createAbilityGlyph } from './abilityGlyph.ts';
 import { COMBAT_PRESETS } from '../loadouts/combatPresets.ts';
+import { listMapLibrarySections } from '../content/maps/library.ts';
 import { ControllerMenuNavigator } from './ControllerNavigation.js';
 import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
 
-const SAFE_PANELS = new Set(['loadout', 'modes', 'settings']);
+const SAFE_PANELS = new Set(['maps', 'loadout', 'modes', 'settings']);
 
 const SETTING_CHOICE_GROUPS = Object.freeze([
   Object.freeze({ id: 'quality-btns', dataKey: 'q' }),
@@ -74,6 +75,7 @@ export class MenuUI {
     this.selectedSkinId = getSkin().id;
     this.selectedArmorId = loadArmorType();
     this.selectedModeId = GAME_MODES[0].id;
+    this.selectedMapId = 'iron_bastion';
     this._displayName = 'Recruit';
     this._activePanel = null;
     this._panelReturnFocus = null;
@@ -89,6 +91,7 @@ export class MenuUI {
     this.onProfileEdit = null;
 
     this._buildModeCards();
+    this._buildMapLibrary();
     this._buildSettings();
     this._wireNav();
     this._controllerNavigation = new ControllerMenuNavigator({
@@ -99,13 +102,7 @@ export class MenuUI {
   }
 
   _wireNav() {
-    const startPractice = (modeId) => {
-      if (modeId) this.selectedModeId = modeId;
-      this._closeAllPanels();
-      this._closeAllDropdowns();
-      const name = this.nameInput?.value.trim() || this._displayName || 'Recruit';
-      this.onPlay?.(name, this.selectedSkinId, this.selectedModeId, this.selectedArmorId);
-    };
+    const startPractice = (modeId) => this._startPractice(modeId);
 
     this.playBtn?.addEventListener('click', () => startPractice());
 
@@ -162,6 +159,7 @@ export class MenuUI {
     document.getElementById('quit-btn')?.addEventListener('click', () => this.onQuit?.());
     document.getElementById('restart-btn')?.addEventListener('click', () => this.onRestart?.());
     document.getElementById('menu-btn')?.addEventListener('click', () => this.onBackToMenu?.());
+    document.getElementById('maps-close-btn')?.addEventListener('click', () => this._closeAllPanels(true));
     document.getElementById('inv-close-btn')?.addEventListener('click', () => this._closeAllPanels(true));
     document.getElementById('settings-close-btn')?.addEventListener('click', () => this._closeAllPanels(true));
 
@@ -202,6 +200,15 @@ export class MenuUI {
       event.preventDefault();
       moveFocusSpatial(scope, event.key, event.target);
     });
+  }
+
+  _startPractice(modeId) {
+    if (modeId) this.selectedModeId = modeId;
+    this.selectedMapId = 'iron_bastion';
+    this._closeAllPanels();
+    this._closeAllDropdowns();
+    const name = this.nameInput?.value.trim() || this._displayName || 'Recruit';
+    this.onPlay?.(name, this.selectedSkinId, this.selectedModeId, this.selectedArmorId);
   }
 
   _activeFocusScope() {
@@ -248,6 +255,7 @@ export class MenuUI {
     const panel = document.getElementById(`panel-${id}`);
     this._panelReturnFocus = trigger;
     this._activePanel = id;
+    document.body.dataset.activeMenuPanel = id;
     panel?.classList.remove('hidden');
     trigger?.classList.add('active');
     trigger?.setAttribute('aria-expanded', 'true');
@@ -260,6 +268,7 @@ export class MenuUI {
     const returnFocus = this._panelReturnFocus;
     this._activePanel = null;
     this._panelReturnFocus = null;
+    delete document.body.dataset.activeMenuPanel;
     document.querySelectorAll('.nav-panel').forEach((panel) => panel.classList.add('hidden'));
     document.querySelectorAll('[data-panel]').forEach((button) => {
       button.classList.remove('active');
@@ -290,6 +299,101 @@ export class MenuUI {
         this.onPlay?.(playerName, this.selectedSkinId, mode.id, this.selectedArmorId);
       });
       root.appendChild(button);
+    }
+  }
+
+  _buildMapLibrary() {
+    const root = document.getElementById('map-library-sections');
+    if (!root) return;
+    root.replaceChildren();
+
+    for (const section of listMapLibrarySections()) {
+      const sectionNode = document.createElement('section');
+      sectionNode.className = 'map-library__section';
+      sectionNode.dataset.sectionId = section.id;
+
+      const sectionHead = document.createElement('header');
+      sectionHead.className = 'map-library__section-head';
+      const sectionTitle = document.createElement('h3');
+      sectionTitle.textContent = section.label;
+      const sectionCopy = document.createElement('p');
+      sectionCopy.className = 'map-library__section-copy';
+      sectionCopy.textContent = section.description;
+      sectionHead.append(sectionTitle, sectionCopy);
+
+      const entries = document.createElement('div');
+      entries.className = 'map-library__entries';
+
+      for (const entry of section.entries) {
+        const article = document.createElement('article');
+        article.className = 'map-library__entry';
+        article.dataset.mapId = entry.id;
+        article.dataset.availability = entry.availability;
+
+        const descriptionColumn = document.createElement('div');
+        const titleRow = document.createElement('div');
+        titleRow.className = 'map-library__entry-title-row';
+        const title = document.createElement('h4');
+        title.textContent = entry.displayName;
+        const status = document.createElement('span');
+        status.className = 'map-library__entry-status';
+        status.textContent = entry.statusLabel;
+        titleRow.append(title, status);
+
+        const maker = document.createElement('p');
+        maker.className = 'map-library__entry-maker';
+        maker.textContent = entry.maker;
+        const copy = document.createElement('p');
+        copy.className = 'map-library__entry-copy';
+        copy.textContent = entry.description;
+        const modes = document.createElement('div');
+        modes.className = 'map-library__modes';
+        modes.setAttribute('aria-label', `${entry.displayName} modes`);
+        for (const mode of entry.modes) {
+          const modeNode = document.createElement('span');
+          modeNode.textContent = mode;
+          modes.appendChild(modeNode);
+        }
+        descriptionColumn.append(titleRow, maker, copy, modes);
+
+        const actionColumn = document.createElement('div');
+        actionColumn.className = 'map-library__action-column';
+        if (entry.action.kind === 'start_local_practice') {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'map-library__action map-library__action--primary';
+          button.textContent = 'Play offline';
+          button.addEventListener('click', () => this._startPractice(entry.action.modeId));
+          actionColumn.appendChild(button);
+        } else {
+          const link = document.createElement('a');
+          link.className = entry.action.kind === 'open_review_route'
+            ? 'map-library__action'
+            : 'map-library__reference';
+          link.href = entry.action.href;
+          link.textContent = entry.action.kind === 'open_review_route'
+            ? 'Open review arena'
+            : 'View official library';
+          if (entry.action.kind === 'external_reference') {
+            link.target = '_blank';
+            link.rel = 'noreferrer';
+          }
+          actionColumn.appendChild(link);
+
+          if (entry.availability === 'rights_blocked') {
+            const blocked = document.createElement('p');
+            blocked.className = 'map-library__blocked-note';
+            blocked.textContent = 'Import and redistribution remain locked.';
+            actionColumn.appendChild(blocked);
+          }
+        }
+
+        article.append(descriptionColumn, actionColumn);
+        entries.appendChild(article);
+      }
+
+      sectionNode.append(sectionHead, entries);
+      root.appendChild(sectionNode);
     }
   }
 

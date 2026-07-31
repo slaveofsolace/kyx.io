@@ -1,0 +1,69 @@
+name: Repository verification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      CI: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Use repository npm version
+        run: npm install --global npm@11.18.0
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Typecheck application
+        run: npm run typecheck
+
+      - name: Typecheck Worker
+        run: npm run typecheck:worker
+
+      - name: Typecheck deterministic simulation
+        run: npm run typecheck:sim
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test application
+        run: npm run test
+
+      - name: Test routine Worker suite
+        run: npm run test:worker
+
+      - name: Build production package
+        run: npm run build
+
+      - name: Validate release assets
+        run: npm run validate:assets:release
+
+      - name: Verify release provenance
+        run: npm run verify:release-provenance
+
+      - name: Verify package closure
+        run: npm run verify:release-package
+
+      - name: Audit release readiness
+        run: npm run audit:g9

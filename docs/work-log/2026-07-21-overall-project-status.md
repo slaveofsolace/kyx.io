@@ -1,7 +1,7 @@
 # KYX.IO overall project status — 2026-07-21
 
-- Canonical repository: `C:\AI Projects\Projects\Games\evio\evio-repo`
-- Governing handoff: `C:\AI Projects\Projects\Games\evio\codex_handoff_pack_20260719_v2`
+- Canonical repository: repository root
+- Governing handoff: archived project handoff package
 - Baseline commit: `81aa1d02acce8e30ba411bb895901d2d2ac6694e`
 - Worktree policy: preserve the intentional dirty tree. No reset, clean, stash, commit, deployment, or publication was performed.
 - Accepted gates: **G0, G1, and G2 only**. G3–G9 remain open until their complete contracts and required human reviews are proven.

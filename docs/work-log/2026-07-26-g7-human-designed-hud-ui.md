@@ -4,7 +4,7 @@ Status: **implemented; human visual review pending**
 
 ## Isolation and integration
 
-- Dedicated worktree: `C:\AI Projects\Projects\Games\evio\evio-g7-human-ui-20260726`
+- Dedicated worktree: `evio-g7-human-ui-20260726`
 - Branch: `codex/g7-human-ui-20260726`
 - Canonical integration point: `145264d7d72e2dc1be63eddc355edf4e5d5e2cac`
 - G7 source commit: `cadeb2b0e6773db7009499dc56231c12c98817ac`

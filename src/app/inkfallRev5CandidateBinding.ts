@@ -17,13 +17,13 @@ import {
 
 export const INKFALL_REV5_CANDIDATE_ART = Object.freeze({
   revision: '5.0',
-  bytes: 2_689_992,
-  sha256: '1783bb9292a48f0903b70c0a65e809f261ca0422cb92ca5399fd38782ae297ad',
-  nodeCount: 24,
-  meshCount: 24,
-  primitiveCount: 24,
-  triangleCount: 44_748,
-  materialCount: 11,
+  bytes: 2_983_004,
+  sha256: '1f8c556e3d8c0127933332bf1dbc19e585f050c7df3f10405db2b103ab307f27',
+  nodeCount: 26,
+  meshCount: 26,
+  primitiveCount: 26,
+  triangleCount: 50_620,
+  materialCount: 13,
 } as const);
 
 export const INKFALL_REV5_CANDIDATE_AUTHORITY = Object.freeze({
@@ -89,8 +89,8 @@ export function inspectInkfallRev5CandidateScene(scene: THREE.Object3D) {
     expectedStructuralFamilies:
       riseMeshCount === 6
       && landingMeshCount === 8
-      && lowerPortalMeshCount === 5
-      && upperPortalMeshCount === 5,
+      && lowerPortalMeshCount === 6
+      && upperPortalMeshCount === 6,
     pairedEnergizedSurfaces: energySurfaceMeshCount === 2,
     horizontalBoundsInsideAuthorityPackage:
       overall.min.x >= -36

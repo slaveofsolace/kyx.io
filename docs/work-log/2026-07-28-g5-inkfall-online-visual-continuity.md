@@ -4,8 +4,7 @@
 
 - Base: canonical `685e8633fd24b456e3a86bac03f08486580615ce`
 - Branch: `codex/inkfall-visual-continuity-20260728`
-- Worktree:
-  `C:\AI Projects\Projects\Games\evio\evio-inkfall-visual-continuity-20260728`
+- Worktree: `evio-inkfall-visual-continuity-20260728`
 - No merge, push, or deployment was performed.
 
 ## Major presentation change

@@ -199,9 +199,8 @@ export class WeaponSystem {
 
   _syncRev17ViewmodelVisibility() {
     const isMelee = this.currentDef?.kind === 'melee';
-    // The blockout-era procedural arm does not have a valid melee grip and
-    // visibly intersects the blade. Keep it for the default rifle only; Rev17
-    // supplies its own rifle arms and has no accepted melee hand/socket yet.
+    // The procedural arm has no valid melee grip and intersects the blade, so
+    // it remains limited to non-melee weapons.
     if (this.armGroup) this.armGroup.visible = !isMelee && !this._rev17Viewmodel;
     if (!this._rev17Viewmodel) return;
     const candidateVisible = !isMelee;
@@ -1136,9 +1135,8 @@ export class WeaponSystem {
     const presentationMotionScale = player.reducedMotion ? 0.12 : 1;
     if (this._rev17Viewmodel?.visible) {
       const grounded = !!player.onGround;
-      // Keep the candidate reload inside a camera-safe envelope. The GLB still
-      // carries the reviewed FP_RELOAD clip, but its full reach is not promoted
-      // to the live viewmodel until a dedicated retarget passes visual review.
+      // Keep reload motion inside a camera-safe envelope until a dedicated
+      // retarget completes visual review.
       const reloadProgress = st.isReloading
         ? THREE.MathUtils.clamp(1 - st.reloadTimer / def.reloadTime, 0, 1)
         : 0;

@@ -4,9 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#0a0c10" />
-  <meta name="description" content="KYX.IO offline combat practice prototype." />
+  <meta name="description" content="KYX.IO is a desktop-browser sci-fi arena FPS with deterministic movement and authoritative online matches." />
+  <meta property="og:title" content="KYX.IO — Arena FPS" />
+  <meta property="og:description" content="Fast browser-based arena combat in Practice and authoritative online matches." />
+  <meta property="og:type" content="website" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0c10'/%3E%3Cpath d='M7 7h5v7l7-7h6l-8 8 8 10h-6l-7-9v9H7z' fill='%23ffd166'/%3E%3C/svg%3E" />
-  <title>KYX.IO &mdash; Offline Practice</title>
+  <title>KYX.IO &mdash; Arena FPS</title>
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body data-interface="kyx-cutline-v1">
@@ -14,10 +17,10 @@
     <canvas
       id="game-canvas"
       tabindex="0"
-      aria-label="KYX.IO offline practice game viewport"
+      aria-label="KYX.IO game viewport"
     ></canvas>
 
-    <!-- Boot status. The live arena remains visible behind this local-only shell. -->
+    <!-- Boot overlay -->
     <div id="connect-screen" class="overlay" role="status" aria-live="polite">
       <div class="connect-panel">
         <h1 class="logo boot-logo">KYX<span>.IO</span></h1>
@@ -25,17 +28,18 @@
       </div>
     </div>
 
-    <!-- Truthful desktop navigation: only working local paths are actionable. -->
+    <!-- Primary navigation -->
     <header id="top-nav" class="hidden">
       <div class="nav-brand-lockup">
         <div class="nav-brand" aria-label="KYX.IO">KYX<span>.IO</span></div>
       </div>
-      <nav class="nav-items" aria-label="Practice menu">
+      <nav class="nav-items" aria-label="Game menu">
         <button
           type="button"
           class="nav-item mode-option practice-nav-mode"
           data-mode="deathmatch"
         >Practice</button>
+        <button type="button" class="nav-item" data-panel="maps" aria-controls="panel-maps" aria-expanded="false">Maps</button>
         <button type="button" class="nav-item" data-panel="loadout" aria-controls="panel-loadout" aria-expanded="false">Loadout</button>
         <button type="button" class="nav-item" data-panel="settings" aria-controls="panel-settings" aria-expanded="false">Settings</button>
         <button
@@ -54,7 +58,7 @@
       </aside>
     </header>
 
-    <!-- Primary local mode and explicit bot disclosure. -->
+      <!-- Practice mode -->
     <main id="center-play" class="hidden">
       <section class="practice-launch-card" aria-labelledby="practice-title">
         <header class="practice-card-head">
@@ -105,7 +109,19 @@
       </section>
     </main>
 
-    <!-- Local loadout. Cosmetic ownership and currency claims are intentionally absent. -->
+    <section id="panel-maps" class="nav-panel hidden" aria-labelledby="map-library-title">
+      <header class="map-library__head">
+        <div>
+          <span class="map-library__index">Arena index / desktop</span>
+          <h2 id="map-library-title" class="map-library__title">Map library</h2>
+          <p>Choose a playable KYX arena, enter a source-frozen review build, or inspect an external legacy catalog without confusing public downloads with licensed game content.</p>
+        </div>
+        <button id="maps-close-btn" type="button" class="panel-close-btn" aria-label="Close map library">Close</button>
+      </header>
+      <div id="map-library-sections" class="map-library__body"></div>
+    </section>
+
+    <!-- Loadout panel -->
     <section id="panel-loadout" class="nav-panel nav-panel-inv hidden" aria-label="Local loadout">
       <button id="inv-close-btn" type="button" class="panel-close-btn" aria-label="Close loadout">Close</button>
       <div class="inv-header">
@@ -126,7 +142,7 @@
       <div id="inv-grid" class="inv-grid"></div>
     </section>
 
-    <!-- Local settings are the only other active shell panel. -->
+    <!-- Settings panel -->
     <section id="panel-settings" class="nav-panel hidden" aria-labelledby="settings-title">
       <header class="settings-command-head">
         <div>
@@ -258,14 +274,14 @@
       </footer>
     </section>
 
-    <!-- Required initialization hooks, kept inaccessible and free of product claims. -->
+      <!-- Runtime hooks -->
     <div id="panel-modes" class="nav-panel hidden" aria-hidden="true">
       <div id="mode-cards" class="hidden"></div>
     </div>
     <div id="skin-grid" class="hidden" aria-hidden="true"></div>
     <button id="profile-logout-btn" type="button" class="hidden" tabindex="-1" aria-hidden="true">RESET LOCAL PROFILE</button>
 
-    <!-- Local map transition. -->
+    <!-- Loading overlay -->
     <div id="map-loading" class="hidden" role="status" aria-live="polite">
       <div class="ml-panel">
         <div class="ml-name">Iron<br />Bastion</div>
@@ -297,7 +313,7 @@
       </div>
     </div>
 
-    <!-- In-practice HUD: every population label identifies bots explicitly. -->
+    <!-- Match HUD -->
     <div id="hud" class="hidden" aria-label="Offline practice heads-up display" data-hud-contract="cutline-v1" data-ui-revision="cutline-v1" data-kyx-a11y="text-and-pattern-critical-states">
       <div id="crosshair" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
       <div id="hitmarker" aria-hidden="true"></div>
@@ -401,7 +417,7 @@
       </div>
     </div>
 
-    <!-- Local post-practice results. No currency or remote-population claims. -->
+    <!-- Match results -->
     <div id="leaderboard-overlay" class="hidden">
       <div class="lb-panel">
         <div class="lb-kicker">Round report</div>
@@ -430,7 +446,7 @@
       </div>
     </div>
 
-    <!-- CSS reveals this only on coarse-pointer or narrow devices. -->
+    <!-- Touch controls -->
     <div id="desktop-required-overlay" class="overlay desktop-required hidden" role="dialog" aria-modal="true" aria-labelledby="desktop-required-title">
       <div class="desktop-required-card">
         <p class="practice-eyebrow">Input requirement</p>
@@ -439,7 +455,7 @@
       </div>
     </div>
 
-    <!-- Development builds may publish renderer/runtime facts here. -->
+    <!-- Development diagnostics -->
     <output id="dev-build-diagnostics" class="dev-build-diagnostics hidden" aria-live="polite"></output>
   </div>
 

@@ -16,8 +16,6 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
 const ledgerPath = join(root, 'assets/provenance/shipped-assets.g9.json');
 const publicRoot = join(root, 'public');
-const expectedProductionOrigin = 'https://kyx-io-authority.suhaibabdeljaber.workers.dev';
-const expectedStagingOrigin = 'https://kyx-io-authority-staging.suhaibabdeljaber.workers.dev';
 const binaryExtensions = new Set(['.glb', '.gltf', '.jpeg', '.jpg', '.png', '.webp']);
 const textExtensions = new Set([
   '',
@@ -308,28 +306,35 @@ record(
 );
 
 const connectSource = publicHeaders.match(/connect-src\s+([^;]+);/iu)?.[1] ?? '';
-const bareWebSocketScheme = /(?:^|\s)wss:(?=\s|$)/iu.test(connectSource);
-const exactOrigins = [
-  expectedProductionOrigin,
-  expectedProductionOrigin.replace('https://', 'wss://'),
-  expectedStagingOrigin,
-  expectedStagingOrigin.replace('https://', 'wss://'),
-];
+const connectSourceTokens = connectSource.split(/\s+/u).filter(Boolean);
+const externalConnectSources = connectSourceTokens.filter(
+  (source) => source !== "'self'",
+);
 record(
-  'static_asset_csp_uses_exact_worker_origins',
+  'static_asset_csp_is_same_origin',
   connectSource.length > 0
-    && !bareWebSocketScheme
-    && exactOrigins.every((origin) => connectSource.split(/\s+/u).includes(origin)),
+    && connectSourceTokens.includes("'self'")
+    && externalConnectSources.length === 0,
   {
-    bareWebSocketScheme,
-    requiredOriginsPresent: Object.fromEntries(
-      exactOrigins.map((origin) => [origin, connectSource.split(/\s+/u).includes(origin)]),
-    ),
+    connectSourceTokens,
+    externalConnectSources,
   },
 );
 
 const staging = wrangler.env?.staging;
-const stagingOrigins = (staging?.vars?.ALLOWED_ORIGINS ?? '').split(',');
+const stagingOrigins = (staging?.vars?.ALLOWED_ORIGINS ?? '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const configuredStagingOriginsAreLoopback = stagingOrigins.every((origin) => {
+  try {
+    const url = new URL(origin);
+    return url.protocol === 'http:'
+      && (url.hostname === '127.0.0.1' || url.hostname === 'localhost' || url.hostname === '[::1]');
+  } catch {
+    return false;
+  }
+});
 const stagingBindings = staging?.durable_objects?.bindings ?? [];
 const expectedStagingBindings = new Map([
   ['KYX_ROOM', 'KyxRoom'],
@@ -348,13 +353,14 @@ record(
   'cloudflare_staging_environment_isolated',
   staging?.name === 'kyx-io-authority-staging'
     && staging?.name !== wrangler.name
+    && staging?.workers_dev === true
     && exactStagingBindings
     && productionNamespaceReuseAbsent
-    && stagingOrigins.includes(expectedStagingOrigin)
-    && !stagingOrigins.includes(expectedProductionOrigin),
+    && configuredStagingOriginsAreLoopback,
   {
     productionWorkerName: wrangler.name,
     stagingWorkerName: staging?.name ?? null,
+    stagingWorkersDevEnabled: staging?.workers_dev ?? null,
     stagingDurableObjectBindingCount: stagingBindings.length,
     stagingDurableObjectBindings: stagingBindings.map((binding) => ({
       name: binding.name,
@@ -363,8 +369,8 @@ record(
     })),
     exactIntendedBindingsPresent: exactStagingBindings,
     productionNamespaceReuseAbsent,
-    stagingOriginPresent: stagingOrigins.includes(expectedStagingOrigin),
-    productionOriginExcludedFromStagingAllowlist: !stagingOrigins.includes(expectedProductionOrigin),
+    configuredStagingOriginsAreLoopback,
+    sameOriginDeploymentAccess: 'validated by Worker CORS tests',
   },
 );
 
@@ -394,7 +400,7 @@ const report = {
       affectedAssetCount: ledger.assets.length,
     },
     ...(blockedAssets.length === 0 ? [] : [{
-      code: 'OWNER_ATTESTATION_OR_LICENSE_REQUIRED',
+      code: 'ASSET_ATTESTATION_OR_LICENSE_REQUIRED',
       affectedAssetCount: blockedAssets.length,
       affectedAssetIds: blockedAssets.map((asset) => asset.assetId),
     }]),

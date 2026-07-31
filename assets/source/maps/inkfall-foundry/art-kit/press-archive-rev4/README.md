@@ -52,7 +52,7 @@ From the repository root:
   --repo-root (Get-Location).Path `
   --output-root ((Get-Location).Path + '\assets\source\maps\inkfall-foundry\art-kit\press-archive-rev4\rev4')
 
-& 'C:\Users\suhai\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe' `
+python `
   'tools/evidence/verify-inkfall-g5-press-archive-rev4.py' `
   --repo-root (Get-Location).Path
 ```

@@ -106,6 +106,18 @@ BRIDGE_SECTION = {
     "maximumRailRadiusMeters": 0.052,
     "supportOffsetMeters": 0.96,
 }
+# These tops are defined by the authority-aligned procedural presentation shell
+# in `inkfallRev4VisualContinuity.ts`. They are render-contact surfaces only;
+# frozen Revision 3 collision remains authoritative.
+PRESS_HALL_VISUAL_DECK_TOP_Z = -0.16
+FOUNDATION_INSET_VISUAL_TOP_Z = -4.98
+SUPPORT_FOOT_PENETRATION_METERS = 0.04
+SUPPORT_FOOT_HEIGHT_METERS = 0.24
+SUPPORT_LOAD_FOOT_OVERLAP_MINIMUM_METERS = 0.04
+BRIDGE_TRESTLE_SURFACE_TOP_Z = {
+    "J1": PRESS_HALL_VISUAL_DECK_TOP_Z,
+    "J2": FOUNDATION_INSET_VISUAL_TOP_Z,
+}
 LANDING_CENTER = (-22.0, 19.0, 5.82)
 LANDING_SIZE = (8.0, 7.0, 0.36)
 EXPECTED_PARENT_MESH_COUNT = rev4.EXPECTED_PARENT_MESH_COUNT
@@ -1102,60 +1114,105 @@ def carve_continuous_clearance(
     }
 
 
-def add_support_pair(
-    segment_token: str,
-    sample: tuple[float, float, float],
+def add_bridge_trestle(
+    joint_token: str,
+    point: tuple[float, float, float],
     side: Vector,
     materials: dict[str, bpy.types.Material],
-    sample_token: str,
 ) -> int:
     cast = materials["V3_CAST_IRON"]
     steel = materials["V3_WORN_STEEL"]
+    amber = materials["V3_WORN_AMBER"]
     zone = "archive_rise"
-    top_z = sample[2] - 0.18
-    base_z = 0.02
-    if top_z - base_z <= 0.35:
+    top_z = point[2] - 0.18
+    surface_top_z = BRIDGE_TRESTLE_SURFACE_TOP_Z[joint_token]
+    foot_center_z = (
+        surface_top_z
+        - SUPPORT_FOOT_PENETRATION_METERS
+        + SUPPORT_FOOT_HEIGHT_METERS * 0.5
+    )
+    foot_top_z = foot_center_z + SUPPORT_FOOT_HEIGHT_METERS * 0.5
+    leg_start_z = foot_top_z - 0.10
+    if top_z - leg_start_z <= 0.35:
         return 0
-    left = offset_point(
-        sample,
+    left_top = offset_point(
+        point,
         side,
         -BRIDGE_SECTION["supportOffsetMeters"],
     )
-    right = offset_point(
-        sample,
+    right_top = offset_point(
+        point,
         side,
         BRIDGE_SECTION["supportOffsetMeters"],
     )
-    for side_token, point in (("L", left), ("R", right)):
-        add_box(
-            f"V5_BRIDGE_{segment_token}_PIER_{sample_token}_{side_token}",
-            (0.52, 0.52, top_z - base_z),
-            (point[0], point[1], (base_z + top_z) * 0.5),
+    left_base = offset_point(point, side, -1.52)
+    right_base = offset_point(point, side, 1.52)
+    for side_token, base, top in (
+        ("L", left_base, left_top),
+        ("R", right_base, right_top),
+    ):
+        add_beam(
+            f"V5_BRIDGE_TRESTLE_{joint_token}_LEG_{side_token}",
+            (base[0], base[1], leg_start_z),
+            (top[0], top[1], top_z - 0.06),
+            0.19,
             cast,
             zone,
             "load_pier",
-            bevel=0.055,
+            vertices=12,
         )
         add_box(
-            f"V5_BRIDGE_{segment_token}_FOOT_{sample_token}_{side_token}",
-            (0.90, 0.90, 0.20),
-            (point[0], point[1], base_z + 0.08),
+            f"V5_BRIDGE_TRESTLE_{joint_token}_FOOT_{side_token}",
+            (1.04, 0.92, SUPPORT_FOOT_HEIGHT_METERS),
+            (base[0], base[1], foot_center_z),
             steel,
             zone,
             "load_pier",
             bevel=0.065,
         )
     add_beam(
-        f"V5_BRIDGE_{segment_token}_SUPPORT_CROSS_{sample_token}",
-        (left[0], left[1], top_z - 0.04),
-        (right[0], right[1], top_z - 0.04),
-        0.15,
+        f"V5_BRIDGE_TRESTLE_{joint_token}_CAP",
+        (left_top[0], left_top[1], top_z - 0.04),
+        (right_top[0], right_top[1], top_z - 0.04),
+        0.18,
         steel,
         zone,
         "load_pier_cap",
         vertices=12,
     )
-    return 5
+    knee_z = leg_start_z + (top_z - leg_start_z) * 0.44
+    left_knee = interpolate(left_base, left_top, 0.44)
+    right_knee = interpolate(right_base, right_top, 0.44)
+    add_beam(
+        f"V5_BRIDGE_TRESTLE_{joint_token}_KNEE_L",
+        (left_knee[0], left_knee[1], knee_z),
+        (point[0], point[1], knee_z + 0.42),
+        0.11,
+        cast,
+        zone,
+        "load_pier_cap",
+        vertices=12,
+    )
+    add_beam(
+        f"V5_BRIDGE_TRESTLE_{joint_token}_KNEE_R",
+        (right_knee[0], right_knee[1], knee_z),
+        (point[0], point[1], knee_z + 0.42),
+        0.11,
+        cast,
+        zone,
+        "load_pier_cap",
+        vertices=12,
+    )
+    add_box(
+        f"V5_BRIDGE_TRESTLE_{joint_token}_DATUM",
+        (0.16, 0.16, 0.50),
+        (point[0], point[1], knee_z + 0.20),
+        amber,
+        zone,
+        "load_pier_cap",
+        bevel=0.025,
+    )
+    return 8
 
 
 def build_connected_bridge(
@@ -1244,12 +1301,9 @@ def build_connected_bridge(
                     "attached_guard_rail",
                     vertices=14,
                 )
-            # Posts only at structural segment boundaries keep the continuous
-            # rails safe while opening combat sightlines. Mid-span pickets read
-            # as construction scaffold rather than finished bridge hardware.
-            fractions: tuple[float, ...] = ()
-            if segment_index == 0:
-                fractions += (0.0,)
+            # One post at every route joint keeps the long guard rails visibly
+            # rooted without returning to a dense mid-span picket fence.
+            fractions: tuple[float, ...] = (0.0,)
             if segment_index == len(ROUTE_POINTS) - 2:
                 fractions += (1.0,)
             for post_index, fraction in enumerate(fractions):
@@ -1265,24 +1319,17 @@ def build_connected_bridge(
                 )
                 rail_post_count += 1
 
-        # One centered load frame per span is enough to show a credible load
-        # path. The previous two-pair cadence filled combat lanes with a forest
-        # of thin posts and repeated feet.
-        for support_index, fraction in enumerate((0.5,)):
-            sample = interpolate(start, end, fraction)
-            support_count += add_support_pair(
-                token,
-                sample,
-                side,
-                materials,
-                f"P{support_index}",
-            )
-            support_pair_count += 1
-
     for joint_index, point in enumerate(ROUTE_POINTS[1:-1], start=1):
         incoming = path_side(ROUTE_POINTS[joint_index - 1], point)
         outgoing = path_side(point, ROUTE_POINTS[joint_index + 1])
         side = (incoming + outgoing).normalized()
+        support_count += add_bridge_trestle(
+            f"J{joint_index}",
+            point,
+            side,
+            materials,
+        )
+        support_pair_count += 1
         left = offset_point(point, side, -1.27)
         right = offset_point(point, side, 1.27)
         add_beam(
@@ -1302,6 +1349,7 @@ def build_connected_bridge(
         "supportPairCount": support_pair_count,
         "jointComponentCount": joint_count,
         "railPostCount": rail_post_count,
+        "trestleSurfaceTopMeters": dict(BRIDGE_TRESTLE_SURFACE_TOP_Z),
         "continuousPrimaryDeck": True,
         "railsRootedToDeckGirders": True,
         "jointSillsRootedToDeck": True,
@@ -1328,6 +1376,39 @@ def build_supported_landing(
         zone,
         "landing_deck",
         bevel=0.035,
+    )
+    for token, size, location in (
+        ("WEST", (0.34, 7.18, 0.72), (-26.02, 19.0, 5.58)),
+        ("EAST", (0.34, 7.18, 0.72), (-17.98, 19.0, 5.58)),
+        ("SOUTH", (8.18, 0.34, 0.72), (-22.0, 15.48, 5.58)),
+        ("NORTH", (8.18, 0.34, 0.72), (-22.0, 22.52, 5.58)),
+    ):
+        add_box(
+            f"V5_ARCHIVE_EDGE_FASCIA_{token}",
+            size,
+            location,
+            cast,
+            zone,
+            "landing_understructure",
+            bevel=0.045,
+        )
+    add_box(
+        "V5_ARCHIVE_ROUTE_INLAY",
+        (2.12, 5.84, 0.035),
+        (-22.0, 18.72, 6.045),
+        ceramic,
+        zone,
+        "landing_route_inlay",
+        bevel=0.012,
+    )
+    add_box(
+        "V5_ARCHIVE_ROUTE_INLAY_DATUM",
+        (0.12, 5.64, 0.044),
+        (-22.0, 18.72, 6.068),
+        amber,
+        zone,
+        "landing_route_inlay",
+        bevel=0.010,
     )
     for x in (-24.8, -22.0, -19.2):
         add_box(
@@ -1357,27 +1438,42 @@ def build_supported_landing(
         (-18.65, 21.8),
     )
     for index, (x, y) in enumerate(support_points):
+        foot_center_z = (
+            FOUNDATION_INSET_VISUAL_TOP_Z
+            - SUPPORT_FOOT_PENETRATION_METERS
+            + SUPPORT_FOOT_HEIGHT_METERS * 0.5
+        )
+        foot_top_z = foot_center_z + SUPPORT_FOOT_HEIGHT_METERS * 0.5
         add_beam(
             f"V5_ARCHIVE_SUPPORT_COLUMN_{index}",
-            (x, y, 0.02),
-            (x, y, 10.35),
-            0.14,
+            (x, y, foot_top_z - 0.10),
+            (x, y, 5.66),
+            0.19,
             cast,
             zone,
             "landing_load_support",
+            vertices=12,
         )
         add_box(
             f"V5_ARCHIVE_SUPPORT_FOOT_{index}",
-            (0.58, 0.58, 0.16),
-            (x, y, 0.10),
+            (0.72, 0.72, SUPPORT_FOOT_HEIGHT_METERS),
+            (x, y, foot_center_z),
             steel,
             zone,
             "landing_load_support",
             bevel=0.03,
         )
     for token, start, end in (
-        ("SW_NE", (-25.35, 16.2, 0.18), (-18.65, 21.8, 5.25)),
-        ("SE_NW", (-18.65, 16.2, 0.18), (-25.35, 21.8, 5.25)),
+        (
+            "SW_NE",
+            (-25.35, 16.2, FOUNDATION_INSET_VISUAL_TOP_Z + 0.22),
+            (-18.65, 21.8, 5.25),
+        ),
+        (
+            "SE_NW",
+            (-18.65, 16.2, FOUNDATION_INSET_VISUAL_TOP_Z + 0.22),
+            (-25.35, 21.8, 5.25),
+        ),
     ):
         add_beam(
             f"V5_ARCHIVE_UNDERDECK_BRACE_{token}",
@@ -1410,21 +1506,40 @@ def build_supported_landing(
             bevel=0.006,
         )
 
-    # The four continuous load columns now carry the restrained overhead pair;
-    # no second post/shoe/crown cage competes with the combat route.
-    gantry_bars = (
-        ("S", (-25.35, 16.2, 10.3), (-18.65, 16.2, 10.3)),
-        ("N", (-25.35, 21.8, 10.3), (-18.65, 21.8, 10.3)),
-    )
-    for token, start, end in gantry_bars:
+    # Ground loads terminate at the deck. A separate north-wall service spine
+    # is visibly rooted to the landing instead of continuing four columns into
+    # an empty overhead cage.
+    service_posts = ((-25.35, 22.16), (-18.65, 22.16))
+    for index, (x, y) in enumerate(service_posts):
         add_beam(
-            f"V5_ARCHIVE_GANTRY_BAR_{token}",
-            start,
-            end,
-            0.13,
+            f"V5_ARCHIVE_SERVICE_POST_{index}",
+            (x, y, 6.02),
+            (x, y, 9.56),
+            0.15,
             cast,
             zone,
-            "rooted_archive_gantry",
+            "supported_context_wall",
+            vertices=12,
+        )
+    add_beam(
+        "V5_ARCHIVE_NORTH_SERVICE_SPINE",
+        (-25.35, 22.16, 9.50),
+        (-18.65, 22.16, 9.50),
+        0.17,
+        cast,
+        zone,
+        "supported_context_wall",
+        vertices=12,
+    )
+    for index, x in enumerate((-24.2, -22.0, -19.8)):
+        add_box(
+            f"V5_ARCHIVE_NORTH_SPINE_HANGER_{index}",
+            (0.18, 0.30, 0.66),
+            (x, 22.16, 9.20),
+            amber if index == 1 else steel,
+            zone,
+            "attached_wall_datum",
+            bevel=0.026,
         )
 
     rack_centers = (
@@ -1505,9 +1620,13 @@ def build_supported_landing(
     return {
         "supportColumnCount": len(support_points),
         "underdeckBraceCount": 2,
-        "gantryBarCount": len(gantry_bars),
+        "gantryBarCount": 0,
+        "northServicePostCount": len(service_posts),
+        "northServiceSpineCount": 1,
+        "edgeFasciaCount": 4,
         "contextWallBaseMeters": 6.0,
         "landingFloorTopMeters": 6.0,
+        "foundationVisualTopMeters": FOUNDATION_INSET_VISUAL_TOP_Z,
         "allPrimaryLoadsReachFoundationOrDeck": True,
     }
 
@@ -1625,22 +1744,26 @@ def build_cc0_donor_service_language(
 def portal_energy_material(
     endpoint_id: str,
     base: bpy.types.Material,
+    *,
+    role: str,
+    alpha: float,
+    emission_value: float,
 ) -> bpy.types.Material:
     material = base.copy()
-    material.name = f"V5_PORTAL_ENERGY_{endpoint_id.upper()}"
-    color = tuple(base.diffuse_color[:3]) + (0.46,)
+    material.name = f"V5_PORTAL_{role.upper()}_{endpoint_id.upper()}"
+    color = tuple(base.diffuse_color[:3]) + (alpha,)
     material.diffuse_color = color
     if material.use_nodes:
         principled = material.node_tree.nodes.get("Principled BSDF")
         if principled is not None:
             principled.inputs["Base Color"].default_value = color
-            principled.inputs["Alpha"].default_value = 0.46
+            principled.inputs["Alpha"].default_value = alpha
             emission_color = principled.inputs.get("Emission Color")
             if emission_color is not None:
                 emission_color.default_value = tuple(color[:3]) + (1.0,)
-            emission_strength = principled.inputs.get("Emission Strength")
-            if emission_strength is not None:
-                emission_strength.default_value = 1.85
+            emission_input = principled.inputs.get("Emission Strength")
+            if emission_input is not None:
+                emission_input.default_value = emission_value
     if hasattr(material, "surface_render_method"):
         material.surface_render_method = "DITHERED"
     material.use_backface_culling = False
@@ -1656,15 +1779,17 @@ def add_portal_energy_field(
     radius: float,
     material: bpy.types.Material,
     zone: str,
+    depth_offset: float = 0.0,
 ) -> bpy.types.Object:
-    """Create one connected translucent field inside the authored gateway."""
+    """Create one low-alpha destination veil inside the authored gateway."""
 
-    segment_count = 12
-    vertices = [(center.x, center.y + 0.018, center.z)]
+    segment_count = 24
+    field_y = center.y + depth_offset
+    vertices = [(center.x, field_y, center.z)]
     vertices.extend(
         (
             center.x + math.cos(math.tau * index / segment_count) * radius,
-            center.y + 0.018,
+            field_y,
             center.z + math.sin(math.tau * index / segment_count) * radius,
         )
         for index in range(segment_count)
@@ -1681,6 +1806,8 @@ def add_portal_energy_field(
     bpy.context.scene.collection.objects.link(field)
     field["kyx_translucent_field"] = True
     field["kyx_field_segment_count"] = segment_count
+    field["kyx_field_radius_meters"] = radius
+    field["kyx_field_destination_veil"] = True
     return mark_render_only(
         field,
         zone,
@@ -1735,7 +1862,20 @@ def build_portal_endpoint(
     steel = materials["V3_WORN_STEEL"]
     ink = materials["V3_INK_BLACK"]
     safety = materials["V3_CHIPPED_SAFETY_RED"]
-    energy = portal_energy_material(endpoint["id"], color)
+    energy = portal_energy_material(
+        endpoint["id"],
+        color,
+        role="energy",
+        alpha=0.065,
+        emission_value=0.30,
+    )
+    filament = portal_energy_material(
+        endpoint["id"],
+        color,
+        role="filament",
+        alpha=0.22,
+        emission_value=0.82,
+    )
 
     endpoint_token = endpoint["id"].upper()
     import_geometry_donor(
@@ -1756,50 +1896,50 @@ def build_portal_endpoint(
     import_geometry_donor(
         "Prop_Light_Wide",
         f"V5_DONOR_PORTAL_{endpoint_token}_HEADER_LIGHT",
-        (center.x, center.y - 0.31, floor + 2.58),
-        (1.12, 1.12, 1.12),
+        (center.x, center.y - 0.34, floor + 2.54),
+        (0.72, 0.72, 0.72),
         (0.0, 0.0, 0.0),
-        color,
+        steel,
         zone,
         "donor_portal_header_light",
         instance_records,
         anchor="center",
     )
-    import_geometry_donor(
-        "Prop_AccessPoint",
-        f"V5_DONOR_PORTAL_{endpoint_token}_ACCESS",
-        (center.x + 2.05, center.y + 0.78, floor + 0.022),
-        (1.0, 1.0, 1.0),
-        (0.0, 0.0, math.pi),
+    add_box(
+        f"V5_PORTAL_{endpoint_token}_HEADER_INDICATOR",
+        (0.92, 0.12, 0.10),
+        (center.x, center.y - 0.44, floor + 2.50),
         color,
         zone,
-        "donor_portal_access_terminal",
-        instance_records,
+        "portal_attached_indicator",
+        bevel=0.025,
     )
 
-    # One translucent field and one attached six-piece collar replace the
-    # donor gateway, nested rings, and turbine filaments. This keeps the linked
-    # destination readable without producing a flat fan or stacked-logo shape.
+    # One authored collar owns the silhouette. A low-alpha veil preserves the
+    # destination view, while six short ties and one shallow depth-varying
+    # S-wisp give the aperture volume without stacking another frame or logo.
     energy_field = add_portal_energy_field(
         f"V5_PORTAL_{endpoint_token}_ACTIVE_FIELD",
         center,
-        1.04,
+        0.98,
         energy,
         zone,
+        depth_offset=0.12,
     )
     collar_segments: list[bpy.types.Object] = []
+    connector_segments: list[bpy.types.Object] = []
     collar_radius = 1.22
     for segment_index in range(6):
         start_angle = math.tau * segment_index / 6.0
         end_angle = math.tau * (segment_index + 1) / 6.0
         start = (
             center.x + math.cos(start_angle) * collar_radius,
-            center.y,
+            center.y + 0.22,
             center.z + math.sin(start_angle) * collar_radius,
         )
         end = (
             center.x + math.cos(end_angle) * collar_radius,
-            center.y,
+            center.y + 0.22,
             center.z + math.sin(end_angle) * collar_radius,
         )
         collar_segments.append(
@@ -1814,8 +1954,52 @@ def build_portal_endpoint(
                 vertices=12,
             )
         )
+        connector_segments.append(
+            add_beam(
+                f"V5_PORTAL_{endpoint_token}_DEPTH_TIE_{segment_index}",
+                (
+                    center.x + math.cos(start_angle) * collar_radius,
+                    center.y - 0.10,
+                    center.z + math.sin(start_angle) * collar_radius,
+                ),
+                start,
+                0.052,
+                steel,
+                zone,
+                "portal_depth_tie",
+                vertices=10,
+            )
+        )
 
-    for surface in [energy_field, *collar_segments]:
+    wisp_points: list[tuple[float, float, float]] = []
+    for index in range(13):
+        fraction = index / 12.0
+        wisp_points.append(
+            (
+                center.x - 0.56 + fraction * 1.02,
+                center.y - 0.12 + fraction * 0.25,
+                (
+                    center.z
+                    + 0.16
+                    - fraction * 0.24
+                    + math.sin(fraction * 1.35 * math.pi) * 0.13
+                ),
+            )
+        )
+    energy_wisp = add_portal_energy_curve(
+        f"V5_PORTAL_{endpoint_token}_DEPTH_WISP",
+        wisp_points,
+        0.008,
+        filament,
+        zone,
+    )
+
+    for surface in [
+        energy_field,
+        energy_wisp,
+        *collar_segments,
+        *connector_segments,
+    ]:
         surface["kyx_portal_endpoint_id"] = endpoint["id"]
         surface["kyx_portal_partner_id"] = endpoint["partnerId"]
         surface["kyx_portal_authority_capability"] = AUTHORITY_PORTAL_CAPABILITY
@@ -1833,8 +2017,8 @@ def build_portal_endpoint(
     )
 
     for side_index, sign in enumerate((-1.0, 1.0)):
-        # These piers overlap the collar at its widest point and continue into
-        # the floor plinths, so the portal reads as one load-bearing machine.
+        # Low anchors tie the authored collar into the machine base without
+        # duplicating it with another pair of full-height blocky piers.
         x = center.x + sign * 1.32
         add_box(
             f"V5_PORTAL_{endpoint_token}_PLINTH_{side_index}",
@@ -1846,18 +2030,18 @@ def build_portal_endpoint(
             bevel=0.045,
         )
         add_box(
-            f"V5_PORTAL_{endpoint_token}_SIDE_PIER_{side_index}",
-            (0.38, 0.58, 1.76),
-            (x, center.y, floor + 0.88),
+            f"V5_PORTAL_{endpoint_token}_SIDE_ANCHOR_{side_index}",
+            (0.42, 0.62, 0.58),
+            (x, center.y, floor + 0.31),
             cast,
             zone,
-            "portal_grounded_pier",
+            "portal_grounded_anchor",
             bevel=0.035,
         )
         add_box(
             f"V5_PORTAL_{endpoint_token}_SIDE_DATUM_{side_index}",
-            (0.11, 0.60, 0.48),
-            (x - sign * 0.18, center.y - 0.01, floor + 0.78),
+            (0.11, 0.64, 0.22),
+            (x - sign * 0.21, center.y - 0.01, floor + 0.35),
             safety,
             zone,
             "portal_attached_hazard_datum",
@@ -1909,8 +2093,9 @@ def build_portal_endpoint(
         "donorGatewayFrameCount": 0,
         "donorTeleporterBaseCount": 1,
         "authoredCollarSegmentCount": len(collar_segments),
+        "depthTieSegmentCount": len(connector_segments),
         "translucentEnergyFieldCount": 1,
-        "energySurfaceCount": 1,
+        "energySurfaceCount": 2,
         "exitChevronCount": 3,
         "noOpaqueEnergyBillboard": True,
         "renderOnly": True,
@@ -1958,6 +2143,75 @@ def add_point_light(
     return obj
 
 
+def build_review_surface_references(
+    materials: dict[str, bpy.types.Material],
+) -> dict[str, Any]:
+    """Show the runtime presentation surfaces used by the contact audit.
+
+    The frozen Press Hall source does not contain the procedural continuity
+    shell that the browser adds around this modular art. These two thin boxes
+    make the declared support contacts visible in source-review renders only.
+    They carry no Rev5 export scope and cannot become collision or authority.
+    """
+
+    references = (
+        (
+            "V5_REVIEW_PRESS_HALL_VISUAL_DECK",
+            (46.0, 20.0, 0.24),
+            (0.0, 0.0, PRESS_HALL_VISUAL_DECK_TOP_Z - 0.12),
+            materials["V3_WORN_STEEL"],
+            "press_hall_visual_deck",
+            PRESS_HALL_VISUAL_DECK_TOP_Z,
+        ),
+        (
+            "V5_REVIEW_FOUNDATION_INSET",
+            (70.0, 54.0, 0.12),
+            (0.0, 0.0, FOUNDATION_INSET_VISUAL_TOP_Z - 0.06),
+            materials["V3_CAST_IRON"],
+            "foundation_inset",
+            FOUNDATION_INSET_VISUAL_TOP_Z,
+        ),
+    )
+    records: list[dict[str, Any]] = []
+    for name, dimensions, location, material, surface_id, top_z in references:
+        bpy.ops.mesh.primitive_cube_add(location=location)
+        obj = bpy.context.object
+        obj.name = name
+        obj.dimensions = dimensions
+        bpy.ops.object.transform_apply(
+            location=False,
+            rotation=False,
+            scale=True,
+        )
+        obj.data.materials.append(material)
+        obj["kyx_review_reference"] = True
+        obj["kyx_role"] = "presentation_surface_reference_only"
+        obj["kyx_surface_id"] = surface_id
+        obj["kyx_surface_top_meters"] = top_z
+        obj["kyx_render_only"] = True
+        obj["kyx_collision"] = False
+        obj["kyx_authority"] = False
+        records.append(
+            {
+                "object": name,
+                "surfaceId": surface_id,
+                "dimensionsMeters": list(dimensions),
+                "locationMeters": list(location),
+                "surfaceTopMeters": top_z,
+                "material": material.name,
+                "excludedFromModularExport": True,
+                "collisionAuthority": False,
+            }
+        )
+    return {
+        "kind": "review_only_runtime_presentation_surface_references",
+        "referenceCount": len(records),
+        "references": records,
+        "excludedFromModularExport": True,
+        "authorityGeometryModified": False,
+    }
+
+
 def configure_review_scene() -> dict[str, bpy.types.Object]:
     cameras = rev4.configure_review_scene()
     for light_name in ("V4_LIGHT_OVERHEAD_PLAN", "V4_LIGHT_PRESS_FILL"):
@@ -1989,6 +2243,18 @@ def configure_review_scene() -> dict[str, bpy.types.Object]:
         (-18.0, 11.2, 2.7),
         42.0,
     )
+    cameras["bridge_foundation_contact"] = rev4.add_camera(
+        "CAM_V5_BRIDGE_FOUNDATION_CONTACT",
+        (-6.0, 0.0, -0.55),
+        (-18.0, 10.0, -0.55),
+        30.0,
+    )
+    cameras["landing_foundation_contact"] = rev4.add_camera(
+        "CAM_V5_LANDING_FOUNDATION_CONTACT",
+        (-35.0, 5.0, 0.45),
+        (-22.0, 19.0, 0.45),
+        31.0,
+    )
     lower_glow = add_point_light(
         "V5_PORTAL_LOWER_REVIEW_GLOW",
         (-4.0, -9.4, -1.15),
@@ -2003,8 +2269,24 @@ def configure_review_scene() -> dict[str, bpy.types.Object]:
         140.0,
         2.0,
     )
+    bridge_foundation_fill = add_point_light(
+        "V5_BRIDGE_FOUNDATION_REVIEW_FILL",
+        (-18.0, 9.5, -1.1),
+        (0.22, 0.48, 0.52),
+        320.0,
+        3.0,
+    )
+    landing_foundation_fill = add_point_light(
+        "V5_LANDING_FOUNDATION_REVIEW_FILL",
+        (-22.0, 18.8, -0.3),
+        (0.42, 0.30, 0.18),
+        360.0,
+        3.5,
+    )
     lower_glow.data.use_shadow = False
     upper_glow.data.use_shadow = False
+    bridge_foundation_fill.data.use_shadow = False
+    landing_foundation_fill.data.use_shadow = False
     return cameras
 
 
@@ -2030,7 +2312,25 @@ def render_views(
         path = render_dir / f"inkfall-rev5-geometry-portal-{view_id}.png"
         scene.camera = camera
         scene.render.filepath = str(path)
-        bpy.ops.render.render(write_still=True)
+        isolated_contact_view = view_id in {
+            "bridge_foundation_contact",
+            "landing_foundation_contact",
+        }
+        hidden_context: list[tuple[bpy.types.Object, bool]] = []
+        if isolated_contact_view:
+            for obj in scene.objects:
+                if (
+                    obj.type == "MESH"
+                    and obj.get("kyx_scope") != SCOPE
+                    and not obj.get("kyx_review_reference", False)
+                ):
+                    hidden_context.append((obj, obj.hide_render))
+                    obj.hide_render = True
+        try:
+            bpy.ops.render.render(write_still=True)
+        finally:
+            for obj, previous_hide_render in hidden_context:
+                obj.hide_render = previous_hide_render
         results.append({"view": view_id, "path": path})
     return results
 
@@ -2165,7 +2465,12 @@ def scene_facts() -> dict[str, Any]:
         if obj.type == "MESH" and not obj.hide_render
     ]
     parent = [
-        obj for obj in meshes if obj.get("kyx_scope") != SCOPE
+        obj
+        for obj in meshes
+        if (
+            obj.get("kyx_scope") != SCOPE
+            and not obj.get("kyx_review_reference", False)
+        )
     ]
     rev5_meshes = [
         obj for obj in meshes if obj.get("kyx_scope") == SCOPE
@@ -2284,6 +2589,175 @@ def audit_new_support_bounds_against_travel_lane() -> dict[str, Any]:
     }
 
 
+def audit_support_contacts_against_presentation_surfaces() -> dict[str, Any]:
+    """Fail closed when a Rev5 load member or foot visibly floats."""
+
+    contact_specs: list[dict[str, Any]] = []
+    for joint_token, surface_top_z in BRIDGE_TRESTLE_SURFACE_TOP_Z.items():
+        for side_token in ("L", "R"):
+            contact_specs.append(
+                {
+                    "id": f"bridge_trestle_{joint_token}_{side_token}",
+                    "surface": (
+                        "press_hall_visual_deck"
+                        if joint_token == "J1"
+                        else "foundation_inset"
+                    ),
+                    "surfaceTopMeters": surface_top_z,
+                    "foot": (
+                        f"V5_BRIDGE_TRESTLE_{joint_token}_FOOT_{side_token}"
+                    ),
+                    "load": (
+                        f"V5_BRIDGE_TRESTLE_{joint_token}_LEG_{side_token}"
+                    ),
+                }
+            )
+    for index in range(4):
+        contact_specs.append(
+            {
+                "id": f"archive_landing_column_{index}",
+                "surface": "foundation_inset",
+                "surfaceTopMeters": FOUNDATION_INSET_VISUAL_TOP_Z,
+                "foot": f"V5_ARCHIVE_SUPPORT_FOOT_{index}",
+                "load": f"V5_ARCHIVE_SUPPORT_COLUMN_{index}",
+            }
+        )
+
+    def bounds_for(
+        obj: bpy.types.Object,
+    ) -> tuple[Vector, Vector]:
+        corners = [
+            obj.matrix_world @ Vector(corner)
+            for corner in obj.bound_box
+        ]
+        return (
+            Vector((
+                min(point.x for point in corners),
+                min(point.y for point in corners),
+                min(point.z for point in corners),
+            )),
+            Vector((
+                max(point.x for point in corners),
+                max(point.y for point in corners),
+                max(point.z for point in corners),
+            )),
+        )
+
+    records: list[dict[str, Any]] = []
+    violations: list[dict[str, Any]] = []
+    tolerance = 0.005
+    for spec in contact_specs:
+        foot = bpy.data.objects.get(spec["foot"])
+        load = bpy.data.objects.get(spec["load"])
+        if (
+            foot is None
+            or load is None
+            or foot.type != "MESH"
+            or load.type != "MESH"
+        ):
+            record = spec | {
+                "checks": {
+                    "footAndLoadObjectsPresent": False,
+                    "footStraddlesPresentationSurface": False,
+                    "footPenetrationBounded": False,
+                    "loadOverlapsFootVertically": False,
+                    "loadOverlapsFootHorizontally": False,
+                    "loadContinuesAboveFoot": False,
+                },
+            }
+            records.append(record)
+            violations.append(record)
+            continue
+
+        foot_minimum, foot_maximum = bounds_for(foot)
+        load_minimum, load_maximum = bounds_for(load)
+        surface_top_z = float(spec["surfaceTopMeters"])
+        vertical_overlap = (
+            min(foot_maximum.z, load_maximum.z)
+            - max(foot_minimum.z, load_minimum.z)
+        )
+        horizontal_overlap_x = (
+            min(foot_maximum.x, load_maximum.x)
+            - max(foot_minimum.x, load_minimum.x)
+        )
+        horizontal_overlap_y = (
+            min(foot_maximum.y, load_maximum.y)
+            - max(foot_minimum.y, load_minimum.y)
+        )
+        checks = {
+            "footAndLoadObjectsPresent": True,
+            "footStraddlesPresentationSurface": (
+                foot_minimum.z <= surface_top_z + tolerance
+                and foot_maximum.z >= surface_top_z - tolerance
+            ),
+            "footPenetrationBounded": (
+                foot_minimum.z
+                >= (
+                    surface_top_z
+                    - SUPPORT_FOOT_PENETRATION_METERS
+                    - tolerance
+                )
+            ),
+            "loadOverlapsFootVertically": (
+                vertical_overlap
+                >= SUPPORT_LOAD_FOOT_OVERLAP_MINIMUM_METERS
+            ),
+            "loadOverlapsFootHorizontally": (
+                horizontal_overlap_x > 0.0
+                and horizontal_overlap_y > 0.0
+            ),
+            "loadContinuesAboveFoot": (
+                load_maximum.z > foot_maximum.z + 0.1
+            ),
+        }
+        record = spec | {
+            "footBoundsMinimumMeters": [
+                round(foot_minimum.x, 4),
+                round(foot_minimum.y, 4),
+                round(foot_minimum.z, 4),
+            ],
+            "footBoundsMaximumMeters": [
+                round(foot_maximum.x, 4),
+                round(foot_maximum.y, 4),
+                round(foot_maximum.z, 4),
+            ],
+            "loadBoundsMinimumMeters": [
+                round(load_minimum.x, 4),
+                round(load_minimum.y, 4),
+                round(load_minimum.z, 4),
+            ],
+            "loadBoundsMaximumMeters": [
+                round(load_maximum.x, 4),
+                round(load_maximum.y, 4),
+                round(load_maximum.z, 4),
+            ],
+            "verticalFootLoadOverlapMeters": round(vertical_overlap, 4),
+            "checks": checks,
+        }
+        records.append(record)
+        if not all(checks.values()):
+            violations.append(record)
+
+    return {
+        "kind": "render_only_support_contact_audit",
+        "authorityGeometryModified": False,
+        "expectedContactCount": len(contact_specs),
+        "inspectedContactCount": len(records),
+        "surfaceTopsMeters": {
+            "pressHallVisualDeck": PRESS_HALL_VISUAL_DECK_TOP_Z,
+            "foundationInset": FOUNDATION_INSET_VISUAL_TOP_Z,
+        },
+        "minimumLoadFootOverlapMeters": (
+            SUPPORT_LOAD_FOOT_OVERLAP_MINIMUM_METERS
+        ),
+        "maximumFootPenetrationMeters": SUPPORT_FOOT_PENETRATION_METERS,
+        "records": records,
+        "violationCount": len(violations),
+        "violations": violations,
+        "allContactsValid": not violations,
+    }
+
+
 def traversal_clearance_audit() -> dict[str, Any]:
     guard_inner_clear_width = 2.0 * (
         BRIDGE_SECTION["edgeGirderOffsetMeters"]
@@ -2379,8 +2853,12 @@ def main() -> None:
     portals = build_portal_pair(materials, donor_instances)
     traversal_audit = traversal_clearance_audit()
     support_lane_audit = audit_new_support_bounds_against_travel_lane()
+    support_contact_audit = (
+        audit_support_contacts_against_presentation_surfaces()
+    )
     family_counts = rev4.family_counts()
     joined = join_rev5_meshes()
+    review_surface_references = build_review_surface_references(materials)
     cameras = configure_review_scene()
 
     scene = bpy.context.scene
@@ -2475,7 +2953,7 @@ def main() -> None:
         "cc0DonorInstancesRemainRenderOnly": (
             donor_service_language["instanceCount"] == 8
             and len(donor_instances)
-            == donor_service_language["instanceCount"] + 6
+            == donor_service_language["instanceCount"] + 4
             and all(
                 item["renderOnly"]
                 and item["collisionAuthority"] is False
@@ -2499,22 +2977,44 @@ def main() -> None:
             support_lane_audit["newSupportBoundsClearStandingCapsuleLane"]
             and support_lane_audit["inspectedObjectCount"] >= 1
         ),
+        "newSupportsContactDeclaredPresentationSurfaces": (
+            support_contact_audit["allContactsValid"]
+            and support_contact_audit["expectedContactCount"] == 8
+            and support_contact_audit["inspectedContactCount"] == 8
+            and support_contact_audit["authorityGeometryModified"] is False
+        ),
+        "reviewSurfaceReferencesAreNonAuthorityAndExcluded": (
+            review_surface_references["referenceCount"] == 2
+            and review_surface_references["excludedFromModularExport"]
+            and (
+                review_surface_references["authorityGeometryModified"]
+                is False
+            )
+            and all(
+                item["excludedFromModularExport"]
+                and item["collisionAuthority"] is False
+                for item in review_surface_references["references"]
+            )
+        ),
         "bridgeHasContinuousPrimaryDecks": (
             bridge["continuousPrimaryDeck"]
             and bridge["segmentCount"] == 3
         ),
         "bridgeLoadsVisiblySupported": (
-            bridge["supportComponentCount"] == 15
-            and bridge["supportPairCount"] == 3
+            bridge["supportComponentCount"] == 16
+            and bridge["supportPairCount"] == 2
             and bridge["jointComponentCount"] == 2
-            and bridge["railPostCount"] == 4
+            and bridge["railPostCount"] == 8
             and bridge["jointSillsRootedToDeck"]
         ),
         "railsAttachedToGirders": bridge["railsRootedToDeckGirders"],
         "landingLoadsVisiblySupported": (
             landing["supportColumnCount"] == 4
             and landing["underdeckBraceCount"] == 2
-            and landing["gantryBarCount"] == 2
+            and landing["gantryBarCount"] == 0
+            and landing["northServicePostCount"] == 2
+            and landing["northServiceSpineCount"] == 1
+            and landing["edgeFasciaCount"] == 4
             and landing["allPrimaryLoadsReachFoundationOrDeck"]
         ),
         "landingTopPreservesAuthorityAlignment": (
@@ -2526,13 +3026,14 @@ def main() -> None:
             and all(item["donorGatewayFrameCount"] == 0 for item in portals)
             and all(item["donorTeleporterBaseCount"] == 1 for item in portals)
             and all(item["authoredCollarSegmentCount"] == 6 for item in portals)
+            and all(item["depthTieSegmentCount"] == 6 for item in portals)
             and all(item["translucentEnergyFieldCount"] == 1 for item in portals)
-            and all(item["energySurfaceCount"] == 1 for item in portals)
+            and all(item["energySurfaceCount"] == 2 for item in portals)
             and all(item["noOpaqueEnergyBillboard"] for item in portals)
         ),
         "portalExitOffsetsPreventPingPong": exit_offsets_safe,
         "portalPresentationHooksDeclared": (
-            family_counts.get("portal_energy_filament_vfx_hook", 0) == 2
+            family_counts.get("portal_energy_filament_vfx_hook", 0) == 4
         ),
         "modularExportExcludesParentMeshes": (
             len(selected_export_nodes) == facts["rev5JoinedMeshCount"]
@@ -2550,6 +3051,8 @@ def main() -> None:
                 + [
                     "V5_PORTAL_ENERGY_RED_FOLD_LOWER",
                     "V5_PORTAL_ENERGY_RED_FOLD_UPPER",
+                    "V5_PORTAL_FILAMENT_RED_FOLD_LOWER",
+                    "V5_PORTAL_FILAMENT_RED_FOLD_UPPER",
                 ]
             )
         ),
@@ -2559,6 +3062,8 @@ def main() -> None:
                 "gameplay_continuity",
                 "archive_rise",
                 "bridge_support",
+                "bridge_foundation_contact",
+                "landing_foundation_contact",
                 "portal_lower",
                 "portal_upper",
                 "overhead_context",
@@ -2616,6 +3121,8 @@ def main() -> None:
         "derivativeReviewContextClutterCleanup": clutter_cleanup,
         "traversalClearanceAudit": traversal_audit,
         "newSupportLaneBoundsAudit": support_lane_audit,
+        "presentationSupportContactAudit": support_contact_audit,
+        "reviewPresentationSurfaceReferences": review_surface_references,
         "structuralCorrection": {
             "bridge": bridge,
             "landing": landing,

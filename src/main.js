@@ -1,5 +1,6 @@
 import './style.css';
 import './ui/kyx-cutline.css';
+import './ui/map-library.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
@@ -53,8 +54,10 @@ const inkfallRev3ReviewRequest = resolveInkfallRev3ReviewRequest(window.location
 const inkfallRev3ReviewRoute = import.meta.env.DEV
   && inkfallRev3ReviewRequest.kind !== 'none';
 const onlineAuthorityRoute = window.location.pathname === ONLINE_AUTHORITY_PATH;
+const authorityOriginCandidate = import.meta.env.VITE_KYX_AUTHORITY_ORIGIN
+  || (import.meta.env.PROD ? window.location.origin : undefined);
 const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
-  import.meta.env.VITE_KYX_AUTHORITY_ORIGIN,
+  authorityOriginCandidate,
   { isDevelopment: import.meta.env.DEV },
 );
 const launchOverrideRoute = developmentTestRoute

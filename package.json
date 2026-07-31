@@ -2,7 +2,7 @@
   "name": "kyx.io",
   "version": "1.0.0",
   "private": true,
-  "description": "Desktop-browser arena FPS currently shipping a truthful local Offline Practice slice.",
+  "description": "Desktop-browser arena FPS with deterministic simulation and authoritative Cloudflare multiplayer.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -49,12 +49,6 @@
     "verify:release-provenance": "node tools/assets/verify-release-provenance-cleanup.mjs",
     "evidence:authority-soak": "node tools/evidence/capture-phase9-g8-authority-soak.mjs"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/slaveofsolace/Ev.io-Legacy-Build.git"
-  },
-  "keywords": [],
-  "author": "",
   "license": "UNLICENSED",
   "packageManager": "npm@11.18.0",
   "engines": {

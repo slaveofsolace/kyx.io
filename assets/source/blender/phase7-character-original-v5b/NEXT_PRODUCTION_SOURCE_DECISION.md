@@ -98,7 +98,7 @@ Do not run these steps until acquisition is explicitly authorized.
 The planned acquisition target and command shape are pinned below for the authorized run; this block has not been executed:
 
 ```powershell
-$kyxVendorRoot = 'C:\AI Projects\Projects\Games\evio\evio-repo\assets\source\vendor\blender-human-base-meshes\1.4.1'
+$kyxVendorRoot = Join-Path (Get-Location).Path 'assets\source\vendor\blender-human-base-meshes\1.4.1'
 $kyxQuarantine = Join-Path $kyxVendorRoot 'quarantine'
 $kyxArchive = Join-Path $kyxQuarantine 'human-base-meshes-bundle-v1.4.1.zip'
 $kyxExtracted = Join-Path $kyxVendorRoot 'extracted'

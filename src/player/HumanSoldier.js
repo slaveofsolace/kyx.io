@@ -9,12 +9,11 @@ import {
 import { isG6CharacterCandidateEnabled } from '../config/g6CharacterCandidate.js';
 
 // ───────────────────────────────────────────────────────────────────────────
-// Provenance-safe project-authored runtime character.
+// Project-authored runtime character.
 //
-// The former default loaded an unresolved legacy binary from public/. Keep the
-// mature legacy animation implementation below only as non-shipping migration
-// scaffolding while the accepted project-authored character revision is wired
-// in. It cannot be selected or fetched by the runtime.
+// The former default loaded an unresolved binary from public/. The animation
+// implementation below remains non-shipping compatibility scaffolding and
+// cannot be selected or fetched by the runtime.
 // ───────────────────────────────────────────────────────────────────────────
 let _template = null;
 

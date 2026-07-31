@@ -9,8 +9,8 @@ non-inheritable, so `wrangler.jsonc` repeats the staging variables and
 
 - production Worker: `kyx-io-authority`;
 - staging Worker: `kyx-io-authority-staging`;
-- staging origin:
-  `https://kyx-io-authority-staging.suhaibabdeljaber.workers.dev`.
+- staging origin: the operator-provided HTTPS origin recorded with the
+  deployment evidence.
 
 References:
 

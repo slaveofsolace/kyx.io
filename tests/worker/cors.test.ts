@@ -23,6 +23,16 @@ function expectExactCors(response: Response): void {
 }
 
 describe('Worker exact-origin CORS policy', () => {
+  it('accepts its own deployment origin without a hostname committed to configuration', async () => {
+    const response = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
+      method: 'POST',
+      headers: { Origin: AUTHORITY_ORIGIN },
+    });
+    expect(response.status).toBe(201);
+    expect(response.headers.get('access-control-allow-origin')).toBe(AUTHORITY_ORIGIN);
+    expect(response.headers.get('access-control-allow-origin')).not.toBe('*');
+  });
+
   it('reflects one exact allowed origin on create and proxied room HTTP responses', async () => {
     const created = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
       method: 'POST',

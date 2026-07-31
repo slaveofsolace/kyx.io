@@ -34,6 +34,12 @@ const SUPERSEDED_INDEX_WHEEL_OBJECTS = Object.freeze([
   ),
 ]);
 
+const SUPERSEDED_ARCHIVE_BRACE_OBJECTS = Object.freeze([
+  ...['WEST', 'EAST'].flatMap((side) => (
+    [-8, 0, 8].map((offset) => `INKFALL_${side}_ARCHIVE_BRACE_${offset}`)
+  )),
+]);
+
 const REV5_READABILITY_PALETTE = new Map<number, Readonly<{
   color: number;
   emissive?: number;
@@ -109,6 +115,21 @@ function removeSupersededIndexWheel(group: THREE.Group): Readonly<{
 }> {
   let meshCount = 0;
   for (const name of SUPERSEDED_INDEX_WHEEL_OBJECTS) {
+    const object = group.getObjectByName(name);
+    if (object?.parent === null || object?.parent === undefined) continue;
+    object.traverse((descendant) => {
+      if ((descendant as THREE.Mesh).isMesh) meshCount += 1;
+    });
+    object.parent.remove(object);
+  }
+  return Object.freeze({ meshCount });
+}
+
+function removeSupersededArchiveBraces(group: THREE.Group): Readonly<{
+  meshCount: number;
+}> {
+  let meshCount = 0;
+  for (const name of SUPERSEDED_ARCHIVE_BRACE_OBJECTS) {
     const object = group.getObjectByName(name);
     if (object?.parent === null || object?.parent === undefined) continue;
     object.traverse((descendant) => {
@@ -257,8 +278,8 @@ function retuneRev5Readability(group: THREE.Group): Readonly<{
 }
 
 /**
- * Retains the authority-aligned procedural shell while the rejected Rev4
- * parent-scene overlay is removed. Rev5 adds only its modular bridge,
+ * Retains the authority-aligned procedural shell without the Rev4 parent-scene
+ * overlay. Rev5 adds only its modular bridge,
  * landing, and portal presentation on top of this no-hit shell.
  */
 export function createInkfallRev5VisualContinuity(
@@ -271,6 +292,7 @@ export function createInkfallRev5VisualContinuity(
     continuity.group,
   );
   const removedIndexWheel = removeSupersededIndexWheel(continuity.group);
+  const removedArchiveBraces = removeSupersededArchiveBraces(continuity.group);
   const readabilityRetune = retuneRev5Readability(continuity.group);
   const pressRollerMount = mountPressRollerLandmark(continuity.group);
   const meshCount = (
@@ -279,6 +301,7 @@ export function createInkfallRev5VisualContinuity(
     - removedSpawnFrames.meshCount
     - removedPressRollerObjects.meshCount
     - removedIndexWheel.meshCount
+    - removedArchiveBraces.meshCount
     + pressRollerMount.meshCount
   );
   const lightCount = continuity.lightCount - removedRedFold.lightCount;
@@ -303,6 +326,9 @@ export function createInkfallRev5VisualContinuity(
     removedPressRollerObjectMeshCount: removedPressRollerObjects.meshCount,
     supersededFloatingIndexWheelRemoved: true,
     removedIndexWheelMeshCount: removedIndexWheel.meshCount,
+    supersededThinArchiveBracesRemoved: true,
+    removedArchiveBraceMeshCount: removedArchiveBraces.meshCount,
+    legacyArchivePiersPreserved: true,
     pressRollerMount: 'two_bearings_two_overhead_hangers_v1',
     pressRollerMountMeshCount: pressRollerMount.meshCount,
     authorityFixtureUnchanged: true,

@@ -2416,13 +2416,8 @@ body[data-ui-system="match-instrument-v1"][data-high-contrast="true"] {
   }
 }
 
-/* Arena visor v1 -----------------------------------------------------
- *
- * The playfield owns the screen. Match data sits on the four edges; room,
- * transport and integration evidence live in explicit drawers. This section
- * intentionally overrides the earlier online dashboard composition while the
- * lobby keeps its document layout.
- */
+/* Arena visor v1: keep the playfield clear, match data at the edges, and
+ * connection details inside an explicit drawer. */
 
 body[data-ui-system="match-instrument-v1"][data-online-hud="arena-visor-v1"] {
   overflow: hidden !important;

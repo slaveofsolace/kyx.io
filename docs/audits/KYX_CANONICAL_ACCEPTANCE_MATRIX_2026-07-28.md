@@ -7,8 +7,7 @@ Consolidated recovery gate completed:
 `2026-07-29T01:52:21.961Z`
 
 This matrix separates compile/test status, runtime evidence, release controls,
-and human visual decisions. Commands are run from canonical
-`E:\AI Projects\Projects\Games\evio\evio-repo`.
+and human visual decisions. Commands are run from the repository root.
 
 | Gate | Authoritative command | Audit-anchor state | Recovered state | Evidence / owner decision |
 | --- | --- | --- | --- | --- |

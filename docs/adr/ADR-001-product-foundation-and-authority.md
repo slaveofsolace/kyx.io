@@ -9,7 +9,10 @@
 
 KYX is the existing Vite/Three.js product shell and deployed application. It already contains the entry points, menu/HUD, world, weapon, profile, bot, and deployment wiring that must be migrated. It is also client-local, visually procedural, untested, and currently presents insecure or misleading product surfaces.
 
-`C:\AI Projects\Projects\Games\aether-foundry-fps` has stronger TypeScript, pure-logic tests, interpolation, Playwright, and Cloudflare Worker/Durable Object patterns. It is not a Git checkout, so no donor commit is available, and its room accepts client-authored transforms and fire rays. Its current React application and visuals are not the product target.
+A separate local prototype demonstrated useful TypeScript, pure-logic testing,
+interpolation, Playwright, and Cloudflare Worker/Durable Object patterns. It
+was not a versioned donor and accepted client-authored transforms and fire
+rays, so neither its authority model nor its visual application was adopted.
 
 ## Decision
 

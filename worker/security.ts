@@ -124,7 +124,16 @@ export function parseAllowedOrigins(value: string | undefined): ReadonlySet<stri
 
 export function isAllowedOrigin(request: Request, configuredOrigins: string | undefined): boolean {
   const origin = request.headers.get('Origin');
-  return origin !== null && parseAllowedOrigins(configuredOrigins).has(origin);
+  if (origin === null) return false;
+
+  let authorityOrigin: string;
+  try {
+    authorityOrigin = new URL(request.url).origin;
+  } catch {
+    return false;
+  }
+
+  return origin === authorityOrigin || parseAllowedOrigins(configuredOrigins).has(origin);
 }
 
 export function isSocketAttachment(value: unknown): value is SocketAttachment {
