@@ -1,0 +1,629 @@
+{
+  "harness": "fable5-full-game-audit-v1",
+  "startedAtIso": "2026-07-31T13:44:40.165Z",
+  "finishedAtIso": "2026-07-31T13:45:42.692Z",
+  "repository": {
+    "head": "a1ba98fbd8257c94ac8f787351a69fc9bb011b20",
+    "branch": "claude/fable5-kyx-full-audit-20260730",
+    "statusShort": "M src/ui/kyx-cutline.css\n?? tools/evidence/capture-fable5-full-game-audit.mjs"
+  },
+  "stages": {
+    "boot_services": {
+      "status": "completed",
+      "milliseconds": 1344,
+      "detail": {
+        "authorityOrigin": "http://127.0.0.1:8951",
+        "frontendOrigin": "http://127.0.0.1:6351"
+      }
+    },
+    "boot_browser": {
+      "status": "completed",
+      "milliseconds": 318,
+      "detail": {
+        "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe"
+      }
+    },
+    "lobby_cold_eye": {
+      "status": "completed",
+      "milliseconds": 7198,
+      "detail": {
+        "lobbyShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/00-lobby-cold-eye.png",
+        "inventory": {
+          "testids": [
+            "online-preview-route",
+            "online-inkfall-rev4-profile",
+            "online-inkfall-profile",
+            "online-create-room",
+            "online-room-code",
+            "online-join-room"
+          ],
+          "buttons": [
+            "KYX.IO",
+            "Offline practice",
+            "Create room",
+            "Join room"
+          ]
+        }
+      }
+    },
+    "create_and_join_two_clients": {
+      "status": "completed",
+      "milliseconds": 3227,
+      "detail": {
+        "inviteUrl": "(recorded-local-only)",
+        "pointerLockState": {
+          "locked": true,
+          "canvasFlag": "active",
+          "appBarVisible": false
+        },
+        "immersionShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/01c-hud-pointer-locked.png",
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4090 (0x00002684) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "presentationSha256": "88bc45a6735256dcffb5735f3d466840f362e9ece9d02a52a9f1c8a082b395e0",
+        "renderMeshCount": 36,
+        "colliders": 339,
+        "weaponVisualSource": "project_authored_procedural",
+        "spawnShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/01-two-client-spawn.png",
+        "hudShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/01b-hud-full-1440x900.png"
+      }
+    },
+    "movement_probe": {
+      "status": "completed",
+      "milliseconds": 4044,
+      "detail": {
+        "movedMillimeters": 8638.12346519775,
+        "samples": [
+          {
+            "t": 0,
+            "position": {
+              "x": -33141,
+              "y": 0,
+              "z": -3230
+            },
+            "speed": null
+          },
+          {
+            "t": 220,
+            "position": {
+              "x": -31464,
+              "y": 0,
+              "z": -1966
+            },
+            "speed": null
+          },
+          {
+            "t": 440,
+            "position": {
+              "x": -30729,
+              "y": 1,
+              "z": -1260
+            },
+            "speed": null
+          },
+          {
+            "t": 660,
+            "position": {
+              "x": -30381,
+              "y": 41,
+              "z": -573
+            },
+            "speed": null
+          },
+          {
+            "t": 880,
+            "position": {
+              "x": -28704,
+              "y": 41,
+              "z": 691
+            },
+            "speed": null
+          },
+          {
+            "t": 1100,
+            "position": {
+              "x": -27586,
+              "y": 41,
+              "z": 1534
+            },
+            "speed": null
+          },
+          {
+            "t": 1320,
+            "position": {
+              "x": -26468,
+              "y": 41,
+              "z": 2377
+            },
+            "speed": null
+          },
+          {
+            "t": 1540,
+            "position": {
+              "x": -25371,
+              "y": -9,
+              "z": 3220
+            },
+            "speed": null
+          }
+        ],
+        "jump": {
+          "groundedBefore": false,
+          "airborneObserved": false,
+          "groundedAfter": true
+        }
+      }
+    },
+    "weapon_roster_composition": {
+      "status": "completed",
+      "milliseconds": 14022,
+      "detail": {
+        "rail": [
+          {
+            "slot": "0",
+            "active": "true",
+            "allowed": "true",
+            "disabled": false,
+            "label": "1Auto"
+          },
+          {
+            "slot": "1",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "2Sidearm"
+          },
+          {
+            "slot": "2",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "3Scatter"
+          },
+          {
+            "slot": "3",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "4Longshot"
+          },
+          {
+            "slot": "4",
+            "active": "false",
+            "allowed": "false",
+            "disabled": true,
+            "label": "5Rocket"
+          },
+          {
+            "slot": "5",
+            "active": "false",
+            "allowed": "true",
+            "disabled": false,
+            "label": "6Blade"
+          }
+        ],
+        "perWeapon": [
+          {
+            "slot": 0,
+            "label": "1Auto",
+            "selectedWeaponId": "vertical_rifle_v1",
+            "visualSource": "project_authored_procedural",
+            "contactMode": "authored_two_hand_assault_suit_v2",
+            "handCount": 2,
+            "adsMix": 0.9999999991635344,
+            "adsFov": 60.00039523227546,
+            "shots": {
+              "hip": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot0-hip.png",
+              "ads": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot0-ads.png",
+              "fire": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot0-fire.png",
+              "reload": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot0-reload.png"
+            }
+          },
+          {
+            "slot": 5,
+            "label": "6Blade",
+            "selectedWeaponId": "kyx_edge_v1",
+            "visualSource": "project_authored_procedural",
+            "contactMode": "none",
+            "handCount": 0,
+            "adsMix": 0,
+            "adsFov": 71.99555287526815,
+            "shots": {
+              "hip": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot5-hip.png",
+              "ads": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot5-ads.png",
+              "fire": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot5-fire.png",
+              "reload": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/02-weapon-slot5-reload.png"
+            }
+          }
+        ]
+      }
+    },
+    "abilities": {
+      "status": "completed",
+      "milliseconds": 10257,
+      "detail": {
+        "blinkPreviewShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03-blink-preview.png",
+        "blinkPreview": {
+          "active": true,
+          "valid": true,
+          "reason": "ready",
+          "authorityBound": true,
+          "distanceMillimeters": 3598,
+          "maximumRangeMillimeters": 9000
+        },
+        "blinkPreviewPitchedDown": {
+          "valid": false,
+          "reason": "cooldown",
+          "distanceMillimeters": 0
+        },
+        "blinkPitchedShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03-blink-preview-pitched.png",
+        "blinkCommit": {
+          "positionBefore": {
+            "x": -33265,
+            "y": 0,
+            "z": 4053
+          },
+          "positionAfter": {
+            "x": -29952,
+            "y": 0,
+            "z": 2648
+          }
+        },
+        "blinkArrivalShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03b-blink-arrival.png",
+        "launchShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03c-ability-launch.png",
+        "smokeStartShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03d-smoke-early.png",
+        "smokeFullShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03e-smoke-expanded.png",
+        "fragFlightShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03f-frag-flight.png",
+        "fragAfterShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/03g-frag-after.png",
+        "abilityDiagnostics": {
+          "grenades": 1,
+          "effects": 0
+        }
+      }
+    },
+    "combat_damage_kill_respawn": {
+      "status": "completed",
+      "milliseconds": 28,
+      "detail": {
+        "engagements": [],
+        "remotePlayerKeys": [
+          "playerId",
+          "connected",
+          "teamId",
+          "lifePhase",
+          "healthPoints",
+          "shieldPoints",
+          "deathOrdinal",
+          "respawnEligibleAtTick",
+          "riflePhase",
+          "magazineRounds",
+          "reserveRounds",
+          "nextShotAtTick",
+          "reloadCompletesAtTick",
+          "acceptedShotCount",
+          "selectedWeaponSlot",
+          "selectedWeaponId",
+          "grenadePhase",
+          "grenadeCooldownEndsAtTick",
+          "acceptedThrowCount",
+          "activeProjectileCount"
+        ],
+        "finalMatch": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 9044,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 0
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 0,
+          "result": null
+        }
+      }
+    },
+    "scoreboard_probe": {
+      "status": "completed",
+      "milliseconds": 577,
+      "detail": {
+        "domScoreboard": [
+          "online-session__scoreboard",
+          "online-session__scoreboard-head",
+          "online-session__scoreboard-score",
+          "online-session__scoreboard-players",
+          "online-session__scoreboard-player"
+        ],
+        "shot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/05-tab-scoreboard.png",
+        "present": true
+      }
+    },
+    "reconnect_resume": {
+      "status": "completed",
+      "milliseconds": 1434,
+      "detail": {
+        "bannerShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/06-reconnect-inflight.png",
+        "resumedShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/06b-reconnect-resumed.png",
+        "playerIdPreserved": false,
+        "scoreBefore": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 9032,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 0
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 0,
+          "result": null
+        },
+        "scoreAfter": {
+          "phase": "active",
+          "phaseEndsAtTick": 9640,
+          "activeTicksRemaining": 9006,
+          "teamScores": [
+            {
+              "teamId": "team_blue",
+              "score": 0
+            },
+            {
+              "teamId": "team_red",
+              "score": 0
+            }
+          ],
+          "feedSequence": 0,
+          "result": null
+        },
+        "hostRemoteAvatarCount": 2,
+        "guestPlayersSeen": 3
+      }
+    },
+    "performance_sample": {
+      "status": "completed",
+      "milliseconds": 9199,
+      "detail": {
+        "sampleCount": 900,
+        "p50": 1.9,
+        "p95": 3.8,
+        "p99": 5.6,
+        "worst": 13,
+        "longTasks": [],
+        "memory": {
+          "usedJsHeapMb": 83,
+          "totalJsHeapMb": 132
+        }
+      }
+    },
+    "hud_viewport_matrix": {
+      "status": "completed",
+      "milliseconds": 2875,
+      "detail": {
+        "fullHd": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/07-hud-1920x1080.png",
+        "narrow": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/07b-hud-1024x640.png",
+        "ultrawide": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/07c-hud-2560x1080.png"
+      }
+    },
+    "practice_parity_probe": {
+      "status": "completed",
+      "milliseconds": 7877,
+      "detail": {
+        "landingLinks": [
+          {
+            "text": "Practice",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Maps",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Loadout",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Settings",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "ONLINE COMBAT PREVIEW",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Start practiceEnter",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Inkfall Foundry @2",
+            "href": "?mapPackage=inkfall_foundry%402",
+            "testid": null
+          },
+          {
+            "text": "Press Hall v3.3",
+            "href": "?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined",
+            "testid": null
+          },
+          {
+            "text": "Close",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Open review arena",
+            "href": "/online?mode=create&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1",
+            "testid": null
+          },
+          {
+            "text": "Play offline",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "View official library",
+            "href": "https://ev.io/maps",
+            "testid": null
+          },
+          {
+            "text": "Close",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Close",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Normal",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Inverted",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Off",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "On",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Off",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "On",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Low",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Medium",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "High",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Aqua",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "White",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Amber",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Standard",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "High",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Full",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Reduced",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Full",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Reduced",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Save settings",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "OFFLINE PRACTICEOne local player versus seven explicitly labeled practice bots for eight minutes.",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "SOLO WAVE PRACTICELocal solo wave defense with automatic recovery. No teammates or online session.",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "RESET LOCAL PROFILE",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Resume practice",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Quit to practice menu",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Respawn offline",
+            "href": null,
+            "testid": null
+          },
+          {
+            "text": "Practice menu",
+            "href": null,
+            "testid": null
+          }
+        ],
+        "landingShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/08-landing.png",
+        "settingsShot": "evidence/2026-07-31/fable5-full-game-audit-a1ba98f/screenshots/08c-settings-panel.png",
+        "practiceShot": null,
+        "practiceNote": "No Start practice button discovered."
+      }
+    }
+  },
+  "findings": [],
+  "consoleErrors": [],
+  "pageErrors": []
+}
