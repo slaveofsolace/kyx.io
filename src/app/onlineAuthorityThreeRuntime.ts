@@ -236,6 +236,16 @@ function loadReleaseRev5Visual(): LoadedRev5Visual {
 }
 
 async function loadRev5Visual(): Promise<LoadedRev5Visual> {
+  if (import.meta.env.MODE === 'staging-review') {
+    // The noindex Pages preview deliberately carries the current review GLB so
+    // manual player-eye review can happen against the isolated staging Worker.
+    // Normal production builds never discover this static import branch and
+    // remain limited to ledgered release assets plus the procedural fallback.
+    const { loadInkfallRev5ReviewVisual } = await import(
+      '../dev/loadInkfallRev5ReviewVisual'
+    );
+    return loadInkfallRev5ReviewVisual();
+  }
   if (!import.meta.env.DEV) return loadReleaseRev5Visual();
   // Resolve the development-only visual without allowing Rollup to discover
   // or package non-release GLBs.
