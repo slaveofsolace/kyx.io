@@ -273,6 +273,71 @@ function headingToMapTarget(position, target) {
   ) % 360_000;
 }
 
+async function driveRoute(page, waypoints) {
+  const samples = [];
+  await page.locator('.online-session__canvas').click().catch(() => undefined);
+  await delay(250);
+  try {
+    for (const [waypointIndex, target] of waypoints.entries()) {
+      let reached = false;
+      let stalledSteps = 0;
+      let previousDistance = Infinity;
+      for (let step = 0; step < 24; step += 1) {
+        const before = await snapshot(page);
+        const position = before?.localAuthoritativePosition ?? null;
+        const distance = horizontalDistance(position, target);
+        if (distance !== null && distance <= 1_800) {
+          reached = true;
+          samples.push({ waypointIndex, step, target, position, distance, reached });
+          break;
+        }
+        if (position === null || distance === null) break;
+        await rotateToYaw(page, headingToMapTarget(position, target));
+        await page.keyboard.down('KeyW');
+        await delay(Math.min(420, Math.max(180, distance / 24)));
+        await page.keyboard.up('KeyW');
+        await delay(180);
+        const after = await snapshot(page);
+        const afterPosition = after?.localAuthoritativePosition ?? null;
+        const afterDistance = horizontalDistance(afterPosition, target);
+        samples.push({
+          waypointIndex,
+          step,
+          target,
+          position: afterPosition,
+          distance: afterDistance,
+          reached: (afterDistance ?? Infinity) <= 1_800,
+        });
+        if ((afterDistance ?? Infinity) >= previousDistance - 120) {
+          stalledSteps += 1;
+        } else {
+          stalledSteps = 0;
+        }
+        previousDistance = afterDistance ?? previousDistance;
+        if (stalledSteps === 3 && after?.localAuthoritativeGrounded === true) {
+          await page.keyboard.press('Space');
+          await delay(420);
+        }
+        if ((afterDistance ?? Infinity) <= 1_800) {
+          reached = true;
+          break;
+        }
+      }
+      if (!reached) break;
+    }
+  } finally {
+    await releaseGameplayInputs(page);
+  }
+  return {
+    reachedWaypoints: waypoints.filter((_, index) => samples.some(
+      (sample) => sample.waypointIndex === index && sample.reached,
+    )).length,
+    requestedWaypoints: waypoints.length,
+    samples,
+    finalPosition: (await snapshot(page))?.localAuthoritativePosition ?? null,
+  };
+}
+
 function localPlayer(value) {
   return value?.combat?.snapshot?.players?.find(
     ({ playerId }) => playerId === value.playerId,
@@ -839,23 +904,30 @@ try {
       maximumRangeMillimeters:
         preview?.render3d?.blinkPreviewMaximumRangeMillimeters ?? null,
     };
-      // While the same preview remains held, pitch toward the floor ahead and
-      // record the grounded-destination-friendly variant. Releasing Q only
-      // once avoids accidentally consuming Blink before the second sample.
-      await tapLook(hostPage, 'ArrowDown', 6);
-      await delay(650);
-      const pitched = await snapshot(hostPage);
+      // Preserve a valid authority-bound target for the commit. Only search a
+      // pitched variant when the level target is invalid, so the diagnostic
+      // branch cannot turn a valid Blink into a rejected activation.
+      let pitched = null;
+      if (preview?.render3d?.blinkPreviewValid !== true) {
+        await tapLook(hostPage, 'ArrowDown', 6);
+        await delay(650);
+        pitched = await snapshot(hostPage);
+      }
     result.blinkPreviewPitchedDown = {
+      sampled: pitched !== null,
       valid: pitched?.render3d?.blinkPreviewValid ?? null,
       reason: pitched?.render3d?.blinkPreviewReason ?? null,
       distanceMillimeters:
         pitched?.render3d?.blinkPreviewDistanceMillimeters ?? null,
     };
-    result.blinkPitchedShot = await shoot(
-      hostPage,
-      '03-blink-preview-pitched.png',
-    );
-      if (pitched?.render3d?.blinkPreviewValid !== true
+      if (pitched !== null) {
+        result.blinkPitchedShot = await shoot(
+          hostPage,
+          '03-blink-preview-pitched.png',
+        );
+      }
+      if (pitched !== null
+        && pitched?.render3d?.blinkPreviewValid !== true
         && preview?.render3d?.blinkPreviewValid === true) {
         await tapLook(hostPage, 'ArrowUp', 6);
       }
@@ -923,12 +995,15 @@ try {
         positionBefore,
         afterBlink?.localAuthoritativePosition,
       );
+      const blinkCommitted = result.blinkCommit.distanceMillimeters > 250;
       return auditResult(
         'partial',
         result,
         {
           severity: 'coverage-gap',
-          summary: 'Authority counters and Blink displacement are sampled, but bounce/weight, smoke radius and smoothness, victim readability, damage, and each role-specific ability set still require dedicated proof and human play.',
+          summary: blinkCommitted
+            ? 'Authority activation counters and Blink displacement are observed, but bounce/weight, smoke radius and smoothness, victim readability, damage, and each role-specific ability set still require dedicated proof and human play.'
+            : 'Throwable activation counters were observed, but Blink did not commit; ability physics, victim readability, damage, and role coverage remain incomplete.',
         },
       );
     } finally {
@@ -955,6 +1030,23 @@ try {
       result.remotePlayerKeys = Object.keys(remotePlayer(first) ?? {});
       result.remoteEntityKeys = Object.keys(remoteEntity(first) ?? {});
       result.presentationCueCountBefore = first?.presentation?.recentCues?.length ?? 0;
+
+      const hostRoute = [
+        { x: -27_500, z: 1_000 },
+        { x: -18_000, z: -1_500 },
+        { x: -9_000, z: 4_500 },
+        { x: -4_000, z: -2_500 },
+      ];
+      const guestRoute = [
+        { x: 27_500, z: -1_000 },
+        { x: 18_000, z: 1_500 },
+        { x: 9_000, z: 4_500 },
+        { x: 4_000, z: -2_500 },
+      ];
+      [result.hostRouteApproach, result.guestRouteApproach] = await Promise.all([
+        driveRoute(hostPage, hostRoute),
+        driveRoute(guestPage, guestRoute),
+      ]);
 
       for (let attempt = 0; attempt < 36; attempt += 1) {
         const value = await snapshot(hostPage);
