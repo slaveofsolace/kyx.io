@@ -7,8 +7,8 @@
   "sourceHashKind": "canonical_source",
   "runtime": {
     "uri": "assets/review/runtime-candidates/g6-assault-rev32/kyx-g6-assault-rev32-lod0.runtime-candidate.glb",
-    "hash": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9",
-    "bytes": 24804780
+    "hash": "775a423da21ad9cafefc1b2f7882805ddcbc2531b50336857b38d350b5b4cb62",
+    "bytes": 25434708
   },
   "budgets": {
     "triangles": 61780,
@@ -18,20 +18,27 @@
     "bones": 66,
     "clips": 16,
     "textures": 3,
-    "estimatedTextureBytes": null,
+    "estimatedTextureBytes": 21087216,
     "waiverId": null
   },
   "validation": {
     "structuralInspector": "kyx_binary_inspector_v1+blender_5_1_direct_import",
     "structuralStatus": "passed",
-    "externalGltfValidator": "not_run",
-    "externalGltfReport": null,
+    "externalGltfValidator": "Khronos glTF Validator 2.0.0-dev.3.10",
+    "externalGltfReport": "evidence/2026-08-01/g6-assault-rev32/direct-glb-review-v10/external-validation/lod0.gltf-validator.report.json",
+    "externalGltfIssueCounts": {
+      "errors": 0,
+      "warnings": 0,
+      "infos": 14,
+      "hints": 0
+    },
+    "allFrameDeformationAudit": "evidence/2026-08-01/g6-assault-rev32/direct-glb-review-v10/all-frame-deformation-audit/all-frame-deformation-report.json",
+    "allFrameDeformationStatus": "459_integer_frames_sampled_0_hard_failures_death_contact_semantics_passed",
     "errors": [],
     "warnings": [
       "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED",
-      "EXTERNAL_GLTF_VALIDATION_NOT_RUN",
       "BROWSER_PACKAGE_BUDGET_NOT_MET",
-      "EVERY_FRAME_CLIPPING_REVIEW_REQUIRED",
+      "HUMAN_VISIBLE_CLIPPING_REVIEW_REQUIRED",
       "FIRST_PERSON_AND_RUNTIME_SELECTION_NOT_INTEGRATED"
     ]
   },

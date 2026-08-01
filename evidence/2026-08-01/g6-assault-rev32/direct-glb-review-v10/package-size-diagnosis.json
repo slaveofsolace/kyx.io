@@ -1,0 +1,121 @@
+{
+  "schema": "kyx-g6-assault-rev32-package-size-diagnosis-v1",
+  "generatedAtUtc": "2026-08-01T18:38:15.967Z",
+  "checkpoint": "G6_ASSAULT_REV32_PACKAGE_DIAGNOSIS",
+  "status": "PACKAGE_BUDGET_BLOCKED_BY_REPEATED_UNCOMPRESSED_REVIEW_TEXTURES",
+  "glbs": [
+    {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod0.runtime-candidate.glb",
+      "sha256": "775a423da21ad9cafefc1b2f7882805ddcbc2531b50336857b38d350b5b4cb62",
+      "totalBytes": 25434708,
+      "embeddedImageBytes": 21087216,
+      "nonImageApproxBytes": 4347492,
+      "images": [
+        {
+          "index": 0,
+          "name": "SciFiHelmet_Normal",
+          "mimeType": "image/png",
+          "bytes": 5389165,
+          "sha256": "437c034b60900b503bb41be3328011ab3b7602c8454f8eebcab98929ea25fe99"
+        },
+        {
+          "index": 1,
+          "name": "SciFiHelmet_AmbientOcclusion-SciFiHelmet_MetallicRoughness",
+          "mimeType": "image/png",
+          "bytes": 7856913,
+          "sha256": "d806871a57566aab0b5521859db44b6f8c66841b6d6edb12f16a80cda6274a13"
+        },
+        {
+          "index": 2,
+          "name": "SciFiHelmet_BaseColor",
+          "mimeType": "image/png",
+          "bytes": 7841138,
+          "sha256": "bda08dd029775ea0964d5721b779a639da091222eaa750233ba34e01e3eeace2"
+        }
+      ]
+    },
+    {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod1.runtime-candidate.glb",
+      "sha256": "aa1bf26a9bd9c3c5524f81a6848978cccbcc27eaefad2285cdcbd0d059788479",
+      "totalBytes": 23598468,
+      "embeddedImageBytes": 21087216,
+      "nonImageApproxBytes": 2511252,
+      "images": [
+        {
+          "index": 0,
+          "name": "SciFiHelmet_Normal",
+          "mimeType": "image/png",
+          "bytes": 5389165,
+          "sha256": "437c034b60900b503bb41be3328011ab3b7602c8454f8eebcab98929ea25fe99"
+        },
+        {
+          "index": 1,
+          "name": "SciFiHelmet_AmbientOcclusion-SciFiHelmet_MetallicRoughness",
+          "mimeType": "image/png",
+          "bytes": 7856913,
+          "sha256": "d806871a57566aab0b5521859db44b6f8c66841b6d6edb12f16a80cda6274a13"
+        },
+        {
+          "index": 2,
+          "name": "SciFiHelmet_BaseColor",
+          "mimeType": "image/png",
+          "bytes": 7841138,
+          "sha256": "bda08dd029775ea0964d5721b779a639da091222eaa750233ba34e01e3eeace2"
+        }
+      ]
+    },
+    {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod2.runtime-candidate.glb",
+      "sha256": "b4c8da22afdd8c6b0fbb121a7474c36ec4c159cd5e05a405a84eeb76b04e09a4",
+      "totalBytes": 22988040,
+      "embeddedImageBytes": 21087216,
+      "nonImageApproxBytes": 1900824,
+      "images": [
+        {
+          "index": 0,
+          "name": "SciFiHelmet_Normal",
+          "mimeType": "image/png",
+          "bytes": 5389165,
+          "sha256": "437c034b60900b503bb41be3328011ab3b7602c8454f8eebcab98929ea25fe99"
+        },
+        {
+          "index": 1,
+          "name": "SciFiHelmet_AmbientOcclusion-SciFiHelmet_MetallicRoughness",
+          "mimeType": "image/png",
+          "bytes": 7856913,
+          "sha256": "d806871a57566aab0b5521859db44b6f8c66841b6d6edb12f16a80cda6274a13"
+        },
+        {
+          "index": 2,
+          "name": "SciFiHelmet_BaseColor",
+          "mimeType": "image/png",
+          "bytes": 7841138,
+          "sha256": "bda08dd029775ea0964d5721b779a639da091222eaa750233ba34e01e3eeace2"
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "totalGlbBytes": 72021216,
+    "repeatedEmbeddedImageBytes": 63261648,
+    "repeatedImageSharePercent": 87.84,
+    "uniqueEmbeddedImageBytes": 21087216,
+    "avoidableDuplicateImageBytes": 42174432,
+    "uniqueImageCount": 3
+  },
+  "diagnosis": [
+    "The same three 2048x2048 PNG helmet textures are embedded independently in LOD0, LOD1, and LOD2.",
+    "Texture payload, not geometry, dominates the review package.",
+    "LOD optimization alone cannot meet a browser package budget while each GLB repeats the same uncompressed PNG payload."
+  ],
+  "recommendedAfterDirectionAcceptance": [
+    "Make textures shared external runtime resources or build KTX2/BasisU variants.",
+    "Author distance-appropriate 1024/512 texture variants for LOD1/LOD2 and verify visual readability before release.",
+    "Run the release ledger, provenance, browser runtime, and GPU-memory gates on the final chosen compression path."
+  ],
+  "claims": {
+    "packageBudgetMet": false,
+    "compressionImplemented": false,
+    "visualQualityAfterCompressionApproved": false
+  }
+}

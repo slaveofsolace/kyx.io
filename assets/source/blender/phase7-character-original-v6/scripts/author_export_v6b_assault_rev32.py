@@ -1287,6 +1287,142 @@ def refine_runtime_grip_actions(
     return records
 
 
+def evaluated_minimum_z(objects: list[bpy.types.Object]) -> float:
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    minimum = math.inf
+    for obj in objects:
+        evaluated = obj.evaluated_get(depsgraph)
+        mesh = evaluated.to_mesh()
+        try:
+            minimum = min(
+                minimum,
+                *(
+                    (evaluated.matrix_world @ vertex.co).z
+                    for vertex in mesh.vertices
+                ),
+            )
+        finally:
+            evaluated.to_mesh_clear()
+    if not math.isfinite(minimum):
+        raise RuntimeError("Could not evaluate a finite runtime floor minimum")
+    return float(minimum)
+
+
+def ground_runtime_death_action(
+    rig: bpy.types.Object,
+    meshes: list[bpy.types.Object],
+) -> dict[str, Any]:
+    """Keep the inherited in-place death fall in contact with the floor.
+
+    Rev17 rotated the character around an elevated root without compensating
+    translation, leaving the final corpse roughly 0.77 m in the air. Sample the
+    unmodified exact export slot first, then key a per-frame root translation so
+    the lowest evaluated body/armor point remains on the rest-pose floor.
+    """
+
+    action_name = "KYX_REV17_TP_DEATH_FRONT"
+    action = bpy.data.actions.get(action_name)
+    if action is None:
+        raise RuntimeError(f"Death grounding action is missing: {action_name}")
+    animation_data = rig.animation_data_create()
+    matching_export_strips = [
+        strip
+        for track in animation_data.nla_tracks
+        for strip in track.strips
+        if strip.action == action
+    ]
+    if len(matching_export_strips) != 1:
+        raise RuntimeError(
+            f"Expected one NLA export strip for {action_name}, got "
+            f"{len(matching_export_strips)}"
+        )
+    export_strip = matching_export_strips[0]
+    export_slot = export_strip.action_slot
+    if export_slot is None:
+        raise RuntimeError(f"NLA export slot is missing for {action_name}")
+    slot_count_before = len(action.slots)
+    scene = bpy.context.scene
+    root = rig.pose.bones.get("root")
+    if root is None:
+        raise RuntimeError("Runtime rig is missing the root bone")
+
+    animation_data.use_nla = False
+    animation_data.action = None
+    rig.data.pose_position = "REST"
+    scene.frame_set(1)
+    bpy.context.view_layer.update()
+    reference_floor = evaluated_minimum_z(meshes)
+
+    rig.data.pose_position = "POSE"
+    animation_data.action = action
+    animation_data.action_slot = export_slot
+    if animation_data.action_slot != export_slot:
+        raise RuntimeError(f"Could not bind NLA export slot for {action_name}")
+    start = int(math.floor(action.frame_range[0]))
+    end = int(math.ceil(action.frame_range[1]))
+    sampled: dict[int, dict[str, Any]] = {}
+    for frame in range(start, end + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        sampled[frame] = {
+            "matrix": root.matrix.copy(),
+            "floorBefore": evaluated_minimum_z(meshes),
+        }
+
+    world_to_pose = rig.matrix_world.inverted().to_3x3()
+    corrections: list[float] = []
+    floors_after: list[float] = []
+    for frame in range(start, end + 1):
+        scene.frame_set(frame)
+        correction = max(
+            0.0,
+            sampled[frame]["floorBefore"] - reference_floor,
+        )
+        corrected = sampled[frame]["matrix"].copy()
+        corrected.translation += world_to_pose @ Vector((0.0, 0.0, -correction))
+        root.matrix = corrected
+        bpy.context.view_layer.update()
+        root.keyframe_insert(
+            data_path="location",
+            frame=frame,
+            group=root.name,
+        )
+        corrections.append(correction)
+
+    for frame in range(start, end + 1):
+        scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        floors_after.append(evaluated_minimum_z(meshes))
+    maximum_floor_error = max(abs(value - reference_floor) for value in floors_after)
+    if maximum_floor_error > 0.0025:
+        raise RuntimeError(
+            f"Death grounding residual exceeds tolerance: {maximum_floor_error:.6f} m"
+        )
+    if len(action.slots) != slot_count_before:
+        raise RuntimeError(
+            f"Death grounding created an unintended action slot: "
+            f"{slot_count_before} -> {len(action.slots)}"
+        )
+    action["kyx_rev32_grounded_death"] = True
+    animation_data.action = None
+    return {
+        "action": action_name,
+        "frames": [start, end],
+        "method": "sample_exact_nla_slot_then_key_root_floor_contact_every_frame",
+        "exportSlot": {
+            "identifier": export_slot.identifier,
+            "handle": int(export_slot.handle),
+            "nlaStrip": export_strip.name,
+            "actionSlotCount": len(action.slots),
+        },
+        "referenceFloorZ": round(reference_floor, 8),
+        "finalFloorBeforeZ": round(sampled[end]["floorBefore"], 8),
+        "finalFloorAfterZ": round(floors_after[-1], 8),
+        "maximumAppliedDownwardCorrectionMeters": round(max(corrections), 8),
+        "maximumPostCorrectionFloorErrorMeters": round(maximum_floor_error, 8),
+    }
+
+
 def author_runtime_proportions(body: bpy.types.Object) -> dict[str, Any]:
     """Correct the inherited hourglass read into an athletic cyber-soldier."""
 
@@ -1866,6 +2002,28 @@ def duplicate_mesh(obj: bpy.types.Object, name: str) -> bpy.types.Object:
     return duplicate
 
 
+def triangulate_runtime_mesh(obj: bpy.types.Object) -> dict[str, Any]:
+    """Bake a portable tangent-ready topology on the generated runtime copy."""
+
+    before_faces = len(obj.data.polygons)
+    before_triangles = triangle_count(obj)
+    mesh = bmesh.new()
+    mesh.from_mesh(obj.data)
+    bmesh.ops.triangulate(mesh, faces=list(mesh.faces))
+    mesh.to_mesh(obj.data)
+    mesh.free()
+    obj.data.update()
+    return {
+        "facesBefore": before_faces,
+        "facesAfter": len(obj.data.polygons),
+        "trianglesBefore": before_triangles,
+        "trianglesAfter": triangle_count(obj),
+        "topologyTriangleCountPreserved": (
+            before_triangles == triangle_count(obj)
+        ),
+    }
+
+
 def decimate_skinned(obj: bpy.types.Object, ratio: float) -> dict[str, Any]:
     before_vertices = len(obj.data.vertices)
     before_triangles = triangle_count(obj)
@@ -1879,12 +2037,24 @@ def decimate_skinned(obj: bpy.types.Object, ratio: float) -> dict[str, Any]:
         bpy.context.view_layer.objects.active = obj
         bpy.ops.object.modifier_move_up(modifier=modifier.name)
     apply_modifier(obj, modifier)
+    # Collapse decimation can leave imported split normals referencing a
+    # topology that no longer exists. Blender's glTF exporter then derives a
+    # zero-length tangent for an otherwise valid vertex (observed on the LOD2
+    # SciFiHelmet primitive). Drop only the stale custom-normal layer on the
+    # generated LOD copy so Blender recomputes a tangent basis from the reduced
+    # geometry; the authored LOD0 mesh and source presentation remain intact.
+    custom_normal = obj.data.attributes.get("custom_normal")
+    custom_normals_cleared = custom_normal is not None
+    if custom_normal is not None:
+        obj.data.attributes.remove(custom_normal)
+    obj.data.update()
     return {
         "ratio": ratio,
         "verticesBefore": before_vertices,
         "verticesAfter": len(obj.data.vertices),
         "trianglesBefore": before_triangles,
         "trianglesAfter": triangle_count(obj),
+        "staleCustomNormalsCleared": custom_normals_cleared,
     }
 
 
@@ -2094,11 +2264,16 @@ def main() -> None:
     if not armor_objects:
         raise RuntimeError("No candidate armor objects were found")
     armor = join_meshes(armor_objects, armor_objects[0], RUNTIME_ARMOR)
+    # Blender's implicit glTF triangulation could not derive a portable tangent
+    # basis for one textured helmet polygon. Triangulate only the generated
+    # runtime armor copy; source presentation meshes remain untouched.
+    runtime_armor_triangulation_audit = triangulate_runtime_mesh(armor)
     body.name = RUNTIME_BODY
     lod0_weight_pruning = {
         "body": limit_and_normalize_weights(body),
         "armor": limit_and_normalize_weights(armor),
     }
+    death_grounding_audit = ground_runtime_death_action(rig, [body, armor])
 
     # Remove source-only and presentation helper objects.
     bpy.data.objects.remove(reference_body, do_unlink=True)
@@ -2234,6 +2409,7 @@ def main() -> None:
         },
         "armor": {
             "piecesJoined": len(armor_objects),
+            "runtimeTriangulation": runtime_armor_triangulation_audit,
             "surfaceWeightedPieces": armor_records,
             "headRigidPieces": helmet_records,
             "postProportionTorsoFit": torso_armor_fit_records,
@@ -2243,6 +2419,7 @@ def main() -> None:
         },
         "animationCorrections": {
             "weaponContact": weapon_contact_audit,
+            "deathGrounding": death_grounding_audit,
         },
         "eyes": eye_records,
         "lods": lod_audit,

@@ -7,8 +7,8 @@
   "sourceHashKind": "canonical_source",
   "runtime": {
     "uri": "assets/review/runtime-candidates/g6-assault-rev32/kyx-g6-assault-rev32-lod1.runtime-candidate.glb",
-    "hash": "ba08d337ce56737b8dc4968455408392fefc0425a2ef846779c1f49501dcd196",
-    "bytes": 23598128
+    "hash": "aa1bf26a9bd9c3c5524f81a6848978cccbcc27eaefad2285cdcbd0d059788479",
+    "bytes": 23598468
   },
   "budgets": {
     "triangles": 32394,
@@ -18,18 +18,23 @@
     "bones": 66,
     "clips": 16,
     "textures": 3,
-    "estimatedTextureBytes": null,
+    "estimatedTextureBytes": 21087216,
     "waiverId": null
   },
   "validation": {
     "structuralInspector": "kyx_binary_inspector_v1+blender_5_1_direct_import",
     "structuralStatus": "passed",
-    "externalGltfValidator": "not_run",
-    "externalGltfReport": null,
+    "externalGltfValidator": "Khronos glTF Validator 2.0.0-dev.3.10",
+    "externalGltfReport": "evidence/2026-08-01/g6-assault-rev32/direct-glb-review-v10/external-validation/lod1.gltf-validator.report.json",
+    "externalGltfIssueCounts": {
+      "errors": 0,
+      "warnings": 0,
+      "infos": 15,
+      "hints": 0
+    },
     "errors": [],
     "warnings": [
       "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED",
-      "EXTERNAL_GLTF_VALIDATION_NOT_RUN",
       "BROWSER_PACKAGE_BUDGET_NOT_MET",
       "DISTANCE_READABILITY_NOT_RUNTIME_PROVEN"
     ]

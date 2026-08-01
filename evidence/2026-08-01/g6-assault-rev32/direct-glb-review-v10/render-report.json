@@ -1,6 +1,6 @@
 {
   "schema": "kyx-g6-assault-rev32-direct-glb-review-report-v1",
-  "generatedAt": "2026-08-01T17:14:44.420312+00:00",
+  "generatedAt": "2026-08-01T18:34:30.386709+00:00",
   "blenderVersion": "5.1.2",
   "checkpoint": "G6_ASSAULT_REV32_DIRECT_GLB_REVIEW",
   "status": "REVIEW_PACKET_COMPLETE_EXPLICIT_HUMAN_DECISION_REQUIRED_NOT_G6",
@@ -12,9 +12,9 @@
   },
   "sourceGlb": {
     "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod0.runtime-candidate.glb",
-    "bytes": 24804780,
-    "sha256Before": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9",
-    "sha256After": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9"
+    "bytes": 25434708,
+    "sha256Before": "775a423da21ad9cafefc1b2f7882805ddcbc2531b50336857b38d350b5b4cb62",
+    "sha256After": "775a423da21ad9cafefc1b2f7882805ddcbc2531b50336857b38d350b5b4cb62"
   },
   "freshImport": {
     "runtimeMeshes": [
@@ -44,8 +44,8 @@
     "topologyBefore": {
       "KYX_REV32_ASSAULT_LOD0_CONNECTED_ARMOR_HELMET": {
         "meshData": "KYX_V6B_REV23_ClavicleYoke_L_Mesh.001",
-        "vertices": 32122,
-        "edges": 83824,
+        "vertices": 33814,
+        "edges": 84683,
         "polygons": 52816,
         "triangles": 52816,
         "uvLayers": [
@@ -92,8 +92,8 @@
     "topologyAfter": {
       "KYX_REV32_ASSAULT_LOD0_CONNECTED_ARMOR_HELMET": {
         "meshData": "KYX_V6B_REV23_ClavicleYoke_L_Mesh.001",
-        "vertices": 32122,
-        "edges": 83824,
+        "vertices": 33814,
+        "edges": 84683,
         "polygons": 52816,
         "triangles": 52816,
         "uvLayers": [
@@ -167,8 +167,8 @@
       "label": "FULL FRONT",
       "purpose": "full_silhouette",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-front.png",
-      "bytes": 1619739,
-      "sha256": "edfcafbbbf690cdfdeadfb4c0a47a029deea71e5d5ff7dd7b4c62dd7e235a863",
+      "bytes": 1619136,
+      "sha256": "6a5ed3f1c38c6499c0de617a6d1c60960d39e3835166596f8d1ac01f60f024d0",
       "resolution": [
         1100,
         1400
@@ -206,8 +206,8 @@
       "label": "FRONT THREE-QUARTER",
       "purpose": "full_silhouette",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-three-quarter.png",
-      "bytes": 1616397,
-      "sha256": "6d69f2fc8798c3737f1528b98337cc799326329777d51e31836879e6b7f98b5a",
+      "bytes": 1617238,
+      "sha256": "85745806d0d6632cd000937589871df62ca6bcedf54bc1e0c589b1ddb2dcaa0f",
       "resolution": [
         1100,
         1400
@@ -245,8 +245,8 @@
       "label": "RIGHT PROFILE",
       "purpose": "full_silhouette",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-side.png",
-      "bytes": 1544512,
-      "sha256": "72f3cc9cd04adc3af1e6294ac3a5032f4a2c025bc0c19d8fdd2e85919906ab16",
+      "bytes": 1543984,
+      "sha256": "dd6f10b10afff1066fd9d17feb3aaffe53cc231fd1fab2a065f4fd135d8ad519",
       "resolution": [
         1100,
         1400
@@ -284,8 +284,8 @@
       "label": "FULL REAR",
       "purpose": "full_silhouette",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-rear.png",
-      "bytes": 1568952,
-      "sha256": "fadeb84b276b8e260062daa8677fc793dc3f4525fb1e2be6117cc9d339f136b1",
+      "bytes": 1569607,
+      "sha256": "9777a77801f61aa0f4472cac1727d9625ae534dc6586ec7da4b1476af3a9be82",
       "resolution": [
         1100,
         1400
@@ -323,8 +323,8 @@
       "label": "HELMET + VISOR FRONT",
       "purpose": "helmet_visor_integration",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-helmet-front.png",
-      "bytes": 1640968,
-      "sha256": "451f1691691607efbd5ff971fad8bea3ef19293be0aaee2f6768a03ecc951bd9",
+      "bytes": 1639334,
+      "sha256": "746eb244d97ad43c59af36d7de5f6223bbc6471d3ebc7c03b7fc6d22ee4e08f3",
       "resolution": [
         1250,
         1050
@@ -362,8 +362,8 @@
       "label": "HELMET + VISOR THREE-QUARTER",
       "purpose": "helmet_visor_integration",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-helmet-three-quarter.png",
-      "bytes": 1613432,
-      "sha256": "7d51ec75054f73f752a10cdd8dfa80b08478533de698da48c52da79ebe47d908",
+      "bytes": 1614377,
+      "sha256": "6446eacd1526f10123f56c576b68814fa0578983f7fd596c75243222b4490ad0",
       "resolution": [
         1250,
         1050
@@ -401,8 +401,8 @@
       "label": "CONNECTED TORSO ARMOR",
       "purpose": "connected_armor_material_flow",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-torso-front.png",
-      "bytes": 1563654,
-      "sha256": "1d32d1d503f87632798e0f7449e8f551b038d9977b1584f52a27cf9393bf0879",
+      "bytes": 1563892,
+      "sha256": "1f93388a5bea721c2d759f911c7e6e8f9af63a2720e337715c981990ae0a9e60",
       "resolution": [
         1250,
         1100
@@ -440,8 +440,8 @@
       "label": "BOOTS + FLOOR CONTACT",
       "purpose": "footwear_alignment_floor_contact",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-boots-front.png",
-      "bytes": 1285607,
-      "sha256": "2297027f80b49091cb15885ed09261ab1cdccf64568d1aa2f7cd49e41f62bc4f",
+      "bytes": 1285173,
+      "sha256": "e399fde657a19a1422b007e207191256eee05538ed69ca99c37201b74c177ea9",
       "resolution": [
         1250,
         950
@@ -479,8 +479,8 @@
       "label": "RUN LEFT LEAD",
       "purpose": "full_silhouette",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-run-left-lead.png",
-      "bytes": 1662340,
-      "sha256": "e8773f133e1f0422f7954d0080a037514b299541fe42ddae31e29588ad23044d",
+      "bytes": 1662827,
+      "sha256": "75df0e5002e7d238588851003121f12b12ce029df0a8c5318b93ac0188ab4635",
       "resolution": [
         1100,
         1400
@@ -518,8 +518,8 @@
       "label": "AIRBORNE LOOP",
       "purpose": "full_silhouette",
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-airborne.png",
-      "bytes": 1632702,
-      "sha256": "81368f80598088f933b5674d65bf863ba7f60ca08edd0845f6caa054d5074a2a",
+      "bytes": 1632744,
+      "sha256": "a961fa3eca85ee7b8679a86b996581aa41faeaf235d26edb88eb6f871cfd5395",
       "resolution": [
         1100,
         1400

@@ -1,7 +1,7 @@
 {
   "checkpoint": "G6_ASSAULT_REV32_RUNTIME_REVIEW_CHARACTER",
   "status": "RIGGED_RUNTIME_CANDIDATE_EXPORTED_VISUAL_RUNTIME_REVIEW_REQUIRED",
-  "generatedAtUtc": "2026-08-01T17:14:37.054523+00:00",
+  "generatedAtUtc": "2026-08-01T18:32:27.626517+00:00",
   "sources": {
     "presentationCandidate": {
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-assault-rev32\\kyx-v6b-assault-rev32-source.blend",
@@ -18,8 +18,8 @@
   },
   "masterBlend": {
     "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-assault-rev32\\kyx-v6b-assault-rev32-master.blend",
-    "bytes": 32823501,
-    "sha256": "9163ea6a8989e9ce1156eaaf5c9e23b0024e61670b4cf9bf97df1eb29e225164"
+    "bytes": 32741701,
+    "sha256": "982e6a24ffa30a4c3b474b8fcaa24a44957f8b80d1661c45f7b7e250de83a67e"
   },
   "runtimeMaterials": [
     {
@@ -466,6 +466,13 @@
   },
   "armor": {
     "piecesJoined": 42,
+    "runtimeTriangulation": {
+      "facesBefore": 37313,
+      "facesAfter": 52816,
+      "trianglesBefore": 52816,
+      "trianglesAfter": 52816,
+      "topologyTriangleCountPreserved": true
+    },
     "surfaceWeightedPieces": [
       {
         "method": "inherited_articulated_weights_from_proven_rev17_footwear",
@@ -1174,6 +1181,25 @@
       "ownership": "equipped runtime weapon and socket adapter",
       "status": "NOT_CLAIMED_BY_CHARACTER_REVIEW_EXPORT",
       "reason": "base character GLBs must not overlap the equipped weapon model"
+    },
+    "deathGrounding": {
+      "action": "KYX_REV17_TP_DEATH_FRONT",
+      "frames": [
+        1,
+        60
+      ],
+      "method": "sample_exact_nla_slot_then_key_root_floor_contact_every_frame",
+      "exportSlot": {
+        "identifier": "OBKYX_REV17_RIG_66_JOINT_WITH_SOCKETS",
+        "handle": 929201142,
+        "nlaStrip": "KYX_REV17_TP_DEATH_FRONT",
+        "actionSlotCount": 1
+      },
+      "referenceFloorZ": -0.003,
+      "finalFloorBeforeZ": 0.77171737,
+      "finalFloorAfterZ": -0.00299972,
+      "maximumAppliedDownwardCorrectionMeters": 0.84789078,
+      "maximumPostCorrectionFloorErrorMeters": 3.6e-07
     }
   },
   "eyes": [
@@ -1195,14 +1221,16 @@
         "verticesBefore": 10582,
         "verticesAfter": 8565,
         "trianglesBefore": 8964,
-        "trianglesAfter": 4930
+        "trianglesAfter": 4930,
+        "staleCustomNormalsCleared": false
       },
       "armor": {
         "ratio": 0.52,
         "verticesBefore": 26791,
         "verticesAfter": 14106,
         "trianglesBefore": 52816,
-        "trianglesAfter": 27464
+        "trianglesAfter": 27464,
+        "staleCustomNormalsCleared": true
       }
     },
     "lod2": {
@@ -1211,14 +1239,16 @@
         "verticesBefore": 10582,
         "verticesAfter": 7354,
         "trianglesBefore": 8964,
-        "trianglesAfter": 2508
+        "trianglesAfter": 2508,
+        "staleCustomNormalsCleared": false
       },
       "armor": {
         "ratio": 0.24,
         "verticesBefore": 26791,
-        "verticesAfter": 6663,
+        "verticesAfter": 6662,
         "trianglesBefore": 52816,
-        "trianglesAfter": 12675
+        "trianglesAfter": 12675,
+        "staleCustomNormalsCleared": true
       }
     }
   },
@@ -1251,8 +1281,8 @@
   "exports": {
     "lod0": {
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod0.runtime-candidate.glb",
-      "bytes": 24804780,
-      "sha256": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9",
+      "bytes": 25434708,
+      "sha256": "775a423da21ad9cafefc1b2f7882805ddcbc2531b50336857b38d350b5b4cb62",
       "meshes": [
         {
           "name": "KYX_REV32_ASSAULT_LOD0_CONTINUOUS_CYBERSUIT",
@@ -1268,8 +1298,8 @@
     },
     "lod1": {
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod1.runtime-candidate.glb",
-      "bytes": 23598128,
-      "sha256": "ba08d337ce56737b8dc4968455408392fefc0425a2ef846779c1f49501dcd196",
+      "bytes": 23598468,
+      "sha256": "aa1bf26a9bd9c3c5524f81a6848978cccbcc27eaefad2285cdcbd0d059788479",
       "meshes": [
         {
           "name": "KYX_REV32_ASSAULT_LOD1_CONTINUOUS_CYBERSUIT",
@@ -1285,8 +1315,8 @@
     },
     "lod2": {
       "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod2.runtime-candidate.glb",
-      "bytes": 22988468,
-      "sha256": "a504674cd82c69a4c471b498ec633c67e139de444a86d99d9524719e5ba6a97d",
+      "bytes": 22988040,
+      "sha256": "b4c8da22afdd8c6b0fbb121a7474c36ec4c159cd5e05a405a84eeb76b04e09a4",
       "meshes": [
         {
           "name": "KYX_REV32_ASSAULT_LOD2_CONTINUOUS_CYBERSUIT",
@@ -1295,7 +1325,7 @@
         },
         {
           "name": "KYX_REV32_ASSAULT_LOD2_CONNECTED_ARMOR_HELMET",
-          "vertices": 6663,
+          "vertices": 6662,
           "triangles": 12675
         }
       ]
