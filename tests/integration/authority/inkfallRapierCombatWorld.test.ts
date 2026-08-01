@@ -19,7 +19,7 @@ import {
   requireBundledMapPackageManifest,
 } from '../../../src/content/maps';
 import {
-  IMPULSE_GRENADE_SOLID_LAYERS,
+  IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
 } from '../../../src/authority/combat/impulseGrenade';
 import {
   convertAuthorityCollisionGlbToFixture,
@@ -81,8 +81,8 @@ const downwardSphereSweep = Object.freeze({
   centerMillimeters: Object.freeze({ x: -33_500, y: 1_000, z: -3_500 }),
   translationMillimeters: Object.freeze({ x: 0, y: -2_000, z: 0 }),
   radiusMillimeters: 100,
-  solidLayers: IMPULSE_GRENADE_SOLID_LAYERS,
-  ignoredPlayerIds: Object.freeze(['player.probe.1']),
+  solidLayers: IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
+  ignoredPlayerIds: Object.freeze([]),
 });
 
 beforeAll(async () => {

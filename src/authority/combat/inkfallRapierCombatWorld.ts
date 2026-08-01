@@ -1,18 +1,21 @@
 import {
   INKFALL_AUTHORITY_MAP_IDENTITY_V2,
   INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V4,
   type InkfallAuthorityMapIdentity,
 } from '../inkfallMapIdentity';
 import type { RapierMovementWorld } from '../../physics';
 import { asMillimeters } from '../../sim';
 import {
   IMPULSE_GRENADE_SOLID_LAYERS,
+  IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
   type AuthorityImpulseGrenadeWorldPort,
   type ImpulseGrenadeCollisionLayer,
   type ImpulseGrenadeCollisionSafeImpulseRequestV1,
   type ImpulseGrenadeRadialOcclusionRequestV1,
   type ImpulseGrenadeSweepSphereRequestV1,
+  type ImpulseGrenadeSweepSolidLayers,
   type ImpulseGrenadeVector3,
 } from './impulseGrenade';
 import type {
@@ -24,17 +27,14 @@ export const INKFALL_REVISION_2_COMBAT_WORLD_CAPABILITY_ID =
   'authoritative_inkfall_revision_2_rapier_combat_v1' as const;
 export const INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID =
   'authoritative_inkfall_revision_3_rapier_combat_v1' as const;
+export const INKFALL_REVISION_4_COMBAT_WORLD_CAPABILITY_ID =
+  'authoritative_inkfall_revision_4_rapier_combat_v1' as const;
 
 const FIXED_AUTHORITY_HZ = 20;
 const INKFALL_REVISION_2_FIXTURE_ID = 'inkfall_foundry_map_collision';
 const MAXIMUM_VECTOR_COMPONENT = 20_000_000;
 const STABLE_ID = /^[A-Za-z0-9][A-Za-z0-9_.:-]*$/u;
-const WORLD_SOLID_LAYERS = Object.freeze([
-  'world_static',
-  'dynamic_platform',
-  'door',
-  'spawn_barrier',
-] as const);
+const WORLD_SOLID_LAYERS = IMPULSE_GRENADE_WORLD_ONLY_LAYERS;
 
 type StrictRecord = Record<string, unknown>;
 
@@ -87,15 +87,19 @@ function vector(value: unknown, label: string): ImpulseGrenadeVector3 {
   });
 }
 
-function assertExactSolidLayers(value: unknown): void {
-  if (!Array.isArray(value) || value.length !== IMPULSE_GRENADE_SOLID_LAYERS.length) {
-    throw new RangeError('impulse grenade solid layers do not match the authority contract');
-  }
-  for (let index = 0; index < IMPULSE_GRENADE_SOLID_LAYERS.length; index += 1) {
-    if (value[index] !== IMPULSE_GRENADE_SOLID_LAYERS[index]) {
-      throw new RangeError('impulse grenade solid layers do not match the authority contract');
+function assertExactSolidLayers(value: unknown): ImpulseGrenadeSweepSolidLayers {
+  if (Array.isArray(value)) {
+    const contracts = [IMPULSE_GRENADE_SOLID_LAYERS, IMPULSE_GRENADE_WORLD_ONLY_LAYERS] as const;
+    for (const contract of contracts) {
+      if (
+        value.length === contract.length
+        && contract.every((layer, index) => value[index] === layer)
+      ) {
+        return contract;
+      }
     }
   }
+  throw new RangeError('impulse grenade solid layers do not match an authority contract');
 }
 
 function assertIgnoredPlayers(value: unknown): readonly string[] {
@@ -213,6 +217,7 @@ function validateSweep(value: ImpulseGrenadeSweepSphereRequestV1): {
   readonly center: ImpulseGrenadeVector3;
   readonly translation: ImpulseGrenadeVector3;
   readonly radius: number;
+  readonly solidLayers: ImpulseGrenadeSweepSolidLayers;
 } {
   const item = strictRecord(value, [
     'schemaVersion', 'authorityTick', 'projectileId', 'ownerPlayerId',
@@ -223,12 +228,13 @@ function validateSweep(value: ImpulseGrenadeSweepSphereRequestV1): {
   integer(item.authorityTick, 0, Number.MAX_SAFE_INTEGER - 100_000, 'authorityTick');
   stableId(item.projectileId, 'projectileId');
   stableId(item.ownerPlayerId, 'ownerPlayerId');
-  assertExactSolidLayers(item.solidLayers);
+  const solidLayers = assertExactSolidLayers(item.solidLayers);
   assertIgnoredPlayers(item.ignoredPlayerIds);
   return Object.freeze({
     center: vector(item.centerMillimeters, 'sphere center'),
     translation: vector(item.translationMillimeters, 'sphere translation'),
     radius: integer(item.radiusMillimeters, 1, 5_000, 'sphere radius'),
+    solidLayers,
   });
 }
 
@@ -303,12 +309,24 @@ export interface InkfallRevision3RapierCombatWorldPorts {
   readonly impulseGrenadeWorld: AuthorityImpulseGrenadeWorldPort;
 }
 
+export interface InkfallRevision4RapierCombatWorldPorts {
+  readonly capabilityId: typeof INKFALL_REVISION_4_COMBAT_WORLD_CAPABILITY_ID;
+  readonly mapId: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V4.mapId;
+  readonly mapRevision: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V4.mapRevision;
+  readonly packageDigest: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V4.packageDigest;
+  readonly fixtureHash: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V4.fixtureHash;
+  readonly colliderCardinality: typeof INKFALL_AUTHORITY_MAP_IDENTITY_V4.colliderCardinality;
+  readonly worldOcclusion: AuthorityWorldOcclusionPort;
+  readonly impulseGrenadeWorld: AuthorityImpulseGrenadeWorldPort;
+}
+
 function createInkfallRapierCombatWorldPorts(
   world: RapierMovementWorld,
   identity: InkfallAuthorityMapIdentity,
   capabilityId:
     | typeof INKFALL_REVISION_2_COMBAT_WORLD_CAPABILITY_ID
-    | typeof INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID,
+    | typeof INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID
+    | typeof INKFALL_REVISION_4_COMBAT_WORLD_CAPABILITY_ID,
 ) {
   assertInkfallWorld(world, identity);
 
@@ -361,7 +379,7 @@ function createInkfallRapierCombatWorldPorts(
           height: asMillimeters(request.radius * 2),
           radius: asMillimeters(request.radius),
         },
-        solidLayers: IMPULSE_GRENADE_SOLID_LAYERS,
+        solidLayers: request.solidLayers,
         contactSkin: asMillimeters(0),
       });
       if (cast.hit === null) {
@@ -369,6 +387,9 @@ function createInkfallRapierCombatWorldPorts(
       }
       if (!isImpulseGrenadeCollisionLayer(cast.hit.layer)) {
         throw new Error('INKFALL_STATIC_COMBAT_WORLD_RETURNED_NON_SOLID_COLLIDER');
+      }
+      if (!(request.solidLayers as readonly string[]).includes(cast.hit.layer)) {
+        throw new Error('INKFALL_STATIC_COMBAT_WORLD_RETURNED_UNREQUESTED_COLLIDER');
       }
       if (cast.hit.layer === 'player_body') {
         throw new Error('INKFALL_STATIC_COMBAT_WORLD_RETURNED_PLAYER_COLLIDER');
@@ -489,4 +510,14 @@ export function createInkfallRevision3RapierCombatWorldPorts(
     INKFALL_AUTHORITY_MAP_IDENTITY_V3,
     INKFALL_REVISION_3_COMBAT_WORLD_CAPABILITY_ID,
   ) as InkfallRevision3RapierCombatWorldPorts;
+}
+
+export function createInkfallRevision4RapierCombatWorldPorts(
+  world: RapierMovementWorld,
+): InkfallRevision4RapierCombatWorldPorts {
+  return createInkfallRapierCombatWorldPorts(
+    world,
+    INKFALL_AUTHORITY_MAP_IDENTITY_V4,
+    INKFALL_REVISION_4_COMBAT_WORLD_CAPABILITY_ID,
+  ) as InkfallRevision4RapierCombatWorldPorts;
 }

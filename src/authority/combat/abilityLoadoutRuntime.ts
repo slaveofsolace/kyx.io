@@ -44,17 +44,17 @@ export const AUTHORITY_THROWABLE_RULES = Object.freeze({
   [ABILITY_ID.launch]: Object.freeze({
     abilityId: ABILITY_ID.launch,
     cooldownTicks: 240,
-    fuseTicks: 29,
+    fuseTicks: 0,
     lifetimeTicks: 120,
-    speedMillimetersPerSecond: 17_000,
-    upwardSpeedMillimetersPerSecond: 6_200,
-    gravityMillimetersPerSecondSquared: -21_000,
+    speedMillimetersPerSecond: 18_000,
+    upwardSpeedMillimetersPerSecond: 0,
+    gravityMillimetersPerSecondSquared: -19_200,
     radiusMillimeters: 150,
     areaRadiusMillimeters: 11_000,
     damageHealthPoints: 0,
-    maximumBounces: 5,
-    restitutionPermille: 560,
-    frictionPermille: 180,
+    maximumBounces: 0,
+    restitutionPermille: 0,
+    frictionPermille: 0,
     sticky: false,
     fuseStartsOnCollision: true,
     effect: 'launch',
@@ -438,6 +438,9 @@ export function createAuthorityAbilityProjectile(options: Readonly<{
   lookYawMilliDegrees: number;
   lookPitchMilliDegrees: number;
 }>): AuthorityAbilityProjectileV1 {
+  if (options.activation.abilityId === ABILITY_ID.launch) {
+    throw new RangeError('AUTHORITY_LAUNCH_REQUIRES_DEDICATED_IMPULSE_RUNTIME');
+  }
   const rules = AUTHORITY_THROWABLE_RULES[options.activation.abilityId];
   const direction = impulseGrenadeDirectionQ15FromLook(
     options.lookYawMilliDegrees,

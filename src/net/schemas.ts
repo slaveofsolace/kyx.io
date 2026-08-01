@@ -2144,7 +2144,7 @@ function validateCombatPresentationReliableEvent(
     idAt(required(record, 'ownerPlayerId', path), `${path}.ownerPlayerId`);
     nullableIdAt(required(record, 'ownerTeamId', path), `${path}.ownerTeamId`);
     stringAt(required(record, 'reason', path), `${path}.reason`, {
-      allowed: ['fuse', 'lifetime'],
+      allowed: ['collision', 'fuse', 'lifetime'],
     });
     validatePresentationVector(
       required(record, 'positionMillimeters', path),

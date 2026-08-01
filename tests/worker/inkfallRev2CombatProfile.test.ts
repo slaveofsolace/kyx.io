@@ -13,8 +13,10 @@ import {
 } from '../../src/net';
 import {
   G5_INKFALL_REV4_COMBAT_PROFILE,
+  G5_INKFALL_REV5_COMBAT_PROFILE,
   INKFALL_REVISION_2_WORKER_MAP_BINDING,
   INKFALL_REVISION_3_WORKER_MAP_BINDING,
+  INKFALL_REVISION_4_WORKER_MAP_BINDING,
   INTERNAL_ROOM_PROFILE_HEADER,
   P511_INKFALL_REV2_COMBAT_PROFILE,
   P58D_COMBAT_PROFILE_HEADER,
@@ -39,7 +41,8 @@ interface RoomCreated {
   readonly roomProfile?: string;
   readonly mapBinding?:
     | typeof INKFALL_REVISION_2_WORKER_MAP_BINDING
-    | typeof INKFALL_REVISION_3_WORKER_MAP_BINDING;
+    | typeof INKFALL_REVISION_3_WORKER_MAP_BINDING
+    | typeof INKFALL_REVISION_4_WORKER_MAP_BINDING;
 }
 
 interface SocketProbe {
@@ -511,6 +514,23 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     });
     expect(resumed.decodeErrors).toEqual([]);
     expect(second.decodeErrors).toEqual([]);
+  }, 30_000);
+
+  it('binds the Rev5 room profile to the corrected Revision 4 authority world', async () => {
+    const room = await createRoom(G5_INKFALL_REV5_COMBAT_PROFILE);
+    expect(room).toMatchObject({
+      roomProfile: G5_INKFALL_REV5_COMBAT_PROFILE,
+      mapBinding: INKFALL_REVISION_4_WORKER_MAP_BINDING,
+    });
+
+    const socket = await connectSocket(room.socketPath);
+    const welcome = await waitForType(socket, 'welcome');
+    expect(welcome.simulationIdentity).toMatchObject({
+      mapId: 'inkfall_foundry',
+      fixtureId: 'inkfall_foundry_map_collision',
+      fixtureHash: 'b24d002179389621',
+    });
+    expect(socket.decodeErrors).toEqual([]);
   }, 30_000);
 
   it('rejects profile mismatch, cross-profile resume, and persisted flat-run aliasing', async () => {

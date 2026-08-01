@@ -1,6 +1,7 @@
 import inkfallFoundryV1 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v1.json';
 import inkfallFoundryV2 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v2.json';
 import inkfallFoundryV3 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v3.json';
+import inkfallFoundryV4 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v4.json';
 
 import {
   DEFAULT_MAP_ID,
@@ -28,6 +29,7 @@ const MAP_CATALOG: ReadonlyMap<string, BundledMapEntry> = new Map([
       [1, inkfallFoundryV1],
       [2, inkfallFoundryV2],
       [3, inkfallFoundryV3],
+      [4, inkfallFoundryV4],
     ]),
   }],
 ]);

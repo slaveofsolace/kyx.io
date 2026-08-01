@@ -7,6 +7,7 @@ import {
   G4_COMBAT_RULESET_ID,
   G4_COMBAT_RULESET_REVISION,
   G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
+  IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
   type AuthorityImpulseGrenadeWorldPort,
   type AuthorityRoomOptions,
@@ -139,6 +140,7 @@ function advanceTo(authority: AuthoritativeRoom, targetTick: number): void {
 
 describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
   it('is absent by default and rejects non-exact capability and client outcome fields', () => {
+    expect(G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID).toBe('authoritative_impulse_grenade_v2');
     const combatOnly = room({ grenade: false });
     start(combatOnly);
     const priorTick = combatOnly.advanceOneTick();
@@ -212,9 +214,10 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
       authorityTick: 8,
       ownerPlayerId: 'player_A',
       centerMillimeters: { x: 0, z: 200 },
-      translationMillimeters: { x: 0, y: 0, z: 900 },
+      translationMillimeters: { x: 0, y: -48, z: 900 },
       radiusMillimeters: 150,
-      ignoredPlayerIds: ['player_A'],
+      solidLayers: IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
+      ignoredPlayerIds: [],
     });
     const snapshot = authority.fullSnapshot();
     expect(snapshot.players.find((player) => player.playerId === 'player_A')?.combat?.impulseGrenade)
@@ -230,7 +233,7 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
         ownerPlayerId: 'player_A',
         spawnTick: 8,
         positionMillimeters: expect.objectContaining({ x: 0, z: 1_100 }),
-        velocityMillimetersPerSecond: { x: 0, y: 0, z: 18_000 },
+        velocityMillimetersPerSecond: { x: 0, y: -960, z: 18_000 },
       }),
     ]);
 
@@ -282,11 +285,8 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
     advanceTo(authority, 7);
     authority.enqueueInputBatch('connection_A', throwBatch(0, authority.serverTick));
     authority.enqueueInputBatch('connection_B', throwBatch(0, authority.serverTick));
-    authority.advanceOneTick();
-    expect(authority.fullSnapshot().impulseGrenadeProjectiles).toHaveLength(2);
-    advanceTo(authority, 37);
     const detonationTick = authority.advanceOneTick();
-    expect(detonationTick.serverTick).toBe(38);
+    expect(detonationTick.serverTick).toBe(8);
     expect(detonationTick.impulseGrenadeResults).toHaveLength(2);
     const projectileIds = detonationTick.impulseGrenadeResults?.map(
       (result) => result.detonation.projectileId,
@@ -295,7 +295,10 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
     expect(detonationTick.impulseGrenadeResults?.map((result) => result.resolutionOrdinal))
       .toEqual([0, 1]);
     expect(detonationTick.impulseGrenadeResults?.map((result) => result.detonation.reason))
-      .toEqual(['fuse', 'fuse']);
+      .toEqual(['collision', 'collision']);
+    expect(detonationTick.impulseGrenadeEvents?.filter(
+      (event) => event.kind === 'impulse_grenade_collision',
+    )).toHaveLength(2);
     expect(detonationTick.impulseGrenadeEvents?.filter(
       (event) => event.kind === 'impulse_grenade_detonated',
     )).toHaveLength(2);
@@ -337,8 +340,6 @@ describe('P5.4 exact authoritative room Impulse Grenade integration', () => {
     start(authority, true);
     advanceTo(authority, 7);
     authority.enqueueInputBatch('connection_A', throwBatch(0, authority.serverTick));
-    authority.advanceOneTick();
-    advanceTo(authority, 37);
     const result = authority.advanceOneTick().impulseGrenadeResults?.[0];
     expect(result?.radial.outcomes).toEqual([
       expect.objectContaining({ targetPlayerId: 'player_A', status: 'applied' }),

@@ -926,7 +926,9 @@ function parseGrenadeEvent(value: unknown): ParsedAuthorityEventV1 {
     stableId(item.projectileId, 'grenade projectile');
     stableId(item.ownerPlayerId, 'grenade owner');
     nullableStableId(item.ownerTeamId, 'grenade owner team');
-    if (item.reason !== 'fuse' && item.reason !== 'lifetime') throw new RangeError('detonation reason is unsupported');
+    if (item.reason !== 'collision' && item.reason !== 'fuse' && item.reason !== 'lifetime') {
+      throw new RangeError('detonation reason is unsupported');
+    }
     vector3(item.positionMillimeters, 'grenade detonation position');
     integer(item.areaRadiusMillimeters, 1, 1_000_000, 'grenade area radius');
     literal(item.damageHealthPoints, 0, 'grenade damage');

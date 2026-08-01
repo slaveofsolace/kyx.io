@@ -143,6 +143,13 @@ describe('P5.13 active-match authority checkpoint', () => {
       { ...checkpoint, identity: { ...checkpoint.identity, fixtureHash: '5252525252525252' } },
       {
         ...checkpoint,
+        options: {
+          ...checkpoint.options,
+          impulseGrenadeCapabilityId: 'authoritative_impulse_grenade_v1',
+        },
+      },
+      {
+        ...checkpoint,
         counters: { ...checkpoint.counters, nextCombatEventSequence: 0 },
       },
       {
@@ -150,6 +157,13 @@ describe('P5.13 active-match authority checkpoint', () => {
         impulseGrenadeProjectiles: checkpoint.impulseGrenadeProjectiles.map((projectile) => ({
           ...projectile,
           lastProcessedAuthorityTick: projectile.lastProcessedAuthorityTick - 1,
+        })),
+      },
+      {
+        ...checkpoint,
+        impulseGrenadeProjectiles: checkpoint.impulseGrenadeProjectiles.map((projectile) => ({
+          ...projectile,
+          accelerationMillimetersPerSecondSquared: { x: 0, y: 0, z: 0 },
         })),
       },
     ];

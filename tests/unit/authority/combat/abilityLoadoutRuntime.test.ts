@@ -8,6 +8,7 @@ import {
   abilityLoadoutReconnectPayload,
   advanceAuthorityAbilityLoadout,
   createAuthorityAbilityLoadoutRuntimeState,
+  createAuthorityAbilityProjectile,
 } from '../../../../src/authority/combat/abilityLoadoutRuntime';
 import { INTENT_BUTTON } from '../../../../src/sim';
 
@@ -71,5 +72,28 @@ describe('authoritative four-slot ability loadout runtime', () => {
       maximumCharges: [2, 2, 2],
       acceptedActivationCounts: [0, 2, 0],
     });
+  });
+
+  it('quarantines Launch from the generic throwable projectile runtime', () => {
+    const state = createAuthorityAbilityLoadoutRuntimeState({
+      playerId: 'player_A',
+      roomSeed: 'room_A',
+      authorityTick: 0,
+      loadout: DEFAULT_ABILITY_LOADOUT,
+    });
+    const activation = advanceAuthorityAbilityLoadout(state, {
+      authorityTick: 1,
+      pressedButtons: INTENT_BUTTON.abilityOne,
+      alive: true,
+    }).accepted[0];
+    expect(activation?.abilityId).toBe(ABILITY_ID.launch);
+    if (activation === undefined) throw new Error('expected a Launch activation');
+    expect(() => createAuthorityAbilityProjectile({
+      activation,
+      ownerTeamId: 'team_blue',
+      originMillimeters: { x: 0, y: 1_800, z: 0 },
+      lookYawMilliDegrees: 0,
+      lookPitchMilliDegrees: 0,
+    })).toThrow('AUTHORITY_LAUNCH_REQUIRES_DEDICATED_IMPULSE_RUNTIME');
   });
 });

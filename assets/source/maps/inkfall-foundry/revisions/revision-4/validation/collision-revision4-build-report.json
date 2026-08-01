@@ -1,0 +1,274 @@
+{
+  "candidateRevision": {
+    "collision": {
+      "bytes": 605512,
+      "export": {
+        "operatorArguments": {
+          "export_animations": false,
+          "export_apply": true,
+          "export_cameras": false,
+          "export_extras": true,
+          "export_format": "GLB",
+          "export_lights": false,
+          "export_materials": "EXPORT",
+          "export_yup": true,
+          "filepath": "D:\\AI Projects\\Projects\\Games\\evio\\evio-repo\\assets\\source\\maps\\inkfall-foundry\\revisions\\revision-4\\export\\collision.authority.glb",
+          "use_selection": true
+        },
+        "result": [
+          "FINISHED"
+        ]
+      },
+      "meshNodeCount": 339,
+      "path": "export/collision.authority.glb",
+      "sha256": "59d791898a3f7815bb2306c678b2b37fcaaf201b33a94a1e260752edb7a5477c"
+    },
+    "render": {
+      "bytes": 614340,
+      "reusedFromRevision": 3,
+      "sha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6"
+    },
+    "revision": 4,
+    "sourceBlend": {
+      "bytes": 529406,
+      "path": "source/inkfall_foundry.blend",
+      "sha256": "823c1cf32bc05304e368415550307d01aec6ec66d1cb37828d0802c8c5a67a10"
+    }
+  },
+  "collisionCorrection": {
+    "after": {
+      "location": [
+        22.374105453,
+        -4.122313023,
+        -0.063008137
+      ],
+      "name": "C_GUARD_RAIL__INK_EAST_CHOICE__S02__RIGHT",
+      "properties": {
+        "kyx_clear_width_mm": 2400,
+        "kyx_collision_revision": 4,
+        "kyx_dimensions_mm": "[1540,160,900]",
+        "kyx_edge_policy": "guarded_except_junction_apron",
+        "kyx_guard_side": "right",
+        "kyx_junction_apron_mm": 3000,
+        "kyx_render_geometry_changed": false,
+        "kyx_required_edge_clearance_mm": 420,
+        "kyx_revision_reason": "remove_east_choice_platform_guard_rail_concave_kcc_seam",
+        "kyx_role": "authoritative_collider",
+        "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+        "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+        "kyx_segment_index": 2,
+        "kyx_shape": "box",
+        "kyx_source_id": "ink_east_choice",
+        "kyx_source_kind": "route_guard_rail",
+        "kyx_trimmed_platform_endpoint_mm": 141
+      },
+      "rotation": [
+        0.549318492,
+        0.054459527,
+        -0.035910401,
+        0.833062947
+      ],
+      "vertices": [
+        [
+          -0.769999981,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.769999981,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.769999981,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.769999981,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.769999981,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.769999981,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.769999981,
+          0.079999998,
+          0.449999988
+        ],
+        [
+          -0.769999981,
+          0.079999998,
+          0.449999988
+        ]
+      ]
+    },
+    "awayEndpointAfterMm": [
+      22675,
+      -163,
+      -4824
+    ],
+    "awayEndpointBeforeMm": [
+      22675,
+      -163,
+      -4824
+    ],
+    "before": {
+      "location": [
+        22.346570969,
+        -4.058064938,
+        -0.053829819
+      ],
+      "name": "C_GUARD_RAIL__INK_EAST_CHOICE__S02__RIGHT",
+      "properties": {
+        "kyx_clear_width_mm": 2400,
+        "kyx_dimensions_mm": "[1681,160,900]",
+        "kyx_edge_policy": "guarded_except_junction_apron",
+        "kyx_guard_side": "right",
+        "kyx_junction_apron_mm": 3000,
+        "kyx_role": "authoritative_collider",
+        "kyx_scope": "P6.2_PREPRODUCTION_ONLY",
+        "kyx_seed_sha256": "562c5ea8711a1eb1f4a08a31c8872c68c23778aa159110a107c9da0b74e67a63",
+        "kyx_segment_index": 2,
+        "kyx_shape": "box",
+        "kyx_source_id": "ink_east_choice",
+        "kyx_source_kind": "route_guard_rail"
+      },
+      "rotation": [
+        0.549318492,
+        0.054459527,
+        -0.035910401,
+        0.833062947
+      ],
+      "vertices": [
+        [
+          -0.840499997,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.840499997,
+          -0.079999998,
+          -0.449999988
+        ],
+        [
+          0.840499997,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.840499997,
+          0.079999998,
+          -0.449999988
+        ],
+        [
+          -0.840499997,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.840499997,
+          -0.079999998,
+          0.449999988
+        ],
+        [
+          0.840499997,
+          0.079999998,
+          0.449999988
+        ],
+        [
+          -0.840499997,
+          0.079999998,
+          0.449999988
+        ]
+      ]
+    },
+    "candidateEdgeClearanceMm": 421,
+    "candidateLengthMm": 1540,
+    "capsuleRadiusMm": 350,
+    "changedCollider": "C_GUARD_RAIL__INK_EAST_CHOICE__S02__RIGHT",
+    "changedColliderCount": 1,
+    "deterministicMarginMm": 50,
+    "intrudingEndpointAfterMm": [
+      22073,
+      37,
+      -3421
+    ],
+    "intrudingEndpointBeforeMm": [
+      22018,
+      56,
+      -3292
+    ],
+    "kccSkinMm": 20,
+    "originalLengthMm": 1681,
+    "platformEdgeZMm": -3000,
+    "requiredEdgeClearanceMm": 420,
+    "trimmedPlatformEndpointMm": 141
+  },
+  "generator": {
+    "blenderVersion": "5.1.2",
+    "id": "inkfall_foundry_rev4_east_choice_seam_correction",
+    "script": "build_inkfall_foundry_collision_revision4.py",
+    "scriptSha256": "8dad444fec51729ad1b143c6184fefe0e50bb9db19dc4a31b8b6608beced5c21",
+    "version": 1
+  },
+  "nonClaims": [
+    "REVISION_4_NOT_PROMOTED",
+    "HUMAN_MAP_ACCEPTANCE_NOT_RUN",
+    "FINAL_TWO_FOUR_EIGHT_MATRIX_NOT_RUN",
+    "G5_NOT_PASSED"
+  ],
+  "preservation": {
+    "allNonTargetCollidersUnchanged": true,
+    "allRenderMeshesUnchanged": true,
+    "colliderCardinalityUnchanged": true,
+    "kccToleranceChanged": false,
+    "movementProfileChanged": false,
+    "nonTargetCollisionFingerprintAfter": "eb75a6029a3d6a5ff1de2b84001ccf710b3fe5904e3d7ea0a8637307cf7d3f7b",
+    "nonTargetCollisionFingerprintBefore": "eb75a6029a3d6a5ff1de2b84001ccf710b3fe5904e3d7ea0a8637307cf7d3f7b",
+    "renderChanged": false,
+    "renderFingerprintAfter": "c035f7b23627ff0a827c453f2ec5ef1383b5999c36c074dda3ec2e1271da4216",
+    "renderFingerprintBefore": "c035f7b23627ff0a827c453f2ec5ef1383b5999c36c074dda3ec2e1271da4216",
+    "revision3ArtifactsChanged": false,
+    "spawnsChanged": false,
+    "topologyChanged": false,
+    "triggersChanged": false,
+    "zonesChanged": false
+  },
+  "requiredProof": [
+    "EXACT_FAILING_POSE_CLEAR",
+    "DETERMINISTIC_ONE_PLUS_SEVEN_SUSTAINED_TRAVERSAL",
+    "PLAYER_EYE_COLLISION_AND_READABILITY_REVIEW"
+  ],
+  "schemaVersion": 1,
+  "sourceRevision": {
+    "blend": {
+      "bytes": 528904,
+      "sha256": "5e0d2549b1e642f3763f2df27213862375cad90ba9ada8353f89bfcba2864fa3"
+    },
+    "collision": {
+      "bytes": 605112,
+      "sha256": "1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8"
+    },
+    "fixtureHash": "97eb7772ac59dc95",
+    "manifest": {
+      "bytes": 9658,
+      "sha256": "14648737f7e511370e1136ac5150fa25b1ebfdc9bff2dd86ba7b2ce83e1c45b6"
+    },
+    "packageDigest": "4027934730af7c855b0abcee1b36cc256294e3e5c22a6ffb8aa02a77f71d196a",
+    "render": {
+      "bytes": 614340,
+      "sha256": "19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6"
+    },
+    "revision": 3
+  },
+  "status": "INKFALL_REV5_REVISION_4_AUTHORITY_SEAM_CORRECTION_CANDIDATE"
+}

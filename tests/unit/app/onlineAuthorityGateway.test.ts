@@ -7,8 +7,10 @@ import {
   createOnlineCombatRoom,
   createOnlineInkfallRevision2CombatRoom,
   createOnlineInkfallRevision4CombatRoom,
+  createOnlineInkfallRevision5CombatRoom,
   verifyOnlineInkfallRevision2CombatRoom,
   verifyOnlineInkfallRevision4CombatRoom,
+  verifyOnlineInkfallRevision5CombatRoom,
   type OnlineAuthorityFetch,
 } from '../../../src/app/onlineAuthorityGateway';
 import {
@@ -16,6 +18,8 @@ import {
   ONLINE_INKFALL_REV2_MAP_BINDING,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_MAP_BINDING,
+  ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  ONLINE_INKFALL_REV5_MAP_BINDING,
 } from '../../../src/app/onlineAuthorityProfiles';
 
 function response(status: number, payload: unknown) {
@@ -182,6 +186,35 @@ describe('createOnlineAuthorityRoom', () => {
       'KYX-RV4234',
       drifted,
     )).rejects.toThrow(ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID);
+  });
+
+  it('creates and verifies the Rev5 presentation / corrected Revision 4 authority binding', async () => {
+    const payload = {
+      ok: true,
+      roomCode: 'KYX-RV5234',
+      roomProfile: ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_INKFALL_REV5_MAP_BINDING,
+    };
+    const createFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(createOnlineInkfallRevision5CombatRoom(
+      'https://authority.example.test',
+      createFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-RV5234',
+      roomProfile: ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_INKFALL_REV5_MAP_BINDING,
+    });
+
+    const joinFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(verifyOnlineInkfallRevision5CombatRoom(
+      'https://authority.example.test',
+      'kyx-rv5234',
+      joinFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-RV5234',
+      roomProfile: ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_INKFALL_REV5_MAP_BINDING,
+    });
   });
 
   it('fails closed on a missing profile, binding drift, or cross-room join response', async () => {

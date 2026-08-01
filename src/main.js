@@ -1,6 +1,7 @@
 import './style.css';
 import './ui/kyx-cutline.css';
 import './ui/map-library.css';
+import './ui/local-inkfall-practice.css';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
@@ -54,6 +55,7 @@ const inkfallRev3ReviewRequest = resolveInkfallRev3ReviewRequest(window.location
 const inkfallRev3ReviewRoute = import.meta.env.DEV
   && inkfallRev3ReviewRequest.kind !== 'none';
 const onlineAuthorityRoute = window.location.pathname === ONLINE_AUTHORITY_PATH;
+const localInkfallPracticeRoute = window.location.pathname === '/practice';
 const authorityOriginCandidate = import.meta.env.VITE_KYX_AUTHORITY_ORIGIN
   || (
     import.meta.env.PROD || import.meta.env.MODE === 'staging-review'
@@ -68,7 +70,8 @@ const launchOverrideRoute = developmentTestRoute
   || lockedGrayboxPreviewRoute
   || pressHallInspectionRoute
   || inkfallRev3ReviewRoute
-  || onlineAuthorityRoute;
+  || onlineAuthorityRoute
+  || localInkfallPracticeRoute;
 const developmentFlatRunRequested = import.meta.env.DEV
   && !launchOverrideRoute
   && window.location.search === '?movementDriver=flat_run';
@@ -175,7 +178,28 @@ if (desktopSupported && !launchOverrideRoute) {
   }
 }
 
-if (pressHallInspectionRoute) {
+if (localInkfallPracticeRoute) {
+  document.body.dataset.launchSupport = 'local-inkfall-practice-authority';
+  document.body.dataset.localPracticeStatus = 'loading';
+  import('./app/localInkfallPracticeRoute.ts')
+    .then(({ mountLocalInkfallPracticeRoute }) => (
+      mountLocalInkfallPracticeRoute(document.body)
+    ))
+    .catch((error) => {
+      const failure = document.createElement('pre');
+      failure.id = 'local-practice-result';
+      failure.setAttribute('role', 'alert');
+      failure.textContent = [
+        'Inkfall Practice stopped during initialization.',
+        '',
+        error instanceof Error ? error.message : String(error),
+        '',
+        'No legacy simulation was loaded as a fallback.',
+      ].join('\n');
+      document.body.dataset.localPracticeStatus = 'error';
+      document.body.replaceChildren(failure);
+    });
+} else if (pressHallInspectionRoute) {
   document.body.dataset.launchSupport = pressHallInspectionRequest.kind === 'selected'
     ? `press-hall-v${pressHallInspectionRequest.artRevision.replace('.', '-')}-inspection`
     : 'press-hall-inspection';

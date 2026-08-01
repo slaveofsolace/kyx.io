@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V4,
 } from '../../../../src/authority/inkfallMapIdentity';
 import {
   INKFALL_REV5_PORTAL_CAPABILITY_ID,
@@ -43,10 +44,11 @@ function stateAt(
   position: Readonly<{ x: number; y: number; z: number }>,
   tick: number,
   teleportCooldownTicksRemaining = 0,
+  fixtureHash: string = INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash,
 ): MovementSimulationState {
   const state = createTestMovementState({
     fixtureId: 'inkfall_foundry_map_collision',
-    fixtureHash: INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash,
+    fixtureHash,
     feetPosition: position,
   });
   return {
@@ -100,6 +102,32 @@ describe('Inkfall Rev5 world portal authority', () => {
       capabilityId: INKFALL_REV5_PORTAL_CAPABILITY_ID,
     });
     expect(Object.isFrozen(port)).toBe(true);
+  });
+
+  it('binds the Revision 4 portal port to Revision 4 state and rejects cross-revision input', () => {
+    const endpoint = INKFALL_REV5_PORTAL_ENDPOINTS[0];
+    const port = createInkfallRev5PortalAuthorityPort(
+      groundedQueries(),
+      INKFALL_AUTHORITY_MAP_IDENTITY_V4,
+    );
+    const outside = {
+      x: endpoint.triggerCenterMm.x + endpoint.triggerHalfExtentsMm.x + 1,
+      y: endpoint.triggerCenterMm.y,
+      z: endpoint.triggerCenterMm.z,
+    };
+    const revision4Result = port.advance(advanceInput(
+      stateAt(outside, 0, 0, INKFALL_AUTHORITY_MAP_IDENTITY_V4.fixtureHash),
+      stateAt(endpoint.triggerCenterMm, 1, 0, INKFALL_AUTHORITY_MAP_IDENTITY_V4.fixtureHash),
+    ));
+
+    expect(revision4Result.events).toContainEqual(expect.objectContaining({
+      kind: 'teleport_succeeded',
+      outcome: 'full',
+    }));
+    expect(() => port.advance(advanceInput(
+      stateAt(outside, 0),
+      stateAt(endpoint.triggerCenterMm, 1),
+    ))).toThrow('INKFALL_REV5_PORTAL_AUTHORITY_INPUT_MISMATCH');
   });
 
   it.each(INKFALL_REV5_PORTAL_ENDPOINTS)(
@@ -301,5 +329,26 @@ describe('Inkfall Rev5 world portal authority', () => {
       Object.isFrozen(loaded.manifest.spawns),
       Object.isFrozen(loaded.manifest.zones),
     ]).toEqual([true, true, true]);
+  });
+
+  it('passes the same portal contract against the Revision 4 collision-only correction', async () => {
+    const manifest = await requireBundledMapPackageManifest('inkfall_foundry', 4);
+    const [render, collision] = await Promise.all([
+      readFile(new URL(manifest.artifacts.render.path, mapRoot)),
+      readFile(new URL(manifest.artifacts.collision.path, mapRoot)),
+    ]);
+    const loaded = await loadRuntimeMapPackage(manifest, { render, collision });
+
+    const compatibility = inspectInkfallRev5PortalCompatibility(loaded);
+
+    expect(compatibility).toMatchObject({
+      allChecksPassed: true,
+      collisionRole: 'revision_4_authoritative_collision_only',
+      checks: {
+        authorityIdentityPinned: true,
+        frozenLowerTriggerAnchored: true,
+        additiveOverlayDoesNotMutateManifest: true,
+      },
+    });
   });
 });

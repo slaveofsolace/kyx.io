@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import { INKFALL_AUTHORITY_MAP_IDENTITY_V3 } from '../authority/inkfallMapIdentity';
+import { INKFALL_AUTHORITY_MAP_IDENTITY_V4 } from '../authority/inkfallMapIdentity';
 import {
   inspectInkfallRev5PortalCompatibility,
 } from '../authority/portal/inkfallRev5PortalAuthority';
@@ -27,9 +27,9 @@ export const INKFALL_REV5_CANDIDATE_ART = Object.freeze({
 } as const);
 
 export const INKFALL_REV5_CANDIDATE_AUTHORITY = Object.freeze({
-  ...INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  ...INKFALL_AUTHORITY_MAP_IDENTITY_V4,
   renderSha256: '19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6',
-  collisionSha256: '1cce637ab4f83766627527b3885c3e9da819d8bcabdfa2144f8dc6b46bc5bba8',
+  collisionSha256: '59d791898a3f7815bb2306c678b2b37fcaaf201b33a94a1e260752edb7a5477c',
   colliderCount: 339,
   spawnCount: 12,
   zoneCount: 9,

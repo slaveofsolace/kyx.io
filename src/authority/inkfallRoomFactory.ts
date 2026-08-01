@@ -2,10 +2,14 @@ import inkfallRevision2CombatFixtureSnapshot
   from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.p5-10.v1.json';
 import inkfallRevision3CombatFixtureSnapshot
   from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
+import inkfallRevision4CombatFixtureSnapshot
+  from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision4.v1.json';
 import inkfallRevision2MapPackage
   from '../../assets/source/maps/inkfall-foundry/runtime/map.package.v2.json';
 import inkfallRevision3MapPackage
   from '../../assets/source/maps/inkfall-foundry/revisions/revision-3/runtime/map.package.v3.json';
+import inkfallRevision4MapPackage
+  from '../../assets/source/maps/inkfall-foundry/revisions/revision-4/runtime/map.package.v4.json';
 import type { LoadedRuntimeMapPackage, PhysicsFixtureV1, RapierMovementWorld } from '../physics';
 import {
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
@@ -14,10 +18,12 @@ import {
 import {
   createInkfallRevision2RapierCombatWorldPorts,
   createInkfallRevision3RapierCombatWorldPorts,
+  createInkfallRevision4RapierCombatWorldPorts,
 } from './combat/inkfallRapierCombatWorld';
 import {
   INKFALL_AUTHORITY_MAP_IDENTITY_V2,
   INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V4,
 } from './inkfallMapIdentity';
 import {
   G4_ABILITY_RESOURCE_ROOM_CAPABILITY_ID,
@@ -34,13 +40,15 @@ export const INKFALL_REVISION_2_AUTHORITY_PROFILE_ID =
   'p511-inkfall-foundry-revision-2-combat-v1' as const;
 export const INKFALL_REVISION_3_AUTHORITY_PROFILE_ID =
   'g5-inkfall-foundry-rev4-revision-3-authority-v1' as const;
-// The persisted profile remains wire-compatible while Rev5 presentation is additive.
+export const INKFALL_REVISION_4_AUTHORITY_PROFILE_ID =
+  'g5-inkfall-foundry-rev5-revision-4-authority-v1' as const;
 export const INKFALL_REVISION_5_AUTHORITY_PROFILE_ID =
-  INKFALL_REVISION_3_AUTHORITY_PROFILE_ID;
+  INKFALL_REVISION_4_AUTHORITY_PROFILE_ID;
 
 export type InkfallAuthorityProfile =
   | typeof INKFALL_REVISION_2_AUTHORITY_PROFILE_ID
-  | typeof INKFALL_REVISION_3_AUTHORITY_PROFILE_ID;
+  | typeof INKFALL_REVISION_3_AUTHORITY_PROFILE_ID
+  | typeof INKFALL_REVISION_4_AUTHORITY_PROFILE_ID;
 
 interface InkfallRuntimeSpawnSource {
   readonly id: string;
@@ -100,7 +108,8 @@ interface InkfallCombatFixtureSnapshotV1 {
   readonly schemaVersion: 1;
   readonly kind:
     | 'inkfall_revision_2_combat_authority_fixture'
-    | 'inkfall_revision_3_combat_authority_fixture';
+    | 'inkfall_revision_3_combat_authority_fixture'
+    | 'inkfall_revision_4_combat_authority_fixture';
   readonly mapId: string;
   readonly mapRevision: number;
   readonly packageDigest: string;
@@ -114,8 +123,10 @@ interface InkfallCombatFixtureSnapshotV1 {
 
 const revision2Package = inkfallRevision2MapPackage as unknown as InkfallRuntimePackageSource;
 const revision3Package = inkfallRevision3MapPackage as unknown as InkfallRuntimePackageSource;
+const revision4Package = inkfallRevision4MapPackage as unknown as InkfallRuntimePackageSource;
 const revision2Fixture = inkfallRevision2CombatFixtureSnapshot as unknown as InkfallCombatFixtureSnapshotV1;
 const revision3Fixture = inkfallRevision3CombatFixtureSnapshot as unknown as InkfallCombatFixtureSnapshotV1;
+const revision4Fixture = inkfallRevision4CombatFixtureSnapshot as unknown as InkfallCombatFixtureSnapshotV1;
 
 const INKFALL_REVISION_2_LOCKED_SPAWN_ORDER = Object.freeze([
   'spawn_w_press_a',
@@ -170,6 +181,10 @@ const revision2Spawns = lockedSpawns(
 );
 const revision3Spawns = lockedSpawns(
   revision3Package,
+  INKFALL_REVISION_3_LOCKED_SPAWN_ORDER,
+);
+const revision4Spawns = lockedSpawns(
+  revision4Package,
   INKFALL_REVISION_3_LOCKED_SPAWN_ORDER,
 );
 
@@ -260,27 +275,67 @@ export const INKFALL_REVISION_3_AUTHORITY_MAP_BINDING = Object.freeze({
   }),
 } as const);
 
+export const INKFALL_REVISION_4_AUTHORITY_MAP_BINDING = Object.freeze({
+  ...INKFALL_REVISION_3_AUTHORITY_MAP_BINDING,
+  mapReference: 'inkfall_foundry@4',
+  presentationReference:
+    'inkfall_foundry@4/press_archive/v5.0/geometry-portal-modular',
+  mapId: INKFALL_AUTHORITY_MAP_IDENTITY_V4.mapId,
+  mapRevision: INKFALL_AUTHORITY_MAP_IDENTITY_V4.mapRevision,
+  packageDigest: INKFALL_AUTHORITY_MAP_IDENTITY_V4.packageDigest,
+  fixtureHash: INKFALL_AUTHORITY_MAP_IDENTITY_V4.fixtureHash,
+  colliderCardinality: INKFALL_AUTHORITY_MAP_IDENTITY_V4.colliderCardinality,
+  collision: Object.freeze({
+    role: 'authority_collision',
+    path: revision4Package.artifacts.collision.path,
+    sha256: revision4Package.artifacts.collision.sha256,
+    bytes: 605_512,
+  }),
+  spawns: revision4Spawns,
+  zones: Object.freeze(revision4Package.zones.map((zone) => Object.freeze({
+    zoneId: zone.id,
+    callout: zone.callout,
+    family: zone.family,
+    center: Object.freeze({ ...zone.centerMm }),
+    halfExtents: Object.freeze({ ...zone.halfExtentsMm }),
+  }))),
+  triggers: Object.freeze(revision4Package.triggers.map((trigger) => Object.freeze({
+    ...trigger,
+    centerMm: Object.freeze({ ...trigger.centerMm }),
+    halfExtentsMm: Object.freeze({ ...trigger.halfExtentsMm }),
+    destinationFeetMm: Object.freeze({ ...trigger.destinationFeetMm }),
+  }))),
+} as const);
+
 export type InkfallRevision2AuthorityMapBinding =
   typeof INKFALL_REVISION_2_AUTHORITY_MAP_BINDING;
 export type InkfallRevision3AuthorityMapBinding =
   typeof INKFALL_REVISION_3_AUTHORITY_MAP_BINDING;
+export type InkfallRevision4AuthorityMapBinding =
+  typeof INKFALL_REVISION_4_AUTHORITY_MAP_BINDING;
 export type InkfallAuthorityMapBinding =
   | InkfallRevision2AuthorityMapBinding
-  | InkfallRevision3AuthorityMapBinding;
+  | InkfallRevision3AuthorityMapBinding
+  | InkfallRevision4AuthorityMapBinding;
 
 export function isInkfallAuthorityProfile(
   value: string | null,
 ): value is InkfallAuthorityProfile {
   return value === INKFALL_REVISION_2_AUTHORITY_PROFILE_ID
-    || value === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID;
+    || value === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID
+    || value === INKFALL_REVISION_4_AUTHORITY_PROFILE_ID;
 }
 
 export function inkfallAuthorityMapBinding(
   profile: InkfallAuthorityProfile,
 ): InkfallAuthorityMapBinding {
-  return profile === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID
-    ? INKFALL_REVISION_3_AUTHORITY_MAP_BINDING
-    : INKFALL_REVISION_2_AUTHORITY_MAP_BINDING;
+  if (profile === INKFALL_REVISION_4_AUTHORITY_PROFILE_ID) {
+    return INKFALL_REVISION_4_AUTHORITY_MAP_BINDING;
+  }
+  if (profile === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID) {
+    return INKFALL_REVISION_3_AUTHORITY_MAP_BINDING;
+  }
+  return INKFALL_REVISION_2_AUTHORITY_MAP_BINDING;
 }
 
 function assertRuntimeArtifacts(
@@ -288,9 +343,11 @@ function assertRuntimeArtifacts(
   fixture: InkfallCombatFixtureSnapshotV1,
   binding: InkfallAuthorityMapBinding,
 ): void {
-  const expectedKind = binding.mapRevision === 3
-    ? 'inkfall_revision_3_combat_authority_fixture'
-    : 'inkfall_revision_2_combat_authority_fixture';
+  const expectedKind = binding.mapRevision === 4
+    ? 'inkfall_revision_4_combat_authority_fixture'
+    : binding.mapRevision === 3
+      ? 'inkfall_revision_3_combat_authority_fixture'
+      : 'inkfall_revision_2_combat_authority_fixture';
   const packageMatches = source.id === binding.mapId
     && source.revision === binding.mapRevision
     && source.identity.digest === binding.packageDigest
@@ -330,6 +387,14 @@ function assertRuntimeArtifacts(
 }
 
 function runtimeArtifacts(profile: InkfallAuthorityProfile) {
+  if (profile === INKFALL_REVISION_4_AUTHORITY_PROFILE_ID) {
+    assertRuntimeArtifacts(
+      revision4Package,
+      revision4Fixture,
+      INKFALL_REVISION_4_AUTHORITY_MAP_BINDING,
+    );
+    return Object.freeze({ source: revision4Package, fixture: revision4Fixture });
+  }
   if (profile === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID) {
     assertRuntimeArtifacts(
       revision3Package,
@@ -353,6 +418,7 @@ export function inkfallAuthorityFixture(
 }
 
 let revision3SpawnAuthority: InkfallSpawnAuthority | null = null;
+let revision4SpawnAuthority: InkfallSpawnAuthority | null = null;
 
 export function inkfallRevision3SpawnAuthority(): InkfallSpawnAuthority {
   if (revision3SpawnAuthority !== null) return revision3SpawnAuthority;
@@ -392,14 +458,54 @@ export function inkfallRevision3SpawnAuthority(): InkfallSpawnAuthority {
   return revision3SpawnAuthority;
 }
 
+export function inkfallRevision4SpawnAuthority(): InkfallSpawnAuthority {
+  if (revision4SpawnAuthority !== null) return revision4SpawnAuthority;
+  const { source, fixture } = runtimeArtifacts(INKFALL_REVISION_4_AUTHORITY_PROFILE_ID);
+  const manifest = inkfallRevision4MapPackage as unknown as
+    LoadedRuntimeMapPackage['manifest'];
+  const loaded = Object.freeze({
+    schemaVersion: 1,
+    manifest,
+    identity: Object.freeze({
+      id: manifest.id,
+      revision: manifest.revision,
+      displayName: manifest.displayName,
+      packageDigest: manifest.identity.digest,
+      boundsMm: manifest.boundsMm,
+    }),
+    presentation: Object.freeze({
+      renderPath: manifest.artifacts.render.path,
+      renderSha256: manifest.artifacts.render.sha256,
+      renderMeshNodeCount: manifest.artifacts.render.expectedMeshNodeCount,
+    }),
+    authority: Object.freeze({
+      collisionPath: fixture.collisionPath,
+      collisionSha256: fixture.collisionSha256,
+      collisionMeshNodeCount: fixture.collisionMeshNodeCount,
+      authorityVolumeCount: fixture.authorityVolumeCount,
+      totalColliderCount: fixture.fixture.solids.length,
+      sourceKindCounts: Object.freeze({ authority_collision: fixture.fixture.solids.length }),
+      fixture: fixture.fixture,
+      fixtureHash: fixture.fixtureHash,
+    }),
+  }) satisfies LoadedRuntimeMapPackage;
+  if (source.id !== loaded.identity.id) {
+    throw new Error('INKFALL_REVISION_4_SPAWN_AUTHORITY_IDENTITY_MISMATCH');
+  }
+  revision4SpawnAuthority = createInkfallSpawnAuthority(loaded);
+  return revision4SpawnAuthority;
+}
+
 export function createInkfallAuthorityCombatOptions(
   world: RapierMovementWorld,
   profile: InkfallAuthorityProfile = INKFALL_REVISION_2_AUTHORITY_PROFILE_ID,
 ): AuthorityRoomCombatOptions {
   runtimeArtifacts(profile);
-  const ports = profile === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID
-    ? createInkfallRevision3RapierCombatWorldPorts(world)
-    : createInkfallRevision2RapierCombatWorldPorts(world);
+  const ports = profile === INKFALL_REVISION_4_AUTHORITY_PROFILE_ID
+    ? createInkfallRevision4RapierCombatWorldPorts(world)
+    : profile === INKFALL_REVISION_3_AUTHORITY_PROFILE_ID
+      ? createInkfallRevision3RapierCombatWorldPorts(world)
+      : createInkfallRevision2RapierCombatWorldPorts(world);
   return Object.freeze({
     profileId: G4_COMBAT_ROOM_PROFILE_ID,
     teamResolver: (_playerId: string, ordinal: number) => (

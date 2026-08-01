@@ -202,11 +202,15 @@ export class MenuUI {
     });
   }
 
-  _startPractice(modeId) {
+  _startPractice(modeId, mapId = 'iron_bastion') {
     if (modeId) this.selectedModeId = modeId;
-    this.selectedMapId = 'iron_bastion';
+    this.selectedMapId = mapId;
     this._closeAllPanels();
     this._closeAllDropdowns();
+    if (mapId === 'inkfall_foundry_rev5') {
+      window.location.assign('/practice');
+      return;
+    }
     const name = this.nameInput?.value.trim() || this._displayName || 'Recruit';
     this.onPlay?.(name, this.selectedSkinId, this.selectedModeId, this.selectedArmorId);
   }
@@ -363,7 +367,7 @@ export class MenuUI {
           button.type = 'button';
           button.className = 'map-library__action map-library__action--primary';
           button.textContent = 'Play offline';
-          button.addEventListener('click', () => this._startPractice(entry.action.modeId));
+          button.addEventListener('click', () => this._startPractice(entry.action.modeId, entry.id));
           actionColumn.appendChild(button);
         } else {
           const link = document.createElement('a');
@@ -371,8 +375,10 @@ export class MenuUI {
             ? 'map-library__action'
             : 'map-library__reference';
           link.href = entry.action.href;
-          link.textContent = entry.action.kind === 'open_review_route'
-            ? 'Open review arena'
+          link.textContent = entry.action.kind === 'open_local_authority_practice'
+            ? 'Play local authority'
+            : entry.action.kind === 'open_review_route'
+              ? 'Open review arena'
             : 'View official library';
           if (entry.action.kind === 'external_reference') {
             link.target = '_blank';

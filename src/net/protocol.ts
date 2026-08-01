@@ -733,7 +733,7 @@ export interface CombatPresentationGrenadeDetonationEventV1 {
   readonly projectileId: string;
   readonly ownerPlayerId: string;
   readonly ownerTeamId: string | null;
-  readonly reason: 'fuse' | 'lifetime';
+  readonly reason: 'collision' | 'fuse' | 'lifetime';
   readonly positionMillimeters: ReconciliationVector3;
   readonly areaRadiusMillimeters: 11_000;
   readonly damageHealthPoints: 0;

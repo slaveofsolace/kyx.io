@@ -140,6 +140,7 @@ export interface PracticeHudInput {
   readonly abilities?: readonly HudAbilityInput[];
   readonly kills: number;
   readonly score: number;
+  readonly opponentScore?: number | null;
   readonly timerLabel?: string;
   readonly phaseLabel?: string;
   readonly objectiveLabel?: string;
@@ -468,7 +469,9 @@ export function createPracticeHudViewModel(input: PracticeHudInput): HudViewMode
     abilities: input.abilities,
     score: {
       leftScore: integer(input.kills),
-      rightScore: null,
+      rightScore: input.opponentScore === null || input.opponentScore === undefined
+        ? null
+        : integer(input.opponentScore),
       timerLabel: cleanLabel(input.timerLabel, '', 12),
       phaseLabel: cleanLabel(input.phaseLabel, 'Practice', 24),
       objectiveLabel: cleanLabel(input.objectiveLabel, 'Score', 24),

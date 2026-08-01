@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   G4_IMPULSE_GRENADE_RULES,
+  IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
   advanceImpulseGrenadeAbility,
   advanceImpulseGrenadeProjectile,
@@ -191,161 +192,104 @@ describe('P5.4 authoritative Impulse Grenade foundation', () => {
     });
   });
 
-  it('moves exactly 900 mm per 20 Hz tick and produces a stable server seed', () => {
+  it('applies the reviewed gravity and forward speed on the fixed 20 Hz authority tick', () => {
     const first = projectile();
     const second = projectile();
     expect(first.seed).toBe(second.seed);
     expect(first.velocityMillimetersPerSecond).toEqual({ x: 0, y: 0, z: 18_000 });
-    const after = step(first, 8, world());
-    expect(after.positionMillimeters).toEqual({ x: 0, y: 1_800, z: 900 });
-  });
-
-  it('sorts unordered contacts and selects the earliest player hit', () => {
     const seen: ImpulseGrenadeSweepSphereRequestV1[] = [];
-    const port = world({
+    const after = step(first, 8, world({
       sweep: (request) => {
         seen.push(request);
-        return {
-          schemaVersion: 1,
-          contacts: [
-            {
-              colliderId: 'world_late',
-              layer: 'world_static',
-              playerId: null,
-              timeOfImpactPermille: 700,
-              normalQ15: { x: 0, y: 0, z: -Q15 },
-            },
-            {
-              colliderId: 'body_B',
-              layer: 'player_body',
-              playerId: 'player_B',
-              timeOfImpactPermille: 250,
-              normalQ15: { x: 0, y: 0, z: -Q15 },
-            },
-          ],
-        };
+        return { schemaVersion: 1, contacts: [] };
       },
+    }));
+    expect(after.positionMillimeters).toEqual({ x: 0, y: 1_752, z: 900 });
+    expect(after.velocityMillimetersPerSecond).toEqual({ x: 0, y: -960, z: 18_000 });
+    expect(seen[0]).toMatchObject({
+      solidLayers: IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
+      ignoredPlayerIds: [],
+      translationMillimeters: { x: 0, y: -48, z: 900 },
+    });
+  });
+
+  it('fails closed if a world-only sweep adapter returns a player body', () => {
+    const port = world({
+      sweep: () => ({
+        schemaVersion: 1,
+        contacts: [{
+          colliderId: 'body_B',
+          layer: 'player_body',
+          playerId: 'player_B',
+          timeOfImpactPermille: 250,
+          normalQ15: { x: 0, y: 0, z: -Q15 },
+        }],
+      }),
+    });
+    expect(() => advanceImpulseGrenadeProjectile(projectile(), 8, port))
+      .toThrow(/outside the requested collision mask/u);
+  });
+
+  it('sorts world contacts and emits collision then detonation on the same tick without a bounce', () => {
+    const port = world({
+      sweep: () => ({
+        schemaVersion: 1,
+        contacts: [
+          {
+            colliderId: 'world_late',
+            layer: 'world_static',
+            playerId: null,
+            timeOfImpactPermille: 700,
+            normalQ15: { x: 0, y: 0, z: -Q15 },
+          },
+          {
+            colliderId: 'door_early',
+            layer: 'door',
+            playerId: null,
+            timeOfImpactPermille: 250,
+            normalQ15: { x: 0, y: 0, z: -Q15 },
+          },
+        ],
+      }),
     });
     const result = advanceImpulseGrenadeProjectile(projectile(), 8, port);
     expect(result).toMatchObject({
       accepted: true,
       state: {
-        positionMillimeters: { x: 0, y: 1_800, z: 224 },
-        velocityMillimetersPerSecond: { x: 0, y: 0, z: -9_900 },
-        bounceCount: 1,
+        phase: 'detonated',
+        positionMillimeters: { x: 0, y: 1_788, z: 224 },
+        velocityMillimetersPerSecond: { x: 0, y: 0, z: 0 },
+        bounceCount: 0,
         fuseStartedAtTick: 8,
+        detonatesAtTick: 8,
+        settled: true,
       },
-      events: [{ layer: 'player_body', playerId: 'player_B', timeOfImpactPermille: 250 }],
+      events: [
+        {
+          kind: 'impulse_grenade_collision',
+          eventId: expect.stringContaining('.collision.8.0'),
+          colliderId: 'door_early',
+          layer: 'door',
+          playerId: null,
+          bounceCount: 0,
+          fuseStartedAtTick: 8,
+          detonatesAtTick: 8,
+          settled: true,
+        },
+        {
+          kind: 'impulse_grenade_detonated',
+          eventId: expect.stringContaining('.detonation'),
+          authorityTick: 8,
+          reason: 'collision',
+          damageHealthPoints: 0,
+        },
+      ],
+      detonation: { authorityTick: 8, reason: 'collision', damageHealthPoints: 0 },
     });
-    expect(seen[0]).toMatchObject({
-      radiusMillimeters: 150,
-      translationMillimeters: { x: 0, y: 0, z: 900 },
-      ignoredPlayerIds: ['player_A'],
-    });
-  });
-
-  it('ignores owner contacts for six ticks and enables them on the expiry tick', () => {
-    const port = world({
-      sweep: () => ({
-        schemaVersion: 1,
-        contacts: [{
-          colliderId: 'body_A',
-          layer: 'player_body',
-          playerId: 'player_A',
-          timeOfImpactPermille: 0,
-          normalQ15: { x: 0, y: 0, z: -Q15 },
-        }],
-      }),
-    });
-    let state = projectile();
-    for (let tick = 8; tick <= 13; tick += 1) {
-      const result = advanceImpulseGrenadeProjectile(state, tick, port);
-      expect(result).toMatchObject({ accepted: true, events: [] });
-      if (!result.accepted) throw new Error('expected owner-immune step');
-      state = result.state;
-    }
-    const expiry = advanceImpulseGrenadeProjectile(state, 14, port);
-    expect(expiry).toMatchObject({
-      accepted: true,
-      events: [{ layer: 'player_body', playerId: 'player_A', authorityTick: 14 }],
-    });
-  });
-
-  it('starts a 30-tick fuse only on first contact and rejects double detonation', () => {
-    let sweepCount = 0;
-    const port = world({
-      sweep: () => ({
-        schemaVersion: 1,
-        contacts: sweepCount++ === 0
-          ? [{
-              colliderId: 'floor',
-              layer: 'world_static',
-              playerId: null,
-              timeOfImpactPermille: 500,
-              normalQ15: { x: 0, y: 0, z: -Q15 },
-            }]
-          : [],
-      }),
-    });
-    let state = projectile();
-    const collision = advanceImpulseGrenadeProjectile(state, 8, port);
-    expect(collision).toMatchObject({
-      accepted: true,
-      state: { fuseStartedAtTick: 8, detonatesAtTick: 38 },
-      detonation: null,
-    });
-    if (!collision.accepted) throw new Error('expected collision');
-    state = collision.state;
-    for (let tick = 9; tick < 38; tick += 1) state = step(state, tick, port);
-    const exploded = advanceImpulseGrenadeProjectile(state, 38, port);
-    expect(exploded).toMatchObject({
-      accepted: true,
-      state: { phase: 'detonated' },
-      detonation: { authorityTick: 38, reason: 'fuse', damageHealthPoints: 0 },
-    });
-    if (!exploded.accepted) throw new Error('expected detonation');
-    expect(advanceImpulseGrenadeProjectile(exploded.state, 39, port)).toMatchObject({
+    if (!result.accepted) throw new Error('expected contact detonation');
+    expect(advanceImpulseGrenadeProjectile(result.state, 9, port)).toMatchObject({
       accepted: false,
       reason: 'already_detonated',
-    });
-  });
-
-  it('allows exactly three bounces, then settles on the next contact', () => {
-    const port = world({
-      sweep: (request) => ({
-        schemaVersion: 1,
-        contacts: [{
-          colliderId: `wall_${request.authorityTick}`,
-          layer: 'world_static',
-          playerId: null,
-          timeOfImpactPermille: 500,
-          normalQ15: {
-            x: 0,
-            y: 0,
-            z: request.translationMillimeters.z >= 0 ? -Q15 : Q15,
-          },
-        }],
-      }),
-    });
-    let state = projectile();
-    for (let tick = 8; tick <= 10; tick += 1) {
-      const result = advanceImpulseGrenadeProjectile(state, tick, port);
-      expect(result).toMatchObject({
-        accepted: true,
-        state: { bounceCount: tick - 7, settled: false },
-      });
-      if (!result.accepted) throw new Error('expected bounce');
-      state = result.state;
-    }
-    const settle = advanceImpulseGrenadeProjectile(state, 11, port);
-    expect(settle).toMatchObject({
-      accepted: true,
-      state: {
-        bounceCount: 3,
-        settled: true,
-        velocityMillimetersPerSecond: { x: 0, y: 0, z: 0 },
-      },
-      events: [{ settled: true, bounceCount: 3 }],
     });
   });
 
@@ -415,13 +359,16 @@ describe('P5.4 authoritative Impulse Grenade foundation', () => {
     }, unsafe)).toThrow(/cannot redirect or amplify/u);
   });
 
-  it('keeps the revision-3 fixture frozen and exact', () => {
+  it('keeps the dedicated revision-2 runtime capability frozen and exact', () => {
     expect(G4_IMPULSE_GRENADE_RULES).toMatchObject({
+      schemaVersion: 2,
       projectileSpeedMillimetersPerSecond: 18_000,
-      fuseTicks: 30,
+      projectileAccelerationMillimetersPerSecondSquared: { x: 0, y: -19_200, z: 0 },
+      fuseTicks: 0,
+      fuseStarts: 'first_qualifying_world_collision',
       lifetimeTicks: 120,
-      maximumBounces: 3,
-      ownerImmunityTicks: 6,
+      maximumBounces: 0,
+      playerCollisionPolicy: 'ignored',
       areaRadiusMillimeters: 11_000,
       damageHealthPoints: 0,
     });

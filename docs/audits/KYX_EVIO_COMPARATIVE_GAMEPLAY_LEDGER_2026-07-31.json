@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "contract": {
+    "subject": "KYX.IO desktop Inkfall vertical slice compared with public ev.io interaction principles",
+    "buildIdentity": "main baseline ddcd7112b1e64a036a3cde89dc2f3893a0af0b9c plus the preserved uncommitted local Inkfall Practice convergence batch",
+    "mode": "KYX local /practice with one player and seven deterministic bots; deployed KYX Iron Bastion Practice; public ev.io live Deathmatch; public ev.io node configuration",
+    "platform": "Windows desktop Chrome, keyboard and mouse, direct pointer-lock play; 1440x900 local evidence viewport",
+    "playerPromise": "A fast, readable, authoritative arena FPS where movement, weapons, abilities, feedback, and HUD communicate one coherent rule set",
+    "decision": "Identify and correct contracts that are technically implemented but player-facing wrong before expanding the vertical slice",
+    "decisionOwner": "Project owner for subjective play, visual, and audio acceptance; canonical authority code owns deterministic mechanics",
+    "constraints": [
+      "Keep all project writes on the physical D drive",
+      "Preserve the current dirty Practice convergence batch",
+      "Do not copy protected ev.io code, art, audio, maps, or expression",
+      "Use public behavior only to extract interaction principles and independently author KYX implementations",
+      "Do not deploy production",
+      "Treat automated gates, runtime evidence, and human acceptance as separate states"
+    ],
+    "nonGoals": [
+      "This audit does not approve current character, map, HUD, audio, or VFX aesthetics",
+      "This bounded correction does not rebalance every cooldown, charge count, fuse, or projectile radius",
+      "This audit does not promote mobile or broaden the map, weapon, or role catalog"
+    ],
+    "successSignals": [
+      "Sustained movement changes the local player's authoritative feet position in the Inkfall world",
+      "Launch follows a visible gravity arc, ignores player-body collision, never rebounds, and activates on first qualifying world contact",
+      "Practice and online consume the same authority rules and communicate the same event once",
+      "Each important action has timely, non-conflicting animation, VFX, audio, HUD, and recovery feedback"
+    ],
+    "failureSignals": [
+      "A test counts accepted inputs while the authoritative player remains stationary",
+      "Launch bounces, floats without gravity, collides with a player body, or sounds like two separate impacts",
+      "Legacy, Practice, and online routes expose contradictory mechanics under the same ability name",
+      "A PASS label is used as visual, audio, play, or release acceptance"
+    ],
+    "stopConditions": [
+      "A route would enter public matchmaking or affect other players",
+      "The source identity changes during a supposedly source-frozen comparison",
+      "Pointer-lock or automation limitations make a claimed observation invalid",
+      "A proposed asset lacks license or provenance clearance"
+    ]
+  },
+  "observations": [
+    {
+      "id": "OBS-001",
+      "label": "OBSERVED",
+      "claim": "The current KYX Practice route renders Inkfall at full desktop viewport with one first-person rifle and visible procedural opponents.",
+      "evidence": "C:/Users/suhai/AppData/Local/Temp/kyx-inkfall-practice-active-20260731.png",
+      "scope": "Local /practice, 1440x900, current dirty Practice batch",
+      "confidence": "HIGH",
+      "contradictions": [
+        "The procedural enemy bodies and map art remain human-unaccepted."
+      ]
+    },
+    {
+      "id": "OBS-002",
+      "label": "OBSERVED",
+      "claim": "Public ev.io entered a live Drought/Brazil Deathmatch. Forward sprint moved the player, and Q exposed an orange destination marker before left-click commitment produced one immediate cyan-white Impulse resolution and player displacement without a visible rebound sequence.",
+      "evidence": "Direct Windows Chrome pointer-lock play at https://ev.io/ on 2026-07-31",
+      "scope": "Public live match, direct keyboard and mouse input",
+      "confidence": "HIGH",
+      "contradictions": [
+        "This qualitative pass does not quantify exact acceleration, impulse strength, cooldown, latency, or repeatability."
+      ]
+    },
+    {
+      "id": "OBS-003",
+      "label": "OBSERVED",
+      "claim": "The KYX Practice event loop currently routes portal audio but does not itself consume the throwable-ability audio presentation used by the online route.",
+      "evidence": "src/app/localInkfallPracticeRoute.ts and src/app/onlineAuthorityRoute.ts",
+      "scope": "Current source before the Launch correction",
+      "confidence": "HIGH",
+      "contradictions": [
+        "Weapon fire and impacts have a separate authored audio owner inside onlineWeaponPresentationFx."
+      ]
+    },
+    {
+      "id": "OBS-004",
+      "label": "OBSERVED",
+      "claim": "The deployed KYX preview can enter and move through legacy Iron Bastion Practice, but it is not the new Inkfall /practice route. A large blocky bot initially occluded the camera, while the first-person rifle and HUD used a different visual hierarchy from ev.io's sparse center-clear presentation.",
+      "evidence": "Direct Windows Chrome pointer-lock play at https://kyx-io-preview.pages.dev on 2026-07-31",
+      "scope": "Stable deployed legacy Practice route",
+      "confidence": "HIGH",
+      "contradictions": [
+        "This proves movement only for deployed Iron Bastion and cannot approve the dirty local Inkfall route."
+      ]
+    },
+    {
+      "id": "OBS-005",
+      "label": "OBSERVED",
+      "claim": "The dirty local Inkfall /practice route accepted sustained forward-sprint input and exceeded meaningful horizontal displacement before the authority failed with PHYSICS_DEPENETRATION_FAILED near tick 13.",
+      "evidence": "tests/browser/local-inkfall-practice.spec.ts targeted run on 2026-07-31",
+      "scope": "Local fixed-20-Hz Practice authority, one player plus seven deterministic bots",
+      "confidence": "HIGH",
+      "contradictions": [
+        "Movement is proven to begin, but uninterrupted traversal and free-play durability are not proven."
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "MEASURE-001",
+      "label": "MEASURED",
+      "claim": "ev.io's public Impulse Grenade data disables both wall and ground bounce and assigns gravity 0.048 at a fixed 20 Hz update rate.",
+      "method": "Read the public live node data and map per-tick velocity decrement to SI acceleration.",
+      "value": "bounceOfWalls=false; bounceOfGround=false; gravity=0.048, equivalent to 19.2 m/s^2 at 20 Hz",
+      "scope": "Public ev.io node 355 behavior data, not copied implementation",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "MEASURE-002",
+      "label": "MEASURED",
+      "claim": "The pre-correction KYX dedicated Impulse authority rule has zero gravity and permits three bounces.",
+      "method": "Static inspection of the exact authority rule and collision step.",
+      "value": "acceleration y=0 mm/s^2; maximumBounces=3; 30-tick post-contact fuse",
+      "scope": "src/authority/combat/impulseGrenade.ts before the v2 correction",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "MEASURE-003",
+      "label": "MEASURED",
+      "claim": "The local Inkfall Practice player moved more than 400 mm horizontally and reached more than 1,000 mm/s horizontal authority velocity under sustained forward-sprint input before the penetration failure.",
+      "method": "Browser test recorded initial/final authority feet position and velocity from localAuthoritativePlayer diagnostics.",
+      "value": "horizontal displacement >400 mm; horizontal velocity >1,000 mm/s; failure near tick 13",
+      "scope": "Current dirty /practice route, not a release or soak result",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "MEASURE-004",
+      "label": "MEASURED",
+      "claim": "Canonical Launch v2 now implements one gravity-driven, zero-bounce, world-only first-contact terminal authority rule with player-body collision excluded, v2 checkpoint rejection, deterministic event ordering, and coalesced presentation cues.",
+      "method": "Consolidated source-matched gate: app and Worker typechecks, focused ESLint, seven app test files with 33 passing tests, one Worker projection file with four passing tests, and focused diff check.",
+      "value": "all listed automated checks passed; gravity=-19,200 mm/s^2; launch speed=18,000 mm/s; restitution=0; friction=0",
+      "scope": "Current dirty canonical source batch; automated mechanics and contract proof only, not human player-eye feel or release approval",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "MEASURE-005",
+      "label": "MEASURED",
+      "claim": "Inkfall Revision 4 removes the diagnosed east-choice rail wedge without changing any other collider or the render, spawn, zone, and trigger packages.",
+      "method": "Exact collider-delta regression plus two byte-identical deterministic 1+7-player local Practice simulations through 300 ticks.",
+      "value": "one collider changed; former approximately 292 mm platform clearance becomes 421 mm; both 300-tick rooms completed beyond the former tick-163 failure",
+      "scope": "Revision 4 authority candidate and bounded deterministic test window; not broad player-eye traversal, 2/4/8 online proof, or soak",
+      "confidence": "HIGH"
+    }
+  ],
+  "worldModel": {
+    "actors": [
+      "local player",
+      "seven deterministic Practice bots",
+      "remote online opponents",
+      "browser client",
+      "local fixed-tick Practice authority host",
+      "authoritative room Worker"
+    ],
+    "resources": [
+      "health and shield",
+      "magazine and reserve ammunition",
+      "Blink cooldown",
+      "three selectable ability charges and cooldowns",
+      "player attention",
+      "frame, latency, and audio-mix budget"
+    ],
+    "goals": [
+      "Read the arena quickly",
+      "Move, aim, fight, use vertical mobility, and understand outcomes without diagnostic overlays",
+      "Win team deathmatch through legible positioning and combat decisions"
+    ],
+    "rules": [
+      {
+        "claim": "Movement and combat outcomes are owned by a fixed 20 Hz authority model.",
+        "owner": "local Practice host or room Worker",
+        "confidence": "HIGH",
+        "evidenceIds": [
+          "OBS-001"
+        ]
+      },
+      {
+        "claim": "A playable route is not accepted until movement survives ordinary uninterrupted traversal without authority penetration failure.",
+        "owner": "Rapier/KCC movement authority and matching map collision profile",
+        "confidence": "HIGH",
+        "evidenceIds": [
+          "OBS-005",
+          "MEASURE-003"
+        ]
+      },
+      {
+        "claim": "Launch is a gravity-driven, surface-triggered mobility charge, not a rebounding grenade-launcher round.",
+        "owner": "authority combat rules",
+        "confidence": "HIGH",
+        "evidenceIds": [
+          "MEASURE-001",
+          "MEASURE-002"
+        ]
+      }
+    ],
+    "signals": [
+      "world geometry and collision",
+      "first- and third-person animation",
+      "muzzle, projectile, contact, detonation, hit, headshot, and kill VFX",
+      "weapon, locomotion, ability, impact, ambience, and UI audio",
+      "Cutline HUD, scoreboard, menus, cooldown fills, captions, and accessibility modes"
+    ],
+    "feedbackLoops": [
+      "Movement creates position advantage, which changes line of sight, damage opportunity, score, respawn, and route choice.",
+      "Clear ability prediction and contact feedback teach trajectory and encourage deliberate mobility plays."
+    ],
+    "delaysAndThresholds": [
+      "50 ms authority ticks",
+      "client interpolation and reconciliation",
+      "weapon cadence and reload windows",
+      "ability cooldowns and charges",
+      "human perception thresholds for input, hit, and audio feedback"
+    ]
+  },
+  "hypotheses": [
+    {
+      "id": "HYP-001",
+      "label": "INFERRED",
+      "symptom": "Launch rebounds in KYX although the reference interaction does not.",
+      "layer": "mechanics_or_state",
+      "mechanism": "A generic throwable or grenade-launcher bounce model was reused for a distinct mobility ability.",
+      "evidenceFor": [
+        "MEASURE-001",
+        "MEASURE-002"
+      ],
+      "evidenceAgainst": [
+        "MEASURE-004 shows the known duplicate authority and fallback behavior has been replaced in the current source batch."
+      ],
+      "predictionIfTrue": "Changing the dedicated authority rule and every reachable same-name fallback removes rebounds deterministically in Practice and online.",
+      "predictionIfFalse": "A rebound remains after authority velocity becomes terminal, implicating presentation interpolation or duplicate simulation.",
+      "discriminatingTest": "Inject one qualifying world contact and assert zero outgoing rebound plus same-tick terminal detonation, then capture the player-eye route.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "HYP-002",
+      "label": "INFERRED",
+      "symptom": "Launch appears and sounds bouncy.",
+      "layer": "presentation",
+      "mechanism": "Collision and detonation are rendered as two independent contact cues, creating a false second impact even if authority is terminal.",
+      "evidenceFor": [
+        "OBS-003"
+      ],
+      "evidenceAgainst": [
+        "MEASURE-002 proves there was also a real authority rebound.",
+        "MEASURE-004 shows collision and detonation presentation cues are coalesced in the corrected source batch."
+      ],
+      "predictionIfTrue": "After mechanics are fixed, the action still feels like a double contact until cues are coalesced.",
+      "predictionIfFalse": "One terminal audiovisual event reads cleanly without cue changes.",
+      "discriminatingTest": "Record reliable event order and audio attempts for one collision-detonation tick.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "id": "HYP-003",
+      "label": "INFERRED",
+      "symptom": "Launch appears to rebound or hesitate at contact.",
+      "layer": "timing_network_performance_or_tooling",
+      "mechanism": "Interpolation displays a stale airborne state after the terminal authority event.",
+      "evidenceFor": [],
+      "evidenceAgainst": [
+        "The pre-correction authority source specified a real rebound.",
+        "MEASURE-004 closes the known authority and event-order causes; only player-eye capture can now expose residual interpolation."
+      ],
+      "predictionIfTrue": "Authority tests pass while player-eye capture still shows one post-contact lift or linger frame.",
+      "predictionIfFalse": "The projectile disappears at the contact point once terminal authority state is rendered.",
+      "discriminatingTest": "Compare event tick, snapshot removal tick, and rendered projectile frames in a source-frozen capture.",
+      "confidence": "LOW"
+    },
+    {
+      "id": "HYP-004",
+      "label": "INFERRED",
+      "symptom": "Inkfall Practice aborts shortly after otherwise valid forward-sprint movement.",
+      "layer": "mechanics_or_state",
+      "mechanism": "The player KCC or a bot enters geometry that cannot be depenetrated under the current Rev5 visual versus revision-3 collision/spawn contract.",
+      "evidenceFor": [
+        "OBS-005",
+        "MEASURE-003",
+        "MEASURE-005"
+      ],
+      "evidenceAgainst": [
+        "MEASURE-005 shows the same deterministic 1+7-player execution continues through 300 ticks after the isolated rail correction."
+      ],
+      "predictionIfTrue": "Actor, position, and collider diagnostics will identify a reproducible spawn/traversal seam, and a matching collision/spawn correction will permit the same itinerary to continue.",
+      "predictionIfFalse": "The failure moves nondeterministically or remains after the implicated geometry/spawn is corrected, suggesting a KCC integration or bot-command issue.",
+      "discriminatingTest": "Capture failing actor id, tick, feet position, velocity, spawn id, collider id, penetration vector, and last accepted command; rerun the same seed after a bounded correction.",
+      "confidence": "MEDIUM"
+    }
+  ],
+  "consequenceLadders": [
+    {
+      "change": "Make Launch a gravity-driven, no-player-collision projectile that activates on first qualifying world contact without rebound.",
+      "label": "PROPOSED",
+      "immediate": "The projectile arcs downward and terminates at the first valid surface instead of ricocheting or waiting through a post-contact fuse.",
+      "behavioral": "Players can intentionally place mobility blasts and learn one reliable trajectory/contact rule.",
+      "counterplay": "Opponents can read the arc and avoid the destination or exploit the user's committed trajectory; players cannot bank it around corners.",
+      "systemic": "Authority collision layers, checkpoint compatibility, reliable event ordering, Practice/online presentation, audio, captions, documentation, and tests must agree.",
+      "temporal": "Repeated use becomes a learned movement skill instead of unpredictable ricochet fishing.",
+      "failure": "Immediate contact could self-launch unintentionally near cover, double audio could imply a rebound, or legacy routes could preserve contradictory behavior.",
+      "recovery": "Fail closed on old checkpoint capability, emit one ordered terminal event sequence, expose cooldown state in HUD, and retain a safe lifetime fallback.",
+      "unknowns": [
+        "Final launch impulse tuning and self-affect rules require a human play pass after deterministic semantics are fixed."
+      ]
+    }
+  ],
+  "perspectives": [
+    {
+      "perspective": "new_player",
+      "goal": "Move and understand what each ability will do after one or two uses.",
+      "predictionErrors": [
+        "A utility named Launch currently behaves like a bouncing explosive.",
+        "A Practice action may lack the online route's ability audio feedback."
+      ],
+      "tradeoffs": [
+        "A simple terminal contact rule is easier to learn than bank-shot behavior but offers less indirect placement."
+      ]
+    },
+    {
+      "perspective": "expert_or_opponent",
+      "goal": "Master trajectories, timing, route openings, and counter-positioning.",
+      "predictionErrors": [
+        "Different same-name rules across routes destroy transferable mastery."
+      ],
+      "tradeoffs": [
+        "Removing ricochet reduces surprise but increases intentionality and counterplay clarity."
+      ]
+    },
+    {
+      "perspective": "developer_operator_release_owner",
+      "goal": "Ship one source-frozen, deterministic, supportable vertical slice.",
+      "predictionErrors": [
+        "Accepted-input or schema tests can pass while the player-facing rule is wrong.",
+        "Parallel legacy and authority implementations can silently diverge."
+      ],
+      "tradeoffs": [
+        "Failing old checkpoints is safer than restoring an in-flight projectile under different physics."
+      ]
+    }
+  ],
+  "creativeDirection": {
+    "promise": "KYX combat should feel like precise industrial motion: readable weight, immediate authority, and restrained instruments rather than arcade noise.",
+    "worldThesis": "Inkfall is an active vertical foundry whose structure, machinery, portals, and combat technology share one engineered visual and sonic language.",
+    "interactionThesis": "Every action previews intent, commits with weight, resolves once, and leaves a clear spatial consequence.",
+    "antiThesis": "The game must not become a collage of generic sci-fi overlays, procedural mannequin parts, retro bleeps, duplicated cues, or interchangeable grenade rules.",
+    "signature": "Readable armored silhouettes, dark industrial massing, warm foundry landmarks, cool tactical instruments, sharp contact transients, and low restrained mechanical body.",
+    "families": [
+      {
+        "name": "Surface-triggered mobility charge",
+        "label": "PROPOSED",
+        "organizingIdea": "A weighty thrown charge arcs under gravity and converts its first world contact into one immediate directional impulse event.",
+        "gameplayStrengths": [
+          "Predictable placement",
+          "Clear counterplay",
+          "Strong Practice/online determinism",
+          "Distinct from the bouncing grenade-launcher weapon"
+        ],
+        "risks": [
+          "Contact near small trim or clutter may activate earlier than expected",
+          "Human tuning is needed for impulse strength and self-use"
+        ],
+        "cost": "MEDIUM",
+        "referenceDistance": "Retains an abstract non-bounce mobility principle while using original KYX authority, visuals, sound, naming, and tuning."
+      },
+      {
+        "name": "Timed ballistic mobility charge",
+        "label": "PROPOSED",
+        "organizingIdea": "The charge follows a gravity arc and activates only after a fixed flight timer.",
+        "gameplayStrengths": [
+          "Fewer collision edge cases",
+          "Easy airborne timing prediction"
+        ],
+        "risks": [
+          "Can detonate in unintuitive empty space",
+          "Weak surface relationship",
+          "Less direct response"
+        ],
+        "cost": "LOW",
+        "referenceDistance": "Mechanically distinct but less aligned with the desired contact-driven interaction."
+      },
+      {
+        "name": "Sticky placement launcher",
+        "label": "PROPOSED",
+        "organizingIdea": "The charge adheres, previews its impulse field, then activates through a second input or short arm window.",
+        "gameplayStrengths": [
+          "High tactical placement depth",
+          "Strong spatial telegraph"
+        ],
+        "risks": [
+          "Overlaps the existing Sticky ability",
+          "Adds state, UI, networking, and cognitive cost"
+        ],
+        "cost": "HIGH",
+        "referenceDistance": "Original interaction family but redundant within the current four-slot loadout."
+      }
+    ],
+    "selectedFamily": "Surface-triggered mobility charge",
+    "selectionReason": "It best restores learnable intent, separates Launch from weapon grenades, preserves authority determinism, and fixes the current contradiction with bounded blast radius.",
+    "reopenTrigger": "Source-frozen human play shows unavoidable premature contacts, poor counterplay, or a less coherent relationship to the Inkfall geometry."
+  },
+  "decisions": [
+    {
+      "id": "DEC-001",
+      "decision": "Replace all reachable same-name Launch bounce behavior with the dedicated terminal-contact authority rule and coalesced feedback.",
+      "label": "PROPOSED",
+      "verdict": "REVISE",
+      "evidenceIds": [
+        "MEASURE-001",
+        "MEASURE-002",
+        "MEASURE-004",
+        "OBS-003"
+      ],
+      "rejectedAlternatives": [
+        "Hide the rebound with VFX only",
+        "Keep route-specific rules",
+        "Treat Launch as the grenade-launcher weapon"
+      ],
+      "assumptions": [
+        "The public behavior data reflects the intended reference interaction principle",
+        "World-contact activation remains desirable after independent KYX playtesting"
+      ],
+      "impact": "HIGH",
+      "confidence": "HIGH",
+      "reversibility": "HIGH",
+      "costOfDelay": "HIGH",
+      "costOfBeingWrong": "MEDIUM",
+      "dependencyUnlock": "Reliable movement-ability playtesting, audio/VFX tuning, Practice/online parity, and final vertical-slice acceptance",
+      "nextExperiment": "Replay one source-frozen Practice and online player-eye itinerary to tune arc, displacement, camera, animation, audio, and recovery without reopening terminal-contact semantics.",
+      "rollback": "Revert the isolated authority v2 checkpoint after preserving the failed capture and evidence.",
+      "reopenTrigger": "Player-eye evidence contradicts the predicted arc/contact behavior or exposes unbounded collision edge cases."
+    },
+    {
+      "id": "DEC-002",
+      "decision": "Adopt Inkfall Revision 4 as the next authority candidate because it changes only the diagnosed east-choice rail collider and preserves all unrelated map content.",
+      "label": "PROPOSED",
+      "verdict": "KEEP",
+      "evidenceIds": [
+        "MEASURE-003",
+        "MEASURE-005"
+      ],
+      "rejectedAlternatives": [
+        "Raise the global KCC penetration tolerance",
+        "Rebuild unrelated map geometry",
+        "Suppress the authority exception",
+        "Reduce bot occupancy to hide the seam"
+      ],
+      "assumptions": [
+        "The bounded 300-tick itinerary covers the previously deterministic failure",
+        "Other map routes still require independent player-eye and scale validation"
+      ],
+      "impact": "HIGH",
+      "confidence": "HIGH",
+      "reversibility": "HIGH",
+      "costOfDelay": "HIGH",
+      "costOfBeingWrong": "MEDIUM",
+      "dependencyUnlock": "Source-frozen Inkfall traversal review and the final 2/4/8 runtime matrix",
+      "nextExperiment": "Run representative player-eye traversal, then execute the final 2/4/8 matrix and soak on the exact accepted source.",
+      "rollback": "Select the preserved revision-3 authority profile and retain the Revision 4 diagnostics and evidence for another bounded correction.",
+      "reopenTrigger": "A source-matched route reproduces depenetration, reveals a new seam, or demonstrates that the reduced rail envelope permits invalid traversal."
+    }
+  ],
+  "actions": [
+    {
+      "priority": 1,
+      "action": "Player-eye verify and tune the implemented Launch v2 arc, displacement, camera, animation, audio, and recovery without reopening terminal first-contact semantics.",
+      "impact": "HIGH",
+      "confidence": "HIGH",
+      "reversibility": "HIGH",
+      "owner": "Canonical KYX authority and presentation implementation",
+      "evidenceRequired": "Source-frozen Practice and online runtime capture; automated authority and projection gates already pass as MEASURE-004"
+    },
+    {
+      "priority": 2,
+      "action": "Prove actual authoritative player displacement in /practice and capture movement through Inkfall.",
+      "impact": "HIGH",
+      "confidence": "HIGH",
+      "reversibility": "HIGH",
+      "owner": "Practice route and browser evidence",
+      "evidenceRequired": "Initial and final authoritative feet positions with meaningful horizontal delta"
+    },
+    {
+      "priority": 3,
+      "action": "Traverse the Revision 4 east-choice correction and representative Inkfall routes in player-eye runtime, then complete the exact-source 2/4/8 matrix and soak.",
+      "impact": "HIGH",
+      "confidence": "HIGH",
+      "reversibility": "HIGH",
+      "owner": "Rapier/KCC movement, spawn, and map-collision integration",
+      "evidenceRequired": "Human traversal verdict plus final 2/4/8 runtime and soak; isolated diagnostics and two deterministic 300-tick 1+7 runs already pass as MEASURE-005"
+    },
+    {
+      "priority": 4,
+      "action": "Collapse duplicated gameplay truth: authoritative smoke occlusion, defined flash impairment, one custom ability selection schema, one Practice/online HUD model, and one event-deduplicated audio path.",
+      "impact": "HIGH",
+      "confidence": "HIGH",
+      "reversibility": "MEDIUM",
+      "owner": "Canonical KYX vertical-slice integration",
+      "evidenceRequired": "Cross-route contract tests and one source-frozen uninterrupted match capture"
+    }
+  ],
+  "unknowns": [
+    {
+      "label": "UNKNOWN",
+      "question": "How does the corrected KYX Launch impulse feel during repeated source-frozen play after the deterministic no-bounce rule is integrated?",
+      "whyItMatters": "It may change impulse strength, aim assistance, self-affect, cooldown, or presentation tuning without changing the no-bounce rule.",
+      "nextTest": "Repeat a named KYX itinerary with synchronized input/capture and compare qualitative intent, commitment, contact, displacement, recovery, and cooldown against the completed ev.io observation."
+    },
+    {
+      "label": "UNKNOWN",
+      "question": "Which current HUD, audio, animation, character, and map issues are the largest trust break during an uninterrupted match?",
+      "whyItMatters": "File completeness does not identify the next highest player-impact correction.",
+      "nextTest": "Run the Human Eye cold pass and Human Brain consequence ladder on the source-frozen corrected slice."
+    }
+  ],
+  "humanDecisionsRequired": [
+    "Approve or reject the corrected Launch feel after source-frozen manual play.",
+    "Approve or reject the player-eye Inkfall readability, enemy silhouette, HUD density, and audio mix.",
+    "Choose whether final distribution is source, built artifact, or both after legal closure.",
+    "Authorize staging promotion and later production only after final gates and rollback proof."
+  ]
+}

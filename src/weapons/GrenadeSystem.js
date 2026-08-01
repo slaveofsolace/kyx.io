@@ -17,15 +17,15 @@ const SMOKE_LIFETIME_SECONDS = 10;
 const PROJECTILE_RULES = Object.freeze({
   [ABILITY_ID.launch]: Object.freeze({
     type: 'launch',
-    throwSpeed: 17,
-    throwArc: 6.2,
-    gravity: -21,
-    restitution: 0.56,
-    friction: 0.18,
-    fuseSeconds: 1.45,
+    throwSpeed: 18,
+    throwArc: 0,
+    gravity: -19.2,
+    restitution: 0,
+    friction: 0,
+    fuseSeconds: 0,
     maximumLifetimeSeconds: 6,
     radius: 0.075,
-    maximumBounces: 5,
+    maximumBounces: 0,
     color: 0x27d3c2,
   }),
   [ABILITY_ID.frag]: Object.freeze({
@@ -385,9 +385,12 @@ export class GrenadeSystem {
       return;
     }
 
-    if (projectile.abilityId === ABILITY_ID.launch && !projectile.fuseStarted) {
+    if (projectile.abilityId === ABILITY_ID.launch) {
+      projectile.vel.set(0, 0, 0);
+      projectile.settled = true;
       projectile.fuseStarted = true;
-      projectile.fuseRemaining = projectile.rules.fuseSeconds;
+      projectile.fuseRemaining = 0;
+      return;
     }
     projectile.bounceCount += 1;
     const incomingSpeed = projectile.vel.length();
@@ -427,7 +430,7 @@ export class GrenadeSystem {
     const distance = _scratchDelta.length();
     let best = null;
 
-    for (const target of targets) {
+    for (const target of projectile.abilityId === ABILITY_ID.launch ? [] : targets) {
       const position = actorPosition(target);
       if (!position) continue;
       _scratchActorCenter.copy(position);

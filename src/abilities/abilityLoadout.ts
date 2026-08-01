@@ -84,7 +84,7 @@ export const ABILITY_PRESENTATION = Object.freeze({
     id: ABILITY_ID.launch,
     shortName: 'Launch',
     displayName: 'Launch Grenade',
-    description: 'A weighted, bouncing grenade that throws nearby players outward and upward.',
+    description: 'A gravity-driven impulse charge that detonates on first world contact and throws nearby players outward and upward.',
     category: 'support',
     locked: false,
     inputLabel: 'Loadout slot',

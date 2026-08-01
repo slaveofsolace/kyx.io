@@ -24,7 +24,7 @@ function issueCodes(result: ReturnType<typeof validateRuntimeMapPackageManifest>
 describe('runtime map package schema', () => {
   it('loads the versioned bundled Inkfall manifest and verifies its canonical identity', async () => {
     expect(listBundledMapIds()).toEqual(['inkfall_foundry']);
-    expect(listBundledMapRevisions('inkfall_foundry')).toEqual([1, 2, 3]);
+    expect(listBundledMapRevisions('inkfall_foundry')).toEqual([1, 2, 3, 4]);
     expect(validateBundledMapPackage()).toMatchObject({ ok: true });
 
     const manifest = await requireBundledMapPackageManifest();
@@ -99,6 +99,33 @@ describe('runtime map package schema', () => {
     });
     expect(openMidCandidateRevision3.identity.digest).toBe(
       await hashRuntimeMapPackageIdentity(openMidCandidateRevision3),
+    );
+
+    const correctedAuthorityRevision4 = await requireBundledMapPackageManifest(
+      'inkfall_foundry',
+      4,
+    );
+    expect(correctedAuthorityRevision4).toMatchObject({
+      id: 'inkfall_foundry',
+      revision: 4,
+      identity: {
+        digest: '65c6c315d9bc0ba27e7ddec1fd2712752b0fa91c4f865f4b2a055e778158c9cf',
+      },
+      artifacts: {
+        render: {
+          path: 'revisions/revision-3/export/render.graybox.glb',
+          sha256: '19bbf6f627f46146a7266d39e00e0635d7b4b09e556bfa0dee988bb2375c5ed6',
+          expectedMeshNodeCount: 346,
+        },
+        collision: {
+          path: 'revisions/revision-4/export/collision.authority.glb',
+          sha256: '59d791898a3f7815bb2306c678b2b37fcaaf201b33a94a1e260752edb7a5477c',
+          expectedMeshNodeCount: 339,
+        },
+      },
+    });
+    expect(correctedAuthorityRevision4.identity.digest).toBe(
+      await hashRuntimeMapPackageIdentity(correctedAuthorityRevision4),
     );
   });
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   getMapLibraryEntry,
-  INKFALL_REV5_REVIEW_HREF,
+  INKFALL_REV5_LOCAL_PRACTICE_HREF,
   listMapLibrarySections,
 } from '../../../src/content/maps/library';
 
@@ -15,9 +15,16 @@ describe('map library truth contract', () => {
     ]);
   });
 
-  it('exposes Iron Bastion as the only local playable map', () => {
+  it('exposes Inkfall authority Practice and legacy Iron Bastion as distinct playable routes', () => {
     const entries = listMapLibrarySections().flatMap((section) => section.entries);
     expect(entries.filter((entry) => entry.availability === 'playable')).toEqual([
+      expect.objectContaining({
+        id: 'inkfall_foundry_rev5',
+        action: {
+          kind: 'open_local_authority_practice',
+          href: INKFALL_REV5_LOCAL_PRACTICE_HREF,
+        },
+      }),
       expect.objectContaining({
         id: 'iron_bastion',
         action: {
@@ -28,13 +35,14 @@ describe('map library truth contract', () => {
     ]);
   });
 
-  it('keeps Inkfall Rev5 review-only and routes to the exact authority profile', () => {
+  it('routes playable Inkfall Rev5 to the shared local authority Practice slice', () => {
     expect(getMapLibraryEntry('inkfall_foundry_rev5')).toEqual(
       expect.objectContaining({
-        availability: 'review_only',
+        availability: 'playable',
+        statusLabel: 'Playable authority review',
         action: {
-          kind: 'open_review_route',
-          href: INKFALL_REV5_REVIEW_HREF,
+          kind: 'open_local_authority_practice',
+          href: INKFALL_REV5_LOCAL_PRACTICE_HREF,
         },
       }),
     );

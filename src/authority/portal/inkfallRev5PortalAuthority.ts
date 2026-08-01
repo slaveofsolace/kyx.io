@@ -17,7 +17,11 @@ import {
   type MovementVolumeHit,
   type Vector3Millimeters,
 } from '../../sim';
-import { INKFALL_AUTHORITY_MAP_IDENTITY_V3 } from '../inkfallMapIdentity';
+import {
+  INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V4,
+  type InkfallAuthorityMapIdentity,
+} from '../inkfallMapIdentity';
 import {
   AUTHORITY_WORLD_PORTAL_SCHEMA_VERSION,
   type AuthorityWorldPortalAdvanceInputV1,
@@ -27,6 +31,23 @@ import {
 
 export const INKFALL_REV5_PORTAL_CAPABILITY_ID =
   'inkfall_rev5_linked_world_portal_v1' as const;
+
+const INKFALL_REV5_PORTAL_AUTHORITY_IDENTITIES = Object.freeze([
+  INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V4,
+] as const);
+
+function isPortalAuthorityIdentity(
+  identity: InkfallAuthorityMapIdentity,
+): boolean {
+  return INKFALL_REV5_PORTAL_AUTHORITY_IDENTITIES.some((candidate) => (
+    candidate.mapId === identity.mapId
+    && candidate.mapRevision === identity.mapRevision
+    && candidate.packageDigest === identity.packageDigest
+    && candidate.fixtureHash === identity.fixtureHash
+    && candidate.colliderCardinality === identity.colliderCardinality
+  ));
+}
 
 export type InkfallRev5PortalEndpointId =
   | 'red_fold_lower'
@@ -237,15 +258,18 @@ function rejected(
 export function advanceInkfallRev5PortalAuthority(
   input: AuthorityWorldPortalAdvanceInputV1,
   queries: MovementQueryPort,
+  authorityIdentity: InkfallAuthorityMapIdentity = INKFALL_AUTHORITY_MAP_IDENTITY_V3,
 ): AuthorityWorldPortalAdvanceResultV1 {
   if (
+    !isPortalAuthorityIdentity(authorityIdentity)
+    ||
     input.schemaVersion !== 1
     || input.authorityTick !== input.nextState.tick
     || input.previousState.player.id !== input.nextState.player.id
     || input.previousState.identity.fixtureHash
-      !== INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash
+      !== authorityIdentity.fixtureHash
     || input.nextState.identity.fixtureHash
-      !== INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash
+      !== authorityIdentity.fixtureHash
   ) {
     throw new Error('INKFALL_REV5_PORTAL_AUTHORITY_INPUT_MISMATCH');
   }
@@ -386,15 +410,16 @@ export function advanceInkfallRev5PortalAuthority(
 
 export function createInkfallRev5PortalAuthorityPort(
   queries: MovementQueryPort,
+  authorityIdentity: InkfallAuthorityMapIdentity = INKFALL_AUTHORITY_MAP_IDENTITY_V3,
 ): AuthorityWorldPortalPort {
-  if (queries.schemaVersion !== 1) {
+  if (queries.schemaVersion !== 1 || !isPortalAuthorityIdentity(authorityIdentity)) {
     throw new Error('INKFALL_REV5_PORTAL_QUERY_SCHEMA_MISMATCH');
   }
   return Object.freeze({
     schemaVersion: AUTHORITY_WORLD_PORTAL_SCHEMA_VERSION,
     capabilityId: INKFALL_REV5_PORTAL_CAPABILITY_ID,
     advance(input: AuthorityWorldPortalAdvanceInputV1) {
-      return advanceInkfallRev5PortalAuthority(input, queries);
+      return advanceInkfallRev5PortalAuthority(input, queries, authorityIdentity);
     },
   });
 }
@@ -433,14 +458,17 @@ export function inspectInkfallRev5PortalCompatibility(
       ))
     )),
   ));
+  const authorityIdentity = INKFALL_REV5_PORTAL_AUTHORITY_IDENTITIES.find(
+    (identity) => identity.mapRevision === loaded.identity.revision,
+  );
   const checks = Object.freeze({
-    authorityIdentityPinned:
-      loaded.identity.id === INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapId
-      && loaded.identity.revision === INKFALL_AUTHORITY_MAP_IDENTITY_V3.mapRevision
+    authorityIdentityPinned: authorityIdentity !== undefined
+      && loaded.identity.id === authorityIdentity.mapId
+      && loaded.identity.revision === authorityIdentity.mapRevision
       && loaded.identity.packageDigest
-        === INKFALL_AUTHORITY_MAP_IDENTITY_V3.packageDigest
+        === authorityIdentity.packageDigest
       && loaded.authority.fixtureHash
-        === INKFALL_AUTHORITY_MAP_IDENTITY_V3.fixtureHash,
+        === authorityIdentity.fixtureHash,
     frozenLowerTriggerAnchored: frozenTrigger !== undefined
       && frozenTrigger.kind === 'teleport'
       && frozenTrigger.implementationStatus === 'contract_only'
@@ -484,7 +512,7 @@ export function inspectInkfallRev5PortalCompatibility(
     minimumSpawnDistanceMm,
     frozenManifestTriggerStatus: frozenTrigger?.implementationStatus ?? null,
     runtimeBindingStatus: 'authoritative_additive_overlay',
-    collisionRole: 'frozen_revision_3_authoritative_collision_only',
+    collisionRole: `revision_${loaded.identity.revision}_authoritative_collision_only`,
     renderRole: 'rev5_render_only_no_hit',
     checks,
     allChecksPassed: true,

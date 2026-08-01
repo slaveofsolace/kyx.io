@@ -14,6 +14,10 @@ export type MapLibraryAction =
       readonly modeId: 'deathmatch';
     }
   | {
+      readonly kind: 'open_local_authority_practice';
+      readonly href: '/practice';
+    }
+  | {
       readonly kind: 'open_review_route';
       readonly href: string;
     }
@@ -41,8 +45,7 @@ export interface MapLibrarySection {
   readonly entries: readonly MapLibraryEntry[];
 }
 
-export const INKFALL_REV5_REVIEW_HREF =
-  '/online?mode=create&profile=g5-inkfall-foundry-rev4-revision-3-authority-v1';
+export const INKFALL_REV5_LOCAL_PRACTICE_HREF = '/practice' as const;
 
 const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
   Object.freeze({
@@ -55,14 +58,14 @@ const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
         sectionId: 'original_maps',
         displayName: 'Inkfall Foundry',
         maker: 'KYX',
-        availability: 'review_only',
-        statusLabel: 'Rev5 review build',
+        availability: 'playable',
+        statusLabel: 'Playable authority review',
         description:
-          'Vertical combat arena with separate render art, collision, spawns, zones, and linked portals. Manual map/play review remains open.',
+          'Vertical combat arena with shared local/online collision, spawns, zones, weapons, abilities, bots, and linked portals. Manual map/play review remains open.',
         modes: Object.freeze(['Team deathmatch', 'Deathmatch']),
         action: Object.freeze({
-          kind: 'open_review_route',
-          href: INKFALL_REV5_REVIEW_HREF,
+          kind: 'open_local_authority_practice',
+          href: INKFALL_REV5_LOCAL_PRACTICE_HREF,
         }),
       }),
     ]),

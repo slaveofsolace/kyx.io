@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
-import combatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
+import revision3CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
+import revision4CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision4.v1.json';
 import { validateBundledMapPackage } from '../content/maps';
 import type { AuthorityEvidencePresentation } from '../dev/authorityEvidenceClient';
 import type {
@@ -39,7 +40,10 @@ import {
   createOnlineBlinkPreviewPresentation,
 } from './onlineBlinkPreviewPresentation';
 import {
+  ONLINE_INKFALL_REV4_MAP_BINDING,
   ONLINE_INKFALL_REV5_MAP_BINDING,
+  type OnlineInkfallRevision4MapBinding,
+  type OnlineInkfallRevision5MapBinding,
 } from './onlineAuthorityProfiles';
 import { createOnlineWeaponPresentationFx } from './onlineWeaponPresentationFx';
 
@@ -60,17 +64,20 @@ export interface OnlineAuthorityThreeFrame {
   readonly blinkPreview: OnlineBlinkPreview | null;
 }
 
+type OnlineInkfallThreeMapBinding =
+  | OnlineInkfallRevision4MapBinding
+  | OnlineInkfallRevision5MapBinding;
+
 export interface OnlineAuthorityThreeDiagnostics {
   readonly status: 'ready' | 'disposed';
   readonly renderer: 'three_webgl';
-  readonly mapReference: typeof ONLINE_INKFALL_REV5_MAP_BINDING.mapReference;
-  readonly presentationReference:
-    typeof ONLINE_INKFALL_REV5_MAP_BINDING.presentationReference;
+  readonly mapReference: OnlineInkfallThreeMapBinding['mapReference'];
+  readonly presentationReference: OnlineInkfallThreeMapBinding['presentationReference'];
   readonly presentationMode:
     | 'review_glb'
     | 'procedural_authority_containment';
   readonly presentationSha256: string | null;
-  readonly authorityFixtureHash: typeof ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash;
+  readonly authorityFixtureHash: OnlineInkfallThreeMapBinding['fixtureHash'];
   readonly renderMeshesMayBeAuthority: false;
   readonly renderMeshCount: number;
   readonly renderOnlyContainmentMeshCount: number;
@@ -124,6 +131,7 @@ export interface OnlineAuthorityThreeRuntime {
 
 export interface OnlineAuthorityThreeRuntimeOptions {
   readonly onWorldPortalAudio?: InkfallRev5PortalAudioCallback;
+  readonly mapBinding?: OnlineInkfallThreeMapBinding;
 }
 
 interface PlayerAvatar {
@@ -189,30 +197,34 @@ export function directionFromAuthorityLook(
   ).normalize();
 }
 
-function loadReleaseRev5Visual(): LoadedRev5Visual {
-  const validated = validateBundledMapPackage('inkfall_foundry', 3);
+function loadReleaseRev5Visual(
+  mapBinding: OnlineInkfallThreeMapBinding,
+): LoadedRev5Visual {
+  const validated = validateBundledMapPackage('inkfall_foundry', mapBinding.mapRevision);
   if (!validated.ok) {
     throw new Error('ONLINE_REV5_AUTHORITY_PACKAGE_NOT_BUNDLED');
   }
   const loaded = validated.value;
-  const fixtureRecord = combatAuthorityFixtureSource;
+  const fixtureRecord = mapBinding.mapRevision === 4
+    ? revision4CombatAuthorityFixtureSource
+    : revision3CombatAuthorityFixtureSource;
   const fixture = loadPhysicsFixture(fixtureRecord.fixture);
   const fixtureHash = hashPhysicsFixture(fixture);
   if (
-    loaded.id !== ONLINE_INKFALL_REV5_MAP_BINDING.mapId
-    || loaded.revision !== ONLINE_INKFALL_REV5_MAP_BINDING.mapRevision
+    loaded.id !== mapBinding.mapId
+    || loaded.revision !== mapBinding.mapRevision
     || loaded.identity.digest
-      !== ONLINE_INKFALL_REV5_MAP_BINDING.packageDigest
-    || fixture.id !== ONLINE_INKFALL_REV5_MAP_BINDING.fixtureId
+      !== mapBinding.packageDigest
+    || fixture.id !== mapBinding.fixtureId
     || fixtureHash
-      !== ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash
+      !== mapBinding.fixtureHash
     || fixtureRecord.fixtureHash !== fixtureHash
     || fixtureRecord.mapId !== loaded.id
     || fixtureRecord.mapRevision !== loaded.revision
     || fixtureRecord.packageDigest !== loaded.identity.digest
     || fixtureRecord.collisionSha256 !== loaded.artifacts.collision.sha256
     || fixture.solids.length
-      !== ONLINE_INKFALL_REV5_MAP_BINDING.colliderCardinality
+      !== mapBinding.colliderCardinality
     || loaded.spawns.length !== 12
     || loaded.zones.length !== 9
     || loaded.pickups.length !== 0
@@ -236,8 +248,13 @@ function loadReleaseRev5Visual(): LoadedRev5Visual {
   });
 }
 
-async function loadRev5Visual(): Promise<LoadedRev5Visual> {
-  if (import.meta.env.MODE === 'staging-review') {
+async function loadRev5Visual(
+  mapBinding: OnlineInkfallThreeMapBinding,
+): Promise<LoadedRev5Visual> {
+  if (
+    import.meta.env.MODE === 'staging-review'
+    && mapBinding.mapRevision === ONLINE_INKFALL_REV5_MAP_BINDING.mapRevision
+  ) {
     // The noindex Pages preview deliberately carries the current review GLB so
     // manual player-eye review can happen against the isolated staging Worker.
     // Normal production builds never discover this static import branch and
@@ -247,7 +264,10 @@ async function loadRev5Visual(): Promise<LoadedRev5Visual> {
     );
     return loadInkfallRev5ReviewVisual();
   }
-  if (!import.meta.env.DEV) return loadReleaseRev5Visual();
+  if (!import.meta.env.DEV) return loadReleaseRev5Visual(mapBinding);
+  if (mapBinding.mapRevision === ONLINE_INKFALL_REV4_MAP_BINDING.mapRevision) {
+    return loadReleaseRev5Visual(mapBinding);
+  }
   // Resolve the development-only visual without allowing Rollup to discover
   // or package non-release GLBs.
   const reviewVisualModulePath = '../dev/loadInkfallRev5ReviewVisual.ts';
@@ -421,8 +441,9 @@ export async function createOnlineAuthorityThreeRuntime(
   canvas: HTMLCanvasElement,
   options: OnlineAuthorityThreeRuntimeOptions = {},
 ): Promise<OnlineAuthorityThreeRuntime> {
+  const mapBinding = options.mapBinding ?? ONLINE_INKFALL_REV5_MAP_BINDING;
   const [loadedVisual] = await Promise.all([
-    loadRev5Visual(),
+    loadRev5Visual(mapBinding),
     ensureHumanSoldierReady(),
     loadStagingWeaponReview(),
   ]);
@@ -1161,12 +1182,11 @@ export async function createOnlineAuthorityThreeRuntime(
     return Object.freeze({
       status: disposed ? 'disposed' : 'ready',
       renderer: 'three_webgl',
-      mapReference: ONLINE_INKFALL_REV5_MAP_BINDING.mapReference,
-      presentationReference:
-        ONLINE_INKFALL_REV5_MAP_BINDING.presentationReference,
+      mapReference: mapBinding.mapReference,
+      presentationReference: mapBinding.presentationReference,
       presentationMode: loadedVisual.presentationMode,
       presentationSha256: loadedVisual.presentationSha256,
-      authorityFixtureHash: ONLINE_INKFALL_REV5_MAP_BINDING.fixtureHash,
+      authorityFixtureHash: mapBinding.fixtureHash,
       renderMeshesMayBeAuthority: false,
       renderMeshCount: loadedVisual.meshCount,
       renderOnlyContainmentMeshCount: loadedVisual.containmentMeshCount,

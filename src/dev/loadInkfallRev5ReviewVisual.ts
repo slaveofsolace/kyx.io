@@ -25,8 +25,8 @@ const revision3RenderArtifactUrl = new URL(
   '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/render.graybox.glb',
   import.meta.url,
 ).href;
-const revision3CollisionArtifactUrl = new URL(
-  '../../assets/source/maps/inkfall-foundry/revisions/revision-3/export/collision.authority.glb',
+const revision4CollisionArtifactUrl = new URL(
+  '../../assets/source/maps/inkfall-foundry/revisions/revision-4/export/collision.authority.glb',
   import.meta.url,
 ).href;
 
@@ -68,7 +68,7 @@ export async function loadInkfallRev5ReviewVisual() {
   ) {
     throw new Error('ONLINE_REV5_PRESENTATION_PROFILE_MISMATCH');
   }
-  const source = getBundledMapPackageSource('inkfall_foundry', 3);
+  const source = getBundledMapPackageSource('inkfall_foundry', 4);
   if (source === undefined || source === null) {
     throw new Error('ONLINE_REV5_AUTHORITY_PACKAGE_NOT_BUNDLED');
   }
@@ -79,7 +79,7 @@ export async function loadInkfallRev5ReviewVisual() {
   ] = await Promise.all([
     fetchArtifact(rev5PresentationArtifactUrl, 'rev5_modular_presentation'),
     fetchArtifact(revision3RenderArtifactUrl, 'revision3_render_verification'),
-    fetchArtifact(revision3CollisionArtifactUrl, 'revision3_authority_collision'),
+    fetchArtifact(revision4CollisionArtifactUrl, 'revision4_authority_collision'),
   ]);
   const binding = await loadInkfallRev5CandidateAuthorityBinding(source, {
     presentationArt,

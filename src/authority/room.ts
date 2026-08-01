@@ -152,8 +152,10 @@ export const G4_COMBAT_RULESET_REVISION = 3 as const;
 export const G4_COMBAT_RULESET_HASH = '69b19f19a19de288' as const;
 export const G4_COMBAT_ROOM_PROFILE_ID = 'revamped_classic_g4_v1' as const;
 export const G4_HITSCAN_ROOM_CAPABILITY_ID = 'authoritative_hitscan_v1' as const;
+export const IMPULSE_GRENADE_ROOM_CAPABILITY_ID_V2 =
+  'authoritative_impulse_grenade_v2' as const;
 export const G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID =
-  'authoritative_impulse_grenade_v1' as const;
+  IMPULSE_GRENADE_ROOM_CAPABILITY_ID_V2;
 export const G4_ABILITY_RESOURCE_ROOM_CAPABILITY_ID =
   'authoritative_ability_resources_teleport_v1' as const;
 export const G4_TDM_MATCH_ROOM_CAPABILITY_ID = 'authoritative_tdm_match_v1' as const;
@@ -1119,19 +1121,8 @@ function validateCheckpointImpulseGrenadeProjectile(
     spawnTick + G4_IMPULSE_GRENADE_RULES.lifetimeTicks,
     'grenade projectile lifetime',
   );
-  const fuseStartedAtTick = state.fuseStartedAtTick === null
-    ? null
-    : checkpointInteger(state.fuseStartedAtTick, spawnTick, serverTick, 'grenade fuse start tick');
-  const detonatesAtTick = state.detonatesAtTick === null
-    ? null
-    : checkpointInteger(state.detonatesAtTick, spawnTick, ACTIVE_MATCH_CHECKPOINT_MAX_TICK, 'grenade detonation tick');
-  if (
-    (fuseStartedAtTick === null) !== (detonatesAtTick === null)
-    || (fuseStartedAtTick !== null
-      && detonatesAtTick !== fuseStartedAtTick + G4_IMPULSE_GRENADE_RULES.fuseTicks)
-  ) {
-    throw new RangeError('impulse grenade fuse clocks disagree');
-  }
+  checkpointLiteral(state.fuseStartedAtTick, null, 'retained grenade fuse start tick');
+  checkpointLiteral(state.detonatesAtTick, null, 'retained grenade detonation tick');
   checkpointVector(state.positionMillimeters, -20_000_000, 20_000_000, 'grenade position');
   checkpointVector(state.velocityMillimetersPerSecond, -20_000_000, 20_000_000, 'grenade velocity');
   const acceleration = checkpointVector(
@@ -1140,8 +1131,8 @@ function validateCheckpointImpulseGrenadeProjectile(
     20_000_000,
     'grenade acceleration',
   );
-  if (acceleration.x !== 0 || acceleration.y !== 0 || acceleration.z !== 0) {
-    throw new RangeError('impulse grenade acceleration must remain the reviewed zero vector');
+  if (acceleration.x !== 0 || acceleration.y !== -19_200 || acceleration.z !== 0) {
+    throw new RangeError('impulse grenade acceleration must remain the reviewed gravity vector');
   }
   checkpointVector(state.positionIntegrationRemainder, -19, 19, 'grenade position remainder');
   checkpointVector(state.velocityIntegrationRemainder, -19, 19, 'grenade velocity remainder');
@@ -1150,13 +1141,8 @@ function validateCheckpointImpulseGrenadeProjectile(
     G4_IMPULSE_GRENADE_RULES.projectileRadiusMillimeters,
     'grenade projectile radius',
   );
-  checkpointInteger(
-    state.bounceCount,
-    0,
-    G4_IMPULSE_GRENADE_RULES.maximumBounces,
-    'grenade bounce count',
-  );
-  checkpointBoolean(state.settled, 'grenade settled flag');
+  checkpointLiteral(state.bounceCount, 0, 'retained grenade bounce count');
+  checkpointLiteral(state.settled, false, 'retained grenade settled flag');
   checkpointInteger(state.seed, 0, 0xffff_ffff, 'grenade seed');
   const expectedPrefix = `${owner.impulseGrenade.eventNamespace}.projectile.`;
   if (!projectileId.startsWith(expectedPrefix)) {

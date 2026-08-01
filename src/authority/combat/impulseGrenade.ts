@@ -13,8 +13,8 @@ export interface ImpulseGrenadeVector3 {
   readonly z: number;
 }
 
-export interface ImpulseGrenadeRulesV1 {
-  readonly schemaVersion: 1;
+export interface ImpulseGrenadeRulesV2 {
+  readonly schemaVersion: 2;
   readonly abilityId: typeof IMPULSE_GRENADE_ABILITY_ID;
   readonly authorityHz: 20;
   readonly damageHealthPoints: 0;
@@ -22,20 +22,19 @@ export interface ImpulseGrenadeRulesV1 {
   readonly projectileSpeedMillimetersPerSecond: 18_000;
   readonly projectileAccelerationMillimetersPerSecondSquared: Readonly<{
     readonly x: 0;
-    readonly y: 0;
+    readonly y: -19_200;
     readonly z: 0;
   }>;
   readonly readyTicks: 8;
   readonly cooldownTicks: 240;
-  readonly fuseTicks: 30;
-  readonly fuseStarts: 'first_qualifying_collision';
+  readonly fuseTicks: 0;
+  readonly fuseStarts: 'first_qualifying_world_collision';
   readonly lifetimeTicks: 120;
   readonly projectileRadiusMillimeters: 150;
-  readonly maximumBounces: 3;
-  readonly restitutionPermille: 550;
-  readonly frictionPermille: 200;
-  readonly ownerImmunityTicks: 6;
-  readonly ownerCollisionPolicy: 'ignored_then_normal';
+  readonly maximumBounces: 0;
+  readonly restitutionPermille: 0;
+  readonly frictionPermille: 0;
+  readonly playerCollisionPolicy: 'ignored';
   readonly radialFalloff: 'linear_to_zero';
   readonly selfImpulseMillimetersPerSecond: 9_000;
   readonly enemyImpulseMillimetersPerSecond: 7_000;
@@ -44,37 +43,38 @@ export interface ImpulseGrenadeRulesV1 {
 }
 
 /**
- * Exact `revamped_classic` revision-3 P5.4 implementation fixture. Gravity is
- * intentionally zero because the reviewed content profile does not authorize
- * an acceleration value. The projectile still uses an explicit server-owned
- * acceleration vector so a later profile revision cannot inherit a hidden
- * engine default.
+ * Runtime capability revision 2. The public ev.io Impulse Grenade record uses
+ * 0.048 world-units of velocity loss per 20 Hz tick. With the shared 20 Hz
+ * authority scale that is exactly 19.2 m/s^2. Player bodies are excluded and
+ * the first qualifying world contact detonates without a rebound.
  */
-export const G4_IMPULSE_GRENADE_RULES: ImpulseGrenadeRulesV1 = Object.freeze({
-  schemaVersion: 1,
+export const IMPULSE_GRENADE_RULES_V2: ImpulseGrenadeRulesV2 = Object.freeze({
+  schemaVersion: 2,
   abilityId: IMPULSE_GRENADE_ABILITY_ID,
   authorityHz: 20,
   damageHealthPoints: 0,
   areaRadiusMillimeters: 11_000,
   projectileSpeedMillimetersPerSecond: 18_000,
-  projectileAccelerationMillimetersPerSecondSquared: Object.freeze({ x: 0, y: 0, z: 0 }),
+  projectileAccelerationMillimetersPerSecondSquared: Object.freeze({ x: 0, y: -19_200, z: 0 }),
   readyTicks: 8,
   cooldownTicks: 240,
-  fuseTicks: 30,
-  fuseStarts: 'first_qualifying_collision',
+  fuseTicks: 0,
+  fuseStarts: 'first_qualifying_world_collision',
   lifetimeTicks: 120,
   projectileRadiusMillimeters: 150,
-  maximumBounces: 3,
-  restitutionPermille: 550,
-  frictionPermille: 200,
-  ownerImmunityTicks: 6,
-  ownerCollisionPolicy: 'ignored_then_normal',
+  maximumBounces: 0,
+  restitutionPermille: 0,
+  frictionPermille: 0,
+  playerCollisionPolicy: 'ignored',
   radialFalloff: 'linear_to_zero',
   selfImpulseMillimetersPerSecond: 9_000,
   enemyImpulseMillimetersPerSecond: 7_000,
   verticalImpulseCapMillimetersPerSecond: 8_000,
   maximumActivePerPlayer: 2,
 });
+
+/** @deprecated Use the explicit revision-2 name for new code. */
+export const G4_IMPULSE_GRENADE_RULES = IMPULSE_GRENADE_RULES_V2;
 
 export type ImpulseGrenadeAbilityPhase = 'equipping' | 'ready' | 'cooldown' | 'dead';
 
@@ -163,6 +163,17 @@ export const IMPULSE_GRENADE_SOLID_LAYERS = Object.freeze([
   'spawn_barrier',
 ] as const satisfies readonly ImpulseGrenadeCollisionLayer[]);
 
+export const IMPULSE_GRENADE_WORLD_ONLY_LAYERS = Object.freeze([
+  'world_static',
+  'dynamic_platform',
+  'door',
+  'spawn_barrier',
+] as const satisfies readonly ImpulseGrenadeCollisionLayer[]);
+
+export type ImpulseGrenadeSweepSolidLayers =
+  | typeof IMPULSE_GRENADE_SOLID_LAYERS
+  | typeof IMPULSE_GRENADE_WORLD_ONLY_LAYERS;
+
 export interface ImpulseGrenadeSweepSphereRequestV1 {
   readonly schemaVersion: 1;
   readonly authorityTick: number;
@@ -171,7 +182,7 @@ export interface ImpulseGrenadeSweepSphereRequestV1 {
   readonly centerMillimeters: ImpulseGrenadeVector3;
   readonly translationMillimeters: ImpulseGrenadeVector3;
   readonly radiusMillimeters: number;
-  readonly solidLayers: typeof IMPULSE_GRENADE_SOLID_LAYERS;
+  readonly solidLayers: ImpulseGrenadeSweepSolidLayers;
   readonly ignoredPlayerIds: readonly string[];
 }
 
@@ -288,7 +299,7 @@ export interface ImpulseGrenadeDetonatedEvent {
   readonly projectileId: string;
   readonly ownerPlayerId: string;
   readonly ownerTeamId: string | null;
-  readonly reason: 'fuse' | 'lifetime';
+  readonly reason: 'collision' | 'fuse' | 'lifetime';
   readonly positionMillimeters: ImpulseGrenadeVector3;
   readonly areaRadiusMillimeters: 11_000;
   readonly damageHealthPoints: 0;
@@ -477,19 +488,19 @@ function squaredLength(value: ImpulseGrenadeVector3): number {
   return value.x * value.x + value.y * value.y + value.z * value.z;
 }
 
-export function assertImpulseGrenadeRules(rules: ImpulseGrenadeRulesV1): void {
+export function assertImpulseGrenadeRules(rules: ImpulseGrenadeRulesV2): void {
   const item = record(rules, 'impulse grenade rules');
   exactKeys(item, [
     'schemaVersion', 'abilityId', 'authorityHz', 'damageHealthPoints',
     'areaRadiusMillimeters', 'projectileSpeedMillimetersPerSecond',
     'projectileAccelerationMillimetersPerSecondSquared', 'readyTicks', 'cooldownTicks',
     'fuseTicks', 'fuseStarts', 'lifetimeTicks', 'projectileRadiusMillimeters',
-    'maximumBounces', 'restitutionPermille', 'frictionPermille', 'ownerImmunityTicks',
-    'ownerCollisionPolicy', 'radialFalloff', 'selfImpulseMillimetersPerSecond',
+    'maximumBounces', 'restitutionPermille', 'frictionPermille', 'playerCollisionPolicy',
+    'radialFalloff', 'selfImpulseMillimetersPerSecond',
     'enemyImpulseMillimetersPerSecond', 'verticalImpulseCapMillimetersPerSecond',
     'maximumActivePerPlayer',
   ], 'impulse grenade rules');
-  requireLiteral(item.schemaVersion, 1, 'impulse grenade schema version');
+  requireLiteral(item.schemaVersion, 2, 'impulse grenade schema version');
   requireLiteral(item.abilityId, IMPULSE_GRENADE_ABILITY_ID, 'impulse grenade ability id');
   requireLiteral(item.authorityHz, 20, 'impulse grenade authority rate');
   requireLiteral(item.damageHealthPoints, 0, 'impulse grenade damage');
@@ -499,20 +510,19 @@ export function assertImpulseGrenadeRules(rules: ImpulseGrenadeRulesV1): void {
     item.projectileAccelerationMillimetersPerSecondSquared,
     'impulse grenade acceleration',
   );
-  if (acceleration.x !== 0 || acceleration.y !== 0 || acceleration.z !== 0) {
-    throw new RangeError('impulse grenade acceleration must be the reviewed zero vector');
+  if (acceleration.x !== 0 || acceleration.y !== -19_200 || acceleration.z !== 0) {
+    throw new RangeError('impulse grenade acceleration must equal the reviewed gravity vector');
   }
   requireLiteral(item.readyTicks, 8, 'impulse grenade ready ticks');
   requireLiteral(item.cooldownTicks, 240, 'impulse grenade cooldown ticks');
-  requireLiteral(item.fuseTicks, 30, 'impulse grenade fuse ticks');
-  requireLiteral(item.fuseStarts, 'first_qualifying_collision', 'impulse grenade fuse policy');
+  requireLiteral(item.fuseTicks, 0, 'impulse grenade fuse ticks');
+  requireLiteral(item.fuseStarts, 'first_qualifying_world_collision', 'impulse grenade fuse policy');
   requireLiteral(item.lifetimeTicks, 120, 'impulse grenade lifetime ticks');
   requireLiteral(item.projectileRadiusMillimeters, 150, 'impulse grenade radius');
-  requireLiteral(item.maximumBounces, 3, 'impulse grenade maximum bounces');
-  requireLiteral(item.restitutionPermille, 550, 'impulse grenade restitution');
-  requireLiteral(item.frictionPermille, 200, 'impulse grenade friction');
-  requireLiteral(item.ownerImmunityTicks, 6, 'impulse grenade owner immunity');
-  requireLiteral(item.ownerCollisionPolicy, 'ignored_then_normal', 'impulse grenade owner policy');
+  requireLiteral(item.maximumBounces, 0, 'impulse grenade maximum bounces');
+  requireLiteral(item.restitutionPermille, 0, 'impulse grenade restitution');
+  requireLiteral(item.frictionPermille, 0, 'impulse grenade friction');
+  requireLiteral(item.playerCollisionPolicy, 'ignored', 'impulse grenade player collision policy');
   requireLiteral(item.radialFalloff, 'linear_to_zero', 'impulse grenade falloff');
   requireLiteral(item.selfImpulseMillimetersPerSecond, 9_000, 'impulse grenade self impulse');
   requireLiteral(item.enemyImpulseMillimetersPerSecond, 7_000, 'impulse grenade enemy impulse');
@@ -522,7 +532,7 @@ export function assertImpulseGrenadeRules(rules: ImpulseGrenadeRulesV1): void {
 
 export function createImpulseGrenadeAbilityState(
   options: CreateImpulseGrenadeAbilityStateOptions,
-  rules: ImpulseGrenadeRulesV1 = G4_IMPULSE_GRENADE_RULES,
+  rules: ImpulseGrenadeRulesV2 = IMPULSE_GRENADE_RULES_V2,
 ): ImpulseGrenadeAbilityState {
   assertImpulseGrenadeRules(rules);
   const item = record(options, 'impulse grenade state options');
@@ -560,7 +570,7 @@ export function markImpulseGrenadeAbilityDead(
 export function resetImpulseGrenadeAbilityForRespawn(
   state: ImpulseGrenadeAbilityState,
   authorityTickValue: number,
-  rules: ImpulseGrenadeRulesV1 = G4_IMPULSE_GRENADE_RULES,
+  rules: ImpulseGrenadeRulesV2 = IMPULSE_GRENADE_RULES_V2,
 ): ImpulseGrenadeAbilityState {
   assertImpulseGrenadeRules(rules);
   const authorityTick = integer(authorityTickValue, 0, MAX_SAFE_AUTHORITY_TICK, 'authority tick');
@@ -578,7 +588,7 @@ export function resetImpulseGrenadeAbilityForRespawn(
 export function advanceImpulseGrenadeAbility(
   state: ImpulseGrenadeAbilityState,
   input: ImpulseGrenadeAuthorityTickInput,
-  rules: ImpulseGrenadeRulesV1 = G4_IMPULSE_GRENADE_RULES,
+  rules: ImpulseGrenadeRulesV2 = IMPULSE_GRENADE_RULES_V2,
 ): AdvanceImpulseGrenadeAbilityResult {
   assertImpulseGrenadeRules(rules);
   const item = record(input, 'impulse grenade authority input');
@@ -717,7 +727,7 @@ export function impulseGrenadeDirectionQ15FromLook(
 
 export function createImpulseGrenadeProjectile(
   request: CreateImpulseGrenadeProjectileRequestV1,
-  rules: ImpulseGrenadeRulesV1 = G4_IMPULSE_GRENADE_RULES,
+  rules: ImpulseGrenadeRulesV2 = IMPULSE_GRENADE_RULES_V2,
 ): ImpulseGrenadeProjectileState {
   assertImpulseGrenadeRules(rules);
   const item = record(request, 'impulse grenade projectile request');
@@ -805,7 +815,7 @@ function assertNormalQ15(value: unknown, label: string): ImpulseGrenadeVector3 {
 
 function validateSweepResult(
   value: ImpulseGrenadeSweepSphereResultV1,
-  ignoredOwnerPlayerId: string | null,
+  requestedSolidLayers: ImpulseGrenadeSweepSolidLayers,
 ): ImpulseGrenadeSweepSphereContactV1 | null {
   const item = record(value, 'impulse grenade sweep result');
   exactKeys(item, ['schemaVersion', 'contacts'], 'impulse grenade sweep result');
@@ -819,8 +829,8 @@ function validateSweepResult(
       'colliderId', 'layer', 'playerId', 'timeOfImpactPermille', 'normalQ15',
     ], `impulse grenade sweep contact ${index}`);
     const colliderId = stableId(contact.colliderId, 'impulse grenade collider id');
-    if (!IMPULSE_GRENADE_SOLID_LAYERS.includes(contact.layer as never)) {
-      throw new RangeError('impulse grenade sweep returned a non-solid layer');
+    if (!requestedSolidLayers.some((layer) => layer === contact.layer)) {
+      throw new RangeError('impulse grenade sweep returned a layer outside the requested collision mask');
     }
     const layer = contact.layer as ImpulseGrenadeCollisionLayer;
     const playerId = optionalStableId(contact.playerId, 'impulse grenade collision player id');
@@ -839,9 +849,7 @@ function validateSweepResult(
       ),
       normalQ15: assertNormalQ15(contact.normalQ15, 'impulse grenade contact normal'),
     });
-  }).filter((contact) => (
-    ignoredOwnerPlayerId === null || contact.playerId !== ignoredOwnerPlayerId
-  )).sort((left, right) => {
+  }).sort((left, right) => {
     if (left.timeOfImpactPermille !== right.timeOfImpactPermille) {
       return left.timeOfImpactPermille - right.timeOfImpactPermille;
     }
@@ -861,31 +869,12 @@ function validateSweepResult(
   return contacts[0] ?? null;
 }
 
-function bounceVelocity(
-  velocity: ImpulseGrenadeVector3,
-  normal: ImpulseGrenadeVector3,
-  rules: ImpulseGrenadeRulesV1,
-): ImpulseGrenadeVector3 {
-  const dot = Math.round(
-    (velocity.x * normal.x + velocity.y * normal.y + velocity.z * normal.z) / Q15_SCALE,
-  );
-  if (dot >= 0) throw new RangeError('impulse grenade contact normal must oppose travel');
-  const normalComponent = scaleVector(normal, dot, Q15_SCALE);
-  const tangent = {
-    x: velocity.x - normalComponent.x,
-    y: velocity.y - normalComponent.y,
-    z: velocity.z - normalComponent.z,
-  };
-  const retainedTangent = scaleVector(tangent, PERMILLE_SCALE - rules.frictionPermille, PERMILLE_SCALE);
-  const reflectedNormal = scaleVector(normalComponent, -rules.restitutionPermille, PERMILLE_SCALE);
-  return addVector(retainedTangent, reflectedNormal);
-}
-
 function detonate(
   state: ImpulseGrenadeProjectileState,
   authorityTick: number,
-  reason: 'fuse' | 'lifetime',
-  rules: ImpulseGrenadeRulesV1,
+  reason: 'collision' | 'fuse' | 'lifetime',
+  rules: ImpulseGrenadeRulesV2,
+  precedingEvents: readonly ImpulseGrenadeProjectileEvent[] = [],
 ): AdvanceImpulseGrenadeProjectileResult {
   const event = deepFreeze({
     kind: 'impulse_grenade_detonated' as const,
@@ -902,7 +891,7 @@ function detonate(
   return deepFreeze({
     accepted: true as const,
     state: { ...state, phase: 'detonated' as const, lastProcessedAuthorityTick: authorityTick },
-    events: [event],
+    events: [...precedingEvents, event],
     detonation: event,
   });
 }
@@ -911,7 +900,7 @@ export function advanceImpulseGrenadeProjectile(
   state: ImpulseGrenadeProjectileState,
   authorityTickValue: number,
   world: Pick<AuthorityImpulseGrenadeWorldPort, 'sweepSphere'>,
-  rules: ImpulseGrenadeRulesV1 = G4_IMPULSE_GRENADE_RULES,
+  rules: ImpulseGrenadeRulesV2 = IMPULSE_GRENADE_RULES_V2,
 ): AdvanceImpulseGrenadeProjectileResult {
   assertImpulseGrenadeRules(rules);
   const authorityTick = integer(authorityTickValue, 0, MAX_SAFE_AUTHORITY_TICK, 'authority tick');
@@ -958,7 +947,6 @@ export function advanceImpulseGrenadeProjectile(
     state.positionIntegrationRemainder,
     rules.authorityHz,
   );
-  const ownerImmune = authorityTick < state.spawnTick + rules.ownerImmunityTicks;
   const sweep = validateSweepResult(world.sweepSphere(deepFreeze({
     schemaVersion: 1 as const,
     authorityTick,
@@ -967,9 +955,9 @@ export function advanceImpulseGrenadeProjectile(
     centerMillimeters: state.positionMillimeters,
     translationMillimeters: translationIntegration.value,
     radiusMillimeters: state.radiusMillimeters,
-    solidLayers: IMPULSE_GRENADE_SOLID_LAYERS,
-    ignoredPlayerIds: ownerImmune ? [state.ownerPlayerId] : [],
-  })), ownerImmune ? state.ownerPlayerId : null);
+    solidLayers: IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
+    ignoredPlayerIds: [],
+  })), IMPULSE_GRENADE_WORLD_ONLY_LAYERS);
   if (sweep === null) {
     return deepFreeze({
       accepted: true as const,
@@ -988,15 +976,11 @@ export function advanceImpulseGrenadeProjectile(
   const travel = scaleVector(translationIntegration.value, sweep.timeOfImpactPermille, PERMILLE_SCALE);
   const separation = scaleVector(sweep.normalQ15, 1, Q15_SCALE);
   const position = addVector(addVector(state.positionMillimeters, travel), separation);
-  const fuseStartedAtTick = state.fuseStartedAtTick ?? authorityTick;
-  const detonatesAtTick = state.detonatesAtTick
-    ?? checkedTickAdd(fuseStartedAtTick, rules.fuseTicks, 'impulse grenade fuse');
-  const willBounce = state.bounceCount < rules.maximumBounces;
-  const bounceCount = state.bounceCount + (willBounce ? 1 : 0);
-  const settled = !willBounce;
-  const velocity = willBounce
-    ? bounceVelocity(velocityIntegration.value, sweep.normalQ15, rules)
-    : Object.freeze({ x: 0, y: 0, z: 0 });
+  const fuseStartedAtTick = authorityTick;
+  const detonatesAtTick = authorityTick;
+  const bounceCount = 0;
+  const settled = true;
+  const velocity = Object.freeze({ x: 0, y: 0, z: 0 });
   const event = deepFreeze({
     kind: 'impulse_grenade_collision' as const,
     eventId: `${state.projectileId}.collision.${authorityTick}.${bounceCount}`,
@@ -1012,23 +996,19 @@ export function advanceImpulseGrenadeProjectile(
     detonatesAtTick,
     settled,
   });
-  return deepFreeze({
-    accepted: true as const,
-    state: {
-      ...state,
-      lastProcessedAuthorityTick: authorityTick,
-      fuseStartedAtTick,
-      detonatesAtTick,
-      positionMillimeters: position,
-      velocityMillimetersPerSecond: velocity,
-      positionIntegrationRemainder: { x: 0, y: 0, z: 0 },
-      velocityIntegrationRemainder: velocityIntegration.remainder,
-      bounceCount,
-      settled,
-    },
-    events: [event],
-    detonation: null,
+  const impactState = deepFreeze({
+    ...state,
+    lastProcessedAuthorityTick: authorityTick,
+    fuseStartedAtTick,
+    detonatesAtTick,
+    positionMillimeters: position,
+    velocityMillimetersPerSecond: velocity,
+    positionIntegrationRemainder: { x: 0, y: 0, z: 0 },
+    velocityIntegrationRemainder: velocityIntegration.remainder,
+    bounceCount,
+    settled,
   });
+  return detonate(impactState, authorityTick, 'collision', rules, [event]);
 }
 
 function validateOcclusionResult(
@@ -1111,7 +1091,7 @@ export function resolveImpulseGrenadeRadialImpulse(
     AuthorityImpulseGrenadeWorldPort,
     'traceRadialOcclusion' | 'resolveCollisionSafeImpulse'
   >,
-  rules: ImpulseGrenadeRulesV1 = G4_IMPULSE_GRENADE_RULES,
+  rules: ImpulseGrenadeRulesV2 = IMPULSE_GRENADE_RULES_V2,
 ): ResolveImpulseGrenadeRadialResult {
   assertImpulseGrenadeRules(rules);
   const item = record(request, 'impulse grenade radial request');

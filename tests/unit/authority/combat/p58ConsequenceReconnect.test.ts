@@ -42,6 +42,7 @@ function grenadeWorld(): AuthorityImpulseGrenadeWorldPort {
   return {
     schemaVersion: IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
     sweepSphere: (request) => {
+      if (request.authorityTick < 50) return { schemaVersion: 1, contacts: [] };
       const translation = request.translationMillimeters;
       const magnitudes = {
         x: Math.abs(translation.x),
@@ -320,6 +321,7 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
         team_score_changed: 1,
         kill_feed_entry: 1,
         impulse_grenade_throw_accepted: 1,
+        impulse_grenade_collision: 1,
         impulse_grenade_detonated: 1,
         impulse_grenade_impulse_applied: 1,
       });
@@ -328,10 +330,10 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
     expect(results[3]!.first).toEqual(baseline.first);
     expect(Object.fromEntries(results.map(({ profile, first }) => [profile, first.hash])))
       .toEqual({
-        baseline: '8403e8f5d2c7a14f',
-        loss: '96860d5a78fca6e5',
-        reorder: '8403e8f5d2c7a14f',
-        duplicate: '8403e8f5d2c7a14f',
+        baseline: '30ef4258226c9628',
+        loss: '92660546cd6e88be',
+        reorder: '30ef4258226c9628',
+        duplicate: '30ef4258226c9628',
       });
   }, 15_000);
 
@@ -389,7 +391,7 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
       impulseGrenadeProjectiles: [expect.objectContaining({
         ownerPlayerId: 'player_A',
         phase: 'active',
-        detonatesAtTick: 71,
+        detonatesAtTick: null,
         lifetimeEndsAtTick: 161,
       })],
       match: {
@@ -438,6 +440,7 @@ describe('P5.8B combat consequence impairment and composite reconnect', () => {
       continuationEvents.push(...semanticEvents(authority.advanceOneTick()));
     }
     expect(eventKindCounts(continuationEvents)).toMatchObject({
+      impulse_grenade_collision: 1,
       impulse_grenade_detonated: 1,
       impulse_grenade_impulse_applied: 1,
       auto_rifle_reload_completed: 1,

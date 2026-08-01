@@ -6,6 +6,8 @@ import {
   G4_COMBAT_RULESET_HASH,
   G4_COMBAT_RULESET_ID,
   G4_COMBAT_RULESET_REVISION,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+  INKFALL_AUTHORITY_MAP_IDENTITY_V4,
   assertAuthorityLoadoutSelection,
   authorityLoadoutFromRuleset,
   authorityLoadoutRequestFingerprint,
@@ -49,11 +51,13 @@ import {
 import {
   INTERNAL_ROOM_PROFILE_HEADER,
   G5_INKFALL_REV4_COMBAT_PROFILE,
+  G5_INKFALL_REV5_COMBAT_PROFILE,
   createInkfallWorkerCombatOptions,
   combatSnapshotFromAuthority,
   createWorkerCombatOptions,
   inferWorkerRoomProfileFromIdentity,
   inkfallRevision3WorkerSpawnAuthority,
+  inkfallRevision4WorkerSpawnAuthority,
   inkfallWorkerCombatSpawn,
   inkfallWorkerFixture,
   inkfallWorkerMapBinding,
@@ -588,7 +592,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           ...(isInkfallWorkerRoomProfile(this.roomProfile)
             ? { mapBinding: inkfallWorkerMapBinding(this.roomProfile) }
             : {}),
-          ...(this.roomProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+          ...((
+            this.roomProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+            || this.roomProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+          )
             ? {
                 spawnSelection: Object.freeze({
                   schemaVersion: INKFALL_SPAWN_SELECTION_SCHEMA_VERSION,
@@ -1236,6 +1243,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     playerId: string,
     ordinal: number,
     context: AuthoritySpawnResolutionContext,
+    profile: InkfallWorkerRoomProfile,
   ): AuthoritySpawn {
     const tick = context.authorityTick;
     const requesterTeamId = ordinal % 2 === 0 ? 'team_blue' : 'team_red';
@@ -1266,11 +1274,15 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       this.recentInkfallSpawnUses.length,
       ...recentSpawnUses,
     );
-    const result = inkfallRevision3WorkerSpawnAuthority().select({
+    const binding = inkfallWorkerMapBinding(profile);
+    const spawnAuthority = profile === G5_INKFALL_REV5_COMBAT_PROFILE
+      ? inkfallRevision4WorkerSpawnAuthority()
+      : inkfallRevision3WorkerSpawnAuthority();
+    const result = spawnAuthority.select({
       schemaVersion: 1,
-      mapId: 'inkfall_foundry',
-      mapRevision: 3,
-      fixtureHash: '97eb7772ac59dc95',
+      mapId: binding.mapId,
+      mapRevision: binding.mapRevision,
+      fixtureHash: binding.fixtureHash,
       mode: 'team_deathmatch',
       tick,
       requester: Object.freeze({
@@ -1311,7 +1323,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       });
     } else {
       fallbackMode = 'locked_ordinal';
-      selected = inkfallWorkerCombatSpawn(ordinal, G5_INKFALL_REV4_COMBAT_PROFILE);
+      selected = inkfallWorkerCombatSpawn(ordinal, profile);
     }
     const selectedEnemies = selectedEvaluation?.enemies ?? [];
     const enemyDistances = selectedEnemies.map(({ distanceMm }) => distanceMm);
@@ -1644,7 +1656,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.roomProfile = selectedProfile;
         this.compatibilityIdentity = compatibilityIdentity;
         this.authoritativeLoadout = authorityLoadoutFromRuleset(ruleset);
-        if (inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE) {
+        if (inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE) {
+          inkfallRevision4WorkerSpawnAuthority();
+        } else if (inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE) {
           inkfallRevision3WorkerSpawnAuthority();
         }
         this.authority = new AuthoritativeRoom({
@@ -1662,8 +1676,18 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           },
           profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
           queries: world,
-          ...(inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
-            ? { worldPortal: createInkfallRev5PortalAuthorityPort(world) }
+          ...((
+            inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+            || inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+          )
+            ? {
+                worldPortal: createInkfallRev5PortalAuthorityPort(
+                  world,
+                  inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+                    ? INKFALL_AUTHORITY_MAP_IDENTITY_V4
+                    : INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+                ),
+              }
             : {}),
           spawnResolver: (playerId, ordinal, context) => {
             const restoredOrdinal = this.restoredSpawnOrdinals.get(playerId);
@@ -1672,7 +1696,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
               ? restoredOrdinal !== undefined
                 ? inkfallWorkerCombatSpawn(restoredOrdinal, inkfallProfile)
                 : inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
-                  ? this.resolveLiveInkfallSpawn(playerId, ordinal, context)
+                    || inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+                  ? this.resolveLiveInkfallSpawn(playerId, ordinal, context, inkfallProfile)
                   : inkfallWorkerCombatSpawn(resolvedOrdinal, inkfallProfile)
               : revision3Combat
                 ? workerCombatSpawn(resolvedOrdinal)

@@ -8,7 +8,6 @@ import {
 import {
   ABILITY_ID,
   ABILITY_PRESENTATION,
-  type AbilityId,
 } from '../abilities/abilityLoadout';
 import { Loadout } from '../core/Loadout.js';
 import { UserAccount } from '../core/UserAccount.js';
@@ -30,7 +29,6 @@ import { deriveRev17AuthorityAction } from '../player/rev17ActionContract.js';
 import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
 import {
   createOnlineHudViewModel,
-  type HudAbilityInput,
 } from '../ui/hudViewModel';
 import { createAbilityGlyph } from '../ui/abilityGlyph';
 import {
@@ -75,10 +73,14 @@ import {
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  ONLINE_INKFALL_REV4_MAP_BINDING,
+  ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  ONLINE_INKFALL_REV5_MAP_BINDING,
   isOnlineInkfallAuthorityProfile,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
 import { classifyOnlineAuthorityPresentationEvent } from './onlineAuthorityPresentationRouting';
+import { createAuthorityAbilityHudInputs } from './authorityHudProjection';
 import {
   ONLINE_AUTHORITY_PATH,
   onlineCreatePath,
@@ -241,8 +243,10 @@ function appendScopeNotice(
     element(
       'span',
       '',
-      inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-        ? 'Inkfall Foundry Rev5 integration candidate: the Rev5 modular render-only presentation and linked world portal are identity-bound to the frozen Rev3 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Human visual approval and release deployment remain separate gates.'
+      inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+        ? 'Inkfall Foundry Rev5 integration candidate: the modular render-only presentation and linked world portal are identity-bound to the corrected Revision 4 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Human visual approval and release deployment remain separate gates.'
+        : inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+          ? 'Inkfall Foundry Rev4 compatibility profile: the same modular render-only presentation remains pinned to the historical Revision 3 authority world for persisted rooms and checkpoints.'
         : inkfallProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
           ? 'Explicit Inkfall Foundry @2 integration preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. Final-map traversal, final visuals, matchmaking, progression, and release readiness remain open; G4 and G5 are not claimed.'
         : 'Authoritative revision-3 combat preview: movement, rifle, health, team score, feed, respawn, grenade state, remote interpolation, and secure resume. Matchmaking, progression, real-map grenade collision, and release readiness are not included yet.',
@@ -307,7 +311,8 @@ function renderLanding(
   const rev4ProfileCheckbox = document.createElement('input');
   rev4ProfileCheckbox.type = 'checkbox';
   rev4ProfileCheckbox.checked = selectedProfile === undefined
-    || selectedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+    || selectedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    || selectedProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
   rev4ProfileCheckbox.disabled = !configured;
   rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
   const rev4ProfileCopy = element('span', '');
@@ -335,7 +340,7 @@ function renderLanding(
   );
   content.append(profilePicker);
   const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => {
-    if (rev4ProfileCheckbox.checked) return ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+    if (rev4ProfileCheckbox.checked) return ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
     if (profileCheckbox.checked) return ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
     return undefined;
   };
@@ -752,7 +757,8 @@ async function mountSession(
     : null;
   const inkfallProfile = inkfallProof?.roomProfile ?? null;
   const inkfallRuntime = inkfallProof !== null;
-  const inkfallRev4 = inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID;
+  const inkfallRev4 = inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    || inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
   const world = inkfallProof !== null
     ? await createOnlineInkfallWorld(inkfallProof.mapBinding)
     : await createRapierMovementWorld(getPhysicsFixture('flat_run'));
@@ -1233,6 +1239,9 @@ async function mountSession(
     body.dataset.online3dStatus = 'loading';
     try {
       threeRuntime = await createOnlineAuthorityThreeRuntime(canvas, {
+        mapBinding: inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+          ? ONLINE_INKFALL_REV5_MAP_BINDING
+          : ONLINE_INKFALL_REV4_MAP_BINDING,
         onWorldPortalAudio: ({ local }) => {
           if (!local || portalAudio === null || portalCaptionCues === null) {
             return;
@@ -1257,7 +1266,7 @@ async function mountSession(
       });
       const sceneFacts = threeRuntime.diagnostics();
       mapStatus.textContent = 'Arena ready';
-      mapStatus.title = `Rev5 presentation: ${sceneFacts.renderMeshCount} render meshes · Rev3 authority: ${sceneFacts.authorityColliderCount} colliders`;
+      mapStatus.title = `${sceneFacts.mapReference}: ${sceneFacts.renderMeshCount} render meshes · ${sceneFacts.authorityColliderCount} authority colliders`;
       mapStatus.dataset.state = 'ready';
       body.dataset.online3dStatus = 'ready';
       body.dataset.online3dRenderer = sceneFacts.renderer;
@@ -1354,7 +1363,9 @@ async function mountSession(
     if (marker.includes('.hit.shield.confirmed.')) return 'shield';
     if (marker.includes('.hit.kill.confirmed.')) return 'kill';
     if (marker.includes('.grenade.throw.accepted.')) return 'grenade_throw';
-    if (marker.includes('.grenade.projectile.collision.')) return 'grenade_collision';
+    // Launch contact and detonation are an ordered same-tick authority pair.
+    // Present only the confirmed detonation so contact never reads as a bounce.
+    if (marker.includes('.grenade.projectile.collision.')) return null;
     if (marker.includes('.grenade.projectile.detonation.')) return 'grenade_detonation';
     if (marker.includes('.grenade.impulse.applied.')) return 'grenade_impulse';
     if (marker.includes('.teleport.confirmed.')) return 'teleport';
@@ -2446,60 +2457,15 @@ async function mountSession(
       const remainingSeconds = combat === null
         ? 0
         : Math.max(0, Math.ceil(combat.match.activeTicksRemaining / 20));
-      const selectedAbilities = localPlayer?.abilityLoadout?.slots.slice(1) ?? [];
       const blinkReadyIn = Math.max(
         0,
         diagnostics.local.teleportCooldownTicksRemaining ?? 0,
       );
-      const blinkCooldownTicks = ABILITY_PRESENTATION[ABILITY_ID.blink].cooldownSeconds * 20;
-      const hudAbilities: HudAbilityInput[] = [
-        {
-          id: ABILITY_ID.blink,
-          name: ABILITY_PRESENTATION[ABILITY_ID.blink].shortName,
-          key: 'Q',
-          locked: true,
-          state: blinkReadyIn === 0 ? 'ready' : 'charging',
-          cooldownSeconds: blinkReadyIn / 20,
-          readinessRatio: blinkReadyIn === 0
-            ? 1
-            : 1 - Math.min(1, blinkReadyIn / blinkCooldownTicks),
-        },
-        ...(['E', 'F', 'Z'] as const).map((key, index): HudAbilityInput => {
-          const abilityId = selectedAbilities[index] as AbilityId | undefined;
-          const ability = abilityId === undefined ? null : ABILITY_PRESENTATION[abilityId];
-          const readyIn = localPlayer?.abilityLoadout === undefined
-            ? 0
-            : Math.max(
-                0,
-                localPlayer.abilityLoadout.cooldownEndsAtTicks[index]
-                  - diagnostics.authority.serverTick,
-              );
-          const charges = localPlayer?.abilityLoadout?.currentCharges[index] ?? 0;
-          const maximumCharges = localPlayer?.abilityLoadout?.maximumCharges[index] ?? 0;
-          const cooldownTicks = (ability?.cooldownSeconds ?? 0) * 20;
-          return {
-            id: abilityId ?? `empty-${key.toLocaleLowerCase()}`,
-            name: ability?.shortName ?? 'Empty',
-            key,
-            available: ability !== null,
-            state: ability === null
-              ? 'unavailable'
-              : charges > 0
-                ? 'ready'
-                : readyIn > 0
-                  ? 'charging'
-                  : 'empty',
-            charges: ability === null ? null : charges,
-            maximumCharges: ability === null ? null : maximumCharges,
-            cooldownSeconds: readyIn / 20,
-            readinessRatio: charges > 0
-              ? 1
-              : cooldownTicks > 0
-                ? 1 - Math.min(1, readyIn / cooldownTicks)
-                : 0,
-          };
-        }),
-      ];
+      const hudAbilities = createAuthorityAbilityHudInputs({
+        serverTick: diagnostics.authority.serverTick,
+        teleportCooldownTicksRemaining: blinkReadyIn,
+        localPlayer,
+      });
       const hudView = createOnlineHudViewModel({
         health: localPlayer?.healthPoints ?? 0,
         maximumHealth: 100,
@@ -2832,8 +2798,10 @@ export async function mountOnlineAuthorityRoute(
       body.dataset.onlinePreviewStatus = 'verifying-room-profile';
       renderNotice(
         content,
-        requestedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-          ? 'Verifying Inkfall Foundry Rev5 / Rev3 authority room…'
+        requestedProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+          ? 'Verifying Inkfall Foundry Rev5 / Revision 4 authority room…'
+          : requestedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+            ? 'Verifying Inkfall Foundry Rev4 / Revision 3 authority room…'
           : 'Verifying Inkfall Foundry @2 room…',
         'The profile and complete locked map binding must match before the socket can open.',
         'CANCEL',

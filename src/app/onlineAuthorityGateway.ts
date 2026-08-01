@@ -2,10 +2,12 @@ import { normalizeAuthorityRoomCode } from '../dev/authorityEvidenceModel';
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
+  ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
   onlineInkfallMapBinding,
   type OnlineAuthorityProfileSelection,
   type OnlineInkfallRevision2MapBinding,
   type OnlineInkfallRevision4MapBinding,
+  type OnlineInkfallRevision5MapBinding,
 } from './onlineAuthorityProfiles';
 
 interface RoomCreationPayload {
@@ -27,14 +29,23 @@ export interface OnlineInkfallRevision4RoomProof {
   readonly mapBinding: OnlineInkfallRevision4MapBinding;
 }
 
+export interface OnlineInkfallRevision5RoomProof {
+  readonly roomCode: string;
+  readonly roomProfile: typeof ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
+  readonly mapBinding: OnlineInkfallRevision5MapBinding;
+}
+
 export type OnlineInkfallRoomProof =
   | OnlineInkfallRevision2RoomProof
-  | OnlineInkfallRevision4RoomProof;
+  | OnlineInkfallRevision4RoomProof
+  | OnlineInkfallRevision5RoomProof;
 
 type OnlineInkfallRoomProofFor<Profile extends OnlineAuthorityProfileSelection> =
-  Profile extends typeof ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-    ? OnlineInkfallRevision4RoomProof
-    : OnlineInkfallRevision2RoomProof;
+  Profile extends typeof ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+    ? OnlineInkfallRevision5RoomProof
+    : Profile extends typeof ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+      ? OnlineInkfallRevision4RoomProof
+      : OnlineInkfallRevision2RoomProof;
 
 export interface OnlineAuthorityFetchResponse {
   readonly ok: boolean;
@@ -252,14 +263,45 @@ export async function verifyOnlineInkfallRevision4CombatRoom(
   );
 }
 
+export async function createOnlineInkfallRevision5CombatRoom(
+  authorityOrigin: string,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineInkfallRevision5RoomProof> {
+  return await requestOnlineInkfallRoom(
+    new URL('/api/rooms/create', authorityOrigin).toString(),
+    null,
+    'creation',
+    fetchRequest,
+    ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  );
+}
+
+export async function verifyOnlineInkfallRevision5CombatRoom(
+  authorityOrigin: string,
+  roomCode: string,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineInkfallRevision5RoomProof> {
+  const normalized = normalizeAuthorityRoomCode(roomCode);
+  if (normalized === null) throw new RangeError('online room code is invalid');
+  return await requestOnlineInkfallRoom(
+    new URL(`/api/rooms/${normalized}`, authorityOrigin).toString(),
+    normalized,
+    'join verification',
+    fetchRequest,
+    ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  );
+}
+
 export async function createOnlineInkfallCombatRoom(
   authorityOrigin: string,
   profile: OnlineAuthorityProfileSelection,
   fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
 ): Promise<OnlineInkfallRoomProof> {
-  return profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-    ? createOnlineInkfallRevision4CombatRoom(authorityOrigin, fetchRequest)
-    : createOnlineInkfallRevision2CombatRoom(authorityOrigin, fetchRequest);
+  return profile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+    ? createOnlineInkfallRevision5CombatRoom(authorityOrigin, fetchRequest)
+    : profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+      ? createOnlineInkfallRevision4CombatRoom(authorityOrigin, fetchRequest)
+      : createOnlineInkfallRevision2CombatRoom(authorityOrigin, fetchRequest);
 }
 
 export async function verifyOnlineInkfallCombatRoom(
@@ -268,7 +310,9 @@ export async function verifyOnlineInkfallCombatRoom(
   profile: OnlineAuthorityProfileSelection,
   fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
 ): Promise<OnlineInkfallRoomProof> {
-  return profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-    ? verifyOnlineInkfallRevision4CombatRoom(authorityOrigin, roomCode, fetchRequest)
-    : verifyOnlineInkfallRevision2CombatRoom(authorityOrigin, roomCode, fetchRequest);
+  return profile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+    ? verifyOnlineInkfallRevision5CombatRoom(authorityOrigin, roomCode, fetchRequest)
+    : profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+      ? verifyOnlineInkfallRevision4CombatRoom(authorityOrigin, roomCode, fetchRequest)
+      : verifyOnlineInkfallRevision2CombatRoom(authorityOrigin, roomCode, fetchRequest);
 }
