@@ -1,0 +1,39 @@
+{
+  "schema": "kyx-g6-assault-rev32-source-lock-v1",
+  "status": "REVIEW_SOURCE_ONLY_NOT_RELEASE_ELIGIBLE",
+  "presentationSource": {
+    "path": "kyx-v6b-assault-rev32-source.blend",
+    "bytes": 39873470,
+    "sha256": "7b4fd749dd2214309fcbfbc859d65e3f991ff646be8d7cc18f66f294c67b9014",
+    "frozenFrom": "g6-rev19-remodel/Material Flow Rev1 v9 underlay-clean"
+  },
+  "helmetSource": {
+    "name": "Khronos glTF Sample Assets SciFiHelmet",
+    "upstream": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SciFiHelmet",
+    "modelLicense": "CC0-1.0",
+    "metadataLicense": "CC-BY-4.0",
+    "provenanceDirectory": "../../../../third-party/khronos-scifihelmet-rev32",
+    "texturesPackedInBlend": true,
+    "packedImages": [
+      "SciFiHelmet_AmbientOcclusion.png",
+      "SciFiHelmet_BaseColor.png",
+      "SciFiHelmet_MetallicRoughness.png",
+      "SciFiHelmet_Normal.png"
+    ],
+    "pinnedUpstreamHashes": {
+      "SciFiHelmet.bin": "6a7af42896359f8e0d9ba65260cbb7b1a1d36aa787439d3775a48aba1f9a25ba",
+      "SciFiHelmet.gltf": "4b9e64c5337ddaba5b44821d76786bcad3b5b78f877cf034ec6163dc8baca35a",
+      "SciFiHelmet_AmbientOcclusion.png": "95823e77b0a6e45308b53be4fdf1b7a7b6ac085c190dc1c5ef47097d0e35eb2f",
+      "SciFiHelmet_BaseColor.png": "bda08dd029775ea0964d5721b779a639da091222eaa750233ba34e01e3eeace2",
+      "SciFiHelmet_MetallicRoughness.png": "f38f025af3201697679e2a04ba4cf01b4506e68ce4e0e0f09c268a7dfb80b2c3",
+      "SciFiHelmet_Normal.png": "437c034b60900b503bb41be3328011ab3b7602c8454f8eebcab98929ea25fe99"
+    }
+  },
+  "constraints": {
+    "candidateOutsidePublic": true,
+    "sourceBlendMustRemainByteExact": true,
+    "embeddedWeaponForbidden": true,
+    "humanVisualAcceptanceRequired": true,
+    "runtimePromotion": false
+  }
+}

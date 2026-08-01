@@ -1,0 +1,572 @@
+{
+  "schema": "kyx-g6-assault-rev32-direct-glb-review-report-v1",
+  "generatedAt": "2026-08-01T17:14:44.420312+00:00",
+  "blenderVersion": "5.1.2",
+  "checkpoint": "G6_ASSAULT_REV32_DIRECT_GLB_REVIEW",
+  "status": "REVIEW_PACKET_COMPLETE_EXPLICIT_HUMAN_DECISION_REQUIRED_NOT_G6",
+  "candidateDisposition": {
+    "default": false,
+    "releaseEligible": false,
+    "g6Accepted": false,
+    "humanVisualReviewRequired": true
+  },
+  "sourceGlb": {
+    "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod0.runtime-candidate.glb",
+    "bytes": 24804780,
+    "sha256Before": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9",
+    "sha256After": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9"
+  },
+  "freshImport": {
+    "runtimeMeshes": [
+      "KYX_REV32_ASSAULT_LOD0_CONNECTED_ARMOR_HELMET",
+      "KYX_REV32_ASSAULT_LOD0_CONTINUOUS_CYBERSUIT"
+    ],
+    "armature": "KYX_REV32_ASSAULT_RIG_66_JOINT_WITH_SOCKETS",
+    "boneCount": 66,
+    "actions": [
+      "KYX_REV17_FP_AIRBORNE",
+      "KYX_REV17_FP_FIRE",
+      "KYX_REV17_FP_IDLE",
+      "KYX_REV17_FP_LAND",
+      "KYX_REV17_FP_RELOAD",
+      "KYX_REV17_FP_SPRINT",
+      "KYX_REV17_TP_AIRBORNE_LOOP",
+      "KYX_REV17_TP_DEATH_FRONT",
+      "KYX_REV17_TP_HIT_REACTION_FRONT",
+      "KYX_REV17_TP_IDLE",
+      "KYX_REV17_TP_JUMP_START",
+      "KYX_REV17_TP_LAND",
+      "KYX_REV17_TP_PRIMARY_FIRE",
+      "KYX_REV17_TP_RELOAD",
+      "KYX_REV17_TP_RUN",
+      "KYX_REV17_TP_WALK"
+    ],
+    "topologyBefore": {
+      "KYX_REV32_ASSAULT_LOD0_CONNECTED_ARMOR_HELMET": {
+        "meshData": "KYX_V6B_REV23_ClavicleYoke_L_Mesh.001",
+        "vertices": 32122,
+        "edges": 83824,
+        "polygons": 52816,
+        "triangles": 52816,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [],
+        "materials": [
+          "KYX_V6B_REV23_AgedIvorySteel",
+          "KYX_V6B_REV23_GraphiteMetal",
+          "KYX_V6B_REV23_InsetBlack",
+          "KYX_V6B_REV23_MutedBrass",
+          "SciFiHelmet",
+          "KYX_V6B_REV23_VisorGlass"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV32_ASSAULT_LOD0_CONTINUOUS_CYBERSUIT": {
+        "meshData": "KYX_V6B_TACTICAL_REV9_ContinuousBodysuit_Mesh",
+        "vertices": 5414,
+        "edges": 14346,
+        "polygons": 8964,
+        "triangles": 8964,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [],
+        "materials": [
+          "KYX_V6B_REV23_CyberSuit",
+          "KYX_V6B_REV23_CyberGlove"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    },
+    "topologyAfter": {
+      "KYX_REV32_ASSAULT_LOD0_CONNECTED_ARMOR_HELMET": {
+        "meshData": "KYX_V6B_REV23_ClavicleYoke_L_Mesh.001",
+        "vertices": 32122,
+        "edges": 83824,
+        "polygons": 52816,
+        "triangles": 52816,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [],
+        "materials": [
+          "KYX_V6B_REV23_AgedIvorySteel",
+          "KYX_V6B_REV23_GraphiteMetal",
+          "KYX_V6B_REV23_InsetBlack",
+          "KYX_V6B_REV23_MutedBrass",
+          "SciFiHelmet",
+          "KYX_V6B_REV23_VisorGlass"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      },
+      "KYX_REV32_ASSAULT_LOD0_CONTINUOUS_CYBERSUIT": {
+        "meshData": "KYX_V6B_TACTICAL_REV9_ContinuousBodysuit_Mesh",
+        "vertices": 5414,
+        "edges": 14346,
+        "polygons": 8964,
+        "triangles": 8964,
+        "uvLayers": [
+          "UVMap"
+        ],
+        "colorAttributes": [],
+        "materials": [
+          "KYX_V6B_REV23_CyberSuit",
+          "KYX_V6B_REV23_CyberGlove"
+        ],
+        "modifiers": [
+          {
+            "name": "Armature",
+            "type": "ARMATURE"
+          }
+        ]
+      }
+    }
+  },
+  "renderConfiguration": {
+    "engine": "BLENDER_EEVEE",
+    "look": "AgX - Medium High Contrast",
+    "exposure": -0.25,
+    "worldColor": [
+      0.0035,
+      0.008,
+      0.014,
+      1.0
+    ],
+    "worldStrength": 0.16,
+    "renderHelpers": {
+      "cameraCountCreatedPerView": 1,
+      "lights": [
+        "KYX_REV32_REVIEW_Key",
+        "KYX_REV32_REVIEW_WarmFill",
+        "KYX_REV32_REVIEW_CyanRim",
+        "KYX_REV32_REVIEW_ContactFill"
+      ],
+      "floor": "KYX_REV32_REVIEW_Floor",
+      "floorZ": -0.015043
+    }
+  },
+  "renders": [
+    {
+      "name": "full-front",
+      "label": "FULL FRONT",
+      "purpose": "full_silhouette",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-front.png",
+      "bytes": 1619739,
+      "sha256": "edfcafbbbf690cdfdeadfb4c0a47a029deea71e5d5ff7dd7b4c62dd7e235a863",
+      "resolution": [
+        1100,
+        1400
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          -7.5e-05,
+          5.212315,
+          2.027284
+        ],
+        "target": [
+          -7.5e-05,
+          0.012315,
+          0.927284
+        ],
+        "orthographicScale": 2.131524
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "full-three-quarter",
+      "label": "FRONT THREE-QUARTER",
+      "purpose": "full_silhouette",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-three-quarter.png",
+      "bytes": 1616397,
+      "sha256": "6d69f2fc8798c3737f1528b98337cc799326329777d51e31836879e6b7f98b5a",
+      "resolution": [
+        1100,
+        1400
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          3.799925,
+          3.812315,
+          2.077283
+        ],
+        "target": [
+          -7.5e-05,
+          0.012315,
+          0.927284
+        ],
+        "orthographicScale": 2.131524
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "full-side",
+      "label": "RIGHT PROFILE",
+      "purpose": "full_silhouette",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-side.png",
+      "bytes": 1544512,
+      "sha256": "72f3cc9cd04adc3af1e6294ac3a5032f4a2c025bc0c19d8fdd2e85919906ab16",
+      "resolution": [
+        1100,
+        1400
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          5.199925,
+          0.012315,
+          2.027284
+        ],
+        "target": [
+          -7.5e-05,
+          0.012315,
+          0.927284
+        ],
+        "orthographicScale": 2.131524
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "full-rear",
+      "label": "FULL REAR",
+      "purpose": "full_silhouette",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-full-rear.png",
+      "bytes": 1568952,
+      "sha256": "fadeb84b276b8e260062daa8677fc793dc3f4525fb1e2be6117cc9d339f136b1",
+      "resolution": [
+        1100,
+        1400
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          -7.5e-05,
+          -5.187685,
+          2.027284
+        ],
+        "target": [
+          -7.5e-05,
+          0.012315,
+          0.927284
+        ],
+        "orthographicScale": 2.131524
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "helmet-front",
+      "label": "HELMET + VISOR FRONT",
+      "purpose": "helmet_visor_integration",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-helmet-front.png",
+      "bytes": 1640968,
+      "sha256": "451f1691691607efbd5ff971fad8bea3ef19293be0aaee2f6768a03ecc951bd9",
+      "resolution": [
+        1250,
+        1050
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          -0.0,
+          3.45,
+          1.824999
+        ],
+        "target": [
+          -0.0,
+          -0.05,
+          1.574999
+        ],
+        "orthographicScale": 0.58
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "helmet-three-quarter",
+      "label": "HELMET + VISOR THREE-QUARTER",
+      "purpose": "helmet_visor_integration",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-helmet-three-quarter.png",
+      "bytes": 1613432,
+      "sha256": "7d51ec75054f73f752a10cdd8dfa80b08478533de698da48c52da79ebe47d908",
+      "resolution": [
+        1250,
+        1050
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          2.7,
+          3.05,
+          1.854999
+        ],
+        "target": [
+          -0.0,
+          -0.05,
+          1.574999
+        ],
+        "orthographicScale": 0.62
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "torso-front",
+      "label": "CONNECTED TORSO ARMOR",
+      "purpose": "connected_armor_material_flow",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-torso-front.png",
+      "bytes": 1563654,
+      "sha256": "1d32d1d503f87632798e0f7449e8f551b038d9977b1584f52a27cf9393bf0879",
+      "resolution": [
+        1250,
+        1100
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          -0.0,
+          3.763,
+          1.550001
+        ],
+        "target": [
+          -0.0,
+          -0.037,
+          1.200001
+        ],
+        "orthographicScale": 1.04
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "boots-front",
+      "label": "BOOTS + FLOOR CONTACT",
+      "purpose": "footwear_alignment_floor_contact",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-boots-front.png",
+      "bytes": 1285607,
+      "sha256": "2297027f80b49091cb15885ed09261ab1cdccf64568d1aa2f7cd49e41f62bc4f",
+      "resolution": [
+        1250,
+        950
+      ],
+      "action": null,
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          0.0,
+          3.145,
+          0.445001
+        ],
+        "target": [
+          0.0,
+          -0.055,
+          0.165001
+        ],
+        "orthographicScale": 0.66
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.415344,
+          -0.113495,
+          -0.003
+        ],
+        "maximum": [
+          0.415194,
+          0.188126,
+          1.803376
+        ]
+      }
+    },
+    {
+      "name": "run-left-lead",
+      "label": "RUN LEFT LEAD",
+      "purpose": "full_silhouette",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-run-left-lead.png",
+      "bytes": 1662340,
+      "sha256": "e8773f133e1f0422f7954d0080a037514b299541fe42ddae31e29588ad23044d",
+      "resolution": [
+        1100,
+        1400
+      ],
+      "action": "KYX_REV17_TP_RUN",
+      "sampledFrame": 1,
+      "camera": {
+        "location": [
+          3.75214,
+          3.571822,
+          1.89879
+        ],
+        "target": [
+          -0.04786,
+          -0.228178,
+          0.74879
+        ],
+        "orthographicScale": 2.05
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.475026,
+          -0.780277,
+          -0.01321
+        ],
+        "maximum": [
+          0.379305,
+          0.373921,
+          1.466402
+        ]
+      }
+    },
+    {
+      "name": "airborne",
+      "label": "AIRBORNE LOOP",
+      "purpose": "full_silhouette",
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\evidence\\2026-08-01\\g6-assault-rev32\\direct-glb-review-v10\\kyx-assault-rev32-airborne.png",
+      "bytes": 1632702,
+      "sha256": "81368f80598088f933b5674d65bf863ba7f60ca08edd0845f6caa054d5074a2a",
+      "resolution": [
+        1100,
+        1400
+      ],
+      "action": "KYX_REV17_TP_AIRBORNE_LOOP",
+      "sampledFrame": 13,
+      "camera": {
+        "location": [
+          3.729109,
+          3.477598,
+          2.102266
+        ],
+        "target": [
+          -0.070891,
+          -0.322402,
+          0.952266
+        ],
+        "orthographicScale": 2.051952
+      },
+      "poseBounds": {
+        "minimum": [
+          -0.469936,
+          -0.769268,
+          0.056711
+        ],
+        "maximum": [
+          0.328155,
+          0.174464,
+          1.795653
+        ]
+      }
+    }
+  ],
+  "assertions": {
+    "exactGlbHashAndBytesUnchanged": true,
+    "freshImportHasTwoRuntimeMeshes": true,
+    "freshImportHasSingle66JointRig": true,
+    "allSixteenClipsPresent": true,
+    "noEmbeddedWeaponMesh": true,
+    "allReviewViewsRendered": true,
+    "runtimeTopologyUnchangedAcrossCapture": true
+  },
+  "visualDecision": "PENDING_EXPLICIT_HUMAN_REVIEW_NOT_G6",
+  "nonClaims": [
+    "Rendered images and structural assertions do not grant visual acceptance.",
+    "Sampled poses do not prove every-frame clipping freedom.",
+    "Weapon contact is intentionally outside this weapon-free base character export.",
+    "First-person arms, browser runtime selection, compression, and package budget remain open."
+  ]
+}

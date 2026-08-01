@@ -1,0 +1,1315 @@
+{
+  "checkpoint": "G6_ASSAULT_REV32_RUNTIME_REVIEW_CHARACTER",
+  "status": "RIGGED_RUNTIME_CANDIDATE_EXPORTED_VISUAL_RUNTIME_REVIEW_REQUIRED",
+  "generatedAtUtc": "2026-08-01T17:14:37.054523+00:00",
+  "sources": {
+    "presentationCandidate": {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-assault-rev32\\kyx-v6b-assault-rev32-source.blend",
+      "sha256Before": "7b4fd749dd2214309fcbfbc859d65e3f991ff646be8d7cc18f66f294c67b9014",
+      "sha256After": "7b4fd749dd2214309fcbfbc859d65e3f991ff646be8d7cc18f66f294c67b9014",
+      "preserved": true
+    },
+    "rev17RigMaster": {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6c-character-rev17\\kyx-v6c-character-rev17-master.blend",
+      "sha256Before": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+      "sha256After": "832f85562aacdface4d05d86158f9769a69572c99f3f22f98908b30cf986f7c8",
+      "preserved": true
+    }
+  },
+  "masterBlend": {
+    "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\source\\blender\\phase7-character-original-v6\\model\\v6b-assault-rev32\\kyx-v6b-assault-rev32-master.blend",
+    "bytes": 32823501,
+    "sha256": "9163ea6a8989e9ce1156eaaf5c9e23b0024e61670b4cf9bf97df1eb29e225164"
+  },
+  "runtimeMaterials": [
+    {
+      "material": "KYX_V6B_REV23_CyberSuit",
+      "paletteSource": "KYX_V6B_REV23_CyberSuit",
+      "baseColor": [
+        0.007,
+        0.015,
+        0.024,
+        1.0
+      ],
+      "metallic": 0.12,
+      "roughness": 0.58,
+      "method": "portable_constant_pbr_for_gltf"
+    },
+    {
+      "material": "KYX_V6B_REV23_CyberGlove",
+      "paletteSource": "KYX_V6B_REV23_CyberGlove",
+      "baseColor": [
+        0.003,
+        0.0075,
+        0.0125,
+        1.0
+      ],
+      "metallic": 0.08,
+      "roughness": 0.56,
+      "method": "portable_constant_pbr_for_gltf"
+    },
+    {
+      "material": "KYX_V6B_REV23_AgedIvorySteel",
+      "paletteSource": "KYX_V6B_REV23_AgedIvorySteel",
+      "baseColor": [
+        0.05,
+        0.064,
+        0.078,
+        1.0
+      ],
+      "metallic": 0.82,
+      "roughness": 0.4,
+      "method": "portable_constant_pbr_for_gltf"
+    },
+    {
+      "material": "KYX_V6B_REV23_GraphiteMetal",
+      "paletteSource": "KYX_V6B_REV23_GraphiteMetal",
+      "baseColor": [
+        0.006,
+        0.009,
+        0.013,
+        1.0
+      ],
+      "metallic": 0.72,
+      "roughness": 0.48,
+      "method": "portable_constant_pbr_for_gltf"
+    },
+    {
+      "material": "KYX_V6B_REV23_InsetBlack",
+      "paletteSource": "KYX_V6B_REV23_InsetBlack",
+      "baseColor": [
+        0.003,
+        0.01,
+        0.016,
+        1.0
+      ],
+      "metallic": 0.38,
+      "roughness": 0.52,
+      "method": "portable_constant_pbr_for_gltf"
+    },
+    {
+      "material": "KYX_V6B_REV23_MutedBrass",
+      "paletteSource": "KYX_V6B_REV23_MutedBrass",
+      "baseColor": [
+        0.1175,
+        0.0565,
+        0.014,
+        1.0
+      ],
+      "metallic": 0.82,
+      "roughness": 0.34,
+      "method": "portable_constant_pbr_for_gltf"
+    },
+    {
+      "material": "KYX_V6B_REV23_VisorGlass",
+      "paletteSource": "KYX_V6B_REV23_VisorGlass",
+      "baseColor": [
+        0.002,
+        0.032,
+        0.052,
+        1.0
+      ],
+      "metallic": 0.52,
+      "roughness": 0.12,
+      "method": "portable_constant_pbr_for_gltf"
+    }
+  ],
+  "sourceForwardAlignment": {
+    "sourceForward": "-Y",
+    "runtimeForward": "+Y",
+    "leftRightPreserved": true,
+    "objectsMirrored": [
+      {
+        "object": "KYX_V6A_AnatomySculpt_Eye.L",
+        "vertices": 546,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6A_AnatomySculpt_Eye.R",
+        "vertices": 546,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV22_HelmetLiner",
+        "vertices": 1106,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV22_SciFiHelmet_CC0",
+        "vertices": 64974,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV22_Visor",
+        "vertices": 36,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_AbdomenPlate_L",
+        "vertices": 21,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_AbdomenPlate_R",
+        "vertices": 21,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_BackPlate",
+        "vertices": 45,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ChestSeamGasket_L",
+        "vertices": 18,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ChestSeamGasket_R",
+        "vertices": 18,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ClavicleYoke_L",
+        "vertices": 15,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ClavicleYoke_R",
+        "vertices": 15,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_L_1",
+        "vertices": 48,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_L_2",
+        "vertices": 48,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_R_1",
+        "vertices": 48,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_R_2",
+        "vertices": 48,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_LumbarPlate",
+        "vertices": 27,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_NeckGorget",
+        "vertices": 384,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralPlate_L",
+        "vertices": 20,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralPlate_R",
+        "vertices": 20,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralVent_L",
+        "vertices": 12,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralVent_R",
+        "vertices": 12,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_RibPlate_L",
+        "vertices": 63,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_RibPlate_R",
+        "vertices": 63,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ShoulderBridge_L",
+        "vertices": 25,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ShoulderBridge_R",
+        "vertices": 25,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ShoulderCap_L",
+        "vertices": 20,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_ShoulderCap_R",
+        "vertices": 20,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_SternumSpine",
+        "vertices": 25,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_YokeGasket_L",
+        "vertices": 14,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_REV23_YokeGasket_R",
+        "vertices": 14,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootCuff_L",
+        "vertices": 192,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootCuff_R",
+        "vertices": 192,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootOutsole_L",
+        "vertices": 8,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootOutsole_R",
+        "vertices": 8,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootUpper_L",
+        "vertices": 128,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootUpper_R",
+        "vertices": 128,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV2_NarrowWaistBreak",
+        "vertices": 128,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV9_ContinuousBodysuit",
+        "vertices": 10582,
+        "method": "world_y_mirror_preserve_anatomical_x"
+      }
+    ]
+  },
+  "constructedRuntimeParts": [
+    {
+      "name": "KYX_REV24_RuntimeWaistFlexGasket",
+      "role": "continuous inset-black articulated waist flex gasket"
+    },
+    {
+      "name": "KYX_REV24_RuntimeWaistPlate_Front_L",
+      "role": "segmented overlapping waist plate with visible flex gaps"
+    },
+    {
+      "name": "KYX_REV24_RuntimeWaistPlate_Front_R",
+      "role": "segmented overlapping waist plate with visible flex gaps"
+    },
+    {
+      "name": "KYX_REV24_RuntimeWaistPlate_Lumbar",
+      "role": "segmented overlapping waist plate with visible flex gaps"
+    },
+    {
+      "name": "KYX_REV24_RoundedShoulderCap_L",
+      "role": "rounded upper-arm shoulder shell without pointed corners"
+    },
+    {
+      "name": "KYX_REV24_ConnectedClavicleYoke_L",
+      "role": "connected rounded clavicle-to-shoulder transition"
+    },
+    {
+      "name": "KYX_REV24_RoundedShoulderCap_R",
+      "role": "rounded upper-arm shoulder shell without pointed corners"
+    },
+    {
+      "name": "KYX_REV24_ConnectedClavicleYoke_R",
+      "role": "connected rounded clavicle-to-shoulder transition"
+    },
+    {
+      "name": "KYX_REV32_AssaultIntegratedVisor",
+      "role": "continuous fitted dark sapphire eye-line visor"
+    },
+    {
+      "name": "KYX_REV32_AssaultVisorBrowRail",
+      "role": "continuous visor brow frame"
+    },
+    {
+      "name": "KYX_REV32_AssaultVisorSillRail",
+      "role": "continuous visor sill frame"
+    },
+    {
+      "name": "KYX_REV32_AssaultVisorTemple_L",
+      "role": "left fitted visor edge frame"
+    },
+    {
+      "name": "KYX_REV32_AssaultVisorTemple_R",
+      "role": "right fitted visor edge frame"
+    },
+    {
+      "name": "KYX_REV32_AssaultCrownSpine",
+      "role": "continuous visor-to-crown helmet spine"
+    }
+  ],
+  "rig": {
+    "name": "KYX_REV32_ASSAULT_RIG_66_JOINT_WITH_SOCKETS",
+    "bones": 66,
+    "nlaTracks": 16,
+    "actions": [
+      "KYX_REV17_FP_AIRBORNE",
+      "KYX_REV17_FP_FIRE",
+      "KYX_REV17_FP_IDLE",
+      "KYX_REV17_FP_LAND",
+      "KYX_REV17_FP_RELOAD",
+      "KYX_REV17_FP_SPRINT",
+      "KYX_REV17_TP_AIRBORNE_LOOP",
+      "KYX_REV17_TP_DEATH_FRONT",
+      "KYX_REV17_TP_HIT_REACTION_FRONT",
+      "KYX_REV17_TP_IDLE",
+      "KYX_REV17_TP_JUMP_START",
+      "KYX_REV17_TP_LAND",
+      "KYX_REV17_TP_PRIMARY_FIRE",
+      "KYX_REV17_TP_RELOAD",
+      "KYX_REV17_TP_RUN",
+      "KYX_REV17_TP_WALK"
+    ],
+    "expectedThirdPersonActionsPresent": true
+  },
+  "body": {
+    "surfaceModifiers": [
+      {
+        "name": "Multires",
+        "type": "MULTIRES",
+        "action": "removed_runtime_excess"
+      },
+      {
+        "name": "TechnicalSuitModestySmoothing",
+        "type": "SMOOTH",
+        "action": "applied"
+      }
+    ],
+    "runtimeProportions": {
+      "method": "preserve_authored_v6a_anatomical_proportions",
+      "changedVertices": 0,
+      "regionVertexCounts": {},
+      "maximumDisplacementMeters": 0.0,
+      "topologyChanged": false
+    },
+    "gloveGeometry": {
+      "method": "preserve_authored_continuous_glove_geometry",
+      "changedVertices": 0,
+      "maximumDisplacementMeters": 0.0,
+      "topologyChanged": false
+    },
+    "bootUnderlay": {
+      "method": "complete_authored_boot_shell_hides_deleted_foot_helper",
+      "replacedSlots": [],
+      "maskedSlots": [
+        {
+          "slot": 3,
+          "source": "KYX_V6B_TACTICAL_REV21_BootOcclusionMask"
+        }
+      ],
+      "visible": false
+    },
+    "occlusionFaces": {
+      "removedFaces": 6108,
+      "materialIndices": [
+        3,
+        4
+      ],
+      "method": "delete_head_mask_and_fully_enclosed_foot_helper_keep_authored_boot_shell"
+    },
+    "weightTransfer": {
+      "method": "exact_vertex_index_from_rev17_continuous_body",
+      "vertices": 10582,
+      "groups": 52,
+      "assignments": 21299,
+      "maximumInfluences": 4
+    },
+    "influencePruning": {
+      "maximumInfluences": 4,
+      "changedVertices": 0,
+      "removedAssignments": 0
+    },
+    "runtime": {
+      "vertices": 10582,
+      "groups": 52,
+      "underweightedVertices": 0,
+      "overFourInfluenceVertices": 0,
+      "minimumWeightTotal": 1.0,
+      "maximumWeightTotal": 1.0
+    }
+  },
+  "armor": {
+    "piecesJoined": 42,
+    "surfaceWeightedPieces": [
+      {
+        "method": "inherited_articulated_weights_from_proven_rev17_footwear",
+        "weightsPreserved": false
+      },
+      {
+        "object": "KYX_REV24_ConnectedClavicleYoke_L",
+        "bone": "clavicle.L",
+        "vertices": 282,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "KYX_REV24_YokeRound",
+            "type": "SUBSURF",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_YokeThickness",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_YokeEdge",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_ConnectedClavicleYoke_R",
+        "bone": "clavicle.R",
+        "vertices": 282,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "KYX_REV24_YokeRound",
+            "type": "SUBSURF",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_YokeThickness",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_YokeEdge",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_RoundedShoulderCap_L",
+        "bone": "upper_arm.L",
+        "vertices": 326,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "KYX_REV24_ShoulderRound",
+            "type": "SUBSURF",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_ShoulderThickness",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_ShoulderEdge",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_RoundedShoulderCap_R",
+        "bone": "upper_arm.R",
+        "vertices": 326,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "KYX_REV24_ShoulderRound",
+            "type": "SUBSURF",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_ShoulderThickness",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV24_ShoulderEdge",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_RuntimeWaistFlexGasket",
+        "bone": "spine_01",
+        "vertices": 674,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FIXED_BAND_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_FIXED_BAND_EDGE_SOFTENING",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_RuntimeWaistPlate_Front_L",
+        "bone": "spine_01",
+        "vertices": 228,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FIXED_BAND_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_FIXED_BAND_EDGE_SOFTENING",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_RuntimeWaistPlate_Front_R",
+        "bone": "spine_01",
+        "vertices": 228,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FIXED_BAND_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_FIXED_BAND_EDGE_SOFTENING",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_REV24_RuntimeWaistPlate_Lumbar",
+        "bone": "spine_01",
+        "vertices": 572,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FIXED_BAND_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_FIXED_BAND_EDGE_SOFTENING",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_AbdomenPlate_L",
+        "bone": "spine_01",
+        "vertices": 218,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_AbdomenPlate_R",
+        "bone": "spine_01",
+        "vertices": 218,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_BackPlate",
+        "bone": "chest",
+        "vertices": 380,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_ChestSeamGasket_L",
+        "bone": "chest",
+        "vertices": 208,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_ChestSeamGasket_R",
+        "bone": "chest",
+        "vertices": 208,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_L_1",
+        "bone": "chest",
+        "vertices": 192,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FASTENER_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_L_2",
+        "bone": "chest",
+        "vertices": 192,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FASTENER_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_R_1",
+        "bone": "chest",
+        "vertices": 192,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FASTENER_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_Fastener_R_2",
+        "bone": "chest",
+        "vertices": 192,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FASTENER_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_LumbarPlate",
+        "bone": "spine_01",
+        "vertices": 294,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_NeckGorget",
+        "bone": "chest",
+        "vertices": 1876,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_GORGET_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_GORGET_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralPlate_L",
+        "bone": "chest",
+        "vertices": 204,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralPlate_R",
+        "bone": "chest",
+        "vertices": 204,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralVent_L",
+        "bone": "chest",
+        "vertices": 164,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_PectoralVent_R",
+        "bone": "chest",
+        "vertices": 164,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_RibPlate_L",
+        "bone": "chest",
+        "vertices": 443,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_RibPlate_R",
+        "bone": "chest",
+        "vertices": 450,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_SternumSpine",
+        "bone": "chest",
+        "vertices": 210,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_YokeGasket_L",
+        "bone": "chest",
+        "vertices": 160,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_REV23_YokeGasket_R",
+        "bone": "chest",
+        "vertices": 160,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_FUNCTIONAL_PLATE_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_ROUNDED_METAL_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootCuff_L",
+        "bone": "foot_anchor.L",
+        "vertices": 768,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_BOOT_CUFF_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_BOOT_CUFF_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootCuff_R",
+        "bone": "foot_anchor.R",
+        "vertices": 768,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_BOOT_CUFF_THICKNESS",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "02_BOOT_CUFF_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootOutsole_L",
+        "bone": "foot_anchor.L",
+        "vertices": 152,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_ROUNDED_OUTSOLE_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootOutsole_R",
+        "bone": "foot_anchor.R",
+        "vertices": 152,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_ROUNDED_OUTSOLE_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootUpper_L",
+        "bone": "foot_anchor.L",
+        "vertices": 645,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_BOOT_LOFT_SUBDIVISION",
+            "type": "SUBSURF",
+            "action": "applied"
+          },
+          {
+            "name": "02_BOOT_UPPER_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      },
+      {
+        "object": "KYX_V6B_TACTICAL_REV21_BootUpper_R",
+        "bone": "foot_anchor.R",
+        "vertices": 645,
+        "method": "single_bone_articulated_hard_surface_attachment",
+        "surfaceModifiers": [
+          {
+            "name": "01_BOOT_LOFT_SUBDIVISION",
+            "type": "SUBSURF",
+            "action": "applied"
+          },
+          {
+            "name": "02_BOOT_UPPER_EDGE",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ]
+      }
+    ],
+    "headRigidPieces": [
+      {
+        "object": "KYX_REV32_AssaultCrownSpine",
+        "bone": "head",
+        "vertices": 490,
+        "surfaceModifiers": [],
+        "weld": null
+      },
+      {
+        "object": "KYX_REV32_AssaultIntegratedVisor",
+        "bone": "head",
+        "vertices": 240,
+        "surfaceModifiers": [
+          {
+            "name": "KYX_REV32_VisorThickness",
+            "type": "SOLIDIFY",
+            "action": "applied"
+          },
+          {
+            "name": "KYX_REV32_VisorEdge",
+            "type": "BEVEL",
+            "action": "applied"
+          }
+        ],
+        "weld": null
+      },
+      {
+        "object": "KYX_REV32_AssaultVisorBrowRail",
+        "bone": "head",
+        "vertices": 490,
+        "surfaceModifiers": [],
+        "weld": null
+      },
+      {
+        "object": "KYX_REV32_AssaultVisorSillRail",
+        "bone": "head",
+        "vertices": 490,
+        "surfaceModifiers": [],
+        "weld": null
+      },
+      {
+        "object": "KYX_REV32_AssaultVisorTemple_L",
+        "bone": "head",
+        "vertices": 250,
+        "surfaceModifiers": [],
+        "weld": null
+      },
+      {
+        "object": "KYX_REV32_AssaultVisorTemple_R",
+        "bone": "head",
+        "vertices": 250,
+        "surfaceModifiers": [],
+        "weld": null
+      },
+      {
+        "object": "KYX_V6B_REV22_HelmetLiner",
+        "bone": "head",
+        "vertices": 1106,
+        "surfaceModifiers": [],
+        "weld": null
+      },
+      {
+        "object": "KYX_V6B_REV22_SciFiHelmet_CC0",
+        "bone": "head",
+        "vertices": 11098,
+        "surfaceModifiers": [],
+        "weld": {
+          "object": "KYX_V6B_REV22_SciFiHelmet_CC0",
+          "verticesBefore": 64974,
+          "trianglesBefore": 21658,
+          "verticesAfterWeld": 11098,
+          "trianglesAfterWeld": 21658,
+          "verticesFinal": 11098,
+          "trianglesFinal": 21658,
+          "weldDistanceMeters": 1e-05
+        }
+      }
+    ],
+    "postProportionTorsoFit": [],
+    "footwearFit": [],
+    "influencePruning": {
+      "maximumInfluences": 4,
+      "changedVertices": 0,
+      "removedAssignments": 0
+    },
+    "runtime": {
+      "vertices": 26791,
+      "groups": 9,
+      "underweightedVertices": 0,
+      "overFourInfluenceVertices": 0,
+      "minimumWeightTotal": 1.0,
+      "maximumWeightTotal": 1.0
+    }
+  },
+  "animationCorrections": {
+    "weaponContact": {
+      "embeddedWeapon": false,
+      "ownership": "equipped runtime weapon and socket adapter",
+      "status": "NOT_CLAIMED_BY_CHARACTER_REVIEW_EXPORT",
+      "reason": "base character GLBs must not overlap the equipped weapon model"
+    }
+  },
+  "eyes": [
+    {
+      "object": "KYX_V6A_AnatomySculpt_Eye.L",
+      "action": "removed_fully_enclosed_review_geometry",
+      "reason": "prevents transformed eye helper debris outside the helmet"
+    },
+    {
+      "object": "KYX_V6A_AnatomySculpt_Eye.R",
+      "action": "removed_fully_enclosed_review_geometry",
+      "reason": "prevents transformed eye helper debris outside the helmet"
+    }
+  ],
+  "lods": {
+    "lod1": {
+      "body": {
+        "ratio": 0.55,
+        "verticesBefore": 10582,
+        "verticesAfter": 8565,
+        "trianglesBefore": 8964,
+        "trianglesAfter": 4930
+      },
+      "armor": {
+        "ratio": 0.52,
+        "verticesBefore": 26791,
+        "verticesAfter": 14106,
+        "trianglesBefore": 52816,
+        "trianglesAfter": 27464
+      }
+    },
+    "lod2": {
+      "body": {
+        "ratio": 0.28,
+        "verticesBefore": 10582,
+        "verticesAfter": 7354,
+        "trianglesBefore": 8964,
+        "trianglesAfter": 2508
+      },
+      "armor": {
+        "ratio": 0.24,
+        "verticesBefore": 26791,
+        "verticesAfter": 6663,
+        "trianglesBefore": 52816,
+        "trianglesAfter": 12675
+      }
+    }
+  },
+  "lodInfluencePruning": {
+    "lod1": {
+      "body": {
+        "maximumInfluences": 4,
+        "changedVertices": 26,
+        "removedAssignments": 26
+      },
+      "armor": {
+        "maximumInfluences": 4,
+        "changedVertices": 0,
+        "removedAssignments": 0
+      }
+    },
+    "lod2": {
+      "body": {
+        "maximumInfluences": 4,
+        "changedVertices": 46,
+        "removedAssignments": 46
+      },
+      "armor": {
+        "maximumInfluences": 4,
+        "changedVertices": 0,
+        "removedAssignments": 0
+      }
+    }
+  },
+  "exports": {
+    "lod0": {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod0.runtime-candidate.glb",
+      "bytes": 24804780,
+      "sha256": "939737b7f145c80a07c528621efc16b55dfe790c02e3eba9af407e9bcef8e2e9",
+      "meshes": [
+        {
+          "name": "KYX_REV32_ASSAULT_LOD0_CONTINUOUS_CYBERSUIT",
+          "vertices": 10582,
+          "triangles": 8964
+        },
+        {
+          "name": "KYX_REV32_ASSAULT_LOD0_CONNECTED_ARMOR_HELMET",
+          "vertices": 26791,
+          "triangles": 52816
+        }
+      ]
+    },
+    "lod1": {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod1.runtime-candidate.glb",
+      "bytes": 23598128,
+      "sha256": "ba08d337ce56737b8dc4968455408392fefc0425a2ef846779c1f49501dcd196",
+      "meshes": [
+        {
+          "name": "KYX_REV32_ASSAULT_LOD1_CONTINUOUS_CYBERSUIT",
+          "vertices": 8565,
+          "triangles": 4930
+        },
+        {
+          "name": "KYX_REV32_ASSAULT_LOD1_CONNECTED_ARMOR_HELMET",
+          "vertices": 14106,
+          "triangles": 27464
+        }
+      ]
+    },
+    "lod2": {
+      "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-g6-assault-rev32-20260801\\assets\\review\\runtime-candidates\\g6-assault-rev32\\kyx-g6-assault-rev32-lod2.runtime-candidate.glb",
+      "bytes": 22988468,
+      "sha256": "a504674cd82c69a4c471b498ec633c67e139de444a86d99d9524719e5ba6a97d",
+      "meshes": [
+        {
+          "name": "KYX_REV32_ASSAULT_LOD2_CONTINUOUS_CYBERSUIT",
+          "vertices": 7354,
+          "triangles": 2508
+        },
+        {
+          "name": "KYX_REV32_ASSAULT_LOD2_CONNECTED_ARMOR_HELMET",
+          "vertices": 6663,
+          "triangles": 12675
+        }
+      ]
+    }
+  },
+  "claims": {
+    "rigged": true,
+    "skinned": true,
+    "animated": true,
+    "socketContractPreserved": true,
+    "lod0Lod1Lod2Exported": true,
+    "embeddedWeapon": false,
+    "presentationSourceMutated": false,
+    "humanVisualAcceptance": false,
+    "runtimeAcceptance": false
+  }
+}

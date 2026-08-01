@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "assetId": "g6.rev32.assault-character-lod1",
+  "kind": "character",
+  "releaseEligible": false,
+  "sourceHash": "7b4fd749dd2214309fcbfbc859d65e3f991ff646be8d7cc18f66f294c67b9014",
+  "sourceHashKind": "canonical_source",
+  "runtime": {
+    "uri": "assets/review/runtime-candidates/g6-assault-rev32/kyx-g6-assault-rev32-lod1.runtime-candidate.glb",
+    "hash": "ba08d337ce56737b8dc4968455408392fefc0425a2ef846779c1f49501dcd196",
+    "bytes": 23598128
+  },
+  "budgets": {
+    "triangles": 32394,
+    "primitives": 8,
+    "materials": 8,
+    "nodes": 69,
+    "bones": 66,
+    "clips": 16,
+    "textures": 3,
+    "estimatedTextureBytes": null,
+    "waiverId": null
+  },
+  "validation": {
+    "structuralInspector": "kyx_binary_inspector_v1+blender_5_1_direct_import",
+    "structuralStatus": "passed",
+    "externalGltfValidator": "not_run",
+    "externalGltfReport": null,
+    "errors": [],
+    "warnings": [
+      "G6_HUMAN_VISUAL_ACCEPTANCE_REQUIRED",
+      "EXTERNAL_GLTF_VALIDATION_NOT_RUN",
+      "BROWSER_PACKAGE_BUDGET_NOT_MET",
+      "DISTANCE_READABILITY_NOT_RUNTIME_PROVEN"
+    ]
+  },
+  "provenance": {
+    "status": "verified",
+    "creator": "KYX.IO authored Assault suit and adaptation over the V6-A CC0 anatomy foundation with the Khronos SciFiHelmet CC0 source",
+    "source": "assets/source/blender/phase7-character-original-v6/model/v6b-assault-rev32/kyx-v6b-assault-rev32-source.blend",
+    "acquiredAt": "2026-08-01",
+    "license": "CC0-1.0 anatomy and helmet sources; project-authored derivative review candidate",
+    "licenseSnapshot": "assets/source/third-party/khronos-scifihelmet-rev32/LICENSE.md",
+    "attribution": "SciFiHelmet by Michael Pavlovic, glTF conversion by Norbert Nopper, CC0-1.0; V6-A anatomy provenance remains in the project source records",
+    "reviewer": "G6 Assault Rev32 direct-GLB structural review",
+    "notes": "Review-only generated LOD1. Runtime selection, distance readability, package budget, and visual acceptance remain open."
+  },
+  "disposition": "candidate"
+}
