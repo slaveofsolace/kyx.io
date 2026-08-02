@@ -4,7 +4,7 @@ import { LocalInkfallPracticeInputBuffer } from '../../../src/app/localInkfallPr
 import { INTENT_BUTTON } from '../../../src/sim';
 
 describe('local Inkfall Practice input buffer', () => {
-  it('preserves sub-tick button edges and commits Blink on Q release', () => {
+  it('publishes sub-tick taps across valid authority commands', () => {
     const input = new LocalInkfallPracticeInputBuffer();
 
     input.handleKey('Space', true);
@@ -14,11 +14,18 @@ describe('local Inkfall Practice input buffer', () => {
     input.handleKey('KeyQ', false);
 
     const tick = input.consume();
-    expect(tick.heldButtons).toBe(0);
+    expect(tick.heldButtons & INTENT_BUTTON.jump).toBe(INTENT_BUTTON.jump);
+    expect(tick.heldButtons & INTENT_BUTTON.utility).toBe(INTENT_BUTTON.utility);
     expect(tick.pressedButtons & INTENT_BUTTON.jump).toBe(INTENT_BUTTON.jump);
-    expect(tick.releasedButtons & INTENT_BUTTON.jump).toBe(INTENT_BUTTON.jump);
     expect(tick.pressedButtons & INTENT_BUTTON.utility).toBe(INTENT_BUTTON.utility);
-    expect(tick.releasedButtons & INTENT_BUTTON.utility).toBe(INTENT_BUTTON.utility);
+    expect(tick.releasedButtons).toBe(0);
+
+    const releaseTick = input.consume();
+    expect(releaseTick.heldButtons).toBe(0);
+    expect(releaseTick.pressedButtons).toBe(0);
+    expect(releaseTick.releasedButtons & INTENT_BUTTON.jump).toBe(INTENT_BUTTON.jump);
+    expect(releaseTick.releasedButtons & INTENT_BUTTON.utility)
+      .toBe(INTENT_BUTTON.utility);
     expect(input.consume()).toMatchObject({ pressedButtons: 0, releasedButtons: 0 });
   });
 

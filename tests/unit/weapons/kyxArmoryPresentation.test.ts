@@ -130,10 +130,10 @@ describe('KYX first-person armory presentation', () => {
     )).toBeDefined();
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_DOMINANT_GRIP_CONTACT',
-    )?.position.toArray()).toEqual([0, -0.115, 0.19]);
+    )?.position.toArray()).toEqual([0.065, -0.115, 0.2]);
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_SUPPORT_GRIP_CONTACT',
-    )?.position.toArray()).toEqual([-0.024, -0.066, -0.338]);
+    )?.position.toArray()).toEqual([-0.075, -0.082, -0.325]);
     expect(firstPersonRifle.group.getObjectByName(
       'KYX_VLR7_REFLEX_LENS',
     )).toBeDefined();
@@ -166,7 +166,7 @@ describe('KYX first-person armory presentation', () => {
       'KYX_VLR7_LINE_RIFLE_VISUAL',
     )).toHaveLength(1);
     expect(firstPersonRifle.group.userData).toMatchObject({
-      firstPersonContactMode: 'authored_two_hand_assault_suit_v5',
+      firstPersonContactMode: 'profiled_two_hand_assault_suit_v9',
       firstPersonHandCount: 2,
     });
     expect(firstPersonRifle.firstPersonContactRig?.userData).toMatchObject({
@@ -183,7 +183,7 @@ describe('KYX first-person armory presentation', () => {
       const gauntlet = firstPersonRifle.group.getObjectByName(
         `KYX_VLR7_${prefix}_GAUNTLET_DORSAL_PLATE`,
       ) as THREE.Mesh<THREE.BoxGeometry> | undefined;
-      expect(gauntlet?.geometry.parameters.width).toBe(0.068);
+      expect(gauntlet?.geometry.parameters.width).toBe(0.069);
     }
 
     const worldRifle = createKyxWeaponPresentationModel(

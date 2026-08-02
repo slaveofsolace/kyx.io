@@ -37,6 +37,7 @@ interface LocalPracticeDiagnosticsV1 {
   readonly acceptedInputs: number;
   readonly missedSchedulerTicks: number;
   readonly pointerLocked: boolean;
+  readonly aimHeld: boolean;
   readonly recentReliableEvents: number;
   readonly launch: Readonly<{
     readonly acceptedThrowCount: number;
@@ -494,6 +495,7 @@ export async function mountLocalInkfallPracticeRoute(
       acceptedInputs: metrics.acceptedInputs,
       missedSchedulerTicks: metrics.missedSchedulerTicks,
       pointerLocked,
+      aimHeld: input.aimHeld,
       recentReliableEvents: recentEvents.length,
       launch: Object.freeze({
         acceptedThrowCount: countLaunchEvents('impulse_grenade_throw_accepted'),

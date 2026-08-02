@@ -280,11 +280,16 @@ async function loadRev5Visual(
   return loadInkfallRev5ReviewVisual();
 }
 
-async function loadStagingWeaponReview(): Promise<void> {
-  if (import.meta.env.MODE !== 'staging-review') return;
-  const { loadKyxVlr7QuaterniusReview } = await import(
-    '../dev/loadKyxVlr7QuaterniusReview'
-  );
+async function loadVlr7ReviewShell(): Promise<void> {
+  if (import.meta.env.MODE !== 'staging-review' && !import.meta.env.DEV) return;
+  const developmentReviewModulePath =
+    '../dev/loadKyxVlr7QuaterniusReview.ts';
+  const reviewModule = import.meta.env.MODE === 'staging-review'
+    ? await import('../dev/loadKyxVlr7QuaterniusReview')
+    : await import(
+      /* @vite-ignore */ developmentReviewModulePath
+    );
+  const { loadKyxVlr7QuaterniusReview } = reviewModule;
   await loadKyxVlr7QuaterniusReview();
 }
 
@@ -510,7 +515,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const [loadedVisual] = await Promise.all([
     loadRev5Visual(mapBinding),
     ensureHumanSoldierReady(),
-    loadStagingWeaponReview(),
+    loadVlr7ReviewShell(),
   ]);
   const renderer = new THREE.WebGLRenderer({
     canvas,

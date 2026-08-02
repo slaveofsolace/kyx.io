@@ -685,6 +685,7 @@ export function createOnlineWeaponPresentationFx(
     family: KyxWeaponFamily,
     color: number,
     nowMilliseconds: number,
+    local: boolean,
   ): void => {
     if (family === 'melee') return;
     const group = new THREE.Group();
@@ -693,7 +694,7 @@ export function createOnlineWeaponPresentationFx(
       new THREE.Vector3(0, 0, -1),
       direction.clone().normalize(),
     );
-    const size = family === 'rocket'
+    const worldSize = family === 'rocket'
       ? 0.42
       : family === 'shotgun'
         ? 0.28
@@ -702,17 +703,21 @@ export function createOnlineWeaponPresentationFx(
           : family === 'pistol'
             ? 0.17
             : 0.18;
+    // A world-scale flash placed centimeters from the first-person camera
+    // blooms into a screen-filling white polygon. Preserve the readable remote
+    // silhouette while using a compact, shorter-lived local flash.
+    const size = worldSize * (local ? 0.42 : 1);
     const coreMaterial = new THREE.MeshBasicMaterial({
       color: 0xfff1c4,
       transparent: true,
-      opacity: 0.98,
+      opacity: local ? 0.72 : 0.98,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
     const accentMaterial = new THREE.MeshBasicMaterial({
       color,
       transparent: true,
-      opacity: 0.86,
+      opacity: local ? 0.58 : 0.86,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
@@ -732,13 +737,17 @@ export function createOnlineWeaponPresentationFx(
       flare.position.z = -size * 0.3;
       group.add(flare);
     }
-    const light = new THREE.PointLight(color, family === 'rocket' ? 8 : 4, 4);
+    const light = new THREE.PointLight(
+      color,
+      local ? 1.4 : family === 'rocket' ? 8 : 4,
+      local ? 2 : 4,
+    );
     group.add(light);
     addTransient(
       group,
       'flash',
       nowMilliseconds,
-      family === 'rocket' ? 160 : 145,
+      local ? 78 : family === 'rocket' ? 160 : 145,
     );
   };
 
@@ -891,6 +900,7 @@ export function createOnlineWeaponPresentationFx(
       context.weapon.family,
       context.weapon.accent,
       context.nowMilliseconds,
+      context.local,
     );
     if (context.event.attackModel === 'pellet_hitscan') {
       const ballistics = context.event.ballistics.length > 0

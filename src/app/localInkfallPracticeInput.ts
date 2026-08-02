@@ -24,6 +24,7 @@ export class LocalInkfallPracticeInputBuffer {
   private pointerPrimaryHeld = false;
   private pointerAimHeld = false;
   private currentHeldButtons = 0;
+  private publishedHeldButtons = 0;
   private pendingPressedButtons = 0;
   private pendingReleasedButtons = 0;
   private pendingYawMilliDegrees = 0;
@@ -95,16 +96,36 @@ export class LocalInkfallPracticeInputBuffer {
 
   consume(): LocalInkfallPracticeInput {
     const axes = axesFromPressedKeys(this.keys);
+    // The wire protocol intentionally rejects a pressed and released edge for
+    // the same button in one command. Preserve a sub-tick tap by publishing it
+    // as held+pressed for one authority tick, then emit its release on the next
+    // tick. This keeps very fast clicks and key taps deterministic without
+    // weakening the protocol contract or dropping the action.
+    const pulseButtons = (
+      this.pendingPressedButtons
+      & this.pendingReleasedButtons
+      & ~this.currentHeldButtons
+    ) >>> 0;
+    const publishedHeldButtons = (
+      this.currentHeldButtons | pulseButtons
+    ) >>> 0;
+    const publishedPressedButtons = (
+      publishedHeldButtons & ~this.publishedHeldButtons
+    ) >>> 0;
+    const publishedReleasedButtons = (
+      this.publishedHeldButtons & ~publishedHeldButtons
+    ) >>> 0;
     const result = Object.freeze({
       moveX: axes.moveX,
       moveY: axes.moveY,
       lookYawDeltaMilliDegrees: this.pendingYawMilliDegrees,
       lookPitchDeltaMilliDegrees: this.pendingPitchMilliDegrees,
-      heldButtons: this.currentHeldButtons,
-      pressedButtons: this.pendingPressedButtons >>> 0,
-      releasedButtons: this.pendingReleasedButtons >>> 0,
+      heldButtons: publishedHeldButtons,
+      pressedButtons: publishedPressedButtons,
+      releasedButtons: publishedReleasedButtons,
       selectedSlot: this.selectedSlot,
     });
+    this.publishedHeldButtons = publishedHeldButtons;
     this.pendingPressedButtons = 0;
     this.pendingReleasedButtons = 0;
     this.pendingYawMilliDegrees = 0;
