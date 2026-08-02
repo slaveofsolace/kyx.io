@@ -81,9 +81,9 @@ function createEntryGate(): Readonly<{
   root.setAttribute('role', 'dialog');
   root.setAttribute('aria-labelledby', 'local-practice-gate-title');
   root.innerHTML = `
-    <div class="local-practice-gate__index">Local authority / Inkfall Foundry</div>
+    <div class="local-practice-gate__index">Inkfall Foundry / local authority</div>
     <h1 id="local-practice-gate-title">Enter the arena</h1>
-    <p class="local-practice-gate__brief">Eight combatants. Exact 20 Hz authority. Mouse capture is released with Escape.</p>
+    <p class="local-practice-gate__brief">Eight combatants share one exact 20 Hz authority simulation. Escape releases mouse capture.</p>
     <dl class="local-practice-gate__controls">
       <div><dt>Move</dt><dd>W A S D</dd></div>
       <div><dt>Fight</dt><dd>Mouse / R / 1–6</dd></div>

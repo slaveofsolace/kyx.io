@@ -2900,6 +2900,75 @@ body[data-ui-system="cutline-v1"] .online-session__controls {
   gap: 10px !important;
 }
 
+/*
+ * Keep the desktop ability instrument out of the first-person weapon envelope.
+ * The prior centered rail put F/Z directly behind the rifle at 1440x900 and
+ * made live cooldown information unreadable.  Vitals, abilities, and weapon
+ * now form a left-to-right baseline while the reticle and lower-right viewmodel
+ * retain clear space.  Narrow layouts return to the centered treatment below.
+ */
+@media (min-width: 901px) {
+  body[data-ui-system="cutline-v1"] #ability-rack {
+    left: clamp(248px, 19vw, 486px) !important;
+    transform: scale(var(--hud-scale-value)) !important;
+    transform-origin: bottom left !important;
+  }
+
+  body[data-ui-system="cutline-v1"] .online-session__controls {
+    left: clamp(248px, 19vw, 486px) !important;
+    transform: none !important;
+    transform-origin: bottom left !important;
+  }
+
+  body[data-ui-system="cutline-v1"] #hud-vitals,
+  body[data-ui-system="cutline-v1"] #weapon-wrap,
+  body[data-ui-system="cutline-v1"] #ability-rack,
+  body[data-ui-system="cutline-v1"] .online-session__controls {
+    isolation: isolate;
+  }
+
+  body[data-ui-system="cutline-v1"] #hud-vitals::before,
+  body[data-ui-system="cutline-v1"] #weapon-wrap::before,
+  body[data-ui-system="cutline-v1"] #ability-rack::before,
+  body[data-ui-system="cutline-v1"] .online-session__controls::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  body[data-ui-system="cutline-v1"] #hud-vitals::before {
+    inset: -11px -24px -10px -14px;
+    background: linear-gradient(90deg, rgba(3, 6, 8, 0.82), rgba(3, 6, 8, 0.48) 66%, transparent);
+  }
+
+  body[data-ui-system="cutline-v1"] #weapon-wrap::before {
+    inset: -11px -14px -10px -24px;
+    background: linear-gradient(270deg, rgba(3, 6, 8, 0.82), rgba(3, 6, 8, 0.48) 66%, transparent);
+  }
+
+  body[data-ui-system="cutline-v1"] #ability-rack::before,
+  body[data-ui-system="cutline-v1"] .online-session__controls::before {
+    inset: -10px -14px -10px;
+    background: linear-gradient(180deg, transparent, rgba(3, 6, 8, 0.72));
+  }
+}
+
+body[data-ui-system="cutline-v1"] #score-wrap {
+  background: linear-gradient(90deg, transparent, rgba(3, 6, 8, 0.72) 28%, rgba(3, 6, 8, 0.72) 72%, transparent) !important;
+  text-shadow: 0 1px 3px #000, 0 0 12px #000;
+}
+
+body[data-ui-system="cutline-v1"] .hud-score-metrics small {
+  color: #bcc4c0;
+  font-size: 11px;
+}
+
+body[data-ui-system="cutline-v1"] #kill-count,
+body[data-ui-system="cutline-v1"] #score-count {
+  font-size: 28px;
+}
+
 body[data-ui-system="cutline-v1"] #ability-rack .ability-slot,
 body[data-ui-system="cutline-v1"] #ability-rack #ability-q,
 body[data-ui-system="cutline-v1"] .online-session__control--ability {
@@ -3446,9 +3515,12 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
 @media (max-width: 900px) {
   body[data-ui-system="cutline-v1"] #ability-rack,
   body[data-ui-system="cutline-v1"] .online-session__controls {
+    left: 50% !important;
     width: min(400px, calc(100vw - 32px)) !important;
     min-width: 0 !important;
     gap: 6px !important;
+    transform: translateX(-50%) scale(var(--hud-scale-value)) !important;
+    transform-origin: bottom center !important;
   }
 
   body[data-ui-system="cutline-v1"] #ability-rack .ability-slot,

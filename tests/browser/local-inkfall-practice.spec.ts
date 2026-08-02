@@ -21,6 +21,21 @@ test.describe('local Inkfall Practice route', () => {
       'local-inkfall-practice-authority',
     );
 
+    const entryGateLayout = await page.locator('#local-practice-gate').evaluate((gate) => {
+      const bounds = gate.getBoundingClientRect();
+      return {
+        left: bounds.left,
+        right: bounds.right,
+        viewportWidth: window.innerWidth,
+        width: bounds.width,
+      };
+    });
+    if (entryGateLayout.viewportWidth >= 901) {
+      expect(entryGateLayout.left).toBeLessThanOrEqual(1);
+      expect(entryGateLayout.width).toBeGreaterThanOrEqual(540);
+      expect(entryGateLayout.right).toBeLessThanOrEqual(entryGateLayout.viewportWidth * 0.64);
+    }
+
     await page.getByRole('button', { name: 'Enter arena' }).click();
     await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
     await expect(page.getByRole('dialog', { name: 'Enter the arena' })).toBeHidden();
@@ -33,6 +48,25 @@ test.describe('local Inkfall Practice route', () => {
     }));
     expect(canvasViewport.width).toBeGreaterThanOrEqual(canvasViewport.viewportWidth - 1);
     expect(canvasViewport.height).toBeGreaterThanOrEqual(canvasViewport.viewportHeight - 1);
+
+    const hudClearance = await page.evaluate(() => {
+      const vitals = document.querySelector('#hud-vitals')?.getBoundingClientRect();
+      const abilities = document.querySelector('#ability-rack')?.getBoundingClientRect();
+      if (!vitals || !abilities) return null;
+      return {
+        abilityLeft: abilities.left,
+        abilityRight: abilities.right,
+        vitalsRight: vitals.right,
+        viewportWidth: window.innerWidth,
+      };
+    });
+    expect(hudClearance).not.toBeNull();
+    if ((hudClearance?.viewportWidth ?? 0) >= 901) {
+      expect((hudClearance?.abilityLeft ?? 0) - (hudClearance?.vitalsRight ?? 0))
+        .toBeGreaterThanOrEqual(24);
+      expect(hudClearance?.abilityRight ?? Number.POSITIVE_INFINITY)
+        .toBeLessThanOrEqual((hudClearance?.viewportWidth ?? 0) * 0.58);
+    }
 
     await expect.poll(async () => page.evaluate(() => (
       window.__KYX_LOCAL_PRACTICE__?.getSnapshot().serverTick ?? 0
