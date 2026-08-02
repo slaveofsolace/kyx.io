@@ -195,6 +195,54 @@ function equipAndFire(
   return authority.advanceOneTick();
 }
 
+interface MutableSmokeCheckpoint {
+  readonly clock: { readonly serverTick: number };
+  readonly abilityProjectiles: Array<{
+    readonly projectileId: string;
+    detonatesAtTick: number | null;
+    positionMillimeters: { x: number; y: number; z: number };
+    velocityMillimetersPerSecond: { x: number; y: number; z: number };
+  }>;
+}
+
+function checkpointWithSmokeDetonatingNextTick(
+  authority: AuthoritativeRoom,
+  sequence: number,
+  selectedSlot: number,
+): Readonly<{
+  checkpoint: MutableSmokeCheckpoint;
+  projectileId: string;
+  detonationTick: number;
+}> {
+  expect(authority.enqueueInputBatch(
+    'connection_A',
+    input(authority, sequence, selectedSlot, INTENT_BUTTON.abilityTwo),
+  ).accepted).toBe(1);
+  const thrown = authority.advanceOneTick();
+  expect(thrown.abilityLoadoutEvents).toContainEqual(expect.objectContaining({
+    kind: 'ability_activation_accepted',
+    abilityId: 'smoke_grenade_v1',
+    playerId: 'player_A',
+  }));
+  const checkpoint = JSON.parse(
+    JSON.stringify(authority.exportActiveMatchCheckpoint()),
+  ) as MutableSmokeCheckpoint;
+  expect(checkpoint.abilityProjectiles).toHaveLength(1);
+  const projectile = checkpoint.abilityProjectiles[0];
+  if (projectile === undefined) throw new Error('smoke projectile checkpoint is missing');
+  const detonationTick = checkpoint.clock.serverTick + 1;
+  projectile.detonatesAtTick = detonationTick;
+  projectile.positionMillimeters = { x: 0, y: 1_700, z: 1_000 };
+  projectile.velocityMillimetersPerSecond = { x: 0, y: 0, z: 0 };
+  return { checkpoint, projectileId: projectile.projectileId, detonationTick };
+}
+
+function playerHealth(authority: AuthoritativeRoom, playerId: string): number | undefined {
+  return authority.fullSnapshot().players
+    .find((player) => player.playerId === playerId)
+    ?.combat?.life.healthPoints;
+}
+
 function reliablePresentation(
   authority: AuthoritativeRoom,
   tick: AuthorityRoomTickResult,
@@ -408,5 +456,111 @@ describe('authoritative room KYX armory integration', () => {
     const presentation = reliablePresentation(restored, detonationTick);
     expect(presentation.kinds).toContain('weapon_projectile_detonated');
     expect(presentation.kinds).toContain('damage_applied');
+  });
+
+  it('materializes same-tick smoke before legacy rifle resolution and preserves it on reconnect', () => {
+    const source = startRoom();
+    const prepared = checkpointWithSmokeDetonatingNextTick(source, 0, 0);
+    const restored = room();
+    restored.restoreActiveMatchCheckpoint(prepared.checkpoint);
+
+    expect(restored.enqueueInputBatch(
+      'connection_A',
+      input(restored, 1, 0, INTENT_BUTTON.primaryFire),
+    ).accepted).toBe(1);
+    const tick = restored.advanceOneTick();
+    const smokeFieldId = `${prepared.projectileId}.smoke`;
+
+    expect(tick.serverTick).toBe(prepared.detonationTick);
+    expect(tick.hitscanResults?.[0]).toMatchObject({
+      resolution: {
+        accepted: true,
+        outcome: 'miss',
+        reason: 'world_occluded',
+        debug: {
+          barrelObstruction: { hit: false },
+          worldOcclusion: {
+            hit: true,
+            distanceMillimeters: 0,
+            colliderId: smokeFieldId,
+          },
+        },
+      },
+      damage: null,
+    });
+    expect(playerHealth(restored, 'player_B')).toBe(100);
+    expect(restored.fullSnapshot().abilitySmokeFields).toEqual([
+      expect.objectContaining({
+        fieldId: smokeFieldId,
+        spawnedAtTick: prepared.detonationTick,
+        radiusMillimeters: 5_880,
+      }),
+    ]);
+
+    expect(restored.disconnectConnection('connection_A')).toBe(true);
+    const reconnectCheckpoint = JSON.parse(
+      JSON.stringify(restored.exportActiveMatchCheckpoint()),
+    ) as unknown;
+    const resumed = room();
+    resumed.restoreActiveMatchCheckpoint(reconnectCheckpoint);
+    const resume = resumed.resumePlayer({
+      playerId: 'player_A',
+      connectionId: 'connection_A_rotated',
+    });
+    expect(resume).toMatchObject({ ok: true, connectionMode: 'resumed' });
+    if (!resume.ok) return;
+    expect(resume.snapshot.abilitySmokeFields).toEqual([
+      expect.objectContaining({ fieldId: smokeFieldId }),
+    ]);
+  });
+
+  it('applies the same smoke volume to the generalized sniper hitscan family', () => {
+    const source = startRoom();
+    expect(source.enqueueInputBatch(
+      'connection_A',
+      input(source, 0, 3),
+    ).accepted).toBe(1);
+    source.advanceOneTick();
+    const readyAtTick = weaponState(source, KYX_WEAPON_ID.sniper).readyAtTick;
+    if (readyAtTick === null) throw new Error('sniper did not begin equipping');
+    while (source.serverTick < readyAtTick) source.advanceOneTick();
+
+    const prepared = checkpointWithSmokeDetonatingNextTick(source, 1, 3);
+    const restored = room();
+    restored.restoreActiveMatchCheckpoint(prepared.checkpoint);
+    expect(restored.enqueueInputBatch(
+      'connection_A',
+      input(restored, 2, 3, INTENT_BUTTON.primaryFire),
+    ).accepted).toBe(1);
+    const tick = restored.advanceOneTick();
+    const smokeFieldId = `${prepared.projectileId}.smoke`;
+    const result = tick.weaponAttackResults?.[0];
+
+    expect(tick.serverTick).toBe(prepared.detonationTick);
+    expect(result).toMatchObject({
+      kind: 'hitscan',
+      acceptedAttack: { weaponId: KYX_WEAPON_ID.sniper },
+      roomRejectionReason: null,
+      damages: [],
+    });
+    if (result?.kind !== 'hitscan' || result.resolution === null) {
+      throw new Error('sniper smoke proof did not produce a hitscan resolution');
+    }
+    expect(result.resolution.damageTotals).toEqual([]);
+    expect(result.resolution.pelletResults).toHaveLength(1);
+    expect(result.resolution.pelletResults[0]).toMatchObject({
+      accepted: true,
+      outcome: 'miss',
+      reason: 'world_occluded',
+      debug: {
+        barrelObstruction: { hit: false },
+        worldOcclusion: {
+          hit: true,
+          distanceMillimeters: 0,
+          colliderId: smokeFieldId,
+        },
+      },
+    });
+    expect(playerHealth(restored, 'player_B')).toBe(100);
   });
 });

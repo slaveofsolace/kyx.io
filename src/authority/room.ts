@@ -62,6 +62,7 @@ import {
   createAuthorityAbilityLoadoutRuntimeState,
   createAuthorityAbilityProjectile,
   createAuthoritySmokeField,
+  createAuthoritySmokeAwareHitscanOcclusionPort,
   createAuthorityTdmMatchState,
   createAuthorityTeleportResourceEvents,
   createAuthorityWeaponLoadout,
@@ -2632,6 +2633,11 @@ export class AuthoritativeRoom {
         if (step.detonation !== null) abilityDetonations.push(step.detonation);
       }
     }
+    for (const detonation of abilityDetonations) {
+      if (detonation.effect !== 'smoke') continue;
+      const field = createAuthoritySmokeField(detonation);
+      this.abilitySmokeFields.set(field.fieldId, field);
+    }
     for (const [fieldId, field] of this.abilitySmokeFields) {
       if (field.expiresAtTick <= nextTick) this.abilitySmokeFields.delete(fieldId);
     }
@@ -2868,9 +2874,7 @@ export class AuthoritativeRoom {
     pendingResolutions: readonly PendingRoomHitscanResolution[],
   ): readonly AuthorityRoomHitscanTickResult[] {
     if (pendingResolutions.length === 0) return Object.freeze([]);
-    if (this.worldOcclusionPort === null) {
-      throw new Error('AUTHORITY_HITSCAN_WORLD_PORT_MISSING');
-    }
+    const hitscanOcclusionPort = this.smokeAwareHitscanOcclusionPort(this.tick);
     return pendingResolutions.map((pending, resolutionOrdinal) => {
       if (pending.request === null) {
         return deepFreeze({
@@ -2883,7 +2887,7 @@ export class AuthoritativeRoom {
       }
       const resolution = resolveAuthoritativeAutoRifleHitscan(
         pending.request,
-        this.worldOcclusionPort as AuthorityWorldOcclusionPort,
+        hitscanOcclusionPort,
       );
       const damage = resolution.accepted && resolution.outcome === 'hit'
         ? this.applyCombatDamageInternal({
@@ -3018,6 +3022,11 @@ export class AuthoritativeRoom {
     authorityTick: number,
   ): readonly AuthorityRoomWeaponAttackTickResult[] {
     if (acceptedAttacks.length === 0) return Object.freeze([]);
+    const hitscanOcclusionPort = acceptedAttacks.some(({ attack }) => (
+      attack.attackModel === 'hitscan' || attack.attackModel === 'pellet_hitscan'
+    ))
+      ? this.smokeAwareHitscanOcclusionPort(authorityTick)
+      : null;
     const targetHistories = sortedPlayers.map((player) => {
       if (player.poseHistory === null) {
         throw new Error('AUTHORITY_ARMORY_TARGET_POSE_HISTORY_MISSING');
@@ -3075,7 +3084,7 @@ export class AuthoritativeRoom {
         pitchMilliDegrees: shooter.state.player.pitchMilliDegrees,
       };
       if (attack.attackModel === 'hitscan' || attack.attackModel === 'pellet_hitscan') {
-        if (this.worldOcclusionPort === null) {
+        if (hitscanOcclusionPort === null) {
           throw new Error('AUTHORITY_ARMORY_HITSCAN_WORLD_PORT_MISSING');
         }
         if (shooter.observedRttHistory.length === 0) {
@@ -3097,7 +3106,7 @@ export class AuthoritativeRoom {
           acceptedAttack: attack,
           observedRttHistory: shooter.observedRttHistory,
           targetHistories,
-        }, this.worldOcclusionPort);
+        }, hitscanOcclusionPort);
         const damages = resolution.damageTotals.map((total) => (
           this.applyCombatDamageInternal({
             targetPlayerId: total.targetPlayerId,
@@ -3321,10 +3330,6 @@ export class AuthoritativeRoom {
       || left.eventId.localeCompare(right.eventId)
     ));
     return ordered.map((detonation, resolutionOrdinal) => {
-      if (detonation.effect === 'smoke') {
-        const field = createAuthoritySmokeField(detonation);
-        this.abilitySmokeFields.set(field.fieldId, field);
-      }
       const targets = [...this.players.values()]
         .sort((left, right) => left.playerId.localeCompare(right.playerId))
         .map((player) => {
@@ -3477,6 +3482,21 @@ export class AuthoritativeRoom {
           yawMilliDegrees: player.state.player.yawMilliDegrees,
           pitchMilliDegrees: player.state.player.pitchMilliDegrees,
         })),
+    });
+  }
+
+  private smokeAwareHitscanOcclusionPort(
+    authorityTick: number,
+  ): AuthorityWorldOcclusionPort {
+    if (this.worldOcclusionPort === null) {
+      throw new Error('AUTHORITY_HITSCAN_WORLD_PORT_MISSING');
+    }
+    return createAuthoritySmokeAwareHitscanOcclusionPort({
+      schemaVersion: 1,
+      authorityTick,
+      smokeFields: [...this.abilitySmokeFields.values()]
+        .sort((left, right) => left.fieldId.localeCompare(right.fieldId)),
+      worldOcclusion: this.worldOcclusionPort,
     });
   }
 

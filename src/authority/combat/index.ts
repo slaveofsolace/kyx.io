@@ -7,5 +7,6 @@ export * from './loadoutRequest';
 export * from './abilityLoadoutRuntime';
 export * from './poseHistory';
 export * from './rewindHitscan';
+export * from './smokeOcclusion';
 export * from './tdmMatch';
 export * from './weaponFoundation';
