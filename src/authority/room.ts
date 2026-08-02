@@ -2300,12 +2300,25 @@ export class AuthoritativeRoom {
       let abilityTeleportMovementEvents: readonly MovementSemanticEvent[] = [];
       if (player.connected && player.life?.phase !== 'dead') {
         const previousState = player.state;
-        const result = stepMovementSimulation(
-          previousState,
-          player.queue.drain(this.commandsPerPlayerPerTick),
-          this.profile,
-          this.queries,
-        );
+        let result: ReturnType<typeof stepMovementSimulation>;
+        try {
+          result = stepMovementSimulation(
+            previousState,
+            player.queue.drain(this.commandsPerPlayerPerTick),
+            this.profile,
+            this.queries,
+          );
+        } catch (error) {
+          throw new Error(`AUTHORITY_MOVEMENT_STEP_FAILED:${JSON.stringify({
+            playerId: player.playerId,
+            authorityTick: nextTick,
+            feetPosition: previousState.player.feetPosition,
+            velocity: previousState.player.velocity,
+            grounded: previousState.player.grounded,
+            stance: previousState.player.stance,
+            cause: error instanceof Error ? error.message : 'UNKNOWN',
+          })}`, { cause: error });
+        }
         abilityTeleportMovementEvents = result.events;
         let nextState = result.state;
         let nextEvents: readonly MovementSemanticEvent[] = result.events;

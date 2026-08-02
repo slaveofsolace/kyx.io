@@ -7,7 +7,7 @@ test.describe('local Inkfall Practice route', () => {
     // Full-resolution WebGL startup is intentionally allowed extra time under
     // Chromium's software renderer. Frame-performance proof is a separate
     // evidence gate; this test verifies route integration and viewport truth.
-    test.setTimeout(90_000);
+    test.setTimeout(120_000);
     const consoleErrors: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') consoleErrors.push(message.text());
@@ -103,6 +103,50 @@ test.describe('local Inkfall Practice route', () => {
       movementEnd?.localAuthoritativePlayer.velocity.z ?? 0,
     )).toBeGreaterThan(1_000);
 
+    const launchBefore = await page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().launch ?? null
+    ));
+    expect(launchBefore).not.toBeNull();
+    await page.keyboard.press('KeyE');
+    await page.waitForTimeout(120);
+    await page.screenshot({
+      path: join(tmpdir(), 'kyx-launch-contact-presentation-20260802.png'),
+      fullPage: false,
+    });
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().launch.acceptedThrowCount ?? 0
+    ))).toBeGreaterThan(launchBefore?.acceptedThrowCount ?? 0);
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().launch.detonationCount ?? 0
+    )), { timeout: 10_000 }).toBeGreaterThan(launchBefore?.detonationCount ?? 0);
+
+    const launchAfter = await page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
+    ));
+    expect(launchAfter?.launch).toMatchObject({
+      acceptedThrowCount: (launchBefore?.acceptedThrowCount ?? 0) + 1,
+      collisionCount: (launchBefore?.collisionCount ?? 0) + 1,
+      detonationCount: (launchBefore?.detonationCount ?? 0) + 1,
+      terminalContactSameTick: true,
+      lastCollision: {
+        bounceCount: 0,
+        settled: true,
+      },
+      lastDetonation: {
+        reason: 'collision',
+      },
+    });
+    expect(launchAfter?.launch.lastCollision?.authorityTick)
+      .toBe(launchAfter?.launch.lastDetonation?.authorityTick);
+    expect(launchAfter?.render3d).toMatchObject({
+      launchProjectilePresentation: 'cutline_launch_canister_v1',
+      launchCanisterPresentationCount: expect.any(Number),
+      launchPulsePresentationCount: expect.any(Number),
+    });
+    expect(launchAfter?.render3d.launchCanisterPresentationCount ?? 0).toBeGreaterThan(0);
+    expect(launchAfter?.render3d.launchPulsePresentationCount ?? 0).toBeGreaterThan(0);
+    expect(launchAfter?.render3d.grenadeProjectileCount).toBe(0);
+
     const diagnostics = await page.evaluate(() => (
       window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
     ));
@@ -133,6 +177,7 @@ test.describe('local Inkfall Practice route', () => {
         status: 'ready',
         renderer: 'three_webgl',
         remoteAvatarCount: 7,
+        launchProjectilePresentation: 'cutline_launch_canister_v1',
         selectedWeaponId: 'vertical_rifle_v1',
         selectedFirstPersonHandCount: 2,
       },

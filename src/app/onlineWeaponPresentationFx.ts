@@ -24,6 +24,7 @@ interface TransientEffect {
     | 'impact_shield'
     | 'impact_health'
     | 'blast'
+    | 'impulse'
     | 'melee'
     | 'rocket_trail';
   readonly startedAtMilliseconds: number;
@@ -89,6 +90,11 @@ export interface OnlineWeaponPresentationFx {
   readonly presentBlast: (
     position: THREE.Vector3,
     color: number,
+    nowMilliseconds: number,
+    radius?: number,
+  ) => void;
+  readonly presentImpulsePulse: (
+    position: THREE.Vector3,
     nowMilliseconds: number,
     radius?: number,
   ) => void;
@@ -624,6 +630,55 @@ export function createOnlineWeaponPresentationFx(
     addTransient(group, 'blast', nowMilliseconds, 650);
   };
 
+  const presentImpulsePulse = (
+    position: THREE.Vector3,
+    nowMilliseconds: number,
+    radius = 0.72,
+  ): void => {
+    const group = new THREE.Group();
+    group.position.copy(position);
+    group.name = 'CUTLINE_LAUNCH_TERMINAL_PULSE';
+
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0x7de9e1,
+      transparent: true,
+      opacity: 0.82,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const edgeMaterial = new THREE.MeshBasicMaterial({
+      color: 0xd8fffb,
+      transparent: true,
+      opacity: 0.66,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const horizontalRing = new THREE.Mesh(
+      new THREE.TorusGeometry(radius, radius * 0.045, 6, 32),
+      ringMaterial,
+    );
+    horizontalRing.rotation.x = Math.PI / 2;
+    const verticalRing = new THREE.Mesh(
+      new THREE.TorusGeometry(radius * 0.62, radius * 0.026, 5, 28),
+      edgeMaterial,
+    );
+    verticalRing.rotation.y = Math.PI / 2;
+    const pressureCore = new THREE.Mesh(
+      new THREE.SphereGeometry(radius * 0.22, 12, 8),
+      new THREE.MeshBasicMaterial({
+        color: 0xffc46b,
+        transparent: true,
+        opacity: 0.58,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    );
+    pressureCore.scale.set(1, 0.42, 1);
+    group.add(horizontalRing, verticalRing, pressureCore);
+    group.add(new THREE.PointLight(0x7de9e1, 4.2, radius * 9, 2));
+    addTransient(group, 'impulse', nowMilliseconds, 480);
+  };
+
   const muzzleFlash = (
     position: THREE.Vector3,
     direction: THREE.Vector3,
@@ -1059,6 +1114,8 @@ export function createOnlineWeaponPresentationFx(
       });
       if (effect.kind === 'blast') {
         effect.root.scale.setScalar(1 + progress * 6.5);
+      } else if (effect.kind === 'impulse') {
+        effect.root.scale.setScalar(1 + progress * 7.5);
       } else if (
         effect.kind === 'impact_shield'
         || effect.kind === 'impact_health'
@@ -1110,6 +1167,7 @@ export function createOnlineWeaponPresentationFx(
     presentMeleeContact,
     presentProjectileDetonation,
     presentBlast,
+    presentImpulsePulse,
     notifyWeaponPhase,
     syncAuthoritativeRockets,
     update,

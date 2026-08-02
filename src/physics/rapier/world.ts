@@ -51,7 +51,7 @@ const MAX_VOLUME_RESULTS = 16;
 const MINIMUM_CONTROLLER_OFFSET_RAPIER_UNITS = 0.000_001;
 const STRICT_OVERLAP_INSET_MM = 0.5;
 const MATERIAL_VERTICAL_CLIP_MM = 2;
-const FLAT_MICRO_CORRECTION_TOLERANCE_MM = 25;
+const INTEGER_GEOMETRY_RECONCILIATION_TOLERANCE_MM = 25;
 // cos(5 degrees) in Q15: narrow enough to preserve authored 45/50-degree ramps.
 const AXIS_NORMAL_SNAP_Q15 = 32_642;
 const SLOPE_NORMAL_TOLERANCE_Q15 = 64;
@@ -762,7 +762,7 @@ export class RapierMovementWorld implements MovementQueryPort {
       && kccTranslation.y > 0
       && kccTranslation.y <= Math.max(
         1,
-        settings.contactSkin + FLAT_MICRO_CORRECTION_TOLERANCE_MM,
+        settings.contactSkin + INTEGER_GEOMETRY_RECONCILIATION_TOLERANCE_MM,
       )
       && hasOnlyCanonicalFlatContacts) {
       // Rapier can return a few millimeters of upward KCC correction while
@@ -848,10 +848,21 @@ export class RapierMovementWorld implements MovementQueryPort {
       // integer millimeters. At rotated box faces, rounding the KCC result can
       // place the strict 0.5 mm query capsule a few millimeters back inside the
       // same collider the KCC reported. Reconcile only that shallow, known
-      // contact inside the configured skin; larger or novel overlaps still fail
-      // closed as genuine controller/map defects.
+      // contact inside the configured skin. During upward movement, allow the
+      // same bounded 25 mm integer/GJK tolerance used for flat-contact
+      // canonicalization: rotated rail corners can change their closest face as
+      // the capsule rises. Purely planar motion does not receive that allowance,
+      // preserving the fail-closed revision-2 embedded-rail contract.
+      const reconciliationLimit = Math.max(
+        1,
+        settings.contactSkin + (
+          request.desiredTranslation.y > 0
+            ? INTEGER_GEOMETRY_RECONCILIATION_TOLERANCE_MM
+            : 0
+        ),
+      );
       if (!correctsOnlyReportedContacts
-        || postMovementCorrectionDistance > Math.max(1, settings.contactSkin)) {
+        || postMovementCorrectionDistance > reconciliationLimit) {
         throw new Error('PHYSICS_DEPENETRATION_FAILED');
       }
       appliedTranslation = Object.freeze({

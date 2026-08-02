@@ -87,6 +87,9 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly zoneCount: 9;
   readonly remoteAvatarCount: number;
   readonly grenadeProjectileCount: number;
+  readonly launchProjectilePresentation: 'cutline_launch_canister_v1';
+  readonly launchCanisterPresentationCount: number;
+  readonly launchPulsePresentationCount: number;
   readonly weaponProjectileCount: number;
   readonly activeWeaponEffectCount: number;
   readonly renderedReliableEventCount: number;
@@ -304,6 +307,68 @@ function disposeObjectMaterials(root: THREE.Object3D): void {
   });
 }
 
+function createCutlineLaunchCanister(): THREE.Group {
+  const root = new THREE.Group();
+  root.name = 'CUTLINE_LAUNCH_CANISTER';
+  root.userData.presentationOnly = true;
+  root.userData.noHit = true;
+
+  const graphite = new THREE.MeshStandardMaterial({
+    color: 0x182127,
+    emissive: 0x071013,
+    emissiveIntensity: 0.28,
+    metalness: 0.84,
+    roughness: 0.26,
+  });
+  const collar = new THREE.MeshStandardMaterial({
+    color: 0x6d7d82,
+    metalness: 0.9,
+    roughness: 0.2,
+  });
+  const chargeBand = new THREE.MeshStandardMaterial({
+    color: 0x8be8df,
+    emissive: 0x55c8c2,
+    emissiveIntensity: 1.05,
+    metalness: 0.48,
+    roughness: 0.22,
+  });
+  const contactCap = new THREE.MeshStandardMaterial({
+    color: 0xf0ad57,
+    emissive: 0x8c4d16,
+    emissiveIntensity: 0.76,
+    metalness: 0.64,
+    roughness: 0.3,
+  });
+  const body = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.085, 0.1, 0.3, 12, 1, false),
+    graphite,
+  );
+  body.rotation.x = Math.PI / 2;
+  root.add(body);
+  for (const z of [-0.105, 0, 0.105]) {
+    const band = new THREE.Mesh(
+      new THREE.CylinderGeometry(
+        z === 0 ? 0.104 : 0.112,
+        z === 0 ? 0.104 : 0.112,
+        z === 0 ? 0.018 : 0.026,
+        12,
+      ),
+      z === 0 ? chargeBand : collar,
+    );
+    band.rotation.x = Math.PI / 2;
+    band.position.z = z;
+    root.add(band);
+  }
+  const cap = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.062, 0.075, 0.024, 12),
+    contactCap,
+  );
+  cap.rotation.x = Math.PI / 2;
+  cap.position.z = 0.168;
+  root.add(cap);
+  return root;
+}
+
 async function ensureHumanSoldierReady(): Promise<void> {
   if (isHumanSoldierReady()) return;
   await new Promise<void>((resolve, reject) => {
@@ -513,7 +578,7 @@ export async function createOnlineAuthorityThreeRuntime(
   let firstPersonMelee = 0;
 
   const avatars = new Map<string, PlayerAvatar>();
-  const grenadeProjectiles = new Map<string, THREE.Mesh>();
+  const grenadeProjectiles = new Map<string, THREE.Group>();
   const abilityProjectiles = new Map<string, THREE.Mesh>();
   const smokeFields = new Map<string, THREE.Group>();
   const processedReliableEvents = new Set<string>();
@@ -528,6 +593,8 @@ export async function createOnlineAuthorityThreeRuntime(
     '(prefers-reduced-motion: reduce)',
   );
   let renderedReliableEventCount = 0;
+  let launchCanisterPresentationCount = 0;
+  let launchPulsePresentationCount = 0;
   let disposed = false;
   let pointerLocked = document.pointerLockElement === canvas;
   let canvasWidth = 0;
@@ -718,11 +785,11 @@ export async function createOnlineAuthorityThreeRuntime(
           semantic.playerId === frame.combat.localPlayerId,
         );
       } else if (semantic.kind === 'impulse_grenade_detonated') {
-        weaponPresentationFx.presentBlast(
+        weaponPresentationFx.presentImpulsePulse(
           mapMillimetersToScene(semantic.positionMillimeters),
-          0xc889ff,
           frame.nowMilliseconds,
         );
+        launchPulsePresentationCount += 1;
       } else if (
         semantic.kind === 'teleport_resource_confirmed'
         && actorId !== null
@@ -918,34 +985,36 @@ export async function createOnlineAuthorityThreeRuntime(
     for (const projectile of combat?.projectiles ?? []) {
       if (projectile.phase !== 'active') continue;
       active.add(projectile.projectileId);
-      let mesh = grenadeProjectiles.get(projectile.projectileId);
-      if (mesh === undefined) {
-        mesh = new THREE.Mesh(
-          new THREE.IcosahedronGeometry(0.16, 1),
-          new THREE.MeshStandardMaterial({
-            color: 0x8a43d8,
-            emissive: 0x8a43d8,
-            emissiveIntensity: 2.4,
-            metalness: 0.32,
-            roughness: 0.22,
-          }),
-        );
-        mesh.name = `ONLINE_AUTHORITY_GRENADE_${projectile.projectileId}`;
-        grenadeProjectiles.set(projectile.projectileId, mesh);
-        scene.add(mesh);
+      let canister = grenadeProjectiles.get(projectile.projectileId);
+      if (canister === undefined) {
+        canister = createCutlineLaunchCanister();
+        canister.name = `ONLINE_AUTHORITY_LAUNCH_${projectile.projectileId}`;
+        grenadeProjectiles.set(projectile.projectileId, canister);
+        scene.add(canister);
+        launchCanisterPresentationCount += 1;
       }
-      mesh.position.set(
+      canister.position.set(
         projectile.xMillimeters / 1_000,
         projectile.yMillimeters / 1_000,
         -projectile.zMillimeters / 1_000,
       );
-      mesh.rotation.x += 0.08;
-      mesh.rotation.y += 0.12;
+      const velocity = new THREE.Vector3(
+        projectile.velocityXMillimetersPerSecond,
+        projectile.velocityYMillimetersPerSecond,
+        -projectile.velocityZMillimetersPerSecond,
+      );
+      if (velocity.lengthSq() > 0) {
+        canister.quaternion.setFromUnitVectors(
+          new THREE.Vector3(0, 0, 1),
+          velocity.normalize(),
+        );
+        canister.rotateZ((estimatedServerTick % 200) * 0.19);
+      }
     }
-    for (const [projectileId, mesh] of grenadeProjectiles) {
+    for (const [projectileId, canister] of grenadeProjectiles) {
       if (active.has(projectileId)) continue;
-      scene.remove(mesh);
-      disposeObject(mesh);
+      scene.remove(canister);
+      disposeObject(canister);
       grenadeProjectiles.delete(projectileId);
     }
     const activeAbilities = new Set<string>();
@@ -1196,6 +1265,9 @@ export async function createOnlineAuthorityThreeRuntime(
       zoneCount: 9,
       remoteAvatarCount: avatars.size,
       grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
+      launchProjectilePresentation: 'cutline_launch_canister_v1',
+      launchCanisterPresentationCount,
+      launchPulsePresentationCount,
       weaponProjectileCount: weaponDiagnostics.activeRocketCount,
       activeWeaponEffectCount: weaponDiagnostics.activeTransientCount,
       renderedReliableEventCount,

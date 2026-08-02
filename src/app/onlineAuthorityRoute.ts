@@ -1371,10 +1371,11 @@ async function mountSession(
     if (marker.includes('.hit.kill.confirmed.')) return 'kill';
     if (marker.includes('.grenade.throw.accepted.')) return 'grenade_throw';
     // Launch contact and detonation are an ordered same-tick authority pair.
-    // Present only the confirmed detonation so contact never reads as a bounce.
+    // Present only one confirmed terminal pulse: collision and per-target impulse
+    // events remain in the authority stream but never stack into fake rebounds.
     if (marker.includes('.grenade.projectile.collision.')) return null;
     if (marker.includes('.grenade.projectile.detonation.')) return 'grenade_detonation';
-    if (marker.includes('.grenade.impulse.applied.')) return 'grenade_impulse';
+    if (marker.includes('.grenade.impulse.applied.')) return null;
     if (marker.includes('.teleport.confirmed.')) return 'teleport';
     if (marker.includes('.teleport.rejected.')) return 'teleport_rejected';
     return null;
@@ -1388,7 +1389,7 @@ async function mountSession(
     if (cue === 'kill') return 'Target down';
     if (cue === 'grenade_throw') return 'Launch thrown';
     if (cue === 'grenade_collision') return 'Grenade contact';
-    if (cue === 'grenade_detonation') return 'Grenade detonated';
+    if (cue === 'grenade_detonation') return 'Launch pulse';
     if (cue === 'grenade_impulse') return 'Target displaced';
     if (cue === 'teleport') return 'Blink complete';
     return 'Blink blocked';
@@ -1648,22 +1649,22 @@ async function mountSession(
         feedbackBody(225, 78, 0.06, 0.05);
       } else if (cue === 'grenade_detonation') {
         feedbackBurst({
-          duration: 0.035,
-          level: 0.34,
+          duration: 0.028,
+          level: 0.28,
           type: 'highpass',
-          frequency: 2_400,
-          endFrequency: 820,
-          resonance: 0.5,
+          frequency: 3_200,
+          endFrequency: 1_050,
+          resonance: 0.65,
         });
         feedbackBurst({
-          duration: 0.58,
-          level: 0.3,
+          duration: 0.34,
+          level: 0.25,
           type: 'lowpass',
-          frequency: 820,
-          endFrequency: 65,
-          resonance: 0.42,
+          frequency: 680,
+          endFrequency: 72,
+          resonance: 0.5,
         });
-        feedbackBody(88, 24, 0.55, 0.24);
+        feedbackBody(98, 31, 0.3, 0.19);
       } else if (cue === 'grenade_impulse') {
         feedbackBurst({
           duration: 0.22,

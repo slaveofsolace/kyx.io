@@ -15,10 +15,11 @@ describe('AudioManager accessibility event hooks', () => {
     audio.onCriticalCue = onCriticalCue;
 
     audio.playExplosion();
+    audio.playLaunchDetonation();
     audio.playHurt();
     audio.playEmptyClick();
 
-    expect(onCriticalCue).toHaveBeenCalledTimes(3);
+    expect(onCriticalCue).toHaveBeenCalledTimes(4);
     expect(onCriticalCue).toHaveBeenNthCalledWith(1, expect.objectContaining({
       id: 'explosion',
       text: 'EXPLOSION',
@@ -26,6 +27,12 @@ describe('AudioManager accessibility event hooks', () => {
       priority: 'danger',
     }));
     expect(onCriticalCue).toHaveBeenNthCalledWith(2, expect.objectContaining({
+      id: 'launch-pulse',
+      text: 'LAUNCH PULSE',
+      direction: 'nearby',
+      priority: 'status',
+    }));
+    expect(onCriticalCue).toHaveBeenNthCalledWith(3, expect.objectContaining({
       id: 'damage-received',
       direction: 'none',
     }));

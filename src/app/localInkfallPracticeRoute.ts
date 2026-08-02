@@ -38,6 +38,24 @@ interface LocalPracticeDiagnosticsV1 {
   readonly missedSchedulerTicks: number;
   readonly pointerLocked: boolean;
   readonly recentReliableEvents: number;
+  readonly launch: Readonly<{
+    readonly acceptedThrowCount: number;
+    readonly collisionCount: number;
+    readonly detonationCount: number;
+    readonly impulseAppliedCount: number;
+    readonly terminalContactSameTick: boolean;
+    readonly lastCollision: Readonly<{
+      readonly eventId: string;
+      readonly authorityTick: number;
+      readonly bounceCount: number;
+      readonly settled: boolean;
+    }> | null;
+    readonly lastDetonation: Readonly<{
+      readonly eventId: string;
+      readonly authorityTick: number;
+      readonly reason: 'collision' | 'fuse' | 'lifetime';
+    }> | null;
+  }>;
   readonly localAuthoritativePlayer: Readonly<{
     readonly playerId: string;
     readonly feetPosition: Readonly<{ x: number; y: number; z: number }>;
@@ -219,7 +237,7 @@ export async function mountLocalInkfallPracticeRoute(
         && event.presentation?.kind === 'impulse_grenade_detonated'
       ) {
         gameplayAudio.resume();
-        gameplayAudio.playExplosion();
+        gameplayAudio.playLaunchDetonation();
       } else if (event.kind === 'damageApplied' && event.presentation?.kind === 'damage_applied') {
         if (event.actorId === host.localPlayerId) {
           const headshot = event.presentation.hitRegion === 'head';
@@ -443,6 +461,25 @@ export async function mountLocalInkfallPracticeRoute(
       throw new Error('LOCAL_INKFALL_PRACTICE_LOCAL_PLAYER_MISSING');
     }
     const authoritativeMovement = localPlayer.movement.player;
+    const localLaunchEvents = recentEvents.filter((event) => (
+      event.actorId === host.localPlayerId
+      && event.presentation?.kind.startsWith('impulse_grenade_') === true
+    ));
+    const collisionEvent = [...localLaunchEvents].reverse().find(
+      (event) => event.presentation?.kind === 'impulse_grenade_collision',
+    );
+    const detonationEvent = [...localLaunchEvents].reverse().find(
+      (event) => event.presentation?.kind === 'impulse_grenade_detonated',
+    );
+    const collision = collisionEvent?.presentation?.kind === 'impulse_grenade_collision'
+      ? collisionEvent.presentation
+      : null;
+    const detonation = detonationEvent?.presentation?.kind === 'impulse_grenade_detonated'
+      ? detonationEvent.presentation
+      : null;
+    const countLaunchEvents = (kind: string): number => localLaunchEvents.filter(
+      (event) => event.presentation?.kind === kind,
+    ).length;
     return Object.freeze({
       schemaVersion: 1,
       status: disposed ? 'disposed' : pointerLocked ? 'ready' : 'paused',
@@ -458,6 +495,30 @@ export async function mountLocalInkfallPracticeRoute(
       missedSchedulerTicks: metrics.missedSchedulerTicks,
       pointerLocked,
       recentReliableEvents: recentEvents.length,
+      launch: Object.freeze({
+        acceptedThrowCount: countLaunchEvents('impulse_grenade_throw_accepted'),
+        collisionCount: countLaunchEvents('impulse_grenade_collision'),
+        detonationCount: countLaunchEvents('impulse_grenade_detonated'),
+        impulseAppliedCount: countLaunchEvents('impulse_grenade_impulse_applied'),
+        terminalContactSameTick: collision !== null
+          && detonation !== null
+          && collision.authorityTick === detonation.authorityTick,
+        lastCollision: collision === null
+          ? null
+          : Object.freeze({
+              eventId: collision.eventId,
+              authorityTick: collision.authorityTick,
+              bounceCount: collision.bounceCount,
+              settled: collision.settled,
+            }),
+        lastDetonation: detonation === null
+          ? null
+          : Object.freeze({
+              eventId: detonation.eventId,
+              authorityTick: detonation.authorityTick,
+              reason: detonation.reason,
+            }),
+      }),
       localAuthoritativePlayer: Object.freeze({
         playerId: localPlayer.playerId,
         feetPosition: Object.freeze({ ...authoritativeMovement.feetPosition }),

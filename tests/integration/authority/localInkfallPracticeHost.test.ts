@@ -119,14 +119,15 @@ describe('browser-local Inkfall Practice authority host', () => {
   it('sustains a deterministic 1+7 population past the former east-rail failure tick', async () => {
     const first = await host(7);
     const second = await host(7);
+    let lastFirstSnapshot = first.snapshot;
 
-    for (let tick = 0; tick < 300; tick += 1) {
+    for (let tick = 0; tick < 360; tick += 1) {
       try {
-        first.step();
+        lastFirstSnapshot = first.step().snapshot;
       } catch (error) {
         throw new Error(`LOCAL_PRACTICE_SUSTAINED_FAILURE:${JSON.stringify({
           tick,
-          players: first.snapshot.players.map(({ playerId, movement }) => ({
+          players: lastFirstSnapshot.players.map(({ playerId, movement }) => ({
             playerId,
             feetPosition: movement.player.feetPosition,
             velocity: movement.player.velocity,
@@ -137,10 +138,78 @@ describe('browser-local Inkfall Practice authority host', () => {
       second.step();
     }
 
-    expect(first.snapshot.serverTick).toBe(300);
+    expect(first.snapshot.serverTick).toBe(360);
     expect(first.snapshot.players).toHaveLength(8);
     expect(second.snapshot).toEqual(first.snapshot);
     expect(second.authority.metricsSnapshot()).toEqual(first.authority.metricsSnapshot());
+  }, 20_000);
+
+  it('keeps the 1+7 runtime stable after a player-eye Launch sequence', async () => {
+    const practice = await host(7);
+    for (let tick = 0; tick < 8; tick += 1) practice.step();
+    for (let tick = 0; tick < 3; tick += 1) {
+      practice.step({
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: -32_767,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 0,
+      });
+    }
+    const launch = practice.step({
+      moveX: 0,
+      moveY: 0,
+      lookYawDeltaMilliDegrees: 0,
+      lookPitchDeltaMilliDegrees: 0,
+      heldButtons: INTENT_BUTTON.abilityOne,
+      pressedButtons: INTENT_BUTTON.abilityOne,
+      releasedButtons: 0,
+      selectedSlot: 0,
+    });
+    const launchKinds = launch.reliableEvents.flatMap(({ presentation }) => (
+      presentation === undefined ? [] : [presentation.kind]
+    ));
+    const subsequentKinds: string[] = [];
+    for (let tick = 0; tick < 180; tick += 1) {
+      try {
+        const step = practice.step(tick === 0
+          ? {
+              moveX: 0,
+              moveY: 0,
+              lookYawDeltaMilliDegrees: 0,
+              lookPitchDeltaMilliDegrees: 0,
+              heldButtons: 0,
+              pressedButtons: 0,
+              releasedButtons: INTENT_BUTTON.abilityOne,
+              selectedSlot: 0,
+            }
+          : undefined);
+        subsequentKinds.push(...step.reliableEvents.flatMap(({ presentation }) => (
+          presentation === undefined ? [] : [presentation.kind]
+        )));
+      } catch (error) {
+        throw new Error(`LOCAL_PRACTICE_LAUNCH_FAILURE:${JSON.stringify({
+          tick,
+          serverTick: practice.snapshot.serverTick,
+          players: practice.snapshot.players.map(({ playerId, movement }) => ({
+            playerId,
+            feetPosition: movement.player.feetPosition,
+            velocity: movement.player.velocity,
+            grounded: movement.player.grounded,
+            yawMilliDegrees: movement.player.yawMilliDegrees,
+            pitchMilliDegrees: movement.player.pitchMilliDegrees,
+          })),
+        })}`, { cause: error });
+      }
+    }
+
+    expect(launchKinds).toContain('impulse_grenade_throw_accepted');
+    expect(subsequentKinds).toContain('impulse_grenade_collision');
+    expect(subsequentKinds).toContain('impulse_grenade_detonated');
+    expect(practice.snapshot.serverTick).toBe(192);
   }, 20_000);
 
   it('fails closed for invalid population and after disposal', async () => {

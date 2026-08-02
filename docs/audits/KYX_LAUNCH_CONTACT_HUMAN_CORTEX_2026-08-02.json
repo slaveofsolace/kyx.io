@@ -1,0 +1,449 @@
+{
+  "schema_version": "1.1.0",
+  "task": {
+    "id": "kyx-launch-contact-2026-08-02",
+    "title": "Launch contact and movement-seam audit",
+    "mode": "STANDARD",
+    "created_at": "2026-08-02T05:58:33-05:00"
+  },
+  "contract": {
+    "objective": "Verify that Launch reads as one weighted no-bounce contact pulse without weakening deterministic Inkfall collision safety.",
+    "decision_question": "Does the bounded presentation and KCC correction constitute a technically credible checkpoint while leaving human feel and visual acceptance open?",
+    "change_under_review": "Dedicated Launch canister, ejection and pressure-pulse presentation plus a narrow upward same-contact integer-geometry reconciliation.",
+    "real_objective": "Make the desktop Inkfall vertical slice mechanically trustworthy and perceptually legible before final art and balance acceptance.",
+    "proxy_metrics": [
+      "One accepted throw, collision and detonation in a real browser run",
+      "Zero bounce events and same-tick terminal contact",
+      "Two byte-identical 1+7 simulations through 360 ticks"
+    ],
+    "guardrail_metrics": [
+      "Known Revision 2 planar embed remains fail-closed",
+      "No gameplay authority is transferred to presentation code",
+      "No duplicate per-target impulse audio cues"
+    ],
+    "invariants": [],
+    "scope_boundary": "Includes Launch presentation, Practice diagnostics and the exact rotated-rail movement seam. Excludes balance approval, final audio/visual approval, online two-client proof, character art and deployment.",
+    "time_horizons": [
+      "Immediate deterministic tick",
+      "Sixteen-second 1+7 simulation",
+      "Manual player-eye review"
+    ],
+    "project_model_status": "PARTIAL",
+    "load_bearing_unknown_ids": [
+      "unknown-human-feel",
+      "unknown-online-coalescing"
+    ],
+    "user_intent": "Match ev.io-like contact clarity without a fake rebound and continue toward a polished browser game.",
+    "acceptance_criteria": [
+      {
+        "id": "criterion-no-bounce",
+        "criterion": "Launch terminates on first qualifying world contact with zero bounce presentation.",
+        "status": "PASS"
+      },
+      {
+        "id": "criterion-stability",
+        "criterion": "The longer deterministic Practice run remains stable without masking the sealed planar-embed regression.",
+        "status": "PASS"
+      },
+      {
+        "id": "criterion-human-feel",
+        "criterion": "A human accepts the Launch weight, sound and readability in live play.",
+        "status": "NOT_VERIFIED"
+      },
+      {
+        "id": "criterion-online-parity",
+        "criterion": "A fresh two-client room proves one coalesced Launch contact cue for all observers.",
+        "status": "NOT_VERIFIED"
+      }
+    ],
+    "non_goals": [
+      "Final ability balance",
+      "Final character or weapon art",
+      "Production deployment"
+    ],
+    "constraints": [
+      "Worker authority remains authoritative",
+      "Human acceptance cannot be inferred from automated evidence",
+      "Existing fail-closed collision regressions remain effective"
+    ],
+    "permissions": [
+      {
+        "id": "permission-local-slice",
+        "scope": "Local source, tests, evidence and documentation for this bounded slice",
+        "authorization_class": "LOCAL_REVERSIBLE",
+        "status": "AUTHORIZED",
+        "explicit": true,
+        "authorized_by": "project owner",
+        "authorization_reference": "Active KYX.IO goal and continuation instructions",
+        "evidence_ids": []
+      }
+    ],
+    "time_budget": "One coherent implementation and consolidated verification batch.",
+    "source_of_truth_declaration": "Canonical main source, deterministic authority tests and the source-matched desktop browser capture are authoritative for technical claims; the owner is authoritative for feel and visual acceptance.",
+    "human_decisions": [
+      {
+        "id": "decision-human-launch",
+        "question": "Is the Launch contact pulse visually and aurally convincing in live play?",
+        "owner": "project owner",
+        "status": "PENDING",
+        "authorization_evidence_ids": []
+      }
+    ],
+    "output_contract": "A pushed, green technical checkpoint with precise nonclaims and player-eye evidence."
+  },
+  "evidence": [
+    {
+      "id": "evidence-browser-launch",
+      "claim": "A real desktop Chromium Practice run accepted one Launch throw, reported one collision and one detonation on the same authority tick, reported zero bounces, cleaned up the projectile and completed with zero collected runtime errors.",
+      "status": "MEASURED",
+      "provenance": "Playwright desktop Chromium runtime",
+      "source_location": "evidence/2026-08-02/inkfall-launch-runtime-complete.png",
+      "observed_or_measured_at": "2026-08-02T05:36:29-05:00",
+      "scope": "Local Inkfall Practice route",
+      "confidence": 0.99,
+      "freshness_or_expiry": "Valid for the exact source checkpoint under review",
+      "related_contradiction_ids": []
+    },
+    {
+      "id": "evidence-authority-360",
+      "claim": "Two deterministic one-player plus seven-bot simulations completed through 360 ticks and matched byte-for-byte.",
+      "status": "MEASURED",
+      "provenance": "Vitest integration suite",
+      "source_location": "tests/integration/authority/localInkfallPracticeHost.test.ts",
+      "observed_or_measured_at": "2026-08-02T05:43:00-05:00",
+      "scope": "Local Inkfall authority host",
+      "confidence": 0.99,
+      "freshness_or_expiry": "Valid for the exact source checkpoint under review",
+      "related_contradiction_ids": []
+    },
+    {
+      "id": "evidence-sealed-regression",
+      "claim": "The known Revision 2 planar rail embed still throws fail-closed after the upward same-contact reconciliation was introduced.",
+      "status": "MEASURED",
+      "provenance": "Focused movement regression test",
+      "source_location": "tests/integration/movement/inkfallCanonicalTraversalSnag.test.ts",
+      "observed_or_measured_at": "2026-08-02T05:45:00-05:00",
+      "scope": "Rapier KCC post-movement correction",
+      "confidence": 0.99,
+      "freshness_or_expiry": "Valid for the exact source checkpoint under review",
+      "related_contradiction_ids": []
+    },
+    {
+      "id": "evidence-player-eye",
+      "claim": "The player-eye capture shows the current HUD and arena while the Launch runtime diagnostics prove the exercised contact sequence; it does not by itself prove human-perceived audio or visual quality.",
+      "status": "OBSERVED",
+      "provenance": "Source-matched runtime screenshot and audit observation",
+      "source_location": "evidence/2026-08-02/inkfall-launch-contact-presentation.png",
+      "observed_or_measured_at": "2026-08-02T05:36:14-05:00",
+      "scope": "Player-eye presentation",
+      "confidence": 0.9,
+      "freshness_or_expiry": "Requires a new review after material presentation changes",
+      "related_contradiction_ids": []
+    }
+  ],
+  "system_graph": {
+    "nodes": [],
+    "edges": []
+  },
+  "beliefs": [
+    {
+      "id": "belief-false-bounce",
+      "proposition": "The reported Launch rebound impression was primarily a presentation-coalescing defect rather than an authority-physics bounce.",
+      "prior_confidence": 0.45,
+      "current_confidence": 0.95,
+      "supporting_evidence_ids": [
+        "evidence-browser-launch"
+      ],
+      "contradicting_evidence_ids": [],
+      "assumptions": [
+        "The desktop runtime path exercised the same Launch authority contract used by the tested Practice host"
+      ],
+      "last_update": "Runtime diagnostics showed zero bounces and one terminal contact while the prior presentation mapped multiple impulse events to audible cues.",
+      "reopen_triggers": [
+        "Any live run reports bounceCount above zero",
+        "Any observer hears multiple impact cues for one detonation"
+      ],
+      "learning_update_ids": [
+        "learning-false-bounce"
+      ]
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "hypothesis-presentation-duplication",
+      "causal_layer": "Presentation event projection",
+      "statement": "Per-target impulse cues created a false rebound impression even though authority terminated the projectile on first contact.",
+      "mechanism": "One detonation emitted multiple target impulse events, each formerly eligible to produce a local cue.",
+      "distinct_predictions": [
+        "Authority bounce count remains zero",
+        "Coalescing audio to the detonation produces one contact cue"
+      ],
+      "rival_hypothesis_ids": [],
+      "discriminating_predictions": [
+        "If authority actually bounced, collision diagnostics would report a bounce before detonation"
+      ],
+      "decision_change_condition": "Reopen physics behavior if any exact runtime trace reports a nonzero bounce.",
+      "value_of_information": "High because it separates a mechanics rewrite from a presentation correction.",
+      "supporting_evidence_ids": [
+        "evidence-browser-launch"
+      ],
+      "disconfirming_evidence_ids": [],
+      "proposed_discriminating_test": "Exercise Launch in a two-client room and compare authority events with audible presentation count.",
+      "confidence": 0.95,
+      "status": "SUPPORTED"
+    },
+    {
+      "id": "hypothesis-kcc-seam",
+      "causal_layer": "Integer geometry reconciliation",
+      "statement": "The tick-334 failure was a rotated-rail closest-face transition during upward movement, not a Launch defect.",
+      "mechanism": "Integer quantization shifted the closest rail face after KCC movement and produced a 31.8 mm correction against an already-reported contact.",
+      "distinct_predictions": [
+        "A narrow upward same-contact allowance clears the exact seam",
+        "A planar embedded capsule remains fail-closed"
+      ],
+      "rival_hypothesis_ids": [],
+      "discriminating_predictions": [
+        "A global tolerance would also mask the sealed planar embed and is therefore invalid"
+      ],
+      "decision_change_condition": "Reopen the correction if unrelated colliders or downward/planar motion receive the allowance.",
+      "value_of_information": "High because the longer run would otherwise remain unstable or collision safety would be weakened.",
+      "supporting_evidence_ids": [
+        "evidence-authority-360",
+        "evidence-sealed-regression"
+      ],
+      "disconfirming_evidence_ids": [],
+      "proposed_discriminating_test": "Keep both the 360-tick exact run and sealed planar embed in the consolidated regression set.",
+      "confidence": 0.94,
+      "status": "SUPPORTED"
+    }
+  ],
+  "consequence_graph": {
+    "nodes": [],
+    "edges": [],
+    "cycles": []
+  },
+  "decisions": [
+    {
+      "id": "decision-coalesce-launch",
+      "decision_question": "Which event should own the local Launch contact cue?",
+      "options": [
+        {
+          "id": "option-detonation",
+          "label": "Detonation only",
+          "description": "Render and sound one terminal cue from the authoritative detonation event."
+        },
+        {
+          "id": "option-per-target",
+          "label": "Per-target impulses",
+          "description": "Render or sound every affected-player impulse event."
+        }
+      ],
+      "criteria": [
+        "No false rebound impression",
+        "Authority identity remains observable",
+        "One readable terminal beat"
+      ],
+      "selected_option_id": "option-detonation",
+      "rationale": "One terminal authority event matches the intended no-bounce mechanic; target impulses remain stateful effects rather than duplicate contact cues.",
+      "confidence": 0.96,
+      "reversibility": "REVERSIBLE",
+      "owner": "Codex implementation",
+      "human_decision_required": false,
+      "human_decision_id": null,
+      "consequential": true
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-launch-presentation",
+      "description": "Implement a dedicated canister, pressure pulse and ejection/detonation audio while coalescing impulse presentation.",
+      "action_type": "IMPLEMENTATION_SLICE",
+      "authorization_class": "LOCAL_REVERSIBLE",
+      "status": "COMPLETED",
+      "reversibility": "REVERSIBLE",
+      "preconditions": [
+        "Preserve authority mechanics",
+        "Keep changes inside the canonical repository"
+      ],
+      "expected_outcome": "Launch reads as one weighted first-contact pulse.",
+      "observed_outcome": "Browser diagnostics report one collision and detonation, zero bounces, cleanup and one dedicated pulse.",
+      "operating_state": "ACT",
+      "predicted_mechanism_signal": "One detonation presentation and no per-target audio duplication",
+      "observed_mechanism_signal": "One launch pulse count and zero bounce count in the browser proof",
+      "guardrail_checks": [
+        "No authority changes to bounce count or terminal timing",
+        "Accessibility cue remains available"
+      ],
+      "reopen_threshold": "Any duplicate contact cue or nonzero authority bounce",
+      "evidence_output_ids": [
+        "evidence-browser-launch",
+        "evidence-player-eye"
+      ],
+      "authorization_evidence_ids": [],
+      "rollback": "Revert the bounded presentation checkpoint.",
+      "rollback_feasibility": {
+        "feasible": true,
+        "owner": "Codex implementation",
+        "trigger": "A consolidated regression fails or the owner rejects the bounded checkpoint",
+        "state_compatibility": "Presentation and reconciliation changes add no persisted schema and can be reverted as one checkpoint.",
+        "evidence_ids": [
+          "evidence-authority-360",
+          "evidence-sealed-regression"
+        ]
+      },
+      "linked_decision_id": "decision-coalesce-launch",
+      "authorized_scope_ids": [
+        "permission-local-slice"
+      ],
+      "human_decision_id": null,
+      "affected_files_or_systems": [
+        "Practice and online Launch presentation",
+        "AudioManager",
+        "browser diagnostics"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "unknown-human-feel",
+      "unresolved_question": "Does the owner perceive the new Launch ejection and pressure pulse as weighty, readable and non-retro?",
+      "decision_relevance": "Determines human acceptance of the ability presentation.",
+      "impact": "HIGH",
+      "risk_if_wrong": "Technically correct behavior still feels cheap or unclear.",
+      "cheapest_discriminating_test": "Play the source-matched build with audio and approve or reject the contact beat.",
+      "owner": "project owner",
+      "status": "OPEN",
+      "reopen_trigger": "Any subsequent audio or VFX revision"
+    },
+    {
+      "id": "unknown-online-coalescing",
+      "unresolved_question": "Does a fresh two-client room render exactly one Launch terminal cue for both observers?",
+      "decision_relevance": "Determines Practice and online presentation parity.",
+      "impact": "HIGH",
+      "risk_if_wrong": "Remote observers may still hear or see duplicated contact beats.",
+      "cheapest_discriminating_test": "Run one real two-client Launch impact capture and count authoritative and presented cues.",
+      "owner": "Codex implementation",
+      "status": "OPEN",
+      "reopen_trigger": "Any online presentation adapter change"
+    }
+  ],
+  "learning_updates": [
+    {
+      "id": "learning-false-bounce",
+      "belief_id": "belief-false-bounce",
+      "triggering_evidence_ids": [
+        "evidence-browser-launch"
+      ],
+      "previous_belief": "The visible or audible rebound might originate in Launch authority physics.",
+      "revised_belief": "Authority is zero-bounce; duplicate presentation of target impulses was the stronger causal explanation.",
+      "previous_confidence": 0.45,
+      "revised_confidence": 0.95,
+      "confidence_change": 0.5,
+      "contradiction_handling": "The runtime counter would reopen the physics hypothesis if any nonzero bounce is observed.",
+      "persistence_tier": "REPOSITORY_DOCUMENTATION",
+      "authorization_reference": "Project work-log and source-matched runtime evidence",
+      "updated_at": "2026-08-02T05:58:33-05:00"
+    }
+  ],
+  "verification": {
+    "automated_checks": [
+      {
+        "id": "verification-authority-tests",
+        "description": "Focused Launch, audio, Practice-host and movement safety tests",
+        "status": "PASS",
+        "evidence_ids": [
+          "evidence-authority-360",
+          "evidence-sealed-regression"
+        ],
+        "owner": "Codex implementation",
+        "notes": "The final consolidated command is recorded in the work log."
+      }
+    ],
+    "runtime_proof": [
+      {
+        "id": "verification-browser-runtime",
+        "description": "Real desktop Chromium Practice movement and Launch sequence",
+        "status": "VERIFIED",
+        "evidence_ids": [
+          "evidence-browser-launch",
+          "evidence-player-eye"
+        ],
+        "owner": "Codex implementation",
+        "notes": "One local browser route only; online two-client parity is not claimed."
+      }
+    ],
+    "subjective_quality": [
+      {
+        "id": "verification-subjective-launch",
+        "description": "Launch visual and audio quality",
+        "status": "NOT_REVIEWED",
+        "evidence_ids": [
+          "evidence-player-eye"
+        ],
+        "owner": "project owner",
+        "notes": "Static evidence cannot evaluate the sound or complete feel."
+      }
+    ],
+    "human_acceptance": [
+      {
+        "id": "verification-human-launch",
+        "description": "Owner acceptance of Launch contact presentation",
+        "status": "PENDING",
+        "evidence_ids": [
+          "evidence-player-eye"
+        ],
+        "owner": "project owner",
+        "notes": "No acceptance is inferred from automated PASS."
+      }
+    ]
+  },
+  "completion": {
+    "acceptance_criterion_results": [
+      {
+        "criterion_id": "criterion-no-bounce",
+        "status": "PASS",
+        "evidence_ids": [
+          "evidence-browser-launch"
+        ],
+        "notes": "Verified in the real local desktop route."
+      },
+      {
+        "criterion_id": "criterion-stability",
+        "status": "PASS",
+        "evidence_ids": [
+          "evidence-authority-360",
+          "evidence-sealed-regression"
+        ],
+        "notes": "Longer deterministic run passes and the sealed regression remains fail-closed."
+      },
+      {
+        "criterion_id": "criterion-human-feel",
+        "status": "NOT_VERIFIED",
+        "evidence_ids": [
+          "evidence-player-eye"
+        ],
+        "notes": "Requires live owner review with audio."
+      },
+      {
+        "criterion_id": "criterion-online-parity",
+        "status": "NOT_VERIFIED",
+        "evidence_ids": [],
+        "notes": "A fresh two-client run has not been captured."
+      }
+    ],
+    "unresolved_high_impact_unknown_ids": [
+      "unknown-human-feel",
+      "unknown-online-coalescing"
+    ],
+    "residual_risks": [
+      "Human-perceived weight and sound may still be rejected",
+      "Remote observers may expose a presentation-coalescing defect not present in Practice"
+    ],
+    "analysis_stop_reason": "The local mechanism and safety guardrails are verified; remaining decisions require human audio/visual review and a separate two-client runtime.",
+    "budget_stopped_unknown_ids": [],
+    "mechanism_verified": true,
+    "human_review_required": true,
+    "final_status": "PARTIAL",
+    "next_human_decision_or_action": "Review the Launch contact in live play, then run one fresh two-client parity capture after the first-person weapon and arms presentation batch."
+  }
+}

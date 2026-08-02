@@ -420,6 +420,44 @@ export class AudioManager {
     }
   }
 
+  playLaunchDetonation() {
+    this._emitCriticalCue({
+      id: 'launch-pulse',
+      text: 'LAUNCH PULSE',
+      direction: 'nearby',
+      priority: 'status',
+      durationMs: 900,
+      minIntervalMs: 320,
+    });
+    if (!this.ctx) return;
+    this._noiseBurst({
+      duration: 0.028,
+      gain: 0.36,
+      type: 'highpass',
+      frequency: 3_200,
+      endFrequency: 1_050,
+      q: 0.65,
+      room: 0.12,
+    });
+    this._noiseBurst({
+      duration: 0.34,
+      gain: 0.38,
+      type: 'lowpass',
+      frequency: 680,
+      endFrequency: 72,
+      q: 0.5,
+      playbackRate: 0.88,
+      room: 0.24,
+    });
+    this._bodyPulse({
+      duration: 0.3,
+      gain: 0.3,
+      frequency: 98,
+      endFrequency: 31,
+      room: 0.08,
+    });
+  }
+
   playSwing() {
     if (!this.ctx) return;
     this._noiseBurst({
@@ -640,6 +678,27 @@ export class AudioManager {
 
   playGrenadeThrow(kind = 'frag') {
     if (!this.ctx) return;
+    if (kind === 'launch') {
+      this._noiseBurst({
+        duration: 0.095,
+        gain: 0.11,
+        type: 'highpass',
+        frequency: 2_450,
+        endFrequency: 620,
+        q: 0.72,
+        playbackRate: 0.92,
+        room: 0.03,
+      });
+      this._bodyPulse({
+        duration: 0.09,
+        gain: 0.065,
+        frequency: 165,
+        endFrequency: 54,
+        room: 0.02,
+      });
+      this._metalClick(0.008, 0.06, 2_200, 0.025);
+      return;
+    }
     this._noiseBurst({
       duration: 0.17,
       gain: 0.14,
