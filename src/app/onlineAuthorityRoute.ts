@@ -1351,6 +1351,13 @@ async function mountSession(
   let previousMovementVerticalSpeed = 0;
   let lastMovementFootstepAt = 0;
   let movementFoot = 0;
+  type FlashEnvelope = Readonly<{
+    appliedAtTick: number;
+    durationTicks: number;
+    intensityPermille: number;
+    facingPermille: number;
+  }>;
+  let flashEnvelopes: readonly FlashEnvelope[] = Object.freeze([]);
   const processedPresentationTransportIds = new Set<string>();
 
   const feedbackCue = (intent: CombatPresentationIntentV1): FeedbackCue => {
@@ -1827,6 +1834,21 @@ async function mountSession(
       event.presentation.phase === 'flash_applied'
       && event.presentation.targetPlayerId !== client.diagnostics().authority.playerId
     ) return;
+    if (event.presentation.phase === 'flash_applied') {
+      const incomingEnvelope: FlashEnvelope = Object.freeze({
+        appliedAtTick: event.presentation.authorityTick,
+        durationTicks: event.presentation.flashDurationTicks ?? 45,
+        intensityPermille: event.presentation.flashIntensityPermille ?? 1_000,
+        facingPermille: event.presentation.flashFacingPermille ?? 1_000,
+      });
+      flashEnvelopes = Object.freeze([
+        ...flashEnvelopes.filter((envelope) => (
+          envelope.appliedAtTick + envelope.durationTicks
+          > event.presentation.authorityTick
+        )),
+        incomingEnvelope,
+      ].slice(-8));
+    }
     const ability = ABILITY_PRESENTATION[event.presentation.abilityId];
     const phaseCopy = event.presentation.phase === 'activated'
       ? 'deployed'
@@ -2359,14 +2381,30 @@ async function mountSession(
         );
     const reduceFlash = body.dataset.reducedFlash === 'true'
       || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const activeFlashEnvelopes = flashEnvelopes.filter((envelope) => (
+      diagnostics.authority.serverTick < envelope.appliedAtTick + envelope.durationTicks
+    ));
+    const strongestFlashEnvelope = activeFlashEnvelopes.reduce<FlashEnvelope | null>(
+      (strongest, envelope) => (
+        strongest === null || envelope.intensityPermille > strongest.intensityPermille
+          ? envelope
+          : strongest
+      ),
+      null,
+    );
+    const peakIntensity = strongestFlashEnvelope?.intensityPermille === undefined
+      ? 1
+      : strongestFlashEnvelope.intensityPermille / 1_000;
+    const peakOcclusion = 0.36 + 0.5 * Math.max(0, Math.min(1, peakIntensity));
     flashOverlay.dataset.active = String(flashTicksRemaining > 0);
+    flashOverlay.dataset.flashMode = reduceFlash ? 'low_luminance' : 'luminous';
+    flashOverlay.dataset.facingPermille = String(
+      strongestFlashEnvelope?.facingPermille ?? 1_000,
+    );
     flashOverlay.style.opacity = flashTicksRemaining <= 0
       ? '0'
       : String(
-          Math.min(
-            reduceFlash ? 0.32 : 0.78,
-            (reduceFlash ? 0.32 : 0.78) * Math.min(1, flashTicksRemaining / 12),
-          ),
+          peakOcclusion * Math.min(1, flashTicksRemaining / 12),
         );
     if (threeRuntime !== null) {
       try {

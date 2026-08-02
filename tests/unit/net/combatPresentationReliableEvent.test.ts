@@ -104,6 +104,53 @@ describe('versioned reliable combat presentation payload', () => {
     }))).toMatchObject({ ok: true });
   });
 
+  it('accepts a complete Flash envelope, preserves legacy omission, and rejects partial semantics', () => {
+    const legacyFlash = {
+      id: 'event.9',
+      serverTick: 60,
+      kind: 'abilityActivated',
+      subjectId: 'ability.flash.applied.1',
+      actorId: 'player_A',
+      targetId: 'player_B',
+      amountHealthPoints: null,
+      presentation: {
+        schemaVersion: 1,
+        kind: 'throwable_ability_event',
+        eventId: 'ability.flash.applied.1',
+        authorityTick: 60,
+        phase: 'flash_applied',
+        playerId: 'player_A',
+        abilityId: 'flash_grenade_v1',
+        projectileId: 'ability.flash.projectile.1',
+        targetPlayerId: 'player_B',
+        cooldownEndsAtTick: null,
+        positionMillimeters: { x: 0, y: 1_000, z: 0 },
+        areaRadiusMillimeters: 12_000,
+        reason: null,
+      },
+    };
+    const exactFlash = {
+      ...legacyFlash,
+      presentation: {
+        ...legacyFlash.presentation,
+        flashDurationTicks: 35,
+        flashIntensityPermille: 583,
+        flashFacingPermille: 1_000,
+      },
+    };
+    const partialFlash = {
+      ...legacyFlash,
+      presentation: {
+        ...legacyFlash.presentation,
+        flashDurationTicks: 35,
+      },
+    };
+
+    expect(validateServerMessage(batch(legacyFlash))).toMatchObject({ ok: true });
+    expect(validateServerMessage(batch(exactFlash))).toMatchObject({ ok: true });
+    expect(validateServerMessage(batch(partialFlash))).toMatchObject({ ok: false });
+  });
+
   it('accepts exact Impulse Grenade lifecycle semantics with truthful projections', () => {
     const grenadeEvents = [
       {

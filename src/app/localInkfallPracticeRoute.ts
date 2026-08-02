@@ -255,7 +255,10 @@ export async function mountLocalInkfallPracticeRoute(
         && event.presentation?.kind === 'throwable_ability_event'
         && event.presentation.phase === 'flash_applied'
       ) {
-        hud.showFlashEffect(0.68, 1.1);
+        hud.showFlashEffect(
+          (event.presentation.flashIntensityPermille ?? 680) / 1_000,
+          (event.presentation.flashDurationTicks ?? 22) / 20,
+        );
       } else if (
         event.actorId === host.localPlayerId
         && event.kind === 'abilityRejected'

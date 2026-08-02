@@ -3341,6 +3341,10 @@ export class AuthoritativeRoom {
             playerId: player.playerId,
             teamId: player.life.teamId,
             alive: player.life.phase === 'alive',
+            lookYawMilliDegrees: signedYawMilliDegrees(
+              player.state.player.yawMilliDegrees,
+            ),
+            lookPitchMilliDegrees: player.state.player.pitchMilliDegrees,
             feetPositionMillimeters: {
               x: player.state.player.feetPosition.x,
               y: player.state.player.feetPosition.y,

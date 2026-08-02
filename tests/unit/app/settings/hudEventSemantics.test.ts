@@ -34,9 +34,10 @@ describe('HUD event and ability semantics', () => {
     vi.unstubAllGlobals();
   });
 
-  function createHud() {
+  function createHud(reducedFlash = false) {
     const elements = new Map<string, ElementDouble>();
     vi.stubGlobal('document', {
+      body: { dataset: { reducedFlash: String(reducedFlash) } },
       getElementById: (id: string) => {
         const element = elements.get(id) ?? new ElementDouble();
         elements.set(id, element);
@@ -91,6 +92,49 @@ describe('HUD event and ability semantics', () => {
     expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(false);
     vi.advanceTimersByTime(1_400);
     expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(true);
+  });
+
+  it('keeps the exact Flash duration in low-luminance mode instead of shortening gameplay cover', () => {
+    vi.useFakeTimers();
+    const { hud, elements } = createHud(true);
+
+    expect(hud.showFlashEffect(0.7, 1.75)).toBe(true);
+    const overlay = elements.get('ability-flash-overlay');
+    expect(overlay?.dataset.flashMode).toBe('low_luminance');
+    expect(overlay?.styleValues.get('--flash-intensity')).toBe(0.7);
+    expect(overlay?.styleValues.get('--flash-duration')).toBe('1.75s');
+    expect(overlay?.classList.contains('show')).toBe(true);
+    vi.advanceTimersByTime(1_749);
+    expect(overlay?.classList.contains('show')).toBe(true);
+    vi.advanceTimersByTime(1);
+    expect(overlay?.classList.contains('show')).toBe(false);
+  });
+
+  it('does not let a later short Flash truncate a longer active authority envelope', () => {
+    vi.useFakeTimers();
+    const { hud, elements } = createHud(false);
+
+    expect(hud.showFlashEffect(0.4, 2)).toBe(true);
+    vi.advanceTimersByTime(500);
+    expect(hud.showFlashEffect(0.8, 0.5)).toBe(true);
+    const overlay = elements.get('ability-flash-overlay');
+    expect(overlay?.styleValues.get('--flash-intensity')).toBe(0.8);
+    expect(overlay?.styleValues.get('--flash-duration')).toBe('1.5s');
+    vi.advanceTimersByTime(1_499);
+    expect(overlay?.classList.contains('show')).toBe(true);
+    vi.advanceTimersByTime(1);
+    expect(overlay?.classList.contains('show')).toBe(false);
+  });
+
+  it('keeps Flash expiry independent from an ability-unavailable notice', () => {
+    vi.useFakeTimers();
+    const { hud, elements } = createHud(false);
+
+    expect(hud.showFlashEffect(0.6, 0.5)).toBe(true);
+    expect(hud.showAbilityUnavailable('Q', 'Blink recharging')).toBe(true);
+    vi.advanceTimersByTime(500);
+    expect(elements.get('ability-flash-overlay')?.classList.contains('show')).toBe(false);
+    expect(elements.get('ability-reason')?.classList.contains('hidden')).toBe(false);
   });
 
   it('renders bounded direction, interaction, and conditional connection hooks', () => {

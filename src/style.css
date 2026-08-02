@@ -426,7 +426,10 @@ html, body {
 }
 
 body[data-reduced-flash="true"] #ability-flash-overlay {
-  backdrop-filter: none;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(22, 29, 32, 0.88) 0 22%, rgba(5, 9, 11, 0.96) 72%),
+    repeating-linear-gradient(0deg, rgba(151, 184, 190, 0.08) 0 1px, transparent 1px 4px);
+  backdrop-filter: grayscale(1) contrast(0.58) blur(1.5px);
   mix-blend-mode: normal;
 }
 

@@ -20,6 +20,14 @@ const AUTHORITY_HZ = 20;
 const Q15 = 32_767;
 const PERMILLE = 1_000;
 
+export const AUTHORITY_FLASH_IMPAIRMENT_RULES = Object.freeze({
+  schemaVersion: 1 as const,
+  minimumPeripheralExposurePermille: 250,
+  facingExposureWeightPermille: 750,
+  minimumDurationPermille: 450,
+  intensityDurationWeightPermille: 550,
+});
+
 export interface AuthorityThrowableRulesV1 {
   readonly abilityId: SelectableAbilityId;
   readonly cooldownTicks: number;
@@ -258,6 +266,8 @@ export interface AuthorityAbilityEffectTargetV1 {
   readonly playerId: string;
   readonly teamId: string | null;
   readonly alive: boolean;
+  readonly lookYawMilliDegrees: number;
+  readonly lookPitchMilliDegrees: number;
   readonly feetPositionMillimeters: ImpulseGrenadeVector3;
   readonly centerPositionMillimeters: ImpulseGrenadeVector3;
   readonly currentVelocityMillimetersPerSecond: ImpulseGrenadeVector3;
@@ -270,6 +280,7 @@ export interface AuthorityAbilityEffectOutcomeV1 {
   readonly damageHealthPoints: number;
   readonly flashDurationTicks: number;
   readonly flashIntensityPermille: number;
+  readonly flashFacingPermille: number;
   readonly impulseMillimetersPerSecond: ImpulseGrenadeVector3;
 }
 
@@ -770,6 +781,7 @@ export function resolveAuthorityAbilityEffect(options: Readonly<{
         damageHealthPoints: 0,
         flashDurationTicks: 0,
         flashIntensityPermille: 0,
+        flashFacingPermille: 0,
         impulseMillimetersPerSecond: { x: 0, y: 0, z: 0 },
       });
       if (!target.alive) return empty('dead');
@@ -803,9 +815,59 @@ export function resolveAuthorityAbilityEffect(options: Readonly<{
       const damage = rules.effect === 'damage'
         ? Math.max(1, Math.round(rules.damageHealthPoints * falloff / PERMILLE))
         : 0;
-      const flashIntensity = rules.effect === 'flash' ? falloff : 0;
+      let flashFacing = 0;
+      if (rules.effect === 'flash') {
+        if (
+          !Number.isSafeInteger(target.lookYawMilliDegrees)
+          || target.lookYawMilliDegrees < -180_000
+          || target.lookYawMilliDegrees > 180_000
+          || !Number.isSafeInteger(target.lookPitchMilliDegrees)
+          || target.lookPitchMilliDegrees < -89_000
+          || target.lookPitchMilliDegrees > 89_000
+        ) {
+          throw new RangeError('flash target look must use bounded integer milli-degrees');
+        }
+        if (distance === 0) {
+          flashFacing = PERMILLE;
+        } else {
+          const yaw = target.lookYawMilliDegrees * Math.PI / 180_000;
+          const pitch = target.lookPitchMilliDegrees * Math.PI / 180_000;
+          const horizontal = Math.cos(pitch);
+          const forward = {
+            x: Math.sin(yaw) * horizontal,
+            y: Math.sin(pitch),
+            z: Math.cos(yaw) * horizontal,
+          };
+          const towardFlash = {
+            x: -delta.x / distance,
+            y: -delta.y / distance,
+            z: -delta.z / distance,
+          };
+          const facingDot = forward.x * towardFlash.x
+            + forward.y * towardFlash.y
+            + forward.z * towardFlash.z;
+          flashFacing = Math.max(0, Math.min(
+            PERMILLE,
+            Math.round((facingDot + 1) * PERMILLE / 2),
+          ));
+        }
+      }
+      const flashExposureWeight = AUTHORITY_FLASH_IMPAIRMENT_RULES
+        .minimumPeripheralExposurePermille
+        + Math.round(
+          AUTHORITY_FLASH_IMPAIRMENT_RULES.facingExposureWeightPermille
+          * flashFacing
+          / PERMILLE,
+        );
+      const flashIntensity = rules.effect === 'flash'
+        ? Math.round(falloff * flashExposureWeight / PERMILLE)
+        : 0;
       const flashDuration = rules.effect === 'flash'
-        ? Math.round(rules.effectDurationTicks * (450 + 550 * falloff / PERMILLE) / PERMILLE)
+        ? Math.round(rules.effectDurationTicks * (
+            AUTHORITY_FLASH_IMPAIRMENT_RULES.minimumDurationPermille
+            + AUTHORITY_FLASH_IMPAIRMENT_RULES.intensityDurationWeightPermille
+              * flashIntensity / PERMILLE
+          ) / PERMILLE)
         : 0;
       let impulse: ImpulseGrenadeVector3 = { x: 0, y: 0, z: 0 };
       if (rules.effect === 'launch') {
@@ -842,6 +904,7 @@ export function resolveAuthorityAbilityEffect(options: Readonly<{
         damageHealthPoints: damage,
         flashDurationTicks: flashDuration,
         flashIntensityPermille: flashIntensity,
+        flashFacingPermille: flashFacing,
         impulseMillimetersPerSecond: impulse,
       };
     }));

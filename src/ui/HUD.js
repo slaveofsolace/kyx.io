@@ -76,6 +76,8 @@ export class HUD {
     this._abilityReasonTimeout = null;
     this._killConfirmationTimeout = null;
     this._abilityFlashTimeout = null;
+    this._abilityFlashEndsAtMilliseconds = 0;
+    this._abilityFlashPeakIntensity = 0;
     this._abilityInputs = [
       { id: 'blink', name: 'Blink', key: 'Q', locked: true, readinessRatio: 1 },
       { id: 'launch', name: 'Launch', key: 'E', charges: 1, maximumCharges: 1 },
@@ -468,8 +470,24 @@ export class HUD {
   showFlashEffect(intensity, durationSeconds) {
     if (!this.abilityFlashOverlay) return false;
     const reducedFlash = document.body.dataset.reducedFlash === 'true';
-    const safeIntensity = Math.max(0, Math.min(reducedFlash ? 0.22 : 0.68, Number(intensity) || 0));
-    const safeDuration = Math.max(0.15, Math.min(reducedFlash ? 0.45 : 2.5, Number(durationSeconds) || 0));
+    const nowMilliseconds = Date.now();
+    const existingSeconds = Math.max(
+      0,
+      (this._abilityFlashEndsAtMilliseconds - nowMilliseconds) / 1_000,
+    );
+    const requestedIntensity = Math.max(0.18, Math.min(0.86, Number(intensity) || 0));
+    const safeIntensity = existingSeconds > 0
+      ? Math.max(this._abilityFlashPeakIntensity, requestedIntensity)
+      : requestedIntensity;
+    const safeDuration = Math.max(
+      existingSeconds,
+      Math.max(0.15, Math.min(3, Number(durationSeconds) || 0)),
+    );
+    this._abilityFlashEndsAtMilliseconds = nowMilliseconds + safeDuration * 1_000;
+    this._abilityFlashPeakIntensity = safeIntensity;
+    this.abilityFlashOverlay.dataset.flashMode = reducedFlash
+      ? 'low_luminance'
+      : 'luminous';
     this.abilityFlashOverlay.style.setProperty('--flash-intensity', safeIntensity);
     this.abilityFlashOverlay.style.setProperty('--flash-duration', `${safeDuration}s`);
     this.abilityFlashOverlay.classList.remove('show');
@@ -478,6 +496,8 @@ export class HUD {
     clearTimeout(this._abilityFlashTimeout);
     this._abilityFlashTimeout = setTimeout(() => {
       this.abilityFlashOverlay?.classList.remove('show');
+      this._abilityFlashEndsAtMilliseconds = 0;
+      this._abilityFlashPeakIntensity = 0;
     }, safeDuration * 1_000);
     return true;
   }
@@ -529,7 +549,6 @@ export class HUD {
     this.abilityReason.textContent = `${safeKey.toUpperCase()}: ${safeReason}`;
     this.abilityReason.classList.remove('hidden');
     clearTimeout(this._abilityReasonTimeout);
-    clearTimeout(this._abilityFlashTimeout);
     const safeDuration = Number.isFinite(durationMs) ? Math.min(5_000, Math.max(500, durationMs)) : 1_400;
     this._abilityReasonTimeout = setTimeout(() => this.abilityReason.classList.add('hidden'), safeDuration);
     return true;
@@ -584,6 +603,8 @@ export class HUD {
     this._abilityReasonTimeout = null;
     this._killConfirmationTimeout = null;
     this._abilityFlashTimeout = null;
+    this._abilityFlashEndsAtMilliseconds = 0;
+    this._abilityFlashPeakIntensity = 0;
     this.damageDirection?.classList.add('hidden');
     this.abilityReason?.classList.add('hidden');
     this.killConfirmation?.classList.add('hidden');

@@ -774,6 +774,10 @@ export interface CombatPresentationThrowableAbilityEventV1 {
   readonly positionMillimeters: ReconciliationVector3 | null;
   readonly areaRadiusMillimeters: number | null;
   readonly reason: string | null;
+  /** Exact authority exposure envelope; absent only on legacy version-1 events. */
+  readonly flashDurationTicks?: number;
+  readonly flashIntensityPermille?: number;
+  readonly flashFacingPermille?: number;
 }
 
 /**

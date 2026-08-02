@@ -80,7 +80,7 @@ visual-only utility, missing assets, or duplicate identity
 | P0 | Inkfall movement/collision | Corrected; bounded deterministic runtime green; human traversal unverified | Revision 4 corrects the isolated east-choice rail seam; two byte-identical 1+7 simulations reached 300 ticks | The former deterministic abort is removed inside the tested window, but broader routes and long-duration stability remain unproven | Player-eye traversal through the corrected lane, then the final exact-source 2/4/8 matrix and soak |
 | P0 | Practice versus online | Observed | Legacy Iron Bastion, local Inkfall, and online paths remain separate products | Fixes and feel do not reliably transfer between modes | Make the local Inkfall authority route the sole desktop Practice product and share commands, rules, HUD, assets, and events with the Worker |
 | P0 | Smoke | Source-observed | Smoke fields are replicated/rendered but rewind hitscan and AI sight do not consume authoritative occlusion | Opaque smoke can be shot through as though absent | One server-owned smoke-volume query for hitscan, bots, spectators, reconnect, and Practice |
-| P0 | Flash | Source-observed | `flashImpairedUntilTick` drives presentation but does not currently constrain input/combat semantics | A flashed player can retain full mechanical effectiveness | Explicit authority impairment plus reduced-flash accessibility presentation |
+| P0 | Flash | Implemented; consolidated automated gate green; player-eye effect unverified | Authority now owns LOS, distance, facing, exact intensity/duration, reliable semantics and reconnect expiry; reduced-flash preserves timing with low-luminance obstruction | The prior transparent reduced-flash advantage and direction-agnostic exposure are closed in code, but visual comfort, audio and opponent readability remain unapproved | Capture direct/side/away and luminous/low-luminance player-eye cases, then tune presentation without adding hidden aim jitter or input theft |
 | P0 | Ability loadouts | Source-observed | Fixed role trios reject the promised locked-Blink plus three selectable abilities model | The advertised customization loop does not exist | One schema: Q locked to Blink; three unique selectable ability slots validated by menu, persistence, Practice, and Worker |
 | P1 | Map render versus authority | Partially corrected; broad convergence and human acceptance open | Revision 4 now binds corrected collision and runtime identity for the known rail seam while preserving Rev5 render/spawn/zone content; other visual-authority mismatches remain plausible | The known east-choice wedge is fixed, but invisible blockers, clipped bridges, floating pieces, and unsafe sightlines may remain elsewhere | Freeze the full Rev5 structure, audit all render/collision overlays, then complete representative player-eye traversal and 2/4/8 spawn review |
 | P1 | Spawns | Source-observed | A no-safe-spawn result can fail open to a rejected/locked candidate | Spawn deaths can occur at 8-player occupancy | Defer spawn, spectate/retry, or use designed spawn protection; never silently choose unsafe geometry |
@@ -151,8 +151,10 @@ connect.
    runs; final traversal, 2/4/8 matrix, and soak remain open.
 3. **REVISE:** make local Inkfall the single Practice route and prove one
    uninterrupted combat loop.
-4. **REVISE:** authoritative smoke, defined flash, custom Q+3 ability schema,
-   ADS and correlated combat feedback.
+4. **PARTIALLY IMPLEMENTED / VERIFY IN PLAY:** authoritative smoke now blocks
+   every server hitscan family and Flash owns LOS/distance/facing plus exact
+   presentation timing. Bot/spectator smoke convergence, player-eye Flash,
+   ability-preset truth, ADS and correlated combat feedback remain open.
 5. **REVISE:** one shared HUD component tree and one audio event bus.
 6. **REVISE:** Rev5 matching collision/spawns/portal and human map review.
 7. **REVISE:** one accepted Assault character, animations and exposed weapon

@@ -2212,24 +2212,28 @@ function validateCombatPresentationReliableEvent(
       'schemaVersion', 'kind', 'eventId', 'authorityTick', 'phase', 'playerId',
       'abilityId', 'projectileId', 'targetPlayerId', 'cooldownEndsAtTick',
       'positionMillimeters', 'areaRadiusMillimeters', 'reason',
+      'flashDurationTicks', 'flashIntensityPermille', 'flashFacingPermille',
     ]);
     numberAt(required(record, 'schemaVersion', path), `${path}.schemaVersion`, {
       integer: true, min: 1, max: 1,
     });
     idAt(required(record, 'eventId', path), `${path}.eventId`);
     tickAt(required(record, 'authorityTick', path), `${path}.authorityTick`);
-    stringAt(required(record, 'phase', path), `${path}.phase`, {
+    const phase = stringAt(required(record, 'phase', path), `${path}.phase`, {
       allowed: ['activated', 'rejected', 'collision', 'detonated', 'flash_applied'],
     });
     idAt(required(record, 'playerId', path), `${path}.playerId`);
-    stringAt(required(record, 'abilityId', path), `${path}.abilityId`, {
+    const abilityId = stringAt(required(record, 'abilityId', path), `${path}.abilityId`, {
       allowed: [
         'vertical_impulse_grenade_v1', 'frag_grenade_v1', 'smoke_grenade_v1',
         'sticky_grenade_v1', 'flash_grenade_v1',
       ],
     });
     nullableIdAt(required(record, 'projectileId', path), `${path}.projectileId`);
-    nullableIdAt(required(record, 'targetPlayerId', path), `${path}.targetPlayerId`);
+    const targetPlayerId = nullableIdAt(
+      required(record, 'targetPlayerId', path),
+      `${path}.targetPlayerId`,
+    );
     nullableTickAt(required(record, 'cooldownEndsAtTick', path), `${path}.cooldownEndsAtTick`);
     const position = required(record, 'positionMillimeters', path);
     if (position !== null) validatePresentationVector(position, `${path}.positionMillimeters`);
@@ -2247,6 +2251,43 @@ function validateCombatPresentationReliableEvent(
       maxBytes: PROTOCOL_LIMITS.maxNoticeBytes,
       nullable: true,
     });
+    const flashEnvelopeKeys = [
+      'flashDurationTicks',
+      'flashIntensityPermille',
+      'flashFacingPermille',
+    ] as const;
+    const flashEnvelopeFields = flashEnvelopeKeys.filter((key) => Object.hasOwn(record, key));
+    if (flashEnvelopeFields.length !== 0 && flashEnvelopeFields.length !== flashEnvelopeKeys.length) {
+      fail(
+        'PROTOCOL_REQUIRED_FIELD',
+        path,
+        'Flash exposure fields must be supplied as one complete authority envelope.',
+      );
+    }
+    if (flashEnvelopeFields.length === flashEnvelopeKeys.length) {
+      if (phase !== 'flash_applied' || abilityId !== 'flash_grenade_v1' || targetPlayerId === null) {
+        fail(
+          'PROTOCOL_INVALID_FIELD_VALUE',
+          path,
+          'Flash exposure fields require a targeted flash_applied event.',
+        );
+      }
+      numberAt(required(record, 'flashDurationTicks', path), `${path}.flashDurationTicks`, {
+        integer: true,
+        min: 1,
+        max: 200,
+      });
+      numberAt(
+        required(record, 'flashIntensityPermille', path),
+        `${path}.flashIntensityPermille`,
+        { integer: true, min: 0, max: 1_000 },
+      );
+      numberAt(
+        required(record, 'flashFacingPermille', path),
+        `${path}.flashFacingPermille`,
+        { integer: true, min: 0, max: 1_000 },
+      );
+    }
     return record as unknown as CombatPresentationReliableEventV1;
   }
   if (kind === 'teleport_resource_confirmed') {

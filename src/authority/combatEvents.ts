@@ -551,6 +551,9 @@ export function reliableCombatEvents(
           }),
           areaRadiusMillimeters: result.detonation.areaRadiusMillimeters,
           reason: null,
+          flashDurationTicks: outcome.flashDurationTicks,
+          flashIntensityPermille: outcome.flashIntensityPermille,
+          flashFacingPermille: outcome.flashFacingPermille,
         }),
       }));
     }

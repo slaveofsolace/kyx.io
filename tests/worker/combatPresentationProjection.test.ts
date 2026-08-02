@@ -103,6 +103,62 @@ describe('Worker explicit combat presentation projection', () => {
     });
   });
 
+  it('retains the exact authority Flash exposure envelope through the reliable store', () => {
+    const inputs = reliableCombatEvents(tick({
+      abilityEffectResults: [{
+        resolutionOrdinal: 0,
+        detonation: {
+          kind: 'ability_projectile_detonated',
+          eventId: 'ability.flash.projectile.1.detonation',
+          authorityTick: 88,
+          projectileId: 'ability.flash.projectile.1',
+          ownerPlayerId: 'player_A',
+          ownerTeamId: 'team_blue',
+          abilityId: 'flash_grenade_v1',
+          positionMillimeters: { x: 0, y: 1_000, z: 0 },
+          areaRadiusMillimeters: 12_000,
+          damageHealthPoints: 0,
+          effect: 'flash',
+          effectDurationTicks: 45,
+          reason: 'fuse',
+        },
+        outcomes: [{
+          targetPlayerId: 'player_B',
+          status: 'applied',
+          damageHealthPoints: 0,
+          flashDurationTicks: 35,
+          flashIntensityPermille: 583,
+          flashFacingPermille: 1_000,
+          impulseMillimetersPerSecond: { x: 0, y: 0, z: 0 },
+        }],
+        damages: [],
+      }],
+    }));
+    const store = new ReliableEventStore();
+    const events = inputs.map((input) => store.append(input));
+    const flash = events.find(({ presentation }) => (
+      presentation?.kind === 'throwable_ability_event'
+      && presentation.phase === 'flash_applied'
+    ));
+    expect(flash).toMatchObject({
+      kind: 'abilityActivated',
+      actorId: 'player_A',
+      targetId: 'player_B',
+      presentation: {
+        flashDurationTicks: 35,
+        flashIntensityPermille: 583,
+        flashFacingPermille: 1_000,
+      },
+    });
+    expect(validateServerMessage({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'reliableEventBatch',
+      reliableEventStreamVersion: RELIABLE_EVENT_STREAM_VERSION,
+      matchId: 'match_worker_projection',
+      events,
+    })).toMatchObject({ ok: true });
+  });
+
   it('projects an authority kill-volume death through the reliable event stream', () => {
     const inputs = reliableCombatEvents(tick({
       volumeDamageResults: [{
