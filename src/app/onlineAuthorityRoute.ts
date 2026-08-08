@@ -63,6 +63,12 @@ import {
 } from './onlineAuthorityInput';
 import { createOnlineAuthorityWorld } from './onlineAuthorityInkfallWorld';
 import {
+  clearOnlineAuthorityResumeCredential,
+  createOnlineAuthorityResumeBinding,
+  persistOnlineAuthorityResumeCredential,
+  readOnlineAuthorityResumeCredential,
+} from './onlineAuthorityResumeSession';
+import {
   resolveOnlineBlinkPreview,
   type OnlineBlinkPreview,
 } from './onlineBlinkPreview';
@@ -768,6 +774,20 @@ async function mountSession(
     world,
     mapProof?.mapBinding.mapId ?? 'phase4_flat_run',
   );
+  const resumeBinding = createOnlineAuthorityResumeBinding({
+    authorityOrigin,
+    roomCode,
+    profileId: mapProfile ?? 'flat_run_revision_3',
+    mapId: identity.mapId,
+    fixtureHash: identity.fixtureHash,
+  });
+  const initialResumeCredential = readOnlineAuthorityResumeCredential(
+    window.sessionStorage,
+    resumeBinding,
+  );
+  body.dataset.onlineInitialConnectionIntent = initialResumeCredential === null
+    ? 'join'
+    : 'resume';
   const scheduler = createBrowserAuthorityEvidenceScheduler();
   const config: AuthorityEvidenceConfig = Object.freeze({
     authorityUrl: authorityOrigin,
@@ -1241,6 +1261,36 @@ async function mountSession(
     portalCaptionCues.setPreferences(settings);
   }
 
+  let renderRequested = true;
+  const client = new AuthorityEvidenceClient({
+    config,
+    roomCode,
+    expectedIdentity: identity,
+    profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+    queries: world,
+    transport: createBrowserAuthorityEvidenceTransport(),
+    scheduler,
+    createRequestId: () => `online.${crypto.randomUUID()}`,
+    initialResumeCredential: initialResumeCredential ?? undefined,
+    enableCombatInput: true,
+    onSessionCredential: (credential) => {
+      persistOnlineAuthorityResumeCredential(
+        window.sessionStorage,
+        resumeBinding,
+        credential,
+      );
+    },
+    onResumeRejected: () => {
+      clearOnlineAuthorityResumeCredential(window.sessionStorage, resumeBinding);
+    },
+    onChange: () => {
+      renderRequested = true;
+    },
+  });
+  // Establish or resume authority before loading large presentation assets so
+  // a normal page reload stays inside the server's short reconnect window.
+  client.start();
+
   let threeRuntime: OnlineAuthorityThreeRuntime | null = null;
   if (threeDimensionalMap && mapProof !== null) {
     body.dataset.online3dStatus = 'loading';
@@ -1311,6 +1361,7 @@ async function mountSession(
       );
       body.dataset.onlinePreviewStatus = 'map-load-failed';
       body.dataset.online3dStatus = 'failed';
+      client.dispose();
       for (const button of [
         ...weaponSlotButtons,
         sprintButton,
@@ -1328,21 +1379,6 @@ async function mountSession(
     }
   }
 
-  let renderRequested = true;
-  const client = new AuthorityEvidenceClient({
-    config,
-    roomCode,
-    expectedIdentity: identity,
-    profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
-    queries: world,
-    transport: createBrowserAuthorityEvidenceTransport(),
-    scheduler,
-    createRequestId: () => `online.${crypto.randomUUID()}`,
-    enableCombatInput: true,
-    onChange: () => {
-      renderRequested = true;
-    },
-  });
   const pressedKeys = new Set<string>();
   let pointerHeldButtons = 0;
   let heldInputButtons = 0;
@@ -2757,7 +2793,6 @@ async function mountSession(
   };
 
   updateInput();
-  client.start();
   animationFrame = requestAnimationFrame(render);
   window.addEventListener('pagehide', () => {
     cancelAnimationFrame(animationFrame);

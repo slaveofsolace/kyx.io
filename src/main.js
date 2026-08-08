@@ -160,6 +160,7 @@ if (onlineMatchButton instanceof HTMLButtonElement && onlineAuthorityAvailabilit
   onlineMatchButton.classList.remove('online-unavailable');
   onlineMatchButton.classList.add('online-preview-available');
   onlineMatchButton.textContent = 'ONLINE COMBAT PREVIEW';
+  onlineMatchButton.setAttribute('aria-label', 'Online match — available');
   onlineMatchButton.title = 'Create or join a pre-release authoritative combat room';
   onlineMatchButton.addEventListener('click', () => window.location.assign(ONLINE_AUTHORITY_PATH));
 }

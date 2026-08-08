@@ -75,6 +75,7 @@ const RESUME_RECONNECT_DELAY_MILLISECONDS = 250;
 const MAXIMUM_SEEN_RELIABLE_EVENT_IDS = 1_024;
 const MAXIMUM_RECENT_COMBAT_EVENTS = 64;
 const RELIABLE_EVENT_ID_PATTERN = /^event\.([1-9][0-9]*)$/u;
+const RESUME_TOKEN_PATTERN = /^[A-Za-z0-9_-]{43}$/u;
 
 function reliableEventSequence(eventId: string | null): number {
   if (eventId === null) return 0;
@@ -310,6 +311,12 @@ export interface AuthorityEvidencePresentation {
   readonly estimatedServerTick: number;
 }
 
+export interface AuthorityEvidenceSessionCredential {
+  readonly resumeToken: string;
+  readonly matchId: string;
+  readonly playerId: string;
+}
+
 export interface AuthorityEvidenceClientOptions {
   readonly config: AuthorityEvidenceConfig;
   readonly roomCode: string;
@@ -319,7 +326,10 @@ export interface AuthorityEvidenceClientOptions {
   readonly transport: AuthorityEvidenceTransport;
   readonly scheduler: AuthorityEvidenceScheduler;
   readonly createRequestId: () => string;
+  readonly initialResumeCredential?: AuthorityEvidenceSessionCredential;
   readonly enableCombatInput?: boolean;
+  readonly onSessionCredential?: (credential: AuthorityEvidenceSessionCredential) => void;
+  readonly onResumeRejected?: () => void;
   readonly onChange?: () => void;
 }
 
@@ -372,6 +382,9 @@ export class AuthorityEvidenceClient {
   private readonly scheduler: AuthorityEvidenceScheduler;
   private readonly createRequestId: () => string;
   private readonly combatInputEnabled: boolean;
+  private readonly initialResumeIdentity: Readonly<{ matchId: string; playerId: string }> | null;
+  private readonly onSessionCredential: (credential: AuthorityEvidenceSessionCredential) => void;
+  private readonly onResumeRejected: () => void;
   private readonly onChange: () => void;
   private readonly remoteBuffers = new Map<string, RemoteInterpolationBuffer>();
   private readonly entities = new Map<string, SnapshotEntity>();
@@ -492,7 +505,21 @@ export class AuthorityEvidenceClient {
     this.transport = options.transport;
     this.scheduler = options.scheduler;
     this.createRequestId = options.createRequestId;
+    const initialResumeCredential = options.initialResumeCredential;
+    if (
+      initialResumeCredential !== undefined
+      && !RESUME_TOKEN_PATTERN.test(initialResumeCredential.resumeToken)
+    ) throw new RangeError('initial authority resume credential is malformed');
+    this.resumeToken = initialResumeCredential?.resumeToken ?? null;
+    this.initialResumeIdentity = initialResumeCredential === undefined
+      ? null
+      : Object.freeze({
+          matchId: initialResumeCredential.matchId,
+          playerId: initialResumeCredential.playerId,
+        });
     this.combatInputEnabled = options.enableCombatInput === true;
+    this.onSessionCredential = options.onSessionCredential ?? (() => undefined);
+    this.onResumeRejected = options.onResumeRejected ?? (() => undefined);
     this.onChange = options.onChange ?? (() => undefined);
   }
 
@@ -503,7 +530,9 @@ export class AuthorityEvidenceClient {
       () => this.generateFixedInputTick(),
       FIXED_TICK_MILLISECONDS,
     );
-    this.openConnection('join');
+    const initialIntent: ConnectionIntent = this.resumeToken === null ? 'join' : 'resume';
+    if (initialIntent === 'resume') this.counters.resumeAttempts += 1;
+    this.openConnection(initialIntent);
   }
 
   setAxes(axes: AuthorityEvidenceAxes): void {
@@ -877,6 +906,13 @@ export class AuthorityEvidenceClient {
           if (message.connectionMode !== 'resumed') {
             throw new Error('resume connection was not accepted as resumed');
           }
+          if (
+            this.initialResumeIdentity !== null
+            && (
+              message.matchId !== this.initialResumeIdentity.matchId
+              || message.playerId !== this.initialResumeIdentity.playerId
+            )
+          ) throw new Error('resume connection changed the persisted player identity');
           if (message.resumeToken === this.resumeToken) {
             throw new Error('resume token was not rotated');
           }
@@ -891,11 +927,20 @@ export class AuthorityEvidenceClient {
         this.playerId = message.playerId;
         this.connectionMode = message.connectionMode;
         this.resumeToken = message.resumeToken;
+        this.onSessionCredential(Object.freeze({
+          resumeToken: message.resumeToken,
+          matchId: message.matchId,
+          playerId: message.playerId,
+        }));
         this.resetPredictionOnNextSnapshot = true;
         this.observeServerTick(message.serverTick);
         return;
       }
       case 'joinRejected':
+        if (this.connectionIntent === 'resume') {
+          this.resumeToken = null;
+          this.onResumeRejected();
+        }
         throw new Error(`authority rejected ${this.connectionIntent}: ${message.code}`);
       case 'fullSnapshot':
         this.applyFullSnapshot(message);

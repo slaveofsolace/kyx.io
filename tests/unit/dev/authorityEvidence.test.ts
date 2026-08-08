@@ -369,6 +369,88 @@ describe('authority evidence route adapters', () => {
 });
 
 describe('authority evidence transport state', () => {
+  it('resumes from a tab-restored credential on the first connection and persists rotation', () => {
+    const transport = new FakeTransport();
+    const scheduler = new FakeScheduler();
+    const persisted: Array<Readonly<{
+      resumeToken: string;
+      matchId: string;
+      playerId: string;
+    }>> = [];
+    let resumeRejected = 0;
+    const client = new AuthorityEvidenceClient({
+      config: {
+        authorityUrl: 'https://authority.example.test',
+        mode: 'join',
+        roomCode: 'KYX-234567',
+        displayName: 'Reloaded Peer',
+        impairmentProfile: 'nominal',
+      },
+      roomCode: 'KYX-234567',
+      expectedIdentity: EXPECTED_IDENTITY,
+      profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      queries: new FakeMovementQueryPort(),
+      transport,
+      scheduler,
+      createRequestId: () => 'request.initial-resume',
+      initialResumeCredential: {
+        resumeToken: 'A'.repeat(43),
+        matchId: 'match.1',
+        playerId: 'player.1',
+      },
+      onSessionCredential: (next) => persisted.push(next),
+      onResumeRejected: () => { resumeRejected += 1; },
+    });
+
+    client.start();
+    expect(client.diagnostics()).toMatchObject({
+      connection: { phase: 'resuming' },
+      counters: { connectionAttempts: 1, resumeAttempts: 1 },
+      resume: { tokenLength: 43 },
+    });
+    const connection = transport.connections[0]!;
+    connection.open();
+    connection.receive(welcome('connection.reload'));
+    const resume = sentMessage(connection, 1);
+    expect(resume).toEqual({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'resumeRoom',
+      requestId: 'request.initial-resume',
+      roomCode: 'KYX-234567',
+      resumeToken: 'A'.repeat(43),
+    });
+    connection.receive(joinAccepted(
+      resume.type === 'resumeRoom' ? resume.requestId : '',
+      'resumed',
+      'B',
+    ));
+    connection.receive(fullSnapshot(stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    )));
+
+    expect(persisted).toEqual([{
+      resumeToken: 'B'.repeat(43),
+      matchId: 'match.1',
+      playerId: 'player.1',
+    }]);
+    expect(resumeRejected).toBe(0);
+    const diagnostics = client.diagnostics();
+    expect(diagnostics).toMatchObject({
+      connection: { phase: 'joined', connectionMode: 'resumed' },
+      authority: { matchId: 'match.1', playerId: 'player.1' },
+      counters: {
+        resumeAttempts: 1,
+        resumeSuccesses: 1,
+        resumeTokenRotations: 1,
+      },
+      resume: { generation: 1, tokenLength: 43 },
+    });
+    expect(JSON.stringify(diagnostics)).not.toContain('A'.repeat(43));
+    expect(JSON.stringify(diagnostics)).not.toContain('B'.repeat(43));
+    client.dispose();
+  });
+
   it('keeps a joined lobby socket alive without manufacturing movement input', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();
