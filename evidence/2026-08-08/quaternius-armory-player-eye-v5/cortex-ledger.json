@@ -1,0 +1,669 @@
+{
+  "schema_version": "2.0.0",
+  "ledger_id": "ledger_kyx_armory_rev1",
+  "created_at": "2026-08-08T19:40:00Z",
+  "depth": "STANDARD",
+  "iteration": 1,
+  "root": {
+    "kind": "DECISION",
+    "node_id": "root_armory",
+    "statement": "Integrate the licensed Quaternius gun pack into real KYX weapon slots without changing combat authority or presenting a broken doubled first-person model.",
+    "source_state": "Only the VLR rifle donor was integrated; the remaining product slots used procedural presentation and prior fitting attempts produced oversized or detached views.",
+    "target_state": "Five product gun slots load one exact verified imported model each in Practice and staging-review, with a clean WIP first-person contact and explicit human-acceptance nonclaim.",
+    "conditions": [
+      "Preserve Worker and practice combat semantics.",
+      "Ship no unknown-rights asset.",
+      "Keep exactly one visible first-person weapon root.",
+      "Human visual acceptance remains reserved to the owner."
+    ],
+    "boundary": "KYX staging-review weapon presentation, source Blender derivatives, package closure, and local Practice evidence only.",
+    "objective_claim_id": "claim_objective",
+    "invariant_ids": [
+      "inv_authority",
+      "inv_single_root",
+      "inv_rights",
+      "inv_human"
+    ],
+    "uncertainty_changes_decision": false
+  },
+  "project_model": {
+    "status": "PARTIAL",
+    "facets": {
+      "intent": {
+        "summary": "Put the selected gun pack into the actual desktop game for tester use.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_objective"
+        ],
+        "unknown_disposition": ""
+      },
+      "decision": {
+        "summary": "Use four CC0 donors for sidearm, shotgun, sniper, and launcher while retaining the existing rifle donor.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_runtime",
+          "claim_rights"
+        ],
+        "unknown_disposition": ""
+      },
+      "acceptance_contract": {
+        "summary": "Functional/runtime proof may expose a WIP candidate; final visual and animation acceptance remains human-reserved.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_visual"
+        ],
+        "unknown_disposition": ""
+      },
+      "mechanism": {
+        "summary": "Verified GLBs install as presentation-only shell factories over hidden procedural meshes while existing muzzle and authority markers remain authoritative.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_runtime",
+          "claim_authority"
+        ],
+        "unknown_disposition": ""
+      },
+      "current_state_history": {
+        "summary": "v1 was oversized, v2-v4 exposed fit/contact defects, and v5 removes the detached second-contact failure.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_visual"
+        ],
+        "unknown_disposition": ""
+      },
+      "people_incentives": {
+        "summary": "The owner wants an immediately walkable tester build and prefers visible progress over isolated art renders.",
+        "knowledge": "KNOWN",
+        "load_bearing": false,
+        "claim_ids": [
+          "claim_objective"
+        ],
+        "unknown_disposition": ""
+      },
+      "lifecycle_recovery": {
+        "summary": "The integration is isolated on a WIP branch and can be reverted as one bounded commit; production is excluded.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_authority"
+        ],
+        "unknown_disposition": ""
+      }
+    },
+    "invariants": [
+      {
+        "id": "inv_authority",
+        "statement": "Imported presentation must not change damage, cadence, ammo, muzzle, hit, or Worker authority.",
+        "owner": "KYX combat contract",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": [
+          "e_tests",
+          "e_runtime"
+        ]
+      },
+      {
+        "id": "inv_single_root",
+        "statement": "Every product slot renders exactly one first-person weapon root with no legacy overlap.",
+        "owner": "KYX presentation runtime",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": [
+          "e_runtime"
+        ]
+      },
+      {
+        "id": "inv_rights",
+        "statement": "Every imported donor must have exact source identity and reuse rights.",
+        "owner": "KYX distribution gate",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": [
+          "e_build_report"
+        ]
+      },
+      {
+        "id": "inv_human",
+        "statement": "Automated proof must not self-grant visual or animation acceptance.",
+        "owner": "Project owner",
+        "status": "UNKNOWN",
+        "hard_gate": true,
+        "evidence_ids": [
+          "e_player_eye"
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "dep_armory",
+        "name": "KyxArmoryPresentation",
+        "role": "Owns weapon shells, muzzle markers, first-person framing, and contact state.",
+        "claim_ids": [
+          "claim_runtime",
+          "claim_authority"
+        ]
+      },
+      {
+        "id": "dep_loader",
+        "name": "Quaternius review loader",
+        "role": "Fail-closed size, hash, mesh, triangle, and root validation.",
+        "claim_ids": [
+          "claim_rights"
+        ]
+      }
+    ],
+    "stakeholders": [
+      {
+        "id": "owner",
+        "name": "Project owner",
+        "role": "Human visual and tester-readiness acceptance owner.",
+        "claim_ids": [
+          "claim_visual"
+        ]
+      }
+    ]
+  },
+  "authority": {
+    "scope": "Implement, verify, commit, push, and stage a work-in-progress KYX armory batch; production remains excluded.",
+    "decision_owner": "Project owner",
+    "authorized_actions": [
+      "Modify the KYX WIP branch.",
+      "Build and capture local Practice evidence.",
+      "Push a clearly labeled work-in-progress checkpoint.",
+      "Deploy the verified WIP to the existing Cloudflare staging project."
+    ],
+    "forbidden_actions": [
+      "Deploy production.",
+      "Claim final visual or animation acceptance.",
+      "Copy assets without verified reuse rights."
+    ],
+    "human_reserved_decisions": [
+      "Final weapon visual acceptance.",
+      "Final first-person contact and animation acceptance.",
+      "Production promotion."
+    ],
+    "external_state_allowed": true,
+    "hard_gates": [
+      {
+        "id": "gate_authority",
+        "category": "AUTHORITY",
+        "status": "CLEAR",
+        "rationale": "The owner explicitly requested actual implementation plus GitHub and Cloudflare WIP publication.",
+        "claim_ids": [
+          "claim_objective"
+        ]
+      },
+      {
+        "id": "gate_safety",
+        "category": "SAFETY",
+        "status": "NOT_APPLICABLE",
+        "rationale": "The bounded presentation change is not a safety-critical system.",
+        "claim_ids": []
+      },
+      {
+        "id": "gate_privacy",
+        "category": "PRIVACY_SECURITY_LEGAL",
+        "status": "CLEAR",
+        "rationale": "The selected Quaternius source is CC0 and exact donor hashes are preserved.",
+        "claim_ids": [
+          "claim_rights"
+        ]
+      },
+      {
+        "id": "gate_external",
+        "category": "IRREVERSIBLE_EXTERNAL_STATE",
+        "status": "CLEAR",
+        "rationale": "The WIP branch and staging deployment are replaceable; no production promotion is authorized.",
+        "claim_ids": [
+          "claim_authority"
+        ]
+      },
+      {
+        "id": "gate_production",
+        "category": "DESTRUCTIVE_PRODUCTION",
+        "status": "NOT_APPLICABLE",
+        "rationale": "Production deployment and destructive cleanup are out of scope.",
+        "claim_ids": [
+          "claim_authority"
+        ]
+      },
+      {
+        "id": "gate_human",
+        "category": "HUMAN_RESERVED",
+      "status": "CLEAR",
+      "rationale": "Player-eye and animation acceptance remain explicitly reserved to the owner and are not claimed by this WIP action.",
+        "claim_ids": [
+          "claim_visual"
+        ]
+      },
+      {
+        "id": "gate_rollback",
+        "category": "ROLLBACK_FAILURE",
+        "status": "CLEAR",
+        "rationale": "The bounded branch commit and staging alias can be superseded without deleting source evidence.",
+        "claim_ids": [
+          "claim_authority"
+        ]
+      }
+    ]
+  },
+  "companion_findings": {
+    "lead_skill": "HUMAN_CORTEX",
+    "applicable_domains": [
+      "VISUAL",
+      "GAMEPLAY",
+      "ANIMATION",
+      "RUNTIME_EXPERIENCE"
+    ],
+    "observation_input": "BOTH",
+    "cold_eye_status": "TOOL_LIMITED",
+    "cold_eye_before_source_inspection": false,
+    "findings": [
+      {
+        "id": "finding_overlap",
+        "source_skill": "HUMAN_EYE",
+        "domain": "VISUAL",
+        "label": "OBSERVED",
+        "verdict": "KEEP",
+        "statement": "v5 shows one readable imported model per slot without the historical doubled-gun overlap.",
+        "evidence_ids": [
+          "e_player_eye",
+          "e_runtime"
+        ]
+      },
+      {
+        "id": "finding_contacts",
+        "source_skill": "HUMAN_EYE",
+        "domain": "ANIMATION",
+        "label": "OBSERVED",
+        "verdict": "REVISE",
+        "statement": "Shotgun, sniper, and launcher use one clean WIP contact; final authored two-hand grips and motion remain open.",
+        "evidence_ids": [
+          "e_player_eye"
+        ]
+      },
+      {
+        "id": "finding_authority",
+        "source_skill": "HUMAN_BRAIN",
+        "domain": "GAMEPLAY",
+        "label": "INFERRED",
+        "verdict": "KEEP",
+        "statement": "Presentation-only donor shells preserve existing muzzle and combat authority while making each loadout visually distinct.",
+        "evidence_ids": [
+          "e_tests",
+          "e_runtime"
+        ]
+      }
+    ],
+    "completion_axes": {
+      "functional_implementation": {
+        "status": "PASS",
+        "signal": "Five actual product slots select the intended imported presentation.",
+        "evidence_ids": [
+          "e_runtime"
+        ],
+        "rationale": "Runtime snapshot records the exact visual source per slot."
+      },
+      "runtime_integration": {
+        "status": "PASS",
+        "signal": "Local Practice loaded all five slots with zero runtime errors.",
+        "evidence_ids": [
+          "e_runtime"
+        ],
+        "rationale": "System Chrome exercised the built staging-review package."
+      },
+      "player_eye_presentation": {
+        "status": "UNKNOWN",
+        "signal": "Human Eye verdict is REVISE and suitable only for WIP tester exposure.",
+        "evidence_ids": [
+          "e_player_eye"
+        ],
+        "rationale": "Readable models do not equal final contact or animation acceptance."
+      },
+      "evidence_regression_coverage": {
+        "status": "PASS",
+        "signal": "Typecheck, targeted tests, package closure, and runtime capture passed.",
+        "evidence_ids": [
+          "e_tests",
+          "e_runtime"
+        ],
+        "rationale": "Impacted seams were checked once after the coherent batch."
+      },
+      "human_acceptance": {
+        "status": "UNKNOWN",
+        "signal": "No owner acceptance has been recorded.",
+        "evidence_ids": [],
+        "rationale": "Subjective acceptance is human-reserved."
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "claim_objective",
+      "label": "PROPOSED",
+      "statement": "The owner requested immediate implementation of the selected gun models in the actual game.",
+      "evidence_ids": [],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Direct user instruction in the active task."
+      }
+    },
+    {
+      "id": "claim_runtime",
+      "label": "MEASURED",
+      "statement": "Five product weapon slots load the expected imported source with one overlap-free first-person root and zero runtime errors.",
+      "evidence_ids": [
+        "e_runtime"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Current 1440 x 900 Practice runtime capture and machine-readable snapshot."
+      }
+    },
+    {
+      "id": "claim_rights",
+      "label": "OBSERVED",
+      "statement": "The four new derivatives trace to exact-hash Quaternius Sci-Fi Gun Pack donors under CC0-1.0.",
+      "evidence_ids": [
+        "e_build_report"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Fail-closed build report records donor and output identity."
+      }
+    },
+    {
+      "id": "claim_authority",
+      "label": "MEASURED",
+      "statement": "The donor shells are presentation-only and retain the existing authority-facing muzzle and combat contract.",
+      "evidence_ids": [
+        "e_tests",
+        "e_runtime"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Targeted contract tests and runtime source/root assertions passed."
+      }
+    },
+    {
+      "id": "claim_visual",
+      "label": "OBSERVED",
+      "statement": "v5 is readable and cleaner than rejected fits but still requires final two-hand contact, animation, and owner visual review.",
+      "evidence_ids": [
+        "e_player_eye"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Human Eye inspection of all five current player-eye captures."
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "id": "e_build_report",
+      "kind": "ARTIFACT",
+      "access": "GENERATED_CURRENT",
+      "locator": "assets/review/runtime-candidates/kyx-quaternius-armory-rev1/build-report.json",
+      "captured_at": "2026-08-08T19:30:00Z",
+      "integrity": "sha256 69127abd4e8335bb0b9fc8915e8b1cf6c745f103e358c94b3898e37fc7394f48",
+      "supports_claim_ids": [
+        "claim_rights"
+      ],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "e_runtime",
+      "kind": "MEASUREMENT",
+      "access": "GENERATED_CURRENT",
+      "locator": "evidence/2026-08-08/quaternius-armory-player-eye-v5/runtime.json",
+      "captured_at": "2026-08-08T19:40:00Z",
+      "integrity": "sha256 20b1fd25f51e4415611e0969b879c7445bcbdbfbc6ed3cbdaed6b46228a6d7eb",
+      "supports_claim_ids": [
+        "claim_runtime",
+        "claim_authority"
+      ],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "e_player_eye",
+      "kind": "ARTIFACT",
+      "access": "INSPECTED_CURRENT",
+      "locator": "evidence/2026-08-08/quaternius-armory-player-eye-v5/*.png",
+      "captured_at": "2026-08-08T19:40:00Z",
+      "integrity": "Five current 1440 x 900 screenshots paired to runtime.json.",
+      "supports_claim_ids": [
+        "claim_runtime",
+        "claim_visual"
+      ],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "e_tests",
+      "kind": "TEST_RESULT",
+      "access": "GENERATED_CURRENT",
+      "locator": "App TypeScript PASS; tests/unit/weapons/kyxArmoryPresentation.test.ts 8 of 8 PASS; staging package closure PASS.",
+      "captured_at": "2026-08-08T19:40:00Z",
+      "integrity": "Commands executed against the current dirty source state before checkpoint.",
+      "supports_claim_ids": [
+        "claim_authority",
+        "claim_runtime"
+      ],
+      "contradicts_claim_ids": []
+    }
+  ],
+  "hypotheses": [],
+  "tests": [
+    {
+      "id": "test_contract",
+      "question": "Do presentation shells preserve weapon contracts and compile?",
+      "kind": "EXPERIMENT",
+      "discriminates_hypothesis_ids": [],
+      "predicted_outcomes": [],
+      "expected_decision_value": "HIGH",
+      "cost": "LOW",
+      "risk": "LOW",
+      "authorization_status": "AUTHORIZED",
+      "status": "PASS",
+      "evidence_ids": [
+        "e_tests"
+      ],
+      "changes_decision_if": "Any failure blocks the checkpoint."
+    },
+    {
+      "id": "test_runtime",
+      "question": "Does each real Practice slot load one exact imported source without overlap or runtime error?",
+      "kind": "EXPERIMENT",
+      "discriminates_hypothesis_ids": [],
+      "predicted_outcomes": [],
+      "expected_decision_value": "HIGH",
+      "cost": "LOW",
+      "risk": "LOW",
+      "authorization_status": "AUTHORIZED",
+      "status": "PASS",
+      "evidence_ids": [
+        "e_runtime"
+      ],
+      "changes_decision_if": "Any wrong source, duplicate root, overlap, or runtime error blocks the checkpoint."
+    },
+    {
+      "id": "test_human",
+      "question": "Are the models and final two-hand animations visually acceptable?",
+      "kind": "HUMAN_REVIEW",
+      "discriminates_hypothesis_ids": [],
+      "predicted_outcomes": [],
+      "expected_decision_value": "HIGH",
+      "cost": "LOW",
+      "risk": "LOW",
+      "authorization_status": "REQUIRES_AUTHORITY",
+      "status": "PROPOSED",
+      "evidence_ids": [
+        "e_player_eye"
+      ],
+      "changes_decision_if": "Owner acceptance closes the visual gate; rejection reopens fit and contact work."
+    }
+  ],
+  "trace": {
+    "bounds": {
+      "max_depth": 2,
+      "max_nodes": 3,
+      "stop_rule": "Stop after runtime integration, overlap prevention, rights, and human-acceptance consequences are explicit."
+    },
+    "nodes": [
+      {
+        "id": "root_armory",
+        "kind": "ROOT",
+        "statement": "Replace procedural slot presentation with verified imported gun models.",
+        "claim_id": "claim_objective",
+        "depth": 0,
+        "terminal": true,
+        "closure_reason": "BOUNDED"
+      },
+      {
+        "id": "node_runtime",
+        "kind": "CONSEQUENCE",
+        "statement": "Each slot must keep one authoritative presentation root and existing combat markers.",
+        "claim_id": "claim_runtime",
+        "depth": 1,
+        "terminal": true,
+        "closure_reason": "BOUNDED"
+      },
+      {
+        "id": "node_acceptance",
+        "kind": "CONSEQUENCE",
+        "statement": "Tester exposure can proceed as WIP while final contact and visual acceptance remain open.",
+        "claim_id": "claim_visual",
+        "depth": 1,
+        "terminal": true,
+        "closure_reason": "UNKNOWN_ESCALATED"
+      }
+    ],
+    "edges": [],
+    "feedback_loops": [],
+    "thresholds": []
+  },
+  "decision": {
+    "iteration_choice": "ACT",
+    "recommendation": "Publish v5 as a staging-review WIP and continue authored grip/animation work after the owner can inspect it.",
+    "selected_action_ids": [
+      "action_integrate"
+    ],
+    "rejected_options": [
+      "Do not ship rejected oversized fits.",
+      "Do not keep detached two-forearm contacts merely to report a two-hand count.",
+      "Do not change combat authority to accommodate donor geometry."
+    ],
+    "decision_claim_ids": [
+      "claim_runtime",
+      "claim_rights",
+      "claim_authority",
+      "claim_visual"
+    ],
+    "remaining_unknown_claim_ids": [
+      "claim_visual"
+    ],
+    "human_owner": "Project owner",
+    "consecutive_stable_checks": 1,
+    "reopen_trigger": "Wrong model source, duplicate root, muzzle drift, runtime error, owner rejection, or animation/contact clipping."
+  },
+  "actions": [
+    {
+      "id": "action_integrate",
+      "description": "Install the verified CC0 armory as review shells in five real weapon slots and capture current player-eye runtime evidence.",
+      "status": "VERIFIED",
+      "authorization_status": "AUTHORIZED",
+      "authority_basis": "Direct user request to implement these gun models in the actual game.",
+      "destructive": false,
+      "production": false,
+      "external_state_change": false,
+      "irreversible": false,
+      "monitoring": "Capture script asserts exact source, one root, overlap-free state, contact mode, and runtime errors.",
+      "rollback": {
+        "kind": "TRUE_ROLLBACK",
+        "procedure": "Revert the bounded armory integration commit on the WIP branch.",
+        "preconditions": [
+          "Preserve evidence and source provenance before reverting."
+        ],
+        "verification": "Rebuild and confirm procedural fallback models load with one root.",
+        "evidence_ids": [
+          "e_tests"
+        ],
+        "irreversible_residue": "Published Git history and staging deployment records remain historical."
+      },
+      "recovery": {
+        "procedure": "Restore the previous presentation factories and rebuild the staging-review package.",
+        "owner": "KYX integration owner",
+        "evidence_ids": [
+          "e_tests"
+        ]
+      },
+      "mitigation_consequence_node_ids": [
+        "node_runtime",
+        "node_acceptance"
+      ]
+    }
+  ],
+  "verification": {
+    "mechanism": {
+      "status": "PASS",
+      "signal": "Presentation-only shell factories and fallback meshes passed contract tests.",
+      "evidence_ids": [
+        "e_tests"
+      ],
+      "rationale": "The causal seam was directly tested."
+    },
+    "endpoint": {
+      "status": "PASS",
+      "signal": "Five actual Practice slots show their expected imported source.",
+      "evidence_ids": [
+        "e_runtime",
+        "e_player_eye"
+      ],
+      "rationale": "The requested runtime endpoint, not an isolated render, was captured."
+    },
+    "guardrails": {
+      "status": "PASS",
+      "signal": "Exact rights identity, one-root overlap prevention, and unchanged authority are evidenced.",
+      "evidence_ids": [
+        "e_build_report",
+        "e_tests",
+        "e_runtime"
+      ],
+      "rationale": "All non-human hard gates for this WIP batch are clear."
+    },
+    "recovery": {
+      "status": "UNKNOWN",
+      "signal": "A bounded Git rollback path exists but was not destructively rehearsed.",
+      "evidence_ids": [
+        "e_tests"
+      ],
+      "rationale": "Rehearsal is disproportionate before a staging-only WIP checkpoint."
+    }
+  },
+  "closure": {
+    "status": "BOUNDED",
+    "summary": "Functional and runtime armory integration is verified for staging-review; final contact animation and human visual acceptance remain open.",
+    "residual_risks": [
+      "Shotgun, sniper, and launcher still need authored two-hand grip markers and animation.",
+      "The owner has not accepted the v5 player-eye look.",
+      "This batch is not production release eligible."
+    ],
+    "human_acceptance_required": true,
+    "accepted_by": "",
+    "acceptance_evidence_ids": [],
+    "nonclaims": [
+      "This ledger does not contain hidden chain-of-thought.",
+      "Functional/runtime PASS does not grant human visual acceptance.",
+      "No production deployment or release eligibility is claimed."
+    ]
+  }
+}

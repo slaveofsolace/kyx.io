@@ -572,10 +572,79 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   });
 }
 
+const ADAPTED_CONTACT_PROFILE = Object.freeze({
+  kyx_sidearm_v1: Object.freeze({
+    name: 'KYX_K9_FIRST_PERSON_CONTACT_RIG',
+    mode: 'profiled_one_hand_arc_suit_v1',
+    position: Object.freeze([0, 0, -0.18] as const),
+    scale: 0.85,
+    handCount: 1,
+    visibleHand: 'dominant',
+  }),
+  kyx_scattergun_v1: Object.freeze({
+    name: 'KYX_SG4_FIRST_PERSON_CONTACT_RIG',
+    mode: 'profiled_single_contact_breacher_candidate_v2',
+    position: Object.freeze([0.02, 0.25, -0.1] as const),
+    scale: 0.6,
+    handCount: 1,
+    visibleHand: 'support',
+  }),
+  kyx_longshot_v1: Object.freeze({
+    name: 'KYX_LONGBOW12_FIRST_PERSON_CONTACT_RIG',
+    mode: 'profiled_single_contact_recon_candidate_v2',
+    position: Object.freeze([0.015, 0.27, -0.12] as const),
+    scale: 0.58,
+    handCount: 1,
+    visibleHand: 'support',
+  }),
+  kyx_breach_rocket_v1: Object.freeze({
+    name: 'KYX_BR6_FIRST_PERSON_CONTACT_RIG',
+    mode: 'profiled_single_contact_siege_candidate_v2',
+    position: Object.freeze([0.03, 0.26, -0.18] as const),
+    scale: 0.56,
+    handCount: 1,
+    visibleHand: 'support',
+  }),
+});
+
+function buildAdaptedContactRig(
+  authorityWeaponId: keyof typeof ADAPTED_CONTACT_PROFILE,
+): KyxFirstPersonContactRig {
+  const profile = ADAPTED_CONTACT_PROFILE[authorityWeaponId];
+  const rig = buildVlr7ContactRig();
+  rig.root.name = profile.name;
+  rig.root.userData.contactMode = profile.mode;
+  rig.root.userData.adaptedFrom = 'profiled_two_hand_assault_suit_v9';
+  rig.root.position.set(
+    profile.position[0],
+    profile.position[1],
+    profile.position[2],
+  );
+  rig.root.scale.setScalar(profile.scale);
+  if (profile.handCount === 1) {
+    const hiddenPrefix = profile.visibleHand === 'dominant'
+      ? '_SUPPORT_'
+      : '_DOMINANT_';
+    rig.root.traverse((object) => {
+      if (object.name.includes(hiddenPrefix)) object.visible = false;
+    });
+    if (profile.visibleHand === 'dominant') rig.supportGrip.visible = false;
+    else rig.dominantGrip.visible = false;
+  }
+  return Object.freeze({
+    ...rig,
+    handCount: profile.handCount,
+  });
+}
+
 export function createKyxFirstPersonContactRig(
   authorityWeaponId: string,
 ): KyxFirstPersonContactRig | null {
-  return authorityWeaponId === 'vertical_rifle_v1'
-    ? buildVlr7ContactRig()
-    : null;
+  if (authorityWeaponId === 'vertical_rifle_v1') return buildVlr7ContactRig();
+  if (authorityWeaponId in ADAPTED_CONTACT_PROFILE) {
+    return buildAdaptedContactRig(
+      authorityWeaponId as keyof typeof ADAPTED_CONTACT_PROFILE,
+    );
+  }
+  return null;
 }

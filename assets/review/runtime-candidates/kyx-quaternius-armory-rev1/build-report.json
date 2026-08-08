@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "status": "review_only_candidate_batch",
+  "sourcePack": "Quaternius Sci-Fi Gun Pack",
+  "sourceLicense": "CC0-1.0",
+  "candidates": [
+    {
+      "candidateId": "kyx-k9-quaternius-rev1",
+      "authorityWeaponId": "kyx_sidearm_v1",
+      "status": "review_only_candidate",
+      "source": {
+        "pack": "Quaternius Sci-Fi Gun Pack",
+        "asset": "Pistol.blend",
+        "license": "CC0-1.0",
+        "bytes": 642168,
+        "sha256": "c02dceeddd52545f09346ccddf94014d5ff158954c30ef432b10b0a0c1dd3445"
+      },
+      "outputs": {
+        "blend": {
+          "path": "assets/source/blender/kyx-weapons/quaternius-armory-rev1/kyx-k9-quaternius-rev1.blend",
+          "bytes": 1126615,
+          "sha256": "d4d00f96527081c06b26b3beb49a7b3cd2c7405cf8a62e507db76fb8c6d55c46"
+        },
+        "glb": {
+          "path": "assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-k9-quaternius-rev1.glb",
+          "bytes": 233708,
+          "sha256": "4b72710b6071bd120195ddd80673ec47cc5a3f394430bb6d614df04dcf42b339"
+        }
+      },
+      "structure": {
+        "meshObjectCount": 1,
+        "runtimePrimitiveCount": 5,
+        "triangleCount": 7048,
+        "rootNode": "KYX_K9_QUATERNIUS_REV1",
+        "rootScale": [
+          0.22,
+          0.22,
+          0.22
+        ],
+        "rootLocation": [
+          0.0,
+          0.0,
+          0.1224
+        ],
+        "microBevelWidth": 0.018
+      },
+      "claims": {
+        "presentationOnly": true,
+        "authorityUnchanged": true,
+        "releaseEligible": false,
+        "humanAccepted": false
+      }
+    },
+    {
+      "candidateId": "kyx-sg4-quaternius-rev1",
+      "authorityWeaponId": "kyx_scattergun_v1",
+      "status": "review_only_candidate",
+      "source": {
+        "pack": "Quaternius Sci-Fi Gun Pack",
+        "asset": "LongPistol.blend",
+        "license": "CC0-1.0",
+        "bytes": 690720,
+        "sha256": "e091af6e5658e369e27bd0852ed635591b7c936017bf214cfa26da3be3225922"
+      },
+      "outputs": {
+        "blend": {
+          "path": "assets/source/blender/kyx-weapons/quaternius-armory-rev1/kyx-sg4-quaternius-rev1.blend",
+          "bytes": 1237349,
+          "sha256": "d46d2d738a5cbbdc95784bc2587a8d87d1851da8dafb42a3a9d7a2e5eb70efe9"
+        },
+        "glb": {
+          "path": "assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-sg4-quaternius-rev1.glb",
+          "bytes": 510624,
+          "sha256": "d04629199f582dfcb2dce89bf534f295ee8689fa6cead04854c8a2e2a0bafd4b"
+        }
+      },
+      "structure": {
+        "meshObjectCount": 1,
+        "runtimePrimitiveCount": 4,
+        "triangleCount": 10006,
+        "rootNode": "KYX_SG4_QUATERNIUS_REV1",
+        "rootScale": [
+          0.21,
+          0.21,
+          0.21
+        ],
+        "rootLocation": [
+          0.0,
+          -0.08,
+          -0.01297
+        ],
+        "microBevelWidth": 0.025
+      },
+      "claims": {
+        "presentationOnly": true,
+        "authorityUnchanged": true,
+        "releaseEligible": false,
+        "humanAccepted": false
+      }
+    },
+    {
+      "candidateId": "kyx-longbow12-quaternius-rev1",
+      "authorityWeaponId": "kyx_longshot_v1",
+      "status": "review_only_candidate",
+      "source": {
+        "pack": "Quaternius Sci-Fi Gun Pack",
+        "asset": "Sniper rifle.blend",
+        "license": "CC0-1.0",
+        "bytes": 665376,
+        "sha256": "62e97d85a907caf10aa84777ab328e18e91464d65330f865b5742987ce3fe040"
+      },
+      "outputs": {
+        "blend": {
+          "path": "assets/source/blender/kyx-weapons/quaternius-armory-rev1/kyx-longbow12-quaternius-rev1.blend",
+          "bytes": 1127978,
+          "sha256": "724c8fdf4c5dbe6c5387ba2963bc8c1130762e19b974777b08f720ff39b96ebe"
+        },
+        "glb": {
+          "path": "assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-longbow12-quaternius-rev1.glb",
+          "bytes": 285500,
+          "sha256": "af4a907b60c1b482cf9e7d7339c884905dd5ae4d792a1ecc94bbd1a2da227b55"
+        }
+      },
+      "structure": {
+        "meshObjectCount": 1,
+        "runtimePrimitiveCount": 4,
+        "triangleCount": 7440,
+        "rootNode": "KYX_LONGBOW12_QUATERNIUS_REV1",
+        "rootScale": [
+          0.17,
+          0.17,
+          0.17
+        ],
+        "rootLocation": [
+          0.0,
+          0.02,
+          0.36266
+        ],
+        "microBevelWidth": 0.028
+      },
+      "claims": {
+        "presentationOnly": true,
+        "authorityUnchanged": true,
+        "releaseEligible": false,
+        "humanAccepted": false
+      }
+    },
+    {
+      "candidateId": "kyx-br6-quaternius-rev1",
+      "authorityWeaponId": "kyx_breach_rocket_v1",
+      "status": "review_only_candidate",
+      "source": {
+        "pack": "Quaternius Sci-Fi Gun Pack",
+        "asset": "Ray Gun.blend",
+        "license": "CC0-1.0",
+        "bytes": 736464,
+        "sha256": "b3c9fc210844a24a7266918fcde494a43f4d1ce9f02c6f262a86b0298bb8b10b"
+      },
+      "outputs": {
+        "blend": {
+          "path": "assets/source/blender/kyx-weapons/quaternius-armory-rev1/kyx-br6-quaternius-rev1.blend",
+          "bytes": 1426751,
+          "sha256": "538033a74d59ca37987830c962c4e5ab7c6c8a70fa772ca0a927f2ef32405c38"
+        },
+        "glb": {
+          "path": "assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-br6-quaternius-rev1.glb",
+          "bytes": 482632,
+          "sha256": "6eb88285056f83b064cbbf82c7b123a8453d1deec61c4a4c2e47b081409b735b"
+        }
+      },
+      "structure": {
+        "meshObjectCount": 1,
+        "runtimePrimitiveCount": 4,
+        "triangleCount": 12135,
+        "rootNode": "KYX_BR6_QUATERNIUS_REV1",
+        "rootScale": [
+          0.42,
+          0.42,
+          0.42
+        ],
+        "rootLocation": [
+          -0.001,
+          -0.14,
+          0.48308
+        ],
+        "microBevelWidth": 0.02
+      },
+      "claims": {
+        "presentationOnly": true,
+        "authorityUnchanged": true,
+        "releaseEligible": false,
+        "humanAccepted": false
+      }
+    }
+  ]
+}

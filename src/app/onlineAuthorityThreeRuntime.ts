@@ -324,17 +324,26 @@ async function loadRev5Visual(
   return loadReleaseRev5Visual(mapBinding);
 }
 
-async function loadVlr7ReviewShell(): Promise<void> {
+async function loadWeaponReviewShells(): Promise<void> {
   if (import.meta.env.MODE !== 'staging-review' && !import.meta.env.DEV) return;
-  const developmentReviewModulePath =
+  const developmentVlr7ModulePath =
     '../dev/loadKyxVlr7QuaterniusReview.ts';
-  const reviewModule = import.meta.env.MODE === 'staging-review'
+  const developmentArmoryModulePath =
+    '../dev/loadKyxQuaterniusArmoryReview.ts';
+  const vlr7Module = import.meta.env.MODE === 'staging-review'
     ? await import('../dev/loadKyxVlr7QuaterniusReview')
     : await import(
-      /* @vite-ignore */ developmentReviewModulePath
+      /* @vite-ignore */ developmentVlr7ModulePath
     );
-  const { loadKyxVlr7QuaterniusReview } = reviewModule;
-  await loadKyxVlr7QuaterniusReview();
+  const armoryModule = import.meta.env.MODE === 'staging-review'
+    ? await import('../dev/loadKyxQuaterniusArmoryReview')
+    : await import(
+      /* @vite-ignore */ developmentArmoryModulePath
+    );
+  await Promise.all([
+    vlr7Module.loadKyxVlr7QuaterniusReview(),
+    armoryModule.loadKyxQuaterniusArmoryReview(),
+  ]);
 }
 
 function disposeObject(root: THREE.Object3D): void {
@@ -574,7 +583,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const [loadedVisual] = await Promise.all([
     loadRev5Visual(mapBinding, options.presentationFixture),
     ensureHumanSoldierReady(),
-    loadVlr7ReviewShell(),
+    loadWeaponReviewShells(),
   ]);
   const renderer = new THREE.WebGLRenderer({
     canvas,

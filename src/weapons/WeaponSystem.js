@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import { WEAPONS } from './weaponDefs.js';
-import { buildWeaponModel, onWeaponModelsReady } from './WeaponModels.js';
+import {
+  buildWeaponModel,
+  onWeaponModelsReady,
+  usesKyxPresetWeaponModel,
+} from './WeaponModels.js';
 import { applyWeaponSkin, animateWeaponSkin } from './WeaponSkins.js';
 import { applySwordSkin, animateSwordSkin } from './SwordSkins.js';
 import { isG6Rev17CharacterCandidateEnabled } from '../config/g6CharacterCandidate.js';
@@ -199,13 +203,26 @@ export class WeaponSystem {
 
   _syncRev17ViewmodelVisibility() {
     const isMelee = this.currentDef?.kind === 'melee';
+    const usesSharedWeapon = !isMelee
+      && usesKyxPresetWeaponModel(this.currentDef?.id);
     // The procedural arm has no valid melee grip and intersects the blade, so
-    // it remains limited to non-melee weapons.
-    if (this.armGroup) this.armGroup.visible = !isMelee && !this._rev17Viewmodel;
+    // it remains limited to non-melee weapons. Product loadout guns keep their
+    // shared external model and arm instead of the Rev17 candidate's embedded
+    // rifle, preventing the historical double-gun overlap.
+    if (this.armGroup) {
+      this.armGroup.visible = !isMelee
+        && (!this._rev17Viewmodel || usesSharedWeapon);
+    }
     if (!this._rev17Viewmodel) return;
-    const candidateVisible = !isMelee;
+    const candidateVisible = !isMelee && !usesSharedWeapon;
     this._rev17Viewmodel.visible = candidateVisible;
-    if (!candidateVisible) return;
+    if (!candidateVisible) {
+      for (const weapon of this.allWeapons) {
+        const model = this.models.get(weapon.id);
+        if (model) model.group.visible = weapon.id === this.currentDef?.id;
+      }
+      return;
+    }
     for (const weapon of this.allWeapons) {
       if (weapon.kind === 'melee') continue;
       const model = this.models.get(weapon.id);

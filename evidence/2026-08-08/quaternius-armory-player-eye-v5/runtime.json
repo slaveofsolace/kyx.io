@@ -1,0 +1,82 @@
+{
+  "status": "KYX_QUATERNIUS_ARMORY_RUNTIME_CAPTURED",
+  "origin": "http://127.0.0.1:6341",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "captures": [
+    {
+      "slot": 1,
+      "weaponId": "vertical_rifle_v1",
+      "label": "vlr7-rifle",
+      "visualSource": "quaternius_cc0_review_rev1",
+      "file": "01-vlr7-rifle.png",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true
+    },
+    {
+      "slot": 2,
+      "weaponId": "kyx_sidearm_v1",
+      "label": "k9-sidearm",
+      "visualSource": "quaternius_cc0_armory_rev1:kyx-k9-quaternius-rev1",
+      "file": "02-k9-sidearm.png",
+      "selectedWeaponLabel": "K-9 ARC SIDEARM",
+      "selectedWeaponFamily": "pistol",
+      "selectedWeaponSilhouette": "compact_sidearm",
+      "selectedFirstPersonHandCount": 1,
+      "selectedFirstPersonContactMode": "profiled_one_hand_arc_suit_v1",
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true
+    },
+    {
+      "slot": 3,
+      "weaponId": "kyx_scattergun_v1",
+      "label": "sg4-breach",
+      "visualSource": "quaternius_cc0_armory_rev1:kyx-sg4-quaternius-rev1",
+      "file": "03-sg4-breach.png",
+      "selectedWeaponLabel": "SG-4 BREACH ARRAY",
+      "selectedWeaponFamily": "shotgun",
+      "selectedWeaponSilhouette": "wide_quad_barrel",
+      "selectedFirstPersonHandCount": 1,
+      "selectedFirstPersonContactMode": "profiled_single_contact_breacher_candidate_v2",
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true
+    },
+    {
+      "slot": 4,
+      "weaponId": "kyx_longshot_v1",
+      "label": "longbow12-sniper",
+      "visualSource": "quaternius_cc0_armory_rev1:kyx-longbow12-quaternius-rev1",
+      "file": "04-longbow12-sniper.png",
+      "selectedWeaponLabel": "LONGBOW-12",
+      "selectedWeaponFamily": "sniper",
+      "selectedWeaponSilhouette": "long_optic",
+      "selectedFirstPersonHandCount": 1,
+      "selectedFirstPersonContactMode": "profiled_single_contact_recon_candidate_v2",
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true
+    },
+    {
+      "slot": 5,
+      "weaponId": "kyx_breach_rocket_v1",
+      "label": "br6-launcher",
+      "visualSource": "quaternius_cc0_armory_rev1:kyx-br6-quaternius-rev1",
+      "file": "05-br6-launcher.png",
+      "selectedWeaponLabel": "BR-6 SIEGE TUBE",
+      "selectedWeaponFamily": "rocket",
+      "selectedWeaponSilhouette": "heavy_tube",
+      "selectedFirstPersonHandCount": 1,
+      "selectedFirstPersonContactMode": "profiled_single_contact_siege_candidate_v2",
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true
+    }
+  ],
+  "runtimeErrors": [],
+  "humanAccepted": false
+}

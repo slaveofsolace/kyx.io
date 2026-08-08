@@ -27,20 +27,45 @@ const bindingSource = path.join(
   'app',
   'inkfallRev5CandidateBinding.ts',
 );
-const weaponReviewArtifact = path.join(
-  repositoryRoot,
-  'assets',
-  'review',
-  'runtime-candidates',
-  'kyx-vlr7-quaternius-rev1',
-  'kyx-vlr7-quaternius-rev1.glb',
-);
-const weaponBindingSource = path.join(
-  repositoryRoot,
-  'src',
-  'dev',
-  'loadKyxVlr7QuaterniusReview.ts',
-);
+const weaponReviewArtifacts = [
+  {
+    artifact: path.join(
+      repositoryRoot,
+      'assets',
+      'review',
+      'runtime-candidates',
+      'kyx-vlr7-quaternius-rev1',
+      'kyx-vlr7-quaternius-rev1.glb',
+    ),
+    binding: path.join(
+      repositoryRoot,
+      'src',
+      'dev',
+      'loadKyxVlr7QuaterniusReview.ts',
+    ),
+  },
+  ...[
+    'kyx-k9-quaternius-rev1.glb',
+    'kyx-sg4-quaternius-rev1.glb',
+    'kyx-longbow12-quaternius-rev1.glb',
+    'kyx-br6-quaternius-rev1.glb',
+  ].map((name) => ({
+    artifact: path.join(
+      repositoryRoot,
+      'assets',
+      'review',
+      'runtime-candidates',
+      'kyx-quaternius-armory-rev1',
+      name,
+    ),
+    binding: path.join(
+      repositoryRoot,
+      'src',
+      'dev',
+      'loadKyxQuaterniusArmoryReview.ts',
+    ),
+  })),
+];
 const characterReviewArtifacts = [
   'kyx-v6b-assault-rev38-fitted-v1-lod0.glb',
   'kyx-v6b-assault-rev38-fitted-v1-lod1.glb',
@@ -93,21 +118,29 @@ if (
       + 'INKFALL_REV5_CANDIDATE_ART',
   );
 }
-const weaponSourceBytes = await readFile(weaponReviewArtifact);
-const expectedWeaponBytes = weaponSourceBytes.byteLength;
-const expectedWeaponSha256 = sha256(weaponSourceBytes);
-const weaponBindingText = await readFile(weaponBindingSource, 'utf8');
-if (
-  !weaponBindingText.includes(
-    `bytes: ${expectedWeaponBytes.toLocaleString('en-US').replaceAll(',', '_')}`,
-  )
-  || !weaponBindingText.includes(`sha256: '${expectedWeaponSha256}'`)
-) {
-  throw new Error(
-    'STAGING_REVIEW_WEAPON_BINDING_MISMATCH: generated GLB does not match '
-    + 'KYX_VLR7_QUATERNIUS_REVIEW',
-  );
-}
+const weaponArtifacts = await Promise.all(weaponReviewArtifacts.map(
+  async ({ artifact, binding }) => {
+    const bytes = await readFile(artifact);
+    const expected = Object.freeze({
+      source: artifact,
+      bytes: bytes.byteLength,
+      sha256: sha256(bytes),
+    });
+    const bindingText = await readFile(binding, 'utf8');
+    if (
+      !bindingText.includes(
+        `bytes: ${expected.bytes.toLocaleString('en-US').replaceAll(',', '_')}`,
+      )
+      || !bindingText.includes(`sha256: '${expected.sha256}'`)
+    ) {
+      throw new Error(
+        'STAGING_REVIEW_WEAPON_BINDING_MISMATCH '
+          + `artifact=${path.basename(artifact)}`,
+      );
+    }
+    return expected;
+  },
+));
 const characterBindingText = await readFile(characterBindingSource, 'utf8');
 const characterArtifacts = await Promise.all(characterReviewArtifacts.map(
   async (artifact) => {
@@ -134,7 +167,7 @@ const characterArtifacts = await Promise.all(characterReviewArtifacts.map(
 
 const distributedFiles = await walkFiles(distributionRoot);
 const matches = [];
-const weaponMatches = [];
+const weaponMatches = weaponArtifacts.map(() => []);
 const characterMatches = characterArtifacts.map(() => []);
 let usesSameOriginAuthority = false;
 const forbiddenAuthorityOriginFiles = [];
@@ -155,13 +188,12 @@ for (const file of distributedFiles) {
   if (fileStat.size === expectedBytes && sha256(bytes) === expectedSha256) {
     matches.push(path.relative(distributionRoot, file).replaceAll('\\', '/'));
   }
-  if (
-    fileStat.size === expectedWeaponBytes
-    && sha256(bytes) === expectedWeaponSha256
-  ) {
-    weaponMatches.push(
-      path.relative(distributionRoot, file).replaceAll('\\', '/'),
-    );
+  for (const [index, artifact] of weaponArtifacts.entries()) {
+    if (fileStat.size === artifact.bytes && sha256(bytes) === artifact.sha256) {
+      weaponMatches[index].push(
+        path.relative(distributionRoot, file).replaceAll('\\', '/'),
+      );
+    }
   }
   for (const [index, artifact] of characterArtifacts.entries()) {
     if (fileStat.size === artifact.bytes && sha256(bytes) === artifact.sha256) {
@@ -193,10 +225,14 @@ if (matches.length !== 0) {
       + `expected=0 actual=${matches.length}`,
   );
 }
-if (weaponMatches.length !== 1) {
-  throw new Error(
-    `STAGING_REVIEW_WEAPON_PACKAGE_MISMATCH expected=1 actual=${weaponMatches.length}`,
-  );
+for (const [index, artifactMatches] of weaponMatches.entries()) {
+  if (artifactMatches.length !== 1) {
+    throw new Error(
+      'STAGING_REVIEW_WEAPON_PACKAGE_MISMATCH '
+        + `artifact=${path.basename(weaponArtifacts[index].source)} `
+        + `expected=1 actual=${artifactMatches.length}`,
+    );
+  }
 }
 for (const [index, artifactMatches] of characterMatches.entries()) {
   if (artifactMatches.length !== 1) {
@@ -220,9 +256,14 @@ console.log(JSON.stringify({
   retiredMapArtifactPackaged: false,
   retiredMapArtifactSourceBytes: expectedBytes,
   retiredMapArtifactSourceSha256: expectedSha256,
-  weaponArtifact: weaponMatches[0],
-  weaponBytes: expectedWeaponBytes,
-  weaponSha256: expectedWeaponSha256,
+  weaponArtifact: weaponMatches[0][0],
+  weaponBytes: weaponArtifacts[0].bytes,
+  weaponSha256: weaponArtifacts[0].sha256,
+  weaponArtifacts: weaponArtifacts.map((artifact, index) => ({
+    artifact: weaponMatches[index][0],
+    bytes: artifact.bytes,
+    sha256: artifact.sha256,
+  })),
   characterArtifacts: characterArtifacts.map((artifact, index) => ({
     artifact: characterMatches[index][0],
     bytes: artifact.bytes,

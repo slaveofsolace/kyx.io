@@ -1,15 +1,59 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { metalNormalMap, metalRoughnessMap, polymerNormalMap } from './WeaponTextures.js';
+import { createKyxWeaponPresentationModel } from './KyxArmoryPresentation.ts';
 
-// Compatibility callbacks remain asynchronous, but every weapon is assembled
-// from project-authored procedural geometry. No external catalog is fetched.
+// Product loadout weapons converge on the same presentation model used by the
+// online authority route. Unsupported legacy sandbox weapons keep their local
+// procedural builders instead of being forced into a mismatched donor shell.
 const _weaponTemplate = null;
+const _readyCallbacks = new Set();
+let _reviewLoadPromise = null;
+
+const KYX_AUTHORITY_ID_BY_OFFLINE_ID = Object.freeze({
+  m4: 'vertical_rifle_v1',
+  sidearm: 'kyx_sidearm_v1',
+  energyshotgun: 'kyx_scattergun_v1',
+  boltsniper: 'kyx_longshot_v1',
+  sword: 'kyx_edge_v1',
+});
+
+export function usesKyxPresetWeaponModel(weaponId) {
+  return Object.prototype.hasOwnProperty.call(
+    KYX_AUTHORITY_ID_BY_OFFLINE_ID,
+    weaponId,
+  );
+}
+
+function _notifyWeaponModelsReady() {
+  for (const callback of _readyCallbacks) queueMicrotask(callback);
+}
+
+function _ensureReviewWeaponModels() {
+  if (import.meta.env.MODE !== 'staging-review' && !import.meta.env.DEV) {
+    return Promise.resolve();
+  }
+  _reviewLoadPromise ??= Promise.all([
+    import('../dev/loadKyxVlr7QuaterniusReview.ts').then(
+      ({ loadKyxVlr7QuaterniusReview }) => loadKyxVlr7QuaterniusReview(),
+    ),
+    import('../dev/loadKyxQuaterniusArmoryReview.ts').then(
+      ({ loadKyxQuaterniusArmoryReview }) => loadKyxQuaterniusArmoryReview(),
+    ),
+  ]).then(() => {
+    _notifyWeaponModelsReady();
+  });
+  return _reviewLoadPromise;
+}
+
 export function onWeaponModelsReady(cb) {
+  _readyCallbacks.add(cb);
   queueMicrotask(cb);
+  void _ensureReviewWeaponModels();
 }
 
 export function preloadWeaponModels() {
+  void _ensureReviewWeaponModels();
 }
 
 function _buildFromGLB(weaponDef) {
@@ -1870,6 +1914,16 @@ export function buildWeaponModel(weaponDef, opts = {}) {
   // is removed; the template is hard-null and has no loader or public URI.
   void opts;
   void _buildFromGLB;
+  const authorityWeaponId = KYX_AUTHORITY_ID_BY_OFFLINE_ID[weaponDef.id];
+  if (authorityWeaponId) {
+    const presentation = createKyxWeaponPresentationModel(
+      authorityWeaponId,
+      'world',
+    );
+    presentation.group.userData.offlineWeaponId = weaponDef.id;
+    presentation.group.userData.sharedAuthorityPresentation = true;
+    return { group: presentation.group, muzzle: presentation.muzzle };
+  }
   const builder = BUILDERS[weaponDef.id] ?? buildEnergyWeapon;
   const { group, muzzle } = builder(weaponDef.color, weaponDef);
   group.traverse((obj) => {

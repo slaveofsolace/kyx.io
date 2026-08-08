@@ -70,7 +70,7 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     firstPerson: Object.freeze({
       scale: 0.82,
       position: Object.freeze([0.285, -0.315, -0.46] as const),
-      rotation: Object.freeze([-0.065, 0.045, 0.012] as const),
+      rotation: Object.freeze([-0.065, 0.09, 0.012] as const),
       aim: Object.freeze({
         enabled: true,
         offset: Object.freeze([-0.275, 0.2, 0.08] as const),
@@ -96,9 +96,9 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0xd5f4ff,
     tracer: 0xeafaff,
     firstPerson: Object.freeze({
-      scale: 0.7,
-      position: Object.freeze([0.255, -0.29, -0.53] as const),
-      rotation: Object.freeze([-0.028, 0.018, -0.008] as const),
+      scale: 0.82,
+      position: Object.freeze([0.31, -0.31, -0.48] as const),
+      rotation: Object.freeze([-0.028, 0.15, -0.008] as const),
       aim: Object.freeze({
         enabled: true,
         offset: Object.freeze([-0.25, 0.205, 0.1] as const),
@@ -274,9 +274,13 @@ interface BuiltWeapon {
 }
 
 export type KyxLineRifleReviewShellFactory = () => THREE.Group;
+export type KyxWeaponReviewShellFactory = () => THREE.Group;
 
 const KYX_VLR7_REVIEW_MAGAZINE_NODE = 'KYX_VLR7_REVIEW_MAGAZINE';
 let lineRifleReviewShellFactory: KyxLineRifleReviewShellFactory | null = null;
+const weaponReviewShellFactories: Partial<
+  Record<KyxAuthorityWeaponId, KyxWeaponReviewShellFactory>
+> = {};
 
 export function installKyxLineRifleReviewShellFactory(
   factory: KyxLineRifleReviewShellFactory,
@@ -288,6 +292,74 @@ export function installKyxLineRifleReviewShellFactory(
       lineRifleReviewShellFactory = previous;
     }
   };
+}
+
+export function installKyxWeaponReviewShellFactory(
+  weaponId: KyxAuthorityWeaponId,
+  factory: KyxWeaponReviewShellFactory,
+): () => void {
+  const previous = weaponReviewShellFactories[weaponId];
+  weaponReviewShellFactories[weaponId] = factory;
+  return () => {
+    if (weaponReviewShellFactories[weaponId] === factory) {
+      if (previous === undefined) delete weaponReviewShellFactories[weaponId];
+      else weaponReviewShellFactories[weaponId] = previous;
+    }
+  };
+}
+
+function applyInstalledReviewShell(
+  weaponId: KyxAuthorityWeaponId,
+  built: BuiltWeapon,
+): BuiltWeapon {
+  const factory = weaponReviewShellFactories[weaponId];
+  if (factory === undefined) return built;
+
+  // Preserve the procedural model as a fail-safe structural contract while
+  // hiding only its render meshes. Its authority-facing muzzle/backblast
+  // markers and presentation animation state remain the single source of
+  // truth, preventing a donor asset from changing combat behavior.
+  built.visual.traverse((object) => {
+    if ((object as THREE.Mesh).isMesh) object.visible = false;
+  });
+  const reviewShell = factory();
+  reviewShell.name = `${weaponId.toUpperCase()}_REVIEW_SHELL_MOUNT`;
+  reviewShell.userData.presentationOnly = true;
+  reviewShell.userData.noHit = true;
+  reviewShell.userData.authorityUnchanged = true;
+  built.visual.add(reviewShell);
+  built.visual.userData.weaponVisualSource =
+    reviewShell.userData.weaponVisualSource ?? 'quaternius_cc0_armory_rev1';
+  return built;
+}
+
+function fitInstalledReviewShellForFirstPerson(visual: THREE.Group): void {
+  const reviewShell = visual.children.find((child) => (
+    typeof child.userData.firstPersonScaleMultiplier === 'number'
+  ));
+  if (reviewShell === undefined) return;
+  const multiplier = reviewShell.userData.firstPersonScaleMultiplier as number;
+  const pivotValue = reviewShell.userData.firstPersonScalePivot as unknown;
+  if (
+    !Number.isFinite(multiplier)
+    || multiplier <= 0
+    || multiplier > 1
+    || !Array.isArray(pivotValue)
+    || pivotValue.length !== 3
+    || !pivotValue.every((value) => Number.isFinite(value))
+  ) {
+    throw new Error('KYX_REVIEW_FIRST_PERSON_FIT_INVALID');
+  }
+  const pivot = new THREE.Vector3(
+    pivotValue[0] as number,
+    pivotValue[1] as number,
+    pivotValue[2] as number,
+  );
+  // Scale around the authority-facing muzzle pivot so the visible barrel and
+  // procedural muzzle/VFX marker remain coincident after camera-space fitting.
+  reviewShell.scale.setScalar(multiplier);
+  reviewShell.position.copy(pivot).multiplyScalar(1 - multiplier);
+  reviewShell.userData.firstPersonFitApplied = true;
 }
 
 function createLineRifleReviewShell(): Readonly<{
@@ -976,20 +1048,28 @@ function buildByWeaponId(
   weaponId: KyxAuthorityWeaponId,
   materials: MaterialSet,
 ): BuiltWeapon {
+  let built: BuiltWeapon;
   switch (weaponId) {
     case 'vertical_rifle_v1':
-      return buildLineRifle(materials);
+      built = buildLineRifle(materials);
+      break;
     case 'kyx_sidearm_v1':
-      return buildArcSidearm(materials);
+      built = buildArcSidearm(materials);
+      break;
     case 'kyx_scattergun_v1':
-      return buildBreachScattergun(materials);
+      built = buildBreachScattergun(materials);
+      break;
     case 'kyx_longshot_v1':
-      return buildLongbowSniper(materials);
+      built = buildLongbowSniper(materials);
+      break;
     case 'kyx_breach_rocket_v1':
-      return buildSiegeLauncher(materials);
+      built = buildSiegeLauncher(materials);
+      break;
     case 'kyx_edge_v1':
-      return buildPhaseSaber(materials);
+      built = buildPhaseSaber(materials);
+      break;
   }
+  return applyInstalledReviewShell(weaponId, built);
 }
 
 export function normalizeKyxAuthorityWeaponId(
@@ -1024,6 +1104,9 @@ export function createKyxWeaponPresentationModel(
           : 0x26343a,
   );
   const built = buildByWeaponId(authorityWeaponId, materials);
+  if (presentation === 'first_person') {
+    fitInstalledReviewShellForFirstPerson(built.visual);
+  }
   const group = new THREE.Group();
   group.name = `ONLINE_${presentation.toUpperCase()}_${authorityWeaponId}`;
   group.userData.projectAuthoredPresentation = true;

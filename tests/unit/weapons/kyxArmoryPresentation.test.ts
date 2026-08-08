@@ -5,6 +5,7 @@ import {
   KYX_AUTHORITY_WEAPON_PRESENTATION,
   createKyxWeaponPresentationModel,
   installKyxLineRifleReviewShellFactory,
+  installKyxWeaponReviewShellFactory,
   setKyxWeaponAim,
   setKyxWeaponPhase,
   updateKyxWeaponPresentation,
@@ -243,6 +244,78 @@ describe('KYX first-person armory presentation', () => {
       expect(mountedMagazine?.position.y).toBeLessThan(restY);
     } finally {
       restore();
+    }
+  });
+
+  it('replaces only rendered meshes for a verified non-rifle review shell', () => {
+    const source = new THREE.Group();
+    source.name = 'KYX_K9_QUATERNIUS_REV1';
+    source.userData.weaponVisualSource =
+      'quaternius_cc0_armory_rev1:kyx-k9-quaternius-rev1';
+    const donorMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(0.2, 0.18, 0.55),
+      new THREE.MeshStandardMaterial(),
+    );
+    donorMesh.name = 'KYX_K9_QUATERNIUS_DONOR';
+    source.add(donorMesh);
+    const restore = installKyxWeaponReviewShellFactory(
+      'kyx_sidearm_v1',
+      () => source.clone(true),
+    );
+    try {
+      const sidearm = createKyxWeaponPresentationModel(
+        'kyx_sidearm_v1',
+        'first_person',
+      );
+      expect(sidearm.group.userData.weaponVisualSource).toBe(
+        'quaternius_cc0_armory_rev1:kyx-k9-quaternius-rev1',
+      );
+      expect(sidearm.group.getObjectByName(
+        'KYX_K9_QUATERNIUS_DONOR',
+      )?.visible).toBe(true);
+      expect(sidearm.group.getObjectByName(
+        'KYX_K9_POWER_CHAMBER',
+      )?.visible).toBe(false);
+      expect(sidearm.muzzle.name).toBe('KYX_K9_MUZZLE');
+      expect(sidearm.group.getObjectsByProperty(
+        'name',
+        'KYX_K9_QUATERNIUS_DONOR',
+      )).toHaveLength(1);
+    } finally {
+      restore();
+    }
+  });
+
+  it('provides fitted first-person contacts for every product gun family', () => {
+    const expected = Object.freeze({
+      kyx_sidearm_v1: Object.freeze({
+        hands: 1,
+        mode: 'profiled_one_hand_arc_suit_v1',
+      }),
+      kyx_scattergun_v1: Object.freeze({
+        hands: 1,
+        mode: 'profiled_single_contact_breacher_candidate_v2',
+      }),
+      kyx_longshot_v1: Object.freeze({
+        hands: 1,
+        mode: 'profiled_single_contact_recon_candidate_v2',
+      }),
+      kyx_breach_rocket_v1: Object.freeze({
+        hands: 1,
+        mode: 'profiled_single_contact_siege_candidate_v2',
+      }),
+    });
+    for (const [weaponId, contract] of Object.entries(expected)) {
+      const model = createKyxWeaponPresentationModel(
+        weaponId,
+        'first_person',
+      );
+      expect(model.firstPersonHandCount).toBe(contract.hands);
+      expect(model.group.userData.firstPersonContactMode).toBe(contract.mode);
+      expect(model.firstPersonContactRig?.userData).toMatchObject({
+        presentationOnly: true,
+        noHit: true,
+      });
     }
   });
 
