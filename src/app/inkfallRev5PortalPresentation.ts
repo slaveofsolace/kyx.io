@@ -363,17 +363,21 @@ export function createInkfallRev5PortalPresentation(
       local: boolean,
     ): void {
       if (disposed) return;
-      const color = staticPortalDefinitions.find(({ id }) => id === event.endpointId)?.color
-        ?? (event.endpointId.endsWith('upper') ? 0xffa53b : 0x6ff3ff);
+      const departureColor = staticPortalDefinitions.find(
+        ({ id }) => id === event.endpointId,
+      )?.color ?? (event.endpointId.endsWith('upper') ? 0xffa53b : 0x6ff3ff);
+      const arrivalColor = staticPortalDefinitions.find(
+        ({ id }) => id === event.partnerEndpointId,
+      )?.color ?? (event.partnerEndpointId.endsWith('upper') ? 0xffa53b : 0x6ff3ff);
       addWave(
         mapMillimetersToScene(event.from).add(new THREE.Vector3(0, 1, 0)),
-        color,
+        departureColor,
         event.departureVfxHook,
         nowMilliseconds,
       );
       addWave(
         mapMillimetersToScene(event.to).add(new THREE.Vector3(0, 1, 0)),
-        color,
+        arrivalColor,
         event.arrivalVfxHook,
         nowMilliseconds,
       );

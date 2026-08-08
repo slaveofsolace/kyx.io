@@ -12,6 +12,7 @@ import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
 } from '../../../src/app/onlineAuthorityProfiles';
 
 describe('resolveOnlineAuthorityAvailability', () => {
@@ -114,6 +115,22 @@ describe('parseOnlineAuthorityRequest', () => {
     });
   });
 
+  it('parses Relay Revision 1 as a first-class authority profile', () => {
+    expect(parseOnlineAuthorityRequest(
+      `?mode=create&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}`,
+    )).toEqual({
+      kind: 'create',
+      profile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+    });
+    expect(parseOnlineAuthorityRequest(
+      `?mode=join&room=kyx-rly234&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}`,
+    )).toEqual({
+      kind: 'join',
+      roomCode: 'KYX-RLY234',
+      profile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+    });
+  });
+
   it('fails closed for malformed, repeated, or unknown options', () => {
     for (const value of [
       '?mode=join',
@@ -148,6 +165,9 @@ describe('online URL and display-name boundaries', () => {
     );
     expect(onlineCreatePath(ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID)).toBe(
       `/online?mode=create&profile=${ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID}`,
+    );
+    expect(onlineCreatePath(ONLINE_RELAY_REV1_COMBAT_PROFILE_ID)).toBe(
+      `/online?mode=create&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}`,
     );
     expect(() => onlineJoinPath('not-a-room')).toThrow(/invalid/u);
   });

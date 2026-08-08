@@ -70,6 +70,21 @@ describe('Inkfall Rev5 portal presentation', () => {
       activeTransientCount: 2,
     });
 
+    const departureWave = scene.children.find((child) => (
+      child.userData.hook === traversalEvent.departureVfxHook
+    ));
+    const arrivalWave = scene.children.find((child) => (
+      child.userData.hook === traversalEvent.arrivalVfxHook
+    ));
+    const departureLight = departureWave?.children.find(
+      (child): child is THREE.PointLight => (child as THREE.PointLight).isPointLight,
+    );
+    const arrivalLight = arrivalWave?.children.find(
+      (child): child is THREE.PointLight => (child as THREE.PointLight).isPointLight,
+    );
+    expect(departureLight?.color.getHex()).toBe(0xffa53b);
+    expect(arrivalLight?.color.getHex()).toBe(0x6ff3ff);
+
     let wireframeMaterialCount = 0;
     scene.traverse((object) => {
       if (!(object as THREE.Mesh).isMesh) return;

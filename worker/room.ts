@@ -12,6 +12,7 @@ import {
   authorityLoadoutFromRuleset,
   authorityLoadoutRequestFingerprint,
   createInkfallRev5PortalAuthorityPort,
+  createRelayPortalAuthorityPort,
   evaluateAuthorityLoadoutRequest,
   type AuthorityActiveMatchCheckpointV1,
   type AuthorityLoadoutSelectionV1,
@@ -53,6 +54,7 @@ import {
   G5_INKFALL_REV4_COMBAT_PROFILE,
   G5_INKFALL_REV5_COMBAT_PROFILE,
   createInkfallWorkerCombatOptions,
+  createRelayWorkerCombatOptions,
   combatSnapshotFromAuthority,
   createWorkerCombatOptions,
   inferWorkerRoomProfileFromIdentity,
@@ -62,8 +64,13 @@ import {
   inkfallWorkerFixture,
   inkfallWorkerMapBinding,
   isInkfallWorkerRoomProfile,
+  isPersistentMapWorkerRoomProfile,
+  isRelayWorkerRoomProfile,
   isOptInWorkerRoomProfile,
   reliableCombatEvents,
+  relayWorkerCombatSpawn,
+  relayWorkerFixture,
+  workerMapBinding,
   workerRoomProfileFromStorageId,
   workerRoomProfileStorageId,
   workerCombatSpawn,
@@ -236,10 +243,10 @@ interface ActiveMatchCheckpointRow {
 interface ActiveMatchCheckpointEnvelopeV1 {
   readonly schemaVersion: typeof ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION;
   readonly roomCode: string;
-  readonly roomProfile: InkfallWorkerRoomProfile;
+  readonly roomProfile: Parameters<typeof workerMapBinding>[0];
   readonly protocolVersion: typeof PROTOCOL_VERSION;
   readonly simulationIdentity: SimulationIdentityV1;
-  readonly mapBinding: ReturnType<typeof inkfallWorkerMapBinding>;
+  readonly mapBinding: ReturnType<typeof workerMapBinding>;
   readonly authority: AuthorityActiveMatchCheckpointV1;
   readonly reliableEvents: ReliableEventCheckpointV1;
   readonly playerEventAcknowledgements: readonly {
@@ -589,8 +596,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
                 lastTickFailure: this.lastTickFailure,
               }
             : {}),
-          ...(isInkfallWorkerRoomProfile(this.roomProfile)
-            ? { mapBinding: inkfallWorkerMapBinding(this.roomProfile) }
+          ...(isPersistentMapWorkerRoomProfile(this.roomProfile)
+            ? { mapBinding: workerMapBinding(this.roomProfile) }
             : {}),
           ...((
             this.roomProfile === G5_INKFALL_REV4_COMBAT_PROFILE
@@ -624,8 +631,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         ...(this.roomProfile !== null
           ? { roomProfile: this.roomProfile }
           : {}),
-        ...(isInkfallWorkerRoomProfile(this.roomProfile)
-          ? { mapBinding: inkfallWorkerMapBinding(this.roomProfile) }
+        ...(isPersistentMapWorkerRoomProfile(this.roomProfile)
+          ? { mapBinding: workerMapBinding(this.roomProfile) }
           : {}),
       }, { status: 201, headers: { 'cache-control': 'no-store' } });
     }
@@ -860,7 +867,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.playerEventAcknowledgements.set(playerId, eventBaselineId);
         if (authority.lifecycle === 'lobby') {
           this.persistLobbyCheckpointPlayer(playerId);
-        } else if (!isInkfallWorkerRoomProfile(this.roomProfile)) {
+        } else if (!isPersistentMapWorkerRoomProfile(this.roomProfile)) {
           this.markRecoveryState('active_uncheckpointed');
         }
         const accepted = safeSocketSend(webSocket, {
@@ -892,7 +899,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.activateFromLobbyCheckpoint();
           await this.ctx.storage.deleteAlarm();
         } else {
-          if (isInkfallWorkerRoomProfile(this.roomProfile)) {
+          if (isPersistentMapWorkerRoomProfile(this.roomProfile)) {
             this.persistActiveMatchCheckpoint();
           }
           await this.scheduleMaintenanceAlarm();
@@ -966,7 +973,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.playerEventAcknowledgements.set(current.playerId, restoredEventAcknowledgement);
         if (authority.lifecycle === 'lobby') {
           this.persistLobbyCheckpointPlayer(current.playerId);
-        } else if (!isInkfallWorkerRoomProfile(this.roomProfile)) {
+        } else if (!isPersistentMapWorkerRoomProfile(this.roomProfile)) {
           this.markRecoveryState('active_uncheckpointed');
         }
         const accepted = safeSocketSend(webSocket, {
@@ -997,7 +1004,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.activateFromLobbyCheckpoint();
           await this.ctx.storage.deleteAlarm();
         } else {
-          if (isInkfallWorkerRoomProfile(this.roomProfile)) {
+          if (isPersistentMapWorkerRoomProfile(this.roomProfile)) {
             this.persistActiveMatchCheckpoint();
           }
           await this.scheduleMaintenanceAlarm();
@@ -1531,10 +1538,16 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         const inkfallProfile = isInkfallWorkerRoomProfile(selectedProfile)
           ? selectedProfile
           : null;
-        const inkfallCombat = inkfallProfile !== null;
+        const relayProfile = isRelayWorkerRoomProfile(selectedProfile)
+          ? selectedProfile
+          : null;
+        const persistentMapProfile = inkfallProfile ?? relayProfile;
+        const mapCombat = persistentMapProfile !== null;
         const world = RapierMovementWorld.createWithRuntime(
-          inkfallCombat
-            ? inkfallWorkerFixture(inkfallProfile)
+          relayProfile !== null
+            ? relayWorkerFixture()
+            : inkfallProfile !== null
+              ? inkfallWorkerFixture(inkfallProfile)
             : getPhysicsFixture('flat_run'),
           initializeWorkerRapierRuntime(),
         );
@@ -1561,8 +1574,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         }
         const compatibilityIdentity: SimulationIdentityV1 = Object.freeze({
           schemaVersion: 1,
-          mapId: inkfallCombat
-            ? inkfallWorkerMapBinding(inkfallProfile).mapId
+          mapId: persistentMapProfile !== null
+            ? workerMapBinding(persistentMapProfile).mapId
             : LOCAL_MAP_ID,
           rulesetId: ruleset.id,
           rulesetRevision: ruleset.revision,
@@ -1623,7 +1636,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           if (runtime.recovery_state === 'lobby_checkpointed') {
             restoreLobbyCheckpoint = true;
           } else if (runtime.recovery_state === 'active_checkpointed') {
-            if (!inkfallCombat) {
+            if (!mapCombat) {
               world.dispose();
               this.markRecoveryState('expired');
               this.initializationFailure = 'AUTHORITY_ACTIVE_CHECKPOINT_PROFILE_MISMATCH';
@@ -1676,38 +1689,55 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           },
           profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
           queries: world,
-          ...((
-            inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
-            || inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
-          )
-            ? {
-                worldPortal: createInkfallRev5PortalAuthorityPort(
-                  world,
-                  inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
-                    ? INKFALL_AUTHORITY_MAP_IDENTITY_V4
-                    : INKFALL_AUTHORITY_MAP_IDENTITY_V3,
-                ),
-              }
-            : {}),
+          ...(relayProfile !== null
+            ? { worldPortal: createRelayPortalAuthorityPort(world) }
+            : (
+                inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+                || inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+              )
+              ? {
+                  worldPortal: createInkfallRev5PortalAuthorityPort(
+                    world,
+                    inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+                      ? INKFALL_AUTHORITY_MAP_IDENTITY_V4
+                      : INKFALL_AUTHORITY_MAP_IDENTITY_V3,
+                  ),
+                }
+              : {}),
           spawnResolver: (playerId, ordinal, context) => {
             const restoredOrdinal = this.restoredSpawnOrdinals.get(playerId);
             const resolvedOrdinal = restoredOrdinal ?? ordinal;
-            return inkfallCombat
-              ? restoredOrdinal !== undefined
-                ? inkfallWorkerCombatSpawn(restoredOrdinal, inkfallProfile)
-                : inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
-                    || inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
-                  ? this.resolveLiveInkfallSpawn(playerId, ordinal, context, inkfallProfile)
-                  : inkfallWorkerCombatSpawn(resolvedOrdinal, inkfallProfile)
-              : revision3Combat
-                ? workerCombatSpawn(resolvedOrdinal)
-                : { feetPosition: this.spawnFor(resolvedOrdinal) };
+            if (relayProfile !== null) {
+              return relayWorkerCombatSpawn(resolvedOrdinal);
+            }
+            if (inkfallProfile !== null) {
+              if (restoredOrdinal !== undefined) {
+                return inkfallWorkerCombatSpawn(restoredOrdinal, inkfallProfile);
+              }
+              if (
+                inkfallProfile === G5_INKFALL_REV4_COMBAT_PROFILE
+                || inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE
+              ) {
+                return this.resolveLiveInkfallSpawn(
+                  playerId,
+                  ordinal,
+                  context,
+                  inkfallProfile,
+                );
+              }
+              return inkfallWorkerCombatSpawn(resolvedOrdinal, inkfallProfile);
+            }
+            return revision3Combat
+              ? workerCombatSpawn(resolvedOrdinal)
+              : { feetPosition: this.spawnFor(resolvedOrdinal) };
           },
-          ...(inkfallCombat ? { maximumPlayers: 8 } : {}),
+          ...(mapCombat ? { maximumPlayers: 8 } : {}),
           ...(revision3Combat
             ? {
-                combat: inkfallCombat
-                  ? createInkfallWorkerCombatOptions(world, inkfallProfile)
+                combat: relayProfile !== null
+                  ? createRelayWorkerCombatOptions(world)
+                  : inkfallProfile !== null
+                    ? createInkfallWorkerCombatOptions(world, inkfallProfile)
                   : createWorkerCombatOptions(),
               }
             : {}),
@@ -1798,7 +1828,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private markActiveMatchCheckpointDirty(): void {
     const authority = this.requireAuthority();
     if (
-      !isInkfallWorkerRoomProfile(this.roomProfile)
+      !isPersistentMapWorkerRoomProfile(this.roomProfile)
       || (
         authority.lifecycle !== 'warmup'
         && authority.lifecycle !== 'active'
@@ -1832,7 +1862,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       && authority.lifecycle !== 'active'
       && authority.lifecycle !== 'postmatch'
     ) return;
-    if (!isInkfallWorkerRoomProfile(this.roomProfile)) {
+    if (!isPersistentMapWorkerRoomProfile(this.roomProfile)) {
       this.markRecoveryState('active_uncheckpointed');
       return;
     }
@@ -1861,7 +1891,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       roomProfile,
       protocolVersion: PROTOCOL_VERSION,
       simulationIdentity: this.simulationIdentity(),
-      mapBinding: inkfallWorkerMapBinding(roomProfile),
+      mapBinding: workerMapBinding(roomProfile),
       authority: authorityCheckpoint,
       reliableEvents: this.reliableEvents.exportCheckpoint(),
       playerEventAcknowledgements: Object.freeze(playerEventAcknowledgements),
@@ -2083,7 +2113,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   }
 
   private async restoreActiveMatchCheckpoint(): Promise<void> {
-    if (!isInkfallWorkerRoomProfile(this.roomProfile)) {
+    if (!isPersistentMapWorkerRoomProfile(this.roomProfile)) {
       throw new Error('AUTHORITY_ACTIVE_CHECKPOINT_PROFILE_UNAVAILABLE');
     }
     const roomProfile = this.roomProfile;
@@ -2097,7 +2127,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     )][0];
     if (row === undefined) throw new Error('AUTHORITY_ACTIVE_CHECKPOINT_ROW_MISSING');
     const expectedIdentityJson = JSON.stringify(this.simulationIdentity());
-    const expectedMapBindingJson = JSON.stringify(inkfallWorkerMapBinding(roomProfile));
+    const expectedMapBindingJson = JSON.stringify(workerMapBinding(roomProfile));
     if (
       row.schema_version !== ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION
       || row.room_code !== this.roomCode
@@ -2490,7 +2520,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   }
 
   private activateFromLobbyCheckpoint(): void {
-    if (isInkfallWorkerRoomProfile(this.roomProfile)) {
+    if (isPersistentMapWorkerRoomProfile(this.roomProfile)) {
       this.persistActiveMatchCheckpoint();
       return;
     }

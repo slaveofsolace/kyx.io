@@ -4,9 +4,12 @@ import {
   RELAY_AUTHORITY_FIXTURE,
   RELAY_AUTHORITY_FIXTURE_HASH,
   RELAY_AUTHORITY_IDENTITY,
+  RELAY_AUTHORITY_MAP_BINDING,
   RELAY_AUTHORITY_PACKAGE_DIGEST,
+  RELAY_AUTHORITY_PROFILE_ID,
   RELAY_AUTHORITY_SPAWNS,
   relayAuthoritySpawn,
+  isRelayAuthorityProfile,
 } from '../../../src/authority/relayAuthority';
 
 describe('Relay Revision 1 authority candidate', () => {
@@ -107,5 +110,19 @@ describe('Relay Revision 1 authority candidate', () => {
         .toBe(spawn);
     }
     expect(() => relayAuthoritySpawn(-1)).toThrow(RangeError);
+  });
+
+  it('publishes one exact fail-closed browser and Worker map contract', () => {
+    expect(RELAY_AUTHORITY_PROFILE_ID).toBe('relay-revision-1-authority-v1');
+    expect(isRelayAuthorityProfile(RELAY_AUTHORITY_PROFILE_ID)).toBe(true);
+    expect(isRelayAuthorityProfile('inkfall-foundry')).toBe(false);
+    expect(RELAY_AUTHORITY_MAP_BINDING).toMatchObject({
+      mapReference: 'relay@1',
+      presentationReference: 'relay@1/open-sky/v3',
+      fixtureId: RELAY_AUTHORITY_IDENTITY.fixtureId,
+      fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
+      colliderCardinality: 56,
+      spawns: RELAY_AUTHORITY_SPAWNS,
+    });
   });
 });

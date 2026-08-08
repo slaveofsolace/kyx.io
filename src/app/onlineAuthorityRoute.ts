@@ -4,6 +4,7 @@ import { GameSettings } from '../core/GameSettings.js';
 import {
   authorityLoadoutForCombatPreset,
   createAuthorityLoadoutRequestMessage,
+  RELAY_PORTAL_PRESENTATION_DEFINITIONS,
 } from '../authority';
 import {
   ABILITY_ID,
@@ -51,16 +52,16 @@ import {
 } from '../dev/authorityEvidenceTransport';
 import {
   createOnlineCombatRoom,
-  createOnlineInkfallCombatRoom,
-  verifyOnlineInkfallCombatRoom,
-  type OnlineInkfallRoomProof,
+  createOnlineAuthorityMapCombatRoom,
+  verifyOnlineAuthorityMapCombatRoom,
+  type OnlineAuthorityMapRoomProof,
 } from './onlineAuthorityGateway';
 import {
   isOnlineAuthorityInputCode,
   onlineAuthorityInputButtonsFromPressedKeys,
   onlineAuthorityWeaponSlotFromCode,
 } from './onlineAuthorityInput';
-import { createOnlineInkfallWorld } from './onlineAuthorityInkfallWorld';
+import { createOnlineAuthorityWorld } from './onlineAuthorityInkfallWorld';
 import {
   resolveOnlineBlinkPreview,
   type OnlineBlinkPreview,
@@ -73,10 +74,8 @@ import {
 import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
-  ONLINE_INKFALL_REV4_MAP_BINDING,
   ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
-  ONLINE_INKFALL_REV5_MAP_BINDING,
-  isOnlineInkfallAuthorityProfile,
+  ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
 import { classifyOnlineAuthorityPresentationEvent } from './onlineAuthorityPresentationRouting';
@@ -185,7 +184,7 @@ interface OnlinePreviewSnapshot {
   }>;
   readonly roomVerification?: Readonly<{
     roomProfile: OnlineAuthorityProfileSelection;
-    mapBinding: OnlineInkfallRoomProof['mapBinding'];
+    mapBinding: OnlineAuthorityMapRoomProof['mapBinding'];
     simulationIdentity: SimulationIdentityV1;
     identityChecks: number;
   }>;
@@ -235,7 +234,7 @@ function createShell(): { readonly root: HTMLElement; readonly content: HTMLElem
 
 function appendScopeNotice(
   parent: HTMLElement,
-  inkfallProfile: OnlineAuthorityProfileSelection | null = null,
+  mapProfile: OnlineAuthorityProfileSelection | null = null,
 ): void {
   const notice = element('details', 'online-preview__scope');
   notice.append(
@@ -243,11 +242,13 @@ function appendScopeNotice(
     element(
       'span',
       '',
-      inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
-        ? 'Relay visual candidate: one original render-only presentation and the linked world portal are temporarily bound to the corrected Revision 4 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Relay still requires its own authority package and human play approval.'
-        : inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+      mapProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
+        ? 'Relay Revision 1: the browser and Worker share the same 56-collider arena, eight spawns, paired portal authority, combat, and secure resume contract. Environment art, balance, and human play approval remain work in progress.'
+        : mapProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+          ? 'Retired Foundry Revision 4 compatibility profile retained only for persisted rooms and checkpoints.'
+        : mapProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
           ? 'Retired Revision 3 compatibility profile retained only for persisted rooms and checkpoints.'
-        : inkfallProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
+        : mapProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
           ? 'Legacy authority preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. It is retained for compatibility evidence, not current map presentation.'
         : 'Authoritative revision-3 combat preview: movement, rifle, health, team score, feed, respawn, grenade state, remote interpolation, and secure resume. Matchmaking, progression, real-map grenade collision, and release readiness are not included yet.',
     ),
@@ -307,40 +308,39 @@ function renderLanding(
     ),
   );
   profileOption.append(profileCheckbox, profileCopy);
-  const rev4ProfileOption = element('label', 'online-preview__profile-option');
-  const rev4ProfileCheckbox = document.createElement('input');
-  rev4ProfileCheckbox.type = 'checkbox';
-  rev4ProfileCheckbox.checked = selectedProfile === undefined
-    || selectedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-    || selectedProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
-  rev4ProfileCheckbox.disabled = !configured;
-  rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
-  const rev4ProfileCopy = element('span', '');
-  rev4ProfileCopy.append(
+  const relayProfileOption = element('label', 'online-preview__profile-option');
+  const relayProfileCheckbox = document.createElement('input');
+  relayProfileCheckbox.type = 'checkbox';
+  relayProfileCheckbox.checked = selectedProfile === undefined
+    || selectedProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
+  relayProfileCheckbox.disabled = !configured;
+  relayProfileCheckbox.dataset.testid = 'online-relay-rev1-profile';
+  const relayProfileCopy = element('span', '');
+  relayProfileCopy.append(
     element('strong', '', 'Relay'),
     element(
       'span',
       '',
-      'Current open-sky visual candidate and linked portals.',
+      'Current shared Practice/online arena and linked portals.',
     ),
   );
-  rev4ProfileOption.append(rev4ProfileCheckbox, rev4ProfileCopy);
+  relayProfileOption.append(relayProfileCheckbox, relayProfileCopy);
   profileCheckbox.addEventListener('change', () => {
-    if (profileCheckbox.checked) rev4ProfileCheckbox.checked = false;
+    if (profileCheckbox.checked) relayProfileCheckbox.checked = false;
   });
-  rev4ProfileCheckbox.addEventListener('change', () => {
-    if (rev4ProfileCheckbox.checked) profileCheckbox.checked = false;
+  relayProfileCheckbox.addEventListener('change', () => {
+    if (relayProfileCheckbox.checked) profileCheckbox.checked = false;
   });
   const profilePicker = element('details', 'online-preview__profile-picker');
   profilePicker.hidden = !configured;
   profilePicker.append(
     element('summary', '', 'Arena profile'),
-    rev4ProfileOption,
+    relayProfileOption,
     profileOption,
   );
   content.append(profilePicker);
   const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => {
-    if (rev4ProfileCheckbox.checked) return ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
+    if (relayProfileCheckbox.checked) return ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
     if (profileCheckbox.checked) return ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
     return undefined;
   };
@@ -426,7 +426,7 @@ function renderLanding(
 
 function expectedIdentity(
   world: RapierMovementWorld,
-  mapId: 'phase4_flat_run' | 'inkfall_foundry' = 'phase4_flat_run',
+  mapId: 'phase4_flat_run' | 'inkfall_foundry' | 'relay' = 'phase4_flat_run',
 ): SimulationIdentityV1 {
   const ruleset = requireRuleset('revamped_classic', 3);
   if (
@@ -727,8 +727,8 @@ function metric(label: string): { readonly root: HTMLElement; readonly value: HT
 type OnlineSessionBinding =
   | Readonly<{ kind: 'flat_run_revision_3' }>
   | Readonly<{
-      kind: 'inkfall';
-      proof: OnlineInkfallRoomProof;
+      kind: 'authority_map';
+      proof: OnlineAuthorityMapRoomProof;
     }>;
 
 async function mountSession(
@@ -752,17 +752,22 @@ async function mountSession(
     new URLSearchParams(window.location.search).get('debug') === '1';
   content.classList.add('online-preview__content--session');
   const displayName = protocolDisplayName(UserAccount.getDisplayName());
-  const inkfallProof = sessionBinding.kind === 'inkfall'
+  const mapProof = sessionBinding.kind === 'authority_map'
     ? sessionBinding.proof
     : null;
-  const inkfallProfile = inkfallProof?.roomProfile ?? null;
-  const inkfallRuntime = inkfallProof !== null;
-  const inkfallRev4 = inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-    || inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
-  const world = inkfallProof !== null
-    ? await createOnlineInkfallWorld(inkfallProof.mapBinding)
+  const mapProfile = mapProof?.roomProfile ?? null;
+  const mapRuntime = mapProof !== null;
+  const relayRuntime = mapProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
+  const threeDimensionalMap = relayRuntime
+    || mapProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    || mapProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
+  const world = mapProof !== null
+    ? await createOnlineAuthorityWorld(mapProof.mapBinding)
     : await createRapierMovementWorld(getPhysicsFixture('flat_run'));
-  const identity = expectedIdentity(world, inkfallRuntime ? 'inkfall_foundry' : 'phase4_flat_run');
+  const identity = expectedIdentity(
+    world,
+    mapProof?.mapBinding.mapId ?? 'phase4_flat_run',
+  );
   const scheduler = createBrowserAuthorityEvidenceScheduler();
   const config: AuthorityEvidenceConfig = Object.freeze({
     authorityUrl: authorityOrigin,
@@ -778,23 +783,23 @@ async function mountSession(
     element(
       'p',
       'online-preview__eyebrow',
-      inkfallRev4
+      threeDimensionalMap
         ? 'Relay · Online'
-        : inkfallRuntime
-          ? 'Relay · Online'
+        : mapRuntime
+          ? 'Legacy map · Online'
         : 'Online match',
     ),
     element(
       'h1',
       '',
-      inkfallRuntime ? 'Relay' : 'Authoritative arena',
+      relayRuntime ? 'Relay' : 'Authoritative arena',
     ),
     element(
       'p',
       'online-session__instructions',
-      inkfallRev4
+      threeDimensionalMap
         ? 'Click the arena to capture the pointer. WASD moves; Shift sprints; Space jumps; C crouches; 1–6 equip; E/F/Z use abilities; Q Blinks.'
-        : inkfallRuntime
+        : mapRuntime
           ? 'Click the arena to focus. WASD moves; Shift sprints; Space jumps; C crouches; E/F/Z use abilities; Q Blinks.'
           : 'Click the arena to focus. Movement, combat, score and life state resolve on the server.',
     ),
@@ -806,15 +811,15 @@ async function mountSession(
   );
   head.append(title, room);
 
-  const profileBanner = inkfallRuntime ? element('section', 'online-session__profile') : null;
-  if (profileBanner !== null && inkfallProof !== null) {
+  const profileBanner = mapRuntime ? element('section', 'online-session__profile') : null;
+  if (profileBanner !== null && mapProof !== null) {
     profileBanner.dataset.testid = 'online-profile-binding';
     profileBanner.append(
       element('strong', '', 'Opt-in profile verified'),
       element(
         'code',
         '',
-        `${inkfallProof.roomProfile} · ${inkfallProof.mapBinding.mapReference} · ${inkfallProof.mapBinding.fixtureId} / ${inkfallProof.mapBinding.fixtureHash} · ${inkfallProof.mapBinding.colliderCardinality} colliders`,
+        `${mapProof.roomProfile} · ${mapProof.mapBinding.mapReference} · ${mapProof.mapBinding.fixtureId} / ${mapProof.mapBinding.fixtureHash} · ${mapProof.mapBinding.colliderCardinality} colliders`,
       ),
     );
   }
@@ -844,41 +849,41 @@ async function mountSession(
   const arenaHead = element(
     'div',
     'online-session__panel-head',
-    inkfallRev4
+    relayRuntime
       ? 'Relay'
-      : inkfallRuntime
-        ? 'Relay'
+      : mapRuntime
+        ? 'Legacy arena'
         : 'Online arena',
   );
   arenaHead.append(element(
     'span',
     '',
-    inkfallRev4
+    threeDimensionalMap
       ? `Click for mouse look · WASD · ${selectedCombatPreset.roleLabel} + blade · M1 fire · M2 ADS · R reload · E/F/Z abilities · Q Blink`
       : 'WASD + air steer · Shift sprint · Space jump · C/Ctrl crouch + slide · Mouse/Arrows look · M1 fire · M2 ADS · R reload · E/F/Z abilities · Q Blink',
   ));
   const canvasWrap = element('div', 'online-session__canvas-wrap');
   const canvas = element('canvas', 'online-session__canvas');
-  canvas.width = inkfallRev4 ? 1280 : 960;
-  canvas.height = inkfallRev4 ? 720 : 640;
+  canvas.width = threeDimensionalMap ? 1280 : 960;
+  canvas.height = threeDimensionalMap ? 720 : 640;
   canvas.dataset.testid = 'online-arena';
-  canvas.dataset.renderer = inkfallRev4 ? 'three' : 'canvas2d';
+  canvas.dataset.renderer = threeDimensionalMap ? 'three' : 'canvas2d';
   canvas.tabIndex = 0;
   canvas.setAttribute(
     'aria-label',
-    inkfallRev4
+    threeDimensionalMap
       ? 'Playable Relay 3D online combat visual candidate with linked portals. Click for pointer lock and mouse look; Mouse 1 fires and Mouse 2 aims.'
       : 'Online authoritative combat arena. Click to focus; Mouse 1 fires and Mouse 2 aims.',
   );
   const mapStatus = element(
     'div',
     'online-session__map-status',
-    inkfallRev4
+    threeDimensionalMap
       ? 'Loading arena…'
       : 'Arena ready',
   );
   mapStatus.dataset.testid = 'online-map-load-status';
-  mapStatus.dataset.state = inkfallRev4 ? 'loading' : 'ready';
+  mapStatus.dataset.state = threeDimensionalMap ? 'loading' : 'ready';
   const reticle = element('div', 'online-session__reticle');
   reticle.setAttribute('aria-hidden', 'true');
   const flashOverlay = element('div', 'online-session__flash-overlay');
@@ -942,12 +947,12 @@ async function mountSession(
   audioCueRegion.setAttribute('aria-label', 'Critical sound indicators');
   canvasWrap.append(
     canvas,
-    ...(inkfallRev4 ? [mapStatus, reticle] : []),
+    ...(threeDimensionalMap ? [mapStatus, reticle] : []),
     flashOverlay,
     feedbackVfx,
     feedbackHud,
     weaponRail,
-    ...(inkfallRev4 ? [captionRegion, audioCueRegion] : []),
+    ...(threeDimensionalMap ? [captionRegion, audioCueRegion] : []),
   );
   const combatStrip = element('div', 'online-session__combat-strip');
   const blueCombat = element('div', 'online-session__combat-player');
@@ -1002,7 +1007,7 @@ async function mountSession(
   const inviteUrl = new URL(
     onlineJoinPath(
       roomCode,
-      inkfallProfile ?? undefined,
+      mapProfile ?? undefined,
     ),
     window.location.origin,
   ).toString();
@@ -1104,9 +1109,11 @@ async function mountSession(
   const limitation = element(
     'p',
     'online-session__limitation',
-    inkfallRev4
-      ? 'INTEGRATION CANDIDATE: this room uses frozen Inkfall @3 collision plus the additive server portal capability, spawns, zones, combat ports, telemetry, and resume persistence. Rev5 render meshes are explicitly non-authoritative; human visual approval and deployment remain separate.'
-      : inkfallRuntime
+    relayRuntime
+      ? 'WORK IN PROGRESS: Relay now shares one exact browser and Worker authority contract: 56 colliders, eight spawns, paired portals, combat, telemetry, and reconnect state. Environment art, balance, and human play approval remain open.'
+      : threeDimensionalMap
+        ? 'COMPATIBILITY MODE: this persisted Foundry room retains its locked authority contract. It is not the current arena direction.'
+      : mapRuntime
         ? 'INTEGRATION LIMIT: this room uses the real hash-locked P5.10 Inkfall @2 hitscan and grenade collision ports. Final-map traversal, final visuals, and human acceptance are still open; this preview does not claim G4 or G5.'
       : 'PRE-RELEASE LIMIT: movement uses the real flat-run Rapier fixture; grenade flight is authoritative, but this room still uses the deterministic empty combat-collision evidence port rather than accepted real-map grenade collision.',
   );
@@ -1178,7 +1185,7 @@ async function mountSession(
     combatPanel,
     metricsPanel,
   );
-  appendScopeNotice(side, inkfallProfile);
+  appendScopeNotice(side, mapProfile);
   const technicalError = element('pre', 'online-session__technical-error');
   technicalError.dataset.testid = 'online-technical-error';
   technicalError.setAttribute('aria-label', 'Technical error details');
@@ -1220,8 +1227,8 @@ async function mountSession(
     error,
   );
 
-  const portalAudio = inkfallRev4 ? new AudioManager() : null;
-  const portalCaptionCues = inkfallRev4
+  const portalAudio = threeDimensionalMap ? new AudioManager() : null;
+  const portalCaptionCues = threeDimensionalMap
     ? new CaptionCueOverlay({
         document,
         captionRegion,
@@ -1235,13 +1242,31 @@ async function mountSession(
   }
 
   let threeRuntime: OnlineAuthorityThreeRuntime | null = null;
-  if (inkfallRev4) {
+  if (threeDimensionalMap && mapProof !== null) {
     body.dataset.online3dStatus = 'loading';
     try {
       threeRuntime = await createOnlineAuthorityThreeRuntime(canvas, {
-        mapBinding: inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
-          ? ONLINE_INKFALL_REV5_MAP_BINDING
-          : ONLINE_INKFALL_REV4_MAP_BINDING,
+        mapBinding: mapProof.mapBinding,
+        ...(relayRuntime
+          ? {
+              presentationFixture: world.fixture,
+              presentationIdentity: {
+                mapReference: mapProof.mapBinding.mapReference,
+                presentationReference: 'presentationReference' in mapProof.mapBinding
+                  ? mapProof.mapBinding.presentationReference
+                  : mapProof.mapBinding.mapReference,
+                fixtureHash: mapProof.mapBinding.fixtureHash,
+                colliderCardinality: mapProof.mapBinding.colliderCardinality,
+                spawnCount: mapProof.mapBinding.spawns.length,
+                zoneCount: 'zones' in mapProof.mapBinding
+                  ? mapProof.mapBinding.zones.length
+                  : 0,
+                spawnPocketContainmentCount: 2,
+                authorityCompatibility: 'relay_revision_1_authority_candidate',
+              },
+              staticWorldPortalDefinitions: RELAY_PORTAL_PRESENTATION_DEFINITIONS,
+            }
+          : {}),
         onWorldPortalAudio: ({ local }) => {
           if (!local || portalAudio === null || portalCaptionCues === null) {
             return;
@@ -1960,12 +1985,12 @@ async function mountSession(
         audioCueAttempts: presentationAudioCueAttempts,
         recentCues: Object.freeze(presentationRecentCues.map((cue) => Object.freeze({ ...cue }))),
       }),
-      ...(inkfallProof === null
+      ...(mapProof === null
         ? {}
         : {
             roomVerification: Object.freeze({
-              roomProfile: inkfallProof.roomProfile,
-              mapBinding: inkfallProof.mapBinding,
+              roomProfile: mapProof.roomProfile,
+              mapBinding: mapProof.mapBinding,
               simulationIdentity: diagnostics.authority.simulationIdentity,
               identityChecks: diagnostics.counters.identityChecks,
             }),
@@ -2133,7 +2158,7 @@ async function mountSession(
       feedbackHud.dataset.audio = 'caption_only';
     });
     canvas.focus();
-    if (inkfallRev4 && document.pointerLockElement !== canvas) {
+    if (threeDimensionalMap && document.pointerLockElement !== canvas) {
       const pointerLockRequest = canvas.requestPointerLock();
       if (pointerLockRequest !== undefined) {
         void pointerLockRequest.catch(() => {
@@ -2152,7 +2177,7 @@ async function mountSession(
     event.preventDefault();
   };
   const pointerLook = (event: MouseEvent): void => {
-    if (!inkfallRev4 || document.pointerLockElement !== canvas) return;
+    if (!threeDimensionalMap || document.pointerLockElement !== canvas) return;
     const yaw = Math.max(-12_000, Math.min(12_000, Math.round(event.movementX * 110)));
     const pitch = Math.max(-12_000, Math.min(12_000, Math.round(-event.movementY * 110)));
     client.addLookDeltas(yaw, pitch);
@@ -2471,8 +2496,8 @@ async function mountSession(
         threeRuntime.dispose();
         threeRuntime = null;
       }
-    } else if (!inkfallRev4) {
-      renderArena(canvas, presentation, combatView, inkfallRuntime);
+    } else if (!threeDimensionalMap) {
+      renderArena(canvas, presentation, combatView, mapRuntime);
     }
     if (renderRequested || nowMilliseconds - lastDiagnosticsRefresh >= 100) {
       const combat = diagnostics.combat.snapshot;
@@ -2702,8 +2727,8 @@ async function mountSession(
       body.dataset.onlineCombatPhase = combat?.match.phase ?? 'waiting';
       body.dataset.onlineLocalLife = localPlayer?.lifePhase ?? 'waiting';
       body.dataset.onlineCombatFeedSequence = String(combat?.match.feedSequence ?? 0);
-      body.dataset.onlineRoomProfile = inkfallProof?.roomProfile ?? 'p58d-rev3-combat-v1';
-      body.dataset.onlineMapReference = inkfallProof?.mapBinding.mapReference ?? 'phase4_flat_run';
+      body.dataset.onlineRoomProfile = mapProof?.roomProfile ?? 'p58d-rev3-combat-v1';
+      body.dataset.onlineMapReference = mapProof?.mapBinding.mapReference ?? 'phase4_flat_run';
       body.dataset.onlineFixtureHash = identity.fixtureHash;
       body.dataset.onlinePresentationStatus = presentationStatus;
       body.dataset.onlinePresentationLastCue = presentationLastCue ?? 'none';
@@ -2809,10 +2834,13 @@ export async function mountOnlineAuthorityRoute(
       'CANCEL',
     );
     try {
-      if (requestedProfile !== undefined && isOnlineInkfallAuthorityProfile(requestedProfile)) {
-        const proof = await createOnlineInkfallCombatRoom(availability.origin, requestedProfile);
+      if (requestedProfile !== undefined) {
+        const proof = await createOnlineAuthorityMapCombatRoom(
+          availability.origin,
+          requestedProfile,
+        );
         roomCode = proof.roomCode;
-        sessionBinding = Object.freeze({ kind: 'inkfall', proof });
+        sessionBinding = Object.freeze({ kind: 'authority_map', proof });
       } else {
         roomCode = await createOnlineCombatRoom(availability.origin);
         sessionBinding = Object.freeze({ kind: 'flat_run_revision_3' });
@@ -2833,12 +2861,14 @@ export async function mountOnlineAuthorityRoute(
   } else {
     roomCode = request.roomCode;
     mode = 'join';
-    if (requestedProfile !== undefined && isOnlineInkfallAuthorityProfile(requestedProfile)) {
+    if (requestedProfile !== undefined) {
       body.dataset.onlinePreviewStatus = 'verifying-room-profile';
       renderNotice(
         content,
-        requestedProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
-          ? 'Verifying Relay / Revision 4 compatibility authority room…'
+        requestedProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
+          ? 'Verifying Relay Revision 1 authority room…'
+          : requestedProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+            ? 'Verifying retired Foundry Revision 4 compatibility room…'
           : requestedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
             ? 'Verifying retired Revision 3 compatibility room…'
           : 'Verifying legacy authority room…',
@@ -2846,12 +2876,12 @@ export async function mountOnlineAuthorityRoute(
         'CANCEL',
       );
       try {
-        const proof = await verifyOnlineInkfallCombatRoom(
+        const proof = await verifyOnlineAuthorityMapCombatRoom(
           availability.origin,
           roomCode,
           requestedProfile,
         );
-        sessionBinding = Object.freeze({ kind: 'inkfall', proof });
+        sessionBinding = Object.freeze({ kind: 'authority_map', proof });
       } catch (cause) {
         body.dataset.onlinePreviewStatus = 'room-profile-mismatch';
         renderNotice(

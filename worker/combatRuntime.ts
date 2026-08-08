@@ -8,6 +8,13 @@ import {
   G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
   G4_TDM_MATCH_ROOM_CAPABILITY_ID,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
+  RELAY_AUTHORITY_FIXTURE,
+  RELAY_AUTHORITY_IDENTITY,
+  RELAY_AUTHORITY_MAP_BINDING,
+  RELAY_AUTHORITY_PROFILE_ID,
+  createRelayAuthorityCombatOptions,
+  isRelayAuthorityProfile,
+  relayAuthoritySpawn,
   type AuthorityRoomCombatOptions,
   type AuthoritySpawn,
   type ImpulseGrenadeCollisionSafeImpulseRequestV1,
@@ -52,6 +59,7 @@ export const G5_INKFALL_REV4_COMBAT_PROFILE =
   INKFALL_REVISION_3_AUTHORITY_PROFILE_ID;
 export const G5_INKFALL_REV5_COMBAT_PROFILE =
   INKFALL_REVISION_5_AUTHORITY_PROFILE_ID;
+export const RELAY_REV1_COMBAT_PROFILE = RELAY_AUTHORITY_PROFILE_ID;
 export const P58D_COMBAT_PROFILE_HEADER = 'x-kyx-evidence-profile' as const;
 export const INTERNAL_ROOM_PROFILE_HEADER = 'x-kyx-room-profile' as const;
 export const DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID =
@@ -61,7 +69,8 @@ export type OptInWorkerRoomProfile =
   | typeof P58D_REV3_COMBAT_PROFILE
   | typeof P511_INKFALL_REV2_COMBAT_PROFILE
   | typeof G5_INKFALL_REV4_COMBAT_PROFILE
-  | typeof G5_INKFALL_REV5_COMBAT_PROFILE;
+  | typeof G5_INKFALL_REV5_COMBAT_PROFILE
+  | typeof RELAY_REV1_COMBAT_PROFILE;
 
 export type WorkerRoomProfile = OptInWorkerRoomProfile | null;
 export type InkfallWorkerRoomProfile = InkfallAuthorityProfile;
@@ -71,6 +80,7 @@ export const INKFALL_REVISION_3_WORKER_MAP_BINDING =
   INKFALL_REVISION_3_AUTHORITY_MAP_BINDING;
 export const INKFALL_REVISION_4_WORKER_MAP_BINDING =
   INKFALL_REVISION_4_AUTHORITY_MAP_BINDING;
+export const RELAY_REVISION_1_WORKER_MAP_BINDING = RELAY_AUTHORITY_MAP_BINDING;
 
 export function isInkfallWorkerRoomProfile(
   value: WorkerRoomProfile,
@@ -80,6 +90,26 @@ export function isInkfallWorkerRoomProfile(
 
 export function inkfallWorkerMapBinding(profile: InkfallWorkerRoomProfile) {
   return inkfallAuthorityMapBinding(profile);
+}
+
+export function isRelayWorkerRoomProfile(
+  value: WorkerRoomProfile,
+): value is typeof RELAY_REV1_COMBAT_PROFILE {
+  return isRelayAuthorityProfile(value);
+}
+
+export function isPersistentMapWorkerRoomProfile(
+  value: WorkerRoomProfile,
+): value is InkfallWorkerRoomProfile | typeof RELAY_REV1_COMBAT_PROFILE {
+  return isInkfallWorkerRoomProfile(value) || isRelayWorkerRoomProfile(value);
+}
+
+export function workerMapBinding(
+  profile: InkfallWorkerRoomProfile | typeof RELAY_REV1_COMBAT_PROFILE,
+) {
+  return isRelayWorkerRoomProfile(profile)
+    ? RELAY_REVISION_1_WORKER_MAP_BINDING
+    : inkfallWorkerMapBinding(profile);
 }
 
 export function isP58DCombatProfile(value: string | null): boolean {
@@ -92,7 +122,8 @@ export function isOptInWorkerRoomProfile(
   return value === P58D_REV3_COMBAT_PROFILE
     || value === P511_INKFALL_REV2_COMBAT_PROFILE
     || value === G5_INKFALL_REV4_COMBAT_PROFILE
-    || value === G5_INKFALL_REV5_COMBAT_PROFILE;
+    || value === G5_INKFALL_REV5_COMBAT_PROFILE
+    || value === RELAY_REV1_COMBAT_PROFILE;
 }
 
 export function workerRoomProfileStorageId(profile: WorkerRoomProfile): string {
@@ -111,6 +142,12 @@ export function inferWorkerRoomProfileFromIdentity(
   const revision3Combat = identity.rulesetId === G4_COMBAT_RULESET_ID
     && identity.rulesetRevision === G4_COMBAT_RULESET_REVISION
     && identity.rulesetHash === G4_COMBAT_RULESET_HASH;
+  if (
+    revision3Combat
+    && identity.mapId === RELAY_AUTHORITY_IDENTITY.mapId
+    && identity.fixtureId === RELAY_AUTHORITY_IDENTITY.fixtureId
+    && identity.fixtureHash === RELAY_AUTHORITY_IDENTITY.fixtureHash
+  ) return RELAY_REV1_COMBAT_PROFILE;
   if (
     revision3Combat
     && identity.mapId === INKFALL_AUTHORITY_MAP_IDENTITY_V4.mapId
@@ -202,6 +239,20 @@ export function inkfallRevision4WorkerSpawnAuthority() {
 
 export function inkfallWorkerFixture(profile: InkfallWorkerRoomProfile) {
   return inkfallAuthorityFixture(profile);
+}
+
+export function relayWorkerFixture() {
+  return RELAY_AUTHORITY_FIXTURE;
+}
+
+export function createRelayWorkerCombatOptions(
+  world: RapierMovementWorld,
+): AuthorityRoomCombatOptions {
+  return createRelayAuthorityCombatOptions(world);
+}
+
+export function relayWorkerCombatSpawn(ordinal: number): AuthoritySpawn {
+  return relayAuthoritySpawn(ordinal);
 }
 
 export function createInkfallWorkerCombatOptions(

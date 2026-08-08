@@ -21,6 +21,11 @@ import {
 export const RELAY_AUTHORITY_MAP_ID = 'relay' as const;
 export const RELAY_AUTHORITY_FIXTURE_ID = 'relay_map_collision' as const;
 export const RELAY_AUTHORITY_REVISION = 1 as const;
+export const RELAY_AUTHORITY_PROFILE_ID =
+  'relay-revision-1-authority-v1' as const;
+export const RELAY_AUTHORITY_MAP_REFERENCE = 'relay@1' as const;
+export const RELAY_AUTHORITY_PRESENTATION_REFERENCE =
+  'relay@1/open-sky/v3' as const;
 export const RELAY_COMBAT_WORLD_CAPABILITY_ID =
   'authoritative_relay_revision_1_rapier_combat_v1' as const;
 
@@ -192,6 +197,42 @@ export const RELAY_AUTHORITY_SPAWNS = Object.freeze([
   Object.freeze({ spawnId: 'relay_spawn_lower_west', feetPosition: vector([-16_000, -3_000, -17_000]), yawMilliDegrees: 90_000 }),
   Object.freeze({ spawnId: 'relay_spawn_lower_east', feetPosition: vector([16_000, -3_000, -17_000]), yawMilliDegrees: 270_000 }),
 ] as const);
+
+export const RELAY_AUTHORITY_MAP_BINDING = Object.freeze({
+  mapReference: RELAY_AUTHORITY_MAP_REFERENCE,
+  presentationReference: RELAY_AUTHORITY_PRESENTATION_REFERENCE,
+  mapId: RELAY_AUTHORITY_IDENTITY.mapId,
+  mapRevision: RELAY_AUTHORITY_IDENTITY.mapRevision,
+  packageDigest: RELAY_AUTHORITY_IDENTITY.packageDigest,
+  fixtureId: RELAY_AUTHORITY_IDENTITY.fixtureId,
+  fixtureHash: RELAY_AUTHORITY_IDENTITY.fixtureHash,
+  xAxis: 'east',
+  yAxis: 'up',
+  zAxis: 'north',
+  origin: 'relay_central_court',
+  gltfToMap: 'x_y_negative_z',
+  distanceUnit: 'millimeters',
+  angleUnit: 'milli_degrees',
+  colliderCardinality: RELAY_AUTHORITY_IDENTITY.colliderCardinality,
+  supportedModes: Object.freeze(['deathmatch', 'team_deathmatch']),
+  spawns: RELAY_AUTHORITY_SPAWNS,
+  zones: Object.freeze([]),
+  pickups: Object.freeze([]),
+  portal: Object.freeze({
+    capabilityId: 'relay_revision_1_linked_world_portal_v1',
+    authorityRole: 'server_authority',
+    renderRole: 'relay_render_only_no_hit',
+    endpointCount: 2,
+  }),
+} as const);
+
+export type RelayAuthorityMapBinding = typeof RELAY_AUTHORITY_MAP_BINDING;
+
+export function isRelayAuthorityProfile(
+  value: string | null,
+): value is typeof RELAY_AUTHORITY_PROFILE_ID {
+  return value === RELAY_AUTHORITY_PROFILE_ID;
+}
 
 export function relayAuthoritySpawn(ordinal: number): AuthoritySpawn {
   if (!Number.isSafeInteger(ordinal) || ordinal < 0) {

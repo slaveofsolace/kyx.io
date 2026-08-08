@@ -41,6 +41,7 @@ import {
 } from './inkfallRev5PortalPresentation';
 import {
   createRelayVisualContinuity,
+  RELAY_AUTHORITY_COMPATIBILITY,
   RELAY_DISPLAY_NAME,
   RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
 } from './relayVisualContinuity';
@@ -50,10 +51,15 @@ import {
 } from './onlineBlinkPreviewPresentation';
 import {
   ONLINE_INKFALL_REV5_MAP_BINDING,
+  type OnlineAuthorityMapBinding,
   type OnlineInkfallRevision4MapBinding,
   type OnlineInkfallRevision5MapBinding,
 } from './onlineAuthorityProfiles';
 import { createOnlineWeaponPresentationFx } from './onlineWeaponPresentationFx';
+
+type OnlineInkfallThreeMapBinding =
+  | OnlineInkfallRevision4MapBinding
+  | OnlineInkfallRevision5MapBinding;
 
 interface OnlineCombatView {
   readonly snapshot: CombatSnapshotV1 | null;
@@ -71,10 +77,6 @@ export interface OnlineAuthorityThreeFrame {
   readonly aimHeld: boolean;
   readonly blinkPreview: OnlineBlinkPreview | null;
 }
-
-type OnlineInkfallThreeMapBinding =
-  | OnlineInkfallRevision4MapBinding
-  | OnlineInkfallRevision5MapBinding;
 
 export interface OnlineAuthorityThreeDiagnostics {
   readonly status: 'ready' | 'disposed';
@@ -153,7 +155,7 @@ export interface OnlineAuthorityThreeRuntime {
 
 export interface OnlineAuthorityThreeRuntimeOptions {
   readonly onWorldPortalAudio?: InkfallRev5PortalAudioCallback;
-  readonly mapBinding?: OnlineInkfallThreeMapBinding;
+  readonly mapBinding?: OnlineAuthorityMapBinding;
   readonly presentationFixture?: PhysicsFixtureV1;
   readonly presentationIdentity?: OnlineAuthorityVisualIdentity;
   readonly showStaticWorldPortals?: boolean;
@@ -304,7 +306,7 @@ function loadReleaseRev5Visual(
 }
 
 async function loadRev5Visual(
-  mapBinding: OnlineInkfallThreeMapBinding,
+  mapBinding: OnlineAuthorityMapBinding,
   presentationFixture?: PhysicsFixtureV1,
 ): Promise<LoadedRev5Visual> {
   // Relay is the sole player-facing presentation. The rejected Foundry GLB
@@ -312,6 +314,12 @@ async function loadRev5Visual(
   // development, staging, or release builds.
   if (presentationFixture !== undefined) {
     return createRelayLoadedVisual(presentationFixture);
+  }
+  if (mapBinding.mapId === 'relay') {
+    throw new Error('ONLINE_RELAY_PRESENTATION_FIXTURE_REQUIRED');
+  }
+  if (mapBinding.mapRevision !== 3 && mapBinding.mapRevision !== 4) {
+    throw new Error('ONLINE_RELAY_VISUAL_PROFILE_UNSUPPORTED');
   }
   return loadReleaseRev5Visual(mapBinding);
 }
@@ -551,13 +559,17 @@ export async function createOnlineAuthorityThreeRuntime(
   const mapBinding = options.mapBinding ?? ONLINE_INKFALL_REV5_MAP_BINDING;
   const presentationIdentity = options.presentationIdentity ?? Object.freeze({
     mapReference: mapBinding.mapReference,
-    presentationReference: mapBinding.presentationReference,
+    presentationReference: 'presentationReference' in mapBinding
+      ? mapBinding.presentationReference
+      : mapBinding.mapReference,
     fixtureHash: mapBinding.fixtureHash,
     colliderCardinality: mapBinding.colliderCardinality,
-    spawnCount: 12,
-    zoneCount: 9,
+    spawnCount: mapBinding.spawns.length,
+    zoneCount: 'zones' in mapBinding ? mapBinding.zones.length : 0,
     spawnPocketContainmentCount: 2,
-    authorityCompatibility: RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
+    authorityCompatibility: mapBinding.mapId === 'relay'
+      ? RELAY_AUTHORITY_COMPATIBILITY
+      : RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
   });
   const [loadedVisual] = await Promise.all([
     loadRev5Visual(mapBinding, options.presentationFixture),

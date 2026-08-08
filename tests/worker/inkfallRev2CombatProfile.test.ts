@@ -21,6 +21,8 @@ import {
   P511_INKFALL_REV2_COMBAT_PROFILE,
   P58D_COMBAT_PROFILE_HEADER,
   P58D_REV3_COMBAT_PROFILE,
+  RELAY_REV1_COMBAT_PROFILE,
+  RELAY_REVISION_1_WORKER_MAP_BINDING,
 } from '../../worker/combatRuntime';
 import type { KyxAuthorityEnv } from '../../worker/env';
 import { INTENT_BUTTON } from '../../src/sim';
@@ -42,7 +44,8 @@ interface RoomCreated {
   readonly mapBinding?:
     | typeof INKFALL_REVISION_2_WORKER_MAP_BINDING
     | typeof INKFALL_REVISION_3_WORKER_MAP_BINDING
-    | typeof INKFALL_REVISION_4_WORKER_MAP_BINDING;
+    | typeof INKFALL_REVISION_4_WORKER_MAP_BINDING
+    | typeof RELAY_REVISION_1_WORKER_MAP_BINDING;
 }
 
 interface SocketProbe {
@@ -531,6 +534,94 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       fixtureHash: 'b24d002179389621',
     });
     expect(socket.decodeErrors).toEqual([]);
+  }, 30_000);
+
+  it('runs Relay Revision 1 with exact spawns, portals, and active checkpoint binding', async () => {
+    const room = await createRoom(RELAY_REV1_COMBAT_PROFILE);
+    expect(room).toMatchObject({
+      roomProfile: RELAY_REV1_COMBAT_PROFILE,
+      mapBinding: RELAY_REVISION_1_WORKER_MAP_BINDING,
+    });
+
+    const first = await connectSocket(room.socketPath);
+    const second = await connectSocket(room.socketPath);
+    const [firstWelcome, secondWelcome] = await Promise.all([
+      waitForType(first, 'welcome'),
+      waitForType(second, 'welcome'),
+    ]);
+    expect(firstWelcome.simulationIdentity).toMatchObject({
+      mapId: 'relay',
+      fixtureId: 'relay_map_collision',
+      fixtureHash: RELAY_REVISION_1_WORKER_MAP_BINDING.fixtureHash,
+    });
+    expect(secondWelcome.simulationIdentity).toEqual(firstWelcome.simulationIdentity);
+
+    sendClient(first, joinMessage(room.roomCode, 'req.join.relay.first', 'Relay First'));
+    const firstJoin = await waitForType(
+      first,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.relay.first',
+    );
+    const firstSnapshot = await waitForType(
+      first,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === firstJoin.playerId,
+    );
+    expect(firstSnapshot.localReconciliation.player).toMatchObject({
+      feetPosition: { x: -29_000, y: 0, z: 0 },
+      yawMilliDegrees: 90_000,
+    });
+
+    sendClient(second, joinMessage(room.roomCode, 'req.join.relay.second', 'Relay Second'));
+    const secondJoin = await waitForType(
+      second,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.relay.second',
+    );
+    const secondSnapshot = await waitForType(
+      second,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === secondJoin.playerId,
+    );
+    expect(secondSnapshot.localReconciliation.player).toMatchObject({
+      feetPosition: { x: 29_000, y: 0, z: 0 },
+      yawMilliDegrees: 270_000,
+    });
+
+    const metrics = await waitForMetrics(
+      room,
+      (candidate) => candidate.connectedPlayers === 2
+        && candidate.lifecycle === 'warmup',
+      'Relay active checkpoint',
+    );
+    expect(metrics).toMatchObject({
+      roomProfile: RELAY_REV1_COMBAT_PROFILE,
+      connectedPlayers: 2,
+      mapBinding: {
+        mapReference: 'relay@1',
+        presentationReference: 'relay@1/open-sky/v3',
+        fixtureHash: RELAY_REVISION_1_WORKER_MAP_BINDING.fixtureHash,
+        colliderCardinality: 56,
+        spawns: expect.any(Array),
+        portal: {
+          capabilityId: 'relay_revision_1_linked_world_portal_v1',
+        },
+      },
+    });
+    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
+    const stored = await runInDurableObject(stub, async (_instance, state) => (
+      [...state.storage.sql.exec<Record<string, string | number>>(
+        `SELECT profile_id, map_binding_json, checkpoint_hash
+         FROM room_active_checkpoint_v1 WHERE singleton = 1`,
+      )][0]
+    ));
+    expect(stored).toMatchObject({
+      profile_id: RELAY_REV1_COMBAT_PROFILE,
+      map_binding_json: JSON.stringify(RELAY_REVISION_1_WORKER_MAP_BINDING),
+      checkpoint_hash: expect.stringMatching(/^[a-f0-9]{16}$/u),
+    });
+    expect(first.decodeErrors).toEqual([]);
+    expect(second.decodeErrors).toEqual([]);
   }, 30_000);
 
   it('rejects profile mismatch, cross-profile resume, and persisted flat-run aliasing', async () => {

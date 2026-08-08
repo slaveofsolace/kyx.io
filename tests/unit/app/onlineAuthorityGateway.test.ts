@@ -4,10 +4,12 @@ import {
   ONLINE_COMBAT_PROFILE_HEADER,
   ONLINE_COMBAT_PROFILE_ID,
   createOnlineAuthorityRoom,
+  createOnlineAuthorityMapCombatRoom,
   createOnlineCombatRoom,
   createOnlineInkfallRevision2CombatRoom,
   createOnlineInkfallRevision4CombatRoom,
   createOnlineInkfallRevision5CombatRoom,
+  verifyOnlineAuthorityMapCombatRoom,
   verifyOnlineInkfallRevision2CombatRoom,
   verifyOnlineInkfallRevision4CombatRoom,
   verifyOnlineInkfallRevision5CombatRoom,
@@ -20,6 +22,8 @@ import {
   ONLINE_INKFALL_REV4_MAP_BINDING,
   ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV5_MAP_BINDING,
+  ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+  ONLINE_RELAY_REV1_MAP_BINDING,
 } from '../../../src/app/onlineAuthorityProfiles';
 
 function response(status: number, payload: unknown) {
@@ -215,6 +219,61 @@ describe('createOnlineAuthorityRoom', () => {
       roomProfile: ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
       mapBinding: ONLINE_INKFALL_REV5_MAP_BINDING,
     });
+  });
+
+  it('creates and verifies the exact Relay Revision 1 authority binding', async () => {
+    const payload = {
+      ok: true,
+      roomCode: 'KYX-RLY234',
+      roomProfile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_RELAY_REV1_MAP_BINDING,
+    };
+    const createFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(createOnlineAuthorityMapCombatRoom(
+      'https://authority.example.test',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      createFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-RLY234',
+      roomProfile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_RELAY_REV1_MAP_BINDING,
+    });
+
+    const joinFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(verifyOnlineAuthorityMapCombatRoom(
+      'https://authority.example.test',
+      'kyx-rly234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      joinFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-RLY234',
+      roomProfile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_RELAY_REV1_MAP_BINDING,
+    });
+    expect(joinFetch).toHaveBeenCalledWith(
+      'https://authority.example.test/api/rooms/KYX-RLY234',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          [ONLINE_COMBAT_PROFILE_HEADER]: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+        },
+      },
+    );
+
+    const drifted = vi.fn<OnlineAuthorityFetch>(async () => response(201, {
+      ...payload,
+      mapBinding: {
+        ...ONLINE_RELAY_REV1_MAP_BINDING,
+        fixtureHash: 'forged',
+      },
+    }));
+    await expect(verifyOnlineAuthorityMapCombatRoom(
+      'https://authority.example.test',
+      'KYX-RLY234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      drifted,
+    )).rejects.toThrow(ONLINE_RELAY_REV1_COMBAT_PROFILE_ID);
   });
 
   it('fails closed on a missing profile, binding drift, or cross-room join response', async () => {

@@ -7,9 +7,9 @@ import {
 import {
   INTERNAL_ROOM_PROFILE_HEADER,
   P58D_COMBAT_PROFILE_HEADER,
-  inkfallWorkerMapBinding,
-  isInkfallWorkerRoomProfile,
+  isPersistentMapWorkerRoomProfile,
   isOptInWorkerRoomProfile,
+  workerMapBinding,
 } from './combatRuntime';
 import type { KyxAuthorityEnv } from './env';
 import {
@@ -317,8 +317,8 @@ export default {
         ...(requestedProfile === null
           ? {}
           : { roomProfile: requestedProfile }),
-        ...(isInkfallWorkerRoomProfile(requestedProfile)
-          ? { mapBinding: inkfallWorkerMapBinding(requestedProfile) }
+        ...(isPersistentMapWorkerRoomProfile(requestedProfile)
+          ? { mapBinding: workerMapBinding(requestedProfile) }
           : {}),
       }, 201, cors);
     }
