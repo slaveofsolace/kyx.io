@@ -37,5 +37,11 @@ describe('Relay architectural skin', () => {
       .toBeDefined();
     expect(skin.group.getObjectByName('RELAY_CENTER_DECK_PANEL_BREAK_4'))
       .toBeDefined();
+    expect(skin.group.getObjectByName('RELAY_WEST_SPAWN_DECK_INSERT'))
+      .toBeDefined();
+    expect(skin.group.getObjectByName('RELAY_EAST_SPAWN_BAY_HEADER'))
+      .toBeDefined();
+    expect(skin.group.getObjectByName('RELAY_NORTH_EQUIPMENT_HOUSING_4'))
+      .toBeDefined();
   });
 });

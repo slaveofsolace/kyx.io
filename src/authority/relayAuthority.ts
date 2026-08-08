@@ -25,7 +25,7 @@ export const RELAY_AUTHORITY_PROFILE_ID =
   'relay-revision-1-authority-v1' as const;
 export const RELAY_AUTHORITY_MAP_REFERENCE = 'relay@1' as const;
 export const RELAY_AUTHORITY_PRESENTATION_REFERENCE =
-  'relay@1/open-sky/v3' as const;
+  'relay@1/open-sky/v4' as const;
 export const RELAY_COMBAT_WORLD_CAPABILITY_ID =
   'authoritative_relay_revision_1_rapier_combat_v1' as const;
 
@@ -174,18 +174,6 @@ export const RELAY_AUTHORITY_FIXTURE: PhysicsFixtureV1 = loadPhysicsFixture(
 export const RELAY_AUTHORITY_FIXTURE_HASH = hashPhysicsFixture(
   RELAY_AUTHORITY_FIXTURE,
 );
-// Revision 1 is still a local candidate rather than a sealed map package. Its
-// identity is therefore pinned to the exact canonical fixture digest until a
-// complete art/spawn/zone package is source-frozen.
-export const RELAY_AUTHORITY_PACKAGE_DIGEST = RELAY_AUTHORITY_FIXTURE_HASH;
-export const RELAY_AUTHORITY_IDENTITY = Object.freeze({
-  mapId: RELAY_AUTHORITY_MAP_ID,
-  mapRevision: RELAY_AUTHORITY_REVISION,
-  packageDigest: RELAY_AUTHORITY_PACKAGE_DIGEST,
-  fixtureId: RELAY_AUTHORITY_FIXTURE_ID,
-  fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
-  colliderCardinality: RELAY_AUTHORITY_FIXTURE.solids.length,
-});
 
 export const RELAY_AUTHORITY_SPAWNS = Object.freeze([
   Object.freeze({ spawnId: 'relay_spawn_west_a', feetPosition: vector([-29_000, 0, 0]), yawMilliDegrees: 90_000 }),
@@ -197,6 +185,68 @@ export const RELAY_AUTHORITY_SPAWNS = Object.freeze([
   Object.freeze({ spawnId: 'relay_spawn_lower_west', feetPosition: vector([-16_000, -3_000, -17_000]), yawMilliDegrees: 90_000 }),
   Object.freeze({ spawnId: 'relay_spawn_lower_east', feetPosition: vector([16_000, -3_000, -17_000]), yawMilliDegrees: 270_000 }),
 ] as const);
+
+function zone(
+  zoneId: string,
+  callout: string,
+  family: string,
+  center: VectorTuple,
+  halfExtents: VectorTuple,
+) {
+  return Object.freeze({
+    zoneId,
+    callout,
+    family,
+    center: vector(center),
+    halfExtents: vector(halfExtents),
+  });
+}
+
+export const RELAY_AUTHORITY_ZONES = Object.freeze([
+  zone('relay_west_spawn', 'West Bay', 'spawn', [-28_000, 1_500, 0], [6_500, 3_000, 8_500]),
+  zone('relay_east_spawn', 'East Bay', 'spawn', [28_000, 1_500, 0], [6_500, 3_000, 8_500]),
+  zone('relay_central_court', 'Signal Court', 'main', [0, 1_500, 750], [13_000, 3_000, 9_250]),
+  zone('relay_north_flank', 'North Gallery', 'flank', [0, 1_500, 15_000], [30_000, 3_000, 5_000]),
+  zone('relay_upper_bridge', 'Relay Bridge', 'upper', [0, 4_250, 11_000], [15_000, 2_250, 5_000]),
+  zone('relay_upper_overlook', 'Array Overlook', 'upper', [0, 4_250, 19_000], [5_500, 2_250, 4_000]),
+  zone('relay_lower_descent', 'Service Descent', 'lower', [0, -1_250, -11_000], [31_000, 3_000, 3_500]),
+  zone('relay_lower_service', 'Lower Relay', 'lower', [0, -1_750, -17_000], [24_000, 3_000, 4_500]),
+] as const);
+
+function relayPackageDigest(): string {
+  const source = JSON.stringify({
+    schemaVersion: 1,
+    mapId: RELAY_AUTHORITY_MAP_ID,
+    mapRevision: RELAY_AUTHORITY_REVISION,
+    fixtureId: RELAY_AUTHORITY_FIXTURE_ID,
+    fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
+    spawns: RELAY_AUTHORITY_SPAWNS,
+    zones: RELAY_AUTHORITY_ZONES,
+    portal: {
+      capabilityId: 'relay_revision_1_linked_world_portal_v1',
+      endpointCount: 2,
+    },
+  });
+  let hash = 0xcbf29ce484222325n;
+  for (const byte of new TextEncoder().encode(source)) {
+    hash ^= BigInt(byte);
+    hash = (hash * 0x100000001b3n) & 0xffffffffffffffffn;
+  }
+  return hash.toString(16).padStart(16, '0');
+}
+
+// Collision, ordered spawns, callout zones, and the linked-gate contract are
+// one exact authority package. Presentation art iterates behind its separate
+// presentationReference without mutating this digest.
+export const RELAY_AUTHORITY_PACKAGE_DIGEST = relayPackageDigest();
+export const RELAY_AUTHORITY_IDENTITY = Object.freeze({
+  mapId: RELAY_AUTHORITY_MAP_ID,
+  mapRevision: RELAY_AUTHORITY_REVISION,
+  packageDigest: RELAY_AUTHORITY_PACKAGE_DIGEST,
+  fixtureId: RELAY_AUTHORITY_FIXTURE_ID,
+  fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
+  colliderCardinality: RELAY_AUTHORITY_FIXTURE.solids.length,
+});
 
 export const RELAY_AUTHORITY_MAP_BINDING = Object.freeze({
   mapReference: RELAY_AUTHORITY_MAP_REFERENCE,
@@ -216,7 +266,7 @@ export const RELAY_AUTHORITY_MAP_BINDING = Object.freeze({
   colliderCardinality: RELAY_AUTHORITY_IDENTITY.colliderCardinality,
   supportedModes: Object.freeze(['deathmatch', 'team_deathmatch']),
   spawns: RELAY_AUTHORITY_SPAWNS,
-  zones: Object.freeze([]),
+  zones: RELAY_AUTHORITY_ZONES,
   pickups: Object.freeze([]),
   portal: Object.freeze({
     capabilityId: 'relay_revision_1_linked_world_portal_v1',

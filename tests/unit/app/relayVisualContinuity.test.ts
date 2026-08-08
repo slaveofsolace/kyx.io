@@ -47,8 +47,16 @@ describe('Relay original visual continuity candidate', () => {
     expect(names.join('\n')).not.toMatch(/(?:INKFALL|FOUNDRY|PRESS|ARCHIVE)/u);
     expect(continuity.group.getObjectByName('RELAY_OPEN_SKY')).toBeDefined();
     expect(continuity.group.getObjectByName('RELAY_ARRAY_OUTER_RING')).toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARCHITECTURAL_SKIN_V3'))
+    expect(continuity.group.getObjectByName('RELAY_ARCHITECTURAL_SKIN_V4'))
       .toBeDefined();
+    const midDeck = continuity.group.getObjectByName('RELAY_AUTHORITY_CLADDING_DECK_MID');
+    expect(midDeck).toBeDefined();
+    if (midDeck !== undefined && 'material' in midDeck) {
+      const material = midDeck.material as { map?: unknown; roughnessMap?: unknown; bumpMap?: unknown };
+      expect(material.map).toBeDefined();
+      expect(material.roughnessMap).toBeDefined();
+      expect(material.bumpMap).toBeDefined();
+    }
     expect(continuity.group.getObjectByName('RELAY_ARRAY_CROSSBEAM'))
       .toBeDefined();
     expect(continuity.group.getObjectByName('RELAY_ARRAY_CROWN_MAST'))

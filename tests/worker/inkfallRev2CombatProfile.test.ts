@@ -599,7 +599,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       connectedPlayers: 2,
       mapBinding: {
         mapReference: 'relay@1',
-        presentationReference: 'relay@1/open-sky/v3',
+        presentationReference: 'relay@1/open-sky/v4',
         fixtureHash: RELAY_REVISION_1_WORKER_MAP_BINDING.fixtureHash,
         colliderCardinality: 56,
         spawns: expect.any(Array),

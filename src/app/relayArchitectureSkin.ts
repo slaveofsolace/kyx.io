@@ -50,6 +50,7 @@ function addBox(
     name: string;
     position: readonly [number, number, number];
     size: readonly [number, number, number];
+    rotation?: readonly [number, number, number];
     material: THREE.Material;
     role: string;
   }>,
@@ -65,6 +66,7 @@ function addBox(
   );
   mesh.name = definition.name;
   mesh.position.set(...definition.position);
+  if (definition.rotation !== undefined) mesh.rotation.set(...definition.rotation);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   mark(mesh, definition.role, visualContinuityVersion);
@@ -82,7 +84,7 @@ export function createRelayArchitectureSkin(
   visualContinuityVersion: string,
 ): RelayArchitectureSkin {
   const group = new THREE.Group();
-  group.name = 'RELAY_ARCHITECTURAL_SKIN_V3';
+  group.name = 'RELAY_ARCHITECTURAL_SKIN_V4';
   mark(group, 'relay_architectural_skin_root', visualContinuityVersion);
   const facts: SkinFacts = { meshCount: 0, lightCount: 0 };
 
@@ -192,6 +194,38 @@ export function createRelayArchitectureSkin(
     }, visualContinuityVersion);
   }
 
+  // Route-edge inlays sit directly on the two proven upper ramps. Their
+  // mirrored slope follows the authority boxes and makes the upper route
+  // readable from either spawn without becoming a floating guide rail.
+  for (const side of [-1, 1] as const) {
+    const signal = side < 0 ? cyan : amber;
+    const rotationZ = side < 0 ? -Math.PI * 24 / 180 : Math.PI * 24 / 180;
+    for (const [index, z] of [-11.72, -8.28].entries()) {
+      addBox(group, facts, {
+        name: `RELAY_${side < 0 ? 'WEST' : 'EAST'}_UPPER_RAMP_INLAY_${index + 1}`,
+        position: [side * 14.1, 1.93, z],
+        size: [9.4, 0.035, 0.08],
+        rotation: [0, 0, rotationZ],
+        material: signal,
+        role: 'authority_ramp_route_inlay',
+      }, visualContinuityVersion);
+    }
+  }
+
+  // Flush collars articulate the real bridge supports and visually connect
+  // the columns to the deck above. They remain inside the support footprint.
+  for (const [index, x] of [-5.6, 5.6].entries()) {
+    for (const [collarIndex, y] of [0.2, 3.28].entries()) {
+      addBox(group, facts, {
+        name: `RELAY_BRIDGE_SUPPORT_${index + 1}_COLLAR_${collarIndex + 1}`,
+        position: [x, y, -10],
+        size: [0.82, 0.24, 0.82],
+        material: collarIndex === 0 ? darkMetal : ceramic,
+        role: 'authority_bridge_support_collar',
+      }, visualContinuityVersion);
+    }
+  }
+
   // Flush underside bands connect the bridge deck into one authored assembly
   // instead of a stack of unrelated pale slabs. They stay inside the real
   // deck/support silhouette and cannot be mistaken for new traversal.
@@ -213,6 +247,28 @@ export function createRelayArchitectureSkin(
   // without turning the whole floor into a saturated team color.
   for (const side of [-1, 1] as const) {
     const signal = side < 0 ? cyan : amber;
+
+    // A dark inset breaks the oversized single-color spawn slab into a
+    // readable equipment deck while remaining a flush, non-authority skin.
+    addBox(group, facts, {
+      name: side < 0
+        ? 'RELAY_WEST_SPAWN_DECK_INSERT'
+        : 'RELAY_EAST_SPAWN_DECK_INSERT',
+      position: [side * 28, 0.009, 0],
+      size: [8.2, 0.014, 11.2],
+      material: darkMetal,
+      role: 'authority_spawn_floor_inset',
+    }, visualContinuityVersion);
+    for (const [index, z] of [-4.5, 4.5].entries()) {
+      addBox(group, facts, {
+        name: `RELAY_${side < 0 ? 'WEST' : 'EAST'}_SPAWN_DECK_TRACK_${index + 1}`,
+        position: [side * 28, 0.019, z],
+        size: [7.4, 0.012, 0.07],
+        material: signal,
+        role: 'spawn_floor_signal_track',
+      }, visualContinuityVersion);
+    }
+
     addBox(group, facts, {
       name: side < 0
         ? 'RELAY_WEST_SPAWN_SIGNAL_PANEL'
@@ -233,6 +289,27 @@ export function createRelayArchitectureSkin(
       }, visualContinuityVersion);
     }
 
+    // A continuous frame makes each protected spawn read as one constructed
+    // bay rather than a colored floor beside a featureless boundary wall.
+    for (const [index, z] of [-6, 0, 6].entries()) {
+      addBox(group, facts, {
+        name: `RELAY_${side < 0 ? 'WEST' : 'EAST'}_SPAWN_BAY_POST_${index + 1}`,
+        position: [side * 33.43, 1.25, z],
+        size: [0.09, 2.5, 0.28],
+        material: index === 1 ? signal : ceramic,
+        role: 'authority_boundary_spawn_bay_frame',
+      }, visualContinuityVersion);
+    }
+    addBox(group, facts, {
+      name: side < 0
+        ? 'RELAY_WEST_SPAWN_BAY_HEADER'
+        : 'RELAY_EAST_SPAWN_BAY_HEADER',
+      position: [side * 33.43, 2.42, 0],
+      size: [0.09, 0.26, 12.2],
+      material: darkMetal,
+      role: 'authority_boundary_spawn_bay_header',
+    }, visualContinuityVersion);
+
     const light = new THREE.PointLight(
       side < 0 ? 0x72e9f2 : 0xffb66f,
       0.92,
@@ -246,6 +323,51 @@ export function createRelayArchitectureSkin(
     mark(light, 'spawn_readability_light', visualContinuityVersion);
     group.add(light);
     facts.lightCount += 1;
+  }
+
+  // Equipment housings sit outside the north authority boundary and turn the
+  // skyline into a coherent relay installation. Their court-facing panels
+  // overlap the real wall silhouette, so they cannot imply reachable cover or
+  // traversal beyond the proven fixture.
+  for (const [index, x] of [-22, -12, 12, 22].entries()) {
+    const signal = x < 0 ? cyan : amber;
+    addBox(group, facts, {
+      name: `RELAY_NORTH_EQUIPMENT_HOUSING_${index + 1}`,
+      position: [x, 2.15, -25.18],
+      size: [7.4, 4.3, 1.48],
+      material: darkMetal,
+      role: 'outside_authority_boundary_equipment_housing',
+    }, visualContinuityVersion);
+    addBox(group, facts, {
+      name: `RELAY_NORTH_EQUIPMENT_CAP_${index + 1}`,
+      position: [x, 4.38, -25.18],
+      size: [7.8, 0.24, 1.76],
+      material: ceramic,
+      role: 'outside_authority_boundary_equipment_cap',
+    }, visualContinuityVersion);
+    addBox(group, facts, {
+      name: `RELAY_NORTH_EQUIPMENT_FACE_${index + 1}`,
+      position: [x, 2.28, -24.39],
+      size: [5.9, 2.1, 0.08],
+      material: ceramic,
+      role: 'authority_boundary_equipment_faceplate',
+    }, visualContinuityVersion);
+    addBox(group, facts, {
+      name: `RELAY_NORTH_EQUIPMENT_SIGNAL_${index + 1}`,
+      position: [x, 2.28, -24.33],
+      size: [0.09, 1.55, 0.04],
+      material: signal,
+      role: 'authority_boundary_equipment_signal',
+    }, visualContinuityVersion);
+    for (const [ventIndex, ventX] of [-2.1, -1.05, 1.05, 2.1].entries()) {
+      addBox(group, facts, {
+        name: `RELAY_NORTH_EQUIPMENT_${index + 1}_VENT_${ventIndex + 1}`,
+        position: [x + ventX, 2.32, -24.325],
+        size: [0.46, 0.92, 0.035],
+        material: darkMetal,
+        role: 'authority_boundary_equipment_vent',
+      }, visualContinuityVersion);
+    }
   }
 
   // Lower court receives a continuous structural datum and short vertical

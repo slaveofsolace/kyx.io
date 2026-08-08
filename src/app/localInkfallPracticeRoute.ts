@@ -6,6 +6,7 @@ import {
   RELAY_AUTHORITY_FIXTURE,
   RELAY_AUTHORITY_FIXTURE_HASH,
   RELAY_AUTHORITY_IDENTITY,
+  RELAY_AUTHORITY_MAP_BINDING,
   RELAY_AUTHORITY_SPAWNS,
   RELAY_PORTAL_PRESENTATION_DEFINITIONS,
 } from '../authority';
@@ -191,12 +192,12 @@ export async function mountLocalInkfallPracticeRoute(
     renderer = await createOnlineAuthorityThreeRuntime(canvas, {
       presentationFixture: RELAY_AUTHORITY_FIXTURE,
       presentationIdentity: {
-        mapReference: 'relay@1',
-        presentationReference: 'relay@1/open-sky/v2',
+        mapReference: RELAY_AUTHORITY_MAP_BINDING.mapReference,
+        presentationReference: RELAY_AUTHORITY_MAP_BINDING.presentationReference,
         fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
         colliderCardinality: RELAY_AUTHORITY_IDENTITY.colliderCardinality,
         spawnCount: RELAY_AUTHORITY_SPAWNS.length,
-        zoneCount: 0,
+        zoneCount: RELAY_AUTHORITY_MAP_BINDING.zones.length,
         spawnPocketContainmentCount: 2,
         authorityCompatibility: RELAY_AUTHORITY_COMPATIBILITY,
       },

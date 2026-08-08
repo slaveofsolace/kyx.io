@@ -8,7 +8,7 @@ import { createRelayArchitectureSkin } from './relayArchitectureSkin';
 
 export const RELAY_DISPLAY_NAME = 'Relay' as const;
 export const RELAY_VISUAL_CONTINUITY_VERSION =
-  'relay_open_sky_visual_candidate_v3' as const;
+  'relay_open_sky_visual_candidate_v4' as const;
 export const RELAY_AUTHORITY_COMPATIBILITY =
   'relay_revision_1_authority_candidate' as const;
 export const RELAY_LEGACY_AUTHORITY_COMPATIBILITY =
@@ -65,6 +65,10 @@ function standardMaterial(
     emissiveIntensity?: number;
     metalness?: number;
     roughness?: number;
+    map?: THREE.Texture;
+    roughnessMap?: THREE.Texture;
+    bumpMap?: THREE.Texture;
+    bumpScale?: number;
   }> = {},
 ): THREE.MeshStandardMaterial {
   const material = new THREE.MeshStandardMaterial({
@@ -73,9 +77,105 @@ function standardMaterial(
     emissiveIntensity: options.emissiveIntensity ?? 0,
     metalness: options.metalness ?? 0.18,
     roughness: options.roughness ?? 0.66,
+    map: options.map ?? null,
+    roughnessMap: options.roughnessMap ?? null,
+    bumpMap: options.bumpMap ?? null,
+    bumpScale: options.bumpScale ?? 1,
   });
   material.name = name;
   return material;
+}
+
+interface RelayPanelMaps {
+  readonly color: THREE.DataTexture;
+  readonly roughness: THREE.DataTexture;
+  readonly height: THREE.DataTexture;
+}
+
+function relayPanelTexture(
+  name: string,
+  channel: 'color' | 'roughness' | 'height',
+): THREE.DataTexture {
+  const size = 64;
+  const data = new Uint8Array(size * size * 4);
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      const offset = (y * size + x) * 4;
+      const outerSeam = x < 2 || y < 2 || x >= size - 2 || y >= size - 2;
+      const innerSeam = x === 31 || x === 32 || y === 31 || y === 32;
+      const fastener = (
+        (x - 7) ** 2 + (y - 7) ** 2 <= 3
+        || (x - 56) ** 2 + (y - 7) ** 2 <= 3
+        || (x - 7) ** 2 + (y - 56) ** 2 <= 3
+        || (x - 56) ** 2 + (y - 56) ** 2 <= 3
+      );
+      const grain = ((x * 19 + y * 37 + (x ^ y) * 11) % 19) - 9;
+      let value: number;
+      if (channel === 'color') {
+        value = outerSeam ? 118 : innerSeam ? 158 : fastener ? 96 : 226 + grain;
+      } else if (channel === 'roughness') {
+        value = outerSeam || innerSeam ? 230 : fastener ? 112 : 166 + grain * 2;
+      } else {
+        value = outerSeam ? 80 : innerSeam ? 112 : fastener ? 218 : 176 + grain;
+      }
+      const clamped = Math.max(0, Math.min(255, value));
+      data[offset] = clamped;
+      data[offset + 1] = clamped;
+      data[offset + 2] = clamped;
+      data[offset + 3] = 255;
+    }
+  }
+  const texture = new THREE.DataTexture(
+    data,
+    size,
+    size,
+    THREE.RGBAFormat,
+    THREE.UnsignedByteType,
+  );
+  texture.name = name;
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.generateMipmaps = true;
+  if (channel === 'color') texture.colorSpace = THREE.SRGBColorSpace;
+  texture.needsUpdate = true;
+  return texture;
+}
+
+function createRelayPanelMaps(repeatX: number, repeatY: number): RelayPanelMaps {
+  const configure = (texture: THREE.DataTexture): THREE.DataTexture => {
+    texture.repeat.set(repeatX, repeatY);
+    texture.needsUpdate = true;
+    return texture;
+  };
+  return Object.freeze({
+    color: configure(relayPanelTexture('RELAY_PANEL_ALBEDO', 'color')),
+    roughness: configure(relayPanelTexture('RELAY_PANEL_ROUGHNESS', 'roughness')),
+    height: configure(relayPanelTexture('RELAY_PANEL_HEIGHT', 'height')),
+  });
+}
+
+function panelMaterial(
+  name: string,
+  color: number,
+  repeat: readonly [number, number],
+  options: Readonly<{
+    emissive?: number;
+    emissiveIntensity?: number;
+    metalness?: number;
+    roughness?: number;
+    bumpScale?: number;
+  }> = {},
+): THREE.MeshStandardMaterial {
+  const maps = createRelayPanelMaps(repeat[0], repeat[1]);
+  return standardMaterial(name, color, {
+    ...options,
+    map: maps.color,
+    roughnessMap: maps.roughness,
+    bumpMap: maps.height,
+    bumpScale: options.bumpScale ?? 0.035,
+  });
 }
 
 function surfaceRole(solid: FixtureSolidV1): ColliderSurfaceRole {
@@ -119,37 +219,37 @@ function createColliderInstances(
   waypointInlayCount: number;
 }> {
   const materials = Object.freeze({
-    deck_upper: standardMaterial('RELAY_CERAMIC_UPPER_DECK', 0x92a29e, {
+    deck_upper: panelMaterial('RELAY_CERAMIC_UPPER_DECK', 0x92a29e, [5, 4], {
       metalness: 0.16,
       roughness: 0.62,
     }),
-    deck_mid: standardMaterial('RELAY_GRAPHITE_MID_DECK', 0x4d6263, {
+    deck_mid: panelMaterial('RELAY_GRAPHITE_MID_DECK', 0x4d6263, [8, 6], {
       metalness: 0.28,
       roughness: 0.56,
     }),
-    deck_lower: standardMaterial('RELAY_MOSS_LOWER_DECK', 0x344d48, {
+    deck_lower: panelMaterial('RELAY_MOSS_LOWER_DECK', 0x344d48, [6, 4], {
       metalness: 0.18,
       roughness: 0.68,
     }),
-    edge: standardMaterial('RELAY_CERAMIC_EDGE', 0x81918e, {
+    edge: panelMaterial('RELAY_CERAMIC_EDGE', 0x81918e, [3, 5], {
       metalness: 0.2,
       roughness: 0.58,
     }),
-    cover: standardMaterial('RELAY_BLUEGRAY_COVER', 0x4f6b70, {
+    cover: panelMaterial('RELAY_BLUEGRAY_COVER', 0x4f6b70, [2, 2], {
       metalness: 0.34,
       roughness: 0.46,
     }),
-    structure: standardMaterial('RELAY_DARK_STRUCTURE', 0x2d4245, {
+    structure: panelMaterial('RELAY_DARK_STRUCTURE', 0x2d4245, [3, 3], {
       metalness: 0.46,
       roughness: 0.46,
     }),
-    spawn_west: standardMaterial('RELAY_WEST_SPAWN_CYAN', 0x28535b, {
+    spawn_west: panelMaterial('RELAY_WEST_SPAWN_CYAN', 0x28535b, [5, 5], {
       emissive: 0x0b3037,
       emissiveIntensity: 0.18,
       metalness: 0.3,
       roughness: 0.44,
     }),
-    spawn_east: standardMaterial('RELAY_EAST_SPAWN_AMBER', 0x72503a, {
+    spawn_east: panelMaterial('RELAY_EAST_SPAWN_AMBER', 0x72503a, [5, 5], {
       emissive: 0x3e2515,
       emissiveIntensity: 0.18,
       metalness: 0.3,
@@ -268,9 +368,9 @@ function createSkyEnvironment(parent: THREE.Group): number {
     depthWrite: false,
     toneMapped: false,
     uniforms: {
-      upperColor: { value: new THREE.Color(0x688697) },
-      horizonColor: { value: new THREE.Color(0xb4c2bb) },
-      lowerColor: { value: new THREE.Color(0x667b74) },
+      upperColor: { value: new THREE.Color(0x82a4b8) },
+      horizonColor: { value: new THREE.Color(0xd2cbb5) },
+      lowerColor: { value: new THREE.Color(0x6f8279) },
     },
     vertexShader: `
       varying vec3 vWorldDirection;
@@ -350,7 +450,7 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
     return mesh;
   };
 
-  const hemisphere = new THREE.HemisphereLight(0xc9e7ef, 0x304b44, 1.95);
+  const hemisphere = new THREE.HemisphereLight(0xd7edf2, 0x304b44, 2.3);
   hemisphere.name = 'RELAY_DAYLIGHT_HEMISPHERE';
   markRenderOnly(hemisphere, 'environment_light');
   parent.add(hemisphere);
@@ -370,7 +470,7 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
   markRenderOnly(sun, 'environment_light');
   parent.add(sun);
   lightCount += 1;
-  const skyFill = new THREE.DirectionalLight(0x6aa6bd, 0.95);
+  const skyFill = new THREE.DirectionalLight(0x79b8ce, 1.35);
   skyFill.name = 'RELAY_DAYLIGHT_FILL';
   skyFill.position.set(26, 20, -30);
   markRenderOnly(skyFill, 'environment_light');

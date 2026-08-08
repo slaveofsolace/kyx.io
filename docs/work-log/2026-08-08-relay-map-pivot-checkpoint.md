@@ -200,3 +200,64 @@ Source-matched runtime packet:
 This is a work-in-progress staging candidate. Automated proof establishes the
 route and presentation behavior; it does not grant final map art, balance,
 online Worker, or human play acceptance.
+
+## Online authority and reload-continuity checkpoint
+
+Relay is now the default real browser/Worker authority profile rather than a
+local-only presentation. Commit `210a87d` binds the exact 56-collider fixture,
+8 spawns, linked portal capability, Worker room creation/verification, online
+Three presentation, combat, and active checkpoints. Commit `ac23bc6` preserves
+the opaque rotated resume credential in tab-scoped storage, binds it to the
+exact authority origin/room/profile/map/fixture, and starts reconnect before
+large presentation assets load.
+
+Public staging proof used two independent browser clients. A real page reload
+then returned with the same match ID, player ID, and exact authoritative
+position; `resumeSuccesses` advanced from 0 to 1 and prediction error settled
+to 0. The main-menu online control also exposes the corrected available
+accessible name. This is staging proof, not production deployment.
+
+## Relay Open Sky v4 presentation and zone batch
+
+Current source presentation reference: `relay@1/open-sky/v4`.
+
+- Practice and online now consume the same presentation reference and exact
+  zone cardinality.
+- Eight named callout zones cover the west/east spawn bays, signal court,
+  north gallery, upper bridge/overlook, and lower descent/service route.
+- The authority package digest now covers the collision fixture, ordered
+  spawns, zones, and linked-gate contract instead of aliasing the fixture hash.
+- Deterministic generated panel albedo, roughness, and height maps replace the
+  broad flat-color collider treatment without adding network requests or
+  external payloads.
+- Dark spawn-deck inserts, signal tracks, boundary bay frames, upper-ramp
+  inlays, bridge collars, and equipment housings add coherent structural
+  hierarchy while remaining render-only and outside/flush with authority
+  geometry.
+- A flat sky-disc experiment in the v12 packet was visually rejected and
+  removed before the final source-matched capture.
+
+Resource Pilfer disposition for the supplied NotHereButAfk/Ev.io archive
+remains `REFERENCE ONLY`: the archive matches the audited upstream tree, but a
+root license covering the code and assets is absent. No upstream source,
+geometry, texture, audio, or `.evmap` entered this implementation.
+
+Consolidated gates for the v4 batch:
+
+- App and Worker TypeScript: PASS.
+- Changed-surface ESLint: PASS.
+- Relay unit packet: 3 files / 7 tests PASS.
+- Relay Worker room/profile packet: 1 file / 8 tests PASS.
+- Staging build: PASS, 228 modules; existing large-chunk warning remains.
+- Staging package closure: PASS; retired Foundry GLB absent and selected
+  character/weapon artifacts exact-hash verified.
+- Final player-eye packet:
+  `evidence/2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/`.
+  Pointer lock, 1+7 population, 56 colliders, 8 spawns, 8 zones, 2 portals,
+  7 remote avatars, overlap-free first-person mount, and zero runtime errors
+  were observed.
+
+Human Eye verdict remains **REVISE**. Material breakup and route readability
+are better, but the arena is still graybox-plus with repetitive box massing.
+No human map/play acceptance, 4/8 public population run, final performance
+qualification, or release claim is made by this batch.

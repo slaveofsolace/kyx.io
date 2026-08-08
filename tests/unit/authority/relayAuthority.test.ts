@@ -8,6 +8,7 @@ import {
   RELAY_AUTHORITY_PACKAGE_DIGEST,
   RELAY_AUTHORITY_PROFILE_ID,
   RELAY_AUTHORITY_SPAWNS,
+  RELAY_AUTHORITY_ZONES,
   relayAuthoritySpawn,
   isRelayAuthorityProfile,
 } from '../../../src/authority/relayAuthority';
@@ -29,7 +30,8 @@ describe('Relay Revision 1 authority candidate', () => {
       fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
       colliderCardinality: 56,
     });
-    expect(RELAY_AUTHORITY_PACKAGE_DIGEST).toBe(RELAY_AUTHORITY_FIXTURE_HASH);
+    expect(RELAY_AUTHORITY_PACKAGE_DIGEST).toMatch(/^[0-9a-f]{16}$/u);
+    expect(RELAY_AUTHORITY_PACKAGE_DIGEST).not.toBe(RELAY_AUTHORITY_FIXTURE_HASH);
 
     const ids = RELAY_AUTHORITY_FIXTURE.solids.map(({ id }) => id);
     expect(new Set(ids).size).toBe(ids.length);
@@ -112,17 +114,31 @@ describe('Relay Revision 1 authority candidate', () => {
     expect(() => relayAuthoritySpawn(-1)).toThrow(RangeError);
   });
 
+  it('binds every authored spawn to one of eight named gameplay callout zones', () => {
+    expect(RELAY_AUTHORITY_ZONES).toHaveLength(8);
+    expect(new Set(RELAY_AUTHORITY_ZONES.map(({ zoneId }) => zoneId)).size).toBe(8);
+    for (const spawn of RELAY_AUTHORITY_SPAWNS) {
+      const containingZones = RELAY_AUTHORITY_ZONES.filter((zone) => (
+        Math.abs(spawn.feetPosition.x - zone.center.x) <= zone.halfExtents.x
+        && Math.abs(spawn.feetPosition.y - zone.center.y) <= zone.halfExtents.y
+        && Math.abs(spawn.feetPosition.z - zone.center.z) <= zone.halfExtents.z
+      ));
+      expect(containingZones.length, spawn.spawnId).toBeGreaterThan(0);
+    }
+  });
+
   it('publishes one exact fail-closed browser and Worker map contract', () => {
     expect(RELAY_AUTHORITY_PROFILE_ID).toBe('relay-revision-1-authority-v1');
     expect(isRelayAuthorityProfile(RELAY_AUTHORITY_PROFILE_ID)).toBe(true);
     expect(isRelayAuthorityProfile('inkfall-foundry')).toBe(false);
     expect(RELAY_AUTHORITY_MAP_BINDING).toMatchObject({
       mapReference: 'relay@1',
-      presentationReference: 'relay@1/open-sky/v3',
+      presentationReference: 'relay@1/open-sky/v4',
       fixtureId: RELAY_AUTHORITY_IDENTITY.fixtureId,
       fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
       colliderCardinality: 56,
       spawns: RELAY_AUTHORITY_SPAWNS,
+      zones: RELAY_AUTHORITY_ZONES,
     });
   });
 });
