@@ -12,6 +12,7 @@ import { ControllerMenuNavigator } from './ControllerNavigation.js';
 import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
 import { buildPracticeHref } from './practiceRoute.ts';
 import { ArmorPreviewRenderer } from './ArmorPreviewRenderer.js';
+import { getWeaponThumb, warmWeaponThumbs } from './WeaponThumbnails.js';
 import {
   isHumanSoldierReady,
   preloadHumanSoldier,
@@ -91,6 +92,7 @@ export class MenuUI {
     this._settingsStatusTimer = null;
     this._armorPreview = null;
     this._armorPreviewModelLoaded = false;
+    this._loadoutThumbsRequested = false;
 
     this.onPlay = null;
     this.onResume = null;
@@ -138,6 +140,22 @@ export class MenuUI {
     }
     canvas.dataset.modelState = 'loading';
     preloadHumanSoldier(loadAndStart);
+  }
+
+  _requestLoadoutThumbnails() {
+    if (this._loadoutThumbsRequested) return;
+    this._loadoutThumbsRequested = true;
+    let attempts = 0;
+    const refreshWhenReady = () => {
+      const ready = GUNS.every((weapon) => getWeaponThumb(weapon.id));
+      if (!ready && attempts < 50) {
+        attempts += 1;
+        setTimeout(refreshWhenReady, 200);
+        return;
+      }
+      if (this._activePanel === 'loadout') this._renderLocalLoadout();
+    };
+    warmWeaponThumbs(refreshWhenReady);
   }
 
   _wireNav() {
@@ -674,7 +692,7 @@ export class MenuUI {
     const grid = document.getElementById('inv-grid');
     const tabs = document.getElementById('inv-tabs');
     const title = document.getElementById('inv-username');
-    if (title) title.textContent = 'Loadout';
+    if (title) title.textContent = 'Combat rig';
     tabs?.replaceChildren();
     equipped?.replaceChildren();
     grid?.replaceChildren();
@@ -684,126 +702,257 @@ export class MenuUI {
     const currentGun = Loadout.getGun();
     const currentMelee = Loadout.getMelee();
     const abilitySlots = Loadout.getAbilityUiSlots();
+    const gun = GUNS.find((weapon) => weapon.id === currentGun);
+    const melee = MELEE.find((weapon) => weapon.id === currentMelee);
+    const currentAbilitySlot = new Map(
+      abilitySlots.map((slot) => [slot.ability.id, slot]),
+    );
+
     if (equipped) {
-      const gun = GUNS.find((weapon) => weapon.id === currentGun);
       const roleChip = document.createElement('div');
       roleChip.className = 'local-loadout-chip';
       roleChip.dataset.combatPresetId = currentPreset.id;
-      roleChip.textContent = `${currentPreset.displayName} · ${currentPreset.roleLabel} · ${gun?.name ?? 'Default'}`;
+      roleChip.textContent = `${currentPreset.displayName} preset`;
       equipped.appendChild(roleChip);
-      const melee = MELEE.find((weapon) => weapon.id === currentMelee);
       const reserveChip = document.createElement('div');
       reserveChip.className = 'local-loadout-chip local-loadout-chip--quiet';
-      reserveChip.textContent = `${melee?.name ?? 'Blade'} · ${currentPreset.helmetVariantId} helmet`;
+      reserveChip.textContent = `${gun?.name ?? 'Primary'} / ${melee?.name ?? 'Blade'} / ${currentPreset.helmetVariantId} helmet`;
       equipped.appendChild(reserveChip);
+      const hint = document.createElement('div');
+      hint.className = 'local-loadout-chip local-loadout-chip--hint';
+      hint.textContent = 'Choose a weapon or ability node';
+      equipped.appendChild(hint);
     }
 
-    const presetHeading = document.createElement('div');
-    presetHeading.className = 'inv-section-label';
-    presetHeading.textContent = 'Combat package';
-    grid.appendChild(presetHeading);
+    const board = document.createElement('section');
+    board.className = 'loadout-command-board';
+
+    const radial = document.createElement('div');
+    radial.className = 'loadout-radial';
+    radial.setAttribute('aria-label', 'Linked weapon and ability presets');
+
+    const radialLegend = document.createElement('div');
+    radialLegend.className = 'loadout-radial__legend';
+    radialLegend.replaceChildren(
+      Object.assign(document.createElement('strong'), { textContent: 'Preset-linked armory' }),
+      Object.assign(document.createElement('span'), {
+        textContent: 'Weapons choose the whole rig. Bright ability nodes are equipped.',
+      }),
+    );
+    radial.appendChild(radialLegend);
+
     const presetRow = document.createElement('div');
     presetRow.className = 'local-loadout-packages';
-    for (const preset of COMBAT_PRESETS) {
+    presetRow.setAttribute('role', 'group');
+    presetRow.setAttribute('aria-label', 'Combat presets');
+
+    const detail = document.createElement('aside');
+    detail.className = 'loadout-detail';
+    detail.setAttribute('aria-live', 'polite');
+    const detailKicker = document.createElement('p');
+    detailKicker.className = 'loadout-detail__kicker';
+    const detailTitle = document.createElement('h3');
+    detailTitle.className = 'loadout-detail__title';
+    const detailCopy = document.createElement('p');
+    detailCopy.className = 'loadout-detail__copy';
+    const detailFacts = document.createElement('dl');
+    detailFacts.className = 'loadout-detail__facts';
+    const detailNote = document.createElement('p');
+    detailNote.className = 'loadout-detail__note';
+    detail.append(detailKicker, detailTitle, detailCopy, detailFacts, detailNote);
+
+    const renderDetail = ({ kicker, heading, copy, facts, note }) => {
+      detailKicker.textContent = kicker;
+      detailTitle.textContent = heading;
+      detailCopy.textContent = copy;
+      detailFacts.replaceChildren();
+      for (const [label, value] of facts) {
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = value;
+        detailFacts.append(term, description);
+      }
+      detailNote.textContent = note;
+    };
+
+    const presentationWeaponForPreset = (preset) => (
+      preset.initialOfflineWeaponId === 'sword'
+        ? MELEE.find((weapon) => weapon.id === preset.initialOfflineWeaponId)
+        : GUNS.find((weapon) => weapon.id === preset.offlinePrimaryWeaponId)
+    );
+
+    const showPresetDetail = (preset) => {
+      const primary = presentationWeaponForPreset(preset);
+      const reserve = preset.initialOfflineWeaponId === 'sword'
+        ? GUNS.find((weapon) => weapon.id === preset.offlinePrimaryWeaponId)
+        : MELEE.find((weapon) => weapon.id === preset.offlineMeleeWeaponId);
+      const slotLabels = ['E', 'F', 'Z'];
+      renderDetail({
+        kicker: 'Complete combat preset',
+        heading: `${preset.displayName} / ${preset.roleLabel}`,
+        copy: preset.description,
+        facts: [
+          ['Primary', primary?.name ?? preset.roleLabel],
+          ['Reserve', reserve?.name ?? 'Arc Blade'],
+          ['Helmet', `${preset.helmetVariantId} variant`],
+          ['Abilities', preset.selectableAbilityIds.map((id, index) => (
+            `${slotLabels[index]} ${ABILITY_PRESENTATION[id].shortName}`
+          )).join(' / ')],
+        ],
+        note: preset.id === currentPreset.id
+          ? 'Equipped for Practice and online authority.'
+          : 'Select this weapon node to equip the complete preset.',
+      });
+    };
+
+    const matchingScore = (preset) => preset.selectableAbilityIds.reduce(
+      (score, abilityId) => score + Number(currentPreset.selectableAbilityIds.includes(abilityId)),
+      0,
+    );
+    const linkedPresetForAbility = (abilityId) => COMBAT_PRESETS
+      .filter((preset) => preset.selectableAbilityIds.includes(abilityId))
+      .sort((left, right) => matchingScore(right) - matchingScore(left))[0] ?? currentPreset;
+
+    const showAbilityDetail = (ability, linkedPreset) => {
+      const selectedSlot = currentAbilitySlot.get(ability.id);
+      const reach = ability.maximumRangeMeters !== null
+        ? `${ability.maximumRangeMeters} m range`
+        : ability.radiusMeters !== null
+          ? `${ability.radiusMeters} m radius`
+          : 'Self target';
+      renderDetail({
+        kicker: selectedSlot ? `Equipped on ${selectedSlot.inputLabel}` : 'Available through linked preset',
+        heading: ability.displayName,
+        copy: ability.description,
+        facts: [
+          ['Class', ability.category],
+          ['Cooldown', `${ability.cooldownSeconds} seconds`],
+          ['Charges', ability.charges === null ? 'Cooldown governed' : String(ability.charges)],
+          ['Reach', reach],
+          ['Authority', ability.authority],
+        ],
+        note: selectedSlot
+          ? `${ability.displayName} is active in the ${currentPreset.displayName} preset.`
+          : `Select this node to equip the linked ${linkedPreset.displayName} preset.`,
+      });
+    };
+
+    for (const [presetIndex, preset] of COMBAT_PRESETS.entries()) {
       const selected = preset.id === currentPreset.id;
+      const primary = presentationWeaponForPreset(preset);
       const button = document.createElement('button');
       button.className = `local-loadout-option${selected ? ' equipped' : ''}`;
       button.dataset.combatPresetId = preset.id;
+      button.dataset.orbitIndex = String(presetIndex);
       button.setAttribute('aria-pressed', String(selected));
       button.title = preset.description;
-      button.textContent = `${preset.displayName} · ${preset.roleLabel}`;
+      const thumb = getWeaponThumb(primary?.id ?? preset.offlinePrimaryWeaponId);
+      const visual = thumb
+        ? Object.assign(document.createElement('img'), {
+            className: 'local-loadout-option__image',
+            src: thumb,
+            alt: '',
+          })
+        : Object.assign(document.createElement('span'), {
+            className: 'local-loadout-option__fallback',
+            textContent: preset.weaponFamily.slice(0, 2).toUpperCase(),
+          });
+      visual.setAttribute('aria-hidden', 'true');
+      const copy = document.createElement('span');
+      copy.className = 'local-loadout-option__copy';
+      copy.replaceChildren(
+        Object.assign(document.createElement('strong'), { textContent: preset.displayName }),
+        Object.assign(document.createElement('span'), { textContent: primary?.name ?? preset.roleLabel }),
+      );
+      const equippedMarker = document.createElement('span');
+      equippedMarker.className = 'local-loadout-option__state';
+      equippedMarker.textContent = selected ? 'Equipped' : 'Choose';
+      button.replaceChildren(visual, copy, equippedMarker);
+      button.addEventListener('mouseenter', () => showPresetDetail(preset));
+      button.addEventListener('focus', () => showPresetDetail(preset));
       button.addEventListener('click', () => {
         Loadout.setCombatPreset(preset.id);
         this._renderLocalLoadout();
+        queueMicrotask(() => document.querySelector(
+          `.local-loadout-option[data-combat-preset-id="${preset.id}"]`,
+        )?.focus());
       });
       presetRow.appendChild(button);
     }
-    grid.appendChild(presetRow);
+    radial.appendChild(presetRow);
 
-    const abilityHeading = document.createElement('div');
-    abilityHeading.className = 'inv-section-label';
-    abilityHeading.textContent = 'Ability slots';
-    grid.appendChild(abilityHeading);
     const slotGrid = document.createElement('div');
     slotGrid.className = 'local-loadout-slots';
-    const blink = abilitySlots[0];
-    const blinkSlot = document.createElement('div');
-    blinkSlot.className = 'local-loadout-slot';
-    blinkSlot.appendChild(Object.assign(document.createElement('span'), {
-      className: 'local-loadout-slot__key',
-      textContent: blink.inputLabel,
-    }));
-    const blinkButton = document.createElement('button');
-    blinkButton.className = 'local-loadout-ability equipped';
-    blinkButton.disabled = true;
-    blinkButton.setAttribute('aria-label', `${blink.ability.displayName}, fixed to ${blink.inputLabel}`);
-    blinkButton.replaceChildren(
-      createAbilityGlyph(blink.ability.id, 'ability-glyph ability-glyph--loadout'),
-      Object.assign(document.createElement('span'), {
-        textContent: `${blink.ability.displayName} · Fixed`,
-      }),
-    );
-    blinkSlot.appendChild(blinkButton);
-    slotGrid.appendChild(blinkSlot);
-
-    for (const slot of abilitySlots.slice(1)) {
-      const slotIndex = slot.slot - 1;
+    slotGrid.setAttribute('role', 'group');
+    slotGrid.setAttribute('aria-label', 'Ability nodes');
+    const allAbilities = [
+      abilitySlots[0].ability,
+      ...Loadout.getSelectableAbilities(),
+    ];
+    for (const [abilityIndex, ability] of allAbilities.entries()) {
+      const selectedSlot = currentAbilitySlot.get(ability.id);
+      const selected = Boolean(selectedSlot);
+      const linkedPreset = ability.locked ? currentPreset : linkedPresetForAbility(ability.id);
       const slotRoot = document.createElement('div');
       slotRoot.className = 'local-loadout-slot';
-      slotRoot.appendChild(Object.assign(document.createElement('span'), {
-        className: 'local-loadout-slot__key',
-        textContent: slot.inputLabel,
-      }));
-      const candidateIds = [...new Set(COMBAT_PRESETS.map(
-        (preset) => preset.selectableAbilityIds[slotIndex],
-      ))];
-      for (const abilityId of candidateIds) {
-        const candidatePresets = COMBAT_PRESETS
-          .filter((preset) => preset.selectableAbilityIds[slotIndex] === abilityId)
-          .sort((left, right) => {
-            const matchingOtherSlots = (preset) => preset.selectableAbilityIds.reduce(
-              (count, candidateAbilityId, index) => (
-                count + Number(index !== slotIndex
-                  && candidateAbilityId === currentPreset.selectableAbilityIds[index])
-              ),
-              0,
-            );
-            return matchingOtherSlots(right) - matchingOtherSlots(left);
-          });
-        const candidatePreset = candidatePresets[0];
-        if (!candidatePreset) continue;
-        const ability = ABILITY_PRESENTATION[abilityId];
-        const selected = currentPreset.selectableAbilityIds[slotIndex] === abilityId;
-        const button = document.createElement('button');
-        button.className = `local-loadout-ability${selected ? ' equipped' : ''}`;
-        button.dataset.abilitySlot = String(slot.slot);
-        button.dataset.abilityId = abilityId;
-        button.dataset.combatPresetId = candidatePreset.id;
-        button.setAttribute('aria-pressed', String(selected));
-        button.setAttribute(
-          'aria-label',
-          `${ability.displayName}, key ${slot.inputLabel}. Equips the linked ${candidatePreset.displayName} combat package.`,
-        );
-        button.title = `${ability.description} Linked package: ${candidatePreset.displayName}.`;
-        button.replaceChildren(
-          createAbilityGlyph(abilityId, 'ability-glyph ability-glyph--loadout'),
-          Object.assign(document.createElement('span'), {
-            textContent: `${ability.shortName} · ${candidatePreset.displayName}`,
-          }),
-        );
-        button.addEventListener('click', () => {
-          Loadout.setCombatPreset(candidatePreset.id);
-          this._renderLocalLoadout();
-        });
-        slotRoot.appendChild(button);
+      slotRoot.dataset.abilityId = ability.id;
+      slotRoot.dataset.orbitIndex = String(abilityIndex);
+      const button = document.createElement('button');
+      button.className = `local-loadout-ability${selected ? ' equipped' : ''}`;
+      button.dataset.abilityId = ability.id;
+      button.dataset.combatPresetId = linkedPreset.id;
+      if (selectedSlot) button.dataset.abilitySlot = String(selectedSlot.slot);
+      button.setAttribute('aria-pressed', String(selected));
+      button.setAttribute('aria-label', selectedSlot
+        ? `${ability.displayName}, equipped on ${selectedSlot.inputLabel}`
+        : `${ability.displayName}, equips the linked ${linkedPreset.displayName} preset`);
+      button.title = ability.description;
+      const glyphWrap = document.createElement('span');
+      glyphWrap.className = 'local-loadout-ability__glyph';
+      glyphWrap.appendChild(createAbilityGlyph(
+        ability.id,
+        'ability-glyph ability-glyph--loadout',
+      ));
+      const abilityCopy = document.createElement('span');
+      abilityCopy.className = 'local-loadout-ability__copy';
+      abilityCopy.replaceChildren(
+        Object.assign(document.createElement('strong'), { textContent: ability.shortName }),
+        Object.assign(document.createElement('span'), {
+          textContent: selectedSlot ? ability.category : linkedPreset.displayName,
+        }),
+      );
+      const key = document.createElement('span');
+      key.className = 'local-loadout-slot__key';
+      key.textContent = selectedSlot?.inputLabel ?? '+';
+      button.replaceChildren(glyphWrap, abilityCopy, key);
+      button.addEventListener('mouseenter', () => showAbilityDetail(ability, linkedPreset));
+      button.addEventListener('focus', () => showAbilityDetail(ability, linkedPreset));
+      button.addEventListener('click', () => {
+        showAbilityDetail(ability, linkedPreset);
+        if (selected || ability.locked) return;
+        Loadout.setCombatPreset(linkedPreset.id);
+        this._renderLocalLoadout();
+        queueMicrotask(() => document.querySelector(
+          `.local-loadout-ability[data-ability-id="${ability.id}"]`,
+        )?.focus());
+      });
+      slotRoot.appendChild(button);
+      if (ability.locked) {
+        slotRoot.dataset.locked = 'true';
       }
       slotGrid.appendChild(slotRoot);
     }
-    grid.appendChild(slotGrid);
+    radial.appendChild(slotGrid);
+
+    board.append(radial, detail);
+    grid.appendChild(board);
     const packageNote = document.createElement('p');
     packageNote.className = 'local-loadout-note';
-    packageNote.textContent = 'Ability choices equip the compatible combat package.';
+    packageNote.textContent = 'Presets are complete deployment rigs: primary weapon, opening weapon, helmet, and E/F/Z abilities move together. Blink remains fixed to Q.';
     grid.appendChild(packageNote);
+    showPresetDetail(currentPreset);
+    this._requestLoadoutThumbnails();
   }
 
   setUsername(displayName) {

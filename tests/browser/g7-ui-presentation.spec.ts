@@ -21,7 +21,7 @@ function observeRuntimeErrors(page: Page): RuntimeErrors {
 async function waitForMenu(page: Page, search = ''): Promise<void> {
   await page.goto(`/${search}`, { waitUntil: 'networkidle' });
   await expect(page.locator('#connect-screen')).toHaveClass(/hidden/u, { timeout: 15_000 });
-  await expect(page.getByRole('button', { name: 'Start offline practice' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible();
 }
 
 async function gameplayLayout(page: Page) {
@@ -165,7 +165,7 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
   expect(errors).toEqual({ console: [], page: [], requests: [] });
 });
 
-test('compact loadout keeps Blink fixed and makes E/F/Z package choices operable', async ({
+test('radial loadout keeps Blink fixed and makes linked package choices operable', async ({
   page,
 }) => {
   const errors = observeRuntimeErrors(page);
@@ -173,21 +173,26 @@ test('compact loadout keeps Blink fixed and makes E/F/Z package choices operable
   await page.getByRole('button', { name: 'Loadout' }).click();
   await expect(page.locator('#panel-loadout')).toBeVisible();
   await expect(page.locator('.local-loadout-packages .local-loadout-option')).toHaveCount(4);
-  await expect(page.locator('.local-loadout-slot')).toHaveCount(4);
+  await expect(page.locator('.local-loadout-slot')).toHaveCount(6);
 
-  const blink = page.locator('.local-loadout-slot').first().getByRole('button');
-  await expect(blink).toBeDisabled();
-  await expect(blink).toHaveText(/Blink · Fixed/u);
+  const blink = page.locator(
+    '.local-loadout-slot[data-locked="true"] .local-loadout-ability',
+  );
+  await expect(blink).toHaveAttribute('aria-pressed', 'true');
+  await expect(blink).toContainText('Blink');
+  await expect(blink.locator('.local-loadout-slot__key')).toHaveText('Q');
 
   const stickyBreacher = page.locator(
-    '.local-loadout-ability[data-ability-slot="1"][data-combat-preset-id="breacher"]',
+    '.local-loadout-ability[data-ability-id="sticky_grenade_v1"]',
   );
   await expect(stickyBreacher).toBeEnabled();
+  await expect(stickyBreacher).toHaveAttribute('data-combat-preset-id', 'breacher');
   await stickyBreacher.click();
-  await expect(page.locator('#inv-equipped')).toContainText('Breacher · Shotgun');
+  await expect(page.locator('#inv-equipped')).toContainText('Breacher preset');
   await expect(page.locator(
     '.local-loadout-packages [data-combat-preset-id="breacher"]',
   )).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('.loadout-detail__title')).toContainText('Sticky Grenade');
 
   await page.keyboard.press('Escape');
   await expect(page.locator('#panel-loadout')).toBeHidden();
