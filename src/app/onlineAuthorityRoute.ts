@@ -244,11 +244,11 @@ function appendScopeNotice(
       'span',
       '',
       inkfallProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
-        ? 'Inkfall Foundry Rev5 integration candidate: the modular render-only presentation and linked world portal are identity-bound to the corrected Revision 4 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Human visual approval and release deployment remain separate gates.'
+        ? 'Relay visual candidate: one original render-only presentation and the linked world portal are temporarily bound to the corrected Revision 4 authoritative collision, spawns, zones, empty pickup set, telemetry contract, combat, and secure resume. Relay still requires its own authority package and human play approval.'
         : inkfallProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-          ? 'Inkfall Foundry Rev4 compatibility profile: the same modular render-only presentation remains pinned to the historical Revision 3 authority world for persisted rooms and checkpoints.'
+          ? 'Retired Revision 3 compatibility profile retained only for persisted rooms and checkpoints.'
         : inkfallProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
-          ? 'Explicit Inkfall Foundry @2 integration preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. Final-map traversal, final visuals, matchmaking, progression, and release readiness remain open; G4 and G5 are not claimed.'
+          ? 'Legacy authority preview: movement, rifle hitscan occlusion, grenade collision and radial occlusion use the hash-locked P5.10 Rapier fixture. It is retained for compatibility evidence, not current map presentation.'
         : 'Authoritative revision-3 combat preview: movement, rifle, health, team score, feed, respawn, grenade state, remote interpolation, and secure resume. Matchmaking, progression, real-map grenade collision, and release readiness are not included yet.',
     ),
   );
@@ -303,7 +303,7 @@ function renderLanding(
     element(
       'span',
       '',
-      'Older Inkfall collision preview.',
+      'Older collision compatibility preview.',
     ),
   );
   profileOption.append(profileCheckbox, profileCopy);
@@ -317,11 +317,11 @@ function renderLanding(
   rev4ProfileCheckbox.dataset.testid = 'online-inkfall-rev4-profile';
   const rev4ProfileCopy = element('span', '');
   rev4ProfileCopy.append(
-    element('strong', '', 'Inkfall Foundry'),
+    element('strong', '', 'Relay'),
     element(
       'span',
       '',
-      'Current arena and linked portals.',
+      'Current open-sky visual candidate and linked portals.',
     ),
   );
   rev4ProfileOption.append(rev4ProfileCheckbox, rev4ProfileCopy);
@@ -779,15 +779,15 @@ async function mountSession(
       'p',
       'online-preview__eyebrow',
       inkfallRev4
-        ? 'Inkfall Foundry · Online'
+        ? 'Relay · Online'
         : inkfallRuntime
-          ? 'Inkfall Foundry · Online'
+          ? 'Relay · Online'
         : 'Online match',
     ),
     element(
       'h1',
       '',
-      inkfallRuntime ? 'Inkfall Foundry' : 'Authoritative arena',
+      inkfallRuntime ? 'Relay' : 'Authoritative arena',
     ),
     element(
       'p',
@@ -845,9 +845,9 @@ async function mountSession(
     'div',
     'online-session__panel-head',
     inkfallRev4
-      ? 'Inkfall Foundry'
+      ? 'Relay'
       : inkfallRuntime
-        ? 'Inkfall Foundry'
+        ? 'Relay'
         : 'Online arena',
   );
   arenaHead.append(element(
@@ -867,7 +867,7 @@ async function mountSession(
   canvas.setAttribute(
     'aria-label',
     inkfallRev4
-      ? 'Playable Inkfall Foundry Rev5 3D online combat arena with linked portals. Click for pointer lock and mouse look; Mouse 1 fires and Mouse 2 aims.'
+      ? 'Playable Relay 3D online combat visual candidate with linked portals. Click for pointer lock and mouse look; Mouse 1 fires and Mouse 2 aims.'
       : 'Online authoritative combat arena. Click to focus; Mouse 1 fires and Mouse 2 aims.',
   );
   const mapStatus = element(
@@ -2838,10 +2838,10 @@ export async function mountOnlineAuthorityRoute(
       renderNotice(
         content,
         requestedProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
-          ? 'Verifying Inkfall Foundry Rev5 / Revision 4 authority room…'
+          ? 'Verifying Relay / Revision 4 compatibility authority room…'
           : requestedProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
-            ? 'Verifying Inkfall Foundry Rev4 / Revision 3 authority room…'
-          : 'Verifying Inkfall Foundry @2 room…',
+            ? 'Verifying retired Revision 3 compatibility room…'
+          : 'Verifying legacy authority room…',
         'The profile and complete locked map binding must match before the socket can open.',
         'CANCEL',
       );
@@ -2856,7 +2856,7 @@ export async function mountOnlineAuthorityRoute(
         body.dataset.onlinePreviewStatus = 'room-profile-mismatch';
         renderNotice(
           content,
-          'Inkfall room verification failed.',
+          'Arena room verification failed.',
           cause instanceof Error ? cause.message : String(cause),
           'BACK TO ONLINE LOBBY',
         );

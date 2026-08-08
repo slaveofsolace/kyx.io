@@ -1,0 +1,484 @@
+{
+  "schema": "kyx-g6-assault-rev38-player-eye-capture-v1",
+  "capturedAt": "2026-08-08T14:43:44.957Z",
+  "buildCommit": "e380b716154528700b6b83ae58ebc5718920dbd9+working-tree",
+  "buildMode": "staging-review",
+  "baseUrl": "http://127.0.0.1:6338",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "candidateSnapshot": {
+    "revision": "rev38-fitted-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev38-fitted-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "enemy",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-3",
+        "kind": "thirdPerson",
+        "runtimeRole": "enemy",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-4",
+        "kind": "thirdPerson",
+        "runtimeRole": "enemy",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-5",
+        "kind": "thirdPerson",
+        "runtimeRole": "enemy",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-6",
+        "kind": "thirdPerson",
+        "runtimeRole": "enemy",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-7",
+        "kind": "thirdPerson",
+        "runtimeRole": "enemy",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      },
+      {
+        "id": "rev38-fitted-v1-8",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2,
+      "enemy": 6
+    }
+  },
+  "practiceBefore": {
+    "schemaVersion": 1,
+    "status": "paused",
+    "hostId": "local_inkfall_practice_authority_v1",
+    "serverTick": 0,
+    "lifecycle": "warmup",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "inkfall_foundry",
+    "fixtureId": "inkfall_foundry_map_collision",
+    "fixtureHash": "b24d002179389621",
+    "acceptedInputs": 0,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": false,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -33500,
+        "y": 0,
+        "z": -3500
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "inkfall_foundry@4",
+      "presentationReference": "inkfall_foundry@4/press_archive/v5.0/geometry-portal-modular",
+      "presentationMode": "review_glb",
+      "presentationSha256": "88bc45a6735256dcffb5735f3d466840f362e9ece9d02a52a9f1c8a082b395e0",
+      "authorityFixtureHash": "b24d002179389621",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 36,
+      "renderOnlyContainmentMeshCount": 284,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 339,
+      "spawnCount": 12,
+      "zoneCount": 9,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "locked",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": false,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "practiceAfter": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_inkfall_practice_authority_v1",
+    "serverTick": 59,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "inkfall_foundry",
+    "fixtureId": "inkfall_foundry_map_collision",
+    "fixtureHash": "b24d002179389621",
+    "acceptedInputs": 472,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 1,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -35129,
+        "y": 21,
+        "z": 906
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "inkfall_foundry@4",
+      "presentationReference": "inkfall_foundry@4/press_archive/v5.0/geometry-portal-modular",
+      "presentationMode": "review_glb",
+      "presentationSha256": "88bc45a6735256dcffb5735f3d466840f362e9ece9d02a52a9f1c8a082b395e0",
+      "authorityFixtureHash": "b24d002179389621",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 36,
+      "renderOnlyContainmentMeshCount": 284,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 339,
+      "spawnCount": 12,
+      "zoneCount": 9,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 1,
+      "acceptedAttackPresentationCount": 1,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0.000005003183362830177,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "pointerLockAcquired": true,
+  "glbResponses": [
+    {
+      "url": "http://127.0.0.1:6338/assets/kyx-v6b-assault-rev38-fitted-v1-lod0-CNkSEWWm.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/kyx-v6b-assault-rev38-fitted-v1-lod1-Dm0TqRXk.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/kyx-v6b-assault-rev38-fitted-v1-lod0-CNkSEWWm.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/kyx-v6b-assault-rev38-fitted-v1-lod1-Dm0TqRXk.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/kyx-vlr7-quaternius-rev1-B4S_-JM4.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/render.graybox-C3XbMWVM.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/inkfall_foundry_rev5_geometry_portal.render-only-modules-C61TcfoN.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6338/assets/collision.authority-CMOJvCw8.glb",
+      "status": 200
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-menu-first-impression-1440x900.png",
+      "url": "http://127.0.0.1:6338/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "First 3/10/30-second menu surface in the source-matched staging-review build."
+    },
+    {
+      "name": "02-arena-selection-original-1440x900.png",
+      "url": "http://127.0.0.1:6338/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Original-arena lane before any legacy tab interaction."
+    },
+    {
+      "name": "03-arena-selection-legacy-1440x900.png",
+      "url": "http://127.0.0.1:6338/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Legacy lane showing playable KYX history and the local-only evmap rights boundary."
+    },
+    {
+      "name": "04-loadout-rev38-turntable-1440x900.png",
+      "url": "http://127.0.0.1:6338/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Actual runtime loadout turntable using the installed Rev38 staging-review candidate."
+    },
+    {
+      "name": "05-rev38-turntable-canvas.png",
+      "url": "http://127.0.0.1:6338/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Unscaled runtime canvas crop; not a static Blender render."
+    },
+    {
+      "name": "06-inkfall-practice-paused-1440x900.png",
+      "url": "http://127.0.0.1:6338/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Player-eye Inkfall view before pointer capture; HUD and entry affordance visible."
+    },
+    {
+      "name": "07-inkfall-after-move-fire-1440x900.png",
+      "url": "http://127.0.0.1:6338/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Gray-box play sample after diagonal movement, camera rotation, and primary fire."
+    },
+    {
+      "name": "08-inkfall-scoreboard-held-1440x900.png",
+      "url": "http://127.0.0.1:6338/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Live hold-Tab scoreboard over the current player-eye frame."
+    }
+  ],
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "nonclaims": [
+    "No human visual acceptance is claimed.",
+    "The Rev38 GLBs remain review-only and release-ineligible.",
+    "This bounded run is not 2/4/8 multiplayer proof or a performance soak."
+  ]
+}

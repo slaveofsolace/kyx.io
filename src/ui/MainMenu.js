@@ -7,8 +7,17 @@ import { ABILITY_PRESENTATION } from '../abilities/abilityLoadout.ts';
 import { createAbilityGlyph } from './abilityGlyph.ts';
 import { COMBAT_PRESETS } from '../loadouts/combatPresets.ts';
 import { listMapLibrarySections } from '../content/maps/library.ts';
+import { inspectLocalEvmapFile } from '../content/maps/localEvmapInspection.ts';
 import { ControllerMenuNavigator } from './ControllerNavigation.js';
 import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
+import { buildPracticeHref } from './practiceRoute.ts';
+import { ArmorPreviewRenderer } from './ArmorPreviewRenderer.js';
+import {
+  isHumanSoldierReady,
+  preloadHumanSoldier,
+} from '../player/HumanSoldier.js';
+
+export { buildPracticeHref } from './practiceRoute.ts';
 
 const SAFE_PANELS = new Set(['maps', 'loadout', 'modes', 'settings']);
 
@@ -75,11 +84,13 @@ export class MenuUI {
     this.selectedSkinId = getSkin().id;
     this.selectedArmorId = loadArmorType();
     this.selectedModeId = GAME_MODES[0].id;
-    this.selectedMapId = 'iron_bastion';
+    this.selectedMapId = 'relay_visual_candidate';
     this._displayName = 'Recruit';
     this._activePanel = null;
     this._panelReturnFocus = null;
     this._settingsStatusTimer = null;
+    this._armorPreview = null;
+    this._armorPreviewModelLoaded = false;
 
     this.onPlay = null;
     this.onResume = null;
@@ -99,6 +110,34 @@ export class MenuUI {
       onBack: () => this._handleBackNavigation(),
     });
     this._controllerNavigation.start();
+    window.addEventListener('pagehide', () => {
+      this._armorPreview?.dispose();
+      this._armorPreview = null;
+      this._armorPreviewModelLoaded = false;
+    }, { once: true });
+  }
+
+  _showArmorPreview() {
+    const canvas = document.getElementById('armor-preview-canvas');
+    if (!(canvas instanceof HTMLCanvasElement)) return;
+    if (this._armorPreview === null) {
+      this._armorPreview = new ArmorPreviewRenderer(canvas);
+    }
+    const loadAndStart = () => {
+      if (this._activePanel !== 'loadout' || this._armorPreview === null) return;
+      if (!this._armorPreviewModelLoaded) {
+        this._armorPreview.loadArmor(getSkin(), this.selectedArmorId, null);
+        this._armorPreviewModelLoaded = true;
+      }
+      this._armorPreview.start();
+      canvas.dataset.modelState = 'ready';
+    };
+    if (isHumanSoldierReady()) {
+      loadAndStart();
+      return;
+    }
+    canvas.dataset.modelState = 'loading';
+    preloadHumanSoldier(loadAndStart);
   }
 
   _wireNav() {
@@ -202,13 +241,13 @@ export class MenuUI {
     });
   }
 
-  _startPractice(modeId, mapId = 'iron_bastion') {
+  _startPractice(modeId, mapId = 'relay_visual_candidate') {
     if (modeId) this.selectedModeId = modeId;
     this.selectedMapId = mapId;
     this._closeAllPanels();
     this._closeAllDropdowns();
-    if (mapId === 'inkfall_foundry_rev5') {
-      window.location.assign('/practice');
+    if (mapId === 'relay_visual_candidate') {
+      window.location.assign(buildPracticeHref(window.location.search));
       return;
     }
     const name = this.nameInput?.value.trim() || this._displayName || 'Recruit';
@@ -263,7 +302,10 @@ export class MenuUI {
     panel?.classList.remove('hidden');
     trigger?.classList.add('active');
     trigger?.setAttribute('aria-expanded', 'true');
-    if (id === 'loadout') this._renderLocalLoadout();
+    if (id === 'loadout') {
+      this._renderLocalLoadout();
+      this._showArmorPreview();
+    }
     if (id === 'settings') this._loadSettings();
     queueMicrotask(() => focusFirst(panel));
   }
@@ -278,6 +320,7 @@ export class MenuUI {
       button.classList.remove('active');
       button.setAttribute('aria-expanded', 'false');
     });
+    this._armorPreview?.stop();
     if (restoreFocus) queueMicrotask(() => returnFocus?.focus?.());
   }
 
@@ -311,7 +354,83 @@ export class MenuUI {
     if (!root) return;
     root.replaceChildren();
 
+    const lanes = Object.freeze([
+      Object.freeze({
+        id: 'original',
+        label: 'Original arenas',
+        description: 'Current KYX maps and source-frozen authority builds.',
+      }),
+      Object.freeze({
+        id: 'legacy',
+        label: 'Legacy maps',
+        description: 'KYX history plus local inspection of externally owned map files.',
+      }),
+    ]);
+    const tabList = document.createElement('div');
+    tabList.className = 'map-library__tabs';
+    tabList.setAttribute('role', 'tablist');
+    tabList.setAttribute('aria-label', 'Arena families');
+    const laneStack = document.createElement('div');
+    laneStack.className = 'map-library__lanes';
+    const laneNodes = new Map();
+    const tabNodes = new Map();
+
+    const activateLane = (laneId) => {
+      for (const lane of lanes) {
+        const selected = lane.id === laneId;
+        const tab = tabNodes.get(lane.id);
+        tab?.setAttribute('aria-selected', String(selected));
+        tab?.classList.toggle('active', selected);
+        if (tab) tab.tabIndex = selected ? 0 : -1;
+        laneNodes.get(lane.id)?.classList.toggle('hidden', !selected);
+      }
+    };
+
+    for (const lane of lanes) {
+      const tab = document.createElement('button');
+      tab.type = 'button';
+      tab.id = `map-library-tab-${lane.id}`;
+      tab.className = 'map-library__tab';
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', `map-library-lane-${lane.id}`);
+      tab.setAttribute('aria-selected', 'false');
+      tab.tabIndex = -1;
+      const tabLabel = document.createElement('strong');
+      tabLabel.textContent = lane.label;
+      const tabCopy = document.createElement('span');
+      tabCopy.textContent = lane.description;
+      tab.append(tabLabel, tabCopy);
+      tab.addEventListener('click', () => activateLane(lane.id));
+      tab.addEventListener('keydown', (event) => {
+        const currentIndex = lanes.findIndex((candidate) => candidate.id === lane.id);
+        let nextIndex = null;
+        if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + lanes.length) % lanes.length;
+        if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % lanes.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = lanes.length - 1;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const nextLane = lanes[nextIndex];
+        activateLane(nextLane.id);
+        tabNodes.get(nextLane.id)?.focus();
+      });
+      tabList.appendChild(tab);
+      tabNodes.set(lane.id, tab);
+
+      const laneNode = document.createElement('div');
+      laneNode.id = `map-library-lane-${lane.id}`;
+      laneNode.className = 'map-library__lane hidden';
+      laneNode.setAttribute('role', 'tabpanel');
+      laneNode.setAttribute('aria-labelledby', tab.id);
+      laneStack.appendChild(laneNode);
+      laneNodes.set(lane.id, laneNode);
+    }
+
     for (const section of listMapLibrarySections()) {
+      const laneId = section.id === 'original_maps' ? 'original' : 'legacy';
+      const laneNode = laneNodes.get(laneId);
+      if (!laneNode) continue;
       const sectionNode = document.createElement('section');
       sectionNode.className = 'map-library__section';
       sectionNode.dataset.sectionId = section.id;
@@ -333,6 +452,27 @@ export class MenuUI {
         article.className = 'map-library__entry';
         article.dataset.mapId = entry.id;
         article.dataset.availability = entry.availability;
+
+        const visual = document.createElement('div');
+        visual.className = 'map-library__entry-visual';
+        visual.setAttribute('aria-hidden', 'true');
+        const visualCode = document.createElement('strong');
+        visualCode.textContent = entry.id === 'relay_visual_candidate'
+          ? 'RY-01'
+          : entry.id === 'iron_bastion'
+            ? 'IB-01'
+            : entry.id === 'local_evmap_inspection'
+              ? 'LOCAL'
+              : 'EXT';
+        const visualCopy = document.createElement('span');
+        visualCopy.textContent = entry.id === 'relay_visual_candidate'
+          ? 'Open sky / three combat tiers'
+          : entry.id === 'iron_bastion'
+            ? 'Archive / offline bots'
+            : entry.id === 'local_evmap_inspection'
+              ? 'Private file / no upload'
+              : 'External rights boundary';
+        visual.append(visualCode, visualCopy);
 
         const descriptionColumn = document.createElement('div');
         const titleRow = document.createElement('div');
@@ -369,6 +509,52 @@ export class MenuUI {
           button.textContent = 'Play offline';
           button.addEventListener('click', () => this._startPractice(entry.action.modeId, entry.id));
           actionColumn.appendChild(button);
+        } else if (entry.action.kind === 'inspect_local_evmap') {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = '.evmap';
+          input.className = 'map-library__file-input';
+          input.tabIndex = -1;
+          input.setAttribute('aria-label', 'Choose a local evmap file to inspect');
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'map-library__action';
+          button.textContent = 'Choose local file';
+          button.addEventListener('click', () => input.click());
+          const result = document.createElement('p');
+          result.className = 'map-library__inspection-result';
+          result.setAttribute('role', 'status');
+          result.setAttribute('aria-live', 'polite');
+          result.textContent = 'Nothing leaves this device.';
+          let inspectionRequestToken = 0;
+          input.addEventListener('change', async () => {
+            const requestToken = ++inspectionRequestToken;
+            const file = input.files?.[0];
+            if (!file) return;
+            result.dataset.state = 'working';
+            result.textContent = 'Inspecting local bytes…';
+            try {
+              const inspection = await inspectLocalEvmapFile(file);
+              if (requestToken !== inspectionRequestToken) return;
+              result.dataset.state = 'complete';
+              result.textContent = [
+                inspection.fileName,
+                `${(inspection.bytes / 1024).toFixed(1)} KiB`,
+                inspection.container,
+                `SHA-256 ${inspection.sha256.slice(0, 12)}…`,
+                'inspection only',
+              ].join(' · ');
+            } catch (error) {
+              if (requestToken !== inspectionRequestToken) return;
+              result.dataset.state = 'error';
+              result.textContent = error instanceof Error
+                ? error.message
+                : 'LOCAL_EVMAP_INSPECTION_FAILED';
+            } finally {
+              if (requestToken === inspectionRequestToken) input.value = '';
+            }
+          });
+          actionColumn.append(button, input, result);
         } else {
           const link = document.createElement('a');
           link.className = entry.action.kind === 'open_review_route'
@@ -394,13 +580,16 @@ export class MenuUI {
           }
         }
 
-        article.append(descriptionColumn, actionColumn);
+        article.append(visual, descriptionColumn, actionColumn);
         entries.appendChild(article);
       }
 
       sectionNode.append(sectionHead, entries);
-      root.appendChild(sectionNode);
+      laneNode.appendChild(sectionNode);
     }
+
+    root.append(tabList, laneStack);
+    activateLane('original');
   }
 
   _buildSettings() {

@@ -1,0 +1,50 @@
+{
+  "candidateId": "g6-assault-rev38-fitted-v1",
+  "displayName": "KYX Assault Rev38 fitted",
+  "disposition": "staging review candidate",
+  "runtimeSelection": "staging-review default or explicit development query g6Candidate=rev38-fitted-v1",
+  "releaseEligible": false,
+  "humanAccepted": false,
+  "source": {
+    "kind": "project-authored derivative of the preserved V6-A anatomical and rig foundation",
+    "authoringWorktree": "evio-g6-assault-rev32-20260801",
+    "authoringScript": "assets/source/blender/phase7-character-original-v6/scripts/author_export_v6b_assault_rev38_fitted.py"
+  },
+  "structure": {
+    "runtimeMeshes": 2,
+    "bones": 66,
+    "animationClips": 16,
+    "embeddedWeapon": false,
+    "helmetTriangles": 258
+  },
+  "artifacts": [
+    {
+      "role": "lod0",
+      "path": "assets/review/runtime-candidates/g6-assault-rev38-fitted-v1/kyx-v6b-assault-rev38-fitted-v1-lod0.glb",
+      "bytes": 14544296,
+      "sha256": "bf0daeee910ce0acf486df9918a1dafc301065fd2ac31ff304b6dee6901a3dcc",
+      "bodyTriangles": 3134
+    },
+    {
+      "role": "lod1",
+      "path": "assets/review/runtime-candidates/g6-assault-rev38-fitted-v1/kyx-v6b-assault-rev38-fitted-v1-lod1.glb",
+      "bytes": 14506216,
+      "sha256": "1141532d674cfd9ebd2ea4380b1485fef71e234cbffbd4adb2fc8741ade8a929",
+      "bodyTriangles": 2318
+    },
+    {
+      "role": "lod2",
+      "path": "assets/review/runtime-candidates/g6-assault-rev38-fitted-v1/kyx-v6b-assault-rev38-fitted-v1-lod2.glb",
+      "bytes": 14473100,
+      "sha256": "6258bbb1ee09c5dc4e46e0cccaa3dda826096a5add1d5948380c12dc23bcd7a3",
+      "bodyTriangles": 1628
+    }
+  ],
+  "nonclaims": [
+    "Not human visually accepted",
+    "Not included in ordinary production builds",
+    "Not release-ledger eligible",
+    "First-person arms remain a separate presentation system",
+    "Recovered 16-clip motion set remains subject to player-eye review and CC0 retargeting refinement"
+  ]
+}

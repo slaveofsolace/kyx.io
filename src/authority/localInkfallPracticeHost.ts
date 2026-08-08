@@ -11,14 +11,11 @@ import {
   PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
 } from '../sim';
 import {
-  INKFALL_REVISION_4_AUTHORITY_MAP_BINDING,
-  INKFALL_REVISION_4_AUTHORITY_PROFILE_ID,
-  createInkfallAuthorityCombatOptions,
-  inkfallAuthorityCombatSpawn,
-  inkfallAuthorityFixture,
-} from './inkfallRoomFactory';
-import { INKFALL_AUTHORITY_MAP_IDENTITY_V4 } from './inkfallMapIdentity';
-import { createInkfallRev5PortalAuthorityPort } from './portal/inkfallRev5PortalAuthority';
+  RELAY_AUTHORITY_FIXTURE,
+  RELAY_AUTHORITY_IDENTITY,
+  createRelayAuthorityCombatOptions,
+  relayAuthoritySpawn,
+} from './relayAuthority';
 import {
   AuthoritativeRoom,
   G4_COMBAT_RULESET_HASH,
@@ -28,9 +25,13 @@ import {
   type AuthorityRoomTickResult,
 } from './room';
 import { reliableCombatEvents } from './combatEvents';
+import {
+  createRelayPortalAuthorityPort,
+} from './portal/relayPortalAuthority';
 
-export const LOCAL_INKFALL_PRACTICE_HOST_ID =
-  'local_inkfall_practice_authority_v1' as const;
+export const LOCAL_RELAY_PRACTICE_HOST_ID =
+  'local_relay_practice_authority_v1' as const;
+export const LOCAL_INKFALL_PRACTICE_HOST_ID = LOCAL_RELAY_PRACTICE_HOST_ID;
 export const LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ = 20 as const;
 export const LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS = 50 as const;
 export const LOCAL_INKFALL_PRACTICE_PLAYER_ID = 'practice.local.player' as const;
@@ -66,7 +67,7 @@ const NEUTRAL_INPUT = Object.freeze({
 function boundedBotCount(value: number | undefined): number {
   const count = value ?? 7;
   if (!Number.isSafeInteger(count) || count < 1 || count > 7) {
-    throw new RangeError('Local Inkfall Practice bot count must be an integer from 1 through 7');
+    throw new RangeError('Local Relay Practice bot count must be an integer from 1 through 7');
   }
   return count;
 }
@@ -146,7 +147,7 @@ function botInput(
  * steps and never grants client frames authority.
  */
 export class LocalInkfallPracticeHost {
-  readonly hostId = LOCAL_INKFALL_PRACTICE_HOST_ID;
+  readonly hostId = LOCAL_RELAY_PRACTICE_HOST_ID;
   readonly authority: AuthoritativeRoom;
   readonly world: RapierMovementWorld;
   readonly localPlayerId = LOCAL_INKFALL_PRACTICE_PLAYER_ID;
@@ -177,17 +178,17 @@ export class LocalInkfallPracticeHost {
     options: LocalInkfallPracticeHostOptions = {},
   ): Promise<LocalInkfallPracticeHost> {
     const botCount = boundedBotCount(options.botCount);
-    const fixture = inkfallAuthorityFixture(INKFALL_REVISION_4_AUTHORITY_PROFILE_ID);
+    const fixture = RELAY_AUTHORITY_FIXTURE;
     const world = await createRapierMovementWorld(fixture);
     if (
-      world.fixture.id !== INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.fixtureId
-      || world.fixture.revision !== INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.mapRevision
-      || world.fixtureHash !== INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.fixtureHash
+      world.fixture.id !== RELAY_AUTHORITY_IDENTITY.fixtureId
+      || world.fixture.revision !== RELAY_AUTHORITY_IDENTITY.mapRevision
+      || world.fixtureHash !== RELAY_AUTHORITY_IDENTITY.fixtureHash
       || world.fixture.solids.length
-        !== INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.colliderCardinality
+        !== RELAY_AUTHORITY_IDENTITY.colliderCardinality
     ) {
       world.dispose();
-      throw new Error('LOCAL_INKFALL_PRACTICE_WORLD_IDENTITY_MISMATCH');
+      throw new Error('LOCAL_RELAY_PRACTICE_WORLD_IDENTITY_MISMATCH');
     }
 
     const botPlayerIds = Object.freeze(Array.from(
@@ -196,12 +197,12 @@ export class LocalInkfallPracticeHost {
     ));
     const authority = new AuthoritativeRoom({
       identity: {
-        roomId: options.roomId ?? 'room.local.inkfall.practice',
-        matchId: options.matchId ?? 'match.local.inkfall.practice',
+        roomId: options.roomId ?? 'room.local.relay.practice',
+        matchId: options.matchId ?? 'match.local.relay.practice',
         rulesetId: G4_COMBAT_RULESET_ID,
         rulesetRevision: G4_COMBAT_RULESET_REVISION,
         rulesetHash: G4_COMBAT_RULESET_HASH,
-        mapId: INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.mapId,
+        mapId: RELAY_AUTHORITY_IDENTITY.mapId,
         fixtureId: world.fixture.id,
         fixtureHash: world.fixtureHash,
         physicsAdapterId: 'rapier3d_deterministic_compat',
@@ -209,19 +210,13 @@ export class LocalInkfallPracticeHost {
       },
       profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
       queries: world,
-      worldPortal: createInkfallRev5PortalAuthorityPort(
-        world,
-        INKFALL_AUTHORITY_MAP_IDENTITY_V4,
-      ),
       maximumPlayers: 8,
       minimumConnectedPlayersToStart: 1,
       spawnResolver: (_playerId, ordinal) => (
-        inkfallAuthorityCombatSpawn(ordinal, INKFALL_REVISION_4_AUTHORITY_PROFILE_ID)
+        relayAuthoritySpawn(ordinal)
       ),
-      combat: createInkfallAuthorityCombatOptions(
-        world,
-        INKFALL_REVISION_4_AUTHORITY_PROFILE_ID,
-      ),
+      combat: createRelayAuthorityCombatOptions(world),
+      worldPortal: createRelayPortalAuthorityPort(world),
     });
     const host = new LocalInkfallPracticeHost(world, authority, botPlayerIds);
     try {

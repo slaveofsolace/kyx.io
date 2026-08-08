@@ -28,7 +28,15 @@ interface StaticPortalPresentation {
   readonly meshCount: number;
 }
 
-const STATIC_PORTALS = Object.freeze([
+export interface WorldPortalPresentationDefinition {
+  readonly id: string;
+  readonly position: readonly [number, number, number];
+  readonly color: number;
+  readonly accent: number;
+  readonly phase: number;
+}
+
+export const INKFALL_REV5_STATIC_PORTALS = Object.freeze([
   Object.freeze({
     id: 'red_fold_lower',
     position: Object.freeze([-4, -1.25, 10] as const),
@@ -113,7 +121,7 @@ function disposePresentationRoot(root: THREE.Object3D): void {
 }
 
 function createStaticPortalPresentation(
-  definition: (typeof STATIC_PORTALS)[number],
+  definition: WorldPortalPresentationDefinition,
 ): StaticPortalPresentation {
   const root = new THREE.Group();
   root.name = `INKFALL_PORTAL_${definition.id.toUpperCase()}_PRESENTATION`;
@@ -270,14 +278,14 @@ function portalWave(
   const ringMaterial = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.92,
+    opacity: 0.74,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
   });
   const shellMaterial = new THREE.MeshBasicMaterial({
     color,
     transparent: true,
-    opacity: 0.18,
+    opacity: 0.11,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     side: THREE.DoubleSide,
@@ -292,7 +300,10 @@ function portalWave(
     new THREE.IcosahedronGeometry(0.58, 1),
     shellMaterial,
   );
-  root.add(ring, shell, new THREE.PointLight(color, 5.8, 9, 2));
+  // A portal event should read as a tight spatial pulse, not a full-screen
+  // exposure flash. The restrained light also keeps team and route colors
+  // visible during the first post-traversal frame.
+  root.add(ring, shell, new THREE.PointLight(color, 2.15, 5.5, 2));
   return Object.freeze({
     root,
     materials: Object.freeze([ringMaterial, shellMaterial]),
@@ -302,17 +313,20 @@ function portalWave(
 export function createInkfallRev5PortalPresentation(
   scene: THREE.Scene,
   playAudio: InkfallRev5PortalAudioCallback = () => {},
+  showStaticPortals = true,
+  staticPortalDefinitions: readonly WorldPortalPresentationDefinition[] =
+    INKFALL_REV5_STATIC_PORTALS,
 ) {
   const transients: PortalTransient[] = [];
   const reducedMotion = typeof window !== 'undefined'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const staticPortals = STATIC_PORTALS.map((definition) => {
+  const staticPortals = (showStaticPortals ? staticPortalDefinitions : []).map((definition) => {
     const portal = createStaticPortalPresentation(definition);
     scene.add(portal.root);
     return portal;
   });
-  const staticLights = STATIC_PORTALS.map((definition) => {
-    const light = new THREE.PointLight(definition.color, 3.1, 12, 2);
+  const staticLights = (showStaticPortals ? staticPortalDefinitions : []).map((definition) => {
+    const light = new THREE.PointLight(definition.color, 1.65, 8, 2);
     light.name =
       `INKFALL_PORTAL_${definition.id.toUpperCase()}_PRESENTATION_LIGHT`;
     light.position.set(
@@ -349,9 +363,8 @@ export function createInkfallRev5PortalPresentation(
       local: boolean,
     ): void {
       if (disposed) return;
-      const color = event.endpointId.endsWith('upper')
-        ? 0xffa53b
-        : 0x6ff3ff;
+      const color = staticPortalDefinitions.find(({ id }) => id === event.endpointId)?.color
+        ?? (event.endpointId.endsWith('upper') ? 0xffa53b : 0x6ff3ff);
       addWave(
         mapMillimetersToScene(event.from).add(new THREE.Vector3(0, 1, 0)),
         color,

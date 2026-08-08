@@ -19,7 +19,9 @@ import { buildPreviewCharacter } from '../player/PreviewCharacter.js';
 import {
   hashPhysicsFixture,
   loadPhysicsFixture,
+  type PhysicsFixtureV1,
 } from '../physics';
+import { disposeThreeObjectResources } from '../render/disposeThreeObjectResources';
 import {
   createKyxWeaponPresentationModel,
   normalizeKyxAuthorityWeaponId,
@@ -29,18 +31,24 @@ import {
   type KyxWeaponPresentationModel,
 } from '../weapons/KyxArmoryPresentation';
 import {
+  inspectKyxFirstPersonWeaponMount,
+  replaceKyxFirstPersonWeaponMount,
+} from '../weapons/KyxFirstPersonWeaponMount';
+import {
   createInkfallRev5PortalPresentation,
   type InkfallRev5PortalAudioCallback,
+  type WorldPortalPresentationDefinition,
 } from './inkfallRev5PortalPresentation';
 import {
-  createInkfallRev5VisualContinuity,
-} from './inkfallRev5VisualContinuity';
+  createRelayVisualContinuity,
+  RELAY_DISPLAY_NAME,
+  RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
+} from './relayVisualContinuity';
 import type { OnlineBlinkPreview } from './onlineBlinkPreview';
 import {
   createOnlineBlinkPreviewPresentation,
 } from './onlineBlinkPreviewPresentation';
 import {
-  ONLINE_INKFALL_REV4_MAP_BINDING,
   ONLINE_INKFALL_REV5_MAP_BINDING,
   type OnlineInkfallRevision4MapBinding,
   type OnlineInkfallRevision5MapBinding,
@@ -71,21 +79,27 @@ type OnlineInkfallThreeMapBinding =
 export interface OnlineAuthorityThreeDiagnostics {
   readonly status: 'ready' | 'disposed';
   readonly renderer: 'three_webgl';
-  readonly mapReference: OnlineInkfallThreeMapBinding['mapReference'];
-  readonly presentationReference: OnlineInkfallThreeMapBinding['presentationReference'];
+  readonly mapReference: string;
+  readonly presentationReference: string;
   readonly presentationMode:
     | 'review_glb'
-    | 'procedural_authority_containment';
+    | 'procedural_authority_containment'
+    | 'relay_visual_candidate';
+  readonly presentationDisplayName: typeof RELAY_DISPLAY_NAME;
+  readonly authorityCompatibility: string;
   readonly presentationSha256: string | null;
-  readonly authorityFixtureHash: OnlineInkfallThreeMapBinding['fixtureHash'];
+  readonly authorityFixtureHash: string;
   readonly renderMeshesMayBeAuthority: false;
   readonly renderMeshCount: number;
   readonly renderOnlyContainmentMeshCount: number;
-  readonly spawnPocketContainmentCount: 2;
-  readonly authorityColliderCount: 339;
-  readonly spawnCount: 12;
-  readonly zoneCount: 9;
+  readonly spawnPocketContainmentCount: number;
+  readonly authorityColliderCount: number;
+  readonly spawnCount: number;
+  readonly zoneCount: number;
   readonly remoteAvatarCount: number;
+  readonly remoteAvatarAnimationContractCount: number;
+  readonly remoteAvatarProceduralAnimationCount: number;
+  readonly remoteAvatarWeaponAttachmentCount: number;
   readonly grenadeProjectileCount: number;
   readonly launchProjectilePresentation: 'cutline_launch_canister_v1';
   readonly launchCanisterPresentationCount: number;
@@ -98,6 +112,8 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly reloadPresentationCount: number;
   readonly portalTraversalPresentationCount: number;
   readonly activePortalEffectCount: number;
+  readonly staticWorldPortalCount: number;
+  readonly staticWorldPortalMeshCount: number;
   readonly portalAudioDelegation: 'shared_callback';
   readonly authoredWeaponAudio: 'locked' | 'ready' | 'unavailable' | 'disposed';
   readonly selectedWeaponId: string | null;
@@ -108,6 +124,9 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedWeaponVisualSource: string;
   readonly selectedFirstPersonHandCount: number;
   readonly selectedFirstPersonContactMode: string;
+  readonly selectedFirstPersonMountChildCount: number;
+  readonly selectedFirstPersonWeaponRootCount: number;
+  readonly selectedFirstPersonOverlapFree: boolean;
   readonly selectedFirstPersonAimRequested: boolean;
   readonly selectedFirstPersonAimMix: number;
   readonly selectedFirstPersonScale: number;
@@ -135,6 +154,21 @@ export interface OnlineAuthorityThreeRuntime {
 export interface OnlineAuthorityThreeRuntimeOptions {
   readonly onWorldPortalAudio?: InkfallRev5PortalAudioCallback;
   readonly mapBinding?: OnlineInkfallThreeMapBinding;
+  readonly presentationFixture?: PhysicsFixtureV1;
+  readonly presentationIdentity?: OnlineAuthorityVisualIdentity;
+  readonly showStaticWorldPortals?: boolean;
+  readonly staticWorldPortalDefinitions?: readonly WorldPortalPresentationDefinition[];
+}
+
+export interface OnlineAuthorityVisualIdentity {
+  readonly mapReference: string;
+  readonly presentationReference: string;
+  readonly fixtureHash: string;
+  readonly colliderCardinality: number;
+  readonly spawnCount: number;
+  readonly zoneCount: number;
+  readonly spawnPocketContainmentCount: number;
+  readonly authorityCompatibility: string;
 }
 
 interface PlayerAvatar {
@@ -156,8 +190,26 @@ interface LoadedRev5Visual {
   readonly containmentMeshCount: number;
   readonly presentationMode:
     | 'review_glb'
-    | 'procedural_authority_containment';
+    | 'procedural_authority_containment'
+    | 'relay_visual_candidate';
   readonly presentationSha256: string | null;
+}
+
+function createRelayLoadedVisual(fixture: PhysicsFixtureV1): LoadedRev5Visual {
+  const relay = createRelayVisualContinuity(fixture);
+  const containment = new THREE.Group();
+  containment.name = 'RELAY_EMPTY_LEGACY_CONTAINMENT_SLOT';
+  containment.userData.presentationRole = 'empty_compatibility_slot';
+  containment.userData.renderMeshesMayBeAuthority = false;
+  containment.userData.noHit = true;
+  return Object.freeze({
+    art: relay.group,
+    containment,
+    meshCount: relay.meshCount,
+    containmentMeshCount: 0,
+    presentationMode: 'relay_visual_candidate',
+    presentationSha256: null,
+  });
 }
 
 const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
@@ -235,49 +287,33 @@ function loadReleaseRev5Visual(
   ) {
     throw new Error('ONLINE_REV5_AUTHORITY_BINDING_MISMATCH');
   }
-  const containment = createInkfallRev5VisualContinuity(fixture);
-  const art = new THREE.Group();
-  art.name = 'INKFALL_RELEASE_PROCEDURAL_PRESENTATION_FALLBACK';
-  art.userData.presentationRole = 'rev5_modular_render_only_no_hit';
-  art.userData.renderMeshesMayBeAuthority = false;
-  art.userData.noHit = true;
+  const relay = createRelayVisualContinuity(fixture);
+  const containment = new THREE.Group();
+  containment.name = 'RELAY_EMPTY_LEGACY_CONTAINMENT_SLOT';
+  containment.userData.presentationRole = 'empty_compatibility_slot';
+  containment.userData.renderMeshesMayBeAuthority = false;
+  containment.userData.noHit = true;
   return Object.freeze({
-    art,
-    containment: containment.group,
-    meshCount: 0,
-    containmentMeshCount: containment.meshCount,
-    presentationMode: 'procedural_authority_containment',
+    art: relay.group,
+    containment,
+    meshCount: relay.meshCount,
+    containmentMeshCount: 0,
+    presentationMode: 'relay_visual_candidate',
     presentationSha256: null,
   });
 }
 
 async function loadRev5Visual(
   mapBinding: OnlineInkfallThreeMapBinding,
+  presentationFixture?: PhysicsFixtureV1,
 ): Promise<LoadedRev5Visual> {
-  if (
-    import.meta.env.MODE === 'staging-review'
-    && mapBinding.mapRevision === ONLINE_INKFALL_REV5_MAP_BINDING.mapRevision
-  ) {
-    // The noindex Pages preview deliberately carries the current review GLB so
-    // manual player-eye review can happen against the isolated staging Worker.
-    // Normal production builds never discover this static import branch and
-    // remain limited to ledgered release assets plus the procedural fallback.
-    const { loadInkfallRev5ReviewVisual } = await import(
-      '../dev/loadInkfallRev5ReviewVisual'
-    );
-    return loadInkfallRev5ReviewVisual();
+  // Relay is the sole player-facing presentation. The rejected Foundry GLB
+  // remains preserved as source/evidence, but is not loaded or packaged in
+  // development, staging, or release builds.
+  if (presentationFixture !== undefined) {
+    return createRelayLoadedVisual(presentationFixture);
   }
-  if (!import.meta.env.DEV) return loadReleaseRev5Visual(mapBinding);
-  if (mapBinding.mapRevision === ONLINE_INKFALL_REV4_MAP_BINDING.mapRevision) {
-    return loadReleaseRev5Visual(mapBinding);
-  }
-  // Resolve the development-only visual without allowing Rollup to discover
-  // or package non-release GLBs.
-  const reviewVisualModulePath = '../dev/loadInkfallRev5ReviewVisual.ts';
-  const { loadInkfallRev5ReviewVisual } = await import(
-    /* @vite-ignore */ reviewVisualModulePath
-  );
-  return loadInkfallRev5ReviewVisual();
+  return loadReleaseRev5Visual(mapBinding);
 }
 
 async function loadVlr7ReviewShell(): Promise<void> {
@@ -294,22 +330,11 @@ async function loadVlr7ReviewShell(): Promise<void> {
 }
 
 function disposeObject(root: THREE.Object3D): void {
-  root.traverse((object) => {
-    if (!(object as THREE.Mesh).isMesh) return;
-    const mesh = object as THREE.Mesh;
-    mesh.geometry?.dispose();
-    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    for (const material of materials) material.dispose();
-  });
+  disposeThreeObjectResources(root);
 }
 
 function disposeObjectMaterials(root: THREE.Object3D): void {
-  root.traverse((object) => {
-    if (!(object as THREE.Mesh).isMesh) return;
-    const mesh = object as THREE.Mesh;
-    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-    for (const material of materials) material.dispose();
-  });
+  disposeThreeObjectResources(root, { geometry: false });
 }
 
 function createCutlineLaunchCanister(): THREE.Group {
@@ -407,7 +432,7 @@ function createPlayerAvatar(teamId: string | null): PlayerAvatar {
       : { primary: 0x2f6fae, secondary: 0x151c27 },
     armorTypeId,
     null,
-    { allowHuman: false },
+    { allowHuman: false, animate: true, runtimeRole: 'online_remote' },
   )) as THREE.Group;
   root.name = isHumanSoldierReady()
     ? 'ONLINE_AUTHORITY_HUMAN_SOLDIER'
@@ -431,6 +456,18 @@ function createPlayerAvatar(teamId: string | null): PlayerAvatar {
     smoothedTurnRateRadiansPerSecond: 0,
     deathPresentationUntilMilliseconds: 0,
   };
+}
+
+function isAttachedBelow(
+  object: THREE.Object3D,
+  expectedAncestor: THREE.Object3D,
+): boolean {
+  let current: THREE.Object3D | null = object.parent;
+  while (current !== null) {
+    if (current === expectedAncestor) return true;
+    current = current.parent;
+  }
+  return false;
 }
 
 function selectedPlayerWeapon(
@@ -512,8 +549,18 @@ export async function createOnlineAuthorityThreeRuntime(
   options: OnlineAuthorityThreeRuntimeOptions = {},
 ): Promise<OnlineAuthorityThreeRuntime> {
   const mapBinding = options.mapBinding ?? ONLINE_INKFALL_REV5_MAP_BINDING;
+  const presentationIdentity = options.presentationIdentity ?? Object.freeze({
+    mapReference: mapBinding.mapReference,
+    presentationReference: mapBinding.presentationReference,
+    fixtureHash: mapBinding.fixtureHash,
+    colliderCardinality: mapBinding.colliderCardinality,
+    spawnCount: 12,
+    zoneCount: 9,
+    spawnPocketContainmentCount: 2,
+    authorityCompatibility: RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
+  });
   const [loadedVisual] = await Promise.all([
-    loadRev5Visual(mapBinding),
+    loadRev5Visual(mapBinding, options.presentationFixture),
     ensureHumanSoldierReady(),
     loadVlr7ReviewShell(),
   ]);
@@ -527,24 +574,13 @@ export async function createOnlineAuthorityThreeRuntime(
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.24;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.shadowMap.enabled = false;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0d1b22);
-  scene.fog = new THREE.FogExp2(0x16272d, 0.0068);
+  scene.background = new THREE.Color(0x9db8c1);
+  scene.fog = new THREE.FogExp2(0x9baca9, 0.0045);
   scene.add(loadedVisual.art, loadedVisual.containment);
-  // Ground bounce is the only light reaching downward-facing overhead
-  // surfaces (both directionals point down), so it owns the darkness floor.
-  scene.add(new THREE.HemisphereLight(0xd7eef3, 0x36454d, 1.62));
-  const key = new THREE.DirectionalLight(0xffd7af, 2.25);
-  key.position.set(-14, 22, 12);
-  scene.add(key);
-  const fill = new THREE.DirectionalLight(0x70dbe8, 1.2);
-  fill.position.set(18, 12, -16);
-  scene.add(fill);
-  const archiveGlow = new THREE.PointLight(0xffad55, 4.2, 28, 1.8);
-  archiveGlow.position.set(-20, 6, -14);
-  scene.add(archiveGlow);
 
   const camera = new THREE.PerspectiveCamera(
     BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES,
@@ -558,8 +594,8 @@ export async function createOnlineAuthorityThreeRuntime(
   const firstPersonWeaponMount = new THREE.Group();
   firstPersonWeaponMount.name = 'ONLINE_FIRST_PERSON_WEAPON_ONLY';
   camera.add(firstPersonWeaponMount);
-  // Camera-space key/fill keeps the six authored silhouettes legible in dark
-  // Inkfall interiors without altering authority-owned world lighting.
+  // Camera-space key/fill keeps weapon contact legible across Relay's bright
+  // exterior and shaded lower route without changing authority state.
   const firstPersonWeaponKey = new THREE.PointLight(
     0xd9f8ff,
     1.65,
@@ -592,6 +628,8 @@ export async function createOnlineAuthorityThreeRuntime(
   const portalPresentation = createInkfallRev5PortalPresentation(
     scene,
     options.onWorldPortalAudio,
+    options.showStaticWorldPortals ?? true,
+    options.staticWorldPortalDefinitions,
   );
   const blinkPreviewPresentation = createOnlineBlinkPreviewPresentation(scene);
   const reducedMotionQuery = window.matchMedia(
@@ -824,16 +862,18 @@ export async function createOnlineAuthorityThreeRuntime(
     const weaponState = selectedWeaponState(local);
     const nextId = normalizeKyxAuthorityWeaponId(local?.selectedWeaponId);
     if (selectedWeaponId !== nextId || firstPersonWeapon === null) {
-      if (firstPersonWeapon !== null) {
-        firstPersonWeaponMount.remove(firstPersonWeapon.group);
-        disposeObject(firstPersonWeapon.group);
-      }
-      firstPersonWeapon = createKyxWeaponPresentationModel(
+      const nextWeapon = createKyxWeaponPresentationModel(
         nextId,
         'first_person',
       );
+      replaceKyxFirstPersonWeaponMount(
+        firstPersonWeaponMount,
+        firstPersonWeapon,
+        nextWeapon,
+        disposeObject,
+      );
+      firstPersonWeapon = nextWeapon;
       selectedWeaponId = nextId;
-      firstPersonWeaponMount.add(firstPersonWeapon.group);
     }
     if (localId !== null && firstPersonWeapon !== null) {
       weaponPresentationFx.notifyWeaponPhase(
@@ -1253,22 +1293,41 @@ export async function createOnlineAuthorityThreeRuntime(
     const weaponDiagnostics = weaponPresentationFx.diagnostics();
     const portalDiagnostics = portalPresentation.diagnostics();
     const blinkDiagnostics = blinkPreviewPresentation.diagnostics();
+    const remoteAvatars = [...avatars.values()];
+    const firstPersonMountDiagnostics = inspectKyxFirstPersonWeaponMount(
+      firstPersonWeaponMount,
+      firstPersonWeapon,
+    );
     return Object.freeze({
       status: disposed ? 'disposed' : 'ready',
       renderer: 'three_webgl',
-      mapReference: mapBinding.mapReference,
-      presentationReference: mapBinding.presentationReference,
+      mapReference: presentationIdentity.mapReference,
+      presentationReference: presentationIdentity.presentationReference,
       presentationMode: loadedVisual.presentationMode,
+      presentationDisplayName: RELAY_DISPLAY_NAME,
+      authorityCompatibility: presentationIdentity.authorityCompatibility,
       presentationSha256: loadedVisual.presentationSha256,
-      authorityFixtureHash: mapBinding.fixtureHash,
+      authorityFixtureHash: presentationIdentity.fixtureHash,
       renderMeshesMayBeAuthority: false,
       renderMeshCount: loadedVisual.meshCount,
       renderOnlyContainmentMeshCount: loadedVisual.containmentMeshCount,
-      spawnPocketContainmentCount: 2,
-      authorityColliderCount: 339,
-      spawnCount: 12,
-      zoneCount: 9,
+      spawnPocketContainmentCount:
+        presentationIdentity.spawnPocketContainmentCount,
+      authorityColliderCount: presentationIdentity.colliderCardinality,
+      spawnCount: presentationIdentity.spawnCount,
+      zoneCount: presentationIdentity.zoneCount,
       remoteAvatarCount: avatars.size,
+      remoteAvatarAnimationContractCount: remoteAvatars.filter(
+        (avatar) => typeof avatar.root.userData.setLocomotion === 'function'
+          && typeof avatar.root.userData.actionTick === 'function',
+      ).length,
+      remoteAvatarProceduralAnimationCount: remoteAvatars.filter(
+        (avatar) => avatar.root.userData.proceduralPresentation === true,
+      ).length,
+      remoteAvatarWeaponAttachmentCount: remoteAvatars.filter(
+        (avatar) => avatar.weapon !== null
+          && isAttachedBelow(avatar.weapon.group, avatar.root),
+      ).length,
       grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
       launchProjectilePresentation: 'cutline_launch_canister_v1',
       launchCanisterPresentationCount,
@@ -1283,6 +1342,8 @@ export async function createOnlineAuthorityThreeRuntime(
       reloadPresentationCount: weaponDiagnostics.reloadPresentationCount,
       portalTraversalPresentationCount: portalDiagnostics.cueCount,
       activePortalEffectCount: portalDiagnostics.activeTransientCount,
+      staticWorldPortalCount: portalDiagnostics.staticPortalCount,
+      staticWorldPortalMeshCount: portalDiagnostics.staticPresentationMeshCount,
       portalAudioDelegation: portalDiagnostics.audioDelegation,
       authoredWeaponAudio: weaponDiagnostics.authoredAudio,
       selectedWeaponId,
@@ -1299,6 +1360,12 @@ export async function createOnlineAuthorityThreeRuntime(
         String(
           firstPersonWeapon?.group.userData.firstPersonContactMode ?? 'none',
         ),
+      selectedFirstPersonMountChildCount:
+        firstPersonMountDiagnostics.childCount,
+      selectedFirstPersonWeaponRootCount:
+        firstPersonMountDiagnostics.weaponRootCount,
+      selectedFirstPersonOverlapFree:
+        firstPersonMountDiagnostics.overlapFree,
       selectedFirstPersonAimRequested:
         firstPersonWeapon?.aimRequested ?? false,
       selectedFirstPersonAimMix:

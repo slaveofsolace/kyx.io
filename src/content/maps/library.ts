@@ -24,6 +24,9 @@ export type MapLibraryAction =
   | {
       readonly kind: 'external_reference';
       readonly href: string;
+    }
+  | {
+      readonly kind: 'inspect_local_evmap';
     };
 
 export interface MapLibraryEntry {
@@ -45,7 +48,7 @@ export interface MapLibrarySection {
   readonly entries: readonly MapLibraryEntry[];
 }
 
-export const INKFALL_REV5_LOCAL_PRACTICE_HREF = '/practice' as const;
+export const RELAY_LOCAL_PRACTICE_HREF = '/practice' as const;
 
 const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
   Object.freeze({
@@ -54,18 +57,18 @@ const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
     description: 'KYX arenas authored for the current authority and movement contracts.',
     entries: Object.freeze([
       Object.freeze({
-        id: 'inkfall_foundry_rev5',
+        id: 'relay_visual_candidate',
         sectionId: 'original_maps',
-        displayName: 'Inkfall Foundry',
+        displayName: 'Relay',
         maker: 'KYX',
         availability: 'playable',
-        statusLabel: 'Playable authority review',
+        statusLabel: 'Playable visual candidate',
         description:
-          'Vertical combat arena with shared local/online collision, spawns, zones, weapons, abilities, bots, and linked portals. Manual map/play review remains open.',
+          'Open-sky communications campus with readable upper, court, and lower routes. Local practice now runs Relay\'s own collision, spawns, weapons, abilities, and bots; online and portal rollout remain gated behind map approval.',
         modes: Object.freeze(['Team deathmatch', 'Deathmatch']),
         action: Object.freeze({
           kind: 'open_local_authority_practice',
-          href: INKFALL_REV5_LOCAL_PRACTICE_HREF,
+          href: RELAY_LOCAL_PRACTICE_HREF,
         }),
       }),
     ]),
@@ -98,6 +101,20 @@ const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
     description:
       'External map families remain outside the KYX package until their owners grant written redistribution and adaptation rights.',
     entries: Object.freeze([
+      Object.freeze({
+        id: 'local_evmap_inspection',
+        sectionId: 'external_legacy',
+        displayName: 'Local .evmap file',
+        maker: 'Private file on this device',
+        availability: 'review_only',
+        statusLabel: 'Local inspection',
+        description:
+          'Inspect a map file locally without uploading it. KYX records its fingerprint and container shape, but will not claim play compatibility until a lawful renderer adapter is verified.',
+        modes: Object.freeze(['No upload', 'Inspection only']),
+        action: Object.freeze({
+          kind: 'inspect_local_evmap',
+        }),
+      }),
       Object.freeze({
         id: 'evio_legacy_library',
         sectionId: 'external_legacy',

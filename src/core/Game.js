@@ -37,6 +37,9 @@ import { PRODUCT_CONFIG } from '../config/productConfig.js';
 import { G6_CHARACTER_CANDIDATE } from '../config/g6CharacterCandidate.js';
 import { ABILITY_SLOT_INPUT_LABELS } from '../abilities/abilityLoadout.ts';
 import { BlinkPreviewRenderer } from '../abilities/BlinkPreviewRenderer.js';
+import { createRelayVisualContinuity } from '../app/relayVisualContinuity.ts';
+import { RELAY_AUTHORITY_FIXTURE } from '../authority/relayAuthority.ts';
+import { disposeThreeObjectResources } from '../render/disposeThreeObjectResources.ts';
 
 const SPAWN_POINT = new THREE.Vector3(0, 0, 8);
 
@@ -109,6 +112,14 @@ export class Game {
     preloadHumanSoldier(swapPreview);
 
     this.world        = new World();
+    this._legacySceneChildren = [...this.world.scene.children];
+    this._legacySceneBackground = this.world.scene.background;
+    this._legacySceneFog = this.world.scene.fog;
+    this._relayMenuPreview = createRelayVisualContinuity(
+      RELAY_AUTHORITY_FIXTURE,
+    ).group;
+    this.world.scene.add(this._relayMenuPreview);
+    this._setRelayMenuPreviewVisible(true);
 
     // IBL — makes every MeshStandardMaterial look physically accurate
     const pmrem = new THREE.PMREMGenerator(this.renderer);
@@ -173,12 +184,12 @@ export class Game {
 
     // Cinematic spectator waypoints (pos + lookAt) for the fly-through
     this._camWpts = [
-      { p: new THREE.Vector3(-30,  9, -22), t: new THREE.Vector3(  5, 3,   0) },
-      { p: new THREE.Vector3( 18,  5, -58), t: new THREE.Vector3( -6, 4,  16) },
-      { p: new THREE.Vector3( 62, 15,  24), t: new THREE.Vector3(  0, 4, -10) },
-      { p: new THREE.Vector3(-14,  7,  62), t: new THREE.Vector3( 20, 3,   0) },
-      { p: new THREE.Vector3(  4, 22,  -3), t: new THREE.Vector3( 42, 1,  40) },
-      { p: new THREE.Vector3(-58,  6,  10), t: new THREE.Vector3( 10, 5,   0) },
+      { p: new THREE.Vector3(-42, 14,  28), t: new THREE.Vector3( -4, 2,   0) },
+      { p: new THREE.Vector3(-14, 14, -41), t: new THREE.Vector3(  0, 4,  -8) },
+      { p: new THREE.Vector3( 29, 10, -25), t: new THREE.Vector3( 10, 3,   0) },
+      { p: new THREE.Vector3( 35, 12,  18), t: new THREE.Vector3(  0, 5,   5) },
+      { p: new THREE.Vector3(  0, 19,  34), t: new THREE.Vector3(  0, 5,   0) },
+      { p: new THREE.Vector3(-30, 10,  21), t: new THREE.Vector3(-10, 3,   1) },
     ];
     this._camSeg     = 0;
     this._camSegTime = 0;
@@ -259,6 +270,8 @@ export class Game {
     this.captionCues.dispose();
     this.timer.dispose();
     this.renderer.dispose();
+    this.world.scene.remove(this._relayMenuPreview);
+    disposeThreeObjectResources(this._relayMenuPreview);
     this.botManager.clear();
     this.zombieManager.clear();
   }
@@ -537,10 +550,29 @@ export class Game {
     this.world.scene.add(this.previewCharacter);
   }
 
+  _setRelayMenuPreviewVisible(visible) {
+    this._relayMenuPreview.visible = visible;
+    for (const object of this._legacySceneChildren) object.visible = !visible;
+    if (visible) {
+      this.world.scene.background = new THREE.Color(0x9db8c1);
+      this.world.scene.fog = new THREE.FogExp2(0x9baca9, 0.0045);
+      this.renderer.toneMappingExposure = 0.88;
+      this.renderer.shadowMap.enabled = true;
+      document.body.dataset.menuArena = 'relay-visual-candidate';
+      return;
+    }
+    this.world.scene.background = this._legacySceneBackground;
+    this.world.scene.fog = this._legacySceneFog;
+    this.renderer.toneMappingExposure = 0.78;
+    this.renderer.shadowMap.enabled = false;
+    delete document.body.dataset.menuArena;
+  }
+
   _startGame(name, skinId, modeId = 'deathmatch', armorTypeId, options = undefined) {
     const sameModeRestart = options?.reuseRuntimeActors === true
       && this._mode?.id === modeId;
     this._clearMenuBots();
+    this._setRelayMenuPreviewVisible(false);
     this.audio.resume();
     this.selectedSkin      = getSkin(skinId);
     this.selectedArmorSkin = null;
@@ -900,6 +932,7 @@ export class Game {
     this.pickupSystem?.dispose();
     this.pickupSystem = null;
     this._playerDowned = false;
+    this._setRelayMenuPreviewVisible(true);
     this.menu.showMain();
   }
 
@@ -1051,7 +1084,7 @@ export class Game {
       });
     }
     this.player.camera.updateMatrixWorld(true);
-    this.world.update(dt);
+    if (!this._relayMenuPreview.visible) this.world.update(dt);
 
     const inTPS = this.player._camDist > 0;
     if (this._playerBody) {
@@ -1386,11 +1419,13 @@ export class Game {
     if (pud?.isHuman) { pud.setMotion('idle'); pud.mixer.update(dt); pud.armorTick?.(dt); }
 
     // Keep the city alive behind the menu fly-through (flying traffic, pulse).
-    this.world.update(dt);
+    if (!this._relayMenuPreview.visible) this.world.update(dt);
 
     // Spectator bots — visible running around the map during the home screen.
-    if (this.state === 'menu' && !this._menuBotsActive) this._spawnMenuBots();
-    if (this._menuBotsActive) {
+    if (!this._relayMenuPreview.visible && this.state === 'menu' && !this._menuBotsActive) {
+      this._spawnMenuBots();
+    }
+    if (!this._relayMenuPreview.visible && this._menuBotsActive) {
       const dummyPlayer = { position: new THREE.Vector3(9999, 9999, 9999), isDead: true };
       this.botManager.update(
         dt,

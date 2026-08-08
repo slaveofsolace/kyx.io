@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { buildHumanSoldier, isHumanSoldierReady, tintHumanSoldier } from './HumanSoldier.js';
+import { normalizeRev17LocomotionPresentation } from './rev17PresentationPolish.js';
 
 // Compatibility hooks retained for menu callers. Quarantined static models
 // cannot be fetched; previews use the project-authored runtime when available
@@ -297,6 +298,7 @@ export function buildPreviewCharacter(skin, armorTypeId = 'assault', armorSkin =
   });
 
   g.userData = { primaryMat: P, secondaryMat: S, armorTypeId };
+  if (opts.animate === true) installProceduralCharacterPresentation(g);
   return g;
 }
 
@@ -322,8 +324,8 @@ export function applySkinToCharacter(group, skin, armorSkin = null) {
 // The character is a flat collection of armour plates (named GLB nodes). To
 // animate a walk cycle we regroup those plates into four pivots — left/right
 // shoulder and left/right hip — so each limb can swing about its joint.
-// Returns a rig object { armL, armR, legL, legR } or null when it can't rig
-// (e.g. the procedural fallback, whose meshes are unnamed).
+// Returns a rig object { armL, armR, legL, legR } or null when a source lacks
+// the named limb coverage required for deterministic pivots.
 // ===========================================================================
 const _ARM_RE = /uarm|farm|elbow|hand|shoulder|pau|pvs/i;
 const _LEG_RE = /thigh|lleg|knee|boot|shinp|sole|grv|kn_|knsph|tpl|cg_/i;
@@ -334,7 +336,7 @@ export function rigCharacterLimbs(group) {
 
     const meshes = [];
     group.traverse((o) => { if (o.isMesh && o.name) meshes.push(o); });
-    if (!meshes.length) return null; // procedural / unnamed — leave un-rigged
+    if (!meshes.length) return null;
 
     const buckets = { armL: [], armR: [], legL: [], legR: [] };
     const wp = new THREE.Vector3();
@@ -370,4 +372,272 @@ export function rigCharacterLimbs(group) {
     console.warn('[rigCharacterLimbs] failed:', e.message);
     return null;
   }
+}
+
+// ===========================================================================
+// Procedural runtime presentation
+// ---------------------------------------------------------------------------
+// The provenance-safe fallback is intentionally simple art, but it still needs
+// to obey the same online presentation contract as a rigged candidate. This
+// controller animates the existing named limb pivots from measured authority
+// velocity. It never feeds movement authority or changes collision state.
+// ===========================================================================
+
+export function installProceduralCharacterPresentation(group) {
+  const rig = rigCharacterLimbs(group);
+  if (!rig) return null;
+
+  const clamp = THREE.MathUtils.clamp;
+  const handRight = group.getObjectByName('hand_R');
+  let locomotion = normalizeRev17LocomotionPresentation(0, 0);
+  let grounded = true;
+  let sprinting = false;
+  let locomotionClock = 0;
+  let airTime = 0;
+  let landRemaining = 0;
+  let targetAimPitch = 0;
+  let targetAimYaw = 0;
+  let smoothAimPitch = 0;
+  let smoothAimYaw = 0;
+  let smoothRightRatio = 0;
+  let smoothForwardRatio = 1;
+  let smoothStrafeLean = 0;
+  let smoothTurnRate = 0;
+  let fireRecoil = 0;
+  let flinch = 0;
+  let action = null;
+  let heldWeapon = null;
+  let heldWeaponIsMelee = false;
+  let dead = false;
+
+  const setLocomotion = (
+    speed,
+    isGrounded = true,
+    isSprinting = false,
+    signalOrStrafe = 0,
+    legacyForwardRatio = null,
+    legacyTurnRateRadiansPerSecond = 0,
+  ) => {
+    locomotion = normalizeRev17LocomotionPresentation(
+      speed,
+      signalOrStrafe,
+      legacyForwardRatio,
+      legacyTurnRateRadiansPerSecond,
+    );
+    if (isGrounded && !grounded) landRemaining = 0.24;
+    if (!isGrounded && grounded) airTime = 0;
+    grounded = isGrounded;
+    sprinting = isSprinting;
+  };
+
+  const setAim = (pitch = 0, yaw = 0) => {
+    targetAimPitch = clamp(Number.isFinite(pitch) ? pitch : 0, -1.15, 1.15);
+    targetAimYaw = clamp(Number.isFinite(yaw) ? yaw : 0, -0.95, 0.95);
+  };
+
+  const beginAction = (kind, durationSeconds) => {
+    const duration = clamp(
+      Number.isFinite(durationSeconds) ? durationSeconds : 0.35,
+      0.12,
+      4,
+    );
+    action = { kind, duration, remaining: duration };
+  };
+
+  const triggerReload = (durationSeconds = 1.8) => {
+    beginAction('reload', durationSeconds);
+  };
+  const triggerEquip = (durationSeconds = 0.34) => {
+    beginAction('equip', durationSeconds);
+  };
+  const triggerFire = (kick = 1) => {
+    fireRecoil = Math.max(fireRecoil, clamp(kick, 0, 3) * 0.14);
+  };
+  const triggerHit = (x = 0) => {
+    flinch = clamp(Number.isFinite(x) ? x : 0, -1, 1) || 0.45;
+  };
+  const triggerJump = () => {
+    grounded = false;
+    airTime = 0;
+  };
+  const triggerDeath = () => {
+    dead = true;
+    action = null;
+  };
+  const resetPresentation = () => {
+    dead = false;
+    action = null;
+    fireRecoil = 0;
+    flinch = 0;
+    airTime = 0;
+    landRemaining = 0;
+    group.rotation.z = 0;
+  };
+
+  const attachWeapon = (weapon, isMelee = false) => {
+    if (heldWeapon !== null) heldWeapon.parent?.remove(heldWeapon);
+    heldWeapon = weapon ?? null;
+    heldWeaponIsMelee = isMelee;
+    if (heldWeapon === null || handRight === null) return;
+    if (isMelee) {
+      heldWeapon.position.set(0.02, 0.06, 0.02);
+      heldWeapon.rotation.set(Math.PI * 0.5, 0, Math.PI * 0.5);
+      heldWeapon.scale.setScalar(1.15);
+    } else {
+      heldWeapon.position.set(-0.02, 0.04, 0.02);
+      heldWeapon.rotation.set(1.15, Math.PI, 0.15);
+      heldWeapon.scale.setScalar(1);
+    }
+    handRight.add(heldWeapon);
+  };
+
+  const actionTick = (deltaSeconds) => {
+    const dt = clamp(
+      Number.isFinite(deltaSeconds) ? deltaSeconds : 0,
+      0,
+      0.1,
+    );
+    const fast = 1 - Math.exp(-dt * 12);
+    const medium = 1 - Math.exp(-dt * 8);
+    smoothAimPitch += (targetAimPitch - smoothAimPitch) * fast;
+    smoothAimYaw += (targetAimYaw - smoothAimYaw) * fast;
+    smoothRightRatio += (locomotion.rightRatio - smoothRightRatio) * medium;
+    smoothForwardRatio += (locomotion.forwardRatio - smoothForwardRatio) * medium;
+    smoothStrafeLean += (locomotion.strafeLean - smoothStrafeLean) * medium;
+    smoothTurnRate += (
+      locomotion.turnRateRadiansPerSecond - smoothTurnRate
+    ) * medium;
+
+    rig.armL.rotation.set(0, 0, 0);
+    rig.armR.rotation.set(0, 0, 0);
+    rig.legL.rotation.set(0, 0, 0);
+    rig.legR.rotation.set(0, 0, 0);
+
+    if (dead) {
+      group.rotation.z += (-1.42 - group.rotation.z) * medium;
+      rig.armL.rotation.x = -0.34;
+      rig.armR.rotation.x = 0.48;
+      rig.legL.rotation.x = 0.28;
+      rig.legR.rotation.x = -0.18;
+      return;
+    }
+    group.rotation.z += (0 - group.rotation.z) * medium;
+
+    const moving = grounded && locomotion.planarSpeed > 0.28;
+    const cadence = sprinting ? 10.2 : 7.1;
+    if (moving) {
+      locomotionClock += dt * cadence * locomotion.gaitPlaybackDirection;
+    } else if (grounded && Math.abs(smoothTurnRate) > 0.12) {
+      locomotionClock += dt * 6.4 * Math.sign(smoothTurnRate);
+    }
+    const step = Math.sin(locomotionClock);
+    const authoredSpeed = sprinting ? 5.5 : 2.15;
+    const speedMix = moving
+      ? clamp(locomotion.planarSpeed / authoredSpeed, 0.25, 1)
+      : 0;
+    const stride = step * speedMix * (sprinting ? 0.72 : 0.52);
+    const lateralStep = step * smoothRightRatio * 0.13;
+    const lowerBodyYaw = clamp(
+      locomotion.travelDirectionRadians * 0.11,
+      -0.18,
+      0.18,
+    );
+
+    rig.legL.rotation.x = stride;
+    rig.legR.rotation.x = -stride;
+    rig.legL.rotation.y = lowerBodyYaw;
+    rig.legR.rotation.y = lowerBodyYaw;
+    rig.legL.rotation.z = lateralStep;
+    rig.legR.rotation.z = -lateralStep;
+
+    const weaponHeld = heldWeapon !== null;
+    const weaponSupport = weaponHeld && !heldWeaponIsMelee;
+    rig.armR.rotation.x = weaponHeld
+      ? 1.02 + smoothAimPitch * 0.28 - fireRecoil
+      : -stride * 0.62;
+    rig.armL.rotation.x = weaponSupport
+      ? 0.82 + smoothAimPitch * 0.2
+      : stride * 0.62;
+    rig.armR.rotation.y = weaponHeld ? smoothAimYaw * 0.24 : 0;
+    rig.armL.rotation.y = weaponSupport ? smoothAimYaw * 0.18 : 0;
+    rig.armR.rotation.z = smoothStrafeLean * -0.045;
+    rig.armL.rotation.z = smoothStrafeLean * -0.035;
+
+    if (!moving && grounded && Math.abs(smoothTurnRate) > 0.12) {
+      const turnStep = step * clamp(smoothTurnRate / 4.5, -1, 1) * 0.16;
+      rig.legL.rotation.x = turnStep;
+      rig.legR.rotation.x = -turnStep;
+      rig.legL.rotation.y = clamp(smoothTurnRate * 0.035, -0.14, 0.14);
+      rig.legR.rotation.y = rig.legL.rotation.y;
+    }
+
+    if (!grounded) {
+      airTime += dt;
+      const tuck = Math.sin(clamp(airTime / 0.32, 0, 1) * Math.PI * 0.5);
+      rig.legL.rotation.x = -0.34 * tuck;
+      rig.legR.rotation.x = 0.22 * tuck;
+      rig.armL.rotation.x += 0.14 * tuck;
+      rig.armR.rotation.x += 0.14 * tuck;
+    } else if (landRemaining > 0) {
+      const landMix = Math.sin((landRemaining / 0.24) * Math.PI);
+      rig.legL.rotation.x -= landMix * 0.2;
+      rig.legR.rotation.x -= landMix * 0.2;
+      landRemaining = Math.max(0, landRemaining - dt);
+    }
+
+    if (action !== null) {
+      const progress = 1 - action.remaining / action.duration;
+      const mix = Math.sin(clamp(progress, 0, 1) * Math.PI);
+      if (action.kind === 'reload') {
+        rig.armR.rotation.x += mix * 0.48;
+        rig.armR.rotation.z += mix * 0.42;
+        rig.armL.rotation.x += mix * 0.22;
+      } else {
+        rig.armR.rotation.x -= mix * 0.3;
+        rig.armL.rotation.x -= mix * 0.16;
+      }
+      action.remaining = Math.max(0, action.remaining - dt);
+      if (action.remaining === 0) action = null;
+    }
+
+    fireRecoil = Math.max(0, fireRecoil - dt * 1.65);
+    if (flinch !== 0) {
+      group.rotation.z += flinch * 0.045;
+      flinch *= Math.pow(0.08, dt);
+      if (Math.abs(flinch) < 0.002) flinch = 0;
+    }
+  };
+
+  const locomotionDiagnostics = () => Object.freeze({
+    planarSpeed: locomotion.planarSpeed,
+    forwardRatio: smoothForwardRatio,
+    rightRatio: smoothRightRatio,
+    strafeLean: smoothStrafeLean,
+    gaitPlaybackDirection: locomotion.gaitPlaybackDirection,
+    sector: locomotion.sector,
+    turnRateRadiansPerSecond: smoothTurnRate,
+    grounded,
+    sprinting,
+    dead,
+    action: action?.kind ?? null,
+    weaponAttached: heldWeapon !== null,
+  });
+
+  Object.assign(group.userData, {
+    proceduralPresentation: true,
+    setLocomotion,
+    setAim,
+    triggerReload,
+    triggerEquip,
+    triggerFire,
+    triggerHit,
+    triggerJump,
+    triggerDeath,
+    resetPresentation,
+    attachWeapon,
+    actionTick,
+    armorTick: () => {},
+    locomotionDiagnostics,
+  });
+  return Object.freeze({ rig, locomotionDiagnostics });
 }

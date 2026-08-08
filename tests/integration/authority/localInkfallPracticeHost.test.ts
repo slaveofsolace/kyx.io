@@ -1,12 +1,13 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
-  INKFALL_REVISION_4_AUTHORITY_MAP_BINDING,
   LOCAL_INKFALL_PRACTICE_HOST_ID,
   LOCAL_INKFALL_PRACTICE_PLAYER_ID,
   LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS,
   LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ,
   LocalInkfallPracticeHost,
+  RELAY_AUTHORITY_IDENTITY,
+  RELAY_PORTAL_CAPABILITY_ID,
 } from '../../../src/authority';
 import { createLocalInkfallPracticePresentation } from '../../../src/app/localInkfallPracticePresentation';
 import { INTENT_BUTTON } from '../../../src/sim';
@@ -23,8 +24,8 @@ afterEach(() => {
   while (hosts.length > 0) hosts.pop()?.dispose();
 });
 
-describe('browser-local Inkfall Practice authority host', () => {
-  it('boots the exact Rev5-compatible Inkfall authority room at fixed 20 Hz', async () => {
+describe('browser-local Relay Practice authority host', () => {
+  it('boots the original Relay authority room at fixed 20 Hz', async () => {
     const practice = await host(3);
     const initial = practice.snapshot;
 
@@ -32,9 +33,9 @@ describe('browser-local Inkfall Practice authority host', () => {
     expect(LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ).toBe(20);
     expect(LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS).toBe(50);
     expect(initial.identity).toMatchObject({
-      mapId: INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.mapId,
-      fixtureId: INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.fixtureId,
-      fixtureHash: INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.fixtureHash,
+      mapId: RELAY_AUTHORITY_IDENTITY.mapId,
+      fixtureId: RELAY_AUTHORITY_IDENTITY.fixtureId,
+      fixtureHash: RELAY_AUTHORITY_IDENTITY.fixtureHash,
       rulesetId: 'revamped_classic',
       rulesetRevision: 3,
       physicsAdapterId: 'rapier3d_deterministic_compat',
@@ -48,7 +49,7 @@ describe('browser-local Inkfall Practice authority host', () => {
     ]);
     expect(initial.players.every(({ combat }) => combat !== undefined)).toBe(true);
     expect(practice.authority.worldPortalCapabilityId)
-      .toBe(INKFALL_REVISION_4_AUTHORITY_MAP_BINDING.portal.capabilityId);
+      .toBe(RELAY_PORTAL_CAPABILITY_ID);
   });
 
   it('accepts one local and one deterministic bot command per participant per tick', async () => {
@@ -80,7 +81,7 @@ describe('browser-local Inkfall Practice authority host', () => {
         !== JSON.stringify(initialBots.get(player.playerId))
     ))).toBe(true);
     expect(result.snapshot.match).toMatchObject({
-      matchId: 'match.local.inkfall.practice',
+      matchId: 'match.local.relay.practice',
       phase: 'active',
     });
     const attack = practice.step({

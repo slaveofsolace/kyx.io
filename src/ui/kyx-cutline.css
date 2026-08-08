@@ -832,13 +832,13 @@ body[data-ui-system="cutline-v1"] .ghost-btn:hover {
 }
 
 body[data-ui-system="cutline-v1"] #panel-loadout {
-  width: min(700px, calc(100vw - 40px)) !important;
+  width: min(960px, calc(100vw - 40px)) !important;
   max-height: calc(100vh - 96px) !important;
-  padding: 20px !important;
+  padding: 22px !important;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 1fr);
   grid-template-rows: auto auto 1fr;
-  gap: 8px;
+  gap: 10px 22px;
   border: 1px solid var(--cut-line) !important;
   border-top-color: var(--cut-cyan) !important;
   border-radius: 0 !important;
@@ -847,9 +847,19 @@ body[data-ui-system="cutline-v1"] #panel-loadout {
   backdrop-filter: none !important;
 }
 
-body[data-ui-system="cutline-v1"] #panel-loadout .local-panel-kicker,
+body[data-ui-system="cutline-v1"] #panel-loadout .local-panel-kicker {
+  display: block !important;
+  color: var(--cut-amber);
+  font: 650 9px/1.2 var(--cut-font-mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
 body[data-ui-system="cutline-v1"] #panel-loadout .inv-meta {
-  display: none !important;
+  display: block !important;
+  color: var(--cut-dim);
+  font-size: 10px;
+  line-height: 1.45;
 }
 
 body[data-ui-system="cutline-v1"] #panel-loadout > .panel-close-btn {
@@ -859,16 +869,32 @@ body[data-ui-system="cutline-v1"] #panel-loadout > .panel-close-btn {
 }
 
 body[data-ui-system="cutline-v1"] .inv-header {
-  grid-row: auto;
-  display: block;
+  grid-column: 1;
+  grid-row: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  margin: 0;
+  padding: 2px 20px 0 0;
+  border-right: 1px solid var(--cut-line) !important;
 }
 
 body[data-ui-system="cutline-v1"] .inv-avatar-big {
-  display: none;
+  display: block;
+  width: 100%;
+  height: 220px;
+  flex: none;
+  border: 1px solid var(--cut-line) !important;
+  border-bottom-color: var(--cut-cyan) !important;
+  border-radius: 0;
+  background: #080d11;
 }
 
 body[data-ui-system="cutline-v1"] #armor-preview-canvas {
-  display: none;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 body[data-ui-system="cutline-v1"] .inv-username {
@@ -882,7 +908,23 @@ body[data-ui-system="cutline-v1"] #panel-loadout > .inv-section-label {
 }
 
 body[data-ui-system="cutline-v1"] #inv-equipped {
+  grid-column: 2;
+  grid-row: 1;
   margin-top: 6px;
+}
+
+body[data-ui-system="cutline-v1"] #inv-tabs {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+body[data-ui-system="cutline-v1"] #inv-tabs:empty {
+  display: none;
+}
+
+body[data-ui-system="cutline-v1"] #inv-grid {
+  grid-column: 2;
+  grid-row: 3;
 }
 
 body[data-ui-system="cutline-v1"] .inv-section-label {
@@ -3573,18 +3615,31 @@ body[data-ui-system="cutline-v1"][data-reduced-flash="true"] .online-session__fl
 
   body[data-ui-system="cutline-v1"] #panel-loadout {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
   }
 
   body[data-ui-system="cutline-v1"] .inv-header {
+    grid-column: 1;
     grid-row: auto;
     flex-direction: row;
     align-items: center;
+    padding: 0 0 14px;
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--cut-line) !important;
   }
 
   body[data-ui-system="cutline-v1"] .inv-avatar-big,
   body[data-ui-system="cutline-v1"] #armor-preview-canvas {
+    display: block;
     width: 96px;
     height: 96px;
+  }
+
+  body[data-ui-system="cutline-v1"] #inv-equipped,
+  body[data-ui-system="cutline-v1"] #inv-tabs,
+  body[data-ui-system="cutline-v1"] #inv-grid {
+    grid-column: 1;
+    grid-row: auto;
   }
 
   body[data-ui-system="cutline-v1"] .inv-grid {

@@ -41,6 +41,24 @@ const weaponBindingSource = path.join(
   'dev',
   'loadKyxVlr7QuaterniusReview.ts',
 );
+const characterReviewArtifacts = [
+  'kyx-v6b-assault-rev38-fitted-v1-lod0.glb',
+  'kyx-v6b-assault-rev38-fitted-v1-lod1.glb',
+  'kyx-v6b-assault-rev38-fitted-v1-lod2.glb',
+].map((name) => path.join(
+  repositoryRoot,
+  'assets',
+  'review',
+  'runtime-candidates',
+  'g6-assault-rev38-fitted-v1',
+  name,
+));
+const characterBindingSource = path.join(
+  repositoryRoot,
+  'src',
+  'dev',
+  'installKyxAssaultRev38Review.ts',
+);
 const localStagingEnvironment = path.join(repositoryRoot, '.env.staging');
 
 function sha256(bytes) {
@@ -87,13 +105,37 @@ if (
 ) {
   throw new Error(
     'STAGING_REVIEW_WEAPON_BINDING_MISMATCH: generated GLB does not match '
-      + 'KYX_VLR7_QUATERNIUS_REVIEW',
+    + 'KYX_VLR7_QUATERNIUS_REVIEW',
   );
 }
+const characterBindingText = await readFile(characterBindingSource, 'utf8');
+const characterArtifacts = await Promise.all(characterReviewArtifacts.map(
+  async (artifact) => {
+    const bytes = await readFile(artifact);
+    const expected = Object.freeze({
+      source: artifact,
+      bytes: bytes.byteLength,
+      sha256: sha256(bytes),
+    });
+    if (
+      !characterBindingText.includes(
+        `bytes: ${expected.bytes.toLocaleString('en-US').replaceAll(',', '_')}`,
+      )
+      || !characterBindingText.includes(`sha256: '${expected.sha256}'`)
+    ) {
+      throw new Error(
+        'STAGING_REVIEW_CHARACTER_BINDING_MISMATCH '
+          + `artifact=${path.basename(artifact)}`,
+      );
+    }
+    return expected;
+  },
+));
 
 const distributedFiles = await walkFiles(distributionRoot);
 const matches = [];
 const weaponMatches = [];
+const characterMatches = characterArtifacts.map(() => []);
 let usesSameOriginAuthority = false;
 const forbiddenAuthorityOriginFiles = [];
 let localStagingAuthorityOrigin = '';
@@ -121,6 +163,13 @@ for (const file of distributedFiles) {
       path.relative(distributionRoot, file).replaceAll('\\', '/'),
     );
   }
+  for (const [index, artifact] of characterArtifacts.entries()) {
+    if (fileStat.size === artifact.bytes && sha256(bytes) === artifact.sha256) {
+      characterMatches[index].push(
+        path.relative(distributionRoot, file).replaceAll('\\', '/'),
+      );
+    }
+  }
   if (path.extname(file).toLowerCase() !== '.js') continue;
   const script = bytes.toString('utf8');
   if (script.includes('location.origin')) usesSameOriginAuthority = true;
@@ -138,15 +187,25 @@ for (const file of distributedFiles) {
   }
 }
 
-if (matches.length !== 1) {
+if (matches.length !== 0) {
   throw new Error(
-    `STAGING_REVIEW_PACKAGE_MISMATCH expected=1 actual=${matches.length}`,
+    'STAGING_REVIEW_RETIRED_MAP_ARTIFACT_PACKAGED '
+      + `expected=0 actual=${matches.length}`,
   );
 }
 if (weaponMatches.length !== 1) {
   throw new Error(
     `STAGING_REVIEW_WEAPON_PACKAGE_MISMATCH expected=1 actual=${weaponMatches.length}`,
   );
+}
+for (const [index, artifactMatches] of characterMatches.entries()) {
+  if (artifactMatches.length !== 1) {
+    throw new Error(
+      'STAGING_REVIEW_CHARACTER_PACKAGE_MISMATCH '
+        + `artifact=${path.basename(characterArtifacts[index].source)} `
+        + `expected=1 actual=${artifactMatches.length}`,
+    );
+  }
 }
 if (!usesSameOriginAuthority || forbiddenAuthorityOriginFiles.length > 0) {
   throw new Error(
@@ -158,11 +217,16 @@ if (!usesSameOriginAuthority || forbiddenAuthorityOriginFiles.length > 0) {
 
 console.log(JSON.stringify({
   status: 'STAGING_REVIEW_PACKAGE_VERIFIED',
-  artifact: matches[0],
-  bytes: expectedBytes,
-  sha256: expectedSha256,
+  retiredMapArtifactPackaged: false,
+  retiredMapArtifactSourceBytes: expectedBytes,
+  retiredMapArtifactSourceSha256: expectedSha256,
   weaponArtifact: weaponMatches[0],
   weaponBytes: expectedWeaponBytes,
   weaponSha256: expectedWeaponSha256,
+  characterArtifacts: characterArtifacts.map((artifact, index) => ({
+    artifact: characterMatches[index][0],
+    bytes: artifact.bytes,
+    sha256: artifact.sha256,
+  })),
   authorityTransport: 'same_origin_pages_service_binding',
 }, null, 2));

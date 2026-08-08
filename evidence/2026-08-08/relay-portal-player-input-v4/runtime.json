@@ -1,0 +1,2275 @@
+{
+  "schema": "kyx-relay-portal-player-input-evidence-v1",
+  "capturedAt": "2026-08-08T17:25:36.163Z",
+  "buildCommit": "working-tree-relay-v2-floor-portals",
+  "buildMode": "staging-review",
+  "baseUrl": "http://127.0.0.1:6342",
+  "expectedFixtureHash": "95ec4f13a599892b",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "inputDevice": "automated_keyboard_mouse_equivalent",
+  "route": "west_spawn_to_center_to_service_gate_to_overlook_gate_to_service_return",
+  "elapsedMilliseconds": 27250.7727,
+  "spawn": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 0,
+    "lifecycle": "warmup",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 0,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "locked",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "center": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 73,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 584,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": 1107,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "centerAligned": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 94,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 752,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -643,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": -1000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "serviceApproach": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 137,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 1096,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -693,
+        "y": -2980,
+        "z": -18894
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "upperArrival": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 146,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 1168,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 1,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 1,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": 0,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 160
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 1,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 2,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "cooldownComplete": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 309,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 2472,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 1,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 1,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 1,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "upperAligned": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 323,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 2584,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 1,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 1,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -600,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": -1000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 1,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "upperApproach": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 332,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 2656,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 2,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 2,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": 0,
+        "y": -3000,
+        "z": -17150
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -3000
+      },
+      "teleportCooldownTicksRemaining": 159
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 2,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 2,
+      "activePortalEffectCount": 2,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "lowerReturn": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 332,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 2656,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 2,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 2,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": 0,
+        "y": -3000,
+        "z": -17150
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -3000
+      },
+      "teleportCooldownTicksRemaining": 159
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v2",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 76,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 0,
+      "remoteAvatarCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "grenadeProjectileCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 2,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "portalTraversalPresentationCount": 2,
+      "activePortalEffectCount": 2,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "observations": [
+    {
+      "phase": "notice_orient",
+      "expectation": "W advances from the west spawn toward the central court.",
+      "actual": "The local authority player begins at the west spawn with pointer lock.",
+      "evidence": "01-west-spawn.png"
+    },
+    {
+      "phase": "act_read",
+      "expectation": "The repaired connector-to-center seam remains grounded.",
+      "actual": "Reached x=1107, y=127 without recovery.",
+      "evidence": "02-center-seam-crossed.png"
+    },
+    {
+      "phase": "orient_predict",
+      "expectation": "The player can line up with the visible service gate before committing to the stair descent.",
+      "actual": "Aligned to x=-643 with x velocity=-1000.",
+      "evidence": "02-center-seam-crossed.png"
+    },
+    {
+      "phase": "contact_confirmation",
+      "expectation": "Crossing the service aperture moves the player to the upper overlook and emits one reliable traversal presentation.",
+      "actual": "Arrived at y=3930, z=17000; authority events=1; presentation count=1.",
+      "evidence": "04-upper-overlook-arrival.png"
+    },
+    {
+      "phase": "transfer_recovery",
+      "expectation": "The learned portal rule transfers to the partner aperture and returns to the lower court after cooldown.",
+      "actual": "Returned at y=-3000, z=-17150; authority events=2.",
+      "evidence": "06-lower-service-return.png"
+    }
+  ],
+  "movementSamples": [
+    {
+      "label": "spawn",
+      "capturedAtMilliseconds": 9362.5083,
+      "serverTick": 0,
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.01",
+      "capturedAtMilliseconds": 9921.0366,
+      "serverTick": 11,
+      "feetPosition": {
+        "x": -26750,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.02",
+      "capturedAtMilliseconds": 10227.5011,
+      "serverTick": 17,
+      "feetPosition": {
+        "x": -24050,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.03",
+      "capturedAtMilliseconds": 10544.0111,
+      "serverTick": 24,
+      "feetPosition": {
+        "x": -20943,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.04",
+      "capturedAtMilliseconds": 10848.9209,
+      "serverTick": 30,
+      "feetPosition": {
+        "x": -18243,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.05",
+      "capturedAtMilliseconds": 11153.782,
+      "serverTick": 36,
+      "feetPosition": {
+        "x": -15543,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.06",
+      "capturedAtMilliseconds": 11458.4983,
+      "serverTick": 42,
+      "feetPosition": {
+        "x": -12843,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.07",
+      "capturedAtMilliseconds": 11762.6404,
+      "serverTick": 48,
+      "feetPosition": {
+        "x": -10143,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.08",
+      "capturedAtMilliseconds": 12069.5498,
+      "serverTick": 54,
+      "feetPosition": {
+        "x": -7443,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.09",
+      "capturedAtMilliseconds": 12375.0262,
+      "serverTick": 60,
+      "feetPosition": {
+        "x": -4743,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.10",
+      "capturedAtMilliseconds": 12677.7543,
+      "serverTick": 66,
+      "feetPosition": {
+        "x": -2043,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "west_to_center.11",
+      "capturedAtMilliseconds": 12996.9331,
+      "serverTick": 73,
+      "feetPosition": {
+        "x": 1107,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 9000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_alignment.start",
+      "capturedAtMilliseconds": 13353.3254,
+      "serverTick": 80,
+      "feetPosition": {
+        "x": 1907,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_alignment.01",
+      "capturedAtMilliseconds": 13593.6996,
+      "serverTick": 85,
+      "feetPosition": {
+        "x": 1157,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_alignment.02",
+      "capturedAtMilliseconds": 13823.2864,
+      "serverTick": 89,
+      "feetPosition": {
+        "x": 407,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": -2000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_alignment.03",
+      "capturedAtMilliseconds": 14045.6532,
+      "serverTick": 94,
+      "feetPosition": {
+        "x": -643,
+        "y": 127,
+        "z": 0
+      },
+      "velocity": {
+        "x": -1000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.01",
+      "capturedAtMilliseconds": 14361.4452,
+      "serverTick": 100,
+      "feetPosition": {
+        "x": -693,
+        "y": 127,
+        "z": -2244
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.02",
+      "capturedAtMilliseconds": 14666.3683,
+      "serverTick": 106,
+      "feetPosition": {
+        "x": -693,
+        "y": 127,
+        "z": -4944
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.03",
+      "capturedAtMilliseconds": 14972.804,
+      "serverTick": 112,
+      "feetPosition": {
+        "x": -693,
+        "y": 127,
+        "z": -7644
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.04",
+      "capturedAtMilliseconds": 15275.3476,
+      "serverTick": 118,
+      "feetPosition": {
+        "x": -693,
+        "y": 127,
+        "z": -10344
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.05",
+      "capturedAtMilliseconds": 15580.8908,
+      "serverTick": 124,
+      "feetPosition": {
+        "x": -693,
+        "y": 127,
+        "z": -13044
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.06",
+      "capturedAtMilliseconds": 15898.1339,
+      "serverTick": 131,
+      "feetPosition": {
+        "x": -693,
+        "y": -923,
+        "z": -16194
+      },
+      "velocity": {
+        "x": 0,
+        "y": -6000,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "center_to_service_approach.07",
+      "capturedAtMilliseconds": 16201.7735,
+      "serverTick": 137,
+      "feetPosition": {
+        "x": -693,
+        "y": -2980,
+        "z": -18894
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "service_gate_entry.01",
+      "capturedAtMilliseconds": 18234.5404,
+      "serverTick": 146,
+      "feetPosition": {
+        "x": 0,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 160,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 2
+    },
+    {
+      "label": "portal_cooldown.start",
+      "capturedAtMilliseconds": 18704.5377,
+      "serverTick": 160,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 146,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.01",
+      "capturedAtMilliseconds": 18958.6212,
+      "serverTick": 165,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 141,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.02",
+      "capturedAtMilliseconds": 19215.9611,
+      "serverTick": 170,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 136,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.03",
+      "capturedAtMilliseconds": 19471.747,
+      "serverTick": 175,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 131,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.04",
+      "capturedAtMilliseconds": 19727.58,
+      "serverTick": 180,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 126,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.05",
+      "capturedAtMilliseconds": 19981.0471,
+      "serverTick": 185,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 121,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.06",
+      "capturedAtMilliseconds": 20233.6131,
+      "serverTick": 190,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 116,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.07",
+      "capturedAtMilliseconds": 20500.2502,
+      "serverTick": 196,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 110,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.08",
+      "capturedAtMilliseconds": 20759.2152,
+      "serverTick": 201,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 105,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.09",
+      "capturedAtMilliseconds": 21016.0583,
+      "serverTick": 206,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 100,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.10",
+      "capturedAtMilliseconds": 21274.6886,
+      "serverTick": 211,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 95,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.11",
+      "capturedAtMilliseconds": 21528.0529,
+      "serverTick": 216,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 90,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.12",
+      "capturedAtMilliseconds": 21781.9987,
+      "serverTick": 221,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 85,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.13",
+      "capturedAtMilliseconds": 22045.0793,
+      "serverTick": 227,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 79,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.14",
+      "capturedAtMilliseconds": 22298.168,
+      "serverTick": 232,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 74,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.15",
+      "capturedAtMilliseconds": 22551.6474,
+      "serverTick": 237,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 69,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.16",
+      "capturedAtMilliseconds": 22811.4781,
+      "serverTick": 242,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 64,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.17",
+      "capturedAtMilliseconds": 23067.3577,
+      "serverTick": 247,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 59,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.18",
+      "capturedAtMilliseconds": 23324.9426,
+      "serverTick": 252,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 54,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.19",
+      "capturedAtMilliseconds": 23582.2337,
+      "serverTick": 257,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 49,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.20",
+      "capturedAtMilliseconds": 23849.3042,
+      "serverTick": 263,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 43,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.21",
+      "capturedAtMilliseconds": 24102.5255,
+      "serverTick": 268,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 38,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.22",
+      "capturedAtMilliseconds": 24359.5905,
+      "serverTick": 273,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 33,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.23",
+      "capturedAtMilliseconds": 24617.8482,
+      "serverTick": 278,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 28,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.24",
+      "capturedAtMilliseconds": 24873.9759,
+      "serverTick": 283,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 23,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.25",
+      "capturedAtMilliseconds": 25128.2002,
+      "serverTick": 288,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 18,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.26",
+      "capturedAtMilliseconds": 25381.2879,
+      "serverTick": 293,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 13,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.27",
+      "capturedAtMilliseconds": 25649.0723,
+      "serverTick": 299,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 7,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.28",
+      "capturedAtMilliseconds": 25907.9685,
+      "serverTick": 304,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 2,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "portal_cooldown.29",
+      "capturedAtMilliseconds": 26160.5186,
+      "serverTick": 309,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "upper_alignment.start",
+      "capturedAtMilliseconds": 26167.1327,
+      "serverTick": 309,
+      "feetPosition": {
+        "x": 1950,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "upper_alignment.01",
+      "capturedAtMilliseconds": 26397.9693,
+      "serverTick": 314,
+      "feetPosition": {
+        "x": 1200,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "upper_alignment.02",
+      "capturedAtMilliseconds": 26623.5391,
+      "serverTick": 318,
+      "feetPosition": {
+        "x": 450,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": -2000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "upper_alignment.03",
+      "capturedAtMilliseconds": 26849.6907,
+      "serverTick": 323,
+      "feetPosition": {
+        "x": -600,
+        "y": 3930,
+        "z": 17000
+      },
+      "velocity": {
+        "x": -1000,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "upper_exit_to_return_approach.01",
+      "capturedAtMilliseconds": 27084.042,
+      "serverTick": 327,
+      "feetPosition": {
+        "x": -650,
+        "y": 4027,
+        "z": 18312
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 9000
+      },
+      "teleportCooldownTicksRemaining": 0,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 1,
+      "portalTraversalPresentationCount": 1,
+      "activePortalEffectCount": 0
+    },
+    {
+      "label": "upper_exit_to_return_approach.02",
+      "capturedAtMilliseconds": 27308.0194,
+      "serverTick": 332,
+      "feetPosition": {
+        "x": 0,
+        "y": -3000,
+        "z": -17150
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": -3000
+      },
+      "teleportCooldownTicksRemaining": 159,
+      "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+      "recentPortalTraversalEvents": 2,
+      "portalTraversalPresentationCount": 2,
+      "activePortalEffectCount": 2
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-west-spawn.png",
+      "note": "West spawn before the player-input route.",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "02-center-seam-crossed.png",
+      "note": "Normal sprint input crossed the formerly open connector-to-center seam.",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "03-service-gate-approach.png",
+      "note": "Lower service court immediately before entering the cyan authority aperture.",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "04-upper-overlook-arrival.png",
+      "note": "First authority-confirmed portal arrival on the upper overlook.",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "name": "06-lower-service-return.png",
+      "note": "Second authority-confirmed traversal returned the player to the lower service court.",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ],
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "labels": {
+    "functionalCorrectness": "MEASURED",
+    "playerEyePresentation": "OBSERVED",
+    "routeInterpretation": "INFERRED",
+    "humanAcceptance": "UNKNOWN"
+  },
+  "nonclaims": [
+    "Keyboard automation is not literal human play or final human acceptance.",
+    "This local 1+7 route does not prove online Worker Relay authority or reconnect behavior.",
+    "This route proves the paired portal loop once; it is not a balance, spawn-safety, or repeated-use stress claim."
+  ]
+}

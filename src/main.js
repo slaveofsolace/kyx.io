@@ -90,6 +90,28 @@ async function importDevelopmentModule(specifier) {
   return import(/* @vite-ignore */ specifier);
 }
 
+async function installCharacterReviewBeforeRuntimeImports() {
+  const reviewModulePath = './dev/installKyxAssaultRev38Review.ts';
+  if (import.meta.env.MODE === 'staging-review') {
+    const { installKyxAssaultRev38Review } = await import(
+      './dev/installKyxAssaultRev38Review'
+    );
+    return installKyxAssaultRev38Review(window.location.search, import.meta.env.MODE);
+  }
+  if (!import.meta.env.DEV) return null;
+  const requestedRevision = new URLSearchParams(window.location.search)
+    .get('g6Candidate');
+  if (requestedRevision !== 'rev38-fitted-v1') return null;
+  const { installKyxAssaultRev38Review } = await import(
+    /* @vite-ignore */ reviewModulePath
+  );
+  return installKyxAssaultRev38Review(window.location.search, import.meta.env.MODE);
+}
+
+// This must complete before Game or an authority route imports HumanSoldier;
+// Rev17Character snapshots the selected rig and asset URLs at module load.
+await installCharacterReviewBeforeRuntimeImports();
+
 function showDevelopmentMovementFailure(error, phase) {
   document.getElementById('dev-flat-run-movement-failure')?.remove();
   const failure = document.createElement('pre');
@@ -179,7 +201,7 @@ if (desktopSupported && !launchOverrideRoute) {
 }
 
 if (localInkfallPracticeRoute) {
-  document.body.dataset.launchSupport = 'local-inkfall-practice-authority';
+  document.body.dataset.launchSupport = 'local-relay-practice-authority';
   document.body.dataset.localPracticeStatus = 'loading';
   import('./app/localInkfallPracticeRoute.ts')
     .then(({ mountLocalInkfallPracticeRoute }) => (
@@ -190,7 +212,7 @@ if (localInkfallPracticeRoute) {
       failure.id = 'local-practice-result';
       failure.setAttribute('role', 'alert');
       failure.textContent = [
-        'Inkfall Practice stopped during initialization.',
+        'Relay Practice stopped during initialization.',
         '',
         error instanceof Error ? error.message : String(error),
         '',

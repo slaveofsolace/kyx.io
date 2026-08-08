@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   getMapLibraryEntry,
-  INKFALL_REV5_LOCAL_PRACTICE_HREF,
+  RELAY_LOCAL_PRACTICE_HREF,
   listMapLibrarySections,
 } from '../../../src/content/maps/library';
 
@@ -15,14 +15,14 @@ describe('map library truth contract', () => {
     ]);
   });
 
-  it('exposes Inkfall authority Practice and legacy Iron Bastion as distinct playable routes', () => {
+  it('exposes Relay authority Practice and legacy Iron Bastion as distinct playable routes', () => {
     const entries = listMapLibrarySections().flatMap((section) => section.entries);
     expect(entries.filter((entry) => entry.availability === 'playable')).toEqual([
       expect.objectContaining({
-        id: 'inkfall_foundry_rev5',
+        id: 'relay_visual_candidate',
         action: {
           kind: 'open_local_authority_practice',
-          href: INKFALL_REV5_LOCAL_PRACTICE_HREF,
+          href: RELAY_LOCAL_PRACTICE_HREF,
         },
       }),
       expect.objectContaining({
@@ -35,17 +35,18 @@ describe('map library truth contract', () => {
     ]);
   });
 
-  it('routes playable Inkfall Rev5 to the shared local authority Practice slice', () => {
-    expect(getMapLibraryEntry('inkfall_foundry_rev5')).toEqual(
+  it('routes playable Relay to the shared local authority Practice slice', () => {
+    expect(getMapLibraryEntry('relay_visual_candidate')).toEqual(
       expect.objectContaining({
         availability: 'playable',
-        statusLabel: 'Playable authority review',
+        statusLabel: 'Playable visual candidate',
         action: {
           kind: 'open_local_authority_practice',
-          href: INKFALL_REV5_LOCAL_PRACTICE_HREF,
+          href: RELAY_LOCAL_PRACTICE_HREF,
         },
       }),
     );
+    expect(getMapLibraryEntry('inkfall_foundry_rev5')).toBeUndefined();
   });
 
   it('never represents public ev.io downloads as cleared or bundled content', () => {
@@ -61,5 +62,15 @@ describe('map library truth contract', () => {
     );
     expect(external?.description).toContain('not a redistribution license');
     expect(external?.description).toContain('No ev.io map files');
+  });
+
+  it('offers a local-only evmap inspection seam without claiming play support', () => {
+    expect(getMapLibraryEntry('local_evmap_inspection')).toEqual(
+      expect.objectContaining({
+        availability: 'review_only',
+        action: { kind: 'inspect_local_evmap' },
+        modes: ['No upload', 'Inspection only'],
+      }),
+    );
   });
 });

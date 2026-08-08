@@ -38,8 +38,8 @@
           type="button"
           class="nav-item mode-option practice-nav-mode"
           data-mode="deathmatch"
-        >Practice</button>
-        <button type="button" class="nav-item" data-panel="maps" aria-controls="panel-maps" aria-expanded="false">Maps</button>
+        >Quick play</button>
+        <button type="button" class="nav-item" data-panel="maps" aria-controls="panel-maps" aria-expanded="false">Arenas</button>
         <button type="button" class="nav-item" data-panel="loadout" aria-controls="panel-loadout" aria-expanded="false">Loadout</button>
         <button type="button" class="nav-item" data-panel="settings" aria-controls="panel-settings" aria-expanded="false">Settings</button>
         <button
@@ -58,51 +58,39 @@
       </aside>
     </header>
 
-      <!-- Practice mode -->
+      <!-- Primary playable slice -->
     <main id="center-play" class="hidden">
       <section class="practice-launch-card" aria-labelledby="practice-title">
         <header class="practice-card-head">
           <div>
-            <p class="practice-eyebrow">Practice</p>
-            <h1 id="practice-title">Iron Bastion</h1>
-            <p class="practice-summary">Legacy solo deathmatch against seven labeled bots.</p>
+            <p class="practice-eyebrow">Current arena</p>
+            <h1 id="practice-title">Relay</h1>
+            <p class="practice-summary">An open-sky combat campus with three readable tiers, weapons, abilities, and bots.</p>
           </div>
         </header>
 
         <div class="practice-command-grid">
           <div class="map-preview-window" aria-label="Live map preview">
-            <strong>Bastion Sector</strong>
-            <span class="map-preview-coordinates">KYX legacy arena</span>
+            <strong>Aerial Relay</strong>
+            <span class="map-preview-coordinates">Original map / playable visual candidate</span>
           </div>
 
           <div class="practice-launch-rail">
             <div class="practice-stat-grid" aria-label="Offline practice details">
-              <span><small>Mode</small>Deathmatch</span>
-              <span><small>Roster</small>1 player + 7 bots</span>
+              <span><small>Mode</small>Team deathmatch</span>
+              <span><small>Runtime</small>Shared authority</span>
             </div>
-            <button id="play-btn" type="button" class="click-to-play" aria-label="Start offline practice"><span>Start practice</span><b aria-hidden="true">Enter</b></button>
-            <p class="practice-footnote">Legacy local simulation. Use Maps for Inkfall Foundry authority practice.</p>
+            <button id="play-btn" type="button" class="click-to-play" aria-label="Enter Relay practice"><span>Enter Relay</span><b aria-hidden="true">Enter</b></button>
+            <p class="practice-footnote">Runs the same map, movement, loadout, HUD, and combat presentation used by online authority.</p>
           </div>
         </div>
 
         <details class="practice-inspection-rail">
-          <summary>Development inspections</summary>
+          <summary>Candidate status</summary>
           <div class="practice-inspection-grid">
             <div>
-              <a
-                id="locked-graybox-preview-link"
-                class="locked-graybox-preview-link"
-                href="?mapPackage=inkfall_foundry%402"
-              >Inkfall Foundry @2</a>
-              <p class="locked-graybox-preview-note">Locked graybox package. Does not replace the Offline Practice map.</p>
-            </div>
-            <div>
-              <a
-                id="press-hall-inspection-link"
-                class="locked-graybox-preview-link"
-                href="?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined"
-              >Press Hall v3.3</a>
-              <p class="locked-graybox-preview-note">Hash-pinned material runtime. G5 and G8 remain open.</p>
+              <strong>Relay visual candidate</strong>
+              <p class="locked-graybox-preview-note">Original render-only architecture is live now. Its dedicated collision and spawn package remains the next map gate.</p>
             </div>
           </div>
         </details>
@@ -112,9 +100,9 @@
     <section id="panel-maps" class="nav-panel hidden" aria-labelledby="map-library-title">
       <header class="map-library__head">
         <div>
-          <span class="map-library__index">Arena index / desktop</span>
-          <h2 id="map-library-title" class="map-library__title">Map library</h2>
-          <p>Choose a playable KYX arena, enter a source-frozen review build, or inspect an external legacy catalog without confusing public downloads with licensed game content.</p>
+          <span class="map-library__index">Match setup / desktop</span>
+          <h2 id="map-library-title" class="map-library__title">Choose an arena</h2>
+          <p>Start the current KYX slice, revisit a local archive, or inspect a private legacy map file without uploading or redistributing it.</p>
         </div>
         <button id="maps-close-btn" type="button" class="panel-close-btn" aria-label="Close map library">Close</button>
       </header>

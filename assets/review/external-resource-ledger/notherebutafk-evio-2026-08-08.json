@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "recordId": "notherebutafk-evio-2026-08-08",
+  "source": {
+    "repository": "https://github.com/NotHereButAfk/Ev.io",
+    "auditedHead": "213738b5913dd7d5806fa9c54b10687cf366b670",
+    "mapRotationAnchor": "ce6e10c6aba752f6d9c18b1e54d80246cd200d90",
+    "ownerProvidedArchive": "C:\\Users\\suhai\\Downloads\\Ev.io-main.zip",
+    "archiveIntegrity": {
+      "sha256": "2ad470b7d2337e1d0a5aebff69684544448c02d93d2b6dcfc52fb1c4385099c2",
+      "bytes": 9931303,
+      "entries": 193,
+      "files": 168,
+      "uncompressedBytes": 23673895,
+      "githubTreeFiles": 168,
+      "githubTreeContentMismatches": 0,
+      "exactSnapshotMatch": true,
+      "inventory": "assets/review/external-resource-ledger/notherebutafk-evio-2026-08-08.inventory.json",
+      "candidateRegistry": "assets/review/external-resource-ledger/notherebutafk-evio-2026-08-08.candidate.json",
+      "extracted": false,
+      "executed": false,
+      "originalArchiveModified": false
+    }
+  },
+  "licenseEvidence": {
+    "packageMetadata": "ISC",
+    "repositoryLicenseFile": null,
+    "assetSpecificLicenseEvidence": null,
+    "disposition": "insufficient-for-code-or-asset-import"
+  },
+  "allowedUse": [
+    "read-only architecture inspection",
+    "behavioral failure-mode research",
+    "independent clean-room requirements",
+    "non-shipped local comparison"
+  ],
+  "prohibitedUse": [
+    "source copying",
+    "binary map redistribution",
+    "Blender output import",
+    "texture or audio import",
+    "release packaging",
+    "license inference from package metadata alone"
+  ],
+  "importedFiles": [],
+  "cleanRoomImplementations": [
+    "src/authority/spawn/fixtureSpawnSupport.ts",
+    "src/weapons/KyxFirstPersonWeaponMount.ts",
+    "src/render/disposeThreeObjectResources.ts",
+    "src/player/PreviewCharacter.js"
+  ],
+  "notes": [
+    "The owner-provided archive is quarantined as an inspection source only.",
+    "The supplied archive is an exact 168-file Git tree match for audited upstream head 213738b5913dd7d5806fa9c54b10687cf366b670.",
+    "The non-extracting inventory found no traversal, encryption, symlink, duplicate/case collision, nested archive, or compression-ratio bomb indicator; active content was not executed.",
+    "The upstream block-built hero remains visually rejected for KYX.",
+    "The upstream EV-style GUI skin is not imported; only interaction lessons were retained.",
+    "Missing root and component-level license evidence keeps all upstream expression and binaries reference-only."
+  ]
+}

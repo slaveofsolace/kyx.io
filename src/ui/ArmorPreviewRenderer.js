@@ -1,6 +1,16 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { buildPreviewCharacter } from '../player/PreviewCharacter.js';
+import { disposeThreeObjectResources } from '../render/disposeThreeObjectResources.ts';
+
+function disposePreviewCharacter(group) {
+  // Skeleton clones share geometry with the cached GLB template but own their
+  // cloned materials. Procedural previews own both. Preserve the shared GLB
+  // geometry so changing a loadout cannot invalidate another runtime clone.
+  disposeThreeObjectResources(group, {
+    geometry: group.userData?.isHuman !== true,
+  });
+}
 
 // Dedicated Three.js renderer for the loadout panel's live armor preview.
 // Shows the full character (selected player skin + armor type + armor finish)
@@ -61,7 +71,7 @@ export class ArmorPreviewRenderer {
   loadArmor(playerSkin, armorTypeId, armorSkin) {
     if (this._group) {
       this._scene.remove(this._group);
-      this._group.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+      disposePreviewCharacter(this._group);
       this._group = null;
     }
     const g = buildPreviewCharacter(playerSkin, armorTypeId, armorSkin, { preferSpartan: true });
@@ -121,7 +131,7 @@ export class ArmorPreviewRenderer {
   dispose() {
     this.stop();
     if (this._group) {
-      this._group.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+      disposePreviewCharacter(this._group);
     }
     this._renderer.dispose();
   }

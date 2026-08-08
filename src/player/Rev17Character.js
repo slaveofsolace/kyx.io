@@ -255,7 +255,7 @@ function tintMaterials(materials, skin, armorTypeId = 'assault', armorSkin = nul
     ...materials.visor,
   ];
   const preservesAuthoredDarkBase = allCharacterMaterials.some(
-    (material) => /^KYX_REV30_/i.test(material.name ?? ''),
+    (material) => /^KYX_REV(?:30|38)_/i.test(material.name ?? ''),
   );
 
   if (preservesAuthoredDarkBase) {
@@ -578,6 +578,14 @@ export function buildRev17Character(
   group.name = `KYX_${CHARACTER_REVISION_TOKEN}_${opts.runtimeRole === 'enemy' ? 'ENEMY_LOD1' : 'PLAYER_LOD0'}`;
   group.add(root);
 
+  // Cache neutral-pose framing metrics before the mixer starts posing the
+  // skeleton. Re-measuring a live SkinnedMesh later can produce a degenerate
+  // box, which previously left the loadout turntable with NaN transforms.
+  group.updateWorldMatrix(true, true);
+  const framingBox = new THREE.Box3().setFromObject(group);
+  const framingSize = framingBox.getSize(new THREE.Vector3());
+  const framingCenter = framingBox.getCenter(new THREE.Vector3());
+
   const controller = createActionController(
     root,
     template.animations,
@@ -876,6 +884,10 @@ export function buildRev17Character(
     candidateDefault: CHARACTER_IS_DEFAULT,
     runtimeRole: opts.runtimeRole ?? 'preview',
     armorTypeId,
+    standHeight: framingSize.y || 1.8,
+    feetY: framingBox.min.y,
+    centerX: framingCenter.x,
+    centerZ: framingCenter.z,
     primaryMat: materials.armor[0] ?? materials.body[0] ?? null,
     materials,
     mixer: controller.mixer,

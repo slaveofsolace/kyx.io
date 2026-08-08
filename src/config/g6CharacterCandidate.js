@@ -46,16 +46,64 @@ export function resolveG6CharacterCandidate(search = defaultSearch()) {
   });
 }
 
-export const G6_CHARACTER_CANDIDATE = resolveG6CharacterCandidate();
+export let G6_CHARACTER_CANDIDATE = resolveG6CharacterCandidate();
+
+function requireReviewAssetUrl(value, label) {
+  if (typeof value !== 'string' || value.length === 0) {
+    throw new Error(`G6_REVIEW_CANDIDATE_ASSET_MISSING field=${label}`);
+  }
+  return value;
+}
+
+/**
+ * Install an isolated visual-review candidate before Game/HumanSoldier modules
+ * are imported. Normal production never calls this seam, so unaccepted GLBs
+ * remain outside both the default runtime and the release asset ledger.
+ */
+export function installG6CharacterReviewCandidate(candidate) {
+  if (
+    !candidate
+    || candidate.enabled !== true
+    || candidate.default !== false
+    || candidate.releaseEligible !== false
+    || candidate.humanAccepted !== false
+    || candidate.runtimeScope !== 'development-or-staging-review'
+    || typeof candidate.revision !== 'string'
+    || candidate.revision.length === 0
+  ) {
+    throw new Error('G6_REVIEW_CANDIDATE_POLICY_MISMATCH');
+  }
+
+  const previous = G6_CHARACTER_CANDIDATE;
+  const installed = Object.freeze({
+    ...candidate,
+    assets: Object.freeze({
+      lod0: requireReviewAssetUrl(candidate.assets?.lod0, 'lod0'),
+      lod1: requireReviewAssetUrl(candidate.assets?.lod1, 'lod1'),
+      lod2: requireReviewAssetUrl(candidate.assets?.lod2, 'lod2'),
+      firstPerson: candidate.assets?.firstPerson ?? null,
+    }),
+    reviewWorkspace: 'assets/review/runtime-candidates',
+    releasePackagePolicy: 'staging-review-only-excluded-from-production',
+  });
+  G6_CHARACTER_CANDIDATE = installed;
+
+  return () => {
+    if (G6_CHARACTER_CANDIDATE === installed) {
+      G6_CHARACTER_CANDIDATE = previous;
+    }
+  };
+}
 
 export function isG6CharacterCandidateEnabled() {
-  return false;
+  return G6_CHARACTER_CANDIDATE.enabled === true;
 }
 
 // Compatibility helper for the legacy selection API. Non-release files must
 // never be fetched by the browser or copied into a release package.
 export function isG6Rev17CharacterCandidateEnabled() {
-  return false;
+  return G6_CHARACTER_CANDIDATE.enabled === true
+    && typeof G6_CHARACTER_CANDIDATE.assets.firstPerson === 'string';
 }
 
 export function isG6Rev17ThirdPersonFallbackSelected() {

@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-test.describe('local Inkfall Practice route', () => {
+test.describe('local Relay Practice route', () => {
   test('advances one shared 8-player authority runtime', async ({ page }) => {
     // Full-resolution WebGL startup is intentionally allowed extra time under
     // Chromium's software renderer. Frame-performance proof is a separate
@@ -18,7 +18,7 @@ test.describe('local Inkfall Practice route', () => {
     await expect(page.getByRole('dialog', { name: 'Enter the arena' })).toBeVisible();
     await expect(page.locator('body')).toHaveAttribute(
       'data-launch-support',
-      'local-inkfall-practice-authority',
+      'local-relay-practice-authority',
     );
 
     const entryGateLayout = await page.locator('#local-practice-gate').evaluate((gate) => {
@@ -154,11 +154,11 @@ test.describe('local Inkfall Practice route', () => {
     expect(diagnostics).toMatchObject({
       schemaVersion: 1,
       status: 'ready',
-      hostId: 'local_inkfall_practice_authority_v1',
+      hostId: 'local_relay_practice_authority_v1',
       lifecycle: 'active',
       playerCount: 8,
       botCount: 7,
-      mapId: 'inkfall_foundry',
+      mapId: 'relay',
       pointerLocked: true,
       localAuthoritativePlayer: {
         playerId: 'practice.local.player',
@@ -176,6 +176,9 @@ test.describe('local Inkfall Practice route', () => {
       render3d: {
         status: 'ready',
         renderer: 'three_webgl',
+        presentationMode: 'relay_visual_candidate',
+        presentationDisplayName: 'Relay',
+        authorityCompatibility: 'relay_revision_1_authority_candidate',
         remoteAvatarCount: 7,
         launchProjectilePresentation: 'cutline_launch_canister_v1',
         selectedWeaponId: 'vertical_rifle_v1',
@@ -187,7 +190,7 @@ test.describe('local Inkfall Practice route', () => {
     expect(consoleErrors).toEqual([]);
 
     await page.screenshot({
-      path: join(tmpdir(), 'kyx-inkfall-practice-active-20260731.png'),
+      path: join(tmpdir(), 'kyx-relay-practice-active.png'),
       fullPage: false,
     });
   });

@@ -3,7 +3,13 @@ import {
   LocalInkfallPracticeHost,
   type AuthorityFullSnapshot,
   type LOCAL_INKFALL_PRACTICE_HOST_ID,
+  RELAY_AUTHORITY_FIXTURE,
+  RELAY_AUTHORITY_FIXTURE_HASH,
+  RELAY_AUTHORITY_IDENTITY,
+  RELAY_AUTHORITY_SPAWNS,
+  RELAY_PORTAL_PRESENTATION_DEFINITIONS,
 } from '../authority';
+import { RELAY_AUTHORITY_COMPATIBILITY } from './relayVisualContinuity';
 import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
 import { PHASE3_HYPOTHESIS_MOVEMENT_PROFILE } from '../sim';
@@ -39,6 +45,8 @@ interface LocalPracticeDiagnosticsV1 {
   readonly pointerLocked: boolean;
   readonly aimHeld: boolean;
   readonly recentReliableEvents: number;
+  readonly portalAuthorityCapabilityId: string | null;
+  readonly recentPortalTraversalEvents: number;
   readonly launch: Readonly<{
     readonly acceptedThrowCount: number;
     readonly collisionCount: number;
@@ -61,6 +69,7 @@ interface LocalPracticeDiagnosticsV1 {
     readonly playerId: string;
     readonly feetPosition: Readonly<{ x: number; y: number; z: number }>;
     readonly velocity: Readonly<{ x: number; y: number; z: number }>;
+    readonly teleportCooldownTicksRemaining: number;
   }>;
   readonly render3d: ReturnType<OnlineAuthorityThreeRuntime['diagnostics']>;
 }
@@ -100,7 +109,7 @@ function createEntryGate(): Readonly<{
   root.setAttribute('role', 'dialog');
   root.setAttribute('aria-labelledby', 'local-practice-gate-title');
   root.innerHTML = `
-    <div class="local-practice-gate__index">Inkfall Foundry / local authority</div>
+    <div class="local-practice-gate__index">Relay / local authority</div>
     <h1 id="local-practice-gate-title">Enter the arena</h1>
     <p class="local-practice-gate__brief">Eight combatants share one exact 20 Hz authority simulation. Escape releases mouse capture.</p>
     <dl class="local-practice-gate__controls">
@@ -151,12 +160,12 @@ export async function mountLocalInkfallPracticeRoute(
   const canvas = requireElement('#game-canvas', HTMLCanvasElement);
   const app = requireElement('#app', HTMLDivElement);
   hideLauncherChrome();
-  document.title = 'KYX.IO — Inkfall Practice';
+  document.title = 'KYX.IO — Relay Practice';
   document.querySelector('meta[name="description"]')?.setAttribute(
     'content',
-    'Local-authority KYX.IO combat practice in Inkfall Foundry.',
+    'Local-authority KYX.IO combat practice in the Relay visual candidate.',
   );
-  body.dataset.launchSupport = 'local-inkfall-practice-authority';
+  body.dataset.launchSupport = 'local-relay-practice-authority';
   body.dataset.localPracticeStatus = 'loading';
   canvas.dataset.pointerLock = 'inactive';
 
@@ -164,7 +173,7 @@ export async function mountLocalInkfallPracticeRoute(
   app.append(gate.root);
   const hud = new HUD();
   hud.show();
-  hud.showPracticeStatus(true, 7, 'Inkfall Foundry · Local authority');
+  hud.showPracticeStatus(true, 7, 'Relay · Local authority');
   const input = new LocalInkfallPracticeInputBuffer();
   const host = await LocalInkfallPracticeHost.create({ botCount: 7 });
   const gameplayAudio = new AudioManager();
@@ -180,6 +189,19 @@ export async function mountLocalInkfallPracticeRoute(
   let renderer: OnlineAuthorityThreeRuntime;
   try {
     renderer = await createOnlineAuthorityThreeRuntime(canvas, {
+      presentationFixture: RELAY_AUTHORITY_FIXTURE,
+      presentationIdentity: {
+        mapReference: 'relay@1',
+        presentationReference: 'relay@1/open-sky/v2',
+        fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
+        colliderCardinality: RELAY_AUTHORITY_IDENTITY.colliderCardinality,
+        spawnCount: RELAY_AUTHORITY_SPAWNS.length,
+        zoneCount: 0,
+        spawnPocketContainmentCount: 2,
+        authorityCompatibility: RELAY_AUTHORITY_COMPATIBILITY,
+      },
+      showStaticWorldPortals: true,
+      staticWorldPortalDefinitions: RELAY_PORTAL_PRESENTATION_DEFINITIONS,
       onWorldPortalAudio: ({ local }) => {
         if (!local) return;
         gameplayAudio.resume();
@@ -311,7 +333,7 @@ export async function mountLocalInkfallPracticeRoute(
       kd: player.deathOrdinal === 0 ? '0.0' : '0.0',
       isYou: player.playerId === host.localPlayerId,
     }));
-    hud.showScoreboard(rows, 'Inkfall Foundry · Local authority');
+    hud.showScoreboard(rows, 'Relay · Local authority');
     scoreboardOpen = true;
     lastScoreboardRefreshAt = nowMilliseconds;
   };
@@ -388,7 +410,7 @@ export async function mountLocalInkfallPracticeRoute(
       blinkPreview,
     });
     hud.render(projection.hud);
-    hud.showPracticeStatus(true, host.botPlayerIds.length, 'Inkfall Foundry · Local authority');
+    hud.showPracticeStatus(true, host.botPlayerIds.length, 'Relay · Local authority');
     renderScoreboard(nowMilliseconds);
     body.dataset.localPracticeServerTick = String(snapshot.serverTick);
     body.dataset.localPracticePlayerCount = String(snapshot.players.length);
@@ -497,6 +519,12 @@ export async function mountLocalInkfallPracticeRoute(
       pointerLocked,
       aimHeld: input.aimHeld,
       recentReliableEvents: recentEvents.length,
+      portalAuthorityCapabilityId: host.authority.worldPortalCapabilityId,
+      recentPortalTraversalEvents: recentEvents.filter(
+        ({ kind, actorId }) => (
+          kind === 'worldPortalTraversed' && actorId === host.localPlayerId
+        ),
+      ).length,
       launch: Object.freeze({
         acceptedThrowCount: countLaunchEvents('impulse_grenade_throw_accepted'),
         collisionCount: countLaunchEvents('impulse_grenade_collision'),
@@ -525,6 +553,8 @@ export async function mountLocalInkfallPracticeRoute(
         playerId: localPlayer.playerId,
         feetPosition: Object.freeze({ ...authoritativeMovement.feetPosition }),
         velocity: Object.freeze({ ...authoritativeMovement.velocity }),
+        teleportCooldownTicksRemaining:
+          authoritativeMovement.teleportCooldownTicksRemaining,
       }),
       render3d: renderer.diagnostics(),
     });

@@ -11,6 +11,7 @@ import {
   type InkfallAuthorityMapIdentity,
 } from '../inkfallMapIdentity';
 import { FixtureAuthorityLineOfSight } from './fixtureLineOfSight';
+import { FixtureAuthoritySpawnSupport } from './fixtureSpawnSupport';
 
 const INPUT_SCHEMA_VERSION = 1 as const;
 const RESULT_SCHEMA_VERSION = 1 as const;
@@ -522,6 +523,7 @@ export class InkfallSpawnAuthority {
       throw new Error('SPAWN_AUTHORITY_MAP_IDENTITY_MISMATCH');
     }
     this.identity = identity;
+    const spawnSupport = new FixtureAuthoritySpawnSupport(loaded.authority.fixture);
     const ordered = [...loaded.manifest.spawns]
       .sort((left, right) => compareCodeUnits(left.id, right.id));
     const ids = new Set<string>();
@@ -530,7 +532,8 @@ export class InkfallSpawnAuthority {
         || spawn.validationStatus !== 'capsule_clear_unscored'
         || spawn.escapeRouteFamilies.length < 2
         || new Set(spawn.escapeRouteFamilies).size !== spawn.escapeRouteFamilies.length
-        || !candidateInsideBounds(spawn, loaded)) {
+        || !candidateInsideBounds(spawn, loaded)
+        || !spawnSupport.probe(spawn.feetPositionMm).supported) {
         throw new Error(`SPAWN_AUTHORITY_INVALID_CANDIDATE ${spawn.id}`);
       }
       ids.add(spawn.id);

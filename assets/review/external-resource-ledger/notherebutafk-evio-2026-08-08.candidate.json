@@ -1,0 +1,214 @@
+{
+  "records": [
+    {
+      "acquisition": {
+        "acquired_at": "owner-provided-before-2026-08-08",
+        "evidence": "Owner supplied C:\\Users\\suhai\\Downloads\\Ev.io-main.zip; no account mutation or download was performed by this audit.",
+        "original_archive_unchanged": true,
+        "quarantine_root": "C:\\Users\\suhai\\Downloads",
+        "status": "completed"
+      },
+      "adaptation_plan": {
+        "acceptance_evidence": [
+          "docs/audits/NOTHEREBUTAFK_EVIO_RESOURCE_AUDIT_2026-08-08.md"
+        ],
+        "actions": [
+          "Extract only general failure-mode and architecture lessons.",
+          "Reimplement independently against KYX authority and presentation contracts.",
+          "Keep all upstream source, GLBs, audio, textures, and .evmap payloads outside the product tree."
+        ],
+        "clean_room_required": true,
+        "status": "planned",
+        "summary": "Reference-only clean-room adaptation because repository and component rights are unresolved."
+      },
+      "ai_flags": {
+        "evidence": "The repository history and documentation identify AI-agent authorship, while no affirmative external-AI permission or component-level AI terms are supplied. Unknown AI terms are therefore treated as NoAI operationally.",
+        "external_ai_input_allowed": "no",
+        "generated_ai": "yes",
+        "no_ai": "yes"
+      },
+      "archive_scan": {
+        "active_content_executed": false,
+        "active_content_review": {
+          "evidence": "Inventory flags JavaScript, Python, and server/tool scripts; none were executed.",
+          "reviewed_at": "2026-08-08",
+          "reviewer": "Codex Resource Pilfer",
+          "scope": "Metadata and selected source text only; not a complete security review.",
+          "status": "partial-reference-review"
+        },
+        "encrypted_entries": [],
+        "executables_or_active_content": [
+          "JavaScript and MJS source",
+          "Python authoring/check scripts",
+          "server-side source"
+        ],
+        "inventory_path": "assets/review/external-resource-ledger/notherebutafk-evio-2026-08-08.inventory.json",
+        "path_traversal_detected": false,
+        "review_disposition": "approved-without-execution",
+        "scanned_at": "2026-08-08",
+        "status": "passed-with-reviewed-findings",
+        "suspicious_entries": [
+          "7 GLB binaries require component provenance",
+          "2 downloaded .evmap binaries lack redistribution evidence"
+        ],
+        "symlinks_detected": false
+      },
+      "attribution": {
+        "placement": "docs/audits/NOTHEREBUTAFK_EVIO_RESOURCE_AUDIT_2026-08-08.md",
+        "required": "yes",
+        "text": "Reference research source: NotHereButAfk/Ev.io at commit 213738b5913dd7d5806fa9c54b10687cf366b670. No upstream expression or binaries imported."
+      },
+      "brief_id": "kyx-inkfall-desktop-vertical-slice",
+      "candidate_id": "notherebutafk-evio-213738b",
+      "checksums": {
+        "C:\\Users\\suhai\\Downloads\\Ev.io-main.zip": "2ad470b7d2337e1d0a5aebff69684544448c02d93d2b6dcfc52fb1c4385099c2"
+      },
+      "comparison": {
+        "abandonment_risk_inverse": null,
+        "adaptation_cost_inverse": null,
+        "coherence": null,
+        "fit": null,
+        "provenance_confidence": null,
+        "representative_group": "",
+        "runtime_cost_inverse": null,
+        "weighted_score": null
+      },
+      "downloaded_paths": [
+        "C:\\Users\\suhai\\Downloads\\Ev.io-main.zip"
+      ],
+      "entitlement": {
+        "account_or_ownership_basis": "Public repository access plus owner-provided local snapshot; no reuse entitlement inferred.",
+        "action_time_confirmation": {
+          "confirmed_at": "2026-08-08",
+          "evidence": "No authenticated checkout or account mutation was required for read-only inspection.",
+          "required": false,
+          "scope": "Read-only public metadata and local archive inspection only.",
+          "status": "not-required"
+        },
+        "confirmed_at": "2026-08-08",
+        "evidence": "Inspection access is established; copying, modification, redistribution, and release rights are not established.",
+        "status": "unknown"
+      },
+      "formats": [
+        "JavaScript",
+        "TypeScript-adjacent ESM tooling",
+        "Python",
+        "CSS",
+        "HTML",
+        "JSON",
+        "GLB",
+        "PNG",
+        "EVMap"
+      ],
+      "human": {
+        "evidence": "",
+        "reviewed_at": "",
+        "reviewer": "",
+        "verdict": "pending"
+      },
+      "inspection": {
+        "delivered_payload_inspected": true,
+        "embedded_urls": [],
+        "evidence_paths": [
+          "assets/review/external-resource-ledger/notherebutafk-evio-2026-08-08.inventory.json",
+          "docs/audits/NOTHEREBUTAFK_EVIO_RESOURCE_AUDIT_2026-08-08.md"
+        ],
+        "external_services": [],
+        "generative_tools_used": false,
+        "hidden_dependencies": [],
+        "metrics": {
+          "archive_bytes": 9931303,
+          "archive_entries": 193,
+          "archive_files": 168,
+          "uncompressed_bytes": 23673895,
+          "glb_files": 7,
+          "evmap_files": 2,
+          "github_tree_files": 168,
+          "github_tree_content_mismatches": 0
+        },
+        "result": "Exact snapshot match to upstream 213738b; metadata and selected source inspected without extraction or execution.",
+        "route": "local-read-only-plus-primary-github-metadata",
+        "status": "partial",
+        "tools_and_versions": [
+          "Resource Pilfer quarantine_inventory.py schema 1.0",
+          "Node.js ZIP central-directory and Git blob hash inspection"
+        ]
+      },
+      "isolation": {
+        "candidate_path": "",
+        "evidence_paths": [],
+        "product_tree_unchanged": true,
+        "status": "not-started"
+      },
+      "known_nonclaims": [
+        "Archive inventory is not malware clearance or a complete active-code security review.",
+        "Public availability and owner possession do not prove copying or redistribution rights.",
+        "No upstream source, GLB, texture, audio, or .evmap payload is accepted into KYX.",
+        "Clean-room KYX implementations still require compilation, tests, runtime proof, and human acceptance."
+      ],
+      "license": {
+        "name_version": "ISC claimed by package metadata only",
+        "snapshot_path": "",
+        "snapshot_sha256": "",
+        "status": "unclear",
+        "text": "package.json declares ISC; no root LICENSE, LICENSE.md, COPYING, or NOTICE exists in the exact snapshot.",
+        "url": "https://github.com/NotHereButAfk/Ev.io",
+        "verified_at": "2026-08-08"
+      },
+      "next_action": "Continue only independent clean-room implementation; require explicit root and per-component license evidence before importing any upstream expression or binary.",
+      "permitted_uses": [
+        "read-only architecture inspection",
+        "general failure-mode research",
+        "independent clean-room requirements",
+        "non-shipped local comparison"
+      ],
+      "recommendation": "REFERENCE ONLY",
+      "release": {
+        "attribution_delivery_path": "",
+        "ledger_path": "",
+        "released_at": "",
+        "status": "not-recorded"
+      },
+      "required_owner_decision": "Obtain explicit repository and per-asset redistribution licenses only if direct reuse is still desired; no decision is required for clean-room reference learning.",
+      "runtime": {
+        "disposition": "not-tested",
+        "environment": "",
+        "evidence_paths": [],
+        "measured_budgets": {}
+      },
+      "schema_version": "1.0",
+      "source": {
+        "access_scope": "public",
+        "author_publisher": "NotHereButAfk",
+        "canonical_url": "https://github.com/NotHereButAfk/Ev.io",
+        "kind": "repository",
+        "listing_date": "2026-08-08",
+        "listing_snapshot_path": "",
+        "listing_version": "213738b5913dd7d5806fa9c54b10687cf366b670",
+        "local_path": "C:\\Users\\suhai\\Downloads\\Ev.io-main.zip",
+        "metadata_checked_at": "2026-08-08",
+        "price": {
+          "amount": null,
+          "currency": "",
+          "label": "not-applicable",
+          "tier": "not-applicable"
+        }
+      },
+      "stage": "metadata-verified",
+      "stage_history": [
+        {
+          "at": "2026-08-08",
+          "evidence": "Registry initialized; no rights or entitlement inferred.",
+          "stage": "discovered"
+        },
+        {
+          "at": "2026-08-08",
+          "evidence": "Canonical repository, head 213738b, package metadata, and absent root/component licenses verified.",
+          "stage": "metadata-verified"
+        }
+      ],
+      "title": "NotHereButAfk Ev.io upstream snapshot 213738b"
+    }
+  ],
+  "schema_version": "1.0"
+}
