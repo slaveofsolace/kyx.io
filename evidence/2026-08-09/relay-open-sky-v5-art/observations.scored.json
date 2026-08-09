@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "observations": [
+    {
+      "id": "OBS-001",
+      "component": "world-and-map",
+      "label": "OBSERVED",
+      "title": "V4 sky and ridge field flatten the campus scale hierarchy",
+      "context": "Preserved v13 menu fly-through and all five player-eye route frames",
+      "action": "Cold-eye inspection at 3, 10, and 30 seconds",
+      "expectation": "An open-sky relay campus should separate playable decks, regional ridges, horizon haze, and upper sky at a glance",
+      "actual": "A nearly uniform green-gray field dominates the frame while isolated rounded ridge blobs sit at one similar visual depth",
+      "playerConsequence": "The arena reads as a lit graybox suspended in a blank field instead of a place with environmental scale",
+      "reproduction": [
+        "Open the preserved v13 packet",
+        "Inspect 01, 03, 04, 05, 06, and 07 without source context"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 2,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/01-relay-menu-flythrough-1440x900.png",
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/05-relay-route-one-1440x900.png"
+      ],
+      "hypotheses": [
+        "The v4 sky colors occupy too narrow a luminance and hue range",
+        "Repeated dodecahedral ridge masses do not create near, middle, and far silhouettes"
+      ],
+      "nextDiscriminatingTest": "Capture the same menu and spawn cameras on v5 after the protected Blender process is absent",
+      "recommendedOutcome": "Retain v5 only if the playable campus separates clearly from three readable environmental depth layers",
+      "status": "REJECT",
+      "priorityScore": 74,
+      "priorityTier": "A"
+    },
+    {
+      "id": "OBS-002",
+      "component": "world-and-map",
+      "label": "OBSERVED",
+      "title": "V4 bridge slabs and spawn beacon read as unsupported kit parts",
+      "context": "V13 spawn-active, route-one, route-two, and movement-contact frames",
+      "action": "Trace the visible load path from bridge deck to supports and scan the central combat sightline",
+      "expectation": "Bridge structure should explain how decks are carried while navigation markers remain outside the aiming lane",
+      "actual": "Pale slab edges float over narrow dark posts and a tall black mast with a glowing cap resembles a streetlamp directly in the route read",
+      "playerConsequence": "The first-person view prioritizes construction gaps and an obstruction-like prop over authored campus identity",
+      "reproduction": [
+        "Open v13 04-relay-spawn-active-1440x900.png",
+        "Compare the bridge underside and beacon in v13 frames 05 through 07"
+      ],
+      "frequency": 5,
+      "severity": 4,
+      "reach": 4,
+      "trust": 4,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/04-relay-spawn-active-1440x900.png",
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/07-relay-movement-contact-1440x900.png"
+      ],
+      "hypotheses": [
+        "The bridge fascia is not visually continuous with its support collars",
+        "The beacon silhouette borrows street furniture proportions instead of wall-bound relay infrastructure"
+      ],
+      "nextDiscriminatingTest": "Use the identical spawn and route cameras to verify v5 capitals, rail braces, underside bands, and removal of both beacon masts",
+      "recommendedOutcome": "A continuous bridge load path and wall-bound spawn identity should replace the floating-slab and lamp reads",
+      "status": "REJECT",
+      "priorityScore": 81,
+      "priorityTier": "A"
+    },
+    {
+      "id": "OBS-003",
+      "component": "world-and-map",
+      "label": "OBSERVED",
+      "title": "V4 cover and boundary surfaces repeat one panel-box grammar",
+      "context": "V13 menu overview and central route frames",
+      "action": "Compare cover, rails, facades, and deck surfacing at near and mid range",
+      "expectation": "Gameplay roles should remain collision-truthful while using distinct material and silhouette cues",
+      "actual": "Square panel grids repeat across exposed collider boxes, long walls, and equipment housings with little role separation",
+      "playerConsequence": "Cover and architecture look procedurally assembled and different areas are harder to remember from cropped views",
+      "reproduction": [
+        "Open v13 01-relay-menu-flythrough-1440x900.png",
+        "Inspect cover at center-left and center-right in frames 05 and 06"
+      ],
+      "frequency": 5,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/01-relay-menu-flythrough-1440x900.png",
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/06-relay-route-two-1440x900.png"
+      ],
+      "hypotheses": [
+        "One square-grid procedural map is reused too broadly",
+        "Four repeated north equipment boxes amplify the kit-like massing"
+      ],
+      "nextDiscriminatingTest": "Inspect v5 chevron cover armor, deck strakes, edge louvers, service grates, and absence of north equipment boxes at the same distances",
+      "recommendedOutcome": "Keep collision truth while making surface role and area identity readable without a repeated locker-grid motif",
+      "status": "REJECT",
+      "priorityScore": 77,
+      "priorityTier": "A"
+    },
+    {
+      "id": "OBS-004",
+      "component": "lighting",
+      "label": "OBSERVED",
+      "title": "V4 cyan floor wash clips local material information",
+      "context": "V13 spawn-active, route-two, and movement-contact frames",
+      "action": "Inspect the west spawn and lower-left route surfaces around the active readability light",
+      "expectation": "Team-side color should orient the player without erasing floor texture or competing with the crosshair",
+      "actual": "Large cyan-white patches bloom across the floor and dominate nearby neutral materials",
+      "playerConsequence": "The route looks cheaper, surface detail disappears, and team color becomes glare instead of information",
+      "reproduction": [
+        "Open v13 04-relay-spawn-active-1440x900.png",
+        "Compare the cyan floor patch in frames 06 and 07"
+      ],
+      "frequency": 4,
+      "severity": 2,
+      "reach": 4,
+      "trust": 3,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/04-relay-spawn-active-1440x900.png",
+        "../../2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final/06-relay-route-two-1440x900.png"
+      ],
+      "hypotheses": [
+        "Spawn point-light intensity and range are too high for the dark floor response",
+        "Several emissive inlays stack in the same view"
+      ],
+      "nextDiscriminatingTest": "Compare histogram and retained floor detail in the v5 spawn-active frame",
+      "recommendedOutcome": "Use low-output wall-bound signals with floor detail preserved around the entire spawn route",
+      "status": "REVISE",
+      "priorityScore": 60,
+      "priorityTier": "B"
+    },
+    {
+      "id": "OBS-005",
+      "component": "runtime-integrity",
+      "label": "MEASURED",
+      "title": "V5 preserves authority identity and stays under its explicit base-art budget",
+      "context": "Consolidated source gate on the isolated v5 worktree",
+      "action": "Run app typecheck, Relay unit tests, targeted Relay Worker test, changed-file lint, and production build",
+      "expectation": "Art remains no-hit behind 56 colliders, 8 spawns, 8 zones, linked portals, and a bounded render construction",
+      "actual": "All requested gates passed; deterministic construction accounts for 54 base meshes/draw calls, 6 lights, 22 architectural batches, and 122 architectural logical instances",
+      "playerConsequence": "Practice/online authority parity and performance guardrails remain testable while presentation iterates",
+      "reproduction": [
+        "Read gate/consolidated-gate-run1.log",
+        "Run the four Relay unit files and targeted Relay Worker test from the worktree"
+      ],
+      "frequency": 0,
+      "severity": 0,
+      "reach": 0,
+      "trust": 0,
+      "friction": 0,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "gate/consolidated-gate-run1.log",
+        "source-facts.json"
+      ],
+      "hypotheses": [
+        "No authority drift is present because only the presentation reference changed in relayAuthority.ts"
+      ],
+      "nextDiscriminatingTest": "Verify the same counts in a source-matched browser snapshot when capture is permitted",
+      "recommendedOutcome": "KEEP the authority isolation and render budget contracts",
+      "status": "KEEP",
+      "priorityScore": 0,
+      "priorityTier": "D"
+    },
+    {
+      "id": "OBS-006",
+      "component": "player-eye-presentation",
+      "label": "INFERRED",
+      "title": "V5 source directly addresses the rejected construction relationships",
+      "context": "White-box review after the v13 cold-eye pass",
+      "action": "Map each baseline failure to the completed v5 render-only source change",
+      "expectation": "The revision should change silhouette, load path, area identity, material grammar, and light placement rather than only recolor the graybox",
+      "actual": "The source replaces the ring, beacons, ridge blobs, repeated equipment boxes, shared panel grid, disconnected portal trim, and high-output spawn lights with distinct connected systems",
+      "playerConsequence": "The candidate is directionally more authored, but source structure cannot prove its actual player-eye composition",
+      "reproduction": [
+        "Review src/app/relayVisualContinuity.ts",
+        "Review src/app/relayArchitectureSkin.ts against OBS-001 through OBS-004"
+      ],
+      "frequency": 1,
+      "severity": 3,
+      "reach": 5,
+      "trust": 4,
+      "friction": 2,
+      "blocker": false,
+      "confidence": "MEDIUM",
+      "evidence": [
+        "../../../src/app/relayVisualContinuity.ts",
+        "../../../src/app/relayArchitectureSkin.ts"
+      ],
+      "hypotheses": [
+        "The connected v5 systems will produce a clearer campus read at player eye",
+        "Some new facade or ridge proportions may still need revision after capture"
+      ],
+      "nextDiscriminatingTest": "Run the bounded v5 capture with the preserved v13 route once no protected Blender or Unreal process is active",
+      "recommendedOutcome": "KEEP the source direction but withhold visual acceptance",
+      "status": "REVISE",
+      "priorityScore": 58,
+      "priorityTier": "B"
+    },
+    {
+      "id": "OBS-007",
+      "component": "player-eye-presentation",
+      "label": "UNKNOWN",
+      "title": "V5 player-eye appearance and motion remain uncaptured",
+      "context": "Protected-process preflight immediately after the green source gate",
+      "action": "Check for Blender or Unreal before starting the bounded browser capture",
+      "expectation": "No protected Blender or Unreal process is active",
+      "actual": "Blender 5.1 was active as PID 30588, started at 2026-08-09 14:27:29 local time; the browser capture was not launched",
+      "playerConsequence": "No claim can be made about v5 composition, clipping, lighting balance, route readability, portal connection in motion, or subjective quality",
+      "reproduction": [
+        "Run the protected-process preflight",
+        "Observe the active blender process and stop before browser launch"
+      ],
+      "frequency": 1,
+      "severity": 4,
+      "reach": 5,
+      "trust": 5,
+      "friction": 3,
+      "blocker": false,
+      "confidence": "HIGH",
+      "evidence": [
+        "source-facts.json"
+      ],
+      "hypotheses": [
+        "The process belongs to another protected visual-production lane"
+      ],
+      "nextDiscriminatingTest": "Repeat the read-only process check later and capture only if Blender and Unreal are both absent",
+      "recommendedOutcome": "Treat v5 visuals as UNKNOWN and require owner-facing player-eye review before any acceptance decision",
+      "status": "UNKNOWN",
+      "priorityScore": 71,
+      "priorityTier": "A"
+    }
+  ]
+}

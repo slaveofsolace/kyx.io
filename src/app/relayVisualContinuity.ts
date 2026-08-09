@@ -8,11 +8,17 @@ import { createRelayArchitectureSkin } from './relayArchitectureSkin';
 
 export const RELAY_DISPLAY_NAME = 'Relay' as const;
 export const RELAY_VISUAL_CONTINUITY_VERSION =
-  'relay_open_sky_visual_candidate_v4' as const;
+  'relay_open_sky_visual_candidate_v5' as const;
 export const RELAY_AUTHORITY_COMPATIBILITY =
   'relay_revision_1_authority_candidate' as const;
 export const RELAY_LEGACY_AUTHORITY_COMPATIBILITY =
   'inkfall_revision_4_fixture_temporary' as const;
+export const RELAY_OPEN_SKY_V5_RENDER_BUDGET = Object.freeze({
+  maximumMeshObjects: 96,
+  maximumEstimatedDrawCalls: 96,
+  maximumRealtimeLights: 8,
+  portalPresentationDrawCallsOutsideBaseBudget: 10,
+});
 
 type ColliderSurfaceRole =
   | 'deck_upper'
@@ -31,6 +37,8 @@ export interface RelayVisualContinuity {
   readonly colliderInstanceCount: number;
   readonly waypointInlayCount: number;
   readonly landmarkMeshCount: number;
+  readonly estimatedDrawCalls: number;
+  readonly withinRenderBudget: boolean;
   readonly authorityFixtureUnchanged: true;
   readonly humanAccepted: false;
 }
@@ -92,31 +100,66 @@ interface RelayPanelMaps {
   readonly height: THREE.DataTexture;
 }
 
+type RelaySurfacePattern =
+  | 'deck_strake'
+  | 'edge_louver'
+  | 'cover_chevron'
+  | 'structure_brushed'
+  | 'spawn_field'
+  | 'service_grate';
+
 function relayPanelTexture(
   name: string,
   channel: 'color' | 'roughness' | 'height',
+  pattern: RelaySurfacePattern,
 ): THREE.DataTexture {
   const size = 64;
   const data = new Uint8Array(size * size * 4);
   for (let y = 0; y < size; y += 1) {
     for (let x = 0; x < size; x += 1) {
       const offset = (y * size + x) * 4;
-      const outerSeam = x < 2 || y < 2 || x >= size - 2 || y >= size - 2;
-      const innerSeam = x === 31 || x === 32 || y === 31 || y === 32;
-      const fastener = (
-        (x - 7) ** 2 + (y - 7) ** 2 <= 3
-        || (x - 56) ** 2 + (y - 7) ** 2 <= 3
-        || (x - 7) ** 2 + (y - 56) ** 2 <= 3
-        || (x - 56) ** 2 + (y - 56) ** 2 <= 3
+      const deckSeam = y % 16 <= 1;
+      const deckBreak = x % 32 <= 1 && y % 32 > 7 && y % 32 < 25;
+      const louverSeam = y % 8 <= 1;
+      const chevronA = Math.abs(((x + y) % 32) - 16) <= 1;
+      const chevronB = Math.abs(((x - y + 64) % 32) - 16) <= 1;
+      const brushSeam = x % 23 === 0 && y % 16 > 3;
+      const spawnFrame = x < 2 || x > 61 || y === 15 || y === 47;
+      const grateSeam = x % 10 <= 1;
+      const seam = pattern === 'deck_strake'
+        ? deckSeam
+        : pattern === 'edge_louver'
+          ? louverSeam
+          : pattern === 'cover_chevron'
+            ? chevronA || chevronB
+            : pattern === 'structure_brushed'
+              ? brushSeam
+              : pattern === 'spawn_field'
+                ? spawnFrame
+                : grateSeam;
+      const secondary = pattern === 'deck_strake'
+        ? deckBreak
+        : pattern === 'edge_louver'
+          ? x % 31 === 0
+          : pattern === 'cover_chevron'
+            ? y === 31 || y === 32
+            : pattern === 'structure_brushed'
+              ? y % 29 === 0
+              : pattern === 'spawn_field'
+                ? x === 31 || x === 32
+                : y % 24 <= 1;
+      const fastener = pattern !== 'structure_brushed' && (
+        ((x - 5) ** 2 + (y - 5) ** 2 <= 2)
+        || ((x - 58) ** 2 + (y - 58) ** 2 <= 2)
       );
       const grain = ((x * 19 + y * 37 + (x ^ y) * 11) % 19) - 9;
       let value: number;
       if (channel === 'color') {
-        value = outerSeam ? 118 : innerSeam ? 158 : fastener ? 96 : 226 + grain;
+        value = seam ? 112 : secondary ? 158 : fastener ? 86 : 218 + grain;
       } else if (channel === 'roughness') {
-        value = outerSeam || innerSeam ? 230 : fastener ? 112 : 166 + grain * 2;
+        value = seam ? 228 : secondary ? 204 : fastener ? 108 : 168 + grain * 2;
       } else {
-        value = outerSeam ? 80 : innerSeam ? 112 : fastener ? 218 : 176 + grain;
+        value = seam ? 82 : secondary ? 124 : fastener ? 220 : 176 + grain;
       }
       const clamped = Math.max(0, Math.min(255, value));
       data[offset] = clamped;
@@ -143,16 +186,21 @@ function relayPanelTexture(
   return texture;
 }
 
-function createRelayPanelMaps(repeatX: number, repeatY: number): RelayPanelMaps {
+function createRelayPanelMaps(
+  name: string,
+  repeatX: number,
+  repeatY: number,
+  pattern: RelaySurfacePattern,
+): RelayPanelMaps {
   const configure = (texture: THREE.DataTexture): THREE.DataTexture => {
     texture.repeat.set(repeatX, repeatY);
     texture.needsUpdate = true;
     return texture;
   };
   return Object.freeze({
-    color: configure(relayPanelTexture('RELAY_PANEL_ALBEDO', 'color')),
-    roughness: configure(relayPanelTexture('RELAY_PANEL_ROUGHNESS', 'roughness')),
-    height: configure(relayPanelTexture('RELAY_PANEL_HEIGHT', 'height')),
+    color: configure(relayPanelTexture(`${name}_ALBEDO`, 'color', pattern)),
+    roughness: configure(relayPanelTexture(`${name}_ROUGHNESS`, 'roughness', pattern)),
+    height: configure(relayPanelTexture(`${name}_HEIGHT`, 'height', pattern)),
   });
 }
 
@@ -160,6 +208,7 @@ function panelMaterial(
   name: string,
   color: number,
   repeat: readonly [number, number],
+  pattern: RelaySurfacePattern,
   options: Readonly<{
     emissive?: number;
     emissiveIntensity?: number;
@@ -168,7 +217,7 @@ function panelMaterial(
     bumpScale?: number;
   }> = {},
 ): THREE.MeshStandardMaterial {
-  const maps = createRelayPanelMaps(repeat[0], repeat[1]);
+  const maps = createRelayPanelMaps(name, repeat[0], repeat[1], pattern);
   return standardMaterial(name, color, {
     ...options,
     map: maps.color,
@@ -219,41 +268,41 @@ function createColliderInstances(
   waypointInlayCount: number;
 }> {
   const materials = Object.freeze({
-    deck_upper: panelMaterial('RELAY_CERAMIC_UPPER_DECK', 0x92a29e, [5, 4], {
+    deck_upper: panelMaterial('RELAY_CERAMIC_UPPER_DECK', 0x8f9e98, [2, 3], 'deck_strake', {
       metalness: 0.16,
-      roughness: 0.62,
-    }),
-    deck_mid: panelMaterial('RELAY_GRAPHITE_MID_DECK', 0x4d6263, [8, 6], {
-      metalness: 0.28,
-      roughness: 0.56,
-    }),
-    deck_lower: panelMaterial('RELAY_MOSS_LOWER_DECK', 0x344d48, [6, 4], {
-      metalness: 0.18,
       roughness: 0.68,
     }),
-    edge: panelMaterial('RELAY_CERAMIC_EDGE', 0x81918e, [3, 5], {
-      metalness: 0.2,
+    deck_mid: panelMaterial('RELAY_GRAPHITE_MID_DECK', 0x43595b, [3, 3], 'deck_strake', {
+      metalness: 0.24,
+      roughness: 0.62,
+    }),
+    deck_lower: panelMaterial('RELAY_SERVICE_LOWER_DECK', 0x334743, [4, 2], 'service_grate', {
+      metalness: 0.26,
+      roughness: 0.72,
+    }),
+    edge: panelMaterial('RELAY_CERAMIC_EDGE', 0x778984, [2, 4], 'edge_louver', {
+      metalness: 0.16,
+      roughness: 0.68,
+    }),
+    cover: panelMaterial('RELAY_COMPOSITE_COVER', 0x455e61, [1, 1], 'cover_chevron', {
+      metalness: 0.26,
       roughness: 0.58,
     }),
-    cover: panelMaterial('RELAY_BLUEGRAY_COVER', 0x4f6b70, [2, 2], {
-      metalness: 0.34,
-      roughness: 0.46,
-    }),
-    structure: panelMaterial('RELAY_DARK_STRUCTURE', 0x2d4245, [3, 3], {
+    structure: panelMaterial('RELAY_DARK_STRUCTURE', 0x263c42, [2, 3], 'structure_brushed', {
       metalness: 0.46,
-      roughness: 0.46,
+      roughness: 0.52,
     }),
-    spawn_west: panelMaterial('RELAY_WEST_SPAWN_CYAN', 0x28535b, [5, 5], {
-      emissive: 0x0b3037,
-      emissiveIntensity: 0.18,
-      metalness: 0.3,
-      roughness: 0.44,
+    spawn_west: panelMaterial('RELAY_WEST_SPAWN_CYAN', 0x31565b, [2, 2], 'spawn_field', {
+      emissive: 0x0b2c30,
+      emissiveIntensity: 0.1,
+      metalness: 0.24,
+      roughness: 0.54,
     }),
-    spawn_east: panelMaterial('RELAY_EAST_SPAWN_AMBER', 0x72503a, [5, 5], {
-      emissive: 0x3e2515,
-      emissiveIntensity: 0.18,
-      metalness: 0.3,
-      roughness: 0.44,
+    spawn_east: panelMaterial('RELAY_EAST_SPAWN_AMBER', 0x654b3b, [2, 2], 'spawn_field', {
+      emissive: 0x352116,
+      emissiveIntensity: 0.1,
+      metalness: 0.24,
+      roughness: 0.54,
     }),
   } satisfies Readonly<Record<ColliderSurfaceRole, THREE.MeshStandardMaterial>>);
   const groups = new Map<ColliderSurfaceRole, FixtureSolidV1[]>();
@@ -368,9 +417,14 @@ function createSkyEnvironment(parent: THREE.Group): number {
     depthWrite: false,
     toneMapped: false,
     uniforms: {
-      upperColor: { value: new THREE.Color(0x82a4b8) },
-      horizonColor: { value: new THREE.Color(0xd2cbb5) },
-      lowerColor: { value: new THREE.Color(0x6f8279) },
+      zenithColor: { value: new THREE.Color(0x173852) },
+      upperColor: { value: new THREE.Color(0x4d7890) },
+      horizonColor: { value: new THREE.Color(0xe6cda8) },
+      lowerColor: { value: new THREE.Color(0x667b77) },
+      sunColor: { value: new THREE.Color(0xffd39a) },
+      sunDirection: {
+        value: new THREE.Vector3(-0.56, 0.42, 0.72).normalize(),
+      },
     },
     vertexShader: `
       varying vec3 vWorldDirection;
@@ -381,57 +435,138 @@ function createSkyEnvironment(parent: THREE.Group): number {
       }
     `,
     fragmentShader: `
+      uniform vec3 zenithColor;
       uniform vec3 upperColor;
       uniform vec3 horizonColor;
       uniform vec3 lowerColor;
+      uniform vec3 sunColor;
+      uniform vec3 sunDirection;
       varying vec3 vWorldDirection;
       void main() {
-        float up = smoothstep(-0.08, 0.72, vWorldDirection.y);
-        float down = smoothstep(-0.55, -0.04, vWorldDirection.y);
-        vec3 color = mix(horizonColor, upperColor, up);
-        color = mix(color, lowerColor, down * 0.72);
+        vec3 direction = normalize(vWorldDirection);
+        float elevation = direction.y;
+        float horizonRise = smoothstep(-0.14, 0.28, elevation);
+        vec3 color = mix(lowerColor, horizonColor, horizonRise);
+        color = mix(color, upperColor, smoothstep(0.03, 0.68, elevation));
+        color = mix(color, zenithColor, smoothstep(0.58, 0.97, elevation));
+
+        float horizonHaze = 1.0 - smoothstep(0.0, 0.22, abs(elevation - 0.015));
+        color = mix(color, horizonColor, horizonHaze * 0.24);
+
+        float cloudDomain = 0.5 + 0.5 * sin(
+          direction.x * 29.0
+          + direction.z * 18.0
+          + sin(direction.z * 43.0) * 1.7
+        );
+        float cloudBand = smoothstep(0.61, 0.84, cloudDomain)
+          * smoothstep(0.08, 0.34, elevation)
+          * (1.0 - smoothstep(0.58, 0.82, elevation));
+        color = mix(color, vec3(0.82, 0.87, 0.86), cloudBand * 0.13);
+
+        float sunFacing = max(dot(direction, sunDirection), 0.0);
+        float sunHalo = pow(sunFacing, 34.0) * 0.34;
+        float sunDisc = pow(sunFacing, 720.0) * 1.25;
+        color += sunColor * (sunHalo + sunDisc);
         gl_FragColor = vec4(color, 1.0);
       }
     `,
   });
-  skyMaterial.name = 'RELAY_DAYLIGHT_SKY_GRADIENT';
+  skyMaterial.name = 'RELAY_V5_LAYERED_DAYLIGHT_SKY';
   const sky = new THREE.Mesh(
-    new THREE.SphereGeometry(118, 32, 18),
+    new THREE.SphereGeometry(126, 48, 24),
     skyMaterial,
   );
   sky.name = 'RELAY_OPEN_SKY';
   sky.renderOrder = -100;
   markRenderOnly(sky, 'distant_environment');
+  sky.userData.skyModel = 'layered_high_altitude_sun_haze_v5';
   parent.add(sky);
   return 1;
+}
+
+function createRidgeBandGeometry(
+  radius: number,
+  thickness: number,
+  baseY: number,
+  amplitude: number,
+  phase: number,
+): THREE.BufferGeometry {
+  const segments = 72;
+  const positions: number[] = [];
+  const point = (valueRadius: number, valueY: number, angle: number) => (
+    new THREE.Vector3(
+      Math.cos(angle) * valueRadius,
+      valueY,
+      Math.sin(angle) * valueRadius,
+    )
+  );
+  const height = (angle: number): number => baseY + amplitude * (
+    0.72
+    + Math.sin(angle * 3 + phase) * 0.17
+    + Math.sin(angle * 7 - phase * 0.63) * 0.1
+    + Math.sin(angle * 13 + phase * 1.31) * 0.055
+  );
+  const triangle = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3): void => {
+    positions.push(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z);
+  };
+  for (let index = 0; index < segments; index += 1) {
+    const angleA = index / segments * Math.PI * 2;
+    const angleB = (index + 1) / segments * Math.PI * 2;
+    const innerTopA = point(radius, height(angleA), angleA);
+    const innerTopB = point(radius, height(angleB), angleB);
+    const innerBaseA = point(radius, baseY, angleA);
+    const innerBaseB = point(radius, baseY, angleB);
+    const outerTopA = point(radius + thickness, height(angleA) - 2.1, angleA);
+    const outerTopB = point(radius + thickness, height(angleB) - 2.1, angleB);
+    triangle(innerBaseA, innerTopB, innerTopA);
+    triangle(innerBaseA, innerBaseB, innerTopB);
+    triangle(innerTopA, innerTopB, outerTopB);
+    triangle(innerTopA, outerTopB, outerTopA);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute(
+    'position',
+    new THREE.Float32BufferAttribute(positions, 3),
+  );
+  geometry.computeVertexNormals();
+  return geometry;
 }
 
 function createRelayLandmarks(parent: THREE.Group): Readonly<{
   meshCount: number;
   lightCount: number;
 }> {
-  const paleCeramic = standardMaterial('RELAY_LANDMARK_CERAMIC', 0x9faeaa, {
-    metalness: 0.16,
-    roughness: 0.56,
+  const paleCeramic = standardMaterial('RELAY_V5_LANDMARK_CERAMIC', 0xa5b2aa, {
+    metalness: 0.12,
+    roughness: 0.66,
   });
-  const darkMetal = standardMaterial('RELAY_LANDMARK_DARK_METAL', 0x14272d, {
-    metalness: 0.68,
-    roughness: 0.34,
+  const darkMetal = standardMaterial('RELAY_V5_LANDMARK_DARK_METAL', 0x122731, {
+    metalness: 0.7,
+    roughness: 0.36,
   });
-  const signal = standardMaterial('RELAY_SIGNAL_EMISSIVE', 0x54c8ca, {
-    emissive: 0x167a7d,
-    emissiveIntensity: 0.82,
+  const signal = standardMaterial('RELAY_V5_SIGNAL_EMISSIVE', 0x4faeb1, {
+    emissive: 0x135c60,
+    emissiveIntensity: 0.46,
     metalness: 0.18,
-    roughness: 0.32,
+    roughness: 0.4,
   });
-  const terrain = standardMaterial('RELAY_DISTANCE_TERRAIN', 0x263d3a, {
+  const terrain = standardMaterial('RELAY_V5_NEAR_RIDGE', 0x31484b, {
     metalness: 0,
     roughness: 1,
   });
-  const terrainLight = standardMaterial('RELAY_DISTANCE_TERRAIN_LIGHT', 0x405a54, {
+  const terrainLight = standardMaterial('RELAY_V5_MIDDLE_RIDGE', 0x4a6061, {
     metalness: 0,
     roughness: 1,
   });
+  const terrainFar = standardMaterial('RELAY_V5_FAR_RIDGE', 0x687a78, {
+    metalness: 0,
+    roughness: 1,
+  });
+  for (const ridgeMaterial of [terrain, terrainLight, terrainFar]) {
+    ridgeMaterial.side = THREE.DoubleSide;
+    ridgeMaterial.flatShading = true;
+    ridgeMaterial.needsUpdate = true;
+  }
   let meshCount = 0;
   let lightCount = 0;
 
@@ -450,12 +585,12 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
     return mesh;
   };
 
-  const hemisphere = new THREE.HemisphereLight(0xd7edf2, 0x304b44, 2.3);
+  const hemisphere = new THREE.HemisphereLight(0xc5dce7, 0x273941, 1.55);
   hemisphere.name = 'RELAY_DAYLIGHT_HEMISPHERE';
   markRenderOnly(hemisphere, 'environment_light');
   parent.add(hemisphere);
   lightCount += 1;
-  const sun = new THREE.DirectionalLight(0xffe6bf, 2.35);
+  const sun = new THREE.DirectionalLight(0xffd7a3, 2.7);
   sun.name = 'RELAY_DAYLIGHT_SUN';
   sun.position.set(-34, 48, 24);
   sun.castShadow = true;
@@ -470,42 +605,56 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
   markRenderOnly(sun, 'environment_light');
   parent.add(sun);
   lightCount += 1;
-  const skyFill = new THREE.DirectionalLight(0x79b8ce, 1.35);
+  const skyFill = new THREE.DirectionalLight(0x709caf, 0.62);
   skyFill.name = 'RELAY_DAYLIGHT_FILL';
   skyFill.position.set(26, 20, -30);
   markRenderOnly(skyFill, 'environment_light');
   parent.add(skyFill);
   lightCount += 1;
-  const arrayGlow = new THREE.PointLight(0x71e0db, 1.25, 20, 1.85);
-  arrayGlow.name = 'RELAY_ARRAY_SIGNAL_LIGHT';
-  arrayGlow.position.set(0, 11.4, -27);
+  const arrayGlow = new THREE.PointLight(0x71d0d1, 0.72, 14, 2.1);
+  arrayGlow.name = 'RELAY_CAMPUS_CROWN_SIGNAL_LIGHT';
+  arrayGlow.position.set(0, 10.2, -26.7);
   markRenderOnly(arrayGlow, 'route_readability_light');
   parent.add(arrayGlow);
   lightCount += 1;
 
-  for (const [index, x] of [-18, -14, -10, -6, 6, 10, 14, 18].entries()) {
-    const centerLaneSegment = add(
-      new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.025, 0.1), signal),
-      `RELAY_CENTER_LANE_SIGNAL_SEGMENT_${index + 1}`,
-      'route_readability_inlay',
-    );
-    centerLaneSegment.position.set(x, 0.025, 0);
-  }
+  const centerLanePositions = [-18, -14, -10, -6, 6, 10, 14, 18] as const;
+  const centerLane = new THREE.InstancedMesh(
+    new THREE.BoxGeometry(2.35, 0.022, 0.075),
+    signal,
+    centerLanePositions.length,
+  );
+  centerLane.name = 'RELAY_V5_CENTER_LANE_SIGNAL_DASHES';
+  centerLane.castShadow = false;
+  centerLane.receiveShadow = false;
+  centerLane.userData.instanceNames = Object.freeze(
+    centerLanePositions.map((_x, index) => `RELAY_CENTER_LANE_DASH_${index + 1}`),
+  );
+  centerLanePositions.forEach((x, index) => {
+    SCENE_MATRIX.makeTranslation(x, 0.021, 0);
+    centerLane.setMatrixAt(index, SCENE_MATRIX);
+  });
+  centerLane.instanceMatrix.needsUpdate = true;
+  centerLane.computeBoundingBox();
+  centerLane.computeBoundingSphere();
+  markRenderOnly(centerLane, 'route_readability_inlay');
+  parent.add(centerLane);
+  meshCount += 1;
   const centerNode = add(
-    new THREE.Mesh(new THREE.RingGeometry(2.25, 2.48, 32), signal),
+    new THREE.Mesh(new THREE.RingGeometry(2.28, 2.43, 32), signal),
     'RELAY_CENTER_NODE_SIGNAL_INLAY',
     'route_readability_inlay',
   );
   centerNode.rotation.x = -Math.PI / 2;
   centerNode.position.set(0, 0.03, 0);
   const upperBridgeTrim = add(
-    new THREE.Mesh(new THREE.BoxGeometry(11, 0.035, 0.12), signal),
+    new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.026, 0.075), signal),
     'RELAY_UPPER_BRIDGE_SIGNAL_INLAY',
     'route_readability_inlay',
   );
   upperBridgeTrim.position.set(0, 3.96, -10);
   const lowerCourtTrim = add(
-    new THREE.Mesh(new THREE.BoxGeometry(24, 0.035, 0.12), signal),
+    new THREE.Mesh(new THREE.BoxGeometry(20, 0.024, 0.07), signal),
     'RELAY_LOWER_COURT_SIGNAL_INLAY',
     'route_readability_inlay',
   );
@@ -517,7 +666,7 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
       color,
       {
         emissive: color,
-        emissiveIntensity: 0.75,
+        emissiveIntensity: 0.34,
         metalness: 0.08,
         roughness: 0.38,
       },
@@ -532,157 +681,155 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
     spawnFrame.position.set(side * 29, 0.032, 0);
   }
 
-  const island = add(
+  const foundationHull = add(
     new THREE.Mesh(
-      new THREE.CylinderGeometry(58, 66, 9, 12, 1, false),
+      new THREE.CylinderGeometry(57, 63, 7, 16, 1, false),
       terrain,
     ),
-    'RELAY_SUSPENDED_RIDGE_BASE',
+    'RELAY_CAMPUS_FOUNDATION_HULL',
     'distant_environment',
   );
-  island.position.set(0, -8.2, 0);
+  foundationHull.position.set(0, -6.55, 0);
+  const foundationUndercroft = add(
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(49, 57, 3.6, 16, 1, false),
+      darkMetal,
+    ),
+    'RELAY_CAMPUS_FOUNDATION_UNDERCROFT',
+    'distant_environment',
+  );
+  foundationUndercroft.position.set(0, -11.7, 0);
+  const foundationKeel = add(
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(18, 34, 7, 12, 1, false),
+      darkMetal,
+    ),
+    'RELAY_CAMPUS_FOUNDATION_KEEL',
+    'distant_environment',
+  );
+  foundationKeel.position.set(0, -16.8, 0);
 
   const ridgeDefinitions = Object.freeze([
-    [-62, -8, -36, 18, 17, 15],
-    [-38, -10, -62, 22, 21, 18],
-    [2, -12, -72, 29, 25, 20],
-    [42, -9, -58, 23, 19, 18],
-    [67, -10, -24, 20, 18, 16],
-    [68, -12, 39, 26, 22, 19],
-    [24, -11, 71, 24, 18, 21],
-    [-28, -10, 70, 28, 20, 19],
-    [-69, -11, 34, 23, 18, 17],
+    { name: 'NEAR', radius: 72, thickness: 7, baseY: -11, amplitude: 20, phase: 0.4, material: terrain },
+    { name: 'MIDDLE', radius: 91, thickness: 8, baseY: -13, amplitude: 26, phase: 2.1, material: terrainLight },
+    { name: 'FAR', radius: 109, thickness: 8, baseY: -16, amplitude: 34, phase: 4.6, material: terrainFar },
   ] as const);
-  ridgeDefinitions.forEach((definition, index) => {
-    const ridge = add(
+  ridgeDefinitions.forEach((definition) => {
+    add(
       new THREE.Mesh(
-        new THREE.DodecahedronGeometry(1, 1),
-        index % 2 === 0 ? terrain : terrainLight,
+        createRidgeBandGeometry(
+          definition.radius,
+          definition.thickness,
+          definition.baseY,
+          definition.amplitude,
+          definition.phase,
+        ),
+        definition.material,
       ),
-      `RELAY_DISTANCE_RIDGE_${index + 1}`,
+      `RELAY_DISTANCE_RIDGE_BAND_${definition.name}`,
       'distant_environment',
     );
-    ridge.position.set(definition[0], definition[1], definition[2]);
-    ridge.scale.set(definition[3], definition[4], definition[5]);
-    ridge.rotation.set(0.12 * (index % 3), index * 0.47, -0.06 * (index % 2));
   });
 
-  const outerRing = add(
-    new THREE.Mesh(
-      new THREE.TorusGeometry(3.35, 0.14, 10, 56),
-      paleCeramic,
-    ),
-    'RELAY_ARRAY_OUTER_RING',
+  // The campus crown is a continuous load path anchored behind the overlook:
+  // an outboard plinth and wall tie feed two pylons, a curved yoke, and one
+  // suspended lens. It replaces the generic ring-on-sticks silhouette while
+  // preserving the array as the north navigation landmark.
+  const crownPlinth = add(
+    new THREE.Mesh(new THREE.BoxGeometry(11.2, 0.58, 1.9), darkMetal),
+    'RELAY_CAMPUS_CROWN_PLINTH',
   );
-  outerRing.position.set(0, 11.4, -27);
-  const innerRing = add(
-    new THREE.Mesh(
-      new THREE.TorusGeometry(2.45, 0.08, 8, 48),
-      signal,
-    ),
-    'RELAY_ARRAY_SIGNAL_RING',
+  crownPlinth.position.set(0, 4.05, -26.55);
+  const crownWallTie = add(
+    new THREE.Mesh(new THREE.BoxGeometry(6.2, 0.34, 3.2), darkMetal),
+    'RELAY_CAMPUS_CROWN_WALL_TIE',
   );
-  innerRing.position.copy(outerRing.position);
-
-  // The array faces the playable court and sits behind the overlook portal.
-  // Earlier revisions turned the ring edge-on and ran three dark masts through
-  // the arrival view, which read as floating cables/spikes. Two outboard
-  // supports and one crossbeam now form a legible, continuous assembly.
-  for (const [index, x] of [-4.15, 4.15].entries()) {
+  crownWallTie.position.set(0, 4.15, -24.95);
+  for (const [index, x] of [-5.1, 5.1].entries()) {
     const pylon = add(
       new THREE.Mesh(
-        new THREE.CylinderGeometry(0.3, 0.52, 7.2, 10),
+        new THREE.CylinderGeometry(0.34, 0.54, 5.8, 6),
         darkMetal,
       ),
-      `RELAY_ARRAY_PYLON_${index + 1}`,
+      `RELAY_CAMPUS_CROWN_PYLON_${index + 1}`,
     );
-    pylon.position.set(x, 7.05, -26.55);
-    pylon.rotation.z = x < 0 ? -0.1 : 0.1;
+    pylon.position.set(x, 6.9, -26.55);
+    pylon.rotation.z = x < 0 ? -0.12 : 0.12;
   }
-  const crossbeam = add(
+  const crownYokeCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-5.25, 9.2, -26.55),
+    new THREE.Vector3(-4.4, 11.6, -26.62),
+    new THREE.Vector3(-2.4, 13.55, -26.68),
+    new THREE.Vector3(0, 14.25, -26.7),
+    new THREE.Vector3(2.4, 13.55, -26.68),
+    new THREE.Vector3(4.4, 11.6, -26.62),
+    new THREE.Vector3(5.25, 9.2, -26.55),
+  ], false, 'centripetal');
+  add(
     new THREE.Mesh(
-      new THREE.BoxGeometry(8.8, 0.42, 0.5),
-      darkMetal,
+      new THREE.TubeGeometry(crownYokeCurve, 48, 0.28, 8, false),
+      paleCeramic,
     ),
-    'RELAY_ARRAY_CROSSBEAM',
+    'RELAY_CAMPUS_CROWN_STRUCTURAL_YOKE',
   );
-  crossbeam.position.set(0, 10.2, -26.55);
-  const base = add(
+  const signalArcCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-3.65, 9.15, -26.36),
+    new THREE.Vector3(-2.45, 11.45, -26.4),
+    new THREE.Vector3(0, 12.5, -26.42),
+    new THREE.Vector3(2.45, 11.45, -26.4),
+    new THREE.Vector3(3.65, 9.15, -26.36),
+  ], false, 'centripetal');
+  add(
     new THREE.Mesh(
-      new THREE.BoxGeometry(10.2, 0.46, 1.6),
-      darkMetal,
+      new THREE.TubeGeometry(signalArcCurve, 36, 0.1, 8, false),
+      signal,
     ),
-    'RELAY_ARRAY_OUTBOARD_BASE',
+    'RELAY_CAMPUS_CROWN_SIGNAL_ARC',
+    'route_readability_inlay',
   );
-  base.position.set(0, 3.98, -26.55);
-  const hub = add(
-    new THREE.Mesh(
-      new THREE.CylinderGeometry(1.12, 1.12, 0.42, 24),
-      darkMetal,
-    ),
-    'RELAY_ARRAY_SIGNAL_HUB',
+  const crownCrossbar = add(
+    new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.32, 0.48), darkMetal),
+    'RELAY_CAMPUS_CROWN_CROSSBAR',
   );
-  hub.position.copy(outerRing.position);
-  hub.rotation.x = Math.PI / 2;
+  crownCrossbar.position.set(0, 9.15, -26.55);
+  const crownSuspension = add(
+    new THREE.Mesh(new THREE.BoxGeometry(0.22, 2.35, 0.26), darkMetal),
+    'RELAY_CAMPUS_CROWN_LENS_SUSPENSION',
+  );
+  crownSuspension.position.set(0, 11.35, -26.52);
   for (const side of [-1, 1] as const) {
-    const lens = add(
-      new THREE.Mesh(new THREE.CylinderGeometry(0.64, 0.64, 0.34, 24), signal),
+    const shoulder = add(
+      new THREE.Mesh(new THREE.BoxGeometry(3.25, 0.2, 0.3), darkMetal),
       side < 0
-        ? 'RELAY_ARRAY_SIGNAL_LENS_WEST'
-        : 'RELAY_ARRAY_SIGNAL_LENS_EAST',
+        ? 'RELAY_CAMPUS_CROWN_SHOULDER_WEST'
+        : 'RELAY_CAMPUS_CROWN_SHOULDER_EAST',
     );
-    lens.position.set(side * 0.62, 11.4, -26.98);
-    lens.rotation.x = Math.PI / 2;
+    shoulder.position.set(side * 2.65, 10.05, -26.5);
+    shoulder.rotation.z = side * 0.22;
   }
-
-  for (const [index, rotationZ] of [0, Math.PI / 3, -Math.PI / 3].entries()) {
-    const spoke = add(
-      new THREE.Mesh(new THREE.BoxGeometry(0.14, 4.8, 0.12), darkMetal),
-      `RELAY_ARRAY_HUB_SPOKE_${index + 1}`,
-    );
-    spoke.position.copy(outerRing.position);
-    spoke.rotation.z = rotationZ;
-  }
-
-  for (const [side, color] of [[-1, 0x61d6e1], [1, 0xf2a054]] as const) {
-    const beacon = add(
-      new THREE.Mesh(
-        new THREE.CylinderGeometry(0.22, 0.38, 9.2, 10),
-        darkMetal,
-      ),
-      side < 0 ? 'RELAY_WEST_BEACON_MAST' : 'RELAY_EAST_BEACON_MAST',
-    );
-    beacon.position.set(side * 31.5, 4.1, 0);
-    const capMaterial = standardMaterial(
-      side < 0 ? 'RELAY_WEST_BEACON_SIGNAL' : 'RELAY_EAST_BEACON_SIGNAL',
-      color,
-      {
-        emissive: color,
-        emissiveIntensity: 1.4,
-        metalness: 0.08,
-        roughness: 0.3,
-      },
-    );
-    const cap = add(
-      new THREE.Mesh(new THREE.OctahedronGeometry(0.72, 1), capMaterial),
-      side < 0 ? 'RELAY_WEST_BEACON_CAP' : 'RELAY_EAST_BEACON_CAP',
-    );
-    cap.position.set(side * 31.5, 9, 0);
-    const light = new THREE.PointLight(color, 3.2, 22, 1.7);
-    light.name = side < 0 ? 'RELAY_WEST_BEACON_LIGHT' : 'RELAY_EAST_BEACON_LIGHT';
-    light.position.copy(cap.position);
-    markRenderOnly(light, 'route_readability_light');
-    parent.add(light);
-    lightCount += 1;
-  }
+  const crownHub = add(
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(1.05, 1.05, 0.46, 12),
+      darkMetal,
+    ),
+    'RELAY_CAMPUS_CROWN_SIGNAL_HUB',
+  );
+  crownHub.position.set(0, 10.15, -26.48);
+  crownHub.rotation.x = Math.PI / 2;
+  const crownLens = add(
+    new THREE.Mesh(new THREE.OctahedronGeometry(0.72, 1), signal),
+    'RELAY_CAMPUS_CROWN_SIGNAL_LENS',
+    'route_readability_inlay',
+  );
+  crownLens.position.set(0, 10.15, -26.18);
 
   return Object.freeze({ meshCount, lightCount });
 }
 
 /**
- * Builds Relay's original render-only candidate around the current proven
- * authority fixture. This is intentionally a presentation migration, not a
- * false claim that Relay already owns a distinct collision/spawn package.
+ * Builds the Open Sky v5 campus entirely behind Relay's frozen Revision-1
+ * authority fixture. Presentation objects remain no-hit and cannot become
+ * floors, cover, portal triggers, or collision authority.
  */
 export function createRelayVisualContinuity(
   fixture: PhysicsFixtureV1,
@@ -725,10 +872,21 @@ export function createRelayVisualContinuity(
     + skyMeshCount
     + landmarkFacts.meshCount
     + architectureFacts.meshCount;
+  const lightCount = landmarkFacts.lightCount + architectureFacts.lightCount;
+  const estimatedDrawCalls = meshCount;
+  const withinRenderBudget = meshCount
+    <= RELAY_OPEN_SKY_V5_RENDER_BUDGET.maximumMeshObjects
+    && estimatedDrawCalls
+      <= RELAY_OPEN_SKY_V5_RENDER_BUDGET.maximumEstimatedDrawCalls
+    && lightCount <= RELAY_OPEN_SKY_V5_RENDER_BUDGET.maximumRealtimeLights;
 
   group.userData.meshCount = meshCount;
-  group.userData.lightCount = landmarkFacts.lightCount
-    + architectureFacts.lightCount;
+  group.userData.lightCount = lightCount;
+  group.userData.estimatedDrawCalls = estimatedDrawCalls;
+  group.userData.renderBudget = RELAY_OPEN_SKY_V5_RENDER_BUDGET;
+  group.userData.withinRenderBudget = withinRenderBudget;
+  group.userData.architectureLogicalInstanceCount =
+    architectureFacts.logicalInstanceCount;
   group.userData.colliderInstanceCount = colliderFacts.colliderInstanceCount;
   group.userData.waypointInlayCount = colliderFacts.waypointInlayCount;
   group.userData.landmarkMeshCount = landmarkFacts.meshCount
@@ -743,18 +901,21 @@ export function createRelayVisualContinuity(
     renderMeshesMayBeAuthority: false,
     noHit: true,
     expectedAuthorityColliderCount: fixture.solids.length,
+    fakeTraversableSurfaceCount: 0,
     candidateRequiresHumanAcceptance: true,
   });
 
   return Object.freeze({
     group,
     meshCount,
-    lightCount: landmarkFacts.lightCount + architectureFacts.lightCount,
+    lightCount,
     colliderInstanceCount: colliderFacts.colliderInstanceCount,
     waypointInlayCount: colliderFacts.waypointInlayCount,
     landmarkMeshCount: landmarkFacts.meshCount
       + architectureFacts.meshCount
       + skyMeshCount,
+    estimatedDrawCalls,
+    withinRenderBudget,
     authorityFixtureUnchanged: true,
     humanAccepted: false,
   });

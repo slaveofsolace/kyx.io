@@ -287,3 +287,86 @@ Consolidated lightweight verification for this batch:
 
 This checkpoint does not claim a new staging build, deployment, final map art,
 or human acceptance.
+## Relay Open Sky v5 environment-art lane — 2026-08-09
+
+Current source presentation reference: `relay@1/open-sky/v5`.
+
+The v4 section above and its source-matched v13 packet remain preserved as
+history and comparison evidence. The v5 lane is based directly on commit
+`520d94c5c9bd54b5b138ca25a116a1781f3e3356` in isolated worktree
+`D:\AI Projects\Projects\Games\evio\evio-relay-v5-art-20260809` on branch
+`codex/relay-v5-art-20260809`; the dirty canonical checkout is read-only.
+
+### Frozen gameplay authority
+
+- Relay Revision 1 remains exactly 56 colliders, 8 ordered spawns, 8 named
+  zones, and the linked two-endpoint portal capability.
+- The authority fixture, package digest inputs, portal triggers/exits,
+  sightline layout, and Practice/online binding are unchanged by this art lane.
+- Every v5 environment member is marked render-only, no-hit, and not authority.
+  The architectural layer reports zero fake traversable surfaces.
+
+### Authored campus revision
+
+- The green-gray field was replaced with a layered high-altitude sky shader:
+  stronger zenith/horizon separation, warm sun/haze, and restrained cloud
+  bands. Three continuous near/middle/far ridge bands replace the repeated
+  dodecahedral horizon blobs and establish environmental scale.
+- The generic ring-on-sticks landmark became a physically anchored campus
+  crown: foundation wall tie, plinth, twin pylons, curved structural yoke,
+  restrained signal arc, crossbar, suspension, hub, and one readable lens.
+- Both spawn ends now read as operations facades built into/outside the exact
+  boundary wall. Dark pad inserts, facade crowns, canted ceramic fins, and
+  low-output signal blades replace the obstructive streetlamp-like beacons.
+- The upper bridge now has one continuous underside/fascia load path, hexagonal
+  pier skins within the existing support footprints, capitals, and rail-plane
+  braces contained by existing authority rails.
+- The lower service court now has wall-bound pipe banks, clamps, flush grates,
+  and a low-luminance datum that terminate into the service portal structure.
+- Both portal apertures have hex jambs, headers, sills, diagonal braces, and
+  explicit wall/array ties. The assemblies remain visual-only around the
+  unchanged portal authority endpoints.
+- Cover retains truthful box collision cladding but adds inset saddle caps,
+  recessed armor, and alternating identity spines. Surface maps now use
+  role-specific strakes, louvers, chevrons, brushed structure, spawn fields,
+  and service grates instead of one repeated square-panel texture.
+
+### Explicit render budget
+
+- V5 base candidate ceiling: 96 mesh objects / estimated base draw calls and
+  8 realtime lights.
+- V5 architectural layer ceiling: 28 instanced mesh batches, 28 estimated draw
+  calls, 2 lights, and 180 logical instances.
+- The two animated portal apertures retain their existing 10 presentation
+  meshes outside the base-candidate budget.
+
+Verification and the source-matched player-eye packet are intentionally not
+claimed in this source checkpoint. They will be recorded only after the one
+consolidated proportional gate and the protected-process preflight.
+
+### V5 consolidated result and evidence boundary
+
+Dedicated packet:
+`evidence/2026-08-09/relay-open-sky-v5-art/`.
+
+- App TypeScript: PASS.
+- Relay unit packet: PASS, 4 files / 12 tests.
+- Targeted Relay Worker binding: PASS, 1 selected test / 7 skipped.
+- Changed-file ESLint: PASS, 8 TS/MJS files.
+- Production build: PASS, 226 modules. The existing greater-than-500-kB chunk
+  warning remains.
+- Deterministic base construction: 54 mesh objects / estimated draw calls and
+  6 lights, including 22 architectural instance batches representing 122
+  logical members. This is below both explicit v5 budgets.
+
+The first logging wrapper failed before invoking any gate command because its
+PowerShell `Tee-Object` parameter combination was invalid. The corrected
+`consolidated-gate-run1.log` is the only executed proportional gate and passed
+all five requested steps.
+
+The browser/player-eye capture was not launched. The required preflight found
+Blender 5.1 active as PID 30588 at `2026-08-09T19:28:25Z`; that protected
+process was neither closed nor disturbed. V5 runtime appearance is therefore
+`UNKNOWN`, the preserved v13 packet remains the only observed visual baseline,
+and Human Eye disposition remains **REVISE** pending owner review. No automated
+PASS grants visual acceptance.

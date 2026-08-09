@@ -11,9 +11,11 @@ function option(name, fallback) {
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-08/relay-visual-candidate-player-eye-v10',
+  'evidence/2026-08-09/relay-visual-candidate-player-eye-v14-open-sky-v5',
 ));
 const buildCommit = option('--commit', 'working-tree');
+const expectedPresentationReference = 'relay@1/open-sky/v5';
+const maximumBasePresentationMeshCount = 96;
 
 await mkdir(outputRoot, { recursive: true });
 
@@ -166,7 +168,7 @@ try {
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-relay-visual-candidate-player-eye-v6',
+      schema: 'kyx-relay-visual-candidate-player-eye-v7',
       capturedAt: new Date().toISOString(),
       buildCommit,
       buildMode: 'staging-review',
@@ -205,6 +207,14 @@ if (practiceBefore?.render3d?.presentationMode !== 'relay_visual_candidate') {
 if (practiceBefore?.render3d?.presentationDisplayName !== 'Relay') {
   throw new Error('RELAY_RUNTIME_DISPLAY_NAME_MISMATCH');
 }
+if (
+  practiceBefore?.render3d?.presentationReference
+    !== expectedPresentationReference
+) {
+  throw new Error(
+    `RELAY_RUNTIME_PRESENTATION_REFERENCE_MISMATCH actual=${practiceBefore?.render3d?.presentationReference}`,
+  );
+}
 if (practiceBefore?.mapId !== 'relay') {
   throw new Error(`RELAY_RUNTIME_MAP_ID_MISMATCH actual=${practiceBefore?.mapId}`);
 }
@@ -229,6 +239,23 @@ if (practiceBefore?.render3d?.staticWorldPortalCount !== 2) {
 if (practiceBefore?.render3d?.staticWorldPortalMeshCount !== 10) {
   throw new Error('RELAY_STATIC_PORTAL_MESH_COUNT_MISMATCH');
 }
+if (practiceBefore?.render3d?.authorityColliderCount !== 56) {
+  throw new Error('RELAY_AUTHORITY_COLLIDER_COUNT_MISMATCH');
+}
+if (practiceBefore?.render3d?.spawnCount !== 8) {
+  throw new Error('RELAY_AUTHORITY_SPAWN_COUNT_MISMATCH');
+}
+if (practiceBefore?.render3d?.zoneCount !== 8) {
+  throw new Error('RELAY_AUTHORITY_ZONE_COUNT_MISMATCH');
+}
+if (
+  practiceBefore?.render3d?.renderMeshCount
+    > maximumBasePresentationMeshCount
+) {
+  throw new Error(
+    `RELAY_BASE_PRESENTATION_MESH_BUDGET_EXCEEDED actual=${practiceBefore?.render3d?.renderMeshCount}`,
+  );
+}
 if (glbResponses.some(({ url }) => url.includes('inkfall_foundry_rev5_geometry_portal'))) {
   throw new Error('RELAY_RETIRED_FOUNDRY_GLB_REQUESTED');
 }
@@ -238,12 +265,18 @@ process.stdout.write(`${JSON.stringify({
   outputRoot,
   menuArena,
   pointerLockAcquired,
+  presentationReference:
+    practiceAfter?.render3d?.presentationReference ?? null,
   presentationMode: practiceAfter?.render3d?.presentationMode ?? null,
   presentationDisplayName: practiceAfter?.render3d?.presentationDisplayName ?? null,
   mapId: practiceAfter?.mapId ?? null,
   fixtureId: practiceAfter?.fixtureId ?? null,
   authorityColliderCount:
     practiceAfter?.render3d?.authorityColliderCount ?? null,
+  spawnCount: practiceAfter?.render3d?.spawnCount ?? null,
+  zoneCount: practiceAfter?.render3d?.zoneCount ?? null,
+  renderMeshCount: practiceAfter?.render3d?.renderMeshCount ?? null,
+  maximumBasePresentationMeshCount,
   authorityCompatibility: practiceAfter?.render3d?.authorityCompatibility ?? null,
   remoteAvatarCount: practiceAfter?.render3d?.remoteAvatarCount ?? null,
   firstPersonOverlapFree:

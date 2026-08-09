@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createRelayVisualContinuity,
   RELAY_AUTHORITY_COMPATIBILITY,
+  RELAY_OPEN_SKY_V5_RENDER_BUDGET,
   RELAY_VISUAL_CONTINUITY_VERSION,
 } from '../../../src/app/relayVisualContinuity';
 import { RELAY_AUTHORITY_FIXTURE } from '../../../src/authority/relayAuthority';
@@ -32,6 +33,14 @@ describe('Relay original visual continuity candidate', () => {
     expect(continuity.waypointInlayCount).toBe(waypointCount);
     expect(continuity.meshCount).toBe(actualMeshCount);
     expect(continuity.lightCount).toBe(actualLightCount);
+    expect(continuity.estimatedDrawCalls).toBe(continuity.meshCount);
+    expect(continuity.meshCount).toBeLessThanOrEqual(
+      RELAY_OPEN_SKY_V5_RENDER_BUDGET.maximumMeshObjects,
+    );
+    expect(continuity.lightCount).toBeLessThanOrEqual(
+      RELAY_OPEN_SKY_V5_RENDER_BUDGET.maximumRealtimeLights,
+    );
+    expect(continuity.withinRenderBudget).toBe(true);
     expect(continuity.authorityFixtureUnchanged).toBe(true);
     expect(continuity.humanAccepted).toBe(false);
     expect(continuity.group.userData).toMatchObject({
@@ -41,13 +50,15 @@ describe('Relay original visual continuity candidate', () => {
       authorityFixtureUnchanged: true,
       authoritySourceMapId: 'relay',
       authorityCompatibility: RELAY_AUTHORITY_COMPATIBILITY,
+      withinRenderBudget: true,
       humanAccepted: false,
       releaseEligible: false,
     });
     expect(names.join('\n')).not.toMatch(/(?:INKFALL|FOUNDRY|PRESS|ARCHIVE)/u);
     expect(continuity.group.getObjectByName('RELAY_OPEN_SKY')).toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_OUTER_RING')).toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARCHITECTURAL_SKIN_V4'))
+    expect(continuity.group.getObjectByName('RELAY_CAMPUS_CROWN_STRUCTURAL_YOKE'))
+      .toBeDefined();
+    expect(continuity.group.getObjectByName('RELAY_ARCHITECTURAL_SKIN_V5'))
       .toBeDefined();
     const midDeck = continuity.group.getObjectByName('RELAY_AUTHORITY_CLADDING_DECK_MID');
     expect(midDeck).toBeDefined();
@@ -57,17 +68,21 @@ describe('Relay original visual continuity candidate', () => {
       expect(material.roughnessMap).toBeDefined();
       expect(material.bumpMap).toBeDefined();
     }
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_CROSSBEAM'))
+    expect(continuity.group.getObjectByName('RELAY_CAMPUS_CROWN_WALL_TIE'))
       .toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_CROWN_MAST'))
+    expect(continuity.group.getObjectByName('RELAY_ARRAY_OUTER_RING'))
       .toBeUndefined();
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_SIGNAL_HUB'))
+    expect(continuity.group.getObjectByName('RELAY_CAMPUS_CROWN_SIGNAL_HUB'))
       .toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_SIGNAL_LENS_WEST'))
+    expect(continuity.group.getObjectByName('RELAY_CAMPUS_CROWN_SIGNAL_LENS'))
       .toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_SIGNAL_LENS_EAST'))
+    expect(continuity.group.getObjectByName('RELAY_DISTANCE_RIDGE_BAND_NEAR'))
       .toBeDefined();
-    expect(continuity.group.getObjectByName('RELAY_ARRAY_DISH'))
+    expect(continuity.group.getObjectByName('RELAY_DISTANCE_RIDGE_BAND_FAR'))
+      .toBeDefined();
+    expect(continuity.group.getObjectByName('RELAY_WEST_BEACON_MAST'))
+      .toBeUndefined();
+    expect(continuity.group.getObjectByName('RELAY_EAST_BEACON_MAST'))
       .toBeUndefined();
     expect(continuity.group.getObjectByName('RELAY_AUTHORITY_WAYPOINT_INLAYS'))
       .toBeUndefined();

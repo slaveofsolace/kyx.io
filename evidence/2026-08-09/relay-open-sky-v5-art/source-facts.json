@@ -1,0 +1,111 @@
+{
+  "schema": "kyx-relay-open-sky-v5-source-facts-v1",
+  "recordedAt": "2026-08-09T19:28:25Z",
+  "worktree": "D:\\AI Projects\\Projects\\Games\\evio\\evio-relay-v5-art-20260809",
+  "branch": "codex/relay-v5-art-20260809",
+  "baseCommit": "520d94c5c9bd54b5b138ca25a116a1781f3e3356",
+  "canonicalCheckout": {
+    "path": "D:\\AI Projects\\Projects\\Games\\evio\\evio-repo",
+    "branch": "agent/relay-playable-slice-wip",
+    "head": "520d94c5c9bd54b5b138ca25a116a1781f3e3356",
+    "policy": "read_only_dirty_state_preserved"
+  },
+  "presentation": {
+    "displayName": "Relay",
+    "mapReference": "relay@1",
+    "presentationReference": "relay@1/open-sky/v5",
+    "visualContinuityVersion": "relay_open_sky_visual_candidate_v5",
+    "humanAccepted": false,
+    "releaseEligible": false
+  },
+  "authority": {
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "revision": 1,
+    "colliderCount": 56,
+    "spawnCount": 8,
+    "zoneCount": 8,
+    "portalCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "portalEndpointCount": 2,
+    "changedAuthorityData": false,
+    "authorityFileDiff": "presentationReference v4 to v5 only"
+  },
+  "renderConstruction": {
+    "baseMeshObjects": 54,
+    "baseEstimatedDrawCalls": 54,
+    "baseRealtimeLights": 6,
+    "architectureMeshBatches": 22,
+    "architectureEstimatedDrawCalls": 22,
+    "architectureLogicalInstances": 122,
+    "baseBudget": {
+      "maximumMeshObjects": 96,
+      "maximumEstimatedDrawCalls": 96,
+      "maximumRealtimeLights": 8
+    },
+    "architectureBudget": {
+      "maximumMeshObjects": 28,
+      "maximumEstimatedDrawCalls": 28,
+      "maximumRealtimeLights": 2,
+      "maximumLogicalInstances": 180
+    },
+    "staticPortalPresentationMeshesOutsideBaseBudget": 10,
+    "countMethod": "deterministic factory accounting cross-checked by unit traversal assertions"
+  },
+  "consolidatedGate": {
+    "status": "PASS",
+    "log": "gate/consolidated-gate-run1.log",
+    "steps": [
+      {
+        "name": "app-typecheck",
+        "result": "PASS",
+        "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit"
+      },
+      {
+        "name": "relay-unit-tests",
+        "result": "PASS",
+        "summary": "4 files, 12 tests",
+        "command": "vitest run relayArchitectureSkin relayVisualContinuity relayAuthority relayPortalAuthority"
+      },
+      {
+        "name": "relay-worker-test",
+        "result": "PASS",
+        "summary": "1 selected test passed, 7 skipped",
+        "command": "vitest worker inkfallRev2CombatProfile -t Relay Revision 1 binding"
+      },
+      {
+        "name": "changed-file-lint",
+        "result": "PASS",
+        "summary": "8 changed TS/MJS files"
+      },
+      {
+        "name": "production-build",
+        "result": "PASS_WITH_EXISTING_WARNING",
+        "summary": "Vite 8.1.5, 226 modules; chunks above 500 kB warning retained"
+      }
+    ],
+    "toolingPreflight": {
+      "status": "FAILED_BEFORE_GATE_EXECUTION",
+      "detail": "The first transcript wrapper used an unsupported Tee-Object parameter combination; no gate command ran before the corrected run1 gate."
+    }
+  },
+  "playerEyeCapture": {
+    "status": "NOT_RUN_PROTECTED_PROCESS_ACTIVE",
+    "preflightAt": "2026-08-09T19:28:25Z",
+    "protectedProcess": {
+      "processName": "blender",
+      "processId": 30588,
+      "executable": "C:\\Program Files\\Blender Foundation\\Blender 5.1\\blender.exe",
+      "startedAtLocal": "2026-08-09T14:27:29-05:00"
+    },
+    "browserLaunched": false,
+    "blenderOrUnrealLaunchedByLane": false,
+    "intendedOutput": "evidence/2026-08-09/relay-visual-candidate-player-eye-v14-open-sky-v5"
+  },
+  "comparisonBaseline": "evidence/2026-08-08/relay-visual-candidate-player-eye-v13-open-sky-v4-final",
+  "nonclaims": [
+    "No v5 browser runtime or player-eye capture is claimed.",
+    "No human visual, play, balance, accessibility, audio, or release acceptance is claimed.",
+    "No new 2, 4, or 8 independent-client population or performance soak is claimed.",
+    "No merge, push, deployment, canonical checkout edit, Blender launch, or Unreal launch is claimed."
+  ]
+}

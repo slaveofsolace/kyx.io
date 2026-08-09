@@ -25,7 +25,7 @@ export const RELAY_AUTHORITY_PROFILE_ID =
   'relay-revision-1-authority-v1' as const;
 export const RELAY_AUTHORITY_MAP_REFERENCE = 'relay@1' as const;
 export const RELAY_AUTHORITY_PRESENTATION_REFERENCE =
-  'relay@1/open-sky/v4' as const;
+  'relay@1/open-sky/v5' as const;
 export const RELAY_COMBAT_WORLD_CAPABILITY_ID =
   'authoritative_relay_revision_1_rapier_combat_v1' as const;
 

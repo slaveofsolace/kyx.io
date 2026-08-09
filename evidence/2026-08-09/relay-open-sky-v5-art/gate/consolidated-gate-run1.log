@@ -1,0 +1,68 @@
+[gate] START app-typecheck
+[gate] END app-typecheck exit=0
+[gate] START relay-unit-tests
+
+ RUN  v4.1.10 D:/AI Projects/Projects/Games/evio/evio-relay-v5-art-20260809
+
+
+ Test Files  4 passed (4)
+      Tests  12 passed (12)
+   Start at  14:27:29
+   Duration  3.27s (transform 3.73s, setup 0ms, import 7.46s, tests 159ms, environment 0ms)
+
+[gate] END relay-unit-tests exit=0
+[gate] START relay-worker-test
+
+ RUN  v4.1.10 D:/AI Projects/Projects/Games/evio/evio-relay-v5-art-20260809
+
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 7 skipped (8)
+   Start at  14:27:38
+   Duration  10.14s (transform 4.11s, setup 0ms, import 5.70s, tests 275ms, environment 0ms)
+
+[gate] END relay-worker-test exit=0
+[gate] START changed-file-lint
+[gate] END changed-file-lint exit=0
+[gate] START production-build
+[36mvite v8.1.5 [32mbuilding client environment for production...[36m[39m
+[2K
+transforming...✓ 226 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/login.html                                          2.15 kB │ gzip:   0.86 kB
+dist/register.html                                       2.15 kB │ gzip:   0.86 kB
+dist/index.html                                         28.05 kB │ gzip:   6.23 kB
+dist/assets/main-TIGXji41.css                          101.00 kB │ gzip:  15.25 kB
+dist/assets/style-Bcdlgckr.css                         152.85 kB │ gzip:  29.41 kB
+dist/assets/loginPage-BU2xlh89.js                        0.56 kB │ gzip:   0.36 kB
+dist/assets/productConfig-DS6QL_Gx.js                    0.59 kB │ gzip:   0.38 kB
+dist/assets/style-BI3pszSW.js                            0.69 kB │ gzip:   0.39 kB
+dist/assets/Loadout-DWxBcdgc.js                          1.87 kB │ gzip:   0.82 kB
+dist/assets/UserAccount-CIDHoBEI.js                      2.42 kB │ gzip:   1.03 kB
+dist/assets/onlineAuthoritySelection-CtKuQKJ4.js         2.71 kB │ gzip:   1.14 kB
+dist/assets/main-BvB8uFOX.js                             7.52 kB │ gzip:   2.68 kB
+dist/assets/localInkfallPracticeRoute-CULWY012.js       16.52 kB │ gzip:   5.60 kB
+dist/assets/pointerLock-RpzSuiEl.js                     83.38 kB │ gzip:  21.90 kB
+dist/assets/onlineBlinkPreview-Dyt0DlcY.js             139.35 kB │ gzip:  37.78 kB
+dist/assets/onlineAuthorityRoute-BK5e4oul.js           144.29 kB │ gzip:  37.41 kB
+dist/assets/Game-C-KVym0H.js                           250.45 kB │ gzip:  71.17 kB
+dist/assets/onlineAuthorityProfiles-BRU5plih.js        338.69 kB │ gzip:  29.51 kB
+dist/assets/disposeThreeObjectResources-BvGlH0mJ.js    753.40 kB │ gzip: 199.57 kB
+dist/assets/relayAuthority-BXUsvNEP.js               2,864.88 kB │ gzip: 971.19 kB
+
+[32m✓ built in 786ms[39m
+node.exe : [33m[plugin builtin:vite-reporter]
+At line:2 char:1937
++ ... ion-build' { & $nodeExe 'node_modules\vite\bin\vite.js' build }; Writ ...
++                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m[plugin builtin:vite-reporter] :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking:
+https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[gate] END production-build exit=0
+[gate] PASS all requested steps

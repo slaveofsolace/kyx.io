@@ -133,7 +133,7 @@ describe('Relay Revision 1 authority candidate', () => {
     expect(isRelayAuthorityProfile('inkfall-foundry')).toBe(false);
     expect(RELAY_AUTHORITY_MAP_BINDING).toMatchObject({
       mapReference: 'relay@1',
-      presentationReference: 'relay@1/open-sky/v4',
+      presentationReference: 'relay@1/open-sky/v5',
       fixtureId: RELAY_AUTHORITY_IDENTITY.fixtureId,
       fixtureHash: RELAY_AUTHORITY_FIXTURE_HASH,
       colliderCardinality: 56,
