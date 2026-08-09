@@ -370,3 +370,57 @@ process was neither closed nor disturbed. V5 runtime appearance is therefore
 `UNKNOWN`, the preserved v13 packet remains the only observed visual baseline,
 and Human Eye disposition remains **REVISE** pending owner review. No automated
 PASS grants visual acceptance.
+
+## Relay Open Sky v5 source-only continuation - 2026-08-09
+
+Dedicated packet:
+`evidence/2026-08-09/relay-open-sky-v5-source-continuation/`.
+
+The existing `codex/relay-v5-art-20260809` lane continued from commit
+`e663c356b7a33669bee4c07d26da955d684857d2`. No second worktree was opened,
+and the dirty canonical checkout remained read-only.
+
+### Source batch
+
+- Corrected floor/step/bridge material roles from actual top elevation while
+  keeping supports structural. Main, upper, and lower traversal can now carry
+  distinct surface language instead of collapsing into generic dark boxes.
+- Closed center/side bridge underside seams and connected pier capitals into
+  the load path. Boundary facade members were moved to the exact wall plane,
+  and their cant no longer rotates into playable space.
+- Aligned rotated cover skins to the actual collider rotation and capped
+  visible no-hit relief at 12 mm.
+- Turned the four unchanged spawn sight walls into recognizable west-bracket
+  and east-chevron exit shoulders without adding an arch, post, floor, or
+  collision obstruction.
+- Added paired portal destination keys: service previews the overlook crown;
+  overlook previews the lower-service pipe bank.
+- Reduced local emissive/light limits and seated route tracks, grates, and the
+  lower datum flush to authority surfaces. The sky palette now has a warmer
+  horizon, cooler upper air, and deeper blue zenith.
+
+### Frozen authority and budget
+
+The Relay authority fixture, linked-portal authority, Practice route, and
+online route files retain the exact Git blob identities from the parent
+commit. The inherited package therefore remains Revision 1 with 56 colliders,
+8 spawns, 8 zones, and 2 linked portal endpoints; no authority source was
+edited in this continuation.
+
+Expected source accounting is 60 base meshes/draw calls and 6 lights,
+including 27 instanced architecture batches representing 149 logical members.
+This remains within the existing 96/8 base and 28/2/180 architecture ceilings.
+The figures are source accounting, not a fresh runtime traversal or GPU test.
+
+### Shared-runtime hold and acceptance boundary
+
+The parent hold remained authoritative. No Blender, Unreal, browser, dev
+server, build, capture, unit/runtime test, or other protected runtime was
+launched. The non-incremental app typecheck, lint on the four changed TS files,
+diff whitespace check, evidence JSON parse, and four protected-source blob
+comparisons passed. Unit/Worker tests and builds were intentionally not run.
+
+The source direction is `KEEP`; the rejected v4 graybox, floating construction,
+and bright floor-patch relationships remain `REJECT`; v5 player-eye appearance
+and Human Eye acceptance remain `REVISE / UNKNOWN` until representative 2/4/8
+occupancy evidence is captured and reviewed after an explicit hold release.

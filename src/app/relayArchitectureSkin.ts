@@ -6,6 +6,28 @@ export const RELAY_ARCHITECTURE_V5_RENDER_BUDGET = Object.freeze({
   maximumRealtimeLights: 2,
   maximumLogicalInstances: 180,
 });
+export const RELAY_ARCHITECTURE_V5_LIGHTING_LIMITS = Object.freeze({
+  maximumSignalEmissiveIntensity: 0.24,
+  maximumSpawnPointLightIntensity: 0.24,
+  maximumSpawnPointLightRangeMeters: 6.5,
+  surfaceInlayLiftMeters: 0.006,
+});
+export const RELAY_V5_PORTAL_DESTINATION_LANGUAGE = Object.freeze({
+  serviceGate: Object.freeze({
+    endpointId: 'relay_service_gate',
+    destinationEndpointId: 'relay_overlook_gate',
+    destinationZoneId: 'relay_upper_overlook',
+    previewObjectName: 'RELAY_V5_SERVICE_TO_OVERLOOK_CROWN_KEY',
+    destinationLandmarkObjectName: 'RELAY_CAMPUS_CROWN_STRUCTURAL_YOKE',
+  }),
+  overlookGate: Object.freeze({
+    endpointId: 'relay_overlook_gate',
+    destinationEndpointId: 'relay_service_gate',
+    destinationZoneId: 'relay_lower_service',
+    previewObjectName: 'RELAY_V5_OVERLOOK_TO_SERVICE_PIPE_KEY',
+    destinationLandmarkObjectName: 'RELAY_V5_LOWER_SERVICE_PIPE_BANK',
+  }),
+});
 
 export interface RelayArchitectureSkin {
   readonly group: THREE.Group;
@@ -76,6 +98,18 @@ function instance(
   rotation: VectorTuple = [0, 0, 0],
 ): InstanceDefinition {
   return Object.freeze({ name, position, size, rotation });
+}
+
+function positionOnLocalNegativeZ(
+  position: VectorTuple,
+  rotationY: number,
+  distance: number,
+): VectorTuple {
+  return [
+    position[0] - Math.sin(rotationY) * distance,
+    position[1],
+    position[2] - Math.cos(rotationY) * distance,
+  ];
 }
 
 function addInstancedGeometry(
@@ -180,13 +214,14 @@ export function createRelayArchitectureSkin(
   });
   const westSignal = material('RELAY_V5_WEST_SIGNAL', 0x479ba0, {
     emissive: 0x124d52,
-    emissiveIntensity: 0.34,
+    emissiveIntensity:
+      RELAY_ARCHITECTURE_V5_LIGHTING_LIMITS.maximumSignalEmissiveIntensity,
     metalness: 0.18,
     roughness: 0.46,
   });
   const eastSignal = material('RELAY_V5_EAST_SIGNAL', 0xc67e46, {
     emissive: 0x603318,
-    emissiveIntensity: 0.32,
+    emissiveIntensity: 0.22,
     metalness: 0.16,
     roughness: 0.48,
   });
@@ -268,23 +303,74 @@ export function createRelayArchitectureSkin(
     castShadow: false,
   }, visualContinuityVersion);
 
+  // Each gate carries a small, shallow symbol for the place it reaches, not
+  // another same-color echo of its current room. The service header previews
+  // the amber crown; the overlook header previews the cyan service pipe bank.
+  // Both keys are fixed to existing frame headers and make no traversal claim.
+  const serviceDestinationKey = addInstancedGeometry(group, facts, {
+    name: RELAY_V5_PORTAL_DESTINATION_LANGUAGE.serviceGate.previewObjectName,
+    role: 'portal_destination_preview_inlay',
+    geometry: unitBox,
+    material: eastSignal,
+    instances: [
+      instance('RELAY_SERVICE_DESTINATION_CROWN_WEST', [-0.46, 0.38, 20.304], [0.62, 0.05, 0.012], [0, 0, 0.32]),
+      instance('RELAY_SERVICE_DESTINATION_CROWN_EAST', [0.46, 0.38, 20.304], [0.62, 0.05, 0.012], [0, 0, -0.32]),
+      instance('RELAY_SERVICE_DESTINATION_CROWN_HUB', [0, 0.49, 20.304], [0.5, 0.05, 0.012]),
+    ],
+    castShadow: false,
+  }, visualContinuityVersion);
+  serviceDestinationKey.userData.portalEndpointId =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.serviceGate.endpointId;
+  serviceDestinationKey.userData.destinationEndpointId =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.serviceGate.destinationEndpointId;
+  serviceDestinationKey.userData.destinationZoneId =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.serviceGate.destinationZoneId;
+  serviceDestinationKey.userData.destinationLandmarkObjectName =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.serviceGate
+      .destinationLandmarkObjectName;
+
+  const overlookDestinationKey = addInstancedGeometry(group, facts, {
+    name: RELAY_V5_PORTAL_DESTINATION_LANGUAGE.overlookGate.previewObjectName,
+    role: 'portal_destination_preview_inlay',
+    geometry: unitBox,
+    material: westSignal,
+    instances: [
+      instance('RELAY_OVERLOOK_DESTINATION_PIPE_UPPER', [0, 7.08, -20.304], [1.05, 0.04, 0.012]),
+      instance('RELAY_OVERLOOK_DESTINATION_PIPE_MIDDLE', [0, 6.98, -20.304], [1.05, 0.04, 0.012]),
+      instance('RELAY_OVERLOOK_DESTINATION_PIPE_LOWER', [0, 6.88, -20.304], [1.05, 0.04, 0.012]),
+      instance('RELAY_OVERLOOK_DESTINATION_PIPE_CLAMP', [0, 6.98, -20.304], [0.08, 0.28, 0.012]),
+    ],
+    castShadow: false,
+  }, visualContinuityVersion);
+  overlookDestinationKey.userData.portalEndpointId =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.overlookGate.endpointId;
+  overlookDestinationKey.userData.destinationEndpointId =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.overlookGate.destinationEndpointId;
+  overlookDestinationKey.userData.destinationZoneId =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.overlookGate.destinationZoneId;
+  overlookDestinationKey.userData.destinationLandmarkObjectName =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE.overlookGate
+      .destinationLandmarkObjectName;
+
   // All bridge pieces occupy existing deck, rail, or support silhouettes.
   // Dark underside continuity, hexagonal piers, capitals, and rail-plane
   // diagonals make the bridge read as one load path instead of floating slabs.
   const bridgeStructure = [
-    instance('RELAY_BRIDGE_CENTER_UNDERSIDE', [0, 3.61, -10], [13.9, 0.22, 3.58]),
-    instance('RELAY_BRIDGE_WEST_UNDERSIDE', [-10.5, 3.61, -10], [6.9, 0.22, 6.9]),
-    instance('RELAY_BRIDGE_EAST_UNDERSIDE', [10.5, 3.61, -10], [6.9, 0.22, 6.9]),
+    instance('RELAY_BRIDGE_CENTER_UNDERSIDE', [0, 3.61, -10], [14, 0.22, 3.7]),
+    instance('RELAY_BRIDGE_WEST_UNDERSIDE', [-10.5, 3.61, -10], [7, 0.22, 7]),
+    instance('RELAY_BRIDGE_EAST_UNDERSIDE', [10.5, 3.61, -10], [7, 0.22, 7]),
     instance('RELAY_BRIDGE_SUPPORT_WEST_BASE', [-5.6, 0.18, -10], [0.82, 0.3, 0.82]),
     instance('RELAY_BRIDGE_SUPPORT_EAST_BASE', [5.6, 0.18, -10], [0.82, 0.3, 0.82]),
-    instance('RELAY_BRIDGE_SUPPORT_WEST_CAPITAL', [-5.6, 3.3, -10], [0.82, 0.3, 0.82]),
-    instance('RELAY_BRIDGE_SUPPORT_EAST_CAPITAL', [5.6, 3.3, -10], [0.82, 0.3, 0.82]),
-    instance('RELAY_BRIDGE_CENTER_FASCIA_NORTH', [0, 3.85, -11.86], [13.9, 0.34, 0.14]),
-    instance('RELAY_BRIDGE_CENTER_FASCIA_SOUTH', [0, 3.85, -8.14], [13.9, 0.34, 0.14]),
-    instance('RELAY_BRIDGE_WEST_FASCIA_NORTH', [-10.5, 3.85, -13.48], [6.9, 0.34, 0.14]),
-    instance('RELAY_BRIDGE_WEST_FASCIA_SOUTH', [-10.5, 3.85, -6.52], [6.9, 0.34, 0.14]),
-    instance('RELAY_BRIDGE_EAST_FASCIA_NORTH', [10.5, 3.85, -13.48], [6.9, 0.34, 0.14]),
-    instance('RELAY_BRIDGE_EAST_FASCIA_SOUTH', [10.5, 3.85, -6.52], [6.9, 0.34, 0.14]),
+    instance('RELAY_BRIDGE_SUPPORT_WEST_CAPITAL', [-5.6, 3.35, -10], [0.82, 0.34, 0.82]),
+    instance('RELAY_BRIDGE_SUPPORT_EAST_CAPITAL', [5.6, 3.35, -10], [0.82, 0.34, 0.82]),
+    instance('RELAY_BRIDGE_CENTER_JOINT_WEST', [-7, 3.61, -10], [0.12, 0.2, 3.5]),
+    instance('RELAY_BRIDGE_CENTER_JOINT_EAST', [7, 3.61, -10], [0.12, 0.2, 3.5]),
+    instance('RELAY_BRIDGE_CENTER_FASCIA_NORTH', [0, 3.85, -11.86], [14, 0.34, 0.14]),
+    instance('RELAY_BRIDGE_CENTER_FASCIA_SOUTH', [0, 3.85, -8.14], [14, 0.34, 0.14]),
+    instance('RELAY_BRIDGE_WEST_FASCIA_NORTH', [-10.5, 3.85, -13.48], [7, 0.34, 0.14]),
+    instance('RELAY_BRIDGE_WEST_FASCIA_SOUTH', [-10.5, 3.85, -6.52], [7, 0.34, 0.14]),
+    instance('RELAY_BRIDGE_EAST_FASCIA_NORTH', [10.5, 3.85, -13.48], [7, 0.34, 0.14]),
+    instance('RELAY_BRIDGE_EAST_FASCIA_SOUTH', [10.5, 3.85, -6.52], [7, 0.34, 0.14]),
   ];
   addInstancedGeometry(group, facts, {
     name: 'RELAY_V5_BRIDGE_LOAD_PATH',
@@ -360,21 +446,21 @@ export function createRelayArchitectureSkin(
     const sideName = side < 0 ? 'WEST' : 'EAST';
     spawnDarkMembers.push(
       instance(`RELAY_${sideName}_SPAWN_DECK_INSERT`, [side * 28, 0.009, 0], [8.3, 0.016, 11.4]),
-      instance(`RELAY_${sideName}_OPERATIONS_BACKPLANE`, [side * 33.46, 2.72, 0], [0.12, 5.45, 14.8]),
+      instance(`RELAY_${sideName}_OPERATIONS_BACKPLANE`, [side * 33.56, 2.72, 0], [0.12, 5.45, 14.8]),
       instance(`RELAY_${sideName}_OPERATIONS_CROWN`, [side * 34.05, 5.3, 0], [1.08, 0.4, 15.7]),
-      instance(`RELAY_${sideName}_OPERATIONS_SILL`, [side * 33.35, 0.42, 0], [0.16, 0.46, 14.2]),
+      instance(`RELAY_${sideName}_OPERATIONS_SILL`, [side * 33.55, 0.42, 0], [0.1, 0.46, 14.2]),
     );
     for (const [index, z] of [-6.1, -2.05, 2.05, 6.1].entries()) {
       spawnCeramicMembers.push(instance(
         `RELAY_${sideName}_OPERATIONS_FIN_${index + 1}`,
-        [side * 33.35, 2.75, z],
-        [0.09, 4.65, 0.28],
-        [0, 0, index % 2 === 0 ? side * 0.04 : -side * 0.04],
+        [side * 33.515, 2.75, z],
+        [0.03, 4.65, 0.28],
+        [index % 2 === 0 ? side * 0.04 : -side * 0.04, 0, 0],
       ));
     }
     spawnCeramicMembers.push(
-      instance(`RELAY_${sideName}_OPERATIONS_WING_NORTH`, [side * 33.37, 4.35, -4.25], [0.1, 0.28, 4.5], [0.22, 0, 0]),
-      instance(`RELAY_${sideName}_OPERATIONS_WING_SOUTH`, [side * 33.37, 4.35, 4.25], [0.1, 0.28, 4.5], [-0.22, 0, 0]),
+      instance(`RELAY_${sideName}_OPERATIONS_WING_NORTH`, [side * 33.515, 4.35, -4.25], [0.03, 0.28, 4.5], [0.22, 0, 0]),
+      instance(`RELAY_${sideName}_OPERATIONS_WING_SOUTH`, [side * 33.515, 4.35, 4.25], [0.03, 0.28, 4.5], [-0.22, 0, 0]),
     );
   }
   addInstancedGeometry(group, facts, {
@@ -400,20 +486,22 @@ export function createRelayArchitectureSkin(
       geometry: unitBox,
       material: signalMaterial,
       instances: [
-        instance(`RELAY_${sideName}_SPAWN_SIGNAL_SPINE`, [side * 33.28, 2.72, 0], [0.045, 3.3, 0.18]),
-        instance(`RELAY_${sideName}_SPAWN_TRACK_NORTH`, [side * 28, 0.021, -4.4], [7.2, 0.01, 0.055]),
-        instance(`RELAY_${sideName}_SPAWN_TRACK_SOUTH`, [side * 28, 0.021, 4.4], [7.2, 0.01, 0.055]),
+        instance(`RELAY_${sideName}_SPAWN_SIGNAL_SPINE`, [side * 33.508, 2.72, 0], [0.016, 3.3, 0.18]),
+        instance(`RELAY_${sideName}_SPAWN_TRACK_NORTH`, [side * 28, RELAY_ARCHITECTURE_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters, -4.4], [7.2, 0.008, 0.045]),
+        instance(`RELAY_${sideName}_SPAWN_TRACK_SOUTH`, [side * 28, RELAY_ARCHITECTURE_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters, 4.4], [7.2, 0.008, 0.045]),
       ],
       castShadow: false,
     }, visualContinuityVersion);
     const light = new THREE.PointLight(
       side < 0 ? 0x72d8db : 0xeaa262,
-      0.34,
-      7.5,
+      RELAY_ARCHITECTURE_V5_LIGHTING_LIMITS
+        .maximumSpawnPointLightIntensity,
+      RELAY_ARCHITECTURE_V5_LIGHTING_LIMITS
+        .maximumSpawnPointLightRangeMeters,
       2.2,
     );
     light.name = `RELAY_${sideName}_SPAWN_FACADE_LIGHT`;
-    light.position.set(side * 32.7, 3.25, 0);
+    light.position.set(side * 33.72, 3.25, 0);
     addLight(
       group,
       facts,
@@ -422,6 +510,83 @@ export function createRelayArchitectureSkin(
       visualContinuityVersion,
     );
   }
+
+  // The four existing spawn sight-protection walls also become the readable
+  // exit shoulders. Armor and caps stay inside those exact 6 x 2.1 x 0.48 m
+  // collider envelopes. The colored codes are twelve-millimeter surface
+  // inlays, so they communicate bay identity without inventing a blocking
+  // arch, post, or traversable ledge in either spawn route.
+  const spawnProtectionArmor: InstanceDefinition[] = [];
+  for (const side of [-1, 1] as const) {
+    const sideName = side < 0 ? 'WEST' : 'EAST';
+    for (const z of [-7.6, 7.6] as const) {
+      const wallName = z < 0 ? 'NORTH' : 'SOUTH';
+      const spawnFacingSurfaceZ = z - Math.sign(z) * 0.228;
+      spawnProtectionArmor.push(
+        instance(
+          `RELAY_${sideName}_SPAWN_${wallName}_WALL_ARMOR`,
+          [side * 25, 1.04, spawnFacingSurfaceZ],
+          [5.4, 1.34, 0.024],
+        ),
+        instance(
+          `RELAY_${sideName}_SPAWN_${wallName}_WALL_CAP`,
+          [side * 25, 2.05, z],
+          [5.65, 0.09, 0.4],
+        ),
+      );
+    }
+  }
+  const spawnProtectionMesh = addInstancedGeometry(group, facts, {
+    name: 'RELAY_V5_SPAWN_EXIT_SHOULDERS',
+    role: 'authority_spawn_sight_wall_skin',
+    geometry: unitBox,
+    material: shadowCeramic,
+    instances: spawnProtectionArmor,
+  }, visualContinuityVersion);
+  spawnProtectionMesh.userData.authorityAnchorIds = Object.freeze([
+    'relay_wall_west_spawn_north',
+    'relay_wall_west_spawn_south',
+    'relay_wall_east_spawn_north',
+    'relay_wall_east_spawn_south',
+  ]);
+  spawnProtectionMesh.userData.containment =
+    'inside_exact_spawn_sight_wall_envelopes';
+
+  const addSpawnExitCodes = (
+    side: -1 | 1,
+    signalMaterial: THREE.Material,
+  ): void => {
+    const sideName = side < 0 ? 'WEST' : 'EAST';
+    const values: InstanceDefinition[] = [];
+    for (const z of [-7.6, 7.6] as const) {
+      const wallName = z < 0 ? 'NORTH' : 'SOUTH';
+      const signalSurfaceZ = z - Math.sign(z) * 0.246;
+      if (side < 0) {
+        values.push(
+          instance(`RELAY_${sideName}_${wallName}_EXIT_BAR`, [side * 25, 1.04, signalSurfaceZ], [2.1, 0.07, 0.012]),
+          instance(`RELAY_${sideName}_${wallName}_EXIT_TICK_A`, [side * 25 - 0.92, 1.04, signalSurfaceZ], [0.07, 0.62, 0.012]),
+          instance(`RELAY_${sideName}_${wallName}_EXIT_TICK_B`, [side * 25 + 0.92, 1.04, signalSurfaceZ], [0.07, 0.62, 0.012]),
+        );
+      } else {
+        values.push(
+          instance(`RELAY_${sideName}_${wallName}_EXIT_CHEVRON_A`, [side * 25 - 0.42, 1.04, signalSurfaceZ], [1.15, 0.07, 0.012], [0, 0, 0.42]),
+          instance(`RELAY_${sideName}_${wallName}_EXIT_CHEVRON_B`, [side * 25 + 0.42, 1.04, signalSurfaceZ], [1.15, 0.07, 0.012], [0, 0, -0.42]),
+        );
+      }
+    }
+    const mesh = addInstancedGeometry(group, facts, {
+      name: `RELAY_V5_${sideName}_SPAWN_EXIT_CODES`,
+      role: 'spawn_exit_identity_surface_inlay',
+      geometry: unitBox,
+      material: signalMaterial,
+      instances: values,
+      castShadow: false,
+    }, visualContinuityVersion);
+    mesh.userData.navigationClaim = 'spawn_exit_identity_only';
+    mesh.userData.maximumVisualOnlyProtrusionMeters = 0.012;
+  };
+  addSpawnExitCodes(-1, westSignal);
+  addSpawnExitCodes(1, eastSignal);
 
   // The lower service route gets a mechanical datum: pipe banks terminate in
   // the service-gate frame, clamps sit against the arena edge, and dark grates
@@ -462,8 +627,8 @@ export function createRelayArchitectureSkin(
     material: darkMetal,
     instances: [-18, -12, -6, 0, 6, 12, 18].map((x, index) => instance(
       `RELAY_LOWER_SERVICE_GRATE_${index + 1}`,
-      [x, -2.988, 17],
-      [3.55, 0.018, 1.22],
+      [x, -2.996, 17],
+      [3.55, 0.008, 1.22],
     )),
     castShadow: false,
   }, visualContinuityVersion);
@@ -473,35 +638,35 @@ export function createRelayArchitectureSkin(
     geometry: unitBox,
     material: westSignal,
     instances: [
-      instance('RELAY_LOWER_SERVICE_DATUM_WEST', [-12.5, -2.91, 20.84], [21.2, 0.07, 0.08]),
-      instance('RELAY_LOWER_SERVICE_DATUM_EAST', [12.5, -2.91, 20.84], [21.2, 0.07, 0.08]),
+      instance('RELAY_LOWER_SERVICE_DATUM_WEST', [-12.5, -2.994, 20.84], [21.2, 0.012, 0.05]),
+      instance('RELAY_LOWER_SERVICE_DATUM_EAST', [12.5, -2.994, 20.84], [21.2, 0.012, 0.05]),
     ],
     castShadow: false,
   }, visualContinuityVersion);
 
   // Cover keeps the exact box collision readable, but top caps, recessed face
-  // armor, and alternating vertical spines stop the exposed collider cladding
+  // armor, and side-coded vertical spines stop the exposed collider cladding
   // from being the only silhouette/detail read.
   const coverDefinitions = [
-    { name: 'COURT_NORTHWEST', position: [-5.5, 0.65, -5.2] as VectorTuple, size: [2.8, 1.3, 0.9] as VectorTuple, signal: westSignal },
-    { name: 'COURT_SOUTHEAST', position: [5.5, 0.65, 5.2] as VectorTuple, size: [2.8, 1.3, 0.9] as VectorTuple, signal: eastSignal },
-    { name: 'COURT_NORTHEAST', position: [5.8, 1.2, -5.8] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, signal: eastSignal },
-    { name: 'COURT_SOUTHWEST', position: [-5.8, 1.2, 5.8] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, signal: westSignal },
-    { name: 'NORTH_WEST', position: [-14, 0.65, -15] as VectorTuple, size: [3.2, 1.3, 1] as VectorTuple, signal: westSignal },
-    { name: 'NORTH_EAST', position: [14, 0.65, -15] as VectorTuple, size: [3.2, 1.3, 1] as VectorTuple, signal: eastSignal },
-    { name: 'LOWER_WEST', position: [-10, -1.8, 17] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, signal: westSignal },
-    { name: 'LOWER_EAST', position: [10, -1.8, 17] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, signal: eastSignal },
+    { name: 'COURT_NORTHWEST', position: [-5.5, 0.65, -5.2] as VectorTuple, size: [2.8, 1.3, 0.9] as VectorTuple, rotationY: -Math.PI / 8, signal: westSignal },
+    { name: 'COURT_SOUTHEAST', position: [5.5, 0.65, 5.2] as VectorTuple, size: [2.8, 1.3, 0.9] as VectorTuple, rotationY: -Math.PI / 8, signal: eastSignal },
+    { name: 'COURT_NORTHEAST', position: [5.8, 1.2, -5.8] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, rotationY: 0, signal: eastSignal },
+    { name: 'COURT_SOUTHWEST', position: [-5.8, 1.2, 5.8] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, rotationY: 0, signal: westSignal },
+    { name: 'NORTH_WEST', position: [-14, 0.65, -15] as VectorTuple, size: [3.2, 1.3, 1] as VectorTuple, rotationY: 0, signal: westSignal },
+    { name: 'NORTH_EAST', position: [14, 0.65, -15] as VectorTuple, size: [3.2, 1.3, 1] as VectorTuple, rotationY: 0, signal: eastSignal },
+    { name: 'LOWER_WEST', position: [-10, -1.8, 17] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, rotationY: 0, signal: westSignal },
+    { name: 'LOWER_EAST', position: [10, -1.8, 17] as VectorTuple, size: [1.8, 2.4, 1.3] as VectorTuple, rotationY: 0, signal: eastSignal },
   ] as const;
   addInstancedGeometry(group, facts, {
     name: 'RELAY_V5_COVER_SADDLE_CAPS',
     role: 'authority_cover_inset_cap',
     geometry: unitHexColumn,
     material: darkMetal,
-    instances: coverDefinitions.map(({ name, position, size }) => instance(
+    instances: coverDefinitions.map(({ name, position, size, rotationY }) => instance(
       `RELAY_${name}_COVER_SADDLE_CAP`,
-      [position[0], position[1] + size[1] / 2 - 0.045, position[2]],
-      [size[0] * 0.82, 0.08, size[2] * 0.82],
-      [0, Math.PI / 6, 0],
+      [position[0], position[1] + size[1] / 2 + 0.004, position[2]],
+      [size[0] * 0.82, 0.016, size[2] * 0.82],
+      [0, rotationY + Math.PI / 6, 0],
     )),
   }, visualContinuityVersion);
   addInstancedGeometry(group, facts, {
@@ -509,10 +674,16 @@ export function createRelayArchitectureSkin(
     role: 'authority_cover_recessed_face',
     geometry: unitBox,
     material: coverArmor,
-    instances: coverDefinitions.map(({ name, position, size }) => instance(
+    instances: coverDefinitions.map(({
+      name,
+      position,
+      size,
+      rotationY,
+    }) => instance(
       `RELAY_${name}_COVER_RECESSED_ARMOR`,
-      [position[0], position[1], position[2] - size[2] / 2 - 0.006],
-      [size[0] * 0.7, size[1] * 0.56, 0.025],
+      positionOnLocalNegativeZ(position, rotationY, size[2] / 2 + 0.006),
+      [size[0] * 0.7, size[1] * 0.56, 0.012],
+      [0, rotationY, 0],
     )),
     castShadow: false,
   }, visualContinuityVersion);
@@ -529,13 +700,13 @@ export function createRelayArchitectureSkin(
         const definition = coverDefinitions[index];
         return instance(
           `RELAY_${definition.name}_COVER_SPINE`,
-          [
-            definition.position[0],
-            definition.position[1],
-            definition.position[2] - definition.size[2] / 2 - 0.022,
-          ],
-          [0.075, definition.size[1] * 0.72, 0.022],
-          [0, 0, index % 2 === 0 ? 0.16 : -0.16],
+          positionOnLocalNegativeZ(
+            definition.position,
+            definition.rotationY,
+            definition.size[2] / 2 + 0.004,
+          ),
+          [0.065, definition.size[1] * 0.72, 0.008],
+          [0, definition.rotationY, 0],
         );
       }),
       castShadow: false,
@@ -558,6 +729,11 @@ export function createRelayArchitectureSkin(
   group.userData.withinRenderBudget = withinBudget;
   group.userData.authorityGeometryAdded = false;
   group.userData.fakeTraversableSurfaceCount = 0;
+  group.userData.portalDestinationLanguage =
+    RELAY_V5_PORTAL_DESTINATION_LANGUAGE;
+  group.userData.spawnExitAuthorityAnchorCount = 4;
+  group.userData.maximumSurfaceInlayProtrusionMeters = 0.012;
+  group.userData.collisionTruthReview = 'source_static_only_runtime_unknown';
   group.userData.humanAccepted = false;
   return Object.freeze({
     group,

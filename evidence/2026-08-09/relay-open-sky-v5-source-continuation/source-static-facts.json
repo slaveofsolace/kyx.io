@@ -1,0 +1,121 @@
+{
+  "schema": "kyx-relay-open-sky-v5-source-continuation-v1",
+  "recordedAt": "2026-08-09T14:52:38.9383866-05:00",
+  "worktree": "D:\\AI Projects\\Projects\\Games\\evio\\evio-relay-v5-art-20260809",
+  "branch": "codex/relay-v5-art-20260809",
+  "parentCommit": "e663c356b7a33669bee4c07d26da955d684857d2",
+  "runtimeHold": {
+    "status": "AUTHORITATIVE_ACTIVE",
+    "prohibited": [
+      "blender",
+      "unreal",
+      "browser",
+      "dev-server",
+      "build",
+      "capture",
+      "runtime-tests"
+    ],
+    "protectedRuntimeCommandsExecuted": false
+  },
+  "authoritySourceBlobs": {
+    "src/authority/relayAuthority.ts": "57f7e5a13b3824e1cebdc307f414873e2f943cf9",
+    "src/authority/portal/relayPortalAuthority.ts": "ba3e71013150af4f2d6d408895f460d5d8d57b3e",
+    "src/app/localInkfallPracticeRoute.ts": "fbd6f7a1b12274d5798b1358e7b124e3fe9c8df4",
+    "src/app/onlineAuthorityRoute.ts": "80d5cde473ca4eaff3bf80bcaafc6656880cd76f"
+  },
+  "inheritedAuthorityContract": {
+    "revision": 1,
+    "colliders": 56,
+    "spawns": 8,
+    "zones": 8,
+    "linkedPortalEndpoints": 2,
+    "basis": "unchanged pinned authority and parity source blobs"
+  },
+  "expectedSourceAccounting": {
+    "basis": "prior committed factory counts plus explicit net source additions; no fresh factory execution under hold",
+    "baseMeshObjects": 60,
+    "baseEstimatedDrawCalls": 60,
+    "baseRealtimeLights": 6,
+    "architectureMeshBatches": 27,
+    "architectureEstimatedDrawCalls": 27,
+    "architectureLogicalInstances": 149,
+    "architectureRealtimeLights": 2,
+    "fakeTraversableSurfaceCount": 0,
+    "baseBudget": {
+      "maximumMeshObjects": 96,
+      "maximumEstimatedDrawCalls": 96,
+      "maximumRealtimeLights": 8
+    },
+    "architectureBudget": {
+      "maximumMeshObjects": 28,
+      "maximumEstimatedDrawCalls": 28,
+      "maximumRealtimeLights": 2,
+      "maximumLogicalInstances": 180
+    }
+  },
+  "staticChecks": {
+    "status": "PASS",
+    "completedAt": "2026-08-09T14:58:00.7608331-05:00",
+    "executionNote": "The suite first passed after the main batch, then passed a final full rerun after portal inlays were seated to their header contact planes.",
+    "commands": [
+      {
+        "name": "app-typecheck-static",
+        "command": "node node_modules/typescript/bin/tsc -p tsconfig.json --noEmit --incremental false",
+        "result": "PASS"
+      },
+      {
+        "name": "changed-file-eslint",
+        "command": "node node_modules/eslint/bin/eslint.js src/app/relayArchitectureSkin.ts src/app/relayVisualContinuity.ts tests/unit/app/relayArchitectureSkin.test.ts tests/unit/app/relayVisualContinuity.test.ts",
+        "result": "PASS"
+      },
+      {
+        "name": "diff-whitespace",
+        "command": "git diff --check",
+        "result": "PASS_WITH_LINE_ENDING_NOTICES"
+      },
+      {
+        "name": "evidence-json-parse",
+        "command": "Get-Content -Raw source-static-facts.json | ConvertFrom-Json",
+        "result": "PASS"
+      },
+      {
+        "name": "authority-parity-blob-identity",
+        "command": "compare git rev-parse HEAD:<path> with git hash-object <path> for four protected files",
+        "result": "PASS_4_OF_4_EXACT"
+      }
+    ]
+  },
+  "tests": {
+    "updated": [
+      "tests/unit/app/relayArchitectureSkin.test.ts",
+      "tests/unit/app/relayVisualContinuity.test.ts"
+    ],
+    "executed": false,
+    "reason": "authoritative shared-runtime hold"
+  },
+  "provenance": {
+    "projectOwnedProceduralSourceOnly": true,
+    "externalAssetFilesAdded": 0,
+    "evioMapBytesOrArtCopied": false,
+    "referenceIdeasOnly": [
+      "continuous structural load path",
+      "three-depth atmospheric hierarchy",
+      "paired destination wayfinding"
+    ]
+  },
+  "integrationRisks": {
+    "directChangedPathOverlap": [
+      "docs/work-log/2026-08-08-relay-map-pivot-checkpoint.md"
+    ],
+    "canonicalDirtyRelatedPathNotChangedByThisCommit": [
+      "src/app/onlineAuthorityRoute.ts"
+    ],
+    "requiredDisposition": "manual append-preserving reconciliation"
+  },
+  "humanEye": {
+    "sourceCandidate": "KEEP_AS_DIRECTION_ONLY",
+    "playerEyePresentation": "REVISE_UNKNOWN",
+    "humanAccepted": false,
+    "releaseEligible": false
+  }
+}

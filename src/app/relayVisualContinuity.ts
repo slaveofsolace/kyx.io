@@ -19,6 +19,20 @@ export const RELAY_OPEN_SKY_V5_RENDER_BUDGET = Object.freeze({
   maximumRealtimeLights: 8,
   portalPresentationDrawCallsOutsideBaseBudget: 10,
 });
+export const RELAY_OPEN_SKY_V5_LIGHTING_LIMITS = Object.freeze({
+  maximumRouteSignalEmissiveIntensity: 0.3,
+  maximumLocalPointLightIntensity: 0.55,
+  maximumLocalPointLightRangeMeters: 14,
+  surfaceInlayLiftMeters: 0.006,
+});
+export const RELAY_OPEN_SKY_V5_PLAYER_EYE_HIERARCHY = Object.freeze({
+  primaryNorthLandmark: 'RELAY_CAMPUS_CROWN_STRUCTURAL_YOKE',
+  centerDecisionLandmark: 'RELAY_CENTER_NODE_SIGNAL_INLAY',
+  lowerServiceLandmark: 'RELAY_V5_LOWER_SERVICE_PIPE_BANK',
+  westSpawnLandmark: 'RELAY_V5_WEST_SPAWN_EXIT_CODES',
+  eastSpawnLandmark: 'RELAY_V5_EAST_SPAWN_EXIT_CODES',
+  occupancyReviewTargets: Object.freeze([2, 4, 8] as const),
+});
 
 type ColliderSurfaceRole =
   | 'deck_upper'
@@ -46,10 +60,11 @@ export interface RelayVisualContinuity {
 const WAYPOINT_ID = /_waypoint_/u;
 const SPAWN_SURFACE_ID = /(?:spawn_pad|spawn_pocket_floor|node_(?:east|west)_spawn)/u;
 const TRAVERSAL_SURFACE_ID =
-  /(?:playable_floor|route_|node_|jump_pad|landing|bridge|ramp|stair|walk|deck|platform)/u;
+  /(?:^|_)(?:floor|route|node|jump_pad|landing|bridge|ramp|stair|step|walk|deck|platform)(?:_|$)/u;
 const EDGE_ID =
   /(?:guard_rail|door_frame|wall|boundary|barrier|sight_blocker|jump_guard|playable_guard)/u;
 const COVER_ID = /(?:module_|full_cover|half_cover|reactor|slide_gate|baffle)/u;
+const STRUCTURAL_SUPPORT_ID = /(?:support|pier|column|foundation|undercroft|keel)/u;
 
 const SCENE_POSITION = new THREE.Vector3();
 const SCENE_SCALE = new THREE.Vector3();
@@ -231,13 +246,17 @@ function surfaceRole(solid: FixtureSolidV1): ColliderSurfaceRole {
   if (SPAWN_SURFACE_ID.test(solid.id)) {
     return solid.centerMm.x < 0 ? 'spawn_west' : 'spawn_east';
   }
-  if (TRAVERSAL_SURFACE_ID.test(solid.id)) {
-    if (solid.centerMm.y > 3_000) return 'deck_upper';
-    if (solid.centerMm.y < -1_000) return 'deck_lower';
-    return 'deck_mid';
-  }
   if (EDGE_ID.test(solid.id)) return 'edge';
   if (COVER_ID.test(solid.id)) return 'cover';
+  if (STRUCTURAL_SUPPORT_ID.test(solid.id)) return 'structure';
+  if (TRAVERSAL_SURFACE_ID.test(solid.id)) {
+    const topSurfaceMm = solid.shape.type === 'box'
+      ? solid.centerMm.y + solid.shape.halfExtentsMm.y
+      : solid.centerMm.y;
+    if (topSurfaceMm > 3_000) return 'deck_upper';
+    if (topSurfaceMm < -1_000) return 'deck_lower';
+    return 'deck_mid';
+  }
   return 'structure';
 }
 
@@ -362,7 +381,8 @@ function createColliderInstances(
       0x98e6df,
       {
         emissive: 0x258f89,
-        emissiveIntensity: 0.58,
+        emissiveIntensity:
+          RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.maximumRouteSignalEmissiveIntensity,
         metalness: 0.14,
         roughness: 0.44,
       },
@@ -385,12 +405,17 @@ function createColliderInstances(
       const half = solid.shape.halfExtentsMm;
       const quaternion = solidQuaternion(solid);
       const position = scenePosition(solid).clone();
-      LOCAL_UP_OFFSET.set(0, half.y / 1_000 + 0.018, 0)
+      LOCAL_UP_OFFSET.set(
+        0,
+        half.y / 1_000
+          + RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters,
+        0,
+      )
         .applyQuaternion(quaternion);
       position.add(LOCAL_UP_OFFSET);
       SCENE_SCALE.set(
         half.x * 1.35 / 1_000,
-        0.022,
+        0.008,
         half.z * 1.35 / 1_000,
       );
       SCENE_MATRIX.compose(position, quaternion, SCENE_SCALE);
@@ -417,11 +442,11 @@ function createSkyEnvironment(parent: THREE.Group): number {
     depthWrite: false,
     toneMapped: false,
     uniforms: {
-      zenithColor: { value: new THREE.Color(0x173852) },
-      upperColor: { value: new THREE.Color(0x4d7890) },
-      horizonColor: { value: new THREE.Color(0xe6cda8) },
-      lowerColor: { value: new THREE.Color(0x667b77) },
-      sunColor: { value: new THREE.Color(0xffd39a) },
+      zenithColor: { value: new THREE.Color(0x123456) },
+      upperColor: { value: new THREE.Color(0x4b7898) },
+      horizonColor: { value: new THREE.Color(0xf0c9a6) },
+      lowerColor: { value: new THREE.Color(0x70858d) },
+      sunColor: { value: new THREE.Color(0xffc481) },
       sunDirection: {
         value: new THREE.Vector3(-0.56, 0.42, 0.72).normalize(),
       },
@@ -461,7 +486,7 @@ function createSkyEnvironment(parent: THREE.Group): number {
         float cloudBand = smoothstep(0.61, 0.84, cloudDomain)
           * smoothstep(0.08, 0.34, elevation)
           * (1.0 - smoothstep(0.58, 0.82, elevation));
-        color = mix(color, vec3(0.82, 0.87, 0.86), cloudBand * 0.13);
+        color = mix(color, vec3(0.84, 0.88, 0.9), cloudBand * 0.13);
 
         float sunFacing = max(dot(direction, sunDirection), 0.0);
         float sunHalo = pow(sunFacing, 34.0) * 0.34;
@@ -480,6 +505,12 @@ function createSkyEnvironment(parent: THREE.Group): number {
   sky.renderOrder = -100;
   markRenderOnly(sky, 'distant_environment');
   sky.userData.skyModel = 'layered_high_altitude_sun_haze_v5';
+  sky.userData.depthHierarchy = Object.freeze([
+    'warm_horizon',
+    'cool_upper_air',
+    'deep_blue_zenith',
+  ]);
+  sky.userData.humanReviewRequired = true;
   parent.add(sky);
   return 1;
 }
@@ -546,19 +577,20 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
   });
   const signal = standardMaterial('RELAY_V5_SIGNAL_EMISSIVE', 0x4faeb1, {
     emissive: 0x135c60,
-    emissiveIntensity: 0.46,
+    emissiveIntensity:
+      RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.maximumRouteSignalEmissiveIntensity,
     metalness: 0.18,
     roughness: 0.4,
   });
-  const terrain = standardMaterial('RELAY_V5_NEAR_RIDGE', 0x31484b, {
+  const terrain = standardMaterial('RELAY_V5_NEAR_RIDGE', 0x263e48, {
     metalness: 0,
     roughness: 1,
   });
-  const terrainLight = standardMaterial('RELAY_V5_MIDDLE_RIDGE', 0x4a6061, {
+  const terrainLight = standardMaterial('RELAY_V5_MIDDLE_RIDGE', 0x425c67, {
     metalness: 0,
     roughness: 1,
   });
-  const terrainFar = standardMaterial('RELAY_V5_FAR_RIDGE', 0x687a78, {
+  const terrainFar = standardMaterial('RELAY_V5_FAR_RIDGE', 0x71838c, {
     metalness: 0,
     roughness: 1,
   });
@@ -611,7 +643,12 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
   markRenderOnly(skyFill, 'environment_light');
   parent.add(skyFill);
   lightCount += 1;
-  const arrayGlow = new THREE.PointLight(0x71d0d1, 0.72, 14, 2.1);
+  const arrayGlow = new THREE.PointLight(
+    0x71d0d1,
+    RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.maximumLocalPointLightIntensity,
+    RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.maximumLocalPointLightRangeMeters,
+    2.1,
+  );
   arrayGlow.name = 'RELAY_CAMPUS_CROWN_SIGNAL_LIGHT';
   arrayGlow.position.set(0, 10.2, -26.7);
   markRenderOnly(arrayGlow, 'route_readability_light');
@@ -620,7 +657,7 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
 
   const centerLanePositions = [-18, -14, -10, -6, 6, 10, 14, 18] as const;
   const centerLane = new THREE.InstancedMesh(
-    new THREE.BoxGeometry(2.35, 0.022, 0.075),
+    new THREE.BoxGeometry(2.35, 0.008, 0.06),
     signal,
     centerLanePositions.length,
   );
@@ -631,7 +668,11 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
     centerLanePositions.map((_x, index) => `RELAY_CENTER_LANE_DASH_${index + 1}`),
   );
   centerLanePositions.forEach((x, index) => {
-    SCENE_MATRIX.makeTranslation(x, 0.021, 0);
+    SCENE_MATRIX.makeTranslation(
+      x,
+      RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters,
+      0,
+    );
     centerLane.setMatrixAt(index, SCENE_MATRIX);
   });
   centerLane.instanceMatrix.needsUpdate = true;
@@ -646,19 +687,23 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
     'route_readability_inlay',
   );
   centerNode.rotation.x = -Math.PI / 2;
-  centerNode.position.set(0, 0.03, 0);
+  centerNode.position.set(
+    0,
+    RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters,
+    0,
+  );
   const upperBridgeTrim = add(
-    new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.026, 0.075), signal),
+    new THREE.Mesh(new THREE.BoxGeometry(10.8, 0.008, 0.06), signal),
     'RELAY_UPPER_BRIDGE_SIGNAL_INLAY',
     'route_readability_inlay',
   );
-  upperBridgeTrim.position.set(0, 3.96, -10);
+  upperBridgeTrim.position.set(0, 3.936, -10);
   const lowerCourtTrim = add(
-    new THREE.Mesh(new THREE.BoxGeometry(20, 0.024, 0.07), signal),
+    new THREE.Mesh(new THREE.BoxGeometry(20, 0.008, 0.06), signal),
     'RELAY_LOWER_COURT_SIGNAL_INLAY',
     'route_readability_inlay',
   );
-  lowerCourtTrim.position.set(0, -2.97, 17);
+  lowerCourtTrim.position.set(0, -2.994, 17);
 
   for (const [side, color] of [[-1, 0x61d6e1], [1, 0xf2a054]] as const) {
     const spawnSignal = standardMaterial(
@@ -666,7 +711,7 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
       color,
       {
         emissive: color,
-        emissiveIntensity: 0.34,
+        emissiveIntensity: 0.22,
         metalness: 0.08,
         roughness: 0.38,
       },
@@ -678,7 +723,11 @@ function createRelayLandmarks(parent: THREE.Group): Readonly<{
     );
     spawnFrame.rotation.x = -Math.PI / 2;
     spawnFrame.rotation.z = Math.PI / 4;
-    spawnFrame.position.set(side * 29, 0.032, 0);
+    spawnFrame.position.set(
+      side * 29,
+      RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters,
+      0,
+    );
   }
 
   const foundationHull = add(
@@ -851,6 +900,9 @@ export function createRelayVisualContinuity(
   group.userData.authoritySourceMapId = authoritySourceMapId;
   group.userData.humanAccepted = false;
   group.userData.releaseEligible = false;
+  group.userData.playerEyeLandmarkHierarchy =
+    RELAY_OPEN_SKY_V5_PLAYER_EYE_HIERARCHY;
+  group.userData.lightingLimits = RELAY_OPEN_SKY_V5_LIGHTING_LIMITS;
 
   const colliderVisuals = new THREE.Group();
   colliderVisuals.name = 'RELAY_AUTHORITY_ALIGNED_VISUALS';
