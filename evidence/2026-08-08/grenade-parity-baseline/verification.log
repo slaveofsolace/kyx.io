@@ -1,0 +1,49 @@
+Grenade parity batch checkpoint
+Date: 2026-08-08
+Branch: agent/relay-playable-slice-wip
+Base commit: 48cef201421110dfb475bb4ee23591f3d547d870
+
+Observed source baseline:
+- Dedicated Launch authority: first qualifying world contact, zero bounce, same-tick detonation.
+- Standard frag, smoke, sticky, and flash authority: fuse previously armed at spawn.
+- Ordinary online throwable events were not consumed by the Three.js presentation runtime.
+- Online smoke used three concentric spheres rather than a distributed volume.
+
+Implemented checkpoint:
+- Standard grenade fuses now begin on first world contact.
+- Frag, smoke, and flash ignore player-body rebound contacts; sticky retains player attachment.
+- Local fallback GrenadeSystem matches the same contact-fuse model.
+- Online throwable activation, collision, and detonation events now drive authored audio/VFX.
+- Online Launch detonation now has a dedicated pressure-pulse sound.
+- Online smoke uses sixteen distributed phased puffs, continuous authority-age expansion,
+  stronger light/dark separation, and double-sided volume rendering so the field remains
+  visible from both outside and inside its authoritative radius.
+
+Final consolidated verification after the presentation revision:
+- git diff --check: PASS
+- app TypeScript: PASS
+- Worker TypeScript: PASS
+- targeted ESLint: PASS
+- focused Vitest: 2 files, 6 tests PASS
+- staging-review Vite build: PASS, 229 modules transformed
+- staging package verifier: STAGING_REVIEW_PACKAGE_VERIFIED
+- source-matched Practice Playwright: PASS, 1 test, shared 8-player authority runtime
+- Launch runtime proof: one accepted throw, one world collision, one same-tick detonation,
+  zero bounce, zero residual grenade projectile
+- Smoke runtime proof: ordinary throwable presentation event consumed and authoritative smoke
+  field active during capture
+
+Player-eye boundary:
+- Source-matched pointer-lock Practice entry and grenade inputs completed under Playwright.
+- HUMAN_EYE OBSERVED: the revised smoke volume is visible around the mid-right combatants,
+  keeps the crosshair and HUD clear, and no longer disappears when the camera is within it.
+- Evidence: kyx-smoke-field-presentation-20260808.png
+  SHA-256: 4be89f5fd5ac0f05ae42f9063c5df29b32e1dfbb07d7bef892059119555eead3
+- Presentation verdict: KEEP as a bounded integration candidate; owner visual/audio/feel
+  acceptance remains required and is not granted by this checkpoint.
+
+Known non-blocking warnings:
+- Vite reports existing chunks above 500 kB after minification.
+- Runtime logs report the existing deprecated WASM initialization signature and
+  PCFSoftShadowMap fallback to PCFShadowMap.
+- No production deployment occurred.

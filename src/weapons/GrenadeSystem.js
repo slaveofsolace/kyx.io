@@ -26,6 +26,7 @@ const PROJECTILE_RULES = Object.freeze({
     maximumLifetimeSeconds: 6,
     radius: 0.075,
     maximumBounces: 0,
+    fuseStartsOnCollision: true,
     color: 0x27d3c2,
   }),
   [ABILITY_ID.frag]: Object.freeze({
@@ -39,6 +40,7 @@ const PROJECTILE_RULES = Object.freeze({
     maximumLifetimeSeconds: 4,
     radius: 0.07,
     maximumBounces: 4,
+    fuseStartsOnCollision: true,
     color: 0x5b6d38,
   }),
   [ABILITY_ID.smoke]: Object.freeze({
@@ -52,6 +54,7 @@ const PROJECTILE_RULES = Object.freeze({
     maximumLifetimeSeconds: 4,
     radius: 0.065,
     maximumBounces: 3,
+    fuseStartsOnCollision: true,
     color: 0x526a7d,
   }),
   [ABILITY_ID.sticky]: Object.freeze({
@@ -65,6 +68,7 @@ const PROJECTILE_RULES = Object.freeze({
     maximumLifetimeSeconds: 4,
     radius: 0.065,
     maximumBounces: 0,
+    fuseStartsOnCollision: true,
     color: 0xf3c94d,
   }),
   [ABILITY_ID.flash]: Object.freeze({
@@ -78,6 +82,7 @@ const PROJECTILE_RULES = Object.freeze({
     maximumLifetimeSeconds: 3,
     radius: 0.065,
     maximumBounces: 3,
+    fuseStartsOnCollision: true,
     color: 0xe8f2f8,
   }),
 });
@@ -228,7 +233,7 @@ export class GrenadeSystem {
       vel: velocity,
       elapsed: 0,
       fuseRemaining: rules.fuseSeconds,
-      fuseStarted: abilityId !== ABILITY_ID.launch,
+      fuseStarted: !rules.fuseStartsOnCollision,
       bounceCount: 0,
       settled: false,
       attachedTarget: null,
@@ -392,6 +397,7 @@ export class GrenadeSystem {
       projectile.fuseRemaining = 0;
       return;
     }
+    projectile.fuseStarted = true;
     projectile.bounceCount += 1;
     const incomingSpeed = projectile.vel.length();
     const normalVelocity = projectile.vel.dot(collision.normal);
@@ -430,7 +436,7 @@ export class GrenadeSystem {
     const distance = _scratchDelta.length();
     let best = null;
 
-    for (const target of projectile.abilityId === ABILITY_ID.launch ? [] : targets) {
+    for (const target of projectile.abilityId === ABILITY_ID.sticky ? targets : []) {
       const position = actorPosition(target);
       if (!position) continue;
       _scratchActorCenter.copy(position);

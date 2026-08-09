@@ -8,6 +8,7 @@ test.describe('local Relay Practice route', () => {
     // Chromium's software renderer. Frame-performance proof is a separate
     // evidence gate; this test verifies route integration and viewport truth.
     test.setTimeout(120_000);
+    const evidenceDirectory = process.env.KYX_EVIDENCE_DIR ?? tmpdir();
     const consoleErrors: string[] = [];
     page.on('console', (message) => {
       if (message.type() === 'error') consoleErrors.push(message.text());
@@ -147,6 +148,24 @@ test.describe('local Relay Practice route', () => {
     expect(launchAfter?.render3d.launchPulsePresentationCount ?? 0).toBeGreaterThan(0);
     expect(launchAfter?.render3d.grenadeProjectileCount).toBe(0);
 
+    const throwablePresentationBefore = launchAfter?.render3d.throwablePresentationCount ?? 0;
+    await page.mouse.move(840, 650);
+    await page.keyboard.press('KeyF');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().render3d.throwablePresentationCount ?? 0
+    ))).toBeGreaterThan(throwablePresentationBefore);
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().render3d.activeSmokeFieldCount ?? 0
+    )), { timeout: 10_000 }).toBeGreaterThan(0);
+    await page.keyboard.down('KeyS');
+    await page.waitForTimeout(1_900);
+    await page.keyboard.up('KeyS');
+    await page.waitForTimeout(120);
+    await page.screenshot({
+      path: join(evidenceDirectory, 'kyx-smoke-field-presentation-20260808.png'),
+      fullPage: false,
+    });
+
     const diagnostics = await page.evaluate(() => (
       window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
     ));
@@ -190,7 +209,7 @@ test.describe('local Relay Practice route', () => {
     expect(consoleErrors).toEqual([]);
 
     await page.screenshot({
-      path: join(tmpdir(), 'kyx-relay-practice-active.png'),
+      path: join(evidenceDirectory, 'kyx-relay-practice-active.png'),
       fullPage: false,
     });
   });

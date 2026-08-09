@@ -1,0 +1,598 @@
+{
+  "schema_version": "2.0.0",
+  "ledger_id": "kyx_grenade_parity_20260808",
+  "created_at": "2026-08-08T20:39:01.111Z",
+  "depth": "STANDARD",
+  "iteration": 2,
+  "root": {
+    "kind": "FAILURE",
+    "node_id": "root_grenade_parity",
+    "statement": "Correct grenade behavior and feedback without regressing the accepted zero-bounce Launch authority contract.",
+    "source_state": "Launch authority is zero-bounce, but standard grenades arm in flight and online drops ordinary throwable presentation events.",
+    "target_state": "Practice and online share contact-fuse semantics, weighted collision feedback, smooth smoke deployment, and a distinct contact-detonated Launch pulse.",
+    "conditions": [
+      "Worker authority remains authoritative.",
+      "Blink and role loadout contracts remain unchanged.",
+      "Human visual and play acceptance cannot be granted by automated checks."
+    ],
+    "boundary": "Desktop Practice and online throwable mechanics and presentation only; production deployment, unrelated weapons, mobile, and subjective acceptance are out of scope.",
+    "objective_claim_id": "claim_objective",
+    "invariant_ids": [
+      "inv_authority"
+    ],
+    "uncertainty_changes_decision": false
+  },
+  "project_model": {
+    "status": "READY",
+    "facets": {
+      "intent": {
+        "summary": "Restore ev.io-like grenade legibility and weight while keeping KYX authority fail-closed.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_objective"
+        ],
+        "unknown_disposition": ""
+      },
+      "decision": {
+        "summary": "Use first-world-contact fuse arming for standard grenades and add missing online throwable presentation consumption.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_rules"
+        ],
+        "unknown_disposition": ""
+      },
+      "acceptance_contract": {
+        "summary": "Launch has zero bounce and same-tick contact detonation; standard grenades do not airburst before contact; subjective feel remains owner-reviewed.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_rules",
+          "claim_runtime_limit",
+          "claim_human_acceptance"
+        ],
+        "unknown_disposition": "Owner visual and play acceptance remains pending."
+      },
+      "mechanism": {
+        "summary": "The Worker advances fixed-tick projectiles; reliable semantic events feed client audio/VFX; smoke fields are rendered from authoritative age and radius.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_rules"
+        ],
+        "unknown_disposition": ""
+      },
+      "current_state_history": {
+        "summary": "Base commit 48cef20 had correct dedicated Launch authority, spawn-armed standard fuses, missing online throwable event presentation, and concentric-sphere smoke.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_rules"
+        ],
+        "unknown_disposition": ""
+      },
+      "people_incentives": {
+        "summary": "The owner prioritizes tester-visible gameplay changes and direct parity over repeated micro-tests.",
+        "knowledge": "KNOWN",
+        "load_bearing": false,
+        "claim_ids": [
+          "claim_objective"
+        ],
+        "unknown_disposition": ""
+      },
+      "lifecycle_recovery": {
+        "summary": "The batch is a bounded source diff on agent/relay-playable-slice-wip and can be reverted before merge; production is untouched.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_rules"
+        ],
+        "unknown_disposition": ""
+      }
+    },
+    "invariants": [
+      {
+        "id": "inv_authority",
+        "statement": "Worker authority remains the sole source of collision, detonation, impulse, damage, and smoke state.",
+        "owner": "KYX canonical integration",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": [
+          "ev_source_rules",
+          "ev_checks"
+        ]
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "dep_worker",
+        "name": "Worker throwable authority",
+        "role": "Owns projectile and effect truth.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "dep_client",
+        "name": "Three.js presentation runtime",
+        "role": "Consumes reliable events and authoritative snapshots without deciding combat.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      }
+    ],
+    "stakeholders": [
+      {
+        "id": "owner",
+        "name": "Project owner",
+        "role": "Reserves visual and play acceptance.",
+        "claim_ids": [
+          "claim_human_acceptance"
+        ]
+      }
+    ]
+  },
+  "authority": {
+    "scope": "Implement and verify a bounded desktop grenade mechanics and presentation batch on the active WIP branch.",
+    "decision_owner": "Project owner",
+    "authorized_actions": [
+      "Edit in-scope source and tests.",
+      "Run bounded local checks and a staging build."
+    ],
+    "forbidden_actions": [
+      "Deploy production.",
+      "Claim human visual or play acceptance.",
+      "Copy third-party ev.io code or assets."
+    ],
+    "human_reserved_decisions": [
+      "Subjective visual, audio, feel, and play acceptance."
+    ],
+    "external_state_allowed": false,
+    "hard_gates": [
+      {
+        "id": "gate_authority",
+        "category": "AUTHORITY",
+        "status": "CLEAR",
+        "rationale": "The bounded reversible source change preserves the named guardrail.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "gate_safety",
+        "category": "SAFETY",
+        "status": "CLEAR",
+        "rationale": "The bounded reversible source change preserves the named guardrail.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "gate_privacy",
+        "category": "PRIVACY_SECURITY_LEGAL",
+        "status": "CLEAR",
+        "rationale": "The bounded reversible source change preserves the named guardrail.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "gate_external",
+        "category": "IRREVERSIBLE_EXTERNAL_STATE",
+        "status": "NOT_APPLICABLE",
+        "rationale": "No external or production action is in this batch.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "gate_production",
+        "category": "DESTRUCTIVE_PRODUCTION",
+        "status": "NOT_APPLICABLE",
+        "rationale": "No external or production action is in this batch.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "gate_human",
+        "category": "HUMAN_RESERVED",
+        "status": "CLEAR",
+        "rationale": "Implementation stays below the human-reserved acceptance boundary; owner player-eye acceptance remains pending.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      },
+      {
+        "id": "gate_rollback",
+        "category": "ROLLBACK_FAILURE",
+        "status": "CLEAR",
+        "rationale": "The bounded reversible source change preserves the named guardrail.",
+        "claim_ids": [
+          "claim_rules"
+        ]
+      }
+    ]
+  },
+  "companion_findings": {
+    "lead_skill": "HUMAN_CORTEX",
+    "applicable_domains": [
+      "GAMEPLAY",
+      "AUDIO",
+      "VISUAL",
+      "RUNTIME_EXPERIENCE"
+    ],
+    "observation_input": "BOTH",
+    "cold_eye_status": "COMPLETED",
+    "cold_eye_before_source_inspection": true,
+    "findings": [
+      {
+        "id": "finding_rules",
+        "source_skill": "HUMAN_BRAIN",
+        "domain": "GAMEPLAY",
+        "label": "OBSERVED",
+        "verdict": "REVISE",
+        "statement": "Standard grenade fuses armed at spawn, allowing airburst before any world contact.",
+        "evidence_ids": [
+          "ev_source_rules"
+        ]
+      },
+      {
+        "id": "finding_launch",
+        "source_skill": "HUMAN_BRAIN",
+        "domain": "GAMEPLAY",
+        "label": "OBSERVED",
+        "verdict": "KEEP",
+        "statement": "Dedicated Launch already resolves first qualifying world contact with zero bounce and same-tick detonation.",
+        "evidence_ids": [
+          "ev_source_rules"
+        ]
+      },
+      {
+        "id": "finding_runtime",
+        "source_skill": "HUMAN_EYE",
+        "domain": "RUNTIME_EXPERIENCE",
+        "label": "OBSERVED",
+        "verdict": "KEEP",
+        "statement": "The source-matched Practice run completed pointer-lock input, kept the HUD and crosshair clear, and showed a distinct distributed smoke volume around mid-right combatants after the inside-volume culling defect was corrected.",
+        "evidence_ids": [
+          "ev_runtime_capture",
+          "ev_checks"
+        ]
+      }
+    ],
+    "completion_axes": {
+      "functional_implementation": {
+        "status": "PASS",
+        "signal": "Shared source and focused tests cover contact fuse, player-body filtering, zero-bounce Launch, audio/VFX consumption, and a sixteen-puff double-sided smoke volume.",
+        "evidence_ids": [
+          "ev_checks"
+        ],
+        "rationale": "The bounded implementation and focused regressions pass."
+      },
+      "runtime_integration": {
+        "status": "PASS",
+        "signal": "A source-matched staging build and Practice browser run exercised one shared eight-player authority runtime, zero-bounce Launch, ordinary throwable presentation consumption, and an active smoke field.",
+        "evidence_ids": [
+          "ev_checks",
+          "ev_runtime_capture"
+        ],
+        "rationale": "The local Practice route uses the shared authority and Three.js presentation paths and completed the bounded runtime contract. External online transport was not soaked."
+      },
+      "player_eye_presentation": {
+        "status": "PASS",
+        "signal": "The current capture shows the revised smoke volume around combatants while preserving center-screen and HUD clearance.",
+        "evidence_ids": [
+          "ev_runtime_capture"
+        ],
+        "rationale": "Human Eye cold-eye review confirms presentation presence and legibility; this does not grant subjective owner acceptance."
+      },
+      "evidence_regression_coverage": {
+        "status": "PASS",
+        "signal": "Diff check, app and Worker typechecks, targeted lint, six focused tests, staging build/package verification, and the Practice browser proof pass.",
+        "evidence_ids": [
+          "ev_checks"
+        ],
+        "rationale": "The impacted mechanism has direct automated coverage before the build gate."
+      },
+      "human_acceptance": {
+        "status": "UNKNOWN",
+        "signal": "No owner acceptance has been recorded.",
+        "evidence_ids": [
+          "ev_runtime_capture"
+        ],
+        "rationale": "Human visual, audio, and feel approval is reserved."
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "claim_objective",
+      "label": "PROPOSED",
+      "statement": "A coherent contact-fuse and presentation batch is the smallest change that addresses the reported grenade mismatch without altering Blink or loadout authority.",
+      "evidence_ids": [
+        "ev_source_rules"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Source inspection separates the already-correct dedicated Launch rules from the missing standard-fuse and online-presentation behavior."
+      }
+    },
+    {
+      "id": "claim_rules",
+      "label": "MEASURED",
+      "statement": "The implemented batch preserves zero-bounce Launch, starts standard fuses on world contact, filters non-sticky player-body rebounds, consumes online throwable events, and expands smoke continuously.",
+      "evidence_ids": [
+        "ev_source_rules",
+        "ev_checks"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "Current diff, TypeScript checks, lint, and focused tests directly cover the mechanism."
+      }
+    },
+    {
+      "id": "claim_runtime_limit",
+      "label": "MEASURED",
+      "statement": "The source-matched Practice runtime completed pointer-lock input, exercised one shared eight-player authority runtime, preserved zero-bounce Launch, consumed ordinary throwable presentation, and rendered a visible smoke field.",
+      "evidence_ids": [
+        "ev_checks",
+        "ev_runtime_capture"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "HIGH",
+        "basis": "The current Playwright run and source-matched capture directly exercise the bounded Practice path."
+      }
+    },
+    {
+      "id": "claim_human_acceptance",
+      "label": "UNKNOWN",
+      "statement": "The project owner has not yet accepted the grenade visual, audio, or feel presentation.",
+      "evidence_ids": [
+        "ev_runtime_capture"
+      ],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "LOW",
+        "basis": "No owner acceptance decision is present; automated and agent review cannot grant it."
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_source_rules",
+      "kind": "SOURCE",
+      "access": "INSPECTED_CURRENT",
+      "locator": "src/authority/combat/abilityLoadoutRuntime.ts; src/authority/combat/impulseGrenade.ts; src/weapons/GrenadeSystem.js; src/app/onlineAuthorityThreeRuntime.ts",
+      "captured_at": "2026-08-08T20:39:01.111Z",
+      "integrity": "Base 48cef20 plus current bounded working diff.",
+      "supports_claim_ids": [
+        "claim_objective",
+        "claim_rules"
+      ],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "ev_checks",
+      "kind": "TEST_RESULT",
+      "access": "GENERATED_CURRENT",
+      "locator": "evidence/2026-08-08/grenade-parity-baseline/verification.log",
+      "captured_at": "2026-08-09T01:33:29.760Z",
+      "integrity": "Final consolidated git diff check, app and Worker typechecks, targeted ESLint, focused Vitest 2 files and 6 tests, staging-review build/package verification, and source-matched Practice Playwright pass.",
+      "supports_claim_ids": [
+        "claim_rules",
+        "claim_runtime_limit"
+      ],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "ev_runtime_capture",
+      "kind": "ARTIFACT",
+      "access": "GENERATED_CURRENT",
+      "locator": "evidence/2026-08-08/grenade-parity-baseline/kyx-smoke-field-presentation-20260808.png",
+      "captured_at": "2026-08-09T01:33:29.760Z",
+      "integrity": "SHA-256 4be89f5fd5ac0f05ae42f9063c5df29b32e1dfbb07d7bef892059119555eead3",
+      "supports_claim_ids": [
+        "claim_runtime_limit"
+      ],
+      "contradicts_claim_ids": []
+    }
+  ],
+  "hypotheses": [],
+  "tests": [
+    {
+      "id": "test_contact_fuse",
+      "question": "Do shared grenade rules prevent pre-contact airburst and keep Launch zero-bounce?",
+      "kind": "SIMULATION",
+      "discriminates_hypothesis_ids": [],
+      "predicted_outcomes": [],
+      "expected_decision_value": "HIGH",
+      "cost": "LOW",
+      "risk": "LOW",
+      "authorization_status": "AUTHORIZED",
+      "status": "PASS",
+      "evidence_ids": [
+        "ev_checks"
+      ],
+        "changes_decision_if": "Any airburst, player-body rebound, or Launch bounce failure blocks the batch."
+    },
+    {
+      "id": "test_practice_runtime",
+      "question": "Does the source-matched Practice route exercise Launch and smoke presentation in one shared eight-player authority runtime?",
+      "kind": "EXPERIMENT",
+      "discriminates_hypothesis_ids": [],
+      "predicted_outcomes": [],
+      "expected_decision_value": "HIGH",
+      "cost": "MEDIUM",
+      "risk": "LOW",
+      "authorization_status": "AUTHORIZED",
+      "status": "PASS",
+      "evidence_ids": [
+        "ev_checks",
+        "ev_runtime_capture"
+      ],
+      "changes_decision_if": "A missing event, nonzero Launch bounce, absent smoke field, or unreadable capture blocks the checkpoint."
+    }
+  ],
+  "trace": {
+    "bounds": {
+      "max_depth": 3,
+      "max_nodes": 8,
+      "stop_rule": "Expand only consequences that can change authority, parity, presentation, rollback, or human acceptance."
+    },
+    "nodes": [
+      {
+        "id": "root_grenade_parity",
+        "kind": "ROOT",
+        "statement": "Grenade authority and presentation disagree with the intended player model.",
+        "claim_id": "claim_objective",
+        "depth": 0,
+        "terminal": true,
+        "closure_reason": "BOUNDED"
+      },
+      {
+        "id": "state_contact_fuse",
+        "kind": "STATE",
+        "statement": "World contact arms standard fuses and reliable events drive presentation.",
+        "claim_id": "claim_rules",
+        "depth": 1,
+        "terminal": true,
+        "closure_reason": "BOUNDED"
+      },
+      {
+        "id": "state_human_review",
+        "kind": "STATE",
+        "statement": "Subjective feel remains owner-reviewed after a source-matched runtime.",
+        "claim_id": "claim_human_acceptance",
+        "depth": 1,
+        "terminal": true,
+        "closure_reason": "UNKNOWN_ESCALATED"
+      }
+    ],
+    "edges": [],
+    "feedback_loops": [],
+    "thresholds": [
+      {
+        "id": "threshold_launch_bounce",
+        "variable": "Launch bounce count",
+        "boundary": "Exactly zero at terminal world contact.",
+        "direction": "Any value above zero rejects the implementation.",
+        "evidence_or_test_ids": [
+          "ev_checks"
+        ]
+      }
+    ]
+  },
+  "decision": {
+    "iteration_choice": "ACT",
+    "recommendation": "Create a bounded grenade checkpoint commit with explicit human-acceptance nonclaims, then resume the tester-critical character contact and animation batch without production deployment.",
+    "selected_action_ids": [
+      "action_grenade_batch"
+    ],
+    "rejected_options": [
+      "Do not retune the already-correct Launch authority into a generic bouncing throwable.",
+      "Do not use automated checks as visual or feel acceptance."
+    ],
+    "decision_claim_ids": [
+      "claim_objective",
+      "claim_rules",
+      "claim_runtime_limit"
+    ],
+    "remaining_unknown_claim_ids": [
+      "claim_human_acceptance"
+    ],
+    "human_owner": "Project owner",
+    "consecutive_stable_checks": 2,
+    "reopen_trigger": "Reopen if runtime shows bounce, airburst, choppy smoke, missing audio, or authority/presentation divergence."
+  },
+  "actions": [
+    {
+      "id": "action_grenade_batch",
+      "description": "Implement shared contact-fuse semantics and missing online throwable audio/VFX and smoke presentation.",
+      "status": "VERIFIED",
+      "authorization_status": "AUTHORIZED",
+      "authority_basis": "The active KYX goal and explicit request authorize mechanics and presentation implementation.",
+      "destructive": false,
+      "production": false,
+      "external_state_change": false,
+      "irreversible": false,
+      "monitoring": "Run the consolidated build and inspect source-matched Practice and online runtime diagnostics.",
+      "rollback": {
+        "kind": "TRUE_ROLLBACK",
+        "procedure": "Revert only the bounded grenade batch diff before merge.",
+        "preconditions": [
+          "Preserve unrelated untracked evidence and logs."
+        ],
+        "verification": "Rerun focused tests and confirm prior rule values and presentation interface.",
+        "evidence_ids": [
+          "ev_checks"
+        ],
+        "irreversible_residue": "None; production and third-party systems are untouched."
+      },
+      "recovery": {
+        "procedure": "Restore the bounded files from the pre-batch commit and rerun focused checks.",
+        "owner": "KYX canonical integration",
+        "evidence_ids": [
+          "ev_checks"
+        ]
+      },
+      "mitigation_consequence_node_ids": [
+        "state_contact_fuse"
+      ]
+    }
+  ],
+  "verification": {
+    "mechanism": {
+      "status": "PASS",
+      "signal": "Contact-fuse, collision-mask, and zero-bounce behavior pass focused simulation tests.",
+      "evidence_ids": [
+        "ev_checks"
+      ],
+      "rationale": "Direct tests exercise the changed causal rules."
+    },
+    "endpoint": {
+      "status": "PASS",
+      "signal": "Source-matched Practice completed pointer-lock input, zero-bounce Launch, ordinary throwable presentation, active smoke, and a current player-eye capture.",
+      "evidence_ids": [
+        "ev_checks",
+        "ev_runtime_capture"
+      ],
+      "rationale": "The bounded Practice endpoint is directly exercised; subjective quality and external online soak remain separate."
+    },
+    "guardrails": {
+      "status": "PASS",
+      "signal": "App and Worker typechecks plus targeted lint pass.",
+      "evidence_ids": [
+        "ev_checks"
+      ],
+      "rationale": "Shared authority and client contracts compile together."
+    },
+    "recovery": {
+      "status": "UNKNOWN",
+      "signal": "Rollback is specified but not rehearsed.",
+      "evidence_ids": [],
+      "rationale": "A reversible source diff does not require destructive rollback rehearsal before local build."
+    }
+  },
+  "closure": {
+    "status": "BOUNDED",
+    "summary": "Mechanism, source-matched build, Practice runtime, and player-eye evidence are complete for the bounded grenade checkpoint; owner acceptance and external online soak remain open.",
+    "residual_risks": [
+      "Online authored audio balance is not human-reviewed.",
+      "Smoke density and visual character are not owner-accepted.",
+      "External online transport and multiplayer soak were not rerun for this bounded batch."
+    ],
+    "human_acceptance_required": true,
+    "accepted_by": "",
+    "acceptance_evidence_ids": [],
+    "nonclaims": [
+      "This ledger does not expose hidden chain-of-thought.",
+      "Automated PASS does not grant visual, audio, feel, or play acceptance.",
+      "No production deployment or third-party asset import occurred."
+    ]
+  }
+}

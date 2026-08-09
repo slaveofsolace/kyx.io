@@ -9,6 +9,7 @@ import { INTENT_BUTTON } from '../../sim';
 import {
   G4_IMPULSE_GRENADE_RULES,
   IMPULSE_GRENADE_SOLID_LAYERS,
+  IMPULSE_GRENADE_WORLD_ONLY_LAYERS,
   impulseGrenadeDirectionQ15FromLook,
   type AuthorityImpulseGrenadeWorldPort,
   type ImpulseGrenadeCollisionLayer,
@@ -83,7 +84,7 @@ export const AUTHORITY_THROWABLE_RULES = Object.freeze({
     restitutionPermille: 420,
     frictionPermille: 280,
     sticky: false,
-    fuseStartsOnCollision: false,
+    fuseStartsOnCollision: true,
     effect: 'damage',
     effectDurationTicks: 0,
   }),
@@ -102,7 +103,7 @@ export const AUTHORITY_THROWABLE_RULES = Object.freeze({
     restitutionPermille: 380,
     frictionPermille: 300,
     sticky: false,
-    fuseStartsOnCollision: false,
+    fuseStartsOnCollision: true,
     effect: 'smoke',
     effectDurationTicks: 200,
   }),
@@ -121,7 +122,7 @@ export const AUTHORITY_THROWABLE_RULES = Object.freeze({
     restitutionPermille: 0,
     frictionPermille: 1_000,
     sticky: true,
-    fuseStartsOnCollision: false,
+    fuseStartsOnCollision: true,
     effect: 'damage',
     effectDurationTicks: 0,
   }),
@@ -140,7 +141,7 @@ export const AUTHORITY_THROWABLE_RULES = Object.freeze({
     restitutionPermille: 440,
     frictionPermille: 280,
     sticky: false,
-    fuseStartsOnCollision: false,
+    fuseStartsOnCollision: true,
     effect: 'flash',
     effectDurationTicks: 45,
   }),
@@ -488,12 +489,13 @@ function speed(value: ImpulseGrenadeVector3): number {
 
 function earliestContact(
   result: ReturnType<AuthorityImpulseGrenadeWorldPort['sweepSphere']>,
+  allowedLayers: readonly ImpulseGrenadeCollisionLayer[],
 ): ReturnType<AuthorityImpulseGrenadeWorldPort['sweepSphere']>['contacts'][number] | null {
   if (result.schemaVersion !== 1 || !Array.isArray(result.contacts) || result.contacts.length > 64) {
     throw new RangeError('ability projectile sweep result is invalid');
   }
   return [...result.contacts]
-    .filter((contact) => IMPULSE_GRENADE_SOLID_LAYERS.includes(contact.layer as never))
+    .filter((contact) => allowedLayers.includes(contact.layer))
     .sort((left, right) => (
       left.timeOfImpactPermille - right.timeOfImpactPermille
       || left.colliderId.localeCompare(right.colliderId)
@@ -655,6 +657,9 @@ export function advanceAuthorityAbilityProjectile(
     y: Math.round(velocity.y / AUTHORITY_HZ),
     z: Math.round(velocity.z / AUTHORITY_HZ),
   });
+  const solidLayers = rules.sticky
+    ? IMPULSE_GRENADE_SOLID_LAYERS
+    : IMPULSE_GRENADE_WORLD_ONLY_LAYERS;
   const contact = earliestContact(world.sweepSphere(freeze({
     schemaVersion: 1 as const,
     authorityTick,
@@ -663,11 +668,11 @@ export function advanceAuthorityAbilityProjectile(
     centerMillimeters: projectile.positionMillimeters,
     translationMillimeters: translation,
     radiusMillimeters: rules.radiusMillimeters,
-    solidLayers: IMPULSE_GRENADE_SOLID_LAYERS,
+    solidLayers,
     ignoredPlayerIds: authorityTick < projectile.spawnTick + 6
       ? [projectile.ownerPlayerId]
       : [],
-  })));
+  })), solidLayers);
   if (contact === null) {
     return freeze({
       state: {

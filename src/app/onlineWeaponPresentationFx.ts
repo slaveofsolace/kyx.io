@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import { GameSettings } from '../core/GameSettings.js';
+import type { CombatPresentationThrowableAbilityEventV1 } from '../net/protocol';
 import type {
   CombatPresentationDamageEventV1,
   CombatPresentationWeaponAttackEventV1,
@@ -25,6 +26,8 @@ interface TransientEffect {
     | 'impact_health'
     | 'blast'
     | 'impulse'
+    | 'ability_contact'
+    | 'smoke_release'
     | 'melee'
     | 'rocket_trail';
   readonly startedAtMilliseconds: number;
@@ -66,6 +69,7 @@ export interface OnlineWeaponPresentationFxDiagnostics {
   readonly acceptedAttackPresentationCount: number;
   readonly confirmedDamagePresentationCount: number;
   readonly reloadPresentationCount: number;
+  readonly throwablePresentationCount: number;
 }
 
 export interface OnlineWeaponPresentationFx {
@@ -96,7 +100,14 @@ export interface OnlineWeaponPresentationFx {
   readonly presentImpulsePulse: (
     position: THREE.Vector3,
     nowMilliseconds: number,
+    local: boolean,
     radius?: number,
+  ) => void;
+  readonly presentThrowableAbility: (
+    event: CombatPresentationThrowableAbilityEventV1,
+    position: THREE.Vector3 | null,
+    nowMilliseconds: number,
+    local: boolean,
   ) => void;
   readonly notifyWeaponPhase: (
     playerId: string,
@@ -391,6 +402,52 @@ class AuthoredWeaponAudio {
     }
   }
 
+  throwable(
+    phase: CombatPresentationThrowableAbilityEventV1['phase'],
+    abilityId: CombatPresentationThrowableAbilityEventV1['abilityId'],
+    local: boolean,
+  ): void {
+    const level = local ? 1 : 0.46;
+    if (phase === 'activated') {
+      this.noiseBurst(0.12, 0.13 * level, 1_450, 'bandpass', 0, 410, 0.72, 0.08);
+      this.noiseBurst(0.025, 0.07 * level, 2_900, 'highpass', 0.018, 1_250, 1.8, 0.04);
+      this.oscillator(118, 52, 0.1, 0.055 * level, 'sine');
+      return;
+    }
+    if (phase === 'collision') {
+      this.noiseBurst(
+        0.055,
+        (abilityId === 'smoke_grenade_v1' ? 0.1 : 0.14) * level,
+        abilityId === 'smoke_grenade_v1' ? 1_050 : 1_900,
+        'bandpass',
+        0,
+        abilityId === 'smoke_grenade_v1' ? 320 : 620,
+        2.1,
+        0.11,
+      );
+      this.oscillator(210, 78, 0.07, 0.045 * level, 'sine');
+      return;
+    }
+    if (phase !== 'detonated') return;
+    if (abilityId === 'smoke_grenade_v1') {
+      this.noiseBurst(0.035, 0.2 * level, 2_600, 'highpass', 0, 920, 0.75, 0.14);
+      this.noiseBurst(0.88, 0.27 * level, 2_100, 'bandpass', 0.025, 330, 0.38, 0.34);
+      this.oscillator(102, 42, 0.2, 0.08 * level, 'sine');
+    } else if (abilityId === 'flash_grenade_v1') {
+      this.noiseBurst(0.018, 0.42 * level, 6_800, 'highpass', 0, 2_400, 0.52, 0.3);
+      this.noiseBurst(0.24, 0.18 * level, 1_100, 'lowpass', 0.012, 120, 0.48, 0.25);
+    } else {
+      this.impact('blast', local);
+    }
+  }
+
+  impulse(local: boolean): void {
+    const level = local ? 1 : 0.52;
+    this.noiseBurst(0.024, 0.3 * level, 3_200, 'highpass', 0, 1_050, 0.7, 0.15);
+    this.noiseBurst(0.34, 0.34 * level, 720, 'lowpass', 0, 74, 0.46, 0.32);
+    this.oscillator(96, 28, 0.3, 0.27 * level, 'sine');
+  }
+
   diagnostics(): AuthoredAudioState {
     return this.state;
   }
@@ -560,6 +617,7 @@ export function createOnlineWeaponPresentationFx(
   let acceptedAttackPresentationCount = 0;
   let confirmedDamagePresentationCount = 0;
   let reloadPresentationCount = 0;
+  let throwablePresentationCount = 0;
   let disposed = false;
 
   const addTransient = (
@@ -633,8 +691,10 @@ export function createOnlineWeaponPresentationFx(
   const presentImpulsePulse = (
     position: THREE.Vector3,
     nowMilliseconds: number,
+    local: boolean,
     radius = 0.72,
   ): void => {
+    audio.impulse(local);
     const group = new THREE.Group();
     group.position.copy(position);
     group.name = 'CUTLINE_LAUNCH_TERMINAL_PULSE';
@@ -677,6 +737,66 @@ export function createOnlineWeaponPresentationFx(
     group.add(horizontalRing, verticalRing, pressureCore);
     group.add(new THREE.PointLight(0x7de9e1, 4.2, radius * 9, 2));
     addTransient(group, 'impulse', nowMilliseconds, 480);
+  };
+
+  const presentThrowableAbility = (
+    event: CombatPresentationThrowableAbilityEventV1,
+    position: THREE.Vector3 | null,
+    nowMilliseconds: number,
+    local: boolean,
+  ): void => {
+    audio.throwable(event.phase, event.abilityId, local);
+    throwablePresentationCount += 1;
+    if (position === null || event.phase === 'activated' || event.phase === 'rejected') return;
+
+    if (event.phase === 'collision') {
+      const color = event.abilityId === 'smoke_grenade_v1' ? 0x9fb0b5 : 0xffb56a;
+      const group = new THREE.Group();
+      group.position.copy(position);
+      group.name = `CUTLINE_ABILITY_CONTACT_${event.abilityId}`;
+      group.add(new THREE.Mesh(
+        new THREE.TorusGeometry(0.11, 0.018, 5, 18),
+        new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: 0.62,
+          depthWrite: false,
+          blending: THREE.AdditiveBlending,
+        }),
+      ));
+      addTransient(group, 'ability_contact', nowMilliseconds, 210);
+      return;
+    }
+    if (event.phase !== 'detonated') return;
+
+    if (event.abilityId === 'smoke_grenade_v1') {
+      const group = new THREE.Group();
+      group.position.copy(position);
+      group.name = 'CUTLINE_SMOKE_RELEASE';
+      for (const [scale, opacity] of [[1, 0.38], [0.68, 0.28], [0.4, 0.2]] as const) {
+        const release = new THREE.Mesh(
+          new THREE.SphereGeometry(0.24 * scale, 12, 8),
+          new THREE.MeshBasicMaterial({
+            color: 0xaab6ba,
+            transparent: true,
+            opacity,
+            depthWrite: false,
+          }),
+        );
+        release.position.y = 0.08 + scale * 0.12;
+        group.add(release);
+      }
+      addTransient(group, 'smoke_release', nowMilliseconds, 620);
+      return;
+    }
+
+    const color = event.abilityId === 'flash_grenade_v1'
+      ? 0xe9fbff
+      : event.abilityId === 'sticky_grenade_v1' ? 0xff9a55 : 0xff6b3e;
+    const radius = event.abilityId === 'flash_grenade_v1'
+      ? 0.38
+      : event.abilityId === 'sticky_grenade_v1' ? 0.58 : 0.68;
+    presentBlast(position, color, nowMilliseconds, radius);
   };
 
   const muzzleFlash = (
@@ -1126,6 +1246,10 @@ export function createOnlineWeaponPresentationFx(
         effect.root.scale.setScalar(1 + progress * 6.5);
       } else if (effect.kind === 'impulse') {
         effect.root.scale.setScalar(1 + progress * 7.5);
+      } else if (effect.kind === 'ability_contact') {
+        effect.root.scale.setScalar(1 + progress * 1.8);
+      } else if (effect.kind === 'smoke_release') {
+        effect.root.scale.setScalar(1 + progress * 4.2);
       } else if (
         effect.kind === 'impact_shield'
         || effect.kind === 'impact_health'
@@ -1152,6 +1276,7 @@ export function createOnlineWeaponPresentationFx(
     acceptedAttackPresentationCount,
     confirmedDamagePresentationCount,
     reloadPresentationCount,
+    throwablePresentationCount,
   });
 
   const dispose = (): void => {
@@ -1178,6 +1303,7 @@ export function createOnlineWeaponPresentationFx(
     presentProjectileDetonation,
     presentBlast,
     presentImpulsePulse,
+    presentThrowableAbility,
     notifyWeaponPhase,
     syncAuthoritativeRockets,
     update,

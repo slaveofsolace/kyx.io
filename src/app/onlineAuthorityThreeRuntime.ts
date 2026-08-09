@@ -103,6 +103,7 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly remoteAvatarProceduralAnimationCount: number;
   readonly remoteAvatarWeaponAttachmentCount: number;
   readonly grenadeProjectileCount: number;
+  readonly activeSmokeFieldCount: number;
   readonly launchProjectilePresentation: 'cutline_launch_canister_v1';
   readonly launchCanisterPresentationCount: number;
   readonly launchPulsePresentationCount: number;
@@ -112,6 +113,7 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly acceptedAttackPresentationCount: number;
   readonly confirmedDamagePresentationCount: number;
   readonly reloadPresentationCount: number;
+  readonly throwablePresentationCount: number;
   readonly portalTraversalPresentationCount: number;
   readonly activePortalEffectCount: number;
   readonly staticWorldPortalCount: number;
@@ -641,7 +643,7 @@ export async function createOnlineAuthorityThreeRuntime(
 
   const avatars = new Map<string, PlayerAvatar>();
   const grenadeProjectiles = new Map<string, THREE.Group>();
-  const abilityProjectiles = new Map<string, THREE.Mesh>();
+  const abilityProjectiles = new Map<string, THREE.Group>();
   const smokeFields = new Map<string, THREE.Group>();
   const processedReliableEvents = new Set<string>();
   const processedReliableEventOrder: string[] = [];
@@ -852,8 +854,22 @@ export async function createOnlineAuthorityThreeRuntime(
         weaponPresentationFx.presentImpulsePulse(
           mapMillimetersToScene(semantic.positionMillimeters),
           frame.nowMilliseconds,
+          semantic.ownerPlayerId === frame.combat.localPlayerId,
         );
         launchPulsePresentationCount += 1;
+      } else if (semantic.kind === 'throwable_ability_event') {
+        const projectile = semantic.projectileId === null
+          ? null
+          : abilityProjectiles.get(semantic.projectileId) ?? null;
+        const position = semantic.positionMillimeters !== null
+          ? mapMillimetersToScene(semantic.positionMillimeters)
+          : projectile?.position.clone() ?? null;
+        weaponPresentationFx.presentThrowableAbility(
+          semantic,
+          position,
+          frame.nowMilliseconds,
+          semantic.playerId === frame.combat.localPlayerId,
+        );
       } else if (
         semantic.kind === 'teleport_resource_confirmed'
         && actorId !== null
@@ -1093,16 +1109,42 @@ export async function createOnlineAuthorityThreeRuntime(
           : projectile.abilityId === 'flash_grenade_v1'
             ? 0x7fe7ff
             : projectile.abilityId === 'sticky_grenade_v1' ? 0xff8b61 : 0xff654f;
-        mesh = new THREE.Mesh(
-          new THREE.IcosahedronGeometry(0.14, 1),
+        mesh = new THREE.Group();
+        const bodyMaterial = new THREE.MeshStandardMaterial({
+          color,
+          emissive: color,
+          emissiveIntensity: 0.16,
+          metalness: 0.72,
+          roughness: 0.42,
+        });
+        const isCanister = projectile.abilityId === 'smoke_grenade_v1'
+          || projectile.abilityId === 'sticky_grenade_v1';
+        const body = new THREE.Mesh(
+          isCanister
+            ? new THREE.CylinderGeometry(0.075, 0.075, 0.2, 12)
+            : new THREE.SphereGeometry(0.105, 12, 8),
+          bodyMaterial,
+        );
+        if (!isCanister) body.scale.set(1, 0.86, 1);
+        const band = new THREE.Mesh(
+          new THREE.TorusGeometry(isCanister ? 0.078 : 0.101, 0.011, 5, 16),
           new THREE.MeshStandardMaterial({
-            color,
-            emissive: color,
-            emissiveIntensity: 1.15,
-            metalness: 0.62,
-            roughness: 0.28,
+            color: 0x162029,
+            metalness: 0.82,
+            roughness: 0.34,
           }),
         );
+        band.rotation.x = Math.PI / 2;
+        const cap = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.035, 0.046, 0.03, 9),
+          new THREE.MeshStandardMaterial({
+            color: 0x27333c,
+            metalness: 0.88,
+            roughness: 0.3,
+          }),
+        );
+        cap.position.y = isCanister ? 0.115 : 0.09;
+        mesh.add(body, band, cap);
         mesh.name = `ONLINE_AUTHORITY_ABILITY_${projectile.abilityId}_${projectile.projectileId}`;
         abilityProjectiles.set(projectile.projectileId, mesh);
         scene.add(mesh);
@@ -1128,26 +1170,57 @@ export async function createOnlineAuthorityThreeRuntime(
       if (smoke === undefined) {
         smoke = new THREE.Group();
         smoke.name = `ONLINE_AUTHORITY_SMOKE_${field.fieldId}`;
-        for (const [layerScale, opacity] of [
-          [1, 0.2],
-          [0.72, 0.16],
-          [0.46, 0.12],
-        ] as const) {
+        const puffCount = 16;
+        for (let index = 0; index < puffCount; index += 1) {
+          const angle = index * Math.PI * (3 - Math.sqrt(5));
+          const ring = Math.sqrt((index + 0.5) / puffCount);
           const layer = new THREE.Mesh(
-            new THREE.SphereGeometry(1, 20, 14),
-            new THREE.MeshStandardMaterial({
-              color: 0x8aa2a8,
-              emissive: 0x263a40,
-              emissiveIntensity: 0.38,
+            new THREE.SphereGeometry(1, 18, 12),
+            new THREE.ShaderMaterial({
+              uniforms: {
+                uColor: {
+                    value: new THREE.Color(index % 2 === 0 ? 0xa6b4b7 : 0x7d8e94),
+                },
+                uOpacity: { value: 0 },
+              },
+              vertexShader: `
+                varying vec3 vNormalView;
+                varying vec3 vViewPosition;
+                void main() {
+                  vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
+                  vNormalView = normalize(normalMatrix * normal);
+                  vViewPosition = -viewPosition.xyz;
+                  gl_Position = projectionMatrix * viewPosition;
+                }
+              `,
+              fragmentShader: `
+                uniform vec3 uColor;
+                uniform float uOpacity;
+                varying vec3 vNormalView;
+                varying vec3 vViewPosition;
+                void main() {
+                  float facing = abs(dot(
+                    normalize(vNormalView),
+                    normalize(vViewPosition)
+                  ));
+                  float softEdge = smoothstep(0.0, 0.72, facing);
+                  gl_FragColor = vec4(uColor, uOpacity * softEdge);
+                }
+              `,
               transparent: true,
-              opacity,
               depthWrite: false,
               side: THREE.DoubleSide,
-              roughness: 1,
             }),
           );
-          layer.scale.setScalar(layerScale);
-          layer.userData.baseOpacity = opacity;
+          layer.position.set(
+            Math.cos(angle) * 0.4 * ring,
+            0.16 + (index % 5) * 0.075,
+            Math.sin(angle) * 0.4 * ring,
+          );
+          layer.userData.baseScale = 0.39 + (index % 4) * 0.026;
+          layer.userData.baseOpacity = 0.62 + (index % 2) * 0.06;
+          layer.userData.phase = index / puffCount;
+          layer.scale.setScalar(0.02);
           smoke.add(layer);
         }
         smokeFields.set(field.fieldId, smoke);
@@ -1164,18 +1237,27 @@ export async function createOnlineAuthorityThreeRuntime(
         0,
         1,
       );
-      const expansion = expansionLinear * expansionLinear * (3 - 2 * expansionLinear);
       const fade = THREE.MathUtils.clamp(
         (field.expiresAtTick - estimatedServerTick) / 30,
         0,
         1,
       );
-      const scale = radius * Math.max(0.04, expansion);
-      smoke.scale.set(scale, scale * 0.72, scale);
+      smoke.scale.set(radius, radius * 0.78, radius);
       smoke.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
-        if (!(child.material instanceof THREE.MeshStandardMaterial)) return;
-        child.material.opacity = Number(child.userData.baseOpacity ?? 0.12) * fade;
+        if (!(child.material instanceof THREE.ShaderMaterial)) return;
+        const phase = Number(child.userData.phase ?? 0);
+        const delayedLinear = THREE.MathUtils.clamp(
+          expansionLinear - phase * 0.12,
+          0,
+          1,
+        );
+        const delayed = delayedLinear * delayedLinear * (3 - 2 * delayedLinear);
+        const baseScale = Number(child.userData.baseScale ?? 0.39);
+        child.scale.setScalar(baseScale * Math.max(0.025, delayed));
+        child.material.uniforms.uOpacity.value = Number(child.userData.baseOpacity ?? 0.62)
+          * delayed
+          * fade;
       });
     }
     for (const [fieldId, smoke] of smokeFields) {
@@ -1350,6 +1432,7 @@ export async function createOnlineAuthorityThreeRuntime(
           && isAttachedBelow(avatar.weapon.group, avatar.root),
       ).length,
       grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
+      activeSmokeFieldCount: smokeFields.size,
       launchProjectilePresentation: 'cutline_launch_canister_v1',
       launchCanisterPresentationCount,
       launchPulsePresentationCount,
@@ -1361,6 +1444,7 @@ export async function createOnlineAuthorityThreeRuntime(
       confirmedDamagePresentationCount:
         weaponDiagnostics.confirmedDamagePresentationCount,
       reloadPresentationCount: weaponDiagnostics.reloadPresentationCount,
+      throwablePresentationCount: weaponDiagnostics.throwablePresentationCount,
       portalTraversalPresentationCount: portalDiagnostics.cueCount,
       activePortalEffectCount: portalDiagnostics.activeTransientCount,
       staticWorldPortalCount: portalDiagnostics.staticPortalCount,

@@ -12,6 +12,7 @@ if (!Number.isInteger(workers) || workers < 1 || workers > 32) {
   throw new Error('KYX_PLAYWRIGHT_WORKERS must be an integer from 1 through 32');
 }
 const baseURL = `http://${host}:${port}`;
+const executablePath = process.env.KYX_PLAYWRIGHT_EXECUTABLE_PATH?.trim();
 const viteCommand = `"${process.execPath}" node_modules/vite/bin/vite.js --host ${host} --port ${port} --strictPort`;
 
 export default defineConfig({
@@ -24,6 +25,7 @@ export default defineConfig({
   outputDir: './node_modules/.cache/playwright-results',
   use: {
     baseURL,
+    ...(executablePath ? { launchOptions: { executablePath } } : {}),
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

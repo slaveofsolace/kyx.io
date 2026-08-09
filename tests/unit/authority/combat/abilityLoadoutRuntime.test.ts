@@ -6,7 +6,9 @@ import {
 } from '../../../../src/abilities/abilityLoadout';
 import {
   AUTHORITY_FLASH_IMPAIRMENT_RULES,
+  AUTHORITY_THROWABLE_RULES,
   abilityLoadoutReconnectPayload,
+  advanceAuthorityAbilityProjectile,
   advanceAuthorityAbilityLoadout,
   createAuthorityAbilityLoadoutRuntimeState,
   createAuthorityAbilityProjectile,
@@ -99,6 +101,87 @@ describe('authoritative four-slot ability loadout runtime', () => {
       lookYawMilliDegrees: 0,
       lookPitchMilliDegrees: 0,
     })).toThrow('AUTHORITY_LAUNCH_REQUIRES_DEDICATED_IMPULSE_RUNTIME');
+  });
+
+  it('starts standard grenade fuses on world contact and ignores player-body rebounds', () => {
+    const state = createAuthorityAbilityLoadoutRuntimeState({
+      playerId: 'player_A',
+      roomSeed: 'room_A',
+      authorityTick: 0,
+      loadout: DEFAULT_ABILITY_LOADOUT,
+    });
+    const smokeActivation = advanceAuthorityAbilityLoadout(state, {
+      authorityTick: 1,
+      pressedButtons: INTENT_BUTTON.abilityTwo,
+      alive: true,
+    }).accepted[0];
+    if (smokeActivation === undefined) throw new Error('expected a Smoke activation');
+    let smoke = createAuthorityAbilityProjectile({
+      activation: smokeActivation,
+      ownerTeamId: 'team_blue',
+      originMillimeters: { x: 0, y: 1_800, z: 0 },
+      lookYawMilliDegrees: 0,
+      lookPitchMilliDegrees: 0,
+    });
+    expect(smoke.detonatesAtTick).toBeNull();
+    for (let authorityTick = 1; authorityTick <= 26; authorityTick += 1) {
+      const result = advanceAuthorityAbilityProjectile(smoke, authorityTick, {
+        sweepSphere: () => ({ schemaVersion: 1, contacts: [] }),
+      });
+      expect(result.detonation).toBeNull();
+      if (result.state === null) throw new Error('smoke airburst before contact');
+      smoke = result.state;
+    }
+
+    const fragActivation = advanceAuthorityAbilityLoadout(state, {
+      authorityTick: 1,
+      pressedButtons: INTENT_BUTTON.abilityThree,
+      alive: true,
+    }).accepted[0];
+    if (fragActivation === undefined) throw new Error('expected a Frag activation');
+    const frag = createAuthorityAbilityProjectile({
+      activation: fragActivation,
+      ownerTeamId: 'team_blue',
+      originMillimeters: { x: 0, y: 1_800, z: 0 },
+      lookYawMilliDegrees: 0,
+      lookPitchMilliDegrees: 0,
+    });
+    const contact = advanceAuthorityAbilityProjectile(frag, 1, {
+      sweepSphere: (request) => {
+        expect(request.solidLayers).not.toContain('player_body');
+        return {
+          schemaVersion: 1,
+          contacts: [
+            {
+              colliderId: 'player_B',
+              layer: 'player_body',
+              playerId: 'player_B',
+              timeOfImpactPermille: 100,
+              normalQ15: { x: 0, y: 0, z: -32_767 },
+            },
+            {
+              colliderId: 'world_floor',
+              layer: 'world_static',
+              playerId: null,
+              timeOfImpactPermille: 300,
+              normalQ15: { x: 0, y: 32_767, z: 0 },
+            },
+          ],
+        };
+      },
+    });
+    expect(contact.detonation).toBeNull();
+    expect(contact.state).toMatchObject({
+      detonatesAtTick: 51,
+      bounceCount: 1,
+    });
+    expect(contact.events).toMatchObject([{
+      kind: 'ability_projectile_collision',
+      colliderId: 'world_floor',
+    }]);
+    expect(Object.values(AUTHORITY_THROWABLE_RULES).every(
+      (rules) => rules.fuseStartsOnCollision,
+    )).toBe(true);
   });
 
   it('weights Flash by authority distance, line of sight, and target facing without stealing input', () => {
