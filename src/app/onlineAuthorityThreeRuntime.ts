@@ -99,9 +99,12 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly spawnCount: number;
   readonly zoneCount: number;
   readonly remoteAvatarCount: number;
+  readonly remoteAvatarCandidateCount: number;
   readonly remoteAvatarAnimationContractCount: number;
+  readonly remoteAvatarAuthoredClipCount: number;
   readonly remoteAvatarProceduralAnimationCount: number;
   readonly remoteAvatarWeaponAttachmentCount: number;
+  readonly remoteAvatarSupportHandContactCount: number;
   readonly grenadeProjectileCount: number;
   readonly activeSmokeFieldCount: number;
   readonly launchProjectilePresentation: 'cutline_launch_canister_v1';
@@ -437,18 +440,21 @@ async function ensureHumanSoldierReady(): Promise<void> {
 }
 
 function createPlayerAvatar(teamId: string | null): PlayerAvatar {
-  const armorTypeId = teamId === 'team_red' ? 'heavy' : 'recon';
+  const skin = teamId === 'team_red'
+    ? { primary: 0xc96a49, secondary: 0x252932, accent: 0xff8060 }
+    : teamId === 'team_blue'
+      ? { primary: 0x5797b7, secondary: 0x202932, accent: 0x62e6ff }
+      : { primary: 0x9daab2, secondary: 0x242b32, accent: 0xa8f0ff };
+  const armorTypeId = 'assault';
   const root = (buildHumanSoldier(
-    null,
+    skin,
     armorTypeId,
     {
       runtimeRole: 'online_remote',
       presentationOnly: true,
     },
   ) ?? buildPreviewCharacter(
-    teamId === 'team_red'
-      ? { primary: 0x9a4a1f, secondary: 0x171c26 }
-      : { primary: 0x2f6fae, secondary: 0x151c27 },
+    skin,
     armorTypeId,
     null,
     { allowHuman: false, animate: true, runtimeRole: 'online_remote' },
@@ -870,6 +876,12 @@ export async function createOnlineAuthorityThreeRuntime(
           frame.nowMilliseconds,
           semantic.playerId === frame.combat.localPlayerId,
         );
+        if (
+          semantic.phase === 'activated'
+          && semantic.playerId !== frame.combat.localPlayerId
+        ) {
+          avatars.get(semantic.playerId)?.root.userData.triggerAbility?.(0.65);
+        }
       } else if (
         semantic.kind === 'teleport_resource_confirmed'
         && actorId !== null
@@ -1397,6 +1409,9 @@ export async function createOnlineAuthorityThreeRuntime(
     const portalDiagnostics = portalPresentation.diagnostics();
     const blinkDiagnostics = blinkPreviewPresentation.diagnostics();
     const remoteAvatars = [...avatars.values()];
+    const remoteAvatarPresentationStates = remoteAvatars.map(
+      (avatar) => avatar.root.userData.getPresentationState?.() ?? null,
+    );
     const firstPersonMountDiagnostics = inspectKyxFirstPersonWeaponMount(
       firstPersonWeaponMount,
       firstPersonWeapon,
@@ -1420,9 +1435,15 @@ export async function createOnlineAuthorityThreeRuntime(
       spawnCount: presentationIdentity.spawnCount,
       zoneCount: presentationIdentity.zoneCount,
       remoteAvatarCount: avatars.size,
+      remoteAvatarCandidateCount: remoteAvatars.filter(
+        (avatar) => avatar.root.userData.isG6CharacterCandidate === true,
+      ).length,
       remoteAvatarAnimationContractCount: remoteAvatars.filter(
         (avatar) => typeof avatar.root.userData.setLocomotion === 'function'
           && typeof avatar.root.userData.actionTick === 'function',
+      ).length,
+      remoteAvatarAuthoredClipCount: remoteAvatarPresentationStates.filter(
+        (state) => typeof state?.activeClipKey === 'string',
       ).length,
       remoteAvatarProceduralAnimationCount: remoteAvatars.filter(
         (avatar) => avatar.root.userData.proceduralPresentation === true,
@@ -1430,6 +1451,9 @@ export async function createOnlineAuthorityThreeRuntime(
       remoteAvatarWeaponAttachmentCount: remoteAvatars.filter(
         (avatar) => avatar.weapon !== null
           && isAttachedBelow(avatar.weapon.group, avatar.root),
+      ).length,
+      remoteAvatarSupportHandContactCount: remoteAvatarPresentationStates.filter(
+        (state) => state?.weaponContact?.supportHandContact === true,
       ).length,
       grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
       activeSmokeFieldCount: smokeFields.size,

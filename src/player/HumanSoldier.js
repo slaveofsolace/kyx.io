@@ -79,6 +79,7 @@ function findBone(root, name) {
  * `group.userData.setMotion('idle'|'walk'|'run')` to switch clips.
  * `armorTypeId` selects one of the ARMOR_LOOKS variants so each loadout armor
  * type previews as a distinct super-soldier.
+ * @param {{ primary?: number, secondary?: number, accent?: number } | null} skin
  */
 export function buildHumanSoldier(skin = null, armorTypeId = 'assault', opts = {}) {
   if (isG6CharacterCandidateEnabled()) {

@@ -6,9 +6,17 @@ import {
   getRev17WeaponContactProfile,
   normalizeRev17LocomotionPresentation,
   rev17GaitPlaybackRate,
+  rev17RuntimeRoleLod,
 } from '../../../src/player/rev17PresentationPolish.js';
 
 describe('Rev17 runtime presentation polish', () => {
+  it('uses LOD1 for every remote runtime role', () => {
+    expect(rev17RuntimeRoleLod('preview')).toBe(0);
+    expect(rev17RuntimeRoleLod('player')).toBe(0);
+    expect(rev17RuntimeRoleLod('enemy')).toBe(1);
+    expect(rev17RuntimeRoleLod('online_remote')).toBe(1);
+  });
+
   it('preserves measured forward, strafe, and backpedal intent', () => {
     const strafe = normalizeRev17LocomotionPresentation(4, {
       planarSpeedMillimetersPerSecond: 4_000,

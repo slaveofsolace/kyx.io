@@ -72,7 +72,7 @@ describe('procedural character presentation', () => {
     expect(character.userData.locomotionDiagnostics().weaponAttached).toBe(true);
   });
 
-  it('presents jump, land, reload, and death through the shared hooks', () => {
+  it('presents jump, reload, melee, ability, and death through shared hooks', () => {
     const character = buildAnimatedFallback();
     character.userData.triggerJump();
     character.userData.actionTick(1 / 60);
@@ -82,6 +82,14 @@ describe('procedural character presentation', () => {
     character.userData.triggerReload(0.3);
     character.userData.actionTick(0.1);
     expect(character.userData.locomotionDiagnostics().action).toBe('reload');
+
+    character.userData.triggerMelee(0.3);
+    character.userData.actionTick(0.1);
+    expect(character.userData.locomotionDiagnostics().action).toBe('melee');
+
+    character.userData.triggerAbility(0.3);
+    character.userData.actionTick(0.1);
+    expect(character.userData.locomotionDiagnostics().action).toBe('ability');
 
     character.userData.triggerDeath();
     character.userData.actionTick(0.1);

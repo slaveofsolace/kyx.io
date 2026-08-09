@@ -10,7 +10,7 @@ function option(name, fallback) {
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-08/g6-assault-rev38-player-eye',
+  'evidence/2026-08-08/g6-assault-rev38-contact-animation-v1',
 ));
 const buildCommit = option('--commit', 'working-tree');
 
@@ -125,31 +125,23 @@ try {
   }
 
   if (pointerLockAcquired) {
-    const canvas = page.locator('#game-canvas');
-    const box = await canvas.boundingBox();
-    if (box !== null) {
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await page.mouse.move(box.x + box.width * 0.68, box.y + box.height * 0.44, {
-        steps: 8,
-      });
-    }
-    await page.keyboard.down('w');
-    await page.keyboard.down('d');
-    await page.waitForTimeout(1_100);
-    await page.keyboard.up('d');
-    await page.keyboard.up('w');
+    await page.waitForTimeout(650);
+    await capture(
+      '07-inkfall-remote-assault-contact-1440x900.png',
+      'Unsteered player-eye frame preserving the spawn sightline toward remote Assault candidates.',
+    );
     await page.mouse.down({ button: 'left' });
     await page.waitForTimeout(180);
     await page.mouse.up({ button: 'left' });
     await page.waitForTimeout(250);
     await capture(
-      '07-inkfall-after-move-fire-1440x900.png',
-      'Gray-box play sample after diagonal movement, camera rotation, and primary fire.',
+      '08-inkfall-after-primary-fire-1440x900.png',
+      'Same stable spawn sightline after primary fire, without a scripted camera collision.',
     );
     await page.keyboard.down('Tab');
     await page.waitForTimeout(250);
     await capture(
-      '08-inkfall-scoreboard-held-1440x900.png',
+      '09-inkfall-scoreboard-held-1440x900.png',
       'Live hold-Tab scoreboard over the current player-eye frame.',
     );
     await page.keyboard.up('Tab');
@@ -162,7 +154,7 @@ try {
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-g6-assault-rev38-player-eye-capture-v1',
+      schema: 'kyx-g6-assault-rev38-contact-animation-capture-v1',
       capturedAt: new Date().toISOString(),
       buildCommit,
       buildMode: 'staging-review',
@@ -195,17 +187,39 @@ if (candidateSnapshot?.revision !== 'rev38-fitted-v1') {
 if (practiceBefore?.render3d?.selectedFirstPersonOverlapFree !== true) {
   throw new Error('G6_REV38_FIRST_PERSON_WEAPON_OVERLAP');
 }
+const remoteAvatarCount = practiceAfter?.render3d?.remoteAvatarCount ?? 0;
+if (remoteAvatarCount < 1) {
+  throw new Error('G6_REV38_REMOTE_AVATARS_MISSING');
+}
+if (practiceAfter?.render3d?.remoteAvatarCandidateCount !== remoteAvatarCount) {
+  throw new Error('G6_REV38_REMOTE_CANDIDATE_BINDING_MISMATCH');
+}
+if (practiceAfter?.render3d?.remoteAvatarAuthoredClipCount !== remoteAvatarCount) {
+  throw new Error('G6_REV38_REMOTE_AUTHORED_CLIP_MISMATCH');
+}
+if (practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount !== remoteAvatarCount) {
+  throw new Error('G6_REV38_REMOTE_WEAPON_ATTACHMENT_MISMATCH');
+}
+if (practiceAfter?.render3d?.remoteAvatarSupportHandContactCount !== remoteAvatarCount) {
+  throw new Error('G6_REV38_REMOTE_SUPPORT_HAND_CONTACT_MISMATCH');
+}
 
 process.stdout.write(`${JSON.stringify({
   status: 'G6_REV38_PLAYER_EYE_PACKET_CAPTURED',
   outputRoot,
   pointerLockAcquired,
   candidateInstances: candidateSnapshot?.instances?.length ?? 0,
-  remoteAvatarCount: practiceAfter?.render3d?.remoteAvatarCount ?? null,
+  remoteAvatarCount,
+  remoteAvatarCandidateCount:
+    practiceAfter?.render3d?.remoteAvatarCandidateCount ?? null,
   remoteAvatarAnimationContractCount:
     practiceAfter?.render3d?.remoteAvatarAnimationContractCount ?? null,
+  remoteAvatarAuthoredClipCount:
+    practiceAfter?.render3d?.remoteAvatarAuthoredClipCount ?? null,
   remoteAvatarWeaponAttachmentCount:
     practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount ?? null,
+  remoteAvatarSupportHandContactCount:
+    practiceAfter?.render3d?.remoteAvatarSupportHandContactCount ?? null,
   firstPersonOverlapFree:
     practiceAfter?.render3d?.selectedFirstPersonOverlapFree ?? null,
   runtimeErrorCount:

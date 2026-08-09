@@ -8,6 +8,10 @@ function finite(value, fallback = 0) {
   return Number.isFinite(value) ? value : fallback;
 }
 
+export function rev17RuntimeRoleLod(runtimeRole) {
+  return runtimeRole === 'preview' || runtimeRole === 'player' ? 0 : 1;
+}
+
 function sectorForDirection(directionRadians, speed) {
   if (speed <= 1e-4) return 'idle';
   const octant = Math.round(directionRadians / (Math.PI / 4));

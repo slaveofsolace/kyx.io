@@ -12,6 +12,7 @@ import {
   fitRev17WeaponContact,
   normalizeRev17LocomotionPresentation,
   rev17GaitPlaybackRate,
+  rev17RuntimeRoleLod,
 } from './rev17PresentationPolish.js';
 
 const TEMPLATES = {
@@ -567,7 +568,9 @@ export function buildRev17Character(
   armorTypeId = 'assault',
   opts = {},
 ) {
-  const template = opts.runtimeRole === 'enemy' ? TEMPLATES.lod1 : TEMPLATES.lod0;
+  const runtimeRole = opts.runtimeRole ?? 'preview';
+  const runtimeLod = rev17RuntimeRoleLod(runtimeRole);
+  const template = runtimeLod === 1 ? TEMPLATES.lod1 : TEMPLATES.lod0;
   if (!template) return null;
 
   const root = cloneSkeleton(template.scene);
@@ -575,7 +578,7 @@ export function buildRev17Character(
   tintMaterials(materials, skin, armorTypeId);
 
   const group = new THREE.Group();
-  group.name = `KYX_${CHARACTER_REVISION_TOKEN}_${opts.runtimeRole === 'enemy' ? 'ENEMY_LOD1' : 'PLAYER_LOD0'}`;
+  group.name = `KYX_${CHARACTER_REVISION_TOKEN}_${runtimeLod === 1 ? 'REMOTE_LOD1' : 'PLAYER_LOD0'}`;
   group.add(root);
 
   // Cache neutral-pose framing metrics before the mixer starts posing the
@@ -594,7 +597,7 @@ export function buildRev17Character(
   const semanticActions = createSemanticActionDriver(
     controller,
     root,
-    opts.runtimeRole ?? 'preview',
+    runtimeRole,
   );
   let grounded = true;
   let locomotion = normalizeRev17LocomotionPresentation(0);
@@ -882,7 +885,7 @@ export function buildRev17Character(
     isG6CharacterCandidate: true,
     candidateRevision: CHARACTER_REVISION,
     candidateDefault: CHARACTER_IS_DEFAULT,
-    runtimeRole: opts.runtimeRole ?? 'preview',
+    runtimeRole,
     armorTypeId,
     standHeight: framingSize.y || 1.8,
     feetY: framingBox.min.y,
@@ -947,8 +950,8 @@ export function buildRev17Character(
   };
   registerRuntimeInstance(group, {
     kind: 'thirdPerson',
-    runtimeRole: opts.runtimeRole ?? 'preview',
-    lod: opts.runtimeRole === 'enemy' ? 1 : 0,
+    runtimeRole,
+    lod: runtimeLod,
   });
   return group;
 }

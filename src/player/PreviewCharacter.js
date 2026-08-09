@@ -450,6 +450,12 @@ export function installProceduralCharacterPresentation(group) {
   const triggerEquip = (durationSeconds = 0.34) => {
     beginAction('equip', durationSeconds);
   };
+  const triggerMelee = (durationSeconds = 0.55) => {
+    beginAction('melee', durationSeconds);
+  };
+  const triggerAbility = (durationSeconds = 0.65) => {
+    beginAction('ability', durationSeconds);
+  };
   const triggerFire = (kick = 1) => {
     fireRecoil = Math.max(fireRecoil, clamp(kick, 0, 3) * 0.14);
   };
@@ -592,7 +598,17 @@ export function installProceduralCharacterPresentation(group) {
         rig.armR.rotation.x += mix * 0.48;
         rig.armR.rotation.z += mix * 0.42;
         rig.armL.rotation.x += mix * 0.22;
-      } else {
+      } else if (action.kind === 'melee') {
+        rig.armR.rotation.x -= mix * 0.74;
+        rig.armR.rotation.y -= mix * 0.34;
+        rig.armR.rotation.z -= mix * 0.22;
+        rig.armL.rotation.x += mix * 0.18;
+      } else if (action.kind === 'ability') {
+        rig.armR.rotation.x -= mix * 0.52;
+        rig.armR.rotation.y += mix * 0.28;
+        rig.armL.rotation.x -= mix * 0.26;
+        rig.armL.rotation.y -= mix * 0.18;
+      } else if (action.kind === 'equip') {
         rig.armR.rotation.x -= mix * 0.3;
         rig.armL.rotation.x -= mix * 0.16;
       }
@@ -629,6 +645,8 @@ export function installProceduralCharacterPresentation(group) {
     setAim,
     triggerReload,
     triggerEquip,
+    triggerMelee,
+    triggerAbility,
     triggerFire,
     triggerHit,
     triggerJump,
