@@ -122,7 +122,9 @@ export class ArmorPreviewRenderer {
         // Drive the rigged human soldier's idle animation on the turntable.
         const ud = this._group.userData;
         if (ud?.isHuman) {
-          ud.setMotion('idle');
+          if (ud.getReviewLocomotionOverride?.() === null) {
+            ud.setMotion('idle');
+          }
           ud.beginPresentationFrame?.();
           ud.mixer.update(0.016);
           ud.armorTick?.(0.016);

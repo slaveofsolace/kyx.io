@@ -51,6 +51,10 @@ async function capture(name, notes) {
 
 let candidateSnapshot = null;
 let loadoutCrouchSnapshot = null;
+let loadoutStrafeSnapshot = null;
+let loadoutBackpedalSnapshot = null;
+const loadoutStrafeSamples = [];
+const loadoutBackpedalSamples = [];
 let crouchCandidateSnapshot = null;
 let practiceBefore = null;
 let practiceAfter = null;
@@ -108,7 +112,7 @@ try {
   await page.waitForFunction(() => {
     const instances = window.__KYX_G6_CHARACTER_EVIDENCE__
       ?.snapshot().instances
-      .filter((instance) => instance.connectedToScene) ?? [];
+      .filter((instance) => instance.connectedToScene && instance.visible) ?? [];
     return instances.length > 0 && instances.every(
       (instance) => (instance.presentation?.crouchMix ?? 0) > 0.65,
     );
@@ -127,6 +131,74 @@ try {
   });
   await page.evaluate(() => (
     window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.(null)
+  ));
+  await page.waitForTimeout(350);
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setLocomotionOverride?.('right')
+  ));
+  await page.waitForFunction(() => {
+    const instances = window.__KYX_G6_CHARACTER_EVIDENCE__
+      ?.snapshot().instances
+      .filter((instance) => instance.connectedToScene && instance.visible) ?? [];
+    return instances.length > 0 && instances.every((instance) => (
+      instance.presentation?.locomotion?.sector === 'right'
+      && instance.presentation?.activeClipKey === 'run'
+      && (instance.presentation?.gaitPlaybackRate ?? 0) > 0
+      && (instance.presentation?.cadenceSpeedError ?? Infinity) < 0.05
+    ));
+  }, null, { timeout: 5_000 });
+  for (let frame = 1; frame <= 4; frame += 1) {
+    await page.waitForTimeout(160);
+    const snapshot = await page.evaluate(() => (
+      window.__KYX_G6_CHARACTER_EVIDENCE__?.snapshot() ?? null
+    ));
+    loadoutStrafeSamples.push(snapshot);
+    const name = `05c-${frame}-armored-turntable-strafe-right-canvas.png`;
+    await page.locator('#armor-preview-canvas').screenshot({
+      path: path.join(outputRoot, name),
+    });
+    captures.push({
+      name,
+      url: page.url(),
+      viewport: page.viewportSize(),
+      notes: `Right-strafe gait sequence frame ${frame}/4 using measured direction.`,
+    });
+  }
+  loadoutStrafeSnapshot = loadoutStrafeSamples.at(-1) ?? null;
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setLocomotionOverride?.('backward')
+  ));
+  await page.waitForFunction(() => {
+    const instances = window.__KYX_G6_CHARACTER_EVIDENCE__
+      ?.snapshot().instances
+      .filter((instance) => instance.connectedToScene && instance.visible) ?? [];
+    return instances.length > 0 && instances.every((instance) => (
+      instance.presentation?.locomotion?.sector === 'backward'
+      && instance.presentation?.activeClipKey === 'walk'
+      && (instance.presentation?.gaitPlaybackRate ?? 0) < 0
+      && (instance.presentation?.cadenceSpeedError ?? Infinity) < 0.05
+    ));
+  }, null, { timeout: 5_000 });
+  for (let frame = 1; frame <= 4; frame += 1) {
+    await page.waitForTimeout(210);
+    const snapshot = await page.evaluate(() => (
+      window.__KYX_G6_CHARACTER_EVIDENCE__?.snapshot() ?? null
+    ));
+    loadoutBackpedalSamples.push(snapshot);
+    const name = `05d-${frame}-armored-turntable-backpedal-canvas.png`;
+    await page.locator('#armor-preview-canvas').screenshot({
+      path: path.join(outputRoot, name),
+    });
+    captures.push({
+      name,
+      url: page.url(),
+      viewport: page.viewportSize(),
+      notes: `Reverse-backpedal gait sequence frame ${frame}/4.`,
+    });
+  }
+  loadoutBackpedalSnapshot = loadoutBackpedalSamples.at(-1) ?? null;
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setLocomotionOverride?.(null)
   ));
   await page.waitForTimeout(350);
   await page.getByRole('button', { name: 'Close loadout' }).click();
@@ -211,10 +283,13 @@ try {
   await page.evaluate(() => (
     window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.(null)
   )).catch(() => undefined);
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setLocomotionOverride?.(null)
+  )).catch(() => undefined);
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-g6-assault-player-eye-capture-v3',
+      schema: 'kyx-g6-assault-player-eye-capture-v4',
       capturedAt: new Date().toISOString(),
       buildCommit,
       candidateRevision,
@@ -223,6 +298,10 @@ try {
       viewport: { width: 1440, height: 900 },
       candidateSnapshot,
       loadoutCrouchSnapshot,
+      loadoutStrafeSnapshot,
+      loadoutBackpedalSnapshot,
+      loadoutStrafeSamples,
+      loadoutBackpedalSamples,
       crouchCandidateSnapshot,
       practiceBefore,
       practiceAfter,
@@ -248,7 +327,7 @@ if (candidateSnapshot?.revision !== candidateRevision) {
   throw new Error('G6_ASSAULT_RUNTIME_IDENTITY_MISMATCH');
 }
 const loadoutCrouchCandidates = loadoutCrouchSnapshot?.instances?.filter(
-  (instance) => instance.connectedToScene,
+  (instance) => instance.connectedToScene && instance.visible,
 ) ?? [];
 if (
   loadoutCrouchCandidates.length < 1
@@ -257,6 +336,34 @@ if (
   )
 ) {
   throw new Error('G6_ASSAULT_LOADOUT_CROUCH_PROOF_INVALID');
+}
+const loadoutStrafeCandidates = loadoutStrafeSnapshot?.instances?.filter(
+  (instance) => instance.connectedToScene && instance.visible,
+) ?? [];
+if (
+  loadoutStrafeCandidates.length < 1
+  || loadoutStrafeCandidates.some((instance) => (
+    instance.presentation?.locomotion?.sector !== 'right'
+    || instance.presentation?.activeClipKey !== 'run'
+    || (instance.presentation?.gaitPlaybackRate ?? 0) <= 0
+    || (instance.presentation?.cadenceSpeedError ?? Infinity) >= 0.05
+  ))
+) {
+  throw new Error('G6_ASSAULT_LOADOUT_STRAFE_PROOF_INVALID');
+}
+const loadoutBackpedalCandidates = loadoutBackpedalSnapshot?.instances?.filter(
+  (instance) => instance.connectedToScene && instance.visible,
+) ?? [];
+if (
+  loadoutBackpedalCandidates.length < 1
+  || loadoutBackpedalCandidates.some((instance) => (
+    instance.presentation?.locomotion?.sector !== 'backward'
+    || instance.presentation?.activeClipKey !== 'walk'
+    || (instance.presentation?.gaitPlaybackRate ?? 0) >= 0
+    || (instance.presentation?.cadenceSpeedError ?? Infinity) >= 0.05
+  ))
+) {
+  throw new Error('G6_ASSAULT_LOADOUT_BACKPEDAL_PROOF_INVALID');
 }
 if (practiceBefore?.render3d?.selectedFirstPersonOverlapFree !== true) {
   throw new Error('G6_ASSAULT_FIRST_PERSON_WEAPON_OVERLAP');
@@ -303,6 +410,8 @@ process.stdout.write(`${JSON.stringify({
   pointerLockAcquired,
   candidateInstances: candidateSnapshot?.instances?.length ?? 0,
   loadoutCrouchProofCount: loadoutCrouchCandidates.length,
+  loadoutStrafeProofCount: loadoutStrafeCandidates.length,
+  loadoutBackpedalProofCount: loadoutBackpedalCandidates.length,
   remoteAvatarCount,
   remoteAvatarCandidateCount:
     practiceAfter?.render3d?.remoteAvatarCandidateCount ?? null,

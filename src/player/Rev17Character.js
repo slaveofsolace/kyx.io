@@ -12,6 +12,8 @@ import {
   fitRev17WeaponContact,
   normalizeRev17LocomotionPresentation,
   rev17GaitPlaybackRate,
+  rev17LocomotionClipKey,
+  rev17ProjectedGaitSpeed,
   rev17RuntimeRoleLod,
 } from './rev17PresentationPolish.js';
 
@@ -27,6 +29,51 @@ const RUNTIME_INSTANCES = new Map();
 const FALLBACK_WARNINGS = new Set();
 let runtimeInstanceSerial = 0;
 let reviewStanceOverride = null;
+let reviewLocomotionOverride = null;
+const REVIEW_LOCOMOTION_PROFILES = Object.freeze({
+  forward: Object.freeze({
+    speed: 3.2,
+    sprinting: false,
+    signal: Object.freeze({
+      planarSpeedMillimetersPerSecond: 3_200,
+      forwardSpeedMillimetersPerSecond: 3_200,
+      rightSpeedMillimetersPerSecond: 0,
+      travelDirectionRadians: 0,
+      strafeLean: 0,
+      gaitPlaybackDirection: 1,
+      sector: 'forward',
+      turnRateRadiansPerSecond: 0,
+    }),
+  }),
+  right: Object.freeze({
+    speed: 3.2,
+    sprinting: false,
+    signal: Object.freeze({
+      planarSpeedMillimetersPerSecond: 3_200,
+      forwardSpeedMillimetersPerSecond: 0,
+      rightSpeedMillimetersPerSecond: 3_200,
+      travelDirectionRadians: Math.PI / 2,
+      strafeLean: -1,
+      gaitPlaybackDirection: 1,
+      sector: 'right',
+      turnRateRadiansPerSecond: 0,
+    }),
+  }),
+  backward: Object.freeze({
+    speed: 2.4,
+    sprinting: false,
+    signal: Object.freeze({
+      planarSpeedMillimetersPerSecond: 2_400,
+      forwardSpeedMillimetersPerSecond: -2_400,
+      rightSpeedMillimetersPerSecond: 0,
+      travelDirectionRadians: Math.PI,
+      strafeLean: 0,
+      gaitPlaybackDirection: -1,
+      sector: 'backward',
+      turnRateRadiansPerSecond: 0,
+    }),
+  }),
+});
 const CHARACTER_REVISION = G6_CHARACTER_CANDIDATE.revision ?? 'rev17';
 const CHARACTER_REVISION_TOKEN = String(CHARACTER_REVISION)
   .replace(/[^a-z0-9]+/gi, '_')
@@ -81,6 +128,23 @@ if (CHARACTER_RUNTIME_ACTIVE && typeof window !== 'undefined') {
         : null;
       for (const entry of RUNTIME_INSTANCES.values()) {
         entry.group.userData.setStance?.(reviewStanceOverride ?? 'standing');
+      }
+    },
+    setLocomotionOverride: (mode) => {
+      reviewLocomotionOverride = Object.hasOwn(
+        REVIEW_LOCOMOTION_PROFILES,
+        mode,
+      ) ? mode : null;
+      const profile = reviewLocomotionOverride === null
+        ? null
+        : REVIEW_LOCOMOTION_PROFILES[reviewLocomotionOverride];
+      for (const entry of RUNTIME_INSTANCES.values()) {
+        entry.group.userData.setLocomotion?.(
+          profile?.speed ?? 0,
+          true,
+          profile?.sprinting ?? false,
+          profile?.signal ?? 0,
+        );
       }
     },
   });
@@ -684,27 +748,33 @@ export function buildRev17Character(
     legacyForwardRatio = null,
     legacyTurnRateRadiansPerSecond = 0,
   ) => {
+    const reviewProfile = reviewLocomotionOverride === null
+      ? null
+      : REVIEW_LOCOMOTION_PROFILES[reviewLocomotionOverride];
+    const effectiveSpeed = reviewProfile?.speed ?? speed;
+    const effectiveGrounded = reviewProfile === null ? isGrounded : true;
+    const effectiveSprinting = reviewProfile?.sprinting ?? sprinting;
+    const effectiveSignalOrStrafe = reviewProfile?.signal ?? signalOrStrafe;
     locomotion = normalizeRev17LocomotionPresentation(
-      speed,
-      signalOrStrafe,
+      effectiveSpeed,
+      effectiveSignalOrStrafe,
       legacyForwardRatio,
       legacyTurnRateRadiansPerSecond,
     );
-    if (!isGrounded) {
+    if (!effectiveGrounded) {
       controller.setDesired('air');
       controller.setPlaybackRate(1);
       if (grounded) controller.playOnce('jump');
     } else {
-      const key = sprinting || locomotion.planarSpeed > 4.2
-        ? 'run'
-        : locomotion.planarSpeed > 0.45
-          ? 'walk'
-          : 'idle';
+      const key = rev17LocomotionClipKey(
+        locomotion.planarSpeed,
+        effectiveSprinting,
+      );
       controller.setPlaybackRate(rev17GaitPlaybackRate(key, locomotion));
       controller.setDesired(key);
       if (!grounded) controller.playOnce('land');
     }
-    grounded = isGrounded;
+    grounded = effectiveGrounded;
   };
 
   const setAim = (pitch = 0, yaw = 0) => {
@@ -809,8 +879,6 @@ export function buildRev17Character(
     const moving = grounded && locomotion.planarSpeed > 0.35;
     const backward = Math.max(0, -smoothForwardRatio);
     const lateral = smoothRightRatio;
-    const cadence = controller.activeKey === 'run' ? 7.9 : 6.05;
-    const footPhase = Math.sin(locomotionClock * cadence);
 
     // Keep the lower body biased toward measured travel while the shoulders and
     // weapon remain aligned with authority yaw/aim. This is intentionally
@@ -823,13 +891,13 @@ export function buildRev17Character(
         poseBones.thighLeft,
         backward * 0.08,
         lateral * 0.08,
-        lateral * footPhase * 0.045,
+        0,
       );
       applyPoseOffset(
         poseBones.thighRight,
         backward * 0.08,
         lateral * 0.08,
-        lateral * footPhase * -0.045,
+        0,
       );
       applyPoseOffset(poseBones.shinLeft, backward * 0.07, 0, 0);
       applyPoseOffset(poseBones.shinRight, backward * 0.07, 0, 0);
@@ -959,28 +1027,40 @@ export function buildRev17Character(
     setAim,
     beginPresentationFrame,
     setStance,
+    getReviewLocomotionOverride: () => reviewLocomotionOverride,
     getStanceOffsetY: () => -0.18 * smoothCrouchMix,
     armorTick,
     triggerAction: (request) => semanticActions.trigger(request),
     getActionState: () => semanticActions.snapshot(),
-    getPresentationState: () => Object.freeze({
-      locomotion,
-      activeClipKey: controller.activeKey,
-      gaitPlaybackRate: controller.playbackRate,
-      grounded,
-      crouchMix: smoothCrouchMix,
-      stanceOffsetY: -0.18 * smoothCrouchMix,
-      aimPitch: smoothAimPitch,
-      aimYaw: smoothAimYaw,
-      weaponContact: weaponContact
-        ? Object.freeze({
-            family: weaponContact.family,
-            socketName: weaponContact.socketName,
-            muzzleNodeName: weaponContact.muzzleNodeName,
-            supportHandContact: weaponContact.supportTarget !== null,
-          })
-        : null,
-    }),
+    getPresentationState: () => {
+      const cadenceProjectedSpeed = rev17ProjectedGaitSpeed(
+        controller.activeKey,
+        controller.playbackRate,
+      );
+      return Object.freeze({
+        locomotion,
+        activeClipKey: controller.activeKey,
+        gaitPlaybackRate: controller.playbackRate,
+        cadenceProjectedSpeed,
+        cadenceSpeedError: Math.abs(
+          cadenceProjectedSpeed - locomotion.planarSpeed,
+        ),
+        grounded,
+        crouchMix: smoothCrouchMix,
+        stanceOffsetY: -0.18 * smoothCrouchMix,
+        reviewLocomotionOverride,
+        aimPitch: smoothAimPitch,
+        aimYaw: smoothAimYaw,
+        weaponContact: weaponContact
+          ? Object.freeze({
+              family: weaponContact.family,
+              socketName: weaponContact.socketName,
+              muzzleNodeName: weaponContact.muzzleNodeName,
+              supportHandContact: weaponContact.supportTarget !== null,
+            })
+          : null,
+      });
+    },
     actionTick: (dt) => semanticActions.tick(dt),
     triggerEquip: (durationSeconds) => semanticActions.trigger({
       kind: 'equip',

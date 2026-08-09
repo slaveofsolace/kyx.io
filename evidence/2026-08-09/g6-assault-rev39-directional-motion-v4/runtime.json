@@ -1,0 +1,1901 @@
+{
+  "schema": "kyx-g6-assault-player-eye-capture-v4",
+  "capturedAt": "2026-08-09T07:41:45.704Z",
+  "buildCommit": "working-tree",
+  "candidateRevision": "rev39-armored-restore-v1",
+  "buildMode": "staging-review",
+  "baseUrl": "http://127.0.0.1:6343",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "candidateSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0,
+          "stanceOffsetY": 0,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0,
+          "stanceOffsetY": 0,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2
+    }
+  },
+  "loadoutCrouchSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0.5247907283138554,
+          "stanceOffsetY": -0.09446233109649398,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0.7391996221188765,
+          "stanceOffsetY": -0.13305593198139776,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2
+    }
+  },
+  "loadoutStrafeSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 3.2,
+            "forwardRatio": 0,
+            "rightRatio": 1,
+            "travelDirectionRadians": 1.5707963267948966,
+            "strafeLean": -1,
+            "gaitPlaybackDirection": 1,
+            "sector": "right",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 0.5818181818181819,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 3.2,
+          "grounded": true,
+          "crouchMix": 3.270840382809179e-7,
+          "stanceOffsetY": -5.887512689056522e-8,
+          "reviewLocomotionOverride": "right",
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 3.2,
+            "forwardRatio": 0,
+            "rightRatio": 1,
+            "travelDirectionRadians": 1.5707963267948966,
+            "strafeLean": -1,
+            "gaitPlaybackDirection": 1,
+            "sector": "right",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 0.5818181818181819,
+          "cadenceProjectedSpeed": 3.2000000000000006,
+          "cadenceSpeedError": 4.440892098500626e-16,
+          "grounded": true,
+          "crouchMix": 2.944066100597587e-50,
+          "stanceOffsetY": -5.2993189810756564e-51,
+          "reviewLocomotionOverride": "right",
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2
+    }
+  },
+  "loadoutBackpedalSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 2.4,
+            "forwardRatio": -1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 3.141592653589793,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": -1,
+            "sector": "backward",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": -1.1162790697674418,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 2.4,
+          "grounded": true,
+          "crouchMix": 5.68003564162408e-13,
+          "stanceOffsetY": -1.0224064154923343e-13,
+          "reviewLocomotionOverride": "backward",
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 2.4,
+            "forwardRatio": -1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 3.141592653589793,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": -1,
+            "sector": "backward",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "walk",
+          "gaitPlaybackRate": -1.1162790697674418,
+          "cadenceProjectedSpeed": 2.4,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 5.937516949345635e-97,
+          "stanceOffsetY": -1.0687530508822143e-97,
+          "reviewLocomotionOverride": "backward",
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2
+    }
+  },
+  "loadoutStrafeSamples": [
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 3.2,
+            "grounded": true,
+            "crouchMix": 0.001321419553035278,
+            "stanceOffsetY": -0.00023785551954635004,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "run",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 3.2000000000000006,
+            "cadenceSpeedError": 4.440892098500626e-16,
+            "grounded": true,
+            "crouchMix": 7.988429181770177e-23,
+            "stanceOffsetY": -1.437917252718632e-23,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    },
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 3.2,
+            "grounded": true,
+            "crouchMix": 0.0000825382528429589,
+            "stanceOffsetY": -0.000014856885511732603,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "run",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 3.2000000000000006,
+            "cadenceSpeedError": 4.440892098500626e-16,
+            "grounded": true,
+            "crouchMix": 7.887348178941635e-32,
+            "stanceOffsetY": -1.4197226722094944e-32,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    },
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 3.2,
+            "grounded": true,
+            "crouchMix": 0.000005268058331898171,
+            "stanceOffsetY": -9.482504997416707e-7,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "run",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 3.2000000000000006,
+            "cadenceSpeedError": 4.440892098500626e-16,
+            "grounded": true,
+            "crouchMix": 6.427115365220441e-41,
+            "stanceOffsetY": -1.1568807657396793e-41,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    },
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 3.2,
+            "grounded": true,
+            "crouchMix": 3.270840382809179e-7,
+            "stanceOffsetY": -5.887512689056522e-8,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 3.2,
+              "forwardRatio": 0,
+              "rightRatio": 1,
+              "travelDirectionRadians": 1.5707963267948966,
+              "strafeLean": -1,
+              "gaitPlaybackDirection": 1,
+              "sector": "right",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "run",
+            "gaitPlaybackRate": 0.5818181818181819,
+            "cadenceProjectedSpeed": 3.2000000000000006,
+            "cadenceSpeedError": 4.440892098500626e-16,
+            "grounded": true,
+            "crouchMix": 2.944066100597587e-50,
+            "stanceOffsetY": -5.2993189810756564e-51,
+            "reviewLocomotionOverride": "right",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    }
+  ],
+  "loadoutBackpedalSamples": [
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 2.4,
+            "grounded": true,
+            "crouchMix": 1.1934306308843993e-8,
+            "stanceOffsetY": -2.1481751355919187e-9,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "walk",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 2.4,
+            "cadenceSpeedError": 0,
+            "grounded": true,
+            "crouchMix": 5.149052767880142e-62,
+            "stanceOffsetY": -9.268294982184256e-63,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    },
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 2.4,
+            "grounded": true,
+            "crouchMix": 4.328418482089726e-10,
+            "stanceOffsetY": -7.791153267761507e-11,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "walk",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 2.4,
+            "cadenceSpeedError": 0,
+            "grounded": true,
+            "crouchMix": 1.3221362400407945e-73,
+            "stanceOffsetY": -2.37984523207343e-74,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    },
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 2.4,
+            "grounded": true,
+            "crouchMix": 1.549275375062186e-11,
+            "stanceOffsetY": -2.7886956751119347e-12,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "walk",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 2.4,
+            "cadenceSpeedError": 0,
+            "grounded": true,
+            "crouchMix": 4.1134821492090323e-85,
+            "stanceOffsetY": -7.404267868576258e-86,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    },
+    {
+      "revision": "rev39-armored-restore-v1",
+      "default": false,
+      "instances": [
+        {
+          "id": "rev39-armored-restore-v1-1",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": false,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "idle",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 0,
+            "cadenceSpeedError": 2.4,
+            "grounded": true,
+            "crouchMix": 5.68003564162408e-13,
+            "stanceOffsetY": -1.0224064154923343e-13,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        },
+        {
+          "id": "rev39-armored-restore-v1-2",
+          "kind": "thirdPerson",
+          "runtimeRole": "preview",
+          "lod": 0,
+          "connectedToScene": true,
+          "visible": true,
+          "action": {
+            "kind": "idle",
+            "sequence": 0,
+            "lastStarted": null,
+            "elapsedSeconds": 0,
+            "durationSeconds": null,
+            "markers": [],
+            "authoredClipKey": null,
+            "fallback": null
+          },
+          "presentation": {
+            "locomotion": {
+              "planarSpeed": 2.4,
+              "forwardRatio": -1,
+              "rightRatio": 0,
+              "travelDirectionRadians": 3.141592653589793,
+              "strafeLean": 0,
+              "gaitPlaybackDirection": -1,
+              "sector": "backward",
+              "turnRateRadiansPerSecond": 0
+            },
+            "activeClipKey": "walk",
+            "gaitPlaybackRate": -1.1162790697674418,
+            "cadenceProjectedSpeed": 2.4,
+            "cadenceSpeedError": 0,
+            "grounded": true,
+            "crouchMix": 5.937516949345635e-97,
+            "stanceOffsetY": -1.0687530508822143e-97,
+            "reviewLocomotionOverride": "backward",
+            "aimPitch": 0,
+            "aimYaw": 0,
+            "weaponContact": null
+          }
+        }
+      ],
+      "connectedByRole": {
+        "preview": 2
+      }
+    }
+  ],
+  "crouchCandidateSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012698468246301,
+            "forwardRatio": 0.970133788185715,
+            "rightRatio": 0.24257047021522232,
+            "travelDirectionRadians": 0.24501458087640857,
+            "strafeLean": -0.24257047021522235,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.20617775898097523
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.275036085135691,
+          "cadenceProjectedSpeed": 7.012698468246301,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 6.233095974845245,
+            "forwardRatio": 0.970154599105497,
+            "rightRatio": 0.24248722406438758,
+            "travelDirectionRadians": 0.24492877285804496,
+            "strafeLean": -0.24248722406438758,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": -0.09929249316842739
+          },
+          "activeClipKey": "jump",
+          "gaitPlaybackRate": 1,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 6.233095974845245,
+          "grounded": false,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-3",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 6.233314986266617,
+            "forwardRatio": 0.9701557629304304,
+            "rightRatio": 0.24248256772987706,
+            "travelDirectionRadians": 0.2449239732810272,
+            "strafeLean": -0.24248256772987706,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.12639437934016193
+          },
+          "activeClipKey": "jump",
+          "gaitPlaybackRate": 1,
+          "cadenceProjectedSpeed": 0,
+          "cadenceSpeedError": 6.233314986266617,
+          "grounded": false,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-4",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012283243851463,
+            "forwardRatio": 0.9701401229920883,
+            "rightRatio": 0.24254513345127257,
+            "travelDirectionRadians": 0.24498846418865394,
+            "strafeLean": -0.24254513345127257,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.26609580798210003
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.274960589791175,
+          "cadenceProjectedSpeed": 7.0122832438514635,
+          "cadenceSpeedError": 8.881784197001252e-16,
+          "grounded": true,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-5",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012283243851463,
+            "forwardRatio": 0.9701401229920885,
+            "rightRatio": 0.24254513345127224,
+            "travelDirectionRadians": 0.24498846418865358,
+            "strafeLean": -0.24254513345127224,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.2660958079820954
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.274960589791175,
+          "cadenceProjectedSpeed": 7.0122832438514635,
+          "cadenceSpeedError": 8.881784197001252e-16,
+          "grounded": true,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-6",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 2.484347787936325,
+            "forwardRatio": 0.6428471804395279,
+            "rightRatio": 0.7659944533747935,
+            "travelDirectionRadians": 0.872586859364614,
+            "strafeLean": -0.7659944533747937,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward_right",
+            "turnRateRadiansPerSecond": 0.7361537312939004
+          },
+          "activeClipKey": "walk",
+          "gaitPlaybackRate": 1.1555105990401513,
+          "cadenceProjectedSpeed": 2.484347787936325,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-7",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 2.484347787936325,
+            "forwardRatio": 0.6428471804395273,
+            "rightRatio": 0.7659944533747943,
+            "travelDirectionRadians": 0.8725868593646149,
+            "strafeLean": -0.7659944533747944,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward_right",
+            "turnRateRadiansPerSecond": 0.7361537312939066
+          },
+          "activeClipKey": "walk",
+          "gaitPlaybackRate": 1.1555105990401513,
+          "cadenceProjectedSpeed": 2.484347787936325,
+          "cadenceSpeedError": 0,
+          "grounded": true,
+          "crouchMix": 0.6918596752731138,
+          "stanceOffsetY": -0.12453474154916047,
+          "reviewLocomotionOverride": null,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      }
+    ],
+    "connectedByRole": {
+      "online_remote": 7
+    }
+  },
+  "practiceBefore": {
+    "schemaVersion": 1,
+    "status": "paused",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 0,
+    "lifecycle": "warmup",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 0,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": false,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v4",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 149,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 8,
+      "remoteAvatarCount": 7,
+      "remoteAvatarCandidateCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarAuthoredClipCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "remoteAvatarSupportHandContactCount": 7,
+      "remoteAvatarSkeletalStanceContractCount": 7,
+      "remoteAvatarWholeBodySquashCount": 0,
+      "grenadeProjectileCount": 0,
+      "activeSmokeFieldCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "throwablePresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "locked",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": false,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "practiceAfter": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 83,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 664,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 1,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v4",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 149,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 8,
+      "remoteAvatarCount": 7,
+      "remoteAvatarCandidateCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarAuthoredClipCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "remoteAvatarSupportHandContactCount": 7,
+      "remoteAvatarSkeletalStanceContractCount": 7,
+      "remoteAvatarWholeBodySquashCount": 0,
+      "grenadeProjectileCount": 0,
+      "activeSmokeFieldCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 1,
+      "acceptedAttackPresentationCount": 1,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "throwablePresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 4.841700812298399e-10,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "pointerLockAcquired": true,
+  "glbResponses": [
+    {
+      "url": "http://127.0.0.1:6343/assets/character-lod0-BJInbp1l.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-vlr7-quaternius-rev1-B4S_-JM4.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-sg4-quaternius-rev1-Ctpz0BrH.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-k9-quaternius-rev1-BxtHXSFG.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-longbow12-quaternius-rev1-w4Rydit-.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-br6-quaternius-rev1-e_S5TDVX.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/character-lod0-BJInbp1l.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-vlr7-quaternius-rev1-B4S_-JM4.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-k9-quaternius-rev1-BxtHXSFG.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-sg4-quaternius-rev1-Ctpz0BrH.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-longbow12-quaternius-rev1-w4Rydit-.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6343/assets/kyx-br6-quaternius-rev1-e_S5TDVX.glb",
+      "status": 200
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-menu-first-impression-1440x900.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "First 3/10/30-second menu surface in the source-matched staging-review build."
+    },
+    {
+      "name": "02-arena-selection-original-1440x900.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Original-arena lane before any legacy tab interaction."
+    },
+    {
+      "name": "03-arena-selection-legacy-1440x900.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Legacy lane showing playable KYX history and the local-only evmap rights boundary."
+    },
+    {
+      "name": "04-loadout-armored-turntable-1440x900.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Actual runtime loadout turntable using the installed armored staging-review candidate."
+    },
+    {
+      "name": "05-armored-turntable-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Unscaled runtime canvas crop; not a static Blender render."
+    },
+    {
+      "name": "05b-armored-turntable-crouch-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Evidence-only skeletal-crouch close-up from the same live turntable."
+    },
+    {
+      "name": "05c-1-armored-turntable-strafe-right-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Right-strafe gait sequence frame 1/4 using measured direction."
+    },
+    {
+      "name": "05c-2-armored-turntable-strafe-right-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Right-strafe gait sequence frame 2/4 using measured direction."
+    },
+    {
+      "name": "05c-3-armored-turntable-strafe-right-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Right-strafe gait sequence frame 3/4 using measured direction."
+    },
+    {
+      "name": "05c-4-armored-turntable-strafe-right-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Right-strafe gait sequence frame 4/4 using measured direction."
+    },
+    {
+      "name": "05d-1-armored-turntable-backpedal-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Reverse-backpedal gait sequence frame 1/4."
+    },
+    {
+      "name": "05d-2-armored-turntable-backpedal-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Reverse-backpedal gait sequence frame 2/4."
+    },
+    {
+      "name": "05d-3-armored-turntable-backpedal-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Reverse-backpedal gait sequence frame 3/4."
+    },
+    {
+      "name": "05d-4-armored-turntable-backpedal-canvas.png",
+      "url": "http://127.0.0.1:6343/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Reverse-backpedal gait sequence frame 4/4."
+    },
+    {
+      "name": "06-inkfall-practice-paused-1440x900.png",
+      "url": "http://127.0.0.1:6343/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Player-eye Inkfall view before pointer capture; HUD and entry affordance visible."
+    },
+    {
+      "name": "07-inkfall-remote-assault-contact-1440x900.png",
+      "url": "http://127.0.0.1:6343/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Unsteered player-eye frame preserving the spawn sightline toward remote Assault candidates."
+    },
+    {
+      "name": "08-inkfall-after-primary-fire-1440x900.png",
+      "url": "http://127.0.0.1:6343/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Same stable spawn sightline after primary fire, without a scripted camera collision."
+    },
+    {
+      "name": "09-inkfall-remote-assault-crouch-1440x900.png",
+      "url": "http://127.0.0.1:6343/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Evidence-only staging override proving a skeletal crouch and preserved character proportions."
+    },
+    {
+      "name": "10-inkfall-scoreboard-held-1440x900.png",
+      "url": "http://127.0.0.1:6343/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Live hold-Tab scoreboard over the current player-eye frame."
+    }
+  ],
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "nonclaims": [
+    "No human visual acceptance is claimed.",
+    "The armored restoration remains review-only and release-ineligible.",
+    "This bounded run is not 2/4/8 multiplayer proof or a performance soak."
+  ]
+}

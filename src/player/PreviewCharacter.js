@@ -549,11 +549,11 @@ export function installProceduralCharacterPresentation(group) {
       ? clamp(locomotion.planarSpeed / authoredSpeed, 0.25, 1)
       : 0;
     const stride = step * speedMix * (sprinting ? 0.72 : 0.52);
-    const lateralStep = step * smoothRightRatio * 0.13;
+    const lateralStep = step * smoothRightRatio * 0.06;
     const lowerBodyYaw = clamp(
-      locomotion.travelDirectionRadians * 0.11,
-      -0.18,
-      0.18,
+      locomotion.travelDirectionRadians * 0.07,
+      -0.11,
+      0.11,
     );
 
     rig.legL.rotation.x = stride;

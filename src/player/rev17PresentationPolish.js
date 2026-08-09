@@ -12,6 +12,12 @@ export function rev17RuntimeRoleLod(runtimeRole) {
   return runtimeRole === 'preview' || runtimeRole === 'player' ? 0 : 1;
 }
 
+export function rev17LocomotionClipKey(planarSpeed, sprinting = false) {
+  const speed = Math.max(0, finite(planarSpeed));
+  if (speed <= 0.45) return 'idle';
+  return sprinting || speed >= 3 ? 'run' : 'walk';
+}
+
 function sectorForDirection(directionRadians, speed) {
   if (speed <= 1e-4) return 'idle';
   const octant = Math.round(directionRadians / (Math.PI / 4));
@@ -132,8 +138,22 @@ export function normalizeRev17LocomotionPresentation(
 export function rev17GaitPlaybackRate(locomotionKey, signal) {
   if (locomotionKey !== 'walk' && locomotionKey !== 'run') return 1;
   const authoredSpeed = locomotionKey === 'run' ? 5.5 : 2.15;
-  const magnitude = clamp(signal.planarSpeed / authoredSpeed, 0.62, 1.48);
+  const minimumRate = locomotionKey === 'run' ? 0.55 : 0.35;
+  const magnitude = clamp(
+    signal.planarSpeed / authoredSpeed,
+    minimumRate,
+    1.35,
+  );
   return magnitude * signal.gaitPlaybackDirection;
+}
+
+export function rev17ProjectedGaitSpeed(locomotionKey, playbackRate) {
+  const authoredSpeed = locomotionKey === 'run'
+    ? 5.5
+    : locomotionKey === 'walk'
+      ? 2.15
+      : 0;
+  return authoredSpeed * Math.abs(finite(playbackRate, 0));
 }
 
 const CONTACT_PROFILES = Object.freeze({

@@ -6,6 +6,8 @@ import {
   getRev17WeaponContactProfile,
   normalizeRev17LocomotionPresentation,
   rev17GaitPlaybackRate,
+  rev17LocomotionClipKey,
+  rev17ProjectedGaitSpeed,
   rev17RuntimeRoleLod,
 } from '../../../src/player/rev17PresentationPolish.js';
 
@@ -63,6 +65,24 @@ describe('Rev17 runtime presentation polish', () => {
     expect(legacy.rightRatio).toBe(-0.6);
     expect(legacy.gaitPlaybackDirection).toBe(-1);
     expect(legacy.turnRateRadiansPerSecond).toBe(-2);
+  });
+
+  it('hands fast traversal to the run clip before walk cadence must overcrank', () => {
+    expect(rev17LocomotionClipKey(0.45, false)).toBe('idle');
+    expect(rev17LocomotionClipKey(0.8, false)).toBe('walk');
+    expect(rev17LocomotionClipKey(2.99, false)).toBe('walk');
+    expect(rev17LocomotionClipKey(3, false)).toBe('run');
+    expect(rev17LocomotionClipKey(1.5, true)).toBe('run');
+
+    const fastWalk = normalizeRev17LocomotionPresentation(2.99);
+    const earlyRun = normalizeRev17LocomotionPresentation(3);
+    expect(rev17GaitPlaybackRate('walk', fastWalk)).toBe(1.35);
+    expect(rev17GaitPlaybackRate('run', earlyRun)).toBeCloseTo(3 / 5.5);
+    expect(Math.abs(rev17ProjectedGaitSpeed(
+      'run',
+      rev17GaitPlaybackRate('run', earlyRun),
+    ) - earlyRun.planarSpeed)).toBeLessThan(0.05);
+    expect(rev17ProjectedGaitSpeed('idle', 1)).toBe(0);
   });
 
   it('plants the authored grip at the hand socket and aims the real muzzle', () => {
