@@ -26,6 +26,7 @@ const FIRST_PERSON_CALLBACKS = [];
 const RUNTIME_INSTANCES = new Map();
 const FALLBACK_WARNINGS = new Set();
 let runtimeInstanceSerial = 0;
+let reviewStanceOverride = null;
 const CHARACTER_REVISION = G6_CHARACTER_CANDIDATE.revision ?? 'rev17';
 const CHARACTER_REVISION_TOKEN = String(CHARACTER_REVISION)
   .replace(/[^a-z0-9]+/gi, '_')
@@ -59,6 +60,7 @@ if (CHARACTER_RUNTIME_ACTIVE && typeof window !== 'undefined') {
         connectedToScene: !!entry.group.parent,
         visible: entry.group.visible,
         action: entry.group.userData.getActionState?.() ?? null,
+        presentation: entry.group.userData.getPresentationState?.() ?? null,
       }));
       return {
         revision: CHARACTER_REVISION,
@@ -72,6 +74,14 @@ if (CHARACTER_RUNTIME_ACTIVE && typeof window !== 'undefined') {
             return counts;
           }, {}),
       };
+    },
+    setStanceOverride: (stance) => {
+      reviewStanceOverride = stance === 'crouched' || stance === 'standing'
+        ? stance
+        : null;
+      for (const entry of RUNTIME_INSTANCES.values()) {
+        entry.group.userData.setStance?.(reviewStanceOverride ?? 'standing');
+      }
     },
   });
   window[CHARACTER_EVIDENCE_HOOK] = evidenceApi;
@@ -605,6 +615,8 @@ export function buildRev17Character(
     runtimeRole,
   );
   let grounded = true;
+  let targetCrouchMix = 0;
+  let smoothCrouchMix = 0;
   let locomotion = normalizeRev17LocomotionPresentation(0);
   let targetAimPitch = 0;
   let targetAimYaw = 0;
@@ -624,6 +636,9 @@ export function buildRev17Character(
       embeddedRifle.push(object);
     }
   });
+  const findPoseBone = (...names) => names
+    .map((name) => root.getObjectByName(name))
+    .find(Boolean) ?? null;
   const poseBones = {
     root: root.getObjectByName('root'),
     spine1: root.getObjectByName('spine_01'),
@@ -631,16 +646,20 @@ export function buildRev17Character(
     chest: root.getObjectByName('chest'),
     neck: root.getObjectByName('neck'),
     head: root.getObjectByName('head'),
-    thighLeft: root.getObjectByName('thigh_anchor.L'),
-    thighRight: root.getObjectByName('thigh_anchor.R'),
-    shinLeft: root.getObjectByName('shin_anchor.L'),
-    shinRight: root.getObjectByName('shin_anchor.R'),
-    upperArmLeft: root.getObjectByName('upper_arm.L'),
-    forearmLeft: root.getObjectByName('forearm.L'),
-    palmLeft: root.getObjectByName('palm.L'),
+    thighLeft: findPoseBone('thigh_anchor.L', 'thigh_anchorL'),
+    thighRight: findPoseBone('thigh_anchor.R', 'thigh_anchorR'),
+    shinLeft: findPoseBone('shin_anchor.L', 'shin_anchorL'),
+    shinRight: findPoseBone('shin_anchor.R', 'shin_anchorR'),
+    upperArmLeft: findPoseBone('upper_arm.L', 'upper_armL'),
+    forearmLeft: findPoseBone('forearm.L', 'forearmL'),
+    palmLeft: findPoseBone('palm.L', 'palmL'),
   };
   const poseEuler = new THREE.Euler();
   const poseQuaternion = new THREE.Quaternion();
+  const inversePoseQuaternion = new THREE.Quaternion();
+  const previousPoseOffsets = new Map();
+  const currentPoseOffsets = new Map();
+  let presentationFramePrepared = false;
   const ikBonePosition = new THREE.Vector3();
   const ikEndPosition = new THREE.Vector3();
   const ikTargetPosition = new THREE.Vector3();
@@ -701,10 +720,28 @@ export function buildRev17Character(
     );
   };
 
+  const setStance = (stance = 'standing') => {
+    const effectiveStance = reviewStanceOverride ?? stance;
+    targetCrouchMix = effectiveStance === 'crouched' ? 1 : 0;
+  };
+
+  const beginPresentationFrame = () => {
+    for (const [bone, offset] of previousPoseOffsets) {
+      inversePoseQuaternion.copy(offset).invert();
+      bone.quaternion.multiply(inversePoseQuaternion);
+    }
+    previousPoseOffsets.clear();
+    currentPoseOffsets.clear();
+    presentationFramePrepared = true;
+  };
+
   const applyPoseOffset = (bone, x = 0, y = 0, z = 0) => {
     if (!bone) return;
     poseQuaternion.setFromEuler(poseEuler.set(x, y, z, 'XYZ'));
     bone.quaternion.multiply(poseQuaternion);
+    const accumulated = currentPoseOffsets.get(bone) ?? new THREE.Quaternion();
+    accumulated.multiply(poseQuaternion);
+    currentPoseOffsets.set(bone, accumulated);
   };
 
   const rotateBoneToward = (
@@ -750,6 +787,7 @@ export function buildRev17Character(
   };
 
   const armorTick = (deltaSeconds) => {
+    if (!presentationFramePrepared) beginPresentationFrame();
     const dt = THREE.MathUtils.clamp(
       Number.isFinite(deltaSeconds) ? deltaSeconds : 0,
       0,
@@ -766,6 +804,7 @@ export function buildRev17Character(
     smoothTurnRate += (
       locomotion.turnRateRadiansPerSecond - smoothTurnRate
     ) * medium;
+    smoothCrouchMix += (targetCrouchMix - smoothCrouchMix) * fast;
 
     const moving = grounded && locomotion.planarSpeed > 0.35;
     const backward = Math.max(0, -smoothForwardRatio);
@@ -801,6 +840,15 @@ export function buildRev17Character(
       applyPoseOffset(poseBones.spine1, 0, turn * -0.09, 0);
       applyPoseOffset(poseBones.thighLeft, turnStep * 0.035, turn * -0.08, 0);
       applyPoseOffset(poseBones.thighRight, turnStep * -0.035, turn * -0.08, 0);
+    }
+
+    if (smoothCrouchMix > 1e-4) {
+      applyPoseOffset(poseBones.spine1, smoothCrouchMix * 0.14, 0, 0);
+      applyPoseOffset(poseBones.spine2, smoothCrouchMix * -0.05, 0, 0);
+      applyPoseOffset(poseBones.thighLeft, smoothCrouchMix * 0.62, 0, 0);
+      applyPoseOffset(poseBones.thighRight, smoothCrouchMix * 0.62, 0, 0);
+      applyPoseOffset(poseBones.shinLeft, smoothCrouchMix * -0.92, 0, 0);
+      applyPoseOffset(poseBones.shinRight, smoothCrouchMix * -0.92, 0, 0);
     }
 
     // Aim is layered after locomotion so camera pitch/yaw remains legible while
@@ -864,6 +912,10 @@ export function buildRev17Character(
         );
       }
     }
+    for (const [bone, offset] of currentPoseOffsets) {
+      previousPoseOffsets.set(bone, offset.clone());
+    }
+    presentationFramePrepared = false;
   };
 
   const attachWeapon = (weapon, isMelee = false) => {
@@ -905,6 +957,9 @@ export function buildRev17Character(
     setMotion: (name) => controller.setDesired(name === 'airborne' ? 'air' : name),
     setLocomotion,
     setAim,
+    beginPresentationFrame,
+    setStance,
+    getStanceOffsetY: () => -0.18 * smoothCrouchMix,
     armorTick,
     triggerAction: (request) => semanticActions.trigger(request),
     getActionState: () => semanticActions.snapshot(),
@@ -913,6 +968,8 @@ export function buildRev17Character(
       activeClipKey: controller.activeKey,
       gaitPlaybackRate: controller.playbackRate,
       grounded,
+      crouchMix: smoothCrouchMix,
+      stanceOffsetY: -0.18 * smoothCrouchMix,
       aimPitch: smoothAimPitch,
       aimYaw: smoothAimYaw,
       weaponContact: weaponContact

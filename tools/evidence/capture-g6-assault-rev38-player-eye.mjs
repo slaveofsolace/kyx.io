@@ -50,6 +50,8 @@ async function capture(name, notes) {
 }
 
 let candidateSnapshot = null;
+let loadoutCrouchSnapshot = null;
+let crouchCandidateSnapshot = null;
 let practiceBefore = null;
 let practiceAfter = null;
 let pointerLockAcquired = false;
@@ -100,6 +102,33 @@ try {
     viewport: page.viewportSize(),
     notes: 'Unscaled runtime canvas crop; not a static Blender render.',
   });
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.('crouched')
+  ));
+  await page.waitForFunction(() => {
+    const instances = window.__KYX_G6_CHARACTER_EVIDENCE__
+      ?.snapshot().instances
+      .filter((instance) => instance.connectedToScene) ?? [];
+    return instances.length > 0 && instances.every(
+      (instance) => (instance.presentation?.crouchMix ?? 0) > 0.65,
+    );
+  }, null, { timeout: 5_000 });
+  loadoutCrouchSnapshot = await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.snapshot() ?? null
+  ));
+  await page.locator('#armor-preview-canvas').screenshot({
+    path: path.join(outputRoot, '05b-armored-turntable-crouch-canvas.png'),
+  });
+  captures.push({
+    name: '05b-armored-turntable-crouch-canvas.png',
+    url: page.url(),
+    viewport: page.viewportSize(),
+    notes: 'Evidence-only skeletal-crouch close-up from the same live turntable.',
+  });
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.(null)
+  ));
+  await page.waitForTimeout(350);
   await page.getByRole('button', { name: 'Close loadout' }).click();
 
   await page.locator('#play-btn').click();
@@ -141,10 +170,35 @@ try {
       '08-inkfall-after-primary-fire-1440x900.png',
       'Same stable spawn sightline after primary fire, without a scripted camera collision.',
     );
+    await page.evaluate(() => (
+      window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.('crouched')
+    ));
+    await page.waitForFunction(() => {
+      const instances = window.__KYX_G6_CHARACTER_EVIDENCE__
+        ?.snapshot().instances
+        .filter((instance) => (
+          instance.runtimeRole === 'online_remote'
+          && instance.connectedToScene
+        )) ?? [];
+      return instances.length > 0 && instances.every(
+        (instance) => (instance.presentation?.crouchMix ?? 0) > 0.65,
+      );
+    }, null, { timeout: 5_000 });
+    crouchCandidateSnapshot = await page.evaluate(() => (
+      window.__KYX_G6_CHARACTER_EVIDENCE__?.snapshot() ?? null
+    ));
+    await capture(
+      '09-inkfall-remote-assault-crouch-1440x900.png',
+      'Evidence-only staging override proving a skeletal crouch and preserved character proportions.',
+    );
+    await page.evaluate(() => (
+      window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.(null)
+    ));
+    await page.waitForTimeout(350);
     await page.keyboard.down('Tab');
     await page.waitForTimeout(250);
     await capture(
-      '09-inkfall-scoreboard-held-1440x900.png',
+      '10-inkfall-scoreboard-held-1440x900.png',
       'Live hold-Tab scoreboard over the current player-eye frame.',
     );
     await page.keyboard.up('Tab');
@@ -154,10 +208,13 @@ try {
     window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
   ));
 } finally {
+  await page.evaluate(() => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.setStanceOverride?.(null)
+  )).catch(() => undefined);
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-g6-assault-player-eye-capture-v2',
+      schema: 'kyx-g6-assault-player-eye-capture-v3',
       capturedAt: new Date().toISOString(),
       buildCommit,
       candidateRevision,
@@ -165,6 +222,8 @@ try {
       baseUrl,
       viewport: { width: 1440, height: 900 },
       candidateSnapshot,
+      loadoutCrouchSnapshot,
+      crouchCandidateSnapshot,
       practiceBefore,
       practiceAfter,
       pointerLockAcquired,
@@ -188,6 +247,17 @@ if (errors.console.length || errors.page.length || errors.requests.length) {
 if (candidateSnapshot?.revision !== candidateRevision) {
   throw new Error('G6_ASSAULT_RUNTIME_IDENTITY_MISMATCH');
 }
+const loadoutCrouchCandidates = loadoutCrouchSnapshot?.instances?.filter(
+  (instance) => instance.connectedToScene,
+) ?? [];
+if (
+  loadoutCrouchCandidates.length < 1
+  || loadoutCrouchCandidates.some(
+    (instance) => (instance.presentation?.crouchMix ?? 0) <= 0.65,
+  )
+) {
+  throw new Error('G6_ASSAULT_LOADOUT_CROUCH_PROOF_INVALID');
+}
 if (practiceBefore?.render3d?.selectedFirstPersonOverlapFree !== true) {
   throw new Error('G6_ASSAULT_FIRST_PERSON_WEAPON_OVERLAP');
 }
@@ -207,6 +277,24 @@ if (practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount !== remoteAvatarC
 if (practiceAfter?.render3d?.remoteAvatarSupportHandContactCount !== remoteAvatarCount) {
   throw new Error('G6_ASSAULT_REMOTE_SUPPORT_HAND_CONTACT_MISMATCH');
 }
+if (practiceAfter?.render3d?.remoteAvatarSkeletalStanceContractCount !== remoteAvatarCount) {
+  throw new Error('G6_ASSAULT_REMOTE_SKELETAL_STANCE_CONTRACT_MISMATCH');
+}
+if (practiceAfter?.render3d?.remoteAvatarWholeBodySquashCount !== 0) {
+  throw new Error('G6_ASSAULT_REMOTE_WHOLE_BODY_SQUASH_PRESENT');
+}
+const crouchCandidates = crouchCandidateSnapshot?.instances?.filter(
+  (instance) => instance.runtimeRole === 'online_remote' && instance.connectedToScene,
+) ?? [];
+if (crouchCandidates.length !== remoteAvatarCount) {
+  throw new Error('G6_ASSAULT_CROUCH_PROOF_CARDINALITY_MISMATCH');
+}
+if (crouchCandidates.some((instance) => (
+  (instance.presentation?.crouchMix ?? 0) <= 0.65
+  || (instance.presentation?.stanceOffsetY ?? 0) >= 0
+))) {
+  throw new Error('G6_ASSAULT_CROUCH_PROOF_INVALID');
+}
 
 process.stdout.write(`${JSON.stringify({
   status: 'G6_ASSAULT_PLAYER_EYE_PACKET_CAPTURED',
@@ -214,6 +302,7 @@ process.stdout.write(`${JSON.stringify({
   outputRoot,
   pointerLockAcquired,
   candidateInstances: candidateSnapshot?.instances?.length ?? 0,
+  loadoutCrouchProofCount: loadoutCrouchCandidates.length,
   remoteAvatarCount,
   remoteAvatarCandidateCount:
     practiceAfter?.render3d?.remoteAvatarCandidateCount ?? null,
@@ -225,6 +314,11 @@ process.stdout.write(`${JSON.stringify({
     practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount ?? null,
   remoteAvatarSupportHandContactCount:
     practiceAfter?.render3d?.remoteAvatarSupportHandContactCount ?? null,
+  remoteAvatarSkeletalStanceContractCount:
+    practiceAfter?.render3d?.remoteAvatarSkeletalStanceContractCount ?? null,
+  remoteAvatarWholeBodySquashCount:
+    practiceAfter?.render3d?.remoteAvatarWholeBodySquashCount ?? null,
+  crouchProofCount: crouchCandidates.length,
   firstPersonOverlapFree:
     practiceAfter?.render3d?.selectedFirstPersonOverlapFree ?? null,
   runtimeErrorCount:

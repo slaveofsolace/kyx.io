@@ -72,6 +72,19 @@ describe('procedural character presentation', () => {
     expect(character.userData.locomotionDiagnostics().weaponAttached).toBe(true);
   });
 
+  it('uses a stance pose and vertical offset without whole-body scaling', () => {
+    const character = buildAnimatedFallback();
+
+    character.userData.setStance('crouched');
+    character.userData.actionTick(0.1);
+
+    const diagnostics = character.userData.locomotionDiagnostics();
+    expect(diagnostics.crouchMix).toBeGreaterThan(0.5);
+    expect(diagnostics.stanceOffsetY).toBeLessThan(0);
+    expect(character.userData.getStanceOffsetY()).toBeLessThan(0);
+    expect(character.scale.toArray()).toEqual([1, 1, 1]);
+  });
+
   it('presents jump, reload, melee, ability, and death through shared hooks', () => {
     const character = buildAnimatedFallback();
     character.userData.triggerJump();

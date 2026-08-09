@@ -488,6 +488,7 @@ export class Bot {
           ud.setAim(0, 0);
         }
       }
+      ud.beginPresentationFrame?.();
       ud.mixer.update(dt);
       ud.actionTick?.(dt);
       ud.armorTick?.(dt);

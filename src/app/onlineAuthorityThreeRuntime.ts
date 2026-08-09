@@ -105,6 +105,8 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly remoteAvatarProceduralAnimationCount: number;
   readonly remoteAvatarWeaponAttachmentCount: number;
   readonly remoteAvatarSupportHandContactCount: number;
+  readonly remoteAvatarSkeletalStanceContractCount: number;
+  readonly remoteAvatarWholeBodySquashCount: number;
   readonly grenadeProjectileCount: number;
   readonly activeSmokeFieldCount: number;
   readonly launchProjectilePresentation: 'cutline_launch_canister_v1';
@@ -985,7 +987,8 @@ export async function createOnlineAuthorityThreeRuntime(
       ) * (1 - Math.exp(-deltaSeconds * 10));
       avatar.previousYawRadians = yawRadians;
       avatar.root.rotation.y = yawRadians;
-      avatar.root.scale.y = remote.state.stance === 'crouched' ? 0.78 : 1;
+      avatar.root.scale.set(1, 1, 1);
+      avatar.root.userData.setStance?.(remote.state.stance);
       const selectedState = selectedWeaponState(combatPlayer);
       const weaponPhase = combatPlayer === null
         ? 'ready'
@@ -1053,9 +1056,11 @@ export async function createOnlineAuthorityThreeRuntime(
         0,
       );
       avatar.recoil *= 0.72;
+      avatar.root.userData.beginPresentationFrame?.();
       avatar.root.userData.mixer?.update(deltaSeconds);
       avatar.root.userData.actionTick?.(deltaSeconds);
       avatar.root.userData.armorTick?.(deltaSeconds);
+      avatar.root.position.y += avatar.root.userData.getStanceOffsetY?.() ?? 0;
       avatar.previousLifePhase = lifePhase;
       avatar.previousWeaponPhase = weaponPhase;
     }
@@ -1454,6 +1459,14 @@ export async function createOnlineAuthorityThreeRuntime(
       ).length,
       remoteAvatarSupportHandContactCount: remoteAvatarPresentationStates.filter(
         (state) => state?.weaponContact?.supportHandContact === true,
+      ).length,
+      remoteAvatarSkeletalStanceContractCount: remoteAvatars.filter(
+        (avatar) => typeof avatar.root.userData.setStance === 'function'
+          && typeof avatar.root.userData.getStanceOffsetY === 'function',
+      ).length,
+      remoteAvatarWholeBodySquashCount: remoteAvatars.filter(
+        (avatar) => Math.abs(avatar.root.scale.y - avatar.root.scale.x) > 1e-4
+          || Math.abs(avatar.root.scale.y - avatar.root.scale.z) > 1e-4,
       ).length,
       grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
       activeSmokeFieldCount: smokeFields.size,

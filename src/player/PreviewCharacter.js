@@ -391,6 +391,8 @@ export function installProceduralCharacterPresentation(group) {
   const handRight = group.getObjectByName('hand_R');
   let locomotion = normalizeRev17LocomotionPresentation(0, 0);
   let grounded = true;
+  let targetCrouchMix = 0;
+  let smoothCrouchMix = 0;
   let sprinting = false;
   let locomotionClock = 0;
   let airTime = 0;
@@ -433,6 +435,10 @@ export function installProceduralCharacterPresentation(group) {
   const setAim = (pitch = 0, yaw = 0) => {
     targetAimPitch = clamp(Number.isFinite(pitch) ? pitch : 0, -1.15, 1.15);
     targetAimYaw = clamp(Number.isFinite(yaw) ? yaw : 0, -0.95, 0.95);
+  };
+
+  const setStance = (stance = 'standing') => {
+    targetCrouchMix = stance === 'crouched' ? 1 : 0;
   };
 
   const beginAction = (kind, durationSeconds) => {
@@ -513,6 +519,7 @@ export function installProceduralCharacterPresentation(group) {
     smoothTurnRate += (
       locomotion.turnRateRadiansPerSecond - smoothTurnRate
     ) * medium;
+    smoothCrouchMix += (targetCrouchMix - smoothCrouchMix) * fast;
 
     rig.armL.rotation.set(0, 0, 0);
     rig.armR.rotation.set(0, 0, 0);
@@ -555,6 +562,8 @@ export function installProceduralCharacterPresentation(group) {
     rig.legR.rotation.y = lowerBodyYaw;
     rig.legL.rotation.z = lateralStep;
     rig.legR.rotation.z = -lateralStep;
+    rig.legL.rotation.x -= smoothCrouchMix * 0.24;
+    rig.legR.rotation.x -= smoothCrouchMix * 0.24;
 
     const weaponHeld = heldWeapon !== null;
     const weaponSupport = weaponHeld && !heldWeaponIsMelee;
@@ -633,6 +642,8 @@ export function installProceduralCharacterPresentation(group) {
     sector: locomotion.sector,
     turnRateRadiansPerSecond: smoothTurnRate,
     grounded,
+    crouchMix: smoothCrouchMix,
+    stanceOffsetY: -0.18 * smoothCrouchMix,
     sprinting,
     dead,
     action: action?.kind ?? null,
@@ -643,6 +654,8 @@ export function installProceduralCharacterPresentation(group) {
     proceduralPresentation: true,
     setLocomotion,
     setAim,
+    setStance,
+    getStanceOffsetY: () => -0.18 * smoothCrouchMix,
     triggerReload,
     triggerEquip,
     triggerMelee,

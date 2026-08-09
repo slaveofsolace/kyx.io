@@ -1,0 +1,882 @@
+{
+  "schema": "kyx-g6-assault-player-eye-capture-v3",
+  "capturedAt": "2026-08-09T07:26:32.904Z",
+  "buildCommit": "working-tree",
+  "candidateRevision": "rev39-armored-restore-v1",
+  "buildMode": "staging-review",
+  "baseUrl": "http://127.0.0.1:6342",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "candidateSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "grounded": true,
+          "crouchMix": 0,
+          "stanceOffsetY": 0,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "grounded": true,
+          "crouchMix": 0,
+          "stanceOffsetY": 0,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2
+    }
+  },
+  "loadoutCrouchSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": false,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "grounded": true,
+          "crouchMix": 0.6644552672957573,
+          "stanceOffsetY": -0.11960194811323631,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "preview",
+        "lod": 0,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 0,
+            "forwardRatio": 1,
+            "rightRatio": 0,
+            "travelDirectionRadians": 0,
+            "strafeLean": 0,
+            "gaitPlaybackDirection": 1,
+            "sector": "idle",
+            "turnRateRadiansPerSecond": 0
+          },
+          "activeClipKey": "idle",
+          "gaitPlaybackRate": 1,
+          "grounded": true,
+          "crouchMix": 0.9997856713557154,
+          "stanceOffsetY": -0.17996142084402877,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": null
+        }
+      }
+    ],
+    "connectedByRole": {
+      "preview": 2
+    }
+  },
+  "crouchCandidateSnapshot": {
+    "revision": "rev39-armored-restore-v1",
+    "default": false,
+    "instances": [
+      {
+        "id": "rev39-armored-restore-v1-1",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012358976276672,
+            "forwardRatio": 0.9701649746653143,
+            "rightRatio": 0.24244570924776107,
+            "travelDirectionRadians": 0.24488598112705248,
+            "strafeLean": -0.2424457092477611,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.2080926616167727
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.2749743593230312,
+          "grounded": true,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-2",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012116709703284,
+            "forwardRatio": 0.9701316629088726,
+            "rightRatio": 0.24257896986685692,
+            "travelDirectionRadians": 0.24502334220505023,
+            "strafeLean": -0.24257896986685695,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": -0.09975327116766163
+          },
+          "activeClipKey": "jump",
+          "gaitPlaybackRate": 1,
+          "grounded": false,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-3",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 6.359940154385723,
+            "forwardRatio": 0.9700991082859125,
+            "rightRatio": 0.24270912653395904,
+            "travelDirectionRadians": 0.24515750837624928,
+            "strafeLean": -0.24270912653395904,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.13501709839415746
+          },
+          "activeClipKey": "jump",
+          "gaitPlaybackRate": 1,
+          "grounded": false,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-4",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012476706735787,
+            "forwardRatio": 0.9701720924424556,
+            "rightRatio": 0.24241722514257819,
+            "travelDirectionRadians": 0.24485662117133783,
+            "strafeLean": -0.24241722514257819,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.2302631960003315
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.2749957648610521,
+          "grounded": true,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-5",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.012476706735787,
+            "forwardRatio": 0.9701720924424556,
+            "rightRatio": 0.24241722514257852,
+            "travelDirectionRadians": 0.24485662117133816,
+            "strafeLean": -0.24241722514257852,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.2302631960003323
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.2749957648610521,
+          "grounded": true,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-6",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.01246231449496,
+            "forwardRatio": 0.9701119726888673,
+            "rightRatio": 0.24265770221798938,
+            "travelDirectionRadians": 0.2451044993851535,
+            "strafeLean": -0.24265770221798935,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.5077986188020832
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.2749931480899928,
+          "grounded": true,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      },
+      {
+        "id": "rev39-armored-restore-v1-7",
+        "kind": "thirdPerson",
+        "runtimeRole": "online_remote",
+        "lod": 1,
+        "connectedToScene": true,
+        "visible": true,
+        "action": {
+          "kind": "idle",
+          "sequence": 0,
+          "lastStarted": null,
+          "elapsedSeconds": 0,
+          "durationSeconds": null,
+          "markers": [],
+          "authoredClipKey": null,
+          "fallback": null
+        },
+        "presentation": {
+          "locomotion": {
+            "planarSpeed": 7.01246231449496,
+            "forwardRatio": 0.9701119726888674,
+            "rightRatio": 0.24265770221798888,
+            "travelDirectionRadians": 0.245104499385153,
+            "strafeLean": -0.24265770221798888,
+            "gaitPlaybackDirection": 1,
+            "sector": "forward",
+            "turnRateRadiansPerSecond": 0.5077986188020748
+          },
+          "activeClipKey": "run",
+          "gaitPlaybackRate": 1.2749931480899928,
+          "grounded": true,
+          "crouchMix": 0.6868897769146618,
+          "stanceOffsetY": -0.12364015984463912,
+          "aimPitch": 0,
+          "aimYaw": 0,
+          "weaponContact": {
+            "family": "rifle",
+            "socketName": "socket_weapon_r",
+            "muzzleNodeName": "KYX_VLR7_MUZZLE",
+            "supportHandContact": true
+          }
+        }
+      }
+    ],
+    "connectedByRole": {
+      "online_remote": 7
+    }
+  },
+  "practiceBefore": {
+    "schemaVersion": 1,
+    "status": "paused",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 0,
+    "lifecycle": "warmup",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 0,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": false,
+    "aimHeld": false,
+    "recentReliableEvents": 0,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v4",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 149,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 8,
+      "remoteAvatarCount": 7,
+      "remoteAvatarCandidateCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarAuthoredClipCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "remoteAvatarSupportHandContactCount": 7,
+      "remoteAvatarSkeletalStanceContractCount": 7,
+      "remoteAvatarWholeBodySquashCount": 0,
+      "grenadeProjectileCount": 0,
+      "activeSmokeFieldCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 0,
+      "acceptedAttackPresentationCount": 0,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "throwablePresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "locked",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 0,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": false,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "practiceAfter": {
+    "schemaVersion": 1,
+    "status": "ready",
+    "hostId": "local_relay_practice_authority_v1",
+    "serverTick": 77,
+    "lifecycle": "active",
+    "playerCount": 8,
+    "botCount": 7,
+    "mapId": "relay",
+    "fixtureId": "relay_map_collision",
+    "fixtureHash": "95ec4f13a599892b",
+    "acceptedInputs": 616,
+    "missedSchedulerTicks": 0,
+    "pointerLocked": true,
+    "aimHeld": false,
+    "recentReliableEvents": 1,
+    "portalAuthorityCapabilityId": "relay_revision_1_linked_world_portal_v1",
+    "recentPortalTraversalEvents": 0,
+    "launch": {
+      "acceptedThrowCount": 0,
+      "collisionCount": 0,
+      "detonationCount": 0,
+      "impulseAppliedCount": 0,
+      "terminalContactSameTick": false,
+      "lastCollision": null,
+      "lastDetonation": null
+    },
+    "localAuthoritativePlayer": {
+      "playerId": "practice.local.player",
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "teleportCooldownTicksRemaining": 0
+    },
+    "render3d": {
+      "status": "ready",
+      "renderer": "three_webgl",
+      "mapReference": "relay@1",
+      "presentationReference": "relay@1/open-sky/v4",
+      "presentationMode": "relay_visual_candidate",
+      "presentationDisplayName": "Relay",
+      "authorityCompatibility": "relay_revision_1_authority_candidate",
+      "presentationSha256": null,
+      "authorityFixtureHash": "95ec4f13a599892b",
+      "renderMeshesMayBeAuthority": false,
+      "renderMeshCount": 149,
+      "renderOnlyContainmentMeshCount": 0,
+      "spawnPocketContainmentCount": 2,
+      "authorityColliderCount": 56,
+      "spawnCount": 8,
+      "zoneCount": 8,
+      "remoteAvatarCount": 7,
+      "remoteAvatarCandidateCount": 7,
+      "remoteAvatarAnimationContractCount": 7,
+      "remoteAvatarAuthoredClipCount": 7,
+      "remoteAvatarProceduralAnimationCount": 0,
+      "remoteAvatarWeaponAttachmentCount": 7,
+      "remoteAvatarSupportHandContactCount": 7,
+      "remoteAvatarSkeletalStanceContractCount": 7,
+      "remoteAvatarWholeBodySquashCount": 0,
+      "grenadeProjectileCount": 0,
+      "activeSmokeFieldCount": 0,
+      "launchProjectilePresentation": "cutline_launch_canister_v1",
+      "launchCanisterPresentationCount": 0,
+      "launchPulsePresentationCount": 0,
+      "weaponProjectileCount": 0,
+      "activeWeaponEffectCount": 0,
+      "renderedReliableEventCount": 1,
+      "acceptedAttackPresentationCount": 1,
+      "confirmedDamagePresentationCount": 0,
+      "reloadPresentationCount": 0,
+      "throwablePresentationCount": 0,
+      "portalTraversalPresentationCount": 0,
+      "activePortalEffectCount": 0,
+      "staticWorldPortalCount": 2,
+      "staticWorldPortalMeshCount": 10,
+      "portalAudioDelegation": "shared_callback",
+      "authoredWeaponAudio": "ready",
+      "selectedWeaponId": "vertical_rifle_v1",
+      "selectedProceduralDefinitionId": "kyx_vlr7",
+      "selectedWeaponLabel": "VLR-7 LINE RIFLE",
+      "selectedWeaponFamily": "rifle",
+      "selectedWeaponSilhouette": "standard_longarm",
+      "selectedWeaponVisualSource": "quaternius_cc0_review_rev1",
+      "selectedFirstPersonHandCount": 2,
+      "selectedFirstPersonContactMode": "profiled_two_hand_assault_suit_v9",
+      "selectedFirstPersonMountChildCount": 1,
+      "selectedFirstPersonWeaponRootCount": 1,
+      "selectedFirstPersonOverlapFree": true,
+      "selectedFirstPersonAimRequested": false,
+      "selectedFirstPersonAimMix": 0,
+      "selectedFirstPersonScale": 0.585,
+      "selectedFirstPersonFieldOfViewDegrees": 72,
+      "selectedFirstPersonFireImpulse": 3.1311324415545117e-9,
+      "selectedFirstPersonReloadProgress": 0,
+      "selectedFirstPersonReloadPoseMix": 0,
+      "blinkPreviewActive": false,
+      "blinkPreviewValid": false,
+      "blinkPreviewAuthorityBound": false,
+      "blinkPreviewReason": "inactive",
+      "blinkPreviewDistanceMillimeters": 0,
+      "blinkPreviewMaximumRangeMillimeters": 0,
+      "pointerLocked": true,
+      "canvasWidth": 1440,
+      "canvasHeight": 900
+    }
+  },
+  "pointerLockAcquired": true,
+  "glbResponses": [
+    {
+      "url": "http://127.0.0.1:6342/assets/character-lod0-BJInbp1l.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-longbow12-quaternius-rev1-w4Rydit-.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-k9-quaternius-rev1-BxtHXSFG.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-sg4-quaternius-rev1-Ctpz0BrH.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-vlr7-quaternius-rev1-B4S_-JM4.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-br6-quaternius-rev1-e_S5TDVX.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/character-lod0-BJInbp1l.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-vlr7-quaternius-rev1-B4S_-JM4.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-k9-quaternius-rev1-BxtHXSFG.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-sg4-quaternius-rev1-Ctpz0BrH.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-longbow12-quaternius-rev1-w4Rydit-.glb",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:6342/assets/kyx-br6-quaternius-rev1-e_S5TDVX.glb",
+      "status": 200
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-menu-first-impression-1440x900.png",
+      "url": "http://127.0.0.1:6342/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "First 3/10/30-second menu surface in the source-matched staging-review build."
+    },
+    {
+      "name": "02-arena-selection-original-1440x900.png",
+      "url": "http://127.0.0.1:6342/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Original-arena lane before any legacy tab interaction."
+    },
+    {
+      "name": "03-arena-selection-legacy-1440x900.png",
+      "url": "http://127.0.0.1:6342/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Legacy lane showing playable KYX history and the local-only evmap rights boundary."
+    },
+    {
+      "name": "04-loadout-armored-turntable-1440x900.png",
+      "url": "http://127.0.0.1:6342/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Actual runtime loadout turntable using the installed armored staging-review candidate."
+    },
+    {
+      "name": "05-armored-turntable-canvas.png",
+      "url": "http://127.0.0.1:6342/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Unscaled runtime canvas crop; not a static Blender render."
+    },
+    {
+      "name": "05b-armored-turntable-crouch-canvas.png",
+      "url": "http://127.0.0.1:6342/",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Evidence-only skeletal-crouch close-up from the same live turntable."
+    },
+    {
+      "name": "06-inkfall-practice-paused-1440x900.png",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Player-eye Inkfall view before pointer capture; HUD and entry affordance visible."
+    },
+    {
+      "name": "07-inkfall-remote-assault-contact-1440x900.png",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Unsteered player-eye frame preserving the spawn sightline toward remote Assault candidates."
+    },
+    {
+      "name": "08-inkfall-after-primary-fire-1440x900.png",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Same stable spawn sightline after primary fire, without a scripted camera collision."
+    },
+    {
+      "name": "09-inkfall-remote-assault-crouch-1440x900.png",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Evidence-only staging override proving a skeletal crouch and preserved character proportions."
+    },
+    {
+      "name": "10-inkfall-scoreboard-held-1440x900.png",
+      "url": "http://127.0.0.1:6342/practice",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "notes": "Live hold-Tab scoreboard over the current player-eye frame."
+    }
+  ],
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "nonclaims": [
+    "No human visual acceptance is claimed.",
+    "The armored restoration remains review-only and release-ineligible.",
+    "This bounded run is not 2/4/8 multiplayer proof or a performance soak."
+  ]
+}

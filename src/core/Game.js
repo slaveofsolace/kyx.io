@@ -1279,6 +1279,7 @@ export class Game {
       // Head/spine track the player's aim pitch (the whole body already yaws to
       // face the aim direction, so we only need pitch here).
       if (ud.setAim) ud.setAim(p.pitch, 0);
+      ud.beginPresentationFrame?.();
       ud.mixer.update(dt);
       ud.actionTick?.(dt);
       ud.armorTick?.(dt);
@@ -1416,7 +1417,12 @@ export class Game {
     }
     // Tick the human soldier's idle animation whenever it's on screen.
     const pud = this.previewCharacter?.userData;
-    if (pud?.isHuman) { pud.setMotion('idle'); pud.mixer.update(dt); pud.armorTick?.(dt); }
+    if (pud?.isHuman) {
+      pud.setMotion('idle');
+      pud.beginPresentationFrame?.();
+      pud.mixer.update(dt);
+      pud.armorTick?.(dt);
+    }
 
     // Keep the city alive behind the menu fly-through (flying traffic, pulse).
     if (!this._relayMenuPreview.visible) this.world.update(dt);

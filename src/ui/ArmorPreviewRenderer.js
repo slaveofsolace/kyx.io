@@ -63,6 +63,8 @@ export class ArmorPreviewRenderer {
     this._scene.add(rim);
 
     this._group = null;
+    this._groupBaseY = 0;
+    this._groupScale = 1;
     this._t     = 0;
     this._raf   = null;
   }
@@ -99,6 +101,8 @@ export class ArmorPreviewRenderer {
     g.scale.setScalar(s);
 
     this._group = g;
+    this._groupBaseY = g.position.y;
+    this._groupScale = s;
     this._scene.add(g);
 
     // frame the full body with a little headroom/legroom
@@ -117,7 +121,14 @@ export class ArmorPreviewRenderer {
         this._group.rotation.y = this._t * 0.6;
         // Drive the rigged human soldier's idle animation on the turntable.
         const ud = this._group.userData;
-        if (ud?.isHuman) { ud.setMotion('idle'); ud.mixer.update(0.016); ud.armorTick?.(0.016); }
+        if (ud?.isHuman) {
+          ud.setMotion('idle');
+          ud.beginPresentationFrame?.();
+          ud.mixer.update(0.016);
+          ud.armorTick?.(0.016);
+          this._group.position.y = this._groupBaseY
+            + (ud.getStanceOffsetY?.() ?? 0) * this._groupScale;
+        }
       }
       this._renderer.render(this._scene, this._camera);
     };
