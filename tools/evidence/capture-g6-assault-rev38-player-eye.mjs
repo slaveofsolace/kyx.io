@@ -10,9 +10,10 @@ function option(name, fallback) {
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-08/g6-assault-rev38-contact-animation-v1',
+  'evidence/2026-08-08/g6-assault-rev39-armored-player-eye-v1',
 ));
 const buildCommit = option('--commit', 'working-tree');
+const candidateRevision = option('--candidate', 'rev39-armored-restore-v1');
 
 await mkdir(outputRoot, { recursive: true });
 
@@ -77,22 +78,24 @@ try {
   await page.getByRole('button', { name: 'Loadout' }).click();
   await page.locator('#panel-loadout').waitFor({ state: 'visible' });
   await page.waitForFunction(() => (
-    window.__KYX_G6_CHARACTER_EVIDENCE__?.revision === 'rev38-fitted-v1'
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.revision === 'rev39-armored-restore-v1'
     && window.__KYX_G6_CHARACTER_EVIDENCE__.snapshot().instances.length > 0
   ), null, { timeout: 30_000 });
-  await page.waitForTimeout(1_000);
+  // The turntable rotates continuously; this short settle preserves a useful
+  // front-three-quarter review angle instead of waiting into a side profile.
+  await page.waitForTimeout(250);
   candidateSnapshot = await page.evaluate(() => (
     window.__KYX_G6_CHARACTER_EVIDENCE__?.snapshot() ?? null
   ));
   await capture(
-    '04-loadout-rev38-turntable-1440x900.png',
-    'Actual runtime loadout turntable using the installed Rev38 staging-review candidate.',
+    '04-loadout-armored-turntable-1440x900.png',
+    'Actual runtime loadout turntable using the installed armored staging-review candidate.',
   );
   await page.locator('#armor-preview-canvas').screenshot({
-    path: path.join(outputRoot, '05-rev38-turntable-canvas.png'),
+    path: path.join(outputRoot, '05-armored-turntable-canvas.png'),
   });
   captures.push({
-    name: '05-rev38-turntable-canvas.png',
+    name: '05-armored-turntable-canvas.png',
     url: page.url(),
     viewport: page.viewportSize(),
     notes: 'Unscaled runtime canvas crop; not a static Blender render.',
@@ -154,9 +157,10 @@ try {
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-g6-assault-rev38-contact-animation-capture-v1',
+      schema: 'kyx-g6-assault-player-eye-capture-v2',
       capturedAt: new Date().toISOString(),
       buildCommit,
+      candidateRevision,
       buildMode: 'staging-review',
       baseUrl,
       viewport: { width: 1440, height: 900 },
@@ -169,7 +173,7 @@ try {
       errors,
       nonclaims: [
         'No human visual acceptance is claimed.',
-        'The Rev38 GLBs remain review-only and release-ineligible.',
+        'The armored restoration remains review-only and release-ineligible.',
         'This bounded run is not 2/4/8 multiplayer proof or a performance soak.',
       ],
     }, null, 2)}\n`,
@@ -179,33 +183,34 @@ try {
 }
 
 if (errors.console.length || errors.page.length || errors.requests.length) {
-  throw new Error(`G6_REV38_RUNTIME_ERRORS ${JSON.stringify(errors)}`);
+  throw new Error(`G6_ASSAULT_RUNTIME_ERRORS ${JSON.stringify(errors)}`);
 }
-if (candidateSnapshot?.revision !== 'rev38-fitted-v1') {
-  throw new Error('G6_REV38_RUNTIME_IDENTITY_MISMATCH');
+if (candidateSnapshot?.revision !== candidateRevision) {
+  throw new Error('G6_ASSAULT_RUNTIME_IDENTITY_MISMATCH');
 }
 if (practiceBefore?.render3d?.selectedFirstPersonOverlapFree !== true) {
-  throw new Error('G6_REV38_FIRST_PERSON_WEAPON_OVERLAP');
+  throw new Error('G6_ASSAULT_FIRST_PERSON_WEAPON_OVERLAP');
 }
 const remoteAvatarCount = practiceAfter?.render3d?.remoteAvatarCount ?? 0;
 if (remoteAvatarCount < 1) {
-  throw new Error('G6_REV38_REMOTE_AVATARS_MISSING');
+  throw new Error('G6_ASSAULT_REMOTE_AVATARS_MISSING');
 }
 if (practiceAfter?.render3d?.remoteAvatarCandidateCount !== remoteAvatarCount) {
-  throw new Error('G6_REV38_REMOTE_CANDIDATE_BINDING_MISMATCH');
+  throw new Error('G6_ASSAULT_REMOTE_CANDIDATE_BINDING_MISMATCH');
 }
 if (practiceAfter?.render3d?.remoteAvatarAuthoredClipCount !== remoteAvatarCount) {
-  throw new Error('G6_REV38_REMOTE_AUTHORED_CLIP_MISMATCH');
+  throw new Error('G6_ASSAULT_REMOTE_AUTHORED_CLIP_MISMATCH');
 }
 if (practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount !== remoteAvatarCount) {
-  throw new Error('G6_REV38_REMOTE_WEAPON_ATTACHMENT_MISMATCH');
+  throw new Error('G6_ASSAULT_REMOTE_WEAPON_ATTACHMENT_MISMATCH');
 }
 if (practiceAfter?.render3d?.remoteAvatarSupportHandContactCount !== remoteAvatarCount) {
-  throw new Error('G6_REV38_REMOTE_SUPPORT_HAND_CONTACT_MISMATCH');
+  throw new Error('G6_ASSAULT_REMOTE_SUPPORT_HAND_CONTACT_MISMATCH');
 }
 
 process.stdout.write(`${JSON.stringify({
-  status: 'G6_REV38_PLAYER_EYE_PACKET_CAPTURED',
+  status: 'G6_ASSAULT_PLAYER_EYE_PACKET_CAPTURED',
+  candidateRevision,
   outputRoot,
   pointerLockAcquired,
   candidateInstances: candidateSnapshot?.instances?.length ?? 0,

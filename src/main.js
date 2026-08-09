@@ -91,21 +91,27 @@ async function importDevelopmentModule(specifier) {
 }
 
 async function installCharacterReviewBeforeRuntimeImports() {
-  const reviewModulePath = './dev/installKyxAssaultRev38Review.ts';
+  const reviewModulePath = './dev/installKyxAssaultRev39ArmoredReview.ts';
   if (import.meta.env.MODE === 'staging-review') {
-    const { installKyxAssaultRev38Review } = await import(
-      './dev/installKyxAssaultRev38Review'
+    const { installKyxAssaultRev39ArmoredReview } = await import(
+      './dev/installKyxAssaultRev39ArmoredReview'
     );
-    return installKyxAssaultRev38Review(window.location.search, import.meta.env.MODE);
+    return installKyxAssaultRev39ArmoredReview(
+      window.location.search,
+      import.meta.env.MODE,
+    );
   }
   if (!import.meta.env.DEV) return null;
   const requestedRevision = new URLSearchParams(window.location.search)
     .get('g6Candidate');
-  if (requestedRevision !== 'rev38-fitted-v1') return null;
-  const { installKyxAssaultRev38Review } = await import(
+  if (requestedRevision !== 'rev39-armored-restore-v1') return null;
+  const { installKyxAssaultRev39ArmoredReview } = await import(
     /* @vite-ignore */ reviewModulePath
   );
-  return installKyxAssaultRev38Review(window.location.search, import.meta.env.MODE);
+  return installKyxAssaultRev39ArmoredReview(
+    window.location.search,
+    import.meta.env.MODE,
+  );
 }
 
 // This must complete before Game or an authority route imports HumanSoldier;

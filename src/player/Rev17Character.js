@@ -262,22 +262,27 @@ function tintMaterials(materials, skin, armorTypeId = 'assault', armorSkin = nul
   if (preservesAuthoredDarkBase) {
     const teamPrimary = new THREE.Color(primary);
     const teamSecondary = new THREE.Color(secondary);
+    const readableArmor = teamPrimary.clone().lerp(new THREE.Color(0xffffff), 0.16);
+    const readableSuit = teamSecondary.clone().lerp(new THREE.Color(0xffffff), 0.22);
     const visorAccent = new THREE.Color(
       armorSkin?.accent ?? skin?.accent ?? 0x2dcbff,
     );
     for (const material of materials.armor) {
-      material.color?.lerp(teamPrimary, 0.12);
+      material.color?.lerp(readableArmor, 0.38);
+      material.roughness = Math.max(material.roughness ?? 0.36, 0.36);
+      material.metalness = Math.min(material.metalness ?? 0.42, 0.46);
     }
     for (const material of materials.body) {
-      material.color?.lerp(teamSecondary, 0.07);
+      material.color?.lerp(readableSuit, 0.26);
+      material.roughness = Math.max(material.roughness ?? 0.42, 0.42);
     }
     for (const material of materials.visor) {
-      material.color?.lerp(visorAccent, 0.18);
+      material.color?.lerp(visorAccent, 0.55);
       if (material.emissive) {
-        material.emissive.copy(material.color).multiplyScalar(0.32);
+        material.emissive.copy(visorAccent).multiplyScalar(0.48);
         material.emissiveIntensity = Math.max(
           material.emissiveIntensity ?? 0,
-          0.42,
+          0.58,
         );
       }
     }
@@ -614,7 +619,10 @@ export function buildRev17Character(
   let weaponContact = null;
   const embeddedRifle = [];
   root.traverse((object) => {
-    if (object.isMesh && /RIFLE/i.test(object.name)) embeddedRifle.push(object);
+    if (object.isMesh && /RIFLE/i.test(object.name)) {
+      object.visible = false;
+      embeddedRifle.push(object);
+    }
   });
   const poseBones = {
     root: root.getObjectByName('root'),
@@ -862,7 +870,7 @@ export function buildRev17Character(
     attachedWeapon?.removeFromParent();
     attachedWeapon = null;
     weaponContact = null;
-    showEmbeddedRifle(!weapon);
+    showEmbeddedRifle(false);
     if (!weapon) return;
     const socket = root.getObjectByName('socket_weapon_r')
       || root.getObjectByName('palm.R');

@@ -67,22 +67,20 @@ const weaponReviewArtifacts = [
   })),
 ];
 const characterReviewArtifacts = [
-  'kyx-v6b-assault-rev38-fitted-v1-lod0.glb',
-  'kyx-v6b-assault-rev38-fitted-v1-lod1.glb',
-  'kyx-v6b-assault-rev38-fitted-v1-lod2.glb',
+  'character-lod0.glb',
 ].map((name) => path.join(
   repositoryRoot,
   'assets',
   'review',
   'runtime-candidates',
-  'g6-assault-rev38-fitted-v1',
+  'g6-rev30-cc0-donor',
   name,
 ));
 const characterBindingSource = path.join(
   repositoryRoot,
   'src',
   'dev',
-  'installKyxAssaultRev38Review.ts',
+  'installKyxAssaultRev39ArmoredReview.ts',
 );
 const localStagingEnvironment = path.join(repositoryRoot, '.env.staging');
 
