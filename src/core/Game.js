@@ -425,12 +425,16 @@ export class Game {
     this.grenadeSystem.onProjectileEvent = (event) => {
       if (event.kind === 'ability_bounce') {
         this.audio.playGrenadeBounce?.(event.outgoingSpeed, event.abilityId);
+      } else if (event.kind === 'ability_contact') {
+        this.audio.playGrenadeContact?.(event.abilityId);
       } else if (event.kind === 'ability_stuck') {
         this.audio.playGrenadeBounce?.(0.5, event.abilityId);
       } else if (event.kind === 'ability_throw') {
         this.audio.playGrenadeThrow?.(event.abilityId);
       } else if (event.kind === 'ability_detonated') {
-        if (event.abilityId === 'smoke_grenade_v1') {
+        if (event.abilityId === 'vertical_impulse_grenade_v1') {
+          this.audio.playLaunchDetonation?.();
+        } else if (event.abilityId === 'smoke_grenade_v1') {
           this.audio.playSmokeDeploy?.();
         } else if (event.abilityId === 'flash_grenade_v1') {
           if (typeof this.audio.playFlashDetonation === 'function') {

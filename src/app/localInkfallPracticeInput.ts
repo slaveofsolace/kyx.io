@@ -47,7 +47,20 @@ export class LocalInkfallPracticeInputBuffer {
     return Object.freeze([...this.keys].sort());
   }
 
-  handleKey(code: string, down: boolean, repeat = false): boolean {
+  get pendingLookYawMilliDegrees(): number {
+    return this.pendingYawMilliDegrees;
+  }
+
+  get pendingLookPitchMilliDegrees(): number {
+    return this.pendingPitchMilliDegrees;
+  }
+
+  handleKey(
+    code: string,
+    down: boolean,
+    repeat = false,
+    blinkCommitEligible = true,
+  ): boolean {
     if (code === 'Tab') {
       if (down) this.keys.add(code);
       else this.keys.delete(code);
@@ -61,7 +74,9 @@ export class LocalInkfallPracticeInputBuffer {
       }
       this.keys.add(code);
     } else {
-      const commitBlink = code === 'KeyQ' && this.keys.has(code);
+      const commitBlink = code === 'KeyQ'
+        && this.keys.has(code)
+        && blinkCommitEligible;
       this.keys.delete(code);
       if (commitBlink) {
         this.pendingPressedButtons |= INTENT_BUTTON.utility;

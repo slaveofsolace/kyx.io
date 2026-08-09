@@ -69,6 +69,7 @@ import {
   readOnlineAuthorityResumeCredential,
 } from './onlineAuthorityResumeSession';
 import {
+  isOnlineBlinkPreviewCommitEligible,
   resolveOnlineBlinkPreview,
   type OnlineBlinkPreview,
 } from './onlineBlinkPreview';
@@ -84,7 +85,11 @@ import {
   ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
-import { classifyOnlineAuthorityPresentationEvent } from './onlineAuthorityPresentationRouting';
+import {
+  classifyOnlineAuthorityPresentationEvent,
+  selectOnlineAbilityPresentationAudioOwner,
+  type OnlineAbilityPresentationAudioEvent,
+} from './onlineAuthorityPresentationRouting';
 import { createAuthorityAbilityHudInputs } from './authorityHudProjection';
 import {
   ONLINE_AUTHORITY_PATH,
@@ -1815,7 +1820,23 @@ async function mountSession(
         requestAnimationFrame(() => {
           feedbackGlyph.dataset.active = 'true';
         });
-        playFeedbackTone(cue);
+        const abilityAudioEvent: OnlineAbilityPresentationAudioEvent =
+          cue === 'grenade_detonation'
+            ? 'launch_detonation'
+            : cue === 'grenade_impulse'
+              ? 'launch_impulse'
+              : 'route_feedback';
+        const audioOwner = selectOnlineAbilityPresentationAudioOwner(
+          abilityAudioEvent,
+          {
+            threeRuntimeActive: threeRuntime !== null,
+            threeDimensionalMap,
+          },
+        );
+        if (audioOwner === 'route') playFeedbackTone(cue);
+        else feedbackHud.dataset.audio = audioOwner === 'three_runtime'
+          ? 'delegated_three_runtime'
+          : 'suppressed_duplicate';
       }
       window.clearTimeout(feedbackTimeout);
       feedbackTimeout = window.setTimeout(() => {
@@ -1937,7 +1958,14 @@ async function mountSession(
     feedbackGlyph.dataset.active = event.presentation.phase === 'rejected'
       ? 'false'
       : 'true';
-    playThrowableAbilityCue(event.presentation);
+    const audioOwner = selectOnlineAbilityPresentationAudioOwner('throwable', {
+      threeRuntimeActive: threeRuntime !== null,
+      threeDimensionalMap,
+    });
+    if (audioOwner === 'route') playThrowableAbilityCue(event.presentation);
+    else feedbackHud.dataset.audio = audioOwner === 'three_runtime'
+      ? 'delegated_three_runtime'
+      : 'caption_only';
     window.clearTimeout(feedbackTimeout);
     feedbackTimeout = window.setTimeout(() => {
       feedbackHud.dataset.active = 'false';
@@ -2078,6 +2106,15 @@ async function mountSession(
       button.setAttribute('aria-pressed', String(active));
     }
   };
+  const blinkCommitEligible = (): boolean => {
+    const local = client.diagnostics().local;
+    return local.predictedYawMilliDegrees !== null
+      && local.predictedPitchMilliDegrees !== null
+      && isOnlineBlinkPreviewCommitEligible(latestBlinkPreview, {
+        yawMilliDegrees: local.predictedYawMilliDegrees,
+        pitchMilliDegrees: local.predictedPitchMilliDegrees,
+      });
+  };
   const selectWeaponSlot = (slot: number): void => {
     if (!allowedAuthorityWeaponSlots.has(slot)) return;
     selectedWeaponSlot = slot;
@@ -2120,7 +2157,9 @@ async function mountSession(
       pressedKeys.add(event.code);
       if (event.code === 'KeyQ') blinkPreviewHeld = true;
     } else {
-      const commitBlink = event.code === 'KeyQ' && blinkPreviewHeld;
+      const commitBlink = event.code === 'KeyQ'
+        && blinkPreviewHeld
+        && blinkCommitEligible();
       pressedKeys.delete(event.code);
       if (event.code === 'KeyQ') blinkPreviewHeld = false;
       if (commitBlink) pulseButton(INTENT_BUTTON.utility);
@@ -2187,7 +2226,8 @@ async function mountSession(
     renderRequested = true;
   };
   const commitBlinkPreview = (): void => {
-    const shouldCommit = blinkPreviewHeld;
+    const shouldCommit = blinkPreviewHeld
+      && blinkCommitEligible();
     cancelBlinkPreview();
     if (shouldCommit) pulseButton(INTENT_BUTTON.utility);
   };

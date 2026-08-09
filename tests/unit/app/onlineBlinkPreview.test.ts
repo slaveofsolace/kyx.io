@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveOnlineBlinkPreview } from '../../../src/app/onlineBlinkPreview';
+import {
+  isOnlineBlinkPreviewCommitEligible,
+  resolveOnlineBlinkPreview,
+} from '../../../src/app/onlineBlinkPreview';
 import {
   authorityCameraYawRadians,
   directionFromAuthorityLook,
@@ -84,6 +87,8 @@ describe('online authoritative Blink preview', () => {
       outcome: 'full',
       maximumRangeMillimeters: 9_000,
       distanceMillimeters: 9_000,
+      intentYawMilliDegrees: 0,
+      intentPitchMilliDegrees: 0,
       destinationFeetMillimeters: millimeterVector(0, 0, 9_000),
     });
     expect(authority).toMatchObject({
@@ -91,6 +96,14 @@ describe('online authoritative Blink preview', () => {
       outcome: preview.outcome,
       to: preview.destinationFeetMillimeters,
     });
+    expect(isOnlineBlinkPreviewCommitEligible(preview, {
+      yawMilliDegrees: 0,
+      pitchMilliDegrees: 0,
+    })).toBe(true);
+    expect(isOnlineBlinkPreviewCommitEligible(preview, {
+      yawMilliDegrees: 1,
+      pitchMilliDegrees: 0,
+    })).toBe(false);
   });
 
   it('matches authority collision clamping and backward occupancy search', () => {
@@ -179,5 +192,6 @@ describe('online authoritative Blink preview', () => {
     });
     expect(queries.castRequests).toHaveLength(0);
     expect(queries.overlapRequests).toHaveLength(0);
+    expect(isOnlineBlinkPreviewCommitEligible(preview)).toBe(false);
   });
 });

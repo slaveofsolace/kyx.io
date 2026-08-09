@@ -54,4 +54,20 @@ describe('local Inkfall Practice input buffer', () => {
       .toBe(INTENT_BUTTON.primaryFire);
     expect(input.pressedKeys).toEqual([]);
   });
+
+  it('submits Blink only for the exact eligible held-preview intent', () => {
+    const blocked = new LocalInkfallPracticeInputBuffer();
+    blocked.handleKey('KeyQ', true);
+    blocked.handleKey('KeyQ', false, false, false);
+    expect(blocked.consume().pressedButtons & INTENT_BUTTON.utility).toBe(0);
+
+    const eligible = new LocalInkfallPracticeInputBuffer();
+    eligible.handleKey('KeyQ', true);
+    eligible.addPointerLook(4, -2);
+    eligible.handleKey('KeyQ', false, false, true);
+    const commit = eligible.consume();
+    expect(commit.pressedButtons & INTENT_BUTTON.utility).toBe(INTENT_BUTTON.utility);
+    expect(commit.lookYawDeltaMilliDegrees).toBe(440);
+    expect(commit.lookPitchDeltaMilliDegrees).toBe(220);
+  });
 });

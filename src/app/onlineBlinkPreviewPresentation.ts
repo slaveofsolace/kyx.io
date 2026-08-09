@@ -4,9 +4,48 @@ import type {
   OnlineBlinkPreview,
   OnlineBlinkPreviewReason,
 } from './onlineBlinkPreview';
+import { isOnlineBlinkPreviewCommitEligible } from './onlineBlinkPreview';
 
 const VALID_COLOR = 0x55f4e4;
 const BLOCKED_COLOR = 0xff765f;
+
+function finitePosition(
+  value: Readonly<{ x: number; y: number; z: number }>,
+): boolean {
+  return Number.isFinite(value.x)
+    && Number.isFinite(value.y)
+    && Number.isFinite(value.z);
+}
+
+/**
+ * Presentation accepts only a complete authority-bound result. Invalid
+ * results must remain at the origin, while valid results must be a ready,
+ * bounded full/partial destination. Malformed client state fails closed.
+ */
+export function canPresentOnlineBlinkPreview(
+  preview: OnlineBlinkPreview | null,
+): preview is OnlineBlinkPreview {
+  if (preview === null || preview.active !== true || preview.authorityBound !== true) {
+    return false;
+  }
+  if (
+    !Number.isFinite(preview.maximumRangeMillimeters)
+    || preview.maximumRangeMillimeters <= 0
+    || !Number.isFinite(preview.distanceMillimeters)
+    || preview.distanceMillimeters < 0
+    || preview.distanceMillimeters > preview.maximumRangeMillimeters
+    || !finitePosition(preview.originFeetMillimeters)
+    || !finitePosition(preview.destinationFeetMillimeters)
+  ) return false;
+  if (preview.valid) {
+    return isOnlineBlinkPreviewCommitEligible(preview);
+  }
+  return preview.outcome === null
+    && preview.distanceMillimeters === 0
+    && preview.destinationFeetMillimeters.x === preview.originFeetMillimeters.x
+    && preview.destinationFeetMillimeters.y === preview.originFeetMillimeters.y
+    && preview.destinationFeetMillimeters.z === preview.originFeetMillimeters.z;
+}
 
 export interface OnlineBlinkPreviewPresentationDiagnostics {
   readonly active: boolean;
@@ -44,10 +83,10 @@ function presentationMaterial(
     transparent: true,
     opacity,
     depthWrite: false,
-    // The current Rev5 art is render-only while Rev3 is the hash-locked
-    // authority fixture. Draw through presentation-only surfaces so the
-    // authoritative landing cannot be hidden by non-colliding decoration.
-    depthTest: false,
+    // The destination comes from the authority collision fixture. It still
+    // obeys render depth so a marker never advertises reachability through a
+    // visible wall or invalid surface.
+    depthTest: true,
     side: THREE.DoubleSide,
     toneMapped: false,
   });
@@ -74,7 +113,7 @@ export function createOnlineBlinkPreviewPresentation(
     dashSize: 0.35,
     gapSize: 0.22,
     depthWrite: false,
-    depthTest: false,
+    depthTest: true,
     toneMapped: false,
   });
 
@@ -186,7 +225,7 @@ export function createOnlineBlinkPreviewPresentation(
     nowMilliseconds: number,
     reducedMotion: boolean,
   ): void => {
-    const active = preview?.active === true;
+    const active = canPresentOnlineBlinkPreview(preview);
     destination.visible = active;
     rangeGroup.visible = active;
     tether.visible = active;

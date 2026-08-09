@@ -34,8 +34,41 @@ export interface OnlineBlinkPreview {
   readonly outcome: 'full' | 'partial' | null;
   readonly maximumRangeMillimeters: number;
   readonly distanceMillimeters: number;
+  readonly intentYawMilliDegrees: number;
+  readonly intentPitchMilliDegrees: number;
   readonly originFeetMillimeters: Vector3Millimeters;
   readonly destinationFeetMillimeters: Vector3Millimeters;
+}
+
+/**
+ * The release edge submits the current authoritative look intent only when the
+ * held preview represents an eligible authority-bound destination. The Worker
+ * still recomputes and owns the final target, cost and cooldown.
+ */
+export function isOnlineBlinkPreviewCommitEligible(
+  preview: OnlineBlinkPreview | null,
+  expectedIntent?: Readonly<{
+    yawMilliDegrees: number;
+    pitchMilliDegrees: number;
+  }>,
+): preview is OnlineBlinkPreview & { readonly valid: true } {
+  return preview !== null
+    && preview.active === true
+    && preview.authorityBound === true
+    && preview.valid === true
+    && preview.reason === 'ready'
+    && (preview.outcome === 'full' || preview.outcome === 'partial')
+    && Number.isFinite(preview.maximumRangeMillimeters)
+    && Number.isFinite(preview.distanceMillimeters)
+    && preview.distanceMillimeters >= 0
+    && preview.distanceMillimeters <= preview.maximumRangeMillimeters
+    && (
+      expectedIntent === undefined
+      || (
+        preview.intentYawMilliDegrees === expectedIntent.yawMilliDegrees
+        && preview.intentPitchMilliDegrees === expectedIntent.pitchMilliDegrees
+      )
+    );
 }
 
 export interface ResolveOnlineBlinkPreviewRequest {
@@ -87,6 +120,8 @@ function result(
       y: values.destination.y - origin.y,
       z: values.destination.z - origin.z,
     }),
+    intentYawMilliDegrees: request.yawMilliDegrees,
+    intentPitchMilliDegrees: request.pitchMilliDegrees,
     originFeetMillimeters: origin,
     destinationFeetMillimeters: position(values.destination),
   });

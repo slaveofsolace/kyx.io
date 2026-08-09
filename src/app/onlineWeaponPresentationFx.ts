@@ -403,11 +403,18 @@ class AuthoredWeaponAudio {
   }
 
   throwable(
-    phase: CombatPresentationThrowableAbilityEventV1['phase'],
-    abilityId: CombatPresentationThrowableAbilityEventV1['abilityId'],
+    event: CombatPresentationThrowableAbilityEventV1,
     local: boolean,
   ): void {
+    const { phase, abilityId } = event;
     const level = local ? 1 : 0.46;
+    if (phase === 'rejected') {
+      // A short, damped mechanism rejection: finite, non-melodic and distinct
+      // from a successful throw without becoming an arcade error chirp.
+      this.noiseBurst(0.055, 0.095 * level, 1_050, 'bandpass', 0, 230, 1.2, 0.035);
+      this.noiseBurst(0.025, 0.045 * level, 2_200, 'highpass', 0.018, 760, 1.8, 0.02);
+      return;
+    }
     if (phase === 'activated') {
       this.noiseBurst(0.12, 0.13 * level, 1_450, 'bandpass', 0, 410, 0.72, 0.08);
       this.noiseBurst(0.025, 0.07 * level, 2_900, 'highpass', 0.018, 1_250, 1.8, 0.04);
@@ -415,17 +422,24 @@ class AuthoredWeaponAudio {
       return;
     }
     if (phase === 'collision') {
+      const attached = event.reason === 'attached';
       this.noiseBurst(
-        0.055,
-        (abilityId === 'smoke_grenade_v1' ? 0.1 : 0.14) * level,
-        abilityId === 'smoke_grenade_v1' ? 1_050 : 1_900,
+        attached ? 0.085 : 0.055,
+        (attached ? 0.13 : abilityId === 'smoke_grenade_v1' ? 0.1 : 0.14) * level,
+        attached ? 720 : abilityId === 'smoke_grenade_v1' ? 1_050 : 1_900,
         'bandpass',
         0,
-        abilityId === 'smoke_grenade_v1' ? 320 : 620,
-        2.1,
+        attached ? 150 : abilityId === 'smoke_grenade_v1' ? 320 : 620,
+        attached ? 1.15 : 2.1,
         0.11,
       );
-      this.oscillator(210, 78, 0.07, 0.045 * level, 'sine');
+      this.oscillator(
+        attached ? 155 : 210,
+        attached ? 58 : 78,
+        attached ? 0.1 : 0.07,
+        (attached ? 0.06 : 0.045) * level,
+        'sine',
+      );
       return;
     }
     if (phase !== 'detonated') return;
@@ -745,7 +759,7 @@ export function createOnlineWeaponPresentationFx(
     nowMilliseconds: number,
     local: boolean,
   ): void => {
-    audio.throwable(event.phase, event.abilityId, local);
+    audio.throwable(event, local);
     throwablePresentationCount += 1;
     if (position === null || event.phase === 'activated' || event.phase === 'rejected') return;
 

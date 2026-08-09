@@ -1,6 +1,15 @@
 // Procedural tactical audio built from short noise transients, filtered body,
 // restrained low-frequency pulses and a compact room tail. No external samples
 // are required and every per-event variation comes from a deterministic PRNG.
+export function normalizeAbilityAudioKind(value) {
+  const kind = String(value ?? '').toLowerCase();
+  if (kind === 'launch' || kind.includes('impulse_grenade')) return 'launch';
+  if (kind === 'smoke' || kind.includes('smoke_grenade')) return 'smoke';
+  if (kind === 'sticky' || kind.includes('sticky_grenade')) return 'sticky';
+  if (kind === 'flash' || kind.includes('flash_grenade')) return 'flash';
+  return 'frag';
+}
+
 export class AudioManager {
   constructor() {
     this.ctx = null;
@@ -678,7 +687,8 @@ export class AudioManager {
 
   playGrenadeThrow(kind = 'frag') {
     if (!this.ctx) return;
-    if (kind === 'launch') {
+    const abilityKind = normalizeAbilityAudioKind(kind);
+    if (abilityKind === 'launch') {
       this._noiseBurst({
         duration: 0.095,
         gain: 0.11,
@@ -706,30 +716,52 @@ export class AudioManager {
       frequency: 390,
       endFrequency: 1_900,
       q: 0.5,
-      playbackRate: kind === 'smoke' ? 0.72 : 0.86,
+      playbackRate: abilityKind === 'smoke' ? 0.72 : 0.86,
       room: 0.04,
     });
-    this._metalClick(0.012, kind === 'smoke' ? 0.07 : 0.095, 1_950, 0.04);
+    this._metalClick(0.012, abilityKind === 'smoke' ? 0.07 : 0.095, 1_950, 0.04);
   }
 
   playGrenadeBounce(intensity = 1, kind = 'frag') {
     if (!this.ctx) return;
+    const abilityKind = normalizeAbilityAudioKind(kind);
     const level = Math.max(0.025, Math.min(0.15, 0.04 + intensity * 0.1));
     this._noiseBurst({
       duration: 0.045,
       gain: level,
       type: 'bandpass',
-      frequency: kind === 'smoke' ? 1_100 : 1_850,
-      endFrequency: kind === 'smoke' ? 480 : 850,
-      q: kind === 'smoke' ? 1.4 : 3.2,
+      frequency: abilityKind === 'smoke' ? 1_100 : 1_850,
+      endFrequency: abilityKind === 'smoke' ? 480 : 850,
+      q: abilityKind === 'smoke' ? 1.4 : 3.2,
       room: 0.08,
     });
     this._bodyPulse({
       duration: 0.055,
       gain: level * 0.38,
-      frequency: kind === 'smoke' ? 190 : 245,
+      frequency: abilityKind === 'smoke' ? 190 : 245,
       endFrequency: 90,
       room: 0.03,
+    });
+  }
+
+  playGrenadeContact(kind = 'launch') {
+    if (!this.ctx) return;
+    const abilityKind = normalizeAbilityAudioKind(kind);
+    this._noiseBurst({
+      duration: abilityKind === 'launch' ? 0.065 : 0.05,
+      gain: abilityKind === 'launch' ? 0.14 : 0.1,
+      type: 'bandpass',
+      frequency: abilityKind === 'launch' ? 1_350 : 1_800,
+      endFrequency: abilityKind === 'launch' ? 360 : 720,
+      q: 1.4,
+      room: 0.09,
+    });
+    this._bodyPulse({
+      duration: 0.075,
+      gain: abilityKind === 'launch' ? 0.07 : 0.045,
+      frequency: abilityKind === 'launch' ? 185 : 225,
+      endFrequency: 72,
+      room: 0.035,
     });
   }
 
@@ -760,6 +792,37 @@ export class AudioManager {
       gain: 0.1,
       frequency: 130,
       endFrequency: 54,
+    });
+  }
+
+  playFlashDetonation() {
+    this._emitCriticalCue({
+      id: 'flash-detonation',
+      text: 'FLASH DETONATION',
+      direction: 'nearby',
+      priority: 'danger',
+      durationMs: 900,
+      minIntervalMs: 320,
+    });
+    if (!this.ctx) return;
+    this._noiseBurst({
+      duration: 0.018,
+      gain: 0.42,
+      type: 'highpass',
+      frequency: 6_800,
+      endFrequency: 2_400,
+      q: 0.52,
+      room: 0.3,
+    });
+    this._noiseBurst({
+      delay: 0.012,
+      duration: 0.24,
+      gain: 0.18,
+      type: 'lowpass',
+      frequency: 1_100,
+      endFrequency: 120,
+      q: 0.48,
+      room: 0.25,
     });
   }
 

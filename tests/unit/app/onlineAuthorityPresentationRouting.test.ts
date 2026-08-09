@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { ReliableEvent } from '../../../src/net';
-import { classifyOnlineAuthorityPresentationEvent } from '../../../src/app/onlineAuthorityPresentationRouting';
+import {
+  classifyOnlineAuthorityPresentationEvent,
+  selectOnlineAbilityPresentationAudioOwner,
+} from '../../../src/app/onlineAuthorityPresentationRouting';
 
 function reliableEvent(
   presentation: ReliableEvent['presentation'],
@@ -61,5 +64,25 @@ describe('online authority presentation routing', () => {
 
   it('leaves events without semantic payloads unpresented', () => {
     expect(classifyOnlineAuthorityPresentationEvent(reliableEvent(undefined))).toBe('none');
+  });
+
+  it('assigns one ability audio owner and suppresses per-target Launch repeats', () => {
+    const three = { threeRuntimeActive: true, threeDimensionalMap: true };
+    expect(selectOnlineAbilityPresentationAudioOwner('throwable', three))
+      .toBe('three_runtime');
+    expect(selectOnlineAbilityPresentationAudioOwner('launch_detonation', three))
+      .toBe('three_runtime');
+    expect(selectOnlineAbilityPresentationAudioOwner('launch_impulse', three))
+      .toBe('none');
+    expect(selectOnlineAbilityPresentationAudioOwner('route_feedback', three))
+      .toBe('route');
+
+    const fallback = { threeRuntimeActive: false, threeDimensionalMap: false };
+    expect(selectOnlineAbilityPresentationAudioOwner('throwable', fallback))
+      .toBe('route');
+    expect(selectOnlineAbilityPresentationAudioOwner('launch_detonation', fallback))
+      .toBe('route');
+    expect(selectOnlineAbilityPresentationAudioOwner('launch_impulse', fallback))
+      .toBe('route');
   });
 });

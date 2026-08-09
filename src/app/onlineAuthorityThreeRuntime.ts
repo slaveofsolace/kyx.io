@@ -2,6 +2,10 @@ import * as THREE from 'three';
 
 import revision3CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
 import revision4CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision4.v1.json';
+import {
+  advanceSmokePresentationAgeTicks,
+  smokePuffExpansion,
+} from '../abilities/abilityPresentationSemantics';
 import { validateBundledMapPackage } from '../content/maps';
 import type { AuthorityEvidencePresentation } from '../dev/authorityEvidenceClient';
 import type {
@@ -655,6 +659,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const grenadeProjectiles = new Map<string, THREE.Group>();
   const abilityProjectiles = new Map<string, THREE.Group>();
   const smokeFields = new Map<string, THREE.Group>();
+  const smokePresentationAgeTicks = new Map<string, number>();
   const processedReliableEvents = new Set<string>();
   const processedReliableEventOrder: string[] = [];
   const weaponPresentationFx = createOnlineWeaponPresentationFx(scene, canvas);
@@ -1081,6 +1086,7 @@ export async function createOnlineAuthorityThreeRuntime(
   const syncGrenades = (
     combat: CombatSnapshotV1 | null,
     estimatedServerTick: number,
+    deltaSeconds: number,
   ): void => {
     const active = new Set<string>();
     for (const projectile of combat?.projectiles ?? []) {
@@ -1251,11 +1257,16 @@ export async function createOnlineAuthorityThreeRuntime(
         -field.zMillimeters / 1_000,
       );
       const radius = field.radiusMillimeters / 1_000;
-      const expansionLinear = THREE.MathUtils.clamp(
-        (estimatedServerTick - field.spawnedAtTick) / 27,
+      const authoritativeAgeTicks = Math.max(
         0,
-        1,
+        estimatedServerTick - field.spawnedAtTick,
       );
+      const presentationAgeTicks = advanceSmokePresentationAgeTicks(
+        smokePresentationAgeTicks.get(field.fieldId) ?? null,
+        authoritativeAgeTicks,
+        deltaSeconds,
+      );
+      smokePresentationAgeTicks.set(field.fieldId, presentationAgeTicks);
       const fade = THREE.MathUtils.clamp(
         (field.expiresAtTick - estimatedServerTick) / 30,
         0,
@@ -1266,12 +1277,7 @@ export async function createOnlineAuthorityThreeRuntime(
         if (!(child instanceof THREE.Mesh)) return;
         if (!(child.material instanceof THREE.ShaderMaterial)) return;
         const phase = Number(child.userData.phase ?? 0);
-        const delayedLinear = THREE.MathUtils.clamp(
-          expansionLinear - phase * 0.12,
-          0,
-          1,
-        );
-        const delayed = delayedLinear * delayedLinear * (3 - 2 * delayedLinear);
+        const delayed = smokePuffExpansion(presentationAgeTicks, phase);
         const baseScale = Number(child.userData.baseScale ?? 0.39);
         child.scale.setScalar(baseScale * Math.max(0.025, delayed));
         child.material.uniforms.uOpacity.value = Number(child.userData.baseOpacity ?? 0.62)
@@ -1284,6 +1290,7 @@ export async function createOnlineAuthorityThreeRuntime(
       scene.remove(smoke);
       disposeObject(smoke);
       smokeFields.delete(fieldId);
+      smokePresentationAgeTicks.delete(fieldId);
     }
   };
 
@@ -1304,7 +1311,11 @@ export async function createOnlineAuthorityThreeRuntime(
       reducedMotionQuery.matches,
     );
     syncAvatars(frame, deltaSeconds);
-    syncGrenades(frame.combat.snapshot, frame.presentation.estimatedServerTick);
+    syncGrenades(
+      frame.combat.snapshot,
+      frame.presentation.estimatedServerTick,
+      deltaSeconds,
+    );
     weaponPresentationFx.syncAuthoritativeRockets(
       frame.combat.snapshot?.weaponProjectiles ?? [],
       frame.nowMilliseconds,
@@ -1555,6 +1566,7 @@ export async function createOnlineAuthorityThreeRuntime(
     portalPresentation.dispose();
     weaponPresentationFx.dispose();
     blinkPreviewPresentation.dispose();
+    smokePresentationAgeTicks.clear();
     processedReliableEvents.clear();
     processedReliableEventOrder.length = 0;
     renderer.dispose();

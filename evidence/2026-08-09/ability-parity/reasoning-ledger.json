@@ -1,0 +1,690 @@
+{
+  "schema_version": "2.0.0",
+  "ledger_id": "ability_parity",
+  "created_at": "2026-08-09T19:30:00Z",
+  "depth": "STANDARD",
+  "iteration": 2,
+  "root": {
+    "kind": "DECISION",
+    "node_id": "root_ability_batch",
+    "statement": "Under the frozen relay baseline, implement one bounded ability authority and presentation batch that improves grenade, smoke, Blink, audio, and Practice/online parity while preserving scope and loadout invariants.",
+    "source_state": "Launch prediction duplicated authority rules and could evaluate its zero-tick fuse before contact; smoke growth lacked a shared time curve; online throwable audio had two potential owners; Blink release did not bind to the previewed look intent.",
+    "target_state": "A focused source batch shares authoritative ability rules and presentation semantics, passes deterministic static checks, and leaves runtime, listening, and Human review explicitly open under the shared-runtime hold.",
+    "conditions": [
+      "Work only in the isolated candidate worktree at the user-specified baseline.",
+      "Keep the canonical dirty checkout read-only.",
+      "Use ev.io as text-only behavioral reference; copy or import no protected payload."
+    ],
+    "boundary": "Ability authority, GrenadeSystem, owned online/Practice presentation FX and audio, and focused tests; no map art, player model or rig, HUD or CSS, or release configuration.",
+    "objective_claim_id": "claim_objective",
+    "invariant_ids": [
+      "inv_isolation",
+      "inv_worker_authority",
+      "inv_loadout_contract",
+      "inv_lane_scope",
+      "inv_provenance"
+    ],
+    "uncertainty_changes_decision": true
+  },
+  "project_model": {
+    "status": "READY",
+    "facets": {
+      "intent": {
+        "summary": "Deliver a coherent desktop-first ability feel and authority slice, not disconnected tests.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_objective"],
+        "unknown_disposition": "Human gameplay and audio preference remain reserved for review after runtime evidence."
+      },
+      "decision": {
+        "summary": "Use Worker rules as the Launch prediction source, share bounded smoke presentation semantics, bind Blink release to its eligible preview intent, and select one online audio owner.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_objective", "claim_source_inspection_next"],
+        "unknown_disposition": "The exact module set depends on current source ownership and duplication found during inspection."
+      },
+      "acceptance_contract": {
+        "summary": "Preserve Worker authority, predictable physics, fixed Blink plus three custom slots, scope exclusions, provenance, and the Human acceptance nonclaim.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_objective", "claim_loadout_baseline", "claim_human_review"],
+        "unknown_disposition": "Subjective weight, clarity, modernity, and audio coherence require named human review."
+      },
+      "mechanism": {
+        "summary": "Practice and online share reliable authority events and Three presentation; local grenade prediction had duplicated rules, route and Three audio overlapped, smoke growth lacked a shared curve, and Blink release was not bound to the rendered intent.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_mechanism_unknown", "claim_pointer_limit"],
+        "unknown_disposition": "The source mechanism is statically verified; player-visible and audible endpoint quality remains deferred by the runtime hold."
+      },
+      "current_state_history": {
+        "summary": "The candidate and canonical HEAD match the requested commit; canonical has 109 preserved dirty entries; source-blind Practice exposes the fixed slot contract.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_identity", "claim_canonical_dirty", "claim_loadout_baseline"],
+        "unknown_disposition": "Current live ev.io tuning is not measured and cannot be automated under its EULA."
+      },
+      "people_incentives": {
+        "summary": "The user owns merge and subjective acceptance; players and recipients need consistent, fair, readable outcomes; maintainers need a bounded merge.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_human_review", "claim_objective"],
+        "unknown_disposition": "No external release or operator decision is in scope."
+      },
+      "lifecycle_recovery": {
+        "summary": "All changes remain on an isolated local branch; omission from merge or a local revert is a true rollback with no production residue.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": ["claim_identity"],
+        "unknown_disposition": "Post-merge conflict resolution and integration retest remain the merge owner's responsibility."
+      }
+    },
+    "invariants": [
+      {
+        "id": "inv_isolation",
+        "statement": "The canonical dirty checkout remains read-only and unchanged by this lane.",
+        "owner": "User",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": ["evidence_checkout_freeze"]
+      },
+      {
+        "id": "inv_worker_authority",
+        "statement": "Online ability consequence, resource commitment, and cooldown remain Worker-authoritative.",
+        "owner": "Ability authority lane",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": ["evidence_static_verification"]
+      },
+      {
+        "id": "inv_loadout_contract",
+        "statement": "Blink stays fixed at Q and the custom three-slot E/F/Z loadout remains intact.",
+        "owner": "Ability lane",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": ["evidence_baseline_observations", "evidence_static_verification"]
+      },
+      {
+        "id": "inv_lane_scope",
+        "statement": "Map art, player model or rig, HUD or CSS, and release configuration remain untouched.",
+        "owner": "User",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": ["evidence_user_request", "evidence_static_verification"]
+      },
+      {
+        "id": "inv_provenance",
+        "statement": "No ev.io or otherwise unlicensed code or asset enters the implementation.",
+        "owner": "Ability lane",
+        "status": "PRESERVED",
+        "hard_gate": true,
+        "evidence_ids": ["evidence_reference_provenance"]
+      }
+    ],
+    "dependencies": [
+      {
+        "id": "dependency_practice",
+        "name": "Practice ability runtime",
+        "role": "Local simulation and presentation consumer",
+        "claim_ids": ["claim_loadout_baseline", "claim_mechanism_unknown"]
+      },
+      {
+        "id": "dependency_worker",
+        "name": "Worker ability authority",
+        "role": "Online acceptance, resource, cooldown, and consequence owner",
+        "claim_ids": ["claim_mechanism_unknown"]
+      },
+      {
+        "id": "dependency_presentation",
+        "name": "Ability presentation event model",
+        "role": "Shared VFX and audio truth surface",
+        "claim_ids": ["claim_mechanism_unknown"]
+      }
+    ],
+    "stakeholders": [
+      {
+        "id": "stakeholder_user",
+        "name": "User and merge owner",
+        "role": "Scope, merge, residual risk, and Human acceptance owner",
+        "claim_ids": ["claim_objective", "claim_human_review"]
+      },
+      {
+        "id": "stakeholder_players",
+        "name": "Ability users and recipients",
+        "role": "Need predictable self/target outcomes, readable counterplay, and non-misleading feedback",
+        "claim_ids": ["claim_reference_principles"]
+      }
+    ]
+  },
+  "authority": {
+    "scope": "Local source implementation, focused static verification, evidence, and one local commit in the isolated worktree; runtime and build activity are held.",
+    "decision_owner": "User",
+    "authorized_actions": [
+      "Edit owned ability authority, GrenadeSystem, online and Practice presentation FX or audio, and focused tests.",
+      "Run local typecheck, lint, focused deterministic unit verification, and evidence validation.",
+      "Commit locally on codex/ability-parity-20260809."
+    ],
+    "forbidden_actions": [
+      "Modify the canonical dirty checkout.",
+      "Edit map art, player model or rig, HUD or CSS, or release configuration.",
+      "Push, deploy, merge, clean worktrees, automate ev.io, or import ev.io code or assets.",
+      "Run Blender, Unreal, browser, dev server, build, capture, or protected runtime while the shared-runtime hold is active."
+    ],
+    "human_reserved_decisions": [
+      "Gameplay weight and parity acceptance.",
+      "Visual and audio acceptance.",
+      "Merge and release approval."
+    ],
+    "external_state_allowed": false,
+    "hard_gates": [
+      {
+        "id": "gate_authority",
+        "category": "AUTHORITY",
+        "status": "CLEAR",
+        "rationale": "The user explicitly authorized the bounded source batch, focused static checks, evidence, and local commit while imposing a hold on build and runtime activity.",
+        "claim_ids": ["claim_objective"]
+      },
+      {
+        "id": "gate_safety",
+        "category": "SAFETY",
+        "status": "NOT_APPLICABLE",
+        "rationale": "The isolated browser-game source batch has no identified physical safety effect.",
+        "claim_ids": []
+      },
+      {
+        "id": "gate_privacy",
+        "category": "PRIVACY_SECURITY_LEGAL",
+        "status": "CLEAR",
+        "rationale": "No account, private payload, or external asset is used; ev.io remains text-only REFERENCE ONLY under the recorded EULA boundary.",
+        "claim_ids": ["claim_reference_principles"]
+      },
+      {
+        "id": "gate_external",
+        "category": "IRREVERSIBLE_EXTERNAL_STATE",
+        "status": "CLEAR",
+        "rationale": "No push, deployment, account action, public matchmaking, or production Worker action is allowed.",
+        "claim_ids": ["claim_identity"]
+      },
+      {
+        "id": "gate_production",
+        "category": "DESTRUCTIVE_PRODUCTION",
+        "status": "CLEAR",
+        "rationale": "All changes are isolated local source and evidence writes; production and canonical mutation are forbidden.",
+        "claim_ids": ["claim_identity", "claim_canonical_dirty"]
+      },
+      {
+        "id": "gate_human",
+        "category": "HUMAN_RESERVED",
+        "status": "CLEAR",
+        "rationale": "Implementation may proceed while Human visual, audio, gameplay, merge, and release acceptance remain explicitly open.",
+        "claim_ids": ["claim_human_review"]
+      },
+      {
+        "id": "gate_rollback",
+        "category": "ROLLBACK_FAILURE",
+        "status": "CLEAR",
+        "rationale": "The candidate can be omitted from merge or locally reverted without changing canonical or production state.",
+        "claim_ids": ["claim_identity"]
+      }
+    ]
+  },
+  "companion_findings": {
+    "lead_skill": "HUMAN_CORTEX",
+    "applicable_domains": ["GAMEPLAY", "AUDIO", "VISUAL", "RUNTIME_EXPERIENCE", "ACCESSIBILITY_COMFORT"],
+    "observation_input": "BOTH",
+    "cold_eye_status": "TOOL_LIMITED",
+    "cold_eye_before_source_inspection": true,
+    "findings": [
+      {
+        "id": "finding_loadout",
+        "source_skill": "HUMAN_EYE",
+        "domain": "GAMEPLAY",
+        "label": "OBSERVED",
+        "verdict": "KEEP",
+        "statement": "Source-blind Practice presents fixed Q Blink with E Launch, F Smoke, and Z Frag at the frozen baseline.",
+        "evidence_ids": ["evidence_baseline_observations"]
+      },
+      {
+        "id": "finding_pointer_lock",
+        "source_skill": "HUMAN_EYE",
+        "domain": "RUNTIME_EXPERIENCE",
+        "label": "UNKNOWN",
+        "verdict": "BLOCKED",
+        "statement": "The in-app browser could not acquire pointer lock, so baseline ability motion and audio were not directly observed.",
+        "evidence_ids": ["evidence_baseline_observations"]
+      },
+      {
+        "id": "finding_direction",
+        "source_skill": "HUMAN_BRAIN",
+        "domain": "GAMEPLAY",
+        "label": "MEASURED",
+        "verdict": "KEEP",
+        "statement": "The source batch implements a restrained contact-driven direction: ballistic commitment, one contact/settle transition, authority consequence, and finite initiation/contact/consequence cue roles.",
+        "evidence_ids": ["evidence_reference_provenance", "evidence_static_verification"]
+      }
+    ],
+    "completion_axes": {
+      "functional_implementation": {
+        "status": "PASS",
+        "signal": "The owned source batch is present and both application and Worker typechecks pass.",
+        "evidence_ids": ["evidence_static_verification"],
+        "rationale": "Current source and deterministic contract checks establish the implemented mechanism, not player acceptance."
+      },
+      "runtime_integration": {
+        "status": "UNKNOWN",
+        "signal": "Post-change runtime and two-client Worker evidence were prohibited by the shared-runtime hold.",
+        "evidence_ids": ["evidence_static_verification"],
+        "rationale": "The deferred procedure is recorded; no runtime endpoint claim is made."
+      },
+      "player_eye_presentation": {
+        "status": "UNKNOWN",
+        "signal": "Motion, contact, VFX, audio, and Blink honesty were not exercised after the source change.",
+        "evidence_ids": ["evidence_baseline_observations", "evidence_static_verification"],
+        "rationale": "Source and baseline frames cannot establish perceived presentation quality."
+      },
+      "evidence_regression_coverage": {
+        "status": "PASS",
+        "signal": "Application and Worker typechecks, focused ESLint, and 34 of 34 deterministic tests pass.",
+        "evidence_ids": ["evidence_static_verification"],
+        "rationale": "Focused contract coverage passes; full-suite, build, and runtime coverage remain outside this held batch."
+      },
+      "human_acceptance": {
+        "status": "UNKNOWN",
+        "signal": "No named Human verdict exists.",
+        "evidence_ids": [],
+        "rationale": "Automation and agent review cannot grant subjective acceptance."
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "claim_objective",
+      "label": "OBSERVED",
+      "statement": "The user authorized one isolated, coherent ability authority, physics, audio, VFX, and focused-test batch with a local commit and explicit scope exclusions.",
+      "evidence_ids": ["evidence_user_request"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Direct user delegation."}
+    },
+    {
+      "id": "claim_identity",
+      "label": "MEASURED",
+      "statement": "Candidate branch codex/ability-parity-20260809 was created at 520d94c5c9bd54b5b138ca25a116a1781f3e3356.",
+      "evidence_ids": ["evidence_checkout_freeze"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current git branch and HEAD inspection."}
+    },
+    {
+      "id": "claim_canonical_dirty",
+      "label": "MEASURED",
+      "statement": "The canonical checkout was at the same HEAD with 109 dirty entries and remained excluded from edits.",
+      "evidence_ids": ["evidence_checkout_freeze"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current git status count and checkout freeze."}
+    },
+    {
+      "id": "claim_loadout_baseline",
+      "label": "OBSERVED",
+      "statement": "Source-blind Practice exposes fixed Q Blink and three custom slots E Launch, F Smoke, and Z Frag.",
+      "evidence_ids": ["evidence_baseline_observations"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current DOM snapshot and source-frozen capture."}
+    },
+    {
+      "id": "claim_pointer_limit",
+      "label": "OBSERVED",
+      "statement": "The in-app browser did not acquire pointer lock after one semantic and one coordinate attempt, preventing direct baseline ability input.",
+      "evidence_ids": ["evidence_baseline_observations"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current controlled browser observation with bounded retries."}
+    },
+    {
+      "id": "claim_reference_principles",
+      "label": "INFERRED",
+      "statement": "Official historical ev.io text supports clean-room principles of directional self/target impulse, meaningful contact/fuse semantics, persistent smoke visibility, and distinct state cues without defining KYX tuning.",
+      "evidence_ids": ["evidence_reference_provenance"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "MEDIUM", "basis": "Primary publisher text is direct, but transfer to KYX and present-day ev.io behavior are not measured."}
+    },
+    {
+      "id": "claim_mechanism_unknown",
+      "label": "MEASURED",
+      "statement": "Source inspection located duplicated local throwable rules, a pre-contact zero-fuse path, overlapping online audio owners, stepped smoke presentation inputs, and a Blink preview-to-release intent gap.",
+      "evidence_ids": ["evidence_static_verification"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current owned source inspection and focused regression tests."}
+    },
+    {
+      "id": "claim_source_inspection_next",
+      "label": "MEASURED",
+      "statement": "The bounded owned source inspection and coherent implementation batch are complete and statically verified.",
+      "evidence_ids": ["evidence_user_request", "evidence_static_verification"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current diff, application and Worker typechecks, focused lint, and deterministic tests."}
+    },
+    {
+      "id": "claim_human_review",
+      "label": "UNKNOWN",
+      "statement": "Human gameplay, visual, audio, merge, and release acceptance remain unrecorded.",
+      "evidence_ids": ["evidence_user_request"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "LOW", "basis": "No Human decision evidence exists; the user explicitly prohibited claiming Human acceptance."}
+    },
+    {
+      "id": "claim_selected_direction",
+      "label": "MEASURED",
+      "statement": "The implemented direction shares authority rules and smoke semantics, makes Launch contact-driven and zero-bounce, binds Blink release to its eligible preview intent, and selects one online audio owner.",
+      "evidence_ids": ["evidence_reference_provenance", "evidence_static_verification"],
+      "contradiction_claim_ids": [],
+      "confidence": {"level": "HIGH", "basis": "Current source diff and focused deterministic checks; endpoint quality remains unmeasured."}
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence_user_request",
+      "kind": "SOURCE",
+      "access": "INSPECTED_CURRENT",
+      "locator": "Delegation input in source task 019f7d41-cea0-7c83-8b3a-42299cddaa02",
+      "captured_at": "2026-08-09T19:00:00Z",
+      "integrity": "Current task authority text",
+      "supports_claim_ids": ["claim_objective", "claim_human_review", "claim_source_inspection_next"],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "evidence_checkout_freeze",
+      "kind": "MEASUREMENT",
+      "access": "GENERATED_CURRENT",
+      "locator": "evidence/2026-08-09/ability-parity/CHECKOUT_FREEZE.md",
+      "captured_at": "2026-08-09T19:05:00Z",
+      "integrity": "Git branch, HEAD, and dirty-count freeze",
+      "supports_claim_ids": ["claim_identity", "claim_canonical_dirty"],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "evidence_baseline_observations",
+      "kind": "ARTIFACT",
+      "access": "GENERATED_CURRENT",
+      "locator": "evidence/2026-08-09/ability-parity/BASELINE_OBSERVATIONS.md and baseline-runtime PNG captures",
+      "captured_at": "2026-08-09T19:20:00Z",
+      "integrity": "Source-blind local loopback observation at frozen candidate HEAD",
+      "supports_claim_ids": ["claim_loadout_baseline", "claim_pointer_limit", "claim_source_inspection_next"],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "evidence_reference_provenance",
+      "kind": "SOURCE",
+      "access": "INSPECTED_CURRENT",
+      "locator": "evidence/2026-08-09/ability-parity/REFERENCE_PROVENANCE.md and reference-candidates.json",
+      "captured_at": "2026-08-09T19:25:00Z",
+      "integrity": "Official public changelog and EULA, no downloaded payload",
+      "supports_claim_ids": ["claim_reference_principles", "claim_selected_direction"],
+      "contradicts_claim_ids": []
+    },
+    {
+      "id": "evidence_static_verification",
+      "kind": "MEASUREMENT",
+      "access": "GENERATED_CURRENT",
+      "locator": "evidence/2026-08-09/ability-parity/IMPLEMENTATION_AND_VERIFICATION.md",
+      "captured_at": "2026-08-09T21:15:00Z",
+      "integrity": "Current source inspection, scoped implementation record, application and Worker typechecks, focused ESLint, and 34/34 deterministic tests",
+      "supports_claim_ids": ["claim_mechanism_unknown", "claim_source_inspection_next", "claim_selected_direction"],
+      "contradicts_claim_ids": []
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "hypothesis_mechanics",
+      "statement": "Toy-like launch behavior is primarily caused by unconstrained projectile contact response and impulse application semantics.",
+      "mechanism": "Repeated contact response preserves excessive normal velocity or applies consequence at the wrong lifecycle boundary.",
+      "status": "SUPPORTED",
+      "supporting_claim_ids": ["claim_objective", "claim_mechanism_unknown", "claim_selected_direction"],
+      "contradicting_claim_ids": [],
+      "distinguishing_prediction": "Owned grenade source contains generic bounce handling or repeated-contact behavior shared with launch.",
+      "falsifier": "Source shows bounded contact/settle semantics and the symptom instead originates only in presentation timing.",
+      "decision_if_true": "Implement a launch-specific contact policy with a single readable response and authority-owned impulse.",
+      "test_ids": ["test_source_inspection"],
+      "confidence": {"level": "HIGH", "basis": "Source inspection found generic local lifecycle drift and a zero-fuse-before-contact defect; focused tests now cover the corrected contract."}
+    },
+    {
+      "id": "hypothesis_presentation",
+      "statement": "Choppy smoke and placeholder feel are primarily caused by stepped presentation growth and generic synthesized cue patterns rather than authority state.",
+      "mechanism": "Sparse update cadence, reused pulse emitters, or looping audio surfaces reveal simulation steps and detach feedback from lifecycle roles.",
+      "status": "SUPPORTED",
+      "supporting_claim_ids": ["claim_objective", "claim_mechanism_unknown", "claim_selected_direction"],
+      "contradicting_claim_ids": [],
+      "distinguishing_prediction": "Presentation source grows smoke on discrete ticks or timers and contains arpeggio, siren, or unintended loop patterns.",
+      "falsifier": "Presentation interpolation and bounded one-shots are already coherent, while authority snapshots themselves are discontinuous.",
+      "decision_if_true": "Create continuous time-based interpolation and finite role-specific Web Audio cues driven by presentation events.",
+      "test_ids": ["test_source_inspection"],
+      "confidence": {"level": "MEDIUM", "basis": "Source inspection found stepped presentation inputs, duplicated online cue ownership, and authority-ID audio profile mismatch; perceived outcome is not listened or run."}
+    },
+    {
+      "id": "hypothesis_contract_duplication",
+      "statement": "Practice and online inconsistency is primarily caused by duplicated ability rules or presentation event translation.",
+      "mechanism": "Separate mode-specific code paths encode range, impulse, radius, cooldown, or event meaning independently.",
+      "status": "SUPPORTED",
+      "supporting_claim_ids": ["claim_objective", "claim_loadout_baseline", "claim_mechanism_unknown", "claim_selected_direction"],
+      "contradicting_claim_ids": [],
+      "distinguishing_prediction": "Source inspection finds repeated constants or distinct Practice/online event shapes for the same abilities.",
+      "falsifier": "Both modes already import one typed contract and consume the same normalized event model.",
+      "decision_if_true": "Extract or extend one shared contract and normalize both modes at the event boundary.",
+      "test_ids": ["test_source_inspection"],
+      "confidence": {"level": "HIGH", "basis": "Source inspection found separate local throwable constants and overlapping event translation; focused contract tests cover the shared replacements."}
+    }
+  ],
+  "tests": [
+    {
+      "id": "test_baseline_blackbox",
+      "question": "Can the frozen local build directly demonstrate baseline ability motion, contact, smoke growth, Blink preview, and audio before source inspection?",
+      "kind": "EXPERIMENT",
+      "discriminates_hypothesis_ids": ["hypothesis_mechanics", "hypothesis_presentation"],
+      "predicted_outcomes": [
+        {"hypothesis_id": "hypothesis_mechanics", "outcome": "Repeated contact or impulse behavior is visible if pointer lock and ability input succeed."},
+        {"hypothesis_id": "hypothesis_presentation", "outcome": "Stepped smoke or placeholder audio is visible or audible if pointer lock and ability input succeed."}
+      ],
+      "expected_decision_value": "HIGH",
+      "cost": "LOW",
+      "risk": "LOW",
+      "authorization_status": "AUTHORIZED",
+      "status": "INCONCLUSIVE",
+      "evidence_ids": ["evidence_baseline_observations"],
+      "changes_decision_if": "A direct baseline observation would prioritize mechanics versus presentation; pointer-lock failure preserved both hypotheses."
+    },
+    {
+      "id": "test_source_inspection",
+      "question": "Which owned source seams actually control authority, contact response, smoke growth, Blink preview, and event/audio translation?",
+      "kind": "INSPECTION",
+      "discriminates_hypothesis_ids": ["hypothesis_mechanics", "hypothesis_presentation", "hypothesis_contract_duplication"],
+      "predicted_outcomes": [
+        {"hypothesis_id": "hypothesis_mechanics", "outcome": "Generic or repeated contact policy appears in GrenadeSystem or authority rules."},
+        {"hypothesis_id": "hypothesis_presentation", "outcome": "Discrete growth or looping cue patterns appear in owned presentation/audio surfaces."},
+        {"hypothesis_id": "hypothesis_contract_duplication", "outcome": "Practice and online duplicate constants or event translation."}
+      ],
+      "expected_decision_value": "HIGH",
+      "cost": "LOW",
+      "risk": "LOW",
+      "authorization_status": "AUTHORIZED",
+      "status": "PASS",
+      "evidence_ids": ["evidence_static_verification"],
+      "changes_decision_if": "The inspection selected a coherent batch spanning shared authority rules, presentation semantics, preview intent, and single-owner audio routing."
+    }
+  ],
+  "trace": {
+    "bounds": {
+      "max_depth": 4,
+      "max_nodes": 30,
+      "stop_rule": "Expand only consequences that change authority, player prediction, scope, provenance, verification, rollback, or Human review."
+    },
+    "nodes": [
+      {
+        "id": "root_ability_batch",
+        "kind": "ROOT",
+        "statement": "Implement the bounded coherent ability authority and presentation batch.",
+        "claim_id": "claim_objective",
+        "depth": 0,
+        "terminal": false,
+        "closure_reason": "EXPANDED"
+      },
+      {
+        "id": "state_shared_contract",
+        "kind": "STATE",
+        "statement": "Practice and online consume one explicit ability semantics and presentation event contract.",
+        "claim_id": "claim_selected_direction",
+        "depth": 1,
+        "terminal": false,
+        "closure_reason": "EXPANDED"
+      },
+      {
+        "id": "consequence_prediction",
+        "kind": "CONSEQUENCE",
+        "statement": "Users and recipients receive consistent commitment, contact, and consequence signals without duplicate or looping cues.",
+        "claim_id": "claim_reference_principles",
+        "depth": 2,
+        "terminal": true,
+        "closure_reason": "MONITORED"
+      },
+      {
+        "id": "recovery_local_revert",
+        "kind": "RECOVERY",
+        "statement": "If guardrails fail, omit the candidate from merge or revert its local commit.",
+        "claim_id": "claim_identity",
+        "depth": 1,
+        "terminal": true,
+        "closure_reason": "BOUNDED"
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge_contract",
+        "relation": "FORWARD",
+        "source_node_id": "root_ability_batch",
+        "target_node_id": "state_shared_contract",
+        "source_delta": "Mode-specific or implicit rules move toward one typed owned contract.",
+        "mechanism_status": "KNOWN",
+        "mechanism": "Shared rule and event normalization removes duplicated semantics while leaving Worker consequence authoritative.",
+        "conditions": ["Owned source stays within ability, grenade, presentation, audio, and focused-test boundaries."],
+        "lag": "Immediate in source; runtime integration remains deferred by the hold.",
+        "target_delta": "Practice and online event meaning aligns.",
+        "affected_refs": ["inv_worker_authority", "inv_loadout_contract", "dependency_practice", "dependency_worker", "dependency_presentation"],
+        "supporting_claim_ids": ["claim_selected_direction"],
+        "contradicting_claim_ids": [],
+        "detection": {"signal": "Focused contract tests and source pointers", "latency": "During consolidated unit cycle", "failure_to_detect": "A mode-specific path could remain untested and drift later."},
+        "falsifier": "Source already proves one complete shared contract with no duplication or translation mismatch.",
+        "confidence": {"level": "HIGH", "basis": "Current source diff and focused contract verification."}
+      },
+      {
+        "id": "edge_prediction",
+        "relation": "FORWARD",
+        "source_node_id": "state_shared_contract",
+        "target_node_id": "consequence_prediction",
+        "source_delta": "Authority transitions emit stable lifecycle roles.",
+        "mechanism_status": "KNOWN",
+        "mechanism": "Presentation consumes accepted event roles once and renders finite initiation, contact, consequence, and tail feedback.",
+        "conditions": ["Duplicate suppression, bounded audio lifetime, and smooth time-based smoke growth pass focused tests."],
+        "lag": "Within the next frame to the finite effect tail.",
+        "target_delta": "Ability outcomes become more predictable and less arcade-like without increasing signal clutter.",
+        "affected_refs": ["stakeholder_players", "inv_worker_authority", "inv_provenance"],
+        "supporting_claim_ids": ["claim_reference_principles"],
+        "contradicting_claim_ids": ["claim_pointer_limit"],
+        "detection": {"signal": "Event timeline tests, runtime capture, and Human review packet", "latency": "Immediate technical signal; Human verdict later", "failure_to_detect": "Automation can miss perceived weight, loudness, and fairness."},
+        "falsifier": "Runtime shows duplicate, late, looping, misleading, or visually stepped feedback despite the shared contract.",
+        "confidence": {"level": "MEDIUM", "basis": "Event ownership and finite lifetimes are source-tested; player-eye and listening outcomes remain unobserved."}
+      },
+      {
+        "id": "edge_recovery",
+        "relation": "FORWARD",
+        "source_node_id": "root_ability_batch",
+        "target_node_id": "recovery_local_revert",
+        "source_delta": "The candidate remains isolated from canonical and production.",
+        "mechanism_status": "KNOWN",
+        "mechanism": "A local branch and commit can be omitted or reverted without altering the canonical dirty worktree.",
+        "conditions": ["No push, deploy, merge, or canonical write occurs."],
+        "lag": "Immediate before merge.",
+        "target_delta": "Failed guardrails do not persist outside the candidate branch.",
+        "affected_refs": ["inv_isolation", "stakeholder_user"],
+        "supporting_claim_ids": ["claim_identity", "claim_canonical_dirty"],
+        "contradicting_claim_ids": [],
+        "detection": {"signal": "Git worktree, branch, HEAD, and status inspection", "latency": "Immediate", "failure_to_detect": "An accidental external write would invalidate true rollback."},
+        "falsifier": "Any canonical, remote, deployment, or account state changes.",
+        "confidence": {"level": "HIGH", "basis": "Current isolated worktree and explicit forbidden-action boundary."}
+      }
+    ],
+    "feedback_loops": [],
+    "thresholds": [
+      {
+        "id": "threshold_authority_accept",
+        "variable": "Ability consequence and resource commitment",
+        "boundary": "Only after authoritative acceptance; client intent may preview but not commit irreversible state.",
+        "direction": "Intent to accepted consequence",
+        "evidence_or_test_ids": ["test_source_inspection"]
+      }
+    ]
+  },
+  "decision": {
+    "iteration_choice": "ACT",
+    "recommendation": "Commit the completed bounded source batch and defer build, runtime, capture, listening, and Human acceptance until the shared-runtime hold is explicitly lifted.",
+    "selected_action_ids": ["action_source_batch"],
+    "rejected_options": [
+      "Do not tune isolated constants without tracing authority and presentation consumers.",
+      "Do not automate the external ev.io client or import any ev.io payload.",
+      "Do not broaden into HUD, CSS, map, rig, or release surfaces."
+    ],
+    "decision_claim_ids": ["claim_objective", "claim_source_inspection_next", "claim_selected_direction"],
+    "remaining_unknown_claim_ids": ["claim_human_review"],
+    "human_owner": "User",
+    "consecutive_stable_checks": 1,
+    "reopen_trigger": "Deferred build/runtime evidence exposes drift, duplicated cues, dishonest Blink presentation, smoke performance or authority failure, or Human review rejects gameplay, visual, or audio quality."
+  },
+  "actions": [
+    {
+      "id": "action_source_batch",
+      "description": "Inspect and implement the bounded coherent ability authority, grenade physics, presentation event, audio, VFX, and focused-test batch in the candidate worktree.",
+      "status": "VERIFIED",
+      "authorization_status": "AUTHORIZED",
+      "authority_basis": "Direct user delegation with exact repo, baseline, lane ownership, exclusions, verification cycle, and local-commit instruction.",
+      "destructive": false,
+      "production": false,
+      "external_state_change": false,
+      "irreversible": false,
+      "monitoring": "Git scope diff, application and Worker typechecks, focused lint and unit tests, reference registry validation, and ledger validation; build and runtime are explicitly deferred.",
+      "rollback": {
+        "kind": "TRUE_ROLLBACK",
+        "procedure": "Do not merge the candidate, or revert the single local candidate commit if it has been created.",
+        "preconditions": ["No push, deployment, merge, or canonical source write has occurred."],
+        "verification": "Candidate diff disappears while canonical HEAD, branch, and dirty count remain unchanged.",
+        "evidence_ids": ["evidence_checkout_freeze"],
+        "irreversible_residue": "None expected outside ignored dependency cache and local evidence artifacts."
+      },
+      "recovery": {
+        "procedure": "Return to the frozen baseline candidate or create a fresh isolated worktree at the same commit; preserve failure evidence.",
+        "owner": "Ability lane and merge owner",
+        "evidence_ids": ["evidence_checkout_freeze"]
+      },
+      "mitigation_consequence_node_ids": ["recovery_local_revert"]
+    }
+  ],
+  "verification": {
+    "mechanism": {"status": "PASS", "signal": "Application and Worker typechecks, focused lint, and 34/34 deterministic contract tests pass.", "evidence_ids": ["evidence_static_verification"], "rationale": "Current static evidence verifies the implemented source mechanism."},
+    "endpoint": {"status": "UNKNOWN", "signal": "Post-change ability feel, two-client reconciliation, presentation, and listening evidence do not exist under the hold.", "evidence_ids": ["evidence_static_verification"], "rationale": "No runtime or Human endpoint claim is permitted."},
+    "guardrails": {"status": "PASS", "signal": "Final source scope preserves isolation, Worker consequence authority, the fixed Blink plus three-slot contract, and provenance boundaries.", "evidence_ids": ["evidence_checkout_freeze", "evidence_reference_provenance", "evidence_static_verification"], "rationale": "Current diff and focused contract checks cover the source guardrails; canonical preservation is rechecked before commit."},
+    "recovery": {"status": "PASS", "signal": "The candidate is an isolated local branch with no external state change.", "evidence_ids": ["evidence_checkout_freeze"], "rationale": "Omitting or reverting the candidate is a true rollback before merge."}
+  },
+  "closure": {
+    "status": "OPEN",
+    "summary": "The bounded source batch and focused static verification are complete; endpoint verification remains open because build, runtime, capture, listening, and Human acceptance are held or reserved.",
+    "residual_risks": [
+      "Build and browser-bundle integration are unverified under the shared-runtime hold.",
+      "Two-client Worker reconciliation and event/audio single-delivery are unverified at runtime.",
+      "Smoke smoothness and bounded presentation cost are statically specified but not visually measured.",
+      "Procedural cue quality, mix, and unintended siren-like perception have no listening evidence.",
+      "Human gameplay, visual, and audio acceptance is not available."
+    ],
+    "human_acceptance_required": true,
+    "accepted_by": "",
+    "acceptance_evidence_ids": [],
+    "nonclaims": [
+      "This ledger contains auditable claims and decisions, not hidden chain-of-thought.",
+      "Baseline captures do not prove ability physics, audio, VFX, Worker authority, or parity.",
+      "No automated result grants Human acceptance, merge approval, or release readiness."
+    ]
+  }
+}

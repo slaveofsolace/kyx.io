@@ -13,7 +13,13 @@ import {
 import { RELAY_AUTHORITY_COMPATIBILITY } from './relayVisualContinuity';
 import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
-import { PHASE3_HYPOTHESIS_MOVEMENT_PROFILE } from '../sim';
+import {
+  clampMilliDegrees,
+  MOVEMENT_PITCH_MAX_MILLI_DEGREES,
+  MOVEMENT_PITCH_MIN_MILLI_DEGREES,
+  normalizeYawMilliDegrees,
+  PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+} from '../sim';
 import type { ReliableEvent } from '../net';
 import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
 import { HUD } from '../ui/HUD.js';
@@ -24,7 +30,11 @@ import {
   createOnlineAuthorityThreeRuntime,
   type OnlineAuthorityThreeRuntime,
 } from './onlineAuthorityThreeRuntime';
-import { resolveOnlineBlinkPreview } from './onlineBlinkPreview';
+import {
+  isOnlineBlinkPreviewCommitEligible,
+  resolveOnlineBlinkPreview,
+  type OnlineBlinkPreview,
+} from './onlineBlinkPreview';
 
 const MAXIMUM_AUTHORITY_STEPS_PER_FRAME = 5;
 const MAXIMUM_FRAME_DELTA_MILLISECONDS = 250;
@@ -232,9 +242,23 @@ export async function mountLocalInkfallPracticeRoute(
   let animationFrame = 0;
   let disposed = false;
   let pointerLocked = false;
+  let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let scoreboardOpen = false;
   let lastScoreboardRefreshAt = 0;
   const recentHeadshots = new Map<string, number>();
+
+  const projectedBlinkLook = (
+    player: AuthorityFullSnapshot['players'][number]['movement']['player'],
+  ): Readonly<{ yawMilliDegrees: number; pitchMilliDegrees: number }> => ({
+    yawMilliDegrees: normalizeYawMilliDegrees(
+      player.yawMilliDegrees + input.pendingLookYawMilliDegrees,
+    ),
+    pitchMilliDegrees: clampMilliDegrees(
+      player.pitchMilliDegrees + input.pendingLookPitchMilliDegrees,
+      MOVEMENT_PITCH_MIN_MILLI_DEGREES,
+      MOVEMENT_PITCH_MAX_MILLI_DEGREES,
+    ),
+  });
 
   const showGate = (message: string): void => {
     if (disposed) return;
@@ -387,13 +411,16 @@ export async function mountLocalInkfallPracticeRoute(
     const authoritativeLocal = snapshot.players.find(
       ({ playerId }) => playerId === host.localPlayerId,
     )?.movement.player;
-    const blinkPreview = authoritativeLocal === undefined
+    const previewLook = authoritativeLocal === undefined
+      ? null
+      : projectedBlinkLook(authoritativeLocal);
+    latestBlinkPreview = authoritativeLocal === undefined || previewLook === null
       ? null
       : resolveOnlineBlinkPreview({
           active: input.blinkPreviewHeld,
           feetPosition: authoritativeLocal.feetPosition,
-          yawMilliDegrees: authoritativeLocal.yawMilliDegrees,
-          pitchMilliDegrees: authoritativeLocal.pitchMilliDegrees,
+          yawMilliDegrees: previewLook.yawMilliDegrees,
+          pitchMilliDegrees: previewLook.pitchMilliDegrees,
           stance: authoritativeLocal.stance,
           cooldownTicksRemaining: authoritativeLocal.teleportCooldownTicksRemaining,
         }, PHASE3_HYPOTHESIS_MOVEMENT_PROFILE, host.world);
@@ -408,7 +435,7 @@ export async function mountLocalInkfallPracticeRoute(
         projection.localMovement.velocity.z,
       ),
       aimHeld: input.aimHeld,
-      blinkPreview,
+      blinkPreview: latestBlinkPreview,
     });
     hud.render(projection.hud);
     hud.showPracticeStatus(true, host.botPlayerIds.length, 'Relay · Local authority');
@@ -427,7 +454,18 @@ export async function mountLocalInkfallPracticeRoute(
   };
   const keyHandler = (event: KeyboardEvent): void => {
     if (!pointerLocked) return;
-    if (input.handleKey(event.code, event.type === 'keydown', event.repeat)) {
+    const authoritativeLocal = snapshot.players.find(
+      ({ playerId }) => playerId === host.localPlayerId,
+    )?.movement.player;
+    const currentLook = authoritativeLocal === undefined
+      ? undefined
+      : projectedBlinkLook(authoritativeLocal);
+    if (input.handleKey(
+      event.code,
+      event.type === 'keydown',
+      event.repeat,
+      isOnlineBlinkPreviewCommitEligible(latestBlinkPreview, currentLook),
+    )) {
       event.preventDefault();
     }
   };

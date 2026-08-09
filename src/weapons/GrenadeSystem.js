@@ -6,85 +6,62 @@ import {
   DEFAULT_ABILITY_LOADOUT,
   assertAbilityLoadout,
 } from '../abilities/abilityLoadout.ts';
+import {
+  ABILITY_PRESENTATION_AUTHORITY_HZ,
+  SMOKE_PRESENTATION_RULES,
+  smokePuffExpansion,
+} from '../abilities/abilityPresentationSemantics.ts';
+import {
+  AUTHORITY_THROWABLE_RULES,
+} from '../authority/combat/abilityLoadoutRuntime.ts';
+import {
+  IMPULSE_GRENADE_RULES_V2,
+} from '../authority/combat/impulseGrenade.ts';
 
 const MAX_PHYSICS_STEP = 1 / 120;
 const MAX_PHYSICS_SUBSTEPS = 12;
 const THROW_ORIGIN_DROP = 0.15;
-const SMOKE_RADIUS = 4.2 * 1.4;
-const SMOKE_EXPANSION_SECONDS = 1.35;
-const SMOKE_LIFETIME_SECONDS = 10;
+const SMOKE_AUTHORITY_RULES = AUTHORITY_THROWABLE_RULES[ABILITY_ID.smoke];
+const SMOKE_RADIUS = SMOKE_AUTHORITY_RULES.areaRadiusMillimeters / 1_000;
+const SMOKE_LIFETIME_SECONDS = SMOKE_AUTHORITY_RULES.effectDurationTicks
+  / ABILITY_PRESENTATION_AUTHORITY_HZ;
+
+function projectileRules(abilityId, type, color, visualRadius) {
+  const authority = AUTHORITY_THROWABLE_RULES[abilityId];
+  return Object.freeze({
+    type,
+    throwSpeed: authority.speedMillimetersPerSecond / 1_000,
+    throwArc: authority.upwardSpeedMillimetersPerSecond / 1_000,
+    gravity: authority.gravityMillimetersPerSecondSquared / 1_000,
+    restitution: authority.restitutionPermille / 1_000,
+    friction: authority.frictionPermille / 1_000,
+    fuseSeconds: authority.fuseTicks / ABILITY_PRESENTATION_AUTHORITY_HZ,
+    maximumLifetimeSeconds:
+      authority.lifetimeTicks / ABILITY_PRESENTATION_AUTHORITY_HZ,
+    radius: visualRadius,
+    collisionRadius: authority.radiusMillimeters / 1_000,
+    maximumBounces: authority.maximumBounces,
+    fuseStartsOnCollision: authority.fuseStartsOnCollision,
+    color,
+  });
+}
 
 const PROJECTILE_RULES = Object.freeze({
-  [ABILITY_ID.launch]: Object.freeze({
-    type: 'launch',
-    throwSpeed: 18,
-    throwArc: 0,
-    gravity: -19.2,
-    restitution: 0,
-    friction: 0,
-    fuseSeconds: 0,
-    maximumLifetimeSeconds: 6,
-    radius: 0.075,
-    maximumBounces: 0,
-    fuseStartsOnCollision: true,
-    color: 0x27d3c2,
-  }),
-  [ABILITY_ID.frag]: Object.freeze({
-    type: 'frag',
-    throwSpeed: 16,
-    throwArc: 4.8,
-    gravity: -19,
-    restitution: 0.42,
-    friction: 0.28,
-    fuseSeconds: 2.5,
-    maximumLifetimeSeconds: 4,
-    radius: 0.07,
-    maximumBounces: 4,
-    fuseStartsOnCollision: true,
-    color: 0x5b6d38,
-  }),
-  [ABILITY_ID.smoke]: Object.freeze({
-    type: 'smoke',
-    throwSpeed: 15,
-    throwArc: 4.6,
-    gravity: -19,
-    restitution: 0.38,
-    friction: 0.3,
-    fuseSeconds: 1.25,
-    maximumLifetimeSeconds: 4,
-    radius: 0.065,
-    maximumBounces: 3,
-    fuseStartsOnCollision: true,
-    color: 0x526a7d,
-  }),
-  [ABILITY_ID.sticky]: Object.freeze({
-    type: 'sticky',
-    throwSpeed: 18,
-    throwArc: 3.6,
-    gravity: -17,
-    restitution: 0,
-    friction: 1,
-    fuseSeconds: 1.9,
-    maximumLifetimeSeconds: 4,
-    radius: 0.065,
-    maximumBounces: 0,
-    fuseStartsOnCollision: true,
-    color: 0xf3c94d,
-  }),
-  [ABILITY_ID.flash]: Object.freeze({
-    type: 'flash',
-    throwSpeed: 16,
-    throwArc: 4.2,
-    gravity: -19,
-    restitution: 0.44,
-    friction: 0.28,
-    fuseSeconds: 1.15,
-    maximumLifetimeSeconds: 3,
-    radius: 0.065,
-    maximumBounces: 3,
-    fuseStartsOnCollision: true,
-    color: 0xe8f2f8,
-  }),
+  [ABILITY_ID.launch]: projectileRules(
+    ABILITY_ID.launch, 'launch', 0x27d3c2, 0.075,
+  ),
+  [ABILITY_ID.frag]: projectileRules(
+    ABILITY_ID.frag, 'frag', 0x5b6d38, 0.07,
+  ),
+  [ABILITY_ID.smoke]: projectileRules(
+    ABILITY_ID.smoke, 'smoke', 0x526a7d, 0.065,
+  ),
+  [ABILITY_ID.sticky]: projectileRules(
+    ABILITY_ID.sticky, 'sticky', 0xf3c94d, 0.065,
+  ),
+  [ABILITY_ID.flash]: projectileRules(
+    ABILITY_ID.flash, 'flash', 0xe8f2f8, 0.065,
+  ),
 });
 
 const DEFAULT_CHARGES = Object.freeze({
@@ -124,6 +101,26 @@ function actorPosition(actor) {
 
 function actorAlive(actor) {
   return actor && actor.isDead !== true && actor.alive !== false;
+}
+
+export function resolveLaunchImpulseVector(source, target, relation = 'enemy') {
+  const delta = new THREE.Vector3().copy(target).sub(source);
+  const distance = delta.length();
+  const radius = IMPULSE_GRENADE_RULES_V2.areaRadiusMillimeters / 1_000;
+  if (distance >= radius) return new THREE.Vector3();
+  const impulseCap = (
+    relation === 'self'
+      ? IMPULSE_GRENADE_RULES_V2.selfImpulseMillimetersPerSecond
+      : IMPULSE_GRENADE_RULES_V2.enemyImpulseMillimetersPerSecond
+  ) / 1_000;
+  const magnitude = impulseCap * (1 - distance / radius);
+  if (distance <= 1e-6) return new THREE.Vector3(0, magnitude, 0);
+  delta.multiplyScalar(magnitude / distance);
+  const verticalCap = (
+    IMPULSE_GRENADE_RULES_V2.verticalImpulseCapMillimetersPerSecond / 1_000
+  );
+  delta.y = THREE.MathUtils.clamp(delta.y, -verticalCap, verticalCap);
+  return delta;
 }
 
 export class GrenadeSystem {
@@ -331,7 +328,7 @@ export class GrenadeSystem {
       }
 
       if (
-        projectile.fuseRemaining <= 0
+        (projectile.fuseStarted && projectile.fuseRemaining <= 0)
         || projectile.elapsed >= projectile.rules.maximumLifetimeSeconds
       ) {
         this._detonate(projectile, context);
@@ -395,6 +392,16 @@ export class GrenadeSystem {
       projectile.settled = true;
       projectile.fuseStarted = true;
       projectile.fuseRemaining = 0;
+      this._emitProjectileEvent('ability_contact', {
+        projectileId: projectile.projectileId,
+        abilityId: projectile.abilityId,
+        position: projectile.pos,
+        colliderId: collision.colliderId,
+        bounceCount: 0,
+        settled: true,
+        reason: 'first_world_contact',
+        audioCue: 'contact',
+      });
       return;
     }
     projectile.fuseStarted = true;
@@ -445,7 +452,7 @@ export class GrenadeSystem {
       segment.closestPointToPoint(_scratchActorCenter, true, _scratchClosest);
       const targetRadius = Number.isFinite(target.radius) ? target.radius : 0.45;
       const separation = _scratchClosest.distanceTo(_scratchActorCenter);
-      if (separation > projectile.rules.radius + targetRadius) continue;
+      if (separation > projectile.rules.collisionRadius + targetRadius) continue;
       const along = distance > 0 ? start.distanceTo(_scratchClosest) / distance : 0;
       _scratchNormal.copy(_scratchClosest).sub(_scratchActorCenter);
       if (_scratchNormal.lengthSq() < 1e-6) _scratchNormal.copy(_scratchDelta).normalize().negate();
@@ -465,11 +472,11 @@ export class GrenadeSystem {
       _scratchDirection.copy(_scratchDelta).normalize();
       _scratchRay.set(start, _scratchDirection);
       _scratchRay.near = 0;
-      _scratchRay.far = distance + projectile.rules.radius;
+      _scratchRay.far = distance + projectile.rules.collisionRadius;
       const hit = _scratchRay.intersectObjects(colliders, true)[0];
       if (hit) {
         const fraction = THREE.MathUtils.clamp(
-          Math.max(0, hit.distance - projectile.rules.radius) / distance,
+          Math.max(0, hit.distance - projectile.rules.collisionRadius) / distance,
           0,
           1,
         );
@@ -488,11 +495,11 @@ export class GrenadeSystem {
     }
 
     const groundFraction = (
-      end.y < projectile.rules.radius
-      && start.y >= projectile.rules.radius
+      end.y < projectile.rules.collisionRadius
+      && start.y >= projectile.rules.collisionRadius
       && Math.abs(start.y - end.y) > 1e-6
     )
-      ? (start.y - projectile.rules.radius) / (start.y - end.y)
+      ? (start.y - projectile.rules.collisionRadius) / (start.y - end.y)
       : null;
     if (groundFraction !== null && (!best || groundFraction < best.fraction)) {
       best = {
@@ -551,8 +558,13 @@ export class GrenadeSystem {
   }
 
   _launchExplode(point, context, projectile) {
-    const radius = 11;
-    const maximumImpulse = 10.5;
+    const radius = IMPULSE_GRENADE_RULES_V2.areaRadiusMillimeters / 1_000;
+    const maximumSelfImpulse = (
+      IMPULSE_GRENADE_RULES_V2.selfImpulseMillimetersPerSecond / 1_000
+    );
+    const maximumTargetImpulse = (
+      IMPULSE_GRENADE_RULES_V2.enemyImpulseMillimetersPerSecond / 1_000
+    );
     this._spawnExplosionVisual(point, 0x4fffe1, 0.7);
     const actors = [context.player, ...(Array.isArray(context.targets) ? context.targets : [])]
       .filter(actorAlive);
@@ -560,26 +572,52 @@ export class GrenadeSystem {
     for (const actor of actors) {
       const position = actorPosition(actor);
       if (!position) continue;
-      const distance = position.distanceTo(point);
+      const relation = actor === context.player ? 'self' : 'enemy';
+      if (
+        relation === 'enemy'
+        && context.player?.teamId !== undefined
+        && context.player.teamId !== null
+        && actor.teamId === context.player.teamId
+      ) continue;
+      _scratchActorCenter.copy(position);
+      _scratchActorCenter.y += Number.isFinite(actor.height) ? actor.height * 0.5 : 0.85;
+      const distance = _scratchActorCenter.distanceTo(point);
       if (distance >= radius) continue;
-      const falloff = smooth01(1 - distance / radius);
-      const direction = position.clone().sub(point);
-      direction.y = Math.max(1.4, direction.y + 2.6);
-      direction.normalize();
-      const impulse = direction.multiplyScalar(maximumImpulse * falloff);
+      _scratchDirection.copy(_scratchActorCenter).sub(point);
+      if (_scratchDirection.lengthSq() > 1e-6 && this._collisionMeshes.length > 0) {
+        _scratchDirection.normalize();
+        _scratchRay.set(point, _scratchDirection);
+        _scratchRay.near = 0.04;
+        _scratchRay.far = Math.max(0.04, distance - 0.08);
+        if (_scratchRay.intersectObjects(this._collisionMeshes, true)[0]) continue;
+      }
+      const impulse = resolveLaunchImpulseVector(
+        point,
+        _scratchActorCenter,
+        relation,
+      );
       if (actor.velocity?.isVector3) actor.velocity.add(impulse);
-      else actor.applyAbilityImpulse?.(impulse);
+      else actor.applyAbilityImpulse?.(impulse, {
+        abilityId: projectile.abilityId,
+        projectileId: projectile.projectileId,
+        relation,
+      });
       applied.push(Object.freeze({
         actorId: actor.id || actor.name || (actor === context.player ? 'local_player' : 'target'),
+        relation,
         distance,
         impulse: impulse.clone(),
       }));
     }
-    this.onImpulse?.(point, radius, maximumImpulse, {
+    this.onImpulse?.(point, radius, maximumSelfImpulse, {
       abilityId: projectile.abilityId,
       projectileId: projectile.projectileId,
       applied,
-      upwardBiasMetersPerSecond: 2.6,
+      maximumSelfImpulseMetersPerSecond: maximumSelfImpulse,
+      maximumTargetImpulseMetersPerSecond: maximumTargetImpulse,
+      verticalImpulseCapMetersPerSecond:
+        IMPULSE_GRENADE_RULES_V2.verticalImpulseCapMillimetersPerSecond / 1_000,
+      radialFalloff: IMPULSE_GRENADE_RULES_V2.radialFalloff,
     });
   }
 
@@ -628,7 +666,7 @@ export class GrenadeSystem {
 
   _smokeExplode(point) {
     const puffs = [];
-    const puffCount = 10;
+    const puffCount = SMOKE_PRESENTATION_RULES.puffCount;
     for (let i = 0; i < puffCount; i += 1) {
       const angle = i * Math.PI * (3 - Math.sqrt(5));
       const ring = Math.sqrt((i + 0.5) / puffCount);
@@ -674,14 +712,13 @@ export class GrenadeSystem {
         continue;
       }
 
-      const expansion = smooth01(cloud.elapsed / SMOKE_EXPANSION_SECONDS);
+      const ageTicks = cloud.elapsed * ABILITY_PRESENTATION_AUTHORITY_HZ;
+      const expansion = smokePuffExpansion(ageTicks, 0);
       const fade = cloud.elapsed > cloud.life - 2.4
         ? smooth01((cloud.life - cloud.elapsed) / 2.4)
         : 1;
       for (const puff of cloud.puffs) {
-        const delayedExpansion = smooth01(
-          (cloud.elapsed - puff.phase * 0.16) / SMOKE_EXPANSION_SECONDS,
-        );
+        const delayedExpansion = smokePuffExpansion(ageTicks, puff.phase);
         puff.mesh.scale.setScalar(0.03 + delayedExpansion * 0.97);
         puff.mesh.material.opacity = 0.56 * expansion * fade;
         puff.mesh.position.y += dt * (0.025 + puff.phase * 0.018);
@@ -715,7 +752,10 @@ export class GrenadeSystem {
   getActiveSmokeVolumes() {
     return this.smokeClouds.map((cloud) => Object.freeze({
       center: cloud.origin.clone().add(new THREE.Vector3(0, cloud.radius * 0.22, 0)),
-      radius: cloud.radius * smooth01(cloud.elapsed / SMOKE_EXPANSION_SECONDS),
+      radius: cloud.radius * smokePuffExpansion(
+        cloud.elapsed * ABILITY_PRESENTATION_AUTHORITY_HZ,
+        0,
+      ),
       expiresInSeconds: Math.max(0, cloud.life - cloud.elapsed),
     }));
   }
@@ -726,7 +766,10 @@ export class GrenadeSystem {
     const segmentLengthSq = _scratchDelta.lengthSq();
     if (segmentLengthSq <= 1e-6) return false;
     for (const cloud of this.smokeClouds) {
-      const radius = cloud.radius * smooth01(cloud.elapsed / SMOKE_EXPANSION_SECONDS);
+      const radius = cloud.radius * smokePuffExpansion(
+        cloud.elapsed * ABILITY_PRESENTATION_AUTHORITY_HZ,
+        0,
+      );
       if (radius < 0.35) continue;
       _scratchActorCenter.copy(cloud.origin);
       _scratchActorCenter.y += cloud.radius * 0.22;
