@@ -16,6 +16,13 @@ import {
   advanceRev17SemanticAction,
   startRev17SemanticAction,
 } from '../player/rev17ActionContract.js';
+import {
+  setKyxWeaponAim,
+  setKyxWeaponPhase,
+  triggerKyxWeaponEquip,
+  triggerKyxWeaponFire,
+  updateKyxWeaponPresentation,
+} from './KyxArmoryPresentation.ts';
 
 const TRACER_LIFE = 0.07;
 const FLASH_LIFE = 0.05;
@@ -74,6 +81,7 @@ export class WeaponSystem {
     this.scopeT = 0; // 0..1 zoom blend
     this._sprintT = 0; // 0..1 sprint carry blend
     this._reloadPresentationAction = null;
+    this._presentationNowMilliseconds = 0;
 
     this.tracers = [];
     this.rockets = [];
@@ -174,21 +182,25 @@ export class WeaponSystem {
 
     this.models = new Map();
     for (const w of this.allWeapons) {
-      const { group, muzzle } = buildWeaponModel(w);
+      const { group, muzzle, presentation = null } = buildWeaponModel(w, {
+        presentation: 'first_person',
+      });
       group.visible = false;
       this.kickGroup.add(group);
-      this.models.set(w.id, { group, muzzle });
+      this.models.set(w.id, { group, muzzle, presentation });
     }
     this._setActiveModel(0);
     this._buildArm();
+    this._syncRev17ViewmodelVisibility();
     this._rev17Viewmodel = null;
     this._rev17FpGrounded = true;
     if (isG6Rev17CharacterCandidateEnabled()) {
       preloadRev17FirstPerson(() => this._installRev17FirstPerson());
     }
 
-    // The viewmodels above are procedural (the GLB loads async and is rarely
-    // ready this early). Swap in the detailed Blender models once it arrives.
+    // Review/dev gun meshes fail closed while their exact GLBs verify. Rebuild
+    // once the all-or-nothing loader finishes; release paths retain their
+    // existing project-authored models.
     onWeaponModelsReady(() => this._refreshModels());
   }
 
@@ -203,15 +215,15 @@ export class WeaponSystem {
 
   _syncRev17ViewmodelVisibility() {
     const isMelee = this.currentDef?.kind === 'melee';
-    const usesSharedWeapon = !isMelee
-      && usesKyxPresetWeaponModel(this.currentDef?.id);
+    const usesSharedWeapon = usesKyxPresetWeaponModel(this.currentDef?.id);
     // The procedural arm has no valid melee grip and intersects the blade, so
-    // it remains limited to non-melee weapons. Product loadout guns keep their
-    // shared external model and arm instead of the Rev17 candidate's embedded
-    // rifle, preventing the historical double-gun overlap.
+    // it remains limited to non-melee legacy weapons. Product loadout families
+    // use the shared model's fitted contact rig instead of either this arm or
+    // the Rev17 candidate's embedded rifle, preventing stacked presentations.
     if (this.armGroup) {
       this.armGroup.visible = !isMelee
-        && (!this._rev17Viewmodel || usesSharedWeapon);
+        && !usesSharedWeapon
+        && !this._rev17Viewmodel;
     }
     if (!this._rev17Viewmodel) return;
     const candidateVisible = !isMelee && !usesSharedWeapon;
@@ -219,7 +231,10 @@ export class WeaponSystem {
     if (!candidateVisible) {
       for (const weapon of this.allWeapons) {
         const model = this.models.get(weapon.id);
-        if (model) model.group.visible = weapon.id === this.currentDef?.id;
+        if (model) {
+          model.group.visible = weapon.id === this.currentDef?.id
+            && model.group.userData.selectedAssetFailClosed !== true;
+        }
       }
       return;
     }
@@ -242,11 +257,19 @@ export class WeaponSystem {
   _refreshModels() {
     for (const w of this.allWeapons) {
       const old = this.models.get(w.id);
-      const { group, muzzle } = buildWeaponModel(w);
-      group.visible = old ? old.group.visible : false;
+      const { group, muzzle, presentation = null } = buildWeaponModel(w, {
+        presentation: 'first_person',
+      });
+      const selectedAssetBecameReady = old?.group.userData
+        .selectedAssetFailClosed === true
+        && group.userData.selectedAssetFailClosed !== true
+        && w.id === this.currentDef?.id;
+      group.visible = selectedAssetBecameReady
+        ? true
+        : old?.group.visible ?? false;
       if (old) this.kickGroup.remove(old.group);
       this.kickGroup.add(group);
-      this.models.set(w.id, { group, muzzle });
+      this.models.set(w.id, { group, muzzle, presentation });
     }
     if (this._armoryMap) this.applyArmoryMap(this._armoryMap);
     if (this.weaponSkin) this.setWeaponSkin(this.weaponSkin);
@@ -438,8 +461,34 @@ export class WeaponSystem {
       if (m) m.group.visible = false;
     }
     const cur = this.loadout[index];
-    if (cur) this.models.get(cur.id).group.visible = true;
+    if (cur) {
+      const active = this.models.get(cur.id);
+      if (!active) {
+        throw new Error(`KYX_FIRST_PERSON_PROFILE_MISSING weaponId=${cur.id}`);
+      }
+      active.group.visible =
+        active.group.userData.selectedAssetFailClosed !== true;
+    }
     this._syncRev17ViewmodelVisibility();
+    if (cur && usesKyxPresetWeaponModel(cur.id)) {
+      const visibleSharedModels = [...this.models.entries()].filter(
+        ([weaponId, model]) => (
+          usesKyxPresetWeaponModel(weaponId) && model.group.visible
+        ),
+      );
+      const selectedPending = this.models.get(cur.id)?.group
+        .userData.selectedAssetFailClosed === true;
+      const expectedSharedCount = selectedPending ? 0 : 1;
+      if (visibleSharedModels.length !== expectedSharedCount) {
+        throw new Error('KYX_FIRST_PERSON_WEAPON_OVERLAP');
+      }
+      if (
+        !selectedPending
+        && visibleSharedModels[0]?.[0] !== cur.id
+      ) {
+        throw new Error('KYX_FIRST_PERSON_WEAPON_SELECTION_MISMATCH');
+      }
+    }
   }
 
   get currentDef() {
@@ -460,6 +509,8 @@ export class WeaponSystem {
     this.currentIndex = index;
     this.fireTimer = Math.max(this.fireTimer, 0.12);
     this._setActiveModel(index);
+    const presentation = this.models.get(this.currentDef.id)?.presentation;
+    if (presentation) triggerKyxWeaponEquip(presentation);
     this.audio.playWeaponSwitch();
     this._rev17Viewmodel?.userData?.triggerAction?.({ kind: 'equip' });
     this._emitPresentationAction({
@@ -500,6 +551,7 @@ export class WeaponSystem {
     this._knifeCooldown = 0;
     this._prevRightMouse = false;
     this._reloadPresentationAction = null;
+    this._presentationNowMilliseconds = 0;
     this.camera.fov = baseFov;
     this.camera.updateProjectionMatrix();
 
@@ -1037,6 +1089,8 @@ export class WeaponSystem {
     const st = this.currentState;
 
     if (def.kind === 'melee') {
+      const presentation = this.models.get(def.id)?.presentation;
+      if (presentation) triggerKyxWeaponFire(presentation);
       this._emitPresentationAction({
         kind: 'melee',
         phase: 'started',
@@ -1060,6 +1114,8 @@ export class WeaponSystem {
     }
 
     st.magAmmo -= 1;
+    const presentation = this.models.get(def.id)?.presentation;
+    if (presentation) triggerKyxWeaponFire(presentation);
     this.fireTimer = def.fireRate;
     this._emitPresentationAction({
       kind: 'fire',
@@ -1147,6 +1203,30 @@ export class WeaponSystem {
     }
     this._prevRightMouse = input.rightMouseDown;
 
+    this._presentationNowMilliseconds += dt * 1_000;
+    const activePresentation = this.models.get(def.id)?.presentation ?? null;
+    if (activePresentation) {
+      const phase = st.isReloading
+        ? 'reloading'
+        : player.isSprinting
+          ? 'sprinting'
+          : 'ready';
+      setKyxWeaponPhase(
+        activePresentation,
+        phase,
+        this._presentationNowMilliseconds,
+      );
+      setKyxWeaponAim(
+        activePresentation,
+        input.rightMouseDown && !player.isSprinting && def.kind !== 'melee',
+      );
+      updateKyxWeaponPresentation(
+        activePresentation,
+        this._presentationNowMilliseconds,
+        dt,
+      );
+    }
+
     // Sprint blend for COD carry animation (blocks ADS)
     this._sprintT += ((player.isSprinting ? 1 : 0) - this._sprintT) * Math.min(1, dt * 9);
     const presentationMotionScale = player.reducedMotion ? 0.12 : 1;
@@ -1187,10 +1267,24 @@ export class WeaponSystem {
     }
 
     // scope zoom — disabled while sprinting
-    const wantScope = !!def.scoped && input.rightMouseDown && !player.isSprinting;
-    this.scopeT += ((wantScope ? 1 : 0) - this.scopeT) * Math.min(1, dt * 10);
+    const wantScope = activePresentation
+      ? activePresentation.firstPersonPose.aimEnabled
+        && input.rightMouseDown
+        && !player.isSprinting
+      : !!def.scoped && input.rightMouseDown && !player.isSprinting;
+    if (activePresentation) {
+      this.scopeT = activePresentation.aimMix;
+    } else {
+      this.scopeT += (
+        (wantScope ? 1 : 0) - this.scopeT
+      ) * Math.min(1, dt * 10);
+    }
     const sprintFovBoost = this._sprintT * 6 * presentationMotionScale;
-    const targetFov = THREE.MathUtils.lerp(player.baseFov + sprintFovBoost, 28, this.scopeT);
+    const targetFov = THREE.MathUtils.lerp(
+      player.baseFov + sprintFovBoost,
+      activePresentation?.firstPersonPose.aimFieldOfViewDegrees ?? 28,
+      this.scopeT,
+    );
     if (Math.abs(this.camera.fov - targetFov) > 0.01) {
       this.camera.fov = targetFov;
       this.camera.updateProjectionMatrix();
@@ -1259,19 +1353,72 @@ export class WeaponSystem {
     const bobV   = Math.sin(player.bobTime) * bobAmt;
     const bobH   = Math.sin(player.bobTime * 0.5) * bobAmt * 0.55;
 
-    // ADS: slide gun to center-screen when scoping
-    const adsShiftX = -this.scopeT * 0.32;
-
-    // Sprint carry: raise gun and tilt to side like COD
-    const sprintRaiseY = this._sprintT * 0.12 * presentationMotionScale;
-    const sprintShiftX = -this._sprintT * 0.12 * presentationMotionScale;
-    this.weaponMount.position.set(
-      0.32 + sprintShiftX + adsShiftX + bobH,
-      -0.26 + sprintRaiseY + bobV,
-      VIEWMODEL_DEPTH,
-    );
-    this.weaponMount.rotation.x = this._sprintT * 0.22 * presentationMotionScale;
-    this.weaponMount.rotation.z = this._sprintT * -1.0 * presentationMotionScale;
+    if (activePresentation) {
+      const pose = activePresentation.firstPersonPose;
+      const aim = activePresentation.aimMix;
+      const reload = activePresentation.reloadPoseMix;
+      const equip = activePresentation.equipMix;
+      const sprint = activePresentation.sprintMix;
+      const recoil = activePresentation.fireImpulse;
+      activePresentation.group.scale.setScalar(
+        pose.baseScale * THREE.MathUtils.lerp(
+          1,
+          pose.aimScaleMultiplier,
+          aim,
+        ),
+      );
+      this.weaponMount.position.set(
+        bobH
+          + pose.aimOffset.x * aim
+          + pose.recoilOffset.x * recoil
+          + pose.reloadOffset.x * reload
+          + pose.equipOffset.x * equip
+          + pose.sprintOffset.x * sprint,
+        bobV
+          + pose.aimOffset.y * aim
+          + pose.recoilOffset.y * recoil
+          + pose.reloadOffset.y * reload
+          + pose.equipOffset.y * equip
+          + pose.sprintOffset.y * sprint,
+        pose.aimOffset.z * aim
+          + pose.recoilOffset.z * recoil
+          + pose.reloadOffset.z * reload
+          + pose.equipOffset.z * equip
+          + pose.sprintOffset.z * sprint,
+      );
+      this.weaponMount.rotation.set(
+        pose.aimRotation.x * aim
+          + pose.recoilRotation.x * recoil
+          + pose.reloadRotation.x * reload
+          + pose.equipRotation.x * equip
+          + pose.sprintRotation.x * sprint,
+        pose.aimRotation.y * aim
+          + pose.recoilRotation.y * recoil
+          + pose.reloadRotation.y * reload
+          + pose.equipRotation.y * equip
+          + pose.sprintRotation.y * sprint,
+        pose.aimRotation.z * aim
+          + pose.recoilRotation.z * recoil
+          + pose.reloadRotation.z * reload
+          + pose.equipRotation.z * equip
+          + pose.sprintRotation.z * sprint,
+      );
+    } else {
+      // Legacy sandbox weapons retain their existing generic camera framing.
+      const adsShiftX = -this.scopeT * 0.32;
+      const sprintRaiseY = this._sprintT * 0.12 * presentationMotionScale;
+      const sprintShiftX = -this._sprintT * 0.12 * presentationMotionScale;
+      this.weaponMount.position.set(
+        0.32 + sprintShiftX + adsShiftX + bobH,
+        -0.26 + sprintRaiseY + bobV,
+        VIEWMODEL_DEPTH,
+      );
+      this.weaponMount.rotation.x =
+        this._sprintT * 0.22 * presentationMotionScale;
+      this.weaponMount.rotation.y = 0;
+      this.weaponMount.rotation.z =
+        this._sprintT * -1.0 * presentationMotionScale;
+    }
 
     // muzzle flash decay
     if (this._flashTimer !== undefined && this._flashTimer > 0) {

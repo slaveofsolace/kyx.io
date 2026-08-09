@@ -40,15 +40,15 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0xffca5c,
     tracer: 0xffe7a0,
     firstPerson: Object.freeze({
-      scale: 1.04,
-      position: Object.freeze([0.37, -0.335, -0.34] as const),
-      rotation: Object.freeze([-0.025, -0.025, -0.045] as const),
+      scale: 1,
+      position: Object.freeze([0.32, -0.3, -0.4] as const),
+      rotation: Object.freeze([-0.02, -0.015, -0.03] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.36, 0.22, 0.06] as const),
-        rotation: Object.freeze([0.015, 0.025, 0.045] as const),
+        offset: Object.freeze([-0.31, 0.19, 0.08] as const),
+        rotation: Object.freeze([0.012, 0.015, 0.03] as const),
         fieldOfViewDegrees: 62,
-        scaleMultiplier: 0.9,
+        scaleMultiplier: 0.88,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0.015, -0.005, 0.09] as const),
@@ -69,14 +69,14 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     tracer: 0xffbb7d,
     firstPerson: Object.freeze({
       scale: 0.82,
-      position: Object.freeze([0.285, -0.315, -0.46] as const),
-      rotation: Object.freeze([-0.065, 0.09, 0.012] as const),
+      position: Object.freeze([0.27, -0.29, -0.52] as const),
+      rotation: Object.freeze([-0.055, 0.07, 0.01] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.275, 0.2, 0.08] as const),
-        rotation: Object.freeze([0.045, -0.045, -0.012] as const),
-        fieldOfViewDegrees: 60,
-        scaleMultiplier: 0.85,
+        offset: Object.freeze([-0.265, 0.19, 0.12] as const),
+        rotation: Object.freeze([0.04, -0.035, -0.01] as const),
+        fieldOfViewDegrees: 62,
+        scaleMultiplier: 0.82,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.02, 0.14] as const),
@@ -97,14 +97,14 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     tracer: 0xeafaff,
     firstPerson: Object.freeze({
       scale: 0.82,
-      position: Object.freeze([0.31, -0.31, -0.48] as const),
-      rotation: Object.freeze([-0.028, 0.15, -0.008] as const),
+      position: Object.freeze([0.27, -0.285, -0.58] as const),
+      rotation: Object.freeze([-0.025, 0.11, -0.006] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.25, 0.205, 0.1] as const),
-        rotation: Object.freeze([0.018, -0.018, 0.008] as const),
-        fieldOfViewDegrees: 44,
-        scaleMultiplier: 0.78,
+        offset: Object.freeze([-0.22, 0.19, 0.15] as const),
+        rotation: Object.freeze([0.016, -0.014, 0.006] as const),
+        fieldOfViewDegrees: 34,
+        scaleMultiplier: 0.72,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.025, 0.12] as const),
@@ -125,14 +125,14 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     tracer: 0xffa066,
     firstPerson: Object.freeze({
       scale: 0.68,
-      position: Object.freeze([0.36, -0.36, -0.51] as const),
-      rotation: Object.freeze([-0.035, -0.025, 0.035] as const),
+      position: Object.freeze([0.29, -0.32, -0.58] as const),
+      rotation: Object.freeze([-0.04, -0.02, 0.025] as const),
       aim: Object.freeze({
         enabled: true,
-        offset: Object.freeze([-0.345, 0.24, 0.08] as const),
-        rotation: Object.freeze([0.025, 0.025, -0.035] as const),
-        fieldOfViewDegrees: 56,
-        scaleMultiplier: 0.8,
+        offset: Object.freeze([-0.28, 0.21, 0.12] as const),
+        rotation: Object.freeze([0.03, 0.02, -0.025] as const),
+        fieldOfViewDegrees: 52,
+        scaleMultiplier: 0.76,
       }),
       recoil: Object.freeze({
         offset: Object.freeze([0, -0.03, 0.18] as const),
@@ -152,9 +152,9 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0x58f4ff,
     tracer: 0xb6fbff,
     firstPerson: Object.freeze({
-      scale: 0.96,
-      position: Object.freeze([0.41, -0.42, -0.32] as const),
-      rotation: Object.freeze([-0.2, -0.18, -0.16] as const),
+      scale: 0.92,
+      position: Object.freeze([0.34, -0.36, -0.43] as const),
+      rotation: Object.freeze([-0.16, -0.12, -0.12] as const),
       aim: Object.freeze({
         enabled: false,
         offset: Object.freeze([0, 0, 0] as const),
@@ -175,6 +175,102 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
   }),
 } as const);
 
+export const KYX_FIRST_PERSON_TRANSITION_PROFILE = Object.freeze({
+  vertical_rifle_v1: Object.freeze({
+    aimPresentation: 'reflex' as const,
+    adsDatumNode: 'KYX_VLR7_REFLEX_RETICLE_DOT',
+    adsDatumPosition: null,
+    recoilRecoveryHalfLifeSeconds: 0.065,
+    equipOffset: Object.freeze([0.12, -0.2, 0.24] as const),
+    equipRotation: Object.freeze([0.2, -0.18, 0.22] as const),
+    sprintOffset: Object.freeze([-0.08, 0.1, 0.12] as const),
+    sprintRotation: Object.freeze([0.18, -0.08, -0.74] as const),
+  }),
+  kyx_sidearm_v1: Object.freeze({
+    aimPresentation: 'iron' as const,
+    adsDatumNode: 'KYX_K9_IRON_SIGHT_DATUM',
+    adsDatumPosition: Object.freeze([0, 0.2, -0.04] as const),
+    recoilRecoveryHalfLifeSeconds: 0.09,
+    equipOffset: Object.freeze([0.16, -0.22, 0.18] as const),
+    equipRotation: Object.freeze([0.18, -0.2, 0.34] as const),
+    sprintOffset: Object.freeze([-0.04, 0.08, 0.08] as const),
+    sprintRotation: Object.freeze([0.1, 0.04, -0.48] as const),
+  }),
+  kyx_scattergun_v1: Object.freeze({
+    aimPresentation: 'breach_sight' as const,
+    adsDatumNode: 'KYX_SG4_BREACH_SIGHT_DATUM',
+    adsDatumPosition: Object.freeze([0, 0.18, -0.14] as const),
+    recoilRecoveryHalfLifeSeconds: 0.14,
+    equipOffset: Object.freeze([0.14, -0.24, 0.3] as const),
+    equipRotation: Object.freeze([0.24, -0.22, 0.32] as const),
+    sprintOffset: Object.freeze([-0.1, 0.11, 0.16] as const),
+    sprintRotation: Object.freeze([0.22, -0.08, -0.8] as const),
+  }),
+  kyx_longshot_v1: Object.freeze({
+    aimPresentation: 'precision_scope' as const,
+    adsDatumNode: 'KYX_LONGBOW12_SCOPE_DATUM',
+    adsDatumPosition: Object.freeze([0, 0.26, -0.04] as const),
+    recoilRecoveryHalfLifeSeconds: 0.16,
+    equipOffset: Object.freeze([0.16, -0.25, 0.34] as const),
+    equipRotation: Object.freeze([0.25, -0.25, 0.28] as const),
+    sprintOffset: Object.freeze([-0.12, 0.12, 0.2] as const),
+    sprintRotation: Object.freeze([0.2, -0.12, -0.72] as const),
+  }),
+  kyx_breach_rocket_v1: Object.freeze({
+    aimPresentation: 'launcher_sight' as const,
+    adsDatumNode: 'KYX_BR6_LAUNCHER_SIGHT_DATUM',
+    adsDatumPosition: Object.freeze([0, 0.27, -0.29] as const),
+    recoilRecoveryHalfLifeSeconds: 0.18,
+    equipOffset: Object.freeze([0.2, -0.28, 0.38] as const),
+    equipRotation: Object.freeze([0.3, -0.28, 0.42] as const),
+    sprintOffset: Object.freeze([-0.13, 0.12, 0.24] as const),
+    sprintRotation: Object.freeze([0.25, -0.16, -0.86] as const),
+  }),
+  kyx_edge_v1: Object.freeze({
+    aimPresentation: 'disabled' as const,
+    adsDatumNode: null,
+    adsDatumPosition: null,
+    recoilRecoveryHalfLifeSeconds: 0.12,
+    equipOffset: Object.freeze([0.2, -0.25, 0.26] as const),
+    equipRotation: Object.freeze([0.28, -0.42, 0.58] as const),
+    sprintOffset: Object.freeze([-0.02, 0.12, 0.08] as const),
+    sprintRotation: Object.freeze([0.08, -0.18, -0.64] as const),
+  }),
+} as const);
+
+export const KYX_WORLD_WEAPON_MOUNT_PROFILE = Object.freeze({
+  vertical_rifle_v1: Object.freeze({
+    scale: 0.92,
+    position: Object.freeze([0, -0.015, -0.02] as const),
+    rotation: Object.freeze([0, 0, 0] as const),
+  }),
+  kyx_sidearm_v1: Object.freeze({
+    scale: 0.76,
+    position: Object.freeze([0, 0.01, 0.08] as const),
+    rotation: Object.freeze([0, 0, 0] as const),
+  }),
+  kyx_scattergun_v1: Object.freeze({
+    scale: 0.92,
+    position: Object.freeze([0, -0.015, -0.04] as const),
+    rotation: Object.freeze([0, 0, 0] as const),
+  }),
+  kyx_longshot_v1: Object.freeze({
+    scale: 0.86,
+    position: Object.freeze([0, -0.02, -0.08] as const),
+    rotation: Object.freeze([0, 0, 0] as const),
+  }),
+  kyx_breach_rocket_v1: Object.freeze({
+    scale: 0.88,
+    position: Object.freeze([0, -0.025, -0.04] as const),
+    rotation: Object.freeze([0, 0, 0] as const),
+  }),
+  kyx_edge_v1: Object.freeze({
+    scale: 0.9,
+    position: Object.freeze([0, -0.01, -0.04] as const),
+    rotation: Object.freeze([0, 0, 0] as const),
+  }),
+} as const);
+
 export type KyxAuthorityWeaponId =
   keyof typeof KYX_AUTHORITY_WEAPON_PRESENTATION;
 
@@ -183,6 +279,9 @@ export type KyxWeaponFamily =
 
 export type KyxWeaponSilhouette =
   typeof KYX_AUTHORITY_WEAPON_PRESENTATION[KyxAuthorityWeaponId]['silhouette'];
+
+export type KyxWeaponAimPresentation =
+  typeof KYX_FIRST_PERSON_TRANSITION_PROFILE[KyxAuthorityWeaponId]['aimPresentation'];
 
 export type KyxWeaponPhase =
   | 'holstered'
@@ -215,11 +314,18 @@ export interface KyxFirstPersonWeaponPose {
   readonly aimRotation: THREE.Euler;
   readonly aimFieldOfViewDegrees: number;
   readonly aimScaleMultiplier: number;
+  readonly aimPresentation: KyxWeaponAimPresentation;
+  readonly aimDatumNodeName: string | null;
   readonly recoilOffset: THREE.Vector3;
   readonly recoilRotation: THREE.Euler;
+  readonly recoilRecoveryHalfLifeSeconds: number;
   readonly reloadDurationMilliseconds: number;
   readonly reloadOffset: THREE.Vector3;
   readonly reloadRotation: THREE.Euler;
+  readonly equipOffset: THREE.Vector3;
+  readonly equipRotation: THREE.Euler;
+  readonly sprintOffset: THREE.Vector3;
+  readonly sprintRotation: THREE.Euler;
 }
 
 export interface KyxWeaponPresentationModel {
@@ -233,6 +339,7 @@ export interface KyxWeaponPresentationModel {
   readonly presentation: 'first_person' | 'world';
   readonly group: THREE.Group;
   readonly muzzle: THREE.Object3D;
+  readonly aimDatum: THREE.Object3D | null;
   readonly backblast: THREE.Object3D | null;
   readonly firstPersonContactRig: THREE.Group | null;
   readonly firstPersonHandCount: number;
@@ -245,6 +352,8 @@ export interface KyxWeaponPresentationModel {
   reloadPoseMix: number;
   reloadProgress: number;
   reloadStartedAtMilliseconds: number | null;
+  equipMix: number;
+  sprintMix: number;
   phase: KyxWeaponPhase;
 }
 
@@ -277,6 +386,8 @@ export type KyxLineRifleReviewShellFactory = () => THREE.Group;
 export type KyxWeaponReviewShellFactory = () => THREE.Group;
 
 const KYX_VLR7_REVIEW_MAGAZINE_NODE = 'KYX_VLR7_REVIEW_MAGAZINE';
+const KYX_REVIEW_MUZZLE_SUFFIX = '_MUZZLE_REFERENCE';
+const KYX_REVIEW_MOTION_OVERLAY = 'kyxReviewMotionOverlay';
 let lineRifleReviewShellFactory: KyxLineRifleReviewShellFactory | null = null;
 const weaponReviewShellFactories: Partial<
   Record<KyxAuthorityWeaponId, KyxWeaponReviewShellFactory>
@@ -320,7 +431,12 @@ function applyInstalledReviewShell(
   // markers and presentation animation state remain the single source of
   // truth, preventing a donor asset from changing combat behavior.
   built.visual.traverse((object) => {
-    if ((object as THREE.Mesh).isMesh) object.visible = false;
+    if (
+      (object as THREE.Mesh).isMesh
+      && object.userData[KYX_REVIEW_MOTION_OVERLAY] !== true
+    ) {
+      object.visible = false;
+    }
   });
   const reviewShell = factory();
   reviewShell.name = `${weaponId.toUpperCase()}_REVIEW_SHELL_MOUNT`;
@@ -328,9 +444,36 @@ function applyInstalledReviewShell(
   reviewShell.userData.noHit = true;
   reviewShell.userData.authorityUnchanged = true;
   built.visual.add(reviewShell);
+  const reviewMuzzle = findReviewMuzzleReference(reviewShell);
+  let reviewBackblast = built.backblast;
+  if (weaponId === 'kyx_breach_rocket_v1' && reviewMuzzle !== null) {
+    reviewBackblast = createReviewBackblastReference(
+      reviewShell,
+      reviewMuzzle,
+    );
+  }
   built.visual.userData.weaponVisualSource =
     reviewShell.userData.weaponVisualSource ?? 'quaternius_cc0_armory_rev1';
-  return built;
+  built.visual.userData.reviewCandidateId =
+    reviewShell.userData.reviewCandidateId ?? null;
+  built.visual.userData.sourceAssetSha256 =
+    reviewShell.userData.sourceAssetSha256 ?? null;
+  built.visual.userData.sourceAssetBytes =
+    reviewShell.userData.sourceAssetBytes ?? null;
+  built.visual.userData.reviewMuzzleReferenceBound = reviewMuzzle !== null;
+  return {
+    ...built,
+    muzzle: reviewMuzzle ?? built.muzzle,
+    backblast: reviewBackblast,
+  };
+}
+
+function preserveWithReviewShell(object: THREE.Object3D): void {
+  object.traverse((child) => {
+    child.userData[KYX_REVIEW_MOTION_OVERLAY] = true;
+    child.userData.presentationOnly = true;
+    child.userData.noHit = true;
+  });
 }
 
 function fitInstalledReviewShellForFirstPerson(visual: THREE.Group): void {
@@ -355,8 +498,8 @@ function fitInstalledReviewShellForFirstPerson(visual: THREE.Group): void {
     pivotValue[1] as number,
     pivotValue[2] as number,
   );
-  // Scale around the authority-facing muzzle pivot so the visible barrel and
-  // procedural muzzle/VFX marker remain coincident after camera-space fitting.
+  // Scale the donor and its authored muzzle reference as one object. This
+  // preserves camera framing without detaching muzzle FX from the nozzle.
   reviewShell.scale.setScalar(multiplier);
   reviewShell.position.copy(pivot).multiplyScalar(1 - multiplier);
   reviewShell.userData.firstPersonFitApplied = true;
@@ -365,6 +508,7 @@ function fitInstalledReviewShellForFirstPerson(visual: THREE.Group): void {
 function createLineRifleReviewShell(): Readonly<{
   root: THREE.Group;
   magazine: THREE.Object3D;
+  muzzle: THREE.Object3D | null;
 }> | null {
   if (lineRifleReviewShellFactory === null) return null;
   const root = lineRifleReviewShellFactory();
@@ -378,7 +522,9 @@ function createLineRifleReviewShell(): Readonly<{
   root.userData.presentationOnly = true;
   root.userData.noHit = true;
   root.userData.authorityUnchanged = true;
-  return Object.freeze({ root, magazine });
+  const muzzle = findReviewMuzzleReference(root);
+  root.userData.reviewMuzzleReferenceBound = muzzle !== null;
+  return Object.freeze({ root, magazine, muzzle });
 }
 
 function standardMaterials(
@@ -540,6 +686,25 @@ function marker(
   return result;
 }
 
+function resolveAimDatum(
+  visual: THREE.Group,
+  transition: typeof KYX_FIRST_PERSON_TRANSITION_PROFILE[KyxAuthorityWeaponId],
+): THREE.Object3D | null {
+  if (transition.adsDatumNode === null) return null;
+  const existing = visual.getObjectByName(transition.adsDatumNode);
+  if (existing !== undefined) return existing;
+  if (transition.adsDatumPosition === null) {
+    throw new Error(
+      `KYX_ADS_DATUM_MISSING node=${transition.adsDatumNode}`,
+    );
+  }
+  return marker(
+    visual,
+    transition.adsDatumNode,
+    transition.adsDatumPosition,
+  );
+}
+
 function buildLineRifle(materials: MaterialSet): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_VLR7_LINE_RIFLE_VISUAL';
@@ -684,14 +849,29 @@ function buildLineRifle(materials: MaterialSet): BuiltWeapon {
     defaultShell.visible = false;
     magazine.visible = false;
     visual.add(reviewShell.root);
-    visual.userData.weaponVisualSource = 'quaternius_cc0_review_rev1';
+    visual.userData.weaponVisualSource =
+      reviewShell.root.userData.weaponVisualSource
+      ?? 'quaternius_cc0_review_rev1';
+    visual.userData.reviewCandidateId =
+      reviewShell.root.userData.reviewCandidateId ?? null;
+    visual.userData.sourceAssetSha256 =
+      reviewShell.root.userData.sourceAssetSha256 ?? null;
+    visual.userData.sourceAssetBytes =
+      reviewShell.root.userData.sourceAssetBytes ?? null;
   } else {
     visual.userData.weaponVisualSource = 'project_authored_procedural';
   }
 
+  const proceduralMuzzle = marker(
+    visual,
+    'KYX_VLR7_MUZZLE',
+    [0, 0.105, -0.89],
+  );
+  visual.userData.reviewMuzzleReferenceBound = reviewShell?.muzzle !== null
+    && reviewShell?.muzzle !== undefined;
   return {
     visual,
-    muzzle: marker(visual, 'KYX_VLR7_MUZZLE', [0, 0.105, -0.89]),
+    muzzle: reviewShell?.muzzle ?? proceduralMuzzle,
     movingParts: {
       action: movingPart(action),
       magazine: movingPart(reviewShell?.magazine ?? magazine),
@@ -760,15 +940,77 @@ function buildArcSidearm(materials: MaterialSet): BuiltWeapon {
     box(0.06, 0.035, 0.035, materials.dark, [0, 0.19, 0.07]),
   );
 
+  // The donor is a single fused mesh, so keep the verified shell intact and
+  // layer only two compact mechanical witnesses over it. They read as a rear
+  // slide cap and removable power cell, not as a second pistol body.
+  const reviewAction = box(
+    0.062,
+    0.026,
+    0.082,
+    materials.metal,
+    [0.038, 0.165, 0.045],
+  );
+  reviewAction.name = 'KYX_K9_REVIEW_SLIDE_CAP';
+  const reviewCell = new THREE.Group();
+  reviewCell.name = 'KYX_K9_REVIEW_POWER_CELL';
+  reviewCell.position.set(0, -0.09, 0.135);
+  reviewCell.rotation.x = 0.3;
+  reviewCell.add(
+    box(0.052, 0.105, 0.052, materials.dark, [0, -0.025, 0]),
+    box(0.018, 0.072, 0.012, materials.accent, [0, -0.02, 0.032]),
+  );
+  preserveWithReviewShell(reviewAction);
+  preserveWithReviewShell(reviewCell);
+  visual.add(reviewAction, reviewCell);
+
   return {
     visual,
     muzzle: marker(visual, 'KYX_K9_MUZZLE', [0, 0.12, -0.385]),
     movingParts: {
-      action: movingPart(slide),
-      magazine: movingPart(magazine),
+      action: movingPart(reviewAction),
+      magazine: movingPart(reviewCell),
       auxiliary: movingPart(chamber),
     },
   };
+}
+
+function findReviewMuzzleReference(
+  root: THREE.Object3D,
+): THREE.Object3D | null {
+  const matches: THREE.Object3D[] = [];
+  root.traverse((object) => {
+    if (object.name.endsWith(KYX_REVIEW_MUZZLE_SUFFIX)) {
+      matches.push(object);
+    }
+  });
+  if (matches.length > 1) {
+    throw new Error(
+      `KYX_REVIEW_MUZZLE_REFERENCE_AMBIGUOUS count=${matches.length}`,
+    );
+  }
+  return matches[0] ?? null;
+}
+
+function createReviewBackblastReference(
+  reviewShell: THREE.Group,
+  muzzle: THREE.Object3D,
+): THREE.Object3D {
+  reviewShell.updateMatrixWorld(true);
+  const bounds = new THREE.Box3().setFromObject(reviewShell);
+  const muzzleWorld = muzzle.getWorldPosition(new THREE.Vector3());
+  const rearWorld = new THREE.Vector3(
+    muzzleWorld.x,
+    muzzleWorld.y,
+    bounds.max.z + 0.06,
+  );
+  const backblast = new THREE.Object3D();
+  backblast.name = 'KYX_BR6_REVIEW_BACKBLAST_REFERENCE';
+  backblast.position.copy(reviewShell.worldToLocal(rearWorld));
+  backblast.userData.presentationOnly = true;
+  backblast.userData.noHit = true;
+  backblast.userData.calibratedToVisibleRear = true;
+  reviewShell.add(backblast);
+  return backblast;
 }
 
 function buildBreachScattergun(materials: MaterialSet): BuiltWeapon {
@@ -805,6 +1047,7 @@ function buildBreachScattergun(materials: MaterialSet): BuiltWeapon {
     box(0.135, 0.018, 0.13, materials.accent, [0, -0.046, 0]),
   );
   visual.add(pump);
+  preserveWithReviewShell(pump);
 
   const drum = new THREE.Group();
   drum.name = 'KYX_SG4_QUAD_CELL_DRUM';
@@ -815,6 +1058,18 @@ function buildBreachScattergun(materials: MaterialSet): BuiltWeapon {
     torusZ(0.07, 0.012, materials.metal, [0, 0, 0.07]),
   );
   visual.add(drum);
+
+  const loadingGate = box(
+    0.075,
+    0.038,
+    0.09,
+    materials.accent,
+    [0.075, -0.005, 0.045],
+    [0, 0, -0.08],
+  );
+  loadingGate.name = 'KYX_SG4_REVIEW_LOADING_GATE';
+  preserveWithReviewShell(loadingGate);
+  visual.add(loadingGate);
 
   const grip = new THREE.Group();
   grip.position.set(0, -0.045, 0.2);
@@ -827,7 +1082,7 @@ function buildBreachScattergun(materials: MaterialSet): BuiltWeapon {
     muzzle: marker(visual, 'KYX_SG4_MUZZLE', [0, 0.095, -0.74]),
     movingParts: {
       action: movingPart(pump),
-      magazine: movingPart(drum),
+      magazine: movingPart(loadingGate),
     },
   };
 }
@@ -861,6 +1116,7 @@ function buildLongbowSniper(materials: MaterialSet): BuiltWeapon {
     cylinderZ(0.024, 0.024, 0.04, materials.dark, [0, -0.055, 0.08], 10),
   );
   visual.add(bolt);
+  preserveWithReviewShell(bolt);
 
   const magazine = new THREE.Group();
   magazine.name = 'KYX_LONGBOW12_MAGAZINE';
@@ -870,6 +1126,16 @@ function buildLongbowSniper(materials: MaterialSet): BuiltWeapon {
     box(0.025, 0.165, 0.035, materials.accent, [0, -0.06, 0.06]),
   );
   visual.add(magazine);
+
+  const reviewMagazine = new THREE.Group();
+  reviewMagazine.name = 'KYX_LONGBOW12_REVIEW_MAGAZINE';
+  reviewMagazine.position.set(0, -0.075, 0.035);
+  reviewMagazine.add(
+    box(0.058, 0.12, 0.065, materials.dark, [0, -0.035, 0]),
+    box(0.018, 0.082, 0.014, materials.accent, [0, -0.03, 0.04]),
+  );
+  preserveWithReviewShell(reviewMagazine);
+  visual.add(reviewMagazine);
 
   const scope = new THREE.Group();
   scope.name = 'KYX_LONGBOW12_SCOPE';
@@ -897,7 +1163,7 @@ function buildLongbowSniper(materials: MaterialSet): BuiltWeapon {
     muzzle: marker(visual, 'KYX_LONGBOW12_MUZZLE', [0, 0.11, -1.205]),
     movingParts: {
       action: movingPart(bolt),
-      magazine: movingPart(magazine),
+      magazine: movingPart(reviewMagazine),
     },
   };
 }
@@ -958,6 +1224,7 @@ function buildSiegeLauncher(materials: MaterialSet): BuiltWeapon {
     torusZ(0.115, 0.016, materials.accent, [0, 0, -0.12], 8),
   );
   visual.add(chamber);
+  preserveWithReviewShell(chamber);
 
   const grip = new THREE.Group();
   grip.position.set(0, -0.01, 0.14);
@@ -969,12 +1236,14 @@ function buildSiegeLauncher(materials: MaterialSet): BuiltWeapon {
   visual.add(grip);
 
   const sight = new THREE.Group();
+  sight.name = 'KYX_BR6_REVIEW_SIGHT';
   sight.position.set(0, 0.27, -0.18);
   sight.add(
     box(0.1, 0.07, 0.2, materials.dark, [0, 0, 0]),
     box(0.065, 0.045, 0.012, materials.lens, [0, 0.005, -0.108]),
   );
   visual.add(sight);
+  preserveWithReviewShell(sight);
 
   return {
     visual,
@@ -1075,14 +1344,14 @@ function buildByWeaponId(
 export function normalizeKyxAuthorityWeaponId(
   value: string | null | undefined,
 ): KyxAuthorityWeaponId {
-  return value !== undefined
-    && value !== null
-    && Object.prototype.hasOwnProperty.call(
-      KYX_AUTHORITY_WEAPON_PRESENTATION,
-      value,
-    )
-    ? value as KyxAuthorityWeaponId
-    : 'vertical_rifle_v1';
+  if (value === undefined || value === null) return 'vertical_rifle_v1';
+  if (Object.prototype.hasOwnProperty.call(
+    KYX_AUTHORITY_WEAPON_PRESENTATION,
+    value,
+  )) {
+    return value as KyxAuthorityWeaponId;
+  }
+  throw new Error(`KYX_WEAPON_PROFILE_MISSING weaponId=${value}`);
 }
 
 export function createKyxWeaponPresentationModel(
@@ -1091,6 +1360,8 @@ export function createKyxWeaponPresentationModel(
 ): KyxWeaponPresentationModel {
   const authorityWeaponId = normalizeKyxAuthorityWeaponId(requestedWeaponId);
   const spec = KYX_AUTHORITY_WEAPON_PRESENTATION[authorityWeaponId];
+  const transition = KYX_FIRST_PERSON_TRANSITION_PROFILE[authorityWeaponId];
+  const worldMount = KYX_WORLD_WEAPON_MOUNT_PROFILE[authorityWeaponId];
   const materials = standardMaterials(
     spec.accent,
     authorityWeaponId === 'vertical_rifle_v1'
@@ -1107,6 +1378,7 @@ export function createKyxWeaponPresentationModel(
   if (presentation === 'first_person') {
     fitInstalledReviewShellForFirstPerson(built.visual);
   }
+  const aimDatum = resolveAimDatum(built.visual, transition);
   const group = new THREE.Group();
   group.name = `ONLINE_${presentation.toUpperCase()}_${authorityWeaponId}`;
   group.userData.projectAuthoredPresentation = true;
@@ -1115,7 +1387,16 @@ export function createKyxWeaponPresentationModel(
   group.userData.weaponSilhouette = spec.silhouette;
   group.userData.weaponVisualSource =
     built.visual.userData.weaponVisualSource ?? 'project_authored_procedural';
+  group.userData.reviewCandidateId =
+    built.visual.userData.reviewCandidateId ?? null;
+  group.userData.sourceAssetSha256 =
+    built.visual.userData.sourceAssetSha256 ?? null;
+  group.userData.sourceAssetBytes =
+    built.visual.userData.sourceAssetBytes ?? null;
   group.userData.muzzleNodeName = built.muzzle.name;
+  group.userData.authorityMuzzleReferenceBound =
+    built.visual.userData.reviewMuzzleReferenceBound === true;
+  group.userData.aimDatumNodeName = aimDatum?.name ?? null;
   group.add(built.visual);
   const firstPersonContact = presentation === 'first_person'
     ? createKyxFirstPersonContactRig(authorityWeaponId)
@@ -1129,6 +1410,8 @@ export function createKyxWeaponPresentationModel(
   group.userData.firstPersonAimEnabled = spec.firstPerson.aim.enabled;
   group.userData.firstPersonAimFieldOfViewDegrees =
     spec.firstPerson.aim.fieldOfViewDegrees;
+  group.userData.firstPersonAimPresentation = transition.aimPresentation;
+  group.userData.worldMountProfile = authorityWeaponId;
 
   const firstPersonPose: KyxFirstPersonWeaponPose = {
     baseScale: spec.firstPerson.scale,
@@ -1137,12 +1420,20 @@ export function createKyxWeaponPresentationModel(
     aimRotation: new THREE.Euler(...spec.firstPerson.aim.rotation),
     aimFieldOfViewDegrees: spec.firstPerson.aim.fieldOfViewDegrees,
     aimScaleMultiplier: spec.firstPerson.aim.scaleMultiplier,
+    aimPresentation: transition.aimPresentation,
+    aimDatumNodeName: aimDatum?.name ?? null,
     recoilOffset: new THREE.Vector3(...spec.firstPerson.recoil.offset),
     recoilRotation: new THREE.Euler(...spec.firstPerson.recoil.rotation),
+    recoilRecoveryHalfLifeSeconds:
+      transition.recoilRecoveryHalfLifeSeconds,
     reloadDurationMilliseconds:
       spec.firstPerson.reload.durationMilliseconds,
     reloadOffset: new THREE.Vector3(...spec.firstPerson.reload.offset),
     reloadRotation: new THREE.Euler(...spec.firstPerson.reload.rotation),
+    equipOffset: new THREE.Vector3(...transition.equipOffset),
+    equipRotation: new THREE.Euler(...transition.equipRotation),
+    sprintOffset: new THREE.Vector3(...transition.sprintOffset),
+    sprintRotation: new THREE.Euler(...transition.sprintRotation),
   };
 
   group.traverse((object) => {
@@ -1168,6 +1459,18 @@ export function createKyxWeaponPresentationModel(
       spec.firstPerson.rotation[1],
       spec.firstPerson.rotation[2],
     );
+  } else {
+    built.visual.scale.setScalar(worldMount.scale);
+    built.visual.position.set(
+      worldMount.position[0],
+      worldMount.position[1],
+      worldMount.position[2],
+    );
+    built.visual.rotation.set(
+      worldMount.rotation[0],
+      worldMount.rotation[1],
+      worldMount.rotation[2],
+    );
   }
 
   return {
@@ -1181,6 +1484,7 @@ export function createKyxWeaponPresentationModel(
     presentation,
     group,
     muzzle: built.muzzle,
+    aimDatum,
     backblast: built.backblast ?? null,
     firstPersonContactRig: firstPersonContact?.root ?? null,
     firstPersonHandCount: firstPersonContact?.handCount ?? 0,
@@ -1193,6 +1497,8 @@ export function createKyxWeaponPresentationModel(
     reloadPoseMix: 0,
     reloadProgress: 0,
     reloadStartedAtMilliseconds: null,
+    equipMix: 0,
+    sprintMix: 0,
     phase: 'ready',
   };
 }
@@ -1201,6 +1507,14 @@ export function triggerKyxWeaponFire(
   weapon: KyxWeaponPresentationModel,
 ): void {
   weapon.fireImpulse = 1;
+}
+
+export function triggerKyxWeaponEquip(
+  weapon: KyxWeaponPresentationModel,
+): void {
+  if (weapon.presentation !== 'first_person') return;
+  weapon.equipMix = 1;
+  weapon.aimMix = 0;
 }
 
 export function setKyxWeaponAim(
@@ -1239,7 +1553,11 @@ export function updateKyxWeaponPresentation(
   nowMilliseconds: number,
   deltaSeconds: number,
 ): void {
-  const decay = Math.pow(0.00045, Math.max(0, deltaSeconds));
+  const decay = Math.pow(
+    0.5,
+    Math.max(0, deltaSeconds)
+      / weapon.firstPersonPose.recoilRecoveryHalfLifeSeconds,
+  );
   weapon.fireImpulse *= decay;
   const aimAllowed = weapon.presentation === 'first_person'
     && weapon.firstPersonPose.aimEnabled
@@ -1268,6 +1586,14 @@ export function updateKyxWeaponPresentation(
       );
   weapon.reloadPoseMix = weapon.reloadMix
     * Math.sin(weapon.reloadProgress * Math.PI);
+  weapon.equipMix *= Math.pow(0.0012, Math.max(0, deltaSeconds));
+  const sprintTarget = weapon.phase === 'sprinting' ? 1 : 0;
+  weapon.sprintMix += (
+    sprintTarget - weapon.sprintMix
+  ) * Math.min(
+    1,
+    deltaSeconds * (sprintTarget > weapon.sprintMix ? 8 : 12),
+  );
 
   const action = weapon.movingParts.action;
   const magazine = weapon.movingParts.magazine;

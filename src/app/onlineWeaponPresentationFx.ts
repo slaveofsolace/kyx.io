@@ -24,6 +24,9 @@ interface TransientEffect {
     | 'tracer'
     | 'impact_shield'
     | 'impact_health'
+    | 'impact_headshot'
+    | 'impact_kill'
+    | 'backblast'
     | 'blast'
     | 'impulse'
     | 'ability_contact'
@@ -62,12 +65,44 @@ export interface WeaponDamagePresentationContext {
   readonly localTarget: boolean;
 }
 
+export type KyxConfirmedDamagePresentationKind =
+  | 'hit'
+  | 'headshot'
+  | 'kill'
+  | 'headshot_kill';
+
+export function classifyKyxConfirmedDamagePresentation(
+  event: Pick<
+    CombatPresentationDamageEventV1,
+    'hitRegion' | 'healthPointsAfter'
+  >,
+): KyxConfirmedDamagePresentationKind {
+  const headshot = event.hitRegion === 'head';
+  const kill = event.healthPointsAfter <= 0;
+  if (headshot && kill) return 'headshot_kill';
+  if (headshot) return 'headshot';
+  if (kill) return 'kill';
+  return 'hit';
+}
+
+export interface OnlineWeaponPresentationHooks {
+  readonly onConfirmedDamage?: (
+    kind: KyxConfirmedDamagePresentationKind,
+    context: WeaponDamagePresentationContext,
+  ) => void;
+}
+
 export interface OnlineWeaponPresentationFxDiagnostics {
   readonly activeTransientCount: number;
   readonly activeRocketCount: number;
   readonly authoredAudio: 'locked' | 'ready' | 'unavailable' | 'disposed';
   readonly acceptedAttackPresentationCount: number;
   readonly confirmedDamagePresentationCount: number;
+  readonly confirmedHitPresentationCount: number;
+  readonly headshotPresentationCount: number;
+  readonly killPresentationCount: number;
+  readonly lastConfirmedDamagePresentation:
+    KyxConfirmedDamagePresentationKind | null;
   readonly reloadPresentationCount: number;
   readonly throwablePresentationCount: number;
 }
@@ -623,6 +658,7 @@ function rocketModel(): RocketPresentation {
 export function createOnlineWeaponPresentationFx(
   scene: THREE.Scene,
   interactionTarget: HTMLElement,
+  hooks: OnlineWeaponPresentationHooks = {},
 ): OnlineWeaponPresentationFx {
   const audio = new AuthoredWeaponAudio(interactionTarget);
   const transients: TransientEffect[] = [];
@@ -630,6 +666,11 @@ export function createOnlineWeaponPresentationFx(
   const phases = new Map<string, KyxWeaponPhase>();
   let acceptedAttackPresentationCount = 0;
   let confirmedDamagePresentationCount = 0;
+  let confirmedHitPresentationCount = 0;
+  let headshotPresentationCount = 0;
+  let killPresentationCount = 0;
+  let lastConfirmedDamagePresentation:
+    KyxConfirmedDamagePresentationKind | null = null;
   let reloadPresentationCount = 0;
   let throwablePresentationCount = 0;
   let disposed = false;
@@ -947,6 +988,44 @@ export function createOnlineWeaponPresentationFx(
     addTransient(slash, 'melee', nowMilliseconds, 245);
   };
 
+  const backblastPlume = (
+    position: THREE.Vector3,
+    forward: THREE.Vector3,
+    nowMilliseconds: number,
+  ): void => {
+    const group = new THREE.Group();
+    group.name = 'KYX_BR6_DIRECTIONAL_BACKBLAST';
+    group.position.copy(position);
+    const rearward = forward.clone().normalize().negate();
+    group.quaternion.setFromUnitVectors(
+      new THREE.Vector3(0, 1, 0),
+      rearward,
+    );
+    const coreMaterial = new THREE.MeshBasicMaterial({
+      color: 0xff7a45,
+      transparent: true,
+      opacity: 0.88,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+    });
+    const vaporMaterial = coreMaterial.clone();
+    vaporMaterial.color.setHex(0xffcf9a);
+    vaporMaterial.opacity = 0.45;
+    const core = new THREE.Mesh(
+      new THREE.ConeGeometry(0.13, 0.7, 10, 1, true),
+      coreMaterial,
+    );
+    core.position.y = 0.35;
+    const vapor = new THREE.Mesh(
+      new THREE.ConeGeometry(0.24, 1.05, 12, 1, true),
+      vaporMaterial,
+    );
+    vapor.position.y = 0.52;
+    group.add(core, vapor);
+    addTransient(group, 'backblast', nowMilliseconds, 240);
+  };
+
   const impact = (
     position: THREE.Vector3,
     kind: 'shield' | 'health',
@@ -1012,6 +1091,67 @@ export function createOnlineWeaponPresentationFx(
     );
   };
 
+  const confirmedDamageFlair = (
+    position: THREE.Vector3,
+    kind: KyxConfirmedDamagePresentationKind,
+    nowMilliseconds: number,
+  ): void => {
+    if (kind === 'hit') return;
+    const kill = kind === 'kill' || kind === 'headshot_kill';
+    const headshot = kind === 'headshot' || kind === 'headshot_kill';
+    const group = new THREE.Group();
+    group.name = kill
+      ? 'KYX_CONFIRMED_KILL_PRESENTATION'
+      : 'KYX_CONFIRMED_HEADSHOT_PRESENTATION';
+    group.position.copy(position);
+    const material = new THREE.MeshBasicMaterial({
+      color: kill ? 0xff6042 : 0xd5f4ff,
+      transparent: true,
+      opacity: 0.96,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(kill ? 0.34 : 0.27, 0.028, 6, 28),
+      material,
+    );
+    ring.rotation.x = Math.PI / 2;
+    group.add(ring);
+    if (headshot) {
+      const diamond = new THREE.Mesh(
+        new THREE.OctahedronGeometry(0.13, 0),
+        material.clone(),
+      );
+      diamond.rotation.z = Math.PI / 4;
+      group.add(diamond);
+    }
+    if (kill) {
+      const crossMaterial = material.clone();
+      group.add(
+        cylinderBetween(
+          new THREE.Vector3(-0.16, -0.16, 0),
+          new THREE.Vector3(0.16, 0.16, 0),
+          0.018,
+          crossMaterial,
+          4,
+        ),
+        cylinderBetween(
+          new THREE.Vector3(0.16, -0.16, 0),
+          new THREE.Vector3(-0.16, 0.16, 0),
+          0.018,
+          crossMaterial.clone(),
+          4,
+        ),
+      );
+    }
+    addTransient(
+      group,
+      kill ? 'impact_kill' : 'impact_headshot',
+      nowMilliseconds,
+      kill ? 520 : 390,
+    );
+  };
+
   const presentAttack = (
     context: WeaponAttackPresentationContext,
   ): void => {
@@ -1071,11 +1211,10 @@ export function createOnlineWeaponPresentationFx(
       const backblast = context.weapon.backblast.getWorldPosition(
         new THREE.Vector3(),
       );
-      presentBlast(
+      backblastPlume(
         backblast,
-        0xff7a45,
+        context.direction,
         context.nowMilliseconds,
-        0.16,
       );
     }
   };
@@ -1085,6 +1224,20 @@ export function createOnlineWeaponPresentationFx(
   ): void => {
     if (disposed) return;
     confirmedDamagePresentationCount += 1;
+    const confirmedKind = classifyKyxConfirmedDamagePresentation(
+      context.event,
+    );
+    lastConfirmedDamagePresentation = confirmedKind;
+    if (confirmedKind === 'hit') confirmedHitPresentationCount += 1;
+    if (
+      confirmedKind === 'headshot'
+      || confirmedKind === 'headshot_kill'
+    ) {
+      headshotPresentationCount += 1;
+    }
+    if (confirmedKind === 'kill' || confirmedKind === 'headshot_kill') {
+      killPresentationCount += 1;
+    }
     const shield = context.event.shieldDamagePoints > 0;
     impact(
       context.impactPosition,
@@ -1096,24 +1249,12 @@ export function createOnlineWeaponPresentationFx(
       shield ? 'shield' : 'health',
       context.localSource || context.localTarget,
     );
-    if (
-      context.sourceMuzzle !== null
-      && context.sourceWeapon !== null
-      && context.sourceWeapon.family === 'sniper'
-    ) {
-      const direction = context.impactPosition.clone()
-        .sub(context.sourceMuzzle)
-        .normalize();
-      tracer(
-        context.sourceMuzzle,
-        direction,
-        context.sourceMuzzle.distanceTo(context.impactPosition),
-        context.sourceWeapon.tracer,
-        'sniper',
-        context.nowMilliseconds,
-        0.98,
-      );
-    }
+    confirmedDamageFlair(
+      context.impactPosition,
+      confirmedKind,
+      context.nowMilliseconds,
+    );
+    hooks.onConfirmedDamage?.(confirmedKind, context);
   };
 
   const presentMeleeContact = (
@@ -1267,9 +1408,17 @@ export function createOnlineWeaponPresentationFx(
       } else if (
         effect.kind === 'impact_shield'
         || effect.kind === 'impact_health'
+        || effect.kind === 'impact_headshot'
+        || effect.kind === 'impact_kill'
       ) {
         effect.root.scale.setScalar(1 + progress * 2.2);
         effect.root.rotation.y += 0.08;
+      } else if (effect.kind === 'backblast') {
+        effect.root.scale.set(
+          1 + progress * 0.75,
+          1 + progress * 1.2,
+          1 + progress * 0.75,
+        );
       } else if (effect.kind === 'melee') {
         effect.root.rotation.z += 0.065;
         effect.root.scale.setScalar(1 + progress * 0.28);
@@ -1289,6 +1438,10 @@ export function createOnlineWeaponPresentationFx(
     authoredAudio: disposed ? 'disposed' : audio.diagnostics(),
     acceptedAttackPresentationCount,
     confirmedDamagePresentationCount,
+    confirmedHitPresentationCount,
+    headshotPresentationCount,
+    killPresentationCount,
+    lastConfirmedDamagePresentation,
     reloadPresentationCount,
     throwablePresentationCount,
   });

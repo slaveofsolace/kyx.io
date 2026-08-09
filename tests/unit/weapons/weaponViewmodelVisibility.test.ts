@@ -23,6 +23,7 @@ type VisibilityHarness = {
   models: Map<string, {
     group: {
       visible: boolean;
+      userData: Record<string, unknown>;
     };
   }>;
   readonly currentDef: {
@@ -46,22 +47,22 @@ function createHarness(
   system.loadout = [rifle, sword];
   system.currentIndex = currentIndex;
   system.models = new Map([
-    [rifle.id, { group: { visible: currentIndex === 0 } }],
-    [sword.id, { group: { visible: currentIndex === 1 } }],
+    [rifle.id, { group: { visible: currentIndex === 0, userData: {} } }],
+    [sword.id, { group: { visible: currentIndex === 1, userData: {} } }],
   ]);
 
   return system;
 }
 
 describe('WeaponSystem first-person viewmodel visibility', () => {
-  it('uses only the Rev17 first-person candidate for a rifle', () => {
+  it('uses only the shared fitted first-person candidate for a rifle', () => {
     const system = createHarness(0);
 
     system._setActiveModel(0);
 
-    expect(system._rev17Viewmodel?.visible).toBe(true);
+    expect(system._rev17Viewmodel?.visible).toBe(false);
     expect(system.armGroup.visible).toBe(false);
-    expect(system.models.get('m4')?.group.visible).toBe(false);
+    expect(system.models.get('m4')?.group.visible).toBe(true);
     expect(system.models.get('sword')?.group.visible).toBe(false);
   });
 
@@ -76,13 +77,13 @@ describe('WeaponSystem first-person viewmodel visibility', () => {
     expect(system.models.get('sword')?.group.visible).toBe(true);
   });
 
-  it('retains the legacy arm and weapon model for a default-path rifle', () => {
+  it('does not restore a legacy arm overlay when Rev17 is unavailable', () => {
     const system = createHarness(0, { rev17: false });
 
     system._setActiveModel(0);
 
     expect(system._rev17Viewmodel).toBeNull();
-    expect(system.armGroup.visible).toBe(true);
+    expect(system.armGroup.visible).toBe(false);
     expect(system.models.get('m4')?.group.visible).toBe(true);
     expect(system.models.get('sword')?.group.visible).toBe(false);
   });
@@ -96,5 +97,19 @@ describe('WeaponSystem first-person viewmodel visibility', () => {
     expect(system.armGroup.visible).toBe(false);
     expect(system.models.get('m4')?.group.visible).toBe(false);
     expect(system.models.get('sword')?.group.visible).toBe(true);
+  });
+
+  it('fails closed without revealing a legacy gun while a selected GLB is pending', () => {
+    const system = createHarness(0);
+    const rifle = system.models.get('m4');
+    if (rifle === undefined) throw new Error('TEST_RIFLE_MISSING');
+    rifle.group.userData.selectedAssetFailClosed = true;
+
+    system._setActiveModel(0);
+
+    expect(system._rev17Viewmodel?.visible).toBe(false);
+    expect(system.armGroup.visible).toBe(false);
+    expect(system.models.get('m4')?.group.visible).toBe(false);
+    expect(system.models.get('sword')?.group.visible).toBe(false);
   });
 });

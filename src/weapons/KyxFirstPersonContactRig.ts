@@ -572,68 +572,364 @@ function buildVlr7ContactRig(): KyxFirstPersonContactRig {
   });
 }
 
-const ADAPTED_CONTACT_PROFILE = Object.freeze({
+export type KyxFirstPersonContactPoint =
+  readonly [number, number, number];
+
+interface CompactContactHandProfile {
+  readonly role: 'DOMINANT' | 'SUPPORT';
+  readonly entry: KyxFirstPersonContactPoint;
+  readonly wrist: KyxFirstPersonContactPoint;
+  readonly palm: KyxFirstPersonContactPoint;
+  readonly grip: KyxFirstPersonContactPoint;
+}
+
+interface CompactContactProfile {
+  readonly name: string;
+  readonly prefix: string;
+  readonly mode: string;
+  readonly accent: number;
+  readonly dominant: CompactContactHandProfile;
+  readonly support?: CompactContactHandProfile;
+}
+
+export const KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE = Object.freeze({
   kyx_sidearm_v1: Object.freeze({
     name: 'KYX_K9_FIRST_PERSON_CONTACT_RIG',
-    mode: 'profiled_one_hand_arc_suit_v1',
-    position: Object.freeze([0, 0, -0.18] as const),
-    scale: 0.85,
-    handCount: 1,
-    visibleHand: 'dominant',
+    prefix: 'KYX_K9',
+    mode: 'fitted_one_hand_sidearm_contact_v2',
+    accent: 0xffca5c,
+    dominant: Object.freeze({
+      role: 'DOMINANT' as const,
+      entry: Object.freeze([0.48, -0.94, 0.54] as const),
+      wrist: Object.freeze([0.25, -0.34, 0.3] as const),
+      palm: Object.freeze([0.1, -0.14, 0.18] as const),
+      grip: Object.freeze([0.025, -0.07, 0.13] as const),
+    }),
   }),
   kyx_scattergun_v1: Object.freeze({
     name: 'KYX_SG4_FIRST_PERSON_CONTACT_RIG',
-    mode: 'profiled_single_contact_breacher_candidate_v2',
-    position: Object.freeze([0.02, 0.25, -0.1] as const),
-    scale: 0.6,
-    handCount: 1,
-    visibleHand: 'support',
+    prefix: 'KYX_SG4',
+    mode: 'fitted_two_hand_breacher_contact_v3',
+    accent: 0xff8c5a,
+    dominant: Object.freeze({
+      role: 'DOMINANT' as const,
+      entry: Object.freeze([0.5, -0.92, 0.6] as const),
+      wrist: Object.freeze([0.28, -0.36, 0.34] as const),
+      palm: Object.freeze([0.11, -0.13, 0.23] as const),
+      grip: Object.freeze([0.03, -0.07, 0.18] as const),
+    }),
+    support: Object.freeze({
+      role: 'SUPPORT' as const,
+      entry: Object.freeze([-0.4, -0.91, 0.3] as const),
+      wrist: Object.freeze([-0.21, -0.35, -0.15] as const),
+      palm: Object.freeze([-0.08, -0.11, -0.36] as const),
+      grip: Object.freeze([-0.025, -0.045, -0.42] as const),
+    }),
   }),
   kyx_longshot_v1: Object.freeze({
     name: 'KYX_LONGBOW12_FIRST_PERSON_CONTACT_RIG',
-    mode: 'profiled_single_contact_recon_candidate_v2',
-    position: Object.freeze([0.015, 0.27, -0.12] as const),
-    scale: 0.58,
-    handCount: 1,
-    visibleHand: 'support',
+    prefix: 'KYX_LONGBOW12',
+    mode: 'fitted_two_hand_precision_contact_v3',
+    accent: 0xd5f4ff,
+    dominant: Object.freeze({
+      role: 'DOMINANT' as const,
+      entry: Object.freeze([0.53, -0.94, 0.62] as const),
+      wrist: Object.freeze([0.29, -0.38, 0.34] as const),
+      palm: Object.freeze([0.11, -0.13, 0.21] as const),
+      grip: Object.freeze([0.03, -0.06, 0.16] as const),
+    }),
+    support: Object.freeze({
+      role: 'SUPPORT' as const,
+      entry: Object.freeze([-0.4, -0.92, 0.2] as const),
+      wrist: Object.freeze([-0.22, -0.36, -0.2] as const),
+      palm: Object.freeze([-0.075, -0.1, -0.44] as const),
+      grip: Object.freeze([-0.025, -0.045, -0.5] as const),
+    }),
   }),
   kyx_breach_rocket_v1: Object.freeze({
     name: 'KYX_BR6_FIRST_PERSON_CONTACT_RIG',
-    mode: 'profiled_single_contact_siege_candidate_v2',
-    position: Object.freeze([0.03, 0.26, -0.18] as const),
-    scale: 0.56,
-    handCount: 1,
-    visibleHand: 'support',
+    prefix: 'KYX_BR6',
+    mode: 'fitted_two_hand_launcher_contact_v3',
+    accent: 0xff6042,
+    dominant: Object.freeze({
+      role: 'DOMINANT' as const,
+      entry: Object.freeze([0.56, -0.95, 0.64] as const),
+      wrist: Object.freeze([0.3, -0.4, 0.34] as const),
+      palm: Object.freeze([0.115, -0.14, 0.21] as const),
+      grip: Object.freeze([0.035, -0.07, 0.15] as const),
+    }),
+    support: Object.freeze({
+      role: 'SUPPORT' as const,
+      entry: Object.freeze([-0.43, -0.94, 0.23] as const),
+      wrist: Object.freeze([-0.24, -0.39, -0.14] as const),
+      palm: Object.freeze([-0.085, -0.13, -0.32] as const),
+      grip: Object.freeze([-0.03, -0.065, -0.38] as const),
+    }),
   }),
-});
+  kyx_edge_v1: Object.freeze({
+    name: 'KYX_EDGE1_FIRST_PERSON_CONTACT_RIG',
+    prefix: 'KYX_EDGE1',
+    mode: 'fitted_one_hand_saber_contact_v2',
+    accent: 0x58f4ff,
+    dominant: Object.freeze({
+      role: 'DOMINANT' as const,
+      entry: Object.freeze([0.48, -0.96, 0.5] as const),
+      wrist: Object.freeze([0.24, -0.38, 0.29] as const),
+      palm: Object.freeze([0.08, -0.12, 0.16] as const),
+      grip: Object.freeze([0.015, -0.055, 0.1] as const),
+    }),
+  }),
+} satisfies Readonly<Record<string, CompactContactProfile>>);
 
-function buildAdaptedContactRig(
-  authorityWeaponId: keyof typeof ADAPTED_CONTACT_PROFILE,
-): KyxFirstPersonContactRig {
-  const profile = ADAPTED_CONTACT_PROFILE[authorityWeaponId];
-  const rig = buildVlr7ContactRig();
-  rig.root.name = profile.name;
-  rig.root.userData.contactMode = profile.mode;
-  rig.root.userData.adaptedFrom = 'profiled_two_hand_assault_suit_v9';
-  rig.root.position.set(
-    profile.position[0],
-    profile.position[1],
-    profile.position[2],
+export interface KyxFirstPersonContactSeam {
+  readonly mode: string;
+  readonly handCount: 1 | 2;
+  readonly dominantGrip: KyxFirstPersonContactPoint;
+  readonly supportGrip: KyxFirstPersonContactPoint | null;
+  readonly characterBinding: 'unbound_pending_accepted_assault_body';
+}
+
+export type KyxFirstPersonContactAuthorityWeaponId =
+  | 'vertical_rifle_v1'
+  | 'kyx_sidearm_v1'
+  | 'kyx_scattergun_v1'
+  | 'kyx_longshot_v1'
+  | 'kyx_breach_rocket_v1'
+  | 'kyx_edge_v1';
+
+export const KYX_FIRST_PERSON_CONTACT_SEAM = Object.freeze({
+  vertical_rifle_v1: Object.freeze({
+    mode: 'profiled_two_hand_assault_suit_v9',
+    handCount: 2,
+    dominantGrip: Object.freeze([0.065, -0.115, 0.2] as const),
+    supportGrip: Object.freeze([-0.075, -0.082, -0.325] as const),
+    characterBinding: 'unbound_pending_accepted_assault_body',
+  }),
+  kyx_sidearm_v1: Object.freeze({
+    mode: KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_sidearm_v1.mode,
+    handCount: 1,
+    dominantGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_sidearm_v1.dominant.grip,
+    supportGrip: null,
+    characterBinding: 'unbound_pending_accepted_assault_body',
+  }),
+  kyx_scattergun_v1: Object.freeze({
+    mode: KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_scattergun_v1.mode,
+    handCount: 2,
+    dominantGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_scattergun_v1.dominant.grip,
+    supportGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_scattergun_v1.support.grip,
+    characterBinding: 'unbound_pending_accepted_assault_body',
+  }),
+  kyx_longshot_v1: Object.freeze({
+    mode: KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_longshot_v1.mode,
+    handCount: 2,
+    dominantGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_longshot_v1.dominant.grip,
+    supportGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_longshot_v1.support.grip,
+    characterBinding: 'unbound_pending_accepted_assault_body',
+  }),
+  kyx_breach_rocket_v1: Object.freeze({
+    mode: KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_breach_rocket_v1.mode,
+    handCount: 2,
+    dominantGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_breach_rocket_v1.dominant.grip,
+    supportGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_breach_rocket_v1.support.grip,
+    characterBinding: 'unbound_pending_accepted_assault_body',
+  }),
+  kyx_edge_v1: Object.freeze({
+    mode: KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_edge_v1.mode,
+    handCount: 1,
+    dominantGrip:
+      KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE.kyx_edge_v1.dominant.grip,
+    supportGrip: null,
+    characterBinding: 'unbound_pending_accepted_assault_body',
+  }),
+} satisfies Readonly<
+  Record<KyxFirstPersonContactAuthorityWeaponId, KyxFirstPersonContactSeam>
+>);
+
+function vector(point: KyxFirstPersonContactPoint): THREE.Vector3 {
+  return new THREE.Vector3(point[0], point[1], point[2]);
+}
+
+function addCompactContactHand(
+  root: THREE.Group,
+  prefix: string,
+  profile: CompactContactHandProfile,
+  suit: THREE.Material,
+  plate: THREE.Material,
+  glove: THREE.Material,
+  seam: THREE.Material,
+): void {
+  const entry = vector(profile.entry);
+  const wrist = vector(profile.wrist);
+  const palm = vector(profile.palm);
+  const grip = vector(profile.grip);
+  const name = `${prefix}_${profile.role}`;
+  const gauntletStart = pointBetween(entry, wrist, 0.55);
+  const gauntletEnd = pointBetween(entry, wrist, 0.92);
+  const hand = new THREE.Group();
+  hand.name = `${name}_HAND`;
+  hand.add(
+    roundedBlockBetween(
+      `${name}_PALM`,
+      palm,
+      grip,
+      0.074,
+      0.05,
+      0.012,
+      glove,
+    ),
+    plateBetween(
+      `${name}_GLOVE_BACKPLATE`,
+      pointBetween(palm, grip, 0.22).add(new THREE.Vector3(0, 0, 0.035)),
+      pointBetween(palm, grip, 0.72).add(new THREE.Vector3(0, 0, 0.035)),
+      0.038,
+      0.01,
+      plate,
+    ),
   );
-  rig.root.scale.setScalar(profile.scale);
-  if (profile.handCount === 1) {
-    const hiddenPrefix = profile.visibleHand === 'dominant'
-      ? '_SUPPORT_'
-      : '_DOMINANT_';
-    rig.root.traverse((object) => {
-      if (object.name.includes(hiddenPrefix)) object.visible = false;
-    });
-    if (profile.visibleHand === 'dominant') rig.supportGrip.visible = false;
-    else rig.dominantGrip.visible = false;
+  addWrappedFingers(
+    hand,
+    name,
+    [profile.grip[0], profile.grip[1], profile.grip[2]],
+    glove,
+  );
+  root.add(
+    profiledForearmBetween(
+      `${name}_SLEEVE_LOWER`,
+      entry,
+      wrist,
+      0.054,
+      0.041,
+      0.041,
+      0.032,
+      suit,
+    ),
+    profiledForearmBetween(
+      `${name}_GAUNTLET_CORE`,
+      gauntletStart,
+      gauntletEnd,
+      0.05,
+      0.039,
+      0.041,
+      0.032,
+      plate,
+    ),
+    plateBetween(
+      `${name}_GAUNTLET_DORSAL_PLATE`,
+      gauntletStart.clone().add(new THREE.Vector3(0, 0, 0.041)),
+      gauntletEnd.clone().add(new THREE.Vector3(0, 0, 0.036)),
+      0.068,
+      0.011,
+      plate,
+    ),
+    taperedLimbBetween(
+      `${name}_WRIST_SEAL`,
+      pointBetween(wrist, entry, 0.14),
+      pointBetween(wrist, palm, 0.2),
+      0.044,
+      0.039,
+      seam,
+    ),
+    taperedLimbBetween(
+      `${name}_WRIST`,
+      wrist,
+      palm,
+      0.039,
+      0.034,
+      glove,
+    ),
+    hand,
+  );
+}
+
+function buildCompactContactRig(
+  authorityWeaponId: keyof typeof KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE,
+): KyxFirstPersonContactRig {
+  const profile: CompactContactProfile =
+    KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE[authorityWeaponId];
+  const suit = new THREE.MeshStandardMaterial({
+    name: `${profile.prefix}_FP_SYNTH_SLEEVE`,
+    color: 0x111820,
+    metalness: 0.12,
+    roughness: 0.58,
+  });
+  const plate = new THREE.MeshStandardMaterial({
+    name: `${profile.prefix}_FP_FOREARM_PLATE`,
+    color: 0x1f3038,
+    metalness: 0.45,
+    roughness: 0.48,
+  });
+  const glove = new THREE.MeshStandardMaterial({
+    name: `${profile.prefix}_FP_TACTICAL_GLOVE`,
+    color: 0x10161c,
+    metalness: 0.05,
+    roughness: 0.66,
+  });
+  const seam = new THREE.MeshStandardMaterial({
+    name: `${profile.prefix}_FP_CONTACT_SEAM`,
+    color: profile.accent,
+    emissive: profile.accent,
+    emissiveIntensity: 0.08,
+    metalness: 0.3,
+    roughness: 0.5,
+  });
+  const root = new THREE.Group();
+  root.name = profile.name;
+  root.userData.presentationOnly = true;
+  root.userData.noHit = true;
+  root.userData.contactMode = profile.mode;
+  root.userData.authorityWeaponId = authorityWeaponId;
+  root.userData.weaponFittedContact = true;
+  addCompactContactHand(
+    root,
+    profile.prefix,
+    profile.dominant,
+    suit,
+    plate,
+    glove,
+    seam,
+  );
+  if (profile.support !== undefined) {
+    addCompactContactHand(
+      root,
+      profile.prefix,
+      profile.support,
+      suit,
+      plate,
+      glove,
+      seam,
+    );
   }
+
+  const dominantGrip = gripMarker(
+    `${profile.prefix}_DOMINANT_GRIP_CONTACT`,
+    profile.dominant.grip,
+  );
+  const supportGrip = gripMarker(
+    `${profile.prefix}_SUPPORT_GRIP_CONTACT`,
+    profile.support?.grip ?? profile.dominant.grip,
+  );
+  supportGrip.visible = profile.support !== undefined;
+  root.add(dominantGrip, supportGrip);
+  root.traverse((object) => {
+    object.userData.presentationOnly = true;
+    object.userData.noHit = true;
+    if (!(object as THREE.Mesh).isMesh) return;
+    const mesh = object as THREE.Mesh;
+    mesh.frustumCulled = false;
+    mesh.renderOrder = 39;
+  });
   return Object.freeze({
-    ...rig,
-    handCount: profile.handCount,
+    root,
+    handCount: profile.support === undefined ? 1 : 2,
+    dominantGrip,
+    supportGrip,
   });
 }
 
@@ -641,9 +937,9 @@ export function createKyxFirstPersonContactRig(
   authorityWeaponId: string,
 ): KyxFirstPersonContactRig | null {
   if (authorityWeaponId === 'vertical_rifle_v1') return buildVlr7ContactRig();
-  if (authorityWeaponId in ADAPTED_CONTACT_PROFILE) {
-    return buildAdaptedContactRig(
-      authorityWeaponId as keyof typeof ADAPTED_CONTACT_PROFILE,
+  if (authorityWeaponId in KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE) {
+    return buildCompactContactRig(
+      authorityWeaponId as keyof typeof KYX_COMPACT_FIRST_PERSON_CONTACT_PROFILE,
     );
   }
   return null;

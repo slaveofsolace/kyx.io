@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { metalNormalMap, metalRoughnessMap, polymerNormalMap } from './WeaponTextures.js';
 import { createKyxWeaponPresentationModel } from './KyxArmoryPresentation.ts';
+import {
+  KYX_AUTHORITY_ID_BY_OFFLINE_ID as KYX_SELECTED_GUN_ID_BY_OFFLINE_ID,
+} from './KyxArmorySelectedAssets.ts';
 
 // Product loadout weapons converge on the same presentation model used by the
 // online authority route. Unsupported legacy sandbox weapons keep their local
@@ -11,10 +14,7 @@ const _readyCallbacks = new Set();
 let _reviewLoadPromise = null;
 
 const KYX_AUTHORITY_ID_BY_OFFLINE_ID = Object.freeze({
-  m4: 'vertical_rifle_v1',
-  sidearm: 'kyx_sidearm_v1',
-  energyshotgun: 'kyx_scattergun_v1',
-  boltsniper: 'kyx_longshot_v1',
+  ...KYX_SELECTED_GUN_ID_BY_OFFLINE_ID,
   sword: 'kyx_edge_v1',
 });
 
@@ -23,6 +23,10 @@ export function usesKyxPresetWeaponModel(weaponId) {
     KYX_AUTHORITY_ID_BY_OFFLINE_ID,
     weaponId,
   );
+}
+
+export function resolveKyxPresetAuthorityWeaponId(weaponId) {
+  return KYX_AUTHORITY_ID_BY_OFFLINE_ID[weaponId] ?? null;
 }
 
 function _notifyWeaponModelsReady() {
@@ -1912,17 +1916,45 @@ export function buildWeaponModel(weaponDef, opts = {}) {
   // Project-authored procedural models are the only release runtime path.
   // Keep the dormant converter referenced only until its migration scaffolding
   // is removed; the template is hard-null and has no loader or public URI.
-  void opts;
   void _buildFromGLB;
   const authorityWeaponId = KYX_AUTHORITY_ID_BY_OFFLINE_ID[weaponDef.id];
   if (authorityWeaponId) {
+    const requestedPresentation = opts.presentation ?? 'world';
+    if (
+      requestedPresentation !== 'first_person'
+      && requestedPresentation !== 'world'
+    ) {
+      throw new Error(
+        `KYX_WEAPON_PRESENTATION_INVALID value=${requestedPresentation}`,
+      );
+    }
     const presentation = createKyxWeaponPresentationModel(
       authorityWeaponId,
-      'world',
+      requestedPresentation,
     );
     presentation.group.userData.offlineWeaponId = weaponDef.id;
     presentation.group.userData.sharedAuthorityPresentation = true;
-    return { group: presentation.group, muzzle: presentation.muzzle };
+    const selectedReviewAssetRequired = authorityWeaponId !== 'kyx_edge_v1'
+      && (import.meta.env.MODE === 'staging-review' || import.meta.env.DEV);
+    const selectedReviewAssetResolved = String(
+      presentation.group.userData.weaponVisualSource ?? '',
+    ).startsWith('quaternius_cc0_');
+    presentation.group.userData.selectedReviewAssetRequired =
+      selectedReviewAssetRequired;
+    presentation.group.userData.selectedReviewAssetResolved =
+      !selectedReviewAssetRequired || selectedReviewAssetResolved;
+    presentation.group.userData.selectedAssetFailClosed =
+      selectedReviewAssetRequired && !selectedReviewAssetResolved;
+    if (presentation.group.userData.selectedAssetFailClosed === true) {
+      presentation.group.traverse((object) => {
+        if (object.isMesh) object.visible = false;
+      });
+    }
+    return {
+      group: presentation.group,
+      muzzle: presentation.muzzle,
+      presentation,
+    };
   }
   const builder = BUILDERS[weaponDef.id] ?? buildEnergyWeapon;
   const { group, muzzle } = builder(weaponDef.color, weaponDef);

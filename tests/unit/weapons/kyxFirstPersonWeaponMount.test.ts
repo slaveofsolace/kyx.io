@@ -84,6 +84,29 @@ describe('KyxFirstPersonWeaponMount', () => {
     expect(inspectKyxFirstPersonWeaponMount(mount, selected)).toEqual(result);
   });
 
+  it('switches from rifle to Edge-1 without retaining a donor overlay', () => {
+    const mount = new THREE.Group();
+    const rifle = weaponRoot('vertical_rifle_v1');
+    const rifleDonor = new THREE.Group();
+    rifleDonor.name = 'KYX_VLR7_REVIEW_SHELL_MOUNT';
+    rifle.group.add(rifleDonor);
+    const edge = weaponRoot('kyx_edge_v1');
+    const dispose = vi.fn();
+    mount.add(rifle.group);
+
+    const result = replaceKyxFirstPersonWeaponMount(
+      mount,
+      rifle,
+      edge,
+      dispose,
+    );
+
+    expect(result.overlapFree).toBe(true);
+    expect(mount.children).toEqual([edge.group]);
+    expect(mount.getObjectByName('KYX_VLR7_REVIEW_SHELL_MOUNT')).toBeUndefined();
+    expect(dispose).toHaveBeenCalledTimes(1);
+  });
+
   it('rejects a malformed next root before removing the current weapon', () => {
     const mount = new THREE.Group();
     const previous = weaponRoot('vertical_rifle_v1');

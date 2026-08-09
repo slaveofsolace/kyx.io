@@ -30,6 +30,7 @@ import {
   createKyxWeaponPresentationModel,
   normalizeKyxAuthorityWeaponId,
   setKyxWeaponAim,
+  triggerKyxWeaponEquip,
   updateKyxWeaponPresentation,
   type KyxWeaponPhase,
   type KyxWeaponPresentationModel,
@@ -38,6 +39,10 @@ import {
   inspectKyxFirstPersonWeaponMount,
   replaceKyxFirstPersonWeaponMount,
 } from '../weapons/KyxFirstPersonWeaponMount';
+import {
+  inspectKyxWorldWeaponMount,
+  replaceKyxWorldWeaponMount,
+} from '../weapons/KyxWorldWeaponMount';
 import {
   createInkfallRev5PortalPresentation,
   type InkfallRev5PortalAudioCallback,
@@ -108,6 +113,9 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly remoteAvatarAuthoredClipCount: number;
   readonly remoteAvatarProceduralAnimationCount: number;
   readonly remoteAvatarWeaponAttachmentCount: number;
+  readonly remoteAvatarWorldWeaponRootCount: number;
+  readonly remoteAvatarWorldWeaponOverlapFreeCount: number;
+  readonly remoteAvatarWorldWeaponSelectionMatchCount: number;
   readonly remoteAvatarSupportHandContactCount: number;
   readonly remoteAvatarQualifiedSupportHandContactCount: number;
   readonly remoteAvatarMaximumSupportHandErrorMeters: number | null;
@@ -123,6 +131,10 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly renderedReliableEventCount: number;
   readonly acceptedAttackPresentationCount: number;
   readonly confirmedDamagePresentationCount: number;
+  readonly confirmedHitPresentationCount: number;
+  readonly headshotPresentationCount: number;
+  readonly killPresentationCount: number;
+  readonly lastConfirmedDamagePresentation: string | null;
   readonly reloadPresentationCount: number;
   readonly throwablePresentationCount: number;
   readonly portalTraversalPresentationCount: number;
@@ -144,6 +156,11 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedFirstPersonOverlapFree: boolean;
   readonly selectedFirstPersonAimRequested: boolean;
   readonly selectedFirstPersonAimMix: number;
+  readonly selectedFirstPersonAimPresentation: string | null;
+  readonly selectedFirstPersonAimDatumNodeName: string | null;
+  readonly selectedFirstPersonAuthorityMuzzleReferenceBound: boolean;
+  readonly selectedFirstPersonEquipMix: number;
+  readonly selectedFirstPersonSprintMix: number;
   readonly selectedFirstPersonScale: number;
   readonly selectedFirstPersonFieldOfViewDegrees: number;
   readonly selectedFirstPersonFireImpulse: number;
@@ -534,24 +551,37 @@ function setAvatarWeapon(
   selectedWeaponId: string | null | undefined,
 ): boolean {
   const normalized = normalizeKyxAuthorityWeaponId(selectedWeaponId);
-  if (avatar.weaponId === normalized) return false;
-  if (avatar.weapon !== null) {
-    avatar.root.userData.attachWeapon?.(null);
-    avatar.weapon.group.parent?.remove(avatar.weapon.group);
-    disposeObject(avatar.weapon.group);
+  if (
+    avatar.weaponId === normalized
+    && avatar.weapon !== null
+    && inspectKyxWorldWeaponMount(avatar.root, avatar.weapon).overlapFree
+  ) {
+    return false;
   }
-  avatar.weapon = createKyxWeaponPresentationModel(normalized, 'world');
+  const previous = avatar.weapon;
+  const next = avatar.weaponId === normalized && previous !== null
+    ? previous
+    : createKyxWeaponPresentationModel(normalized, 'world');
+  replaceKyxWorldWeaponMount(
+    avatar.root,
+    previous,
+    next,
+    (group) => {
+      if (typeof avatar.root.userData.attachWeapon === 'function') {
+        avatar.root.userData.attachWeapon(
+          group,
+          normalized === 'kyx_edge_v1',
+        );
+      } else {
+        group.position.set(-0.4, 1.05, -0.1);
+        group.rotation.set(-0.35, Math.PI, 0.14);
+        avatar.root.add(group);
+      }
+    },
+    disposeObject,
+  );
+  avatar.weapon = next;
   avatar.weaponId = normalized;
-  if (typeof avatar.root.userData.attachWeapon === 'function') {
-    avatar.root.userData.attachWeapon(
-      avatar.weapon.group,
-      normalized === 'kyx_edge_v1',
-    );
-  } else {
-    avatar.weapon.group.position.set(-0.4, 1.05, -0.1);
-    avatar.weapon.group.rotation.set(-0.35, Math.PI, 0.14);
-    avatar.root.add(avatar.weapon.group);
-  }
   return true;
 }
 
@@ -652,7 +682,6 @@ export async function createOnlineAuthorityThreeRuntime(
   camera.add(firstPersonWeaponKey, firstPersonWeaponFill);
   let firstPersonWeapon: KyxWeaponPresentationModel | null = null;
   let selectedWeaponId: string | null = null;
-  let firstPersonRecoil = 0;
   let firstPersonMelee = 0;
 
   const avatars = new Map<string, PlayerAvatar>();
@@ -813,9 +842,7 @@ export async function createOnlineAuthorityThreeRuntime(
         ) {
           firstPersonMelee = 1;
         }
-        if (semantic.playerId === frame.combat.localPlayerId) {
-          firstPersonRecoil = 1;
-        } else {
+        if (semantic.playerId !== frame.combat.localPlayerId) {
           const avatar = avatars.get(semantic.playerId);
           if (avatar !== undefined) {
             avatar.recoil = 1;
@@ -930,6 +957,7 @@ export async function createOnlineAuthorityThreeRuntime(
         nextWeapon,
         disposeObject,
       );
+      triggerKyxWeaponEquip(nextWeapon);
       firstPersonWeapon = nextWeapon;
       selectedWeaponId = nextId;
     }
@@ -1354,12 +1382,14 @@ export async function createOnlineAuthorityThreeRuntime(
       camera.lookAt(-14, 2.2, -5);
     }
 
-    firstPersonRecoil *= Math.pow(0.72, deltaSeconds * 60);
     firstPersonMelee *= Math.pow(0.82, deltaSeconds * 60);
     if (firstPersonWeapon !== null) {
       const pose = firstPersonWeapon.firstPersonPose;
       const aim = firstPersonWeapon.aimMix;
       const reload = firstPersonWeapon.reloadPoseMix;
+      const equip = firstPersonWeapon.equipMix;
+      const sprint = firstPersonWeapon.sprintMix;
+      const recoil = firstPersonWeapon.fireImpulse;
       firstPersonWeapon.group.scale.setScalar(
         pose.baseScale * THREE.MathUtils.lerp(
           1,
@@ -1375,27 +1405,39 @@ export async function createOnlineAuthorityThreeRuntime(
       firstPersonWeaponMount.position.set(
         Math.sin(bobPhase) * 0.008 * movementBob
           + pose.aimOffset.x * aim
-          + pose.recoilOffset.x * firstPersonRecoil
-          + pose.reloadOffset.x * reload,
+          + pose.recoilOffset.x * recoil
+          + pose.reloadOffset.x * reload
+          + pose.equipOffset.x * equip
+          + pose.sprintOffset.x * sprint,
         Math.abs(Math.cos(bobPhase)) * -0.008 * movementBob
           + pose.aimOffset.y * aim
-          + pose.recoilOffset.y * firstPersonRecoil
-          + pose.reloadOffset.y * reload,
+          + pose.recoilOffset.y * recoil
+          + pose.reloadOffset.y * reload
+          + pose.equipOffset.y * equip
+          + pose.sprintOffset.y * sprint,
         pose.aimOffset.z * aim
-          + pose.recoilOffset.z * firstPersonRecoil
-          + pose.reloadOffset.z * reload,
+          + pose.recoilOffset.z * recoil
+          + pose.reloadOffset.z * reload
+          + pose.equipOffset.z * equip
+          + pose.sprintOffset.z * sprint,
       );
       firstPersonWeaponMount.rotation.set(
         pose.aimRotation.x * aim
-          + pose.recoilRotation.x * firstPersonRecoil
-          + pose.reloadRotation.x * reload,
+          + pose.recoilRotation.x * recoil
+          + pose.reloadRotation.x * reload
+          + pose.equipRotation.x * equip
+          + pose.sprintRotation.x * sprint,
         pose.aimRotation.y * aim
-          + pose.recoilRotation.y * firstPersonRecoil
+          + pose.recoilRotation.y * recoil
           + pose.reloadRotation.y * reload
+          + pose.equipRotation.y * equip
+          + pose.sprintRotation.y * sprint
           + firstPersonMelee * -0.52,
         pose.aimRotation.z * aim
-          + pose.recoilRotation.z * firstPersonRecoil
+          + pose.recoilRotation.z * recoil
           + pose.reloadRotation.z * reload
+          + pose.equipRotation.z * equip
+          + pose.sprintRotation.z * sprint
           + firstPersonMelee * -0.26,
       );
       const targetFieldOfView = THREE.MathUtils.lerp(
@@ -1433,6 +1475,9 @@ export async function createOnlineAuthorityThreeRuntime(
     const remoteAvatarSupportHandErrors = remoteAvatarPresentationStates
       .map((state) => state?.weaponContact?.supportHandErrorMeters)
       .filter((error): error is number => Number.isFinite(error));
+    const remoteWorldMountDiagnostics = remoteAvatars.map((avatar) => (
+      inspectKyxWorldWeaponMount(avatar.root, avatar.weapon)
+    ));
     const firstPersonMountDiagnostics = inspectKyxFirstPersonWeaponMount(
       firstPersonWeaponMount,
       firstPersonWeapon,
@@ -1473,6 +1518,16 @@ export async function createOnlineAuthorityThreeRuntime(
         (avatar) => avatar.weapon !== null
           && isAttachedBelow(avatar.weapon.group, avatar.root),
       ).length,
+      remoteAvatarWorldWeaponRootCount: remoteWorldMountDiagnostics.reduce(
+        (sum, item) => sum + item.weaponRootCount,
+        0,
+      ),
+      remoteAvatarWorldWeaponOverlapFreeCount:
+        remoteWorldMountDiagnostics.filter((item) => item.overlapFree).length,
+      remoteAvatarWorldWeaponSelectionMatchCount:
+        remoteWorldMountDiagnostics.filter(
+          (item) => item.selectedWeaponMatches,
+        ).length,
       remoteAvatarSupportHandContactCount: remoteAvatarPresentationStates.filter(
         (state) => state?.weaponContact?.supportHandContact === true,
       ).length,
@@ -1502,6 +1557,14 @@ export async function createOnlineAuthorityThreeRuntime(
         weaponDiagnostics.acceptedAttackPresentationCount,
       confirmedDamagePresentationCount:
         weaponDiagnostics.confirmedDamagePresentationCount,
+      confirmedHitPresentationCount:
+        weaponDiagnostics.confirmedHitPresentationCount,
+      headshotPresentationCount:
+        weaponDiagnostics.headshotPresentationCount,
+      killPresentationCount:
+        weaponDiagnostics.killPresentationCount,
+      lastConfirmedDamagePresentation:
+        weaponDiagnostics.lastConfirmedDamagePresentation,
       reloadPresentationCount: weaponDiagnostics.reloadPresentationCount,
       throwablePresentationCount: weaponDiagnostics.throwablePresentationCount,
       portalTraversalPresentationCount: portalDiagnostics.cueCount,
@@ -1534,6 +1597,16 @@ export async function createOnlineAuthorityThreeRuntime(
         firstPersonWeapon?.aimRequested ?? false,
       selectedFirstPersonAimMix:
         firstPersonWeapon?.aimMix ?? 0,
+      selectedFirstPersonAimPresentation:
+        firstPersonWeapon?.firstPersonPose.aimPresentation ?? null,
+      selectedFirstPersonAimDatumNodeName:
+        firstPersonWeapon?.firstPersonPose.aimDatumNodeName ?? null,
+      selectedFirstPersonAuthorityMuzzleReferenceBound:
+        firstPersonWeapon?.group.userData.authorityMuzzleReferenceBound === true,
+      selectedFirstPersonEquipMix:
+        firstPersonWeapon?.equipMix ?? 0,
+      selectedFirstPersonSprintMix:
+        firstPersonWeapon?.sprintMix ?? 0,
       selectedFirstPersonScale:
         firstPersonWeapon?.group.scale.x ?? 0,
       selectedFirstPersonFieldOfViewDegrees: camera.fov,

@@ -3,14 +3,20 @@ import { describe, expect, it } from 'vitest';
 
 import {
   KYX_AUTHORITY_WEAPON_PRESENTATION,
+  KYX_FIRST_PERSON_TRANSITION_PROFILE,
+  KYX_WORLD_WEAPON_MOUNT_PROFILE,
   createKyxWeaponPresentationModel,
   installKyxLineRifleReviewShellFactory,
   installKyxWeaponReviewShellFactory,
   setKyxWeaponAim,
   setKyxWeaponPhase,
+  triggerKyxWeaponEquip,
   updateKyxWeaponPresentation,
   type KyxAuthorityWeaponId,
 } from '../../../src/weapons/KyxArmoryPresentation';
+import {
+  KYX_FIRST_PERSON_CONTACT_SEAM,
+} from '../../../src/weapons/KyxFirstPersonContactRig';
 
 const WEAPON_IDS = Object.freeze(
   Object.keys(KYX_AUTHORITY_WEAPON_PRESENTATION) as KyxAuthorityWeaponId[],
@@ -90,7 +96,7 @@ describe('KYX first-person armory presentation', () => {
     expect(new Set(poses).size).toBe(WEAPON_IDS.length);
   });
 
-  it('gives the VLR-7 a two-hand first-person contact rig without polluting world or blade presentation', () => {
+  it('keeps first-person contact rigs out of world presentation and fits the blade hand', () => {
     const firstPersonRifle = createKyxWeaponPresentationModel(
       'vertical_rifle_v1',
       'first_person',
@@ -197,8 +203,13 @@ describe('KYX first-person armory presentation', () => {
     );
     expect(worldRifle.firstPersonContactRig).toBeNull();
     expect(worldRifle.firstPersonHandCount).toBe(0);
-    expect(firstPersonBlade.firstPersonContactRig).toBeNull();
-    expect(firstPersonBlade.firstPersonHandCount).toBe(0);
+    expect(firstPersonBlade.firstPersonContactRig?.name).toBe(
+      'KYX_EDGE1_FIRST_PERSON_CONTACT_RIG',
+    );
+    expect(firstPersonBlade.firstPersonHandCount).toBe(1);
+    expect(firstPersonBlade.group.getObjectByName(
+      'KYX_EDGE1_DOMINANT_GRIP_CONTACT',
+    )).toBeDefined();
   });
 
   it('mounts an isolated review shell while preserving optic, hands, muzzle, and reload motion', () => {
@@ -210,7 +221,10 @@ describe('KYX first-person armory presentation', () => {
     ));
     const magazine = new THREE.Group();
     magazine.name = 'KYX_VLR7_REVIEW_MAGAZINE';
-    source.add(magazine);
+    const muzzleReference = new THREE.Object3D();
+    muzzleReference.name = 'KYX_VLR7_REVIEW_MUZZLE_REFERENCE';
+    muzzleReference.position.set(0, 0.105, -0.73);
+    source.add(magazine, muzzleReference);
     const restore = installKyxLineRifleReviewShellFactory(
       () => source.clone(true),
     );
@@ -232,7 +246,10 @@ describe('KYX first-person armory presentation', () => {
         'KYX_VLR7_REFLEX_OPTIC',
       )).toBeDefined();
       expect(rifle.firstPersonHandCount).toBe(2);
-      expect(rifle.muzzle.name).toBe('KYX_VLR7_MUZZLE');
+      expect(rifle.muzzle.name).toBe(
+        'KYX_VLR7_REVIEW_MUZZLE_REFERENCE',
+      );
+      expect(rifle.group.userData.authorityMuzzleReferenceBound).toBe(true);
 
       const mountedMagazine = rifle.group.getObjectByName(
         'KYX_VLR7_REVIEW_MAGAZINE',
@@ -257,7 +274,10 @@ describe('KYX first-person armory presentation', () => {
       new THREE.MeshStandardMaterial(),
     );
     donorMesh.name = 'KYX_K9_QUATERNIUS_DONOR';
-    source.add(donorMesh);
+    const muzzleReference = new THREE.Object3D();
+    muzzleReference.name = 'KYX_K9_QUATERNIUS_REV1_MUZZLE_REFERENCE';
+    muzzleReference.position.set(0, 0.2434, -0.507405);
+    source.add(donorMesh, muzzleReference);
     const restore = installKyxWeaponReviewShellFactory(
       'kyx_sidearm_v1',
       () => source.clone(true),
@@ -276,7 +296,16 @@ describe('KYX first-person armory presentation', () => {
       expect(sidearm.group.getObjectByName(
         'KYX_K9_POWER_CHAMBER',
       )?.visible).toBe(false);
-      expect(sidearm.muzzle.name).toBe('KYX_K9_MUZZLE');
+      expect(sidearm.muzzle.name).toBe(
+        'KYX_K9_QUATERNIUS_REV1_MUZZLE_REFERENCE',
+      );
+      expect(sidearm.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(sidearm.group.getObjectByName(
+        'KYX_K9_REVIEW_SLIDE_CAP',
+      )?.visible).toBe(true);
+      expect(sidearm.group.getObjectByName(
+        'KYX_K9_REVIEW_POWER_CELL',
+      )?.visible).toBe(true);
       expect(sidearm.group.getObjectsByProperty(
         'name',
         'KYX_K9_QUATERNIUS_DONOR',
@@ -290,19 +319,23 @@ describe('KYX first-person armory presentation', () => {
     const expected = Object.freeze({
       kyx_sidearm_v1: Object.freeze({
         hands: 1,
-        mode: 'profiled_one_hand_arc_suit_v1',
+        mode: 'fitted_one_hand_sidearm_contact_v2',
       }),
       kyx_scattergun_v1: Object.freeze({
-        hands: 1,
-        mode: 'profiled_single_contact_breacher_candidate_v2',
+        hands: 2,
+        mode: 'fitted_two_hand_breacher_contact_v3',
       }),
       kyx_longshot_v1: Object.freeze({
-        hands: 1,
-        mode: 'profiled_single_contact_recon_candidate_v2',
+        hands: 2,
+        mode: 'fitted_two_hand_precision_contact_v3',
       }),
       kyx_breach_rocket_v1: Object.freeze({
+        hands: 2,
+        mode: 'fitted_two_hand_launcher_contact_v3',
+      }),
+      kyx_edge_v1: Object.freeze({
         hands: 1,
-        mode: 'profiled_single_contact_siege_candidate_v2',
+        mode: 'fitted_one_hand_saber_contact_v2',
       }),
     });
     for (const [weaponId, contract] of Object.entries(expected)) {
@@ -315,6 +348,14 @@ describe('KYX first-person armory presentation', () => {
       expect(model.firstPersonContactRig?.userData).toMatchObject({
         presentationOnly: true,
         noHit: true,
+        weaponFittedContact: true,
+      });
+      expect(KYX_FIRST_PERSON_CONTACT_SEAM[
+        weaponId as keyof typeof KYX_FIRST_PERSON_CONTACT_SEAM
+      ]).toMatchObject({
+        handCount: contract.hands,
+        mode: contract.mode,
+        characterBinding: 'unbound_pending_accepted_assault_body',
       });
     }
   });
@@ -346,6 +387,43 @@ describe('KYX first-person armory presentation', () => {
     updateKyxWeaponPresentation(rifle, 4_000, 0.1);
     expect(rifle.reloadPoseMix).toBe(0);
     expect(rifle.aimMix).toBeCloseTo(1, 5);
+  });
+
+  it('exposes typed ADS, recoil recovery, equip, sprint, and world-mount profiles for every family', () => {
+    for (const weaponId of WEAPON_IDS) {
+      const firstPerson = createKyxWeaponPresentationModel(
+        weaponId,
+        'first_person',
+      );
+      const transition = KYX_FIRST_PERSON_TRANSITION_PROFILE[weaponId];
+      expect(firstPerson.firstPersonPose).toMatchObject({
+        aimPresentation: transition.aimPresentation,
+        aimDatumNodeName: transition.adsDatumNode,
+        recoilRecoveryHalfLifeSeconds:
+          transition.recoilRecoveryHalfLifeSeconds,
+      });
+      expect(firstPerson.aimDatum?.name ?? null).toBe(
+        transition.adsDatumNode,
+      );
+
+      triggerKyxWeaponEquip(firstPerson);
+      expect(firstPerson.equipMix).toBe(1);
+      updateKyxWeaponPresentation(firstPerson, 16, 0.016);
+      expect(firstPerson.equipMix).toBeGreaterThan(0);
+      expect(firstPerson.equipMix).toBeLessThan(1);
+      setKyxWeaponPhase(firstPerson, 'sprinting', 20);
+      updateKyxWeaponPresentation(firstPerson, 120, 0.1);
+      expect(firstPerson.sprintMix).toBeGreaterThan(0.5);
+      expect(firstPerson.aimMix).toBe(0);
+
+      const world = createKyxWeaponPresentationModel(weaponId, 'world');
+      const visual = world.group.children[0];
+      expect(visual.scale.x).toBeCloseTo(
+        KYX_WORLD_WEAPON_MOUNT_PROFILE[weaponId].scale,
+        6,
+      );
+      expect(world.group.userData.worldMountProfile).toBe(weaponId);
+    }
   });
 
   it('keeps ADS presentation-only and disabled for world weapons and melee', () => {

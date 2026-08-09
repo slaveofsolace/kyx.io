@@ -4,24 +4,20 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import {
   installKyxLineRifleReviewShellFactory,
 } from '../weapons/KyxArmoryPresentation';
+import {
+  KYX_SELECTED_QUATERNIUS_GUN_ASSETS,
+} from '../weapons/KyxArmorySelectedAssets';
+
+const selectedVlr7 = KYX_SELECTED_QUATERNIUS_GUN_ASSETS.vertical_rifle_v1;
 
 export const KYX_VLR7_QUATERNIUS_REVIEW = Object.freeze({
-  candidateId: 'kyx-vlr7-quaternius-rev1',
-  bytes: 132_052,
-  sha256: '46de2380ac08810524d7bb4bb67d8621bb436a4f559b4d672d5c2026a075dd79',
+  ...selectedVlr7,
   meshObjectCount: 24,
-  runtimeMeshCount: 28,
-  triangleCount: 2_384,
-  rootNode: 'KYX_VLR7_QUATERNIUS_REV1',
-  magazineNode: 'KYX_VLR7_REVIEW_MAGAZINE',
-  license: 'CC0-1.0',
-  sourceCredit: 'Sci-Fi Gun Pack by Quaternius',
-  releaseEligible: false,
-  humanAccepted: false,
+  license: selectedVlr7.sourceLicense,
 } as const);
 
 const candidateUrl = new URL(
-  '../../assets/review/runtime-candidates/kyx-vlr7-quaternius-rev1/kyx-vlr7-quaternius-rev1.glb',
+  `../../${KYX_VLR7_QUATERNIUS_REVIEW.assetRelativePath}`,
   import.meta.url,
 ).href;
 
@@ -84,14 +80,13 @@ function countTriangles(root: THREE.Object3D): Readonly<{
   return Object.freeze({ meshCount, triangleCount });
 }
 
-const REVIEW_RETONE_VERSION = 'kyx_dark_alloy_retone_v1';
-
 // The raw donor palette exposes broad bright receiver planes and saturated
 // warning-red accents in first person; retoning keeps donor geometry and
 // provenance intact while joining the KYX dark-alloy/cyan service language.
 function retoneReviewMaterial(material: THREE.Material): THREE.Material {
   const clone = material.clone();
   if (!(clone instanceof THREE.MeshStandardMaterial)) return clone;
+  const treatment = KYX_VLR7_QUATERNIUS_REVIEW.materialTreatment;
   const hsl = { h: 0, s: 0, l: 0 };
   clone.color.getHSL(hsl);
   if (hsl.s > 0.45 && (hsl.h <= 0.09 || hsl.h >= 0.9)) {
@@ -112,11 +107,20 @@ function retoneReviewMaterial(material: THREE.Material): THREE.Material {
   // The adapted donor ships hot PBR values (metalness up to 0.92, roughness
   // 0.2, boosted emissive strength); under the close camera-space weapon key
   // those bloom into blank white planes, so clamp them into the suit range.
-  clone.metalness = Math.min(clone.metalness, 0.5);
-  clone.roughness = Math.max(clone.roughness, 0.48);
-  clone.emissiveIntensity = Math.min(clone.emissiveIntensity, 0.18);
+  clone.metalness = Math.min(
+    clone.metalness,
+    treatment.maximumMetalness,
+  );
+  clone.roughness = Math.max(
+    clone.roughness,
+    treatment.minimumRoughness,
+  );
+  clone.emissiveIntensity = Math.min(
+    clone.emissiveIntensity,
+    treatment.maximumEmissiveIntensity,
+  );
   clone.name =
-    `${material.name || 'KYX_VLR7_REVIEW_MATERIAL'}_${REVIEW_RETONE_VERSION}`;
+    `${material.name || 'KYX_VLR7_REVIEW_MATERIAL'}_${treatment.version}`;
   return clone;
 }
 
@@ -140,11 +144,26 @@ function cloneOwnedReviewShell(source: THREE.Object3D): THREE.Group {
   });
   clone.userData.reviewCandidateId =
     KYX_VLR7_QUATERNIUS_REVIEW.candidateId;
-  clone.userData.reviewMaterialRetone = REVIEW_RETONE_VERSION;
+  clone.userData.sourceAssetSha256 =
+    KYX_VLR7_QUATERNIUS_REVIEW.sha256;
+  clone.userData.sourceAssetBytes =
+    KYX_VLR7_QUATERNIUS_REVIEW.bytes;
+  clone.userData.weaponVisualSource =
+    `quaternius_cc0_armory_rev1:${KYX_VLR7_QUATERNIUS_REVIEW.candidateId}`;
+  clone.userData.reviewMaterialRetone =
+    KYX_VLR7_QUATERNIUS_REVIEW.materialTreatment.version;
   clone.userData.sourceCredit = KYX_VLR7_QUATERNIUS_REVIEW.sourceCredit;
   clone.userData.sourceLicense = KYX_VLR7_QUATERNIUS_REVIEW.license;
+  clone.userData.reviewOnly = true;
   clone.userData.releaseEligible = false;
   clone.userData.humanAccepted = false;
+  clone.userData.firstPersonScaleMultiplier =
+    KYX_VLR7_QUATERNIUS_REVIEW.firstPersonScaleMultiplier;
+  clone.userData.firstPersonScalePivot = [
+    ...KYX_VLR7_QUATERNIUS_REVIEW.firstPersonScalePivot,
+  ];
+  clone.userData.authorityMuzzleNode =
+    KYX_VLR7_QUATERNIUS_REVIEW.muzzleNode;
   return clone;
 }
 
@@ -184,6 +203,16 @@ async function loadReviewShell() {
     throw new Error(
       'KYX_VLR7_REVIEW_MAGAZINE_MISSING '
       + `node=${KYX_VLR7_QUATERNIUS_REVIEW.magazineNode}`,
+    );
+  }
+  if (
+    candidateRoot.getObjectByName(
+      KYX_VLR7_QUATERNIUS_REVIEW.muzzleNode,
+    ) === undefined
+  ) {
+    throw new Error(
+      'KYX_VLR7_REVIEW_MUZZLE_MISSING '
+      + `node=${KYX_VLR7_QUATERNIUS_REVIEW.muzzleNode}`,
     );
   }
   const structure = countTriangles(candidateRoot);

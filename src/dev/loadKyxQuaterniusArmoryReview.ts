@@ -3,83 +3,30 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import {
   installKyxWeaponReviewShellFactory,
-  type KyxAuthorityWeaponId,
 } from '../weapons/KyxArmoryPresentation';
+import {
+  KYX_SELECTED_QUATERNIUS_GUN_ASSETS,
+  type KyxSelectedGunAssetProfile,
+} from '../weapons/KyxArmorySelectedAssets';
 
-interface ArmoryCandidate {
-  readonly candidateId: string;
-  readonly authorityWeaponId: KyxAuthorityWeaponId;
+interface ArmoryCandidate extends KyxSelectedGunAssetProfile {
   readonly url: string;
-  readonly bytes: number;
-  readonly sha256: string;
-  readonly runtimeMeshCount: number;
-  readonly triangleCount: number;
-  readonly rootNode: string;
-  readonly firstPersonScaleMultiplier: number;
-  readonly firstPersonScalePivot: readonly [number, number, number];
+}
+
+function withRuntimeUrl(
+  profile: KyxSelectedGunAssetProfile,
+): Readonly<ArmoryCandidate> {
+  return Object.freeze({
+    ...profile,
+    url: new URL(`../../${profile.assetRelativePath}`, import.meta.url).href,
+  });
 }
 
 export const KYX_QUATERNIUS_ARMORY_REVIEW = Object.freeze([
-  Object.freeze({
-    candidateId: 'kyx-k9-quaternius-rev1',
-    authorityWeaponId: 'kyx_sidearm_v1',
-    url: new URL(
-      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-k9-quaternius-rev1.glb',
-      import.meta.url,
-    ).href,
-    bytes: 233_708,
-    sha256: '4b72710b6071bd120195ddd80673ec47cc5a3f394430bb6d614df04dcf42b339',
-    runtimeMeshCount: 5,
-    triangleCount: 7_048,
-    rootNode: 'KYX_K9_QUATERNIUS_REV1',
-    firstPersonScaleMultiplier: 0.56,
-    firstPersonScalePivot: Object.freeze([0, 0.12, -0.385] as const),
-  }),
-  Object.freeze({
-    candidateId: 'kyx-sg4-quaternius-rev1',
-    authorityWeaponId: 'kyx_scattergun_v1',
-    url: new URL(
-      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-sg4-quaternius-rev1.glb',
-      import.meta.url,
-    ).href,
-    bytes: 510_624,
-    sha256: 'd04629199f582dfcb2dce89bf534f295ee8689fa6cead04854c8a2e2a0bafd4b',
-    runtimeMeshCount: 4,
-    triangleCount: 10_006,
-    rootNode: 'KYX_SG4_QUATERNIUS_REV1',
-    firstPersonScaleMultiplier: 0.58,
-    firstPersonScalePivot: Object.freeze([0, 0.095, -0.74] as const),
-  }),
-  Object.freeze({
-    candidateId: 'kyx-longbow12-quaternius-rev1',
-    authorityWeaponId: 'kyx_longshot_v1',
-    url: new URL(
-      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-longbow12-quaternius-rev1.glb',
-      import.meta.url,
-    ).href,
-    bytes: 285_500,
-    sha256: 'af4a907b60c1b482cf9e7d7339c884905dd5ae4d792a1ecc94bbd1a2da227b55',
-    runtimeMeshCount: 4,
-    triangleCount: 7_440,
-    rootNode: 'KYX_LONGBOW12_QUATERNIUS_REV1',
-    firstPersonScaleMultiplier: 0.5,
-    firstPersonScalePivot: Object.freeze([0, 0.11, -1.205] as const),
-  }),
-  Object.freeze({
-    candidateId: 'kyx-br6-quaternius-rev1',
-    authorityWeaponId: 'kyx_breach_rocket_v1',
-    url: new URL(
-      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-br6-quaternius-rev1.glb',
-      import.meta.url,
-    ).href,
-    bytes: 482_632,
-    sha256: '6eb88285056f83b064cbbf82c7b123a8453d1deec61c4a4c2e47b081409b735b',
-    runtimeMeshCount: 4,
-    triangleCount: 12_135,
-    rootNode: 'KYX_BR6_QUATERNIUS_REV1',
-    firstPersonScaleMultiplier: 0.46,
-    firstPersonScalePivot: Object.freeze([0, 0.11, -0.76] as const),
-  }),
+  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_sidearm_v1),
+  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_scattergun_v1),
+  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_longshot_v1),
+  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_breach_rocket_v1),
 ] as const satisfies readonly ArmoryCandidate[]);
 
 let loadPromise: Promise<Readonly<{
@@ -139,6 +86,41 @@ function countStructure(root: THREE.Object3D): Readonly<{
   return Object.freeze({ meshCount, triangleCount });
 }
 
+function retoneReviewMaterial(
+  material: THREE.Material,
+  candidate: ArmoryCandidate,
+): THREE.Material {
+  const clone = material.clone();
+  if (!(clone instanceof THREE.MeshStandardMaterial)) return clone;
+  const treatment = candidate.materialTreatment;
+  const hsl = { h: 0, s: 0, l: 0 };
+  clone.color.getHSL(hsl);
+  if (hsl.s > 0.42) {
+    clone.color.setHex(treatment.accent).multiplyScalar(0.34);
+    clone.emissive.setHex(treatment.accent).multiplyScalar(0.05);
+  } else if (hsl.l > 0.56) {
+    clone.color.setHex(treatment.armor);
+  } else if (hsl.l > 0.28) {
+    clone.color.setHex(0x29343b);
+  } else {
+    clone.color.setHex(0x121a20);
+  }
+  clone.metalness = Math.min(
+    clone.metalness,
+    treatment.maximumMetalness,
+  );
+  clone.roughness = Math.max(
+    clone.roughness,
+    treatment.minimumRoughness,
+  );
+  clone.emissiveIntensity = Math.min(
+    clone.emissiveIntensity,
+    treatment.maximumEmissiveIntensity,
+  );
+  clone.name = `${material.name || candidate.rootNode}_${treatment.version}`;
+  return clone;
+}
+
 function cloneOwnedShell(
   candidate: ArmoryCandidate,
   source: THREE.Object3D,
@@ -154,8 +136,10 @@ function cloneOwnedShell(
     const mesh = object as THREE.Mesh;
     mesh.geometry = mesh.geometry.clone();
     mesh.material = Array.isArray(mesh.material)
-      ? mesh.material.map((material) => material.clone())
-      : mesh.material.clone();
+      ? mesh.material.map((material) => (
+          retoneReviewMaterial(material, candidate)
+        ))
+      : retoneReviewMaterial(mesh.material, candidate);
     mesh.castShadow = false;
     mesh.receiveShadow = true;
     mesh.frustumCulled = false;
@@ -163,10 +147,16 @@ function cloneOwnedShell(
   clone.userData.weaponVisualSource =
     `quaternius_cc0_armory_rev1:${candidate.candidateId}`;
   clone.userData.reviewCandidateId = candidate.candidateId;
+  clone.userData.sourceAssetSha256 = candidate.sha256;
+  clone.userData.sourceAssetBytes = candidate.bytes;
   clone.userData.sourceCredit = 'Sci-Fi Gun Pack by Quaternius';
   clone.userData.sourceLicense = 'CC0-1.0';
+  clone.userData.reviewOnly = true;
   clone.userData.releaseEligible = false;
   clone.userData.humanAccepted = false;
+  clone.userData.reviewMaterialRetone =
+    candidate.materialTreatment.version;
+  clone.userData.authorityMuzzleNode = candidate.muzzleNode;
   clone.userData.firstPersonScaleMultiplier =
     candidate.firstPersonScaleMultiplier;
   clone.userData.firstPersonScalePivot = [
@@ -202,6 +192,11 @@ async function loadCandidate(candidate: ArmoryCandidate): Promise<Readonly<{
   if (root === undefined) {
     throw new Error(
       `KYX_ARMORY_REVIEW_ROOT_MISSING candidate=${candidate.candidateId} node=${candidate.rootNode}`,
+    );
+  }
+  if (root.getObjectByName(candidate.muzzleNode) === undefined) {
+    throw new Error(
+      `KYX_ARMORY_REVIEW_MUZZLE_MISSING candidate=${candidate.candidateId} node=${candidate.muzzleNode}`,
     );
   }
   const structure = countStructure(root);
