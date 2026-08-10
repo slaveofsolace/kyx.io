@@ -56,12 +56,10 @@ const inkfallRev3ReviewRoute = import.meta.env.DEV
   && inkfallRev3ReviewRequest.kind !== 'none';
 const onlineAuthorityRoute = window.location.pathname === ONLINE_AUTHORITY_PATH;
 const localInkfallPracticeRoute = window.location.pathname === '/practice';
-const authorityOriginCandidate = import.meta.env.VITE_KYX_AUTHORITY_ORIGIN
-  || (
-    import.meta.env.PROD || import.meta.env.MODE === 'staging-review'
-      ? window.location.origin
-      : undefined
-  );
+const authorityOriginCandidate = import.meta.env.MODE === 'staging-review'
+  ? window.location.origin
+  : import.meta.env.VITE_KYX_AUTHORITY_ORIGIN
+    || (import.meta.env.PROD ? window.location.origin : undefined);
 const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
   authorityOriginCandidate,
   { isDevelopment: import.meta.env.DEV },
@@ -91,8 +89,20 @@ async function importDevelopmentModule(specifier) {
 }
 
 async function installCharacterReviewBeforeRuntimeImports() {
-  const reviewModulePath = './dev/installKyxAssaultRev39ArmoredReview.ts';
+  const requestedRevision = new URLSearchParams(window.location.search)
+    .get('g6Candidate');
+  const requestsRev40Review = requestedRevision === 'g6-assault-rev40-cc0'
+    || requestedRevision === 'g6-assault-rev40-cc0-weapon-ready-v4';
   if (import.meta.env.MODE === 'staging-review') {
+    if (requestsRev40Review) {
+      const { installKyxAssaultRev40Cc0Review } = await import(
+        './dev/installKyxAssaultRev40Cc0Review'
+      );
+      return installKyxAssaultRev40Cc0Review(
+        window.location.search,
+        import.meta.env.MODE,
+      );
+    }
     const { installKyxAssaultRev39ArmoredReview } = await import(
       './dev/installKyxAssaultRev39ArmoredReview'
     );
@@ -102,16 +112,25 @@ async function installCharacterReviewBeforeRuntimeImports() {
     );
   }
   if (!import.meta.env.DEV) return null;
-  const requestedRevision = new URLSearchParams(window.location.search)
-    .get('g6Candidate');
-  if (requestedRevision !== 'rev39-armored-restore-v1') return null;
-  const { installKyxAssaultRev39ArmoredReview } = await import(
-    /* @vite-ignore */ reviewModulePath
-  );
-  return installKyxAssaultRev39ArmoredReview(
-    window.location.search,
-    import.meta.env.MODE,
-  );
+  if (requestsRev40Review) {
+    const { installKyxAssaultRev40Cc0Review } = await import(
+      /* @vite-ignore */ './dev/installKyxAssaultRev40Cc0Review.ts'
+    );
+    return installKyxAssaultRev40Cc0Review(
+      window.location.search,
+      import.meta.env.MODE,
+    );
+  }
+  if (requestedRevision === 'rev39-armored-restore-v1') {
+    const { installKyxAssaultRev39ArmoredReview } = await import(
+      /* @vite-ignore */ './dev/installKyxAssaultRev39ArmoredReview.ts'
+    );
+    return installKyxAssaultRev39ArmoredReview(
+      window.location.search,
+      import.meta.env.MODE,
+    );
+  }
+  return null;
 }
 
 // This must complete before Game or an authority route imports HumanSoldier;

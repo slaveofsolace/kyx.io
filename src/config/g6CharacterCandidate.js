@@ -1,6 +1,10 @@
 const QUERY_KEY = 'g6Candidate';
 const POPULATION_QUERY_KEY = 'g6Population';
 const REVIEW_POPULATIONS = new Set([2, 4, 8]);
+const SUPPORT_HAND_IK_POLICIES = new Set([
+  'runtime-ccd',
+  'authored-contact-monitor-only',
+]);
 const DISABLED_ASSETS = Object.freeze({
   lod0: null,
   lod1: null,
@@ -40,6 +44,8 @@ export function resolveG6CharacterCandidate(search = defaultSearch()) {
     provenanceSafeDefaultAsset: null,
     thirdPersonAssetPolicy: 'project-authored-procedural-fallback',
     firstPersonRevision: null,
+    supportHandIkPolicy: 'runtime-ccd',
+    thirdPersonContactProfiles: null,
     assets: DISABLED_ASSETS,
     reviewWorkspace: 'assets/review/runtime-candidates',
     releasePackagePolicy: 'accepted-ledgered-assets-only',
@@ -55,12 +61,57 @@ function requireReviewAssetUrl(value, label) {
   return value;
 }
 
+function finitePoint(value, label, nullable = false) {
+  if (nullable && value === null) return null;
+  if (
+    !Array.isArray(value)
+    || value.length !== 3
+    || value.some((component) => !Number.isFinite(component))
+  ) {
+    throw new Error(`G6_REVIEW_CONTACT_PROFILE_INVALID field=${label}`);
+  }
+  return Object.freeze(value.map(Number));
+}
+
+function normalizeThirdPersonContactProfiles(profiles) {
+  if (profiles == null) return null;
+  if (typeof profiles !== 'object' || Array.isArray(profiles)) {
+    throw new Error('G6_REVIEW_CONTACT_PROFILE_INVALID field=profiles');
+  }
+  const normalized = Object.create(null);
+  for (const [weaponId, profile] of Object.entries(profiles)) {
+    if (
+      weaponId.length === 0
+      || profile == null
+      || typeof profile !== 'object'
+      || Array.isArray(profile)
+      || !Number.isFinite(profile.uniformScale)
+      || profile.uniformScale <= 0
+    ) {
+      throw new Error(
+        `G6_REVIEW_CONTACT_PROFILE_INVALID field=${weaponId}`,
+      );
+    }
+    normalized[weaponId] = Object.freeze({
+      uniformScale: Number(profile.uniformScale),
+      gripPoint: finitePoint(profile.gripPoint, `${weaponId}.gripPoint`),
+      supportPoint: finitePoint(
+        profile.supportPoint,
+        `${weaponId}.supportPoint`,
+        true,
+      ),
+    });
+  }
+  return Object.freeze(normalized);
+}
+
 /**
  * Install an isolated visual-review candidate before Game/HumanSoldier modules
  * are imported. Normal production never calls this seam, so unaccepted GLBs
  * remain outside both the default runtime and the release asset ledger.
  */
 export function installG6CharacterReviewCandidate(candidate) {
+  const supportHandIkPolicy = candidate?.supportHandIkPolicy ?? 'runtime-ccd';
   if (
     !candidate
     || candidate.enabled !== true
@@ -70,13 +121,31 @@ export function installG6CharacterReviewCandidate(candidate) {
     || candidate.runtimeScope !== 'development-or-staging-review'
     || typeof candidate.revision !== 'string'
     || candidate.revision.length === 0
+    || !SUPPORT_HAND_IK_POLICIES.has(supportHandIkPolicy)
   ) {
     throw new Error('G6_REVIEW_CANDIDATE_POLICY_MISMATCH');
+  }
+
+  const thirdPersonContactProfiles = normalizeThirdPersonContactProfiles(
+    candidate.thirdPersonContactProfiles,
+  );
+  if (
+    supportHandIkPolicy === 'authored-contact-monitor-only'
+    && (
+      thirdPersonContactProfiles === null
+      || Object.keys(thirdPersonContactProfiles).length === 0
+    )
+  ) {
+    throw new Error(
+      'G6_REVIEW_CONTACT_PROFILE_INVALID field=authored-contact-monitor-only',
+    );
   }
 
   const previous = G6_CHARACTER_CANDIDATE;
   const installed = Object.freeze({
     ...candidate,
+    supportHandIkPolicy,
+    thirdPersonContactProfiles,
     assets: Object.freeze({
       lod0: requireReviewAssetUrl(candidate.assets?.lod0, 'lod0'),
       lod1: requireReviewAssetUrl(candidate.assets?.lod1, 'lod1'),

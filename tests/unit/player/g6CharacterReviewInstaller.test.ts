@@ -51,6 +51,83 @@ describe('G6 Assault Rev38 staging review boundary', () => {
     })).toThrow('G6_REVIEW_CANDIDATE_POLICY_MISMATCH');
   });
 
+  it('installs exact third-person contact geometry without enabling runtime IK', () => {
+    const restore = installG6CharacterReviewCandidate({
+      enabled: true,
+      default: false,
+      revision: 'g6-contact-review',
+      runtimeScope: 'development-or-staging-review',
+      releaseEligible: false,
+      humanAccepted: false,
+      supportHandIkPolicy: 'authored-contact-monitor-only',
+      thirdPersonContactProfiles: {
+        vertical_rifle_v1: {
+          uniformScale: 0.86,
+          gripPoint: [0, -0.115, 0.19],
+          supportPoint: [-0.019679019928, -0.062568904877, -0.1881275177],
+        },
+      },
+      assets: { lod0: 'a', lod1: 'b', lod2: 'c', firstPerson: null },
+    });
+    try {
+      expect(G6_CHARACTER_CANDIDATE).toMatchObject({
+        revision: 'g6-contact-review',
+        supportHandIkPolicy: 'authored-contact-monitor-only',
+        thirdPersonContactProfiles: {
+          vertical_rifle_v1: {
+            uniformScale: 0.86,
+            gripPoint: [0, -0.115, 0.19],
+            supportPoint: [-0.019679019928, -0.062568904877, -0.1881275177],
+          },
+        },
+      });
+      const installedProfiles = (
+        G6_CHARACTER_CANDIDATE.thirdPersonContactProfiles
+      ) as unknown as Record<string, unknown>;
+      expect(Object.isFrozen(
+        installedProfiles.vertical_rifle_v1,
+      )).toBe(true);
+    } finally {
+      restore();
+    }
+  });
+
+  it('rejects malformed candidate contact geometry', () => {
+    expect(() => installG6CharacterReviewCandidate({
+      enabled: true,
+      default: false,
+      revision: 'g6-contact-review-invalid',
+      runtimeScope: 'development-or-staging-review',
+      releaseEligible: false,
+      humanAccepted: false,
+      supportHandIkPolicy: 'authored-contact-monitor-only',
+      thirdPersonContactProfiles: {
+        vertical_rifle_v1: {
+          uniformScale: 0.86,
+          gripPoint: [0, Number.NaN, 0.19],
+          supportPoint: null,
+        },
+      },
+      assets: { lod0: 'a', lod1: 'b', lod2: 'c', firstPerson: null },
+    })).toThrow('G6_REVIEW_CONTACT_PROFILE_INVALID');
+  });
+
+  it('does not disable runtime contact correction without an exact profile', () => {
+    expect(() => installG6CharacterReviewCandidate({
+      enabled: true,
+      default: false,
+      revision: 'g6-contact-review-missing-profile',
+      runtimeScope: 'development-or-staging-review',
+      releaseEligible: false,
+      humanAccepted: false,
+      supportHandIkPolicy: 'authored-contact-monitor-only',
+      thirdPersonContactProfiles: null,
+      assets: { lod0: 'a', lod1: 'b', lod2: 'c', firstPerson: null },
+    })).toThrow(
+      'G6_REVIEW_CONTACT_PROFILE_INVALID field=authored-contact-monitor-only',
+    );
+  });
+
   it('installs exact Rev38 URLs without enabling a nonexistent first-person GLB', () => {
     const result = installKyxAssaultRev38Review(
       '?g6Candidate=rev38-fitted-v1&g6Population=4',

@@ -209,8 +209,16 @@ export function fitRev17WeaponContact(
   socket,
   authoredMuzzle,
   isMelee = false,
+  overrides = /** @type {{
+    uniformScale: number,
+    gripPoint: readonly number[],
+    supportPoint: readonly number[] | null,
+  } | null} */ (null),
 ) {
-  const profile = getRev17WeaponContactProfile(weapon, isMelee);
+  const baseProfile = getRev17WeaponContactProfile(weapon, isMelee);
+  const profile = overrides
+    ? { ...baseProfile, ...overrides }
+    : baseProfile;
   const muzzleName = weapon?.userData?.muzzleNodeName;
   const muzzle = typeof muzzleName === 'string'
     ? weapon.getObjectByName(muzzleName)
@@ -219,6 +227,7 @@ export function fitRev17WeaponContact(
   const supportTarget = profile.supportPoint === null
     ? null
     : new THREE.Object3D();
+  const gripTarget = new THREE.Object3D();
 
   weapon.position.set(0, 0, 0);
   weapon.rotation.set(0, 0, 0);
@@ -246,6 +255,10 @@ export function fitRev17WeaponContact(
   weapon.scale.setScalar(profile.uniformScale);
   weapon.position.copy(scaledGrip).multiplyScalar(-1);
 
+  gripTarget.name = 'KYX_REV17_PRIMARY_HAND_CONTACT';
+  gripTarget.position.set(...profile.gripPoint);
+  weapon.add(gripTarget);
+
   if (supportTarget !== null) {
     supportTarget.name = 'KYX_REV17_SUPPORT_HAND_CONTACT';
     supportTarget.position.set(...profile.supportPoint);
@@ -254,7 +267,13 @@ export function fitRev17WeaponContact(
 
   return Object.freeze({
     family: profile.family,
+    profileSource: overrides ? 'candidate-exact' : 'family-default',
+    gripPoint: Object.freeze([...profile.gripPoint]),
+    supportPoint: profile.supportPoint === null
+      ? null
+      : Object.freeze([...profile.supportPoint]),
     muzzle,
+    gripTarget,
     supportTarget,
     socketName: socket.name,
     muzzleNodeName: muzzle?.name ?? null,

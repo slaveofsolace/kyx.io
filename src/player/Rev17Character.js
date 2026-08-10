@@ -78,6 +78,15 @@ const CHARACTER_REVISION = G6_CHARACTER_CANDIDATE.revision ?? 'rev17';
 const CHARACTER_REVISION_TOKEN = String(CHARACTER_REVISION)
   .replace(/[^a-z0-9]+/gi, '_')
   .toUpperCase();
+const CHARACTER_USES_AUTHORED_WEAPON_MOTION = (
+  G6_CHARACTER_CANDIDATE.sourceCandidate?.authoredWeaponReadyUpperBody === true
+  || CHARACTER_REVISION === 'g6-assault-rev40-cc0'
+  || CHARACTER_REVISION === 'g6-assault-rev40-cc0-weapon-ready-v4'
+);
+const CHARACTER_SUPPORT_HAND_IK_POLICY =
+  G6_CHARACTER_CANDIDATE.supportHandIkPolicy ?? 'runtime-ccd';
+const CHARACTER_CONTACT_PROFILES =
+  G6_CHARACTER_CANDIDATE.thirdPersonContactProfiles ?? null;
 const CHARACTER_IS_DEFAULT = G6_CHARACTER_CANDIDATE.default ?? false;
 const CHARACTER_RUNTIME_ACTIVE = (
   G6_CHARACTER_CANDIDATE.enabled || CHARACTER_IS_DEFAULT
@@ -85,6 +94,13 @@ const CHARACTER_RUNTIME_ACTIVE = (
 const CHARACTER_EVIDENCE_HOOK = (
   `__KYX_G6_${CHARACTER_REVISION_TOKEN}_EVIDENCE__`
 );
+
+function contactProfileForWeapon(weapon, isMelee) {
+  if (isMelee || CHARACTER_CONTACT_PROFILES === null) return null;
+  const weaponId = weapon?.userData?.authorityWeaponId;
+  if (typeof weaponId !== 'string') return null;
+  return CHARACTER_CONTACT_PROFILES[weaponId] ?? null;
+}
 
 function registerRuntimeInstance(group, record) {
   if (!CHARACTER_RUNTIME_ACTIVE) return;
@@ -163,6 +179,8 @@ const THIRD_PERSON_CLIPS = Object.freeze({
   reload: 'KYX_REV17_TP_RELOAD',
   hit: 'KYX_REV17_TP_HIT_REACTION_FRONT',
   death: 'KYX_REV17_TP_DEATH_FRONT',
+  ability: 'KYX_REV40_TP_ABILITY_THROW',
+  melee: 'KYX_REV40_TP_MELEE',
 });
 
 const FIRST_PERSON_CLIPS = Object.freeze({
@@ -330,24 +348,24 @@ function tintMaterials(materials, skin, armorTypeId = 'assault', armorSkin = nul
     ...materials.visor,
   ];
   const preservesAuthoredDarkBase = allCharacterMaterials.some(
-    (material) => /^KYX_REV(?:30|38)_/i.test(material.name ?? ''),
+    (material) => /^KYX_REV(?:30|38|40)_/i.test(material.name ?? ''),
   );
 
   if (preservesAuthoredDarkBase) {
     const teamPrimary = new THREE.Color(primary);
     const teamSecondary = new THREE.Color(secondary);
-    const readableArmor = teamPrimary.clone().lerp(new THREE.Color(0xffffff), 0.16);
-    const readableSuit = teamSecondary.clone().lerp(new THREE.Color(0xffffff), 0.22);
+    const readableArmor = teamPrimary.clone().lerp(new THREE.Color(0xffffff), 0.08);
+    const readableSuit = teamSecondary.clone().lerp(new THREE.Color(0xffffff), 0.1);
     const visorAccent = new THREE.Color(
       armorSkin?.accent ?? skin?.accent ?? 0x2dcbff,
     );
     for (const material of materials.armor) {
-      material.color?.lerp(readableArmor, 0.38);
+      material.color?.lerp(readableArmor, 0.22);
       material.roughness = Math.max(material.roughness ?? 0.36, 0.36);
       material.metalness = Math.min(material.metalness ?? 0.42, 0.46);
     }
     for (const material of materials.body) {
-      material.color?.lerp(readableSuit, 0.26);
+      material.color?.lerp(readableSuit, 0.14);
       material.roughness = Math.max(material.roughness ?? 0.42, 0.42);
     }
     for (const material of materials.visor) {
@@ -506,13 +524,16 @@ function createSemanticActionDriver(
   let actionSequence = 0;
   let lastStarted = null;
   let lastMarkers = Object.freeze([]);
+  const findBone = (...names) => names
+    .map((name) => root.getObjectByName(name))
+    .find(Boolean) ?? null;
   const bones = {
-    chest: root.getObjectByName('chest'),
-    spine: root.getObjectByName('spine_02'),
-    upperArmLeft: root.getObjectByName('upper_arm.L'),
-    upperArmRight: root.getObjectByName('upper_arm.R'),
-    forearmLeft: root.getObjectByName('forearm.L'),
-    forearmRight: root.getObjectByName('forearm.R'),
+    chest: findBone('chest', 'spine_03'),
+    spine: findBone('spine_02'),
+    upperArmLeft: findBone('upper_arm.L', 'upperarm_l'),
+    upperArmRight: findBone('upper_arm.R', 'upperarm_r'),
+    forearmLeft: findBone('forearm.L', 'lowerarm_l'),
+    forearmRight: findBone('forearm.R', 'lowerarm_r'),
   };
   const offset = new THREE.Quaternion();
   const euler = new THREE.Euler();
@@ -573,17 +594,19 @@ function createSemanticActionDriver(
     const pulse = Math.sin(progress * Math.PI);
     const smooth = (value) => value * value * (3 - 2 * value);
 
-    // These bounded post-mixer accents make currently unsupported semantic
-    // actions visible without pretending they are authored clips. Socketed
-    // weapons remain children of the hand bones and retain their contact.
-    if (action.kind === 'equip') {
+    // Apply procedural bone accents only when the selected candidate has no
+    // authored clip for the semantic action. Rev40 supplies real throw/melee
+    // motion; layering these offsets over it would double-transform the arms
+    // and break weapon/ability contact.
+    const usesProceduralFallback = !activeAuthoredClipKey && !!activeFallback;
+    if (usesProceduralFallback && action.kind === 'equip') {
       const settle = smooth(Math.min(1, progress / 0.72))
         * (1 - smooth(Math.max(0, (progress - 0.72) / 0.28)));
       applyOffset(bones.chest, 0.035 * settle, 0, 0);
       applyOffset(bones.upperArmLeft, -0.16 * settle, 0, -0.1 * settle);
       applyOffset(bones.forearmLeft, -0.08 * settle, 0, -0.05 * settle);
       applyOffset(bones.upperArmRight, -0.2 * settle, 0, 0.14 * settle);
-    } else if (action.kind === 'melee') {
+    } else if (usesProceduralFallback && action.kind === 'melee') {
       const windup = smooth(Math.min(1, progress / 0.22));
       const strike = smooth(Math.min(1, Math.max(0, (progress - 0.22) / 0.28)));
       const recover = smooth(Math.min(1, Math.max(0, (progress - 0.5) / 0.5)));
@@ -603,7 +626,7 @@ function createSemanticActionDriver(
         0,
         0.14 * guard + 0.3 * sweep,
       );
-    } else if (action.kind === 'ability') {
+    } else if (usesProceduralFallback && action.kind === 'ability') {
       const commit = smooth(Math.min(1, progress / 0.44));
       const recover = smooth(Math.min(1, Math.max(0, (progress - 0.44) / 0.56)));
       const throwWeight = commit * (1 - recover);
@@ -677,6 +700,14 @@ export function buildRev17Character(
     controller,
     root,
     runtimeRole,
+    CHARACTER_USES_AUTHORED_WEAPON_MOTION
+      ? {
+          authoredClipOverrides: {
+            ability: 'ability',
+            melee: 'melee',
+          },
+        }
+      : undefined,
   );
   let grounded = true;
   let targetCrouchMix = 0;
@@ -693,6 +724,12 @@ export function buildRev17Character(
   let locomotionClock = 0;
   let attachedWeapon = null;
   let weaponContact = null;
+  let supportHandErrorMeters = null;
+  let authoredSupportHandWeaponLocal = null;
+  let solvedSupportHandWeaponLocal = null;
+  let supportTargetDistanceFromShoulderMeters = null;
+  let supportArmReachMeters = null;
+  let primaryGripDistanceFromSupportShoulderMeters = null;
   const embeddedRifle = [];
   root.traverse((object) => {
     if (object.isMesh && /RIFLE/i.test(object.name)) {
@@ -707,16 +744,17 @@ export function buildRev17Character(
     root: root.getObjectByName('root'),
     spine1: root.getObjectByName('spine_01'),
     spine2: root.getObjectByName('spine_02'),
-    chest: root.getObjectByName('chest'),
-    neck: root.getObjectByName('neck'),
-    head: root.getObjectByName('head'),
-    thighLeft: findPoseBone('thigh_anchor.L', 'thigh_anchorL'),
-    thighRight: findPoseBone('thigh_anchor.R', 'thigh_anchorR'),
-    shinLeft: findPoseBone('shin_anchor.L', 'shin_anchorL'),
-    shinRight: findPoseBone('shin_anchor.R', 'shin_anchorR'),
-    upperArmLeft: findPoseBone('upper_arm.L', 'upper_armL'),
-    forearmLeft: findPoseBone('forearm.L', 'forearmL'),
-    palmLeft: findPoseBone('palm.L', 'palmL'),
+    chest: findPoseBone('chest', 'spine_03'),
+    neck: findPoseBone('neck', 'neck_01'),
+    head: findPoseBone('head', 'Head'),
+    thighLeft: findPoseBone('thigh_anchor.L', 'thigh_anchorL', 'thigh_l'),
+    thighRight: findPoseBone('thigh_anchor.R', 'thigh_anchorR', 'thigh_r'),
+    shinLeft: findPoseBone('shin_anchor.L', 'shin_anchorL', 'calf_l'),
+    shinRight: findPoseBone('shin_anchor.R', 'shin_anchorR', 'calf_r'),
+    upperArmLeft: findPoseBone('upper_arm.L', 'upper_armL', 'upperarm_l'),
+    forearmLeft: findPoseBone('forearm.L', 'forearmL', 'lowerarm_l'),
+    palmLeft: findPoseBone('palm.L', 'palmL', 'hand_l'),
+    clavicleLeft: findPoseBone('clavicle.L', 'clavicleL', 'clavicle_l'),
   };
   const poseEuler = new THREE.Euler();
   const poseQuaternion = new THREE.Quaternion();
@@ -725,7 +763,10 @@ export function buildRev17Character(
   const currentPoseOffsets = new Map();
   let presentationFramePrepared = false;
   const ikBonePosition = new THREE.Vector3();
+  const ikShoulderPosition = new THREE.Vector3();
+  const ikElbowPosition = new THREE.Vector3();
   const ikEndPosition = new THREE.Vector3();
+  const ikWeaponLocalPosition = new THREE.Vector3();
   const ikTargetPosition = new THREE.Vector3();
   const ikCurrentDirection = new THREE.Vector3();
   const ikTargetDirection = new THREE.Vector3();
@@ -955,30 +996,107 @@ export function buildRev17Character(
     // Conservative two-bone support-hand contact. Reload/equip intentionally
     // release most of the IK weight so authored hand separation is preserved.
     const actionKind = semanticActions.snapshot().kind;
+    if (attachedWeapon && poseBones.palmLeft) {
+      root.updateMatrixWorld(true);
+      poseBones.palmLeft.getWorldPosition(ikEndPosition);
+      attachedWeapon.worldToLocal(ikWeaponLocalPosition.copy(ikEndPosition));
+      authoredSupportHandWeaponLocal = Object.freeze([
+        ikWeaponLocalPosition.x,
+        ikWeaponLocalPosition.y,
+        ikWeaponLocalPosition.z,
+      ]);
+    } else {
+      authoredSupportHandWeaponLocal = null;
+    }
+    const usesRev40ContactSolver = (
+      CHARACTER_SUPPORT_HAND_IK_POLICY === 'runtime-ccd'
+      && (
+        CHARACTER_REVISION === 'g6-assault-rev40-cc0'
+        || CHARACTER_REVISION === 'g6-assault-rev40-cc0-weapon-ready-v4'
+      )
+    );
     const supportWeight = actionKind === 'reload' || actionKind === 'equip'
-      ? 0.08
+      ? usesRev40ContactSolver ? 0.12 : 0.08
       : actionKind === 'ability' || actionKind === 'melee'
         ? 0
         : grounded
-          ? 0.62
-          : 0.42;
-    if (weaponContact?.supportTarget && supportWeight > 0) {
-      for (let iteration = 0; iteration < 2; iteration += 1) {
-        rotateBoneToward(
-          poseBones.upperArmLeft,
-          poseBones.palmLeft,
-          weaponContact.supportTarget,
-          supportWeight * 0.55,
-          0.34,
-        );
+          ? usesRev40ContactSolver ? 1 : 0.62
+          : usesRev40ContactSolver ? 0.72 : 0.42;
+    if (
+      CHARACTER_SUPPORT_HAND_IK_POLICY === 'runtime-ccd'
+      && weaponContact?.supportTarget
+      && supportWeight > 0
+    ) {
+      const iterations = usesRev40ContactSolver ? 4 : 2;
+      for (let iteration = 0; iteration < iterations; iteration += 1) {
+        // CCD works from the end effector back toward the shoulder. Rev40's
+        // source idle has relaxed arms, so its review-only solver needs enough
+        // angular authority to lift the support arm onto a rifle fore-end.
         rotateBoneToward(
           poseBones.forearmLeft,
           poseBones.palmLeft,
           weaponContact.supportTarget,
-          supportWeight * 0.72,
-          0.42,
+          supportWeight * (usesRev40ContactSolver ? 0.96 : 0.72),
+          usesRev40ContactSolver ? 0.58 : 0.42,
         );
+        rotateBoneToward(
+          poseBones.upperArmLeft,
+          poseBones.palmLeft,
+          weaponContact.supportTarget,
+          supportWeight * (usesRev40ContactSolver ? 0.9 : 0.55),
+          usesRev40ContactSolver ? 0.52 : 0.34,
+        );
+        if (usesRev40ContactSolver) {
+          rotateBoneToward(
+            poseBones.clavicleLeft,
+            poseBones.palmLeft,
+            weaponContact.supportTarget,
+            supportWeight * 0.22,
+            0.16,
+          );
+        }
       }
+    }
+    if (weaponContact?.supportTarget && poseBones.palmLeft) {
+      root.updateMatrixWorld(true);
+      poseBones.palmLeft.getWorldPosition(ikEndPosition);
+      if (attachedWeapon) {
+        attachedWeapon.worldToLocal(ikWeaponLocalPosition.copy(ikEndPosition));
+        solvedSupportHandWeaponLocal = Object.freeze([
+          ikWeaponLocalPosition.x,
+          ikWeaponLocalPosition.y,
+          ikWeaponLocalPosition.z,
+        ]);
+      } else {
+        solvedSupportHandWeaponLocal = null;
+      }
+      weaponContact.supportTarget.getWorldPosition(ikTargetPosition);
+      supportHandErrorMeters = ikEndPosition.distanceTo(ikTargetPosition);
+      if (poseBones.upperArmLeft && poseBones.forearmLeft) {
+        poseBones.upperArmLeft.getWorldPosition(ikShoulderPosition);
+        poseBones.forearmLeft.getWorldPosition(ikElbowPosition);
+        supportArmReachMeters = ikShoulderPosition.distanceTo(ikElbowPosition)
+          + ikElbowPosition.distanceTo(ikEndPosition);
+        supportTargetDistanceFromShoulderMeters =
+          ikShoulderPosition.distanceTo(ikTargetPosition);
+        if (weaponContact.gripTarget) {
+          weaponContact.gripTarget.getWorldPosition(ikBonePosition);
+          primaryGripDistanceFromSupportShoulderMeters =
+            ikShoulderPosition.distanceTo(ikBonePosition);
+        } else {
+          primaryGripDistanceFromSupportShoulderMeters = null;
+        }
+      } else {
+        supportArmReachMeters = null;
+        supportTargetDistanceFromShoulderMeters = null;
+        primaryGripDistanceFromSupportShoulderMeters = null;
+      }
+    } else {
+      supportHandErrorMeters = null;
+      solvedSupportHandWeaponLocal = null;
+      supportArmReachMeters = null;
+      supportTargetDistanceFromShoulderMeters = null;
+      primaryGripDistanceFromSupportShoulderMeters = null;
     }
     for (const [bone, offset] of currentPoseOffsets) {
       previousPoseOffsets.set(bone, offset.clone());
@@ -990,10 +1108,17 @@ export function buildRev17Character(
     attachedWeapon?.removeFromParent();
     attachedWeapon = null;
     weaponContact = null;
+    supportHandErrorMeters = null;
+    authoredSupportHandWeaponLocal = null;
+    solvedSupportHandWeaponLocal = null;
+    supportArmReachMeters = null;
+    supportTargetDistanceFromShoulderMeters = null;
+    primaryGripDistanceFromSupportShoulderMeters = null;
     showEmbeddedRifle(false);
     if (!weapon) return;
     const socket = root.getObjectByName('socket_weapon_r')
-      || root.getObjectByName('palm.R');
+      || root.getObjectByName('palm.R')
+      || root.getObjectByName('hand_r');
     if (!socket) return;
     const authoredMuzzle = root.getObjectByName('socket_muzzle');
     socket.add(weapon);
@@ -1002,6 +1127,7 @@ export function buildRev17Character(
       socket,
       authoredMuzzle,
       isMelee,
+      contactProfileForWeapon(weapon, isMelee),
     );
     attachedWeapon = weapon;
   };
@@ -1054,9 +1180,19 @@ export function buildRev17Character(
         weaponContact: weaponContact
           ? Object.freeze({
               family: weaponContact.family,
+              profileSource: weaponContact.profileSource,
+              supportHandIkPolicy: CHARACTER_SUPPORT_HAND_IK_POLICY,
+              gripPoint: weaponContact.gripPoint,
+              supportPoint: weaponContact.supportPoint,
               socketName: weaponContact.socketName,
               muzzleNodeName: weaponContact.muzzleNodeName,
               supportHandContact: weaponContact.supportTarget !== null,
+              supportHandErrorMeters,
+              authoredSupportHandWeaponLocal,
+              solvedSupportHandWeaponLocal,
+              supportArmReachMeters,
+              supportTargetDistanceFromShoulderMeters,
+              primaryGripDistanceFromSupportShoulderMeters,
             })
           : null,
       });

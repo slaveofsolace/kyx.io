@@ -128,7 +128,13 @@ export class MenuUI {
     const loadAndStart = () => {
       if (this._activePanel !== 'loadout' || this._armorPreview === null) return;
       if (!this._armorPreviewModelLoaded) {
-        this._armorPreview.loadArmor(getSkin(), this.selectedArmorId, null);
+        const selectedGun = GUNS.find((weapon) => weapon.id === Loadout.getGun());
+        this._armorPreview.loadArmor(
+          getSkin(),
+          this.selectedArmorId,
+          null,
+          selectedGun,
+        );
         this._armorPreviewModelLoaded = true;
       }
       this._armorPreview.start();
@@ -153,7 +159,11 @@ export class MenuUI {
         setTimeout(refreshWhenReady, 200);
         return;
       }
-      if (this._activePanel === 'loadout') this._renderLocalLoadout();
+      if (this._activePanel === 'loadout') {
+        this._armorPreviewModelLoaded = false;
+        this._renderLocalLoadout();
+        this._showArmorPreview();
+      }
     };
     warmWeaponThumbs(refreshWhenReady);
   }
@@ -359,9 +369,7 @@ export class MenuUI {
       description.textContent = mode.desc;
       button.append(name, description);
       button.addEventListener('click', () => {
-        this.selectedModeId = mode.id;
-        const playerName = this.nameInput?.value.trim() || this._displayName || 'Recruit';
-        this.onPlay?.(playerName, this.selectedSkinId, mode.id, this.selectedArmorId);
+        this._startPractice(mode.id);
       });
       root.appendChild(button);
     }
@@ -873,7 +881,9 @@ export class MenuUI {
       button.addEventListener('focus', () => showPresetDetail(preset));
       button.addEventListener('click', () => {
         Loadout.setCombatPreset(preset.id);
+        this._armorPreviewModelLoaded = false;
         this._renderLocalLoadout();
+        this._showArmorPreview();
         queueMicrotask(() => document.querySelector(
           `.local-loadout-option[data-combat-preset-id="${preset.id}"]`,
         )?.focus());
@@ -932,7 +942,9 @@ export class MenuUI {
         showAbilityDetail(ability, linkedPreset);
         if (selected || ability.locked) return;
         Loadout.setCombatPreset(linkedPreset.id);
+        this._armorPreviewModelLoaded = false;
         this._renderLocalLoadout();
+        this._showArmorPreview();
         queueMicrotask(() => document.querySelector(
           `.local-loadout-ability[data-ability-id="${ability.id}"]`,
         )?.focus());

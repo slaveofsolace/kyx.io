@@ -1,0 +1,297 @@
+{
+  "records": [
+    {
+      "acquisition": {
+        "acquired_at": "",
+        "evidence": "No new acquisition in this batch; the hash-pinned donor derivative is already preserved in the repository.",
+        "original_archive_unchanged": false,
+        "quarantine_root": "",
+        "status": "not-started"
+      },
+      "adaptation_plan": {
+        "acceptance_evidence": [],
+        "actions": [],
+        "clean_room_required": false,
+        "status": "not-started",
+        "summary": ""
+      },
+      "ai_flags": {
+        "evidence": "No NoAI or generated-AI flag is stated in the pinned source record; current work uses local Blender/engine tooling only.",
+        "external_ai_input_allowed": "no",
+        "generated_ai": "no",
+        "no_ai": "no"
+      },
+      "archive_scan": {
+        "active_content_executed": false,
+        "active_content_review": {
+          "evidence": "",
+          "reviewed_at": "",
+          "reviewer": "",
+          "scope": "",
+          "status": "not-reviewed"
+        },
+        "encrypted_entries": [],
+        "executables_or_active_content": [],
+        "inventory_path": "",
+        "path_traversal_detected": false,
+        "review_disposition": "pending",
+        "scanned_at": "",
+        "status": "not-started",
+        "suspicious_entries": [],
+        "symlinks_detected": false
+      },
+      "attribution": {
+        "placement": "Internal donor notice and any future third-party acknowledgements file.",
+        "required": "not-required",
+        "text": "Sci-fi Soldier by Irondust, CC0 1.0, https://opengameart.org/content/sci-fi-soldier"
+      },
+      "brief_id": "g6-assault-rev40-browser-character",
+      "candidate_id": "irondust-sci-fi-soldier-cc0",
+      "checksums": {
+        "assets/review/runtime-candidates/g6-rev30-cc0-donor/character-lod0.glb": "24e742efe1d596e0efcc4fed73fb527346049b29a7b0782a9b93b0719a2e49ed",
+        "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/kyx-v6c-character-rev30-cc0-donor-master.blend": "ebfc91e9918a1d48fa1dd6330387debdf2f4c1aa0d08fbcf743071023a5f0a2a"
+      },
+      "comparison": {
+        "abandonment_risk_inverse": 5,
+        "adaptation_cost_inverse": 4,
+        "coherence": 4,
+        "fit": 4,
+        "provenance_confidence": 5,
+        "representative_group": "qualified browser Assault body and animation donor",
+        "runtime_cost_inverse": 4,
+        "weighted_score": 88
+      },
+      "downloaded_paths": [],
+      "entitlement": {
+        "account_or_ownership_basis": "CC0 public-domain dedication; no marketplace account entitlement is required for reuse.",
+        "action_time_confirmation": {
+          "confirmed_at": "2026-08-09",
+          "evidence": "No checkout, price, subscription, account mutation, or tier selection is involved.",
+          "required": false,
+          "scope": "Reuse of the existing local CC0 derivative only.",
+          "status": "not-required"
+        },
+        "confirmed_at": "2026-08-09",
+        "evidence": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/DONOR_NOTICE.md",
+        "status": "not-required"
+      },
+      "formats": [
+        "blend",
+        "glb",
+        "png"
+      ],
+      "human": {
+        "evidence": "",
+        "reviewed_at": "",
+        "reviewer": "",
+        "verdict": "pending"
+      },
+      "inspection": {
+        "delivered_payload_inspected": true,
+        "embedded_urls": [],
+        "evidence_paths": [
+          "evidence/2026-07-28/g6-rev30-cc0-donor/author-export-report.json",
+          "assets/review/runtime-candidates/g6-rev30-cc0-donor/manifest.json"
+        ],
+        "external_services": [],
+        "generative_tools_used": false,
+        "hidden_dependencies": [],
+        "metrics": {
+          "animationClips": 16,
+          "bones": 66,
+          "glbBytes": 15025320,
+          "triangles": 10748
+        },
+        "result": "Historical payload inspection and runtime evidence exist; this registry is intentionally stopped at entitlement-confirmed until a new isolated Rev40 candidate is built.",
+        "route": "local-blender-and-browser",
+        "status": "completed"
+      },
+      "isolation": {
+        "candidate_path": "",
+        "evidence_paths": [],
+        "product_tree_unchanged": true,
+        "status": "not-started"
+      },
+      "known_nonclaims": [
+        "ADAPT does not grant human visual acceptance or release eligibility.",
+        "The original source archive is not present in this worktree and is not reacquired in this batch.",
+        "Fab acquisition-review entries remain outside this candidate and are not cleared by the Irondust CC0 decision."
+      ],
+      "license": {
+        "name_version": "CC0-1.0",
+        "snapshot_path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/DONOR_NOTICE.md",
+        "snapshot_sha256": "a4ae21fd08952b3306375b9cb35e66c1d71353274e5db3c224c2adfa28f2ead3",
+        "status": "verified",
+        "text": "The canonical creator listing identifies the Sci-fi Soldier payload as CC0 1.0; the repository preserves the creator, URL, archive hash, objects used, and omitted branding textures.",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "verified_at": "2026-07-28"
+      },
+      "next_action": "Build the isolated Rev40 Assault derivative and advance only after exact LOD, runtime, and player-eye evidence exists.",
+      "permitted_uses": [
+        "commercial use",
+        "modification",
+        "redistribution",
+        "browser-game integration"
+      ],
+      "recommendation": "ADAPT",
+      "release": {
+        "attribution_delivery_path": "",
+        "ledger_path": "",
+        "released_at": "",
+        "status": "not-recorded"
+      },
+      "required_owner_decision": "Human visual acceptance is required after runtime evidence; no source decision is required to begin the bounded CC0 adaptation.",
+      "runtime": {
+        "disposition": "conditional",
+        "environment": "Rev39 staging-review browser evidence",
+        "evidence_paths": [
+          "evidence/2026-08-09/g6-assault-rev39-directional-motion-v4"
+        ],
+        "measured_budgets": {
+          "remoteAuthoredClipCount": "7/7",
+          "runtimeErrors": 0
+        }
+      },
+      "schema_version": "1.0",
+      "source": {
+        "access_scope": "public",
+        "author_publisher": "Irondust",
+        "canonical_url": "https://opengameart.org/content/sci-fi-soldier",
+        "kind": "creator",
+        "listing_date": "historical listing; pinned 2026-07-28",
+        "listing_snapshot_path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/DONOR_NOTICE.md",
+        "listing_version": "Sci-fi Soldier OpenGameArt CC0 archive",
+        "local_path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev30-cc0-donor/kyx-v6c-character-rev30-cc0-donor-master.blend",
+        "metadata_checked_at": "2026-07-28",
+        "price": {
+          "amount": 0,
+          "currency": "USD",
+          "label": "free",
+          "tier": "not-applicable"
+        }
+      },
+      "stage": "entitlement-confirmed",
+      "stage_history": [
+        {
+          "at": "2026-07-28",
+          "evidence": "Creator listing and donor identity entered in the Rev30 source record.",
+          "stage": "discovered"
+        },
+        {
+          "at": "2026-07-28",
+          "evidence": "Canonical URL, creator, CC0 1.0 status, archive hash, used objects, and omitted textures were pinned in DONOR_NOTICE.md.",
+          "stage": "metadata-verified"
+        },
+        {
+          "at": "2026-08-09",
+          "evidence": "CC0 reuse requires no marketplace checkout, account mutation, price, subscription, seat, or tier decision.",
+          "stage": "entitlement-confirmed"
+        }
+      ],
+      "title": "Sci-fi Soldier by Irondust"
+    }
+  ],
+  "linked_source_records": [
+    {
+      "candidate_id": "quaternius-ual1-standard",
+      "title": "Quaternius Universal Animation Library Standard",
+      "canonical_url": "https://quaternius.com/packs/universalanimationlibrary.html",
+      "author_publisher": "Quaternius",
+      "license": "CC0-1.0",
+      "license_snapshot": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/UAL1/Universal Animation Library[Standard]/License.txt",
+        "sha256": "6d01f55c6e4c49a2c9963e147e561945ae2c83958c8ca667d90a6bffdbfac061"
+      },
+      "quarantined_archive": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/Universal Animation Library Standard.zip",
+        "sha256": "cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724",
+        "unchanged": true
+      },
+      "full_registry_snapshot": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/ual1.candidate.json",
+        "sha256": "4c3db47a3a0f1ffe6ef51981259bfa6b71cd09c3d4a0d8ab97c4efe47f9c42bd"
+      },
+      "archive_inventory": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/ual1.inventory.json",
+        "sha256": "5ffcbe1741793fd1d1d0f83104ffdee4526ccaac7678da53cca603d3fe4a3ada",
+        "entries": 12,
+        "scan_status": "passed"
+      },
+      "motion_payload": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/UAL1/Universal Animation Library[Standard]/Unreal-Godot/UAL1_Standard.glb",
+        "sha256": "69591853d817488edaa8fd9bf8fc1d821eaeaf789f8627b3cd23b41c4ed67997",
+        "bytes": 7618436,
+        "source_joints": 65,
+        "source_clips": 43,
+        "selected_clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Jog_Fwd_Loop",
+          "Jump_Start",
+          "Jump_Loop",
+          "Jump_Land",
+          "Pistol_Shoot",
+          "Pistol_Reload",
+          "Hit_Chest",
+          "Death01"
+        ]
+      },
+      "recommendation": "ADAPT",
+      "stage": "isolated-candidate",
+      "release_eligible": false,
+      "human_accepted": false,
+      "evidence": "evidence/2026-08-09/g6-assault-rev40-source-build/author-export-report.json",
+      "nonclaims": [
+        "The full 43-clip library is not copied into the candidate.",
+        "Retargeted source evidence is not browser runtime or human visual acceptance."
+      ]
+    },
+    {
+      "candidate_id": "quaternius-ual2-standard",
+      "title": "Quaternius Universal Animation Library 2 Standard",
+      "canonical_url": "https://quaternius.com/packs/universalanimationlibrary2.html",
+      "author_publisher": "Quaternius",
+      "license": "CC0-1.0",
+      "license_snapshot": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/UAL2/Universal Animation Library 2[Standard]/License.txt",
+        "sha256": "6d01f55c6e4c49a2c9963e147e561945ae2c83958c8ca667d90a6bffdbfac061"
+      },
+      "quarantined_archive": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/Universal Animation Library 2 Standard.zip",
+        "sha256": "4008ea208a604773a2b2177d965f0f5d3195498b5bf838c3f5785d68e95f2a68",
+        "unchanged": true
+      },
+      "full_registry_snapshot": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/ual2.candidate.json",
+        "sha256": "2816488126d06ae7321e27161296d288694700352ea9ce5184dc20b54114310d"
+      },
+      "archive_inventory": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/ual2.inventory.json",
+        "sha256": "e4882906a1a9ed1fbbf4bd5bb0ed932934cbfa6ebcebb256a7b9497a7e741a77",
+        "entries": 19,
+        "scan_status": "passed"
+      },
+      "motion_payload": {
+        "path": "D:/AI Projects/Projects/Games/evio/resource-quarantine-20260802/quaternius-universal-animation/UAL2/Universal Animation Library 2[Standard]/Unreal-Godot/UAL2_Standard.glb",
+        "sha256": "8cee20ab1bc55130092447e810e26df22dd2803eccc54f52137a7d54d7ab88a8",
+        "bytes": 8091444,
+        "source_joints": 65,
+        "source_clips": 43,
+        "selected_clips": [
+          "OverhandThrow",
+          "Sword_Regular_A"
+        ]
+      },
+      "recommendation": "ADAPT",
+      "stage": "isolated-candidate",
+      "release_eligible": false,
+      "human_accepted": false,
+      "evidence": "evidence/2026-08-09/g6-assault-rev40-source-build/author-export-report.json",
+      "nonclaims": [
+        "The full 43-clip library is not copied into the candidate.",
+        "Retargeted source evidence is not browser runtime or human visual acceptance."
+      ]
+    }
+  ],
+  "schema_version": "1.0"
+}

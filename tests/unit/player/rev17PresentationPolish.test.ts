@@ -124,10 +124,71 @@ describe('Rev17 runtime presentation polish', () => {
       .normalize();
 
     expect(plantedGrip.length()).toBeLessThan(1e-6);
+    expect(
+      socket.worldToLocal(
+        contact.gripTarget.getWorldPosition(new THREE.Vector3()),
+      ).length(),
+    ).toBeLessThan(1e-6);
+    expect(contact.gripTarget.name).toBe(
+      'KYX_REV17_PRIMARY_HAND_CONTACT',
+    );
     expect(muzzleDirection.dot(targetDirection)).toBeGreaterThan(0.9999);
     expect(contact.supportTarget?.name).toBe(
       'KYX_REV17_SUPPORT_HAND_CONTACT',
     );
     expect(contact.muzzleNodeName).toBe('TEST_MUZZLE');
+  });
+
+  it('uses candidate-exact VLR-7 contact points without changing the family contract', () => {
+    const rig = new THREE.Group();
+    const socket = new THREE.Object3D();
+    socket.name = 'socket_weapon_r';
+    const authoredMuzzle = new THREE.Object3D();
+    authoredMuzzle.position.set(0, 0.105, -0.89);
+    socket.add(authoredMuzzle);
+    rig.add(socket);
+
+    const weapon = new THREE.Group();
+    weapon.userData.weaponFamily = 'rifle';
+    weapon.userData.muzzleNodeName = 'VLR7_MUZZLE';
+    const muzzle = new THREE.Object3D();
+    muzzle.name = 'VLR7_MUZZLE';
+    muzzle.position.set(0, 0.105, -0.89);
+    weapon.add(muzzle);
+    socket.add(weapon);
+
+    const exactProfile = Object.freeze({
+      uniformScale: 0.86,
+      gripPoint: Object.freeze([0, -0.115, 0.19]),
+      supportPoint: Object.freeze([
+        -0.019679019928,
+        -0.062568904877,
+        -0.1881275177,
+      ]),
+    });
+    const contact = fitRev17WeaponContact(
+      weapon,
+      socket,
+      authoredMuzzle,
+      false,
+      exactProfile,
+    );
+    rig.updateMatrixWorld(true);
+
+    expect(contact.family).toBe('rifle');
+    expect(contact.profileSource).toBe('candidate-exact');
+    expect(contact.uniformScale).toBe(0.86);
+    expect(contact.gripPoint).toEqual(exactProfile.gripPoint);
+    expect(contact.supportPoint).toEqual(exactProfile.supportPoint);
+    expect(Object.isFrozen(contact.gripPoint)).toBe(true);
+    expect(Object.isFrozen(contact.supportPoint)).toBe(true);
+    expect(contact.supportTarget?.position.toArray()).toEqual(
+      exactProfile.supportPoint,
+    );
+    expect(
+      socket.worldToLocal(
+        contact.gripTarget.getWorldPosition(new THREE.Vector3()),
+      ).length(),
+    ).toBeLessThan(1e-6);
   });
 });

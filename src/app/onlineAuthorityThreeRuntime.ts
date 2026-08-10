@@ -105,6 +105,8 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly remoteAvatarProceduralAnimationCount: number;
   readonly remoteAvatarWeaponAttachmentCount: number;
   readonly remoteAvatarSupportHandContactCount: number;
+  readonly remoteAvatarQualifiedSupportHandContactCount: number;
+  readonly remoteAvatarMaximumSupportHandErrorMeters: number | null;
   readonly remoteAvatarSkeletalStanceContractCount: number;
   readonly remoteAvatarWholeBodySquashCount: number;
   readonly grenadeProjectileCount: number;
@@ -1417,6 +1419,9 @@ export async function createOnlineAuthorityThreeRuntime(
     const remoteAvatarPresentationStates = remoteAvatars.map(
       (avatar) => avatar.root.userData.getPresentationState?.() ?? null,
     );
+    const remoteAvatarSupportHandErrors = remoteAvatarPresentationStates
+      .map((state) => state?.weaponContact?.supportHandErrorMeters)
+      .filter((error): error is number => Number.isFinite(error));
     const firstPersonMountDiagnostics = inspectKyxFirstPersonWeaponMount(
       firstPersonWeaponMount,
       firstPersonWeapon,
@@ -1460,6 +1465,12 @@ export async function createOnlineAuthorityThreeRuntime(
       remoteAvatarSupportHandContactCount: remoteAvatarPresentationStates.filter(
         (state) => state?.weaponContact?.supportHandContact === true,
       ).length,
+      remoteAvatarQualifiedSupportHandContactCount:
+        remoteAvatarSupportHandErrors.filter((error) => error <= 0.12).length,
+      remoteAvatarMaximumSupportHandErrorMeters:
+        remoteAvatarSupportHandErrors.length > 0
+          ? Math.max(...remoteAvatarSupportHandErrors)
+          : null,
       remoteAvatarSkeletalStanceContractCount: remoteAvatars.filter(
         (avatar) => typeof avatar.root.userData.setStance === 'function'
           && typeof avatar.root.userData.getStanceOffsetY === 'function',

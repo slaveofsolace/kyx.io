@@ -67,21 +67,59 @@ const weaponReviewArtifacts = [
   })),
 ];
 const characterReviewArtifacts = [
-  'character-lod0.glb',
-].map((name) => path.join(
-  repositoryRoot,
-  'assets',
-  'review',
-  'runtime-candidates',
-  'g6-rev30-cc0-donor',
-  name,
-));
-const characterBindingSource = path.join(
-  repositoryRoot,
-  'src',
-  'dev',
-  'installKyxAssaultRev39ArmoredReview.ts',
-);
+  {
+    artifact: path.join(
+      repositoryRoot,
+      'assets',
+      'review',
+      'runtime-candidates',
+      'g6-rev30-cc0-donor',
+      'character-lod0.glb',
+    ),
+    binding: path.join(
+      repositoryRoot,
+      'src',
+      'dev',
+      'installKyxAssaultRev39ArmoredReview.ts',
+    ),
+  },
+  ...['character-lod0.glb', 'character-lod1.glb', 'character-lod2.glb'].map(
+    (name) => ({
+      artifact: path.join(
+        repositoryRoot,
+        'assets',
+        'review',
+        'runtime-candidates',
+        'g6-assault-rev40-cc0',
+        name,
+      ),
+      binding: path.join(
+        repositoryRoot,
+        'src',
+        'dev',
+        'installKyxAssaultRev40Cc0Review.ts',
+      ),
+    }),
+  ),
+  ...['character-lod0.glb', 'character-lod1.glb', 'character-lod2.glb'].map(
+    (name) => ({
+      artifact: path.join(
+        repositoryRoot,
+        'assets',
+        'review',
+        'runtime-candidates',
+        'g6-assault-rev40-cc0-weapon-ready-v4',
+        name,
+      ),
+      binding: path.join(
+        repositoryRoot,
+        'src',
+        'dev',
+        'installKyxAssaultRev40Cc0Review.ts',
+      ),
+    }),
+  ),
+];
 const localStagingEnvironment = path.join(repositoryRoot, '.env.staging');
 
 function sha256(bytes) {
@@ -139,15 +177,15 @@ const weaponArtifacts = await Promise.all(weaponReviewArtifacts.map(
     return expected;
   },
 ));
-const characterBindingText = await readFile(characterBindingSource, 'utf8');
 const characterArtifacts = await Promise.all(characterReviewArtifacts.map(
-  async (artifact) => {
+  async ({ artifact, binding }) => {
     const bytes = await readFile(artifact);
     const expected = Object.freeze({
       source: artifact,
       bytes: bytes.byteLength,
       sha256: sha256(bytes),
     });
+    const characterBindingText = await readFile(binding, 'utf8');
     if (
       !characterBindingText.includes(
         `bytes: ${expected.bytes.toLocaleString('en-US').replaceAll(',', '_')}`,
@@ -156,7 +194,7 @@ const characterArtifacts = await Promise.all(characterReviewArtifacts.map(
     ) {
       throw new Error(
         'STAGING_REVIEW_CHARACTER_BINDING_MISMATCH '
-          + `artifact=${path.basename(artifact)}`,
+          + `artifact=${path.relative(repositoryRoot, artifact)}`,
       );
     }
     return expected;

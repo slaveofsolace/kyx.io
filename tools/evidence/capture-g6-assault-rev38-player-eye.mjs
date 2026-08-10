@@ -8,12 +8,18 @@ function option(name, fallback) {
 }
 
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
+const candidateRevision = option('--candidate', 'rev39-armored-restore-v1');
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-08/g6-assault-rev39-armored-player-eye-v1',
+  `evidence/2026-08-09/${candidateRevision}-player-eye-v1`,
 ));
 const buildCommit = option('--commit', 'working-tree');
-const candidateRevision = option('--candidate', 'rev39-armored-restore-v1');
+
+function candidateUrl(pathname = '/') {
+  const url = new URL(pathname, `${baseUrl.replace(/\/$/u, '')}/`);
+  url.searchParams.set('g6Candidate', candidateRevision);
+  return url.href;
+}
 
 await mkdir(outputRoot, { recursive: true });
 
@@ -23,7 +29,12 @@ const context = await browser.newContext({
   reducedMotion: 'no-preference',
 });
 const page = await context.newPage();
-const errors = { console: [], page: [], requests: [] };
+const errors = {
+  console: [],
+  page: [],
+  requests: [],
+  ignoredSameOriginModuleAborts: [],
+};
 const glbResponses = [];
 const captures = [];
 
@@ -32,11 +43,26 @@ page.on('console', (message) => {
 });
 page.on('pageerror', (error) => errors.page.push(error.message));
 page.on('requestfailed', (request) => {
-  errors.requests.push({
+  const failure = {
     method: request.method(),
     url: request.url(),
     error: request.failure()?.errorText ?? 'failed',
-  });
+  };
+  const failedUrl = new URL(failure.url);
+  const reviewOrigin = new URL(baseUrl).origin;
+  if (
+    failure.method === 'GET'
+    && failure.error === 'net::ERR_ABORTED'
+    && failedUrl.origin === reviewOrigin
+    && failedUrl.pathname.startsWith('/src/')
+  ) {
+    // Entering the arena intentionally replaces the menu document. Chromium
+    // cancels any same-origin Vite module requests still in flight from that
+    // document; preserve them as navigation telemetry, not runtime failures.
+    errors.ignoredSameOriginModuleAborts.push(failure);
+    return;
+  }
+  errors.requests.push(failure);
 });
 page.on('response', (response) => {
   if (!new URL(response.url()).pathname.toLowerCase().endsWith('.glb')) return;
@@ -61,7 +87,7 @@ let practiceAfter = null;
 let pointerLockAcquired = false;
 
 try {
-  await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
+  await page.goto(candidateUrl('/'), { waitUntil: 'networkidle' });
   await page.locator('#play-btn').waitFor({ state: 'visible', timeout: 20_000 });
   await capture(
     '01-menu-first-impression-1440x900.png',
@@ -83,10 +109,10 @@ try {
 
   await page.getByRole('button', { name: 'Loadout' }).click();
   await page.locator('#panel-loadout').waitFor({ state: 'visible' });
-  await page.waitForFunction(() => (
-    window.__KYX_G6_CHARACTER_EVIDENCE__?.revision === 'rev39-armored-restore-v1'
+  await page.waitForFunction((expectedRevision) => (
+    window.__KYX_G6_CHARACTER_EVIDENCE__?.revision === expectedRevision
     && window.__KYX_G6_CHARACTER_EVIDENCE__.snapshot().instances.length > 0
-  ), null, { timeout: 30_000 });
+  ), candidateRevision, { timeout: 30_000 });
   // The turntable rotates continuously; this short settle preserves a useful
   // front-three-quarter review angle instead of waiting into a side profile.
   await page.waitForTimeout(250);
@@ -289,7 +315,7 @@ try {
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-g6-assault-player-eye-capture-v4',
+      schema: 'kyx-g6-assault-player-eye-capture-v5',
       capturedAt: new Date().toISOString(),
       buildCommit,
       candidateRevision,
@@ -311,7 +337,7 @@ try {
       errors,
       nonclaims: [
         'No human visual acceptance is claimed.',
-        'The armored restoration remains review-only and release-ineligible.',
+        `Candidate ${candidateRevision} remains review-only and release-ineligible.`,
         'This bounded run is not 2/4/8 multiplayer proof or a performance soak.',
       ],
     }, null, 2)}\n`,
@@ -384,6 +410,14 @@ if (practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount !== remoteAvatarC
 if (practiceAfter?.render3d?.remoteAvatarSupportHandContactCount !== remoteAvatarCount) {
   throw new Error('G6_ASSAULT_REMOTE_SUPPORT_HAND_CONTACT_MISMATCH');
 }
+if (
+  practiceAfter?.render3d?.remoteAvatarQualifiedSupportHandContactCount
+    !== remoteAvatarCount
+  || (practiceAfter?.render3d?.remoteAvatarMaximumSupportHandErrorMeters ?? Infinity)
+    > 0.12
+) {
+  throw new Error('G6_ASSAULT_REMOTE_SUPPORT_HAND_CONTACT_NOT_QUALIFIED');
+}
 if (practiceAfter?.render3d?.remoteAvatarSkeletalStanceContractCount !== remoteAvatarCount) {
   throw new Error('G6_ASSAULT_REMOTE_SKELETAL_STANCE_CONTRACT_MISMATCH');
 }
@@ -423,6 +457,10 @@ process.stdout.write(`${JSON.stringify({
     practiceAfter?.render3d?.remoteAvatarWeaponAttachmentCount ?? null,
   remoteAvatarSupportHandContactCount:
     practiceAfter?.render3d?.remoteAvatarSupportHandContactCount ?? null,
+  remoteAvatarQualifiedSupportHandContactCount:
+    practiceAfter?.render3d?.remoteAvatarQualifiedSupportHandContactCount ?? null,
+  remoteAvatarMaximumSupportHandErrorMeters:
+    practiceAfter?.render3d?.remoteAvatarMaximumSupportHandErrorMeters ?? null,
   remoteAvatarSkeletalStanceContractCount:
     practiceAfter?.render3d?.remoteAvatarSkeletalStanceContractCount ?? null,
   remoteAvatarWholeBodySquashCount:

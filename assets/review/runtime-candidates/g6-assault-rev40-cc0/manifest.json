@@ -1,0 +1,116 @@
+{
+  "schema": "kyx-g6-assault-rev40-review-candidate-manifest-v2",
+  "revision": "g6-assault-rev40-cc0",
+  "displayName": "KYX Assault Rev40 CC0 mesh and motion derivative",
+  "default": false,
+  "releaseEligible": false,
+  "humanAccepted": false,
+  "runtimeIntegrated": false,
+  "sourceDisposition": "ADAPT",
+  "assets": {
+    "lod0": {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0/character-lod0.glb",
+      "sha256": "55828c78aebf74b4cd4de8d63dff9dc2084ad25eda4f423b7ac468244bbba843",
+      "bytes": 4643864,
+      "nodes": 70,
+      "meshes": 3,
+      "primitives": 8,
+      "triangles": 3392,
+      "materials": 5,
+      "textures": 9,
+      "skins": 1,
+      "joints": 66,
+      "animations": [
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_WALK",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV40_TP_ABILITY_THROW",
+        "KYX_REV40_TP_MELEE"
+      ]
+    },
+    "lod1": {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0/character-lod1.glb",
+      "sha256": "50836dd25902d7ee07e5f1b04dc32122f495e9634f799fd607e3e0c7a9c6b175",
+      "bytes": 4588760,
+      "nodes": 70,
+      "meshes": 3,
+      "primitives": 8,
+      "triangles": 1914,
+      "materials": 5,
+      "textures": 9,
+      "skins": 1,
+      "joints": 66,
+      "animations": [
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_WALK",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV40_TP_ABILITY_THROW",
+        "KYX_REV40_TP_MELEE"
+      ]
+    },
+    "lod2": {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0/character-lod2.glb",
+      "sha256": "eb072f25317bc66103a84a64102bc2ac6efdd95b4d7bbee80a60f746aa76d29c",
+      "bytes": 4553860,
+      "nodes": 70,
+      "meshes": 3,
+      "primitives": 8,
+      "triangles": 1057,
+      "materials": 5,
+      "textures": 9,
+      "skins": 1,
+      "joints": 66,
+      "animations": [
+        "KYX_REV17_TP_IDLE",
+        "KYX_REV17_TP_WALK",
+        "KYX_REV17_TP_RUN",
+        "KYX_REV17_TP_JUMP_START",
+        "KYX_REV17_TP_AIRBORNE_LOOP",
+        "KYX_REV17_TP_LAND",
+        "KYX_REV17_TP_PRIMARY_FIRE",
+        "KYX_REV17_TP_RELOAD",
+        "KYX_REV17_TP_HIT_REACTION_FRONT",
+        "KYX_REV17_TP_DEATH_FRONT",
+        "KYX_REV40_TP_ABILITY_THROW",
+        "KYX_REV40_TP_MELEE"
+      ]
+    }
+  },
+  "provenance": {
+    "meshSource": "Sci-fi Soldier by Irondust",
+    "meshSourceUrl": "https://opengameart.org/content/sci-fi-soldier",
+    "motionSource": "Quaternius Universal Animation Library 1/2 Standard",
+    "motionSourceUrls": [
+      "https://quaternius.com/packs/universalanimationlibrary.html",
+      "https://quaternius.com/packs/universalanimationlibrary2.html"
+    ],
+    "license": "CC0-1.0",
+    "notice": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault/DONOR_NOTICE.md",
+    "resourceBrief": "docs/resource-briefs/g6-assault-rev40-browser-character.md",
+    "registry": "assets/review/resource-registry/g6-assault-rev40-source-candidates.json"
+  },
+  "package": {
+    "combinedBytes": 13786484,
+    "distinctAuthoredLods": true,
+    "embeddedDiagnosticWeapon": false
+  },
+  "nonClaims": [
+    "Review-only candidate; no owner or human visual acceptance is declared.",
+    "No final first-person-arm derivative is authored in this source build.",
+    "Structural export is not browser runtime, foot-lock, performance-soak, release, or deployment proof."
+  ]
+}

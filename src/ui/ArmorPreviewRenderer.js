@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { buildPreviewCharacter } from '../player/PreviewCharacter.js';
 import { disposeThreeObjectResources } from '../render/disposeThreeObjectResources.ts';
+import { buildWeaponModel } from '../weapons/WeaponModels.js';
 
 function disposePreviewCharacter(group) {
   // Skeleton clones share geometry with the cached GLB template but own their
@@ -20,9 +21,11 @@ export class ArmorPreviewRenderer {
     this._canvas   = canvas;
     this._renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     this._renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    const displayWidth = Math.max(1, Math.round(canvas.clientWidth || canvas.width));
+    const displayHeight = Math.max(1, Math.round(canvas.clientHeight || canvas.height));
     // updateStyle=false: keep the CSS width:100% so the canvas fits its column
     // (the drawing buffer stays crisp at the canvas's intrinsic resolution).
-    this._renderer.setSize(canvas.width, canvas.height, false);
+    this._renderer.setSize(displayWidth, displayHeight, false);
     this._renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this._renderer.toneMappingExposure = 1.05;
 
@@ -49,7 +52,12 @@ export class ArmorPreviewRenderer {
     ring.position.y = 0.012;
     this._scene.add(ring);
 
-    this._camera = new THREE.PerspectiveCamera(34, canvas.width / canvas.height, 0.01, 50);
+    this._camera = new THREE.PerspectiveCamera(
+      34,
+      displayWidth / displayHeight,
+      0.01,
+      50,
+    );
 
     this._scene.add(new THREE.AmbientLight(0xffffff, 0.4));
     const key = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -63,6 +71,7 @@ export class ArmorPreviewRenderer {
     this._scene.add(rim);
 
     this._group = null;
+    this._weapon = null;
     this._groupBaseY = 0;
     this._groupScale = 1;
     this._t     = 0;
@@ -70,7 +79,12 @@ export class ArmorPreviewRenderer {
   }
 
   // Build (or rebuild) the character for the given player skin + armor.
-  loadArmor(playerSkin, armorTypeId, armorSkin) {
+  loadArmor(playerSkin, armorTypeId, armorSkin, weaponDef = null) {
+    if (this._weapon) {
+      this._weapon.removeFromParent();
+      disposeThreeObjectResources(this._weapon);
+      this._weapon = null;
+    }
     if (this._group) {
       this._scene.remove(this._group);
       disposePreviewCharacter(this._group);
@@ -78,6 +92,11 @@ export class ArmorPreviewRenderer {
     }
     const g = buildPreviewCharacter(playerSkin, armorTypeId, armorSkin, { preferSpartan: true });
     g.traverse((o) => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
+    if (weaponDef && typeof g.userData?.attachWeapon === 'function') {
+      const { group: weapon } = buildWeaponModel(weaponDef);
+      g.userData.attachWeapon(weapon, false);
+      this._weapon = weapon;
+    }
 
     // center horizontally, sit feet on the disc, frame the whole body.
     const targetH = 2.3;
@@ -107,9 +126,12 @@ export class ArmorPreviewRenderer {
 
     // frame the full body with a little headroom/legroom
     const midY = targetH * 0.5;
-    this._camera.position.set(0.0, midY + 0.15, 4.3);
+    // Candidate assets face toward +Z after glTF conversion. Start with their
+    // actual front, then rotate slowly enough for deliberate silhouette review.
+    this._camera.position.set(0.0, midY + 0.15, 4.15);
     this._camera.lookAt(0, midY, 0);
     this._lookY = midY;
+    this._t = 0;
   }
 
   start() {
@@ -118,7 +140,11 @@ export class ArmorPreviewRenderer {
       this._raf = requestAnimationFrame(loop);
       this._t += 0.016;
       if (this._group) {
-        this._group.rotation.y = this._t * 0.6;
+        // Hold the authored front long enough for the player to read the
+        // silhouette and weapon contact before beginning a deliberate orbit.
+        // The previous fast spin commonly reached a side profile before the
+        // loadout panel had even finished settling.
+        this._group.rotation.y = Math.max(0, this._t - 2) * 0.12;
         // Drive the rigged human soldier's idle animation on the turntable.
         const ud = this._group.userData;
         if (ud?.isHuman) {
@@ -143,6 +169,11 @@ export class ArmorPreviewRenderer {
 
   dispose() {
     this.stop();
+    if (this._weapon) {
+      this._weapon.removeFromParent();
+      disposeThreeObjectResources(this._weapon);
+      this._weapon = null;
+    }
     if (this._group) {
       disposePreviewCharacter(this._group);
     }
