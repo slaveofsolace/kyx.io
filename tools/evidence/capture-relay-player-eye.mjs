@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 import { chromium } from 'playwright';
@@ -9,12 +9,12 @@ function option(name, fallback) {
 }
 
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
-const v3EvidenceRoot = path.resolve(
-  'evidence/2026-08-09/canonical-combat-presentation-integration-v3',
+const v4EvidenceRoot = path.resolve(
+  'evidence/2026-08-10/canonical-combat-presentation-integration-v4',
 );
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-09/canonical-combat-presentation-integration-v3/runtime',
+  'evidence/2026-08-10/canonical-combat-presentation-integration-v4/runtime',
 ));
 const buildCommit = option('--commit', 'working-tree');
 const expectedPresentationReference = 'relay@1/open-sky/v5';
@@ -23,6 +23,7 @@ const maximumBasePresentationMeshCount = 96;
 const protectedEvidenceRoots = Object.freeze([
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v1'),
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v2'),
+  path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v3'),
 ]);
 const provenMainFloorRegions = Object.freeze([
   Object.freeze({
@@ -64,6 +65,9 @@ const routeTwoCaptureBounds = Object.freeze({
 const settledFloorMinimumY = -100;
 const settledFloorMaximumY = 250;
 const settledMaximumVerticalSpeed = 250;
+const maximumCaptureLookErrorMilliDegrees = 750;
+const mouseMilliDegreesPerPixel = 110;
+const maximumCameraCorrectionPixelsPerStep = 240;
 
 function containsPath(root, candidate) {
   const relative = path.relative(root, candidate);
@@ -79,8 +83,8 @@ for (const protectedRoot of protectedEvidenceRoots) {
     throw new Error(`RELAY_PROTECTED_EVIDENCE_ROOT actual=${outputRoot}`);
   }
 }
-if (!containsPath(v3EvidenceRoot, outputRoot)) {
-  throw new Error(`RELAY_V3_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
+if (!containsPath(v4EvidenceRoot, outputRoot)) {
+  throw new Error(`RELAY_V4_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
 }
 
 await mkdir(outputRoot, { recursive: true });
@@ -96,7 +100,9 @@ const glbResponses = [];
 const captures = [];
 const movementSnapshots = [];
 const routeFloorAssertions = [];
+const cameraAlignmentSamples = [];
 let captureFailure = null;
+let captureMousePosition = null;
 
 page.on('console', (message) => {
   if (message.type() === 'error') errors.console.push(message.text());
@@ -114,8 +120,9 @@ page.on('response', (response) => {
   glbResponses.push({ url: response.url(), status: response.status() });
 });
 
-async function capture(name, notes) {
-  await page.waitForTimeout(300);
+async function capture(name, notes, proveFrame = null, settleMilliseconds = 300) {
+  await page.waitForTimeout(settleMilliseconds);
+  if (proveFrame !== null) await proveFrame();
   await page.screenshot({ path: path.join(outputRoot, name), fullPage: false });
   captures.push({ name, url: page.url(), viewport: page.viewportSize(), notes });
 }
@@ -135,17 +142,36 @@ async function readPracticeSnapshot() {
 function finitePosition(snapshot, label) {
   const feet = snapshot?.localAuthoritativePlayer?.feetPosition;
   const velocity = snapshot?.localAuthoritativePlayer?.velocity;
+  const yawMilliDegrees = snapshot?.localAuthoritativePlayer?.yawMilliDegrees;
+  const pitchMilliDegrees = snapshot?.localAuthoritativePlayer?.pitchMilliDegrees;
   if (
     feet === null
     || feet === undefined
     || velocity === null
     || velocity === undefined
-    || ![feet.x, feet.y, feet.z, velocity.x, velocity.y, velocity.z]
+    || ![
+      feet.x,
+      feet.y,
+      feet.z,
+      velocity.x,
+      velocity.y,
+      velocity.z,
+      yawMilliDegrees,
+      pitchMilliDegrees,
+    ]
       .every(Number.isFinite)
   ) {
     throw new Error(`RELAY_ROUTE_POSITION_UNAVAILABLE label=${label}`);
   }
-  return { feet, velocity };
+  return { feet, velocity, yawMilliDegrees, pitchMilliDegrees };
+}
+
+function signedYawMilliDegrees(yawMilliDegrees) {
+  return ((yawMilliDegrees + 180_000) % 360_000 + 360_000) % 360_000 - 180_000;
+}
+
+function clamp(value, minimum, maximum) {
+  return Math.max(minimum, Math.min(maximum, value));
 }
 
 function insideHorizontalBounds(feet, bounds) {
@@ -182,6 +208,12 @@ function assertOverProvenMainFloor(snapshot, label, maximumFeetY = settledFloorM
 
 function assertCapturedOnFloor(snapshot, label, requiredBounds) {
   const proof = assertOverProvenMainFloor(snapshot, label);
+  if (snapshot?.match?.localLifePhase !== 'alive') {
+    throw new Error(
+      `RELAY_CAPTURE_LOCAL_PLAYER_NOT_ALIVE label=${label}`
+      + ` phase=${snapshot?.match?.localLifePhase}`,
+    );
+  }
   if (!insideHorizontalBounds(proof.feet, requiredBounds)) {
     throw new Error(
       `RELAY_ROUTE_CAPTURE_BOUNDS_MISMATCH label=${label}`
@@ -195,16 +227,92 @@ function assertCapturedOnFloor(snapshot, label, requiredBounds) {
       + ` verticalSpeed=${proof.velocity.y}`,
     );
   }
+  const signedYaw = signedYawMilliDegrees(proof.yawMilliDegrees);
+  if (
+    Math.abs(signedYaw) > maximumCaptureLookErrorMilliDegrees
+    || Math.abs(proof.pitchMilliDegrees) > maximumCaptureLookErrorMilliDegrees
+  ) {
+    throw new Error(
+      `RELAY_CAPTURE_LOOK_NOT_NEUTRAL label=${label}`
+      + ` yaw=${signedYaw}`
+      + ` pitch=${proof.pitchMilliDegrees}`,
+    );
+  }
   routeFloorAssertions.push(Object.freeze({
     label,
     authorityFloorRegion: proof.region.id,
     requiredCaptureBounds: requiredBounds.id,
     feetPosition: Object.freeze({ ...proof.feet }),
     velocity: Object.freeze({ ...proof.velocity }),
+    yawMilliDegrees: signedYaw,
+    pitchMilliDegrees: proof.pitchMilliDegrees,
     serverTick: snapshot.serverTick,
     status: 'PASS',
   }));
   return snapshot;
+}
+
+async function alignCameraToNeutral(canvasBounds, label) {
+  if (captureMousePosition === null) {
+    captureMousePosition = {
+      x: canvasBounds.x + canvasBounds.width / 2,
+      y: canvasBounds.y + canvasBounds.height / 2,
+    };
+  }
+  for (let iteration = 0; iteration < 6; iteration += 1) {
+    const snapshot = await readPracticeSnapshot();
+    const proof = finitePosition(snapshot, `${label}:camera_alignment`);
+    const signedYaw = signedYawMilliDegrees(proof.yawMilliDegrees);
+    const sample = {
+      label,
+      iteration,
+      yawMilliDegrees: signedYaw,
+      pitchMilliDegrees: proof.pitchMilliDegrees,
+    };
+    if (
+      Math.abs(signedYaw) <= maximumCaptureLookErrorMilliDegrees
+      && Math.abs(proof.pitchMilliDegrees) <= maximumCaptureLookErrorMilliDegrees
+    ) {
+      cameraAlignmentSamples.push(Object.freeze({ ...sample, status: 'PASS' }));
+      return;
+    }
+    const deltaX = clamp(
+      Math.round(-signedYaw / mouseMilliDegreesPerPixel),
+      -maximumCameraCorrectionPixelsPerStep,
+      maximumCameraCorrectionPixelsPerStep,
+    );
+    const deltaY = clamp(
+      Math.round(proof.pitchMilliDegrees / mouseMilliDegreesPerPixel),
+      -maximumCameraCorrectionPixelsPerStep,
+      maximumCameraCorrectionPixelsPerStep,
+    );
+    captureMousePosition = {
+      x: clamp(
+        captureMousePosition.x + deltaX,
+        canvasBounds.x + 1,
+        canvasBounds.x + canvasBounds.width - 1,
+      ),
+      y: clamp(
+        captureMousePosition.y + deltaY,
+        canvasBounds.y + 1,
+        canvasBounds.y + canvasBounds.height - 1,
+      ),
+    };
+    cameraAlignmentSamples.push(Object.freeze({
+      ...sample,
+      requestedMouseDelta: Object.freeze({ x: deltaX, y: deltaY }),
+      status: 'CORRECTING',
+    }));
+    await page.mouse.move(captureMousePosition.x, captureMousePosition.y);
+    await page.waitForTimeout(160);
+  }
+  const finalSnapshot = await readPracticeSnapshot();
+  const finalProof = finitePosition(finalSnapshot, `${label}:camera_alignment_final`);
+  throw new Error(
+    `RELAY_CAMERA_ALIGNMENT_FAILED label=${label}`
+    + ` yaw=${signedYawMilliDegrees(finalProof.yawMilliDegrees)}`
+    + ` pitch=${finalProof.pitchMilliDegrees}`,
+  );
 }
 
 async function moveToSafeFloorTarget(keys, label, requiredBounds, timeoutMilliseconds) {
@@ -232,11 +340,7 @@ async function moveToSafeFloorTarget(keys, label, requiredBounds, timeoutMillise
     throw new Error(`RELAY_ROUTE_TARGET_TIMEOUT label=${label} target=${requiredBounds.id}`);
   }
   await page.waitForTimeout(180);
-  return assertCapturedOnFloor(
-    await practiceSnapshot(label),
-    label,
-    requiredBounds,
-  );
+  return practiceSnapshot(`${label}:arrival`);
 }
 
 async function performSafeMovementContact() {
@@ -247,7 +351,7 @@ async function performSafeMovementContact() {
     await page.keyboard.down('w');
     pressedKeys.push('w');
     await page.keyboard.press('Space');
-    const deadline = Date.now() + 1_050;
+    const deadline = Date.now() + 450;
     while (Date.now() < deadline) {
       await page.waitForTimeout(80);
       assertOverProvenMainFloor(
@@ -259,7 +363,7 @@ async function performSafeMovementContact() {
   } finally {
     for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
   }
-  await page.waitForTimeout(220);
+  await page.waitForTimeout(80);
 }
 
 let menuArena = null;
@@ -307,6 +411,10 @@ try {
     canvasBox.x + canvasBox.width / 2,
     canvasBox.y + canvasBox.height / 2,
   );
+  captureMousePosition = {
+    x: canvasBox.x + canvasBox.width / 2,
+    y: canvasBox.y + canvasBox.height / 2,
+  };
   await entryAction.focus();
   const entryActionFocused = await entryAction.evaluate((element) => (
     document.activeElement === element
@@ -319,14 +427,17 @@ try {
   pointerLockAcquired = true;
   await page.waitForTimeout(180);
 
-  assertCapturedOnFloor(
-    await practiceSnapshot('spawn_active'),
-    'spawn_active',
-    provenMainFloorRegions[0],
-  );
   await capture(
     '04-relay-spawn-active-1440x900.png',
     'Centered first-person west-spawn view with the live weapon mount and HUD.',
+    async () => {
+      await alignCameraToNeutral(canvasBox, 'spawn_active');
+      assertCapturedOnFloor(
+        await practiceSnapshot('spawn_active'),
+        'spawn_active',
+        provenMainFloorRegions[0],
+      );
+    },
   );
 
   await moveToSafeFloorTarget(
@@ -338,6 +449,14 @@ try {
   await capture(
     '05-relay-route-one-1440x900.png',
     'Player-eye route read from the proven west connector authority floor.',
+    async () => {
+      await alignCameraToNeutral(canvasBox, 'route_one');
+      assertCapturedOnFloor(
+        await practiceSnapshot('route_one'),
+        'route_one',
+        routeOneCaptureBounds,
+      );
+    },
   );
 
   await moveToSafeFloorTarget(
@@ -349,28 +468,43 @@ try {
   await capture(
     '06-relay-route-two-1440x900.png',
     'Second route read after crossing the proven connector-to-central-court seam.',
+    async () => {
+      await alignCameraToNeutral(canvasBox, 'route_two');
+      assertCapturedOnFloor(
+        await practiceSnapshot('route_two'),
+        'route_two',
+        routeTwoCaptureBounds,
+      );
+    },
   );
 
   await performSafeMovementContact();
+  await alignCameraToNeutral(canvasBox, 'movement_contact');
   await page.mouse.down({ button: 'left' });
-  await page.waitForTimeout(160);
-  await page.mouse.up({ button: 'left' });
-  assertCapturedOnFloor(
-    await practiceSnapshot('movement_contact'),
-    'movement_contact',
-    Object.freeze({
-      ...provenMainFloorRegions[2],
-      id: 'relay_floor_central_court_movement_contact',
-    }),
-  );
-  await capture(
-    '07-relay-movement-contact-1440x900.png',
-    'Grounded sprint/jump/contact sample on the proven central-court authority floor.',
-  );
+  try {
+    await capture(
+      '07-relay-movement-contact-1440x900.png',
+      'Grounded sprint/jump/fire sample on the proven central-court authority floor.',
+      async () => {
+        assertCapturedOnFloor(
+          await practiceSnapshot('movement_contact'),
+          'movement_contact',
+          Object.freeze({
+            ...provenMainFloorRegions[2],
+            id: 'relay_floor_central_court_movement_contact',
+          }),
+        );
+      },
+      80,
+    );
+  } finally {
+    await page.mouse.up({ button: 'left' });
+  }
 
-  practiceAfter = await practiceSnapshot('final');
-  assertCapturedOnFloor(
-    practiceAfter,
+  await page.waitForTimeout(80);
+  await alignCameraToNeutral(canvasBox, 'final');
+  practiceAfter = assertCapturedOnFloor(
+    await practiceSnapshot('final'),
     'final',
     Object.freeze({
       ...provenMainFloorRegions[2],
@@ -385,9 +519,9 @@ try {
   throw error;
 } finally {
   await writeFile(
-    path.join(outputRoot, 'runtime.json'),
+    path.join(outputRoot, 'runtime.partial.json'),
     `${JSON.stringify({
-      schema: 'kyx-relay-visual-candidate-player-eye-v8',
+      schema: 'kyx-relay-visual-candidate-player-eye-v9',
       capturedAt: new Date().toISOString(),
       buildCommit,
       buildMode: 'staging-review',
@@ -400,6 +534,7 @@ try {
           maximum: settledFloorMaximumY,
         },
         maximumSettledVerticalSpeed: settledMaximumVerticalSpeed,
+        maximumCaptureLookErrorMilliDegrees,
         provenMainFloorRegions,
         routeOneCaptureBounds,
         routeTwoCaptureBounds,
@@ -410,6 +545,7 @@ try {
       pointerLockAcquired,
       movementSnapshots,
       routeFloorAssertions,
+      cameraAlignmentSamples,
       glbResponses,
       captures,
       errors,
@@ -524,6 +660,11 @@ if (routeFloorAssertions.some(({ label }, index) => (
     )}`,
   );
 }
+
+await rename(
+  path.join(outputRoot, 'runtime.partial.json'),
+  path.join(outputRoot, 'runtime.json'),
+);
 
 process.stdout.write(`${JSON.stringify({
   status: 'RELAY_PLAYER_EYE_PACKET_CAPTURED',

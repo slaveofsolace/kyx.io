@@ -133,6 +133,8 @@ interface LocalPracticeDiagnosticsV1 {
     readonly playerId: string;
     readonly feetPosition: Readonly<{ x: number; y: number; z: number }>;
     readonly velocity: Readonly<{ x: number; y: number; z: number }>;
+    readonly yawMilliDegrees: number;
+    readonly pitchMilliDegrees: number;
     readonly teleportCooldownTicksRemaining: number;
   }>;
   readonly render3d: ReturnType<OnlineAuthorityThreeRuntime['diagnostics']>;
@@ -873,6 +875,8 @@ export async function mountLocalInkfallPracticeRoute(
         playerId: localPlayer.playerId,
         feetPosition: Object.freeze({ ...authoritativeMovement.feetPosition }),
         velocity: Object.freeze({ ...authoritativeMovement.velocity }),
+        yawMilliDegrees: authoritativeMovement.yawMilliDegrees,
+        pitchMilliDegrees: authoritativeMovement.pitchMilliDegrees,
         teleportCooldownTicksRemaining:
           authoritativeMovement.teleportCooldownTicksRemaining,
       }),

@@ -343,6 +343,8 @@ test.describe('local Relay Practice route', () => {
           y: expect.any(Number),
           z: expect.any(Number),
         },
+        yawMilliDegrees: expect.any(Number),
+        pitchMilliDegrees: expect.any(Number),
       },
       render3d: {
         status: 'ready',
