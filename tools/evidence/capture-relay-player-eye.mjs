@@ -9,13 +9,79 @@ function option(name, fallback) {
 }
 
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
+const v3EvidenceRoot = path.resolve(
+  'evidence/2026-08-09/canonical-combat-presentation-integration-v3',
+);
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-09/relay-visual-candidate-player-eye-v14-open-sky-v5',
+  'evidence/2026-08-09/canonical-combat-presentation-integration-v3/runtime',
 ));
 const buildCommit = option('--commit', 'working-tree');
 const expectedPresentationReference = 'relay@1/open-sky/v5';
+const expectedAuthorityFixtureHash = '95ec4f13a599892b';
 const maximumBasePresentationMeshCount = 96;
+const protectedEvidenceRoots = Object.freeze([
+  path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v1'),
+  path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v2'),
+]);
+const provenMainFloorRegions = Object.freeze([
+  Object.freeze({
+    id: 'relay_spawn_pad_west',
+    minimumX: -33_000,
+    maximumX: -23_000,
+    minimumZ: -7_000,
+    maximumZ: 7_000,
+  }),
+  Object.freeze({
+    id: 'relay_floor_west_connector',
+    minimumX: -23_000,
+    maximumX: -13_000,
+    minimumZ: -4_000,
+    maximumZ: 4_000,
+  }),
+  Object.freeze({
+    id: 'relay_floor_central_court',
+    minimumX: -13_000,
+    maximumX: 13_000,
+    minimumZ: -8_500,
+    maximumZ: 10_000,
+  }),
+]);
+const routeOneCaptureBounds = Object.freeze({
+  id: 'relay_floor_west_connector_capture',
+  minimumX: -19_500,
+  maximumX: -16_500,
+  minimumZ: -3_000,
+  maximumZ: 3_000,
+});
+const routeTwoCaptureBounds = Object.freeze({
+  id: 'relay_floor_central_court_capture',
+  minimumX: -11_500,
+  maximumX: -8_500,
+  minimumZ: -3_000,
+  maximumZ: 3_000,
+});
+const settledFloorMinimumY = -100;
+const settledFloorMaximumY = 250;
+const settledMaximumVerticalSpeed = 250;
+
+function containsPath(root, candidate) {
+  const relative = path.relative(root, candidate);
+  return relative === '' || (
+    relative !== '..'
+    && !relative.startsWith(`..${path.sep}`)
+    && !path.isAbsolute(relative)
+  );
+}
+
+for (const protectedRoot of protectedEvidenceRoots) {
+  if (containsPath(protectedRoot, outputRoot)) {
+    throw new Error(`RELAY_PROTECTED_EVIDENCE_ROOT actual=${outputRoot}`);
+  }
+}
+if (!containsPath(v3EvidenceRoot, outputRoot)) {
+  throw new Error(`RELAY_V3_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
+}
 
 await mkdir(outputRoot, { recursive: true });
 
@@ -29,6 +95,8 @@ const errors = { console: [], page: [], requests: [] };
 const glbResponses = [];
 const captures = [];
 const movementSnapshots = [];
+const routeFloorAssertions = [];
+let captureFailure = null;
 
 page.on('console', (message) => {
   if (message.type() === 'error') errors.console.push(message.text());
@@ -53,18 +121,145 @@ async function capture(name, notes) {
 }
 
 async function practiceSnapshot(label) {
-  const snapshot = await page.evaluate(() => (
-    window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
-  ));
+  const snapshot = await readPracticeSnapshot();
   movementSnapshots.push({ label, snapshot });
   return snapshot;
 }
 
-async function move(keys, durationMilliseconds) {
-  for (const key of keys) await page.keyboard.down(key);
-  await page.waitForTimeout(durationMilliseconds);
-  for (const key of [...keys].reverse()) await page.keyboard.up(key);
+async function readPracticeSnapshot() {
+  return page.evaluate(() => (
+    window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
+  ));
+}
+
+function finitePosition(snapshot, label) {
+  const feet = snapshot?.localAuthoritativePlayer?.feetPosition;
+  const velocity = snapshot?.localAuthoritativePlayer?.velocity;
+  if (
+    feet === null
+    || feet === undefined
+    || velocity === null
+    || velocity === undefined
+    || ![feet.x, feet.y, feet.z, velocity.x, velocity.y, velocity.z]
+      .every(Number.isFinite)
+  ) {
+    throw new Error(`RELAY_ROUTE_POSITION_UNAVAILABLE label=${label}`);
+  }
+  return { feet, velocity };
+}
+
+function insideHorizontalBounds(feet, bounds) {
+  return feet.x >= bounds.minimumX
+    && feet.x <= bounds.maximumX
+    && feet.z >= bounds.minimumZ
+    && feet.z <= bounds.maximumZ;
+}
+
+function assertOverProvenMainFloor(snapshot, label, maximumFeetY = settledFloorMaximumY) {
+  if (snapshot?.fixtureHash !== expectedAuthorityFixtureHash) {
+    throw new Error(
+      `RELAY_ROUTE_FIXTURE_HASH_MISMATCH label=${label}`
+      + ` actual=${snapshot?.fixtureHash}`
+      + ` expected=${expectedAuthorityFixtureHash}`,
+    );
+  }
+  const { feet, velocity } = finitePosition(snapshot, label);
+  const region = provenMainFloorRegions.find((candidate) => (
+    insideHorizontalBounds(feet, candidate)
+  ));
+  if (
+    region === undefined
+    || feet.y < settledFloorMinimumY
+    || feet.y > maximumFeetY
+  ) {
+    throw new Error(
+      `RELAY_ROUTE_LEFT_PROVEN_MAIN_FLOOR label=${label}`
+      + ` feet=${JSON.stringify(feet)}`,
+    );
+  }
+  return { feet, velocity, region };
+}
+
+function assertCapturedOnFloor(snapshot, label, requiredBounds) {
+  const proof = assertOverProvenMainFloor(snapshot, label);
+  if (!insideHorizontalBounds(proof.feet, requiredBounds)) {
+    throw new Error(
+      `RELAY_ROUTE_CAPTURE_BOUNDS_MISMATCH label=${label}`
+      + ` expected=${requiredBounds.id}`
+      + ` feet=${JSON.stringify(proof.feet)}`,
+    );
+  }
+  if (Math.abs(proof.velocity.y) > settledMaximumVerticalSpeed) {
+    throw new Error(
+      `RELAY_ROUTE_CAPTURE_NOT_SETTLED label=${label}`
+      + ` verticalSpeed=${proof.velocity.y}`,
+    );
+  }
+  routeFloorAssertions.push(Object.freeze({
+    label,
+    authorityFloorRegion: proof.region.id,
+    requiredCaptureBounds: requiredBounds.id,
+    feetPosition: Object.freeze({ ...proof.feet }),
+    velocity: Object.freeze({ ...proof.velocity }),
+    serverTick: snapshot.serverTick,
+    status: 'PASS',
+  }));
+  return snapshot;
+}
+
+async function moveToSafeFloorTarget(keys, label, requiredBounds, timeoutMilliseconds) {
+  let reached = false;
+  const pressedKeys = [];
+  try {
+    for (const key of keys) {
+      await page.keyboard.down(key);
+      pressedKeys.push(key);
+    }
+    const deadline = Date.now() + timeoutMilliseconds;
+    while (Date.now() < deadline) {
+      await page.waitForTimeout(80);
+      const snapshot = await readPracticeSnapshot();
+      const proof = assertOverProvenMainFloor(snapshot, `${label}:in_flight`);
+      if (insideHorizontalBounds(proof.feet, requiredBounds)) {
+        reached = true;
+        break;
+      }
+    }
+  } finally {
+    for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
+  }
+  if (!reached) {
+    throw new Error(`RELAY_ROUTE_TARGET_TIMEOUT label=${label} target=${requiredBounds.id}`);
+  }
   await page.waitForTimeout(180);
+  return assertCapturedOnFloor(
+    await practiceSnapshot(label),
+    label,
+    requiredBounds,
+  );
+}
+
+async function performSafeMovementContact() {
+  const pressedKeys = [];
+  try {
+    await page.keyboard.down('Shift');
+    pressedKeys.push('Shift');
+    await page.keyboard.down('w');
+    pressedKeys.push('w');
+    await page.keyboard.press('Space');
+    const deadline = Date.now() + 1_050;
+    while (Date.now() < deadline) {
+      await page.waitForTimeout(80);
+      assertOverProvenMainFloor(
+        await readPracticeSnapshot(),
+        'movement_contact:in_flight',
+        3_500,
+      );
+    }
+  } finally {
+    for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
+  }
+  await page.waitForTimeout(220);
 }
 
 let menuArena = null;
@@ -95,93 +290,130 @@ try {
   await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined, null, {
     timeout: 30_000,
   });
-  await page.locator('.local-practice-gate__enter').waitFor({ state: 'visible' });
+  const entryAction = page.locator('.local-practice-gate__enter');
+  await entryAction.waitFor({ state: 'visible' });
   practiceBefore = await practiceSnapshot('entry_gate');
   await capture(
     '03-relay-entry-gate-1440x900.png',
     'Player-eye spawn view before capture; Relay identity, controls, HUD, and map are visible.',
   );
 
-  await page.locator('.local-practice-gate__enter').click();
-  try {
-    await page.waitForFunction(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().pointerLocked === true
-    ), null, { timeout: 5_000 });
-    pointerLockAcquired = true;
-  } catch {
-    pointerLockAcquired = false;
+  const canvas = page.locator('#game-canvas');
+  const canvasBox = await canvas.boundingBox();
+  if (canvasBox === null) {
+    throw new Error('RELAY_GAME_CANVAS_BOUNDS_UNAVAILABLE');
   }
+  await page.mouse.move(
+    canvasBox.x + canvasBox.width / 2,
+    canvasBox.y + canvasBox.height / 2,
+  );
+  await entryAction.focus();
+  const entryActionFocused = await entryAction.evaluate((element) => (
+    document.activeElement === element
+  ));
+  if (!entryActionFocused) throw new Error('RELAY_ENTRY_ACTION_FOCUS_FAILED');
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => (
+    window.__KYX_LOCAL_PRACTICE__?.getSnapshot().pointerLocked === true
+  ), null, { timeout: 5_000 });
+  pointerLockAcquired = true;
+  await page.waitForTimeout(180);
 
-  await practiceSnapshot('spawn_active');
+  assertCapturedOnFloor(
+    await practiceSnapshot('spawn_active'),
+    'spawn_active',
+    provenMainFloorRegions[0],
+  );
   await capture(
     '04-relay-spawn-active-1440x900.png',
-    'Unobstructed first-person spawn view with the live weapon mount and HUD.',
+    'Centered first-person west-spawn view with the live weapon mount and HUD.',
   );
 
-  if (pointerLockAcquired) {
-    const canvas = page.locator('#game-canvas');
-    const box = await canvas.boundingBox();
-    if (box !== null) {
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-      await page.mouse.move(box.x + box.width * 0.62, box.y + box.height * 0.47, {
-        steps: 12,
-      });
-    }
-    await move(['Shift', 'w'], 3_100);
-    await practiceSnapshot('route_one');
-    await capture(
-      '05-relay-route-one-1440x900.png',
-      'Player-eye route read after a sustained sprint away from spawn.',
-    );
+  await moveToSafeFloorTarget(
+    ['Shift', 'w'],
+    'route_one',
+    routeOneCaptureBounds,
+    5_000,
+  );
+  await capture(
+    '05-relay-route-one-1440x900.png',
+    'Player-eye route read from the proven west connector authority floor.',
+  );
 
-    if (box !== null) {
-      await page.mouse.move(box.x + box.width * 0.39, box.y + box.height * 0.43, {
-        steps: 14,
-      });
-    }
-    await move(['w', 'd'], 1_450);
-    await practiceSnapshot('route_two');
-    await capture(
-      '06-relay-route-two-1440x900.png',
-      'Second route read after a direction change and diagonal movement.',
-    );
+  await moveToSafeFloorTarget(
+    ['Shift', 'w'],
+    'route_two',
+    routeTwoCaptureBounds,
+    4_000,
+  );
+  await capture(
+    '06-relay-route-two-1440x900.png',
+    'Second route read after crossing the proven connector-to-central-court seam.',
+  );
 
-    await page.keyboard.down('Shift');
-    await page.keyboard.down('w');
-    await page.keyboard.press('Space');
-    await page.waitForTimeout(1_050);
-    await page.keyboard.up('w');
-    await page.keyboard.up('Shift');
-    await page.waitForTimeout(220);
-    await page.mouse.down({ button: 'left' });
-    await page.waitForTimeout(160);
-    await page.mouse.up({ button: 'left' });
-    await practiceSnapshot('movement_contact');
-    await capture(
-      '07-relay-movement-contact-1440x900.png',
-      'Sprint/jump/contact sample with first-person weapon, route geometry, and combat HUD.',
-    );
-  }
+  await performSafeMovementContact();
+  await page.mouse.down({ button: 'left' });
+  await page.waitForTimeout(160);
+  await page.mouse.up({ button: 'left' });
+  assertCapturedOnFloor(
+    await practiceSnapshot('movement_contact'),
+    'movement_contact',
+    Object.freeze({
+      ...provenMainFloorRegions[2],
+      id: 'relay_floor_central_court_movement_contact',
+    }),
+  );
+  await capture(
+    '07-relay-movement-contact-1440x900.png',
+    'Grounded sprint/jump/contact sample on the proven central-court authority floor.',
+  );
 
   practiceAfter = await practiceSnapshot('final');
+  assertCapturedOnFloor(
+    practiceAfter,
+    'final',
+    Object.freeze({
+      ...provenMainFloorRegions[2],
+      id: 'relay_floor_central_court_final',
+    }),
+  );
+} catch (error) {
+  captureFailure = Object.freeze({
+    name: error instanceof Error ? error.name : 'UnknownError',
+    message: error instanceof Error ? error.message : String(error),
+  });
+  throw error;
 } finally {
   await writeFile(
     path.join(outputRoot, 'runtime.json'),
     `${JSON.stringify({
-      schema: 'kyx-relay-visual-candidate-player-eye-v7',
+      schema: 'kyx-relay-visual-candidate-player-eye-v8',
       capturedAt: new Date().toISOString(),
       buildCommit,
       buildMode: 'staging-review',
       baseUrl,
       viewport: { width: 1440, height: 900 },
+      routeFloorContract: {
+        fixtureHash: expectedAuthorityFixtureHash,
+        settledFeetY: {
+          minimum: settledFloorMinimumY,
+          maximum: settledFloorMaximumY,
+        },
+        maximumSettledVerticalSpeed: settledMaximumVerticalSpeed,
+        provenMainFloorRegions,
+        routeOneCaptureBounds,
+        routeTwoCaptureBounds,
+      },
       menuArena,
       practiceBefore,
       practiceAfter,
       pointerLockAcquired,
       movementSnapshots,
+      routeFloorAssertions,
       glbResponses,
       captures,
       errors,
+      captureFailure,
       nonclaims: [
         'No human visual or play acceptance is claimed.',
         'Relay Revision 1 is an original local-authority gameplay candidate and is not an accepted/release map.',
@@ -217,6 +449,12 @@ if (
 }
 if (practiceBefore?.mapId !== 'relay') {
   throw new Error(`RELAY_RUNTIME_MAP_ID_MISMATCH actual=${practiceBefore?.mapId}`);
+}
+if (practiceBefore?.fixtureHash !== expectedAuthorityFixtureHash) {
+  throw new Error(
+    `RELAY_RUNTIME_FIXTURE_HASH_MISMATCH actual=${practiceBefore?.fixtureHash}`
+    + ` expected=${expectedAuthorityFixtureHash}`,
+  );
 }
 if (
   practiceBefore?.render3d?.authorityCompatibility
@@ -259,12 +497,41 @@ if (
 if (glbResponses.some(({ url }) => url.includes('inkfall_foundry_rev5_geometry_portal'))) {
   throw new Error('RELAY_RETIRED_FOUNDRY_GLB_REQUESTED');
 }
+if (!pointerLockAcquired) {
+  throw new Error('RELAY_POINTER_LOCK_NOT_ACQUIRED');
+}
+if (captures.length !== 7) {
+  throw new Error(`RELAY_CAPTURE_CARDINALITY_MISMATCH actual=${captures.length}`);
+}
+if (routeFloorAssertions.length !== 5) {
+  throw new Error(
+    `RELAY_ROUTE_FLOOR_ASSERTION_CARDINALITY_MISMATCH actual=${routeFloorAssertions.length}`,
+  );
+}
+const expectedFloorAssertionLabels = Object.freeze([
+  'spawn_active',
+  'route_one',
+  'route_two',
+  'movement_contact',
+  'final',
+]);
+if (routeFloorAssertions.some(({ label }, index) => (
+  label !== expectedFloorAssertionLabels[index]
+))) {
+  throw new Error(
+    `RELAY_ROUTE_FLOOR_ASSERTION_SEQUENCE_MISMATCH actual=${JSON.stringify(
+      routeFloorAssertions.map(({ label }) => label),
+    )}`,
+  );
+}
 
 process.stdout.write(`${JSON.stringify({
   status: 'RELAY_PLAYER_EYE_PACKET_CAPTURED',
   outputRoot,
   menuArena,
   pointerLockAcquired,
+  routeFloorAssertions,
+  expectedAuthorityFixtureHash,
   presentationReference:
     practiceAfter?.render3d?.presentationReference ?? null,
   presentationMode: practiceAfter?.render3d?.presentationMode ?? null,
