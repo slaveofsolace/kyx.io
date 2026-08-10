@@ -3,18 +3,26 @@ import path from 'node:path';
 
 import { chromium } from 'playwright';
 
+import {
+  captureOrientationResidual,
+  captureOrientationWithinTolerance,
+  RELAY_CAPTURE_FRAME,
+} from './relay-player-eye-orientation-contract.mjs';
+
 function option(name, fallback) {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
 
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
-const v4EvidenceRoot = path.resolve(
-  'evidence/2026-08-10/canonical-combat-presentation-integration-v4',
+const capturePacketIdentity = 'canonical-combat-presentation-integration-v5';
+const capturePacketSchema = 'kyx-relay-visual-candidate-player-eye-v10';
+const v5EvidenceRoot = path.resolve(
+  `evidence/2026-08-10/${capturePacketIdentity}`,
 );
 const outputRoot = path.resolve(option(
   '--output',
-  'evidence/2026-08-10/canonical-combat-presentation-integration-v4/runtime',
+  `evidence/2026-08-10/${capturePacketIdentity}/runtime`,
 ));
 const buildCommit = option('--commit', 'working-tree');
 const expectedPresentationReference = 'relay@1/open-sky/v5';
@@ -24,6 +32,7 @@ const protectedEvidenceRoots = Object.freeze([
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v1'),
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v2'),
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v3'),
+  path.resolve('evidence/2026-08-10/canonical-combat-presentation-integration-v4'),
 ]);
 const provenMainFloorRegions = Object.freeze([
   Object.freeze({
@@ -83,8 +92,8 @@ for (const protectedRoot of protectedEvidenceRoots) {
     throw new Error(`RELAY_PROTECTED_EVIDENCE_ROOT actual=${outputRoot}`);
   }
 }
-if (!containsPath(v4EvidenceRoot, outputRoot)) {
-  throw new Error(`RELAY_V4_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
+if (!containsPath(v5EvidenceRoot, outputRoot)) {
+  throw new Error(`RELAY_V5_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
 }
 
 await mkdir(outputRoot, { recursive: true });
@@ -166,10 +175,6 @@ function finitePosition(snapshot, label) {
   return { feet, velocity, yawMilliDegrees, pitchMilliDegrees };
 }
 
-function signedYawMilliDegrees(yawMilliDegrees) {
-  return ((yawMilliDegrees + 180_000) % 360_000 + 360_000) % 360_000 - 180_000;
-}
-
 function clamp(value, minimum, maximum) {
   return Math.max(minimum, Math.min(maximum, value));
 }
@@ -189,7 +194,12 @@ function assertOverProvenMainFloor(snapshot, label, maximumFeetY = settledFloorM
       + ` expected=${expectedAuthorityFixtureHash}`,
     );
   }
-  const { feet, velocity } = finitePosition(snapshot, label);
+  const {
+    feet,
+    velocity,
+    yawMilliDegrees,
+    pitchMilliDegrees,
+  } = finitePosition(snapshot, label);
   const region = provenMainFloorRegions.find((candidate) => (
     insideHorizontalBounds(feet, candidate)
   ));
@@ -203,7 +213,13 @@ function assertOverProvenMainFloor(snapshot, label, maximumFeetY = settledFloorM
       + ` feet=${JSON.stringify(feet)}`,
     );
   }
-  return { feet, velocity, region };
+  return {
+    feet,
+    velocity,
+    yawMilliDegrees,
+    pitchMilliDegrees,
+    region,
+  };
 }
 
 function assertCapturedOnFloor(snapshot, label, requiredBounds) {
@@ -227,15 +243,22 @@ function assertCapturedOnFloor(snapshot, label, requiredBounds) {
       + ` verticalSpeed=${proof.velocity.y}`,
     );
   }
-  const signedYaw = signedYawMilliDegrees(proof.yawMilliDegrees);
-  if (
-    Math.abs(signedYaw) > maximumCaptureLookErrorMilliDegrees
-    || Math.abs(proof.pitchMilliDegrees) > maximumCaptureLookErrorMilliDegrees
-  ) {
+  const residual = captureOrientationResidual(
+    proof.yawMilliDegrees,
+    proof.pitchMilliDegrees,
+  );
+  if (!captureOrientationWithinTolerance(
+    residual,
+    maximumCaptureLookErrorMilliDegrees,
+  )) {
     throw new Error(
-      `RELAY_CAPTURE_LOOK_NOT_NEUTRAL label=${label}`
-      + ` yaw=${signedYaw}`
-      + ` pitch=${proof.pitchMilliDegrees}`,
+      `RELAY_CAPTURE_LOOK_OUTSIDE_ROUTE_FRAME label=${label}`
+      + ` actualYaw=${proof.yawMilliDegrees}`
+      + ` actualPitch=${proof.pitchMilliDegrees}`
+      + ` targetYaw=${RELAY_CAPTURE_FRAME.yawMilliDegrees}`
+      + ` targetPitch=${RELAY_CAPTURE_FRAME.pitchMilliDegrees}`
+      + ` yawResidual=${residual.yawMilliDegrees}`
+      + ` pitchResidual=${residual.pitchMilliDegrees}`,
     );
   }
   routeFloorAssertions.push(Object.freeze({
@@ -244,15 +267,20 @@ function assertCapturedOnFloor(snapshot, label, requiredBounds) {
     requiredCaptureBounds: requiredBounds.id,
     feetPosition: Object.freeze({ ...proof.feet }),
     velocity: Object.freeze({ ...proof.velocity }),
-    yawMilliDegrees: signedYaw,
+    yawMilliDegrees: proof.yawMilliDegrees,
     pitchMilliDegrees: proof.pitchMilliDegrees,
+    targetYawMilliDegrees: RELAY_CAPTURE_FRAME.yawMilliDegrees,
+    targetPitchMilliDegrees: RELAY_CAPTURE_FRAME.pitchMilliDegrees,
+    yawResidualMilliDegrees: residual.yawMilliDegrees,
+    pitchResidualMilliDegrees: residual.pitchMilliDegrees,
+    maximumOrientationResidualMilliDegrees: maximumCaptureLookErrorMilliDegrees,
     serverTick: snapshot.serverTick,
     status: 'PASS',
   }));
   return snapshot;
 }
 
-async function alignCameraToNeutral(canvasBounds, label) {
+async function alignCameraToCaptureFrame(canvasBounds, label) {
   if (captureMousePosition === null) {
     captureMousePosition = {
       x: canvasBounds.x + canvasBounds.width / 2,
@@ -262,45 +290,59 @@ async function alignCameraToNeutral(canvasBounds, label) {
   for (let iteration = 0; iteration < 6; iteration += 1) {
     const snapshot = await readPracticeSnapshot();
     const proof = finitePosition(snapshot, `${label}:camera_alignment`);
-    const signedYaw = signedYawMilliDegrees(proof.yawMilliDegrees);
+    const residual = captureOrientationResidual(
+      proof.yawMilliDegrees,
+      proof.pitchMilliDegrees,
+    );
     const sample = {
       label,
       iteration,
-      yawMilliDegrees: signedYaw,
+      targetYawMilliDegrees: RELAY_CAPTURE_FRAME.yawMilliDegrees,
+      targetPitchMilliDegrees: RELAY_CAPTURE_FRAME.pitchMilliDegrees,
+      yawMilliDegrees: proof.yawMilliDegrees,
       pitchMilliDegrees: proof.pitchMilliDegrees,
+      yawResidualMilliDegrees: residual.yawMilliDegrees,
+      pitchResidualMilliDegrees: residual.pitchMilliDegrees,
     };
-    if (
-      Math.abs(signedYaw) <= maximumCaptureLookErrorMilliDegrees
-      && Math.abs(proof.pitchMilliDegrees) <= maximumCaptureLookErrorMilliDegrees
-    ) {
+    if (captureOrientationWithinTolerance(
+      residual,
+      maximumCaptureLookErrorMilliDegrees,
+    )) {
       cameraAlignmentSamples.push(Object.freeze({ ...sample, status: 'PASS' }));
       return;
     }
     const deltaX = clamp(
-      Math.round(-signedYaw / mouseMilliDegreesPerPixel),
+      Math.round(-residual.yawMilliDegrees / mouseMilliDegreesPerPixel),
       -maximumCameraCorrectionPixelsPerStep,
       maximumCameraCorrectionPixelsPerStep,
     );
     const deltaY = clamp(
-      Math.round(proof.pitchMilliDegrees / mouseMilliDegreesPerPixel),
+      Math.round(residual.pitchMilliDegrees / mouseMilliDegreesPerPixel),
       -maximumCameraCorrectionPixelsPerStep,
       maximumCameraCorrectionPixelsPerStep,
     );
-    captureMousePosition = {
+    const previousMousePosition = captureMousePosition;
+    const nextMousePosition = {
       x: clamp(
-        captureMousePosition.x + deltaX,
+        previousMousePosition.x + deltaX,
         canvasBounds.x + 1,
         canvasBounds.x + canvasBounds.width - 1,
       ),
       y: clamp(
-        captureMousePosition.y + deltaY,
+        previousMousePosition.y + deltaY,
         canvasBounds.y + 1,
         canvasBounds.y + canvasBounds.height - 1,
       ),
     };
+    const appliedMouseDelta = Object.freeze({
+      x: nextMousePosition.x - previousMousePosition.x,
+      y: nextMousePosition.y - previousMousePosition.y,
+    });
+    captureMousePosition = nextMousePosition;
     cameraAlignmentSamples.push(Object.freeze({
       ...sample,
       requestedMouseDelta: Object.freeze({ x: deltaX, y: deltaY }),
+      appliedMouseDelta,
       status: 'CORRECTING',
     }));
     await page.mouse.move(captureMousePosition.x, captureMousePosition.y);
@@ -308,10 +350,18 @@ async function alignCameraToNeutral(canvasBounds, label) {
   }
   const finalSnapshot = await readPracticeSnapshot();
   const finalProof = finitePosition(finalSnapshot, `${label}:camera_alignment_final`);
+  const finalResidual = captureOrientationResidual(
+    finalProof.yawMilliDegrees,
+    finalProof.pitchMilliDegrees,
+  );
   throw new Error(
     `RELAY_CAMERA_ALIGNMENT_FAILED label=${label}`
-    + ` yaw=${signedYawMilliDegrees(finalProof.yawMilliDegrees)}`
-    + ` pitch=${finalProof.pitchMilliDegrees}`,
+    + ` actualYaw=${finalProof.yawMilliDegrees}`
+    + ` actualPitch=${finalProof.pitchMilliDegrees}`
+    + ` targetYaw=${RELAY_CAPTURE_FRAME.yawMilliDegrees}`
+    + ` targetPitch=${RELAY_CAPTURE_FRAME.pitchMilliDegrees}`
+    + ` yawResidual=${finalResidual.yawMilliDegrees}`
+    + ` pitchResidual=${finalResidual.pitchMilliDegrees}`,
   );
 }
 
@@ -431,7 +481,7 @@ try {
     '04-relay-spawn-active-1440x900.png',
     'Centered first-person west-spawn view with the live weapon mount and HUD.',
     async () => {
-      await alignCameraToNeutral(canvasBox, 'spawn_active');
+      await alignCameraToCaptureFrame(canvasBox, 'spawn_active');
       assertCapturedOnFloor(
         await practiceSnapshot('spawn_active'),
         'spawn_active',
@@ -450,7 +500,7 @@ try {
     '05-relay-route-one-1440x900.png',
     'Player-eye route read from the proven west connector authority floor.',
     async () => {
-      await alignCameraToNeutral(canvasBox, 'route_one');
+      await alignCameraToCaptureFrame(canvasBox, 'route_one');
       assertCapturedOnFloor(
         await practiceSnapshot('route_one'),
         'route_one',
@@ -469,7 +519,7 @@ try {
     '06-relay-route-two-1440x900.png',
     'Second route read after crossing the proven connector-to-central-court seam.',
     async () => {
-      await alignCameraToNeutral(canvasBox, 'route_two');
+      await alignCameraToCaptureFrame(canvasBox, 'route_two');
       assertCapturedOnFloor(
         await practiceSnapshot('route_two'),
         'route_two',
@@ -479,7 +529,7 @@ try {
   );
 
   await performSafeMovementContact();
-  await alignCameraToNeutral(canvasBox, 'movement_contact');
+  await alignCameraToCaptureFrame(canvasBox, 'movement_contact');
   await page.mouse.down({ button: 'left' });
   try {
     await capture(
@@ -502,7 +552,7 @@ try {
   }
 
   await page.waitForTimeout(80);
-  await alignCameraToNeutral(canvasBox, 'final');
+  await alignCameraToCaptureFrame(canvasBox, 'final');
   practiceAfter = assertCapturedOnFloor(
     await practiceSnapshot('final'),
     'final',
@@ -521,7 +571,8 @@ try {
   await writeFile(
     path.join(outputRoot, 'runtime.partial.json'),
     `${JSON.stringify({
-      schema: 'kyx-relay-visual-candidate-player-eye-v9',
+      schema: capturePacketSchema,
+      identity: capturePacketIdentity,
       capturedAt: new Date().toISOString(),
       buildCommit,
       buildMode: 'staging-review',
@@ -535,6 +586,7 @@ try {
         },
         maximumSettledVerticalSpeed: settledMaximumVerticalSpeed,
         maximumCaptureLookErrorMilliDegrees,
+        captureFrame: RELAY_CAPTURE_FRAME,
         provenMainFloorRegions,
         routeOneCaptureBounds,
         routeTwoCaptureBounds,
@@ -667,7 +719,9 @@ await rename(
 );
 
 process.stdout.write(`${JSON.stringify({
-  status: 'RELAY_PLAYER_EYE_PACKET_CAPTURED',
+  status: 'RELAY_PLAYER_EYE_V5_PACKET_CAPTURED',
+  schema: capturePacketSchema,
+  identity: capturePacketIdentity,
   outputRoot,
   menuArena,
   pointerLockAcquired,
