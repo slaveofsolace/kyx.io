@@ -379,37 +379,37 @@ function createColliderInstances(
   const westConnector = fixture.solids.find(
     ({ id }) => id === 'relay_floor_west_connector',
   );
+  const eastConnector = fixture.solids.find(
+    ({ id }) => id === 'relay_floor_east_connector',
+  );
   const centralCourt = fixture.solids.find(
     ({ id }) => id === 'relay_floor_central_court',
   );
-  if ((westConnector === undefined) !== (centralCourt === undefined)) {
-    throw new Error('RELAY_WEST_CONNECTOR_GAP_ANCHOR_INCOMPLETE');
+  const gapAnchorCount = [westConnector, eastConnector, centralCourt].filter(
+    (solid) => solid !== undefined,
+  ).length;
+  if (gapAnchorCount !== 0 && gapAnchorCount !== 3) {
+    throw new Error('RELAY_CONNECTOR_GAP_ANCHOR_INCOMPLETE');
   }
-  if (westConnector !== undefined && centralCourt !== undefined) {
+  if (
+    westConnector !== undefined
+    && eastConnector !== undefined
+    && centralCourt !== undefined
+  ) {
     if (
       westConnector.shape.type !== 'box'
+      || eastConnector.shape.type !== 'box'
       || centralCourt.shape.type !== 'box'
     ) {
-      throw new Error('RELAY_WEST_CONNECTOR_GAP_ANCHOR_NOT_BOX');
+      throw new Error('RELAY_CONNECTOR_GAP_ANCHOR_NOT_BOX');
     }
-    const connectorHalf = westConnector.shape.halfExtentsMm;
     const courtHalf = centralCourt.shape.halfExtentsMm;
-    const sharedEdgeXmm = westConnector.centerMm.x + connectorHalf.x;
-    const courtWestEdgeXmm = centralCourt.centerMm.x - courtHalf.x;
-    const connectorSouthEdgeZmm = westConnector.centerMm.z - connectorHalf.z;
+    const westConnectorHalf = westConnector.shape.halfExtentsMm;
+    const eastConnectorHalf = eastConnector.shape.halfExtentsMm;
     const courtSouthEdgeZmm = centralCourt.centerMm.z - courtHalf.z;
-    const connectorTopYmm = westConnector.centerMm.y + connectorHalf.y;
     const courtTopYmm = centralCourt.centerMm.y + courtHalf.y;
-    if (
-      sharedEdgeXmm !== courtWestEdgeXmm
-      || connectorTopYmm !== courtTopYmm
-      || courtSouthEdgeZmm >= connectorSouthEdgeZmm
-    ) {
-      throw new Error('RELAY_WEST_CONNECTOR_GAP_ANCHOR_MISMATCH');
-    }
-
     const hazardMaterial = standardMaterial(
-      'RELAY_WEST_CONNECTOR_GAP_HAZARD_AMBER',
+      'RELAY_CONNECTOR_GAP_HAZARD_AMBER',
       0xf0ae55,
       {
         emissive: 0x6a3113,
@@ -418,56 +418,98 @@ function createColliderInstances(
         roughness: 0.5,
       },
     );
-    const hazard = new THREE.InstancedMesh(unitBox, hazardMaterial, 2);
-    hazard.name = 'RELAY_WEST_CONNECTOR_COURT_GAP_HAZARD_INLAYS';
-    hazard.castShadow = false;
-    hazard.receiveShadow = false;
-    hazard.userData.instanceNames = Object.freeze([
-      'RELAY_WEST_CONNECTOR_SOUTH_HAZARD_LIP',
-      'RELAY_CENTRAL_COURT_WEST_SOUTH_HAZARD_LIP',
-    ]);
-    hazard.userData.authorityAlignmentColliderIds = Object.freeze([
-      westConnector.id,
-      centralCourt.id,
-    ]);
-    hazard.userData.visualOnlySurfaceInlay = true;
-    hazard.userData.fakeTraversableSurfaceCount = 0;
-    hazard.userData.hazardMeaning = 'drop_boundary_not_walkable';
-    markRenderOnly(hazard, 'authority_gap_hazard_inlay');
-
     const hazardLiftMeters =
       RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters;
-    const connectorSceneSouthEdgeMeters = -connectorSouthEdgeZmm / 1_000;
-    SCENE_POSITION.set(
-      westConnector.centerMm.x / 1_000,
-      connectorTopYmm / 1_000 + hazardLiftMeters,
-      connectorSceneSouthEdgeMeters - RELAY_GAP_HAZARD_WIDTH_METERS / 2,
-    );
-    SCENE_SCALE.set(
-      connectorHalf.x * 2 / 1_000,
-      0.008,
-      RELAY_GAP_HAZARD_WIDTH_METERS,
-    );
-    SCENE_MATRIX.compose(SCENE_POSITION, SCENE_QUATERNION.identity(), SCENE_SCALE);
-    hazard.setMatrixAt(0, SCENE_MATRIX);
+    for (const definition of [
+      {
+        side: -1,
+        sideName: 'WEST',
+        connector: westConnector,
+        connectorHalf: westConnectorHalf,
+      },
+      {
+        side: 1,
+        sideName: 'EAST',
+        connector: eastConnector,
+        connectorHalf: eastConnectorHalf,
+      },
+    ] as const) {
+      const connectorHalf = definition.connectorHalf;
+      const sharedEdgeXmm = definition.connector.centerMm.x
+        - definition.side * connectorHalf.x;
+      const courtEdgeXmm = centralCourt.centerMm.x
+        + definition.side * courtHalf.x;
+      const connectorSouthEdgeZmm = definition.connector.centerMm.z
+        - connectorHalf.z;
+      const connectorTopYmm = definition.connector.centerMm.y
+        + connectorHalf.y;
+      if (
+        sharedEdgeXmm !== courtEdgeXmm
+        || connectorTopYmm !== courtTopYmm
+        || courtSouthEdgeZmm >= connectorSouthEdgeZmm
+      ) {
+        throw new Error(`RELAY_${definition.sideName}_CONNECTOR_GAP_ANCHOR_MISMATCH`);
+      }
 
-    SCENE_POSITION.set(
-      sharedEdgeXmm / 1_000 + RELAY_GAP_HAZARD_WIDTH_METERS / 2,
-      courtTopYmm / 1_000 + hazardLiftMeters,
-      -(connectorSouthEdgeZmm + courtSouthEdgeZmm) / 2_000,
-    );
-    SCENE_SCALE.set(
-      RELAY_GAP_HAZARD_WIDTH_METERS,
-      0.008,
-      (connectorSouthEdgeZmm - courtSouthEdgeZmm) / 1_000,
-    );
-    SCENE_MATRIX.compose(SCENE_POSITION, SCENE_QUATERNION.identity(), SCENE_SCALE);
-    hazard.setMatrixAt(1, SCENE_MATRIX);
-    hazard.instanceMatrix.needsUpdate = true;
-    hazard.computeBoundingBox();
-    hazard.computeBoundingSphere();
-    parent.add(hazard);
-    meshCount += 1;
+      const hazard = new THREE.InstancedMesh(unitBox, hazardMaterial, 2);
+      hazard.name =
+        `RELAY_${definition.sideName}_CONNECTOR_COURT_GAP_HAZARD_INLAYS`;
+      hazard.castShadow = false;
+      hazard.receiveShadow = false;
+      hazard.userData.instanceNames = Object.freeze([
+        `RELAY_${definition.sideName}_CONNECTOR_SOUTH_HAZARD_LIP`,
+        `RELAY_CENTRAL_COURT_${definition.sideName}_SOUTH_HAZARD_LIP`,
+      ]);
+      hazard.userData.authorityAlignmentColliderIds = Object.freeze([
+        definition.connector.id,
+        centralCourt.id,
+      ]);
+      hazard.userData.visualOnlySurfaceInlay = true;
+      hazard.userData.fakeTraversableSurfaceCount = 0;
+      hazard.userData.hazardMeaning = 'drop_boundary_not_walkable';
+      markRenderOnly(hazard, 'authority_gap_hazard_inlay');
+
+      const connectorSceneSouthEdgeMeters = -connectorSouthEdgeZmm / 1_000;
+      SCENE_POSITION.set(
+        definition.connector.centerMm.x / 1_000,
+        connectorTopYmm / 1_000 + hazardLiftMeters,
+        connectorSceneSouthEdgeMeters - RELAY_GAP_HAZARD_WIDTH_METERS / 2,
+      );
+      SCENE_SCALE.set(
+        connectorHalf.x * 2 / 1_000,
+        0.008,
+        RELAY_GAP_HAZARD_WIDTH_METERS,
+      );
+      SCENE_MATRIX.compose(
+        SCENE_POSITION,
+        SCENE_QUATERNION.identity(),
+        SCENE_SCALE,
+      );
+      hazard.setMatrixAt(0, SCENE_MATRIX);
+
+      SCENE_POSITION.set(
+        sharedEdgeXmm / 1_000
+          - definition.side * RELAY_GAP_HAZARD_WIDTH_METERS / 2,
+        courtTopYmm / 1_000 + hazardLiftMeters,
+        -(connectorSouthEdgeZmm + courtSouthEdgeZmm) / 2_000,
+      );
+      SCENE_SCALE.set(
+        RELAY_GAP_HAZARD_WIDTH_METERS,
+        0.008,
+        (connectorSouthEdgeZmm - courtSouthEdgeZmm) / 1_000,
+      );
+      SCENE_MATRIX.compose(
+        SCENE_POSITION,
+        SCENE_QUATERNION.identity(),
+        SCENE_SCALE,
+      );
+      hazard.setMatrixAt(1, SCENE_MATRIX);
+      hazard.instanceMatrix.needsUpdate = true;
+      hazard.computeBoundingBox();
+      hazard.computeBoundingSphere();
+      parent.add(hazard);
+      meshCount += 1;
+    }
   }
 
   if (waypoints.length > 0) {
