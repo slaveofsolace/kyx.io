@@ -729,6 +729,7 @@ describe('development movement visualization boundary', () => {
         update: driverUpdate,
       },
       _menuOpen: false,
+      _relayMenuPreview: { visible: false },
       _playerDowned: false,
       _playerBody: null,
       state: 'playing',

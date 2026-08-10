@@ -64,6 +64,44 @@ describe('KyxWorldWeaponMount', () => {
     expect(dispose).toHaveBeenCalledWith(next.group);
   });
 
+  it('keeps exactly one world root across rifle to melee to rifle swaps', () => {
+    const avatar = new THREE.Group();
+    const hand = new THREE.Group();
+    avatar.add(hand);
+    const firstRifle = weaponRoot('vertical_rifle_v1');
+    const edge = weaponRoot('kyx_edge_v1');
+    const secondRifle = weaponRoot('vertical_rifle_v1');
+    const dispose = vi.fn();
+    hand.add(firstRifle.group);
+
+    replaceKyxWorldWeaponMount(
+      avatar,
+      firstRifle,
+      edge,
+      (root) => hand.add(root),
+      dispose,
+    );
+    const result = replaceKyxWorldWeaponMount(
+      avatar,
+      edge,
+      secondRifle,
+      (root) => hand.add(root),
+      dispose,
+    );
+
+    expect(hand.children).toEqual([secondRifle.group]);
+    expect(result).toEqual({
+      weaponRootCount: 1,
+      overlapFree: true,
+      selectedWeaponMatches: true,
+      activeAuthorityWeaponId: 'vertical_rifle_v1',
+    });
+    expect(dispose.mock.calls.map(([root]) => root)).toEqual([
+      firstRifle.group,
+      edge.group,
+    ]);
+  });
+
   it('validates the next world root before disturbing the current mount', () => {
     const avatar = new THREE.Group();
     const previous = weaponRoot('vertical_rifle_v1');

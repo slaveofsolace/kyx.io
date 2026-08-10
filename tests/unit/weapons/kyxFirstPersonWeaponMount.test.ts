@@ -107,6 +107,40 @@ describe('KyxFirstPersonWeaponMount', () => {
     expect(dispose).toHaveBeenCalledTimes(1);
   });
 
+  it('keeps exactly one weapon root across rifle to melee to rifle swaps', () => {
+    const mount = new THREE.Group();
+    const firstRifle = weaponRoot('vertical_rifle_v1');
+    const edge = weaponRoot('kyx_edge_v1');
+    const secondRifle = weaponRoot('vertical_rifle_v1');
+    const dispose = vi.fn();
+    mount.add(firstRifle.group);
+
+    replaceKyxFirstPersonWeaponMount(
+      mount,
+      firstRifle,
+      edge,
+      dispose,
+    );
+    const result = replaceKyxFirstPersonWeaponMount(
+      mount,
+      edge,
+      secondRifle,
+      dispose,
+    );
+
+    expect(mount.children).toEqual([secondRifle.group]);
+    expect(result).toEqual({
+      childCount: 1,
+      weaponRootCount: 1,
+      overlapFree: true,
+      activeAuthorityWeaponId: 'vertical_rifle_v1',
+    });
+    expect(dispose.mock.calls.map(([root]) => root)).toEqual([
+      firstRifle.group,
+      edge.group,
+    ]);
+  });
+
   it('rejects a malformed next root before removing the current weapon', () => {
     const mount = new THREE.Group();
     const previous = weaponRoot('vertical_rifle_v1');

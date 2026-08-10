@@ -84,5 +84,26 @@ describe('online authority presentation routing', () => {
       .toBe('route');
     expect(selectOnlineAbilityPresentationAudioOwner('launch_impulse', fallback))
       .toBe('route');
+
+    const threeDimensionalWithoutRuntime = {
+      threeRuntimeActive: false,
+      threeDimensionalMap: true,
+    };
+    expect(selectOnlineAbilityPresentationAudioOwner(
+      'throwable',
+      threeDimensionalWithoutRuntime,
+    )).toBe('none');
+    expect(selectOnlineAbilityPresentationAudioOwner(
+      'launch_detonation',
+      threeDimensionalWithoutRuntime,
+    )).toBe('none');
+    expect(selectOnlineAbilityPresentationAudioOwner(
+      'launch_impulse',
+      threeDimensionalWithoutRuntime,
+    )).toBe('none');
+    expect(selectOnlineAbilityPresentationAudioOwner(
+      'route_feedback',
+      threeDimensionalWithoutRuntime,
+    )).toBe('route');
   });
 });
