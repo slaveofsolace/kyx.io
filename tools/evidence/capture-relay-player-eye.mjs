@@ -8,6 +8,11 @@ import {
   captureOrientationWithinTolerance,
   RELAY_CAPTURE_FRAME,
 } from './relay-player-eye-orientation-contract.mjs';
+import {
+  createRouteProgressWatchdog,
+  horizontalTargetDelta,
+  observeRouteProgress,
+} from './relay-player-eye-route-watchdog.mjs';
 
 function option(name, fallback) {
   const index = process.argv.indexOf(name);
@@ -15,9 +20,9 @@ function option(name, fallback) {
 }
 
 const baseUrl = option('--base-url', 'http://127.0.0.1:6338');
-const capturePacketIdentity = 'canonical-combat-presentation-integration-v5';
-const capturePacketSchema = 'kyx-relay-visual-candidate-player-eye-v10';
-const v5EvidenceRoot = path.resolve(
+const capturePacketIdentity = 'canonical-combat-presentation-integration-v6';
+const capturePacketSchema = 'kyx-relay-visual-candidate-player-eye-v11';
+const v6EvidenceRoot = path.resolve(
   `evidence/2026-08-10/${capturePacketIdentity}`,
 );
 const outputRoot = path.resolve(option(
@@ -33,6 +38,7 @@ const protectedEvidenceRoots = Object.freeze([
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v2'),
   path.resolve('evidence/2026-08-09/canonical-combat-presentation-integration-v3'),
   path.resolve('evidence/2026-08-10/canonical-combat-presentation-integration-v4'),
+  path.resolve('evidence/2026-08-10/canonical-combat-presentation-integration-v5'),
 ]);
 const provenMainFloorRegions = Object.freeze([
   Object.freeze({
@@ -71,12 +77,19 @@ const routeTwoCaptureBounds = Object.freeze({
   minimumZ: -3_000,
   maximumZ: 3_000,
 });
+const movementContactBounds = Object.freeze({
+  ...provenMainFloorRegions[2],
+  id: 'relay_floor_central_court_movement_contact',
+});
 const settledFloorMinimumY = -100;
 const settledFloorMaximumY = 250;
 const settledMaximumVerticalSpeed = 250;
 const maximumCaptureLookErrorMilliDegrees = 750;
 const mouseMilliDegreesPerPixel = 110;
 const maximumCameraCorrectionPixelsPerStep = 240;
+const routeAuthorityTickMilliseconds = 50;
+const routeMaximumStalledTicks = 12;
+const routeMinimumProgressMillimeters = 100;
 
 function containsPath(root, candidate) {
   const relative = path.relative(root, candidate);
@@ -92,8 +105,8 @@ for (const protectedRoot of protectedEvidenceRoots) {
     throw new Error(`RELAY_PROTECTED_EVIDENCE_ROOT actual=${outputRoot}`);
   }
 }
-if (!containsPath(v5EvidenceRoot, outputRoot)) {
-  throw new Error(`RELAY_V5_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
+if (!containsPath(v6EvidenceRoot, outputRoot)) {
+  throw new Error(`RELAY_V6_OUTPUT_ROOT_REQUIRED actual=${outputRoot}`);
 }
 
 await mkdir(outputRoot, { recursive: true });
@@ -108,6 +121,8 @@ const errors = { console: [], page: [], requests: [] };
 const glbResponses = [];
 const captures = [];
 const movementSnapshots = [];
+const routeMovementSamples = [];
+const routeMovementReports = [];
 const routeFloorAssertions = [];
 const cameraAlignmentSamples = [];
 let captureFailure = null;
@@ -280,6 +295,110 @@ function assertCapturedOnFloor(snapshot, label, requiredBounds) {
   return snapshot;
 }
 
+function recordRouteMovementSample(
+  snapshot,
+  segment,
+  phase,
+  requiredBounds,
+  sampleOrdinal,
+) {
+  const proof = finitePosition(snapshot, `${segment}:${phase}`);
+  const authorityFloorRegion = provenMainFloorRegions.find((candidate) => (
+    insideHorizontalBounds(proof.feet, candidate)
+  ))?.id ?? null;
+  const targetDelta = horizontalTargetDelta(proof.feet, requiredBounds);
+  const orientationResidual = captureOrientationResidual(
+    proof.yawMilliDegrees,
+    proof.pitchMilliDegrees,
+  );
+  const sample = Object.freeze({
+    sequence: routeMovementSamples.length,
+    segment,
+    phase,
+    sampleOrdinal,
+    serverTick: snapshot?.serverTick ?? null,
+    fixtureHash: snapshot?.fixtureHash ?? null,
+    authorityFloorRegion,
+    targetBounds: requiredBounds.id,
+    targetDelta,
+    feetPosition: Object.freeze({ ...proof.feet }),
+    velocity: Object.freeze({ ...proof.velocity }),
+    yawMilliDegrees: proof.yawMilliDegrees,
+    pitchMilliDegrees: proof.pitchMilliDegrees,
+    yawResidualMilliDegrees: orientationResidual.yawMilliDegrees,
+    pitchResidualMilliDegrees: orientationResidual.pitchMilliDegrees,
+    localLifePhase: snapshot?.match?.localLifePhase ?? null,
+    pointerLocked: snapshot?.pointerLocked ?? null,
+  });
+  routeMovementSamples.push(sample);
+  return Object.freeze({
+    proof,
+    targetDelta,
+    orientationResidual,
+    sample,
+  });
+}
+
+function assertRouteMovementSample(
+  snapshot,
+  observation,
+  maximumFeetY = settledFloorMaximumY,
+) {
+  assertOverProvenMainFloor(
+    snapshot,
+    `${observation.sample.segment}:${observation.sample.phase}`,
+    maximumFeetY,
+  );
+  if (observation.sample.localLifePhase !== 'alive') {
+    throw new Error(
+      `RELAY_ROUTE_PLAYER_NOT_ALIVE segment=${observation.sample.segment}`
+      + ` phase=${observation.sample.phase}`
+      + ` life=${observation.sample.localLifePhase}`
+      + ` tick=${observation.sample.serverTick}`,
+    );
+  }
+  if (observation.sample.pointerLocked !== true) {
+    throw new Error(
+      `RELAY_ROUTE_POINTER_LOCK_LOST segment=${observation.sample.segment}`
+      + ` phase=${observation.sample.phase}`
+      + ` tick=${observation.sample.serverTick}`,
+    );
+  }
+  if (!captureOrientationWithinTolerance(
+    observation.orientationResidual,
+    maximumCaptureLookErrorMilliDegrees,
+  )) {
+    throw new Error(
+      `RELAY_ROUTE_LOOK_DRIFT segment=${observation.sample.segment}`
+      + ` phase=${observation.sample.phase}`
+      + ` yawResidual=${observation.orientationResidual.yawMilliDegrees}`
+      + ` pitchResidual=${observation.orientationResidual.pitchMilliDegrees}`
+      + ` tick=${observation.sample.serverTick}`,
+    );
+  }
+  return observation;
+}
+
+async function prepareRouteMovement(canvasBounds, segment, requiredBounds) {
+  await alignCameraToCaptureFrame(canvasBounds, `${segment}_departure`);
+  const snapshot = await practiceSnapshot(`${segment}:preflight`);
+  return assertRouteMovementSample(
+    snapshot,
+    recordRouteMovementSample(
+      snapshot,
+      segment,
+      'preflight',
+      requiredBounds,
+      null,
+    ),
+  );
+}
+
+function failureCode(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.split(' ', 1)[0];
+}
+
 async function alignCameraToCaptureFrame(canvasBounds, label) {
   if (captureMousePosition === null) {
     captureMousePosition = {
@@ -365,55 +484,206 @@ async function alignCameraToCaptureFrame(canvasBounds, label) {
   );
 }
 
-async function moveToSafeFloorTarget(keys, label, requiredBounds, timeoutMilliseconds) {
+async function moveToSafeFloorTarget(
+  keys,
+  label,
+  requiredBounds,
+  timeoutMilliseconds,
+  preflight,
+) {
   let reached = false;
   const pressedKeys = [];
+  let sampleCount = 0;
+  let firstInFlightSequence = null;
+  let lastInFlightSequence = null;
+  let lastSample = preflight.sample;
+  let outcome = 'not_started';
+  let watchdog = createRouteProgressWatchdog({
+    serverTick: preflight.sample.serverTick,
+    distanceMillimeters: preflight.targetDelta.distance,
+    timeoutMilliseconds,
+    maximumStalledTicks: routeMaximumStalledTicks,
+    minimumProgressMillimeters: routeMinimumProgressMillimeters,
+    authorityTickMilliseconds: routeAuthorityTickMilliseconds,
+  });
   try {
-    for (const key of keys) {
-      await page.keyboard.down(key);
-      pressedKeys.push(key);
-    }
-    const deadline = Date.now() + timeoutMilliseconds;
-    while (Date.now() < deadline) {
-      await page.waitForTimeout(80);
-      const snapshot = await readPracticeSnapshot();
-      const proof = assertOverProvenMainFloor(snapshot, `${label}:in_flight`);
-      if (insideHorizontalBounds(proof.feet, requiredBounds)) {
-        reached = true;
-        break;
+    try {
+      for (const key of keys) {
+        await page.keyboard.down(key);
+        pressedKeys.push(key);
       }
+      const deadline = Date.now() + timeoutMilliseconds;
+      while (Date.now() < deadline) {
+        await page.waitForTimeout(80);
+        const snapshot = await readPracticeSnapshot();
+        const observation = recordRouteMovementSample(
+          snapshot,
+          label,
+          'in_flight',
+          requiredBounds,
+          sampleCount,
+        );
+        sampleCount += 1;
+        firstInFlightSequence ??= observation.sample.sequence;
+        lastInFlightSequence = observation.sample.sequence;
+        lastSample = observation.sample;
+        assertRouteMovementSample(snapshot, observation);
+        let progress;
+        try {
+          progress = observeRouteProgress(watchdog, {
+            serverTick: observation.sample.serverTick,
+            distanceMillimeters: observation.targetDelta.distance,
+          });
+        } catch (error) {
+          throw new Error(
+            `RELAY_ROUTE_AUTHORITY_TICK_INVALID segment=${label}`
+            + ` tick=${observation.sample.serverTick}`
+            + ` reason=${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
+        watchdog = progress.state;
+        if (progress.outcome === 'reached') {
+          reached = true;
+          break;
+        }
+        if (progress.outcome === 'stalled') {
+          throw new Error(
+            `RELAY_ROUTE_PROGRESS_STALLED segment=${label}`
+            + ` tick=${observation.sample.serverTick}`
+            + ` stalledTicks=${progress.stalledAuthorityTicks}`
+            + ` distance=${observation.targetDelta.distance}`,
+          );
+        }
+        if (progress.outcome === 'timeout') {
+          throw new Error(
+            `RELAY_ROUTE_TARGET_TIMEOUT segment=${label}`
+            + ` target=${requiredBounds.id}`
+            + ' source=authority_tick'
+            + ` elapsedTicks=${progress.elapsedAuthorityTicks}`
+            + ` distance=${observation.targetDelta.distance}`,
+          );
+        }
+      }
+      if (!reached) {
+        throw new Error(
+          `RELAY_ROUTE_TARGET_TIMEOUT segment=${label}`
+          + ` target=${requiredBounds.id}`
+          + ' source=wall_clock'
+          + ` tick=${lastSample.serverTick}`
+          + ` distance=${lastSample.targetDelta.distance}`,
+        );
+      }
+    } finally {
+      for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
     }
-  } finally {
-    for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
-  }
-  if (!reached) {
-    throw new Error(`RELAY_ROUTE_TARGET_TIMEOUT label=${label} target=${requiredBounds.id}`);
-  }
-  await page.waitForTimeout(180);
-  return practiceSnapshot(`${label}:arrival`);
-}
-
-async function performSafeMovementContact() {
-  const pressedKeys = [];
-  try {
-    await page.keyboard.down('Shift');
-    pressedKeys.push('Shift');
-    await page.keyboard.down('w');
-    pressedKeys.push('w');
-    await page.keyboard.press('Space');
-    const deadline = Date.now() + 450;
-    while (Date.now() < deadline) {
-      await page.waitForTimeout(80);
-      assertOverProvenMainFloor(
-        await readPracticeSnapshot(),
-        'movement_contact:in_flight',
-        3_500,
+    await page.waitForTimeout(180);
+    const arrivalSnapshot = await practiceSnapshot(`${label}:arrival`);
+    const arrival = recordRouteMovementSample(
+      arrivalSnapshot,
+      label,
+      'arrival',
+      requiredBounds,
+      null,
+    );
+    lastSample = arrival.sample;
+    assertRouteMovementSample(arrivalSnapshot, arrival);
+    if (arrival.targetDelta.distance !== 0) {
+      throw new Error(
+        `RELAY_ROUTE_ARRIVAL_LEFT_TARGET segment=${label}`
+        + ` target=${requiredBounds.id}`
+        + ` distance=${arrival.targetDelta.distance}`,
       );
     }
+    outcome = 'reached';
+    return arrivalSnapshot;
+  } catch (error) {
+    outcome = failureCode(error);
+    throw error;
   } finally {
-    for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
+    routeMovementReports.push(Object.freeze({
+      segment: label,
+      targetBounds: requiredBounds.id,
+      keys: Object.freeze([...keys]),
+      timeoutMilliseconds,
+      authorityTickBudget: watchdog.maximumAuthorityTicks,
+      maximumStalledTicks: routeMaximumStalledTicks,
+      minimumProgressMillimeters: routeMinimumProgressMillimeters,
+      preflightSampleSequence: preflight.sample.sequence,
+      firstInFlightSequence,
+      lastInFlightSequence,
+      inFlightSampleCount: sampleCount,
+      finalSampleSequence: lastSample.sequence,
+      finalServerTick: lastSample.serverTick,
+      finalTargetDelta: lastSample.targetDelta,
+      outcome,
+    }));
   }
-  await page.waitForTimeout(80);
+}
+
+async function performSafeMovementContact(requiredBounds, preflight) {
+  const pressedKeys = [];
+  let sampleCount = 0;
+  let firstInFlightSequence = null;
+  let lastInFlightSequence = null;
+  let lastSample = preflight.sample;
+  let outcome = 'not_started';
+  try {
+    try {
+      await page.keyboard.down('Shift');
+      pressedKeys.push('Shift');
+      await page.keyboard.down('w');
+      pressedKeys.push('w');
+      await page.keyboard.press('Space');
+      const deadline = Date.now() + 450;
+      while (Date.now() < deadline) {
+        await page.waitForTimeout(80);
+        const snapshot = await readPracticeSnapshot();
+        const observation = recordRouteMovementSample(
+          snapshot,
+          'movement_contact',
+          'in_flight',
+          requiredBounds,
+          sampleCount,
+        );
+        sampleCount += 1;
+        firstInFlightSequence ??= observation.sample.sequence;
+        lastInFlightSequence = observation.sample.sequence;
+        lastSample = observation.sample;
+        assertRouteMovementSample(snapshot, observation, 3_500);
+        if (observation.targetDelta.distance !== 0) {
+          throw new Error(
+            'RELAY_ROUTE_CONTACT_LEFT_TARGET_BOUNDS segment=movement_contact'
+            + ` distance=${observation.targetDelta.distance}`,
+          );
+        }
+      }
+    } finally {
+      for (const key of [...pressedKeys].reverse()) await page.keyboard.up(key);
+    }
+    await page.waitForTimeout(80);
+    outcome = 'completed';
+  } catch (error) {
+    outcome = failureCode(error);
+    throw error;
+  } finally {
+    routeMovementReports.push(Object.freeze({
+      segment: 'movement_contact',
+      targetBounds: requiredBounds.id,
+      keys: Object.freeze(['Shift', 'w', 'Space']),
+      timeoutMilliseconds: 450,
+      authorityTickBudget: null,
+      maximumStalledTicks: null,
+      minimumProgressMillimeters: null,
+      preflightSampleSequence: preflight.sample.sequence,
+      firstInFlightSequence,
+      lastInFlightSequence,
+      inFlightSampleCount: sampleCount,
+      finalSampleSequence: lastSample.sequence,
+      finalServerTick: lastSample.serverTick,
+      finalTargetDelta: lastSample.targetDelta,
+      outcome,
+    }));
+  }
 }
 
 let menuArena = null;
@@ -490,11 +760,17 @@ try {
     },
   );
 
+  const routeOnePreflight = await prepareRouteMovement(
+    canvasBox,
+    'route_one',
+    routeOneCaptureBounds,
+  );
   await moveToSafeFloorTarget(
     ['Shift', 'w'],
     'route_one',
     routeOneCaptureBounds,
     5_000,
+    routeOnePreflight,
   );
   await capture(
     '05-relay-route-one-1440x900.png',
@@ -509,11 +785,17 @@ try {
     },
   );
 
+  const routeTwoPreflight = await prepareRouteMovement(
+    canvasBox,
+    'route_two',
+    routeTwoCaptureBounds,
+  );
   await moveToSafeFloorTarget(
     ['Shift', 'w'],
     'route_two',
     routeTwoCaptureBounds,
     4_000,
+    routeTwoPreflight,
   );
   await capture(
     '06-relay-route-two-1440x900.png',
@@ -528,7 +810,15 @@ try {
     },
   );
 
-  await performSafeMovementContact();
+  const movementContactPreflight = await prepareRouteMovement(
+    canvasBox,
+    'movement_contact',
+    movementContactBounds,
+  );
+  await performSafeMovementContact(
+    movementContactBounds,
+    movementContactPreflight,
+  );
   await alignCameraToCaptureFrame(canvasBox, 'movement_contact');
   await page.mouse.down({ button: 'left' });
   try {
@@ -539,10 +829,7 @@ try {
         assertCapturedOnFloor(
           await practiceSnapshot('movement_contact'),
           'movement_contact',
-          Object.freeze({
-            ...provenMainFloorRegions[2],
-            id: 'relay_floor_central_court_movement_contact',
-          }),
+          movementContactBounds,
         );
       },
       80,
@@ -587,6 +874,11 @@ try {
         maximumSettledVerticalSpeed: settledMaximumVerticalSpeed,
         maximumCaptureLookErrorMilliDegrees,
         captureFrame: RELAY_CAPTURE_FRAME,
+        movementWatchdog: {
+          authorityTickMilliseconds: routeAuthorityTickMilliseconds,
+          maximumStalledTicks: routeMaximumStalledTicks,
+          minimumProgressMillimeters: routeMinimumProgressMillimeters,
+        },
         provenMainFloorRegions,
         routeOneCaptureBounds,
         routeTwoCaptureBounds,
@@ -596,6 +888,8 @@ try {
       practiceAfter,
       pointerLockAcquired,
       movementSnapshots,
+      routeMovementSamples,
+      routeMovementReports,
       routeFloorAssertions,
       cameraAlignmentSamples,
       glbResponses,
@@ -712,6 +1006,38 @@ if (routeFloorAssertions.some(({ label }, index) => (
     )}`,
   );
 }
+const expectedRouteMovementOutcomes = Object.freeze([
+  Object.freeze({ segment: 'route_one', outcome: 'reached' }),
+  Object.freeze({ segment: 'route_two', outcome: 'reached' }),
+  Object.freeze({ segment: 'movement_contact', outcome: 'completed' }),
+]);
+if (routeMovementReports.length !== expectedRouteMovementOutcomes.length) {
+  throw new Error(
+    `RELAY_ROUTE_MOVEMENT_REPORT_CARDINALITY_MISMATCH actual=${routeMovementReports.length}`,
+  );
+}
+for (const [index, expected] of expectedRouteMovementOutcomes.entries()) {
+  const report = routeMovementReports[index];
+  const preflight = routeMovementSamples[report?.preflightSampleSequence];
+  const first = routeMovementSamples[report?.firstInFlightSequence];
+  const last = routeMovementSamples[report?.lastInFlightSequence];
+  if (
+    report?.segment !== expected.segment
+    || report?.outcome !== expected.outcome
+    || report?.inFlightSampleCount < 1
+    || preflight?.segment !== expected.segment
+    || preflight?.phase !== 'preflight'
+    || first?.segment !== expected.segment
+    || first?.phase !== 'in_flight'
+    || last?.segment !== expected.segment
+    || last?.phase !== 'in_flight'
+  ) {
+    throw new Error(
+      `RELAY_ROUTE_MOVEMENT_REPORT_INVALID expected=${expected.segment}`
+      + ` actual=${JSON.stringify(report)}`,
+    );
+  }
+}
 
 await rename(
   path.join(outputRoot, 'runtime.partial.json'),
@@ -719,13 +1045,14 @@ await rename(
 );
 
 process.stdout.write(`${JSON.stringify({
-  status: 'RELAY_PLAYER_EYE_V5_PACKET_CAPTURED',
+  status: 'RELAY_PLAYER_EYE_V6_PACKET_CAPTURED',
   schema: capturePacketSchema,
   identity: capturePacketIdentity,
   outputRoot,
   menuArena,
   pointerLockAcquired,
   routeFloorAssertions,
+  routeMovementReports,
   expectedAuthorityFixtureHash,
   presentationReference:
     practiceAfter?.render3d?.presentationReference ?? null,
