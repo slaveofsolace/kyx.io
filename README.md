@@ -4,10 +4,11 @@ KYX.IO is a work-in-progress desktop-browser arena FPS built with Three.js,
 TypeScript, Rapier physics, Vite, and an authoritative Cloudflare
 Worker/Durable Object match service.
 
-The current milestone is one polished team-deathmatch vertical slice on
-Inkfall Foundry. Practice and online play are being brought onto the same
-movement, loadout, HUD, character, weapon, and feedback contracts before the
-project expands to more maps or mobile-specific polish.
+The current milestone is one polished team-deathmatch vertical slice on Relay,
+an original open-sky KYX arena. Practice and online now select the same Relay
+authority profile and are being closed onto one movement, loadout, HUD,
+character, weapon, ability, and feedback contract before the project expands
+to more original maps or mobile-specific polish.
 
 ## Playable scope
 
@@ -16,13 +17,17 @@ project expands to more maps or mobile-specific polish.
 - Online rooms use Worker-authoritative allocation, simulation, combat,
   scoring, and reconnect/resume.
 - Movement includes sprint, jump, crouch, slide, and Blink.
-- Rifle, sidearm, shotgun, sniper, rocket, and melee gameplay families are
-  implemented with project-authored procedural presentation.
+- Rifle, sidearm, shotgun, sniper, launcher, and melee gameplay families are
+  implemented. Rights-cleared Quaternius review assets now cover the six world
+  and first-person weapon families; final contact and presentation acceptance
+  remains open.
 - Frag, launch, smoke, sticky, and flash grenade contracts are implemented.
-- The map library separates original KYX arenas, the playable Iron Bastion
-  legacy practice arena, and external map references that are not bundled.
+- The map library separates the playable Relay original candidate, the
+  retained Iron Bastion legacy practice arena, and external map references
+  that are not bundled.
 - The Cutline HUD/UI system is integrated across the main menu, Practice, and
-  online surfaces. Its final manual visual and accessibility review is open.
+  online surfaces. Its final manual visual and accessibility review is open;
+  automated checks or captures do not grant visual acceptance.
 
 This is a development build, not a promoted release. See
 [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the current component-level state.

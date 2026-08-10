@@ -323,16 +323,17 @@ export class Game {
     }, 2000);
   }
 
-  // Show the map-loading card (IRON-BASTION + map name) over the fly-through,
-  // then reveal the main menu GUI.
+  // Show the current product arena over the fly-through, then reveal the menu.
   _runMapIntro() {
     const el = document.getElementById('map-loading');
     if (el) {
+      const name    = document.getElementById('ml-name');
       const region  = document.getElementById('ml-region');
       const mode    = document.getElementById('ml-mode');
       const players = document.getElementById('ml-players');
       const tip     = document.getElementById('ml-tip');
-      if (region)  region.textContent  = 'Bastion Sector';
+      if (name)    name.textContent    = 'Relay';
+      if (region)  region.textContent  = 'Open Sky Campus';
       if (mode)    mode.textContent     = 'Offline Practice Preview';
       if (players) players.textContent  = `1 LOCAL PLAYER · ${PRACTICE_BOTS} PRACTICE BOTS`;
       if (tip)     tip.textContent      = 'TIP: start offline practice when ready';
@@ -878,6 +879,10 @@ export class Game {
       deathmatch: 'Offline Practice',
       survival: 'Solo Wave Practice',
     };
+    const name = document.getElementById('ml-name');
+    if (name) name.innerHTML = 'Iron<br>Bastion';
+    const region = document.getElementById('ml-region');
+    if (region) region.textContent = 'Bastion Sector';
     const mode = document.getElementById('ml-mode');
     if (mode) mode.textContent = modeNames[modeId] || 'Offline Practice';
     const players = document.getElementById('ml-players');

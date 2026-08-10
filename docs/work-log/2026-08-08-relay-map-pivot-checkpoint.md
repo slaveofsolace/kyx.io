@@ -261,3 +261,29 @@ Human Eye verdict remains **REVISE**. Material breakup and route readability
 are better, but the arena is still graybox-plus with repetitive box massing.
 No human map/play acceptance, 4/8 public population run, final performance
 qualification, or release claim is made by this batch.
+
+## Relay product-default convergence
+
+The unprofiled product path now resolves to Relay consistently instead of
+falling back to the retired Inkfall/flat-run inspection profile. Main-menu
+Quick Play, Practice, direct online create/join, landing scope copy, transition
+notices, and the loading overlay all identify Relay / Open Sky Campus. Explicit
+historical profile URLs retain their requested profile rather than being
+silently relabeled. Arena selection is a required radio group, and the dormant
+mode-card path now routes through the same Practice entry adapter.
+
+Stale presentation copy was corrected to match the implemented authority
+contract: 56 colliders, eight spawns, eight zones, linked portals, and shared
+Practice/online presentation are live; visual, balance, public-population, and
+human play approval remain open.
+
+Consolidated lightweight verification for this batch:
+
+- App TypeScript: PASS.
+- Changed TypeScript ESLint surface: PASS.
+- Online authority selection/routing: 1 file / 13 tests PASS.
+- `git diff --check` on the touched Relay/default files: PASS (line-ending
+  conversion notices only).
+
+This checkpoint does not claim a new staging build, deployment, final map art,
+or human acceptance.

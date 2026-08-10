@@ -88,6 +88,7 @@ import { classifyOnlineAuthorityPresentationEvent } from './onlineAuthorityPrese
 import { createAuthorityAbilityHudInputs } from './authorityHudProjection';
 import {
   ONLINE_AUTHORITY_PATH,
+  defaultOnlineProfile,
   onlineCreatePath,
   onlineJoinPath,
   parseOnlineAuthorityRequest,
@@ -266,6 +267,7 @@ function renderNotice(
   content: HTMLElement,
   title: string,
   copy: string,
+  mapProfile: OnlineAuthorityProfileSelection = defaultOnlineProfile(),
   actionLabel = 'Back to online',
   actionPath: string = ONLINE_AUTHORITY_PATH,
 ): void {
@@ -273,7 +275,7 @@ function renderNotice(
     element('p', 'online-preview__eyebrow', 'Online'),
     element('h1', 'online-preview__title', 'Room unavailable.'),
   );
-  appendScopeNotice(content);
+  appendScopeNotice(content, mapProfile);
   const notice = element('section', 'online-preview__notice');
   notice.append(element('h2', '', title), element('p', '', copy));
   const action = element('button', 'online-preview__primary', actionLabel);
@@ -300,8 +302,15 @@ function renderLanding(
   const configured = availability.kind === 'configured';
   const profileOption = element('label', 'online-preview__profile-option');
   const profileCheckbox = document.createElement('input');
-  profileCheckbox.type = 'checkbox';
-  profileCheckbox.checked = selectedProfile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
+  profileCheckbox.type = 'radio';
+  profileCheckbox.name = 'online-arena-profile';
+  profileCheckbox.required = true;
+  const selectedLegacyProfile = selectedProfile !== undefined
+    && selectedProfile !== ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
+    ? selectedProfile
+    : ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
+  profileCheckbox.checked = selectedProfile !== undefined
+    && selectedProfile !== ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
   profileCheckbox.disabled = !configured;
   profileCheckbox.dataset.testid = 'online-inkfall-profile';
   const profileCopy = element('span', '');
@@ -316,7 +325,9 @@ function renderLanding(
   profileOption.append(profileCheckbox, profileCopy);
   const relayProfileOption = element('label', 'online-preview__profile-option');
   const relayProfileCheckbox = document.createElement('input');
-  relayProfileCheckbox.type = 'checkbox';
+  relayProfileCheckbox.type = 'radio';
+  relayProfileCheckbox.name = 'online-arena-profile';
+  relayProfileCheckbox.required = true;
   relayProfileCheckbox.checked = selectedProfile === undefined
     || selectedProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
   relayProfileCheckbox.disabled = !configured;
@@ -331,12 +342,6 @@ function renderLanding(
     ),
   );
   relayProfileOption.append(relayProfileCheckbox, relayProfileCopy);
-  profileCheckbox.addEventListener('change', () => {
-    if (profileCheckbox.checked) relayProfileCheckbox.checked = false;
-  });
-  relayProfileCheckbox.addEventListener('change', () => {
-    if (relayProfileCheckbox.checked) profileCheckbox.checked = false;
-  });
   const profilePicker = element('details', 'online-preview__profile-picker');
   profilePicker.hidden = !configured;
   profilePicker.append(
@@ -347,8 +352,7 @@ function renderLanding(
   content.append(profilePicker);
   const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => {
     if (relayProfileCheckbox.checked) return ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
-    if (profileCheckbox.checked) return ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
-    return undefined;
+    return selectedLegacyProfile;
   };
   const lobby = element('section', 'online-preview__lobby');
   const createCard = element('article', 'online-preview__lobby-card');
@@ -427,7 +431,7 @@ function renderLanding(
     endpoint.title = 'VITE_KYX_AUTHORITY_ORIGIN is not configured.';
   }
   content.append(endpoint);
-  appendScopeNotice(content);
+  appendScopeNotice(content, selectedProfile ?? defaultOnlineProfile());
 }
 
 function expectedIdentity(
@@ -2856,7 +2860,11 @@ export async function mountOnlineAuthorityRoute(
     return;
   }
 
-  const requestedProfile = 'profile' in request ? request.profile : undefined;
+  // A missing profile is a product entry, not permission to revive the old
+  // flat-run preview. Explicit historical profile links remain supported.
+  const requestedProfile = 'profile' in request
+    ? request.profile
+    : defaultOnlineProfile();
   let roomCode: string;
   let mode: AuthorityEvidenceConfig['mode'];
   let sessionBinding: OnlineSessionBinding;
@@ -2866,6 +2874,7 @@ export async function mountOnlineAuthorityRoute(
       content,
       'Creating an authority room…',
       'The configured server is allocating a fresh room. This normally takes only a moment.',
+      requestedProfile,
       'CANCEL',
     );
     try {
@@ -2886,6 +2895,7 @@ export async function mountOnlineAuthorityRoute(
         content,
         'Room creation failed.',
         cause instanceof Error ? cause.message : String(cause),
+        requestedProfile,
         'TRY AGAIN',
         onlineCreatePath(requestedProfile),
       );
@@ -2908,6 +2918,7 @@ export async function mountOnlineAuthorityRoute(
             ? 'Verifying retired Revision 3 compatibility room…'
           : 'Verifying legacy authority room…',
         'The profile and complete locked map binding must match before the socket can open.',
+        requestedProfile,
         'CANCEL',
       );
       try {
@@ -2923,6 +2934,7 @@ export async function mountOnlineAuthorityRoute(
           content,
           'Arena room verification failed.',
           cause instanceof Error ? cause.message : String(cause),
+          requestedProfile,
           'BACK TO ONLINE LOBBY',
         );
         return;
@@ -2948,6 +2960,7 @@ export async function mountOnlineAuthorityRoute(
       content,
       'Online client initialization failed.',
       cause instanceof Error ? cause.message : String(cause),
+      requestedProfile,
     );
   }
 }

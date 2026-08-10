@@ -64,7 +64,7 @@ const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
         availability: 'playable',
         statusLabel: 'Playable visual candidate',
         description:
-          'Open-sky communications campus with readable upper, court, and lower routes. Local practice now runs Relay\'s own collision, spawns, weapons, abilities, and bots; online and portal rollout remain gated behind map approval.',
+          'Open-sky communications campus with readable upper, court, and lower routes. Practice and online now share Relay\'s collision, eight spawns, paired portals, weapons, abilities, bots, and authority contract; visual balance and human play approval remain open.',
         modes: Object.freeze(['Team deathmatch', 'Deathmatch']),
         action: Object.freeze({
           kind: 'open_local_authority_practice',

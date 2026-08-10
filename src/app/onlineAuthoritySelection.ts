@@ -2,6 +2,7 @@ import { PROTOCOL_LIMITS } from '../net';
 import { normalizeAuthorityRoomCode } from '../dev/authorityEvidenceModel';
 import {
   ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
   isOnlineAuthorityProfileSelection,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
@@ -152,6 +153,11 @@ export function onlineJoinPath(
 
 export function inkfallOnlineProfile(): OnlineAuthorityProfileSelection {
   return ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
+}
+
+/** Product default. Historical Foundry profiles require an explicit link. */
+export function defaultOnlineProfile(): OnlineAuthorityProfileSelection {
+  return ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
 }
 
 export function protocolDisplayName(value: string): string {

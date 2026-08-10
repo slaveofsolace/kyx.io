@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  defaultOnlineProfile,
   inkfallOnlineProfile,
   onlineCreatePath,
   onlineJoinPath,
@@ -147,7 +148,8 @@ describe('parseOnlineAuthorityRequest', () => {
 });
 
 describe('online URL and display-name boundaries', () => {
-  it('selects the Rev5 presentation with corrected Revision 4 authority by default', () => {
+  it('defaults product entry to Relay while retaining explicit Foundry compatibility', () => {
+    expect(defaultOnlineProfile()).toBe(ONLINE_RELAY_REV1_COMBAT_PROFILE_ID);
     expect(inkfallOnlineProfile()).toBe(ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID);
   });
 
