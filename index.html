@@ -294,10 +294,10 @@
     <div id="gameover-menu" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gameover-title" inert>
       <div class="menu-panel small">
         <p class="dialog-kicker">Combat report</p>
-        <h2 id="gameover-title">Eliminated</h2>
+        <h2 id="gameover-title">Match complete</h2>
         <div class="stats" id="gameover-stats"></div>
-        <button id="restart-btn" type="button" class="play-btn">Respawn offline</button>
-        <button id="menu-btn" type="button" class="ghost-btn">Practice menu</button>
+        <button id="restart-btn" type="button" class="play-btn">Play again</button>
+        <button id="menu-btn" type="button" class="ghost-btn">Return to menu</button>
       </div>
     </div>
 
@@ -346,8 +346,8 @@
         <div class="hud-match-head"><div class="hud-practice-label">Practice</div></div>
         <div id="server-pop" class="hidden">1 player / 7 bots<span id="server-pop-count" class="hidden">7</span><span id="server-pop-max" class="hidden">8</span></div>
         <div class="hud-score-metrics">
-          <div><small>Bots defeated</small><span id="kill-count">0</span></div>
-          <div><small>Score</small><span id="score-count">0</span></div>
+          <div><small id="local-score-label">Your team</small><span id="kill-count">0</span></div>
+          <div><small id="opponent-score-label">Opponents</small><span id="score-count">0</span></div>
         </div>
       </div>
 
@@ -427,7 +427,7 @@
         <div class="sb-head"><div class="sb-title">Practice scoreboard</div><div class="sb-sub" id="sb-sub">Offline practice &bull; 7 bots</div></div>
         <div class="sb-tabs"><span class="sb-tab active">Current round</span></div>
         <table class="sb-table">
-          <thead><tr><th class="sb-th-rank">#</th><th class="sb-th-name">Combatant</th><th>Defeats</th><th>Score</th></tr></thead>
+          <thead><tr><th class="sb-th-rank">#</th><th class="sb-th-name">Combatant</th><th>K</th><th>D</th><th>A</th><th>K/D</th></tr></thead>
           <tbody id="sb-rows"></tbody>
         </table>
         <div class="sb-hint">Hold <span class="sb-key">TAB</span> to view practice scores</div>

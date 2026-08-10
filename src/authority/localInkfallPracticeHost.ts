@@ -5,6 +5,11 @@ import {
   type InputCommand,
   type ReliableEvent,
 } from '../net';
+import {
+  DEFAULT_COMBAT_PRESET,
+  combatPresetById,
+  type CombatPresetId,
+} from '../loadouts';
 import { createRapierMovementWorld, type RapierMovementWorld } from '../physics';
 import {
   INTENT_BUTTON,
@@ -40,6 +45,7 @@ export interface LocalInkfallPracticeHostOptions {
   readonly botCount?: number;
   readonly roomId?: string;
   readonly matchId?: string;
+  readonly combatPresetId?: CombatPresetId;
 }
 
 export type LocalInkfallPracticeInput = Readonly<Omit<
@@ -83,7 +89,7 @@ function clamp(value: number, minimum: number, maximum: number): number {
   return Math.max(minimum, Math.min(maximum, value));
 }
 
-function botInput(
+export function localInkfallPracticeBotInput(
   snapshot: AuthorityFullSnapshot,
   playerId: string,
   previousHeldButtons: number,
@@ -122,15 +128,17 @@ function botInput(
   const facingTarget = Math.abs(normalizeYawDelta(
     desiredYaw - player.movement.player.yawMilliDegrees,
   )) < 18_000;
-  const fire = facingTarget && distance < 32_000 && snapshot.serverTick % 3 !== 0;
+  const engaged = facingTarget && distance < 32_000;
+  const fire = engaged && snapshot.serverTick % 6 < 2;
   const jump = snapshot.serverTick % (82 + playerId.length) === 0;
-  const heldButtons = INTENT_BUTTON.sprint
-    | (fire ? INTENT_BUTTON.primaryFire : 0)
+  const heldButtons = (fire
+    ? INTENT_BUTTON.primaryFire
+    : engaged ? 0 : INTENT_BUTTON.sprint)
     | (jump ? INTENT_BUTTON.jump : 0);
 
   return Object.freeze({
     moveX: snapshot.serverTick % 160 < 80 ? 24 : -24,
-    moveY: distance > 5_000 ? 96 : -32,
+    moveY: engaged ? 0 : distance > 5_000 ? 96 : -32,
     lookYawDeltaMilliDegrees: yawDelta,
     lookPitchDeltaMilliDegrees: 0,
     heldButtons,
@@ -156,6 +164,9 @@ export class LocalInkfallPracticeHost {
   private readonly connectionIds = new Map<string, string>();
   private readonly inputSequences = new Map<string, number>();
   private readonly heldButtons = new Map<string, number>();
+  private readonly localPrimaryWeaponSlot: 0 | 2 | 3 | 5;
+  private readonly allowedLocalWeaponSlots: ReadonlySet<number>;
+  private localSelectedWeaponSlot: number;
   private nextReliableEventSequence = 0;
   private disposed = false;
 
@@ -163,10 +174,14 @@ export class LocalInkfallPracticeHost {
     world: RapierMovementWorld,
     authority: AuthoritativeRoom,
     botPlayerIds: readonly string[],
+    localPrimaryWeaponSlot: 0 | 2 | 3 | 5,
   ) {
     this.world = world;
     this.authority = authority;
     this.botPlayerIds = Object.freeze([...botPlayerIds]);
+    this.localPrimaryWeaponSlot = localPrimaryWeaponSlot;
+    this.allowedLocalWeaponSlots = new Set([localPrimaryWeaponSlot, 5]);
+    this.localSelectedWeaponSlot = localPrimaryWeaponSlot;
     for (const playerId of [this.localPlayerId, ...this.botPlayerIds]) {
       this.connectionIds.set(playerId, `connection.${playerId}`);
       this.inputSequences.set(playerId, 0);
@@ -178,6 +193,9 @@ export class LocalInkfallPracticeHost {
     options: LocalInkfallPracticeHostOptions = {},
   ): Promise<LocalInkfallPracticeHost> {
     const botCount = boundedBotCount(options.botCount);
+    const combatPreset = combatPresetById(
+      options.combatPresetId ?? DEFAULT_COMBAT_PRESET.id,
+    );
     const fixture = RELAY_AUTHORITY_FIXTURE;
     const world = await createRapierMovementWorld(fixture);
     if (
@@ -218,7 +236,12 @@ export class LocalInkfallPracticeHost {
       combat: createRelayAuthorityCombatOptions(world),
       worldPortal: createRelayPortalAuthorityPort(world),
     });
-    const host = new LocalInkfallPracticeHost(world, authority, botPlayerIds);
+    const host = new LocalInkfallPracticeHost(
+      world,
+      authority,
+      botPlayerIds,
+      combatPreset.authorityPrimaryWeaponSlot,
+    );
     try {
       for (const playerId of [host.localPlayerId, ...host.botPlayerIds]) {
         const joined = authority.joinNewPlayer({
@@ -226,7 +249,15 @@ export class LocalInkfallPracticeHost {
           connectionId: host.requireConnectionId(playerId),
         });
         if (!joined.ok) throw new Error(`LOCAL_INKFALL_PRACTICE_JOIN_FAILED:${joined.reason}`);
+        // Browser-local Practice has no transport hop. Seed the trusted RTT
+        // history explicitly so the shared rewind resolver can authorize hits.
+        authority.recordServerObservedRtt(playerId, 0);
       }
+      authority.setPlayerCombatLoadout(
+        host.localPlayerId,
+        combatPreset.selectableAbilityIds,
+        combatPreset.authorityPrimaryWeaponSlot,
+      );
       if (!authority.startMatch()) {
         throw new Error('LOCAL_INKFALL_PRACTICE_MATCH_START_FAILED');
       }
@@ -242,18 +273,34 @@ export class LocalInkfallPracticeHost {
     return this.authority.fullSnapshot();
   }
 
-  step(localInput: LocalInkfallPracticeInput = NEUTRAL_INPUT): LocalInkfallPracticeStep {
+  step(localInput?: LocalInkfallPracticeInput): LocalInkfallPracticeStep {
     this.assertActive();
+    const resolvedLocalInput = localInput ?? Object.freeze({
+      ...NEUTRAL_INPUT,
+      selectedSlot: this.localSelectedWeaponSlot,
+    });
+    const selectedSlot = resolvedLocalInput.selectedSlot ?? this.localSelectedWeaponSlot;
+    if (!this.allowedLocalWeaponSlots.has(selectedSlot)) {
+      throw new Error('LOCAL_INKFALL_PRACTICE_WEAPON_SLOT_NOT_IN_PRESET');
+    }
+    const authoritativeLocalInput = Object.freeze({
+      ...resolvedLocalInput,
+      selectedSlot,
+    });
     const before = this.authority.fullSnapshot();
-    this.enqueue(this.localPlayerId, localInput);
-    for (const playerId of this.botPlayerIds) {
-      this.enqueue(playerId, botInput(
-        before,
-        playerId,
-        this.heldButtons.get(playerId) ?? 0,
-      ));
+    if (before.lifecycle === 'warmup' || before.lifecycle === 'active') {
+      this.enqueue(this.localPlayerId, authoritativeLocalInput);
+      this.localSelectedWeaponSlot = selectedSlot;
+      for (const playerId of this.botPlayerIds) {
+        this.enqueue(playerId, localInkfallPracticeBotInput(
+          before,
+          playerId,
+          this.heldButtons.get(playerId) ?? 0,
+        ));
+      }
     }
     const tick = this.authority.advanceOneTick();
+    this.respawnEligibleCombatPlayers();
     const reliableEvents = Object.freeze(reliableCombatEvents(tick).map((event) => Object.freeze({
       id: `event.${this.nextReliableEventSequence++}`,
       ...event,
@@ -308,6 +355,24 @@ export class LocalInkfallPracticeHost {
       throw new Error(`LOCAL_INKFALL_PRACTICE_CONNECTION_MISSING:${playerId}`);
     }
     return connectionId;
+  }
+
+  /** Keep browser-local Practice on the Worker's authoritative respawn path. */
+  private respawnEligibleCombatPlayers(): void {
+    if (this.authority.lifecycle !== 'warmup' && this.authority.lifecycle !== 'active') return;
+    const snapshot = this.authority.fullSnapshot();
+    for (const player of snapshot.players) {
+      const life = player.combat?.life;
+      if (
+        life?.phase !== 'dead'
+        || life.respawnEligibleAtTick === null
+        || snapshot.serverTick < life.respawnEligibleAtTick
+      ) continue;
+      const result = this.authority.respawnCombatPlayer(player.playerId);
+      if (!result.accepted && result.reason !== 'respawn_not_ready') {
+        throw new Error(`LOCAL_INKFALL_PRACTICE_RESPAWN_REJECTED:${result.reason}`);
+      }
+    }
   }
 
   private assertActive(): void {

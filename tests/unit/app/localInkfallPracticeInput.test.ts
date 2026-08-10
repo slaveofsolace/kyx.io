@@ -55,6 +55,23 @@ describe('local Inkfall Practice input buffer', () => {
     expect(input.pressedKeys).toEqual([]);
   });
 
+  it('starts on and remains inside the selected combat preset weapon slots', () => {
+    const input = new LocalInkfallPracticeInputBuffer({
+      initialSelectedSlot: 3,
+      allowedSelectedSlots: [3, 5],
+    });
+
+    expect(input.consume().selectedSlot).toBe(3);
+    input.handleKey('Digit1', true);
+    expect(input.consume().selectedSlot).toBe(3);
+    input.handleKey('Digit6', true);
+    expect(input.consume().selectedSlot).toBe(5);
+    expect(() => new LocalInkfallPracticeInputBuffer({
+      initialSelectedSlot: 3,
+      allowedSelectedSlots: [0, 5],
+    })).toThrow(RangeError);
+  });
+
   it('submits Blink only for the exact eligible held-preview intent', () => {
     const blocked = new LocalInkfallPracticeInputBuffer();
     blocked.handleKey('KeyQ', true);

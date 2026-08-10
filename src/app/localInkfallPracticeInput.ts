@@ -10,6 +10,19 @@ import {
 // InputCommand is a wire-safe intent even for the browser-local host.
 const MAX_LOOK_DELTA_MILLI_DEGREES = 32_767;
 const MOUSE_MILLI_DEGREES_PER_PIXEL = 110;
+const ALL_AUTHORITY_WEAPON_SLOTS = Object.freeze([0, 1, 2, 3, 4, 5]);
+
+export interface LocalInkfallPracticeInputBufferOptions {
+  readonly initialSelectedSlot?: number;
+  readonly allowedSelectedSlots?: readonly number[];
+}
+
+function authorityWeaponSlot(value: number, label: string): number {
+  if (!Number.isSafeInteger(value) || value < 0 || value > 5) {
+    throw new RangeError(`${label} must be an integer from 0 through 5`);
+  }
+  return value;
+}
 
 function clamp(value: number, minimum: number, maximum: number): number {
   return Math.max(minimum, Math.min(maximum, value));
@@ -20,6 +33,7 @@ function clamp(value: number, minimum: number, maximum: number): number {
  * Press/release edges and mouse deltas therefore survive frames with no tick.
  */
 export class LocalInkfallPracticeInputBuffer {
+  private readonly allowedSelectedSlots: ReadonlySet<number>;
   private readonly keys = new Set<string>();
   private pointerPrimaryHeld = false;
   private pointerAimHeld = false;
@@ -29,7 +43,24 @@ export class LocalInkfallPracticeInputBuffer {
   private pendingReleasedButtons = 0;
   private pendingYawMilliDegrees = 0;
   private pendingPitchMilliDegrees = 0;
-  private selectedSlot = 0;
+  private selectedSlot: number;
+
+  constructor(options: LocalInkfallPracticeInputBufferOptions = {}) {
+    const initialSelectedSlot = authorityWeaponSlot(
+      options.initialSelectedSlot ?? 0,
+      'initial selected weapon slot',
+    );
+    const allowedSelectedSlots = new Set(
+      (options.allowedSelectedSlots ?? ALL_AUTHORITY_WEAPON_SLOTS).map(
+        (slot) => authorityWeaponSlot(slot, 'allowed selected weapon slot'),
+      ),
+    );
+    if (allowedSelectedSlots.size === 0 || !allowedSelectedSlots.has(initialSelectedSlot)) {
+      throw new RangeError('allowed selected weapon slots must contain the initial slot');
+    }
+    this.allowedSelectedSlots = allowedSelectedSlots;
+    this.selectedSlot = initialSelectedSlot;
+  }
 
   get aimHeld(): boolean {
     return this.pointerAimHeld;
@@ -70,7 +101,7 @@ export class LocalInkfallPracticeInputBuffer {
     if (down) {
       if (!repeat) {
         const slot = onlineAuthorityWeaponSlotFromCode(code);
-        if (slot !== null) this.selectedSlot = slot;
+        if (slot !== null && this.allowedSelectedSlots.has(slot)) this.selectedSlot = slot;
       }
       this.keys.add(code);
     } else {

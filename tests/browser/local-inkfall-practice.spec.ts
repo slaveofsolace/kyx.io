@@ -70,12 +70,41 @@ test.describe('local Relay Practice route', () => {
     }
 
     await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().serverTick ?? 0
-    ))).toBeGreaterThan(1);
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().match.phase ?? null
+    )), { timeout: 30_000 }).toBe('active');
     const movementStart = await page.evaluate(() => (
       window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
     ));
     expect(movementStart).not.toBeNull();
+    expect(movementStart?.match).toMatchObject({
+      phase: 'active',
+      teamScores: expect.any(Array),
+      playerScores: expect.any(Array),
+      result: null,
+      localLifePhase: 'alive',
+      localDeathOrdinal: 0,
+      localSpawnOrdinal: 1,
+    });
+    expect(movementStart?.match.playerScores).toHaveLength(8);
+    await expect(page.locator('#gameover-menu')).toBeHidden();
+    await expect(page.locator('#gameover-menu')).toHaveAttribute('inert', '');
+    expect(movementStart?.loadout).toMatchObject({
+      combatPresetId: 'assault',
+      primaryWeaponSlot: 0,
+      allowedWeaponSlots: [0, 5],
+      authoritativeSelectedWeaponSlot: 0,
+      authoritativeSelectedWeaponId: 'vertical_rifle_v1',
+    });
+    await expect(page.locator('#dm-timer')).toBeVisible();
+    await expect(page.locator('#local-score-label')).toHaveText('Your team');
+    await expect(page.locator('#opponent-score-label')).toHaveText('Opponents');
+
+    await page.keyboard.down('Tab');
+    await expect(page.locator('#scoreboard-overlay')).toBeVisible();
+    await expect(page.locator('#sb-rows tr')).toHaveCount(8);
+    await expect(page.locator('#sb-rows tr').first().locator('td')).toHaveCount(6);
+    await page.keyboard.up('Tab');
+    await expect(page.locator('#scoreboard-overlay')).toBeHidden();
 
     await page.keyboard.down('KeyW');
     await page.keyboard.down('ShiftLeft');

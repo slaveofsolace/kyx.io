@@ -3,7 +3,11 @@ import {
   ABILITY_PRESENTATION,
   type AbilityId,
 } from '../abilities/abilityLoadout';
-import type { AuthorityFullSnapshot } from '../authority';
+import type {
+  AuthorityFullSnapshot,
+  AuthorityTdmMatchResultV1,
+  AuthorityTdmPlayerScoreV1,
+} from '../authority';
 import type { CombatPlayerSnapshotV1, CombatSnapshotV1 } from '../net';
 import {
   createPracticeHudViewModel,
@@ -101,6 +105,97 @@ export interface AuthorityPracticeHudProjectionInput {
   readonly aimHeld: boolean;
 }
 
+export interface AuthorityScoreboardRow {
+  readonly playerId: string;
+  readonly teamId: string | null;
+  readonly kills: number;
+  readonly deaths: number;
+  readonly assists: number;
+  readonly kd: string;
+  readonly isYou: boolean;
+}
+
+export interface AuthorityPracticeMatchResultViewModel {
+  readonly outcome: 'victory' | 'defeat' | 'draw';
+  readonly title: 'Victory' | 'Defeat' | 'Draw';
+  readonly reasonLabel: 'Score limit reached' | 'Time expired';
+  readonly localTeamScore: number;
+  readonly opposingTeamScore: number;
+  readonly kills: number;
+  readonly deaths: number;
+  readonly assists: number;
+  readonly kd: string;
+}
+
+/** Project a completed authority result without inventing local match facts. */
+export function createAuthorityPracticeMatchResultViewModel(input: Readonly<{
+  result: AuthorityTdmMatchResultV1;
+  playerScores: readonly AuthorityTdmPlayerScoreV1[];
+  localPlayerId: string;
+}>): AuthorityPracticeMatchResultViewModel {
+  const localPlayerScore = input.playerScores.find(
+    ({ playerId }) => playerId === input.localPlayerId,
+  );
+  if (localPlayerScore === undefined) {
+    throw new Error('LOCAL_INKFALL_PRACTICE_RESULT_PLAYER_MISSING');
+  }
+  const localTeamScore = input.result.teamScores.find(
+    ({ teamId }) => teamId === localPlayerScore.teamId,
+  )?.score;
+  const opposingTeamScore = input.result.teamScores
+    .filter(({ teamId }) => teamId !== localPlayerScore.teamId)
+    .reduce<number | undefined>((highest, score) => (
+      highest === undefined ? score.score : Math.max(highest, score.score)
+    ), undefined);
+  if (localTeamScore === undefined || opposingTeamScore === undefined) {
+    throw new Error('LOCAL_INKFALL_PRACTICE_RESULT_TEAM_SCORE_MISSING');
+  }
+  const outcome = input.result.draw
+    ? 'draw'
+    : input.result.winningTeamId === localPlayerScore.teamId
+      ? 'victory'
+      : 'defeat';
+  return Object.freeze({
+    outcome,
+    title: outcome === 'victory' ? 'Victory' : outcome === 'defeat' ? 'Defeat' : 'Draw',
+    reasonLabel: input.result.reason === 'score_limit'
+      ? 'Score limit reached'
+      : 'Time expired',
+    localTeamScore,
+    opposingTeamScore,
+    kills: localPlayerScore.kills,
+    deaths: localPlayerScore.deaths,
+    assists: localPlayerScore.assists,
+    kd: localPlayerScore.deaths === 0
+      ? localPlayerScore.kills.toFixed(1)
+      : (localPlayerScore.kills / localPlayerScore.deaths).toFixed(1),
+  });
+}
+
+/** Project only authority-owned TDM facts; never substitute team score. */
+export function createAuthorityScoreboardRows(
+  playerScores: readonly AuthorityTdmPlayerScoreV1[],
+  localPlayerId: string,
+): readonly AuthorityScoreboardRow[] {
+  return Object.freeze(playerScores.map((score): AuthorityScoreboardRow => {
+    const { kills, deaths, assists } = score;
+    return Object.freeze({
+      playerId: score.playerId,
+      teamId: score.teamId,
+      kills,
+      deaths,
+      assists,
+      kd: deaths === 0 ? kills.toFixed(1) : (kills / deaths).toFixed(1),
+      isYou: score.playerId === localPlayerId,
+    });
+  }).sort((left, right) => (
+    right.kills - left.kills
+    || right.assists - left.assists
+    || left.deaths - right.deaths
+    || left.playerId.localeCompare(right.playerId)
+  )));
+}
+
 export function createAuthorityPracticeHudViewModel(
   input: AuthorityPracticeHudProjectionInput,
 ): HudViewModelV1 {
@@ -161,7 +256,7 @@ export function createAuthorityPracticeHudViewModel(
     opponentScore: opposingTeamScore,
     timerLabel: formatMatchClock(input.combat.match.activeTicksRemaining),
     phaseLabel: input.combat.match.phase,
-    objectiveLabel: 'Team score',
+    objectiveLabel: 'Team deathmatch',
     life: Object.freeze({
       state: lifeState,
       respawnSeconds,

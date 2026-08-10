@@ -40,6 +40,9 @@ export class HUD {
     this.reloadText  = document.getElementById('reload-text');
     this.killCount   = document.getElementById('kill-count');
     this.scoreCount  = document.getElementById('score-count');
+    this.localScoreLabel = document.getElementById('local-score-label');
+    this.opponentScoreLabel = document.getElementById('opponent-score-label');
+    this.matchLabel = document.querySelector?.('.hud-practice-label') ?? null;
     this.practiceStatus = document.getElementById('server-pop');
     this.weaponSlots = document.getElementById('weapon-slots');
     this.hitmarker   = document.getElementById('hitmarker');
@@ -55,6 +58,9 @@ export class HUD {
     this.downedOverlay  = document.getElementById('downed-overlay');
     this.downedBar      = document.getElementById('downed-bar');
     this.downedCountdown = document.getElementById('downed-countdown');
+    this.downedText = document.querySelector?.('#downed-overlay .downed-text') ?? null;
+    this.downedSub = document.querySelector?.('#downed-overlay .downed-sub') ?? null;
+    this.downedBarWrap = document.querySelector?.('#downed-overlay .downed-bar-wrap') ?? null;
     this.waveBanner     = document.getElementById('wave-banner');
     this._teleportFlash    = document.getElementById('teleport-flash');
     this._abilityQ         = document.getElementById('ability-q');
@@ -139,12 +145,13 @@ export class HUD {
 
   // Large centered deathmatch countdown timer
   showDMTimer(timeStr, isLow = false) {
+    if (!this.dmTimer) return;
     this.dmTimer.textContent = timeStr;
     this.dmTimer.classList.remove('hidden');
     this.dmTimer.classList.toggle('dm-low', isLow);
     this.dmTimer.setAttribute('aria-label', `Round time ${timeStr}${isLow ? ', time low' : ''}`);
   }
-  hideDMTimer() { this.dmTimer.classList.add('hidden'); }
+  hideDMTimer() { this.dmTimer?.classList.add('hidden'); }
 
   // Kill streak badge (shown briefly above the DM timer)
   showStreak(streak) {
@@ -157,12 +164,28 @@ export class HUD {
 
   // Survival: downed overlay with countdown bar
   showDowned(secsLeft, totalSecs) {
+    if (!this.downedOverlay) return;
+    if (this.downedText) this.downedText.textContent = 'Downed';
+    if (this.downedSub) this.downedSub.textContent = 'Auto-revive in progress';
+    this.downedBarWrap?.classList.remove('hidden');
     this.downedOverlay.classList.remove('hidden');
     const pct = Math.max(0, (secsLeft / totalSecs) * 100);
     if (this.downedBar) this.downedBar.style.width = pct + '%';
     if (this.downedCountdown) this.downedCountdown.textContent = Math.ceil(Math.max(0, secsLeft));
   }
-  hideDowned() { this.downedOverlay.classList.add('hidden'); }
+  showRespawn(secsLeft, message = '') {
+    if (!this.downedOverlay) return;
+    this.downedOverlay.classList.remove('hidden');
+    this.downedOverlay.dataset.state = 'dead';
+    if (this.downedText) this.downedText.textContent = 'Eliminated';
+    if (this.downedSub) this.downedSub.textContent = message || 'Respawn incoming';
+    this.downedBarWrap?.classList.add('hidden');
+    if (this.downedCountdown) {
+      this.downedCountdown.textContent = Math.ceil(Math.max(0, secsLeft));
+    }
+  }
+
+  hideDowned() { this.downedOverlay?.classList.add('hidden'); }
 
   // Survival: wave banner (auto-removes after animation)
   showWaveBanner(text) {
@@ -301,6 +324,23 @@ export class HUD {
 
     if (this.killCount) this.killCount.textContent = String(viewModel.score.leftScore);
     if (this.scoreCount) this.scoreCount.textContent = String(viewModel.score.rightScore ?? 0);
+    if (this.localScoreLabel) this.localScoreLabel.textContent = 'Your team';
+    if (this.opponentScoreLabel) this.opponentScoreLabel.textContent = 'Opponents';
+    if (this.matchLabel) {
+      this.matchLabel.textContent = `${viewModel.score.objectiveLabel} · ${sentenceCaseHudText(viewModel.score.phaseLabel)}`;
+    }
+    const matchClock = /^([0-9]+):([0-5][0-9])$/u.exec(viewModel.score.timerLabel);
+    if (matchClock) {
+      const secondsRemaining = Number(matchClock[1]) * 60 + Number(matchClock[2]);
+      this.showDMTimer(viewModel.score.timerLabel, secondsRemaining <= 30);
+    } else {
+      this.hideDMTimer();
+    }
+    if (viewModel.life.state === 'dead') {
+      this.showRespawn(viewModel.life.respawnSeconds ?? 0, viewModel.life.message);
+    } else {
+      this.hideDowned();
+    }
     for (const ability of viewModel.abilities) this._renderAbility(ability);
     return true;
   }
@@ -689,7 +729,7 @@ export class HUD {
     document.getElementById('leaderboard-overlay')?.classList.add('hidden');
   }
 
-  // In-game scoreboard (hold TAB). rows: [{name, kills, score, isYou}], sub: mode label.
+  // In-game scoreboard (hold TAB). Authority routes provide K/D/A truth.
   showScoreboard(rows, sub = '') {
     const ov = document.getElementById('scoreboard-overlay');
     const tb = document.getElementById('sb-rows');
@@ -718,10 +758,16 @@ export class HUD {
       rankTd.appendChild(rankSpan);
       tr.appendChild(rankTd);
       tr.appendChild(nameTd);
-      const k = document.createElement('td'); k.className = 'sb-kills'; k.textContent = r.kills;
-      const s = document.createElement('td'); s.className = 'sb-score';
-      s.textContent = typeof r.score === 'number' ? r.score.toLocaleString() : r.score;
-      tr.appendChild(k); tr.appendChild(s);
+      const stat = (value, className) => {
+        const cell = document.createElement('td');
+        cell.className = className;
+        cell.textContent = value ?? '—';
+        tr.appendChild(cell);
+      };
+      stat(r.kills, 'sb-kills');
+      stat(r.deaths, 'sb-deaths');
+      stat(r.assists, 'sb-assists');
+      stat(r.kd, 'sb-kd');
       tb.appendChild(tr);
     });
     ov.classList.remove('hidden');

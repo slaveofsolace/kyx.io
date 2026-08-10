@@ -9,10 +9,12 @@ import {
   RELAY_AUTHORITY_MAP_BINDING,
   RELAY_AUTHORITY_SPAWNS,
   RELAY_PORTAL_PRESENTATION_DEFINITIONS,
+  kyxWeaponProfile,
 } from '../authority';
 import { RELAY_AUTHORITY_COMPATIBILITY } from './relayVisualContinuity';
 import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
+import { Loadout } from '../core/Loadout.js';
 import {
   clampMilliDegrees,
   MOVEMENT_PITCH_MAX_MILLI_DEGREES,
@@ -26,6 +28,10 @@ import { HUD } from '../ui/HUD.js';
 import { requestPointerLockWithRawFallback } from './movement/pointerLock';
 import { LocalInkfallPracticeInputBuffer } from './localInkfallPracticeInput';
 import { createLocalInkfallPracticePresentation } from './localInkfallPracticePresentation';
+import {
+  createAuthorityPracticeMatchResultViewModel,
+  createAuthorityScoreboardRows,
+} from './authorityHudProjection';
 import {
   createOnlineAuthorityThreeRuntime,
   type OnlineAuthorityThreeRuntime,
@@ -42,7 +48,7 @@ const RELIABLE_EVENT_RETENTION = 256;
 
 interface LocalPracticeDiagnosticsV1 {
   readonly schemaVersion: 1;
-  readonly status: 'ready' | 'paused' | 'disposed';
+  readonly status: 'ready' | 'paused' | 'result' | 'disposed';
   readonly hostId: typeof LOCAL_INKFALL_PRACTICE_HOST_ID;
   readonly serverTick: number;
   readonly lifecycle: string;
@@ -56,6 +62,37 @@ interface LocalPracticeDiagnosticsV1 {
   readonly pointerLocked: boolean;
   readonly aimHeld: boolean;
   readonly recentReliableEvents: number;
+  readonly loadout: Readonly<{
+    readonly combatPresetId: string;
+    readonly primaryWeaponSlot: number;
+    readonly allowedWeaponSlots: readonly number[];
+    readonly authoritativeSelectedWeaponSlot: number;
+    readonly authoritativeSelectedWeaponId: string | null;
+    readonly abilitySlots: readonly string[];
+  }>;
+  readonly match: Readonly<{
+    readonly phase: string;
+    readonly activeTicksRemaining: number;
+    readonly teamScores: readonly Readonly<{ readonly teamId: string; readonly score: number }>[];
+    readonly playerScores: readonly Readonly<{
+      readonly playerId: string;
+      readonly teamId: string;
+      readonly kills: number;
+      readonly deaths: number;
+      readonly assists: number;
+    }>[];
+    readonly damageEventCount: number;
+    readonly killEventCount: number;
+    readonly localLifePhase: string;
+    readonly localDeathOrdinal: number;
+    readonly localSpawnOrdinal: number;
+    readonly localRespawnEligibleAtTick: number | null;
+    readonly result: Readonly<{
+      readonly reason: 'score_limit' | 'time_limit';
+      readonly winningTeamId: string | null;
+      readonly draw: boolean;
+    }> | null;
+  }>;
   readonly portalAuthorityCapabilityId: string | null;
   readonly recentPortalTraversalEvents: number;
   readonly launch: Readonly<{
@@ -106,6 +143,14 @@ function displayPlayerName(playerId: string, localPlayerId: string): string {
   if (playerId === localPlayerId) return 'You';
   const ordinal = /([0-9]+)$/u.exec(playerId)?.[1] ?? '?';
   return `Bot ${Number(ordinal) || ordinal}`;
+}
+
+function createResultStatRow(label: string, value: string | number): HTMLDivElement {
+  const row = document.createElement('div');
+  const valueNode = document.createElement('span');
+  row.append(document.createTextNode(label), valueNode);
+  valueNode.textContent = String(value);
+  return row;
 }
 
 function createEntryGate(): Readonly<{
@@ -170,6 +215,11 @@ export async function mountLocalInkfallPracticeRoute(
 ): Promise<void> {
   const canvas = requireElement('#game-canvas', HTMLCanvasElement);
   const app = requireElement('#app', HTMLDivElement);
+  const resultDialog = requireElement('#gameover-menu', HTMLDivElement);
+  const resultTitle = requireElement('#gameover-title', HTMLHeadingElement);
+  const resultStats = requireElement('#gameover-stats', HTMLDivElement);
+  const rematchButton = requireElement('#restart-btn', HTMLButtonElement);
+  const menuButton = requireElement('#menu-btn', HTMLButtonElement);
   hideLauncherChrome();
   document.title = 'KYX.IO — Relay Practice';
   document.querySelector('meta[name="description"]')?.setAttribute(
@@ -185,8 +235,17 @@ export async function mountLocalInkfallPracticeRoute(
   const hud = new HUD();
   hud.show();
   hud.showPracticeStatus(true, 7, 'Relay · Local authority');
-  const input = new LocalInkfallPracticeInputBuffer();
-  const host = await LocalInkfallPracticeHost.create({ botCount: 7 });
+  const combatPreset = Loadout.getCombatPreset();
+  const input = new LocalInkfallPracticeInputBuffer({
+    initialSelectedSlot: combatPreset.authorityPrimaryWeaponSlot,
+    allowedSelectedSlots: [combatPreset.authorityPrimaryWeaponSlot, 5],
+  });
+  const host = await LocalInkfallPracticeHost.create({
+    botCount: 7,
+    combatPresetId: combatPreset.id,
+  });
+  body.dataset.combatPresetId = combatPreset.id;
+  body.dataset.helmetVariantId = combatPreset.helmetVariantId;
   const gameplayAudio = new AudioManager();
   const settings = GameSettings.snapshot();
   gameplayAudio.setVolume(settings.volume);
@@ -244,6 +303,7 @@ export async function mountLocalInkfallPracticeRoute(
   let pointerLocked = false;
   let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let scoreboardOpen = false;
+  let matchResultShown = false;
   let lastScoreboardRefreshAt = 0;
   const recentHeadshots = new Map<string, number>();
 
@@ -261,7 +321,7 @@ export async function mountLocalInkfallPracticeRoute(
   });
 
   const showGate = (message: string): void => {
-    if (disposed) return;
+    if (disposed || matchResultShown) return;
     gate.status.textContent = message;
     gate.root.classList.remove('hidden');
     gate.enter.focus();
@@ -339,6 +399,11 @@ export async function mountLocalInkfallPracticeRoute(
   };
 
   const renderScoreboard = (nowMilliseconds: number): void => {
+    if (matchResultShown) {
+      if (scoreboardOpen) hud.hideScoreboard();
+      scoreboardOpen = false;
+      return;
+    }
     const shouldOpen = input.scoreboardHeld && pointerLocked;
     if (!shouldOpen) {
       if (scoreboardOpen) hud.hideScoreboard();
@@ -346,21 +411,51 @@ export async function mountLocalInkfallPracticeRoute(
       return;
     }
     if (scoreboardOpen && nowMilliseconds - lastScoreboardRefreshAt < 200) return;
-    const combat = createLocalInkfallPracticePresentation({
-      snapshot,
-      localPlayerId: host.localPlayerId,
-    }).combat.snapshot;
-    const rows = [...combat.players].map((player) => ({
-      name: displayPlayerName(player.playerId, host.localPlayerId),
-      kills: 0,
-      score: combat.match.teamScores.find(({ teamId }) => teamId === player.teamId)?.score ?? 0,
-      deaths: player.deathOrdinal,
-      kd: player.deathOrdinal === 0 ? '0.0' : '0.0',
-      isYou: player.playerId === host.localPlayerId,
+    const rows = createAuthorityScoreboardRows(
+      snapshot.match?.playerScores ?? [],
+      host.localPlayerId,
+    ).map((row) => ({
+      ...row,
+      name: displayPlayerName(row.playerId, host.localPlayerId),
     }));
     hud.showScoreboard(rows, 'Relay · Local authority');
     scoreboardOpen = true;
     lastScoreboardRefreshAt = nowMilliseconds;
+  };
+
+  const presentMatchResult = (): boolean => {
+    if (matchResultShown || snapshot.match?.result === null || snapshot.match === undefined) {
+      return false;
+    }
+    const result = createAuthorityPracticeMatchResultViewModel({
+      result: snapshot.match.result,
+      playerScores: snapshot.match.playerScores,
+      localPlayerId: host.localPlayerId,
+    });
+    matchResultShown = true;
+    input.neutralize();
+    accumulatorMilliseconds = 0;
+    gate.root.classList.add('hidden');
+    hud.hideScoreboard();
+    hud.hideLeaderboard();
+    hud.hide();
+    scoreboardOpen = false;
+    resultTitle.textContent = result.title;
+    resultStats.replaceChildren(
+      createResultStatRow('Final score', `${result.localTeamScore}-${result.opposingTeamScore}`),
+      createResultStatRow('Match end', result.reasonLabel),
+      createResultStatRow('Eliminations', result.kills),
+      createResultStatRow('Deaths', result.deaths),
+      createResultStatRow('Assists', result.assists),
+      createResultStatRow('K/D', result.kd),
+    );
+    resultDialog.inert = false;
+    resultDialog.classList.remove('hidden');
+    body.dataset.localPracticeStatus = 'result';
+    body.dataset.localPracticeResult = result.outcome;
+    if (document.pointerLockElement === canvas) void document.exitPointerLock();
+    queueMicrotask(() => rematchButton.focus());
+    return true;
   };
 
   const render = (nowMilliseconds: number): void => {
@@ -370,7 +465,7 @@ export async function mountLocalInkfallPracticeRoute(
       Math.max(0, nowMilliseconds - previousFrameMilliseconds),
     );
     previousFrameMilliseconds = nowMilliseconds;
-    if (pointerLocked && document.visibilityState !== 'hidden') {
+    if (pointerLocked && !matchResultShown && document.visibilityState !== 'hidden') {
       accumulatorMilliseconds += elapsed;
       let steps = 0;
       while (
@@ -401,7 +496,7 @@ export async function mountLocalInkfallPracticeRoute(
     const projection = createLocalInkfallPracticePresentation({
       snapshot,
       previousSnapshot,
-      interpolationAlpha: pointerLocked
+      interpolationAlpha: pointerLocked && !matchResultShown
         ? accumulatorMilliseconds / LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS
         : 1,
       localPlayerId: host.localPlayerId,
@@ -440,20 +535,36 @@ export async function mountLocalInkfallPracticeRoute(
     hud.render(projection.hud);
     hud.showPracticeStatus(true, host.botPlayerIds.length, 'Relay · Local authority');
     renderScoreboard(nowMilliseconds);
+    const localCombatPlayer = projection.combat.snapshot.players.find(
+      ({ playerId }) => playerId === host.localPlayerId,
+    );
+    const localScore = snapshot.match?.playerScores.find(
+      ({ playerId }) => playerId === host.localPlayerId,
+    );
+    const authoritativeWeaponSlot = localCombatPlayer?.selectedWeaponSlot
+      ?? combatPreset.authorityPrimaryWeaponSlot;
+    body.dataset.localPracticeMatchPhase = projection.combat.snapshot.match.phase;
+    body.dataset.localPracticeLifePhase = localCombatPlayer?.lifePhase ?? 'unknown';
+    body.dataset.localPracticeKills = String(localScore?.kills ?? 0);
+    body.dataset.localPracticeDeaths = String(localScore?.deaths ?? 0);
+    body.dataset.localPracticeAssists = String(localScore?.assists ?? 0);
+    body.dataset.localPracticeWeaponSlot = String(authoritativeWeaponSlot);
     body.dataset.localPracticeServerTick = String(snapshot.serverTick);
     body.dataset.localPracticePlayerCount = String(snapshot.players.length);
     body.dataset.localPracticeMapId = snapshot.identity.mapId;
+    presentMatchResult();
     animationFrame = requestAnimationFrame(render);
   };
 
   const requestEntry = async (): Promise<void> => {
+    if (matchResultShown) return;
     gameplayAudio.resume();
     gate.status.textContent = 'Capturing mouse…';
     const accepted = await requestPointerLockWithRawFallback(canvas);
     if (!accepted) showGate('Mouse capture was denied. Click Enter arena to try again.');
   };
   const keyHandler = (event: KeyboardEvent): void => {
-    if (!pointerLocked) return;
+    if (!pointerLocked || matchResultShown) return;
     const authoritativeLocal = snapshot.players.find(
       ({ playerId }) => playerId === host.localPlayerId,
     )?.movement.player;
@@ -472,6 +583,7 @@ export async function mountLocalInkfallPracticeRoute(
   const pointerDown = (event: PointerEvent): void => {
     if (event.button !== 0 && event.button !== 2) return;
     event.preventDefault();
+    if (matchResultShown) return;
     if (!pointerLocked) {
       void requestEntry();
       return;
@@ -480,14 +592,28 @@ export async function mountLocalInkfallPracticeRoute(
     input.handlePointerButton(event.button, true);
   };
   const pointerUp = (event: PointerEvent): void => {
+    if (matchResultShown) return;
     input.handlePointerButton(event.button, false);
   };
   const pointerMove = (event: MouseEvent): void => {
-    if (pointerLocked) input.addPointerLook(event.movementX, event.movementY);
+    if (pointerLocked && !matchResultShown) {
+      input.addPointerLook(event.movementX, event.movementY);
+    }
   };
   const pointerLockChange = (): void => {
     pointerLocked = document.pointerLockElement === canvas;
     canvas.dataset.pointerLock = pointerLocked ? 'active' : 'inactive';
+    if (matchResultShown) {
+      input.neutralize();
+      accumulatorMilliseconds = 0;
+      hud.hideScoreboard();
+      scoreboardOpen = false;
+      gate.root.classList.add('hidden');
+      body.dataset.localPracticeStatus = 'result';
+      if (pointerLocked) void document.exitPointerLock();
+      queueMicrotask(() => rematchButton.focus());
+      return;
+    }
     if (pointerLocked) hideGate();
     else {
       input.neutralize();
@@ -501,6 +627,8 @@ export async function mountLocalInkfallPracticeRoute(
     if (document.visibilityState === 'hidden') neutralize();
   };
   const preventContextMenu = (event: MouseEvent): void => event.preventDefault();
+  const requestRematch = (): void => window.location.reload();
+  const returnToMenu = (): void => window.location.assign('/');
 
   gate.enter.addEventListener('click', requestEntry);
   window.addEventListener('keydown', keyHandler);
@@ -513,6 +641,8 @@ export async function mountLocalInkfallPracticeRoute(
   document.addEventListener('visibilitychange', visibilityHandler);
   canvas.addEventListener('pointerdown', pointerDown);
   canvas.addEventListener('contextmenu', preventContextMenu);
+  rematchButton.addEventListener('click', requestRematch);
+  menuButton.addEventListener('click', returnToMenu);
 
   const diagnostics = (): LocalPracticeDiagnosticsV1 => {
     const metrics = host.authority.metricsSnapshot();
@@ -521,6 +651,13 @@ export async function mountLocalInkfallPracticeRoute(
     );
     if (localPlayer === undefined) {
       throw new Error('LOCAL_INKFALL_PRACTICE_LOCAL_PLAYER_MISSING');
+    }
+    if (
+      snapshot.match === undefined
+      || localPlayer.combat === undefined
+      || localPlayer.combat.abilityLoadout === undefined
+    ) {
+      throw new Error('LOCAL_INKFALL_PRACTICE_COMBAT_MISSING');
     }
     const authoritativeMovement = localPlayer.movement.player;
     const localLaunchEvents = recentEvents.filter((event) => (
@@ -544,7 +681,11 @@ export async function mountLocalInkfallPracticeRoute(
     ).length;
     return Object.freeze({
       schemaVersion: 1,
-      status: disposed ? 'disposed' : pointerLocked ? 'ready' : 'paused',
+      status: disposed
+        ? 'disposed'
+        : matchResultShown
+          ? 'result'
+          : pointerLocked ? 'ready' : 'paused',
       hostId: host.hostId,
       serverTick: snapshot.serverTick,
       lifecycle: snapshot.lifecycle,
@@ -558,6 +699,48 @@ export async function mountLocalInkfallPracticeRoute(
       pointerLocked,
       aimHeld: input.aimHeld,
       recentReliableEvents: recentEvents.length,
+      loadout: Object.freeze({
+        combatPresetId: combatPreset.id,
+        primaryWeaponSlot: combatPreset.authorityPrimaryWeaponSlot,
+        allowedWeaponSlots: Object.freeze([
+          ...new Set([combatPreset.authorityPrimaryWeaponSlot, 5]),
+        ]),
+        authoritativeSelectedWeaponSlot: localPlayer.combat.armory.selectedSlot,
+        authoritativeSelectedWeaponId: localPlayer.combat.armory.weapons.find(
+          ({ weaponId }) => (
+            kyxWeaponProfile(weaponId).slot === localPlayer.combat?.armory.selectedSlot
+          ),
+        )?.weaponId ?? null,
+        abilitySlots: Object.freeze([...localPlayer.combat.abilityLoadout.loadout.slots]),
+      }),
+      match: Object.freeze({
+        phase: snapshot.match.phase,
+        activeTicksRemaining: snapshot.match.activeTicksRemaining,
+        teamScores: Object.freeze(snapshot.match.teamScores.map((score) => Object.freeze({
+          teamId: score.teamId,
+          score: score.score,
+        }))),
+        playerScores: Object.freeze(snapshot.match.playerScores.map((score) => Object.freeze({
+          playerId: score.playerId,
+          teamId: score.teamId,
+          kills: score.kills,
+          deaths: score.deaths,
+          assists: score.assists,
+        }))),
+        damageEventCount: recentEvents.filter(({ kind }) => kind === 'damageApplied').length,
+        killEventCount: recentEvents.filter(({ kind }) => kind === 'playerKilled').length,
+        localLifePhase: localPlayer.combat.life.phase,
+        localDeathOrdinal: localPlayer.combat.life.deathOrdinal,
+        localSpawnOrdinal: localPlayer.combat.life.spawnOrdinal,
+        localRespawnEligibleAtTick: localPlayer.combat.life.respawnEligibleAtTick,
+        result: snapshot.match.result === null
+          ? null
+          : Object.freeze({
+              reason: snapshot.match.result.reason,
+              winningTeamId: snapshot.match.result.winningTeamId,
+              draw: snapshot.match.result.draw,
+            }),
+      }),
       portalAuthorityCapabilityId: host.authority.worldPortalCapabilityId,
       recentPortalTraversalEvents: recentEvents.filter(
         ({ kind, actorId }) => (
@@ -622,6 +805,8 @@ export async function mountLocalInkfallPracticeRoute(
     document.removeEventListener('visibilitychange', visibilityHandler);
     canvas.removeEventListener('pointerdown', pointerDown);
     canvas.removeEventListener('contextmenu', preventContextMenu);
+    rematchButton.removeEventListener('click', requestRematch);
+    menuButton.removeEventListener('click', returnToMenu);
     if (document.pointerLockElement === canvas) void document.exitPointerLock();
     hud.hide();
     captionCues?.dispose();
