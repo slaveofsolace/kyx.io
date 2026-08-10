@@ -1,0 +1,59 @@
+Traceback (most recent call last):
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 4854, in retarget_actions
+    apply_vlr7_constrained_pose(target, weapon_review)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 4579, in apply_vlr7_constrained_pose
+    return apply_vlr7_landmark_grip_pose(target, weapon)
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 4313, in apply_vlr7_landmark_grip_pose
+    digit_plans[role][finger] = prepare_landmark_digit_solve(
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        target,
+        ^^^^^^^
+    ...<4 lines>...
+        finger_pole,
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 3516, in prepare_landmark_digit_solve
+    points, solve_report = solve_fixed_length_digit_waypoints(
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        bones[0].head.copy(),
+        ^^^^^^^^^^^^^^^^^^^^^
+    ...<8 lines>...
+        finger,
+        ^^^^^^^
+    )
+    ^
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 3379, in solve_fixed_length_digit_waypoints
+    raise RuntimeError(
+    ...<3 lines>...
+    )
+RuntimeError: Rev51 bounded route family has no fully qualified candidate: role=dominant finger=index candidates=2 reasons={'trigger-index-wrap': 2, 'handedness': 1}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_assault_rev51_vlr7_bounded_route_v1.py", line 148, in <module>
+    runpy.run_path(
+    ~~~~~~~~~~~~~~^
+        str(Path(__file__).with_name("author_export_cc0_assault_rev51.py")),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        run_name="__main__",
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 7213, in <module>
+    main()
+    ~~~~^^
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 6524, in main
+    motion_records = retarget_actions(rig, libraries, weapon_review)
+  File "D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_cc0_assault_rev51.py", line 4857, in retarget_actions
+    raise RuntimeError(
+    ...<4 lines>...
+    ) from exc
+RuntimeError: Rev42 contact solve failed: output=KYX_REV17_TP_IDLE library=ual1 source=Idle_Loop sourceFrame=0 outputFrame=1: Rev51 bounded route family has no fully qualified candidate: role=dominant finger=index candidates=2 reasons={'trigger-index-wrap': 2, 'handedness': 1}
+
+Error: script failed, file: 'D:\AI Projects\Projects\Games\evio\evio-repo\assets\source\blender\phase7-character-original-v6\scripts\author_export_assault_rev51_vlr7_bounded_route_v1.py', exiting.
