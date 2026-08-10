@@ -151,7 +151,16 @@ test.describe('local Relay Practice route', () => {
       expect(entryGateLayout.right).toBeLessThanOrEqual(entryGateLayout.viewportWidth * 0.64);
     }
 
-    await page.getByRole('button', { name: 'Enter arena' }).click();
+    const entryAction = page.getByRole('button', { name: 'Enter arena' });
+    const canvasBounds = await page.locator('#game-canvas').boundingBox();
+    expect(canvasBounds).not.toBeNull();
+    await page.mouse.move(
+      (canvasBounds?.x ?? 0) + (canvasBounds?.width ?? 0) / 2,
+      (canvasBounds?.y ?? 0) + (canvasBounds?.height ?? 0) / 2,
+    );
+    await entryAction.focus();
+    await expect(entryAction).toBeFocused();
+    await page.keyboard.press('Enter');
     await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
     await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeHidden();
 
