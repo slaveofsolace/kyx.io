@@ -15,18 +15,43 @@ interface ArmoryCandidate extends KyxSelectedGunAssetProfile {
 
 function withRuntimeUrl(
   profile: KyxSelectedGunAssetProfile,
+  url: string,
 ): Readonly<ArmoryCandidate> {
   return Object.freeze({
     ...profile,
-    url: new URL(`../../${profile.assetRelativePath}`, import.meta.url).href,
+    url,
   });
 }
 
 export const KYX_QUATERNIUS_ARMORY_REVIEW = Object.freeze([
-  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_sidearm_v1),
-  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_scattergun_v1),
-  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_longshot_v1),
-  withRuntimeUrl(KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_breach_rocket_v1),
+  withRuntimeUrl(
+    KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_sidearm_v1,
+    new URL(
+      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-k9-quaternius-rev1.glb',
+      import.meta.url,
+    ).href,
+  ),
+  withRuntimeUrl(
+    KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_scattergun_v1,
+    new URL(
+      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-sg4-quaternius-rev1.glb',
+      import.meta.url,
+    ).href,
+  ),
+  withRuntimeUrl(
+    KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_longshot_v1,
+    new URL(
+      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-longbow12-quaternius-rev1.glb',
+      import.meta.url,
+    ).href,
+  ),
+  withRuntimeUrl(
+    KYX_SELECTED_QUATERNIUS_GUN_ASSETS.kyx_breach_rocket_v1,
+    new URL(
+      '../../assets/review/runtime-candidates/kyx-quaternius-armory-rev1/kyx-br6-quaternius-rev1.glb',
+      import.meta.url,
+    ).href,
+  ),
 ] as const satisfies readonly ArmoryCandidate[]);
 
 let loadPromise: Promise<Readonly<{

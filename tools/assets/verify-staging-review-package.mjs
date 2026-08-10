@@ -40,8 +40,8 @@ const weaponReviewArtifacts = [
     binding: path.join(
       repositoryRoot,
       'src',
-      'dev',
-      'loadKyxVlr7QuaterniusReview.ts',
+      'weapons',
+      'KyxArmorySelectedAssets.ts',
     ),
   },
   ...[
@@ -61,8 +61,8 @@ const weaponReviewArtifacts = [
     binding: path.join(
       repositoryRoot,
       'src',
-      'dev',
-      'loadKyxQuaterniusArmoryReview.ts',
+      'weapons',
+      'KyxArmorySelectedAssets.ts',
     ),
   })),
 ];

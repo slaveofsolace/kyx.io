@@ -17,7 +17,7 @@ export const KYX_VLR7_QUATERNIUS_REVIEW = Object.freeze({
 } as const);
 
 const candidateUrl = new URL(
-  `../../${KYX_VLR7_QUATERNIUS_REVIEW.assetRelativePath}`,
+  '../../assets/review/runtime-candidates/kyx-vlr7-quaternius-rev1/kyx-vlr7-quaternius-rev1.glb',
   import.meta.url,
 ).href;
 
