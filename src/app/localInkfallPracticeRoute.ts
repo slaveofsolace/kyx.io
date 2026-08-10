@@ -25,7 +25,15 @@ import {
 import type { ReliableEvent } from '../net';
 import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
 import { HUD } from '../ui/HUD.js';
-import { requestPointerLockWithRawFallback } from './movement/pointerLock';
+import type { AbilityLoadoutUiSlot } from '../abilities/abilityLoadout';
+import { requestConfirmedPointerLock } from './movement/pointerLock';
+import {
+  LOCAL_PRACTICE_GOAL_SUMMARY,
+  LOCAL_PRACTICE_GOAL_TITLE,
+  LOCAL_PRACTICE_MODE_LABEL,
+  LOCAL_PRACTICE_POINTER_LOCK_TIMEOUT_MILLISECONDS,
+  localPracticeAbilityGuideRows,
+} from './localPracticeEntryGate';
 import { LocalInkfallPracticeInputBuffer } from './localInkfallPracticeInput';
 import { createLocalInkfallPracticePresentation } from './localInkfallPracticePresentation';
 import {
@@ -60,6 +68,14 @@ interface LocalPracticeDiagnosticsV1 {
   readonly acceptedInputs: number;
   readonly missedSchedulerTicks: number;
   readonly pointerLocked: boolean;
+  readonly entryGateState:
+    | 'ready'
+    | 'pending'
+    | 'denied'
+    | 'timed_out'
+    | 'active'
+    | 'result'
+    | 'disposed';
   readonly aimHeld: boolean;
   readonly recentReliableEvents: number;
   readonly loadout: Readonly<{
@@ -153,7 +169,10 @@ function createResultStatRow(label: string, value: string | number): HTMLDivElem
   return row;
 }
 
-function createEntryGate(): Readonly<{
+function createEntryGate(
+  abilitySlots: readonly AbilityLoadoutUiSlot[],
+  weaponControlLabel: string,
+): Readonly<{
   root: HTMLElement;
   status: HTMLElement;
   enter: HTMLButtonElement;
@@ -165,16 +184,34 @@ function createEntryGate(): Readonly<{
   root.setAttribute('role', 'dialog');
   root.setAttribute('aria-labelledby', 'local-practice-gate-title');
   root.innerHTML = `
-    <div class="local-practice-gate__index">Relay / local authority</div>
-    <h1 id="local-practice-gate-title">Enter the arena</h1>
-    <p class="local-practice-gate__brief">Eight combatants share one exact 20 Hz authority simulation. Escape releases mouse capture.</p>
+    <div class="local-practice-gate__index">${LOCAL_PRACTICE_MODE_LABEL}</div>
+    <h1 id="local-practice-gate-title">${LOCAL_PRACTICE_GOAL_TITLE}</h1>
+    <p class="local-practice-gate__brief">${LOCAL_PRACTICE_GOAL_SUMMARY}</p>
     <dl class="local-practice-gate__controls">
       <div><dt>Move</dt><dd>W A S D</dd></div>
-      <div><dt>Fight</dt><dd>Mouse / R / 1–6</dd></div>
+      <div><dt>Fight</dt><dd>Mouse / R</dd></div>
+      <div><dt>Weapons</dt><dd>${weaponControlLabel}</dd></div>
       <div><dt>Mobility</dt><dd>Space / Shift / C</dd></div>
-      <div><dt>Abilities</dt><dd>Hold Q / E / F / Z</dd></div>
+      <div><dt>Pause</dt><dd>Escape</dd></div>
     </dl>
   `;
+  const abilityGuide = document.createElement('div');
+  abilityGuide.className = 'local-practice-gate__abilities';
+  abilityGuide.setAttribute('aria-label', 'Selected abilities');
+  for (const ability of localPracticeAbilityGuideRows(abilitySlots)) {
+    const row = document.createElement('div');
+    const key = document.createElement('kbd');
+    const copy = document.createElement('p');
+    const name = document.createElement('strong');
+    const meaning = document.createElement('span');
+    key.textContent = ability.inputLabel;
+    name.textContent = ability.name;
+    meaning.textContent = ability.meaning;
+    if (ability.locked) name.dataset.locked = 'true';
+    copy.append(name, meaning);
+    row.append(key, copy);
+    abilityGuide.appendChild(row);
+  }
   const status = document.createElement('p');
   status.className = 'local-practice-gate__status';
   status.setAttribute('aria-live', 'polite');
@@ -190,7 +227,7 @@ function createEntryGate(): Readonly<{
   exit.href = '/';
   exit.textContent = 'Return to menu';
   actions.append(enter, exit);
-  root.append(status, actions);
+  root.append(abilityGuide, status, actions);
   return Object.freeze({ root, status, enter, exit });
 }
 
@@ -230,12 +267,16 @@ export async function mountLocalInkfallPracticeRoute(
   body.dataset.localPracticeStatus = 'loading';
   canvas.dataset.pointerLock = 'inactive';
 
-  const gate = createEntryGate();
+  const combatPreset = Loadout.getCombatPreset();
+  const abilityUiSlots = Loadout.getAbilityUiSlots() as readonly AbilityLoadoutUiSlot[];
+  const weaponControlLabel = combatPreset.authorityPrimaryWeaponSlot === 5
+    ? 'Melee 6'
+    : `${combatPreset.roleLabel} ${combatPreset.authorityPrimaryWeaponSlot + 1} / Melee 6`;
+  const gate = createEntryGate(abilityUiSlots, weaponControlLabel);
   app.append(gate.root);
   const hud = new HUD();
-  hud.show();
-  hud.showPracticeStatus(true, 7, 'Relay · Local authority');
-  const combatPreset = Loadout.getCombatPreset();
+  hud.hide();
+  hud.showPracticeStatus(true, 7, LOCAL_PRACTICE_MODE_LABEL);
   const input = new LocalInkfallPracticeInputBuffer({
     initialSelectedSlot: combatPreset.authorityPrimaryWeaponSlot,
     allowedSelectedSlots: [combatPreset.authorityPrimaryWeaponSlot, 5],
@@ -304,6 +345,10 @@ export async function mountLocalInkfallPracticeRoute(
   let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let scoreboardOpen = false;
   let matchResultShown = false;
+  let entryRequestPending = false;
+  let entryRequestOrdinal = 0;
+  let entryRequestController: AbortController | null = null;
+  let entryGateState: LocalPracticeDiagnosticsV1['entryGateState'] = 'ready';
   let lastScoreboardRefreshAt = 0;
   const recentHeadshots = new Map<string, number>();
 
@@ -320,17 +365,37 @@ export async function mountLocalInkfallPracticeRoute(
     ),
   });
 
-  const showGate = (message: string): void => {
+  const showGate = (
+    message: string,
+    state: Extract<
+      LocalPracticeDiagnosticsV1['entryGateState'],
+      'ready' | 'denied' | 'timed_out'
+    > = 'ready',
+  ): void => {
     if (disposed || matchResultShown) return;
+    entryGateState = state;
     gate.status.textContent = message;
     gate.root.classList.remove('hidden');
-    gate.enter.focus();
+    hud.hideScoreboard();
+    hud.hideLeaderboard();
+    hud.hide();
+    scoreboardOpen = false;
+    if (!gate.enter.disabled) gate.enter.focus();
     body.dataset.localPracticeStatus = 'paused';
   };
   const hideGate = (): void => {
+    entryGateState = 'active';
     gate.root.classList.add('hidden');
+    hud.show();
     canvas.focus();
     body.dataset.localPracticeStatus = 'ready';
+  };
+  const cancelEntryRequest = (): void => {
+    entryRequestOrdinal += 1;
+    entryRequestPending = false;
+    gate.enter.disabled = false;
+    entryRequestController?.abort();
+    entryRequestController = null;
   };
   const processEvents = (events: readonly ReliableEvent[]): void => {
     for (const event of events) {
@@ -418,7 +483,7 @@ export async function mountLocalInkfallPracticeRoute(
       ...row,
       name: displayPlayerName(row.playerId, host.localPlayerId),
     }));
-    hud.showScoreboard(rows, 'Relay · Local authority');
+    hud.showScoreboard(rows, LOCAL_PRACTICE_MODE_LABEL);
     scoreboardOpen = true;
     lastScoreboardRefreshAt = nowMilliseconds;
   };
@@ -433,6 +498,8 @@ export async function mountLocalInkfallPracticeRoute(
       localPlayerId: host.localPlayerId,
     });
     matchResultShown = true;
+    entryGateState = 'result';
+    cancelEntryRequest();
     input.neutralize();
     accumulatorMilliseconds = 0;
     gate.root.classList.add('hidden');
@@ -533,7 +600,7 @@ export async function mountLocalInkfallPracticeRoute(
       blinkPreview: latestBlinkPreview,
     });
     hud.render(projection.hud);
-    hud.showPracticeStatus(true, host.botPlayerIds.length, 'Relay · Local authority');
+    hud.showPracticeStatus(true, host.botPlayerIds.length, LOCAL_PRACTICE_MODE_LABEL);
     renderScoreboard(nowMilliseconds);
     const localCombatPlayer = projection.combat.snapshot.players.find(
       ({ playerId }) => playerId === host.localPlayerId,
@@ -557,11 +624,38 @@ export async function mountLocalInkfallPracticeRoute(
   };
 
   const requestEntry = async (): Promise<void> => {
-    if (matchResultShown) return;
+    if (disposed || matchResultShown || entryRequestPending) return;
+    const requestOrdinal = ++entryRequestOrdinal;
+    const requestController = new AbortController();
+    entryRequestController = requestController;
+    entryRequestPending = true;
+    entryGateState = 'pending';
+    gate.enter.disabled = true;
     gameplayAudio.resume();
     gate.status.textContent = 'Capturing mouse…';
-    const accepted = await requestPointerLockWithRawFallback(canvas);
-    if (!accepted) showGate('Mouse capture was denied. Click Enter arena to try again.');
+    const result = await requestConfirmedPointerLock(
+      canvas,
+      document,
+      LOCAL_PRACTICE_POINTER_LOCK_TIMEOUT_MILLISECONDS,
+      requestController.signal,
+    );
+    if (requestOrdinal !== entryRequestOrdinal) return;
+    entryRequestPending = false;
+    entryRequestController = null;
+    gate.enter.disabled = false;
+    if (disposed || matchResultShown) {
+      if (document.pointerLockElement === canvas) void document.exitPointerLock();
+      return;
+    }
+    if (result.ok || document.pointerLockElement === canvas) {
+      hideGate();
+      return;
+    }
+    if (result.reason === 'timeout') {
+      showGate('Mouse capture did not complete. Click Enter arena to try again.', 'timed_out');
+    } else if (result.reason !== 'aborted') {
+      showGate('Mouse capture was denied. Click Enter arena to try again.', 'denied');
+    }
   };
   const keyHandler = (event: KeyboardEvent): void => {
     if (!pointerLocked || matchResultShown) return;
@@ -614,7 +708,10 @@ export async function mountLocalInkfallPracticeRoute(
       queueMicrotask(() => rematchButton.focus());
       return;
     }
-    if (pointerLocked) hideGate();
+    if (pointerLocked) {
+      cancelEntryRequest();
+      hideGate();
+    }
     else {
       input.neutralize();
       hud.hideScoreboard();
@@ -697,6 +794,7 @@ export async function mountLocalInkfallPracticeRoute(
       acceptedInputs: metrics.acceptedInputs,
       missedSchedulerTicks: metrics.missedSchedulerTicks,
       pointerLocked,
+      entryGateState,
       aimHeld: input.aimHeld,
       recentReliableEvents: recentEvents.length,
       loadout: Object.freeze({
@@ -787,12 +885,13 @@ export async function mountLocalInkfallPracticeRoute(
     value: Object.freeze({ schemaVersion: 1 as const, getSnapshot: diagnostics }),
   });
 
-  body.dataset.localPracticeStatus = 'paused';
-  gate.status.textContent = 'Arena ready. Capture the mouse to begin.';
+  showGate('Arena ready. Capture the mouse to begin.');
   animationFrame = requestAnimationFrame(render);
   window.addEventListener('pagehide', () => {
     if (disposed) return;
     disposed = true;
+    entryGateState = 'disposed';
+    cancelEntryRequest();
     cancelAnimationFrame(animationFrame);
     gate.enter.removeEventListener('click', requestEntry);
     window.removeEventListener('keydown', keyHandler);

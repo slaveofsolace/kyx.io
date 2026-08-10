@@ -3,6 +3,118 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 test.describe('local Relay Practice route', () => {
+  test('recovers from a stalled pointer-lock request and reconciles a late lock', async ({
+    page,
+  }) => {
+    test.setTimeout(30_000);
+    await page.addInitScript(() => {
+      const state = {
+        requestCount: 0,
+        pointerLockElement: null as Element | null,
+      };
+      Object.defineProperty(window, '__KYX_POINTER_LOCK_TEST__', {
+        configurable: true,
+        value: state,
+      });
+      Object.defineProperty(document, 'pointerLockElement', {
+        configurable: true,
+        get: () => state.pointerLockElement,
+      });
+      Object.defineProperty(document, 'exitPointerLock', {
+        configurable: true,
+        value: () => {
+          state.pointerLockElement = null;
+          document.dispatchEvent(new Event('pointerlockchange'));
+        },
+      });
+      Object.defineProperty(HTMLCanvasElement.prototype, 'requestPointerLock', {
+        configurable: true,
+        value: () => {
+          state.requestCount += 1;
+          return new Promise<void>(() => undefined);
+        },
+      });
+    });
+
+    await page.goto('/practice');
+    const gate = page.getByRole('dialog', { name: 'First team to 40 wins' });
+    const enter = page.getByRole('button', { name: 'Enter arena' });
+    await expect(gate).toBeVisible();
+
+    await enter.evaluate((button) => {
+      if (!(button instanceof HTMLButtonElement)) {
+        throw new TypeError('local Practice entry action is not a button');
+      }
+      button.click();
+      button.click();
+    });
+    await expect(enter).toBeDisabled();
+    await expect(page.locator('.local-practice-gate__status'))
+      .toHaveText('Capturing mouse…');
+    await expect(enter).toBeEnabled({ timeout: 5_000 });
+    await expect(page.locator('.local-practice-gate__status'))
+      .toContainText('did not complete');
+    await expect(enter).toBeFocused();
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().entryGateState ?? null
+    ))).toBe('timed_out');
+    expect(await page.evaluate(() => (
+      (window as unknown as {
+        __KYX_POINTER_LOCK_TEST__: { requestCount: number };
+      }).__KYX_POINTER_LOCK_TEST__.requestCount
+    ))).toBe(1);
+
+    await page.evaluate(() => {
+      const state = (window as unknown as {
+        __KYX_POINTER_LOCK_TEST__: { pointerLockElement: Element | null };
+      }).__KYX_POINTER_LOCK_TEST__;
+      state.pointerLockElement = document.querySelector('#game-canvas');
+      document.dispatchEvent(new Event('pointerlockchange'));
+    });
+    await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
+    await expect(gate).toBeHidden();
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().entryGateState ?? null
+    ))).toBe('active');
+
+    await page.evaluate(() => document.exitPointerLock());
+    await expect(gate).toBeVisible();
+    await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'paused');
+  });
+
+  test('restores an actionable entry gate when pointer lock is denied', async ({ page }) => {
+    await page.addInitScript(() => {
+      const state = { requestCount: 0 };
+      Object.defineProperty(window, '__KYX_POINTER_LOCK_DENIAL_TEST__', {
+        configurable: true,
+        value: state,
+      });
+      Object.defineProperty(HTMLCanvasElement.prototype, 'requestPointerLock', {
+        configurable: true,
+        value: () => {
+          state.requestCount += 1;
+          return Promise.reject(new Error('pointer lock denied'));
+        },
+      });
+    });
+
+    await page.goto('/practice');
+    const enter = page.getByRole('button', { name: 'Enter arena' });
+    await enter.click();
+    await expect(enter).toBeEnabled();
+    await expect(enter).toBeFocused();
+    await expect(page.locator('.local-practice-gate__status'))
+      .toContainText('was denied');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().entryGateState ?? null
+    ))).toBe('denied');
+    expect(await page.evaluate(() => (
+      (window as unknown as {
+        __KYX_POINTER_LOCK_DENIAL_TEST__: { requestCount: number };
+      }).__KYX_POINTER_LOCK_DENIAL_TEST__.requestCount
+    ))).toBe(2);
+  });
+
   test('advances one shared 8-player authority runtime', async ({ page }) => {
     // Full-resolution WebGL startup is intentionally allowed extra time under
     // Chromium's software renderer. Frame-performance proof is a separate
@@ -16,7 +128,7 @@ test.describe('local Relay Practice route', () => {
     page.on('pageerror', (error) => consoleErrors.push(error.message));
 
     await page.goto('/practice');
-    await expect(page.getByRole('dialog', { name: 'Enter the arena' })).toBeVisible();
+    await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeVisible();
     await expect(page.locator('body')).toHaveAttribute(
       'data-launch-support',
       'local-relay-practice-authority',
@@ -39,7 +151,7 @@ test.describe('local Relay Practice route', () => {
 
     await page.getByRole('button', { name: 'Enter arena' }).click();
     await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
-    await expect(page.getByRole('dialog', { name: 'Enter the arena' })).toBeHidden();
+    await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeHidden();
 
     const canvasViewport = await page.locator('#game-canvas').evaluate((canvas) => ({
       height: canvas.getBoundingClientRect().height,

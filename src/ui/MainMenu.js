@@ -8,6 +8,7 @@ import { createAbilityGlyph } from './abilityGlyph.ts';
 import { COMBAT_PRESETS } from '../loadouts/combatPresets.ts';
 import { listMapLibrarySections } from '../content/maps/library.ts';
 import { inspectLocalEvmapFile } from '../content/maps/localEvmapInspection.ts';
+import { LOCAL_PRACTICE_ACTION_LABEL } from '../app/localPracticeEntryGate.ts';
 import { ControllerMenuNavigator } from './ControllerNavigation.js';
 import { focusFirst, moveFocusSpatial, trapTabWithin } from './KeyboardFocus.js';
 import { buildPracticeHref } from './practiceRoute.ts';
@@ -588,7 +589,7 @@ export class MenuUI {
             : 'map-library__reference';
           link.href = entry.action.href;
           link.textContent = entry.action.kind === 'open_local_authority_practice'
-            ? 'Play local authority'
+            ? LOCAL_PRACTICE_ACTION_LABEL
             : entry.action.kind === 'open_review_route'
               ? 'Open review arena'
             : 'View official library';

@@ -55,7 +55,7 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
 
 .local-practice-gate h1 {
   margin: 0;
-  max-width: 8ch;
+  max-width: 12ch;
   color: var(--cut-ink, #eef1ec);
   font: 720 clamp(2.7rem, 5vw, 4.7rem)/0.86 var(--cut-numeral, "Arial Narrow", sans-serif);
   letter-spacing: -0.055em;
@@ -105,6 +105,57 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   white-space: nowrap;
 }
 
+.local-practice-gate__abilities {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px 22px;
+  margin: 0 0 20px;
+  border-block: 1px solid var(--cut-line, rgba(238, 241, 236, 0.28));
+}
+
+.local-practice-gate__abilities > div {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  align-items: start;
+  min-width: 0;
+  padding: 10px 0;
+}
+
+.local-practice-gate__abilities kbd {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--cut-amber, #e3ac4a);
+  border-radius: 0;
+  background: transparent;
+  color: var(--cut-ink, #eef1ec);
+  font: 700 0.75rem/1 var(--cut-mono, monospace);
+}
+
+.local-practice-gate__abilities p {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.local-practice-gate__abilities strong {
+  color: var(--cut-ink, #eef1ec);
+  font: 680 0.78rem/1.2 var(--cut-font, "Segoe UI", sans-serif);
+}
+
+.local-practice-gate__abilities strong[data-locked="true"]::after {
+  content: " · fixed";
+  color: var(--cut-amber, #e3ac4a);
+  font-weight: 580;
+}
+
+.local-practice-gate__abilities span {
+  color: var(--cut-muted, #a6ada9);
+  font: 500 0.72rem/1.35 var(--cut-font, "Segoe UI", sans-serif);
+}
+
 .local-practice-gate__actions {
   display: flex;
   align-items: center;
@@ -143,6 +194,13 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   background: var(--cut-ink, #eef1ec);
 }
 
+.local-practice-gate__enter:disabled {
+  border-color: var(--cut-line, rgba(238, 241, 236, 0.28));
+  background: transparent;
+  color: var(--cut-dim, #747c79);
+  cursor: wait;
+}
+
 .local-practice-gate__exit:hover {
   border-bottom-color: var(--cut-cyan, #58d7e5);
   color: var(--cut-ink, #eef1ec);
@@ -163,6 +221,10 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   }
 
   .local-practice-gate__controls {
+    grid-template-columns: 1fr;
+  }
+
+  .local-practice-gate__abilities {
     grid-template-columns: 1fr;
   }
 
