@@ -37,6 +37,7 @@ test.describe('local Relay Practice route', () => {
     });
 
     await page.goto('/practice');
+    await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined);
     const gate = page.getByRole('dialog', { name: 'First team to 40 wins' });
     const enter = page.getByRole('button', { name: 'Enter arena' });
     await expect(gate).toBeVisible();
@@ -99,6 +100,7 @@ test.describe('local Relay Practice route', () => {
     });
 
     await page.goto('/practice');
+    await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined);
     const enter = page.getByRole('button', { name: 'Enter arena' });
     await enter.click();
     await expect(enter).toBeEnabled();
