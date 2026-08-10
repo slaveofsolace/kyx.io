@@ -352,13 +352,10 @@ export function createRelayArchitectureSkin(
     RELAY_V5_PORTAL_DESTINATION_LANGUAGE.overlookGate
       .destinationLandmarkObjectName;
 
-  // All bridge pieces occupy existing deck, rail, or support silhouettes.
-  // Dark underside continuity, hexagonal piers, capitals, and rail-plane
-  // diagonals make the bridge read as one load path instead of floating slabs.
+  // Authority-aligned cladding owns every deck underside. This layer adds only
+  // supports, fascia, and joints so it cannot bury the readable panel material
+  // beneath a second near-black slab.
   const bridgeStructure = [
-    instance('RELAY_BRIDGE_CENTER_UNDERSIDE', [0, 3.61, -10], [14, 0.22, 3.7]),
-    instance('RELAY_BRIDGE_WEST_UNDERSIDE', [-10.5, 3.61, -10], [7, 0.22, 7]),
-    instance('RELAY_BRIDGE_EAST_UNDERSIDE', [10.5, 3.61, -10], [7, 0.22, 7]),
     instance('RELAY_BRIDGE_SUPPORT_WEST_BASE', [-5.6, 0.18, -10], [0.82, 0.3, 0.82]),
     instance('RELAY_BRIDGE_SUPPORT_EAST_BASE', [5.6, 0.18, -10], [0.82, 0.3, 0.82]),
     instance('RELAY_BRIDGE_SUPPORT_WEST_CAPITAL', [-5.6, 3.35, -10], [0.82, 0.34, 0.82]),
@@ -438,14 +435,13 @@ export function createRelayArchitectureSkin(
   }
 
   // Spawn identity is carried by two wall-bound operations facades rather
-  // than tall lamp posts in the combat lane. Floor inserts remain flush with
-  // the proven pads; every tall element stays in or outside the boundary wall.
+  // than tall lamp posts or a dark overlay across the readable authority pad.
+  // Every tall element stays in or outside the boundary wall.
   const spawnDarkMembers: InstanceDefinition[] = [];
   const spawnCeramicMembers: InstanceDefinition[] = [];
   for (const side of [-1, 1] as const) {
     const sideName = side < 0 ? 'WEST' : 'EAST';
     spawnDarkMembers.push(
-      instance(`RELAY_${sideName}_SPAWN_DECK_INSERT`, [side * 28, 0.009, 0], [8.3, 0.016, 11.4]),
       instance(`RELAY_${sideName}_OPERATIONS_BACKPLANE`, [side * 33.56, 2.72, 0], [0.12, 5.45, 14.8]),
       instance(`RELAY_${sideName}_OPERATIONS_CROWN`, [side * 34.05, 5.3, 0], [1.08, 0.4, 15.7]),
       instance(`RELAY_${sideName}_OPERATIONS_SILL`, [side * 33.55, 0.42, 0], [0.1, 0.46, 14.2]),

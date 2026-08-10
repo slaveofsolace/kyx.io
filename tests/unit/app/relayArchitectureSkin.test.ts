@@ -52,7 +52,7 @@ describe('Relay architectural skin', () => {
     expect(skin.estimatedDrawCalls).toBeLessThanOrEqual(
       RELAY_ARCHITECTURE_V5_RENDER_BUDGET.maximumEstimatedDrawCalls,
     );
-    expect(skin.logicalInstanceCount).toBe(149);
+    expect(skin.logicalInstanceCount).toBe(144);
     expect(skin.logicalInstanceCount).toBeLessThanOrEqual(
       RELAY_ARCHITECTURE_V5_RENDER_BUDGET.maximumLogicalInstances,
     );
@@ -122,6 +122,11 @@ describe('Relay architectural skin', () => {
     expect(instanceNames).toContain('RELAY_EAST_OPERATIONS_CROWN');
     expect(instanceNames).toContain('RELAY_BRIDGE_SUPPORT_WEST_CAPITAL');
     expect(instanceNames).toContain('RELAY_BRIDGE_CENTER_JOINT_WEST');
+    expect(instanceNames).not.toContain('RELAY_BRIDGE_CENTER_UNDERSIDE');
+    expect(instanceNames).not.toContain('RELAY_BRIDGE_WEST_UNDERSIDE');
+    expect(instanceNames).not.toContain('RELAY_BRIDGE_EAST_UNDERSIDE');
+    expect(instanceNames).not.toContain('RELAY_WEST_SPAWN_DECK_INSERT');
+    expect(instanceNames).not.toContain('RELAY_EAST_SPAWN_DECK_INSERT');
     expect(instanceNames).toContain('RELAY_LOWER_SERVICE_GRATE_7');
     expect(instanceNames).toContain('RELAY_LOWER_WEST_COVER_SADDLE_CAP');
     expect(instanceNames).toContain('RELAY_WEST_NORTH_EXIT_BAR');

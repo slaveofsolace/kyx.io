@@ -72,6 +72,7 @@ const SCENE_ROTATION = new THREE.Euler(0, 0, 0, 'YXZ');
 const SCENE_QUATERNION = new THREE.Quaternion();
 const SCENE_MATRIX = new THREE.Matrix4();
 const LOCAL_UP_OFFSET = new THREE.Vector3();
+const RELAY_GAP_HAZARD_WIDTH_METERS = 0.055;
 
 function markRenderOnly(object: THREE.Object3D, role: string): void {
   object.userData.presentationRole = role;
@@ -375,6 +376,100 @@ function createColliderInstances(
     colliderInstanceCount += solids.length;
   }
 
+  const westConnector = fixture.solids.find(
+    ({ id }) => id === 'relay_floor_west_connector',
+  );
+  const centralCourt = fixture.solids.find(
+    ({ id }) => id === 'relay_floor_central_court',
+  );
+  if ((westConnector === undefined) !== (centralCourt === undefined)) {
+    throw new Error('RELAY_WEST_CONNECTOR_GAP_ANCHOR_INCOMPLETE');
+  }
+  if (westConnector !== undefined && centralCourt !== undefined) {
+    if (
+      westConnector.shape.type !== 'box'
+      || centralCourt.shape.type !== 'box'
+    ) {
+      throw new Error('RELAY_WEST_CONNECTOR_GAP_ANCHOR_NOT_BOX');
+    }
+    const connectorHalf = westConnector.shape.halfExtentsMm;
+    const courtHalf = centralCourt.shape.halfExtentsMm;
+    const sharedEdgeXmm = westConnector.centerMm.x + connectorHalf.x;
+    const courtWestEdgeXmm = centralCourt.centerMm.x - courtHalf.x;
+    const connectorSouthEdgeZmm = westConnector.centerMm.z - connectorHalf.z;
+    const courtSouthEdgeZmm = centralCourt.centerMm.z - courtHalf.z;
+    const connectorTopYmm = westConnector.centerMm.y + connectorHalf.y;
+    const courtTopYmm = centralCourt.centerMm.y + courtHalf.y;
+    if (
+      sharedEdgeXmm !== courtWestEdgeXmm
+      || connectorTopYmm !== courtTopYmm
+      || courtSouthEdgeZmm >= connectorSouthEdgeZmm
+    ) {
+      throw new Error('RELAY_WEST_CONNECTOR_GAP_ANCHOR_MISMATCH');
+    }
+
+    const hazardMaterial = standardMaterial(
+      'RELAY_WEST_CONNECTOR_GAP_HAZARD_AMBER',
+      0xf0ae55,
+      {
+        emissive: 0x6a3113,
+        emissiveIntensity: 0.24,
+        metalness: 0.12,
+        roughness: 0.5,
+      },
+    );
+    const hazard = new THREE.InstancedMesh(unitBox, hazardMaterial, 2);
+    hazard.name = 'RELAY_WEST_CONNECTOR_COURT_GAP_HAZARD_INLAYS';
+    hazard.castShadow = false;
+    hazard.receiveShadow = false;
+    hazard.userData.instanceNames = Object.freeze([
+      'RELAY_WEST_CONNECTOR_SOUTH_HAZARD_LIP',
+      'RELAY_CENTRAL_COURT_WEST_SOUTH_HAZARD_LIP',
+    ]);
+    hazard.userData.authorityAlignmentColliderIds = Object.freeze([
+      westConnector.id,
+      centralCourt.id,
+    ]);
+    hazard.userData.visualOnlySurfaceInlay = true;
+    hazard.userData.fakeTraversableSurfaceCount = 0;
+    hazard.userData.hazardMeaning = 'drop_boundary_not_walkable';
+    markRenderOnly(hazard, 'authority_gap_hazard_inlay');
+
+    const hazardLiftMeters =
+      RELAY_OPEN_SKY_V5_LIGHTING_LIMITS.surfaceInlayLiftMeters;
+    const connectorSceneSouthEdgeMeters = -connectorSouthEdgeZmm / 1_000;
+    SCENE_POSITION.set(
+      westConnector.centerMm.x / 1_000,
+      connectorTopYmm / 1_000 + hazardLiftMeters,
+      connectorSceneSouthEdgeMeters - RELAY_GAP_HAZARD_WIDTH_METERS / 2,
+    );
+    SCENE_SCALE.set(
+      connectorHalf.x * 2 / 1_000,
+      0.008,
+      RELAY_GAP_HAZARD_WIDTH_METERS,
+    );
+    SCENE_MATRIX.compose(SCENE_POSITION, SCENE_QUATERNION.identity(), SCENE_SCALE);
+    hazard.setMatrixAt(0, SCENE_MATRIX);
+
+    SCENE_POSITION.set(
+      sharedEdgeXmm / 1_000 + RELAY_GAP_HAZARD_WIDTH_METERS / 2,
+      courtTopYmm / 1_000 + hazardLiftMeters,
+      -(connectorSouthEdgeZmm + courtSouthEdgeZmm) / 2_000,
+    );
+    SCENE_SCALE.set(
+      RELAY_GAP_HAZARD_WIDTH_METERS,
+      0.008,
+      (connectorSouthEdgeZmm - courtSouthEdgeZmm) / 1_000,
+    );
+    SCENE_MATRIX.compose(SCENE_POSITION, SCENE_QUATERNION.identity(), SCENE_SCALE);
+    hazard.setMatrixAt(1, SCENE_MATRIX);
+    hazard.instanceMatrix.needsUpdate = true;
+    hazard.computeBoundingBox();
+    hazard.computeBoundingSphere();
+    parent.add(hazard);
+    meshCount += 1;
+  }
+
   if (waypoints.length > 0) {
     const waypointMaterial = standardMaterial(
       'RELAY_NAVIGATION_INLAY',
@@ -477,16 +572,6 @@ function createSkyEnvironment(parent: THREE.Group): number {
 
         float horizonHaze = 1.0 - smoothstep(0.0, 0.22, abs(elevation - 0.015));
         color = mix(color, horizonColor, horizonHaze * 0.24);
-
-        float cloudDomain = 0.5 + 0.5 * sin(
-          direction.x * 29.0
-          + direction.z * 18.0
-          + sin(direction.z * 43.0) * 1.7
-        );
-        float cloudBand = smoothstep(0.61, 0.84, cloudDomain)
-          * smoothstep(0.08, 0.34, elevation)
-          * (1.0 - smoothstep(0.58, 0.82, elevation));
-        color = mix(color, vec3(0.84, 0.88, 0.9), cloudBand * 0.13);
 
         float sunFacing = max(dot(direction, sunDirection), 0.0);
         float sunHalo = pow(sunFacing, 34.0) * 0.34;

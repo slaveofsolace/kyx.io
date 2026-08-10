@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import * as THREE from 'three';
 
 import {
   createRelayVisualContinuity,
@@ -41,7 +42,7 @@ describe('Relay original visual continuity candidate', () => {
     expect(continuity.colliderInstanceCount).toBe(fixture.solids.length);
     expect(continuity.waypointInlayCount).toBe(waypointCount);
     expect(continuity.meshCount).toBe(actualMeshCount);
-    expect(continuity.meshCount).toBe(60);
+    expect(continuity.meshCount).toBe(61);
     expect(continuity.lightCount).toBe(actualLightCount);
     expect(continuity.lightCount).toBe(6);
     expect(continuity.estimatedDrawCalls).toBe(continuity.meshCount);
@@ -84,6 +85,11 @@ describe('Relay original visual continuity candidate', () => {
       ],
       humanReviewRequired: true,
     });
+    if (sky instanceof THREE.Mesh && sky.material instanceof THREE.ShaderMaterial) {
+      expect(sky.material.fragmentShader).not.toContain('cloudDomain');
+      expect(sky.material.fragmentShader).not.toContain('cloudBand');
+      expect(sky.material.fragmentShader).toContain('horizonHaze');
+    }
     expect(continuity.group.getObjectByName('RELAY_CAMPUS_CROWN_STRUCTURAL_YOKE'))
       .toBeDefined();
     expect(continuity.group.getObjectByName('RELAY_ARCHITECTURAL_SKIN_V5'))
@@ -104,6 +110,48 @@ describe('Relay original visual continuity candidate', () => {
     expect(upperDeck).toBeDefined();
     expect(lowerDeck).toBeDefined();
     expect(structure).toBeDefined();
+    const gapHazards = continuity.group.getObjectByName(
+      'RELAY_WEST_CONNECTOR_COURT_GAP_HAZARD_INLAYS',
+    );
+    expect(gapHazards).toBeInstanceOf(THREE.InstancedMesh);
+    expect(gapHazards?.userData).toMatchObject({
+      presentationRole: 'authority_gap_hazard_inlay',
+      noHit: true,
+      renderMeshesMayBeAuthority: false,
+      visualOnlySurfaceInlay: true,
+      fakeTraversableSurfaceCount: 0,
+      hazardMeaning: 'drop_boundary_not_walkable',
+      instanceNames: [
+        'RELAY_WEST_CONNECTOR_SOUTH_HAZARD_LIP',
+        'RELAY_CENTRAL_COURT_WEST_SOUTH_HAZARD_LIP',
+      ],
+      authorityAlignmentColliderIds: [
+        'relay_floor_west_connector',
+        'relay_floor_central_court',
+      ],
+    });
+    if (gapHazards instanceof THREE.InstancedMesh) {
+      const matrix = new THREE.Matrix4();
+      const position = new THREE.Vector3();
+      const rotation = new THREE.Quaternion();
+      const scale = new THREE.Vector3();
+      gapHazards.getMatrixAt(0, matrix);
+      matrix.decompose(position, rotation, scale);
+      expect(position.x).toBeCloseTo(-18, 5);
+      expect(position.y).toBeCloseTo(0.006, 5);
+      expect(position.z).toBeCloseTo(3.9725, 5);
+      expect(scale.x).toBeCloseTo(10, 5);
+      expect(scale.y).toBeCloseTo(0.008, 5);
+      expect(scale.z).toBeCloseTo(0.055, 5);
+      gapHazards.getMatrixAt(1, matrix);
+      matrix.decompose(position, rotation, scale);
+      expect(position.x).toBeCloseTo(-12.9725, 5);
+      expect(position.y).toBeCloseTo(0.006, 5);
+      expect(position.z).toBeCloseTo(6.25, 5);
+      expect(scale.x).toBeCloseTo(0.055, 5);
+      expect(scale.y).toBeCloseTo(0.008, 5);
+      expect(scale.z).toBeCloseTo(4.5, 5);
+    }
     expect(midDeck?.userData.authorityAlignmentColliderIds).toEqual(
       expect.arrayContaining([
         'relay_floor_central_court',
