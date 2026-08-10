@@ -385,12 +385,12 @@ export class MenuUI {
       Object.freeze({
         id: 'original',
         label: 'Original arenas',
-        description: 'Current KYX maps and source-frozen authority builds.',
+        description: 'Current KYX arenas for shared movement and combat.',
       }),
       Object.freeze({
         id: 'legacy',
         label: 'Legacy maps',
-        description: 'KYX history plus local inspection of externally owned map files.',
+        description: 'Classic KYX arenas and private local map files.',
       }),
     ]);
     const tabList = document.createElement('div');

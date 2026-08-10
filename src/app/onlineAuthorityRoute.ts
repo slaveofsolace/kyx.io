@@ -901,7 +901,7 @@ async function mountSession(
   canvas.setAttribute(
     'aria-label',
     threeDimensionalMap
-      ? 'Playable Relay 3D online combat visual candidate with linked portals. Click for pointer lock and mouse look; Mouse 1 fires and Mouse 2 aims.'
+      ? 'Play online team deathmatch in Relay with linked portals. Click for mouse look; Mouse 1 fires and Mouse 2 aims.'
       : 'Online authoritative combat arena. Click to focus; Mouse 1 fires and Mouse 2 aims.',
   );
   const mapStatus = element(
@@ -1139,7 +1139,7 @@ async function mountSession(
     'p',
     'online-session__limitation',
     relayRuntime
-      ? 'WORK IN PROGRESS: Relay now shares one exact browser and Worker authority contract: 56 colliders, eight spawns, paired portals, combat, telemetry, and reconnect state. Environment art, balance, and human play approval remain open.'
+      ? 'WORK IN PROGRESS: Relay combat is playable now. Arena art, balance, and polish are still being shaped for tester feedback.'
       : threeDimensionalMap
         ? 'COMPATIBILITY MODE: this persisted Foundry room retains its locked authority contract. It is not the current arena direction.'
       : mapRuntime

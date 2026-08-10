@@ -39,7 +39,7 @@ describe('map library truth contract', () => {
     expect(getMapLibraryEntry('relay_visual_candidate')).toEqual(
       expect.objectContaining({
         availability: 'playable',
-        statusLabel: 'Playable visual candidate',
+        statusLabel: 'Playable now',
         action: {
           kind: 'open_local_authority_practice',
           href: RELAY_LOCAL_PRACTICE_HREF,

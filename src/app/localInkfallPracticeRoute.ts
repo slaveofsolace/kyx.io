@@ -261,7 +261,7 @@ export async function mountLocalInkfallPracticeRoute(
   document.title = 'KYX.IO — Relay Practice';
   document.querySelector('meta[name="description"]')?.setAttribute(
     'content',
-    'Local-authority KYX.IO combat practice in the Relay visual candidate.',
+    'Play KYX.IO team deathmatch practice in the Relay arena.',
   );
   body.dataset.launchSupport = 'local-relay-practice-authority';
   body.dataset.localPracticeStatus = 'loading';

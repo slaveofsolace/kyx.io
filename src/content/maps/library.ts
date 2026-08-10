@@ -62,9 +62,9 @@ const MAP_LIBRARY_SECTIONS: readonly MapLibrarySection[] = Object.freeze([
         displayName: 'Relay',
         maker: 'KYX',
         availability: 'playable',
-        statusLabel: 'Playable visual candidate',
+        statusLabel: 'Playable now',
         description:
-          'Open-sky communications campus with readable upper, court, and lower routes. Practice and online now share Relay\'s collision, eight spawns, paired portals, weapons, abilities, bots, and authority contract; visual balance and human play approval remain open.',
+          'Open-sky communications campus with upper, court, and lower routes. Fight through paired portals with eight combatants, distinct weapons, and ability-driven team play.',
         modes: Object.freeze(['Team deathmatch', 'Deathmatch']),
         action: Object.freeze({
           kind: 'open_local_authority_practice',
