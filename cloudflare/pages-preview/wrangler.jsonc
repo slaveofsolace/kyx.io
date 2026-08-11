@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "account_id": "84aa597f700e42f7f2396a71193648c8",
   "name": "kyx-io-preview",
   "pages_build_output_dir": "../../dist",
   "compatibility_date": "2026-07-30",
