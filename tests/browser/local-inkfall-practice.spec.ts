@@ -117,7 +117,11 @@ test.describe('local Relay Practice route', () => {
     ))).toBe(2);
   });
 
-  test('advances one shared 8-player authority runtime', async ({ page }) => {
+  test('advances one shared 8-player authority runtime', async ({ page }, testInfo) => {
+    test.skip(
+      testInfo.project.name === 'chromium-mobile-unsupported',
+      'The 8-player Practice runtime is intentionally desktop-only',
+    );
     // Full-resolution WebGL startup is intentionally allowed extra time under
     // Chromium's software renderer. Frame-performance proof is a separate
     // evidence gate; this test verifies route integration and viewport truth.
