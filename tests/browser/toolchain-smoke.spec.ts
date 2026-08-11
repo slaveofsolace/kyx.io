@@ -19,17 +19,17 @@ test('truthful shell boots in its declared desktop and mobile states', async ({ 
   });
 
   await page.goto('/', { waitUntil: 'networkidle' });
-  await expect(page).toHaveTitle('KYX.IO — Offline Practice');
+  await expect(page).toHaveTitle('KYX.IO — Arena FPS');
 
   const mobile = testInfo.project.name === 'chromium-mobile-unsupported';
   if (mobile) {
     await expect(page.getByRole('heading', { name: 'DESKTOP REQUIRED' })).toBeVisible();
     await expect(page.locator('body')).toHaveAttribute('data-launch-support', 'desktop-required');
   } else {
-    await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible({
+    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
       timeout: 15_000,
     });
-    await expect(page.getByRole('button', { name: 'ONLINE MATCH — NOT AVAILABLE' })).toBeDisabled();
+    await expect(page.locator('#online-match-button')).toBeDisabled();
   }
 
   expect(consoleErrors).toEqual([]);

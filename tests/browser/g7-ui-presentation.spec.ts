@@ -18,6 +18,41 @@ function observeRuntimeErrors(page: Page): RuntimeErrors {
   return errors;
 }
 
+async function installPointerLockShim(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    const state = { pointerLockElement: null as Element | null };
+    Object.defineProperty(document, 'pointerLockElement', {
+      configurable: true,
+      get: () => state.pointerLockElement,
+    });
+    Object.defineProperty(document, 'exitPointerLock', {
+      configurable: true,
+      value: () => {
+        state.pointerLockElement = null;
+        document.dispatchEvent(new Event('pointerlockchange'));
+      },
+    });
+    Object.defineProperty(HTMLCanvasElement.prototype, 'requestPointerLock', {
+      configurable: true,
+      value: function requestPointerLock() {
+        state.pointerLockElement = this;
+        document.dispatchEvent(new Event('pointerlockchange'));
+        return Promise.resolve();
+      },
+    });
+  });
+}
+
+async function enterRelayPractice(page: Page): Promise<void> {
+  await Promise.all([
+    page.waitForURL('**/practice'),
+    page.getByRole('button', { name: 'Enter Relay practice' }).click(),
+  ]);
+  await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeVisible();
+  await page.getByRole('button', { name: 'Enter arena' }).click();
+  await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
+}
+
 async function waitForMenu(page: Page, search = ''): Promise<void> {
   await page.goto(`/${search}`, { waitUntil: 'networkidle' });
   await expect(page.locator('#connect-screen')).toHaveClass(/hidden/u, { timeout: 15_000 });
@@ -73,8 +108,13 @@ async function gameplayLayout(page: Page) {
 
 test('Cutline is a bounded human-review candidate backed by the shared practice HUD model', async ({
   page,
-}) => {
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name === 'chromium-mobile-unsupported',
+    'Cutline gameplay presentation is intentionally desktop-only',
+  );
   const errors = observeRuntimeErrors(page);
+  await installPointerLockShim(page);
   await page.setViewportSize({ width: 1280, height: 720 });
   await waitForMenu(page);
 
@@ -88,7 +128,7 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
   expect(await launchSurface.evaluate((element) => getComputedStyle(element).backdropFilter)).toBe('none');
   expect(await launchSurface.evaluate((element) => getComputedStyle(element).borderRadius)).toBe('0px');
 
-  await page.getByRole('button', { name: 'Start offline practice' }).click();
+  await enterRelayPractice(page);
   await expect(page.locator('#hud')).toBeVisible({ timeout: 15_000 });
   await expect(page.locator('#map-loading')).toHaveClass(/hidden/u, { timeout: 15_000 });
   await expect(page.locator('#hud')).toHaveAttribute('data-hud-view-model', '1');
@@ -167,7 +207,11 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
 
 test('radial loadout keeps Blink fixed and makes linked package choices operable', async ({
   page,
-}) => {
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name === 'chromium-mobile-unsupported',
+    'The local loadout menu is intentionally desktop-only',
+  );
   const errors = observeRuntimeErrors(page);
   await waitForMenu(page);
   await page.getByRole('button', { name: 'Loadout' }).click();
@@ -218,23 +262,27 @@ test('radial loadout keeps Blink fixed and makes linked package choices operable
 
 test('pause and compact scoreboard retain keyboard focus and gameplay sightline', async ({
   page,
-}) => {
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name === 'chromium-mobile-unsupported',
+    'Practice input and pause presentation are intentionally desktop-only',
+  );
   const errors = observeRuntimeErrors(page);
+  await installPointerLockShim(page);
   await page.setViewportSize({ width: 1280, height: 720 });
   await waitForMenu(page);
-  await page.getByRole('button', { name: 'Start offline practice' }).click();
+  await enterRelayPractice(page);
   await expect(page.locator('#hud')).toBeVisible({ timeout: 15_000 });
   await expect(page.locator('#map-loading')).toHaveClass(/hidden/u, { timeout: 15_000 });
 
-  await page.keyboard.press('Escape');
-  await expect(page.getByRole('dialog', { name: 'Paused' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Resume practice' })).toBeFocused();
-  await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: 'Quit to practice menu' })).toBeFocused();
-  await page.keyboard.press('Tab');
-  await expect(page.getByRole('button', { name: 'Resume practice' })).toBeFocused();
-  await page.keyboard.press('Escape');
-  await expect(page.getByRole('dialog', { name: 'Paused' })).toBeHidden();
+  await page.evaluate(() => document.exitPointerLock());
+  const entryGate = page.getByRole('dialog', { name: 'First team to 40 wins' });
+  await expect(entryGate).toBeVisible();
+  await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'paused');
+  await expect(page.getByRole('button', { name: 'Enter arena' })).toBeFocused();
+  await page.getByRole('button', { name: 'Enter arena' }).click();
+  await expect(entryGate).toBeHidden();
+  await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
 
   await page.evaluate(async () => {
     const hudModulePath = '/src/ui/HUD.js';

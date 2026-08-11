@@ -128,7 +128,7 @@ test('default launch does not load or expose the development movement driver', a
   if (mobile) {
     await expect(page.getByRole('heading', { name: 'DESKTOP REQUIRED' })).toBeVisible();
   } else {
-    await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible({
+    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
       timeout: 15_000,
     });
   }
@@ -170,7 +170,12 @@ for (const rejectedQuery of rejectedDriverQueries) {
     if (mobile) {
       await expect(page.getByRole('heading', { name: 'DESKTOP REQUIRED' })).toBeVisible();
     } else {
-      await expect(page.locator('#dev-build-diagnostics')).toBeVisible({ timeout: 15_000 });
+      await expect(page.locator('#dev-build-diagnostics')).toContainText(
+        'LOCAL DEV',
+        { timeout: 15_000 },
+      );
+      await expect(page.locator('#dev-build-diagnostics')).toContainText('OFFLINE PRACTICE');
+      await expect(page.locator('#dev-build-diagnostics')).toBeHidden();
     }
     await expect(page.locator('#dev-flat-run-movement-marker')).toHaveCount(0);
     await expect(page.locator('body')).not.toHaveAttribute('data-movement-driver', /.+/);
@@ -223,7 +228,7 @@ test(`exact DEV flag ${scenario.title}`, async ({
       'MOVEMENT FIXTURE · COMBAT / AI / PICKUPS / MODE TIMER PAUSED',
     );
     await expect(page.locator('body')).toHaveAttribute('data-movement-driver', 'flat_run');
-    await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible({
+    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
       timeout: 15_000,
     });
     expect(failures.requestedUrls.some((url) => url.includes(DRIVER_MODULE_FRAGMENT))).toBe(true);
@@ -288,8 +293,8 @@ test(`exact DEV flag ${scenario.title}`, async ({
     expect(initial.presentation.pitchRadians).toBe(0);
 
     if (scenario.id !== 'boundary') {
-    await page.getByRole('button', { name: 'START OFFLINE PRACTICE' }).click();
-    await expect.poll(async () => {
+      await page.getByRole('button', { name: 'Enter Relay practice' }).click();
+      await expect.poll(async () => {
       return await canvas.evaluate((element, property) => (
         element as unknown as Record<string, DriverDiagnostics>
       )[property], DRIVER_PROPERTY);
@@ -506,10 +511,10 @@ test('exact DEV flag enters an authoritative crouched slide', async ({
   await page.goto('/?movementDriver=flat_run', { waitUntil: 'domcontentloaded' });
   const canvas = page.locator('#game-canvas');
   await expect(page.locator('#dev-flat-run-movement-marker')).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible({
+  await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
     timeout: 15_000,
   });
-  await page.getByRole('button', { name: 'START OFFLINE PRACTICE' }).click();
+  await page.getByRole('button', { name: 'Enter Relay practice' }).click();
   await expect(page.locator('body')).toHaveAttribute('data-movement-driver-status', 'running');
 
   const before = await canvas.evaluate((element, property) => (
@@ -697,10 +702,10 @@ test('dispose clears Game listeners/timers and permits same-document driver rein
 
   await page.goto('/?movementDriver=flat_run', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#dev-flat-run-movement-marker')).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible({
+  await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
     timeout: 15_000,
   });
-  await page.getByRole('button', { name: 'START OFFLINE PRACTICE' }).click();
+  await page.getByRole('button', { name: 'Enter Relay practice' }).click();
   await expect(page.locator('body')).toHaveAttribute('data-movement-driver-status', 'running');
   await expect.poll(async () => {
     return await page.evaluate(() => {
@@ -867,7 +872,7 @@ test('runtime driver fault stops once and shows a no-fallback DEV failure', asyn
   });
   const failures = captureCriticalFailures(page);
   await page.goto('/?movementDriver=flat_run', { waitUntil: 'networkidle' });
-  await page.getByRole('button', { name: 'START OFFLINE PRACTICE' }).click();
+  await page.getByRole('button', { name: 'Enter Relay practice' }).click();
   await expect(page.locator('body')).toHaveAttribute('data-movement-driver-status', 'running');
   await expect(page.locator('#game-canvas')).toHaveAttribute('data-kyx-dev-metrics', /.+/, {
     timeout: 5_000,

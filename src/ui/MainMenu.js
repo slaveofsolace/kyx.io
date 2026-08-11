@@ -72,7 +72,7 @@ function createStatRow(label, value) {
 }
 
 export class MenuUI {
-  constructor() {
+  constructor(options = undefined) {
     this.topNav = document.getElementById('top-nav');
     this.centerPlay = document.getElementById('center-play');
     this.nameInput = document.getElementById('player-name');
@@ -87,6 +87,7 @@ export class MenuUI {
     this.selectedArmorId = loadArmorType();
     this.selectedModeId = GAME_MODES[0].id;
     this.selectedMapId = 'relay_visual_candidate';
+    this._routeRelayPractice = options?.routeRelayPractice !== false;
     this._displayName = 'Recruit';
     this._activePanel = null;
     this._panelReturnFocus = null;
@@ -118,6 +119,13 @@ export class MenuUI {
       this._armorPreview = null;
       this._armorPreviewModelLoaded = false;
     }, { once: true });
+  }
+
+  dispose() {
+    this._controllerNavigation?.stop();
+    this._armorPreview?.dispose();
+    this._armorPreview = null;
+    this._armorPreviewModelLoaded = false;
   }
 
   _showArmorPreview() {
@@ -275,7 +283,7 @@ export class MenuUI {
     this.selectedMapId = mapId;
     this._closeAllPanels();
     this._closeAllDropdowns();
-    if (mapId === 'relay_visual_candidate') {
+    if (mapId === 'relay_visual_candidate' && this._routeRelayPractice) {
       window.location.assign(buildPracticeHref(window.location.search));
       return;
     }

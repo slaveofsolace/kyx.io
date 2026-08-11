@@ -115,6 +115,7 @@ interface LocalPracticeDiagnosticsV1 {
   readonly recentPortalTraversalEvents: number;
   readonly launch: Readonly<{
     readonly acceptedThrowCount: number;
+    readonly activeLocalProjectileCount: number;
     readonly collisionCount: number;
     readonly detonationCount: number;
     readonly impulseAppliedCount: number;
@@ -853,6 +854,11 @@ export async function mountLocalInkfallPracticeRoute(
       ).length,
       launch: Object.freeze({
         acceptedThrowCount: countLaunchEvents('impulse_grenade_throw_accepted'),
+        activeLocalProjectileCount: (snapshot.impulseGrenadeProjectiles ?? []).filter(
+          ({ ownerPlayerId, phase }) => (
+            ownerPlayerId === host.localPlayerId && phase === 'active'
+          ),
+        ).length,
         collisionCount: countLaunchEvents('impulse_grenade_collision'),
         detonationCount: countLaunchEvents('impulse_grenade_detonated'),
         impulseAppliedCount: countLaunchEvents('impulse_grenade_impulse_applied'),

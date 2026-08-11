@@ -9,19 +9,18 @@ const rev4EvidenceDirectory = resolve(
     ?? 'evidence/2026-07-27/g5-inkfall-rev4-runtime-candidate',
 );
 
-test('visible Press Hall inspection link targets v3.3 without changing Offline Practice', async ({
+test('retired Press Hall inspection stays off the player-facing Relay menu', async ({
   page,
-}) => {
-  const response = await page.request.get('/');
-  expect(response.ok()).toBe(true);
-  const landingMarkup = (await response.text()).replace(/<script\b[^>]*>[\s\S]*?<\/script>/giu, '');
-  await page.setContent(landingMarkup);
+}, testInfo) => {
+  await page.goto('/', { waitUntil: 'networkidle' });
   const inspectionLink = page.getByRole('link', { name: 'INSPECT PRESS HALL V3.3 MATERIAL RUNTIME' });
-  await expect(inspectionLink).toHaveAttribute(
-    'href',
-    '?mapArt=inkfall_foundry%402%2Fpress_hall%2Fv3.3%2Fspatial-material-joined',
-  );
-  await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible();
+  await expect(inspectionLink).toHaveCount(0);
+  if (testInfo.project.name === 'chromium-mobile-unsupported') {
+    await expect(page.getByRole('heading', { name: 'DESKTOP REQUIRED' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toHaveCount(0);
+  } else {
+    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toHaveCount(1);
+  }
   await expect(page.locator('body')).not.toHaveAttribute(
     'data-launch-support',
     'press-hall-v3-3-inspection',

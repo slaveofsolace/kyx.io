@@ -178,7 +178,9 @@ export class Game {
     });
     this.blinkPreviewRenderer = new BlinkPreviewRenderer(this.world.scene);
     this.pickupSystem = null; // created on first play, cleared on restart
-    this.menu           = new MenuUI();
+    this.menu           = new MenuUI({
+      routeRelayPractice: this._movementDriver === null,
+    });
 
     this.menuCamera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 300);
 
@@ -269,6 +271,7 @@ export class Game {
     this.input.dispose();
     this.captionCues.dispose();
     this.timer.dispose();
+    this.menu.dispose();
     this.renderer.dispose();
     this.world.scene.remove(this._relayMenuPreview);
     disposeThreeObjectResources(this._relayMenuPreview);

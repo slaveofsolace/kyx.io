@@ -214,7 +214,28 @@ test.describe('local Relay Practice route', () => {
     expect(movementStart?.loadout).toMatchObject({
       combatPresetId: 'assault',
       primaryWeaponSlot: 0,
-      allowedWeaponSlots: [0, 5],
+      allowedWeaponSlots: [0, 1, 5],
+      authoritativeSelectedWeaponSlot: 0,
+      authoritativeSelectedWeaponId: 'vertical_rifle_v1',
+    });
+    await page.keyboard.press('Digit2');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+    ))).toMatchObject({
+      authoritativeSelectedWeaponSlot: 1,
+      authoritativeSelectedWeaponId: 'kyx_sidearm_v1',
+    });
+    await page.keyboard.press('Digit6');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+    ))).toMatchObject({
+      authoritativeSelectedWeaponSlot: 5,
+      authoritativeSelectedWeaponId: 'kyx_edge_v1',
+    });
+    await page.keyboard.press('Digit1');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+    ))).toMatchObject({
       authoritativeSelectedWeaponSlot: 0,
       authoritativeSelectedWeaponId: 'vertical_rifle_v1',
     });
@@ -235,6 +256,14 @@ test.describe('local Relay Practice route', () => {
     await expect.poll(async () => page.evaluate(() => (
       window.__KYX_LOCAL_PRACTICE__?.getSnapshot().serverTick ?? 0
     ))).toBeGreaterThan((movementStart?.serverTick ?? 0) + 12);
+    await expect.poll(async () => page.evaluate((origin) => {
+      const feet = window.__KYX_LOCAL_PRACTICE__?.getSnapshot()
+        .localAuthoritativePlayer.feetPosition;
+      if (feet === undefined) return 0;
+      return Math.hypot(feet.x - origin.x, feet.z - origin.z);
+    }, movementStart?.localAuthoritativePlayer.feetPosition ?? { x: 0, z: 0 }), {
+      timeout: 5_000,
+    }).toBeGreaterThan(400);
     const movementEnd = await page.evaluate(() => (
       window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
     ));
@@ -298,7 +327,9 @@ test.describe('local Relay Practice route', () => {
     });
     expect(launchAfter?.render3d.launchCanisterPresentationCount ?? 0).toBeGreaterThan(0);
     expect(launchAfter?.render3d.launchPulsePresentationCount ?? 0).toBeGreaterThan(0);
-    expect(launchAfter?.render3d.grenadeProjectileCount).toBe(0);
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().launch.activeLocalProjectileCount ?? -1
+    ))).toBe(0);
 
     const throwablePresentationBefore = launchAfter?.render3d.throwablePresentationCount ?? 0;
     await page.mouse.move(840, 650);

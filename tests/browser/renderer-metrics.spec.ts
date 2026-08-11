@@ -49,7 +49,7 @@ test('read-only renderer diagnostics stay development-only and launch-gated', as
     await expect(page.locator('body')).toHaveAttribute('data-launch-support', 'desktop-required');
     await expect(canvas).not.toHaveAttribute('data-kyx-dev-metrics', /.+/);
   } else {
-    await expect(page.getByRole('button', { name: 'START OFFLINE PRACTICE' })).toBeVisible({
+    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
       timeout: 15_000,
     });
     await expect.poll(

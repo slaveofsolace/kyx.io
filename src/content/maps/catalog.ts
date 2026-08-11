@@ -1,7 +1,7 @@
-import inkfallFoundryV1 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v1.json';
-import inkfallFoundryV2 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v2.json';
-import inkfallFoundryV3 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v3.json';
-import inkfallFoundryV4 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v4.json';
+import inkfallFoundryV1 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v1.json' with { type: 'json' };
+import inkfallFoundryV2 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v2.json' with { type: 'json' };
+import inkfallFoundryV3 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v3.json' with { type: 'json' };
+import inkfallFoundryV4 from '../../../assets/source/maps/inkfall-foundry/runtime/map.package.v4.json' with { type: 'json' };
 
 import {
   DEFAULT_MAP_ID,
