@@ -10,11 +10,13 @@ import {
   RELAY_AUTHORITY_SPAWNS,
   RELAY_PORTAL_PRESENTATION_DEFINITIONS,
   kyxWeaponProfile,
+  kyxWeaponProfileForSlot,
 } from '../authority';
 import { RELAY_AUTHORITY_COMPATIBILITY } from './relayVisualContinuity';
 import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
 import { Loadout } from '../core/Loadout.js';
+import { combatPresetAuthorityWeaponSlots } from '../loadouts';
 import {
   clampMilliDegrees,
   MOVEMENT_PITCH_MAX_MILLI_DEGREES,
@@ -270,10 +272,14 @@ export async function mountLocalInkfallPracticeRoute(
   canvas.dataset.pointerLock = 'inactive';
 
   const combatPreset = Loadout.getCombatPreset();
+  const allowedWeaponSlots = combatPresetAuthorityWeaponSlots(combatPreset);
   const abilityUiSlots = Loadout.getAbilityUiSlots() as readonly AbilityLoadoutUiSlot[];
-  const weaponControlLabel = combatPreset.authorityPrimaryWeaponSlot === 5
-    ? 'Melee 6'
-    : `${combatPreset.roleLabel} ${combatPreset.authorityPrimaryWeaponSlot + 1} / Melee 6`;
+  const weaponControlLabel = allowedWeaponSlots
+    .map((slot) => {
+      const family = kyxWeaponProfileForSlot(slot)?.family ?? 'weapon';
+      return `${family[0]?.toUpperCase() ?? ''}${family.slice(1)} ${slot + 1}`;
+    })
+    .join(' / ');
   const gate = createEntryGate(abilityUiSlots, weaponControlLabel);
   app.append(gate.root);
   const hud = new HUD();
@@ -281,7 +287,7 @@ export async function mountLocalInkfallPracticeRoute(
   hud.showPracticeStatus(true, 7, LOCAL_PRACTICE_MODE_LABEL);
   const input = new LocalInkfallPracticeInputBuffer({
     initialSelectedSlot: combatPreset.authorityPrimaryWeaponSlot,
-    allowedSelectedSlots: [combatPreset.authorityPrimaryWeaponSlot, 5],
+    allowedSelectedSlots: allowedWeaponSlots,
   });
   const host = await LocalInkfallPracticeHost.create({
     botCount: 7,
@@ -802,9 +808,7 @@ export async function mountLocalInkfallPracticeRoute(
       loadout: Object.freeze({
         combatPresetId: combatPreset.id,
         primaryWeaponSlot: combatPreset.authorityPrimaryWeaponSlot,
-        allowedWeaponSlots: Object.freeze([
-          ...new Set([combatPreset.authorityPrimaryWeaponSlot, 5]),
-        ]),
+        allowedWeaponSlots,
         authoritativeSelectedWeaponSlot: localPlayer.combat.armory.selectedSlot,
         authoritativeSelectedWeaponId: localPlayer.combat.armory.weapons.find(
           ({ weaponId }) => (

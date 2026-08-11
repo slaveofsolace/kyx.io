@@ -9,7 +9,9 @@ import {
   COMBAT_PRESET_ID,
   DEFAULT_COMBAT_PRESET,
   combatPresetById,
+  combatPresetAuthorityWeaponSlots,
   type CombatPresetId,
+  type CombatPresetV1,
 } from '../loadouts';
 import { createRapierMovementWorld, type RapierMovementWorld } from '../physics';
 import {
@@ -288,14 +290,14 @@ export class LocalInkfallPracticeHost {
     world: RapierMovementWorld,
     authority: AuthoritativeRoom,
     botPlayerIds: readonly string[],
-    localPrimaryWeaponSlot: 0 | 2 | 3 | 5,
+    combatPreset: CombatPresetV1,
   ) {
     this.world = world;
     this.authority = authority;
     this.botPlayerIds = Object.freeze([...botPlayerIds]);
-    this.localPrimaryWeaponSlot = localPrimaryWeaponSlot;
-    this.allowedLocalWeaponSlots = new Set([localPrimaryWeaponSlot, 5]);
-    this.localSelectedWeaponSlot = localPrimaryWeaponSlot;
+    this.localPrimaryWeaponSlot = combatPreset.authorityPrimaryWeaponSlot;
+    this.allowedLocalWeaponSlots = new Set(combatPresetAuthorityWeaponSlots(combatPreset));
+    this.localSelectedWeaponSlot = combatPreset.authorityPrimaryWeaponSlot;
     for (const playerId of [this.localPlayerId, ...this.botPlayerIds]) {
       this.connectionIds.set(playerId, `connection.${playerId}`);
       this.inputSequences.set(playerId, 0);
@@ -354,7 +356,7 @@ export class LocalInkfallPracticeHost {
       world,
       authority,
       botPlayerIds,
-      combatPreset.authorityPrimaryWeaponSlot,
+      combatPreset,
     );
     try {
       for (const playerId of [host.localPlayerId, ...host.botPlayerIds]) {

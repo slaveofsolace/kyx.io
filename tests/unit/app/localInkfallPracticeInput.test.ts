@@ -58,12 +58,14 @@ describe('local Inkfall Practice input buffer', () => {
   it('starts on and remains inside the selected combat preset weapon slots', () => {
     const input = new LocalInkfallPracticeInputBuffer({
       initialSelectedSlot: 3,
-      allowedSelectedSlots: [3, 5],
+      allowedSelectedSlots: [3, 1, 5],
     });
 
     expect(input.consume().selectedSlot).toBe(3);
     input.handleKey('Digit1', true);
     expect(input.consume().selectedSlot).toBe(3);
+    input.handleKey('Digit2', true);
+    expect(input.consume().selectedSlot).toBe(1);
     input.handleKey('Digit6', true);
     expect(input.consume().selectedSlot).toBe(5);
     expect(() => new LocalInkfallPracticeInputBuffer({

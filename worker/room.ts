@@ -23,6 +23,10 @@ import {
 } from '../src/authority';
 import { hashRulesetContent, requireRuleset } from '../src/content';
 import {
+  combatPresetAuthorityWeaponSlots,
+  combatPresetById,
+} from '../src/loadouts';
+import {
   COMBAT_PLAYER_SCORES_CAPABILITY,
   PROTOCOL_LIMITS,
   PROTOCOL_VERSION,
@@ -2864,11 +2868,13 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   ): { readonly sequence: number; readonly slot: number } | null {
     const selection = this.persistedPlayerLoadout(playerId)
       ?? this.requireAuthoritativeLoadout();
+    const allowedSlots = new Set<number>(combatPresetAuthorityWeaponSlots(
+      combatPresetById(selection.presetId),
+    ));
     for (const command of message.commands) {
       if (
         command.selectedSlot !== undefined
-        && command.selectedSlot !== selection.primaryWeaponSlot
-        && command.selectedSlot !== 5
+        && !allowedSlots.has(command.selectedSlot)
       ) {
         return Object.freeze({
           sequence: command.sequence,

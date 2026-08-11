@@ -14,8 +14,9 @@ import {
 import { createLocalInkfallPracticePresentation } from '../../../src/app/localInkfallPracticePresentation';
 import { createAuthorityScoreboardRows } from '../../../src/app/authorityHudProjection';
 import {
-  COMBAT_PRESET_ID,
+  COMBAT_PRESETS,
   combatPresetAbilityLoadout,
+  combatPresetAuthorityWeaponSlots,
   combatPresetById,
 } from '../../../src/loadouts';
 import { INTENT_BUTTON } from '../../../src/sim';
@@ -309,41 +310,45 @@ describe('browser-local Relay Practice authority host', () => {
     });
   });
 
-  it('applies a non-Assault combat preset before the local match starts', async () => {
-    const preset = combatPresetById(COMBAT_PRESET_ID.breacher);
-    const practice = await LocalInkfallPracticeHost.create({
-      botCount: 1,
-      combatPresetId: preset.id,
-    });
-    hosts.push(practice);
+  it('applies every role weapon policy and rejects slots owned by another role', async () => {
+    for (const preset of COMBAT_PRESETS) {
+      const practice = await LocalInkfallPracticeHost.create({
+        botCount: 1,
+        combatPresetId: preset.id,
+      });
+      hosts.push(practice);
 
-    const initialLocal = practice.snapshot.players.find(
-      ({ playerId }) => playerId === practice.localPlayerId,
-    );
-    expect(initialLocal?.combat?.abilityLoadout?.loadout.slots)
-      .toEqual(combatPresetAbilityLoadout(preset).slots);
-    expect(initialLocal?.combat?.armory.selectedSlot)
-      .toBe(preset.authorityPrimaryWeaponSlot);
+      const initialLocal = practice.snapshot.players.find(
+        ({ playerId }) => playerId === practice.localPlayerId,
+      );
+      expect(initialLocal?.combat?.abilityLoadout?.loadout.slots)
+        .toEqual(combatPresetAbilityLoadout(preset).slots);
+      expect(initialLocal?.combat?.armory.selectedSlot)
+        .toBe(preset.authorityPrimaryWeaponSlot);
 
-    const disallowed = {
-      moveX: 0,
-      moveY: 0,
-      lookYawDeltaMilliDegrees: 0,
-      lookPitchDeltaMilliDegrees: 0,
-      heldButtons: 0,
-      pressedButtons: 0,
-      releasedButtons: 0,
-      selectedSlot: 0,
-    } as const;
-    expect(() => practice.step(disallowed))
-      .toThrow('LOCAL_INKFALL_PRACTICE_WEAPON_SLOT_NOT_IN_PRESET');
+      const allowedSlots = combatPresetAuthorityWeaponSlots(preset);
+      const input = {
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+      } as const;
+      for (const selectedSlot of allowedSlots) {
+        practice.step({ ...input, selectedSlot });
+        expect(practice.snapshot.players.find(
+          ({ playerId }) => playerId === practice.localPlayerId,
+        )?.combat?.armory.selectedSlot).toBe(selectedSlot);
+      }
 
-    practice.step({ ...disallowed, selectedSlot: 5 });
-    const steppedLocal = practice.snapshot.players.find(
-      ({ playerId }) => playerId === practice.localPlayerId,
-    );
-    expect(steppedLocal?.combat?.armory.selectedSlot)
-      .toBe(5);
+      const allowedSlotSet = new Set<number>(allowedSlots);
+      const rejectedSlot = [0, 1, 2, 3, 4, 5].find((slot) => !allowedSlotSet.has(slot));
+      if (rejectedSlot === undefined) throw new Error('preset unexpectedly allows every slot');
+      expect(() => practice.step({ ...input, selectedSlot: rejectedSlot }))
+        .toThrow('LOCAL_INKFALL_PRACTICE_WEAPON_SLOT_NOT_IN_PRESET');
+    }
   });
 
   it('stops enqueueing input after an authority score-limit result', async () => {

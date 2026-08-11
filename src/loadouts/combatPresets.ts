@@ -17,6 +17,7 @@ export const COMBAT_PRESET_ID = Object.freeze({
 export type CombatPresetId = typeof COMBAT_PRESET_ID[keyof typeof COMBAT_PRESET_ID];
 export type CombatHelmetVariantId = CombatPresetId;
 export type CombatPresetWeaponFamily = 'rifle' | 'shotgun' | 'sniper' | 'melee';
+export type CombatPresetAuthorityWeaponSlot = 0 | 1 | 2 | 3 | 4 | 5;
 
 export interface CombatPresetV1 {
   readonly schemaVersion: typeof COMBAT_PRESET_SCHEMA_VERSION;
@@ -35,6 +36,7 @@ export interface CombatPresetV1 {
     | 'kyx_longshot_v1'
     | 'kyx_edge_v1';
   readonly authorityPrimaryWeaponSlot: 0 | 2 | 3 | 5;
+  readonly authoritySecondaryWeaponSlot: 1 | 4;
   readonly authorityMeleeWeaponId: 'kyx_edge_v1';
   readonly selectableAbilityIds: readonly [
     SelectableAbilityId,
@@ -78,6 +80,7 @@ export const COMBAT_PRESETS: readonly CombatPresetV1[] = Object.freeze([
     initialOfflineWeaponId: 'm4',
     authorityPrimaryWeaponId: 'vertical_rifle_v1',
     authorityPrimaryWeaponSlot: 0,
+    authoritySecondaryWeaponSlot: 1,
     authorityMeleeWeaponId: 'kyx_edge_v1',
     selectableAbilityIds: [
       ABILITY_ID.launch,
@@ -96,6 +99,7 @@ export const COMBAT_PRESETS: readonly CombatPresetV1[] = Object.freeze([
     initialOfflineWeaponId: 'energyshotgun',
     authorityPrimaryWeaponId: 'kyx_scattergun_v1',
     authorityPrimaryWeaponSlot: 2,
+    authoritySecondaryWeaponSlot: 4,
     authorityMeleeWeaponId: 'kyx_edge_v1',
     selectableAbilityIds: [
       ABILITY_ID.sticky,
@@ -114,6 +118,7 @@ export const COMBAT_PRESETS: readonly CombatPresetV1[] = Object.freeze([
     initialOfflineWeaponId: 'boltsniper',
     authorityPrimaryWeaponId: 'kyx_longshot_v1',
     authorityPrimaryWeaponSlot: 3,
+    authoritySecondaryWeaponSlot: 1,
     authorityMeleeWeaponId: 'kyx_edge_v1',
     selectableAbilityIds: [
       ABILITY_ID.smoke,
@@ -132,6 +137,7 @@ export const COMBAT_PRESETS: readonly CombatPresetV1[] = Object.freeze([
     initialOfflineWeaponId: 'sword',
     authorityPrimaryWeaponId: 'kyx_edge_v1',
     authorityPrimaryWeaponSlot: 5,
+    authoritySecondaryWeaponSlot: 1,
     authorityMeleeWeaponId: 'kyx_edge_v1',
     selectableAbilityIds: [
       ABILITY_ID.launch,
@@ -192,4 +198,23 @@ export function combatPresetForSelectableAbilities(
 export function combatPresetAbilityLoadout(presetValue: CombatPresetV1): AbilityLoadoutV1 {
   const preset = combatPresetById(presetValue.id);
   return createAbilityLoadout(preset.selectableAbilityIds);
+}
+
+/**
+ * Product-owned weapon access for one role. Every role keeps its defining
+ * primary, gains one deliberate secondary, and retains the universal blade.
+ * The Set removes Duelist's duplicate primary/melee slot without changing the
+ * deterministic primary -> secondary -> melee ordering shown to the player.
+ */
+export function combatPresetAuthorityWeaponSlots(
+  presetValue: CombatPresetV1,
+): readonly CombatPresetAuthorityWeaponSlot[] {
+  const preset = combatPresetById(presetValue.id);
+  return Object.freeze([
+    ...new Set<CombatPresetAuthorityWeaponSlot>([
+      preset.authorityPrimaryWeaponSlot,
+      preset.authoritySecondaryWeaponSlot,
+      5,
+    ]),
+  ]);
 }

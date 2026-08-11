@@ -510,13 +510,48 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
       'joinAccepted',
       ({ requestId }) => requestId === 'req.join.breacher.peer',
     );
+    const activeSnapshot = await waitForType(
+      probe,
+      'fullSnapshot',
+      ({ combat }) => (
+        combat?.players.length === 2
+        && combat.players.some(({ playerId }) => playerId === joined.playerId)
+      ),
+    );
     sendClient(probe, {
       protocolVersion: PROTOCOL_VERSION,
       type: 'inputBatch',
       commands: [{
         type: 'input',
         sequence: 0,
-        clientTick: 0,
+        clientTick: activeSnapshot.serverTick,
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 4,
+      }],
+    });
+    const secondarySelected = await waitForMessage(
+      probe,
+      (message) => (
+        (message.type === 'fullSnapshot' || message.type === 'deltaSnapshot')
+        && (message.combat?.players.some((player) => (
+          player.playerId === joined.playerId && player.selectedWeaponSlot === 4
+        )) ?? false)
+      ),
+      'Breacher rocket secondary selection',
+    );
+    sendClient(probe, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'inputBatch',
+      commands: [{
+        type: 'input',
+        sequence: 1,
+        clientTick: 'serverTick' in secondarySelected ? secondarySelected.serverTick : 0,
         moveX: 0,
         moveY: 0,
         lookYawDeltaMilliDegrees: 0,
@@ -532,7 +567,7 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
       'error',
       ({ code, detail }) => (
         code === 'INPUT_REJECTED'
-        && detail === '0:weapon_slot_not_in_preset'
+        && detail === '1:weapon_slot_not_in_preset'
       ),
     )).toMatchObject({ code: 'INPUT_REJECTED' });
   });

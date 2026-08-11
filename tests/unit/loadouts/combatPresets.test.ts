@@ -12,6 +12,7 @@ import { requireRuleset } from '../../../src/content';
 import {
   COMBAT_PRESETS,
   combatPresetAbilityLoadout,
+  combatPresetAuthorityWeaponSlots,
 } from '../../../src/loadouts';
 import { WEAPONS } from '../../../src/weapons/weaponDefs.js';
 
@@ -47,7 +48,19 @@ describe('browser-first combat presets', () => {
       expect(new Set(preset.selectableAbilityIds).size).toBe(3);
       expect(Object.isFrozen(preset)).toBe(true);
       expect(Object.isFrozen(preset.selectableAbilityIds)).toBe(true);
+      expect(Object.isFrozen(combatPresetAuthorityWeaponSlots(preset))).toBe(true);
     }
+
+    expect(COMBAT_PRESETS.map((preset) => combatPresetAuthorityWeaponSlots(preset)))
+      .toEqual([
+        [0, 1, 5],
+        [2, 4, 5],
+        [3, 1, 5],
+        [5, 1],
+      ]);
+    expect(new Set(COMBAT_PRESETS.flatMap((preset) => (
+      combatPresetAuthorityWeaponSlots(preset)
+    )))).toEqual(new Set([0, 1, 2, 3, 4, 5]));
   });
 
   it('accepts every exact preset request and rejects cross-preset hybrids', () => {
