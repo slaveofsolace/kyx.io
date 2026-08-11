@@ -13,10 +13,12 @@ export const PRODUCT_CONFIG = Object.freeze({
   desktopOnly: true,
 });
 
-export function supportsDesktopLaunch() {
-  const userAgent = navigator.userAgent || '';
+export function supportsDesktopLaunch(userAgent = navigator.userAgent || '') {
+  // Touch-capable Windows PCs can report a coarse primary pointer even while a
+  // mouse and keyboard are attached. Pointer media queries therefore cannot
+  // distinguish an unsupported phone/tablet from a supported desktop here.
+  // Keep the launch boundary tied to an explicitly mobile user agent; pointer
+  // lock still provides the authoritative input check when play begins.
   const mobileUserAgent = /Android|iPhone|iPad|iPod|IEMobile|BlackBerry|Opera Mini|Mobile/i.test(userAgent);
-  const hasFinePointer = window.matchMedia?.('(any-pointer: fine)').matches ?? true;
-  const coarsePrimary = window.matchMedia?.('(pointer: coarse)').matches ?? false;
-  return !mobileUserAgent && (hasFinePointer || !coarsePrimary);
+  return !mobileUserAgent;
 }

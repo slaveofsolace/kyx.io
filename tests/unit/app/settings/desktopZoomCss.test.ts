@@ -4,16 +4,13 @@ import { describe, expect, it } from 'vitest';
 
 const css = readFileSync(new URL('../../../../src/style.css', import.meta.url), 'utf8');
 
-describe('desktop zoom support CSS', () => {
-  it('does not classify a narrow zoomed desktop as touch-only', () => {
-    const overlayRule = css.indexOf('#desktop-required-overlay.hidden');
-    const mediaStart = css.lastIndexOf('@media', overlayRule);
-    const mediaHeader = css.slice(mediaStart, css.indexOf('{', mediaStart));
-
-    expect(overlayRule).toBeGreaterThanOrEqual(0);
-    expect(mediaStart).toBeGreaterThanOrEqual(0);
-    expect(mediaHeader).toContain('(hover: none)');
-    expect(mediaHeader).toContain('(pointer: coarse)');
-    expect(mediaHeader).not.toContain('max-width');
+describe('desktop launch overlay CSS', () => {
+  it('does not override the hidden state from pointer capability media queries', () => {
+    expect(css).not.toMatch(
+      /@media\s*\([^}]*pointer:\s*coarse[^}]*\)[^{]*\{[^}]*#desktop-required-overlay\.hidden/s,
+    );
+    expect(css).not.toMatch(
+      /@media\s*\([^}]*hover:\s*none[^}]*\)[^{]*\{[^}]*#desktop-required-overlay\.hidden/s,
+    );
   });
 });

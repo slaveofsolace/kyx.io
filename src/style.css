@@ -4961,11 +4961,6 @@ html, body { margin: 0; }
   pointer-events: none;
 }
 
-/* A narrow CSS viewport can be a zoomed keyboard/mouse desktop. */
-@media (hover: none), (pointer: coarse) {
-  #desktop-required-overlay.hidden { display: flex !important; }
-}
-
 /* ============================================================================
    G7 HUD / ACCESSIBILITY FOUNDATION
    Surgical industrial pass: functional cyan, hazard amber, hard panel edges.
