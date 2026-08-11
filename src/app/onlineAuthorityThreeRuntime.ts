@@ -54,6 +54,10 @@ import {
   RELAY_DISPLAY_NAME,
   RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
 } from './relayVisualContinuity';
+import {
+  combatAvatarArmorType,
+  type CombatAvatarArmorTypeId,
+} from './combatAvatarRole';
 import type { OnlineBlinkPreview } from './onlineBlinkPreview';
 import {
   createOnlineBlinkPreviewPresentation,
@@ -121,6 +125,8 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly remoteAvatarMaximumSupportHandErrorMeters: number | null;
   readonly remoteAvatarSkeletalStanceContractCount: number;
   readonly remoteAvatarWholeBodySquashCount: number;
+  readonly remoteAvatarRoleVariantCount: number;
+  readonly remoteAvatarRoleVariants: readonly CombatAvatarArmorTypeId[];
   readonly grenadeProjectileCount: number;
   readonly activeSmokeFieldCount: number;
   readonly launchProjectilePresentation: 'cutline_launch_canister_v1';
@@ -205,6 +211,7 @@ export interface OnlineAuthorityVisualIdentity {
 
 interface PlayerAvatar {
   readonly root: THREE.Group;
+  readonly armorTypeId: CombatAvatarArmorTypeId;
   weapon: KyxWeaponPresentationModel | null;
   weaponId: string | null;
   recoil: number;
@@ -464,13 +471,16 @@ async function ensureHumanSoldierReady(): Promise<void> {
   });
 }
 
-function createPlayerAvatar(teamId: string | null): PlayerAvatar {
+function createPlayerAvatar(
+  teamId: string | null,
+  combatPlayer: CombatPlayerSnapshotV1 | null,
+): PlayerAvatar {
   const skin = teamId === 'team_red'
     ? { primary: 0xc96a49, secondary: 0x252932, accent: 0xff8060 }
     : teamId === 'team_blue'
       ? { primary: 0x5797b7, secondary: 0x202932, accent: 0x62e6ff }
       : { primary: 0x9daab2, secondary: 0x242b32, accent: 0xa8f0ff };
-  const armorTypeId = 'assault';
+  const armorTypeId = combatAvatarArmorType(combatPlayer);
   const root = (buildHumanSoldier(
     skin,
     armorTypeId,
@@ -497,6 +507,7 @@ function createPlayerAvatar(teamId: string | null): PlayerAvatar {
   });
   return {
     root,
+    armorTypeId,
     weapon: null,
     weaponId: null,
     recoil: 0,
@@ -985,7 +996,7 @@ export async function createOnlineAuthorityThreeRuntime(
       );
       let avatar = avatars.get(remote.entityId);
       if (avatar === undefined) {
-        avatar = createPlayerAvatar(combatPlayer?.teamId ?? null);
+        avatar = createPlayerAvatar(combatPlayer?.teamId ?? null, combatPlayer);
         avatars.set(remote.entityId, avatar);
         scene.add(avatar.root);
       }
@@ -1545,6 +1556,12 @@ export async function createOnlineAuthorityThreeRuntime(
         (avatar) => Math.abs(avatar.root.scale.y - avatar.root.scale.x) > 1e-4
           || Math.abs(avatar.root.scale.y - avatar.root.scale.z) > 1e-4,
       ).length,
+      remoteAvatarRoleVariantCount: new Set(
+        remoteAvatars.map(({ armorTypeId }) => armorTypeId),
+      ).size,
+      remoteAvatarRoleVariants: Object.freeze([
+        ...new Set(remoteAvatars.map(({ armorTypeId }) => armorTypeId)),
+      ].sort()),
       grenadeProjectileCount: grenadeProjectiles.size + abilityProjectiles.size,
       activeSmokeFieldCount: smokeFields.size,
       launchProjectilePresentation: 'cutline_launch_canister_v1',

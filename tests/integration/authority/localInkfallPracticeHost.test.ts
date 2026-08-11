@@ -2,10 +2,12 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   LOCAL_INKFALL_PRACTICE_HOST_ID,
+  LOCAL_INKFALL_PRACTICE_BOT_PRESET_ORDER,
   LOCAL_INKFALL_PRACTICE_PLAYER_ID,
   LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS,
   LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ,
   LocalInkfallPracticeHost,
+  localInkfallPracticeBotPresetId,
   RELAY_AUTHORITY_IDENTITY,
   RELAY_PORTAL_CAPABILITY_ID,
 } from '../../../src/authority';
@@ -56,6 +58,26 @@ describe('browser-local Relay Practice authority host', () => {
     expect(initial.players.every(({ combat }) => combat !== undefined)).toBe(true);
     expect(practice.authority.worldPortalCapabilityId)
       .toBe(RELAY_PORTAL_CAPABILITY_ID);
+  });
+
+  it('fields deterministic Assault, Breacher, Recon, and Duelist opponents', async () => {
+    const practice = await host(7);
+    const bots = practice.snapshot.players.filter(({ playerId }) => (
+      playerId.startsWith('practice.bot.')
+    ));
+
+    expect(LOCAL_INKFALL_PRACTICE_BOT_PRESET_ORDER)
+      .toEqual(['assault', 'breacher', 'recon', 'duelist']);
+    expect(bots.map(({ playerId }) => localInkfallPracticeBotPresetId(playerId)))
+      .toEqual(['assault', 'breacher', 'recon', 'duelist', 'assault', 'breacher', 'recon']);
+    expect(bots.map(({ combat }) => combat?.armory.selectedSlot))
+      .toEqual([0, 2, 3, 5, 0, 2, 3]);
+    expect(bots.map(({ combat }) => combat?.abilityLoadout?.loadout.slots.slice(1)))
+      .toEqual(bots.map(({ playerId }) => (
+        combatPresetAbilityLoadout(combatPresetById(
+          localInkfallPracticeBotPresetId(playerId),
+        )).slots.slice(1)
+      )));
   });
 
   it('accepts one local and one deterministic bot command per participant per tick', async () => {
@@ -154,6 +176,20 @@ describe('browser-local Relay Practice authority host', () => {
     expect(first.snapshot.players).toHaveLength(8);
     expect(second.snapshot).toEqual(first.snapshot);
     expect(second.authority.metricsSnapshot()).toEqual(first.authority.metricsSnapshot());
+    const botSnapshots = first.snapshot.players.filter(({ playerId }) => (
+      playerId.startsWith('practice.bot.')
+    ));
+    expect(new Set(botSnapshots.map(({ combat }) => combat?.armory.selectedSlot)))
+      .toEqual(new Set([0, 2, 3, 5]));
+    expect(botSnapshots.some(({ movement }) => (
+      movement.player.pitchMilliDegrees !== 0
+    ))).toBe(true);
+    expect(botSnapshots.reduce((total, { combat }) => (
+      total + (combat?.abilityLoadout?.acceptedActivationCounts.reduce(
+        (sum, count) => sum + count,
+        0,
+      ) ?? 0)
+    ), 0)).toBeGreaterThan(0);
   }, 20_000);
 
   it('keeps the 1+7 runtime stable after a player-eye Launch sequence', async () => {

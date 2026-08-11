@@ -25,7 +25,8 @@ it('closes the deterministic bot shot, damage, kill, score, and respawn loop', a
     }
 
     expect(acceptedAttacks).toBeGreaterThan(0);
-    expect(resolvedHitscans).toBe(acceptedAttacks);
+    expect(resolvedHitscans).toBeGreaterThan(0);
+    expect(acceptedAttacks).toBeGreaterThan(resolvedHitscans);
     expect(appliedDamage).toBeGreaterThan(0);
     expect(killedPlayerId).not.toBeNull();
 
