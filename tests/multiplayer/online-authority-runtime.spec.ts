@@ -146,14 +146,14 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     }).toBe(true);
 
     const fire = page.getByTestId('online-fire');
-    await page.keyboard.down('KeyF');
+    await page.keyboard.down('Enter');
     await fire.dispatchEvent('pointerdown');
     await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? false)
       .toBe(true);
     await fire.dispatchEvent('pointerup');
     await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? false)
       .toBe(true);
-    await page.keyboard.up('KeyF');
+    await page.keyboard.up('Enter');
     await expect.poll(async () => (await snapshot(page))?.inputBridge.primaryFire ?? true)
       .toBe(false);
 
