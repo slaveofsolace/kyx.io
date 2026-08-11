@@ -16,6 +16,7 @@ import {
   type RemoteSampleInsertDisposition,
 } from '../client/netcode/remoteInterpolation';
 import {
+  COMBAT_PLAYER_SCORES_CAPABILITY,
   PROTOCOL_LIMITS,
   PROTOCOL_VERSION,
   RELIABLE_EVENT_STREAM_VERSION,
@@ -851,6 +852,7 @@ export class AuthorityEvidenceClient {
         'remote-interpolation-v1',
         'delta-baseline-v1',
         'reliable-events-v1',
+        COMBAT_PLAYER_SCORES_CAPABILITY,
       ],
     });
     this.emitChange();

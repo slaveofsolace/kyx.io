@@ -58,7 +58,7 @@ interface FakeSocketProbe {
 
 function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment {
   return Object.freeze({
-    schemaVersion: 7,
+    schemaVersion: 8,
     roomCode: 'KYX-234567',
     connectionId: 'connection.slow-consumer',
     allocationLeaseId: null,
@@ -80,6 +80,7 @@ function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment
     lastAcknowledgedEventId: null,
     lastSentReliableEventId: null,
     backpressureStartedAt: null,
+    combatPlayerScoresV1: false,
     ...overrides,
   });
 }

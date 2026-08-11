@@ -90,7 +90,11 @@ import {
   selectOnlineAbilityPresentationAudioOwner,
   type OnlineAbilityPresentationAudioEvent,
 } from './onlineAuthorityPresentationRouting';
-import { createAuthorityAbilityHudInputs } from './authorityHudProjection';
+import {
+  createAuthorityAbilityHudInputs,
+  createAuthorityMatchResultViewModel,
+  createAuthorityScoreboardRows,
+} from './authorityHudProjection';
 import {
   ONLINE_AUTHORITY_PATH,
   defaultOnlineProfile,
@@ -1235,6 +1239,34 @@ async function mountSession(
   returnToLobbyButton.addEventListener('click', () => window.location.assign(ONLINE_AUTHORITY_PATH));
   errorActions.append(retryRoomButton, returnToLobbyButton);
   error.append(errorMessage, errorActions);
+  const resultDialog = element('section', 'online-session__result hidden');
+  resultDialog.dataset.testid = 'online-match-result';
+  resultDialog.setAttribute('role', 'dialog');
+  resultDialog.setAttribute('aria-modal', 'true');
+  resultDialog.setAttribute('aria-labelledby', 'online-match-result-title');
+  resultDialog.inert = true;
+  const resultPanel = element('div', 'online-session__result-panel');
+  const resultEyebrow = element('p', 'online-preview__eyebrow', 'Online TDM complete');
+  const resultTitle = element('h2', '', 'Match complete');
+  resultTitle.id = 'online-match-result-title';
+  const resultSummary = element('p', 'online-session__result-summary', 'Final authority result');
+  const resultStats = element('dl', 'online-session__result-stats');
+  const playAgainButton = element('button', 'online-preview__primary', 'Play again');
+  playAgainButton.type = 'button';
+  playAgainButton.dataset.testid = 'online-play-again';
+  const resultOnlineButton = element('button', 'online-preview__secondary', 'Return to online');
+  resultOnlineButton.type = 'button';
+  resultOnlineButton.dataset.testid = 'online-result-return';
+  const resultActions = element('div', 'online-session__result-actions');
+  resultActions.append(playAgainButton, resultOnlineButton);
+  resultPanel.append(
+    resultEyebrow,
+    resultTitle,
+    resultSummary,
+    resultStats,
+    resultActions,
+  );
+  resultDialog.append(resultPanel);
   const showPlayerError = (
     message: string,
     canRetry: boolean,
@@ -1254,6 +1286,7 @@ async function mountSession(
     sessionDrawer,
     diagnostics,
     error,
+    resultDialog,
   );
 
   const portalAudio = threeDimensionalMap ? new AudioManager() : null;
@@ -1396,6 +1429,7 @@ async function mountSession(
   let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let selectedWeaponSlot: number = selectedCombatPreset.authorityPrimaryWeaponSlot;
   let loadoutSubmittedForPlayerId: string | null = null;
+  let matchResultShown = false;
 
   type FeedbackCue = OnlinePreviewSnapshot['presentation']['lastCue'];
   let combatPresentationAdapter: CombatPresentationAdapterV1 | null = null;
@@ -2073,8 +2107,10 @@ async function mountSession(
   });
 
   const updateInput = (): void => {
-    const axes = axesFromPressedKeys(pressedKeys);
-    heldInputButtons = (
+    const axes = matchResultShown
+      ? Object.freeze({ moveX: 0, moveY: 0 })
+      : axesFromPressedKeys(pressedKeys);
+    heldInputButtons = matchResultShown ? 0 : (
       (
         onlineAuthorityInputButtonsFromPressedKeys(pressedKeys)
         & ~INTENT_BUTTON.utility
@@ -2116,6 +2152,7 @@ async function mountSession(
       });
   };
   const selectWeaponSlot = (slot: number): void => {
+    if (matchResultShown) return;
     if (!allowedAuthorityWeaponSlots.has(slot)) return;
     selectedWeaponSlot = slot;
     client.setSelectedWeaponSlot(slot);
@@ -2132,6 +2169,10 @@ async function mountSession(
   };
   const scoreboardKeyboardHandler = (event: KeyboardEvent): void => {
     if (event.code !== 'Tab') return;
+    if (matchResultShown) {
+      setScoreboardOpen(false);
+      return;
+    }
     if (
       document.pointerLockElement !== canvas
       && document.activeElement !== canvas
@@ -2140,6 +2181,7 @@ async function mountSession(
     setScoreboardOpen(event.type === 'keydown');
   };
   const keyboardHandler = (event: KeyboardEvent): void => {
+    if (matchResultShown) return;
     if (!isOnlineAuthorityInputCode(event.code)) return;
     event.preventDefault();
     if (event.type === 'keydown') {
@@ -2185,6 +2227,7 @@ async function mountSession(
     if (document.visibilityState === 'hidden') neutralizeRouteInput();
   };
   const holdPointerButton = (button: number): void => {
+    if (matchResultShown) return;
     if (audioContext === null) {
       void ensureFeedbackAudio().catch(() => {
         feedbackHud.dataset.audio = 'caption_only';
@@ -2198,6 +2241,7 @@ async function mountSession(
     updateInput();
   };
   const pulseButton = (button: number): void => {
+    if (matchResultShown) return;
     holdPointerButton(button);
     window.setTimeout(() => {
       releasePointerButton(button);
@@ -2215,6 +2259,7 @@ async function mountSession(
     renderRequested = true;
   };
   const startBlinkPreview = (): void => {
+    if (matchResultShown) return;
     blinkPreviewHeld = true;
     updateInput();
     renderRequested = true;
@@ -2234,6 +2279,7 @@ async function mountSession(
   const canvasPointerDown = (event: PointerEvent): void => {
     if (event.button !== 0 && event.button !== 2) return;
     event.preventDefault();
+    if (matchResultShown) return;
     void ensureFeedbackAudio().catch(() => {
       feedbackHud.dataset.audio = 'caption_only';
     });
@@ -2257,7 +2303,11 @@ async function mountSession(
     event.preventDefault();
   };
   const pointerLook = (event: MouseEvent): void => {
-    if (!threeDimensionalMap || document.pointerLockElement !== canvas) return;
+    if (
+      matchResultShown
+      || !threeDimensionalMap
+      || document.pointerLockElement !== canvas
+    ) return;
     const yaw = Math.max(-12_000, Math.min(12_000, Math.round(event.movementX * 110)));
     const pitch = Math.max(-12_000, Math.min(12_000, Math.round(-event.movementY * 110)));
     client.addLookDeltas(yaw, pitch);
@@ -2267,6 +2317,13 @@ async function mountSession(
   const pointerLockChange = (): void => {
     const active = document.pointerLockElement === canvas;
     canvas.dataset.pointerLock = active ? 'active' : 'inactive';
+    if (matchResultShown) {
+      neutralizeRouteInput();
+      setScoreboardOpen(false);
+      if (active) void document.exitPointerLock();
+      queueMicrotask(() => playAgainButton.focus());
+      return;
+    }
     if (!active) {
       pointerHeldButtons = 0;
       aimHeld = false;
@@ -2313,9 +2370,115 @@ async function mountSession(
   window.addEventListener('pointercancel', releaseAim);
   document.addEventListener('visibilitychange', visibilityHandler);
   resumeButton.addEventListener('click', () => {
+    if (matchResultShown) return;
     neutralizeRouteInput();
     client.requestResume();
     renderRequested = true;
+  });
+
+  const addResultStat = (label: string, value: string | number): void => {
+    const row = element('div', 'online-session__result-stat');
+    row.append(element('dt', '', label), element('dd', '', String(value)));
+    resultStats.append(row);
+  };
+  const presentOnlineMatchResult = (
+    combat: CombatSnapshotV1,
+    localPlayerId: string,
+  ): boolean => {
+    if (matchResultShown || combat.match.result === null) return false;
+    const localPlayer = combat.players.find(({ playerId }) => playerId === localPlayerId);
+    if (localPlayer === undefined || localPlayer.teamId === null) return false;
+
+    matchResultShown = true;
+    pressedKeys.clear();
+    pointerHeldButtons = 0;
+    aimHeld = false;
+    blinkPreviewHeld = false;
+    latestBlinkPreview = null;
+    setScoreboardOpen(false);
+    neutralizeRouteInput();
+    for (const button of [
+      ...weaponSlotButtons,
+      sprintButton,
+      jumpButton,
+      crouchButton,
+      fireButton,
+      reloadButton,
+      abilityOneButton,
+      abilityTwoButton,
+      abilityThreeButton,
+      teleportButton,
+      resumeButton,
+    ]) button.disabled = true;
+
+    const playerScores = combat.match.scoreboard?.playerScores;
+    resultStats.replaceChildren();
+    if (playerScores !== undefined) {
+      try {
+        const result = createAuthorityMatchResultViewModel({
+          result: combat.match.result,
+          teamScores: combat.match.teamScores,
+          playerScores,
+          localPlayerId,
+        });
+        resultTitle.textContent = result.title;
+        resultSummary.textContent = result.reasonLabel;
+        addResultStat('Final score', `${result.localTeamScore}-${result.opposingTeamScore}`);
+        addResultStat('Eliminations', result.kills);
+        addResultStat('Deaths', result.deaths);
+        addResultStat('Assists', result.assists);
+        addResultStat('K/D', result.kd);
+        body.dataset.onlineMatchResult = result.outcome;
+        body.dataset.onlineScoreboardAuthority = 'available';
+      } catch {
+        body.dataset.onlineScoreboardAuthority = 'invalid';
+      }
+    }
+    if (resultStats.childElementCount === 0) {
+      const localTeamScore = combat.match.teamScores.find(
+        ({ teamId }) => teamId === localPlayer.teamId,
+      )?.score;
+      const opposingTeamScore = combat.match.teamScores
+        .filter(({ teamId }) => teamId !== localPlayer.teamId)
+        .reduce<number | undefined>((highest, score) => (
+          highest === undefined ? score.score : Math.max(highest, score.score)
+        ), undefined);
+      const outcome = combat.match.result.draw
+        ? 'draw'
+        : combat.match.result.winningTeamId === localPlayer.teamId
+          ? 'victory'
+          : 'defeat';
+      resultTitle.textContent = outcome === 'victory'
+        ? 'Victory'
+        : outcome === 'defeat' ? 'Defeat' : 'Draw';
+      resultSummary.textContent = combat.match.result.reason === 'score_limit'
+        ? 'Score limit reached'
+        : 'Time expired';
+      addResultStat(
+        'Final score',
+        localTeamScore === undefined || opposingTeamScore === undefined
+          ? 'Unavailable'
+          : `${localTeamScore}-${opposingTeamScore}`,
+      );
+      addResultStat('K/D/A', 'Unavailable — server upgrading');
+      body.dataset.onlineMatchResult = outcome;
+      body.dataset.onlineScoreboardAuthority = playerScores === undefined
+        ? 'legacy_unavailable'
+        : 'invalid';
+    }
+
+    resultDialog.inert = false;
+    resultDialog.classList.remove('hidden');
+    body.dataset.onlinePreviewStatus = 'result';
+    if (document.pointerLockElement === canvas) void document.exitPointerLock();
+    queueMicrotask(() => playAgainButton.focus());
+    return true;
+  };
+  playAgainButton.addEventListener('click', () => {
+    window.location.assign(onlineCreatePath(mapProfile ?? defaultOnlineProfile()));
+  });
+  resultOnlineButton.addEventListener('click', () => {
+    window.location.assign(ONLINE_AUTHORITY_PATH);
   });
 
   let lastDiagnosticsRefresh = -Infinity;
@@ -2584,6 +2747,9 @@ async function mountSession(
       const localPlayer = combat?.players.find(({ playerId }) => (
         playerId === diagnostics.authority.playerId
       ));
+      if (combat !== null && diagnostics.authority.playerId !== null) {
+        presentOnlineMatchResult(combat, diagnostics.authority.playerId);
+      }
       const selectedWeapon = localPlayer?.weapons?.find(
         ({ slot }) => slot === localPlayer.selectedWeaponSlot,
       );
@@ -2650,41 +2816,44 @@ async function mountSession(
       scoreValue.textContent = `${hudView.score.leftScore} — ${hudView.score.rightScore ?? 0}`;
       scorePhase.textContent = `${hudView.score.phaseLabel} · ${hudView.score.timerLabel}`;
       scoreboardScore.textContent = scoreValue.textContent;
-      const scoreboardRows = combat === null
+      const authorityScoreRows = combat?.match.scoreboard === undefined
+        || diagnostics.authority.playerId === null
         ? []
-        : [...combat.players]
-            .sort((left, right) => (
-              (left.teamId ?? '').localeCompare(right.teamId ?? '')
-              || left.playerId.localeCompare(right.playerId)
-            ))
-            .map((player) => {
+        : createAuthorityScoreboardRows(
+            combat.match.scoreboard.playerScores,
+            diagnostics.authority.playerId,
+          );
+      const scoreboardRows = authorityScoreRows.map((player) => {
               const row = element('div', 'online-session__scoreboard-player');
               const team = player.teamId === 'team_red' ? 'red' : 'blue';
               row.dataset.team = team;
-              row.dataset.life = player.lifePhase;
-              const identityLabel = player.playerId === diagnostics.authority.playerId
+              const identityLabel = player.isYou
                 ? 'You'
                 : `${team === 'red' ? 'Red' : 'Blue'} peer`;
-              const lifeLabel = player.lifePhase === 'dead'
-                ? `Respawn ${Math.max(
-                    0,
-                    (player.respawnEligibleAtTick ?? diagnostics.authority.serverTick)
-                      - diagnostics.authority.serverTick,
-                  )}t`
-                : `${player.healthPoints} hp`;
               row.append(
                 element('span', 'online-session__scoreboard-team', team),
                 element('strong', '', identityLabel),
-                element('span', '', lifeLabel),
-                element('span', '', `${player.deathOrdinal} deaths`),
+                element('span', '', `${player.kills} K`),
+                element('span', '', `${player.deaths} D`),
+                element('span', '', `${player.assists} A`),
+                element('span', '', `${player.kd} K/D`),
               );
               return row;
             });
       scoreboardPlayers.replaceChildren(...(
         scoreboardRows.length > 0
           ? scoreboardRows
-          : [element('p', 'online-session__scoreboard-empty', 'Waiting for players')]
+          : [element(
+              'p',
+              'online-session__scoreboard-empty',
+              combat?.match.scoreboard === undefined
+                ? 'K/D/A unavailable while the server upgrades'
+                : 'Waiting for authority player scores',
+            )]
       ));
+      body.dataset.onlineScoreboardAuthority = combat?.match.scoreboard === undefined
+        ? 'legacy_unavailable'
+        : 'available';
       const applyTeam = (
         player: CombatSnapshotV1['players'][number] | undefined,
         state: HTMLElement,
@@ -2803,7 +2972,9 @@ async function mountSession(
         technicalDetail,
         presentationFailureDetail === null ? hudView.connection.state : 'fatal',
       );
-      body.dataset.onlinePreviewStatus = diagnostics.connection.phase;
+      body.dataset.onlinePreviewStatus = matchResultShown
+        ? 'result'
+        : diagnostics.connection.phase;
       body.dataset.onlineCombatPhase = combat?.match.phase ?? 'waiting';
       body.dataset.onlineLocalLife = localPlayer?.lifePhase ?? 'waiting';
       body.dataset.onlineCombatFeedSequence = String(combat?.match.feedSequence ?? 0);

@@ -15,6 +15,7 @@ export {
 } from './combatConsequence';
 export {
   CLIENT_MESSAGE_TYPES,
+  COMBAT_PLAYER_SCORES_CAPABILITY,
   FORBIDDEN_CLIENT_COMMAND_TYPES,
   PROTOCOL_ERROR_CODES,
   PROTOCOL_LIMITS,
@@ -36,8 +37,10 @@ export {
   type CombatPresentationWeaponProjectileDetonatedEventV1,
   type CombatPresentationWeaponProjectileSpawnedEventV1,
   type CombatPlayerSnapshotV1,
+  type CombatPlayerScoreSnapshotV1,
   type CombatProjectileSnapshotV1,
   type CombatSnapshotV1,
+  type CombatScoreboardSnapshotV1,
   type CombatWeaponProjectileSnapshotV1,
   type CombatWeaponSnapshotV1,
   type DeltaSnapshotMessage,

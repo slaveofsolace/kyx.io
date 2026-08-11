@@ -127,28 +127,40 @@ export interface AuthorityPracticeMatchResultViewModel {
   readonly kd: string;
 }
 
-/** Project a completed authority result without inventing local match facts. */
-export function createAuthorityPracticeMatchResultViewModel(input: Readonly<{
-  result: AuthorityTdmMatchResultV1;
-  playerScores: readonly AuthorityTdmPlayerScoreV1[];
-  localPlayerId: string;
-}>): AuthorityPracticeMatchResultViewModel {
+export interface AuthorityMatchResultProjectionInput {
+  readonly result: Readonly<{
+    readonly reason: 'score_limit' | 'time_limit';
+    readonly winningTeamId: string | null;
+    readonly draw: boolean;
+  }>;
+  readonly teamScores: readonly Readonly<{
+    readonly teamId: string;
+    readonly score: number;
+  }>[];
+  readonly playerScores: readonly AuthorityTdmPlayerScoreV1[];
+  readonly localPlayerId: string;
+}
+
+/** Shared Practice/online projection over the same authority-owned TDM facts. */
+export function createAuthorityMatchResultViewModel(
+  input: AuthorityMatchResultProjectionInput,
+): AuthorityPracticeMatchResultViewModel {
   const localPlayerScore = input.playerScores.find(
     ({ playerId }) => playerId === input.localPlayerId,
   );
   if (localPlayerScore === undefined) {
-    throw new Error('LOCAL_INKFALL_PRACTICE_RESULT_PLAYER_MISSING');
+    throw new Error('AUTHORITY_MATCH_RESULT_PLAYER_MISSING');
   }
-  const localTeamScore = input.result.teamScores.find(
+  const localTeamScore = input.teamScores.find(
     ({ teamId }) => teamId === localPlayerScore.teamId,
   )?.score;
-  const opposingTeamScore = input.result.teamScores
+  const opposingTeamScore = input.teamScores
     .filter(({ teamId }) => teamId !== localPlayerScore.teamId)
     .reduce<number | undefined>((highest, score) => (
       highest === undefined ? score.score : Math.max(highest, score.score)
     ), undefined);
   if (localTeamScore === undefined || opposingTeamScore === undefined) {
-    throw new Error('LOCAL_INKFALL_PRACTICE_RESULT_TEAM_SCORE_MISSING');
+    throw new Error('AUTHORITY_MATCH_RESULT_TEAM_SCORE_MISSING');
   }
   const outcome = input.result.draw
     ? 'draw'
@@ -169,6 +181,20 @@ export function createAuthorityPracticeMatchResultViewModel(input: Readonly<{
     kd: localPlayerScore.deaths === 0
       ? localPlayerScore.kills.toFixed(1)
       : (localPlayerScore.kills / localPlayerScore.deaths).toFixed(1),
+  });
+}
+
+/** Project a completed authority result without inventing local match facts. */
+export function createAuthorityPracticeMatchResultViewModel(input: Readonly<{
+  result: AuthorityTdmMatchResultV1;
+  playerScores: readonly AuthorityTdmPlayerScoreV1[];
+  localPlayerId: string;
+}>): AuthorityPracticeMatchResultViewModel {
+  return createAuthorityMatchResultViewModel({
+    result: input.result,
+    teamScores: input.result.teamScores,
+    playerScores: input.playerScores,
+    localPlayerId: input.localPlayerId,
   });
 }
 

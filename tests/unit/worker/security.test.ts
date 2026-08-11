@@ -25,7 +25,7 @@ import {
 
 function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment {
   return {
-    schemaVersion: 7,
+    schemaVersion: 8,
     roomCode: 'KYX-234567',
     connectionId: 'connection.TEST',
     allocationLeaseId: null,
@@ -47,12 +47,13 @@ function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment
     lastAcknowledgedEventId: null,
     lastSentReliableEventId: null,
     backpressureStartedAt: null,
+    combatPlayerScoresV1: false,
     ...overrides,
   };
 }
 
 describe('Worker socket security bounds', () => {
-  it('validates only complete version-7 bounded attachments', () => {
+  it('validates only complete version-8 bounded attachments', () => {
     expect(isSocketAttachment(attachment())).toBe(true);
     expect(isSocketAttachment({ ...attachment(), schemaVersion: 1 })).toBe(false);
     expect(isSocketAttachment({ ...attachment(), bytesInRateWindow: -1 })).toBe(false);
@@ -77,7 +78,7 @@ describe('Worker socket security bounds', () => {
     expect(isSocketAttachment({ ...attachment(), backpressureStartedAt: -1 })).toBe(false);
   });
 
-  it('migrates versions 4, 5, and 6 into bounded version-7 attachments', () => {
+  it('migrates versions 4 through 7 into bounded version-8 attachments', () => {
     const version5 = {
       ...attachment({
         lastSentSnapshotTick: 20,
@@ -86,18 +87,21 @@ describe('Worker socket security bounds', () => {
       schemaVersion: 5,
     } as Record<string, unknown>;
     delete version5.sentSnapshotHistory;
+    delete version5.combatPlayerScoresV1;
     expect(normalizeSocketAttachment(version5)).toMatchObject({
-      schemaVersion: 7,
+      schemaVersion: 8,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
+      combatPlayerScoresV1: false,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
     const version4: Record<string, unknown> = { ...version5, schemaVersion: 4 };
     delete version4.snapshotAckDebtStartedAt;
     expect(normalizeSocketAttachment(version4)).toMatchObject({
-      schemaVersion: 7,
+      schemaVersion: 8,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
+      combatPlayerScoresV1: false,
       snapshotAckDebtStartedAt: null,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
@@ -111,11 +115,22 @@ describe('Worker socket security bounds', () => {
     } as Record<string, unknown>;
     delete version6.allocationLeaseId;
     delete version6.preJoinExpiresAt;
+    delete version6.combatPlayerScoresV1;
     expect(normalizeSocketAttachment(version6)).toMatchObject({
-      schemaVersion: 7,
+      schemaVersion: 8,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
+      combatPlayerScoresV1: false,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
+    });
+    const version7 = {
+      ...attachment(),
+      schemaVersion: 7,
+    } as Record<string, unknown>;
+    delete version7.combatPlayerScoresV1;
+    expect(normalizeSocketAttachment(version7)).toMatchObject({
+      schemaVersion: 8,
+      combatPlayerScoresV1: false,
     });
     expect(normalizeSocketAttachment({ ...version4, schemaVersion: 3 })).toBeNull();
     expect(normalizeSocketAttachment({ ...version4, roomCode: 'invalid' })).toBeNull();

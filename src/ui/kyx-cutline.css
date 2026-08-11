@@ -3585,11 +3585,80 @@ body[data-ui-system="cutline-v1"] .online-session__scoreboard-score {
 body[data-ui-system="cutline-v1"] .online-session__scoreboard-player {
   padding: 7px 4px;
   display: grid;
-  grid-template-columns: 42px 1fr auto auto;
+  grid-template-columns: 42px minmax(84px, 1fr) repeat(4, auto);
   gap: 10px;
   border-bottom: 1px solid rgba(238, 241, 236, 0.1);
   color: var(--cut-muted);
   font-size: 11px;
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result {
+  position: fixed;
+  z-index: 120;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(2, 5, 6, 0.88);
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result.hidden {
+  display: none;
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-panel {
+  width: min(560px, 100%);
+  padding: clamp(24px, 5vw, 44px);
+  border: 1px solid var(--cut-line);
+  border-top: 2px solid var(--cut-cyan);
+  color: var(--cut-ink);
+  background:
+    linear-gradient(135deg, rgba(32, 218, 223, 0.08), transparent 38%),
+    var(--cut-plate-strong);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.72);
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-panel h2 {
+  margin: 4px 0 8px;
+  font-family: var(--cut-numeral);
+  font-size: clamp(36px, 8vw, 72px);
+  line-height: 0.95;
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-summary {
+  margin: 0 0 24px;
+  color: var(--cut-muted);
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-stats {
+  display: grid;
+  gap: 1px;
+  margin: 0 0 24px;
+  background: rgba(238, 241, 236, 0.1);
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-stat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  padding: 10px 12px;
+  background: var(--cut-plate-strong);
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-stat dt {
+  color: var(--cut-muted);
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-stat dd {
+  margin: 0;
+  font-family: var(--cut-numeral);
+  font-weight: 750;
+}
+
+body[data-ui-system="cutline-v1"] .online-session__result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 body[data-ui-system="cutline-v1"] .online-session__scoreboard-player strong {

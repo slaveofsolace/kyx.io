@@ -51,7 +51,7 @@ export const PRE_JOIN_TIMEOUT_MILLISECONDS = 10_000 as const;
 export const FULL_SNAPSHOT_REQUEST_COOLDOWN_MILLISECONDS = 500 as const;
 
 export interface SocketAttachment {
-  readonly schemaVersion: 7;
+  readonly schemaVersion: 8;
   readonly roomCode: string;
   readonly connectionId: string;
   readonly allocationLeaseId: string | null;
@@ -73,6 +73,8 @@ export interface SocketAttachment {
   readonly lastAcknowledgedEventId: string | null;
   readonly lastSentReliableEventId: string | null;
   readonly backpressureStartedAt: number | null;
+  /** Negotiated by hello; false for every attachment restored from an older runtime. */
+  readonly combatPlayerScoresV1: boolean;
 }
 
 export interface SentSnapshotReference {
@@ -139,7 +141,7 @@ export function isAllowedOrigin(request: Request, configuredOrigins: string | un
 export function isSocketAttachment(value: unknown): value is SocketAttachment {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
   const record = value as Partial<SocketAttachment>;
-  return record.schemaVersion === 7
+  return record.schemaVersion === 8
     && typeof record.roomCode === 'string'
     && normalizeRoomCode(record.roomCode) === record.roomCode
     && typeof record.connectionId === 'string'
@@ -189,15 +191,17 @@ export function isSocketAttachment(value: unknown): value is SocketAttachment {
     && nullableTimestamp(record.snapshotAckDebtStartedAt)
     && nullableProtocolId(record.lastAcknowledgedEventId)
     && nullableProtocolId(record.lastSentReliableEventId)
-    && nullableTimestamp(record.backpressureStartedAt);
+    && nullableTimestamp(record.backpressureStartedAt)
+    && typeof record.combatPlayerScoresV1 === 'boolean';
 }
 
 /**
  * Rolling deployments may wake sockets serialized by any of the three prior
  * runtimes. Version 4 lacks snapshot-ACK debt, version 5 lacks the bounded
- * session-local sent-snapshot history, and version 6 predates the global
- * pre-join allocation lease. Prior sockets migrate with a null lease because
- * they were already accepted before this guard existed.
+ * session-local sent-snapshot history, version 6 predates the global pre-join
+ * allocation lease, and version 7 predates capability-gated combat scores.
+ * Prior sockets migrate without the new capability so a rolling deployment
+ * never sends an unknown strict-v2 field to an older client.
  */
 export function normalizeSocketAttachment(value: unknown): SocketAttachment | null {
   if (isSocketAttachment(value)) return value;
@@ -207,37 +211,46 @@ export function normalizeSocketAttachment(value: unknown): SocketAttachment | nu
     || Array.isArray(value)
   ) return null;
   const version = (value as { readonly schemaVersion?: unknown }).schemaVersion;
-  let version6: unknown = value;
-  if (version !== 6) {
-    const version5 = version === 4
-      ? { ...value, schemaVersion: 5, snapshotAckDebtStartedAt: null }
-      : value;
-    if ((version5 as { readonly schemaVersion?: unknown }).schemaVersion !== 5) return null;
-    const previous = version5 as {
-      readonly lastSentSnapshotTick?: unknown;
-      readonly lastSentSnapshotBaselineId?: unknown;
-    };
-    const sentSnapshotHistory = (
-      typeof previous.lastSentSnapshotTick === 'number'
-      && Number.isSafeInteger(previous.lastSentSnapshotTick)
-      && previous.lastSentSnapshotTick >= 0
-      && typeof previous.lastSentSnapshotBaselineId === 'string'
-    ) ? [Object.freeze({
-        serverTick: previous.lastSentSnapshotTick,
-        snapshotBaselineId: previous.lastSentSnapshotBaselineId,
-      })] : [];
-    version6 = Object.freeze({
-      ...version5,
-      schemaVersion: 6,
-      sentSnapshotHistory: Object.freeze(sentSnapshotHistory),
+  let version7: unknown = value;
+  if (version !== 7) {
+    let version6: unknown = value;
+    if (version !== 6) {
+      const version5 = version === 4
+        ? { ...value, schemaVersion: 5, snapshotAckDebtStartedAt: null }
+        : value;
+      if ((version5 as { readonly schemaVersion?: unknown }).schemaVersion !== 5) return null;
+      const previous = version5 as {
+        readonly lastSentSnapshotTick?: unknown;
+        readonly lastSentSnapshotBaselineId?: unknown;
+      };
+      const sentSnapshotHistory = (
+        typeof previous.lastSentSnapshotTick === 'number'
+        && Number.isSafeInteger(previous.lastSentSnapshotTick)
+        && previous.lastSentSnapshotTick >= 0
+        && typeof previous.lastSentSnapshotBaselineId === 'string'
+      ) ? [Object.freeze({
+          serverTick: previous.lastSentSnapshotTick,
+          snapshotBaselineId: previous.lastSentSnapshotBaselineId,
+        })] : [];
+      version6 = Object.freeze({
+        ...version5,
+        schemaVersion: 6,
+        sentSnapshotHistory: Object.freeze(sentSnapshotHistory),
+      });
+    }
+    if ((version6 as { readonly schemaVersion?: unknown }).schemaVersion !== 6) return null;
+    version7 = Object.freeze({
+      ...(version6 as object),
+      schemaVersion: 7,
+      allocationLeaseId: null,
+      preJoinExpiresAt: null,
     });
   }
-  if ((version6 as { readonly schemaVersion?: unknown }).schemaVersion !== 6) return null;
+  if ((version7 as { readonly schemaVersion?: unknown }).schemaVersion !== 7) return null;
   const migrated = Object.freeze({
-    ...(version6 as object),
-    schemaVersion: 7,
-    allocationLeaseId: null,
-    preJoinExpiresAt: null,
+    ...(version7 as object),
+    schemaVersion: 8,
+    combatPlayerScoresV1: false,
   });
   return isSocketAttachment(migrated) ? migrated : null;
 }

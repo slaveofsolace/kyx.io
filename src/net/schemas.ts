@@ -1603,6 +1603,7 @@ function validateCombatSnapshot(value: unknown, path: string): CombatSnapshotV1 
   exactKeys(match, matchPath, [
     'phase', 'phaseEndsAtTick', 'activeTicksRemaining', 'teamScores',
     'feedSequence', 'result',
+    ...(Object.hasOwn(match, 'scoreboard') ? ['scoreboard'] : []),
   ]);
   stringAt(required(match, 'phase', matchPath), `${matchPath}.phase`, {
     allowed: ['lobby', 'warmup', 'active', 'postmatch', 'completed'],
@@ -1623,6 +1624,53 @@ function validateCombatSnapshot(value: unknown, path: string): CombatSnapshotV1 
       return score as unknown as CombatSnapshotV1['match']['teamScores'][number];
     });
   assertUnique(teamScores.map(({ teamId }) => teamId), `${matchPath}.teamScores`);
+  if (Object.hasOwn(match, 'scoreboard')) {
+    const scoreboardPath = `${matchPath}.scoreboard`;
+    const scoreboard = recordAt(required(match, 'scoreboard', matchPath), scoreboardPath);
+    exactKeys(scoreboard, scoreboardPath, ['schemaVersion', 'playerScores']);
+    if (required(scoreboard, 'schemaVersion', scoreboardPath) !== 1) {
+      fail(
+        'PROTOCOL_INVALID_FIELD_VALUE',
+        `${scoreboardPath}.schemaVersion`,
+        'Unsupported combat scoreboard schema version.',
+      );
+    }
+    const playerScores = arrayAt(
+      required(scoreboard, 'playerScores', scoreboardPath),
+      `${scoreboardPath}.playerScores`,
+      PROTOCOL_LIMITS.maxEntitiesPerSnapshot,
+    ).map((value, index) => {
+      const playerScorePath = `${scoreboardPath}.playerScores[${index}]`;
+      const playerScore = recordAt(value, playerScorePath);
+      exactKeys(playerScore, playerScorePath, [
+        'playerId', 'teamId', 'kills', 'deaths', 'assists',
+      ]);
+      idAt(required(playerScore, 'playerId', playerScorePath), `${playerScorePath}.playerId`);
+      const teamId = idAt(
+        required(playerScore, 'teamId', playerScorePath),
+        `${playerScorePath}.teamId`,
+      );
+      if (!teamScores.some((score) => score.teamId === teamId)) {
+        fail(
+          'PROTOCOL_INVALID_FIELD_VALUE',
+          `${playerScorePath}.teamId`,
+          'Player score team is absent from the match team scores.',
+        );
+      }
+      for (const key of ['kills', 'deaths', 'assists'] as const) {
+        numberAt(required(playerScore, key, playerScorePath), `${playerScorePath}.${key}`, {
+          integer: true,
+          min: 0,
+          max: PROTOCOL_LIMITS.maxSequence,
+        });
+      }
+      return playerScore;
+    });
+    assertUnique(
+      playerScores.map((playerScore) => playerScore.playerId as string),
+      `${scoreboardPath}.playerScores`,
+    );
+  }
   numberAt(required(match, 'feedSequence', matchPath), `${matchPath}.feedSequence`, {
     integer: true,
     min: 0,

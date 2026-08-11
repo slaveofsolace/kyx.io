@@ -1,6 +1,7 @@
 export const PROTOCOL_VERSION = 2 as const;
 export const SNAPSHOT_BASELINE_VERSION = 1 as const;
 export const RELIABLE_EVENT_STREAM_VERSION = 1 as const;
+export const COMBAT_PLAYER_SCORES_CAPABILITY = 'combat-player-scores-v1' as const;
 
 export const PROTOCOL_LIMITS = Object.freeze({
   maxMessageBytes: 16_384,
@@ -464,6 +465,19 @@ export interface CombatSmokeFieldSnapshotV1 {
   readonly radiusMillimeters: number;
 }
 
+export interface CombatPlayerScoreSnapshotV1 {
+  readonly playerId: string;
+  readonly teamId: string;
+  readonly kills: number;
+  readonly deaths: number;
+  readonly assists: number;
+}
+
+export interface CombatScoreboardSnapshotV1 {
+  readonly schemaVersion: 1;
+  readonly playerScores: readonly CombatPlayerScoreSnapshotV1[];
+}
+
 export interface CombatMatchSnapshotV1 {
   readonly phase: 'lobby' | 'warmup' | 'active' | 'postmatch' | 'completed';
   readonly phaseEndsAtTick: number | null;
@@ -473,6 +487,8 @@ export interface CombatMatchSnapshotV1 {
     readonly score: number;
   }>[];
   readonly feedSequence: number;
+  /** Capability-gated so strict protocol-v2 clients from rolling deployments stay compatible. */
+  readonly scoreboard?: CombatScoreboardSnapshotV1;
   readonly result: Readonly<{
     readonly reason: 'score_limit' | 'time_limit';
     readonly winningTeamId: string | null;

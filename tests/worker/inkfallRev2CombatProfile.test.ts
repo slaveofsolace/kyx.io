@@ -4,7 +4,10 @@ import { env, evictDurableObject, reset, runInDurableObject, SELF } from 'cloudf
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  COMBAT_PLAYER_SCORES_CAPABILITY,
   PROTOCOL_VERSION,
+  RELIABLE_EVENT_STREAM_VERSION,
+  SNAPSHOT_BASELINE_VERSION,
   decodeServerMessage,
   encodeClientMessage,
   type ClientMessage,
@@ -175,6 +178,38 @@ function joinMessage(roomCode: string, requestId: string, displayName: string): 
     roomCode,
     displayName,
   };
+}
+
+async function announceCombatScoreboardCapability(
+  probe: SocketProbe,
+  requestId: string,
+): Promise<void> {
+  const welcomeCount = probe.messages.filter(({ type }) => type === 'welcome').length;
+  sendClient(probe, {
+    protocolVersion: PROTOCOL_VERSION,
+    type: 'hello',
+    requestId,
+    clientBuild: 'worker-combat-scoreboard-test',
+    requestedRulesetId: 'revamped_classic',
+    capabilities: [COMBAT_PLAYER_SCORES_CAPABILITY],
+  });
+  await waitForMessage(
+    probe,
+    () => probe.messages.filter(({ type }) => type === 'welcome').length > welcomeCount,
+    'combat scoreboard capability welcome',
+  );
+}
+
+function acknowledgeSnapshot(probe: SocketProbe, snapshot: FullSnapshotMessage): void {
+  sendClient(probe, {
+    protocolVersion: PROTOCOL_VERSION,
+    type: 'ack',
+    snapshotBaselineVersion: SNAPSHOT_BASELINE_VERSION,
+    reliableEventStreamVersion: RELIABLE_EVENT_STREAM_VERSION,
+    snapshotBaselineId: snapshot.snapshotBaselineId,
+    serverTick: snapshot.serverTick,
+    lastEventId: snapshot.reliableEventBaselineId,
+  });
 }
 
 async function roomMetrics(room: RoomCreated): Promise<Record<string, unknown>> {
@@ -622,6 +657,107 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     });
     expect(first.decodeErrors).toEqual([]);
     expect(second.decodeErrors).toEqual([]);
+  }, 30_000);
+
+  it('gates authoritative combat scoreboards across full, delta, and resumed snapshots', async () => {
+    const room = await createRoom(RELAY_REV1_COMBAT_PROFILE);
+    const capable = await connectSocket(room.socketPath);
+    const legacy = await connectSocket(room.socketPath);
+    await Promise.all([
+      waitForType(capable, 'welcome'),
+      waitForType(legacy, 'welcome'),
+    ]);
+    await announceCombatScoreboardCapability(capable, 'req.hello.relay.scoreboard');
+
+    sendClient(capable, joinMessage(room.roomCode, 'req.join.relay.scoreboard', 'Scoreboard Client'));
+    const capableJoin = await waitForType(
+      capable,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.relay.scoreboard',
+    );
+    const capableFull = await waitForType(
+      capable,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === capableJoin.playerId,
+    );
+    expect(capableFull.combat?.match.scoreboard).toEqual({
+      schemaVersion: 1,
+      playerScores: [{
+        playerId: capableJoin.playerId,
+        teamId: 'team_blue',
+        kills: 0,
+        deaths: 0,
+        assists: 0,
+      }],
+    });
+    acknowledgeSnapshot(capable, capableFull);
+
+    sendClient(legacy, joinMessage(room.roomCode, 'req.join.relay.legacy', 'Legacy Client'));
+    const legacyJoin = await waitForType(
+      legacy,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.join.relay.legacy',
+    );
+    const legacyFull = await waitForType(
+      legacy,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === legacyJoin.playerId,
+    );
+    expect(legacyFull.combat?.match.scoreboard).toBeUndefined();
+    acknowledgeSnapshot(legacy, legacyFull);
+
+    const capableDelta = await waitForType(
+      capable,
+      'deltaSnapshot',
+      ({ combat, serverTick }) => (
+        serverTick > capableFull.serverTick
+        && combat?.match.scoreboard?.playerScores.length === 2
+      ),
+    );
+    expect(capableDelta.combat?.match.scoreboard?.playerScores.map(({ playerId }) => playerId).sort())
+      .toEqual([capableJoin.playerId, legacyJoin.playerId].sort());
+    const legacyDelta = await waitForType(
+      legacy,
+      'deltaSnapshot',
+      ({ serverTick }) => serverTick > legacyFull.serverTick,
+    );
+    expect(legacyDelta.combat?.match.scoreboard).toBeUndefined();
+
+    capable.socket.close(1000, 'scoreboard resume proof');
+    await waitForMetrics(
+      room,
+      (metrics) => metrics.connectedPlayers === 1,
+      'scoreboard client disconnected',
+    );
+    const resumed = await connectSocket(room.socketPath);
+    await waitForType(resumed, 'welcome');
+    await announceCombatScoreboardCapability(resumed, 'req.hello.relay.scoreboard.resume');
+    sendClient(resumed, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'resumeRoom',
+      requestId: 'req.resume.relay.scoreboard',
+      roomCode: room.roomCode,
+      resumeToken: capableJoin.resumeToken,
+    });
+    const resumedJoin = await waitForType(
+      resumed,
+      'joinAccepted',
+      ({ requestId }) => requestId === 'req.resume.relay.scoreboard',
+    );
+    const resumedFull = await waitForType(
+      resumed,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === capableJoin.playerId,
+    );
+    expect(resumedJoin).toMatchObject({
+      connectionMode: 'resumed',
+      playerId: capableJoin.playerId,
+    });
+    expect(resumedFull.combat?.match.scoreboard?.playerScores.map(({ playerId }) => playerId).sort())
+      .toEqual([capableJoin.playerId, legacyJoin.playerId].sort());
+    expect(capable.decodeErrors).toEqual([]);
+    expect(legacy.decodeErrors).toEqual([]);
+    expect(resumed.decodeErrors).toEqual([]);
   }, 30_000);
 
   it('rejects profile mismatch, cross-profile resume, and persisted flat-run aliasing', async () => {

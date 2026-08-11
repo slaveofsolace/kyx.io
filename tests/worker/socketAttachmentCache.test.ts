@@ -12,7 +12,7 @@ interface SocketAttachmentCacheHarness {
 
 function attachment(connectionId: string): SocketAttachment {
   return Object.freeze({
-    schemaVersion: 7,
+    schemaVersion: 8,
     roomCode: 'KYX-234567',
     connectionId,
     allocationLeaseId: null,
@@ -37,6 +37,7 @@ function attachment(connectionId: string): SocketAttachment {
     lastAcknowledgedEventId: 'event.1',
     lastSentReliableEventId: 'event.1',
     backpressureStartedAt: null,
+    combatPlayerScoresV1: false,
   });
 }
 
@@ -95,10 +96,11 @@ describe('KyxRoom socket attachment cache', () => {
     const migrated = room.readSocketAttachment(legacyWrapper);
 
     expect(migrated).toMatchObject({
-      schemaVersion: 7,
+      schemaVersion: 8,
       connectionId: current.connectionId,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
+      combatPlayerScoresV1: false,
       snapshotAckDebtStartedAt: null,
       sentSnapshotHistory: [{
         serverTick: 0,

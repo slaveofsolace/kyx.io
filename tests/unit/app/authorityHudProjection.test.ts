@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  createAuthorityMatchResultViewModel,
   createAuthorityPracticeMatchResultViewModel,
   createAuthorityScoreboardRows,
 } from '../../../src/app/authorityHudProjection';
@@ -83,6 +84,29 @@ describe('authority HUD match projections', () => {
     });
   });
 
+  it('projects the same result when online match and team-score facts arrive separately', () => {
+    expect(createAuthorityMatchResultViewModel({
+      localPlayerId: 'practice.player.local',
+      playerScores: PLAYER_SCORES,
+      result: {
+        reason: 'score_limit',
+        winningTeamId: 'team_blue',
+        draw: false,
+      },
+      teamScores: [
+        { teamId: 'team_blue', score: 40 },
+        { teamId: 'team_red', score: 37 },
+      ],
+    })).toMatchObject({
+      outcome: 'victory',
+      localTeamScore: 40,
+      opposingTeamScore: 37,
+      kills: 4,
+      deaths: 1,
+      assists: 2,
+    });
+  });
+
   it.each([
     {
       draw: false,
@@ -138,6 +162,6 @@ describe('authority HUD match projections', () => {
           { teamId: 'team_red', score: 18 },
         ],
       },
-    })).toThrow('LOCAL_INKFALL_PRACTICE_RESULT_PLAYER_MISSING');
+    })).toThrow('AUTHORITY_MATCH_RESULT_PLAYER_MISSING');
   });
 });

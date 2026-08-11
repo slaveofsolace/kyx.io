@@ -26,6 +26,7 @@ export function combatWireId(authorityId: string): string {
 export function combatSnapshotFromAuthority(
   snapshot: AuthorityFullSnapshot,
   recipientPlayerId: string | null = null,
+  includePlayerScores = false,
 ): CombatSnapshotV1 | null {
   const combatPlayers = snapshot.players.filter((player) => player.combat !== undefined);
   if (combatPlayers.length === 0) return null;
@@ -237,6 +238,20 @@ export function combatSnapshotFromAuthority(
         Object.freeze({ teamId, score })
       ))),
       feedSequence: snapshot.match.feedSequence,
+      ...(includePlayerScores
+        ? {
+            scoreboard: Object.freeze({
+              schemaVersion: 1 as const,
+              playerScores: Object.freeze(snapshot.match.playerScores.map((score) => Object.freeze({
+                playerId: score.playerId,
+                teamId: score.teamId,
+                kills: score.kills,
+                deaths: score.deaths,
+                assists: score.assists,
+              }))),
+            }),
+          }
+        : {}),
       result: snapshot.match.result === null
         ? null
         : Object.freeze({

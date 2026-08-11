@@ -23,6 +23,7 @@ import {
 } from '../src/authority';
 import { hashRulesetContent, requireRuleset } from '../src/content';
 import {
+  COMBAT_PLAYER_SCORES_CAPABILITY,
   PROTOCOL_LIMITS,
   PROTOCOL_VERSION,
   RELIABLE_EVENT_STREAM_VERSION,
@@ -645,7 +646,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const server = pair[1];
     const now = Date.now();
     const attachment: SocketAttachment = Object.freeze({
-      schemaVersion: 7,
+      schemaVersion: 8,
       roomCode: route.roomCode,
       connectionId: `connection.${crypto.randomUUID()}`,
       allocationLeaseId,
@@ -667,6 +668,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       lastAcknowledgedEventId: null,
       lastSentReliableEventId: null,
       backpressureStartedAt: null,
+      combatPlayerScoresV1: false,
     });
     this.writeSocketAttachment(server, attachment);
     this.ctx.acceptWebSocket(server);
@@ -790,7 +792,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const clientMessage = decoded.value;
     switch (clientMessage.type) {
       case 'hello': {
-        safeSocketSend(webSocket, this.welcome(rate.attachment.connectionId));
+        const nextAttachment: SocketAttachment = Object.freeze({
+          ...rate.attachment,
+          combatPlayerScoresV1: clientMessage.capabilities.includes(
+            COMBAT_PLAYER_SCORES_CAPABILITY,
+          ),
+        });
+        this.writeSocketAttachment(webSocket, nextAttachment);
+        safeSocketSend(webSocket, this.welcome(nextAttachment.connectionId));
         return;
       }
       case 'joinRoom': {
@@ -2627,7 +2636,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       : snapshot.players.find(({ playerId }) => playerId === attachment.playerId) ?? null;
     if (player === null) return null;
     const entities = this.requireAuthority().protocolEntities();
-    const combat = combatSnapshotFromAuthority(snapshot, attachment.playerId);
+    const combat = combatSnapshotFromAuthority(
+      snapshot,
+      attachment.playerId,
+      attachment.combatPlayerScoresV1,
+    );
     const snapshotBaselineId = this.snapshotBaselines.remember(snapshot.serverTick, entities);
     const eventBaselineId = this.retainedEventBaseline(attachment.lastAcknowledgedEventId);
     const eventBaselineReset = eventBaselineId !== attachment.lastAcknowledgedEventId;
@@ -2696,7 +2709,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       snapshot.serverTick,
     );
     if (delta === null) return null;
-    const combat = combatSnapshotFromAuthority(snapshot, attachment.playerId);
+    const combat = combatSnapshotFromAuthority(
+      snapshot,
+      attachment.playerId,
+      attachment.combatPlayerScoresV1,
+    );
     const sent = safeSocketSend(webSocket, {
       protocolVersion: PROTOCOL_VERSION,
       type: 'deltaSnapshot',
