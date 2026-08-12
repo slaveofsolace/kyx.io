@@ -1207,10 +1207,21 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           && rate.attachment.lastSnapshotSentAt !== null
           && authority.combatProfileId !== null
         ) {
-          authority.recordServerObservedRtt(
-            rate.attachment.playerId,
-            Math.min(20_000, Math.max(0, now - rate.attachment.lastSnapshotSentAt)),
+          // A final ACK can already be queued when a page tears down its old
+          // room during an in-place next-match transition. The socket
+          // attachment is still structurally current for that queued message,
+          // while the authority player may have completed its disconnect.
+          // RTT is optional transport telemetry, so never let that race abort
+          // the Durable Object and interrupt unrelated live rooms.
+          const acknowledgedPlayer = authority.fullSnapshot().players.find(
+            ({ playerId }) => playerId === rate.attachment.playerId,
           );
+          if (acknowledgedPlayer?.connected === true) {
+            authority.recordServerObservedRtt(
+              rate.attachment.playerId,
+              Math.min(20_000, Math.max(0, now - rate.attachment.lastSnapshotSentAt)),
+            );
+          }
         }
         this.playerEventAcknowledgements.set(
           rate.attachment.playerId,

@@ -2550,6 +2550,11 @@ async function mountSession(
 
     resultDialog.inert = false;
     resultDialog.classList.remove('hidden');
+    // The completed authority result owns the terminal surface. A socket can
+    // close normally while the expired room is being retired; surfacing that
+    // transport state behind the result reads as a second, contradictory
+    // outcome and competes with the next-match recovery controls.
+    showPlayerError('', false, '', 'quiet');
     body.dataset.onlinePreviewStatus = 'result';
     if (document.pointerLockElement === canvas) void document.exitPointerLock();
     queueMicrotask(() => playAgainButton.focus());
@@ -3069,12 +3074,16 @@ async function mountSession(
       const playerMessage = presentationFailureDetail === null
         ? hudView.connection.message
         : 'Combat feedback stopped. Start a fresh room or return to the online lobby.';
-      showPlayerError(
-        playerMessage,
-        presentationFailureDetail !== null || hudView.connection.canRetry,
-        technicalDetail,
-        presentationFailureDetail === null ? hudView.connection.state : 'fatal',
-      );
+      if (matchResultShown) {
+        showPlayerError('', false, '', 'quiet');
+      } else {
+        showPlayerError(
+          playerMessage,
+          presentationFailureDetail !== null || hudView.connection.canRetry,
+          technicalDetail,
+          presentationFailureDetail === null ? hudView.connection.state : 'fatal',
+        );
+      }
       body.dataset.onlinePreviewStatus = matchResultShown
         ? 'result'
         : diagnostics.connection.phase;
