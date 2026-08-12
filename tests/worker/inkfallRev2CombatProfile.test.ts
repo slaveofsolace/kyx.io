@@ -652,7 +652,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       connectedPlayers: 8,
       botPopulation: {
         schemaVersion: 1,
-        strategy: 'relay_authority_sentry_slot_takeover_v1',
+        strategy: 'relay_authority_safe_patrol_slot_takeover_v2',
         targetPlayers: 8,
         serverControlledPlayers: 6,
         connectedHumanPlayers: 2,

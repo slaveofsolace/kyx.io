@@ -13,7 +13,6 @@ import {
   authorityLoadoutRequestFingerprint,
   createInkfallRev5PortalAuthorityPort,
   createRelayPortalAuthorityPort,
-  deterministicCombatBotInput,
   deterministicCombatBotPresetId,
   evaluateAuthorityLoadoutRequest,
   type AuthorityActiveMatchCheckpointV1,
@@ -114,8 +113,10 @@ import {
 } from './reliableEvents';
 import { SnapshotBaselineStore } from './snapshotBaselines';
 import {
+  RELAY_AUTHORITY_BOT_STRATEGY,
   RELAY_AUTHORITY_PLAYER_SLOT_IDS,
   nextRelayAuthorityBotTakeover,
+  relayAuthorityBotInput,
   relayAuthorityBotConnectionId,
   relayAuthorityPlayerSlotOrdinal,
 } from './relayBotSlots';
@@ -646,7 +647,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             ? {
                 botPopulation: Object.freeze({
                   schemaVersion: 1,
-                  strategy: 'relay_authority_sentry_slot_takeover_v1',
+                  strategy: RELAY_AUTHORITY_BOT_STRATEGY,
                   targetPlayers: RELAY_AUTHORITY_PLAYER_SLOT_IDS.length,
                   serverControlledPlayers: this.serverBotPlayerIds.size,
                   connectedHumanPlayers: this.requireAuthority().fullSnapshot().players.filter(
@@ -2003,12 +2004,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       const ordinal = relayAuthorityPlayerSlotOrdinal(playerId);
       if (ordinal === null) throw new Error('RELAY_BOT_SLOT_ID_INVALID');
       const sequence = this.serverBotInputSequences.get(playerId) ?? 0;
-      const input = deterministicCombatBotInput(
+      const input = relayAuthorityBotInput(
         snapshot,
         playerId,
         this.serverBotHeldButtons.get(playerId) ?? 0,
-        ordinal,
-        { locomotion: 'sentry' },
       );
       const message: InputBatchMessage = Object.freeze({
         protocolVersion: PROTOCOL_VERSION,
