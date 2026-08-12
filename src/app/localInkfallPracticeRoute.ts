@@ -100,6 +100,14 @@ interface LocalPracticeDiagnosticsV1 {
     readonly allowedWeaponSlots: readonly number[];
     readonly authoritativeSelectedWeaponSlot: number;
     readonly authoritativeSelectedWeaponId: string | null;
+    readonly authoritativeSelectedWeapon: Readonly<{
+      readonly weaponId: string;
+      readonly phase: string;
+      readonly magazineRounds: number | null;
+      readonly reserveRounds: number | null;
+      readonly acceptedAttackCount: number;
+      readonly reloadCompletesAtTick: number | null;
+    }> | null;
     readonly abilitySlots: readonly string[];
   }>;
   readonly match: Readonly<{
@@ -857,6 +865,11 @@ export async function mountLocalInkfallPracticeRoute(
     const detonation = detonationEvent?.presentation?.kind === 'impulse_grenade_detonated'
       ? detonationEvent.presentation
       : null;
+    const selectedWeapon = localPlayer.combat.armory.weapons.find(
+      ({ weaponId }) => (
+        kyxWeaponProfile(weaponId).slot === localPlayer.combat?.armory.selectedSlot
+      ),
+    ) ?? null;
     const countLaunchEvents = (kind: string): number => localLaunchEvents.filter(
       (event) => event.presentation?.kind === kind,
     ).length;
@@ -886,11 +899,17 @@ export async function mountLocalInkfallPracticeRoute(
         primaryWeaponSlot: combatPreset.authorityPrimaryWeaponSlot,
         allowedWeaponSlots,
         authoritativeSelectedWeaponSlot: localPlayer.combat.armory.selectedSlot,
-        authoritativeSelectedWeaponId: localPlayer.combat.armory.weapons.find(
-          ({ weaponId }) => (
-            kyxWeaponProfile(weaponId).slot === localPlayer.combat?.armory.selectedSlot
-          ),
-        )?.weaponId ?? null,
+        authoritativeSelectedWeaponId: selectedWeapon?.weaponId ?? null,
+        authoritativeSelectedWeapon: selectedWeapon === null
+          ? null
+          : Object.freeze({
+              weaponId: selectedWeapon.weaponId,
+              phase: selectedWeapon.phase,
+              magazineRounds: selectedWeapon.magazineRounds,
+              reserveRounds: selectedWeapon.reserveRounds,
+              acceptedAttackCount: selectedWeapon.acceptedAttackCount,
+              reloadCompletesAtTick: selectedWeapon.reloadCompletesAtTick,
+            }),
         abilitySlots: Object.freeze([...localPlayer.combat.abilityLoadout.loadout.slots]),
       }),
       match: Object.freeze({

@@ -229,48 +229,73 @@ test.describe('local Relay Practice route', () => {
       authoritativeSelectedWeaponSlot: 0,
       authoritativeSelectedWeaponId: 'vertical_rifle_v1',
     });
-    await page.keyboard.press('Digit2');
-    await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
-    ))).toMatchObject({
-      authoritativeSelectedWeaponSlot: 1,
-      authoritativeSelectedWeaponId: 'kyx_sidearm_v1',
-    });
-    await page.keyboard.press('Digit3');
-    await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
-    ))).toMatchObject({
-      authoritativeSelectedWeaponSlot: 2,
-      authoritativeSelectedWeaponId: 'kyx_scattergun_v1',
-    });
-    await page.keyboard.press('Digit4');
-    await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
-    ))).toMatchObject({
-      authoritativeSelectedWeaponSlot: 3,
-      authoritativeSelectedWeaponId: 'kyx_longshot_v1',
-    });
-    await page.keyboard.press('Digit5');
-    await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
-    ))).toMatchObject({
-      authoritativeSelectedWeaponSlot: 4,
-      authoritativeSelectedWeaponId: 'kyx_breach_rocket_v1',
-    });
-    await page.keyboard.press('Digit6');
-    await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
-    ))).toMatchObject({
-      authoritativeSelectedWeaponSlot: 5,
-      authoritativeSelectedWeaponId: 'kyx_edge_v1',
-    });
+    for (const [slot, weaponId] of [
+      [0, 'vertical_rifle_v1'],
+      [1, 'kyx_sidearm_v1'],
+      [2, 'kyx_scattergun_v1'],
+      [3, 'kyx_longshot_v1'],
+      [4, 'kyx_breach_rocket_v1'],
+      [5, 'kyx_edge_v1'],
+    ] as const) {
+      await page.keyboard.press(`Digit${slot + 1}`);
+      await expect.poll(async () => page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+      )), { timeout: 10_000 }).toMatchObject({
+        authoritativeSelectedWeaponSlot: slot,
+        authoritativeSelectedWeaponId: weaponId,
+        authoritativeSelectedWeapon: {
+          weaponId,
+          phase: 'ready',
+        },
+      });
+      const beforeAttack = await page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+          .authoritativeSelectedWeapon ?? null
+      ));
+      expect(beforeAttack).not.toBeNull();
+      await page.mouse.down({ button: 'left' });
+      await page.waitForTimeout(35);
+      await page.mouse.up({ button: 'left' });
+      await expect.poll(async () => page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+          .authoritativeSelectedWeapon?.acceptedAttackCount ?? -1
+      )), { timeout: 10_000 }).toBeGreaterThan(beforeAttack?.acceptedAttackCount ?? 0);
+      const afterAttack = await page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+          .authoritativeSelectedWeapon ?? null
+      ));
+      if (
+        beforeAttack !== null
+        && afterAttack !== null
+        && beforeAttack.magazineRounds !== null
+        && afterAttack.magazineRounds !== null
+      ) {
+        expect(afterAttack.magazineRounds).toBeLessThan(beforeAttack.magazineRounds);
+        await expect.poll(async () => page.evaluate(() => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+            .authoritativeSelectedWeapon?.phase ?? null
+        )), { timeout: 10_000 }).toMatch(/^(?:ready|empty)$/u);
+        await page.keyboard.press('KeyR');
+        await expect.poll(async () => page.evaluate(() => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+            .authoritativeSelectedWeapon?.reloadCompletesAtTick ?? null
+        )), { timeout: 5_000 }).not.toBeNull();
+        await expect.poll(async () => page.evaluate(() => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+            .authoritativeSelectedWeapon?.phase ?? null
+        )), { timeout: 10_000 }).toBe('ready');
+        const afterReload = await page.evaluate(() => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+            .authoritativeSelectedWeapon ?? null
+        ));
+        expect(afterReload?.magazineRounds ?? -1).toBeGreaterThan(afterAttack.magazineRounds);
+      }
+    }
     await page.keyboard.press('Digit1');
     await expect.poll(async () => page.evaluate(() => (
-      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
-    ))).toMatchObject({
-      authoritativeSelectedWeaponSlot: 0,
-      authoritativeSelectedWeaponId: 'vertical_rifle_v1',
-    });
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout
+        .authoritativeSelectedWeaponId ?? null
+    ))).toBe('vertical_rifle_v1');
     await expect(page.locator('#dm-timer')).toBeVisible();
     await expect(page.locator('#local-score-label')).toHaveText('Your team');
     await expect(page.locator('#opponent-score-label')).toHaveText('Opponents');
