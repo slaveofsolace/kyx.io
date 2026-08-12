@@ -1293,6 +1293,7 @@ describe('authority evidence transport state', () => {
       rejectedCommands: 2,
       duplicateSequence: 1,
       staleSequence: 1,
+      clientTickTooOld: 0,
       lastCategory: 'stale_sequence',
     });
     expect(rejectionDiagnostics.counters).toMatchObject({
@@ -1391,6 +1392,100 @@ describe('authority evidence transport state', () => {
     expect(JSON.stringify(diagnostics)).not.toContain('A'.repeat(43));
     expect(JSON.stringify(diagnostics)).not.toContain('B'.repeat(43));
     expect(Object.isFrozen(diagnostics)).toBe(true);
+    client.dispose();
+  });
+
+  it('rebases a background-stale client tick and waits for fresh authority reconciliation', () => {
+    const transport = new FakeTransport();
+    const scheduler = new FakeScheduler();
+    const state = createTestMovementState({ playerId: 'player.1' });
+    let requestSequence = 0;
+    const client = new AuthorityEvidenceClient({
+      config: {
+        authorityUrl: 'http://127.0.0.1:8787',
+        mode: 'join',
+        roomCode: 'KYX-234567',
+        displayName: 'Background Recovery Peer',
+        impairmentProfile: 'nominal',
+      },
+      roomCode: 'KYX-234567',
+      expectedIdentity: EXPECTED_IDENTITY,
+      profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      queries: new FakeMovementQueryPort(),
+      transport,
+      scheduler,
+      createRequestId: () => `request.${requestSequence++}`,
+    });
+    client.start();
+    const connection = transport.connections[0]!;
+    connection.open();
+    connection.receive(welcome('connection.background-recovery'));
+    const join = sentMessage(connection, 1);
+    connection.receive(joinAccepted(
+      join.type === 'joinRoom' ? join.requestId : '',
+      'joined',
+      'R',
+    ));
+    connection.receive(fullSnapshot(state));
+
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{ sequence: 0, clientTick: 0 }],
+    });
+
+    // Simulate a throttled background tab: wall time and the authority advance,
+    // but the browser's fixed input callback does not run for 25 seconds.
+    scheduler.now += 25_000;
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{ sequence: 1, clientTick: 1 }],
+    });
+    connection.receive({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'error',
+      code: 'INPUT_REJECTED',
+      detail: '1:client_tick_too_old',
+      requestId: null,
+    });
+
+    expect(client.diagnostics()).toMatchObject({
+      connection: { phase: 'joined' },
+      input: {
+        moveX: 0,
+        moveY: 0,
+        heldButtons: 0,
+        nextSequence: 2,
+        nextClientTick: 502,
+        authorityInputRejections: {
+          messages: 1,
+          rejectedCommands: 1,
+          duplicateSequence: 0,
+          staleSequence: 0,
+          clientTickTooOld: 1,
+          lastCategory: 'client_tick_too_old',
+        },
+      },
+      lastNotice: 'INPUT_REJECTED: rebased after 1 background-stale input command',
+      counters: { applicationErrors: 0 },
+    });
+
+    const batchesBeforeReconciliation = connection.sent
+      .map((_, index) => sentMessage(connection, index))
+      .filter(({ type }) => type === 'inputBatch').length;
+    scheduler.runTick();
+    expect(connection.sent
+      .map((_, index) => sentMessage(connection, index))
+      .filter(({ type }) => type === 'inputBatch')).toHaveLength(batchesBeforeReconciliation);
+
+    connection.receive(fullSnapshot(stateAtTick(state, 500)));
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{ sequence: 2, clientTick: 502 }],
+    });
+    expect(client.diagnostics().connection.phase).toBe('joined');
     client.dispose();
   });
 

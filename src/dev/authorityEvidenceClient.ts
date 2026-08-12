@@ -149,12 +149,17 @@ interface MutableAuthorityEvidenceCounters {
   recoverableInputRejectedCommands: number;
 }
 
-type RecoverableInputRejectionCategory = 'duplicate_sequence' | 'stale_sequence' | 'mixed';
+type RecoverableInputRejectionCategory =
+  | 'duplicate_sequence'
+  | 'stale_sequence'
+  | 'client_tick_too_old'
+  | 'mixed';
 
 interface ParsedRecoverableInputRejections {
   readonly sequences: readonly number[];
   readonly duplicateSequence: number;
   readonly staleSequence: number;
+  readonly clientTickTooOld: number;
   readonly category: RecoverableInputRejectionCategory;
 }
 
@@ -171,24 +176,31 @@ function parseRecoverableInputRejections(
   const sequences: number[] = [];
   let duplicateSequence = 0;
   let staleSequence = 0;
+  let clientTickTooOld = 0;
   for (const entry of entries) {
-    const match = /^(0|[1-9][0-9]*):(duplicate_sequence|stale_sequence)$/u.exec(entry);
+    const match = /^(0|[1-9][0-9]*):(duplicate_sequence|stale_sequence|client_tick_too_old)$/u.exec(entry);
     if (match === null) return null;
     const sequence = Number(match[1]);
     if (!Number.isSafeInteger(sequence) || sequence > PROTOCOL_LIMITS.maxSequence) return null;
     sequences.push(sequence);
     if (match[2] === 'duplicate_sequence') duplicateSequence += 1;
-    else staleSequence += 1;
+    else if (match[2] === 'stale_sequence') staleSequence += 1;
+    else clientTickTooOld += 1;
   }
+  const categories = [duplicateSequence, staleSequence, clientTickTooOld]
+    .filter((count) => count > 0).length;
   return Object.freeze({
     sequences: Object.freeze(sequences),
     duplicateSequence,
     staleSequence,
-    category: duplicateSequence > 0 && staleSequence > 0
+    clientTickTooOld,
+    category: categories > 1
       ? 'mixed'
       : duplicateSequence > 0
         ? 'duplicate_sequence'
-        : 'stale_sequence',
+        : staleSequence > 0
+          ? 'stale_sequence'
+          : 'client_tick_too_old',
   });
 }
 
@@ -245,6 +257,7 @@ export interface AuthorityEvidenceDiagnostics {
       readonly rejectedCommands: number;
       readonly duplicateSequence: number;
       readonly staleSequence: number;
+      readonly clientTickTooOld: number;
       readonly lastCategory: RecoverableInputRejectionCategory | null;
     };
   };
@@ -484,6 +497,7 @@ export class AuthorityEvidenceClient {
   private teleportCooldownTicksRemaining = 0;
   private duplicateSequenceInputRejections = 0;
   private staleSequenceInputRejections = 0;
+  private clientTickTooOldInputRejections = 0;
   private lastInputRejectionCategory: RecoverableInputRejectionCategory | null = null;
   private correctionSampleCount = 0;
   private maximumPositionErrorMillimeters: number | null = null;
@@ -712,6 +726,7 @@ export class AuthorityEvidenceClient {
           rejectedCommands: this.counters.recoverableInputRejectedCommands,
           duplicateSequence: this.duplicateSequenceInputRejections,
           staleSequence: this.staleSequenceInputRejections,
+          clientTickTooOld: this.clientTickTooOldInputRejections,
           lastCategory: this.lastInputRejectionCategory,
         },
       },
@@ -1004,13 +1019,34 @@ export class AuthorityEvidenceClient {
       parsed === null
       || parsed.sequences.some((sequence) => sequence >= this.nextSequence)
     ) return false;
-    const rejectedCommands = parsed.duplicateSequence + parsed.staleSequence;
+    const rejectedCommands = (
+      parsed.duplicateSequence
+      + parsed.staleSequence
+      + parsed.clientTickTooOld
+    );
     this.counters.recoverableInputRejectionMessages += 1;
     this.counters.recoverableInputRejectedCommands += rejectedCommands;
     this.duplicateSequenceInputRejections += parsed.duplicateSequence;
     this.staleSequenceInputRejections += parsed.staleSequence;
+    this.clientTickTooOldInputRejections += parsed.clientTickTooOld;
     this.lastInputRejectionCategory = parsed.category;
-    this.lastNotice = `INPUT_REJECTED: authority ignored ${rejectedCommands} duplicate or stale input command${rejectedCommands === 1 ? '' : 's'}`;
+    if (parsed.clientTickTooOld > 0) {
+      // Backgrounded browsers can suspend the 20 Hz input timer while the
+      // authority keeps advancing. Rebase the client clock from elapsed
+      // authority time and wait for a fresh reconciliation before generating
+      // another command. This preserves the server's bounded anti-replay lag
+      // gate instead of weakening it or reconnecting a healthy socket.
+      this.neutralizeInput();
+      this.nextClientTick = Math.max(
+        this.nextClientTick,
+        Math.floor(this.estimatedServerTick()),
+      );
+      this.prediction = null;
+      this.resetPredictionOnNextSnapshot = true;
+      this.lastNotice = `INPUT_REJECTED: rebased after ${parsed.clientTickTooOld} background-stale input command${parsed.clientTickTooOld === 1 ? '' : 's'}`;
+    } else {
+      this.lastNotice = `INPUT_REJECTED: authority ignored ${rejectedCommands} duplicate or stale input command${rejectedCommands === 1 ? '' : 's'}`;
+    }
     return true;
   }
 
