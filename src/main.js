@@ -22,9 +22,6 @@ import {
   resolveInkfallRev3ReviewRequest,
 } from './app/inkfallRev3ReviewSelection.ts';
 
-GameSettings.load();
-applyAccessibilityPreferences(GameSettings.snapshot());
-
 const canvas = document.getElementById('game-canvas');
 const g7UiCandidate = resolveG7UiCandidate(window.location.search);
 const uiSystem = 'cutline-v1';
@@ -50,6 +47,10 @@ const authorityTestRoute = import.meta.env.DEV
 const mapTestRoute = import.meta.env.DEV
   && window.location.pathname === '/__test__/map';
 const developmentTestRoute = deterministicTestRoute || movementTestRoute || authorityTestRoute || mapTestRoute;
+if (!developmentTestRoute) {
+  GameSettings.load();
+  applyAccessibilityPreferences(GameSettings.snapshot());
+}
 const lockedGrayboxPreviewRequest = resolveLockedGrayboxPreviewRequest(window.location.search);
 const lockedGrayboxPreviewRoute = import.meta.env.DEV
   && lockedGrayboxPreviewRequest.kind !== 'none';
