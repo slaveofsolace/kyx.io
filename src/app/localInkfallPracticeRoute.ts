@@ -55,6 +55,20 @@ import {
 const MAXIMUM_AUTHORITY_STEPS_PER_FRAME = 5;
 const MAXIMUM_FRAME_DELTA_MILLISECONDS = 250;
 const RELIABLE_EVENT_RETENTION = 256;
+const LOCAL_PRACTICE_ROOM_ID = 'room.local.relay.practice' as const;
+
+export function localPracticeRematchIdentity(rematchOrdinal: number): Readonly<{
+  roomId: typeof LOCAL_PRACTICE_ROOM_ID;
+  matchId: string;
+}> {
+  if (!Number.isSafeInteger(rematchOrdinal) || rematchOrdinal < 1 || rematchOrdinal > 10_000) {
+    throw new RangeError('local Practice rematch ordinal must be an integer from 1 through 10000');
+  }
+  return Object.freeze({
+    roomId: LOCAL_PRACTICE_ROOM_ID,
+    matchId: `match.local.relay.practice.rematch.${rematchOrdinal}`,
+  });
+}
 
 interface LocalPracticeDiagnosticsV1 {
   readonly schemaVersion: 1;
@@ -297,10 +311,11 @@ export async function mountLocalInkfallPracticeRoute(
     initialSelectedSlot: combatPreset.authorityPrimaryWeaponSlot,
     allowedSelectedSlots: allowedWeaponSlots,
   });
-  const host = await LocalInkfallPracticeHost.create({
+  let host = await LocalInkfallPracticeHost.create({
     botCount: 7,
     combatPresetId: combatPreset.id,
   });
+  body.dataset.localPracticeMatchOrdinal = '1';
   body.dataset.combatPresetId = combatPreset.id;
   body.dataset.helmetVariantId = combatPreset.helmetVariantId;
   const gameplayAudio = new AudioManager();
@@ -361,6 +376,8 @@ export async function mountLocalInkfallPracticeRoute(
   let latestBlinkPreview: OnlineBlinkPreview | null = null;
   let scoreboardOpen = false;
   let matchResultShown = false;
+  let rematchRequestPending = false;
+  let rematchOrdinal = 0;
   let entryRequestPending = false;
   let entryRequestOrdinal = 0;
   let entryRequestController: AbortController | null = null;
@@ -740,7 +757,58 @@ export async function mountLocalInkfallPracticeRoute(
     if (document.visibilityState === 'hidden') neutralize();
   };
   const preventContextMenu = (event: MouseEvent): void => event.preventDefault();
-  const requestRematch = (): void => window.location.reload();
+  const requestRematch = async (): Promise<void> => {
+    if (disposed || !matchResultShown || rematchRequestPending) return;
+    rematchRequestPending = true;
+    rematchButton.disabled = true;
+    const originalLabel = rematchButton.textContent;
+    rematchButton.textContent = 'Preparing next match…';
+    const nextOrdinal = rematchOrdinal + 1;
+    try {
+      const nextHost = await LocalInkfallPracticeHost.create({
+        botCount: 7,
+        combatPresetId: combatPreset.id,
+        ...localPracticeRematchIdentity(nextOrdinal),
+      });
+      if (disposed) {
+        nextHost.dispose();
+        return;
+      }
+      const previousHost = host;
+      host = nextHost;
+      rematchOrdinal = nextOrdinal;
+      previousSnapshot = nextHost.snapshot;
+      snapshot = previousSnapshot;
+      recentEvents = [];
+      recentHeadshots.clear();
+      latestBlinkPreview = null;
+      accumulatorMilliseconds = 0;
+      input.neutralize();
+      matchResultShown = false;
+      resultDialog.classList.add('hidden');
+      resultDialog.inert = true;
+      resultStats.replaceChildren();
+      delete body.dataset.localPracticeResult;
+      body.dataset.localPracticeMatchOrdinal = String(rematchOrdinal + 1);
+      gate.status.textContent = 'Next match ready. Capture the mouse to re-enter Relay.';
+      gate.root.classList.remove('hidden');
+      entryGateState = 'ready';
+      body.dataset.localPracticeStatus = 'paused';
+      previousHost.dispose();
+      queueMicrotask(() => gate.enter.focus());
+    } catch (error) {
+      resultTitle.textContent = 'Next match unavailable';
+      resultStats.replaceChildren(createResultStatRow(
+        'Technical status',
+        error instanceof Error ? error.message : 'Next match could not start.',
+      ));
+      body.dataset.localPracticeStatus = 'rematch-failed';
+    } finally {
+      rematchRequestPending = false;
+      rematchButton.disabled = false;
+      rematchButton.textContent = originalLabel;
+    }
+  };
   const returnToMenu = (): void => window.location.assign('/');
 
   gate.enter.addEventListener('click', requestEntry);

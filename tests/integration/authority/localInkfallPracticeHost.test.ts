@@ -398,6 +398,41 @@ describe('browser-local Relay Practice authority host', () => {
     expect(practice.authority.metricsSnapshot().acceptedInputs).toBe(acceptedInputsBefore);
   }, 30_000);
 
+  it('can replace a completed match with a fresh authority host without reloading the page', async () => {
+    const first = await LocalInkfallPracticeHost.create({
+      botCount: 7,
+      roomId: 'room.local.relay.practice',
+      matchId: 'match.local.relay.practice',
+    });
+    hosts.push(first);
+    for (let tick = 0; tick < 12; tick += 1) first.step();
+
+    const next = await LocalInkfallPracticeHost.create({
+      botCount: 7,
+      roomId: 'room.local.relay.practice',
+      matchId: 'match.local.relay.practice.rematch.1',
+    });
+    hosts.push(next);
+
+    expect(first.snapshot.serverTick).toBe(12);
+    expect(next.snapshot).toMatchObject({
+      serverTick: 0,
+      lifecycle: 'warmup',
+      identity: {
+        roomId: 'room.local.relay.practice',
+        matchId: 'match.local.relay.practice.rematch.1',
+        mapId: RELAY_AUTHORITY_IDENTITY.mapId,
+      },
+      match: {
+        matchId: 'match.local.relay.practice.rematch.1',
+        phase: 'warmup',
+        result: null,
+      },
+    });
+    expect(next.snapshot.players).toHaveLength(8);
+    expect(next.authority.metricsSnapshot().acceptedInputs).toBe(0);
+  });
+
   it('fails closed for invalid population and after disposal', async () => {
     await expect(LocalInkfallPracticeHost.create({ botCount: 0 })).rejects.toThrow(RangeError);
     await expect(LocalInkfallPracticeHost.create({ botCount: 8 })).rejects.toThrow(RangeError);
