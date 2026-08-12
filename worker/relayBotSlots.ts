@@ -6,11 +6,11 @@ import {
 
 export const RELAY_AUTHORITY_PLAYER_SLOT_COUNT = 8 as const;
 export const RELAY_AUTHORITY_BOT_STRATEGY =
-  'relay_authority_safe_patrol_slot_takeover_v2' as const;
+  'relay_authority_map_assault_slot_takeover_v3' as const;
 export const SWITCHYARD_AUTHORITY_BOT_STRATEGY =
-  'switchyard_authority_safe_patrol_slot_takeover_v1' as const;
+  'switchyard_authority_map_assault_slot_takeover_v2' as const;
 export const CROWNPOINT_AUTHORITY_BOT_STRATEGY =
-  'crownpoint_authority_safe_patrol_slot_takeover_v1' as const;
+  'crownpoint_authority_map_assault_slot_takeover_v2' as const;
 
 export function authorityBotStrategy(mapId: string): string {
   if (mapId === 'relay') return RELAY_AUTHORITY_BOT_STRATEGY;
@@ -166,6 +166,65 @@ export function relayAuthorityBotPatrolDecision(
   return authorityBotPatrolDecision(snapshot, playerId, 'relay');
 }
 
+type RelayAssaultRouteTarget = RelayPatrolPoint | null | undefined;
+
+function bounded(value: number, minimum: number, maximum: number): number {
+  return Math.max(minimum, Math.min(maximum, value));
+}
+
+/**
+ * Relay is not one continuous floor, so direct target pursuit can send a bot
+ * through a connector gap. This pure route contract moves each current spawn
+ * region onto the connected central fight floor. `null` means that the bot is
+ * already in the central combat envelope and may use its adaptive pursuit;
+ * `undefined` fails closed for positions outside every proved route.
+ */
+function relayAssaultRouteTarget(position: RelayPatrolPoint): RelayAssaultRouteTarget {
+  if (position.y < -1_000 || position.z < -8_500) {
+    return undefined;
+  }
+
+  if (position.z >= 9_500) {
+    if (Math.abs(position.x) > 9_000) {
+      return point(Math.sign(position.x) * 7_000, 0, 15_000);
+    }
+    return point(0, 0, 8_000);
+  }
+
+  if (position.x <= -12_500) {
+    if (Math.abs(position.z) > 3_500) {
+      return point(position.x, 0, Math.sign(position.z) * 2_500);
+    }
+    return point(-9_500, 0, bounded(position.z, -2_500, 2_500));
+  }
+  if (position.x >= 12_500) {
+    if (Math.abs(position.z) > 3_500) {
+      return point(position.x, 0, Math.sign(position.z) * 2_500);
+    }
+    return point(9_500, 0, bounded(position.z, -2_500, 2_500));
+  }
+  if (position.z >= -8_500 && position.z < 9_500) return null;
+  return undefined;
+}
+
+function movementTowardTarget(
+  yawMilliDegrees: number,
+  position: RelayPatrolPoint,
+  target: RelayPatrolPoint,
+): Readonly<{ moveX: number; moveY: number }> {
+  const deltaX = target.x - position.x;
+  const deltaZ = target.z - position.z;
+  const distance = Math.hypot(deltaX, deltaZ);
+  if (distance <= 700) return Object.freeze({ moveX: 0, moveY: 0 });
+  const yaw = yawMilliDegrees * Math.PI / 180_000;
+  const directionX = deltaX / distance;
+  const directionZ = deltaZ / distance;
+  return Object.freeze({
+    moveX: Math.round((directionX * Math.cos(yaw) - directionZ * Math.sin(yaw)) * 80),
+    moveY: Math.round((directionX * Math.sin(yaw) + directionZ * Math.cos(yaw)) * 80),
+  });
+}
+
 export function authorityBotInput(
   snapshot: AuthorityFullSnapshot,
   playerId: string,
@@ -179,13 +238,30 @@ export function authorityBotInput(
     playerId,
     previousHeldButtons,
     ordinal,
-    { locomotion: 'sentry', strategy: 'adaptive' },
+    { locomotion: 'mobile', strategy: 'adaptive' },
   );
+  const player = snapshot.players.find((candidate) => candidate.playerId === playerId);
+  if (player === undefined) throw new Error('Authority bot player is missing');
+  const position = player.movement.player.feetPosition;
+  const relayRouteTarget = mapId === 'relay'
+    ? relayAssaultRouteTarget(position)
+    : null;
   const patrol = authorityBotPatrolDecision(snapshot, playerId, mapId);
+  const movement = mapId !== 'relay'
+    ? patrol.active
+      ? Object.freeze({ moveX: patrol.moveX, moveY: patrol.moveY })
+      : Object.freeze({ moveX: 0, moveY: 0 })
+    : relayRouteTarget === undefined
+      ? patrol.active
+        ? Object.freeze({ moveX: patrol.moveX, moveY: patrol.moveY })
+        : Object.freeze({ moveX: 0, moveY: 0 })
+      : relayRouteTarget === null
+        ? Object.freeze({ moveX: combat.moveX, moveY: combat.moveY })
+        : movementTowardTarget(player.movement.player.yawMilliDegrees, position, relayRouteTarget);
   return Object.freeze({
     ...combat,
-    moveX: patrol.moveX,
-    moveY: patrol.moveY,
+    moveX: movement.moveX,
+    moveY: movement.moveY,
   });
 }
 

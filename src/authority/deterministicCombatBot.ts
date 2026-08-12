@@ -60,15 +60,15 @@ function botWeaponBehavior(selectedSlot: number): BotWeaponBehavior {
   switch (selectedSlot) {
     case 2:
       return Object.freeze({
-        engagementRangeMillimeters: 15_000,
-        advanceUntilMillimeters: 9_000,
+        engagementRangeMillimeters: 50_000,
+        advanceUntilMillimeters: 20_000,
         retreatInsideMillimeters: 3_500,
         strafeIntent: 42,
       });
     case 3:
       return Object.freeze({
-        engagementRangeMillimeters: 55_000,
-        advanceUntilMillimeters: 32_000,
+        engagementRangeMillimeters: 120_000,
+        advanceUntilMillimeters: 42_000,
         retreatInsideMillimeters: 18_000,
         strafeIntent: 20,
       });
@@ -81,8 +81,8 @@ function botWeaponBehavior(selectedSlot: number): BotWeaponBehavior {
       });
     default:
       return Object.freeze({
-        engagementRangeMillimeters: 32_000,
-        advanceUntilMillimeters: 18_000,
+        engagementRangeMillimeters: 65_000,
+        advanceUntilMillimeters: 26_000,
         retreatInsideMillimeters: 6_000,
         strafeIntent: 30,
       });

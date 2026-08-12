@@ -35,7 +35,7 @@ function patrolSnapshot(
 
 describe('Relay authority bot slots', () => {
   it('pins eight stable authority-owned player slots and connections', () => {
-    expect(RELAY_AUTHORITY_BOT_STRATEGY).toBe('relay_authority_safe_patrol_slot_takeover_v2');
+    expect(RELAY_AUTHORITY_BOT_STRATEGY).toBe('relay_authority_map_assault_slot_takeover_v3');
     expect(RELAY_AUTHORITY_PLAYER_SLOT_IDS).toEqual([
       'player.relay.slot.01',
       'player.relay.slot.02',

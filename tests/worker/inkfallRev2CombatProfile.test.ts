@@ -658,7 +658,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       connectedPlayers: 8,
       botPopulation: {
         schemaVersion: 1,
-        strategy: 'relay_authority_safe_patrol_slot_takeover_v2',
+        strategy: 'relay_authority_map_assault_slot_takeover_v3',
         targetPlayers: 8,
         serverControlledPlayers: 6,
         connectedHumanPlayers: 2,
@@ -765,7 +765,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       roomProfile: profile,
       mapBinding: binding,
       botPopulation: {
-        strategy: `${mapId}_authority_safe_patrol_slot_takeover_v1`,
+        strategy: `${mapId}_authority_map_assault_slot_takeover_v2`,
         targetPlayers: 8,
         serverControlledPlayers: 7,
         connectedHumanPlayers: 1,
