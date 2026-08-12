@@ -96,6 +96,70 @@ describe('KYX first-person armory presentation', () => {
     expect(new Set(poses).size).toBe(WEAPON_IDS.length);
   });
 
+  it('keeps the compact sidearm, launcher, and blade out of the near-camera danger zone', () => {
+    const correctedProfiles = Object.freeze({
+      kyx_sidearm_v1: Object.freeze({
+        scale: 0.74,
+        position: Object.freeze([0.245, -0.335, -0.68]),
+        rotation: Object.freeze([-0.06, 0.16, -0.045]),
+      }),
+      kyx_breach_rocket_v1: Object.freeze({
+        scale: 0.52,
+        position: Object.freeze([0.25, -0.35, -0.79]),
+        rotation: Object.freeze([-0.055, 0.11, 0.018]),
+      }),
+      kyx_edge_v1: Object.freeze({
+        scale: 0.72,
+        position: Object.freeze([0.3, -0.45, -0.78]),
+        rotation: Object.freeze([0.45, 0.62, -0.08]),
+      }),
+    });
+
+    for (const [weaponId, expectedProfile] of Object.entries(
+      correctedProfiles,
+    )) {
+      const profile = KYX_AUTHORITY_WEAPON_PRESENTATION[
+        weaponId as keyof typeof correctedProfiles
+      ].firstPerson;
+      expect(profile.scale).toBe(expectedProfile.scale);
+      expect(profile.position).toEqual(expectedProfile.position);
+      expect(profile.rotation).toEqual(expectedProfile.rotation);
+
+      const model = createKyxWeaponPresentationModel(
+        weaponId,
+        'first_person',
+      );
+      model.group.updateMatrixWorld(true);
+      const bounds = new THREE.Box3().setFromObject(model.group);
+      expect(bounds.max.z).toBeLessThan(-0.18);
+    }
+  });
+
+  it('keeps the phase blade cyan without blowing its emissive core to white', () => {
+    const blade = createKyxWeaponPresentationModel(
+      'kyx_edge_v1',
+      'first_person',
+    );
+    const glow = blade.group.getObjectByName('KYX_EDGE1_ENERGY_BLADE')
+      ?.children.find((child) => (
+        (child as THREE.Mesh).material as THREE.Material | undefined
+      )?.name === 'KYX_EDGE1_BLADE_GLOW') as THREE.Mesh | undefined;
+    const core = blade.group.getObjectByName('KYX_EDGE1_ENERGY_BLADE')
+      ?.children.find((child) => (
+        (child as THREE.Mesh).material as THREE.Material | undefined
+      )?.name === 'KYX_EDGE1_BLADE_CORE') as THREE.Mesh | undefined;
+    expect(glow).toBeDefined();
+    expect(core).toBeDefined();
+    expect((glow?.material as THREE.MeshStandardMaterial).emissiveIntensity)
+      .toBe(0.65);
+    expect((core?.material as THREE.MeshStandardMaterial).emissiveIntensity)
+      .toBe(0.45);
+    expect((glow?.material as THREE.MeshStandardMaterial).color.getHex())
+      .toBe(0x2b747c);
+    expect((core?.material as THREE.MeshStandardMaterial).color.getHex())
+      .toBe(0x2b818b);
+  });
+
   it('keeps first-person contact rigs out of world presentation and fits the blade hand', () => {
     const firstPersonRifle = createKyxWeaponPresentationModel(
       'vertical_rifle_v1',

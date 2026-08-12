@@ -40,9 +40,12 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0xffca5c,
     tracer: 0xffe7a0,
     firstPerson: Object.freeze({
-      scale: 1,
-      position: Object.freeze([0.32, -0.3, -0.4] as const),
-      rotation: Object.freeze([-0.02, -0.015, -0.03] as const),
+      // Keep the compact silhouette fully in front of the camera. The former
+      // near-plane pose left only the emissive muzzle ring visible at common
+      // desktop aspect ratios, which read as a floating white circle.
+      scale: 0.74,
+      position: Object.freeze([0.245, -0.335, -0.68] as const),
+      rotation: Object.freeze([-0.06, 0.16, -0.045] as const),
       aim: Object.freeze({
         enabled: true,
         offset: Object.freeze([-0.31, 0.19, 0.08] as const),
@@ -124,9 +127,12 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0xff6042,
     tracer: 0xffa066,
     firstPerson: Object.freeze({
-      scale: 0.68,
-      position: Object.freeze([0.29, -0.32, -0.58] as const),
-      rotation: Object.freeze([-0.04, -0.02, 0.025] as const),
+      // The backblast bell used to sit only centimeters from the camera and
+      // dominate the entire lower-right quadrant. Preserve its heavy read at
+      // a bounded depth and slight three-quarter angle.
+      scale: 0.52,
+      position: Object.freeze([0.25, -0.35, -0.79] as const),
+      rotation: Object.freeze([-0.055, 0.11, 0.018] as const),
       aim: Object.freeze({
         enabled: true,
         offset: Object.freeze([-0.28, 0.21, 0.12] as const),
@@ -152,9 +158,12 @@ export const KYX_AUTHORITY_WEAPON_PRESENTATION = Object.freeze({
     accent: 0x58f4ff,
     tracer: 0xb6fbff,
     firstPerson: Object.freeze({
-      scale: 0.92,
-      position: Object.freeze([0.34, -0.36, -0.43] as const),
-      rotation: Object.freeze([-0.16, -0.12, -0.12] as const),
+      // Present the blade across the frame instead of pointing its long axis
+      // into the lens. This keeps the hilt attached to the visible hand and
+      // exposes a readable diagonal melee silhouette.
+      scale: 0.72,
+      position: Object.freeze([0.3, -0.45, -0.78] as const),
+      rotation: Object.freeze([0.45, 0.62, -0.08] as const),
       aim: Object.freeze({
         enabled: false,
         offset: Object.freeze([0, 0, 0] as const),
@@ -887,6 +896,11 @@ function buildLineRifle(
 function buildArcSidearm(materials: MaterialSet): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_K9_ARC_SIDEARM_VISUAL';
+  const sidearmAccent = materials.accent.clone();
+  sidearmAccent.name = 'KYX_K9_TACTICAL_ACCENT';
+  sidearmAccent.color.setHex(0xb57e2e);
+  sidearmAccent.emissive.setHex(0xffb24a);
+  sidearmAccent.emissiveIntensity = 0.65;
 
   const slide = new THREE.Group();
   slide.name = 'KYX_K9_RECIPROCATING_SLIDE';
@@ -896,14 +910,14 @@ function buildArcSidearm(materials: MaterialSet): BuiltWeapon {
     box(0.07, 0.018, 0.37, materials.metal, [0, 0.054, -0.01]),
     box(0.055, 0.025, 0.12, materials.armor, [0, -0.054, -0.1]),
   );
-  ventBank(slide, materials.accent, -0.1, 3, 0.052, -0.056, 0.01);
-  ventBank(slide, materials.accent, -0.1, 3, 0.052, 0.056, 0.01);
+  ventBank(slide, sidearmAccent, -0.1, 3, 0.052, -0.056, 0.01);
+  ventBank(slide, sidearmAccent, -0.1, 3, 0.052, 0.056, 0.01);
   visual.add(slide);
 
   visual.add(
     box(0.095, 0.085, 0.24, materials.armor, [0, 0.045, -0.01]),
     cylinderZ(0.026, 0.026, 0.2, materials.metal, [0, 0.12, -0.23]),
-    torusZ(0.042, 0.01, materials.accent, [0, 0.12, -0.335]),
+    torusZ(0.042, 0.01, sidearmAccent, [0, 0.12, -0.335]),
     box(0.07, 0.022, 0.095, materials.dark, [0, -0.005, 0.02]),
   );
 
@@ -923,7 +937,7 @@ function buildArcSidearm(materials: MaterialSet): BuiltWeapon {
       0.009,
       0.009,
       0.118,
-      materials.accent,
+      sidearmAccent,
       [Math.cos(angle) * 0.043, 0.062 + Math.sin(angle) * 0.043, 0.02],
       8,
     ));
@@ -935,7 +949,7 @@ function buildArcSidearm(materials: MaterialSet): BuiltWeapon {
   magazine.rotation.x = 0.34;
   magazine.add(
     box(0.085, 0.21, 0.09, materials.rubber, [0, -0.07, 0]),
-    box(0.035, 0.14, 0.03, materials.accent, [0, -0.055, 0.055]),
+    box(0.035, 0.14, 0.03, sidearmAccent, [0, -0.055, 0.055]),
     box(0.095, 0.028, 0.1, materials.metal, [0, -0.18, 0]),
   );
   visual.add(magazine);
@@ -962,7 +976,7 @@ function buildArcSidearm(materials: MaterialSet): BuiltWeapon {
   reviewCell.rotation.x = 0.3;
   reviewCell.add(
     box(0.052, 0.105, 0.052, materials.dark, [0, -0.025, 0]),
-    box(0.018, 0.072, 0.012, materials.accent, [0, -0.02, 0.032]),
+    box(0.018, 0.072, 0.012, sidearmAccent, [0, -0.02, 0.032]),
   );
   preserveWithReviewShell(reviewAction);
   preserveWithReviewShell(reviewCell);
@@ -1176,6 +1190,11 @@ function buildLongbowSniper(materials: MaterialSet): BuiltWeapon {
 function buildSiegeLauncher(materials: MaterialSet): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_BR6_SIEGE_TUBE_VISUAL';
+  const launcherAccent = materials.accent.clone();
+  launcherAccent.name = 'KYX_BR6_TACTICAL_ACCENT';
+  launcherAccent.color.setHex(0xa63d2d);
+  launcherAccent.emissive.setHex(0xff6042);
+  launcherAccent.emissiveIntensity = 0.55;
 
   visual.add(
     cylinderZ(0.12, 0.12, 0.9, materials.armor, [0, 0.11, -0.08], 12),
@@ -1191,7 +1210,7 @@ function buildSiegeLauncher(materials: MaterialSet): BuiltWeapon {
         0.11,
         -0.08,
       ]),
-      box(0.012, 0.1, 0.46, materials.accent, [
+      box(0.012, 0.1, 0.46, launcherAccent, [
         side * 0.15,
         0.11,
         -0.08,
@@ -1201,9 +1220,9 @@ function buildSiegeLauncher(materials: MaterialSet): BuiltWeapon {
 
   visual.add(
     cylinderZ(0.155, 0.13, 0.16, materials.dark, [0, 0.11, -0.58], 12),
-    torusZ(0.14, 0.02, materials.accent, [0, 0.11, -0.67], 8),
+    torusZ(0.14, 0.02, launcherAccent, [0, 0.11, -0.67], 8),
     cylinderZ(0.17, 0.14, 0.18, materials.metal, [0, 0.11, 0.46], 12),
-    torusZ(0.155, 0.018, materials.accent, [0, 0.11, 0.56], 8),
+    torusZ(0.155, 0.018, launcherAccent, [0, 0.11, 0.56], 8),
   );
   for (let index = 0; index < 8; index += 1) {
     const angle = index / 8 * Math.PI * 2;
@@ -1226,7 +1245,7 @@ function buildSiegeLauncher(materials: MaterialSet): BuiltWeapon {
   chamber.position.set(0, 0.11, -0.05);
   chamber.add(
     cylinderZ(0.135, 0.135, 0.22, materials.dark, [0, 0, 0], 10),
-    torusZ(0.115, 0.016, materials.accent, [0, 0, -0.12], 8),
+    torusZ(0.115, 0.016, launcherAccent, [0, 0, -0.12], 8),
   );
   visual.add(chamber);
   preserveWithReviewShell(chamber);
@@ -1265,6 +1284,18 @@ function buildPhaseSaber(materials: MaterialSet): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_EDGE1_PHASE_SABER_VISUAL';
 
+  const bladeGlow = materials.lens.clone();
+  bladeGlow.name = 'KYX_EDGE1_BLADE_GLOW';
+  bladeGlow.color.setHex(0x2b747c);
+  bladeGlow.emissive.setHex(0x21b7c5);
+  bladeGlow.emissiveIntensity = 0.65;
+  bladeGlow.opacity = 0.72;
+  const bladeCore = materials.accent.clone();
+  bladeCore.name = 'KYX_EDGE1_BLADE_CORE';
+  bladeCore.color.setHex(0x2b818b);
+  bladeCore.emissive.setHex(0x37dbe9);
+  bladeCore.emissiveIntensity = 0.45;
+
   const grip = new THREE.Group();
   grip.position.set(0, 0.02, 0.14);
   grip.add(
@@ -1296,13 +1327,13 @@ function buildPhaseSaber(materials: MaterialSet): BuiltWeapon {
   blade.name = 'KYX_EDGE1_ENERGY_BLADE';
   blade.position.set(0, 0.02, -0.16);
   blade.add(
-    box(0.075, 0.025, 0.76, materials.lens, [0, 0, -0.36]),
-    box(0.025, 0.052, 0.72, materials.accent, [0, 0, -0.34]),
+    box(0.075, 0.025, 0.76, bladeGlow, [0, 0, -0.36]),
+    box(0.025, 0.052, 0.72, bladeCore, [0, 0, -0.34]),
     box(0.11, 0.035, 0.11, materials.metal, [0, 0, -0.02]),
   );
   const tip = new THREE.Mesh(
     new THREE.ConeGeometry(0.055, 0.18, 4),
-    materials.lens,
+    bladeGlow,
   );
   tip.position.set(0, 0, -0.82);
   tip.rotation.x = -Math.PI / 2;
