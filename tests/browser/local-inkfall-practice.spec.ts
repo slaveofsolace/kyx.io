@@ -522,18 +522,6 @@ test.describe('local Relay Practice route', () => {
         window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities.slotIds ?? null
       ))).toEqual(contract.slotIds);
 
-      for (const [slotIndex, key] of ['KeyE', 'KeyF', 'KeyZ'].entries()) {
-        const before = await page.evaluate((index) => (
-          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
-            .acceptedActivationCounts[index] ?? -1
-        ), slotIndex);
-        await page.keyboard.press(key);
-        await expect.poll(async () => page.evaluate((index) => (
-          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
-            .acceptedActivationCounts[index] ?? -1
-        ), slotIndex), { timeout: 10_000 }).toBeGreaterThan(before);
-      }
-
       const beforeBlinkPosition = await page.evaluate(() => (
         window.__KYX_LOCAL_PRACTICE__?.getSnapshot().localAuthoritativePlayer
           .feetPosition ?? null
@@ -551,6 +539,20 @@ test.describe('local Relay Practice route', () => {
           ? 0
           : Math.hypot(current.x - origin.x, current.z - origin.z);
       }, beforeBlinkPosition), { timeout: 10_000 }).toBeGreaterThan(1_000);
+
+      // Verify Blink from the clean spawn state before throwable abilities can
+      // displace the player or place temporary collision volumes in its path.
+      for (const [slotIndex, key] of ['KeyE', 'KeyF', 'KeyZ'].entries()) {
+        const before = await page.evaluate((index) => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
+            .acceptedActivationCounts[index] ?? -1
+        ), slotIndex);
+        await page.keyboard.press(key);
+        await expect.poll(async () => page.evaluate((index) => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
+            .acceptedActivationCounts[index] ?? -1
+        ), slotIndex), { timeout: 10_000 }).toBeGreaterThan(before);
+      }
     }
   });
 });
