@@ -4,7 +4,7 @@ import type { OriginalArenaAuthorityMapBinding } from '../authority/originalAren
 import { hashPhysicsFixture, type FixtureSolidV1, type PhysicsFixtureV1 } from '../physics';
 
 export const ORIGINAL_ARENA_VISUAL_VERSION =
-  'original_arena_visual_continuity_v2' as const;
+  'original_arena_visual_continuity_v3' as const;
 
 export interface OriginalArenaVisualContinuity {
   readonly group: THREE.Group;
@@ -23,6 +23,7 @@ const SCALE = new THREE.Vector3();
 const EULER = new THREE.Euler(0, 0, 0, 'YXZ');
 const QUATERNION = new THREE.Quaternion();
 const MATRIX = new THREE.Matrix4();
+const AXIS_Y = new THREE.Vector3(0, 1, 0);
 
 function markRenderOnly(object: THREE.Object3D, role: string): void {
   object.userData.presentationRole = role;
@@ -297,7 +298,38 @@ function addLandmark(
   ring.rotation.x = Math.PI / 2;
   markRenderOnly(ring, 'center_orientation_signal');
   parent.add(ring);
-  return 2;
+
+  const orbitalRing = new THREE.Mesh(
+    new THREE.TorusGeometry(switchyard ? 1.55 : 2.45, 0.08, 8, 32),
+    material(`${binding.mapId.toUpperCase()}_ORBITAL_RING`, accent, accent, 0.72),
+  );
+  orbitalRing.name = `${binding.mapId.toUpperCase()}_CENTER_ORBITAL_RING`;
+  orbitalRing.position.set(0, switchyard ? 7.8 : 8.2, 0);
+  orbitalRing.rotation.y = Math.PI / 2;
+  markRenderOnly(orbitalRing, 'center_orientation_signal');
+  parent.add(orbitalRing);
+
+  const finCount = switchyard ? 4 : 6;
+  const fins = new THREE.InstancedMesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    material(`${binding.mapId.toUpperCase()}_LANDMARK_FIN`, accent, accent, 0.38),
+    finCount,
+  );
+  fins.name = `${binding.mapId.toUpperCase()}_LANDMARK_FINS`;
+  for (let index = 0; index < finCount; index += 1) {
+    const angle = index * Math.PI * 2 / finCount;
+    QUATERNION.setFromAxisAngle(AXIS_Y, angle);
+    MATRIX.compose(
+      POSITION.set(Math.cos(angle) * 2.25, switchyard ? 6.7 : 6.5, Math.sin(angle) * 2.25),
+      QUATERNION,
+      SCALE.set(switchyard ? 0.16 : 0.2, switchyard ? 2.4 : 3.8, 0.22),
+    );
+    fins.setMatrixAt(index, MATRIX);
+  }
+  fins.instanceMatrix.needsUpdate = true;
+  markRenderOnly(fins, 'center_landmark_fin');
+  parent.add(fins);
+  return 4;
 }
 
 function addLighting(
@@ -350,7 +382,7 @@ export function createOriginalArenaVisualContinuity(
     throw new Error('ORIGINAL_ARENA_VISUAL_AUTHORITY_BINDING_MISMATCH');
   }
   const group = new THREE.Group();
-  group.name = `${binding.mapId.toUpperCase()}_VISUAL_CONTINUITY_V1`;
+  group.name = `${binding.mapId.toUpperCase()}_VISUAL_CONTINUITY_V3`;
   const colliderVisuals = createColliderVisuals(fixture, binding.mapId, group);
   const inlayCount = addRouteInlays(binding.mapId, group);
   const landmarkCount = addLandmark(binding, group);

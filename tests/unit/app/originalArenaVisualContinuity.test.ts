@@ -56,6 +56,12 @@ describe('original arena visual continuity', () => {
         visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_NAVIGATION_SIGNALS`),
       ).toBeDefined();
       expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_CENTER_ORBITAL_RING`),
+      ).toBeDefined();
+      expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_LANDMARK_FINS`),
+      ).toBeDefined();
+      expect(
         visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_ROUTE_SIGNAL_INLAYS`)
           ?.userData.routeMeaning,
       ).toBe(routeMeaning);
