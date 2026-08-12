@@ -3,6 +3,7 @@ import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 interface OnlineSnapshot {
   readonly roomCode: string;
   readonly connection: string;
+  readonly playerId: string | null;
   readonly remotePlayers: number;
   readonly commandsGenerated: number;
   readonly resumeSuccesses: number;
@@ -43,12 +44,15 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
   browser,
   page,
 }) => {
+  test.setTimeout(180_000);
   const extraContexts: BrowserContext[] = [];
   const pages: Page[] = [page];
   try {
     await page.goto('/online?mode=create');
     const creator = await waitForJoined(page);
     expect(creator.roomCode).toMatch(/^KYX-[A-Z0-9]{6}$/u);
+    expect(creator.remotePlayers).toBe(7);
+    expect(creator.playerId).toBe('player.relay.slot.01');
 
     const joinOne = async (): Promise<Page> => {
       const context = await browser.newContext({ viewport: { width: 960, height: 640 } });
@@ -61,10 +65,10 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     };
 
     await joinOne();
-    await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(1);
+    await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(7);
 
     await Promise.all([joinOne(), joinOne()]);
-    await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(3);
+    await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(7);
 
     await Promise.all([joinOne(), joinOne(), joinOne(), joinOne()]);
     await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(7);
@@ -72,6 +76,33 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
       await expect.poll(async () => (await snapshot(clientPage))?.remotePlayers ?? -1)
         .toBe(7);
     }));
+    const joinedPlayerIds = await Promise.all(pages.map(async (clientPage) => (
+      (await waitForJoined(clientPage)).playerId
+    )));
+    expect([...joinedPlayerIds].sort()).toEqual([
+      'player.relay.slot.01',
+      'player.relay.slot.02',
+      'player.relay.slot.03',
+      'player.relay.slot.04',
+      'player.relay.slot.05',
+      'player.relay.slot.06',
+      'player.relay.slot.07',
+      'player.relay.slot.08',
+    ]);
+
+    // Eight simultaneous software-rendered WebGL pages are required only for
+    // the population/takeover proof. Release seven renderers before the
+    // movement/reconciliation sequence; the authority room retains all eight
+    // stable player slots and refills disconnected human slots with bots.
+    await Promise.all(pages.slice(1).map(async (clientPage) => {
+      await clientPage.close({ runBeforeUnload: false });
+    }));
+    for (const context of extraContexts) await context.close();
+    extraContexts.length = 0;
+    pages.splice(1);
+    await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1, {
+      timeout: 20_000,
+    }).toBe(7);
 
     const before = await waitForJoined(page);
     await page.keyboard.down('KeyW');
@@ -177,11 +208,12 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
       .toBe(false);
 
     const beforeResume = await waitForJoined(page);
-    await page.getByTestId('online-resume').click();
+    await page.reload({ waitUntil: 'domcontentloaded' });
     await expect.poll(async () => (await snapshot(page))?.resumeSuccesses ?? 0, {
       timeout: 20_000,
     }).toBeGreaterThan(beforeResume.resumeSuccesses);
-    await waitForJoined(page);
+    const resumed = await waitForJoined(page);
+    expect(resumed.playerId).toBe(beforeResume.playerId);
     await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(7);
   } finally {
     await Promise.all(extraContexts.map((context) => context.close()));

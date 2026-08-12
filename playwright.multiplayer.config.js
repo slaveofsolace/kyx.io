@@ -6,6 +6,7 @@ const authorityPort = 8787;
 const webOrigin = `http://${webHost}:${webPort}`;
 const authorityOrigin = `http://${webHost}:${authorityPort}`;
 const node = `"${process.execPath}"`;
+const executablePath = process.env.KYX_PLAYWRIGHT_EXECUTABLE_PATH?.trim();
 
 export default defineConfig({
   testDir: './tests/multiplayer',
@@ -19,6 +20,7 @@ export default defineConfig({
   outputDir: './node_modules/.cache/playwright-multiplayer-results',
   use: {
     baseURL: webOrigin,
+    ...(executablePath ? { launchOptions: { executablePath } } : {}),
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
