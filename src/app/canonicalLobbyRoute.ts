@@ -1,4 +1,5 @@
 import { UserAccount } from '../core/UserAccount.js';
+import { applyAccessibilityPreferences } from '../ui/AccessibilityPreferences.js';
 import { MenuUI } from '../ui/MainMenu.js';
 import {
   defaultOnlineProfile,
@@ -63,6 +64,9 @@ export function mountCanonicalLobbyRoute(
 
   const primaryPlay = canonicalLobbyPrimaryPlay(onlineAvailability, window.location.search);
   const menu = new MenuUI({ routeRelayPractice: false });
+  menu.onSettingsSaved = (
+    settings: Parameters<typeof applyAccessibilityPreferences>[0],
+  ) => applyAccessibilityPreferences(settings);
   menu.setUsername(UserAccount.getDisplayName());
   menu.onPlay = () => window.location.assign(primaryPlay.href);
   menu.showMain();

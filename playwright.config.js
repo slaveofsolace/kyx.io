@@ -50,5 +50,11 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: false,
     timeout: 30_000,
+    env: {
+      ...process.env,
+      // The broad browser suite owns only the local authority Practice path.
+      // Multiplayer starts its Worker explicitly in playwright.multiplayer.config.js.
+      VITE_KYX_AUTHORITY_ORIGIN: '',
+    },
   },
 });

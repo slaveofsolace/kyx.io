@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 
 test.setTimeout(60_000);
 
 const rev4EvidenceDirectory = resolve(
   process.env.KYX_REV4_EVIDENCE_DIR
-    ?? 'evidence/2026-07-27/g5-inkfall-rev4-runtime-candidate',
+    ?? resolve(tmpdir(), 'kyx-playwright-press-hall'),
 );
 
 test('retired Press Hall inspection stays off the player-facing Relay menu', async ({
@@ -17,9 +18,9 @@ test('retired Press Hall inspection stays off the player-facing Relay menu', asy
   await expect(inspectionLink).toHaveCount(0);
   if (testInfo.project.name === 'chromium-mobile-unsupported') {
     await expect(page.getByRole('heading', { name: 'DESKTOP REQUIRED' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Enter Relay' })).toHaveCount(0);
   } else {
-    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toHaveCount(1);
+    await expect(page.getByRole('button', { name: 'Enter Relay' })).toHaveCount(1);
   }
   await expect(page.locator('body')).not.toHaveAttribute(
     'data-launch-support',

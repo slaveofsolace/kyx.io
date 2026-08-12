@@ -46,17 +46,20 @@ async function installPointerLockShim(page: Page): Promise<void> {
 async function enterRelayPractice(page: Page): Promise<void> {
   await Promise.all([
     page.waitForURL('**/practice'),
-    page.getByRole('button', { name: 'Enter Relay practice' }).click(),
+    page.getByRole('button', { name: 'Enter Relay' }).click(),
   ]);
   await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeVisible();
-  await page.getByRole('button', { name: 'Enter arena' }).click();
+  const enterArena = page.getByRole('button', { name: 'Enter arena' });
+  await enterArena.focus();
+  await expect(enterArena).toBeFocused();
+  await page.keyboard.press('Enter');
   await expect(page.locator('body')).toHaveAttribute('data-local-practice-status', 'ready');
 }
 
 async function waitForMenu(page: Page, search = ''): Promise<void> {
   await page.goto(`/${search}`, { waitUntil: 'networkidle' });
   await expect(page.locator('#connect-screen')).toHaveClass(/hidden/u, { timeout: 15_000 });
-  await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Enter Relay' })).toBeVisible();
 }
 
 async function gameplayLayout(page: Page) {

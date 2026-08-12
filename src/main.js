@@ -2,6 +2,8 @@ import './style.css';
 import './ui/kyx-cutline.css';
 import './ui/map-library.css';
 import './ui/local-inkfall-practice.css';
+import { GameSettings } from './core/GameSettings.js';
+import { applyAccessibilityPreferences } from './ui/AccessibilityPreferences.js';
 import { PRODUCT_CONFIG, supportsDesktopLaunch } from './config/productConfig.js';
 import { resolveG7UiCandidate } from './config/g7UiCandidate.ts';
 import {
@@ -19,6 +21,9 @@ import {
 import {
   resolveInkfallRev3ReviewRequest,
 } from './app/inkfallRev3ReviewSelection.ts';
+
+GameSettings.load();
+applyAccessibilityPreferences(GameSettings.snapshot());
 
 const canvas = document.getElementById('game-canvas');
 const g7UiCandidate = resolveG7UiCandidate(window.location.search);

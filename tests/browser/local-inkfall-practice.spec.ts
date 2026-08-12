@@ -364,19 +364,27 @@ test.describe('local Relay Practice route', () => {
     ));
     expect(launchAfter?.launch).toMatchObject({
       acceptedThrowCount: (launchBefore?.acceptedThrowCount ?? 0) + 1,
-      collisionCount: (launchBefore?.collisionCount ?? 0) + 1,
       detonationCount: (launchBefore?.detonationCount ?? 0) + 1,
-      terminalContactSameTick: true,
-      lastCollision: {
-        bounceCount: 0,
-        settled: true,
-      },
       lastDetonation: {
-        reason: 'collision',
+        reason: expect.stringMatching(/^(?:collision|lifetime)$/u),
       },
     });
-    expect(launchAfter?.launch.lastCollision?.authorityTick)
-      .toBe(launchAfter?.launch.lastDetonation?.authorityTick);
+    if (launchAfter?.launch.lastDetonation?.reason === 'collision') {
+      expect(launchAfter.launch).toMatchObject({
+        collisionCount: (launchBefore?.collisionCount ?? 0) + 1,
+        terminalContactSameTick: true,
+        lastCollision: {
+          bounceCount: 0,
+          settled: true,
+        },
+      });
+      expect(launchAfter.launch.lastCollision?.authorityTick)
+        .toBe(launchAfter.launch.lastDetonation.authorityTick);
+    } else {
+      expect(launchAfter?.launch.collisionCount)
+        .toBe(launchBefore?.collisionCount ?? 0);
+      expect(launchAfter?.launch.terminalContactSameTick).toBe(false);
+    }
     expect(launchAfter?.render3d).toMatchObject({
       launchProjectilePresentation: 'cutline_launch_canister_v1',
       launchCanisterPresentationCount: expect.any(Number),

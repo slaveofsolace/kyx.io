@@ -49,9 +49,15 @@ test('read-only renderer diagnostics stay development-only and launch-gated', as
     await expect(page.locator('body')).toHaveAttribute('data-launch-support', 'desktop-required');
     await expect(canvas).not.toHaveAttribute('data-kyx-dev-metrics', /.+/);
   } else {
-    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
+    await expect(page.getByRole('button', { name: 'Enter Relay' })).toBeVisible({
       timeout: 15_000,
     });
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-launch-support',
+      'canonical-authority-lobby',
+    );
+    await expect(canvas).not.toHaveAttribute('data-kyx-dev-metrics', /.+/);
+    await page.goto('/?movementDriver=flat_run', { waitUntil: 'networkidle' });
     await expect.poll(
       async () => await canvas.getAttribute('data-kyx-dev-metrics'),
       { timeout: 10_000 },
