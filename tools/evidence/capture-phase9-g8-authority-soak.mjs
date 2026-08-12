@@ -8,7 +8,7 @@ const evidenceArgument = process.argv.find((argument) => argument.startsWith('--
 const evidenceDirectory = path.resolve(
   projectRoot,
   evidenceArgument?.slice('--evidence-dir='.length)
-    ?? 'evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak',
+    ?? 'evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2',
 );
 const testArguments = [
   'node_modules/vitest/vitest.mjs',

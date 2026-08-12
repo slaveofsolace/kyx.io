@@ -691,16 +691,18 @@ async function stageRelayCenterlineCombatPair(
   ]);
   await new Promise((resolve) => setTimeout(resolve, 180));
   acknowledgePopulation(population);
+  const shooterSide = westPosition.y <= eastPosition.y ? 'west' : 'east';
   return Object.freeze({
     checkpoints,
     westPosition,
     eastPosition,
     separationMillimeters,
-    // Relay's integer KCC can settle the mirrored capsules a few millimeters
-    // apart on the same authored floor. Use the east combatant as the shooter;
-    // its eye-to-west-target vertical margin remains above the retained 90 mm
-    // live-hitscan safety requirement without changing simulation thresholds.
-    verticalMarginMillimeters: westPosition.y + 1_800 - (eastPosition.y + 1_700),
+    // Relay's integer KCC can settle either mirrored capsule a few millimeters
+    // higher on the same authored floor. Select the lower eye as the shooter so
+    // the live ray retains the 90 mm vertical safety requirement in either
+    // deterministic settlement without changing simulation thresholds.
+    shooterSide,
+    verticalMarginMillimeters: 100 + Math.abs(westPosition.y - eastPosition.y),
     westYawMilliDegrees: westYaw,
     eastYawMilliDegrees: eastYaw,
   });
@@ -777,9 +779,13 @@ describe('canonical Relay real Worker full-occupancy authority soak', () => {
     expect(combatSetup.verticalMarginMillimeters)
       .toBeGreaterThanOrEqual(VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.minimumVerticalMarginMillimeters);
 
-    const shooterCombatant = eastCombatant;
-    const targetCombatant = westCombatant;
-    const shooterIndex = 1;
+    const shooterCombatant = combatSetup.shooterSide === 'west'
+      ? westCombatant
+      : eastCombatant;
+    const targetCombatant = combatSetup.shooterSide === 'west'
+      ? eastCombatant
+      : westCombatant;
+    const shooterIndex = combatSetup.shooterSide === 'west' ? 0 : 1;
     const reliableStarts = clients.map(({ probe }) => probe.messages.length);
     const snapshotStarts = clients.map(({ probe }) => probe.messages.length);
     let killEvent: ReliableEvent | null = null;

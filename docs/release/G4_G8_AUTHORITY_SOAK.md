@@ -35,7 +35,7 @@ node tools/evidence/verify-phase9-g8-authority-soak.mjs
 The capture defaults to:
 
 ```text
-evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak
+evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2
 ```
 
 Pass `--evidence-dir=<path>` to both the capture and verifier to use another
