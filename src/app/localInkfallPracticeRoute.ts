@@ -16,7 +16,7 @@ import { RELAY_AUTHORITY_COMPATIBILITY } from './relayVisualContinuity';
 import { AudioManager } from '../core/AudioManager.js';
 import { GameSettings } from '../core/GameSettings.js';
 import { Loadout } from '../core/Loadout.js';
-import { combatPresetAuthorityWeaponSlots } from '../loadouts';
+import { CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS } from '../loadouts';
 import {
   clampMilliDegrees,
   MOVEMENT_PITCH_MAX_MILLI_DEGREES,
@@ -294,7 +294,7 @@ export async function mountLocalInkfallPracticeRoute(
   canvas.dataset.pointerLock = 'inactive';
 
   const combatPreset = Loadout.getCombatPreset();
-  const allowedWeaponSlots = combatPresetAuthorityWeaponSlots(combatPreset);
+  const allowedWeaponSlots = CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS;
   const abilityUiSlots = Loadout.getAbilityUiSlots() as readonly AbilityLoadoutUiSlot[];
   const weaponControlLabel = allowedWeaponSlots
     .map((slot) => {

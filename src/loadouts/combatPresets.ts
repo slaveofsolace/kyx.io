@@ -19,6 +19,15 @@ export type CombatHelmetVariantId = CombatPresetId;
 export type CombatPresetWeaponFamily = 'rifle' | 'shotgun' | 'sniper' | 'melee';
 export type CombatPresetAuthorityWeaponSlot = 0 | 1 | 2 | 3 | 4 | 5;
 
+export const CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS = Object.freeze([
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+] as const satisfies readonly CombatPresetAuthorityWeaponSlot[]);
+
 export interface CombatPresetV1 {
   readonly schemaVersion: typeof COMBAT_PRESET_SCHEMA_VERSION;
   readonly id: CombatPresetId;

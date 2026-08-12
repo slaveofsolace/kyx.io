@@ -24,7 +24,7 @@ import {
 } from '../src/authority';
 import { hashRulesetContent, requireRuleset } from '../src/content';
 import {
-  combatPresetAuthorityWeaponSlots,
+  CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS,
   combatPresetById,
 } from '../src/loadouts';
 import {
@@ -1129,14 +1129,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           safeSocketSend(webSocket, errorMessage('JOIN_REQUIRED'));
           return;
         }
-        const rejectedWeaponSlot = this.rejectedPresetWeaponSlot(
-          rate.attachment.playerId,
-          clientMessage,
-        );
+        const rejectedWeaponSlot = this.rejectedCanonicalWeaponSlot(clientMessage);
         if (rejectedWeaponSlot !== null) {
           safeSocketSend(webSocket, errorMessage(
             'INPUT_REJECTED',
-            `${rejectedWeaponSlot.sequence}:weapon_slot_not_in_preset`,
+            `${rejectedWeaponSlot.sequence}:weapon_slot_not_in_canonical_armory`,
           ));
           return;
         }
@@ -3144,15 +3141,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     }
   }
 
-  private rejectedPresetWeaponSlot(
-    playerId: string,
+  private rejectedCanonicalWeaponSlot(
     message: InputBatchMessage,
   ): { readonly sequence: number; readonly slot: number } | null {
-    const selection = this.persistedPlayerLoadout(playerId)
-      ?? this.requireAuthoritativeLoadout();
-    const allowedSlots = new Set<number>(combatPresetAuthorityWeaponSlots(
-      combatPresetById(selection.presetId),
-    ));
+    const allowedSlots = new Set<number>(CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS);
     for (const command of message.commands) {
       if (
         command.selectedSlot !== undefined

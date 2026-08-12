@@ -15,6 +15,7 @@ import {
 import { createLocalInkfallPracticePresentation } from '../../../src/app/localInkfallPracticePresentation';
 import { createAuthorityScoreboardRows } from '../../../src/app/authorityHudProjection';
 import {
+  CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS,
   COMBAT_PRESETS,
   combatPresetAbilityLoadout,
   combatPresetAuthorityWeaponSlots,
@@ -311,7 +312,7 @@ describe('browser-local Relay Practice authority host', () => {
     });
   });
 
-  it('applies every role weapon policy and rejects slots owned by another role', async () => {
+  it('keeps each role opening weapon while exposing the full canonical six-weapon armory', async () => {
     for (const preset of COMBAT_PRESETS) {
       const practice = await LocalInkfallPracticeHost.create({
         botCount: 1,
@@ -327,7 +328,7 @@ describe('browser-local Relay Practice authority host', () => {
       expect(initialLocal?.combat?.armory.selectedSlot)
         .toBe(preset.authorityPrimaryWeaponSlot);
 
-      const allowedSlots = combatPresetAuthorityWeaponSlots(preset);
+      const allowedSlots = CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS;
       const input = {
         moveX: 0,
         moveY: 0,
@@ -344,10 +345,10 @@ describe('browser-local Relay Practice authority host', () => {
         )?.combat?.armory.selectedSlot).toBe(selectedSlot);
       }
 
-      const allowedSlotSet = new Set<number>(allowedSlots);
-      const rejectedSlot = [0, 1, 2, 3, 4, 5].find((slot) => !allowedSlotSet.has(slot));
-      if (rejectedSlot === undefined) throw new Error('preset unexpectedly allows every slot');
-      expect(() => practice.step({ ...input, selectedSlot: rejectedSlot }))
+      expect(combatPresetAuthorityWeaponSlots(preset)).toContain(
+        preset.authorityPrimaryWeaponSlot,
+      );
+      expect(() => practice.step({ ...input, selectedSlot: 6 }))
         .toThrow('LOCAL_INKFALL_PRACTICE_WEAPON_SLOT_NOT_IN_PRESET');
     }
   });

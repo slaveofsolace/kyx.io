@@ -12,7 +12,7 @@ import {
 } from '../abilities/abilityLoadout';
 import { Loadout } from '../core/Loadout.js';
 import { UserAccount } from '../core/UserAccount.js';
-import { combatPresetAuthorityWeaponSlots } from '../loadouts';
+import { CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS } from '../loadouts';
 import {
   applyCombatPresentationReliableEvent,
   applyCombatPresentationWireHydration,
@@ -815,7 +815,7 @@ async function mountSession(
   body.dataset.onlineHud = 'arena-visor-v1';
   const selectedCombatPreset = Loadout.getCombatPreset();
   const allowedAuthorityWeaponSlots = new Set<number>(
-    combatPresetAuthorityWeaponSlots(selectedCombatPreset),
+    CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS,
   );
   body.dataset.combatPresetId = selectedCombatPreset.id;
   body.dataset.helmetVariantId = selectedCombatPreset.helmetVariantId;

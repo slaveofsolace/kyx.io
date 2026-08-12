@@ -225,7 +225,7 @@ test.describe('local Relay Practice route', () => {
     expect(movementStart?.loadout).toMatchObject({
       combatPresetId: 'assault',
       primaryWeaponSlot: 0,
-      allowedWeaponSlots: [0, 1, 5],
+      allowedWeaponSlots: [0, 1, 2, 3, 4, 5],
       authoritativeSelectedWeaponSlot: 0,
       authoritativeSelectedWeaponId: 'vertical_rifle_v1',
     });
@@ -235,6 +235,27 @@ test.describe('local Relay Practice route', () => {
     ))).toMatchObject({
       authoritativeSelectedWeaponSlot: 1,
       authoritativeSelectedWeaponId: 'kyx_sidearm_v1',
+    });
+    await page.keyboard.press('Digit3');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+    ))).toMatchObject({
+      authoritativeSelectedWeaponSlot: 2,
+      authoritativeSelectedWeaponId: 'kyx_scattergun_v1',
+    });
+    await page.keyboard.press('Digit4');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+    ))).toMatchObject({
+      authoritativeSelectedWeaponSlot: 3,
+      authoritativeSelectedWeaponId: 'kyx_longshot_v1',
+    });
+    await page.keyboard.press('Digit5');
+    await expect.poll(async () => page.evaluate(() => (
+      window.__KYX_LOCAL_PRACTICE__?.getSnapshot().loadout ?? null
+    ))).toMatchObject({
+      authoritativeSelectedWeaponSlot: 4,
+      authoritativeSelectedWeaponId: 'kyx_breach_rocket_v1',
     });
     await page.keyboard.press('Digit6');
     await expect.poll(async () => page.evaluate(() => (

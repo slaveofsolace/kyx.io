@@ -10,6 +10,7 @@ import {
 import { KYX_WEAPON_PROFILES } from '../../../src/authority/combat/weaponFoundation';
 import { requireRuleset } from '../../../src/content';
 import {
+  CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS,
   COMBAT_PRESETS,
   combatPresetAbilityLoadout,
   combatPresetAuthorityWeaponSlots,
@@ -61,6 +62,8 @@ describe('browser-first combat presets', () => {
     expect(new Set(COMBAT_PRESETS.flatMap((preset) => (
       combatPresetAuthorityWeaponSlots(preset)
     )))).toEqual(new Set([0, 1, 2, 3, 4, 5]));
+    expect(CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(Object.isFrozen(CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS)).toBe(true);
   });
 
   it('accepts every exact preset request and rejects cross-preset hybrids', () => {

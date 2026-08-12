@@ -7,8 +7,8 @@ import {
 } from '../net';
 import {
   DEFAULT_COMBAT_PRESET,
+  CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS,
   combatPresetById,
-  combatPresetAuthorityWeaponSlots,
   type CombatPresetId,
   type CombatPresetV1,
 } from '../loadouts';
@@ -136,7 +136,7 @@ export class LocalInkfallPracticeHost {
     this.authority = authority;
     this.botPlayerIds = Object.freeze([...botPlayerIds]);
     this.localPrimaryWeaponSlot = combatPreset.authorityPrimaryWeaponSlot;
-    this.allowedLocalWeaponSlots = new Set(combatPresetAuthorityWeaponSlots(combatPreset));
+    this.allowedLocalWeaponSlots = new Set(CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS);
     this.localSelectedWeaponSlot = combatPreset.authorityPrimaryWeaponSlot;
     for (const playerId of [this.localPlayerId, ...this.botPlayerIds]) {
       this.connectionIds.set(playerId, `connection.${playerId}`);

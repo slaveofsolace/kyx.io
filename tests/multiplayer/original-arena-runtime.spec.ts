@@ -4,6 +4,7 @@ interface ArenaSnapshot {
   readonly connection: string;
   readonly remotePlayers: number;
   readonly commandsGenerated: number;
+  readonly inputBridge: Readonly<{ readonly selectedWeaponSlot: number }>;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly roomVerification?: Readonly<{
     roomProfile: string;
@@ -72,6 +73,16 @@ test('Switchyard and Crownpoint mount their exact authority worlds and player-vi
     const beforeCommands = initial?.commandsGenerated ?? 0;
     if (beforePosition === null || beforePosition === undefined) {
       throw new Error(`${arena.mapId} did not expose an authoritative spawn position`);
+    }
+    const weaponButtons = page.locator('[data-testid^="online-weapon-slot-"]');
+    await expect(weaponButtons).toHaveCount(6);
+    for (let slot = 0; slot < 6; slot += 1) {
+      const button = page.getByTestId(`online-weapon-slot-${slot}`);
+      await expect(button).toBeEnabled();
+      await page.keyboard.press(`Digit${slot + 1}`);
+      await expect.poll(async () => (
+        await snapshot(page)
+      )?.inputBridge.selectedWeaponSlot ?? -1).toBe(slot);
     }
     await page.keyboard.down('KeyW');
     await expect.poll(async () => (await snapshot(page))?.commandsGenerated ?? 0, {

@@ -562,12 +562,39 @@ describe('P5.8C authoritative Worker loadoutRequest path', () => {
         selectedSlot: 3,
       }],
     });
+    const crossRoleSelected = await waitForMessage(
+      probe,
+      (message) => (
+        (message.type === 'fullSnapshot' || message.type === 'deltaSnapshot')
+        && (message.combat?.players.some((player) => (
+          player.playerId === joined.playerId && player.selectedWeaponSlot === 3
+        )) ?? false)
+      ),
+      'Breacher cross-role canonical armory selection',
+    );
+    sendClient(probe, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'inputBatch',
+      commands: [{
+        type: 'input',
+        sequence: 2,
+        clientTick: 'serverTick' in crossRoleSelected ? crossRoleSelected.serverTick : 0,
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 6,
+      }],
+    });
     expect(await waitForType(
       probe,
       'error',
       ({ code, detail }) => (
         code === 'INPUT_REJECTED'
-        && detail === '1:weapon_slot_not_in_preset'
+        && detail === '2:weapon_slot_not_in_canonical_armory'
       ),
     )).toMatchObject({ code: 'INPUT_REJECTED' });
   });
