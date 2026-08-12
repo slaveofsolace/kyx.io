@@ -54,6 +54,7 @@ import {
   RELAY_DISPLAY_NAME,
   RELAY_LEGACY_AUTHORITY_COMPATIBILITY,
 } from './relayVisualContinuity';
+import { createOriginalArenaVisualContinuity } from './originalArenaVisualContinuity';
 import {
   combatAvatarArmorType,
   type CombatAvatarArmorTypeId,
@@ -65,6 +66,7 @@ import {
 import {
   ONLINE_INKFALL_REV5_MAP_BINDING,
   type OnlineAuthorityMapBinding,
+  type OnlineOriginalArenaMapBinding,
   type OnlineInkfallRevision4MapBinding,
   type OnlineInkfallRevision5MapBinding,
 } from './onlineAuthorityProfiles';
@@ -99,8 +101,9 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly presentationMode:
     | 'review_glb'
     | 'procedural_authority_containment'
-    | 'relay_visual_candidate';
-  readonly presentationDisplayName: typeof RELAY_DISPLAY_NAME;
+    | 'relay_visual_candidate'
+    | 'original_arena_visual_v1';
+  readonly presentationDisplayName: string;
   readonly authorityCompatibility: string;
   readonly presentationSha256: string | null;
   readonly authorityFixtureHash: string;
@@ -230,7 +233,9 @@ interface LoadedRev5Visual {
   readonly presentationMode:
     | 'review_glb'
     | 'procedural_authority_containment'
-    | 'relay_visual_candidate';
+    | 'relay_visual_candidate'
+    | 'original_arena_visual_v1';
+  readonly displayName: string;
   readonly presentationSha256: string | null;
 }
 
@@ -247,6 +252,28 @@ function createRelayLoadedVisual(fixture: PhysicsFixtureV1): LoadedRev5Visual {
     meshCount: relay.meshCount,
     containmentMeshCount: 0,
     presentationMode: 'relay_visual_candidate',
+    displayName: RELAY_DISPLAY_NAME,
+    presentationSha256: null,
+  });
+}
+
+function createOriginalArenaLoadedVisual(
+  mapBinding: OnlineOriginalArenaMapBinding,
+  fixture: PhysicsFixtureV1,
+): LoadedRev5Visual {
+  const arena = createOriginalArenaVisualContinuity(mapBinding, fixture);
+  const containment = new THREE.Group();
+  containment.name = `${mapBinding.mapId.toUpperCase()}_EMPTY_LEGACY_CONTAINMENT_SLOT`;
+  containment.userData.presentationRole = 'empty_compatibility_slot';
+  containment.userData.renderMeshesMayBeAuthority = false;
+  containment.userData.noHit = true;
+  return Object.freeze({
+    art: arena.group,
+    containment,
+    meshCount: arena.meshCount,
+    containmentMeshCount: 0,
+    presentationMode: 'original_arena_visual_v1',
+    displayName: arena.displayName,
     presentationSha256: null,
   });
 }
@@ -338,6 +365,7 @@ function loadReleaseRev5Visual(
     meshCount: relay.meshCount,
     containmentMeshCount: 0,
     presentationMode: 'relay_visual_candidate',
+    displayName: RELAY_DISPLAY_NAME,
     presentationSha256: null,
   });
 }
@@ -346,17 +374,19 @@ async function loadRev5Visual(
   mapBinding: OnlineAuthorityMapBinding,
   presentationFixture?: PhysicsFixtureV1,
 ): Promise<LoadedRev5Visual> {
-  // Relay is the sole player-facing presentation. The rejected Foundry GLB
-  // remains preserved as source/evidence, but is not loaded or packaged in
-  // development, staging, or release builds.
   if (presentationFixture !== undefined) {
-    return createRelayLoadedVisual(presentationFixture);
+    if (mapBinding.mapId === 'relay') {
+      return createRelayLoadedVisual(presentationFixture);
+    }
+    if (mapBinding.mapId === 'switchyard' || mapBinding.mapId === 'crownpoint') {
+      return createOriginalArenaLoadedVisual(mapBinding, presentationFixture);
+    }
   }
   if (mapBinding.mapId === 'relay') {
     throw new Error('ONLINE_RELAY_PRESENTATION_FIXTURE_REQUIRED');
   }
   if (mapBinding.mapRevision !== 3 && mapBinding.mapRevision !== 4) {
-    throw new Error('ONLINE_RELAY_VISUAL_PROFILE_UNSUPPORTED');
+    throw new Error('ONLINE_AUTHORITY_VISUAL_PROFILE_UNSUPPORTED');
   }
   return loadReleaseRev5Visual(mapBinding);
 }
@@ -1499,7 +1529,7 @@ export async function createOnlineAuthorityThreeRuntime(
       mapReference: presentationIdentity.mapReference,
       presentationReference: presentationIdentity.presentationReference,
       presentationMode: loadedVisual.presentationMode,
-      presentationDisplayName: RELAY_DISPLAY_NAME,
+      presentationDisplayName: loadedVisual.displayName,
       authorityCompatibility: presentationIdentity.authorityCompatibility,
       presentationSha256: loadedVisual.presentationSha256,
       authorityFixtureHash: presentationIdentity.fixtureHash,

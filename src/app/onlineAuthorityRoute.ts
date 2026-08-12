@@ -80,12 +80,15 @@ import {
   type OnlineAuthorityThreeRuntime,
 } from './onlineAuthorityThreeRuntime';
 import {
+  ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
   ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+  ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
+import { nextOnlineArenaProfile } from './onlineArenaRotation';
 import {
   classifyOnlineAuthorityPresentationEvent,
   selectOnlineAbilityPresentationAudioOwner,
@@ -261,6 +264,10 @@ function appendScopeNotice(
       '',
       mapProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
         ? 'Relay Revision 1: the browser and Worker share the same 56-collider arena, eight spawns, paired portal authority, combat, and secure resume contract. Environment art, balance, and human play approval remain work in progress.'
+        : mapProfile === ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID
+          ? 'Switchyard Revision 1: an original eight-spawn freight arena with server-owned collision, combat, bots, score, respawn, and secure resume. Visual and balance acceptance remain work in progress.'
+        : mapProfile === ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID
+          ? 'Crownpoint Revision 1: an original eight-spawn vertical arena with server-owned collision, combat, bots, score, respawn, and secure resume. Visual and balance acceptance remain work in progress.'
         : mapProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
           ? 'Retired Foundry Revision 4 compatibility profile retained only for persisted rooms and checkpoints.'
         : mapProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
@@ -317,10 +324,14 @@ function renderLanding(
   profileCheckbox.required = true;
   const selectedLegacyProfile = selectedProfile !== undefined
     && selectedProfile !== ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
+    && selectedProfile !== ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID
+    && selectedProfile !== ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID
     ? selectedProfile
     : ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID;
   profileCheckbox.checked = selectedProfile !== undefined
-    && selectedProfile !== ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
+    && selectedProfile !== ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
+    && selectedProfile !== ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID
+    && selectedProfile !== ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID;
   profileCheckbox.disabled = !configured;
   profileCheckbox.dataset.testid = 'online-inkfall-profile';
   const profileCopy = element('span', '');
@@ -352,16 +363,48 @@ function renderLanding(
     ),
   );
   relayProfileOption.append(relayProfileCheckbox, relayProfileCopy);
+  const switchyardProfileOption = element('label', 'online-preview__profile-option');
+  const switchyardProfileCheckbox = document.createElement('input');
+  switchyardProfileCheckbox.type = 'radio';
+  switchyardProfileCheckbox.name = 'online-arena-profile';
+  switchyardProfileCheckbox.required = true;
+  switchyardProfileCheckbox.checked = selectedProfile === ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID;
+  switchyardProfileCheckbox.disabled = !configured;
+  switchyardProfileCheckbox.dataset.testid = 'online-switchyard-rev1-profile';
+  const switchyardProfileCopy = element('span', '');
+  switchyardProfileCopy.append(
+    element('strong', '', 'Switchyard'),
+    element('span', '', 'Freight lanes, container cover, and a contested raised deck.'),
+  );
+  switchyardProfileOption.append(switchyardProfileCheckbox, switchyardProfileCopy);
+  const crownpointProfileOption = element('label', 'online-preview__profile-option');
+  const crownpointProfileCheckbox = document.createElement('input');
+  crownpointProfileCheckbox.type = 'radio';
+  crownpointProfileCheckbox.name = 'online-arena-profile';
+  crownpointProfileCheckbox.required = true;
+  crownpointProfileCheckbox.checked = selectedProfile === ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID;
+  crownpointProfileCheckbox.disabled = !configured;
+  crownpointProfileCheckbox.dataset.testid = 'online-crownpoint-rev1-profile';
+  const crownpointProfileCopy = element('span', '');
+  crownpointProfileCopy.append(
+    element('strong', '', 'Crownpoint'),
+    element('span', '', 'Four approach lanes converge on a high central crown.'),
+  );
+  crownpointProfileOption.append(crownpointProfileCheckbox, crownpointProfileCopy);
   const profilePicker = element('details', 'online-preview__profile-picker');
   profilePicker.hidden = !configured;
   profilePicker.append(
     element('summary', '', 'Arena profile'),
     relayProfileOption,
+    switchyardProfileOption,
+    crownpointProfileOption,
     profileOption,
   );
   content.append(profilePicker);
   const chosenProfile = (): OnlineAuthorityProfileSelection | undefined => {
     if (relayProfileCheckbox.checked) return ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
+    if (switchyardProfileCheckbox.checked) return ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID;
+    if (crownpointProfileCheckbox.checked) return ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID;
     return selectedLegacyProfile;
   };
   const lobby = element('section', 'online-preview__lobby');
@@ -787,9 +830,15 @@ async function mountSession(
   const mapProfile = mapProof?.roomProfile ?? null;
   const mapRuntime = mapProof !== null;
   const relayRuntime = mapProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
+  const originalArenaRuntime = mapProfile === ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID
+    || mapProfile === ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID;
   const threeDimensionalMap = relayRuntime
+    || originalArenaRuntime
     || mapProfile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
     || mapProfile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID;
+  const mapDisplayName = mapProof !== null && 'displayName' in mapProof.mapBinding
+    ? mapProof.mapBinding.displayName
+    : relayRuntime ? 'Relay' : 'Authoritative arena';
   const world = mapProof !== null
     ? await createOnlineAuthorityWorld(mapProof.mapBinding)
     : await createRapierMovementWorld(getPhysicsFixture('flat_run'));
@@ -826,8 +875,10 @@ async function mountSession(
     element(
       'p',
       'online-preview__eyebrow',
-      threeDimensionalMap
-        ? 'Relay · Online'
+      relayRuntime || originalArenaRuntime
+        ? `${mapDisplayName} · Online`
+        : threeDimensionalMap
+        ? 'Compatibility arena · Online'
         : mapRuntime
           ? 'Legacy map · Online'
         : 'Online match',
@@ -835,7 +886,7 @@ async function mountSession(
     element(
       'h1',
       '',
-      relayRuntime ? 'Relay' : 'Authoritative arena',
+      mapDisplayName,
     ),
     element(
       'p',
@@ -892,8 +943,8 @@ async function mountSession(
   const arenaHead = element(
     'div',
     'online-session__panel-head',
-    relayRuntime
-      ? 'Relay'
+    relayRuntime || originalArenaRuntime
+      ? mapDisplayName
       : mapRuntime
         ? 'Legacy arena'
         : 'Online arena',
@@ -1152,8 +1203,8 @@ async function mountSession(
   const limitation = element(
     'p',
     'online-session__limitation',
-    relayRuntime
-      ? 'WORK IN PROGRESS: Relay combat is playable now. Arena art, balance, and polish are still being shaped for tester feedback.'
+    relayRuntime || originalArenaRuntime
+      ? `WORK IN PROGRESS: ${mapDisplayName} combat is playable now. Arena art, balance, and polish are still being shaped for tester feedback.`
       : threeDimensionalMap
         ? 'COMPATIBILITY MODE: this persisted Foundry room retains its locked authority contract. It is not the current arena direction.'
       : mapRuntime
@@ -1349,7 +1400,7 @@ async function mountSession(
     try {
       threeRuntime = await createOnlineAuthorityThreeRuntime(canvas, {
         mapBinding: mapProof.mapBinding,
-        ...(relayRuntime
+        ...(relayRuntime || originalArenaRuntime
           ? {
               presentationFixture: world.fixture,
               presentationIdentity: {
@@ -1363,10 +1414,14 @@ async function mountSession(
                 zoneCount: 'zones' in mapProof.mapBinding
                   ? mapProof.mapBinding.zones.length
                   : 0,
-                spawnPocketContainmentCount: 2,
-                authorityCompatibility: 'relay_revision_1_authority_candidate',
+                spawnPocketContainmentCount: relayRuntime ? 2 : 0,
+                authorityCompatibility: relayRuntime
+                  ? 'relay_revision_1_authority_candidate'
+                  : `${mapProof.mapBinding.mapId}_revision_1_authority_candidate`,
               },
-              staticWorldPortalDefinitions: RELAY_PORTAL_PRESENTATION_DEFINITIONS,
+              ...(relayRuntime
+                ? { staticWorldPortalDefinitions: RELAY_PORTAL_PRESENTATION_DEFINITIONS }
+                : {}),
             }
           : {}),
         onWorldPortalAudio: ({ local }) => {
@@ -3132,10 +3187,11 @@ export async function mountOnlineAuthorityRoute(
     if (routeDisposed) throw new Error('ONLINE_ROUTE_DISPOSED');
     if (continuationPending) throw new Error('ONLINE_NEXT_MATCH_ALREADY_PENDING');
     continuationPending = true;
+    const nextProfile = nextOnlineArenaProfile(profile);
     try {
       const proof = await createOnlineAuthorityMapCombatRoom(
         availability.origin,
-        profile,
+        nextProfile,
       );
       if (routeDisposed) throw new Error('ONLINE_ROUTE_DISPOSED');
       activeSession?.dispose();
@@ -3144,7 +3200,7 @@ export async function mountOnlineAuthorityRoute(
       content.classList.remove('online-preview__content--session');
       delete body.dataset.onlineMatchResult;
       body.dataset.onlinePreviewStatus = 'initializing-next-match';
-      window.history.replaceState(null, '', onlineJoinPath(proof.roomCode, profile));
+      window.history.replaceState(null, '', onlineJoinPath(proof.roomCode, nextProfile));
       const nextSession = await mountSession(
         body,
         content,
@@ -3166,9 +3222,9 @@ export async function mountOnlineAuthorityRoute(
           content,
           'Next match could not start.',
           cause instanceof Error ? cause.message : String(cause),
-          profile,
+          nextProfile,
           'TRY AGAIN',
-          onlineCreatePath(profile),
+          onlineCreatePath(nextOnlineArenaProfile(profile)),
         );
         body.dataset.onlinePreviewStatus = 'next-match-failed';
       }
