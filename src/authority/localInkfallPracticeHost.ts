@@ -101,7 +101,13 @@ export function localInkfallPracticeBotInput(
   previousHeldButtons: number,
 ): LocalInkfallPracticeInput {
   const botOrdinal = Number(/(\d+)$/u.exec(playerId)?.[1] ?? 1);
-  return deterministicCombatBotInput(snapshot, playerId, previousHeldButtons, botOrdinal);
+  return deterministicCombatBotInput(
+    snapshot,
+    playerId,
+    previousHeldButtons,
+    botOrdinal,
+    { strategy: 'adaptive' },
+  );
 }
 
 /**

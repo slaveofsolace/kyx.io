@@ -179,7 +179,7 @@ export function authorityBotInput(
     playerId,
     previousHeldButtons,
     ordinal,
-    { locomotion: 'sentry' },
+    { locomotion: 'sentry', strategy: 'adaptive' },
   );
   const patrol = authorityBotPatrolDecision(snapshot, playerId, mapId);
   return Object.freeze({
