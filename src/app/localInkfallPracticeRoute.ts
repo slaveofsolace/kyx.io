@@ -217,6 +217,11 @@ function createEntryGate(
     row.append(key, copy);
     abilityGuide.appendChild(row);
   }
+  const loadoutGuide = document.createElement('details');
+  const loadoutSummary = document.createElement('summary');
+  loadoutGuide.className = 'local-practice-gate__loadout';
+  loadoutSummary.textContent = 'Ability guide · Q / E / F / Z';
+  loadoutGuide.append(loadoutSummary, abilityGuide);
   const status = document.createElement('p');
   status.className = 'local-practice-gate__status';
   status.setAttribute('aria-live', 'polite');
@@ -232,7 +237,9 @@ function createEntryGate(
   exit.href = '/';
   exit.textContent = 'Return to menu';
   actions.append(enter, exit);
-  root.append(abilityGuide, status, actions);
+  // Keep the route into play ahead of optional reference material. The HUD
+  // continues to expose the equipped ability names and keys during the match.
+  root.append(status, actions, loadoutGuide);
   return Object.freeze({ root, status, enter, exit });
 }
 

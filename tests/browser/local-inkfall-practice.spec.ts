@@ -135,6 +135,13 @@ test.describe('local Relay Practice route', () => {
 
     await page.goto('/practice');
     await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeVisible();
+    const abilityGuide = page.locator('.local-practice-gate__abilities');
+    const abilityGuideToggle = page.getByText('Ability guide · Q / E / F / Z', { exact: true });
+    await expect(abilityGuide).toBeHidden();
+    await abilityGuideToggle.click();
+    await expect(abilityGuide).toBeVisible();
+    await abilityGuideToggle.click();
+    await expect(abilityGuide).toBeHidden();
     await expect(page.locator('body')).toHaveAttribute(
       'data-launch-support',
       'local-relay-practice-authority',
