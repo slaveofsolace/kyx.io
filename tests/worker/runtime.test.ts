@@ -169,6 +169,20 @@ describe('authority Worker runtime', () => {
         2,
         20_000,
       );
+      const gracePrepared = await registry.prepareRotation(prepared.rotatedResumeToken);
+      if (gracePrepared === null) throw new Error('expected the rotated resume token');
+      const validBeforeExpiry = registry.lookup(
+        gracePrepared,
+        'room.KYX-234567',
+        'match.TEST',
+        79_999,
+      ) !== null;
+      const validAfterExpiry = registry.lookup(
+        gracePrepared,
+        'room.KYX-234567',
+        'match.TEST',
+        80_001,
+      ) !== null;
       const rows = [...state.storage.sql.exec<{
         player_id: string;
         token_digest: string;
@@ -181,6 +195,8 @@ describe('authority Worker runtime', () => {
         rotatedGeneration: rotated?.generation,
         replayAccepted: replay !== null,
         armed,
+        validBeforeExpiry,
+        validAfterExpiry,
         armedExpiry: [...state.storage.sql.exec<{ expires_at: number }>(
           'SELECT expires_at FROM resume_sessions WHERE player_id = ?',
           'player.TEST',
@@ -195,6 +211,8 @@ describe('authority Worker runtime', () => {
     expect(result.rotatedGeneration).toBe(2);
     expect(result.replayAccepted).toBe(false);
     expect(result.armed).toBe(true);
-    expect(result.armedExpiry).toBe(30_000);
+    expect(result.armedExpiry).toBe(80_000);
+    expect(result.validBeforeExpiry).toBe(true);
+    expect(result.validAfterExpiry).toBe(false);
   });
 });

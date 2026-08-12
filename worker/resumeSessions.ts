@@ -4,7 +4,11 @@ import {
   isResumeToken,
 } from './resumeToken';
 
-export const RESUME_GRACE_MILLISECONDS = 10_000 as const;
+// Browser background throttling can delay both the server close event and the
+// client's resume timer well beyond a nominal ten-second window. Keep the
+// disconnected identity reserved for one bounded minute so a returning tab can
+// resume without turning ordinary focus changes into a dead match.
+export const RESUME_GRACE_MILLISECONDS = 60_000 as const;
 const ACTIVE_SESSION_EXPIRY = Number.MAX_SAFE_INTEGER;
 
 interface ResumeSessionRow {
