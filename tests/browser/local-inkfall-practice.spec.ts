@@ -455,4 +455,94 @@ test.describe('local Relay Practice route', () => {
       fullPage: false,
     });
   });
+
+  test('activates every selectable ability family through canonical role presets', async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name === 'chromium-mobile-unsupported',
+      'The ability runtime is intentionally desktop-only',
+    );
+    test.setTimeout(150_000);
+    for (const contract of [
+      {
+        presetId: 'breacher',
+        slotIds: [
+          'vertical_teleport_v1',
+          'sticky_grenade_v1',
+          'flash_grenade_v1',
+          'vertical_impulse_grenade_v1',
+        ],
+      },
+      {
+        presetId: 'recon',
+        slotIds: [
+          'vertical_teleport_v1',
+          'smoke_grenade_v1',
+          'flash_grenade_v1',
+          'sticky_grenade_v1',
+        ],
+      },
+    ] as const) {
+      await page.goto('/practice');
+      await page.evaluate((presetId) => {
+        localStorage.setItem('sio_loadout', JSON.stringify({
+          schemaVersion: 1,
+          presetId,
+        }));
+      }, contract.presetId);
+      await page.reload();
+      await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined);
+      const canvas = page.locator('#game-canvas');
+      const canvasBounds = await canvas.boundingBox();
+      if (canvasBounds === null) throw new Error('Practice canvas is not measurable');
+      await page.mouse.move(
+        canvasBounds.x + canvasBounds.width / 2,
+        canvasBounds.y + canvasBounds.height / 2,
+      );
+      const enter = page.getByRole('button', { name: 'Enter arena' });
+      await enter.focus();
+      await page.keyboard.press('Enter');
+      await expect(page.locator('body')).toHaveAttribute(
+        'data-local-practice-status',
+        'ready',
+      );
+      await expect.poll(async () => page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().match.phase ?? null
+      )), { timeout: 30_000 }).toBe('active');
+      await expect.poll(async () => page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities.slotIds ?? null
+      ))).toEqual(contract.slotIds);
+
+      for (const [slotIndex, key] of ['KeyE', 'KeyF', 'KeyZ'].entries()) {
+        const before = await page.evaluate((index) => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
+            .acceptedActivationCounts[index] ?? -1
+        ), slotIndex);
+        await page.keyboard.press(key);
+        await expect.poll(async () => page.evaluate((index) => (
+          window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
+            .acceptedActivationCounts[index] ?? -1
+        ), slotIndex), { timeout: 10_000 }).toBeGreaterThan(before);
+      }
+
+      const beforeBlinkPosition = await page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().localAuthoritativePlayer
+          .feetPosition ?? null
+      ));
+      if (beforeBlinkPosition === null) throw new Error('Blink origin is unavailable');
+      await page.keyboard.press('KeyQ');
+      await expect.poll(async () => page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot().abilities
+          .blinkCooldownTicksRemaining ?? 0
+      )), { timeout: 10_000 }).toBeGreaterThan(0);
+      await expect.poll(async () => page.evaluate((origin) => {
+        const current = window.__KYX_LOCAL_PRACTICE__?.getSnapshot()
+          .localAuthoritativePlayer.feetPosition;
+        return current === undefined
+          ? 0
+          : Math.hypot(current.x - origin.x, current.z - origin.z);
+      }, beforeBlinkPosition), { timeout: 10_000 }).toBeGreaterThan(1_000);
+    }
+  });
 });

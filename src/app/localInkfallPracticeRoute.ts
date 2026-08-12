@@ -27,7 +27,10 @@ import {
 import type { ReliableEvent } from '../net';
 import { CaptionCueOverlay } from '../ui/CaptionCueOverlay.js';
 import { HUD } from '../ui/HUD.js';
-import type { AbilityLoadoutUiSlot } from '../abilities/abilityLoadout';
+import {
+  ABILITY_ID,
+  type AbilityLoadoutUiSlot,
+} from '../abilities/abilityLoadout';
 import { requestConfirmedPointerLock } from './movement/pointerLock';
 import {
   LOCAL_PRACTICE_GOAL_SUMMARY,
@@ -109,6 +112,15 @@ interface LocalPracticeDiagnosticsV1 {
       readonly reloadCompletesAtTick: number | null;
     }> | null;
     readonly abilitySlots: readonly string[];
+  }>;
+  readonly abilities: Readonly<{
+    readonly slotIds: readonly string[];
+    readonly acceptedActivationCounts: readonly number[];
+    readonly currentCharges: readonly number[];
+    readonly cooldownEndsAtTicks: readonly number[];
+    readonly activeLocalProjectileAbilityIds: readonly string[];
+    readonly activeLocalSmokeFieldCount: number;
+    readonly blinkCooldownTicksRemaining: number;
   }>;
   readonly match: Readonly<{
     readonly phase: string;
@@ -870,6 +882,16 @@ export async function mountLocalInkfallPracticeRoute(
         kyxWeaponProfile(weaponId).slot === localPlayer.combat?.armory.selectedSlot
       ),
     ) ?? null;
+    const activationCounts = [
+      ...localPlayer.combat.abilityLoadout.acceptedActivationCounts,
+    ];
+    const launchSlot = localPlayer.combat.abilityLoadout.loadout.slots.indexOf(
+      ABILITY_ID.launch,
+    );
+    if (launchSlot > 0 && localPlayer.combat.impulseGrenade !== undefined) {
+      activationCounts[launchSlot - 1] =
+        localPlayer.combat.impulseGrenade.acceptedThrowCount;
+    }
     const countLaunchEvents = (kind: string): number => localLaunchEvents.filter(
       (event) => event.presentation?.kind === kind,
     ).length;
@@ -911,6 +933,27 @@ export async function mountLocalInkfallPracticeRoute(
               reloadCompletesAtTick: selectedWeapon.reloadCompletesAtTick,
             }),
         abilitySlots: Object.freeze([...localPlayer.combat.abilityLoadout.loadout.slots]),
+      }),
+      abilities: Object.freeze({
+        slotIds: Object.freeze([...localPlayer.combat.abilityLoadout.loadout.slots]),
+        acceptedActivationCounts: Object.freeze(activationCounts),
+        currentCharges: Object.freeze([
+          ...localPlayer.combat.abilityLoadout.currentCharges,
+        ]),
+        cooldownEndsAtTicks: Object.freeze([
+          ...localPlayer.combat.abilityLoadout.cooldownEndsAtTicks,
+        ]),
+        activeLocalProjectileAbilityIds: Object.freeze(
+          (snapshot.abilityProjectiles ?? [])
+            .filter(({ ownerPlayerId }) => ownerPlayerId === host.localPlayerId)
+            .map(({ abilityId }) => abilityId)
+            .sort(),
+        ),
+        activeLocalSmokeFieldCount: (snapshot.abilitySmokeFields ?? [])
+          .filter(({ ownerPlayerId }) => ownerPlayerId === host.localPlayerId)
+          .length,
+        blinkCooldownTicksRemaining:
+          authoritativeMovement.teleportCooldownTicksRemaining,
       }),
       match: Object.freeze({
         phase: snapshot.match.phase,
