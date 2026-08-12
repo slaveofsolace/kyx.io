@@ -212,7 +212,7 @@ describe('KYX first-person armory presentation', () => {
     )).toBeDefined();
   });
 
-  it('mounts an isolated review shell while preserving optic, hands, muzzle, and reload motion', () => {
+  it('keeps the local weapon readable while isolating review shells to world presentation', () => {
     const source = new THREE.Group();
     source.name = 'KYX_VLR7_QUATERNIUS_REV1';
     source.add(new THREE.Mesh(
@@ -233,26 +233,42 @@ describe('KYX first-person armory presentation', () => {
         'vertical_rifle_v1',
         'first_person',
       );
+      const worldRifle = createKyxWeaponPresentationModel(
+        'vertical_rifle_v1',
+        'world',
+      );
       expect(rifle.group.userData.weaponVisualSource).toBe(
-        'quaternius_cc0_review_rev1',
+        'project_authored_procedural',
       );
       expect(rifle.group.getObjectByName(
         'KYX_VLR7_DEFAULT_PROCEDURAL_SHELL',
-      )?.visible).toBe(false);
+      )?.visible).toBe(true);
       expect(rifle.group.getObjectByName(
         'KYX_VLR7_REVIEW_SHELL_MOUNT',
+      )).toBeUndefined();
+      expect(rifle.firstPersonHandCount).toBe(2);
+      expect(rifle.muzzle.name).toBe('KYX_VLR7_MUZZLE');
+      expect(rifle.group.userData.authorityMuzzleReferenceBound).toBe(false);
+
+      expect(worldRifle.group.userData.weaponVisualSource).toBe(
+        'quaternius_cc0_review_rev1',
+      );
+      expect(worldRifle.group.getObjectByName(
+        'KYX_VLR7_DEFAULT_PROCEDURAL_SHELL',
+      )?.visible).toBe(false);
+      expect(worldRifle.group.getObjectByName(
+        'KYX_VLR7_REVIEW_SHELL_MOUNT',
       )).toBeDefined();
-      expect(rifle.group.getObjectByName(
+      expect(worldRifle.group.getObjectByName(
         'KYX_VLR7_REFLEX_OPTIC',
       )).toBeDefined();
-      expect(rifle.firstPersonHandCount).toBe(2);
-      expect(rifle.muzzle.name).toBe(
+      expect(worldRifle.muzzle.name).toBe(
         'KYX_VLR7_REVIEW_MUZZLE_REFERENCE',
       );
-      expect(rifle.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(worldRifle.group.userData.authorityMuzzleReferenceBound).toBe(true);
 
       const mountedMagazine = rifle.group.getObjectByName(
-        'KYX_VLR7_REVIEW_MAGAZINE',
+        'KYX_VLR7_MAGAZINE',
       );
       expect(mountedMagazine).toBeDefined();
       const restY = mountedMagazine?.position.y ?? 0;
@@ -264,7 +280,7 @@ describe('KYX first-person armory presentation', () => {
     }
   });
 
-  it('replaces only rendered meshes for a verified non-rifle review shell', () => {
+  it('keeps non-rifle review shells out of first person while retaining them in world presentation', () => {
     const source = new THREE.Group();
     source.name = 'KYX_K9_QUATERNIUS_REV1';
     source.userData.weaponVisualSource =
@@ -287,26 +303,42 @@ describe('KYX first-person armory presentation', () => {
         'kyx_sidearm_v1',
         'first_person',
       );
+      const worldSidearm = createKyxWeaponPresentationModel(
+        'kyx_sidearm_v1',
+        'world',
+      );
       expect(sidearm.group.userData.weaponVisualSource).toBe(
-        'quaternius_cc0_armory_rev1:kyx-k9-quaternius-rev1',
+        'project_authored_procedural',
       );
       expect(sidearm.group.getObjectByName(
         'KYX_K9_QUATERNIUS_DONOR',
-      )?.visible).toBe(true);
+      )).toBeUndefined();
       expect(sidearm.group.getObjectByName(
         'KYX_K9_POWER_CHAMBER',
+      )?.visible).toBe(true);
+      expect(sidearm.muzzle.name).toBe('KYX_K9_MUZZLE');
+      expect(sidearm.group.userData.authorityMuzzleReferenceBound).toBe(false);
+
+      expect(worldSidearm.group.userData.weaponVisualSource).toBe(
+        'quaternius_cc0_armory_rev1:kyx-k9-quaternius-rev1',
+      );
+      expect(worldSidearm.group.getObjectByName(
+        'KYX_K9_QUATERNIUS_DONOR',
+      )?.visible).toBe(true);
+      expect(worldSidearm.group.getObjectByName(
+        'KYX_K9_POWER_CHAMBER',
       )?.visible).toBe(false);
-      expect(sidearm.muzzle.name).toBe(
+      expect(worldSidearm.muzzle.name).toBe(
         'KYX_K9_QUATERNIUS_REV1_MUZZLE_REFERENCE',
       );
-      expect(sidearm.group.userData.authorityMuzzleReferenceBound).toBe(true);
-      expect(sidearm.group.getObjectByName(
+      expect(worldSidearm.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(worldSidearm.group.getObjectByName(
         'KYX_K9_REVIEW_SLIDE_CAP',
       )?.visible).toBe(true);
-      expect(sidearm.group.getObjectByName(
+      expect(worldSidearm.group.getObjectByName(
         'KYX_K9_REVIEW_POWER_CELL',
       )?.visible).toBe(true);
-      expect(sidearm.group.getObjectsByProperty(
+      expect(worldSidearm.group.getObjectsByProperty(
         'name',
         'KYX_K9_QUATERNIUS_DONOR',
       )).toHaveLength(1);

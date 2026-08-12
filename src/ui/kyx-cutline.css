@@ -3143,10 +3143,11 @@ body[data-ui-system="cutline-v1"] .online-session__score span {
 }
 
 body[data-ui-system="cutline-v1"] .online-session__combat-stats {
-  position: absolute;
-  z-index: 5;
+  position: fixed;
+  z-index: 60;
   inset: 0;
   pointer-events: none;
+  text-shadow: 0 1px 3px #000, 0 0 12px #000;
 }
 
 body[data-ui-system="cutline-v1"] .online-session__combat-stat {
@@ -3203,8 +3204,8 @@ body[data-ui-system="cutline-v1"] .online-session__combat-stat--abilities {
 }
 
 body[data-ui-system="cutline-v1"] .online-session__controls {
-  position: absolute;
-  z-index: 6;
+  position: fixed;
+  z-index: 61;
   left: 50%;
   bottom: var(--cut-safe-y);
   width: min(360px, calc(100vw - 470px));
@@ -3531,8 +3532,8 @@ body[data-ui-system="cutline-v1"] .local-loadout-ability[aria-pressed="true"] .a
 }
 
 body[data-ui-system="cutline-v1"] .online-session__weapon-rail {
-  position: absolute;
-  z-index: 6;
+  position: fixed;
+  z-index: 61;
   right: var(--cut-safe-x);
   bottom: calc(var(--cut-safe-y) + 64px);
   display: flex;
@@ -3683,7 +3684,10 @@ body[data-ui-system="cutline-v1"] .online-session__result.hidden {
 
 body[data-ui-system="cutline-v1"] .online-session__result-panel {
   width: min(560px, 100%);
+  max-height: calc(100dvh - 48px);
   padding: clamp(24px, 5vw, 44px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border: 1px solid var(--cut-line);
   border-top: 2px solid var(--cut-cyan);
   color: var(--cut-ink);
@@ -3734,6 +3738,30 @@ body[data-ui-system="cutline-v1"] .online-session__result-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+@media (max-height: 820px) {
+  body[data-ui-system="cutline-v1"] .online-session__result {
+    padding: 12px;
+  }
+
+  body[data-ui-system="cutline-v1"] .online-session__result-panel {
+    max-height: calc(100dvh - 24px);
+    padding: 22px 26px;
+  }
+
+  body[data-ui-system="cutline-v1"] .online-session__result-panel h2 {
+    font-size: clamp(32px, 7vh, 54px);
+  }
+
+  body[data-ui-system="cutline-v1"] .online-session__result-summary,
+  body[data-ui-system="cutline-v1"] .online-session__result-stats {
+    margin-bottom: 14px;
+  }
+
+  body[data-ui-system="cutline-v1"] .online-session__result-stat {
+    padding-block: 7px;
+  }
 }
 
 body[data-ui-system="cutline-v1"] .online-session__scoreboard-player strong {

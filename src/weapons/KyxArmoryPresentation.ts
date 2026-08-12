@@ -705,12 +705,17 @@ function resolveAimDatum(
   );
 }
 
-function buildLineRifle(materials: MaterialSet): BuiltWeapon {
+function buildLineRifle(
+  materials: MaterialSet,
+  includeReviewShell: boolean,
+): BuiltWeapon {
   const visual = new THREE.Group();
   visual.name = 'KYX_VLR7_LINE_RIFLE_VISUAL';
   const defaultShell = new THREE.Group();
   defaultShell.name = 'KYX_VLR7_DEFAULT_PROCEDURAL_SHELL';
-  const reviewShell = createLineRifleReviewShell();
+  const reviewShell = includeReviewShell
+    ? createLineRifleReviewShell()
+    : null;
 
   const receiverCore = box(
     0.13,
@@ -1316,11 +1321,12 @@ function buildPhaseSaber(materials: MaterialSet): BuiltWeapon {
 function buildByWeaponId(
   weaponId: KyxAuthorityWeaponId,
   materials: MaterialSet,
+  includeReviewShell: boolean,
 ): BuiltWeapon {
   let built: BuiltWeapon;
   switch (weaponId) {
     case 'vertical_rifle_v1':
-      built = buildLineRifle(materials);
+      built = buildLineRifle(materials, includeReviewShell);
       break;
     case 'kyx_sidearm_v1':
       built = buildArcSidearm(materials);
@@ -1338,7 +1344,9 @@ function buildByWeaponId(
       built = buildPhaseSaber(materials);
       break;
   }
-  return applyInstalledReviewShell(weaponId, built);
+  return includeReviewShell
+    ? applyInstalledReviewShell(weaponId, built)
+    : built;
 }
 
 export function normalizeKyxAuthorityWeaponId(
@@ -1374,7 +1382,15 @@ export function createKyxWeaponPresentationModel(
           ? 0x3a302e
           : 0x26343a,
   );
-  const built = buildByWeaponId(authorityWeaponId, materials);
+  // Review assets remain visible on world weapons for provenance review, but
+  // they are not yet Human Eye accepted for the local camera. Keep the
+  // project-authored procedural weapon in first person so the player always
+  // has a readable weapon, muzzle, and reload silhouette.
+  const built = buildByWeaponId(
+    authorityWeaponId,
+    materials,
+    presentation === 'world',
+  );
   if (presentation === 'first_person') {
     fitInstalledReviewShellForFirstPerson(built.visual);
   }
