@@ -223,7 +223,7 @@ if (desktopSupported && !launchOverrideRoute) {
   } else {
     try {
       const { mountCanonicalLobbyRoute } = await import('./app/canonicalLobbyRoute.ts');
-      mountCanonicalLobbyRoute(document.body);
+      mountCanonicalLobbyRoute(document.body, onlineAuthorityAvailability);
     } catch (error) {
       const failure = document.createElement('pre');
       failure.id = 'canonical-lobby-result';

@@ -72,6 +72,7 @@ function createStatRow(label, value) {
 }
 
 export class MenuUI {
+  /** @param {{ routeRelayPractice?: boolean } | undefined} options */
   constructor(options = undefined) {
     this.topNav = document.getElementById('top-nav');
     this.centerPlay = document.getElementById('center-play');

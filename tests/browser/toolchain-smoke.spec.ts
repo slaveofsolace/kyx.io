@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 const WINDOWS_CHROME_USER_AGENT =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/151.0.0.0 Safari/537.36';
+const AUTHORITY_CONFIGURED = Boolean(process.env.VITE_KYX_AUTHORITY_ORIGIN?.trim());
 
 test('truthful shell boots in its declared desktop and mobile states', async ({ page }, testInfo) => {
   const consoleErrors: string[] = [];
@@ -29,7 +30,7 @@ test('truthful shell boots in its declared desktop and mobile states', async ({ 
     await expect(page.getByRole('heading', { name: 'DESKTOP REQUIRED' })).toBeVisible();
     await expect(page.locator('body')).toHaveAttribute('data-launch-support', 'desktop-required');
   } else {
-    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
+    await expect(page.getByRole('button', { name: /^(?:Enter Relay|Quick Match)$/u })).toBeVisible({
       timeout: 15_000,
     });
     await expect(page.locator('body')).toHaveAttribute(
@@ -60,9 +61,10 @@ test('truthful shell boots in its declared desktop and mobile states', async ({ 
 
 test('the canonical lobby enters the authority-backed Practice runtime', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'chromium-desktop');
+  test.skip(AUTHORITY_CONFIGURED, 'configured builds use online Quick Match');
 
   await page.goto('/', { waitUntil: 'networkidle' });
-  await page.getByRole('button', { name: 'Enter Relay practice' }).click();
+  await page.getByRole('button', { name: 'Enter Relay' }).click();
   await expect(page).toHaveURL(/\/practice(?:\?|$)/u);
   await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined);
   await expect(page.locator('body')).toHaveAttribute(
@@ -70,6 +72,23 @@ test('the canonical lobby enters the authority-backed Practice runtime', async (
     'local-relay-practice-authority',
   );
   await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeVisible();
+});
+
+test('configured canonical lobby enters online Relay Quick Match in one click', async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop');
+  test.skip(!AUTHORITY_CONFIGURED, 'requires configured online authority');
+
+  await page.goto('/', { waitUntil: 'networkidle' });
+  await expect(page.locator('body')).toHaveAttribute(
+    'data-canonical-primary-play',
+    'online_authority',
+  );
+  await page.getByRole('button', { name: 'Quick Match' }).click();
+  await expect(page).toHaveURL(
+    /\/online\?mode=create&profile=relay-revision-1-authority-v1$/u,
+  );
 });
 
 test('touch-capable Windows desktop is not forced behind the mobile boundary', async ({ browser }, testInfo) => {
@@ -88,7 +107,7 @@ test('touch-capable Windows desktop is not forced behind the mobile boundary', a
     expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
     expect(await page.locator('body').getAttribute('data-launch-support')).not.toBe('desktop-required');
     await expect(page.locator('#desktop-required-overlay')).toBeHidden();
-    await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
+    await expect(page.getByRole('button', { name: /^(?:Enter Relay|Quick Match)$/u })).toBeVisible({
       timeout: 15_000,
     });
   } finally {
