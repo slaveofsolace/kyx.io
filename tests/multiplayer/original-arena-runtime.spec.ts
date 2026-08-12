@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
 interface ArenaSnapshot {
+  readonly roomCode: string;
   readonly connection: string;
   readonly remotePlayers: number;
   readonly commandsGenerated: number;
@@ -97,5 +98,61 @@ test('Switchyard and Crownpoint mount their exact authority worlds and player-vi
         ) >= 500;
     }, { timeout: 10_000 }).toBe(true);
     await page.keyboard.up('KeyW');
+  }
+});
+
+test('production continuation allocates fresh rooms across the three-arena rotation', async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+  const sequence = [
+    {
+      profile: 'relay-revision-1-authority-v1',
+      mapReference: 'relay@1',
+    },
+    {
+      profile: 'switchyard-revision-1-authority-v1',
+      mapReference: 'switchyard@1',
+    },
+    {
+      profile: 'crownpoint-revision-1-authority-v1',
+      mapReference: 'crownpoint@1',
+    },
+    {
+      profile: 'relay-revision-1-authority-v1',
+      mapReference: 'relay@1',
+    },
+  ] as const;
+
+  await page.goto(`/online?mode=create&profile=${sequence[0].profile}`);
+  let previousRoomCode: string | null = null;
+  for (const [index, arena] of sequence.entries()) {
+    await expect.poll(async () => (await snapshot(page))?.connection ?? null, {
+      timeout: 30_000,
+    }).toBe('joined');
+    await expect.poll(async () => (
+      (await snapshot(page))?.roomVerification?.roomProfile ?? null
+    ), { timeout: 30_000 }).toBe(arena.profile);
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-online-map-reference',
+      arena.mapReference,
+      { timeout: 30_000 },
+    );
+    const current = await snapshot(page);
+    if (current === null) throw new Error(`arena ${arena.profile} did not expose diagnostics`);
+    expect(current.roomCode).toMatch(/^KYX-[A-Z0-9]{6}$/u);
+    if (previousRoomCode !== null) expect(current.roomCode).not.toBe(previousRoomCode);
+    previousRoomCode = current.roomCode;
+
+    if (index === sequence.length - 1) break;
+    await page.getByTestId('online-play-again').evaluate((button) => {
+      if (!(button instanceof HTMLButtonElement)) {
+        throw new TypeError('online Play again control is not a button');
+      }
+      button.click();
+    });
+    await expect.poll(async () => (await snapshot(page))?.roomCode ?? null, {
+      timeout: 30_000,
+    }).not.toBe(previousRoomCode);
   }
 });
