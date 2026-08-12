@@ -1,6 +1,6 @@
 # Public ev.io clean-room behavior reference
 
-Test contract: public `https://ev.io/`, guest/public match surface, desktop Chrome, keyboard/mouse intent, 2026-08-11. This is a behavioral comparison only. No source, protocol, assets, geometry, branding, audio or text are copied.
+Test contract: public `https://ev.io/`, guest/public match surface, desktop Chrome, keyboard/mouse intent, observed 2026-08-11 and 2026-08-12. This is a behavioral comparison only. No source, protocol, assets, geometry, branding, audio or text are copied.
 
 ## OBSERVED
 
@@ -10,12 +10,13 @@ Test contract: public `https://ev.io/`, guest/public match surface, desktop Chro
 - Repeated deaths exposed a short click-to-respawn loop, persistent score/kill-feed context and rapid re-entry.
 - The public scoreboard exposed player score, assists, kills, deaths and K/D.
 - Weapon fire, impact, damage direction, cooldown state and kill-feed events were visible during the live cycles.
+- A fresh 2026-08-12 desktop session exposed an active arena behind the central one-action play gate. Spectate entered the live match and followed moving players while the visible timer advanced from roughly 2:25 to 1:45. Opponent names/health, dust or speed trails, layered vertical routes, portals and high-contrast regional lighting made combat state legible before direct control.
 - The current public mode selector exposed Deathmatch, Sniper Shotgun, Team Deathmatch, Infection, Battle Royale and Survival. This is breadth evidence only; KYX is not adopting names, rules text or private implementation details from that surface.
 
 ## MEASURED
 
 - Current cold page load reached the named `Winter-Bishop`, `Deathmatch`, `8 players` load card and then the central play affordance in roughly 15 seconds on this connection.
-- Entry requires one intended play action after load. The current automation surface could not grant pointer lock, so a new timing sample from click to controllable movement is `TOOL-LIMITED` rather than fabricated.
+- Entry requires one intended play action after load. The source-matched KYX staging harness separately proves keyboard movement without automating native pointer lock; direct-input latency remains unmeasured rather than fabricated.
 
 ## INFERRED
 
@@ -26,7 +27,7 @@ Test contract: public `https://ev.io/`, guest/public match surface, desktop Chro
 ## UNKNOWN / TOOL-LIMITED
 
 - Exact end-to-end input latency, weapon TTK distributions, cadence values, death-to-control milliseconds, network reconciliation and audio mix are not remeasured in this post-boot run.
-- Pointer lock could not be granted through either the in-app Playwright or direct-computer-control surface. Spectate worked, but the sampled public room was idle and its visible timer remained at 0:53; that observation is not a live-combat measurement.
+- Native player-control timing and weapon TTK were not measured in the 2026-08-12 public session. Spectate proved a live match and camera following, not first-person input control.
 - Competitive balance, accessibility and performance require dedicated controlled sessions.
 
 ## Behavioral targets for KYX
