@@ -686,8 +686,13 @@ export async function createOnlineAuthorityThreeRuntime(
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x9db8c1);
-  scene.fog = new THREE.FogExp2(0x9baca9, 0.0045);
+  const atmosphere = mapBinding.mapId === 'switchyard'
+    ? Object.freeze({ background: 0x142a36, fog: 0x1b3039, density: 0.0062 })
+    : mapBinding.mapId === 'crownpoint'
+      ? Object.freeze({ background: 0x8e735d, fog: 0x776d68, density: 0.0048 })
+      : Object.freeze({ background: 0x9db8c1, fog: 0x9baca9, density: 0.0045 });
+  scene.background = new THREE.Color(atmosphere.background);
+  scene.fog = new THREE.FogExp2(atmosphere.fog, atmosphere.density);
   scene.add(loadedVisual.art, loadedVisual.containment);
 
   const camera = new THREE.PerspectiveCamera(

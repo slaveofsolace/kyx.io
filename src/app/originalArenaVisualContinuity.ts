@@ -4,7 +4,7 @@ import type { OriginalArenaAuthorityMapBinding } from '../authority/originalAren
 import { hashPhysicsFixture, type FixtureSolidV1, type PhysicsFixtureV1 } from '../physics';
 
 export const ORIGINAL_ARENA_VISUAL_VERSION =
-  'original_arena_visual_continuity_v1' as const;
+  'original_arena_visual_continuity_v2' as const;
 
 export interface OriginalArenaVisualContinuity {
   readonly group: THREE.Group;
@@ -83,33 +83,33 @@ function createColliderVisuals(
   const materials: Readonly<Record<SurfaceRole, THREE.MeshStandardMaterial>> = Object.freeze({
     floor: material(
       `${mapId.toUpperCase()}_DECK`,
-      switchyard ? 0x53636d : 0x646875,
-      switchyard ? 0x182229 : 0x20222a,
-      0.34,
+      switchyard ? 0x1d3039 : 0x2c344d,
+      switchyard ? 0x071116 : 0x111629,
+      0.24,
     ),
     boundary: material(
       `${mapId.toUpperCase()}_BOUNDARY`,
-      switchyard ? 0x3c4851 : 0x414858,
-      switchyard ? 0x11191f : 0x151923,
-      0.42,
+      switchyard ? 0x102934 : 0x202849,
+      switchyard ? 0x06151d : 0x0c1128,
+      0.28,
     ),
     stair: material(
       `${mapId.toUpperCase()}_TRAVERSAL`,
-      switchyard ? 0x73818b : 0x8b8791,
-      switchyard ? 0x19242b : 0x25232a,
-      0.28,
+      switchyard ? 0x496a73 : 0x63779b,
+      switchyard ? 0x10262d : 0x1c2945,
+      0.34,
     ),
     cover: material(
       `${mapId.toUpperCase()}_COVER`,
-      switchyard ? 0x8a5838 : 0x58778a,
-      switchyard ? 0x2b1509 : 0x102731,
-      0.3,
+      switchyard ? 0xa84822 : 0x167b8f,
+      switchyard ? 0x3b1006 : 0x052c39,
+      0.42,
     ),
     landmark: material(
       `${mapId.toUpperCase()}_LANDMARK`,
-      switchyard ? 0x65747c : 0x827a6b,
-      switchyard ? 0x172126 : 0x292319,
-      0.26,
+      switchyard ? 0xb8732c : 0xd3a94a,
+      switchyard ? 0x3a1907 : 0x3a2608,
+      0.38,
     ),
   });
   const groups = new Map<SurfaceRole, FixtureSolidV1[]>();
@@ -194,6 +194,78 @@ function addRouteInlays(
   mesh.instanceMatrix.needsUpdate = true;
   parent.add(mesh);
   return 1;
+}
+
+function addNavigationStructures(
+  mapId: OriginalArenaAuthorityMapBinding['mapId'],
+  parent: THREE.Group,
+): number {
+  const switchyard = mapId === 'switchyard';
+  const frameColor = switchyard ? 0x314954 : 0x334b70;
+  const signalColor = switchyard ? 0xffa13d : 0x71e8ff;
+  const frames = switchyard
+    ? [
+      { x: -22, y: 4.4, z: -15.5, sx: 0.35, sy: 8.8, sz: 0.35 },
+      { x: 22, y: 4.4, z: -15.5, sx: 0.35, sy: 8.8, sz: 0.35 },
+      { x: -22, y: 4.4, z: 15.5, sx: 0.35, sy: 8.8, sz: 0.35 },
+      { x: 22, y: 4.4, z: 15.5, sx: 0.35, sy: 8.8, sz: 0.35 },
+      { x: 0, y: 8.45, z: -15.5, sx: 44.35, sy: 0.35, sz: 0.35 },
+      { x: 0, y: 8.45, z: 15.5, sx: 44.35, sy: 0.35, sz: 0.35 },
+    ]
+    : [
+      { x: -18.5, y: 3.2, z: -18.5, sx: 0.55, sy: 6.4, sz: 0.55 },
+      { x: 18.5, y: 3.2, z: -18.5, sx: 0.55, sy: 6.4, sz: 0.55 },
+      { x: -18.5, y: 3.2, z: 18.5, sx: 0.55, sy: 6.4, sz: 0.55 },
+      { x: 18.5, y: 3.2, z: 18.5, sx: 0.55, sy: 6.4, sz: 0.55 },
+    ];
+  const frameMesh = new THREE.InstancedMesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    material(`${mapId.toUpperCase()}_NAV_FRAME`, frameColor, frameColor, 0.18),
+    frames.length,
+  );
+  frameMesh.name = `${mapId.toUpperCase()}_NAVIGATION_FRAMES`;
+  frames.forEach((frame, index) => {
+    MATRIX.compose(
+      POSITION.set(frame.x, frame.y, frame.z),
+      QUATERNION.identity(),
+      SCALE.set(frame.sx, frame.sy, frame.sz),
+    );
+    frameMesh.setMatrixAt(index, MATRIX);
+  });
+  frameMesh.instanceMatrix.needsUpdate = true;
+  frameMesh.castShadow = true;
+  frameMesh.receiveShadow = true;
+  markRenderOnly(frameMesh, 'arena_navigation_frame');
+  parent.add(frameMesh);
+
+  const signals = [
+    { x: -18.5, z: -18.5 }, { x: 18.5, z: -18.5 },
+    { x: -18.5, z: 18.5 }, { x: 18.5, z: 18.5 },
+  ];
+  if (switchyard) {
+    for (const signal of signals) {
+      signal.x = Math.sign(signal.x) * 22;
+      signal.z = Math.sign(signal.z) * 15.5;
+    }
+  }
+  const signalMesh = new THREE.InstancedMesh(
+    new THREE.OctahedronGeometry(switchyard ? 0.48 : 0.62, 0),
+    material(`${mapId.toUpperCase()}_NAV_SIGNAL`, signalColor, signalColor, 1.3),
+    signals.length,
+  );
+  signalMesh.name = `${mapId.toUpperCase()}_NAVIGATION_SIGNALS`;
+  signals.forEach((signal, index) => {
+    MATRIX.compose(
+      POSITION.set(signal.x, switchyard ? 8.9 : 6.75, signal.z),
+      QUATERNION.identity(),
+      SCALE.set(1, 1, 1),
+    );
+    signalMesh.setMatrixAt(index, MATRIX);
+  });
+  signalMesh.instanceMatrix.needsUpdate = true;
+  markRenderOnly(signalMesh, 'arena_navigation_signal');
+  parent.add(signalMesh);
+  return 2;
 }
 
 function addLandmark(
@@ -282,8 +354,12 @@ export function createOriginalArenaVisualContinuity(
   const colliderVisuals = createColliderVisuals(fixture, binding.mapId, group);
   const inlayCount = addRouteInlays(binding.mapId, group);
   const landmarkCount = addLandmark(binding, group);
+  const navigationStructureCount = addNavigationStructures(binding.mapId, group);
   const lightCount = addLighting(binding, group);
-  const meshCount = colliderVisuals.meshCount + inlayCount + landmarkCount;
+  const meshCount = colliderVisuals.meshCount
+    + inlayCount
+    + landmarkCount
+    + navigationStructureCount;
   Object.assign(group.userData, {
     displayName: binding.displayName,
     mapId: binding.mapId,

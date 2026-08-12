@@ -50,6 +50,12 @@ describe('original arena visual continuity', () => {
       expect(visual.humanAccepted).toBe(false);
       expect(visual.group.getObjectByName(landmark)).toBeDefined();
       expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_NAVIGATION_FRAMES`),
+      ).toBeDefined();
+      expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_NAVIGATION_SIGNALS`),
+      ).toBeDefined();
+      expect(
         visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_ROUTE_SIGNAL_INLAYS`)
           ?.userData.routeMeaning,
       ).toBe(routeMeaning);

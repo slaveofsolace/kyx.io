@@ -60,12 +60,19 @@
 
       <!-- Primary playable slice -->
     <main id="center-play" class="hidden">
+      <div class="lobby-arena-panorama" aria-hidden="true">
+        <div class="lobby-arena-panorama__tier lobby-arena-panorama__tier--far"></div>
+        <div class="lobby-arena-panorama__tier lobby-arena-panorama__tier--mid"></div>
+        <div class="lobby-arena-panorama__tier lobby-arena-panorama__tier--near"></div>
+        <div class="lobby-arena-panorama__portal"></div>
+        <div class="lobby-arena-panorama__route"></div>
+      </div>
       <section class="practice-launch-card" aria-labelledby="practice-title">
         <header class="practice-card-head">
           <div>
             <p class="practice-eyebrow">Current arena</p>
             <h1 id="practice-title">Relay</h1>
-            <p class="practice-summary">An open-sky combat campus with three readable tiers, weapons, abilities, and bots.</p>
+            <p class="practice-summary">Drop straight into an eight-combatant team match across three vertical routes.</p>
           </div>
         </header>
 
@@ -81,7 +88,7 @@
               <span><small>Players</small>Eight combatants</span>
             </div>
             <button id="play-btn" type="button" class="click-to-play" aria-label="Enter Relay"><span>Enter Relay</span><b aria-hidden="true">Enter</b></button>
-            <p class="practice-footnote">Practice with the same movement, loadouts, HUD, weapons, and abilities used online.</p>
+            <p class="practice-footnote">Move, shoot, use abilities, score, respawn, and rotate arenas without leaving the match.</p>
           </div>
         </div>
 
