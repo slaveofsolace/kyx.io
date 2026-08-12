@@ -196,7 +196,32 @@ export interface AuthorityRoomOptions {
   readonly reconnectGraceTicks?: number;
   readonly minimumConnectedPlayersToStart?: number;
   readonly spawnResolver?: AuthoritySpawnResolver;
+  /**
+   * Trusted host-only containment for a movement query that rejects a proposed
+   * step after the player's previously committed pose was still valid. Online
+   * uses this only for server-controlled bots; human input remains fail-closed.
+   */
+  readonly movementFailureRecovery?: AuthorityMovementFailureRecoveryPolicy;
   readonly combat?: AuthorityRoomCombatOptions;
+}
+
+export interface AuthorityMovementFailureV1 {
+  readonly schemaVersion: 1;
+  readonly playerId: string;
+  readonly authorityTick: number;
+  readonly feetPosition: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>;
+  readonly velocity: Readonly<{ readonly x: number; readonly y: number; readonly z: number }>;
+  readonly grounded: boolean;
+  readonly stance: MovementSimulationState['player']['stance'];
+  readonly cause: 'PHYSICS_DEPENETRATION_FAILED';
+}
+
+export type AuthorityMovementFailureRecoveryPolicy = (
+  failure: AuthorityMovementFailureV1,
+) => 'recover_spawn' | 'reject';
+
+export interface AuthorityMovementFailureRecoveryV1 extends AuthorityMovementFailureV1 {
+  readonly resolution: 'recover_spawn';
 }
 
 export interface AuthorityRoomCombatOptions {
@@ -399,6 +424,7 @@ export interface AuthorityRoomTickResult {
   readonly lifecycle: RoomLifecycle;
   readonly lifecycleTransitions: readonly RoomLifecycle[];
   readonly movementEvents: readonly MovementSemanticEvent[];
+  readonly movementFailureRecoveries?: readonly AuthorityMovementFailureRecoveryV1[];
   readonly queryMetrics: MovementQueryMetrics;
   readonly prunedPlayerIds: readonly string[];
   readonly combatEvents?: readonly AutoRifleEvent[];
@@ -1415,6 +1441,7 @@ export class AuthoritativeRoom {
   private readonly worldOcclusionPort: AuthorityWorldOcclusionPort | null;
   private readonly impulseGrenadeWorldPort: AuthorityImpulseGrenadeWorldPort | null;
   private readonly worldPortalPort: AuthorityWorldPortalPort | null;
+  private readonly movementFailureRecovery: AuthorityMovementFailureRecoveryPolicy | null;
   private tdmMatchState: AuthorityTdmMatchStateV1 | null = null;
   private activeTickMatchEvents: AuthorityTdmMatchEvent[] | null = null;
   private pendingMatchEvents: AuthorityTdmMatchEvent[] = [];
@@ -1497,6 +1524,13 @@ export class AuthoritativeRoom {
       feetPosition: Object.freeze({ x: 0, y: 0, z: 0 }),
       yawMilliDegrees: 0,
     }));
+    if (
+      options.movementFailureRecovery !== undefined
+      && typeof options.movementFailureRecovery !== 'function'
+    ) {
+      throw new TypeError('room movement failure recovery policy must be a function');
+    }
+    this.movementFailureRecovery = options.movementFailureRecovery ?? null;
     if (options.combat === undefined) {
       this.combatProfileId = null;
       this.hitscanCapabilityId = null;
@@ -2210,6 +2244,7 @@ export class AuthoritativeRoom {
   private recoverMovementPlayer(
     player: AuthorityPlayerRecord,
     authorityTick: number,
+    lastProcessedSequence: number = player.state.player.lastProcessedSequence,
   ): void {
     const spawn = this.spawnResolver(
       player.playerId,
@@ -2242,7 +2277,7 @@ export class AuthoritativeRoom {
       tick: asSimulationTick(authorityTick),
       player: {
         ...initial.player,
-        lastProcessedSequence: previous.lastProcessedSequence,
+        lastProcessedSequence,
         ticksSinceAcceptedCommand: previous.ticksSinceAcceptedCommand,
         slideCooldownTicksRemaining: previous.slideCooldownTicksRemaining,
         teleportCooldownTicksRemaining: previous.teleportCooldownTicksRemaining,
@@ -2294,6 +2329,7 @@ export class AuthoritativeRoom {
     const nextTick = this.tick + 1;
     asSimulationTick(nextTick);
     const movementEvents: MovementSemanticEvent[] = [];
+    const movementFailureRecoveries: AuthorityMovementFailureRecoveryV1[] = [];
     const combatEvents: AutoRifleEvent[] = [];
     const impulseGrenadeEvents: ImpulseGrenadeEvent[] = [];
     const abilityLoadoutEvents: (
@@ -2335,6 +2371,35 @@ export class AuthoritativeRoom {
             this.queries,
           );
         } catch (error) {
+          const cause = error instanceof Error ? error.message : 'UNKNOWN';
+          if (
+            cause === 'PHYSICS_DEPENETRATION_FAILED'
+            && this.movementFailureRecovery !== null
+          ) {
+            const failure: AuthorityMovementFailureV1 = deepFreeze({
+              schemaVersion: 1,
+              playerId: player.playerId,
+              authorityTick: nextTick,
+              feetPosition: previousState.player.feetPosition,
+              velocity: previousState.player.velocity,
+              grounded: previousState.player.grounded,
+              stance: previousState.player.stance,
+              cause,
+            });
+            const resolution = this.movementFailureRecovery(failure);
+            if (resolution === 'recover_spawn') {
+              const processedSequence = player.queue.exportCheckpoint().processedSequence;
+              this.recoverMovementPlayer(player, nextTick, processedSequence);
+              movementFailureRecoveries.push(deepFreeze({
+                ...failure,
+                resolution,
+              }));
+              continue;
+            }
+            if (resolution !== 'reject') {
+              throw new Error('AUTHORITY_MOVEMENT_FAILURE_RECOVERY_RESOLUTION_INVALID');
+            }
+          }
           throw new Error(`AUTHORITY_MOVEMENT_STEP_FAILED:${JSON.stringify({
             playerId: player.playerId,
             authorityTick: nextTick,
@@ -2342,7 +2407,7 @@ export class AuthoritativeRoom {
             velocity: previousState.player.velocity,
             grounded: previousState.player.grounded,
             stance: previousState.player.stance,
-            cause: error instanceof Error ? error.message : 'UNKNOWN',
+            cause,
           })}`, { cause: error });
         }
         abilityTeleportMovementEvents = result.events;
@@ -2773,6 +2838,9 @@ export class AuthoritativeRoom {
       lifecycle: this.phase,
       lifecycleTransitions: Object.freeze(lifecycleTransitions),
       movementEvents: Object.freeze(movementEvents),
+      ...(movementFailureRecoveries.length === 0
+        ? {}
+        : { movementFailureRecoveries: deepFreeze(movementFailureRecoveries) }),
       queryMetrics: Object.freeze(queryMetrics),
       prunedPlayerIds: Object.freeze(prunedPlayerIds),
       ...(this.combatProfileId === null

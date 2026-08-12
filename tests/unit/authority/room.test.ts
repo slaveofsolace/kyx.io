@@ -79,6 +79,86 @@ describe('authoritative room core', () => {
     expect(authority.protocolEntities()).toHaveLength(2);
   });
 
+  it('recovers only an explicitly authorized server bot from rejected movement without aborting the tick', () => {
+    const failures: string[] = [];
+    const queries = new FakeMovementQueryPort({
+      move: (request) => {
+        if (request.feetPosition.x === 2_000) {
+          throw new Error('PHYSICS_DEPENETRATION_FAILED');
+        }
+        return {
+          appliedTranslation: { ...request.desiredTranslation },
+          grounded: true,
+          hitCeiling: false,
+          support: null,
+          contacts: [],
+          shapeCasts: 1,
+          overlapTests: 0,
+        };
+      },
+    });
+    const authority = room({
+      queries,
+      spawnResolver: (_playerId, ordinal) => ({
+        feetPosition: { x: ordinal * 2_000, y: 0, z: 0 },
+      }),
+      movementFailureRecovery: (failure) => {
+        failures.push(failure.playerId);
+        return failure.playerId === 'player_B' ? 'recover_spawn' : 'reject';
+      },
+    });
+    join(authority, 'A');
+    join(authority, 'B');
+    authority.startMatch();
+    authority.enqueueInputBatch('connection_A', batch(0, 127));
+    authority.enqueueInputBatch('connection_B', batch(0, 127));
+
+    const tick = authority.advanceOneTick();
+
+    expect(tick.serverTick).toBe(1);
+    expect(tick.movementFailureRecoveries).toEqual([{
+      schemaVersion: 1,
+      playerId: 'player_B',
+      authorityTick: 1,
+      feetPosition: { x: 2_000, y: 0, z: 0 },
+      velocity: { x: 0, y: 0, z: 0 },
+      grounded: true,
+      stance: 'standing',
+      cause: 'PHYSICS_DEPENETRATION_FAILED',
+      resolution: 'recover_spawn',
+    }]);
+    expect(failures).toEqual(['player_B']);
+    const snapshot = authority.fullSnapshot();
+    expect(snapshot.players.find(({ playerId }) => playerId === 'player_A')
+      ?.movement.player.feetPosition.z).toBeGreaterThan(0);
+    expect(snapshot.players.find(({ playerId }) => playerId === 'player_B')
+      ?.movement).toMatchObject({
+        tick: 1,
+        player: {
+          feetPosition: { x: 2_000, y: 0, z: 0 },
+          velocity: { x: 0, y: 0, z: 0 },
+          lastProcessedSequence: 0,
+        },
+      });
+  });
+
+  it('keeps depenetration failures fatal when the trusted recovery policy rejects the player', () => {
+    const authority = room({
+      queries: new FakeMovementQueryPort({
+        move: () => {
+          throw new Error('PHYSICS_DEPENETRATION_FAILED');
+        },
+      }),
+      movementFailureRecovery: () => 'reject',
+    });
+    join(authority, 'A');
+    join(authority, 'B');
+    authority.startMatch();
+
+    expect(() => authority.advanceOneTick()).toThrow(/AUTHORITY_MOVEMENT_STEP_FAILED/u);
+    expect(authority.serverTick).toBe(0);
+  });
+
   it('processes overtaken input in sequence when its predecessor arrives inside 160 ms', () => {
     const authority = room({ activeTicks: 20 });
     join(authority, 'A');

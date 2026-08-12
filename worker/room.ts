@@ -1802,6 +1802,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
               ? workerCombatSpawn(resolvedOrdinal)
               : { feetPosition: this.spawnFor(resolvedOrdinal) };
           },
+          movementFailureRecovery: ({ playerId }) => (
+            this.serverBotPlayerIds.has(playerId) ? 'recover_spawn' : 'reject'
+          ),
           ...(mapCombat ? { maximumPlayers: 8 } : {}),
           ...(revision3Combat
             ? {
@@ -3531,6 +3534,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         const tickStartedAt = performance.now();
         this.enqueueRelayBotInputs();
         const tickResult = authority.advanceOneTick();
+        for (const recovery of tickResult.movementFailureRecoveries ?? []) {
+          console.warn('AUTHORITY_SERVER_BOT_MOVEMENT_RECOVERED', JSON.stringify(recovery));
+        }
         this.respawnEligibleCombatPlayers();
         const combatEvents = reliableCombatEvents(tickResult);
         for (const event of combatEvents) {
