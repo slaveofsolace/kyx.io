@@ -751,6 +751,14 @@ type OnlineSessionBinding =
       proof: OnlineAuthorityMapRoomProof;
     }>;
 
+interface OnlineSessionController {
+  dispose(): void;
+}
+
+type OnlineSessionContinuation = (
+  profile: OnlineAuthorityProfileSelection,
+) => Promise<void>;
+
 async function mountSession(
   body: HTMLBodyElement,
   content: HTMLElement,
@@ -758,7 +766,9 @@ async function mountSession(
   roomCode: string,
   mode: AuthorityEvidenceConfig['mode'],
   sessionBinding: OnlineSessionBinding,
-): Promise<void> {
+  continueToNextMatch: OnlineSessionContinuation,
+): Promise<OnlineSessionController> {
+  let disposed = false;
   body.dataset.onlineHud = 'arena-visor-v1';
   const selectedCombatPreset = Loadout.getCombatPreset();
   const allowedAuthorityWeaponSlots = new Set<number>(
@@ -1417,7 +1427,8 @@ async function mountSession(
         teleportButton,
         resumeButton,
       ]) button.disabled = true;
-      return;
+      world.dispose();
+      throw new Error(technicalDetail, { cause });
     }
   }
 
@@ -2474,9 +2485,30 @@ async function mountSession(
     queueMicrotask(() => playAgainButton.focus());
     return true;
   };
-  playAgainButton.addEventListener('click', () => {
-    window.location.assign(onlineCreatePath(mapProfile ?? defaultOnlineProfile()));
-  });
+  const requestNextMatch = async (): Promise<void> => {
+    if (disposed || playAgainButton.disabled) return;
+    playAgainButton.disabled = true;
+    resultOnlineButton.disabled = true;
+    const originalLabel = playAgainButton.textContent;
+    playAgainButton.textContent = 'Preparing next match…';
+    resultSummary.textContent = 'Allocating a fresh authority room.';
+    try {
+      await continueToNextMatch(mapProfile ?? defaultOnlineProfile());
+    } catch (cause) {
+      if (disposed) return;
+      resultSummary.textContent = cause instanceof Error
+        ? `Next match could not start: ${cause.message}`
+        : 'Next match could not start.';
+      body.dataset.onlinePreviewStatus = 'next-match-failed';
+    } finally {
+      if (!disposed) {
+        playAgainButton.disabled = false;
+        resultOnlineButton.disabled = false;
+        playAgainButton.textContent = originalLabel;
+      }
+    }
+  };
+  playAgainButton.addEventListener('click', requestNextMatch);
   resultOnlineButton.addEventListener('click', () => {
     window.location.assign(ONLINE_AUTHORITY_PATH);
   });
@@ -2484,6 +2516,7 @@ async function mountSession(
   let lastDiagnosticsRefresh = -Infinity;
   let animationFrame = 0;
   const render = (nowMilliseconds: number): void => {
+    if (disposed) return;
     const presentation = client.samplePresentation();
     const diagnostics = client.diagnostics();
     const joinedPlayerId = diagnostics.authority.playerId;
@@ -3009,7 +3042,9 @@ async function mountSession(
 
   updateInput();
   animationFrame = requestAnimationFrame(render);
-  window.addEventListener('pagehide', () => {
+  const dispose = (): void => {
+    if (disposed) return;
+    disposed = true;
     cancelAnimationFrame(animationFrame);
     window.removeEventListener('keydown', keyboardHandler);
     window.removeEventListener('keyup', keyboardHandler);
@@ -3025,6 +3060,7 @@ async function mountSession(
     document.removeEventListener('pointerlockchange', pointerLockChange);
     canvas.removeEventListener('pointerdown', canvasPointerDown);
     canvas.removeEventListener('contextmenu', preventCanvasContextMenu);
+    playAgainButton.removeEventListener('click', requestNextMatch);
     window.clearTimeout(feedbackTimeout);
     if (audioContext !== null) void audioContext.close();
     audioContext = null;
@@ -3035,7 +3071,10 @@ async function mountSession(
     threeRuntime?.dispose();
     world.dispose();
     delete (window as { __KYX_ONLINE_PREVIEW__?: unknown }).__KYX_ONLINE_PREVIEW__;
-  }, { once: true });
+    window.removeEventListener('pagehide', dispose);
+  };
+  window.addEventListener('pagehide', dispose, { once: true });
+  return Object.freeze({ dispose });
 }
 
 export async function mountOnlineAuthorityRoute(
@@ -3079,6 +3118,65 @@ export async function mountOnlineAuthorityRoute(
   let roomCode: string;
   let mode: AuthorityEvidenceConfig['mode'];
   let sessionBinding: OnlineSessionBinding;
+  let activeSession: OnlineSessionController | null = null;
+  let continuationPending = false;
+  let routeDisposed = false;
+  const disposeRoute = (): void => {
+    if (routeDisposed) return;
+    routeDisposed = true;
+    activeSession?.dispose();
+    activeSession = null;
+  };
+  window.addEventListener('pagehide', disposeRoute, { once: true });
+  const continueToNextMatch: OnlineSessionContinuation = async (profile) => {
+    if (routeDisposed) throw new Error('ONLINE_ROUTE_DISPOSED');
+    if (continuationPending) throw new Error('ONLINE_NEXT_MATCH_ALREADY_PENDING');
+    continuationPending = true;
+    try {
+      const proof = await createOnlineAuthorityMapCombatRoom(
+        availability.origin,
+        profile,
+      );
+      if (routeDisposed) throw new Error('ONLINE_ROUTE_DISPOSED');
+      activeSession?.dispose();
+      activeSession = null;
+      content.replaceChildren();
+      content.classList.remove('online-preview__content--session');
+      delete body.dataset.onlineMatchResult;
+      body.dataset.onlinePreviewStatus = 'initializing-next-match';
+      window.history.replaceState(null, '', onlineJoinPath(proof.roomCode, profile));
+      const nextSession = await mountSession(
+        body,
+        content,
+        availability.origin,
+        proof.roomCode,
+        'create',
+        Object.freeze({ kind: 'authority_map', proof }),
+        continueToNextMatch,
+      );
+      if (routeDisposed) {
+        nextSession.dispose();
+        throw new Error('ONLINE_ROUTE_DISPOSED');
+      }
+      activeSession = nextSession;
+    } catch (cause) {
+      if (!routeDisposed && activeSession === null) {
+        content.classList.remove('online-preview__content--session');
+        renderNotice(
+          content,
+          'Next match could not start.',
+          cause instanceof Error ? cause.message : String(cause),
+          profile,
+          'TRY AGAIN',
+          onlineCreatePath(profile),
+        );
+        body.dataset.onlinePreviewStatus = 'next-match-failed';
+      }
+      throw cause;
+    } finally {
+      continuationPending = false;
+    }
+  };
   if (request.kind === 'create') {
     body.dataset.onlinePreviewStatus = 'creating-room';
     renderNotice(
@@ -3101,6 +3199,7 @@ export async function mountOnlineAuthorityRoute(
         sessionBinding = Object.freeze({ kind: 'flat_run_revision_3' });
       }
     } catch (cause) {
+      if (routeDisposed) return;
       body.dataset.onlinePreviewStatus = 'create-failed';
       renderNotice(
         content,
@@ -3140,6 +3239,7 @@ export async function mountOnlineAuthorityRoute(
         );
         sessionBinding = Object.freeze({ kind: 'authority_map', proof });
       } catch (cause) {
+        if (routeDisposed) return;
         body.dataset.onlinePreviewStatus = 'room-profile-mismatch';
         renderNotice(
           content,
@@ -3157,15 +3257,22 @@ export async function mountOnlineAuthorityRoute(
 
   body.dataset.onlinePreviewStatus = 'initializing';
   try {
-    await mountSession(
+    const initialSession = await mountSession(
       body,
       content,
       availability.origin,
       roomCode,
       mode,
       sessionBinding,
+      continueToNextMatch,
     );
+    if (routeDisposed) {
+      initialSession.dispose();
+      return;
+    }
+    activeSession = initialSession;
   } catch (cause) {
+    if (routeDisposed) return;
     body.dataset.onlinePreviewStatus = 'client-world-mismatch';
     renderNotice(
       content,
