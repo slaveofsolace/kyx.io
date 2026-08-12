@@ -112,7 +112,10 @@ export function createBrowserAuthorityEvidenceTransport(): AuthorityEvidenceTran
         callbacks.onError('authority socket delivered an unsupported payload type');
       });
       socket.addEventListener('close', (event) => callbacks.onClose(event.code, event.reason));
-      socket.addEventListener('error', () => callbacks.onError('authority socket transport error'));
+      // A browser WebSocket error carries no actionable detail and is followed
+      // by the close event that owns the recoverable code/reason. Converting
+      // the generic event into a fatal client error here would pre-empt bounded
+      // room resume before the close can be classified.
       return Object.freeze({
         state: () => browserSocketState(socket),
         send: (payload: string) => socket.send(payload),
