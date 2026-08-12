@@ -1096,14 +1096,16 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.writeSocketAttachment(webSocket, nextAttachment);
         const debt = this.evaluateSnapshotDebt(webSocket, nextAttachment, now);
         if (debt === null) return;
-        if (debt.action === 'coalesce') {
-          this.transportMetrics.snapshotAckDebtSnapshotsCoalesced += 1;
-          return;
-        }
         if (debt.action === 'evict') {
           this.evictSnapshotAckDebtor(webSocket, debt.attachment);
           return;
         }
+        // An explicit recovery request is control traffic. Silently
+        // coalescing it leaves the client waiting forever with a pending
+        // request ID, especially when its immediately preceding ACK is still
+        // queued in this Durable Object. The independent 500 ms request rate
+        // limit bounds this full-snapshot response; routine tick broadcasts
+        // continue to coalesce under ACK debt.
         if (debt.action === 'fallback') {
           this.transportMetrics.snapshotAckTimeoutFallbacks += 1;
         }

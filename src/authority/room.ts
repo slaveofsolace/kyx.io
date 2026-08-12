@@ -1862,6 +1862,32 @@ export class AuthoritativeRoom {
     player.connectionId = null;
     player.disconnectedAtTick = this.tick;
     player.queue.resetToProcessedSequence(player.state.player.lastProcessedSequence);
+    player.state = {
+      ...player.state,
+      player: {
+        ...player.state.player,
+        velocity: {
+          x: asMillimetersPerSecond(0),
+          y: asMillimetersPerSecond(0),
+          z: asMillimetersPerSecond(0),
+        },
+        integrationRemainders: {
+          positionX: 0,
+          positionY: 0,
+          positionZ: 0,
+          planarAcceleration: 0,
+          gravity: 0,
+        },
+        intent: {
+          ...player.state.player.intent,
+          moveX: asQuantizedAxis(0),
+          moveZ: asQuantizedAxis(0),
+          heldButtons: 0,
+          pressedButtons: 0,
+          releasedButtons: 0,
+        },
+      },
+    };
     return true;
   }
 

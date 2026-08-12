@@ -701,7 +701,8 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
 
   it('keeps normalized consequences identical across four real WSS delivery profiles', async () => {
     const profiles = ['baseline', 'loss', 'reorder', 'duplicate'] as const;
-    const results = await Promise.all(profiles.map(runWorkerImpairmentProfile));
+    const results = [];
+    for (const profile of profiles) results.push(await runWorkerImpairmentProfile(profile));
     expect(results.map(({ consequence }) => consequence)).toEqual([
       results[0]!.consequence,
       results[0]!.consequence,

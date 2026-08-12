@@ -81,7 +81,7 @@ describe('online Inkfall revision-2 client world', () => {
       fixtureHash: '0000000000000000',
     } as unknown as OnlineInkfallRevision2MapBinding;
     await expect(createOnlineInkfallRevision2World(forged)).rejects.toThrow(
-      'ONLINE_INKFALL_REVISION_2_CLIENT_WORLD_MISMATCH',
+      'ONLINE_INKFALL_FOUNDRY_REVISION_2_CLIENT_WORLD_MISMATCH',
     );
   });
 });

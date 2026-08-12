@@ -130,6 +130,20 @@ describe('authoritative room core', () => {
     authority.enqueueInputBatch('connection_A', batch(0, 127));
     authority.advanceOneTick();
     expect(authority.disconnectConnection('connection_A')).toBe(true);
+    const disconnected = authority.fullSnapshot().players.find(({ playerId }) => (
+      playerId === 'player_A'
+    ));
+    expect(disconnected?.movement.player).toMatchObject({
+      velocity: { x: 0, y: 0, z: 0 },
+      integrationRemainders: {
+        positionX: 0,
+        positionY: 0,
+        positionZ: 0,
+        planarAcceleration: 0,
+        gravity: 0,
+      },
+      intent: { moveX: 0, moveZ: 0, heldButtons: 0 },
+    });
     expect(authority.joinNewPlayer({
       playerId: 'player_A',
       connectionId: 'connection_EVIL',
@@ -145,7 +159,21 @@ describe('authoritative room core', () => {
     expect(reconnected).toMatchObject({
       ok: true,
       connectionMode: 'resumed',
-      snapshot: { kind: 'authority_full_snapshot', serverTick: 1 },
+      snapshot: {
+        kind: 'authority_full_snapshot',
+        serverTick: 1,
+        players: expect.arrayContaining([
+          expect.objectContaining({
+            playerId: 'player_A',
+            movement: expect.objectContaining({
+              player: expect.objectContaining({
+                feetPosition: disconnected?.movement.player.feetPosition,
+                velocity: { x: 0, y: 0, z: 0 },
+              }),
+            }),
+          }),
+        ]),
+      },
     });
     expect(authority.resumePlayer({
       playerId: 'player_A',
