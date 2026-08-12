@@ -15,6 +15,8 @@ import {
   type ServerMessage,
 } from '../../src/net';
 import {
+  CROWNPOINT_REV1_COMBAT_PROFILE,
+  CROWNPOINT_REVISION_1_WORKER_MAP_BINDING,
   G5_INKFALL_REV4_COMBAT_PROFILE,
   G5_INKFALL_REV5_COMBAT_PROFILE,
   INKFALL_REVISION_2_WORKER_MAP_BINDING,
@@ -26,6 +28,8 @@ import {
   P58D_REV3_COMBAT_PROFILE,
   RELAY_REV1_COMBAT_PROFILE,
   RELAY_REVISION_1_WORKER_MAP_BINDING,
+  SWITCHYARD_REV1_COMBAT_PROFILE,
+  SWITCHYARD_REVISION_1_WORKER_MAP_BINDING,
 } from '../../worker/combatRuntime';
 import type { KyxAuthorityEnv } from '../../worker/env';
 import { RELAY_AUTHORITY_PLAYER_SLOT_IDS } from '../../worker/relayBotSlots';
@@ -49,6 +53,8 @@ interface RoomCreated {
     | typeof INKFALL_REVISION_2_WORKER_MAP_BINDING
     | typeof INKFALL_REVISION_3_WORKER_MAP_BINDING
     | typeof INKFALL_REVISION_4_WORKER_MAP_BINDING
+    | typeof SWITCHYARD_REVISION_1_WORKER_MAP_BINDING
+    | typeof CROWNPOINT_REVISION_1_WORKER_MAP_BINDING
     | typeof RELAY_REVISION_1_WORKER_MAP_BINDING;
 }
 
@@ -701,6 +707,70 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     expect(checkpoint.sessionGenerations).toHaveLength(8);
     expect(first.decodeErrors).toEqual([]);
     expect(second.decodeErrors).toEqual([]);
+  }, 30_000);
+
+  it.each([
+    {
+      profile: SWITCHYARD_REV1_COMBAT_PROFILE,
+      binding: SWITCHYARD_REVISION_1_WORKER_MAP_BINDING,
+      mapId: 'switchyard',
+      spawn: { x: -26_000, y: 0, z: 14_000 },
+      yawMilliDegrees: 90_000,
+    },
+    {
+      profile: CROWNPOINT_REV1_COMBAT_PROFILE,
+      binding: CROWNPOINT_REVISION_1_WORKER_MAP_BINDING,
+      mapId: 'crownpoint',
+      spawn: { x: -21_000, y: 0, z: 11_000 },
+      yawMilliDegrees: 90_000,
+    },
+  ] as const)('creates an eight-slot $mapId authority room', async ({
+    profile,
+    binding,
+    mapId,
+    spawn,
+    yawMilliDegrees,
+  }) => {
+    const room = await createRoom(profile);
+    expect(room).toMatchObject({ roomProfile: profile, mapBinding: binding });
+    const socket = await connectSocket(room.socketPath);
+    const welcome = await waitForType(socket, 'welcome');
+    expect(welcome.simulationIdentity).toMatchObject({
+      mapId,
+      fixtureId: binding.fixtureId,
+      fixtureHash: binding.fixtureHash,
+    });
+    sendClient(socket, joinMessage(room.roomCode, `req.join.${mapId}`, `${mapId} player`));
+    const joined = await waitForType(
+      socket,
+      'joinAccepted',
+      ({ requestId }) => requestId === `req.join.${mapId}`,
+    );
+    const snapshot = await waitForType(
+      socket,
+      'fullSnapshot',
+      ({ localReconciliation }) => localReconciliation.player.id === joined.playerId,
+    );
+    expect(snapshot.localReconciliation.player).toMatchObject({
+      feetPosition: spawn,
+      yawMilliDegrees,
+    });
+    expect(snapshot.combat?.players).toHaveLength(8);
+    const metrics = await waitForMetrics(
+      room,
+      (candidate) => candidate.connectedPlayers === 8,
+      `${mapId} one-human bot population`,
+    );
+    expect(metrics).toMatchObject({
+      roomProfile: profile,
+      mapBinding: binding,
+      botPopulation: {
+        strategy: `${mapId}_authority_safe_patrol_slot_takeover_v1`,
+        targetPlayers: 8,
+        serverControlledPlayers: 7,
+        connectedHumanPlayers: 1,
+      },
+    });
   }, 30_000);
 
   it('gates authoritative combat scoreboards across full, delta, and resumed snapshots', async () => {

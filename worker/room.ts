@@ -60,6 +60,7 @@ import {
   G5_INKFALL_REV4_COMBAT_PROFILE,
   G5_INKFALL_REV5_COMBAT_PROFILE,
   createInkfallWorkerCombatOptions,
+  createOriginalArenaWorkerCombatOptions,
   createRelayWorkerCombatOptions,
   combatSnapshotFromAuthority,
   createWorkerCombatOptions,
@@ -70,10 +71,13 @@ import {
   inkfallWorkerFixture,
   inkfallWorkerMapBinding,
   isInkfallWorkerRoomProfile,
+  isOriginalArenaWorkerRoomProfile,
   isPersistentMapWorkerRoomProfile,
   isRelayWorkerRoomProfile,
   isOptInWorkerRoomProfile,
   reliableCombatEvents,
+  originalArenaWorkerCombatSpawn,
+  originalArenaWorkerFixture,
   relayWorkerCombatSpawn,
   relayWorkerFixture,
   workerMapBinding,
@@ -113,10 +117,10 @@ import {
 } from './reliableEvents';
 import { SnapshotBaselineStore } from './snapshotBaselines';
 import {
-  RELAY_AUTHORITY_BOT_STRATEGY,
   RELAY_AUTHORITY_PLAYER_SLOT_IDS,
+  authorityBotStrategy,
   nextRelayAuthorityBotTakeover,
-  relayAuthorityBotInput,
+  authorityBotInput,
   relayAuthorityBotConnectionId,
   relayAuthorityPlayerSlotOrdinal,
 } from './relayBotSlots';
@@ -647,7 +651,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             ? {
                 botPopulation: Object.freeze({
                   schemaVersion: 1,
-                  strategy: RELAY_AUTHORITY_BOT_STRATEGY,
+                  strategy: authorityBotStrategy(
+                    this.requireAuthority().identity.mapId,
+                  ),
                   targetPlayers: RELAY_AUTHORITY_PLAYER_SLOT_IDS.length,
                   serverControlledPlayers: this.serverBotPlayerIds.size,
                   connectedHumanPlayers: this.requireAuthority().fullSnapshot().players.filter(
@@ -1588,11 +1594,16 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         const relayProfile = isRelayWorkerRoomProfile(selectedProfile)
           ? selectedProfile
           : null;
-        const persistentMapProfile = inkfallProfile ?? relayProfile;
+        const originalArenaProfile = isOriginalArenaWorkerRoomProfile(selectedProfile)
+          ? selectedProfile
+          : null;
+        const persistentMapProfile = inkfallProfile ?? originalArenaProfile ?? relayProfile;
         const mapCombat = persistentMapProfile !== null;
         const world = RapierMovementWorld.createWithRuntime(
           relayProfile !== null
             ? relayWorkerFixture()
+            : originalArenaProfile !== null
+              ? originalArenaWorkerFixture(originalArenaProfile)
             : inkfallProfile !== null
               ? inkfallWorkerFixture(inkfallProfile)
             : getPhysicsFixture('flat_run'),
@@ -1757,6 +1768,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             if (relayProfile !== null) {
               return relayWorkerCombatSpawn(resolvedOrdinal);
             }
+            if (originalArenaProfile !== null) {
+              return originalArenaWorkerCombatSpawn(resolvedOrdinal, originalArenaProfile);
+            }
             if (inkfallProfile !== null) {
               if (restoredOrdinal !== undefined) {
                 return inkfallWorkerCombatSpawn(restoredOrdinal, inkfallProfile);
@@ -1783,6 +1797,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             ? {
                 combat: relayProfile !== null
                   ? createRelayWorkerCombatOptions(world)
+                  : originalArenaProfile !== null
+                    ? createOriginalArenaWorkerCombatOptions(world, originalArenaProfile)
                   : inkfallProfile !== null
                     ? createInkfallWorkerCombatOptions(world, inkfallProfile)
                   : createWorkerCombatOptions(),
@@ -1833,7 +1849,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   }
 
   private relayBotPopulationEnabled(): boolean {
-    return isRelayWorkerRoomProfile(this.roomProfile);
+    return isRelayWorkerRoomProfile(this.roomProfile)
+      || isOriginalArenaWorkerRoomProfile(this.roomProfile);
   }
 
   private async ensureRelayBotPopulationLocked(): Promise<void> {
@@ -2004,10 +2021,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       const ordinal = relayAuthorityPlayerSlotOrdinal(playerId);
       if (ordinal === null) throw new Error('RELAY_BOT_SLOT_ID_INVALID');
       const sequence = this.serverBotInputSequences.get(playerId) ?? 0;
-      const input = relayAuthorityBotInput(
+      const input = authorityBotInput(
         snapshot,
         playerId,
         this.serverBotHeldButtons.get(playerId) ?? 0,
+        snapshot.identity.mapId,
       );
       const message: InputBatchMessage = Object.freeze({
         protocolVersion: PROTOCOL_VERSION,

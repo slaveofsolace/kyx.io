@@ -10,6 +10,8 @@ import {
   type OnlineInkfallRevision2MapBinding,
   type OnlineInkfallRevision4MapBinding,
   type OnlineInkfallRevision5MapBinding,
+  type OnlineOriginalArenaMapBinding,
+  type OnlineOriginalArenaProfileSelection,
   type OnlineRelayMapBinding,
 } from './onlineAuthorityProfiles';
 
@@ -44,6 +46,12 @@ export interface OnlineRelayRoomProof {
   readonly mapBinding: OnlineRelayMapBinding;
 }
 
+export interface OnlineOriginalArenaRoomProof {
+  readonly roomCode: string;
+  readonly roomProfile: OnlineOriginalArenaProfileSelection;
+  readonly mapBinding: OnlineOriginalArenaMapBinding;
+}
+
 export type OnlineInkfallRoomProof =
   | OnlineInkfallRevision2RoomProof
   | OnlineInkfallRevision4RoomProof
@@ -51,6 +59,7 @@ export type OnlineInkfallRoomProof =
 
 export type OnlineAuthorityMapRoomProof =
   | OnlineInkfallRoomProof
+  | OnlineOriginalArenaRoomProof
   | OnlineRelayRoomProof;
 
 type OnlineInkfallRoomProofFor<Profile extends OnlineAuthorityProfileSelection> =
@@ -63,7 +72,9 @@ type OnlineInkfallRoomProofFor<Profile extends OnlineAuthorityProfileSelection> 
 type OnlineAuthorityMapRoomProofFor<Profile extends OnlineAuthorityProfileSelection> =
   Profile extends typeof ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
     ? OnlineRelayRoomProof
-    : OnlineInkfallRoomProofFor<Profile>;
+    : Profile extends OnlineInkfallProfileSelection
+      ? OnlineInkfallRoomProofFor<Profile>
+      : OnlineOriginalArenaRoomProof;
 
 export interface OnlineAuthorityFetchResponse {
   readonly ok: boolean;
@@ -382,9 +393,17 @@ export async function createOnlineAuthorityMapCombatRoom(
   profile: OnlineAuthorityProfileSelection,
   fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
 ): Promise<OnlineAuthorityMapRoomProof> {
-  return profile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
-    ? createOnlineRelayCombatRoom(authorityOrigin, fetchRequest)
-    : createOnlineInkfallCombatRoom(authorityOrigin, profile, fetchRequest);
+  if (profile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID) {
+    return createOnlineRelayCombatRoom(authorityOrigin, fetchRequest);
+  }
+  if (
+    profile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
+    || profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    || profile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+  ) {
+    return createOnlineInkfallCombatRoom(authorityOrigin, profile, fetchRequest);
+  }
+  return createProfileRoom(authorityOrigin, profile, fetchRequest);
 }
 
 export async function verifyOnlineAuthorityMapCombatRoom(
@@ -393,12 +412,20 @@ export async function verifyOnlineAuthorityMapCombatRoom(
   profile: OnlineAuthorityProfileSelection,
   fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
 ): Promise<OnlineAuthorityMapRoomProof> {
-  return profile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID
-    ? verifyOnlineRelayCombatRoom(authorityOrigin, roomCode, fetchRequest)
-    : verifyOnlineInkfallCombatRoom(
+  if (profile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID) {
+    return verifyOnlineRelayCombatRoom(authorityOrigin, roomCode, fetchRequest);
+  }
+  if (
+    profile === ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID
+    || profile === ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID
+    || profile === ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
+  ) {
+    return verifyOnlineInkfallCombatRoom(
         authorityOrigin,
         roomCode,
         profile,
         fetchRequest,
-      );
+    );
+  }
+  return verifyProfileRoom(authorityOrigin, roomCode, profile, fetchRequest);
 }

@@ -13,7 +13,9 @@ import {
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV4_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID,
+  ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID,
   ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+  ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID,
 } from '../../../src/app/onlineAuthorityProfiles';
 
 describe('resolveOnlineAuthorityAvailability', () => {
@@ -132,6 +134,23 @@ describe('parseOnlineAuthorityRequest', () => {
     });
   });
 
+  it.each([
+    ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID,
+    ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID,
+  ])('parses original rotating arena profile %s', (profile) => {
+    expect(parseOnlineAuthorityRequest(`?mode=create&profile=${profile}`)).toEqual({
+      kind: 'create',
+      profile,
+    });
+    expect(parseOnlineAuthorityRequest(
+      `?mode=join&room=kyx-map234&profile=${profile}`,
+    )).toEqual({
+      kind: 'join',
+      roomCode: 'KYX-MAP234',
+      profile,
+    });
+  });
+
   it('fails closed for malformed, repeated, or unknown options', () => {
     for (const value of [
       '?mode=join',
@@ -170,6 +189,12 @@ describe('online URL and display-name boundaries', () => {
     );
     expect(onlineCreatePath(ONLINE_RELAY_REV1_COMBAT_PROFILE_ID)).toBe(
       `/online?mode=create&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}`,
+    );
+    expect(onlineCreatePath(ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID)).toBe(
+      `/online?mode=create&profile=${ONLINE_SWITCHYARD_REV1_COMBAT_PROFILE_ID}`,
+    );
+    expect(onlineCreatePath(ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID)).toBe(
+      `/online?mode=create&profile=${ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID}`,
     );
     expect(() => onlineJoinPath('not-a-room')).toThrow(/invalid/u);
   });

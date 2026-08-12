@@ -1,9 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  CROWNPOINT_AUTHORITY_BOT_PATROL_LANES,
   RELAY_AUTHORITY_BOT_PATROL_LANES,
   RELAY_AUTHORITY_BOT_STRATEGY,
   RELAY_AUTHORITY_PLAYER_SLOT_IDS,
+  SWITCHYARD_AUTHORITY_BOT_PATROL_LANES,
+  SWITCHYARD_AUTHORITY_BOT_STRATEGY,
+  CROWNPOINT_AUTHORITY_BOT_STRATEGY,
+  authorityBotStrategy,
+  authorityBotPatrolDecision,
   nextRelayAuthorityBotTakeover,
   relayAuthorityBotConnectionId,
   relayAuthorityBotPatrolDecision,
@@ -52,19 +58,44 @@ describe('Relay authority bot slots', () => {
     ]);
   });
 
+  it('reports a truthful map-specific strategy identity', () => {
+    expect(authorityBotStrategy('relay')).toBe(RELAY_AUTHORITY_BOT_STRATEGY);
+    expect(authorityBotStrategy('switchyard')).toBe(SWITCHYARD_AUTHORITY_BOT_STRATEGY);
+    expect(authorityBotStrategy('crownpoint')).toBe(CROWNPOINT_AUTHORITY_BOT_STRATEGY);
+    expect(() => authorityBotStrategy('unknown')).toThrow(/does not support/u);
+  });
+
   it('pins one bounded clear-floor patrol lane per stable slot', () => {
-    expect(RELAY_AUTHORITY_BOT_PATROL_LANES).toHaveLength(8);
-    expect(new Set(RELAY_AUTHORITY_BOT_PATROL_LANES.map(({ laneId }) => laneId)).size).toBe(8);
-    for (const patrol of RELAY_AUTHORITY_BOT_PATROL_LANES) {
-      for (const anchor of patrol.anchors) {
-        expect(anchor.x).toBeGreaterThanOrEqual(patrol.minimum.x);
-        expect(anchor.x).toBeLessThanOrEqual(patrol.maximum.x);
-        expect(anchor.y).toBeGreaterThanOrEqual(patrol.minimum.y);
-        expect(anchor.y).toBeLessThanOrEqual(patrol.maximum.y);
-        expect(anchor.z).toBeGreaterThanOrEqual(patrol.minimum.z);
-        expect(anchor.z).toBeLessThanOrEqual(patrol.maximum.z);
+    for (const lanes of [
+      RELAY_AUTHORITY_BOT_PATROL_LANES,
+      SWITCHYARD_AUTHORITY_BOT_PATROL_LANES,
+      CROWNPOINT_AUTHORITY_BOT_PATROL_LANES,
+    ]) {
+      expect(lanes).toHaveLength(8);
+      expect(new Set(lanes.map(({ laneId }) => laneId)).size).toBe(8);
+      for (const patrol of lanes) {
+        for (const anchor of patrol.anchors) {
+          expect(anchor.x).toBeGreaterThanOrEqual(patrol.minimum.x);
+          expect(anchor.x).toBeLessThanOrEqual(patrol.maximum.x);
+          expect(anchor.y).toBeGreaterThanOrEqual(patrol.minimum.y);
+          expect(anchor.y).toBeLessThanOrEqual(patrol.maximum.y);
+          expect(anchor.z).toBeGreaterThanOrEqual(patrol.minimum.z);
+          expect(anchor.z).toBeLessThanOrEqual(patrol.maximum.z);
+        }
       }
     }
+  });
+
+  it.each([
+    ['switchyard', { x: -26_000, y: 0, z: 14_000 }, 'switchyard_west_north'],
+    ['crownpoint', { x: -21_000, y: 0, z: 11_000 }, 'crownpoint_west_north'],
+  ] as const)('selects the %s authored patrol contract', (mapId, feet, laneId) => {
+    const playerId = 'player.relay.slot.01';
+    expect(authorityBotPatrolDecision(
+      patrolSnapshot(playerId, feet),
+      playerId,
+      mapId,
+    )).toMatchObject({ laneId, active: true });
   });
 
   it('moves toward a lane anchor but fails closed outside the authored floor inset', () => {

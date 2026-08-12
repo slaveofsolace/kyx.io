@@ -20,6 +20,18 @@ import {
   type ImpulseGrenadeCollisionSafeImpulseRequestV1,
 } from '../src/authority';
 import {
+  CROWNPOINT_AUTHORITY_MAP_BINDING,
+  CROWNPOINT_AUTHORITY_PROFILE_ID,
+  SWITCHYARD_AUTHORITY_MAP_BINDING,
+  SWITCHYARD_AUTHORITY_PROFILE_ID,
+  createOriginalArenaAuthorityCombatOptions,
+  isOriginalArenaAuthorityProfile,
+  originalArenaAuthorityFixture,
+  originalArenaAuthorityMapBinding,
+  originalArenaAuthoritySpawn,
+  type OriginalArenaAuthorityProfile,
+} from '../src/authority/originalArenaAuthority';
+import {
   INKFALL_AUTHORITY_MAP_IDENTITY_V2,
   INKFALL_AUTHORITY_MAP_IDENTITY_V3,
   INKFALL_AUTHORITY_MAP_IDENTITY_V4,
@@ -60,6 +72,8 @@ export const G5_INKFALL_REV4_COMBAT_PROFILE =
 export const G5_INKFALL_REV5_COMBAT_PROFILE =
   INKFALL_REVISION_5_AUTHORITY_PROFILE_ID;
 export const RELAY_REV1_COMBAT_PROFILE = RELAY_AUTHORITY_PROFILE_ID;
+export const SWITCHYARD_REV1_COMBAT_PROFILE = SWITCHYARD_AUTHORITY_PROFILE_ID;
+export const CROWNPOINT_REV1_COMBAT_PROFILE = CROWNPOINT_AUTHORITY_PROFILE_ID;
 export const P58D_COMBAT_PROFILE_HEADER = 'x-kyx-evidence-profile' as const;
 export const INTERNAL_ROOM_PROFILE_HEADER = 'x-kyx-room-profile' as const;
 export const DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID =
@@ -70,10 +84,13 @@ export type OptInWorkerRoomProfile =
   | typeof P511_INKFALL_REV2_COMBAT_PROFILE
   | typeof G5_INKFALL_REV4_COMBAT_PROFILE
   | typeof G5_INKFALL_REV5_COMBAT_PROFILE
+  | typeof SWITCHYARD_REV1_COMBAT_PROFILE
+  | typeof CROWNPOINT_REV1_COMBAT_PROFILE
   | typeof RELAY_REV1_COMBAT_PROFILE;
 
 export type WorkerRoomProfile = OptInWorkerRoomProfile | null;
 export type InkfallWorkerRoomProfile = InkfallAuthorityProfile;
+export type OriginalArenaWorkerRoomProfile = OriginalArenaAuthorityProfile;
 export const INKFALL_REVISION_2_WORKER_MAP_BINDING =
   INKFALL_REVISION_2_AUTHORITY_MAP_BINDING;
 export const INKFALL_REVISION_3_WORKER_MAP_BINDING =
@@ -81,6 +98,8 @@ export const INKFALL_REVISION_3_WORKER_MAP_BINDING =
 export const INKFALL_REVISION_4_WORKER_MAP_BINDING =
   INKFALL_REVISION_4_AUTHORITY_MAP_BINDING;
 export const RELAY_REVISION_1_WORKER_MAP_BINDING = RELAY_AUTHORITY_MAP_BINDING;
+export const SWITCHYARD_REVISION_1_WORKER_MAP_BINDING = SWITCHYARD_AUTHORITY_MAP_BINDING;
+export const CROWNPOINT_REVISION_1_WORKER_MAP_BINDING = CROWNPOINT_AUTHORITY_MAP_BINDING;
 
 export function isInkfallWorkerRoomProfile(
   value: WorkerRoomProfile,
@@ -98,18 +117,28 @@ export function isRelayWorkerRoomProfile(
   return isRelayAuthorityProfile(value);
 }
 
+export function isOriginalArenaWorkerRoomProfile(
+  value: WorkerRoomProfile,
+): value is OriginalArenaWorkerRoomProfile {
+  return isOriginalArenaAuthorityProfile(value);
+}
+
 export function isPersistentMapWorkerRoomProfile(
   value: WorkerRoomProfile,
-): value is InkfallWorkerRoomProfile | typeof RELAY_REV1_COMBAT_PROFILE {
-  return isInkfallWorkerRoomProfile(value) || isRelayWorkerRoomProfile(value);
+): value is InkfallWorkerRoomProfile | OriginalArenaWorkerRoomProfile | typeof RELAY_REV1_COMBAT_PROFILE {
+  return isInkfallWorkerRoomProfile(value)
+    || isOriginalArenaWorkerRoomProfile(value)
+    || isRelayWorkerRoomProfile(value);
 }
 
 export function workerMapBinding(
-  profile: InkfallWorkerRoomProfile | typeof RELAY_REV1_COMBAT_PROFILE,
+  profile: InkfallWorkerRoomProfile | OriginalArenaWorkerRoomProfile | typeof RELAY_REV1_COMBAT_PROFILE,
 ) {
-  return isRelayWorkerRoomProfile(profile)
-    ? RELAY_REVISION_1_WORKER_MAP_BINDING
-    : inkfallWorkerMapBinding(profile);
+  if (isRelayWorkerRoomProfile(profile)) return RELAY_REVISION_1_WORKER_MAP_BINDING;
+  if (isOriginalArenaWorkerRoomProfile(profile)) {
+    return originalArenaAuthorityMapBinding(profile);
+  }
+  return inkfallWorkerMapBinding(profile);
 }
 
 export function isP58DCombatProfile(value: string | null): boolean {
@@ -123,6 +152,8 @@ export function isOptInWorkerRoomProfile(
     || value === P511_INKFALL_REV2_COMBAT_PROFILE
     || value === G5_INKFALL_REV4_COMBAT_PROFILE
     || value === G5_INKFALL_REV5_COMBAT_PROFILE
+    || value === SWITCHYARD_REV1_COMBAT_PROFILE
+    || value === CROWNPOINT_REV1_COMBAT_PROFILE
     || value === RELAY_REV1_COMBAT_PROFILE;
 }
 
@@ -148,6 +179,18 @@ export function inferWorkerRoomProfileFromIdentity(
     && identity.fixtureId === RELAY_AUTHORITY_IDENTITY.fixtureId
     && identity.fixtureHash === RELAY_AUTHORITY_IDENTITY.fixtureHash
   ) return RELAY_REV1_COMBAT_PROFILE;
+  if (
+    revision3Combat
+    && identity.mapId === SWITCHYARD_AUTHORITY_MAP_BINDING.mapId
+    && identity.fixtureId === SWITCHYARD_AUTHORITY_MAP_BINDING.fixtureId
+    && identity.fixtureHash === SWITCHYARD_AUTHORITY_MAP_BINDING.fixtureHash
+  ) return SWITCHYARD_REV1_COMBAT_PROFILE;
+  if (
+    revision3Combat
+    && identity.mapId === CROWNPOINT_AUTHORITY_MAP_BINDING.mapId
+    && identity.fixtureId === CROWNPOINT_AUTHORITY_MAP_BINDING.fixtureId
+    && identity.fixtureHash === CROWNPOINT_AUTHORITY_MAP_BINDING.fixtureHash
+  ) return CROWNPOINT_REV1_COMBAT_PROFILE;
   if (
     revision3Combat
     && identity.mapId === INKFALL_AUTHORITY_MAP_IDENTITY_V4.mapId
@@ -243,6 +286,24 @@ export function inkfallWorkerFixture(profile: InkfallWorkerRoomProfile) {
 
 export function relayWorkerFixture() {
   return RELAY_AUTHORITY_FIXTURE;
+}
+
+export function originalArenaWorkerFixture(profile: OriginalArenaWorkerRoomProfile) {
+  return originalArenaAuthorityFixture(profile);
+}
+
+export function createOriginalArenaWorkerCombatOptions(
+  world: RapierMovementWorld,
+  profile: OriginalArenaWorkerRoomProfile,
+): AuthorityRoomCombatOptions {
+  return createOriginalArenaAuthorityCombatOptions(world, profile);
+}
+
+export function originalArenaWorkerCombatSpawn(
+  ordinal: number,
+  profile: OriginalArenaWorkerRoomProfile,
+): AuthoritySpawn {
+  return originalArenaAuthoritySpawn(ordinal, profile);
 }
 
 export function createRelayWorkerCombatOptions(

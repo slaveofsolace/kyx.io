@@ -446,7 +446,7 @@ function renderLanding(
 
 function expectedIdentity(
   world: RapierMovementWorld,
-  mapId: 'phase4_flat_run' | 'inkfall_foundry' | 'relay' = 'phase4_flat_run',
+  mapId: 'phase4_flat_run' | 'inkfall_foundry' | 'relay' | 'switchyard' | 'crownpoint' = 'phase4_flat_run',
 ): SimulationIdentityV1 {
   const ruleset = requireRuleset('revamped_classic', 3);
   if (

@@ -8,6 +8,10 @@ import {
   RELAY_AUTHORITY_FIXTURE,
 } from '../authority/relayAuthority';
 import {
+  originalArenaAuthorityFixture,
+  type OriginalArenaAuthorityProfile,
+} from '../authority/originalArenaAuthority';
+import {
   createRapierMovementWorld,
   type RapierMovementWorld,
 } from '../physics';
@@ -17,6 +21,7 @@ import type {
   OnlineInkfallRevision2MapBinding,
   OnlineInkfallRevision4MapBinding,
   OnlineInkfallRevision5MapBinding,
+  OnlineOriginalArenaMapBinding,
   OnlineRelayMapBinding,
 } from './onlineAuthorityProfiles';
 
@@ -26,7 +31,11 @@ export async function createOnlineAuthorityWorld(
 ): Promise<RapierMovementWorld> {
   const fixture = binding.mapId === 'relay'
     ? RELAY_AUTHORITY_FIXTURE
-    : inkfallAuthorityFixture(
+    : binding.mapId === 'switchyard' || binding.mapId === 'crownpoint'
+      ? originalArenaAuthorityFixture(
+        `${binding.mapId}-revision-1-authority-v1` as OriginalArenaAuthorityProfile,
+      )
+      : inkfallAuthorityFixture(
         binding.mapRevision === 4
           ? INKFALL_REVISION_4_AUTHORITY_PROFILE_ID
           : binding.mapRevision === 3
@@ -41,7 +50,7 @@ export async function createOnlineAuthorityWorld(
     || world.fixture.solids.length !== binding.colliderCardinality
   ) {
     world.dispose();
-    const mapToken = binding.mapId === 'inkfall_foundry' ? 'INKFALL' : 'RELAY';
+    const mapToken = binding.mapId.toUpperCase();
     throw new Error(
       `ONLINE_${mapToken}_REVISION_${binding.mapRevision}_CLIENT_WORLD_MISMATCH`,
     );
@@ -76,6 +85,12 @@ export async function createOnlineInkfallRevision5World(
 
 export async function createOnlineRelayWorld(
   binding: OnlineRelayMapBinding,
+): Promise<RapierMovementWorld> {
+  return createOnlineAuthorityWorld(binding);
+}
+
+export async function createOnlineOriginalArenaWorld(
+  binding: OnlineOriginalArenaMapBinding,
 ): Promise<RapierMovementWorld> {
   return createOnlineAuthorityWorld(binding);
 }
