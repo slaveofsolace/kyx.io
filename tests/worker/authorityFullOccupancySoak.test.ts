@@ -18,8 +18,8 @@ import {
   type ServerMessage,
 } from '../../src/net';
 import {
-  P511_INKFALL_REV2_COMBAT_PROFILE,
   P58D_COMBAT_PROFILE_HEADER,
+  RELAY_REV1_COMBAT_PROFILE,
 } from '../../worker/combatRuntime';
 
 const ALLOWED_ORIGIN = 'http://127.0.0.1:5173';
@@ -31,31 +31,23 @@ const MINIMUM_TICK_SAMPLES = 100;
 const MAXIMUM_TICK_P99_MILLISECONDS = 50;
 const PRIMARY_FIRE = 1 << 3;
 const textEncoder = new TextEncoder();
-const WEST_INK_CHANNEL_ROUTE = Object.freeze([
-  Object.freeze({ x: -27_500, z: 1_000 }),
+const WEST_RELAY_CENTERLINE_ROUTE = Object.freeze([
+  Object.freeze({ x: -27_500, z: 0 }),
   Object.freeze({ x: -22_000, z: 0 }),
-  Object.freeze({ x: -25_000, z: -7_000 }),
-  Object.freeze({ x: -25_000, z: -12_000 }),
-  Object.freeze({ x: -22_000, z: -17_000 }),
-  Object.freeze({ x: -15_000, z: -21_000 }),
-  Object.freeze({ x: -8_000, z: -20_000 }),
-  Object.freeze({ x: -5_000, z: -15_000 }),
-  Object.freeze({ x: -3_000, z: -16_000 }),
+  Object.freeze({ x: -15_000, z: 0 }),
+  Object.freeze({ x: -8_000, z: 0 }),
+  Object.freeze({ x: -3_000, z: 0 }),
 ]);
-const EAST_INK_CHANNEL_ROUTE = Object.freeze([
-  Object.freeze({ x: 27_500, z: -1_000 }),
+const EAST_RELAY_CENTERLINE_ROUTE = Object.freeze([
+  Object.freeze({ x: 27_500, z: 0 }),
   Object.freeze({ x: 22_000, z: 0 }),
-  Object.freeze({ x: 25_000, z: -7_000 }),
-  Object.freeze({ x: 25_000, z: -12_000 }),
-  Object.freeze({ x: 22_000, z: -17_000 }),
-  Object.freeze({ x: 15_000, z: -20_000 }),
-  Object.freeze({ x: 8_000, z: -16_000 }),
-  Object.freeze({ x: 5_000, z: -15_000 }),
-  Object.freeze({ x: 3_000, z: -15_000 }),
+  Object.freeze({ x: 15_000, z: 0 }),
+  Object.freeze({ x: 8_000, z: 0 }),
+  Object.freeze({ x: 3_000, z: 0 }),
 ]);
-const VERIFIED_INK_CHANNEL_COMBAT_PAIR = Object.freeze({
-  west: Object.freeze({ x: 400, z: -15_550 }),
-  east: Object.freeze({ x: 2_323, z: -15_175 }),
+const VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR = Object.freeze({
+  west: Object.freeze({ x: -950, z: 0 }),
+  east: Object.freeze({ x: 950, z: 0 }),
   arrivalToleranceMillimeters: 100,
   minimumPulseMilliseconds: 60,
   settleMilliseconds: 750,
@@ -147,7 +139,7 @@ async function createRoom(): Promise<RoomCreated> {
     method: 'POST',
     headers: {
       Origin: ALLOWED_ORIGIN,
-      [P58D_COMBAT_PROFILE_HEADER]: P511_INKFALL_REV2_COMBAT_PROFILE,
+      [P58D_COMBAT_PROFILE_HEADER]: RELAY_REV1_COMBAT_PROFILE,
     },
   });
   if (response.status !== 201) {
@@ -599,7 +591,7 @@ async function moveTo(
   })}`);
 }
 
-async function stageInkChannelCombatPair(
+async function stageRelayCenterlineCombatPair(
   west: JoinedClient,
   east: JoinedClient,
   nextSequences: Map<string, number>,
@@ -610,23 +602,23 @@ async function stageInkChannelCombatPair(
     west: Readonly<{ x: number; y: number; z: number }>;
     east: Readonly<{ x: number; y: number; z: number }>;
   }>> = [];
-  for (let index = 0; index < WEST_INK_CHANNEL_ROUTE.length; index += 1) {
-    const westTarget = WEST_INK_CHANNEL_ROUTE[index];
-    const eastTarget = EAST_INK_CHANNEL_ROUTE[index];
+  for (let index = 0; index < WEST_RELAY_CENTERLINE_ROUTE.length; index += 1) {
+    const westTarget = WEST_RELAY_CENTERLINE_ROUTE[index];
+    const eastTarget = EAST_RELAY_CENTERLINE_ROUTE[index];
     if (westTarget === undefined || eastTarget === undefined) {
-      throw new Error(`Ink Channel route leg ${index} missing`);
+      throw new Error(`Relay centerline route leg ${index} missing`);
     }
-    const arrivalToleranceMillimeters = index === WEST_INK_CHANNEL_ROUTE.length - 1
+    const arrivalToleranceMillimeters = index === WEST_RELAY_CENTERLINE_ROUTE.length - 1
       ? 350
       : 850;
-    const minimumPulseMilliseconds = index === WEST_INK_CHANNEL_ROUTE.length - 1
+    const minimumPulseMilliseconds = index === WEST_RELAY_CENTERLINE_ROUTE.length - 1
       ? 60
       : 80;
     const [westArrival, eastArrival] = await Promise.all([
       moveTo(
         west,
         westTarget,
-        `west Ink Channel leg ${index}`,
+        `west Relay centerline leg ${index}`,
         nextSequences,
         population,
         arrivalToleranceMillimeters,
@@ -635,7 +627,7 @@ async function stageInkChannelCombatPair(
       moveTo(
         east,
         eastTarget,
-        `east Ink Channel leg ${index}`,
+        `east Relay centerline leg ${index}`,
         nextSequences,
         population,
         arrivalToleranceMillimeters,
@@ -652,25 +644,25 @@ async function stageInkChannelCombatPair(
   const [westStaged, eastStaged] = await Promise.all([
     moveTo(
       west,
-      VERIFIED_INK_CHANNEL_COMBAT_PAIR.west,
-      'west verified Ink Channel combat pair',
+      VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.west,
+      'west verified Relay centerline combat pair',
       nextSequences,
       population,
-      VERIFIED_INK_CHANNEL_COMBAT_PAIR.arrivalToleranceMillimeters,
-      VERIFIED_INK_CHANNEL_COMBAT_PAIR.minimumPulseMilliseconds,
+      VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.arrivalToleranceMillimeters,
+      VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.minimumPulseMilliseconds,
     ),
     moveTo(
       east,
-      VERIFIED_INK_CHANNEL_COMBAT_PAIR.east,
-      'east verified Ink Channel combat pair',
+      VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.east,
+      'east verified Relay centerline combat pair',
       nextSequences,
       population,
-      VERIFIED_INK_CHANNEL_COMBAT_PAIR.arrivalToleranceMillimeters,
-      VERIFIED_INK_CHANNEL_COMBAT_PAIR.minimumPulseMilliseconds,
+      VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.arrivalToleranceMillimeters,
+      VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.minimumPulseMilliseconds,
     ),
   ]);
   await new Promise((resolve) => (
-    setTimeout(resolve, VERIFIED_INK_CHANNEL_COMBAT_PAIR.settleMilliseconds)
+    setTimeout(resolve, VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.settleMilliseconds)
   ));
   acknowledgePopulation(population);
   const westPosition = latestSnapshot(west.probe)?.localReconciliation.player.feetPosition
@@ -704,13 +696,17 @@ async function stageInkChannelCombatPair(
     westPosition,
     eastPosition,
     separationMillimeters,
-    verticalMarginMillimeters: eastPosition.y + 1_800 - (westPosition.y + 1_700),
+    // Relay's integer KCC can settle the mirrored capsules a few millimeters
+    // apart on the same authored floor. Use the east combatant as the shooter;
+    // its eye-to-west-target vertical margin remains above the retained 90 mm
+    // live-hitscan safety requirement without changing simulation thresholds.
+    verticalMarginMillimeters: westPosition.y + 1_800 - (eastPosition.y + 1_700),
     westYawMilliDegrees: westYaw,
     eastYawMilliDegrees: eastYaw,
   });
 }
 
-describe('G4/G8 real Worker full-occupancy authority soak', () => {
+describe('canonical Relay real Worker full-occupancy authority soak', () => {
   it('measures a live 8-client room and preserves resume plus combat convergence', async () => {
     const room = await createRoom();
     const clients = await joinEight(room);
@@ -768,25 +764,28 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
     const westCombatant = clients[0];
     const eastCombatant = clients[1];
     if (westCombatant === undefined || eastCombatant === undefined) {
-      throw new Error('Verified Ink Channel combat pair clients missing');
+      throw new Error('Verified Relay centerline combat pair clients missing');
     }
-    const combatSetup = await stageInkChannelCombatPair(
+    const combatSetup = await stageRelayCenterlineCombatPair(
       westCombatant,
       eastCombatant,
       nextSequence,
       clients,
     );
     expect(combatSetup.separationMillimeters)
-      .toBeLessThanOrEqual(VERIFIED_INK_CHANNEL_COMBAT_PAIR.maximumSeparationMillimeters);
+      .toBeLessThanOrEqual(VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.maximumSeparationMillimeters);
     expect(combatSetup.verticalMarginMillimeters)
-      .toBeGreaterThanOrEqual(VERIFIED_INK_CHANNEL_COMBAT_PAIR.minimumVerticalMarginMillimeters);
+      .toBeGreaterThanOrEqual(VERIFIED_RELAY_CENTERLINE_COMBAT_PAIR.minimumVerticalMarginMillimeters);
 
+    const shooterCombatant = eastCombatant;
+    const targetCombatant = westCombatant;
+    const shooterIndex = 1;
     const reliableStarts = clients.map(({ probe }) => probe.messages.length);
     const snapshotStarts = clients.map(({ probe }) => probe.messages.length);
     let killEvent: ReliableEvent | null = null;
     let firingStarted = false;
     for (let fireRound = 0; fireRound < 160 && killEvent === null; fireRound += 1) {
-      issueInput(westCombatant, nextSequence, {
+      issueInput(shooterCombatant, nextSequence, {
         heldButtons: PRIMARY_FIRE,
         pressedButtons: firingStarted ? 0 : PRIMARY_FIRE,
       });
@@ -794,17 +793,17 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
       acknowledgePopulation(clients);
       await new Promise((resolve) => setTimeout(resolve, 45));
       killEvent = reliableEventsAfter(
-        westCombatant.probe,
-        reliableStarts[0] ?? 0,
+        shooterCombatant.probe,
+        reliableStarts[shooterIndex] ?? 0,
       ).find(({ kind }) => kind === 'playerKilled') ?? null;
     }
     if (killEvent === null) {
       const observedEvents = reliableEventsAfter(
-        westCombatant.probe,
-        reliableStarts[0] ?? 0,
+        shooterCombatant.probe,
+        reliableStarts[shooterIndex] ?? 0,
       );
       const current = latestSnapshot(westCombatant.probe);
-      throw new Error(`No live Ink Channel authority kill after 160 fire rounds: ${JSON.stringify({
+      throw new Error(`No live Relay centerline authority kill after 160 fire rounds: ${JSON.stringify({
         combatSetup,
         eventKinds: Object.groupBy(observedEvents, ({ kind }) => kind),
         combatPlayers: current?.combat?.players,
@@ -813,12 +812,12 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
         )),
       })}`);
     }
-    const release = issueInput(westCombatant, nextSequence, {
+    const release = issueInput(shooterCombatant, nextSequence, {
       releasedButtons: PRIMARY_FIRE,
     });
-    await waitForProcessedInput(westCombatant, release, 'live fire release');
+    await waitForProcessedInput(shooterCombatant, release, 'live fire release');
     const targetId = killEvent.targetId ?? killEvent.subjectId;
-    if (targetId === null || targetId !== eastCombatant.join.playerId) {
+    if (targetId === null || targetId !== targetCombatant.join.playerId) {
       throw new Error(`Authoritative kill target mismatch: ${String(targetId)}`);
     }
 
@@ -895,7 +894,7 @@ describe('G4/G8 real Worker full-occupancy authority soak', () => {
     const result = Object.freeze({
       schemaVersion: 1,
       runtime: '@cloudflare/vitest-pool-workers',
-      roomProfile: P511_INKFALL_REV2_COMBAT_PROFILE,
+      roomProfile: RELAY_REV1_COMBAT_PROFILE,
       clients: CLIENT_COUNT,
       soakRounds: SOAK_ROUNDS,
       soakDurationMilliseconds: Math.round(soakDurationMilliseconds * 1_000) / 1_000,

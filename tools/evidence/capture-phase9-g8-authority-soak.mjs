@@ -8,13 +8,13 @@ const evidenceArgument = process.argv.find((argument) => argument.startsWith('--
 const evidenceDirectory = path.resolve(
   projectRoot,
   evidenceArgument?.slice('--evidence-dir='.length)
-    ?? 'evidence/2026-07-27/phase-9-g8-authority-soak/local-full-occupancy',
+    ?? 'evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak',
 );
 const testArguments = [
   'node_modules/vitest/vitest.mjs',
   'run',
   '--config',
-  'vitest.worker.config.ts',
+  'vitest.authority-soak.config.ts',
   'tests/worker/authorityFullOccupancySoak.test.ts',
   '--reporter=verbose',
 ];
@@ -67,7 +67,7 @@ const runtimeResult = JSON.parse(resultLine.slice(resultLine.indexOf(marker) + m
 const finishedAt = new Date();
 const evidence = Object.freeze({
   schemaVersion: 1,
-  gate: 'G4/G8 local full-occupancy authority runtime soak',
+  gate: 'canonical Relay local full-occupancy authority runtime soak',
   capturedAt: finishedAt.toISOString(),
   durationMilliseconds: finishedAt.getTime() - startedAt.getTime(),
   source: sourceAtStart,
@@ -80,12 +80,12 @@ const evidence = Object.freeze({
       'KyxRoom ran its real setTimeout-based FixedTickScheduler and Durable Object storage.',
       'Wire cost is the exact UTF-8 byte count observed at the WebSocket client boundary.',
       'Resume exercised the opaque credential, identity preservation, token rotation, and full snapshot.',
-      'Two clients traversed the verified Ink Channel route with protocol-v2 movement, faced within the locked tolerance, and authored one live auto-rifle kill while all eight clients remained connected.',
+      'Two clients traversed the canonical Relay spawn-to-center route with protocol-v2 movement, faced within the locked tolerance, and authored one live auto-rifle kill while all eight clients remained connected.',
     ],
     limitations: [
       'This is a short deterministic local Workers-runtime soak, not a 30-minute production-network soak.',
       'Tick execution duration is runtime work inside each authority tick; scheduler delay is reported separately by observed tick rate.',
-      'Combat proves one live auto-rifle kill at the separately verified Ink Channel pair. It is not exhaustive weapon, projectile, multi-kill, route, or arbitrary sightline coverage.',
+      'Combat proves one live auto-rifle kill at the verified Relay centerline pair. It is not exhaustive weapon, projectile, multi-kill, route, or arbitrary sightline coverage.',
       'Local Vitest-pool timing and bandwidth are not Cloudflare production latency or billing measurements.',
       'The bounded in-memory timing window resets if the Durable Object isolate is evicted.',
     ],
@@ -100,7 +100,7 @@ await writeFile(
 await writeFile(
   path.join(evidenceDirectory, 'README.md'),
   [
-    '# G4/G8 local full-occupancy authority soak',
+    '# Canonical Relay local full-occupancy authority soak',
     '',
     `- Captured: ${evidence.capturedAt}`,
     `- Source commit: ${evidence.source.commit ?? 'unavailable'}`,
