@@ -1292,9 +1292,11 @@ async function mountSession(
   error.hidden = true;
   const errorMessage = element('p', 'online-session__error-message');
   const errorActions = element('div', 'online-session__error-actions');
-  const retryRoomButton = element('button', 'online-preview__primary', 'Retry room');
+  const retryRoomButton = element('button', 'online-preview__primary', 'Start fresh room');
   retryRoomButton.type = 'button';
-  retryRoomButton.addEventListener('click', () => window.location.reload());
+  retryRoomButton.addEventListener('click', () => {
+    window.location.assign(onlineCreatePath(mapProfile ?? defaultOnlineProfile()));
+  });
   const returnToLobbyButton = element('button', 'online-preview__secondary', 'Return to online');
   returnToLobbyButton.type = 'button';
   returnToLobbyButton.addEventListener('click', () => window.location.assign(ONLINE_AUTHORITY_PATH));
@@ -3066,7 +3068,7 @@ async function mountSession(
       const technicalDetail = presentationFailureDetail ?? diagnostics.lastError ?? '';
       const playerMessage = presentationFailureDetail === null
         ? hudView.connection.message
-        : 'Combat feedback stopped. Retry the room or return to the online lobby.';
+        : 'Combat feedback stopped. Start a fresh room or return to the online lobby.';
       showPlayerError(
         playerMessage,
         presentationFailureDetail !== null || hudView.connection.canRetry,

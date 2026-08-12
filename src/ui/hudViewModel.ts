@@ -396,7 +396,7 @@ export function connectionViewModel(
   if (phase === 'failed' || phase === 'closed' || phase === 'disposed' || hasError) {
     return Object.freeze({
       state: 'fatal',
-      message: 'The room connection ended. Retry or return to the online lobby.',
+      message: 'The room connection ended. Start a fresh room or return to the online lobby.',
       canRetry: true,
     });
   }

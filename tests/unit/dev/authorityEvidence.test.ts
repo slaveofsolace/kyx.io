@@ -451,6 +451,139 @@ describe('authority evidence transport state', () => {
     client.dispose();
   });
 
+  it('automatically resumes one unexpected joined-socket close and waits for a recovery snapshot', () => {
+    const transport = new FakeTransport();
+    const scheduler = new FakeScheduler();
+    let requestOrdinal = 0;
+    const client = new AuthorityEvidenceClient({
+      config: {
+        authorityUrl: 'https://authority.example.test',
+        mode: 'join',
+        roomCode: 'KYX-234567',
+        displayName: 'Backgrounded Peer',
+        impairmentProfile: 'nominal',
+      },
+      roomCode: 'KYX-234567',
+      expectedIdentity: EXPECTED_IDENTITY,
+      profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      queries: new FakeMovementQueryPort(),
+      transport,
+      scheduler,
+      enableCombatInput: true,
+      createRequestId: () => `request.auto-resume.${requestOrdinal += 1}`,
+    });
+
+    client.start();
+    const first = transport.connections[0]!;
+    first.open();
+    first.receive(welcome('connection.1'));
+    const join = sentMessage(first, 1);
+    expect(join.type).toBe('joinRoom');
+    first.receive(joinAccepted(join.type === 'joinRoom' ? join.requestId : '', 'joined', 'A'));
+    first.receive(fullSnapshot(stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    )));
+    client.setAxes({ moveX: 127, moveY: 127 });
+    expect(client.setInputButtons(INTENT_BUTTON.sprint)).toBe(true);
+
+    first.close(1012, 'service restart');
+    expect(client.diagnostics()).toMatchObject({
+      connection: { phase: 'resuming', lastCloseCode: 1012 },
+      counters: { resumeAttempts: 1, socketCloses: 1 },
+      input: { moveX: 0, moveY: 0, heldButtons: 0 },
+    });
+
+    scheduler.runDelay();
+    const second = transport.connections[1]!;
+    second.open();
+    second.receive(welcome('connection.2'));
+    const resume = sentMessage(second, 1);
+    if (resume.type !== 'resumeRoom') throw new Error('expected automatic resume request');
+    expect(resume).toMatchObject({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'resumeRoom',
+      roomCode: 'KYX-234567',
+      resumeToken: 'A'.repeat(43),
+    });
+    expect(resume.requestId).toMatch(/^request\.auto-resume\.[1-9][0-9]*$/u);
+    second.receive(joinAccepted(resume.requestId, 'resumed', 'B'));
+    expect(client.diagnostics().connection.phase).toBe('resuming');
+    second.receive(fullSnapshot(stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      11,
+    )));
+
+    expect(client.diagnostics()).toMatchObject({
+      connection: { phase: 'joined', connectionMode: 'resumed' },
+      counters: {
+        resumeAttempts: 1,
+        resumeSuccesses: 1,
+        resumeTokenRotations: 1,
+      },
+      resume: { generation: 1, tokenLength: 43 },
+    });
+    client.dispose();
+  });
+
+  it('does not loop automatic resume when the recovery socket closes before hydration', () => {
+    const transport = new FakeTransport();
+    const scheduler = new FakeScheduler();
+    let requestOrdinal = 0;
+    const client = new AuthorityEvidenceClient({
+      config: {
+        authorityUrl: 'https://authority.example.test',
+        mode: 'join',
+        roomCode: 'KYX-234567',
+        displayName: 'Bounded Recovery Peer',
+        impairmentProfile: 'nominal',
+      },
+      roomCode: 'KYX-234567',
+      expectedIdentity: EXPECTED_IDENTITY,
+      profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      queries: new FakeMovementQueryPort(),
+      transport,
+      scheduler,
+      createRequestId: () => `request.bounded-resume.${requestOrdinal += 1}`,
+    });
+
+    client.start();
+    const first = transport.connections[0]!;
+    first.open();
+    first.receive(welcome('connection.1'));
+    const join = sentMessage(first, 1);
+    first.receive(joinAccepted(join.type === 'joinRoom' ? join.requestId : '', 'joined', 'A'));
+    first.receive(fullSnapshot(stateAtTick(
+      createTestMovementState({ playerId: 'player.1' }),
+      10,
+    )));
+    first.close(1012, 'service restart');
+    scheduler.runDelay();
+
+    const second = transport.connections[1]!;
+    second.open();
+    second.receive(welcome('connection.2'));
+    const resume = sentMessage(second, 1);
+    second.receive(joinAccepted(
+      resume.type === 'resumeRoom' ? resume.requestId : '',
+      'resumed',
+      'B',
+    ));
+    second.close(1012, 'recovery failed');
+    scheduler.runDelay();
+
+    expect(transport.connections).toHaveLength(2);
+    expect(client.diagnostics()).toMatchObject({
+      connection: {
+        phase: 'closed',
+        lastCloseCode: 1012,
+        lastCloseReason: 'recovery failed',
+      },
+      counters: { resumeAttempts: 1, socketCloses: 2 },
+    });
+    client.dispose();
+  });
+
   it('keeps a joined lobby socket alive without manufacturing movement input', () => {
     const transport = new FakeTransport();
     const scheduler = new FakeScheduler();

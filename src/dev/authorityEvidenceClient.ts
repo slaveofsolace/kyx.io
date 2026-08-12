@@ -433,6 +433,7 @@ export class AuthorityEvidenceClient {
   private joinDispatched = false;
   private pendingJoinRequestId: string | null = null;
   private resumeRequested = false;
+  private automaticResumeAttempted = false;
   private resumeReconnectHandle: unknown = null;
   private fixedTickHandle: unknown = null;
   private resumeToken: string | null = null;
@@ -1075,6 +1076,7 @@ export class AuthorityEvidenceClient {
     this.counters.fullSnapshots += 1;
     this.phase = 'joined';
     this.resumeRequested = false;
+    this.automaticResumeAttempted = false;
     this.sendTransportAcknowledgement();
   }
 
@@ -1511,7 +1513,19 @@ export class AuthorityEvidenceClient {
     this.lastCloseReason = reason;
     this.connection = null;
     if (this.phase === 'disposed' || this.phase === 'failed') return;
-    if (this.resumeRequested) {
+    const shouldAutomaticallyResume = (
+      !this.resumeRequested
+      && code !== 1000
+      && this.phase === 'joined'
+      && this.resumeToken !== null
+      && !this.automaticResumeAttempted
+    );
+    if (this.resumeRequested || shouldAutomaticallyResume) {
+      if (shouldAutomaticallyResume) {
+        this.automaticResumeAttempted = true;
+        this.counters.resumeAttempts += 1;
+        this.neutralizeInput();
+      }
       this.phase = 'resuming';
       this.resumeReconnectHandle = this.scheduler.after(() => {
         this.resumeReconnectHandle = null;
