@@ -13,6 +13,8 @@ import {
   authorityLoadoutRequestFingerprint,
   createInkfallRev5PortalAuthorityPort,
   createRelayPortalAuthorityPort,
+  deterministicCombatBotInput,
+  deterministicCombatBotPresetId,
   evaluateAuthorityLoadoutRequest,
   type AuthorityActiveMatchCheckpointV1,
   type AuthorityLoadoutSelectionV1,
@@ -111,6 +113,12 @@ import {
   type ReliableEventCheckpointV1,
 } from './reliableEvents';
 import { SnapshotBaselineStore } from './snapshotBaselines';
+import {
+  RELAY_AUTHORITY_PLAYER_SLOT_IDS,
+  nextRelayAuthorityBotTakeover,
+  relayAuthorityBotConnectionId,
+  relayAuthorityPlayerSlotOrdinal,
+} from './relayBotSlots';
 
 const SNAPSHOT_INTERVAL_TICKS = 2;
 const ROOM_TIMER_MAXIMUM_CATCH_UP_TICKS = 1;
@@ -155,6 +163,13 @@ interface InkfallSpawnDecisionDiagnostic {
   readonly minimumEnemyDistanceMm: number | null;
   readonly selectedStandingOccluded: boolean;
   readonly selectedCrouchedOccluded: boolean;
+}
+
+interface HumanAuthorityJoin {
+  readonly playerId: string;
+  readonly resumeToken: string;
+  readonly sessionGeneration: number;
+  readonly snapshot: AuthorityFullSnapshot;
 }
 
 function compareCodeUnits(left: string, right: string): number {
@@ -475,6 +490,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private readonly resumeSessions: ResumeSessionRegistry;
   private readonly sessionGenerations = new Map<string, number>();
   private readonly playerEventAcknowledgements = new Map<string, string | null>();
+  private readonly serverBotPlayerIds = new Set<string>();
+  private readonly serverBotInputSequences = new Map<string, number>();
+  private readonly serverBotHeldButtons = new Map<string, number>();
   private readonly snapshotBaselines = new SnapshotBaselineStore();
   private readonly reliableEvents = new ReliableEventStore();
   private readonly socketAttachments = new Map<string, SocketAttachment>();
@@ -528,6 +546,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private inkfallSpawnFallbacks = 0;
   private activeMatchCheckpointDirty = false;
   private lastActiveMatchCheckpointPersistedTick: number | null = null;
+  private serverBotMutation: Promise<void> = Promise.resolve();
 
   constructor(ctx: DurableObjectState, env: KyxAuthorityEnv) {
     super(ctx, env);
@@ -623,6 +642,24 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             : {}),
           authorityTickExecution: this.authorityTickExecutionMetrics(),
           transport: Object.freeze({ ...this.transportMetrics }),
+          ...(this.relayBotPopulationEnabled()
+            ? {
+                botPopulation: Object.freeze({
+                  schemaVersion: 1,
+                  strategy: 'relay_authority_sentry_slot_takeover_v1',
+                  targetPlayers: RELAY_AUTHORITY_PLAYER_SLOT_IDS.length,
+                  serverControlledPlayers: this.serverBotPlayerIds.size,
+                  connectedHumanPlayers: this.requireAuthority().fullSnapshot().players.filter(
+                    ({ playerId, connected }) => connected
+                      && !this.serverBotPlayerIds.has(playerId),
+                  ).length,
+                  reservedHumanReconnectSlots: this.requireAuthority().fullSnapshot().players.filter(
+                    ({ playerId, connected }) => !connected
+                      && !this.serverBotPlayerIds.has(playerId),
+                  ).length,
+                }),
+              }
+            : {}),
         },
       }, {
         headers: { 'cache-control': 'no-store' },
@@ -820,41 +857,37 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.sendJoinRejection(webSocket, clientMessage.requestId, 'DUPLICATE_SESSION');
           return;
         }
-        const playerId = `player.${crypto.randomUUID()}`;
-        let issued;
+        let humanJoin: HumanAuthorityJoin | null;
         try {
-          issued = await this.resumeSessions.issue(
-            playerId,
-            authority.identity.roomId,
-            authority.identity.matchId,
-          );
+          humanJoin = await this.joinHumanAuthorityPlayer(rawAttachment.connectionId);
         } catch {
           this.sendJoinRejection(webSocket, clientMessage.requestId, 'MATCH_INCOMPATIBLE');
           return;
         }
-        if (webSocket.readyState !== WebSocket.OPEN) {
-          this.resumeSessions.revokePlayer(
-            playerId,
-            authority.identity.roomId,
-            authority.identity.matchId,
-          );
+        if (humanJoin === null) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'ROOM_FULL');
           return;
         }
-        const joined = authority.joinNewPlayer({
-          playerId,
-          connectionId: rawAttachment.connectionId,
-        });
-        if (!joined.ok) {
-          this.resumeSessions.revokePlayer(
-            playerId,
-            authority.identity.roomId,
-            authority.identity.matchId,
-          );
-          this.sendJoinRejection(
-            webSocket,
-            clientMessage.requestId,
-            joined.reason === 'room_full' ? 'ROOM_FULL' : 'MATCH_INCOMPATIBLE',
-          );
+        const { playerId } = humanJoin;
+        if (webSocket.readyState !== WebSocket.OPEN) {
+          if (this.relayBotPopulationEnabled()) {
+            await this.withServerBotMutation(async () => {
+              authority.disconnectConnection(rawAttachment.connectionId);
+              this.resumeSessions.revokePlayer(
+                playerId,
+                authority.identity.roomId,
+                authority.identity.matchId,
+              );
+              await this.restoreRelayBotControlLocked(playerId);
+            });
+          } else {
+            authority.disconnectConnection(rawAttachment.connectionId);
+            this.resumeSessions.revokePlayer(
+              playerId,
+              authority.identity.roomId,
+              authority.identity.matchId,
+            );
+          }
           return;
         }
         const eventBaselineId = this.reliableEvents.latestId;
@@ -864,7 +897,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           allocationLeaseId: null,
           preJoinExpiresAt: null,
           playerId,
-          sessionGeneration: issued.session.generation,
+          sessionGeneration: humanJoin.sessionGeneration,
           lastAcknowledgedSnapshotTick: null,
           lastAcknowledgedSnapshotBaselineId: null,
           lastSentSnapshotTick: null,
@@ -876,7 +909,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           lastSentReliableEventId: eventBaselineId,
         });
         this.writeSocketAttachment(webSocket, nextAttachment);
-        this.sessionGenerations.set(playerId, issued.session.generation);
+        this.sessionGenerations.set(playerId, humanJoin.sessionGeneration);
         this.playerEventAcknowledgements.set(playerId, eventBaselineId);
         if (authority.lifecycle === 'lobby') {
           this.persistLobbyCheckpointPlayer(playerId);
@@ -892,8 +925,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           matchId: authority.identity.matchId,
           serverTick: authority.serverTick,
           connectionMode: 'joined',
-          resumeToken: issued.resumeToken,
-          simulationIdentity: this.simulationIdentity(joined.snapshot),
+          resumeToken: humanJoin.resumeToken,
+          simulationIdentity: this.simulationIdentity(humanJoin.snapshot),
         });
         const fullAttachment = accepted
           ? this.sendFullSnapshot(webSocket, nextAttachment)
@@ -1792,6 +1825,212 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     return this.authoritativeLoadout;
   }
 
+  private withServerBotMutation<T>(action: () => Promise<T>): Promise<T> {
+    const result = this.serverBotMutation.then(action, action);
+    this.serverBotMutation = result.then(() => undefined, () => undefined);
+    return result;
+  }
+
+  private relayBotPopulationEnabled(): boolean {
+    return isRelayWorkerRoomProfile(this.roomProfile);
+  }
+
+  private async ensureRelayBotPopulationLocked(): Promise<void> {
+    if (!this.relayBotPopulationEnabled()) return;
+    const authority = this.requireAuthority();
+    if (
+      authority.lifecycle === 'postmatch'
+      || authority.lifecycle === 'idle'
+      || authority.lifecycle === 'expired'
+    ) return;
+    const present = new Set(authority.fullSnapshot().players.map(({ playerId }) => playerId));
+    for (const playerId of RELAY_AUTHORITY_PLAYER_SLOT_IDS) {
+      if (present.has(playerId)) continue;
+      const ordinal = relayAuthorityPlayerSlotOrdinal(playerId);
+      if (ordinal === null) throw new Error('RELAY_BOT_SLOT_ID_INVALID');
+      const connectionId = relayAuthorityBotConnectionId(playerId);
+      this.resumeSessions.revokePlayer(
+        playerId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+      );
+      const issued = await this.resumeSessions.issue(
+        playerId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+      );
+      const joined = authority.joinNewPlayer({ playerId, connectionId });
+      if (!joined.ok) {
+        this.resumeSessions.revokePlayer(
+          playerId,
+          authority.identity.roomId,
+          authority.identity.matchId,
+        );
+        throw new Error(`RELAY_BOT_JOIN_FAILED:${joined.reason}`);
+      }
+      if (authority.lifecycle === 'lobby' || authority.lifecycle === 'warmup') {
+        const preset = combatPresetById(deterministicCombatBotPresetId(ordinal));
+        authority.setPlayerCombatLoadout(
+          playerId,
+          preset.selectableAbilityIds,
+          preset.authorityPrimaryWeaponSlot,
+        );
+      }
+      authority.recordServerObservedRtt(playerId, 0);
+      this.serverBotPlayerIds.add(playerId);
+      this.serverBotInputSequences.set(playerId, 0);
+      this.serverBotHeldButtons.set(playerId, 0);
+      this.sessionGenerations.set(playerId, issued.session.generation);
+      this.playerEventAcknowledgements.set(playerId, this.reliableEvents.latestId);
+      present.add(playerId);
+    }
+  }
+
+  private async restoreRelayBotControlLocked(playerId: string): Promise<void> {
+    const authority = this.requireAuthority();
+    const ordinal = relayAuthorityPlayerSlotOrdinal(playerId);
+    if (ordinal === null) throw new Error('RELAY_BOT_SLOT_ID_INVALID');
+    const connectionId = relayAuthorityBotConnectionId(playerId);
+    this.resumeSessions.revokePlayer(
+      playerId,
+      authority.identity.roomId,
+      authority.identity.matchId,
+    );
+    const issued = await this.resumeSessions.issue(
+      playerId,
+      authority.identity.roomId,
+      authority.identity.matchId,
+    );
+    const resumed = authority.resumePlayer({ playerId, connectionId });
+    if (!resumed.ok) throw new Error(`RELAY_BOT_ROLLBACK_FAILED:${resumed.reason}`);
+    authority.recordServerObservedRtt(playerId, 0);
+    this.serverBotPlayerIds.add(playerId);
+    const restoredPlayer = resumed.snapshot.players.find(
+      (player) => player.playerId === playerId,
+    );
+    if (restoredPlayer === undefined) throw new Error('RELAY_BOT_ROLLBACK_PLAYER_MISSING');
+    this.serverBotInputSequences.set(
+      playerId,
+      restoredPlayer.lastProcessedInputSequence + 1,
+    );
+    this.serverBotHeldButtons.set(playerId, 0);
+    this.sessionGenerations.set(playerId, issued.session.generation);
+    this.playerEventAcknowledgements.set(playerId, this.reliableEvents.latestId);
+  }
+
+  private async joinHumanAuthorityPlayer(
+    connectionId: string,
+  ): Promise<HumanAuthorityJoin | null> {
+    const authority = this.requireAuthority();
+    if (!this.relayBotPopulationEnabled()) {
+      const playerId = `player.${crypto.randomUUID()}`;
+      const issued = await this.resumeSessions.issue(
+        playerId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+      );
+      const joined = authority.joinNewPlayer({ playerId, connectionId });
+      if (!joined.ok) {
+        this.resumeSessions.revokePlayer(
+          playerId,
+          authority.identity.roomId,
+          authority.identity.matchId,
+        );
+        return null;
+      }
+      return Object.freeze({
+        playerId,
+        resumeToken: issued.resumeToken,
+        sessionGeneration: issued.session.generation,
+        snapshot: joined.snapshot,
+      });
+    }
+
+    return this.withServerBotMutation(async () => {
+      await this.ensureRelayBotPopulationLocked();
+      const playerId = nextRelayAuthorityBotTakeover(this.serverBotPlayerIds);
+      if (playerId === null) return null;
+      const botConnectionId = relayAuthorityBotConnectionId(playerId);
+      if (!authority.disconnectConnection(botConnectionId)) {
+        throw new Error('RELAY_BOT_TAKEOVER_DISCONNECT_FAILED');
+      }
+      this.resumeSessions.revokePlayer(
+        playerId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+      );
+      try {
+        const issued = await this.resumeSessions.issue(
+          playerId,
+          authority.identity.roomId,
+          authority.identity.matchId,
+        );
+        const resumed = authority.resumePlayer({ playerId, connectionId });
+        if (!resumed.ok) throw new Error(`RELAY_BOT_TAKEOVER_RESUME_FAILED:${resumed.reason}`);
+        this.serverBotPlayerIds.delete(playerId);
+        this.serverBotInputSequences.delete(playerId);
+        this.serverBotHeldButtons.delete(playerId);
+        const fallbackLoadout = this.requireAuthoritativeLoadout();
+        if (authority.lifecycle === 'lobby' || authority.lifecycle === 'warmup') {
+          authority.setPlayerCombatLoadout(
+            playerId,
+            fallbackLoadout.damageAbilityIds,
+            fallbackLoadout.primaryWeaponSlot,
+          );
+        }
+        return Object.freeze({
+          playerId,
+          resumeToken: issued.resumeToken,
+          sessionGeneration: issued.session.generation,
+          snapshot: resumed.snapshot,
+        });
+      } catch (error) {
+        await this.restoreRelayBotControlLocked(playerId);
+        throw error;
+      }
+    });
+  }
+
+  private enqueueRelayBotInputs(): void {
+    if (this.serverBotPlayerIds.size === 0) return;
+    const authority = this.requireAuthority();
+    // Keep takeover slots on their authored spawn orientation throughout
+    // warmup. Humans joining during that window inherit a stable camera pose;
+    // server bots begin aiming and attacking only when scoring is active.
+    if (authority.lifecycle !== 'active') return;
+    const snapshot = authority.fullSnapshot();
+    for (const playerId of [...this.serverBotPlayerIds].sort(compareCodeUnits)) {
+      const ordinal = relayAuthorityPlayerSlotOrdinal(playerId);
+      if (ordinal === null) throw new Error('RELAY_BOT_SLOT_ID_INVALID');
+      const sequence = this.serverBotInputSequences.get(playerId) ?? 0;
+      const input = deterministicCombatBotInput(
+        snapshot,
+        playerId,
+        this.serverBotHeldButtons.get(playerId) ?? 0,
+        ordinal,
+        { locomotion: 'sentry' },
+      );
+      const message: InputBatchMessage = Object.freeze({
+        protocolVersion: PROTOCOL_VERSION,
+        type: 'inputBatch',
+        commands: Object.freeze([Object.freeze({
+          type: 'input',
+          sequence,
+          clientTick: authority.serverTick,
+          ...input,
+        })]),
+      });
+      const result = authority.enqueueInputBatch(relayAuthorityBotConnectionId(playerId), message);
+      if (result.accepted !== 1 || result.rejections.length !== 0) {
+        throw new Error(
+          `RELAY_BOT_INPUT_REJECTED:${result.rejections[0]?.reason ?? 'unknown'}`,
+        );
+      }
+      this.serverBotInputSequences.set(playerId, sequence + 1);
+      this.serverBotHeldButtons.set(playerId, input.heldButtons);
+    }
+  }
+
   private welcome(connectionId: string): ServerMessage {
     const authority = this.requireAuthority();
     return {
@@ -2283,14 +2522,25 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       }
       connectedSockets.set(attachment.playerId, { socket, attachment });
     }
+    const restoredServerBotPlayerIds = new Set<string>();
     for (const player of checkpointPlayers) {
-      if (player.connected !== connectedSockets.has(player.playerId)) {
+      const socketConnected = connectedSockets.has(player.playerId);
+      const serverBotConnected = this.relayBotPopulationEnabled()
+        && player.connected
+        && !socketConnected
+        && relayAuthorityPlayerSlotOrdinal(player.playerId) !== null
+        && player.connectionId === relayAuthorityBotConnectionId(player.playerId);
+      if (serverBotConnected) restoredServerBotPlayerIds.add(player.playerId);
+      if (player.connected !== (socketConnected || serverBotConnected)) {
         throw new Error('AUTHORITY_ACTIVE_CHECKPOINT_CONNECTED_SET_MISMATCH');
       }
     }
 
     this.playerEventAcknowledgements.clear();
     this.sessionGenerations.clear();
+    this.serverBotPlayerIds.clear();
+    this.serverBotInputSequences.clear();
+    this.serverBotHeldButtons.clear();
     const resynchronized = new Map<string, SocketAttachment>();
     for (const playerId of playerIds) {
       const normalizedAcknowledgement = this.retainedEventBaseline(
@@ -2298,6 +2548,21 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       );
       this.playerEventAcknowledgements.set(playerId, normalizedAcknowledgement);
       this.sessionGenerations.set(playerId, restoredGenerations.get(playerId) as number);
+      if (restoredServerBotPlayerIds.has(playerId)) {
+        const checkpointPlayer = checkpointByPlayerId.get(playerId);
+        if (checkpointPlayer === undefined) {
+          throw new Error('AUTHORITY_ACTIVE_CHECKPOINT_BOT_PLAYER_MISSING');
+        }
+        this.serverBotPlayerIds.add(playerId);
+        this.serverBotInputSequences.set(
+          playerId,
+          checkpointPlayer.movement.player.lastProcessedSequence + 1,
+        );
+        this.serverBotHeldButtons.set(
+          playerId,
+          checkpointPlayer.movement.player.intent.heldButtons,
+        );
+      }
       const live = connectedSockets.get(playerId);
       if (live === undefined) continue;
       const resetAttachment: SocketAttachment = Object.freeze({
@@ -3226,6 +3491,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       authority.recordMissedSchedulerTicks(poll.missedTicks);
       for (let index = 0; index < poll.ticksToRun; index += 1) {
         const tickStartedAt = performance.now();
+        this.enqueueRelayBotInputs();
         const tickResult = authority.advanceOneTick();
         this.respawnEligibleCombatPlayers();
         const combatEvents = reliableCombatEvents(tickResult);
@@ -3234,6 +3500,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.transportMetrics.reliableEventsRecorded += 1;
         }
         for (const playerId of tickResult.prunedPlayerIds) this.recordPlayerLeft(playerId);
+        if (tickResult.prunedPlayerIds.length > 0 && this.relayBotPopulationEnabled()) {
+          await this.withServerBotMutation(() => this.ensureRelayBotPopulationLocked());
+        }
         this.markActiveMatchCheckpointDirty();
         if (combatEvents.length > 0 || tickResult.prunedPlayerIds.length > 0) {
           // Reliable combat and roster boundaries remain immediately durable.

@@ -28,6 +28,7 @@ import {
   RELAY_REVISION_1_WORKER_MAP_BINDING,
 } from '../../worker/combatRuntime';
 import type { KyxAuthorityEnv } from '../../worker/env';
+import { RELAY_AUTHORITY_PLAYER_SLOT_IDS } from '../../worker/relayBotSlots';
 import { INTENT_BUTTON } from '../../src/sim';
 
 const ALLOWED_ORIGIN = 'http://127.0.0.1:5173';
@@ -606,6 +607,21 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       feetPosition: { x: -29_000, y: 0, z: 0 },
       yawMilliDegrees: 90_000,
     });
+    expect(firstSnapshot.combat?.players).toHaveLength(8);
+    acknowledgeSnapshot(first, firstSnapshot);
+    const firstPopulation = await waitForMetrics(
+      room,
+      (candidate) => candidate.connectedPlayers === 8,
+      'Relay one-human bot population',
+    );
+    expect(firstPopulation).toMatchObject({
+      botPopulation: {
+        targetPlayers: 8,
+        serverControlledPlayers: 7,
+        connectedHumanPlayers: 1,
+        reservedHumanReconnectSlots: 0,
+      },
+    });
 
     sendClient(second, joinMessage(room.roomCode, 'req.join.relay.second', 'Relay Second'));
     const secondJoin = await waitForType(
@@ -622,16 +638,26 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       feetPosition: { x: 29_000, y: 0, z: 0 },
       yawMilliDegrees: 270_000,
     });
+    acknowledgeSnapshot(second, secondSnapshot);
 
     const metrics = await waitForMetrics(
       room,
-      (candidate) => candidate.connectedPlayers === 2
-        && candidate.lifecycle === 'warmup',
+      (candidate) => candidate.connectedPlayers === 8
+        && (candidate.lifecycle === 'warmup' || candidate.lifecycle === 'active'),
       'Relay active checkpoint',
     );
     expect(metrics).toMatchObject({
       roomProfile: RELAY_REV1_COMBAT_PROFILE,
-      connectedPlayers: 2,
+      players: 8,
+      connectedPlayers: 8,
+      botPopulation: {
+        schemaVersion: 1,
+        strategy: 'relay_authority_sentry_slot_takeover_v1',
+        targetPlayers: 8,
+        serverControlledPlayers: 6,
+        connectedHumanPlayers: 2,
+        reservedHumanReconnectSlots: 0,
+      },
       mapBinding: {
         mapReference: 'relay@1',
         presentationReference: 'relay@1/open-sky/v5',
@@ -646,7 +672,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
     const stored = await runInDurableObject(stub, async (_instance, state) => (
       [...state.storage.sql.exec<Record<string, string | number>>(
-        `SELECT profile_id, map_binding_json, checkpoint_hash
+        `SELECT profile_id, map_binding_json, checkpoint_hash, checkpoint_json
          FROM room_active_checkpoint_v1 WHERE singleton = 1`,
       )][0]
     ));
@@ -655,6 +681,24 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       map_binding_json: JSON.stringify(RELAY_REVISION_1_WORKER_MAP_BINDING),
       checkpoint_hash: expect.stringMatching(/^[a-f0-9]{16}$/u),
     });
+    const checkpoint = JSON.parse(String(stored.checkpoint_json)) as {
+      readonly authority: {
+        readonly players: readonly {
+          readonly playerId: string;
+          readonly connectionId: string;
+          readonly connected: boolean;
+        }[];
+      };
+      readonly playerEventAcknowledgements: readonly unknown[];
+      readonly sessionGenerations: readonly unknown[];
+    };
+    expect(checkpoint.authority.players).toHaveLength(8);
+    expect(checkpoint.authority.players.filter(({ connectionId }) => (
+      connectionId.startsWith('connection.relay.bot.')
+    ))).toHaveLength(6);
+    expect(checkpoint.authority.players.every(({ connected }) => connected)).toBe(true);
+    expect(checkpoint.playerEventAcknowledgements).toHaveLength(8);
+    expect(checkpoint.sessionGenerations).toHaveLength(8);
     expect(first.decodeErrors).toEqual([]);
     expect(second.decodeErrors).toEqual([]);
   }, 30_000);
@@ -680,15 +724,15 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       'fullSnapshot',
       ({ localReconciliation }) => localReconciliation.player.id === capableJoin.playerId,
     );
-    expect(capableFull.combat?.match.scoreboard).toEqual({
-      schemaVersion: 1,
-      playerScores: [{
-        playerId: capableJoin.playerId,
-        teamId: 'team_blue',
-        kills: 0,
-        deaths: 0,
-        assists: 0,
-      }],
+    expect(capableFull.combat?.match.scoreboard?.playerScores).toHaveLength(8);
+    expect(capableFull.combat?.match.scoreboard?.playerScores.map(({ playerId }) => playerId))
+      .toEqual(RELAY_AUTHORITY_PLAYER_SLOT_IDS);
+    expect(capableFull.combat?.match.scoreboard?.playerScores[0]).toEqual({
+      playerId: capableJoin.playerId,
+      teamId: 'team_blue',
+      kills: 0,
+      deaths: 0,
+      assists: 0,
     });
     acknowledgeSnapshot(capable, capableFull);
 
@@ -711,11 +755,11 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       'deltaSnapshot',
       ({ combat, serverTick }) => (
         serverTick > capableFull.serverTick
-        && combat?.match.scoreboard?.playerScores.length === 2
+        && combat?.match.scoreboard?.playerScores.length === 8
       ),
     );
     expect(capableDelta.combat?.match.scoreboard?.playerScores.map(({ playerId }) => playerId).sort())
-      .toEqual([capableJoin.playerId, legacyJoin.playerId].sort());
+      .toEqual([...RELAY_AUTHORITY_PLAYER_SLOT_IDS].sort());
     const legacyDelta = await waitForType(
       legacy,
       'deltaSnapshot',
@@ -724,11 +768,18 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     expect(legacyDelta.combat?.match.scoreboard).toBeUndefined();
 
     capable.socket.close(1000, 'scoreboard resume proof');
-    await waitForMetrics(
+    const disconnectedMetrics = await waitForMetrics(
       room,
-      (metrics) => metrics.connectedPlayers === 1,
+      (metrics) => metrics.connectedPlayers === 7,
       'scoreboard client disconnected',
     );
+    expect(disconnectedMetrics).toMatchObject({
+      botPopulation: {
+        serverControlledPlayers: 6,
+        connectedHumanPlayers: 1,
+        reservedHumanReconnectSlots: 1,
+      },
+    });
     const resumed = await connectSocket(room.socketPath);
     await waitForType(resumed, 'welcome');
     await announceCombatScoreboardCapability(resumed, 'req.hello.relay.scoreboard.resume');
@@ -754,7 +805,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
       playerId: capableJoin.playerId,
     });
     expect(resumedFull.combat?.match.scoreboard?.playerScores.map(({ playerId }) => playerId).sort())
-      .toEqual([capableJoin.playerId, legacyJoin.playerId].sort());
+      .toEqual([...RELAY_AUTHORITY_PLAYER_SLOT_IDS].sort());
     expect(capable.decodeErrors).toEqual([]);
     expect(legacy.decodeErrors).toEqual([]);
     expect(resumed.decodeErrors).toEqual([]);

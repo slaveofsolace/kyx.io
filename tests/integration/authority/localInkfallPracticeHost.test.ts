@@ -7,6 +7,7 @@ import {
   LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS,
   LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ,
   LocalInkfallPracticeHost,
+  deterministicCombatBotInput,
   localInkfallPracticeBotPresetId,
   RELAY_AUTHORITY_IDENTITY,
   RELAY_PORTAL_CAPABILITY_ID,
@@ -431,6 +432,25 @@ describe('browser-local Relay Practice authority host', () => {
     });
     expect(next.snapshot.players).toHaveLength(8);
     expect(next.authority.metricsSnapshot().acceptedInputs).toBe(0);
+  });
+
+  it('supports a collision-stable sentry policy for Worker-owned bot slots', async () => {
+    const practice = await host(1);
+    const botId = practice.botPlayerIds[0];
+    if (botId === undefined) throw new Error('Missing deterministic bot');
+    const input = deterministicCombatBotInput(
+      practice.snapshot,
+      botId,
+      0,
+      1,
+      { locomotion: 'sentry' },
+    );
+
+    expect(input).toMatchObject({ moveX: 0, moveY: 0, selectedSlot: 0 });
+    expect(input.heldButtons & INTENT_BUTTON.jump).toBe(0);
+    expect(input.heldButtons & INTENT_BUTTON.sprint).toBe(0);
+    expect(Number.isSafeInteger(input.lookYawDeltaMilliDegrees)).toBe(true);
+    expect(Number.isSafeInteger(input.lookPitchDeltaMilliDegrees)).toBe(true);
   });
 
   it('fails closed for invalid population and after disposal', async () => {
