@@ -1260,8 +1260,8 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
 
   override async webSocketClose(
     webSocket: WebSocket,
-    code: number,
-    reason: string,
+    _code: number,
+    _reason: string,
     _wasClean: boolean,
   ): Promise<void> {
     const attachment = this.readSocketAttachment(webSocket);
@@ -1275,7 +1275,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.forgetSocketAttachment(attachment);
       }
     }
-    webSocket.close(code, reason.slice(0, 120));
+    // The hibernation close callback observes a socket that has already
+    // closed. Echoing the peer's close code is both redundant and unsafe:
+    // browsers report abnormal termination as reserved code 1006, which the
+    // WebSocket API forbids applications from sending and Cloudflare rejects
+    // with InvalidAccessError. Cleanup above owns the close boundary.
   }
 
   override async webSocketError(webSocket: WebSocket): Promise<void> {
