@@ -10,6 +10,7 @@ Test contract: public `https://ev.io/`, guest/public match surface, desktop Chro
 - Repeated deaths exposed a short click-to-respawn loop, persistent score/kill-feed context and rapid re-entry.
 - The public scoreboard exposed player score, assists, kills, deaths and K/D.
 - Weapon fire, impact, damage direction, cooldown state and kill-feed events were visible during the live cycles.
+- The current public mode selector exposed Deathmatch, Sniper Shotgun, Team Deathmatch, Infection, Battle Royale and Survival. This is breadth evidence only; KYX is not adopting names, rules text or private implementation details from that surface.
 
 ## MEASURED
 
@@ -25,7 +26,7 @@ Test contract: public `https://ev.io/`, guest/public match surface, desktop Chro
 ## UNKNOWN / TOOL-LIMITED
 
 - Exact end-to-end input latency, weapon TTK distributions, cadence values, death-to-control milliseconds, network reconciliation and audio mix are not remeasured in this post-boot run.
-- Pointer lock could not be granted through the browser-control surface. That is a tool limitation, not evidence that manual Chrome entry is broken.
+- Pointer lock could not be granted through either the in-app Playwright or direct-computer-control surface. Spectate worked, but the sampled public room was idle and its visible timer remained at 0:53; that observation is not a live-combat measurement.
 - Competitive balance, accessibility and performance require dedicated controlled sessions.
 
 ## Behavioral targets for KYX
