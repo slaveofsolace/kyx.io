@@ -3,12 +3,12 @@ import { DurableObject } from 'cloudflare:workers';
 import type { KyxAuthorityEnv } from './env';
 import { normalizeRoomCode } from './security';
 
-export const ALLOCATION_GUARD_NAME = 'kyx-allocation-guard-v1' as const;
+export const ALLOCATION_GUARD_NAME = 'kyx-allocation-guard-v2' as const;
 export const INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER =
   'x-kyx-socket-allocation-lease' as const;
 
 export const ALLOCATION_LIMITS = Object.freeze({
-  roomLeaseMilliseconds: 6 * 60 * 60 * 1_000,
+  roomLeaseMilliseconds: 20 * 60 * 1_000,
   roomWindowMilliseconds: 5 * 60 * 1_000,
   maximumLiveRooms: 512,
   maximumLiveRoomsPerCaller: 16,
@@ -306,14 +306,12 @@ export class KyxAllocationGuard extends DurableObject<KyxAuthorityEnv> {
     const roomCode = typeof body.roomCode === 'string'
       ? normalizeRoomCode(body.roomCode)
       : null;
-    const callerKey = boundedString(body.callerKey, CALLER_KEY_PATTERN);
-    if (roomCode === null || callerKey === null) {
+    if (roomCode === null) {
       return json({ ok: false, code: 'INVALID_REQUEST' }, 400);
     }
     this.ctx.storage.sql.exec(
-      'DELETE FROM allocation_room_leases_v1 WHERE room_code = ? AND caller_key = ?',
+      'DELETE FROM allocation_room_leases_v1 WHERE room_code = ?',
       roomCode,
-      callerKey,
     );
     return json({ ok: true });
   }

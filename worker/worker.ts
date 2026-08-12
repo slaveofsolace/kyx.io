@@ -210,9 +210,8 @@ function allocationRejected(
 async function releaseRoomReservation(
   env: KyxAuthorityEnv,
   roomCode: string,
-  callerKey: string,
 ): Promise<void> {
-  await allocationRequest(env, '/v1/rooms/release', { roomCode, callerKey });
+  await allocationRequest(env, '/v1/rooms/release', { roomCode });
 }
 
 async function releaseSocketReservation(
@@ -294,11 +293,11 @@ export default {
           headers: initializationHeaders,
         }));
       } catch {
-        await releaseRoomReservation(env, roomCode, callerKey);
+        await releaseRoomReservation(env, roomCode);
         return json({ ok: false, code: 'ROOM_INITIALIZATION_FAILED' }, 503, cors);
       }
       if (!initialized.ok) {
-        await releaseRoomReservation(env, roomCode, callerKey);
+        await releaseRoomReservation(env, roomCode);
         return json({ ok: false, code: 'ROOM_INITIALIZATION_FAILED' }, 503, cors);
       }
       return json({
@@ -357,13 +356,13 @@ export default {
       );
       if (reservation === null) {
         if (roomReservation.newlyReserved) {
-          await releaseRoomReservation(env, route.roomCode, callerKey);
+          await releaseRoomReservation(env, route.roomCode);
         }
         return json({ ok: false, code: 'ALLOCATION_GUARD_UNAVAILABLE' }, 503, cors);
       }
       if (!reservation.ok) {
         if (roomReservation.newlyReserved) {
-          await releaseRoomReservation(env, route.roomCode, callerKey);
+          await releaseRoomReservation(env, route.roomCode);
         }
         return allocationRejected(reservation, cors, 'socket');
       }
@@ -390,7 +389,7 @@ export default {
         await releaseSocketReservation(env, socketReservation.leaseId);
       }
       if (response.status !== 101 && !response.ok && roomReservation.newlyReserved) {
-        await releaseRoomReservation(env, route.roomCode, callerKey);
+        await releaseRoomReservation(env, route.roomCode);
       }
       return withCors(response, requestOrigin);
     } catch {
@@ -398,7 +397,7 @@ export default {
         await releaseSocketReservation(env, socketReservation.leaseId);
       }
       if (roomReservation.newlyReserved) {
-        await releaseRoomReservation(env, route.roomCode, callerKey);
+        await releaseRoomReservation(env, route.roomCode);
       }
       return json({ ok: false, code: 'ROOM_UNAVAILABLE' }, 503, cors);
     }

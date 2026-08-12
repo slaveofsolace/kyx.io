@@ -1841,6 +1841,22 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     return this.authoritativeLoadout;
   }
 
+  private async releaseRoomAllocationReservation(): Promise<void> {
+    if (this.roomCode === null) return;
+    try {
+      await this.authorityEnv.KYX_ALLOCATION_GUARD
+        .getByName(ALLOCATION_GUARD_NAME)
+        .fetch(new Request('https://kyx-allocation.internal/v1/rooms/release', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ roomCode: this.roomCode }),
+        }));
+    } catch {
+      // A terminal room no longer needs allocation capacity. If this internal
+      // release fails transiently, the bounded room lease remains the fallback.
+    }
+  }
+
   private withServerBotMutation<T>(action: () => Promise<T>): Promise<T> {
     const result = this.serverBotMutation.then(action, action);
     this.serverBotMutation = result.then(() => undefined, () => undefined);
@@ -3545,6 +3561,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       } else {
         this.timerActive = false;
         this.markRecoveryState('expired');
+        await this.releaseRoomAllocationReservation();
         this.ensureExpiredMaintenanceTimer();
       }
     } catch (error) {

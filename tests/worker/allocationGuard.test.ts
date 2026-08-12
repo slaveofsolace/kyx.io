@@ -12,6 +12,7 @@ import type { KyxAuthorityEnv } from '../../worker/env';
 const authorityEnv = env as unknown as KyxAuthorityEnv;
 const ALLOWED_ORIGIN = 'http://127.0.0.1:5173';
 const CALLER_KEY = `caller.${'a'.repeat(32)}`;
+const SECOND_CALLER_KEY = `caller.${'b'.repeat(32)}`;
 const ROOM_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 
 afterEach(async () => {
@@ -36,6 +37,29 @@ async function guardPost(
 }
 
 describe('deployment allocation guard', () => {
+  it('releases a terminal room by its internal identity without a caller echo', async () => {
+    const room = roomCode(0);
+    const reserved = await guardPost('/v1/rooms/reserve', {
+      roomCode: room,
+      callerKey: CALLER_KEY,
+    });
+    expect(reserved.status).toBe(200);
+
+    const released = await guardPost('/v1/rooms/release', { roomCode: room });
+    expect(released.status).toBe(200);
+    await expect(released.json()).resolves.toEqual({ ok: true });
+
+    const reused = await guardPost('/v1/rooms/reserve', {
+      roomCode: room,
+      callerKey: SECOND_CALLER_KEY,
+    });
+    expect(reused.status).toBe(200);
+    await expect(reused.json()).resolves.toMatchObject({
+      ok: true,
+      newlyReserved: true,
+    });
+  });
+
   it('bounds new room creation per caller while keeping an existing room idempotent', async () => {
     for (
       let index = 0;
