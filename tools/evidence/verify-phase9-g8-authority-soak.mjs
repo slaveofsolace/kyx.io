@@ -6,7 +6,7 @@ const evidenceArgument = process.argv.find((argument) => argument.startsWith('--
 const evidenceDirectory = path.resolve(
   process.cwd(),
   evidenceArgument?.slice('--evidence-dir='.length)
-    ?? 'evidence/2026-07-27/phase-9-g8-authority-soak/local-full-occupancy',
+    ?? 'evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2',
 );
 const evidence = JSON.parse(await readFile(
   path.join(evidenceDirectory, 'authority-soak.json'),
@@ -22,6 +22,11 @@ function check(id, passed, detail) {
 
 check('capture.test_exit_zero', evidence.testExitCode === 0, evidence.testExitCode);
 check('runtime.actual_workers_pool', result.runtime === '@cloudflare/vitest-pool-workers', result.runtime);
+check(
+  'runtime.canonical_relay_profile',
+  result.roomProfile === 'relay-revision-1-authority-v1',
+  result.roomProfile,
+);
 check('occupancy.eight_clients', result.clients === 8, result.clients);
 check('soak.minimum_rounds', result.soakRounds >= 60, result.soakRounds);
 check(
@@ -87,14 +92,16 @@ check(
   result.combat.targetDeadInAuthoritySnapshot,
 );
 check(
-  'combat.verified_ink_channel_pair',
+  'combat.verified_relay_centerline_pair',
   Number.isFinite(combatSetup.separationMillimeters)
     && combatSetup.separationMillimeters <= 2_200
     && Number.isFinite(combatSetup.verticalMarginMillimeters)
-    && combatSetup.verticalMarginMillimeters >= 90,
+    && combatSetup.verticalMarginMillimeters >= 90
+    && (combatSetup.shooterSide === 'west' || combatSetup.shooterSide === 'east'),
   {
     separationMillimeters: combatSetup.separationMillimeters,
     verticalMarginMillimeters: combatSetup.verticalMarginMillimeters,
+    shooterSide: combatSetup.shooterSide,
   },
 );
 check(
