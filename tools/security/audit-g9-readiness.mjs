@@ -311,8 +311,9 @@ record(
 
 const connectSource = publicHeaders.match(/connect-src\s+([^;]+);/iu)?.[1] ?? '';
 const connectSourceTokens = connectSource.split(/\s+/u).filter(Boolean);
+const originBoundedConnectSources = new Set(["'self'", 'blob:']);
 const externalConnectSources = connectSourceTokens.filter(
-  (source) => source !== "'self'",
+  (source) => !originBoundedConnectSources.has(source),
 );
 record(
   'static_asset_csp_is_same_origin',
@@ -321,7 +322,9 @@ record(
     && externalConnectSources.length === 0,
   {
     connectSourceTokens,
+    originBoundedConnectSources: [...originBoundedConnectSources],
     externalConnectSources,
+    blobSourcePurpose: 'Local object URLs used while decoding packaged model textures.',
   },
 );
 
