@@ -32,13 +32,44 @@ test('truthful shell boots in its declared desktop and mobile states', async ({ 
     await expect(page.getByRole('button', { name: 'Enter Relay practice' })).toBeVisible({
       timeout: 15_000,
     });
-    await expect(page.locator('#online-match-button')).toBeDisabled();
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-launch-support',
+      'canonical-authority-lobby',
+    );
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-canonical-runtime',
+      'authority-relay-v1',
+    );
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-canonical-lobby-status',
+      'ready',
+    );
+    await expect(page.locator('#game-canvas')).toHaveAttribute('aria-hidden', 'true');
+    const onlineButton = page.locator('#online-match-button');
+    await expect(onlineButton).toBeVisible();
+    const onlineAriaDisabled = await onlineButton.getAttribute('aria-disabled');
+    expect(['true', 'false']).toContain(onlineAriaDisabled);
+    expect(await onlineButton.isDisabled()).toBe(onlineAriaDisabled === 'true');
   }
 
   expect(consoleErrors).toEqual([]);
   expect(pageErrors).toEqual([]);
   expect(failedRequests).toEqual([]);
   expect([...requestOrigins]).toEqual([new URL(page.url()).origin]);
+});
+
+test('the canonical lobby enters the authority-backed Practice runtime', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'chromium-desktop');
+
+  await page.goto('/', { waitUntil: 'networkidle' });
+  await page.getByRole('button', { name: 'Enter Relay practice' }).click();
+  await expect(page).toHaveURL(/\/practice(?:\?|$)/u);
+  await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined);
+  await expect(page.locator('body')).toHaveAttribute(
+    'data-launch-support',
+    'local-relay-practice-authority',
+  );
+  await expect(page.getByRole('dialog', { name: 'First team to 40 wins' })).toBeVisible();
 });
 
 test('touch-capable Windows desktop is not forced behind the mobile boundary', async ({ browser }, testInfo) => {

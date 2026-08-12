@@ -221,8 +221,24 @@ if (desktopSupported && !launchOverrideRoute) {
       showDevelopmentMovementFailure(error, 'INITIALIZATION');
     }
   } else {
-    const { Game } = await import('./core/Game.js');
-    game = new Game(canvas);
+    try {
+      const { mountCanonicalLobbyRoute } = await import('./app/canonicalLobbyRoute.ts');
+      mountCanonicalLobbyRoute(document.body);
+    } catch (error) {
+      const failure = document.createElement('pre');
+      failure.id = 'canonical-lobby-result';
+      failure.setAttribute('role', 'alert');
+      failure.textContent = [
+        'KYX.IO could not open the combat lobby.',
+        '',
+        error instanceof Error ? error.message : String(error),
+        '',
+        'The retired local simulation was not loaded as a fallback.',
+      ].join('\n');
+      document.body.dataset.launchSupport = 'canonical-authority-lobby-error';
+      document.body.dataset.canonicalLobbyStatus = 'error';
+      document.body.replaceChildren(failure);
+    }
   }
 }
 
