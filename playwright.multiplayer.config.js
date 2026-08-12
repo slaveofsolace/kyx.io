@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const webHost = '127.0.0.1';
 const webPort = 5173;
@@ -7,6 +10,7 @@ const webOrigin = `http://${webHost}:${webPort}`;
 const authorityOrigin = `http://${webHost}:${authorityPort}`;
 const node = `"${process.execPath}"`;
 const executablePath = process.env.KYX_PLAYWRIGHT_EXECUTABLE_PATH?.trim();
+const durableObjectStateDirectory = mkdtempSync(join(tmpdir(), 'kyx-multiplayer-do-'));
 
 export default defineConfig({
   testDir: './tests/multiplayer',
@@ -34,7 +38,7 @@ export default defineConfig({
   }],
   webServer: [
     {
-      command: `${node} node_modules/wrangler/bin/wrangler.js dev --local --ip ${webHost} --port ${authorityPort}`,
+      command: `${node} node_modules/wrangler/bin/wrangler.js dev --local --persist-to "${durableObjectStateDirectory}" --ip ${webHost} --port ${authorityPort}`,
       url: `${authorityOrigin}/health`,
       reuseExistingServer: false,
       timeout: 60_000,

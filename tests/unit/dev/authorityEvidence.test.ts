@@ -1088,15 +1088,6 @@ describe('authority evidence transport state', () => {
     })).toBe(true);
     first.receive({
       protocolVersion: PROTOCOL_VERSION,
-      type: 'matchState',
-      matchId: 'match.1',
-      serverTick: state.tick,
-      phase: 'active',
-      phaseEndsAtTick: 400,
-      simulationIdentity: EXPECTED_IDENTITY,
-    });
-    first.receive({
-      protocolVersion: PROTOCOL_VERSION,
       type: 'error',
       code: 'LOADOUT_REJECTED',
       detail: 'loadout_locked',
@@ -1104,10 +1095,20 @@ describe('authority evidence transport state', () => {
     });
     expect(client.diagnostics()).toMatchObject({
       connection: { phase: 'joined' },
-      authority: { matchPhase: 'active' },
+      authority: { matchPhase: 'warmup' },
       lastNotice: 'LOADOUT_LOCKED: using the authoritative in-match loadout until the next selection window',
       counters: { applicationErrors: 0 },
     });
+    first.receive({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'matchState',
+      matchId: 'match.1',
+      serverTick: state.tick,
+      phase: 'active',
+      phaseEndsAtTick: 400,
+      simulationIdentity: EXPECTED_IDENTITY,
+    });
+    expect(client.diagnostics().authority.matchPhase).toBe('active');
     expect(client.requestLoadout({
       protocolVersion: PROTOCOL_VERSION,
       type: 'loadoutRequest',

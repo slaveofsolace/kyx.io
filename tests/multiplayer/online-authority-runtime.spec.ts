@@ -7,6 +7,7 @@ interface OnlineSnapshot {
   readonly remotePlayers: number;
   readonly commandsGenerated: number;
   readonly resumeSuccesses: number;
+  readonly lastError: string | null;
   readonly localPredictedPosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativePosition: Readonly<{ x: number; y: number; z: number }> | null;
   readonly localAuthoritativeVelocity: Readonly<{ x: number; y: number; z: number }> | null;
@@ -32,7 +33,13 @@ async function snapshot(page: Page): Promise<OnlineSnapshot | null> {
 }
 
 async function waitForJoined(page: Page): Promise<OnlineSnapshot> {
-  await expect.poll(async () => (await snapshot(page))?.connection ?? null, {
+  await expect.poll(async () => {
+    const current = await snapshot(page);
+    if (current?.connection === 'failed') {
+      throw new Error(`online authority client failed: ${current.lastError ?? 'no diagnostic'}`);
+    }
+    return current?.connection ?? null;
+  }, {
     timeout: 20_000,
   }).toBe('joined');
   const result = await snapshot(page);

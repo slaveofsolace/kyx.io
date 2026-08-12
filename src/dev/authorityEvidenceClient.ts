@@ -1016,7 +1016,6 @@ export class AuthorityEvidenceClient {
   private applyRecoverableLoadoutLockRejection(message: ErrorMessage): boolean {
     if (
       this.phase !== 'joined'
-      || (this.matchPhase !== 'active' && this.matchPhase !== 'postmatch')
       || this.playerId === null
       || this.matchId === null
       || message.code !== 'LOADOUT_REJECTED'
@@ -1024,6 +1023,10 @@ export class AuthorityEvidenceClient {
       || message.requestId === null
       || !this.pendingLoadoutRequestIds.delete(message.requestId)
     ) return false;
+    // The authority can cross warmup -> active after this client submits the
+    // request but before the rejection reaches us. The pending request ID is
+    // the fail-closed correlation boundary; the client's last observed phase
+    // can legitimately still be warmup during that race.
     this.lastNotice = 'LOADOUT_LOCKED: using the authoritative in-match loadout until the next selection window';
     return true;
   }
