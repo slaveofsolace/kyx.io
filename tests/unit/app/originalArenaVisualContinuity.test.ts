@@ -45,7 +45,7 @@ describe('original arena visual continuity', () => {
       expect(visual.meshCount).toBe(meshCount);
       expect(visual.lightCount).toBe(lightCount);
       expect(visual.meshCount).toBeLessThanOrEqual(12);
-      expect(visual.lightCount).toBe(2);
+      expect(visual.lightCount).toBe(3);
       expect(visual.authorityFixtureUnchanged).toBe(true);
       expect(visual.humanAccepted).toBe(false);
       expect(visual.group.getObjectByName(landmark)).toBeDefined();

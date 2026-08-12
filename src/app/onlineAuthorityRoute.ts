@@ -1453,6 +1453,8 @@ async function mountSession(
       body.dataset.online3dStatus = 'ready';
       body.dataset.online3dRenderer = sceneFacts.renderer;
       body.dataset.online3dPresentationReference = sceneFacts.presentationReference;
+      body.dataset.online3dPresentationMode = sceneFacts.presentationMode;
+      body.dataset.online3dDisplayName = sceneFacts.presentationDisplayName;
       window.setTimeout(() => {
         if (mapStatus.dataset.state === 'ready') mapStatus.dataset.state = 'settled';
       }, 2_200);

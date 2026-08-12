@@ -83,23 +83,33 @@ function createColliderVisuals(
   const materials: Readonly<Record<SurfaceRole, THREE.MeshStandardMaterial>> = Object.freeze({
     floor: material(
       `${mapId.toUpperCase()}_DECK`,
-      switchyard ? 0x27333b : 0x4b4d59,
+      switchyard ? 0x53636d : 0x646875,
+      switchyard ? 0x182229 : 0x20222a,
+      0.34,
     ),
     boundary: material(
       `${mapId.toUpperCase()}_BOUNDARY`,
-      switchyard ? 0x171e25 : 0x222635,
+      switchyard ? 0x3c4851 : 0x414858,
+      switchyard ? 0x11191f : 0x151923,
+      0.42,
     ),
     stair: material(
       `${mapId.toUpperCase()}_TRAVERSAL`,
-      switchyard ? 0x56616a : 0x77727a,
+      switchyard ? 0x73818b : 0x8b8791,
+      switchyard ? 0x19242b : 0x25232a,
+      0.28,
     ),
     cover: material(
       `${mapId.toUpperCase()}_COVER`,
-      switchyard ? 0x6a4934 : 0x4b6272,
+      switchyard ? 0x8a5838 : 0x58778a,
+      switchyard ? 0x2b1509 : 0x102731,
+      0.3,
     ),
     landmark: material(
       `${mapId.toUpperCase()}_LANDMARK`,
-      switchyard ? 0x4d5b62 : 0x6c6357,
+      switchyard ? 0x65747c : 0x827a6b,
+      switchyard ? 0x172126 : 0x292319,
+      0.26,
     ),
   });
   const groups = new Map<SurfaceRole, FixtureSolidV1[]>();
@@ -245,7 +255,15 @@ function addLighting(
   key.shadow.camera.bottom = -32;
   markRenderOnly(key, 'arena_key_light');
   parent.add(key);
-  return 2;
+  const fill = new THREE.DirectionalLight(
+    switchyard ? 0x8dc9ed : 0x87d4ff,
+    switchyard ? 1.15 : 1.3,
+  );
+  fill.name = `${binding.mapId.toUpperCase()}_FILL_LIGHT`;
+  fill.position.set(switchyard ? 18 : -14, 15, switchyard ? 16 : -18);
+  markRenderOnly(fill, 'arena_fill_light');
+  parent.add(fill);
+  return 3;
 }
 
 export function createOriginalArenaVisualContinuity(
