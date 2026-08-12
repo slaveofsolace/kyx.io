@@ -718,11 +718,24 @@ export async function mountLocalInkfallPracticeRoute(
     const currentLook = authoritativeLocal === undefined
       ? undefined
       : projectedBlinkLook(authoritativeLocal);
+    const blinkCommitEligible = event.code !== 'KeyQ' || event.type !== 'keyup'
+      ? true
+      : authoritativeLocal !== undefined
+        && currentLook !== undefined
+        && currentLook !== null
+        && isOnlineBlinkPreviewCommitEligible(resolveOnlineBlinkPreview({
+          active: true,
+          feetPosition: authoritativeLocal.feetPosition,
+          yawMilliDegrees: currentLook.yawMilliDegrees,
+          pitchMilliDegrees: currentLook.pitchMilliDegrees,
+          stance: authoritativeLocal.stance,
+          cooldownTicksRemaining: authoritativeLocal.teleportCooldownTicksRemaining,
+        }, PHASE3_HYPOTHESIS_MOVEMENT_PROFILE, host.world), currentLook);
     if (input.handleKey(
       event.code,
       event.type === 'keydown',
       event.repeat,
-      isOnlineBlinkPreviewCommitEligible(latestBlinkPreview, currentLook),
+      blinkCommitEligible,
     )) {
       event.preventDefault();
     }

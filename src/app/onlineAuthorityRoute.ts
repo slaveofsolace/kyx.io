@@ -2212,12 +2212,23 @@ async function mountSession(
   };
   const blinkCommitEligible = (): boolean => {
     const local = client.diagnostics().local;
-    return local.predictedYawMilliDegrees !== null
-      && local.predictedPitchMilliDegrees !== null
-      && isOnlineBlinkPreviewCommitEligible(latestBlinkPreview, {
-        yawMilliDegrees: local.predictedYawMilliDegrees,
-        pitchMilliDegrees: local.predictedPitchMilliDegrees,
-      });
+    if (
+      local.predictedPosition === null
+      || local.predictedYawMilliDegrees === null
+      || local.predictedPitchMilliDegrees === null
+    ) return false;
+    const look = {
+      yawMilliDegrees: local.predictedYawMilliDegrees,
+      pitchMilliDegrees: local.predictedPitchMilliDegrees,
+    };
+    return isOnlineBlinkPreviewCommitEligible(resolveOnlineBlinkPreview({
+      active: true,
+      feetPosition: local.predictedPosition,
+      yawMilliDegrees: look.yawMilliDegrees,
+      pitchMilliDegrees: look.pitchMilliDegrees,
+      stance: local.predictedStance ?? 'standing',
+      cooldownTicksRemaining: local.teleportCooldownTicksRemaining,
+    }, PHASE3_HYPOTHESIS_MOVEMENT_PROFILE, world), look);
   };
   const selectWeaponSlot = (slot: number): void => {
     if (matchResultShown) return;

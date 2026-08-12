@@ -429,10 +429,7 @@ test(`exact DEV flag ${scenario.title}`, async ({
     const teleportFlash = page.waitForFunction(() => {
       return document.querySelector('#teleport-flash')?.classList.contains('show') === true;
     }, undefined, { timeout: 5_000, polling: 'raf' });
-    await page.evaluate(() => {
-      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyQ' }));
-      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyQ' }));
-    });
+    await page.keyboard.press('KeyQ');
     const [teleportSnapHandle, teleportFlashHandle] = await Promise.all([
       teleportSnap,
       teleportFlash,
