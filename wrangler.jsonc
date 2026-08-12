@@ -64,7 +64,7 @@
       },
       "vars": {
         "ALLOWED_ORIGINS": "http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8787",
-        "BUILD_ID": "kyx-clean-room-parity-17f55d5-20260812"
+        "BUILD_ID": "kyx-clean-room-parity-52883f7-20260812"
       }
     }
   },
