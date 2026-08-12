@@ -1,6 +1,6 @@
 # KYX.IO clean-room gameplay parity matrix
 
-Working gate for source `6d9ad20f370a0e7b29871c12d5dccf80f169e16a` on 2026-08-11. Statuses describe the canonical shipped paths, not isolated fixtures or review routes.
+Working gate for source `7aca9dc97cc104c0b163fda7f061f1a8c14c04ce` on 2026-08-11. Statuses describe the canonical shipped paths, not isolated fixtures or review routes.
 
 Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists but misses an acceptance-critical behavior; `MOCK` is simulated or presentation-only; `DISCONNECTED` is implemented outside the canonical loop; `MISSING` has no qualifying implementation.
 
@@ -16,7 +16,7 @@ Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists 
 | Damage / death / respawn | PARTIAL | Server authority, reliable events and local auto-respawn are integrated; Practice bots produce real damage/kills. | Measure death-to-control timing, spawn safety and online two-client behavior. |
 | Score / kill feed / scoreboard | COMPLETE | Authority player ledger projects K/D/A to Practice and online; HUD kill feed and terminal result use authority data. | Preserve through rematch and reconnect. |
 | Match clock / win / post-match | PARTIAL | Warmup, active, postmatch, completed and score/time results exist in authority, Practice and online presentation. | Continue into the next match without a page reload and prove automatic/manual transition. |
-| Next match momentum | PARTIAL | Practice now prepares and atomically swaps to a fresh 1+7 authority match inside the mounted runtime, preserving the preset and only disposing the completed host after success. Online still navigates to a new create URL. | Prove the Practice transition in-browser, then create/rejoin the online replacement room without reloading the shell. |
+| Next match momentum | PARTIAL | Practice prepares and atomically swaps to a fresh 1+7 authority match inside the mounted runtime. Online now allocates a fresh same-origin room and replaces the completed client/world in the existing shell. Both preserve the selected preset and fail closed on replacement errors. | Prove both transitions in source-matched desktop and remote runtime evidence; keep the old session usable when allocation itself fails. |
 | Map breadth and rotation | MISSING | Relay is the product default. Inkfall revisions and Iron Bastion exist as legacy/review/compatibility paths, not three accepted canonical maps with rotation. | Three independent layouts with authority fixtures, visual identity, spawn proofs, rotation and player-eye acceptance. |
 | Map traversal / verticality | PARTIAL | Relay has multi-tier routes and portals with authority collision; prior captures found route/readability problems and later source corrections. | Source-matched full traversal and combat-pressure evidence on every accepted layout. |
 | Bots | PARTIAL | Practice bots aim in yaw/pitch, choose range behavior, fire, strafe, jump, use abilities and rotate four presets. They are absent from Worker rooms and do not yet prove strategic navigation/cover. | Shared deterministic server bot agent with navigation, target/cover decisions and bounded difficulty. |
@@ -34,10 +34,9 @@ Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists 
 
 ## Current P0 implementation order
 
-1. Replace Practice page reload with an in-runtime authoritative rematch.
-2. Reuse the transition contract for online fresh-room re-entry without reloading the shell.
-3. Move deterministic bot fill into shared authority and run it in Worker rooms.
-4. Retire the default legacy `Game` path only after the canonical route proves cold-launch through next-match.
+1. Move deterministic bot fill into shared authority and run it in Worker rooms.
+2. Prove Practice and online no-reload continuation in source-matched browser/runtime evidence.
+3. Retire the default legacy `Game` path only after the canonical route proves cold-launch through next-match.
 
 ## Explicit nonclaims
 
