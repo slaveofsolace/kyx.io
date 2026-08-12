@@ -1,6 +1,6 @@
 # KYX.IO clean-room gameplay parity matrix
 
-Working gate for source `7aca9dc97cc104c0b163fda7f061f1a8c14c04ce` on 2026-08-11. Statuses describe the canonical shipped paths, not isolated fixtures or review routes.
+Working gate for source `59c8add37f126ad3e5a5eb710de493bcc5f02e46` on 2026-08-11. Statuses describe the canonical shipped paths, not isolated fixtures or review routes.
 
 Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists but misses an acceptance-critical behavior; `MOCK` is simulated or presentation-only; `DISCONNECTED` is implemented outside the canonical loop; `MISSING` has no qualifying implementation.
 
@@ -9,7 +9,7 @@ Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists 
 | Cold launch to play | PARTIAL | `/` launches a menu, `/practice` is the current playable authority route, and `/online` is a separate preview. `src/main.js` still mounts legacy `Game` on the default document. | One canonical product path with one clear play action and no competing legacy simulation. |
 | Desktop input truth | COMPLETE | Desktop/touch launch detection and bounded pointer-lock recovery are integrated and source-matched in the current staging build. | Preserve; retest at 1440x900 and 1920x1080. |
 | Local 8-player authority | COMPLETE | `LocalInkfallPracticeHost` creates one local player plus seven deterministic bots on the shared 20 Hz authority room. | Preserve while online population is closed. |
-| Online shared authority | PARTIAL | Durable Object room owns movement/combat/snapshots, reconnect, late join, loadouts, damage, score and respawn. Match start still depends on human connections and has no server bot fill. | Fill open slots deterministically on the Worker and replace bots as humans join without trusting clients. |
+| Online shared authority | PARTIAL | Durable Object owns movement/combat/snapshots/reconnect/late join/loadouts/damage/score/respawn. Relay now starts as eight stable authority slots: one human plus seven server bots, deterministic human takeover, reconnect reservation, and exact checkpoint/scoreboard coverage. | Source-matched remote proof; add map-aware bot navigation and bot checkpoint rehydration coverage before calling the population complete. |
 | Client prediction/reconciliation | PARTIAL | Online client has prediction, interpolation, resume and snapshot acknowledgement coverage. | Add representative latency/jitter/loss gameplay proof and bound visible correction. |
 | Six-weapon combat | PARTIAL | Six authority slots and differentiated weapon profiles exist; preset restrictions and several focused tests exist. Canonical player-facing runtime exposes role-owned subsets rather than proving every weapon in one session. | Deterministic fire/reload/swap/empty/hit/headshot/kill tests for all six, plus runtime feel evidence. |
 | Abilities | PARTIAL | Blink, Launch/impulse, smoke/flash/throwable authority and presentation paths exist. | Exercise every selectable ability from user and recipient perspectives with cooldown, rejection, VFX and audio evidence. |
@@ -19,7 +19,7 @@ Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists 
 | Next match momentum | PARTIAL | Practice prepares and atomically swaps to a fresh 1+7 authority match inside the mounted runtime. Online now allocates a fresh same-origin room and replaces the completed client/world in the existing shell. Both preserve the selected preset and fail closed on replacement errors. | Prove both transitions in source-matched desktop and remote runtime evidence; keep the old session usable when allocation itself fails. |
 | Map breadth and rotation | MISSING | Relay is the product default. Inkfall revisions and Iron Bastion exist as legacy/review/compatibility paths, not three accepted canonical maps with rotation. | Three independent layouts with authority fixtures, visual identity, spawn proofs, rotation and player-eye acceptance. |
 | Map traversal / verticality | PARTIAL | Relay has multi-tier routes and portals with authority collision; prior captures found route/readability problems and later source corrections. | Source-matched full traversal and combat-pressure evidence on every accepted layout. |
-| Bots | PARTIAL | Practice bots aim in yaw/pitch, choose range behavior, fire, strafe, jump, use abilities and rotate four presets. They are absent from Worker rooms and do not yet prove strategic navigation/cover. | Shared deterministic server bot agent with navigation, target/cover decisions and bounded difficulty. |
+| Bots | PARTIAL | Practice and Worker share deterministic aim/range/fire/ability/preset policy. Worker Relay rooms use collision-stable sentries and stable takeover slots; generic chase locomotion was rejected after a reproducible map-corner physics failure. | Add authority-map navigation, cover/route decisions, bounded difficulty and remote combat evidence without reviving blind chase. |
 | HUD / combat feedback | PARTIAL | Crosshair, health, ammo, score/time, cooldowns, damage, hit/headshot/kill and kill feed exist. | Stress readability under dense effects, damage and different resolutions. |
 | Audio / VFX | PARTIAL | Weapon/ability/portal/damage presentation routing and audio manager paths exist. | Runtime mix, spatial ownership, recipient cues, captions and reduced-motion evidence. |
 | Player/opponent presentation | PARTIAL | First/third-person armory presentation exists; current release default retains procedural fallback and review characters remain unaccepted. | One provenance-clear Assault character with Human Eye acceptance and contact/animation proof. |
@@ -34,9 +34,9 @@ Legend: `COMPLETE` is source-integrated and runtime-evidenced; `PARTIAL` exists 
 
 ## Current P0 implementation order
 
-1. Move deterministic bot fill into shared authority and run it in Worker rooms.
-2. Prove Practice and online no-reload continuation in source-matched browser/runtime evidence.
-3. Retire the default legacy `Game` path only after the canonical route proves cold-launch through next-match.
+1. Replace the default legacy `Game` bootstrap with the canonical authority lobby/play flow.
+2. Prove Practice/online no-reload continuation and eight-slot Worker population in source-matched browser/runtime evidence.
+3. Add accepted map rotation and map-aware bot navigation after the canonical lifecycle is stable.
 
 ## Explicit nonclaims
 
