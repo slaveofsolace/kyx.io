@@ -10,6 +10,21 @@ it('closes the deterministic bot shot, damage, kill, score, and respawn loop', a
     let appliedDamage = 0;
     let killedPlayerId: string | null = null;
 
+    // The product intentionally withholds bot attacks until the local player
+    // enters the arena. Explicitly author one real movement command so this
+    // lifecycle probe covers combat after the same fair-entry contract.
+    while (host.snapshot.lifecycle !== 'active') host.step();
+    host.step({
+      moveX: 0,
+      moveY: 0,
+      lookYawDeltaMilliDegrees: 1,
+      lookPitchDeltaMilliDegrees: 0,
+      heldButtons: 0,
+      pressedButtons: 0,
+      releasedButtons: 0,
+      selectedSlot: 0,
+    });
+
     for (let tick = 0; tick < 800 && killedPlayerId === null; tick += 1) {
       const step = host.step();
       acceptedAttacks += step.reliableEvents.filter(
