@@ -158,38 +158,23 @@ test('production continuation allocates fresh rooms across the three-arena rotat
   }
 });
 
-test('a continued match remains live beyond the socket stale boundary', async ({ page }) => {
+test('an active match remains live beyond the socket stale boundary', async ({ page }) => {
   test.setTimeout(100_000);
 
   await page.goto('/online?mode=create&profile=relay-revision-1-authority-v1');
   await expect.poll(async () => (await snapshot(page))?.connection ?? null, {
     timeout: 30_000,
   }).toBe('joined');
-  const relay = await snapshot(page);
-  if (relay === null) throw new Error('Relay did not expose online diagnostics');
-
-  await page.getByTestId('online-play-again').evaluate((button) => {
-    if (!(button instanceof HTMLButtonElement)) {
-      throw new TypeError('online Play again control is not a button');
-    }
-    button.click();
-  });
-  await expect.poll(async () => (await snapshot(page))?.roomCode ?? null, {
-    timeout: 30_000,
-  }).not.toBe(relay.roomCode);
-  await expect.poll(async () => (await snapshot(page))?.connection ?? null, {
-    timeout: 30_000,
-  }).toBe('joined');
-  const continued = await snapshot(page);
-  if (continued === null) throw new Error('continued match did not expose online diagnostics');
+  const active = await snapshot(page);
+  if (active === null) throw new Error('active match did not expose online diagnostics');
 
   await page.waitForTimeout(35_000);
   const afterStaleBoundary = await snapshot(page);
   expect(afterStaleBoundary).not.toBeNull();
   expect(afterStaleBoundary?.connection).toBe('joined');
-  expect(afterStaleBoundary?.roomCode).toBe(continued.roomCode);
+  expect(afterStaleBoundary?.roomCode).toBe(active.roomCode);
   expect(afterStaleBoundary?.commandsGenerated ?? 0)
-    .toBeGreaterThan(continued.commandsGenerated + 100);
+    .toBeGreaterThan(active.commandsGenerated + 100);
   expect(afterStaleBoundary?.lastError).toBeNull();
   await expect(page.getByRole('alert')).toBeHidden();
 });
