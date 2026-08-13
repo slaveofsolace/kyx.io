@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  AUTHORITY_BOT_COMBAT_GRACE_TICKS,
   CROWNPOINT_AUTHORITY_BOT_PATROL_LANES,
   RELAY_AUTHORITY_BOT_PATROL_LANES,
   RELAY_AUTHORITY_BOT_STRATEGY,
@@ -10,12 +11,16 @@ import {
   CROWNPOINT_AUTHORITY_BOT_STRATEGY,
   authorityBotStrategy,
   authorityBotPatrolDecision,
+  inputBatchShowsHumanControl,
   nextRelayAuthorityBotTakeover,
   relayAuthorityBotConnectionId,
   relayAuthorityBotPatrolDecision,
   relayAuthorityPlayerSlotOrdinal,
+  withoutAuthorityBotCombat,
 } from '../../worker/relayBotSlots';
 import type { AuthorityFullSnapshot } from '../../src/authority';
+import { PROTOCOL_VERSION, type InputBatchMessage } from '../../src/net';
+import { INTENT_BUTTON } from '../../src/sim';
 
 function patrolSnapshot(
   playerId: string,
@@ -34,6 +39,63 @@ function patrolSnapshot(
 }
 
 describe('Relay authority bot slots', () => {
+  it('waits for meaningful human control before starting a three-second combat grace', () => {
+    expect(AUTHORITY_BOT_COMBAT_GRACE_TICKS).toBe(60);
+    const message = (patch: Partial<InputBatchMessage['commands'][number]>): InputBatchMessage => ({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'inputBatch',
+      commands: [{
+        type: 'input',
+        sequence: 0,
+        clientTick: 1,
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 2,
+        ...patch,
+      }],
+    });
+    expect(inputBatchShowsHumanControl(message({}))).toBe(false);
+    expect(inputBatchShowsHumanControl(message({ moveY: 64 }))).toBe(true);
+    expect(inputBatchShowsHumanControl(message({ lookYawDeltaMilliDegrees: 1 }))).toBe(true);
+    expect(inputBatchShowsHumanControl(message({ pressedButtons: INTENT_BUTTON.primaryFire })))
+      .toBe(true);
+  });
+
+  it('keeps bot locomotion while suppressing every offensive edge during entry grace', () => {
+    const offensive = INTENT_BUTTON.primaryFire
+      | INTENT_BUTTON.secondaryFire
+      | INTENT_BUTTON.abilityOne
+      | INTENT_BUTTON.abilityTwo
+      | INTENT_BUTTON.abilityThree
+      | INTENT_BUTTON.utility;
+    const previous = offensive | INTENT_BUTTON.sprint;
+    const filtered = withoutAuthorityBotCombat({
+      moveX: 31,
+      moveY: 88,
+      lookYawDeltaMilliDegrees: 4_000,
+      lookPitchDeltaMilliDegrees: -900,
+      heldButtons: offensive | INTENT_BUTTON.sprint | INTENT_BUTTON.jump,
+      pressedButtons: offensive | INTENT_BUTTON.jump,
+      releasedButtons: 0,
+      selectedSlot: 2,
+    }, previous);
+    expect(filtered).toMatchObject({
+      moveX: 31,
+      moveY: 88,
+      lookYawDeltaMilliDegrees: 4_000,
+      lookPitchDeltaMilliDegrees: -900,
+      heldButtons: INTENT_BUTTON.sprint | INTENT_BUTTON.jump,
+      pressedButtons: INTENT_BUTTON.jump,
+      releasedButtons: offensive,
+      selectedSlot: 2,
+    });
+  });
+
   it('pins eight stable authority-owned player slots and connections', () => {
     expect(RELAY_AUTHORITY_BOT_STRATEGY).toBe('relay_authority_map_assault_slot_takeover_v3');
     expect(RELAY_AUTHORITY_PLAYER_SLOT_IDS).toEqual([

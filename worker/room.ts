@@ -117,12 +117,15 @@ import {
 } from './reliableEvents';
 import { SnapshotBaselineStore } from './snapshotBaselines';
 import {
+  AUTHORITY_BOT_COMBAT_GRACE_TICKS,
   RELAY_AUTHORITY_PLAYER_SLOT_IDS,
   authorityBotStrategy,
+  inputBatchShowsHumanControl,
   nextRelayAuthorityBotTakeover,
   authorityBotInput,
   relayAuthorityBotConnectionId,
   relayAuthorityPlayerSlotOrdinal,
+  withoutAuthorityBotCombat,
 } from './relayBotSlots';
 
 const SNAPSHOT_INTERVAL_TICKS = 2;
@@ -498,6 +501,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private readonly serverBotPlayerIds = new Set<string>();
   private readonly serverBotInputSequences = new Map<string, number>();
   private readonly serverBotHeldButtons = new Map<string, number>();
+  private serverBotCombatReadyAtTick: number | null = null;
   private readonly snapshotBaselines = new SnapshotBaselineStore();
   private readonly reliableEvents = new ReliableEventStore();
   private readonly socketAttachments = new Map<string, SocketAttachment>();
@@ -664,6 +668,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
                     ({ playerId, connected }) => !connected
                       && !this.serverBotPlayerIds.has(playerId),
                   ).length,
+                  combatGraceTicks: AUTHORITY_BOT_COMBAT_GRACE_TICKS,
+                  humanControlObserved: this.serverBotCombatReadyAtTick !== null,
+                  combatReadyAtTick: this.serverBotCombatReadyAtTick,
+                  combatEnabled: this.serverBotCombatReadyAtTick !== null
+                    && this.requireAuthority().serverTick >= this.serverBotCombatReadyAtTick,
                 }),
               }
             : {}),
@@ -1141,6 +1150,15 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         }
         try {
           const result = authority.enqueueInputBatch(rate.attachment.connectionId, clientMessage);
+          if (
+            result.accepted > 0
+            && authority.lifecycle === 'active'
+            && this.serverBotCombatReadyAtTick === null
+            && inputBatchShowsHumanControl(clientMessage)
+          ) {
+            this.serverBotCombatReadyAtTick = authority.serverTick
+              + AUTHORITY_BOT_COMBAT_GRACE_TICKS;
+          }
           this.markActiveMatchCheckpointDirty();
           if (result.rejections.length > 0) {
             safeSocketSend(webSocket, errorMessage(
@@ -2050,16 +2068,22 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     // server bots begin aiming and attacking only when scoring is active.
     if (authority.lifecycle !== 'active') return;
     const snapshot = authority.fullSnapshot();
+    const combatReady = this.serverBotCombatReadyAtTick !== null
+      && authority.serverTick >= this.serverBotCombatReadyAtTick;
     for (const playerId of [...this.serverBotPlayerIds].sort(compareCodeUnits)) {
       const ordinal = relayAuthorityPlayerSlotOrdinal(playerId);
       if (ordinal === null) throw new Error('RELAY_BOT_SLOT_ID_INVALID');
       const sequence = this.serverBotInputSequences.get(playerId) ?? 0;
-      const input = authorityBotInput(
+      const previousHeldButtons = this.serverBotHeldButtons.get(playerId) ?? 0;
+      const authoredInput = authorityBotInput(
         snapshot,
         playerId,
-        this.serverBotHeldButtons.get(playerId) ?? 0,
+        previousHeldButtons,
         snapshot.identity.mapId,
       );
+      const input = combatReady
+        ? authoredInput
+        : withoutAuthorityBotCombat(authoredInput, previousHeldButtons);
       const message: InputBatchMessage = Object.freeze({
         protocolVersion: PROTOCOL_VERSION,
         type: 'inputBatch',

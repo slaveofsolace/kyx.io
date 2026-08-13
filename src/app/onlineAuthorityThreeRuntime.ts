@@ -4,7 +4,9 @@ import revision3CombatAuthorityFixtureSource from '../../assets/source/maps/inkf
 import revision4CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision4.v1.json';
 import {
   advanceSmokePresentationAgeTicks,
+  SMOKE_PRESENTATION_RULES,
   smokePuffExpansion,
+  smokePresentationProfile,
 } from '../abilities/abilityPresentationSemantics';
 import { validateBundledMapPackage } from '../content/maps';
 import type { AuthorityEvidencePresentation } from '../dev/authorityEvidenceClient';
@@ -199,6 +201,7 @@ export interface OnlineAuthorityThreeRuntimeOptions {
   readonly presentationIdentity?: OnlineAuthorityVisualIdentity;
   readonly showStaticWorldPortals?: boolean;
   readonly staticWorldPortalDefinitions?: readonly WorldPortalPresentationDefinition[];
+  readonly reducedEffects?: boolean;
 }
 
 export interface OnlineAuthorityVisualIdentity {
@@ -1263,13 +1266,17 @@ export async function createOnlineAuthorityThreeRuntime(
       abilityProjectiles.delete(projectileId);
     }
     const activeSmokeFields = new Set<string>();
+    const smokeProfile = smokePresentationProfile(
+      options.reducedEffects === true,
+      combat?.smokeFields?.length ?? 0,
+    );
     for (const field of combat?.smokeFields ?? []) {
       activeSmokeFields.add(field.fieldId);
       let smoke = smokeFields.get(field.fieldId);
       if (smoke === undefined) {
         smoke = new THREE.Group();
         smoke.name = `ONLINE_AUTHORITY_SMOKE_${field.fieldId}`;
-        const puffCount = 16;
+        const puffCount = smokeProfile.puffCount;
         for (let index = 0; index < puffCount; index += 1) {
           const angle = index * Math.PI * (3 - Math.sqrt(5));
           const ring = Math.sqrt((index + 0.5) / puffCount);
@@ -1317,7 +1324,8 @@ export async function createOnlineAuthorityThreeRuntime(
             Math.sin(angle) * 0.4 * ring,
           );
           layer.userData.baseScale = 0.39 + (index % 4) * 0.026;
-          layer.userData.baseOpacity = 0.62 + (index % 2) * 0.06;
+          layer.userData.baseOpacity = SMOKE_PRESENTATION_RULES.baseOpacity
+            + (index % 2) * SMOKE_PRESENTATION_RULES.alternateOpacityDelta;
           layer.userData.phase = index / puffCount;
           layer.scale.setScalar(0.02);
           smoke.add(layer);
@@ -1346,7 +1354,7 @@ export async function createOnlineAuthorityThreeRuntime(
         0,
         1,
       );
-      smoke.scale.set(radius, radius * 0.78, radius);
+      smoke.scale.set(radius, radius * SMOKE_PRESENTATION_RULES.verticalScale, radius);
       smoke.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
         if (!(child.material instanceof THREE.ShaderMaterial)) return;
@@ -1354,9 +1362,12 @@ export async function createOnlineAuthorityThreeRuntime(
         const delayed = smokePuffExpansion(presentationAgeTicks, phase);
         const baseScale = Number(child.userData.baseScale ?? 0.39);
         child.scale.setScalar(baseScale * Math.max(0.025, delayed));
-        child.material.uniforms.uOpacity.value = Number(child.userData.baseOpacity ?? 0.62)
+        child.material.uniforms.uOpacity.value = Number(
+          child.userData.baseOpacity ?? SMOKE_PRESENTATION_RULES.baseOpacity,
+        )
           * delayed
-          * fade;
+          * fade
+          * smokeProfile.opacityMultiplier;
       });
     }
     for (const [fieldId, smoke] of smokeFields) {

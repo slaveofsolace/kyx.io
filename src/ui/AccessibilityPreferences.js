@@ -17,6 +17,7 @@ export function applyAccessibilityPreferences(settings, targetDocument = globalT
 
   targetDocument.body.dataset.highContrast = String(normalized.highContrast);
   targetDocument.body.dataset.reducedMotion = String(normalized.reducedMotion);
+  targetDocument.body.dataset.reducedEffects = String(normalized.reducedEffects);
   targetDocument.body.dataset.reducedFlash = String(normalized.reducedFlash);
   targetDocument.body.dataset.crosshairColor = normalized.crosshairColor;
 
@@ -26,6 +27,7 @@ export function applyAccessibilityPreferences(settings, targetDocument = globalT
     crosshairColor: normalized.crosshairColor,
     highContrast: normalized.highContrast,
     reducedMotion: normalized.reducedMotion,
+    reducedEffects: normalized.reducedEffects,
     reducedFlash: normalized.reducedFlash,
   });
 }

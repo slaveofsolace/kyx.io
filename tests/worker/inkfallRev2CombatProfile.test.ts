@@ -649,7 +649,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     const metrics = await waitForMetrics(
       room,
       (candidate) => candidate.connectedPlayers === 8
-        && (candidate.lifecycle === 'warmup' || candidate.lifecycle === 'active'),
+        && candidate.lifecycle === 'active',
       'Relay active checkpoint',
     );
     expect(metrics).toMatchObject({
@@ -663,6 +663,10 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
         serverControlledPlayers: 6,
         connectedHumanPlayers: 2,
         reservedHumanReconnectSlots: 0,
+        combatGraceTicks: 60,
+        humanControlObserved: false,
+        combatReadyAtTick: null,
+        combatEnabled: false,
       },
       mapBinding: {
         mapReference: 'relay@1',
@@ -675,6 +679,41 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
         },
       },
     });
+    const inputTick = Number(metrics.serverTick);
+    sendClient(first, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'inputBatch',
+      commands: [{
+        type: 'input',
+        sequence: firstSnapshot.localReconciliation.player.lastProcessedSequence + 1,
+        clientTick: inputTick,
+        moveX: 0,
+        moveY: 96,
+        lookYawDeltaMilliDegrees: 0,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 0,
+      }],
+    });
+    const armed = await waitForMetrics(
+      room,
+      (candidate) => (
+        (candidate.botPopulation as { readonly humanControlObserved?: boolean })
+          ?.humanControlObserved === true
+      ),
+      'Relay bot combat grace armed by human control',
+    );
+    expect(armed.botPopulation).toMatchObject({
+      combatGraceTicks: 60,
+      humanControlObserved: true,
+      combatEnabled: false,
+    });
+    expect(
+      Number((armed.botPopulation as { readonly combatReadyAtTick: number }).combatReadyAtTick)
+      - inputTick,
+    ).toBeGreaterThanOrEqual(60);
     const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
     const stored = await runInDurableObject(stub, async (_instance, state) => (
       [...state.storage.sql.exec<Record<string, string | number>>(

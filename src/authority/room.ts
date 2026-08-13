@@ -93,6 +93,7 @@ import {
   recordAuthorityTdmCombat,
   recordAuthorityTdmRespawn,
   recordTargetPoseSample,
+  retainAuthoritySmokeFieldsAfterSpawn,
   assertTargetPoseHistory,
   registerAuthorityTdmPlayer,
   resetImpulseGrenadeAbilityForRespawn,
@@ -2740,7 +2741,14 @@ export class AuthoritativeRoom {
     for (const detonation of abilityDetonations) {
       if (detonation.effect !== 'smoke') continue;
       const field = createAuthoritySmokeField(detonation);
-      this.abilitySmokeFields.set(field.fieldId, field);
+      const retainedFields = retainAuthoritySmokeFieldsAfterSpawn(
+        [...this.abilitySmokeFields.values()],
+        field,
+      );
+      this.abilitySmokeFields.clear();
+      for (const retained of retainedFields) {
+        this.abilitySmokeFields.set(retained.fieldId, retained);
+      }
     }
     for (const [fieldId, field] of this.abilitySmokeFields) {
       if (field.expiresAtTick <= nextTick) this.abilitySmokeFields.delete(fieldId);

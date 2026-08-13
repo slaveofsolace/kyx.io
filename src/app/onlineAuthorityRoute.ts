@@ -1352,6 +1352,7 @@ async function mountSession(
     resultDialog,
   );
 
+  const settings = GameSettings.snapshot();
   const portalAudio = threeDimensionalMap ? new AudioManager() : null;
   const portalCaptionCues = threeDimensionalMap
     ? new CaptionCueOverlay({
@@ -1361,7 +1362,6 @@ async function mountSession(
       })
     : null;
   if (portalAudio !== null && portalCaptionCues !== null) {
-    const settings = GameSettings.snapshot();
     portalAudio.setVolume(settings.volume);
     portalCaptionCues.setPreferences(settings);
   }
@@ -1401,6 +1401,7 @@ async function mountSession(
     body.dataset.online3dStatus = 'loading';
     try {
       threeRuntime = await createOnlineAuthorityThreeRuntime(canvas, {
+        reducedEffects: settings.reducedEffects,
         mapBinding: mapProof.mapBinding,
         ...(relayRuntime || originalArenaRuntime
           ? {

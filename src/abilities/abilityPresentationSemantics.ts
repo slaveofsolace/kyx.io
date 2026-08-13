@@ -2,11 +2,44 @@ export const ABILITY_PRESENTATION_AUTHORITY_HZ = 20 as const;
 
 export const SMOKE_PRESENTATION_RULES = Object.freeze({
   expansionTicks: 27,
-  puffCount: 16,
+  puffCount: 10,
+  reducedEffectsPuffCount: 5,
+  baseOpacity: 0.44,
+  alternateOpacityDelta: 0.04,
+  reducedEffectsOpacityMultiplier: 0.55,
+  verticalScale: 0.7,
   puffPhaseDelayRatio: 0.12,
   maximumPredictionLeadTicks: 1,
   maximumCatchUpMultiplier: 3,
 });
+
+export interface SmokePresentationProfile {
+  readonly puffCount: number;
+  readonly opacityMultiplier: number;
+}
+
+/**
+ * Every authority cloud stays visible, while overlapping fields share one
+ * bounded opacity budget. Reduced effects lowers both geometry and opacity;
+ * neither mode changes authority radius, lifetime, or occlusion semantics.
+ */
+export function smokePresentationProfile(
+  reducedEffects: boolean,
+  activeFieldCount: number,
+): SmokePresentationProfile {
+  const fieldCount = Math.max(
+    1,
+    Math.min(4, Number.isSafeInteger(activeFieldCount) ? activeFieldCount : 1),
+  );
+  return Object.freeze({
+    puffCount: reducedEffects
+      ? SMOKE_PRESENTATION_RULES.reducedEffectsPuffCount
+      : SMOKE_PRESENTATION_RULES.puffCount,
+    opacityMultiplier: (
+      reducedEffects ? SMOKE_PRESENTATION_RULES.reducedEffectsOpacityMultiplier : 1
+    ) / Math.sqrt(fieldCount),
+  });
+}
 
 function clampUnit(value: number): number {
   return Math.max(0, Math.min(1, value));

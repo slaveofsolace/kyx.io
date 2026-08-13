@@ -47,6 +47,7 @@ describe('GameSettings validation and persistence', () => {
       crosshairColor: 'ultraviolet',
       highContrast: true,
       reducedMotion: true,
+      reducedEffects: true,
       reducedFlash: false,
       subtitles: false,
       visualAudioCues: true,
@@ -61,6 +62,7 @@ describe('GameSettings validation and persistence', () => {
       crosshairScale: 0.75,
       highContrast: true,
       reducedMotion: true,
+      reducedEffects: true,
       subtitles: false,
       visualAudioCues: true,
     });
@@ -80,6 +82,7 @@ describe('GameSettings validation and persistence', () => {
     const persisted = GameSettings.setMany({
       hudScale: 1.25,
       crosshairColor: 'amber',
+      reducedEffects: true,
       reducedFlash: true,
       subtitles: false,
       visualAudioCues: true,
@@ -90,6 +93,7 @@ describe('GameSettings validation and persistence', () => {
     expect(GameSettings.snapshot()).toMatchObject({
       hudScale: 1.25,
       crosshairColor: 'amber',
+      reducedEffects: true,
       reducedFlash: true,
       subtitles: false,
       visualAudioCues: true,

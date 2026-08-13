@@ -29,6 +29,7 @@ const SETTING_CHOICE_GROUPS = Object.freeze([
   Object.freeze({ id: 'crosshair-color-btns', dataKey: 'crosshairColor' }),
   Object.freeze({ id: 'high-contrast-btns', dataKey: 'highContrast' }),
   Object.freeze({ id: 'reduced-motion-btns', dataKey: 'reducedMotion' }),
+  Object.freeze({ id: 'reduced-effects-btns', dataKey: 'reducedEffects' }),
   Object.freeze({ id: 'reduced-flash-btns', dataKey: 'reducedFlash' }),
   Object.freeze({ id: 'subtitles-btns', dataKey: 'subtitles' }),
   Object.freeze({ id: 'visual-audio-cues-btns', dataKey: 'visualAudioCues' }),
@@ -662,6 +663,7 @@ export class MenuUI {
         crosshairColor: getChoiceValue('crosshair-color-btns', 'crosshairColor', 'cyan'),
         highContrast: getChoiceValue('high-contrast-btns', 'highContrast', 'off') === 'on',
         reducedMotion: getChoiceValue('reduced-motion-btns', 'reducedMotion', 'off') === 'on',
+        reducedEffects: getChoiceValue('reduced-effects-btns', 'reducedEffects', 'off') === 'on',
         reducedFlash: getChoiceValue('reduced-flash-btns', 'reducedFlash', 'off') === 'on',
         subtitles: getChoiceValue('subtitles-btns', 'subtitles', 'on') === 'on',
         visualAudioCues: getChoiceValue('visual-audio-cues-btns', 'visualAudioCues', 'off') === 'on',
@@ -700,6 +702,7 @@ export class MenuUI {
     setChoiceGroup('crosshair-color-btns', 'crosshairColor', settings.crosshairColor);
     setChoiceGroup('high-contrast-btns', 'highContrast', settings.highContrast ? 'on' : 'off');
     setChoiceGroup('reduced-motion-btns', 'reducedMotion', settings.reducedMotion ? 'on' : 'off');
+    setChoiceGroup('reduced-effects-btns', 'reducedEffects', settings.reducedEffects ? 'on' : 'off');
     setChoiceGroup('reduced-flash-btns', 'reducedFlash', settings.reducedFlash ? 'on' : 'off');
     setChoiceGroup('subtitles-btns', 'subtitles', settings.subtitles ? 'on' : 'off');
     setChoiceGroup('visual-audio-cues-btns', 'visualAudioCues', settings.visualAudioCues ? 'on' : 'off');

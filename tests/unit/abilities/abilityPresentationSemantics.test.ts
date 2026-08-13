@@ -4,9 +4,24 @@ import {
   SMOKE_PRESENTATION_RULES,
   advanceSmokePresentationAgeTicks,
   smokePuffExpansion,
+  smokePresentationProfile,
 } from '../../../src/abilities/abilityPresentationSemantics';
 
 describe('ability presentation semantics', () => {
+  it('shares a bounded smoke density budget and exposes a reduced-effects profile', () => {
+    expect(SMOKE_PRESENTATION_RULES.puffCount).toBe(10);
+    expect(smokePresentationProfile(false, 1)).toEqual({
+      puffCount: 10,
+      opacityMultiplier: 1,
+    });
+    expect(smokePresentationProfile(false, 4).opacityMultiplier).toBe(0.5);
+    expect(smokePresentationProfile(true, 1)).toEqual({
+      puffCount: 5,
+      opacityMultiplier: 0.55,
+    });
+    expect(smokePresentationProfile(true, 4).opacityMultiplier).toBe(0.275);
+  });
+
   it('expands smoke continuously with a bounded one-tick prediction lead', () => {
     let age = advanceSmokePresentationAgeTicks(null, 0, 1 / 60);
     const samples: number[] = [];

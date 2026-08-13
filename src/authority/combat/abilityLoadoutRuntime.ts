@@ -21,6 +21,12 @@ const AUTHORITY_HZ = 20;
 const Q15 = 32_767;
 const PERMILLE = 1_000;
 
+export const AUTHORITY_SMOKE_FIELD_LIMITS = Object.freeze({
+  maximumPerOwner: 1,
+  maximumPerTeam: 2,
+  maximumGlobal: 4,
+});
+
 export const AUTHORITY_FLASH_IMPAIRMENT_RULES = Object.freeze({
   schemaVersion: 1 as const,
   minimumPeripheralExposurePermille: 250,
@@ -105,7 +111,7 @@ export const AUTHORITY_THROWABLE_RULES = Object.freeze({
     sticky: false,
     fuseStartsOnCollision: true,
     effect: 'smoke',
-    effectDurationTicks: 200,
+    effectDurationTicks: 120,
   }),
   [ABILITY_ID.sticky]: Object.freeze({
     abilityId: ABILITY_ID.sticky,
@@ -552,6 +558,49 @@ export function createAuthoritySmokeField(
     centerMillimeters: vector(detonationEvent.positionMillimeters),
     radiusMillimeters: detonationEvent.areaRadiusMillimeters,
   });
+}
+
+/**
+ * Deterministically bounds tactical smoke without hiding an authority field
+ * only in presentation. A new throw replaces its owner's previous cloud; the
+ * newest two clouds per team and newest four globally remain authoritative.
+ */
+export function retainAuthoritySmokeFieldsAfterSpawn(
+  existingFields: readonly AuthoritySmokeFieldV1[],
+  incomingField: AuthoritySmokeFieldV1,
+): readonly AuthoritySmokeFieldV1[] {
+  const incoming = assertAuthoritySmokeField(incomingField);
+  const candidates = [
+    ...existingFields
+      .map((field) => assertAuthoritySmokeField(field))
+      .filter((field) => (
+        field.fieldId !== incoming.fieldId
+        && field.ownerPlayerId !== incoming.ownerPlayerId
+      )),
+    incoming,
+  ].sort((left, right) => (
+    right.spawnedAtTick - left.spawnedAtTick
+    || right.fieldId.localeCompare(left.fieldId)
+  ));
+  const ownerCounts = new Map<string, number>();
+  const teamCounts = new Map<string | null, number>();
+  const retained: AuthoritySmokeFieldV1[] = [];
+  for (const field of candidates) {
+    if (retained.length >= AUTHORITY_SMOKE_FIELD_LIMITS.maximumGlobal) break;
+    const ownerCount = ownerCounts.get(field.ownerPlayerId) ?? 0;
+    const teamCount = teamCounts.get(field.ownerTeamId) ?? 0;
+    if (
+      ownerCount >= AUTHORITY_SMOKE_FIELD_LIMITS.maximumPerOwner
+      || teamCount >= AUTHORITY_SMOKE_FIELD_LIMITS.maximumPerTeam
+    ) continue;
+    retained.push(field);
+    ownerCounts.set(field.ownerPlayerId, ownerCount + 1);
+    teamCounts.set(field.ownerTeamId, teamCount + 1);
+  }
+  return Object.freeze(retained.sort((left, right) => (
+    left.spawnedAtTick - right.spawnedAtTick
+    || left.fieldId.localeCompare(right.fieldId)
+  )));
 }
 
 export function assertAuthorityAbilityLoadoutRuntimeState(

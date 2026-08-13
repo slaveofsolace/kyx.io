@@ -11,6 +11,7 @@ export const DEFAULTS = Object.freeze({
   crosshairColor: 'cyan', // 'cyan' | 'white' | 'amber'
   highContrast: false,
   reducedMotion: false,
+  reducedEffects: false,
   reducedFlash: false,
   subtitles: true,
   visualAudioCues: false,
@@ -33,6 +34,7 @@ const BOOLEAN_KEYS = new Set([
   'invertY',
   'highContrast',
   'reducedMotion',
+  'reducedEffects',
   'reducedFlash',
   'subtitles',
   'visualAudioCues',

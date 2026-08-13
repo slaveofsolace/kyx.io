@@ -31,6 +31,7 @@ describe('applyAccessibilityPreferences', () => {
       crosshairColor: 'amber',
       highContrast: true,
       reducedMotion: true,
+      reducedEffects: true,
       reducedFlash: true,
     }, target.document);
 
@@ -40,6 +41,7 @@ describe('applyAccessibilityPreferences', () => {
       crosshairColor: 'amber',
       highContrast: true,
       reducedMotion: true,
+      reducedEffects: true,
       reducedFlash: true,
     });
     expect(target.properties.get('--hud-scale')).toBe('1.3');
@@ -48,6 +50,7 @@ describe('applyAccessibilityPreferences', () => {
     expect(target.dataset).toEqual({
       highContrast: 'true',
       reducedMotion: 'true',
+      reducedEffects: 'true',
       reducedFlash: 'true',
       crosshairColor: 'amber',
     });

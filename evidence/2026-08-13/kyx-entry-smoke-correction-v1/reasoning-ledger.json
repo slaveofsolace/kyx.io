@@ -1,0 +1,336 @@
+{
+  "schema_version": "2.0.0",
+  "ledger_id": "kyx_entry_smoke_correction_v1",
+  "created_at": "2026-08-13T13:45:00Z",
+  "depth": "DEEP",
+  "iteration": 1,
+  "root": {
+    "kind": "DECISION",
+    "node_id": "root_node",
+    "statement": "Correct the observed unfair first contact and unreadable smoke without weakening server authority.",
+    "source_state": "Live staging entered in one click, but bots reached 3-0 before pointer lock and overlapping full-density smoke occupied central sightlines.",
+    "target_state": "Bots retain deterministic movement while offense waits for meaningful human control plus a bounded grace; smoke remains authoritative with bounded lifetime, stacking, and density.",
+    "conditions": [
+      "Do not deploy production, hide authority smoke only on the client, or modify unrelated dirty evidence and model files."
+    ],
+    "boundary": "Canonical Worker bot input, authority smoke state, online Three smoke presentation, settings UI, focused tests, and staging verification.",
+    "objective_claim_id": "claim_objective",
+    "invariant_ids": [
+      "inv_authority"
+    ],
+    "uncertainty_changes_decision": false
+  },
+  "project_model": {
+    "status": "PARTIAL",
+    "facets": {
+      "intent": {
+        "summary": "Close the largest observed first-engagement feel defects before broader environment work.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_objective"
+        ],
+        "unknown_disposition": "Confirm the actual objective and its acceptance owner before selecting an action."
+      },
+      "decision": {
+        "summary": "Implement fair-entry bot readiness and bounded smoke as one coherent staging slice.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_objective"
+        ],
+        "unknown_disposition": "Replace this decision statement with the exact change, failure, choice, or counterfactual."
+      },
+      "acceptance_contract": {
+        "summary": "Preserve authority and every acceptance-critical invariant.",
+        "knowledge": "UNKNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_unknown"
+        ],
+        "unknown_disposition": "Identify acceptance criteria, non-goals, guardrails, failure budgets, and human-reserved decisions."
+      },
+      "mechanism": {
+        "summary": "Bots generated offense on each active tick; authority retained every smoke field to expiry; Three rendered sixteen high-opacity puffs for every field.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_unknown"
+        ],
+        "unknown_disposition": "Inspect the smallest set of architecture, process, rules, and state transitions needed for this decision."
+      },
+      "current_state_history": {
+        "summary": "Canonical source is a8ab96a, Pages source is 6104a37, and staging Worker version is 608dee67-bb08-4b0e-bc38-91428c41141c.",
+        "knowledge": "KNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_unknown"
+        ],
+        "unknown_disposition": "Freeze current evidence identity and record relevant history before causal claims."
+      },
+      "people_incentives": {
+        "summary": "Decision owners, affected stakeholders, and incentives are not yet established.",
+        "knowledge": "UNKNOWN",
+        "load_bearing": false,
+        "claim_ids": [
+          "claim_unknown"
+        ],
+        "unknown_disposition": "Promote this facet to load-bearing if ownership or behavior can change the recommendation."
+      },
+      "lifecycle_recovery": {
+        "summary": "Degraded operation, rollback, recovery, and future evolution are not yet established.",
+        "knowledge": "UNKNOWN",
+        "load_bearing": true,
+        "claim_ids": [
+          "claim_unknown"
+        ],
+        "unknown_disposition": "Establish monitoring, rollback truth, recovery ownership, and persistent residue before action."
+      }
+    },
+    "invariants": [
+      {
+        "id": "inv_authority",
+        "statement": "Do not exceed explicit authority or silently cross a human-reserved decision boundary.",
+        "owner": "User or named authority owner",
+        "status": "UNKNOWN",
+        "hard_gate": true,
+        "evidence_ids": []
+      }
+    ],
+    "dependencies": [],
+    "stakeholders": []
+  },
+  "authority": {
+    "scope": "Implement, test, deploy, and inspect the bounded correction on staging only.",
+    "decision_owner": "Project owner",
+    "authorized_actions": [
+      "Edit canonical source and focused tests.",
+      "Run local gates and deploy source-matched staging after they pass.",
+      "Use direct desktop control for staging gameplay evidence."
+    ],
+    "forbidden_actions": [
+      "Deploy production.",
+      "Delete, reset, stash, or sweep unrelated dirty files.",
+      "Copy ev.io code, assets, maps, branding, audio, or text."
+    ],
+    "human_reserved_decisions": [
+      "Human Eye acceptance, parity claims, and residual-risk approval."
+    ],
+    "external_state_allowed": true,
+    "hard_gates": [
+      {
+        "id": "gate_authority",
+        "category": "AUTHORITY",
+        "status": "CLEAR",
+        "rationale": "The current delegation explicitly authorizes implementation, local gates, and staging verification.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      },
+      {
+        "id": "gate_safety",
+        "category": "SAFETY",
+        "status": "NOT_APPLICABLE",
+        "rationale": "This bounded game-behavior slice does not affect a physical or high-stakes safety system.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      },
+      {
+        "id": "gate_privacy",
+        "category": "PRIVACY_SECURITY_LEGAL",
+        "status": "CLEAR",
+        "rationale": "No private protocol or copied ev.io expression is used; clean-room boundaries remain explicit.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      },
+      {
+        "id": "gate_external",
+        "category": "IRREVERSIBLE_EXTERNAL_STATE",
+        "status": "CLEAR",
+        "rationale": "Only immutable staging deployments are in scope after gates; production remains excluded.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      },
+      {
+        "id": "gate_production",
+        "category": "DESTRUCTIVE_PRODUCTION",
+        "status": "CLEAR",
+        "rationale": "Production and destructive cleanup are explicitly forbidden and absent from the selected actions.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      },
+      {
+        "id": "gate_human",
+        "category": "HUMAN_RESERVED",
+        "status": "CLEAR",
+        "rationale": "Human Eye and parity acceptance remain reserved to the project owner.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      },
+      {
+        "id": "gate_rollback",
+        "category": "ROLLBACK_FAILURE",
+        "status": "CLEAR",
+        "rationale": "A dedicated commit and immutable staging deployment identities preserve rollback without touching production.",
+        "claim_ids": [
+          "claim_unknown"
+        ]
+      }
+    ]
+  },
+  "companion_findings": {
+    "lead_skill": "HUMAN_CORTEX",
+    "applicable_domains": [],
+    "observation_input": "NONE",
+    "cold_eye_status": "NOT_APPLICABLE",
+    "cold_eye_before_source_inspection": false,
+    "findings": [],
+    "completion_axes": {
+      "functional_implementation": {
+        "status": "UNKNOWN",
+        "signal": "The bounded Worker, authority, presentation, settings, and regression changes are implemented.",
+        "evidence_ids": [],
+        "rationale": "Mark applicable only when the root includes player-facing implementation."
+      },
+      "runtime_integration": {
+        "status": "UNKNOWN",
+        "signal": "The corrected source has not yet been deployed to staging.",
+        "evidence_ids": [],
+        "rationale": "Mark applicable when a build or runtime surface exists."
+      },
+      "player_eye_presentation": {
+        "status": "UNKNOWN",
+        "signal": "Baseline defects were observed, but corrected staging captures do not yet exist.",
+        "evidence_ids": [],
+        "rationale": "Delegate observation to Human Eye when a player-facing domain becomes applicable."
+      },
+      "evidence_regression_coverage": {
+        "status": "UNKNOWN",
+        "signal": "Five type surfaces, full lint, 1,083 app tests, 69 Worker tests, build, package, assets, and provenance gates pass.",
+        "evidence_ids": [],
+        "rationale": "Mark applicable with player-facing implementation or acceptance work."
+      },
+      "human_acceptance": {
+        "status": "UNKNOWN",
+        "signal": "Human Eye acceptance remains reserved and requires corrected staging evidence.",
+        "evidence_ids": [],
+        "rationale": "Require an explicit human decision whenever subjective acceptance applies."
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "claim_objective",
+      "label": "PROPOSED",
+      "statement": "Fair-entry bot readiness plus bounded smoke is the smallest coherent correction for the two strongest observed first-engagement defects.",
+      "evidence_ids": [],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "LOW",
+        "basis": "The defects were directly observed and their source mechanisms were traced; staging endpoint proof is still pending."
+      }
+    },
+    {
+      "id": "claim_unknown",
+      "label": "UNKNOWN",
+      "statement": "Corrected staging player-eye quality, lifecycle behavior, and broader environment acceptance remain unresolved.",
+      "evidence_ids": [],
+      "contradiction_claim_ids": [],
+      "confidence": {
+        "level": "LOW",
+        "basis": "The neutral template intentionally contains no project evidence."
+      }
+    }
+  ],
+  "evidence": [],
+  "hypotheses": [],
+  "tests": [],
+  "trace": {
+    "bounds": {
+      "max_depth": 2,
+      "max_nodes": 8,
+      "stop_rule": "Expand only branches that can change action, acceptance, mitigation, monitoring, rollback, residual risk, or a human decision."
+    },
+    "nodes": [
+      {
+        "id": "root_node",
+        "kind": "ROOT",
+        "statement": "Establish the minimum sufficient project model before selecting an action.",
+        "claim_id": "claim_unknown",
+        "depth": 0,
+        "terminal": true,
+        "closure_reason": "UNKNOWN_ESCALATED"
+      }
+    ],
+    "edges": [],
+    "feedback_loops": [],
+    "thresholds": []
+  },
+  "decision": {
+    "iteration_choice": "ANALYZE",
+    "recommendation": "Finish full local gates, deploy immutable staging identities, and repeat direct player-eye evidence before continuing broader presentation work.",
+    "selected_action_ids": [],
+    "rejected_options": [
+      "Do not answer the observed defects with lobby copy or client-only smoke hiding."
+    ],
+    "decision_claim_ids": [
+      "claim_objective",
+      "claim_unknown"
+    ],
+    "remaining_unknown_claim_ids": [
+      "claim_unknown"
+    ],
+    "human_owner": "Project owner",
+    "consecutive_stable_checks": 1,
+    "reopen_trigger": "Re-evaluate if staging still scores before control, smoke remains frame-obscuring, or an authority/checkpoint regression appears."
+  },
+  "actions": [],
+  "verification": {
+    "mechanism": {
+      "status": "UNKNOWN",
+      "signal": "Focused unit and real Durable Object integration paths pass within the complete suites.",
+      "evidence_ids": [],
+      "rationale": "Establish and test the causal mechanism before claiming verification."
+    },
+    "endpoint": {
+      "status": "UNKNOWN",
+      "signal": "No actual-outcome measurement has run.",
+      "evidence_ids": [],
+      "rationale": "Separate the real objective from its proxy before endpoint verification."
+    },
+    "guardrails": {
+      "status": "UNKNOWN",
+      "signal": "Server authority, smoke truth, clean-room boundaries, staging-only scope, and dirty ownership remain preserved.",
+      "evidence_ids": [],
+      "rationale": "Resolve authority and acceptance-critical guardrails before closure."
+    },
+    "recovery": {
+      "status": "UNKNOWN",
+      "signal": "No rollback or recovery test has run.",
+      "evidence_ids": [],
+      "rationale": "Distinguish true rollback from compensating recovery and test it when applicable."
+    }
+  },
+  "closure": {
+    "status": "OPEN",
+    "summary": "Keep the ledger open through full gates, source-matched staging deployment, and direct fair-entry and smoke evidence.",
+    "residual_risks": [
+      "Smoke may still need visual tuning after real overlap captures.",
+      "Relay environment, weapon contact, and full lifecycle acceptance remain open."
+    ],
+    "human_acceptance_required": true,
+    "accepted_by": "",
+    "acceptance_evidence_ids": [],
+    "nonclaims": [
+      "This ledger does not contain hidden chain-of-thought.",
+      "This ledger does not guarantee correctness or completeness.",
+      "This ledger does not grant human acceptance.",
+      "This bounded slice does not establish ev.io parity or authorize production."
+    ]
+  }
+}

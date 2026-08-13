@@ -6,12 +6,14 @@ import {
 } from '../../../../src/abilities/abilityLoadout';
 import {
   AUTHORITY_FLASH_IMPAIRMENT_RULES,
+  AUTHORITY_SMOKE_FIELD_LIMITS,
   AUTHORITY_THROWABLE_RULES,
   abilityLoadoutReconnectPayload,
   advanceAuthorityAbilityProjectile,
   advanceAuthorityAbilityLoadout,
   createAuthorityAbilityLoadoutRuntimeState,
   createAuthorityAbilityProjectile,
+  retainAuthoritySmokeFieldsAfterSpawn,
   resolveAuthorityAbilityEffect,
   type AuthorityAbilityDetonatedV1,
   type AuthorityAbilityEffectTargetV1,
@@ -19,6 +21,44 @@ import {
 import { INTENT_BUTTON } from '../../../../src/sim';
 
 describe('authoritative four-slot ability loadout runtime', () => {
+  it('keeps smoke brief and deterministically bounded by owner, team, and room', () => {
+    expect(AUTHORITY_THROWABLE_RULES[ABILITY_ID.smoke].effectDurationTicks).toBe(120);
+    expect(AUTHORITY_SMOKE_FIELD_LIMITS).toEqual({
+      maximumPerOwner: 1,
+      maximumPerTeam: 2,
+      maximumGlobal: 4,
+    });
+    const field = (
+      fieldId: string,
+      ownerPlayerId: string,
+      ownerTeamId: string,
+      spawnedAtTick: number,
+    ) => ({
+      schemaVersion: 1 as const,
+      fieldId,
+      ownerPlayerId,
+      ownerTeamId,
+      spawnedAtTick,
+      expiresAtTick: spawnedAtTick + 120,
+      centerMillimeters: { x: spawnedAtTick, y: 0, z: 0 },
+      radiusMillimeters: 5_880,
+    });
+    let retained = retainAuthoritySmokeFieldsAfterSpawn([], field('blue.1.old', 'blue.1', 'blue', 10));
+    retained = retainAuthoritySmokeFieldsAfterSpawn(retained, field('blue.2', 'blue.2', 'blue', 11));
+    retained = retainAuthoritySmokeFieldsAfterSpawn(retained, field('blue.1.new', 'blue.1', 'blue', 12));
+    expect(retained.map(({ fieldId }) => fieldId)).toEqual(['blue.2', 'blue.1.new']);
+
+    retained = retainAuthoritySmokeFieldsAfterSpawn(retained, field('red.1', 'red.1', 'red', 13));
+    retained = retainAuthoritySmokeFieldsAfterSpawn(retained, field('red.2', 'red.2', 'red', 14));
+    retained = retainAuthoritySmokeFieldsAfterSpawn(retained, field('red.3', 'red.3', 'red', 15));
+    expect(retained.map(({ fieldId }) => fieldId)).toEqual([
+      'blue.2',
+      'blue.1.new',
+      'red.2',
+      'red.3',
+    ]);
+  });
+
   it('owns two sequential charges and preserves recharge state for reconnect', () => {
     let state = createAuthorityAbilityLoadoutRuntimeState({
       playerId: 'player_A',

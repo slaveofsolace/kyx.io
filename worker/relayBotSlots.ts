@@ -3,8 +3,18 @@ import {
   type AuthorityFullSnapshot,
   type DeterministicCombatBotInput,
 } from '../src/authority';
+import type { InputBatchMessage } from '../src/net';
+import { INTENT_BUTTON } from '../src/sim';
 
 export const RELAY_AUTHORITY_PLAYER_SLOT_COUNT = 8 as const;
+export const AUTHORITY_BOT_COMBAT_GRACE_TICKS = 60 as const;
+const AUTHORITY_BOT_OFFENSIVE_BUTTON_MASK =
+  INTENT_BUTTON.primaryFire
+  | INTENT_BUTTON.secondaryFire
+  | INTENT_BUTTON.abilityOne
+  | INTENT_BUTTON.abilityTwo
+  | INTENT_BUTTON.abilityThree
+  | INTENT_BUTTON.utility;
 export const RELAY_AUTHORITY_BOT_STRATEGY =
   'relay_authority_map_assault_slot_takeover_v3' as const;
 export const SWITCHYARD_AUTHORITY_BOT_STRATEGY =
@@ -40,6 +50,42 @@ export function nextRelayAuthorityBotTakeover(
   botPlayerIds: ReadonlySet<string>,
 ): string | null {
   return RELAY_AUTHORITY_PLAYER_SLOT_IDS.find((playerId) => botPlayerIds.has(playerId)) ?? null;
+}
+
+/**
+ * Neutral heartbeat traffic must not unleash the room before a player has
+ * actually taken control. Slot selection alone is also not an activity signal
+ * because the browser repeats it on every input sample.
+ */
+export function inputBatchShowsHumanControl(message: InputBatchMessage): boolean {
+  return message.commands.some((command) => (
+    command.moveX !== 0
+    || command.moveY !== 0
+    || command.lookYawDeltaMilliDegrees !== 0
+    || command.lookPitchDeltaMilliDegrees !== 0
+    || command.heldButtons !== 0
+    || command.pressedButtons !== 0
+    || command.releasedButtons !== 0
+  ));
+}
+
+/**
+ * During the entry grace, bots retain deterministic locomotion and look but
+ * cannot fire or activate combat abilities. Edge bits are rebuilt from the
+ * filtered held state so an active checkpoint recovery also releases any
+ * previously-held offensive input rather than leaving it latched.
+ */
+export function withoutAuthorityBotCombat(
+  input: DeterministicCombatBotInput,
+  previousHeldButtons: number,
+): DeterministicCombatBotInput {
+  const heldButtons = input.heldButtons & ~AUTHORITY_BOT_OFFENSIVE_BUTTON_MASK;
+  return Object.freeze({
+    ...input,
+    heldButtons,
+    pressedButtons: heldButtons & ~previousHeldButtons,
+    releasedButtons: previousHeldButtons & ~heldButtons,
+  });
 }
 
 type RelayPatrolPoint = Readonly<{ x: number; y: number; z: number }>;
