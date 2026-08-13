@@ -20,6 +20,11 @@ import {
   deterministicCombatBotPresetId,
 } from './deterministicCombatBot';
 import {
+  AUTHORITY_BOT_COMBAT_GRACE_TICKS,
+  authorityInputShowsHumanControl,
+  withoutAuthorityBotCombat,
+} from './botCombatReadiness';
+import {
   RELAY_AUTHORITY_FIXTURE,
   RELAY_AUTHORITY_IDENTITY,
   createRelayAuthorityCombatOptions,
@@ -129,6 +134,7 @@ export class LocalInkfallPracticeHost {
   private readonly localPrimaryWeaponSlot: 0 | 2 | 3 | 5;
   private readonly allowedLocalWeaponSlots: ReadonlySet<number>;
   private localSelectedWeaponSlot: number;
+  private botCombatReadyAtTick: number | null = null;
   private nextReliableEventSequence = 0;
   private disposed = false;
 
@@ -197,6 +203,9 @@ export class LocalInkfallPracticeHost {
       ),
       combat: createRelayAuthorityCombatOptions(world),
       worldPortal: createRelayPortalAuthorityPort(world),
+      movementFailureRecovery: ({ playerId }) => (
+        botPlayerIds.includes(playerId) ? 'recover_spawn' : 'reject'
+      ),
     });
     const host = new LocalInkfallPracticeHost(
       world,
@@ -263,12 +272,29 @@ export class LocalInkfallPracticeHost {
     if (before.lifecycle === 'warmup' || before.lifecycle === 'active') {
       this.enqueue(this.localPlayerId, authoritativeLocalInput);
       this.localSelectedWeaponSlot = selectedSlot;
+      if (
+        before.lifecycle === 'active'
+        && this.botCombatReadyAtTick === null
+        && authorityInputShowsHumanControl(authoritativeLocalInput)
+      ) {
+        this.botCombatReadyAtTick = this.authority.serverTick
+          + AUTHORITY_BOT_COMBAT_GRACE_TICKS;
+      }
+      const botCombatReady = this.botCombatReadyAtTick !== null
+        && this.authority.serverTick >= this.botCombatReadyAtTick;
       for (const playerId of this.botPlayerIds) {
-        this.enqueue(playerId, localInkfallPracticeBotInput(
+        const previousHeldButtons = this.heldButtons.get(playerId) ?? 0;
+        const authoredInput = localInkfallPracticeBotInput(
           before,
           playerId,
-          this.heldButtons.get(playerId) ?? 0,
-        ));
+          previousHeldButtons,
+        );
+        this.enqueue(
+          playerId,
+          botCombatReady
+            ? authoredInput
+            : withoutAuthorityBotCombat(authoredInput, previousHeldButtons),
+        );
       }
     }
     const tick = this.authority.advanceOneTick();

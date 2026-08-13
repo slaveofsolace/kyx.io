@@ -11,6 +11,9 @@ export const SMOKE_PRESENTATION_RULES = Object.freeze({
   puffPhaseDelayRatio: 0.12,
   maximumPredictionLeadTicks: 1,
   maximumCatchUpMultiplier: 3,
+  interiorOpacityMultiplier: 0.04,
+  interiorClearRadiusRatio: 0.82,
+  fullOpacityRadiusRatio: 1.05,
 });
 
 export interface SmokePresentationProfile {
@@ -39,6 +42,26 @@ export function smokePresentationProfile(
       reducedEffects ? SMOKE_PRESENTATION_RULES.reducedEffectsOpacityMultiplier : 1
     ) / Math.sqrt(fieldCount),
   });
+}
+
+/**
+ * Looking out from inside a cloud must retain silhouettes and route edges.
+ * This changes presentation only; authority radius, lifetime, and occlusion
+ * stay exact. The boundary blend avoids a visible opacity pop.
+ */
+export function smokeInteriorOpacityMultiplier(
+  normalizedDistanceToCenter: number,
+): number {
+  if (!Number.isFinite(normalizedDistanceToCenter)) return 1;
+  const distance = Math.max(0, normalizedDistanceToCenter);
+  const start = SMOKE_PRESENTATION_RULES.interiorClearRadiusRatio;
+  const end = SMOKE_PRESENTATION_RULES.fullOpacityRadiusRatio;
+  if (distance <= start) return SMOKE_PRESENTATION_RULES.interiorOpacityMultiplier;
+  if (distance >= end) return 1;
+  const progress = (distance - start) / (end - start);
+  const eased = progress * progress * (3 - 2 * progress);
+  return SMOKE_PRESENTATION_RULES.interiorOpacityMultiplier
+    + (1 - SMOKE_PRESENTATION_RULES.interiorOpacityMultiplier) * eased;
 }
 
 function clampUnit(value: number): number {

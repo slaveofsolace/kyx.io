@@ -289,10 +289,14 @@ function createColliderInstances(
 }> {
   const materials = Object.freeze({
     deck_upper: panelMaterial('RELAY_CERAMIC_UPPER_DECK', 0x8f9e98, [2, 3], 'deck_strake', {
+      emissive: 0x243531,
+      emissiveIntensity: 0.12,
       metalness: 0.16,
       roughness: 0.68,
     }),
-    deck_mid: panelMaterial('RELAY_GRAPHITE_MID_DECK', 0x43595b, [3, 3], 'deck_strake', {
+    deck_mid: panelMaterial('RELAY_GRAPHITE_MID_DECK', 0x526e70, [3, 3], 'deck_strake', {
+      emissive: 0x284347,
+      emissiveIntensity: 0.28,
       metalness: 0.24,
       roughness: 0.62,
     }),

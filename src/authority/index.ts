@@ -1,6 +1,7 @@
 export * from './combat';
 export * from './combatEvents';
 export * from './combatSnapshot';
+export * from './botCombatReadiness';
 export * from './deterministicCombatBot';
 export * from './fixedTickScheduler';
 export * from './inputQueue';

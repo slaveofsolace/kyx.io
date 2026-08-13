@@ -157,9 +157,9 @@ test.describe('local Relay Practice route', () => {
       };
     });
     if (entryGateLayout.viewportWidth >= 901) {
-      expect(entryGateLayout.left).toBeLessThanOrEqual(1);
-      expect(entryGateLayout.width).toBeGreaterThanOrEqual(540);
-      expect(entryGateLayout.right).toBeLessThanOrEqual(entryGateLayout.viewportWidth * 0.64);
+      expect(entryGateLayout.left).toBeGreaterThanOrEqual(20);
+      expect(entryGateLayout.width).toBeLessThanOrEqual(422);
+      expect(entryGateLayout.right).toBeLessThanOrEqual(entryGateLayout.viewportWidth * 0.5);
     }
 
     const entryAction = page.getByRole('button', { name: 'Enter arena' });

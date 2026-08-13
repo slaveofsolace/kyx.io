@@ -68,7 +68,11 @@ const authorityOriginCandidate = import.meta.env.MODE === 'staging-review'
     || (import.meta.env.PROD ? window.location.origin : undefined);
 const onlineAuthorityAvailability = resolveOnlineAuthorityAvailability(
   authorityOriginCandidate,
-  { isDevelopment: import.meta.env.DEV },
+  {
+    // staging-review is also the canonical local integration bundle. Its
+    // loopback Worker is allowed; non-loopback HTTP still fails closed.
+    isDevelopment: import.meta.env.DEV || import.meta.env.MODE === 'staging-review',
+  },
 );
 const launchOverrideRoute = developmentTestRoute
   || lockedGrayboxPreviewRoute

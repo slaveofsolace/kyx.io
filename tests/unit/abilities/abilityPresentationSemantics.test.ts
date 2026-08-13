@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   SMOKE_PRESENTATION_RULES,
   advanceSmokePresentationAgeTicks,
+  smokeInteriorOpacityMultiplier,
   smokePuffExpansion,
   smokePresentationProfile,
 } from '../../../src/abilities/abilityPresentationSemantics';
@@ -20,6 +21,15 @@ describe('ability presentation semantics', () => {
       opacityMultiplier: 0.55,
     });
     expect(smokePresentationProfile(true, 4).opacityMultiplier).toBe(0.275);
+  });
+
+  it('keeps route edges visible from inside smoke without weakening its outside profile', () => {
+    expect(smokeInteriorOpacityMultiplier(0)).toBe(0.04);
+    expect(smokeInteriorOpacityMultiplier(0.82)).toBe(0.04);
+    expect(smokeInteriorOpacityMultiplier(0.935)).toBeGreaterThan(0.04);
+    expect(smokeInteriorOpacityMultiplier(0.935)).toBeLessThan(1);
+    expect(smokeInteriorOpacityMultiplier(1.05)).toBe(1);
+    expect(smokeInteriorOpacityMultiplier(Number.NaN)).toBe(1);
   });
 
   it('expands smoke continuously with a bounded one-tick prediction lead', () => {

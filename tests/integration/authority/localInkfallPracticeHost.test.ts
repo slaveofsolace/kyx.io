@@ -21,6 +21,7 @@ import {
   combatPresetAuthorityWeaponSlots,
   combatPresetById,
 } from '../../../src/loadouts';
+import type { ReliableEvent } from '../../../src/net';
 import { INTENT_BUTTON } from '../../../src/sim';
 
 const hosts: LocalInkfallPracticeHost[] = [];
@@ -153,14 +154,58 @@ describe('browser-local Relay Practice authority host', () => {
     });
   });
 
+  it('keeps Practice bot offense locked until control plus the shared entry grace', async () => {
+    const practice = await host(7);
+    const neutralOpeningEvents: ReliableEvent[] = [];
+    for (let tick = 0; tick < 120; tick += 1) {
+      neutralOpeningEvents.push(...practice.step().reliableEvents);
+    }
+
+    expect(practice.snapshot.match?.teamScores.map(({ score }) => score)).toEqual([0, 0]);
+    expect(practice.snapshot.players.every(({ combat }) => (
+      combat?.life.healthPoints === 100
+    ))).toBe(true);
+    expect(neutralOpeningEvents.some(({ kind }) => (
+      kind === 'weaponAttackAccepted' || kind === 'damageApplied'
+    ))).toBe(false);
+
+    practice.step({
+      moveX: 0,
+      moveY: 127,
+      lookYawDeltaMilliDegrees: 0,
+      lookPitchDeltaMilliDegrees: 0,
+      heldButtons: 0,
+      pressedButtons: 0,
+      releasedButtons: 0,
+      selectedSlot: 0,
+    });
+    const graceEvents: ReliableEvent[] = [];
+    for (let tick = 0; tick < 59; tick += 1) {
+      graceEvents.push(...practice.step().reliableEvents);
+    }
+    expect(graceEvents.some(({ kind }) => (
+      kind === 'weaponAttackAccepted' || kind === 'damageApplied'
+    ))).toBe(false);
+  });
+
   it('sustains a deterministic 1+7 population past the former east-rail failure tick', async () => {
     const first = await host(7);
     const second = await host(7);
     let lastFirstSnapshot = first.snapshot;
 
     for (let tick = 0; tick < 360; tick += 1) {
+      const localInput = {
+        moveX: 0,
+        moveY: 0,
+        lookYawDeltaMilliDegrees: 1,
+        lookPitchDeltaMilliDegrees: 0,
+        heldButtons: 0,
+        pressedButtons: 0,
+        releasedButtons: 0,
+        selectedSlot: 0,
+      } as const;
       try {
-        lastFirstSnapshot = first.step().snapshot;
+        lastFirstSnapshot = first.step(localInput).snapshot;
       } catch (error) {
         throw new Error(`LOCAL_PRACTICE_SUSTAINED_FAILURE:${JSON.stringify({
           tick,
@@ -172,7 +217,7 @@ describe('browser-local Relay Practice authority host', () => {
           })),
         })}`, { cause: error });
       }
-      second.step();
+      second.step(localInput);
     }
 
     expect(first.snapshot.serverTick).toBe(360);

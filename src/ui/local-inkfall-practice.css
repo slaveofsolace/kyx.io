@@ -7,34 +7,28 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
 .local-practice-gate {
   position: fixed;
   z-index: 1200;
-  inset: 0 auto 0 0;
-  width: min(760px, 62vw);
-  min-width: 560px;
-  padding: clamp(92px, 13vh, 132px) clamp(120px, 11vw, 168px)
-    clamp(64px, 9vh, 104px) clamp(76px, 7vw, 112px);
+  inset: auto auto 24px 24px;
+  width: min(420px, calc(100vw - 48px));
+  max-height: calc(100vh - 48px);
+  min-width: 0;
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   overflow-y: auto;
   box-sizing: border-box;
-  border: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(5, 8, 9, 0.99) 0%,
-    rgba(5, 8, 9, 0.97) 62%,
-    rgba(5, 8, 9, 0.78) 82%,
-    rgba(5, 8, 9, 0) 100%
-  );
+  border: 1px solid rgba(227, 172, 74, 0.38);
+  background: rgba(5, 8, 9, 0.94);
   color: var(--cut-ink, #eef1ec);
-  box-shadow: none;
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.44);
 }
 
 .local-practice-gate::before {
   content: "";
   position: absolute;
-  top: 14vh;
-  bottom: 14vh;
-  left: clamp(28px, 3.5vw, 58px);
+  top: 18px;
+  bottom: 18px;
+  left: 0;
   width: 1px;
   background: linear-gradient(
     to bottom,
@@ -57,8 +51,8 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   margin: 0;
   max-width: 12ch;
   color: var(--cut-ink, #eef1ec);
-  font: 720 clamp(2.7rem, 5vw, 4.7rem)/0.86 var(--cut-numeral, "Arial Narrow", sans-serif);
-  letter-spacing: -0.055em;
+  font: 720 clamp(2rem, 3vw, 2.8rem)/0.94 var(--cut-numeral, "Arial Narrow", sans-serif);
+  letter-spacing: -0.04em;
 }
 
 .local-practice-gate__brief,
@@ -80,8 +74,8 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 30px;
-  margin: 26px 0 22px;
-  border-block: 1px solid var(--cut-line, rgba(238, 241, 236, 0.28));
+  margin: 0;
+  border-top: 1px solid var(--cut-line, rgba(238, 241, 236, 0.28));
 }
 
 .local-practice-gate__controls > div {
@@ -113,11 +107,13 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   border-top: 1px solid var(--cut-line, rgba(238, 241, 236, 0.28));
 }
 
+.local-practice-gate__reference,
 .local-practice-gate__loadout {
   margin-top: 18px;
   border-bottom: 1px solid var(--cut-line, rgba(238, 241, 236, 0.28));
 }
 
+.local-practice-gate__reference summary,
 .local-practice-gate__loadout summary {
   position: relative;
   padding: 11px 56px 11px 0;
@@ -128,10 +124,12 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   letter-spacing: 0.01em;
 }
 
+.local-practice-gate__reference summary::-webkit-details-marker,
 .local-practice-gate__loadout summary::-webkit-details-marker {
   display: none;
 }
 
+.local-practice-gate__reference summary::after,
 .local-practice-gate__loadout summary::after {
   content: "Show";
   position: absolute;
@@ -140,11 +138,15 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   font-family: var(--cut-mono, monospace);
 }
 
+.local-practice-gate__reference[open] summary::after,
 .local-practice-gate__loadout[open] summary::after {
   content: "Hide";
 }
 
+.local-practice-gate__reference summary:hover,
+.local-practice-gate__reference summary:focus-visible,
 .local-practice-gate__loadout summary:hover,
+.local-practice-gate__reference summary:focus-visible,
 .local-practice-gate__loadout summary:focus-visible {
   color: var(--cut-ink, #eef1ec);
 }
@@ -255,9 +257,11 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
 
 @media (max-width: 620px) {
   .local-practice-gate {
-    width: 100vw;
+    inset: auto 12px 12px 12px;
+    width: auto;
     min-width: 0;
-    padding: 52px 24px 32px 44px;
+    max-height: calc(100vh - 24px);
+    padding: 20px;
     background: rgba(5, 8, 9, 0.98);
   }
 
@@ -270,7 +274,7 @@ body[data-launch-support="local-relay-practice-authority"] #game-canvas {
   }
 
   .local-practice-gate h1 {
-    font-size: clamp(2.5rem, 15vw, 4rem);
+    font-size: clamp(2rem, 10vw, 2.7rem);
   }
 
   .local-practice-gate__actions {

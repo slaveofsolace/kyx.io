@@ -226,13 +226,16 @@ function createEntryGate(
     <div class="local-practice-gate__index">${LOCAL_PRACTICE_MODE_LABEL}</div>
     <h1 id="local-practice-gate-title">${LOCAL_PRACTICE_GOAL_TITLE}</h1>
     <p class="local-practice-gate__brief">${LOCAL_PRACTICE_GOAL_SUMMARY}</p>
-    <dl class="local-practice-gate__controls">
-      <div><dt>Move</dt><dd>W A S D</dd></div>
-      <div><dt>Fight</dt><dd>Mouse / R</dd></div>
-      <div><dt>Weapons</dt><dd>${weaponControlLabel}</dd></div>
-      <div><dt>Mobility</dt><dd>Space / Shift / C</dd></div>
-      <div><dt>Pause</dt><dd>Escape</dd></div>
-    </dl>
+    <details class="local-practice-gate__reference">
+      <summary>Controls - WASD / Mouse</summary>
+      <dl class="local-practice-gate__controls">
+        <div><dt>Move</dt><dd>W A S D</dd></div>
+        <div><dt>Fight</dt><dd>Mouse / R</dd></div>
+        <div><dt>Weapons</dt><dd>${weaponControlLabel}</dd></div>
+        <div><dt>Mobility</dt><dd>Space / Shift / C</dd></div>
+        <div><dt>Pause</dt><dd>Escape</dd></div>
+      </dl>
+    </details>
   `;
   const abilityGuide = document.createElement('div');
   abilityGuide.className = 'local-practice-gate__abilities';

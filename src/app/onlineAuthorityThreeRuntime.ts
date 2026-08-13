@@ -5,6 +5,7 @@ import revision4CombatAuthorityFixtureSource from '../../assets/source/maps/inkf
 import {
   advanceSmokePresentationAgeTicks,
   SMOKE_PRESENTATION_RULES,
+  smokeInteriorOpacityMultiplier,
   smokePuffExpansion,
   smokePresentationProfile,
 } from '../abilities/abilityPresentationSemantics';
@@ -1355,6 +1356,16 @@ export async function createOnlineAuthorityThreeRuntime(
         1,
       );
       smoke.scale.set(radius, radius * SMOKE_PRESENTATION_RULES.verticalScale, radius);
+      const cameraOffsetX = camera.position.x - smoke.position.x;
+      const cameraOffsetY = (
+        camera.position.y - smoke.position.y
+      ) / SMOKE_PRESENTATION_RULES.verticalScale;
+      const cameraOffsetZ = camera.position.z - smoke.position.z;
+      const interiorOpacity = smokeInteriorOpacityMultiplier(
+        radius > 0
+          ? Math.hypot(cameraOffsetX, cameraOffsetY, cameraOffsetZ) / radius
+          : Number.POSITIVE_INFINITY,
+      );
       smoke.traverse((child) => {
         if (!(child instanceof THREE.Mesh)) return;
         if (!(child.material instanceof THREE.ShaderMaterial)) return;
@@ -1367,7 +1378,8 @@ export async function createOnlineAuthorityThreeRuntime(
         )
           * delayed
           * fade
-          * smokeProfile.opacityMultiplier;
+          * smokeProfile.opacityMultiplier
+          * interiorOpacity;
       });
     }
     for (const [fieldId, smoke] of smokeFields) {
