@@ -141,7 +141,15 @@ async function resolveLocalImport(importer, specifier) {
   const unresolved = resolve(dirname(importer), cleanSpecifier);
   const candidates = extname(unresolved)
     ? [unresolved]
-    : [unresolved, `${unresolved}.js`, `${unresolved}.mjs`, `${unresolved}.css`, resolve(unresolved, 'index.js')];
+    : [
+        unresolved,
+        `${unresolved}.js`,
+        `${unresolved}.mjs`,
+        `${unresolved}.ts`,
+        `${unresolved}.css`,
+        resolve(unresolved, 'index.js'),
+        resolve(unresolved, 'index.ts'),
+      ];
 
   return candidates.find((candidate) => existsSync(candidate)) ?? null;
 }

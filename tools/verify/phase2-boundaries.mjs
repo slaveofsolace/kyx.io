@@ -47,7 +47,7 @@ check(
   'source gates the deterministic route on Vite development mode',
 );
 check(
-  mainSource.includes("import('./dev/deterministicTestRoute.ts')"),
+  mainSource.includes("importDevelopmentModule('./dev/deterministicTestRoute.ts')"),
   'source loads the deterministic route through a development branch',
 );
 check(
