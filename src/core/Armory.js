@@ -13,7 +13,7 @@ function _load() {
 function _save(d) { localStorage.setItem(_KEY, JSON.stringify(d)); }
 
 export const Armory = {
-  getSkinId(weaponId, isSword = false) {
+  getSkinId(weaponId) {
     // No catalog default any more — an unset weapon simply has no skin (null).
     return _load()[weaponId] || null;
   },

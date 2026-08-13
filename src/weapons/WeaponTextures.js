@@ -762,7 +762,8 @@ function hextechDecal() {
       for (let i = 0; i < 6; i++) {
         const a = (Math.PI / 3) * i;
         const px = x + r * Math.cos(a), py = y + r * Math.sin(a);
-        i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        if (i > 0) ctx.lineTo(px, py);
+        else ctx.moveTo(px, py);
       }
       ctx.closePath();
       ctx.stroke();
@@ -847,7 +848,8 @@ function goldDecal() {
     for (let a = 0; a <= Math.PI * 2; a += 0.3) {
       const rr = r * (0.6 + 0.4 * Math.sin(a * 3));
       const px = x + Math.cos(a) * rr, py = y + Math.sin(a) * rr;
-      a ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      if (a > 0) ctx.lineTo(px, py);
+      else ctx.moveTo(px, py);
     }
     ctx.closePath();
     ctx.stroke();
@@ -1184,7 +1186,8 @@ function camoUrbanDecal() {
       const a = (i / pts) * Math.PI * 2;
       const r = scale * (0.5 + Math.random() * 0.8);
       const px = x + Math.cos(a) * r, py = y + Math.sin(a) * r;
-      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      if (i > 0) ctx.lineTo(px, py);
+      else ctx.moveTo(px, py);
     }
     ctx.closePath();
     ctx.fill();

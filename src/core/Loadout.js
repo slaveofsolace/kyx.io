@@ -125,6 +125,7 @@ export const Loadout = {
     return combatPresetAbilityLoadout(preset);
   },
   setAbilitySlot(slot, _abilityId) {
+    void _abilityId;
     if (slot === 0) throw new RangeError('Blink is locked and cannot be removed');
     throw new RangeError('ability slots are fixed by the selected combat preset');
   },

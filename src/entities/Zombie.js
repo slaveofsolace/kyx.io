@@ -82,7 +82,6 @@ function buildZombieRigFromGLB(mat) {
   const headGroup  = glbScene.getObjectByName('headGroup')  || neckGroup;
 
   // Eye glow light attached to the glowing eye mesh
-  const eyeGlowMesh = glbScene.getObjectByName('ZEyeGlow');
   const eyeGlow = new THREE.PointLight(0x1ce0ff, 0.85, 1.9, 2);
   // (sky-only lighting) eyeGlow not added to scene
 
@@ -463,7 +462,7 @@ function buildZombieRig() {
   });
 
   // Upper teeth (6 individual)
-  [-0.06,-0.036,-0.012,0.012,0.036,0.06].forEach((tx,ti) => {
+  [-0.06,-0.036,-0.012,0.012,0.036,0.06].forEach((tx) => {
     const t = B(0.022, 0.032+Math.random()*0.008, 0.020, mat.bone);
     t.position.set(tx, 0.075, -0.184); headGroup.add(t);
   });
@@ -640,6 +639,7 @@ export class Zombie {
    * @param {string|null}   armedType  — null | 'pistol' | 'rifle' | 'shotgun'
    */
   constructor(world, spawnPoint, hpMult = 1, speedMult = 1, wave = 1, armedType = null, variant = 'shambler', dmgMult = 1) {
+    void wave;
     const V = VARIANTS[armedType ? 'shambler' : variant] ?? VARIANTS.shambler;
     this.variant      = armedType ? 'shambler' : variant;
     this._animMul     = V.anim;

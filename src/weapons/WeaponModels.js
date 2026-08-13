@@ -381,6 +381,7 @@ function buildSidearm(color) {
   return { group: g, muzzle };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained as an original weapon reference builder
 function _buildGlock_REMOVED(color) {
   const g = new THREE.Group();
   const frame  = M('body',   color,    { roughness: 0.72, metalness: 0.12 });
@@ -478,6 +479,7 @@ function _buildGlock_REMOVED(color) {
 // SMGs
 // ===========================================================================
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained as an original weapon reference builder
 function buildSMG(color) {
   const g = new THREE.Group();
   const body  = M('body',   color,    { roughness: 0.55, metalness: 0.38 });
@@ -631,6 +633,7 @@ function buildUzi(color) {
 // SHOTGUNS
 // ===========================================================================
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained as an original weapon reference builder
 function buildShotgun(color) {
   const g = new THREE.Group();
   const body  = M('body',   color,    { roughness: 0.62, metalness: 0.2  });
@@ -710,6 +713,7 @@ function buildShotgun(color) {
 
 // Lever-action shotgun
 function buildLeverShotgun(color) {
+  void color;
   const g = new THREE.Group();
   const wood  = M('wood',   0x8b5c2a, { roughness: 0.68, metalness: 0.06 });
   const dark  = M('accent', 0x12141a, { roughness: 0.58, metalness: 0.3  });
@@ -864,6 +868,7 @@ function buildRifle(color) {
 }
 
 // M4 carbine — flat-top upper, free-float M-LOK handguard, collapsible stock.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained as an original weapon reference builder
 function buildM4(color) {
   const g = new THREE.Group();
   const body  = M('body',   color,    { roughness: 0.58, metalness: 0.28 });
@@ -972,6 +977,7 @@ function buildM4(color) {
 }
 
 // AR-10 .308 — beefier M4 variant, 20-rd PMAG, red dot optic.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained as an original weapon reference builder
 function buildAR10(color) {
   const g = new THREE.Group();
   const body  = M('body',   color,    { roughness: 0.55, metalness: 0.3  });
@@ -1356,6 +1362,7 @@ function buildRPG(color) {
 // SNIPER RIFLES
 // ===========================================================================
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained as an original weapon reference builder
 function buildSniper(color) {
   const g = new THREE.Group();
   const body  = M('body',   color,    { roughness: 0.52, metalness: 0.32 });

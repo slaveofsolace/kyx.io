@@ -70,6 +70,7 @@ function makeTechFloorTexture() {
   return tex;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained for the original arena material library
 function makeTechFloorEmissiveTexture() {
   const size = 512;
   const canvas = document.createElement('canvas');
@@ -95,6 +96,7 @@ function makeTechFloorEmissiveTexture() {
 }
 
 // (removed — replaced by tech floor)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained for the original arena material library
 function makeWetRoughnessTexture() { return null; }
 
 // Vertical gradient skydome — deep space zenith bleeding into a vivid
@@ -669,6 +671,7 @@ export class World {
   // otherwise the emissive material + bloom still carry the glow for free.
   // `important` lights (e.g. the central arena core) bypass the cap.
   _accentLight(parent, color, intensity, distance, x, y, z, important = false) {
+    void important;
     // Sky-only lighting: never add a point light (budget is 0 for all qualities).
     if (this._accentLights >= this._maxAccentLights) return null;
     this._accentLights++;
@@ -1058,6 +1061,7 @@ export class World {
   }
 
   _buildWindowBoxes(cx, cz, fw, fd, front, height) {
+    void height;
     const { ox, oz, ax, az, half, len } = this._faceVecs(front, fw, fd);
     const cols = Math.min(3, Math.max(2, Math.floor(len / 4)));
     const y = 2.2;
