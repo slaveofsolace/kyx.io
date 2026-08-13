@@ -312,7 +312,11 @@ describe('KYX first-person armory presentation', () => {
       )).toBeUndefined();
       expect(rifle.firstPersonHandCount).toBe(2);
       expect(rifle.muzzle.name).toBe('KYX_VLR7_MUZZLE');
-      expect(rifle.group.userData.authorityMuzzleReferenceBound).toBe(false);
+      expect(rifle.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(rifle.group.userData.authorityMuzzleReferenceSource).toBe(
+        'project-authored-procedural',
+      );
+      expect(rifle.group.userData.reviewMuzzleReferenceBound).toBe(false);
 
       expect(worldRifle.group.userData.weaponVisualSource).toBe(
         'quaternius_cc0_review_rev1',
@@ -330,6 +334,10 @@ describe('KYX first-person armory presentation', () => {
         'KYX_VLR7_REVIEW_MUZZLE_REFERENCE',
       );
       expect(worldRifle.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(worldRifle.group.userData.authorityMuzzleReferenceSource).toBe(
+        'review-authored',
+      );
+      expect(worldRifle.group.userData.reviewMuzzleReferenceBound).toBe(true);
 
       const mountedMagazine = rifle.group.getObjectByName(
         'KYX_VLR7_MAGAZINE',
@@ -381,7 +389,11 @@ describe('KYX first-person armory presentation', () => {
         'KYX_K9_POWER_CHAMBER',
       )?.visible).toBe(true);
       expect(sidearm.muzzle.name).toBe('KYX_K9_MUZZLE');
-      expect(sidearm.group.userData.authorityMuzzleReferenceBound).toBe(false);
+      expect(sidearm.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(sidearm.group.userData.authorityMuzzleReferenceSource).toBe(
+        'project-authored-procedural',
+      );
+      expect(sidearm.group.userData.reviewMuzzleReferenceBound).toBe(false);
 
       expect(worldSidearm.group.userData.weaponVisualSource).toBe(
         'quaternius_cc0_armory_rev1:kyx-k9-quaternius-rev1',
@@ -396,6 +408,10 @@ describe('KYX first-person armory presentation', () => {
         'KYX_K9_QUATERNIUS_REV1_MUZZLE_REFERENCE',
       );
       expect(worldSidearm.group.userData.authorityMuzzleReferenceBound).toBe(true);
+      expect(worldSidearm.group.userData.authorityMuzzleReferenceSource).toBe(
+        'review-authored',
+      );
+      expect(worldSidearm.group.userData.reviewMuzzleReferenceBound).toBe(true);
       expect(worldSidearm.group.getObjectByName(
         'KYX_K9_REVIEW_SLIDE_CAP',
       )?.visible).toBe(true);

@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import { buildHumanSoldier, isHumanSoldierReady, tintHumanSoldier } from './HumanSoldier.js';
-import { normalizeRev17LocomotionPresentation } from './rev17PresentationPolish.js';
+import {
+  fitRev17WeaponContact,
+  normalizeRev17LocomotionPresentation,
+} from './rev17PresentationPolish.js';
 
 // Compatibility hooks retained for menu callers. Quarantined static models
 // cannot be fetched; previews use the project-authored runtime when available
@@ -389,6 +392,7 @@ export function installProceduralCharacterPresentation(group) {
 
   const clamp = THREE.MathUtils.clamp;
   const handRight = group.getObjectByName('hand_R');
+  const handLeft = group.getObjectByName('hand_L');
   let locomotion = normalizeRev17LocomotionPresentation(0, 0);
   let grounded = true;
   let targetCrouchMix = 0;
@@ -410,6 +414,24 @@ export function installProceduralCharacterPresentation(group) {
   let action = null;
   let heldWeapon = null;
   let heldWeaponIsMelee = false;
+  let weaponContact = null;
+  let supportContactProfileSource = null;
+  let supportHandErrorMeters = null;
+  let supportHandWorldPosition = null;
+  let supportTargetWorldPosition = null;
+  let supportArmReachMeters = null;
+  let supportTargetDistanceFromShoulderMeters = null;
+  let supportShoulderWeaponLocal = null;
+  const contactShoulder = new THREE.Vector3();
+  const contactHand = new THREE.Vector3();
+  const contactTarget = new THREE.Vector3();
+  const contactCurrentDirection = new THREE.Vector3();
+  const contactTargetDirection = new THREE.Vector3();
+  const contactParentWorld = new THREE.Quaternion();
+  const contactParentWorldInverse = new THREE.Quaternion();
+  const contactDeltaWorld = new THREE.Quaternion();
+  const contactDeltaLocal = new THREE.Quaternion();
+  const contactDesiredLocal = new THREE.Quaternion();
   let dead = false;
 
   const setLocomotion = (
@@ -490,17 +512,101 @@ export function installProceduralCharacterPresentation(group) {
     if (heldWeapon !== null) heldWeapon.parent?.remove(heldWeapon);
     heldWeapon = weapon ?? null;
     heldWeaponIsMelee = isMelee;
+    weaponContact = null;
+    supportContactProfileSource = null;
+    supportHandErrorMeters = null;
+    supportHandWorldPosition = null;
+    supportTargetWorldPosition = null;
+    supportArmReachMeters = null;
+    supportTargetDistanceFromShoulderMeters = null;
+    supportShoulderWeaponLocal = null;
     if (heldWeapon === null || handRight === null) return;
-    if (isMelee) {
-      heldWeapon.position.set(0.02, 0.06, 0.02);
-      heldWeapon.rotation.set(Math.PI * 0.5, 0, Math.PI * 0.5);
-      heldWeapon.scale.setScalar(1.15);
-    } else {
-      heldWeapon.position.set(-0.02, 0.04, 0.02);
-      heldWeapon.rotation.set(1.15, Math.PI, 0.15);
-      heldWeapon.scale.setScalar(1);
-    }
     handRight.add(heldWeapon);
+    weaponContact = fitRev17WeaponContact(
+      heldWeapon,
+      handRight,
+      null,
+      isMelee,
+    );
+    supportContactProfileSource = weaponContact.profileSource;
+    if (weaponContact.supportTarget !== null && handLeft !== null) {
+      // The project-authored fallback has a deliberately broader shoulder span
+      // than the accepted rig profiles. Bind its support glove to the nearest
+      // point in a conservative receiver/fore-end contact envelope instead of
+      // claiming the accepted-rig centerline target is reachable.
+      group.updateWorldMatrix(true, true);
+      rig.armL.getWorldPosition(contactShoulder);
+      handLeft.getWorldPosition(contactHand);
+      const shoulderWeaponLocal = heldWeapon.worldToLocal(
+        contactShoulder.clone(),
+      );
+      supportShoulderWeaponLocal = Object.freeze(
+        shoulderWeaponLocal.toArray(),
+      );
+      weaponContact.supportTarget.position.set(
+        clamp(shoulderWeaponLocal.x, -0.22, 0.22),
+        clamp(shoulderWeaponLocal.y, -0.08, 0.12),
+        clamp(shoulderWeaponLocal.z, -0.24, 0.15),
+      );
+      supportContactProfileSource = 'procedural-proportion-fit';
+    }
+  };
+
+  const applySupportHandContact = (weight) => {
+    if (
+      weaponContact?.supportTarget == null
+      || handLeft === null
+      || weight <= 0
+    ) {
+      supportHandErrorMeters = null;
+      supportHandWorldPosition = null;
+      supportTargetWorldPosition = null;
+      supportArmReachMeters = null;
+      supportTargetDistanceFromShoulderMeters = null;
+      return;
+    }
+    group.updateWorldMatrix(true, true);
+    rig.armL.getWorldPosition(contactShoulder);
+    handLeft.getWorldPosition(contactHand);
+    weaponContact.supportTarget.getWorldPosition(contactTarget);
+    contactCurrentDirection.subVectors(contactHand, contactShoulder);
+    contactTargetDirection.subVectors(contactTarget, contactShoulder);
+    if (
+      contactCurrentDirection.lengthSq() <= 1e-8
+      || contactTargetDirection.lengthSq() <= 1e-8
+    ) {
+      supportHandErrorMeters = null;
+      supportHandWorldPosition = null;
+      supportTargetWorldPosition = null;
+      supportArmReachMeters = null;
+      supportTargetDistanceFromShoulderMeters = null;
+      return;
+    }
+    contactCurrentDirection.normalize();
+    contactTargetDirection.normalize();
+    contactDeltaWorld.setFromUnitVectors(
+      contactCurrentDirection,
+      contactTargetDirection,
+    );
+    rig.armL.parent?.getWorldQuaternion(contactParentWorld);
+    contactParentWorldInverse.copy(contactParentWorld).invert();
+    contactDeltaLocal
+      .copy(contactParentWorldInverse)
+      .multiply(contactDeltaWorld)
+      .multiply(contactParentWorld);
+    contactDesiredLocal
+      .copy(contactDeltaLocal)
+      .multiply(rig.armL.quaternion);
+    rig.armL.quaternion.slerp(contactDesiredLocal, clamp(weight, 0, 1));
+    group.updateWorldMatrix(true, true);
+    handLeft.getWorldPosition(contactHand);
+    weaponContact.supportTarget.getWorldPosition(contactTarget);
+    supportHandErrorMeters = contactHand.distanceTo(contactTarget);
+    supportHandWorldPosition = Object.freeze(contactHand.toArray());
+    supportTargetWorldPosition = Object.freeze(contactTarget.toArray());
+    supportArmReachMeters = contactShoulder.distanceTo(contactHand);
+    supportTargetDistanceFromShoulderMeters =
+      contactShoulder.distanceTo(contactTarget);
   };
 
   const actionTick = (deltaSeconds) => {
@@ -625,6 +731,16 @@ export function installProceduralCharacterPresentation(group) {
       if (action.remaining === 0) action = null;
     }
 
+    applySupportHandContact(
+      heldWeaponIsMelee || action?.kind === 'ability' || action?.kind === 'melee'
+        ? 0
+        : action?.kind === 'reload'
+          ? 0.32
+          : grounded
+            ? 0.9
+            : 0.64,
+    );
+
     fireRecoil = Math.max(0, fireRecoil - dt * 1.65);
     if (flinch !== 0) {
       group.rotation.z += flinch * 0.045;
@@ -648,6 +764,24 @@ export function installProceduralCharacterPresentation(group) {
     dead,
     action: action?.kind ?? null,
     weaponAttached: heldWeapon !== null,
+    supportHandContact: supportHandErrorMeters !== null
+      && supportHandErrorMeters <= 0.12,
+    supportHandErrorMeters,
+  });
+
+  const getPresentationState = () => Object.freeze({
+    weaponContact: Object.freeze({
+      supportHandContact: supportHandErrorMeters !== null
+        && supportHandErrorMeters <= 0.12,
+      supportHandErrorMeters,
+      supportHandWorldPosition,
+      supportTargetWorldPosition,
+      supportArmReachMeters,
+      supportTargetDistanceFromShoulderMeters,
+      supportShoulderWeaponLocal,
+      profileSource: supportContactProfileSource,
+      family: weaponContact?.family ?? null,
+    }),
   });
 
   Object.assign(group.userData, {
@@ -669,6 +803,7 @@ export function installProceduralCharacterPresentation(group) {
     actionTick,
     armorTick: () => {},
     locomotionDiagnostics,
+    getPresentationState,
   });
   return Object.freeze({ rig, locomotionDiagnostics });
 }

@@ -55,7 +55,7 @@ test('Switchyard and Crownpoint mount their exact authority worlds and player-vi
     );
     await expect(page.locator('body')).toHaveAttribute(
       'data-online3d-presentation-mode',
-      'original_arena_visual_v1',
+      'original_arena_visual_v4',
     );
     await expect(page.locator('body')).toHaveAttribute(
       'data-online3d-display-name',

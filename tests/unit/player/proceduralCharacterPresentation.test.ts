@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { describe, expect, it } from 'vitest';
 
 import { buildPreviewCharacter } from '../../../src/player/PreviewCharacter.js';
+import { createKyxWeaponPresentationModel } from '../../../src/weapons/KyxArmoryPresentation';
 
 const SKIN = Object.freeze({ primary: 0x4f7788, secondary: 0x121820 });
 
@@ -71,6 +72,34 @@ describe('procedural character presentation', () => {
     expect(weapon.parent?.name).toBe('hand_R');
     expect(character.userData.locomotionDiagnostics().weaponAttached).toBe(true);
   });
+
+  it.each([
+    ['vertical_rifle_v1', 'rifle'],
+    ['kyx_scattergun_v1', 'shotgun'],
+    ['kyx_longshot_v1', 'sniper'],
+    ['kyx_breach_rocket_v1', 'rocket'],
+  ] as const)(
+    'solves and reports a measured support-hand contact for %s',
+    (weaponId, family) => {
+      const character = buildAnimatedFallback();
+      const weapon = createKyxWeaponPresentationModel(weaponId, 'world');
+
+      character.userData.attachWeapon(weapon.group, false);
+      for (let frame = 0; frame < 12; frame += 1) {
+        character.userData.actionTick(1 / 60);
+      }
+
+      const contact = character.userData.getPresentationState().weaponContact;
+      expect(contact.family).toBe(family);
+      expect(contact.profileSource).toBe('procedural-proportion-fit');
+      expect(contact.supportHandErrorMeters).toBeTypeOf('number');
+      expect(
+        contact.supportHandErrorMeters,
+        JSON.stringify(contact),
+      ).toBeLessThanOrEqual(0.12);
+      expect(contact.supportHandContact).toBe(true);
+    },
+  );
 
   it('uses a stance pose and vertical offset without whole-body scaling', () => {
     const character = buildAnimatedFallback();

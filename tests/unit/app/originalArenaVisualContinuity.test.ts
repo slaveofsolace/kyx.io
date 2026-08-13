@@ -44,8 +44,10 @@ describe('original arena visual continuity', () => {
       expect(visual.colliderInstanceCount).toBe(fixture.solids.length);
       expect(visual.meshCount).toBe(meshCount);
       expect(visual.lightCount).toBe(lightCount);
-      expect(visual.meshCount).toBeLessThanOrEqual(12);
+      expect(visual.meshCount).toBeLessThanOrEqual(18);
       expect(visual.lightCount).toBe(3);
+      expect(visual.structuralLineSegmentCount).toBeGreaterThan(0);
+      expect(visual.architecturalAccentCount).toBe(8);
       expect(visual.authorityFixtureUnchanged).toBe(true);
       expect(visual.humanAccepted).toBe(false);
       expect(visual.group.getObjectByName(landmark)).toBeDefined();
@@ -57,6 +59,15 @@ describe('original arena visual continuity', () => {
       ).toBeDefined();
       expect(
         visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_CENTER_ORBITAL_RING`),
+      ).toBeDefined();
+      expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_ATMOSPHERE_DOME`),
+      ).toBeDefined();
+      expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_STRUCTURAL_EDGE_DEFINITION`),
+      ).toBeInstanceOf(THREE.LineSegments);
+      expect(
+        visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_ARCHITECTURAL_ACCENTS`),
       ).toBeDefined();
       expect(
         visual.group.getObjectByName(`${binding.mapId.toUpperCase()}_LANDMARK_FINS`),

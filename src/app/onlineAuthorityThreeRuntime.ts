@@ -105,7 +105,7 @@ export interface OnlineAuthorityThreeDiagnostics {
     | 'review_glb'
     | 'procedural_authority_containment'
     | 'relay_visual_candidate'
-    | 'original_arena_visual_v1';
+    | 'original_arena_visual_v4';
   readonly presentationDisplayName: string;
   readonly authorityCompatibility: string;
   readonly presentationSha256: string | null;
@@ -238,7 +238,7 @@ interface LoadedRev5Visual {
     | 'review_glb'
     | 'procedural_authority_containment'
     | 'relay_visual_candidate'
-    | 'original_arena_visual_v1';
+    | 'original_arena_visual_v4';
   readonly displayName: string;
   readonly presentationSha256: string | null;
 }
@@ -276,7 +276,7 @@ function createOriginalArenaLoadedVisual(
     containment,
     meshCount: arena.meshCount,
     containmentMeshCount: 0,
-    presentationMode: 'original_arena_visual_v1',
+    presentationMode: 'original_arena_visual_v4',
     displayName: arena.displayName,
     presentationSha256: null,
   });

@@ -1393,6 +1393,18 @@ export function normalizeKyxAuthorityWeaponId(
   throw new Error(`KYX_WEAPON_PROFILE_MISSING weaponId=${value}`);
 }
 
+function isAttachedUnder(
+  object: THREE.Object3D,
+  expectedAncestor: THREE.Object3D,
+): boolean {
+  let current: THREE.Object3D | null = object;
+  while (current !== null) {
+    if (current === expectedAncestor) return true;
+    current = current.parent;
+  }
+  return false;
+}
+
 export function createKyxWeaponPresentationModel(
   requestedWeaponId: string | null | undefined,
   presentation: 'first_person' | 'world',
@@ -1441,8 +1453,18 @@ export function createKyxWeaponPresentationModel(
   group.userData.sourceAssetBytes =
     built.visual.userData.sourceAssetBytes ?? null;
   group.userData.muzzleNodeName = built.muzzle.name;
-  group.userData.authorityMuzzleReferenceBound =
+  const reviewMuzzleReferenceBound =
     built.visual.userData.reviewMuzzleReferenceBound === true;
+  // Every selectable weapon owns a named project-authored muzzle below its
+  // visual root. The server still owns shot acceptance and direction; this
+  // binding only anchors the matching flash/tracer/audio presentation. Review
+  // GLBs retain their narrower provenance signal separately.
+  group.userData.authorityMuzzleReferenceBound =
+    built.muzzle.name.length > 0 && isAttachedUnder(built.muzzle, built.visual);
+  group.userData.authorityMuzzleReferenceSource = reviewMuzzleReferenceBound
+    ? 'review-authored'
+    : 'project-authored-procedural';
+  group.userData.reviewMuzzleReferenceBound = reviewMuzzleReferenceBound;
   group.userData.aimDatumNodeName = aimDatum?.name ?? null;
   group.add(built.visual);
   const firstPersonContact = presentation === 'first_person'
