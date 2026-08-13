@@ -45,6 +45,7 @@ import {
   createAuthorityPracticeMatchResultViewModel,
   createAuthorityScoreboardRows,
 } from './authorityHudProjection';
+import { classifyAuthorityDamageDirection } from './authorityDamageDirection';
 import {
   createOnlineAuthorityThreeRuntime,
   type OnlineAuthorityThreeRuntime,
@@ -476,7 +477,19 @@ export async function mountLocalInkfallPracticeRoute(
             hud.showHeadshotFlair();
           }
         }
-        if (event.targetId === host.localPlayerId) hud.flashDamage();
+        if (event.targetId === host.localPlayerId) {
+          hud.flashDamage();
+          const source = snapshot.players.find(({ playerId }) => playerId === event.actorId)
+            ?.movement.player;
+          const target = snapshot.players.find(({ playerId }) => playerId === host.localPlayerId)
+            ?.movement.player;
+          const direction = classifyAuthorityDamageDirection({
+            sourcePosition: source?.feetPosition ?? null,
+            targetPosition: target?.feetPosition ?? null,
+            targetYawMilliDegrees: target?.yawMilliDegrees ?? null,
+          });
+          if (direction !== null) hud.showDamageDirection(direction);
+        }
       } else if (event.kind === 'playerKilled') {
         const actor = displayPlayerName(event.actorId ?? 'unknown', host.localPlayerId);
         const target = displayPlayerName(event.targetId ?? 'unknown', host.localPlayerId);

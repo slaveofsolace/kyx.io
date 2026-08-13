@@ -60,6 +60,8 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     expect(creator.roomCode).toMatch(/^KYX-[A-Z0-9]{6}$/u);
     expect(creator.remotePlayers).toBe(7);
     expect(creator.playerId).toBe('player.relay.slot.01');
+    await expect(page.getByTestId('online-damage-direction'))
+      .toHaveAttribute('data-active', 'false');
 
     const joinOne = async (): Promise<Page> => {
       const context = await browser.newContext({ viewport: { width: 960, height: 640 } });

@@ -57,6 +57,7 @@ import {
   verifyOnlineAuthorityMapCombatRoom,
   type OnlineAuthorityMapRoomProof,
 } from './onlineAuthorityGateway';
+import { classifyAuthorityDamageDirection } from './authorityDamageDirection';
 import {
   isOnlineAuthorityInputCode,
   onlineAuthorityInputButtonsFromPressedKeys,
@@ -1029,6 +1030,15 @@ async function mountSession(
   feedbackHud.dataset.testid = 'online-confirmed-hud';
   feedbackHud.setAttribute('role', 'status');
   feedbackHud.setAttribute('aria-live', 'polite');
+  const damageDirection = element('div', 'online-session__damage-direction');
+  damageDirection.dataset.testid = 'online-damage-direction';
+  damageDirection.dataset.active = 'false';
+  damageDirection.setAttribute('role', 'status');
+  damageDirection.setAttribute('aria-live', 'polite');
+  const damageDirectionMarker = element('span', 'online-session__damage-direction-marker');
+  damageDirectionMarker.setAttribute('aria-hidden', 'true');
+  const damageDirectionText = element('span', 'online-session__damage-direction-text');
+  damageDirection.append(damageDirectionMarker, damageDirectionText);
   const captionRegion = element('div', 'caption-region hidden');
   captionRegion.id = 'caption-region';
   captionRegion.setAttribute('aria-live', 'polite');
@@ -1045,6 +1055,7 @@ async function mountSession(
     flashOverlay,
     feedbackVfx,
     feedbackHud,
+    damageDirection,
     weaponRail,
     ...(threeDimensionalMap ? [captionRegion, audioCueRegion] : []),
   );
@@ -1534,6 +1545,8 @@ async function mountSession(
   }>;
   let flashEnvelopes: readonly FlashEnvelope[] = Object.freeze([]);
   const processedPresentationTransportIds = new Set<string>();
+  const processedDamageDirectionIds = new Set<string>();
+  let damageDirectionVisibleUntilMilliseconds = -Infinity;
 
   const feedbackCue = (intent: CombatPresentationIntentV1): FeedbackCue => {
     const marker = intent.markers.hud ?? intent.markers.vfx ?? intent.markers.audio;
@@ -2742,6 +2755,41 @@ async function mountSession(
           presentationFailureDetail,
         );
       }
+    }
+    const localDamagePlayerId = diagnostics.authority.playerId;
+    const localDamagePosition = diagnostics.local.predictedPosition;
+    const localDamageYaw = diagnostics.local.predictedYawMilliDegrees;
+    if (localDamagePlayerId !== null && localDamagePosition !== null) {
+      for (const event of diagnostics.combat.recentEvents) {
+        if (
+          event.kind !== 'damageApplied'
+          || event.targetId !== localDamagePlayerId
+          || event.actorId === null
+          || processedDamageDirectionIds.has(event.id)
+        ) continue;
+        const sourcePosition = event.actorId === localDamagePlayerId
+          ? localDamagePosition
+          : presentation.remotes.find(({ entityId }) => entityId === event.actorId)
+              ?.state.feetPosition ?? null;
+        const direction = classifyAuthorityDamageDirection({
+          sourcePosition,
+          targetPosition: localDamagePosition,
+          targetYawMilliDegrees: localDamageYaw,
+        });
+        if (direction === null) continue;
+        processedDamageDirectionIds.add(event.id);
+        damageDirection.dataset.direction = direction;
+        damageDirection.dataset.active = 'true';
+        damageDirectionText.textContent = direction === 'front'
+          ? 'Damage ahead'
+          : direction === 'rear'
+            ? 'Damage behind'
+            : `Damage ${direction}`;
+        damageDirectionVisibleUntilMilliseconds = nowMilliseconds + 800;
+      }
+    }
+    if (nowMilliseconds >= damageDirectionVisibleUntilMilliseconds) {
+      damageDirection.dataset.active = 'false';
     }
     const combatView = {
       snapshot: diagnostics.combat.snapshot,

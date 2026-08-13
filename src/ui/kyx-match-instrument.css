@@ -2560,6 +2560,81 @@ body[data-online-hud="arena-visor-v1"] .online-session__feedback-vfx {
   inset: 0;
 }
 
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction {
+  position: absolute;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 115, 82, 0.76);
+  background: rgba(30, 6, 4, 0.82);
+  color: #ffe0d4;
+  font: 700 11px/1 var(--mi-body);
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px #000;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(5px);
+  transition: opacity 90ms linear, transform 90ms ease-out;
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-active="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction-marker {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 9px solid #ff7352;
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="front"] {
+  top: 19%;
+  left: 50%;
+  transform: translate(-50%, 5px);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="front"][data-active="true"] {
+  transform: translate(-50%, 0);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="front"] .online-session__damage-direction-marker {
+  transform: rotate(90deg);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="rear"] {
+  bottom: 19%;
+  left: 50%;
+  transform: translate(-50%, -5px);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="rear"][data-active="true"] {
+  transform: translate(-50%, 0);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="rear"] .online-session__damage-direction-marker {
+  transform: rotate(-90deg);
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="left"] {
+  top: 48%;
+  left: 28px;
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="right"] {
+  top: 48%;
+  right: 28px;
+}
+
+body[data-online-hud="arena-visor-v1"] .online-session__damage-direction[data-direction="right"] .online-session__damage-direction-marker {
+  order: 2;
+  transform: rotate(180deg);
+}
+
 body[data-online-hud="arena-visor-v1"] .online-session__map-status {
   top: 110px;
   left: 24px;
