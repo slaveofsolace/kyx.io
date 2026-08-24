@@ -7,6 +7,18 @@ type BuiltWeaponModel = {
   finiteMuzzleTransform: boolean;
 };
 
+type BrowserSceneNode = {
+  parent: BrowserSceneNode | null;
+  matrixWorld: { readonly elements: ArrayLike<number> };
+};
+
+type BrowserWeaponDefinition = { readonly id: string };
+
+type BrowserWeaponGroup = BrowserSceneNode & {
+  traverse(callback: (object: { readonly isMesh?: boolean }) => void): void;
+  updateMatrixWorld(force: boolean): void;
+};
+
 const REQUIRED_FAMILIES = Object.freeze({
   pistol: ['sidearm', 'magnum'],
   smg: ['uzi', 'needler'],
@@ -23,10 +35,21 @@ test('every offline weapon family builds a procedural viewmodel with an attached
   await page.goto('/', { waitUntil: 'networkidle' });
 
   const built = await page.evaluate(async (): Promise<BuiltWeaponModel[]> => {
-    const [{ WEAPONS }, { buildWeaponModel }] = await Promise.all([
-      import('/src/weapons/weaponDefs.js'),
-      import('/src/weapons/WeaponModels.js'),
+    const definitionsUrl = '/src/weapons/weaponDefs.js';
+    const modelsUrl = '/src/weapons/WeaponModels.js';
+    const [definitionsModule, modelsModule] = await Promise.all([
+      import(/* @vite-ignore */ definitionsUrl),
+      import(/* @vite-ignore */ modelsUrl),
     ]);
+    const { WEAPONS } = definitionsModule as {
+      readonly WEAPONS: readonly BrowserWeaponDefinition[];
+    };
+    const { buildWeaponModel } = modelsModule as {
+      readonly buildWeaponModel: (
+        definition: BrowserWeaponDefinition,
+        options: { readonly procedural: true },
+      ) => { readonly group: BrowserWeaponGroup; readonly muzzle: BrowserSceneNode };
+    };
 
     return WEAPONS.map((definition) => {
       const { group, muzzle } = buildWeaponModel(definition, { procedural: true });

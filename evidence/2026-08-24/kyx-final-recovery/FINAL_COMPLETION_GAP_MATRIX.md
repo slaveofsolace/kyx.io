@@ -18,7 +18,7 @@ Classification: exact current-source inventory; historical documents are not tre
 | Product area | Current source truth | Required completion |
 | --- | --- | --- |
 | Arenas | Relay, Switchyard, Crownpoint rotate online. Inkfall revisions remain inspection/development material. | Human-accept all three shipping arenas; author and accept one original large Battle Royale arena plus mode-specific objective/spawn/navigation data. |
-| Modes | Worker authority exposes team deathmatch only. `src/core/GameModes.js` offers offline deathmatch and a local zombie-labeled practice mode; these are not the online contract. | FFA, Instagib, CTF, Search and Destroy, Last Team Standing, Survival, Zombie Survival, Battle Royale, and custom/private rule loops; every loop must cover objective, elimination/respawn, result, rematch, rotation, reconnect, and spectator behavior. |
+| Modes | Worker authority routes team deathmatch only. Free For All now has a tested deterministic authority-core score/lifecycle policy but is deliberately not room-routable. Other required identities are fail-closed foundation definitions. `src/core/GameModes.js` offers offline deathmatch and a local zombie-labeled practice mode; these are not the online contract. | Route and fully accept FFA; implement Instagib, CTF, Search and Destroy, Last Team Standing, Survival, Zombie Survival, Battle Royale, and custom/private rule loops; every loop must cover objective, elimination/respawn, result, rematch, rotation, reconnect, and spectator behavior. |
 | Spectating/rematch | Reconnect and three-arena continuation exist. No authority spectator role or player-voted/requested rematch contract exists. | Server-owned spectator permissions/camera targets, join-in-progress policy, elimination transition, rematch consensus, and abuse/reconnect tests. |
 | Weapons | Six online families; 20 offline procedural definitions. Online equip/reload/ammo/contact/recoil presentation exists, but online and offline inventories are not one catalog. | Add burst/beam, SMG, grenade launcher, guided launcher, pickups/loot tiers, and reconcile one shared practice/online weapon contract and player-eye acceptance. |
 | Abilities/upgrades | Blink, Launch, Frag, Smoke, Sticky, Flash. | Double/triple jump, stamina and movement upgrades, proximity/trip mines, handling/ammo upgrades, pickups, persistence, and shared practice/online acceptance. |
@@ -49,4 +49,3 @@ The six non-equivalent commits on the old integration re-audit line were compare
 - This matrix is not a claim that the requested final product is complete.
 - Automated green status is not human visual or gameplay acceptance.
 - No deployment, release, project-license selection, third-party entitlement acceptance, or external asset admission occurred.
-

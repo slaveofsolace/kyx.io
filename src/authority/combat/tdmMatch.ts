@@ -13,6 +13,10 @@ import {
   strictRecord,
   strictStableId,
 } from './strictCombatData';
+import {
+  KYX_MODE_ID,
+  type KyxDeathmatchAuthorityModeId,
+} from '../modes';
 
 const MAX_AUTHORITY_TICK = Number.MAX_SAFE_INTEGER - 100_000;
 const MAX_SCOREBOARD_COUNT = 1_000_000;
@@ -26,21 +30,31 @@ export const TDM_MATCH_SCHEMA_VERSION = 1 as const;
 export interface AuthorityTdmMatchRulesV1 {
   readonly schemaVersion: 1;
   readonly authorityHz: 20;
-  readonly mode: 'team_deathmatch';
+  readonly mode: KyxDeathmatchAuthorityModeId;
   readonly warmupTicks: 40;
   readonly activeTicks: 9_600;
   readonly postmatchTicks: 200;
-  readonly teamScoreLimit: 40;
+  readonly teamScoreLimit: number;
 }
 
 export const G4_TDM_MATCH_RULES: AuthorityTdmMatchRulesV1 = Object.freeze({
   schemaVersion: 1,
   authorityHz: 20,
-  mode: 'team_deathmatch',
+  mode: KYX_MODE_ID.teamDeathmatch,
   warmupTicks: 40,
   activeTicks: 9_600,
   postmatchTicks: 200,
   teamScoreLimit: 40,
+});
+
+export const KYX_FFA_MATCH_RULES: AuthorityTdmMatchRulesV1 = Object.freeze({
+  schemaVersion: 1,
+  authorityHz: 20,
+  mode: KYX_MODE_ID.freeForAll,
+  warmupTicks: 40,
+  activeTicks: 9_600,
+  postmatchTicks: 200,
+  teamScoreLimit: 25,
 });
 
 export type AuthorityTdmMatchPhase =
@@ -85,7 +99,7 @@ export interface AuthorityTdmTeamScoreEventV1 {
   readonly teamId: string;
   readonly previousScore: number;
   readonly scoreAfter: number;
-  readonly scoreLimit: 40;
+  readonly scoreLimit: number;
   readonly killerPlayerId: string;
   readonly victimPlayerId: string;
 }
@@ -204,11 +218,17 @@ function exactRules(rules: AuthorityTdmMatchRulesV1): void {
   ], 'TDM match rules');
   strictLiteral(item.schemaVersion, 1, 'TDM match rules schema');
   strictLiteral(item.authorityHz, 20, 'TDM authority rate');
-  strictLiteral(item.mode, 'team_deathmatch', 'TDM mode');
-  strictLiteral(item.warmupTicks, 40, 'TDM warmup ticks');
-  strictLiteral(item.activeTicks, 9_600, 'TDM active ticks');
-  strictLiteral(item.postmatchTicks, 200, 'TDM postmatch ticks');
-  strictLiteral(item.teamScoreLimit, 40, 'TDM team score limit');
+  if (item.mode !== KYX_MODE_ID.teamDeathmatch && item.mode !== KYX_MODE_ID.freeForAll) {
+    throw new RangeError('deathmatch authority mode is unsupported');
+  }
+  const expected = item.mode === KYX_MODE_ID.teamDeathmatch
+    ? G4_TDM_MATCH_RULES
+    : KYX_FFA_MATCH_RULES;
+  strictLiteral(item.mode, expected.mode, 'deathmatch mode');
+  strictLiteral(item.warmupTicks, expected.warmupTicks, 'deathmatch warmup ticks');
+  strictLiteral(item.activeTicks, expected.activeTicks, 'deathmatch active ticks');
+  strictLiteral(item.postmatchTicks, expected.postmatchTicks, 'deathmatch postmatch ticks');
+  strictLiteral(item.teamScoreLimit, expected.teamScoreLimit, 'deathmatch score limit');
 }
 
 export function assertAuthorityTdmMatchRules(rules: AuthorityTdmMatchRulesV1): void {
@@ -543,6 +563,9 @@ export function registerAuthorityTdmPlayer(
   }
   if (state.phase === 'postmatch' || state.phase === 'completed') {
     throw new RangeError('cannot register a TDM player after active play');
+  }
+  if (state.rules.mode === KYX_MODE_ID.freeForAll && teamId !== playerId) {
+    throw new RangeError('FFA score identity must equal its authority player id');
   }
   const teamScores = teamIndex(state, teamId) >= 0
     ? state.teamScores

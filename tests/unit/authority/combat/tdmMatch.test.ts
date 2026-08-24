@@ -8,12 +8,14 @@ import {
   createCombatLifeState,
   G4_COMBAT_SLICE_LIFE_RULES,
   G4_TDM_MATCH_RULES,
+  KYX_FFA_MATCH_RULES,
   recordAuthorityTdmCombat,
   recordAuthorityTdmRespawn,
   registerAuthorityTdmPlayer,
   settleAuthorityTdmMatchTick,
   startAuthorityTdmMatch,
   type AuthorityTdmMatchStateV1,
+  type AuthorityTdmMatchRulesV1,
   type CombatLifeState,
 } from '../../../../src/authority/combat';
 
@@ -30,12 +32,15 @@ function register(
   });
 }
 
-function createMatch(players: readonly (readonly [string, string])[]): AuthorityTdmMatchStateV1 {
+function createMatch(
+  players: readonly (readonly [string, string])[],
+  rules: AuthorityTdmMatchRulesV1 = G4_TDM_MATCH_RULES,
+): AuthorityTdmMatchStateV1 {
   let state = createAuthorityTdmMatchState({
     schemaVersion: 1,
     matchId: 'match_TDM',
     authorityTick: 0,
-  });
+  }, rules);
   for (const [playerId, teamId] of players) state = register(state, playerId, teamId);
   return state;
 }
@@ -506,5 +511,72 @@ describe('P5.6 authoritative TDM timer, score, feed, and respawn', () => {
       damage: lethal.damage,
       death: { ...deathEvent, victimPlayerId: 'player_A' },
     })).toThrow(/does not match its damage event/u);
+  });
+});
+
+describe('KYX authoritative free-for-all core', () => {
+  it('uses one authority score identity per player and rejects team aliasing', () => {
+    expect(KYX_FFA_MATCH_RULES).toEqual({
+      schemaVersion: 1,
+      authorityHz: 20,
+      mode: 'free_for_all',
+      warmupTicks: 40,
+      activeTicks: 9_600,
+      postmatchTicks: 200,
+      teamScoreLimit: 25,
+    });
+    const state = createMatch([
+      ['player_A', 'player_A'],
+      ['player_B', 'player_B'],
+      ['player_C', 'player_C'],
+    ], KYX_FFA_MATCH_RULES);
+    expect(state.teamScores).toEqual([
+      { teamId: 'player_A', score: 0 },
+      { teamId: 'player_B', score: 0 },
+      { teamId: 'player_C', score: 0 },
+    ]);
+    expect(() => createMatch([
+      ['player_A', 'shared_team'],
+      ['player_B', 'shared_team'],
+    ], KYX_FFA_MATCH_RULES)).toThrow(/score identity/u);
+  });
+
+  it('scores an enemy elimination for the individual competitor', () => {
+    const match = startActive(createMatch([
+      ['player_A', 'player_A'],
+      ['player_B', 'player_B'],
+    ], KYX_FFA_MATCH_RULES));
+    const lethal = damage(life('player_B', 'player_B'), {
+      eventSequence: 0,
+      sourcePlayerId: 'player_A',
+      sourceTeamId: 'player_A',
+      damagePoints: 100,
+    });
+    expect(lethal.accepted).toBe(true);
+    if (!lethal.accepted || lethal.death === null) return;
+    const recorded = recordAuthorityTdmCombat(match, {
+      schemaVersion: 1,
+      damage: lethal.damage,
+      death: lethal.death,
+    });
+    expect(recorded.accepted).toBe(true);
+    if (!recorded.accepted) return;
+    expect(recorded.state.rules.mode).toBe('free_for_all');
+    expect(recorded.state.teamScores).toEqual([
+      { teamId: 'player_A', score: 1 },
+      { teamId: 'player_B', score: 0 },
+    ]);
+    expect(recorded.state.playerScores).toEqual([
+      { playerId: 'player_A', teamId: 'player_A', kills: 1, deaths: 0, assists: 0 },
+      { playerId: 'player_B', teamId: 'player_B', kills: 0, deaths: 1, assists: 0 },
+    ]);
+    expect(recorded.events).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        kind: 'team_score_changed',
+        teamId: 'player_A',
+        scoreAfter: 1,
+        scoreLimit: 25,
+      }),
+    ]));
   });
 });
