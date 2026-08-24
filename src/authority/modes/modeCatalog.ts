@@ -19,6 +19,7 @@ export type KyxDeathmatchAuthorityModeId =
 
 export type AuthorityModeImplementationStatus =
   | 'shipping_runtime'
+  | 'worker_preview_runtime'
   | 'authority_core'
   | 'foundation_only';
 
@@ -76,7 +77,7 @@ export const AUTHORITY_MODE_CATALOG: readonly AuthorityModeDefinitionV1[] = Obje
     id: KYX_MODE_ID.freeForAll,
     displayName: 'Free For All',
     family: 'slayer',
-    implementationStatus: 'authority_core',
+    implementationStatus: 'worker_preview_runtime',
     teamPolicy: 'each_player',
     objectivePolicy: 'kills',
     respawnPolicy: 'timed',
@@ -241,6 +242,17 @@ export function requireAuthorityCoreMode(modeId: unknown): AuthorityModeDefiniti
   return found;
 }
 
+export function requireWorkerRuntimeAuthorityMode(modeId: unknown): AuthorityModeDefinitionV1 {
+  const found = requireAuthorityCoreMode(modeId);
+  if (
+    found.implementationStatus !== 'shipping_runtime'
+    && found.implementationStatus !== 'worker_preview_runtime'
+  ) {
+    throw new RangeError(`KYX authority mode ${String(modeId)} has no Worker runtime`);
+  }
+  return found;
+}
+
 export function requireRoutableAuthorityMode(modeId: unknown): AuthorityModeDefinitionV1 {
   const found = requireAuthorityCoreMode(modeId);
   if (found.implementationStatus !== 'shipping_runtime') {
@@ -248,4 +260,3 @@ export function requireRoutableAuthorityMode(modeId: unknown): AuthorityModeDefi
   }
   return found;
 }
-

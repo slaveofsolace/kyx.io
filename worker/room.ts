@@ -56,12 +56,15 @@ import {
   INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER,
 } from './allocationGuard';
 import {
+  DEFAULT_WORKER_AUTHORITY_MATCH_MODE,
+  INTERNAL_ROOM_MATCH_MODE_HEADER,
   INTERNAL_ROOM_PROFILE_HEADER,
   G5_INKFALL_REV4_COMBAT_PROFILE,
   G5_INKFALL_REV5_COMBAT_PROFILE,
   createInkfallWorkerCombatOptions,
   createOriginalArenaWorkerCombatOptions,
   createRelayWorkerCombatOptions,
+  createWorkerModeCombatOptions,
   combatSnapshotFromAuthority,
   createWorkerCombatOptions,
   inferWorkerRoomProfileFromIdentity,
@@ -75,6 +78,7 @@ import {
   isPersistentMapWorkerRoomProfile,
   isRelayWorkerRoomProfile,
   isOptInWorkerRoomProfile,
+  isWorkerAuthorityMatchMode,
   reliableCombatEvents,
   originalArenaWorkerCombatSpawn,
   originalArenaWorkerFixture,
@@ -83,8 +87,10 @@ import {
   workerMapBinding,
   workerRoomProfileFromStorageId,
   workerRoomProfileStorageId,
+  workerAuthorityMatchModeFromStorageId,
   workerCombatSpawn,
   type InkfallWorkerRoomProfile,
+  type WorkerAuthorityMatchMode,
   type WorkerRoomProfile,
 } from './combatRuntime';
 import { initializeWorkerRapierRuntime } from './rapierRuntime';
@@ -135,6 +141,7 @@ const ROOM_TICK_EXECUTION_SAMPLE_CAPACITY = 4_096;
 const LOCAL_MAP_ID = 'phase4_flat_run';
 const ROOM_RUNTIME_SCHEMA_VERSION = 2;
 const ROOM_PROFILE_SCHEMA_VERSION = 1;
+const ROOM_MATCH_MODE_SCHEMA_VERSION = 1;
 const LOBBY_CHECKPOINT_SCHEMA_VERSION = 1;
 const LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION = 1;
 const LOBBY_RELIABILITY_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
@@ -208,6 +215,12 @@ interface RoomProfileRow {
   readonly [column: string]: string | number | ArrayBuffer | null;
   readonly schema_version: number;
   readonly profile_id: string;
+}
+
+interface RoomMatchModeRow {
+  readonly [column: string]: string | number | ArrayBuffer | null;
+  readonly schema_version: number;
+  readonly mode_id: string;
 }
 
 interface MetricsAccessRow {
@@ -491,6 +504,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private initializationFailure: string | null = null;
   private revision3CombatEnabled = false;
   private roomProfile: WorkerRoomProfile = null;
+  private roomMatchMode: WorkerAuthorityMatchMode = DEFAULT_WORKER_AUTHORITY_MATCH_MODE;
   private lastTickFailure: string | null = null;
   private readonly scheduler = new FixedTickScheduler({
     maximumCatchUpTicks: ROOM_TIMER_MAXIMUM_CATCH_UP_TICKS,
@@ -601,19 +615,47 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const requestedProfile: WorkerRoomProfile | undefined = rawProfile === undefined
       ? undefined
       : rawProfile;
+    const rawMatchMode = route.resource === 'room' && request.method === 'POST'
+      ? request.headers.get(INTERNAL_ROOM_MATCH_MODE_HEADER)
+      : undefined;
+    if (
+      rawMatchMode !== undefined
+      && rawMatchMode !== null
+      && !isWorkerAuthorityMatchMode(rawMatchMode)
+    ) {
+      return Response.json({ ok: false, code: 'MATCH_MODE_UNSUPPORTED' }, { status: 400 });
+    }
+    const requestedMatchMode: WorkerAuthorityMatchMode | undefined = rawMatchMode === undefined
+      || rawMatchMode === null
+      ? undefined
+      : rawMatchMode;
     try {
       if (route.resource === 'room' && request.method === 'POST') {
         this.provisionMetricsAccess(request, route.roomCode);
       }
-      await this.ensureInitialized(route.roomCode, requestedProfile);
+      await this.ensureInitialized(route.roomCode, requestedProfile, requestedMatchMode);
     } catch (error) {
       const profileMismatch = error instanceof Error
         && error.message === 'AUTHORITY_ROOM_PROFILE_MISMATCH';
+      const modeMismatch = error instanceof Error
+        && error.message === 'AUTHORITY_ROOM_MATCH_MODE_MISMATCH';
+      const modeRequiresPersistentMapProfile = error instanceof Error
+        && error.message === 'AUTHORITY_MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE';
       return Response.json({
         ok: false,
-        code: profileMismatch ? 'ROOM_PROFILE_MISMATCH' : 'ROOM_UNAVAILABLE',
+        code: profileMismatch
+          ? 'ROOM_PROFILE_MISMATCH'
+          : modeMismatch
+            ? 'ROOM_MATCH_MODE_MISMATCH'
+            : modeRequiresPersistentMapProfile
+              ? 'MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE'
+              : 'ROOM_UNAVAILABLE',
       }, {
-        status: profileMismatch ? 409 : 503,
+        status: profileMismatch || modeMismatch
+          ? 409
+          : modeRequiresPersistentMapProfile
+            ? 400
+            : 503,
         headers: { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff' },
       });
     }
@@ -623,6 +665,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         ok: true,
         metrics: {
           ...this.requireAuthority().metricsSnapshot(),
+          matchMode: this.roomMatchMode,
           ...(this.roomProfile !== null
             ? {
                 roomProfile: this.roomProfile,
@@ -686,6 +729,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         ok: true,
         roomCode: route.roomCode,
         lifecycle: this.requireAuthority().lifecycle,
+        matchMode: this.roomMatchMode,
         ...(this.roomProfile !== null
           ? { roomProfile: this.roomProfile }
           : {}),
@@ -1460,11 +1504,15 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private async ensureInitialized(
     roomCode: string,
     requestedProfile: WorkerRoomProfile | undefined = undefined,
+    requestedMatchMode: WorkerAuthorityMatchMode | undefined = undefined,
   ): Promise<void> {
     if (this.authority !== null) {
       if (this.roomCode !== roomCode) throw new Error('AUTHORITY_ROOM_CODE_MISMATCH');
       if (requestedProfile !== undefined && requestedProfile !== this.roomProfile) {
         throw new Error('AUTHORITY_ROOM_PROFILE_MISMATCH');
+      }
+      if (requestedMatchMode !== undefined && requestedMatchMode !== this.roomMatchMode) {
+        throw new Error('AUTHORITY_ROOM_MATCH_MODE_MISMATCH');
       }
       return;
     }
@@ -1496,6 +1544,13 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
             schema_version INTEGER NOT NULL,
             profile_id TEXT NOT NULL
+          )
+        `);
+        this.ctx.storage.sql.exec(`
+          CREATE TABLE IF NOT EXISTS room_match_mode_v1 (
+            singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
+            schema_version INTEGER NOT NULL,
+            mode_id TEXT NOT NULL
           )
         `);
         this.ctx.storage.sql.exec(`
@@ -1587,6 +1642,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         const profileRow = [...this.ctx.storage.sql.exec<RoomProfileRow>(
           'SELECT schema_version, profile_id FROM room_profile_v1 WHERE singleton = 1',
         )][0];
+        const matchModeRow = [...this.ctx.storage.sql.exec<RoomMatchModeRow>(
+          'SELECT schema_version, mode_id FROM room_match_mode_v1 WHERE singleton = 1',
+        )][0];
         let persistedProfile: WorkerRoomProfile | undefined;
         let backfillPersistedProfile = false;
         if (runtime !== undefined) {
@@ -1616,9 +1674,32 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.initializationFailure = 'AUTHORITY_PROFILE_WITHOUT_RUNTIME';
           return;
         }
+        let persistedMatchMode: WorkerAuthorityMatchMode | undefined;
+        let backfillPersistedMatchMode = false;
+        if (runtime !== undefined) {
+          if (matchModeRow === undefined) {
+            persistedMatchMode = DEFAULT_WORKER_AUTHORITY_MATCH_MODE;
+            backfillPersistedMatchMode = true;
+          } else {
+            persistedMatchMode = matchModeRow.schema_version === ROOM_MATCH_MODE_SCHEMA_VERSION
+              ? workerAuthorityMatchModeFromStorageId(matchModeRow.mode_id)
+              : undefined;
+            if (persistedMatchMode === undefined) {
+              this.markRecoveryState('expired');
+              this.initializationFailure = 'AUTHORITY_PERSISTED_MATCH_MODE_INVALID';
+              return;
+            }
+          }
+        } else if (matchModeRow !== undefined) {
+          this.initializationFailure = 'AUTHORITY_MATCH_MODE_WITHOUT_RUNTIME';
+          return;
+        }
         const selectedProfile: WorkerRoomProfile = runtime === undefined
           ? requestedProfile ?? null
           : persistedProfile as WorkerRoomProfile;
+        const selectedMatchMode: WorkerAuthorityMatchMode = runtime === undefined
+          ? requestedMatchMode ?? DEFAULT_WORKER_AUTHORITY_MATCH_MODE
+          : persistedMatchMode as WorkerAuthorityMatchMode;
         const revision3Combat = selectedProfile !== null;
         const inkfallProfile = isInkfallWorkerRoomProfile(selectedProfile)
           ? selectedProfile
@@ -1630,6 +1711,13 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           ? selectedProfile
           : null;
         const persistentMapProfile = inkfallProfile ?? originalArenaProfile ?? relayProfile;
+        if (
+          selectedMatchMode !== DEFAULT_WORKER_AUTHORITY_MATCH_MODE
+          && persistentMapProfile === null
+        ) {
+          this.initializationFailure = 'AUTHORITY_MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE';
+          return;
+        }
         const mapCombat = persistentMapProfile !== null;
         const world = RapierMovementWorld.createWithRuntime(
           relayProfile !== null
@@ -1708,6 +1796,12 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
               ROOM_PROFILE_SCHEMA_VERSION,
               workerRoomProfileStorageId(selectedProfile),
             );
+            this.ctx.storage.sql.exec(
+              `INSERT INTO room_match_mode_v1 (singleton, schema_version, mode_id)
+               VALUES (1, ?, ?)`,
+              ROOM_MATCH_MODE_SCHEMA_VERSION,
+              selectedMatchMode,
+            );
           });
         } else {
           matchId = runtime.match_id;
@@ -1752,11 +1846,20 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
               workerRoomProfileStorageId(selectedProfile),
             );
           }
+          if (backfillPersistedMatchMode) {
+            this.ctx.storage.sql.exec(
+              `INSERT INTO room_match_mode_v1 (singleton, schema_version, mode_id)
+               VALUES (1, ?, ?)`,
+              ROOM_MATCH_MODE_SCHEMA_VERSION,
+              selectedMatchMode,
+            );
+          }
         }
         this.world = world;
         this.roomCode = roomCode;
         this.revision3CombatEnabled = revision3Combat;
         this.roomProfile = selectedProfile;
+        this.roomMatchMode = selectedMatchMode;
         this.compatibilityIdentity = compatibilityIdentity;
         this.authoritativeLoadout = authorityLoadoutFromRuleset(ruleset);
         if (inkfallProfile === G5_INKFALL_REV5_COMBAT_PROFILE) {
@@ -1830,13 +1933,13 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           ...(mapCombat ? { maximumPlayers: 8 } : {}),
           ...(revision3Combat
             ? {
-                combat: relayProfile !== null
+                combat: createWorkerModeCombatOptions(relayProfile !== null
                   ? createRelayWorkerCombatOptions(world)
                   : originalArenaProfile !== null
                     ? createOriginalArenaWorkerCombatOptions(world, originalArenaProfile)
                   : inkfallProfile !== null
                     ? createInkfallWorkerCombatOptions(world, inkfallProfile)
-                  : createWorkerCombatOptions(),
+                  : createWorkerCombatOptions(), selectedMatchMode),
               }
             : {}),
         });
@@ -1862,6 +1965,9 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     if (this.initializationFailure !== null) throw new Error(this.initializationFailure);
     if (requestedProfile !== undefined && requestedProfile !== this.roomProfile) {
       throw new Error('AUTHORITY_ROOM_PROFILE_MISMATCH');
+    }
+    if (requestedMatchMode !== undefined && requestedMatchMode !== this.roomMatchMode) {
+      throw new Error('AUTHORITY_ROOM_MATCH_MODE_MISMATCH');
     }
   }
 

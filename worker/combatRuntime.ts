@@ -8,6 +8,8 @@ import {
   G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
   G4_TDM_MATCH_ROOM_CAPABILITY_ID,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
+  KYX_FFA_MATCH_RULES,
+  KYX_MODE_ID,
   RELAY_AUTHORITY_FIXTURE,
   RELAY_AUTHORITY_IDENTITY,
   RELAY_AUTHORITY_MAP_BINDING,
@@ -18,6 +20,8 @@ import {
   type AuthorityRoomCombatOptions,
   type AuthoritySpawn,
   type ImpulseGrenadeCollisionSafeImpulseRequestV1,
+  type KyxDeathmatchAuthorityModeId,
+  requireWorkerRuntimeAuthorityMode,
 } from '../src/authority';
 import {
   CROWNPOINT_AUTHORITY_MAP_BINDING,
@@ -76,6 +80,9 @@ export const SWITCHYARD_REV1_COMBAT_PROFILE = SWITCHYARD_AUTHORITY_PROFILE_ID;
 export const CROWNPOINT_REV1_COMBAT_PROFILE = CROWNPOINT_AUTHORITY_PROFILE_ID;
 export const P58D_COMBAT_PROFILE_HEADER = 'x-kyx-evidence-profile' as const;
 export const INTERNAL_ROOM_PROFILE_HEADER = 'x-kyx-room-profile' as const;
+export const KYX_MATCH_MODE_HEADER = 'x-kyx-match-mode' as const;
+export const INTERNAL_ROOM_MATCH_MODE_HEADER = 'x-kyx-room-match-mode' as const;
+export const DEFAULT_WORKER_AUTHORITY_MATCH_MODE = KYX_MODE_ID.teamDeathmatch;
 export const DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID =
   'phase4-flat-run-default-v1' as const;
 
@@ -89,6 +96,7 @@ export type OptInWorkerRoomProfile =
   | typeof RELAY_REV1_COMBAT_PROFILE;
 
 export type WorkerRoomProfile = OptInWorkerRoomProfile | null;
+export type WorkerAuthorityMatchMode = KyxDeathmatchAuthorityModeId;
 export type InkfallWorkerRoomProfile = InkfallAuthorityProfile;
 export type OriginalArenaWorkerRoomProfile = OriginalArenaAuthorityProfile;
 export const INKFALL_REVISION_2_WORKER_MAP_BINDING =
@@ -165,6 +173,24 @@ export function workerRoomProfileFromStorageId(value: string): WorkerRoomProfile
   if (value === DEFAULT_FLAT_RUN_ROOM_PROFILE_STORAGE_ID) return null;
   if (isOptInWorkerRoomProfile(value)) return value;
   return undefined;
+}
+
+export function isWorkerAuthorityMatchMode(
+  value: unknown,
+): value is WorkerAuthorityMatchMode {
+  if (value !== KYX_MODE_ID.teamDeathmatch && value !== KYX_MODE_ID.freeForAll) return false;
+  try {
+    requireWorkerRuntimeAuthorityMode(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function workerAuthorityMatchModeFromStorageId(
+  value: string,
+): WorkerAuthorityMatchMode | undefined {
+  return isWorkerAuthorityMatchMode(value) ? value : undefined;
 }
 
 export function inferWorkerRoomProfileFromIdentity(
@@ -257,6 +283,25 @@ export function createWorkerCombatOptions(): AuthorityRoomCombatOptions {
       capabilityId: G4_ABILITY_RESOURCE_ROOM_CAPABILITY_ID,
     }),
     match: Object.freeze({ capabilityId: G4_TDM_MATCH_ROOM_CAPABILITY_ID }),
+  });
+}
+
+export function createWorkerModeCombatOptions(
+  base: AuthorityRoomCombatOptions,
+  matchMode: WorkerAuthorityMatchMode,
+): AuthorityRoomCombatOptions {
+  requireWorkerRuntimeAuthorityMode(matchMode);
+  if (matchMode === KYX_MODE_ID.teamDeathmatch) return base;
+  if (base.match === undefined) {
+    throw new Error('WORKER_MATCH_MODE_REQUIRES_DEATHMATCH_CAPABILITY');
+  }
+  return Object.freeze({
+    ...base,
+    teamResolver: (playerId: string) => playerId,
+    match: Object.freeze({
+      ...base.match,
+      rules: KYX_FFA_MATCH_RULES,
+    }),
   });
 }
 

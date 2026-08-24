@@ -7,6 +7,7 @@ import {
   isKyxAuthorityModeId,
   requireAuthorityCoreMode,
   requireRoutableAuthorityMode,
+  requireWorkerRuntimeAuthorityMode,
 } from '../../../../src/authority';
 
 describe('KYX authority mode catalog', () => {
@@ -35,9 +36,13 @@ describe('KYX authority mode catalog', () => {
     expect(requireRoutableAuthorityMode(KYX_MODE_ID.teamDeathmatch).implementationStatus)
       .toBe('shipping_runtime');
     expect(requireAuthorityCoreMode(KYX_MODE_ID.freeForAll).implementationStatus)
-      .toBe('authority_core');
+      .toBe('worker_preview_runtime');
+    expect(requireWorkerRuntimeAuthorityMode(KYX_MODE_ID.freeForAll).implementationStatus)
+      .toBe('worker_preview_runtime');
     expect(() => requireRoutableAuthorityMode(KYX_MODE_ID.freeForAll))
       .toThrow(/not routable/u);
+    expect(() => requireWorkerRuntimeAuthorityMode(KYX_MODE_ID.instagib))
+      .toThrow(/not implemented/u);
     expect(() => requireAuthorityCoreMode(KYX_MODE_ID.instagib))
       .toThrow(/not implemented/u);
     expect(() => requireRoutableAuthorityMode('client_claimed_mode'))

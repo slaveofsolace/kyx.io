@@ -4,6 +4,7 @@ import { reset, SELF } from 'cloudflare:test';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  KYX_MATCH_MODE_HEADER,
   P58D_COMBAT_PROFILE_HEADER,
   P58D_REV3_COMBAT_PROFILE,
 } from '../../worker/combatRuntime';
@@ -70,7 +71,8 @@ describe('Worker exact-origin CORS policy', () => {
       headers: {
         Origin: ALLOWED_ORIGIN,
         'Access-Control-Request-Method': 'POST',
-        'Access-Control-Request-Headers': `Content-Type, ${P58D_COMBAT_PROFILE_HEADER}`,
+        'Access-Control-Request-Headers':
+          `Content-Type, ${P58D_COMBAT_PROFILE_HEADER}, ${KYX_MATCH_MODE_HEADER}`,
       },
     });
     expect(response.status).toBe(204);
@@ -78,7 +80,7 @@ describe('Worker exact-origin CORS policy', () => {
     expect(response.headers.get('access-control-allow-methods')).toBe('GET, POST');
     expect(response.headers.get('access-control-allow-methods')).not.toContain('*');
     expect(response.headers.get('access-control-allow-headers'))
-      .toBe(`content-type, ${P58D_COMBAT_PROFILE_HEADER}`);
+      .toBe(`content-type, ${P58D_COMBAT_PROFILE_HEADER}, ${KYX_MATCH_MODE_HEADER}`);
     expect(response.headers.get('access-control-allow-headers')).not.toContain('*');
     expect(response.headers.get('access-control-max-age')).toBe('600');
 

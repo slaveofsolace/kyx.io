@@ -5,8 +5,12 @@ import {
   KyxAllocationGuard,
 } from './allocationGuard';
 import {
+  DEFAULT_WORKER_AUTHORITY_MATCH_MODE,
+  INTERNAL_ROOM_MATCH_MODE_HEADER,
   INTERNAL_ROOM_PROFILE_HEADER,
+  KYX_MATCH_MODE_HEADER,
   P58D_COMBAT_PROFILE_HEADER,
+  isWorkerAuthorityMatchMode,
   isPersistentMapWorkerRoomProfile,
   isOptInWorkerRoomProfile,
   workerMapBinding,
@@ -30,6 +34,7 @@ const CORS_ALLOWED_METHODS = Object.freeze(['GET', 'POST'] as const);
 const CORS_ROOM_ALLOWED_HEADERS = Object.freeze([
   'content-type',
   P58D_COMBAT_PROFILE_HEADER,
+  KYX_MATCH_MODE_HEADER,
 ] as const);
 const API_CONTENT_SECURITY_POLICY =
   "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'";
@@ -254,6 +259,20 @@ export default {
       if (requestedProfile !== null && !isOptInWorkerRoomProfile(requestedProfile)) {
         return json({ ok: false, code: 'ROOM_PROFILE_UNSUPPORTED' }, 400, cors);
       }
+      const requestedMatchMode = request.headers.get(KYX_MATCH_MODE_HEADER);
+      if (requestedMatchMode !== null && !isWorkerAuthorityMatchMode(requestedMatchMode)) {
+        return json({ ok: false, code: 'MATCH_MODE_UNSUPPORTED' }, 400, cors);
+      }
+      if (
+        requestedMatchMode !== null
+        && requestedMatchMode !== DEFAULT_WORKER_AUTHORITY_MATCH_MODE
+        && !isPersistentMapWorkerRoomProfile(requestedProfile)
+      ) {
+        return json({
+          ok: false,
+          code: 'MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE',
+        }, 400, cors);
+      }
       const callerKey = await callerAllocationKey(request);
       let roomCode: string | null = null;
       let roomReservation: AcceptedRoomReservation | null = null;
@@ -288,6 +307,9 @@ export default {
         if (requestedProfile !== null) {
           initializationHeaders.set(INTERNAL_ROOM_PROFILE_HEADER, requestedProfile);
         }
+        if (requestedMatchMode !== null) {
+          initializationHeaders.set(INTERNAL_ROOM_MATCH_MODE_HEADER, requestedMatchMode);
+        }
         initialized = await roomStub(env, roomCode).fetch(new Request(roomUrl, {
           method: 'POST',
           headers: initializationHeaders,
@@ -316,6 +338,7 @@ export default {
         ...(requestedProfile === null
           ? {}
           : { roomProfile: requestedProfile }),
+        matchMode: requestedMatchMode ?? DEFAULT_WORKER_AUTHORITY_MATCH_MODE,
         ...(isPersistentMapWorkerRoomProfile(requestedProfile)
           ? { mapBinding: workerMapBinding(requestedProfile) }
           : {}),
@@ -335,6 +358,22 @@ export default {
       : null;
     if (requestedProfile !== null && !isOptInWorkerRoomProfile(requestedProfile)) {
       return json({ ok: false, code: 'ROOM_PROFILE_UNSUPPORTED' }, 400, cors);
+    }
+    const requestedMatchMode = route.resource === 'room' && request.method === 'POST'
+      ? request.headers.get(KYX_MATCH_MODE_HEADER)
+      : null;
+    if (requestedMatchMode !== null && !isWorkerAuthorityMatchMode(requestedMatchMode)) {
+      return json({ ok: false, code: 'MATCH_MODE_UNSUPPORTED' }, 400, cors);
+    }
+    if (
+      requestedMatchMode !== null
+      && requestedMatchMode !== DEFAULT_WORKER_AUTHORITY_MATCH_MODE
+      && !isPersistentMapWorkerRoomProfile(requestedProfile)
+    ) {
+      return json({
+        ok: false,
+        code: 'MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE',
+      }, 400, cors);
     }
     const callerKey = await callerAllocationKey(request);
     const roomReservation = await allocationRequest<RoomReservation>(
@@ -370,6 +409,7 @@ export default {
     }
 
     const headers = new Headers(request.headers);
+    headers.delete(INTERNAL_ROOM_MATCH_MODE_HEADER);
     headers.delete(INTERNAL_ROOM_PROFILE_HEADER);
     headers.delete(INTERNAL_SOCKET_ALLOCATION_LEASE_HEADER);
     headers.delete(INTERNAL_METRICS_ACCESS_DIGEST_HEADER);
@@ -377,6 +417,9 @@ export default {
     if (route.resource === 'room' && request.method === 'POST') {
       if (requestedProfile !== null) {
         headers.set(INTERNAL_ROOM_PROFILE_HEADER, requestedProfile);
+      }
+      if (requestedMatchMode !== null) {
+        headers.set(INTERNAL_ROOM_MATCH_MODE_HEADER, requestedMatchMode);
       }
     }
     if (socketReservation !== null) {

@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   G4_COMBAT_RULESET_HASH,
   G4_COMBAT_RULESET_REVISION,
+  KYX_MODE_ID,
 } from '../../src/authority';
 import {
   PROTOCOL_VERSION,
@@ -22,8 +23,11 @@ import {
 } from '../../src/net';
 import { INTENT_BUTTON } from '../../src/sim';
 import {
+  INTERNAL_ROOM_MATCH_MODE_HEADER,
+  KYX_MATCH_MODE_HEADER,
   P58D_COMBAT_PROFILE_HEADER,
   P58D_REV3_COMBAT_PROFILE,
+  RELAY_REV1_COMBAT_PROFILE,
 } from '../../worker/combatRuntime';
 import type { KyxAuthorityEnv } from '../../worker/env';
 
@@ -34,9 +38,11 @@ const authorityEnv = env as unknown as KyxAuthorityEnv;
 
 interface RoomCreated {
   readonly roomCode: string;
+  readonly roomPath: string;
   readonly socketPath: string;
   readonly metricsPath: string;
   readonly roomProfile?: string;
+  readonly matchMode: string;
 }
 
 interface SocketProbe {
@@ -72,12 +78,17 @@ function socketPayload(data: unknown): string | Uint8Array {
   throw new TypeError(`Unsupported WebSocket payload: ${Object.prototype.toString.call(data)}`);
 }
 
-async function createRoom(combat = false): Promise<RoomCreated> {
+async function createRoom(
+  combat = false,
+  matchMode?: string,
+  profile = P58D_REV3_COMBAT_PROFILE,
+): Promise<RoomCreated> {
   const response = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
     method: 'POST',
     headers: {
       Origin: ALLOWED_ORIGIN,
-      ...(combat ? { [P58D_COMBAT_PROFILE_HEADER]: P58D_REV3_COMBAT_PROFILE } : {}),
+      ...(combat ? { [P58D_COMBAT_PROFILE_HEADER]: profile } : {}),
+      ...(matchMode === undefined ? {} : { [KYX_MATCH_MODE_HEADER]: matchMode }),
     },
   });
   if (response.status !== 201) throw new Error(`Room creation failed: ${response.status}`);
@@ -410,6 +421,181 @@ async function runWorkerImpairmentProfile(profile: DeliveryProfile) {
 }
 
 describe('P5.8D explicit revision-3 Worker combat path', () => {
+  it('persists an opt-in FFA Worker runtime without making it player-routable', async () => {
+    for (const matchMode of ['client_claimed_mode', KYX_MODE_ID.instagib]) {
+      const unsupported = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
+        method: 'POST',
+        headers: {
+          Origin: ALLOWED_ORIGIN,
+          [P58D_COMBAT_PROFILE_HEADER]: P58D_REV3_COMBAT_PROFILE,
+          [KYX_MATCH_MODE_HEADER]: matchMode,
+        },
+      });
+      expect(unsupported.status).toBe(400);
+      await expect(unsupported.json()).resolves.toEqual({
+        ok: false,
+        code: 'MATCH_MODE_UNSUPPORTED',
+      });
+    }
+
+    for (const profile of [null, P58D_REV3_COMBAT_PROFILE] as const) {
+      const missingPersistentProfile = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
+        method: 'POST',
+        headers: {
+          Origin: ALLOWED_ORIGIN,
+          ...(profile === null ? {} : { [P58D_COMBAT_PROFILE_HEADER]: profile }),
+          [KYX_MATCH_MODE_HEADER]: KYX_MODE_ID.freeForAll,
+        },
+      });
+      expect(missingPersistentProfile.status).toBe(400);
+      await expect(missingPersistentProfile.json()).resolves.toEqual({
+        ok: false,
+        code: 'MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE',
+      });
+    }
+
+    const internalHeaderProbe = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
+      method: 'POST',
+      headers: {
+        Origin: ALLOWED_ORIGIN,
+        [P58D_COMBAT_PROFILE_HEADER]: P58D_REV3_COMBAT_PROFILE,
+        [INTERNAL_ROOM_MATCH_MODE_HEADER]: KYX_MODE_ID.freeForAll,
+      },
+    });
+    expect(internalHeaderProbe.status).toBe(201);
+    await expect(internalHeaderProbe.json()).resolves.toMatchObject({
+      matchMode: KYX_MODE_ID.teamDeathmatch,
+    });
+
+    const room = await createRoom(
+      true,
+      KYX_MODE_ID.freeForAll,
+      RELAY_REV1_COMBAT_PROFILE,
+    );
+    expect(room).toMatchObject({
+      roomProfile: RELAY_REV1_COMBAT_PROFILE,
+      matchMode: KYX_MODE_ID.freeForAll,
+    });
+    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
+    const persisted = await runInDurableObject(stub, async (_instance, state) => (
+      [...state.storage.sql.exec<Record<string, string | number>>(
+        'SELECT schema_version, mode_id FROM room_match_mode_v1 WHERE singleton = 1',
+      )][0]
+    ));
+    expect(persisted).toEqual({ schema_version: 1, mode_id: KYX_MODE_ID.freeForAll });
+
+    await evictDurableObject(stub);
+    const first = await connectSocket(room.socketPath);
+    const second = await connectSocket(room.socketPath);
+    await Promise.all([waitForType(first, 'welcome'), waitForType(second, 'welcome')]);
+    sendClient(first, joinMessage(room.roomCode, 'req.join.ffa.first', 'FFA First'));
+    const firstJoin = await waitForType(first, 'joinAccepted');
+    sendClient(second, joinMessage(room.roomCode, 'req.join.ffa.second', 'FFA Second'));
+    const secondJoin = await waitForType(second, 'joinAccepted');
+    const active = await waitForMessage(
+      first,
+      (message) => (
+        (message.type === 'fullSnapshot' || message.type === 'deltaSnapshot')
+        && message.combat?.match.phase === 'active'
+        && message.combat.match.teamScores.some(({ teamId }) => teamId === firstJoin.playerId)
+        && message.combat.match.teamScores.some(({ teamId }) => teamId === secondJoin.playerId)
+      ),
+      'FFA active snapshot',
+    ) as FullSnapshotMessage | ServerMessageOfType<'deltaSnapshot'>;
+    expect(active.combat?.players).toEqual(expect.arrayContaining([
+      expect.objectContaining({ playerId: firstJoin.playerId, teamId: firstJoin.playerId }),
+      expect.objectContaining({ playerId: secondJoin.playerId, teamId: secondJoin.playerId }),
+    ]));
+    expect(active.combat?.match).toMatchObject({
+      teamScores: expect.arrayContaining([
+        { teamId: firstJoin.playerId, score: 0 },
+        { teamId: secondJoin.playerId, score: 0 },
+      ]),
+    });
+
+    const messageCount = first.messages.length;
+    await runInDurableObject(stub, async (instance) => {
+      const runtime = instance as unknown as {
+        persistActiveMatchCheckpoint(): void;
+        runTimer(): Promise<void>;
+      };
+      runtime.runTimer = async () => {};
+      runtime.persistActiveMatchCheckpoint();
+    });
+    await evictDurableObject(stub);
+    sendClient(first, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'ping',
+      nonce: 5_001,
+      clientTick: active.serverTick,
+    });
+    await waitForType(first, 'pong', ({ nonce }) => nonce === 5_001);
+    const restored = await waitForMessage(
+      first,
+      (message) => (
+        message.type === 'fullSnapshot'
+        && first.messages.indexOf(message) >= messageCount
+        && message.combat?.match.teamScores.some(({ teamId }) => teamId === firstJoin.playerId)
+        && message.combat.match.teamScores.some(({ teamId }) => teamId === secondJoin.playerId)
+      ),
+      'FFA restart snapshot',
+    ) as FullSnapshotMessage;
+    expect(restored.combat?.match).toMatchObject({
+      teamScores: expect.arrayContaining([
+        { teamId: firstJoin.playerId, score: 0 },
+        { teamId: secondJoin.playerId, score: 0 },
+      ]),
+    });
+
+    const mismatch = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.roomPath}`, {
+      method: 'POST',
+      headers: {
+        Origin: ALLOWED_ORIGIN,
+        [P58D_COMBAT_PROFILE_HEADER]: RELAY_REV1_COMBAT_PROFILE,
+        [KYX_MATCH_MODE_HEADER]: KYX_MODE_ID.teamDeathmatch,
+      },
+    });
+    expect(mismatch.status).toBe(409);
+    await expect(mismatch.json()).resolves.toEqual({
+      ok: false,
+      code: 'ROOM_MATCH_MODE_MISMATCH',
+    });
+  }, 60_000);
+
+  it('backfills legacy rooms to TDM and fails closed on a corrupt persisted mode', async () => {
+    const room = await createRoom(true);
+    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
+    await runInDurableObject(stub, async (_instance, state) => {
+      state.storage.sql.exec('DELETE FROM room_match_mode_v1 WHERE singleton = 1');
+    });
+    await evictDurableObject(stub);
+    const socket = await connectSocket(room.socketPath);
+    await waitForType(socket, 'welcome');
+    const backfilled = await runInDurableObject(stub, async (_instance, state) => (
+      [...state.storage.sql.exec<Record<string, string | number>>(
+        'SELECT schema_version, mode_id FROM room_match_mode_v1 WHERE singleton = 1',
+      )][0]
+    ));
+    expect(backfilled).toEqual({
+      schema_version: 1,
+      mode_id: KYX_MODE_ID.teamDeathmatch,
+    });
+
+    socket.socket.close(1000, 'persisted mode tamper probe');
+    await runInDurableObject(stub, async (_instance, state) => {
+      state.storage.sql.exec(
+        'UPDATE room_match_mode_v1 SET mode_id = ? WHERE singleton = 1',
+        'client_claimed_mode',
+      );
+    });
+    await evictDurableObject(stub);
+    const rejected = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.socketPath}`, {
+      headers: { Origin: ALLOWED_ORIGIN, Upgrade: 'websocket' },
+    });
+    expect(rejected.status).toBe(503);
+    await expect(rejected.json()).resolves.toEqual({ ok: false, code: 'ROOM_UNAVAILABLE' });
+  });
+
   it('preserves revision 2 by default and rehydrates an explicit revision-3 identity', async () => {
     const defaultRoom = await createRoom();
     expect(defaultRoom.roomProfile).toBeUndefined();

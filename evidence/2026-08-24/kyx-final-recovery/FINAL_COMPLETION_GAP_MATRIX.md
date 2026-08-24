@@ -1,14 +1,14 @@
 # KYX.IO final-completion gap matrix
 
 Date: 2026-08-24  
-Source checkpoint inspected: `4541900ac4790f87c8c4ca33d22abf04d04dc6fa` plus the uncommitted, test-only history recovery described below  
+Source checkpoint inspected: `ff261ea994181f6243c8a82baa4f327f380394c2` plus Worker preview batch 05
 Classification: exact current-source inventory; historical documents are not treated as current runtime proof
 
 ## Current verified playable core
 
 - Worker-authoritative 20 Hz rooms, input validation, replay/reconnect state, room restart checkpoints, rate limits, reliable events, delta snapshots, movement, combat, damage, death, respawn, score, results, and three-arena rotation exist.
 - Relay, Switchyard, and Crownpoint have distinct authority map bindings and browser-visible renderers.
-- The online authority match implementation is `team_deathmatch` only. Its lifecycle is lobby, warmup, active, postmatch, and completed; its terminal reasons are score limit and time limit.
+- The shipping player route remains `team_deathmatch`. The Worker now also has an explicit, restart-safe Free For All preview runtime on persistent authority maps; it is not exposed by the menu or gateway. Both use the lifecycle lobby, warmup, active, postmatch, and completed; terminal reasons are score limit and time limit.
 - Six Worker-authoritative weapon families exist: rifle, sidearm, shotgun, sniper, rocket, and melee. Local/offline presentation defines 20 procedural weapon variants, but those variants are not a shared online authority catalog.
 - Six server-modeled abilities exist: Blink, Launch, Frag, Smoke, Sticky, and Flash. Blink is fixed and three of the other five are selectable.
 - Local Relay practice has deterministic bots and shares substantial movement/combat/presentation code with online play.
@@ -18,7 +18,7 @@ Classification: exact current-source inventory; historical documents are not tre
 | Product area | Current source truth | Required completion |
 | --- | --- | --- |
 | Arenas | Relay, Switchyard, Crownpoint rotate online. Inkfall revisions remain inspection/development material. | Human-accept all three shipping arenas; author and accept one original large Battle Royale arena plus mode-specific objective/spawn/navigation data. |
-| Modes | Worker authority routes team deathmatch only. Free For All now has a tested deterministic authority-core score/lifecycle policy but is deliberately not room-routable. Other required identities are fail-closed foundation definitions. `src/core/GameModes.js` offers offline deathmatch and a local zombie-labeled practice mode; these are not the online contract. | Route and fully accept FFA; implement Instagib, CTF, Search and Destroy, Last Team Standing, Survival, Zombie Survival, Battle Royale, and custom/private rule loops; every loop must cover objective, elimination/respawn, result, rematch, rotation, reconnect, and spectator behavior. |
+| Modes | The player route exposes TDM only. FFA is a `worker_preview_runtime` with fail-closed public selection, versioned mode persistence, Relay multi-client play, and active restart proof, but no menu/gateway/practice/browser/HUD acceptance. Other required identities are fail-closed foundation definitions. `src/core/GameModes.js` offers offline deathmatch and a local zombie-labeled practice mode; these are not the online contract. | Add negotiated mode to the shared client contract, route and fully accept FFA, then implement Instagib, CTF, Search and Destroy, Last Team Standing, Survival, Zombie Survival, Battle Royale, and custom/private rule loops; every loop must cover objective, elimination/respawn, result, rematch, rotation, reconnect, and spectator behavior. |
 | Spectating/rematch | Reconnect and three-arena continuation exist. No authority spectator role or player-voted/requested rematch contract exists. | Server-owned spectator permissions/camera targets, join-in-progress policy, elimination transition, rematch consensus, and abuse/reconnect tests. |
 | Weapons | Six online families; 20 offline procedural definitions. Online equip/reload/ammo/contact/recoil presentation exists, but online and offline inventories are not one catalog. | Add burst/beam, SMG, grenade launcher, guided launcher, pickups/loot tiers, and reconcile one shared practice/online weapon contract and player-eye acceptance. |
 | Abilities/upgrades | Blink, Launch, Frag, Smoke, Sticky, Flash. | Double/triple jump, stamina and movement upgrades, proximity/trip mines, handling/ammo upgrades, pickups, persistence, and shared practice/online acceptance. |
