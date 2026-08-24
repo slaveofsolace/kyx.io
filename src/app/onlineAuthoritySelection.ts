@@ -6,6 +6,11 @@ import {
   isOnlineAuthorityProfileSelection,
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
+import {
+  defaultOnlineAuthorityMatchMode,
+  isOnlineAuthorityMatchMode,
+  type OnlineAuthorityMatchMode,
+} from './onlineAuthorityModes';
 
 export const ONLINE_AUTHORITY_PATH = '/online' as const;
 
@@ -15,15 +20,21 @@ export type OnlineAuthorityAvailability =
   | Readonly<{ kind: 'invalid'; reason: string }>;
 
 export type OnlineAuthorityRequest =
-  | Readonly<{ kind: 'landing' }>
-  | Readonly<{ kind: 'landing'; profile: OnlineAuthorityProfileSelection }>
-  | Readonly<{ kind: 'create' }>
-  | Readonly<{ kind: 'create'; profile: OnlineAuthorityProfileSelection }>
-  | Readonly<{ kind: 'join'; roomCode: string }>
+  | Readonly<{
+      kind: 'landing';
+      matchMode: OnlineAuthorityMatchMode;
+      profile?: OnlineAuthorityProfileSelection;
+    }>
+  | Readonly<{
+      kind: 'create';
+      matchMode: OnlineAuthorityMatchMode;
+      profile?: OnlineAuthorityProfileSelection;
+    }>
   | Readonly<{
       kind: 'join';
       roomCode: string;
-      profile: OnlineAuthorityProfileSelection;
+      matchMode: OnlineAuthorityMatchMode;
+      profile?: OnlineAuthorityProfileSelection;
     }>
   | Readonly<{ kind: 'invalid'; reason: string }>;
 
@@ -88,7 +99,7 @@ function uniqueParameter(parameters: URLSearchParams, name: string): string | nu
 
 export function parseOnlineAuthorityRequest(search: string): OnlineAuthorityRequest {
   const parameters = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
-  const allowed = new Set(['mode', 'room', 'profile']);
+  const allowed = new Set(['mode', 'room', 'profile', 'match']);
   for (const name of parameters.keys()) {
     if (!allowed.has(name)) {
       return Object.freeze({ kind: 'invalid', reason: `Unsupported online option: ${name}` });
@@ -98,22 +109,32 @@ export function parseOnlineAuthorityRequest(search: string): OnlineAuthorityRequ
   const mode = uniqueParameter(parameters, 'mode');
   const rawRoom = uniqueParameter(parameters, 'room');
   const rawProfile = uniqueParameter(parameters, 'profile');
-  if (mode === undefined || rawRoom === undefined || rawProfile === undefined) {
+  const rawMatchMode = uniqueParameter(parameters, 'match');
+  if (
+    mode === undefined
+    || rawRoom === undefined
+    || rawProfile === undefined
+    || rawMatchMode === undefined
+  ) {
     return Object.freeze({ kind: 'invalid', reason: 'Online options must not be repeated.' });
   }
   if (rawProfile !== null && !isOnlineAuthorityProfileSelection(rawProfile)) {
     return Object.freeze({ kind: 'invalid', reason: 'The requested online room profile is unavailable.' });
   }
   const profile = rawProfile === null ? null : rawProfile;
+  if (rawMatchMode !== null && !isOnlineAuthorityMatchMode(rawMatchMode)) {
+    return Object.freeze({ kind: 'invalid', reason: 'The requested online match mode is unavailable.' });
+  }
+  const matchMode = rawMatchMode ?? defaultOnlineAuthorityMatchMode();
   if (mode === null && rawRoom === null) {
     return profile === null
-      ? Object.freeze({ kind: 'landing' })
-      : Object.freeze({ kind: 'landing', profile });
+      ? Object.freeze({ kind: 'landing', matchMode })
+      : Object.freeze({ kind: 'landing', profile, matchMode });
   }
   if (mode === 'create' && rawRoom === null) {
     return profile === null
-      ? Object.freeze({ kind: 'create' })
-      : Object.freeze({ kind: 'create', profile });
+      ? Object.freeze({ kind: 'create', matchMode })
+      : Object.freeze({ kind: 'create', profile, matchMode });
   }
   if (mode !== 'join') {
     return Object.freeze({ kind: 'invalid', reason: 'Choose create or join from the online lobby.' });
@@ -130,24 +151,30 @@ export function parseOnlineAuthorityRequest(search: string): OnlineAuthorityRequ
     });
   }
   return profile === null
-    ? Object.freeze({ kind: 'join', roomCode })
-    : Object.freeze({ kind: 'join', roomCode, profile });
+    ? Object.freeze({ kind: 'join', roomCode, matchMode })
+    : Object.freeze({ kind: 'join', roomCode, profile, matchMode });
 }
 
-export function onlineCreatePath(profile?: OnlineAuthorityProfileSelection): string {
+export function onlineCreatePath(
+  profile?: OnlineAuthorityProfileSelection,
+  matchMode: OnlineAuthorityMatchMode = defaultOnlineAuthorityMatchMode(),
+): string {
   const parameters = new URLSearchParams({ mode: 'create' });
   if (profile !== undefined) parameters.set('profile', profile);
+  if (matchMode !== defaultOnlineAuthorityMatchMode()) parameters.set('match', matchMode);
   return `${ONLINE_AUTHORITY_PATH}?${parameters.toString()}`;
 }
 
 export function onlineJoinPath(
   roomCode: string,
   profile?: OnlineAuthorityProfileSelection,
+  matchMode: OnlineAuthorityMatchMode = defaultOnlineAuthorityMatchMode(),
 ): string {
   const normalized = normalizeAuthorityRoomCode(roomCode);
   if (normalized === null) throw new RangeError('online room code is invalid');
   const parameters = new URLSearchParams({ mode: 'join', room: normalized });
   if (profile !== undefined) parameters.set('profile', profile);
+  if (matchMode !== defaultOnlineAuthorityMatchMode()) parameters.set('match', matchMode);
   return `${ONLINE_AUTHORITY_PATH}?${parameters.toString()}`;
 }
 

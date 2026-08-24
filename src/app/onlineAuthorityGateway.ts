@@ -14,11 +14,13 @@ import {
   type OnlineOriginalArenaProfileSelection,
   type OnlineRelayMapBinding,
 } from './onlineAuthorityProfiles';
+import type { OnlineAuthorityMatchMode } from './onlineAuthorityModes';
 
 interface RoomCreationPayload {
   readonly ok?: unknown;
   readonly roomCode?: unknown;
   readonly roomProfile?: unknown;
+  readonly matchMode?: unknown;
   readonly mapBinding?: unknown;
 }
 
@@ -62,6 +64,10 @@ export type OnlineAuthorityMapRoomProof =
   | OnlineOriginalArenaRoomProof
   | OnlineRelayRoomProof;
 
+export type OnlineAuthorityModeMapRoomProof = OnlineAuthorityMapRoomProof & Readonly<{
+  matchMode: OnlineAuthorityMatchMode;
+}>;
+
 type OnlineInkfallRoomProofFor<Profile extends OnlineAuthorityProfileSelection> =
   Profile extends typeof ONLINE_INKFALL_REV5_COMBAT_PROFILE_ID
     ? OnlineInkfallRevision5RoomProof
@@ -88,7 +94,41 @@ export type OnlineAuthorityFetch = (
 ) => Promise<OnlineAuthorityFetchResponse>;
 
 export const ONLINE_COMBAT_PROFILE_HEADER = 'x-kyx-evidence-profile' as const;
+export const ONLINE_MATCH_MODE_HEADER = 'x-kyx-match-mode' as const;
 export const ONLINE_COMBAT_PROFILE_ID = 'p58d-rev3-combat-v1' as const;
+
+function matchModeBoundFetch(
+  matchMode: OnlineAuthorityMatchMode,
+  fetchRequest: OnlineAuthorityFetch,
+): OnlineAuthorityFetch {
+  return async (input, init) => {
+    const response = await fetchRequest(input, Object.freeze({
+      ...init,
+      headers: Object.freeze({
+        ...init.headers,
+        [ONLINE_MATCH_MODE_HEADER]: matchMode,
+      }),
+    }));
+    return Object.freeze({
+      ok: response.ok,
+      status: response.status,
+      json: async () => {
+        const payload = await response.json();
+        if (response.ok) {
+          if (
+            payload === null
+            || typeof payload !== 'object'
+            || Array.isArray(payload)
+            || (payload as RoomCreationPayload).matchMode !== matchMode
+          ) {
+            throw new Error('Authority returned a mismatched online match mode.');
+          }
+        }
+        return payload;
+      },
+    });
+  };
+}
 
 function matchesExpected(candidate: unknown, expected: unknown): boolean {
   if (candidate === expected) return true;
@@ -428,4 +468,34 @@ export async function verifyOnlineAuthorityMapCombatRoom(
     );
   }
   return verifyProfileRoom(authorityOrigin, roomCode, profile, fetchRequest);
+}
+
+export async function createOnlineAuthorityModeCombatRoom(
+  authorityOrigin: string,
+  profile: OnlineAuthorityProfileSelection,
+  matchMode: OnlineAuthorityMatchMode,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineAuthorityModeMapRoomProof> {
+  const proof = await createProfileRoom(
+    authorityOrigin,
+    profile,
+    matchModeBoundFetch(matchMode, fetchRequest),
+  );
+  return Object.freeze({ ...proof, matchMode });
+}
+
+export async function verifyOnlineAuthorityModeCombatRoom(
+  authorityOrigin: string,
+  roomCode: string,
+  profile: OnlineAuthorityProfileSelection,
+  matchMode: OnlineAuthorityMatchMode,
+  fetchRequest: OnlineAuthorityFetch = (input, init) => fetch(input, init),
+): Promise<OnlineAuthorityModeMapRoomProof> {
+  const proof = await verifyProfileRoom(
+    authorityOrigin,
+    roomCode,
+    profile,
+    matchModeBoundFetch(matchMode, fetchRequest),
+  );
+  return Object.freeze({ ...proof, matchMode });
 }

@@ -3,13 +3,16 @@ import { describe, expect, it, vi } from 'vitest';
 import {
   ONLINE_COMBAT_PROFILE_HEADER,
   ONLINE_COMBAT_PROFILE_ID,
+  ONLINE_MATCH_MODE_HEADER,
   createOnlineAuthorityRoom,
   createOnlineAuthorityMapCombatRoom,
+  createOnlineAuthorityModeCombatRoom,
   createOnlineCombatRoom,
   createOnlineInkfallRevision2CombatRoom,
   createOnlineInkfallRevision4CombatRoom,
   createOnlineInkfallRevision5CombatRoom,
   verifyOnlineAuthorityMapCombatRoom,
+  verifyOnlineAuthorityModeCombatRoom,
   verifyOnlineInkfallRevision2CombatRoom,
   verifyOnlineInkfallRevision4CombatRoom,
   verifyOnlineInkfallRevision5CombatRoom,
@@ -25,6 +28,9 @@ import {
   ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
   ONLINE_RELAY_REV1_MAP_BINDING,
 } from '../../../src/app/onlineAuthorityProfiles';
+import {
+  ONLINE_AUTHORITY_MATCH_MODE_ID,
+} from '../../../src/app/onlineAuthorityModes';
 
 function response(status: number, payload: unknown) {
   return {
@@ -298,6 +304,63 @@ describe('createOnlineAuthorityRoom', () => {
         fetchRequest,
       )).rejects.toThrow('invalid Inkfall Foundry revision-2 room binding');
     }
+  });
+
+  it('binds FFA creation and join verification to one exact Worker mode', async () => {
+    const payload = {
+      ok: true,
+      roomCode: 'KYX-FFA234',
+      roomProfile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+      mapBinding: ONLINE_RELAY_REV1_MAP_BINDING,
+    };
+    const createFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(createOnlineAuthorityModeCombatRoom(
+      'https://authority.example.test',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+      createFetch,
+    )).resolves.toEqual({
+      roomCode: 'KYX-FFA234',
+      roomProfile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      mapBinding: ONLINE_RELAY_REV1_MAP_BINDING,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+    });
+    expect(createFetch).toHaveBeenCalledWith(
+      'https://authority.example.test/api/rooms/create',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          [ONLINE_COMBAT_PROFILE_HEADER]: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+          [ONLINE_MATCH_MODE_HEADER]: ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+        },
+      },
+    );
+
+    const joinFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(verifyOnlineAuthorityModeCombatRoom(
+      'https://authority.example.test',
+      'kyx-ffa234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+      joinFetch,
+    )).resolves.toMatchObject({
+      roomCode: 'KYX-FFA234',
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+    });
+
+    const aliased = vi.fn<OnlineAuthorityFetch>(async () => response(201, {
+      ...payload,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch,
+    }));
+    await expect(verifyOnlineAuthorityModeCombatRoom(
+      'https://authority.example.test',
+      'KYX-FFA234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+      aliased,
+    )).rejects.toThrow(/mismatched online match mode/u);
   });
 
   it('does not retry a client-side denial and rejects malformed success payloads', async () => {

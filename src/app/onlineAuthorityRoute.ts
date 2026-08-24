@@ -53,9 +53,9 @@ import {
 } from '../dev/authorityEvidenceTransport';
 import {
   createOnlineCombatRoom,
-  createOnlineAuthorityMapCombatRoom,
-  verifyOnlineAuthorityMapCombatRoom,
-  type OnlineAuthorityMapRoomProof,
+  createOnlineAuthorityModeCombatRoom,
+  verifyOnlineAuthorityModeCombatRoom,
+  type OnlineAuthorityModeMapRoomProof,
 } from './onlineAuthorityGateway';
 import { classifyAuthorityDamageDirection } from './authorityDamageDirection';
 import {
@@ -90,6 +90,12 @@ import {
   type OnlineAuthorityProfileSelection,
 } from './onlineAuthorityProfiles';
 import { nextOnlineArenaProfile } from './onlineArenaRotation';
+import {
+  ONLINE_AUTHORITY_MATCH_MODE_ID,
+  defaultOnlineAuthorityMatchMode,
+  onlineAuthorityMatchModeLabel,
+  type OnlineAuthorityMatchMode,
+} from './onlineAuthorityModes';
 import {
   classifyOnlineAuthorityPresentationEvent,
   selectOnlineAbilityPresentationAudioOwner,
@@ -205,7 +211,8 @@ interface OnlinePreviewSnapshot {
   }>;
   readonly roomVerification?: Readonly<{
     roomProfile: OnlineAuthorityProfileSelection;
-    mapBinding: OnlineAuthorityMapRoomProof['mapBinding'];
+    matchMode: OnlineAuthorityMatchMode;
+    mapBinding: OnlineAuthorityModeMapRoomProof['mapBinding'];
     simulationIdentity: SimulationIdentityV1;
     identityChecks: number;
   }>;
@@ -307,6 +314,7 @@ function renderLanding(
   content: HTMLElement,
   availability: OnlineAuthorityAvailability,
   selectedProfile?: OnlineAuthorityProfileSelection,
+  selectedMatchMode: OnlineAuthorityMatchMode = defaultOnlineAuthorityMatchMode(),
 ): void {
   content.replaceChildren(
     element('p', 'online-preview__eyebrow', 'Online'),
@@ -318,6 +326,43 @@ function renderLanding(
     ),
   );
   const configured = availability.kind === 'configured';
+  const tdmModeOption = element('label', 'online-preview__profile-option');
+  const tdmModeCheckbox = document.createElement('input');
+  tdmModeCheckbox.type = 'radio';
+  tdmModeCheckbox.name = 'online-match-mode';
+  tdmModeCheckbox.required = true;
+  tdmModeCheckbox.checked = selectedMatchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch;
+  tdmModeCheckbox.disabled = !configured;
+  tdmModeCheckbox.dataset.testid = 'online-tdm-mode';
+  const tdmModeCopy = element('span', '');
+  tdmModeCopy.append(
+    element('strong', '', 'Team Deathmatch'),
+    element('span', '', 'Two authority-owned teams race to 40 eliminations.'),
+  );
+  tdmModeOption.append(tdmModeCheckbox, tdmModeCopy);
+  const ffaModeOption = element('label', 'online-preview__profile-option');
+  const ffaModeCheckbox = document.createElement('input');
+  ffaModeCheckbox.type = 'radio';
+  ffaModeCheckbox.name = 'online-match-mode';
+  ffaModeCheckbox.required = true;
+  ffaModeCheckbox.checked = selectedMatchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll;
+  ffaModeCheckbox.disabled = !configured;
+  ffaModeCheckbox.dataset.testid = 'online-ffa-mode';
+  const ffaModeCopy = element('span', '');
+  ffaModeCopy.append(
+    element('strong', '', 'Free For All'),
+    element('span', '', 'Every player owns one score identity; first to 25 wins.'),
+  );
+  ffaModeOption.append(ffaModeCheckbox, ffaModeCopy);
+  const modePicker = element('details', 'online-preview__profile-picker');
+  modePicker.hidden = !configured;
+  modePicker.open = selectedMatchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll;
+  modePicker.append(
+    element('summary', '', 'Match mode'),
+    tdmModeOption,
+    ffaModeOption,
+  );
+  content.append(modePicker);
   const profileOption = element('label', 'online-preview__profile-option');
   const profileCheckbox = document.createElement('input');
   profileCheckbox.type = 'radio';
@@ -408,6 +453,11 @@ function renderLanding(
     if (crownpointProfileCheckbox.checked) return ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID;
     return selectedLegacyProfile;
   };
+  const chosenMatchMode = (): OnlineAuthorityMatchMode => (
+    ffaModeCheckbox.checked
+      ? ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll
+      : ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch
+  );
   const lobby = element('section', 'online-preview__lobby');
   const createCard = element('article', 'online-preview__lobby-card');
   createCard.append(
@@ -423,7 +473,9 @@ function renderLanding(
   createButton.type = 'button';
   createButton.disabled = !configured;
   createButton.dataset.testid = 'online-create-room';
-  createButton.addEventListener('click', () => window.location.assign(onlineCreatePath(chosenProfile())));
+  createButton.addEventListener('click', () => window.location.assign(
+    onlineCreatePath(chosenProfile(), chosenMatchMode()),
+  ));
   createCard.append(createButton);
 
   const joinCard = element('article', 'online-preview__lobby-card');
@@ -463,7 +515,7 @@ function renderLanding(
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     try {
-      window.location.assign(onlineJoinPath(input.value, chosenProfile()));
+      window.location.assign(onlineJoinPath(input.value, chosenProfile(), chosenMatchMode()));
     } catch {
       error.textContent = 'Enter a valid code such as KYX-ABC234.';
     }
@@ -524,6 +576,7 @@ function renderArena(
   presentation: AuthorityEvidencePresentation,
   combat: OnlineCombatView,
   inkfallRevision2: boolean,
+  freeForAll: boolean,
 ): void {
   const context = canvas.getContext('2d', { alpha: false });
   if (context === null) throw new Error('ONLINE_PREVIEW_CANVAS_UNAVAILABLE');
@@ -689,7 +742,9 @@ function renderArena(
         combat.recentEvents,
         presentation.estimatedServerTick,
       );
-      const color = player.teamId === 'team_blue' ? '#14e0ff' : '#ff6570';
+      const color = freeForAll
+        ? local ? '#14e0ff' : '#ff6570'
+        : player.teamId === 'team_blue' ? '#14e0ff' : '#ff6570';
       context.strokeStyle = color;
       context.fillStyle = color;
       context.shadowColor = color;
@@ -706,7 +761,9 @@ function renderArena(
         context.beginPath();
         context.arc(x, y, local ? 11 : 9, 0, Math.PI * 2);
         context.fill();
-        const forward = player.teamId === 'team_blue' ? -1 : 1;
+        const forward = freeForAll
+          ? local ? -1 : 1
+          : player.teamId === 'team_blue' ? -1 : 1;
         context.beginPath();
         context.moveTo(x, y + forward * 18);
         context.lineTo(x - 5, y + forward * 10);
@@ -792,7 +849,7 @@ type OnlineSessionBinding =
   | Readonly<{ kind: 'flat_run_revision_3' }>
   | Readonly<{
       kind: 'authority_map';
-      proof: OnlineAuthorityMapRoomProof;
+      proof: OnlineAuthorityModeMapRoomProof;
     }>;
 
 interface OnlineSessionController {
@@ -828,6 +885,9 @@ async function mountSession(
   const mapProof = sessionBinding.kind === 'authority_map'
     ? sessionBinding.proof
     : null;
+  const matchMode = mapProof?.matchMode ?? defaultOnlineAuthorityMatchMode();
+  const freeForAllRuntime = matchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll;
+  body.dataset.onlineMatchMode = matchMode;
   const mapProfile = mapProof?.roomProfile ?? null;
   const mapRuntime = mapProof !== null;
   const relayRuntime = mapProfile === ONLINE_RELAY_REV1_COMBAT_PROFILE_ID;
@@ -914,7 +974,7 @@ async function mountSession(
       element(
         'code',
         '',
-        `${mapProof.roomProfile} · ${mapProof.mapBinding.mapReference} · ${mapProof.mapBinding.fixtureId} / ${mapProof.mapBinding.fixtureHash} · ${mapProof.mapBinding.colliderCardinality} colliders`,
+        `${onlineAuthorityMatchModeLabel(matchMode)} · ${mapProof.roomProfile} · ${mapProof.mapBinding.mapReference} · ${mapProof.mapBinding.fixtureId} / ${mapProof.mapBinding.fixtureHash} · ${mapProof.mapBinding.colliderCardinality} colliders`,
       ),
     );
   }
@@ -967,7 +1027,7 @@ async function mountSession(
   canvas.setAttribute(
     'aria-label',
     threeDimensionalMap
-      ? 'Play online team deathmatch in Relay with linked portals. Click for mouse look; Mouse 1 fires and Mouse 2 aims.'
+      ? `Play online ${onlineAuthorityMatchModeLabel(matchMode)} in ${mapDisplayName}. Click for mouse look; Mouse 1 fires and Mouse 2 aims.`
       : 'Online authoritative combat arena. Click to focus; Mouse 1 fires and Mouse 2 aims.',
   );
   const mapStatus = element(
@@ -1088,8 +1148,8 @@ async function mountSession(
   combatStrip.append(blueCombat, score, redCombat);
   const legend = element('div', 'online-session__legend');
   for (const [label, color] of [
-    ['Team blue', '#14e0ff'],
-    ['Team red', '#ff6570'],
+    [freeForAllRuntime ? 'You' : 'Team blue', '#14e0ff'],
+    [freeForAllRuntime ? 'Rivals' : 'Team red', '#ff6570'],
     ['Server reconciliation', '#f3fbfd'],
     ['Impulse Grenade', '#c889ff'],
   ] as const) {
@@ -1113,6 +1173,7 @@ async function mountSession(
     onlineJoinPath(
       roomCode,
       mapProfile ?? undefined,
+      matchMode,
     ),
     window.location.origin,
   ).toString();
@@ -1306,7 +1367,10 @@ async function mountSession(
   const retryRoomButton = element('button', 'online-preview__primary', 'Start fresh room');
   retryRoomButton.type = 'button';
   retryRoomButton.addEventListener('click', () => {
-    window.location.assign(onlineCreatePath(mapProfile ?? defaultOnlineProfile()));
+    window.location.assign(onlineCreatePath(
+      mapProfile ?? defaultOnlineProfile(),
+      matchMode,
+    ));
   });
   const returnToLobbyButton = element('button', 'online-preview__secondary', 'Return to online');
   returnToLobbyButton.type = 'button';
@@ -1320,7 +1384,11 @@ async function mountSession(
   resultDialog.setAttribute('aria-labelledby', 'online-match-result-title');
   resultDialog.inert = true;
   const resultPanel = element('div', 'online-session__result-panel');
-  const resultEyebrow = element('p', 'online-preview__eyebrow', 'Online TDM complete');
+  const resultEyebrow = element(
+    'p',
+    'online-preview__eyebrow',
+    `Online ${onlineAuthorityMatchModeLabel(matchMode)} complete`,
+  );
   const resultTitle = element('h2', '', 'Match complete');
   resultTitle.id = 'online-match-result-title';
   const resultSummary = element('p', 'online-session__result-summary', 'Final authority result');
@@ -2176,6 +2244,7 @@ async function mountSession(
         : {
             roomVerification: Object.freeze({
               roomProfile: mapProof.roomProfile,
+              matchMode: mapProof.matchMode,
               mapBinding: mapProof.mapBinding,
               simulationIdentity: diagnostics.authority.simulationIdentity,
               identityChecks: diagnostics.counters.identityChecks,
@@ -2879,6 +2948,7 @@ async function mountSession(
           nowMilliseconds,
           presentation,
           combat: combatView,
+          matchMode,
           localYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
           localPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
           localSpeedMillimetersPerSecond: horizontalSpeed,
@@ -2897,7 +2967,7 @@ async function mountSession(
         threeRuntime = null;
       }
     } else if (!threeDimensionalMap) {
-      renderArena(canvas, presentation, combatView, mapRuntime);
+      renderArena(canvas, presentation, combatView, mapRuntime, freeForAllRuntime);
     }
     if (renderRequested || nowMilliseconds - lastDiagnosticsRefresh >= 100) {
       const combat = diagnostics.combat.snapshot;
@@ -2910,10 +2980,23 @@ async function mountSession(
       const selectedWeapon = localPlayer?.weapons?.find(
         ({ slot }) => slot === localPlayer.selectedWeaponSlot,
       );
-      const bluePlayer = combat?.players.find(({ teamId }) => teamId === 'team_blue');
-      const redPlayer = combat?.players.find(({ teamId }) => teamId === 'team_red');
-      const blueScore = combat?.match.teamScores.find(({ teamId }) => teamId === 'team_blue')?.score ?? 0;
-      const redScore = combat?.match.teamScores.find(({ teamId }) => teamId === 'team_red')?.score ?? 0;
+      const localScoreIdentity = localPlayer?.teamId ?? null;
+      const opposingLeader = combat?.match.teamScores
+        .filter(({ teamId }) => teamId !== localScoreIdentity)
+        .slice()
+        .sort((left, right) => right.score - left.score || left.teamId.localeCompare(right.teamId))[0];
+      const bluePlayer = freeForAllRuntime
+        ? localPlayer
+        : combat?.players.find(({ teamId }) => teamId === 'team_blue');
+      const redPlayer = freeForAllRuntime
+        ? combat?.players.find(({ teamId }) => teamId === opposingLeader?.teamId)
+        : combat?.players.find(({ teamId }) => teamId === 'team_red');
+      const blueScore = freeForAllRuntime
+        ? combat?.match.teamScores.find(({ teamId }) => teamId === localScoreIdentity)?.score ?? 0
+        : combat?.match.teamScores.find(({ teamId }) => teamId === 'team_blue')?.score ?? 0;
+      const redScore = freeForAllRuntime
+        ? opposingLeader?.score ?? 0
+        : combat?.match.teamScores.find(({ teamId }) => teamId === 'team_red')?.score ?? 0;
       connectionFact.value.textContent = diagnostics.connection.phase.toUpperCase();
       connectionFact.value.dataset.state = diagnostics.connection.phase;
       matchFact.value.textContent = `REV ${diagnostics.authority.simulationIdentity.rulesetRevision} · ${diagnostics.authority.simulationIdentity.rulesetHash}`;
@@ -2952,7 +3035,7 @@ async function mountSession(
         redScore,
         remainingSeconds,
         phase: combat?.match.phase ?? diagnostics.authority.matchPhase ?? 'Waiting',
-        objective: 'Team score',
+        objective: freeForAllRuntime ? 'Individual score' : 'Team score',
         connectionPhase: diagnostics.connection.phase,
         connectionError: presentationFailureDetail ?? diagnostics.lastError,
         lifeState: localPlayer?.lifePhase === 'dead'
@@ -2982,13 +3065,21 @@ async function mountSession(
           );
       const scoreboardRows = authorityScoreRows.map((player) => {
               const row = element('div', 'online-session__scoreboard-player');
-              const team = player.teamId === 'team_red' ? 'red' : 'blue';
+              const team = freeForAllRuntime
+                ? player.isYou ? 'blue' : 'red'
+                : player.teamId === 'team_red' ? 'red' : 'blue';
               row.dataset.team = team;
               const identityLabel = player.isYou
                 ? 'You'
-                : `${team === 'red' ? 'Red' : 'Blue'} peer`;
+                : freeForAllRuntime
+                  ? `Rival ${player.playerId.slice(-6)}`
+                  : `${team === 'red' ? 'Red' : 'Blue'} peer`;
               row.append(
-                element('span', 'online-session__scoreboard-team', team),
+                element(
+                  'span',
+                  'online-session__scoreboard-team',
+                  freeForAllRuntime ? player.isYou ? 'self' : 'rival' : team,
+                ),
                 element('strong', '', identityLabel),
                 element('span', '', `${player.kills} K`),
                 element('span', '', `${player.deaths} D`),
@@ -3029,8 +3120,20 @@ async function mountSession(
         health.textContent = `${player?.healthPoints ?? '—'} HP`;
         fill.style.transform = `scaleX(${Math.max(0, Math.min(100, player?.healthPoints ?? 0)) / 100})`;
       };
-      applyTeam(bluePlayer, blueState, blueHealthText, blueHealthFill, 'BLUE');
-      applyTeam(redPlayer, redState, redHealthText, redHealthFill, 'RED');
+      applyTeam(
+        bluePlayer,
+        blueState,
+        blueHealthText,
+        blueHealthFill,
+        freeForAllRuntime ? 'YOU' : 'BLUE',
+      );
+      applyTeam(
+        redPlayer,
+        redState,
+        redHealthText,
+        redHealthFill,
+        freeForAllRuntime ? 'LEADER' : 'RED',
+      );
       localHealth.value.textContent = hudView.life.state === 'dead'
         ? `Respawn ${hudView.life.respawnSeconds ?? 0}s`
         : String(hudView.health.value);
@@ -3234,6 +3337,7 @@ export async function mountOnlineAuthorityRoute(
       content,
       availability,
       'profile' in request ? request.profile : undefined,
+      request.matchMode,
     );
     return;
   }
@@ -3243,6 +3347,8 @@ export async function mountOnlineAuthorityRoute(
   const requestedProfile = 'profile' in request
     ? request.profile
     : defaultOnlineProfile();
+  const requestedMatchMode = request.matchMode;
+  body.dataset.onlineMatchMode = requestedMatchMode;
   let roomCode: string;
   let mode: AuthorityEvidenceConfig['mode'];
   let sessionBinding: OnlineSessionBinding;
@@ -3262,9 +3368,10 @@ export async function mountOnlineAuthorityRoute(
     continuationPending = true;
     const nextProfile = nextOnlineArenaProfile(profile);
     try {
-      const proof = await createOnlineAuthorityMapCombatRoom(
+      const proof = await createOnlineAuthorityModeCombatRoom(
         availability.origin,
         nextProfile,
+        requestedMatchMode,
       );
       if (routeDisposed) throw new Error('ONLINE_ROUTE_DISPOSED');
       activeSession?.dispose();
@@ -3273,7 +3380,11 @@ export async function mountOnlineAuthorityRoute(
       content.classList.remove('online-preview__content--session');
       delete body.dataset.onlineMatchResult;
       body.dataset.onlinePreviewStatus = 'initializing-next-match';
-      window.history.replaceState(null, '', onlineJoinPath(proof.roomCode, nextProfile));
+      window.history.replaceState(
+        null,
+        '',
+        onlineJoinPath(proof.roomCode, nextProfile, requestedMatchMode),
+      );
       const nextSession = await mountSession(
         body,
         content,
@@ -3297,7 +3408,7 @@ export async function mountOnlineAuthorityRoute(
           cause instanceof Error ? cause.message : String(cause),
           nextProfile,
           'TRY AGAIN',
-          onlineCreatePath(nextOnlineArenaProfile(profile)),
+          onlineCreatePath(nextOnlineArenaProfile(profile), requestedMatchMode),
         );
         body.dataset.onlinePreviewStatus = 'next-match-failed';
       }
@@ -3317,9 +3428,10 @@ export async function mountOnlineAuthorityRoute(
     );
     try {
       if (requestedProfile !== undefined) {
-        const proof = await createOnlineAuthorityMapCombatRoom(
+        const proof = await createOnlineAuthorityModeCombatRoom(
           availability.origin,
           requestedProfile,
+          requestedMatchMode,
         );
         roomCode = proof.roomCode;
         sessionBinding = Object.freeze({ kind: 'authority_map', proof });
@@ -3336,12 +3448,16 @@ export async function mountOnlineAuthorityRoute(
         cause instanceof Error ? cause.message : String(cause),
         requestedProfile,
         'TRY AGAIN',
-        onlineCreatePath(requestedProfile),
+        onlineCreatePath(requestedProfile, requestedMatchMode),
       );
       return;
     }
     mode = 'create';
-    window.history.replaceState(null, '', onlineJoinPath(roomCode, requestedProfile));
+    window.history.replaceState(
+      null,
+      '',
+      onlineJoinPath(roomCode, requestedProfile, requestedMatchMode),
+    );
   } else {
     roomCode = request.roomCode;
     mode = 'join';
@@ -3361,10 +3477,11 @@ export async function mountOnlineAuthorityRoute(
         'CANCEL',
       );
       try {
-        const proof = await verifyOnlineAuthorityMapCombatRoom(
+        const proof = await verifyOnlineAuthorityModeCombatRoom(
           availability.origin,
           roomCode,
           requestedProfile,
+          requestedMatchMode,
         );
         sessionBinding = Object.freeze({ kind: 'authority_map', proof });
       } catch (cause) {

@@ -1,5 +1,8 @@
 import { expect, test, type BrowserContext, type Page } from '@playwright/test';
 
+const FREE_FOR_ALL_MATCH_MODE = 'free_for_all';
+const RELAY_REVISION_1_PROFILE = 'relay-revision-1-authority-v1';
+
 interface OnlineSnapshot {
   readonly roomCode: string;
   readonly connection: string;
@@ -25,6 +28,9 @@ interface OnlineSnapshot {
     readonly sprint: boolean;
     readonly primaryFire: boolean;
     readonly aimHeld: boolean;
+  }>;
+  readonly roomVerification?: Readonly<{
+    readonly matchMode: string;
   }>;
 }
 
@@ -226,5 +232,82 @@ test('ships movement inputs and converges real 2/4/8 browser clients with resume
     await expect.poll(async () => (await snapshot(page))?.remotePlayers ?? -1).toBe(7);
   } finally {
     await Promise.all(extraContexts.map((context) => context.close()));
+  }
+});
+
+test('negotiates FFA across create, invite, join, HUD, resume, and mismatch rejection', async ({
+  browser,
+  page,
+}) => {
+  test.setTimeout(90_000);
+  const contexts: BrowserContext[] = [];
+  try {
+    // The suite intentionally creates more than one caller's production room
+    // allowance. Model Cloudflare's edge-injected identity at the network
+    // boundary; putting this header in browser fetch would correctly fail CORS.
+    await page.route('http://127.0.0.1:8787/**', async (route) => {
+      await route.continue({
+        headers: {
+          ...route.request().headers(),
+          'CF-Connecting-IP': '203.0.113.44',
+        },
+      });
+    });
+    const createPath = `/online?mode=create&profile=${RELAY_REVISION_1_PROFILE}`
+      + `&match=${FREE_FOR_ALL_MATCH_MODE}`;
+    await page.goto(createPath);
+    const creator = await waitForJoined(page);
+    expect(creator.roomVerification).toMatchObject({
+      matchMode: FREE_FOR_ALL_MATCH_MODE,
+    });
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-online-match-mode',
+      FREE_FOR_ALL_MATCH_MODE,
+    );
+    await expect(page.getByTestId('online-profile-binding')).toContainText('Free For All');
+    await expect(page.getByTestId('online-score')).toHaveText('0 — 0');
+    await expect.poll(async () => page.locator('body').getAttribute('data-online-combat-phase'), {
+      timeout: 20_000,
+    }).toBe('active');
+    await expect.poll(async () => page.locator(
+      '.online-session__scoreboard-team',
+    ).allTextContents()).toEqual(expect.arrayContaining(['self', 'rival']));
+
+    const inviteUrl = await page.getByTestId('online-invite').textContent();
+    expect(inviteUrl).not.toBeNull();
+    if (inviteUrl === null) return;
+    expect(inviteUrl).toContain('match=free_for_all');
+
+    const joinContext = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+    contexts.push(joinContext);
+    const joinPage = await joinContext.newPage();
+    await joinPage.goto(inviteUrl);
+    const joined = await waitForJoined(joinPage);
+    expect(joined.roomCode).toBe(creator.roomCode);
+    expect(joined.roomVerification).toMatchObject({
+      matchMode: FREE_FOR_ALL_MATCH_MODE,
+    });
+    const beforeResume = joined.resumeSuccesses;
+    await joinPage.reload({ waitUntil: 'domcontentloaded' });
+    await expect.poll(async () => (await snapshot(joinPage))?.resumeSuccesses ?? 0, {
+      timeout: 20_000,
+    }).toBeGreaterThan(beforeResume);
+    expect((await waitForJoined(joinPage)).playerId).toBe(joined.playerId);
+
+    const mismatchContext = await browser.newContext({ viewport: { width: 960, height: 640 } });
+    contexts.push(mismatchContext);
+    const mismatchPage = await mismatchContext.newPage();
+    await mismatchPage.goto(
+      `/online?mode=join&room=${creator.roomCode}`
+      + `&profile=${RELAY_REVISION_1_PROFILE}`,
+    );
+    await expect(mismatchPage.locator('body')).toHaveAttribute(
+      'data-online-preview-status',
+      'room-profile-mismatch',
+      { timeout: 20_000 },
+    );
+    await expect(mismatchPage.getByText('Arena room verification failed.')).toBeVisible();
+  } finally {
+    await Promise.all(contexts.map((context) => context.close()));
   }
 });

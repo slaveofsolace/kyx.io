@@ -338,7 +338,11 @@ test('online lobby shares Cutline while technical scope stays collapsed', async 
   await expect(page.getByText('Guest sessions use server-owned movement, combat, score, and respawn.'))
     .toBeVisible();
   await expect(page.locator('details.online-preview__scope')).not.toHaveAttribute('open', /.*/u);
-  await expect(page.locator('.online-preview__profile-picker')).not.toHaveAttribute('open', /.*/u);
+  const onlinePickers = page.locator('.online-preview__profile-picker');
+  await expect(onlinePickers).toHaveCount(2);
+  for (const picker of await onlinePickers.all()) {
+    await expect(picker).not.toHaveAttribute('open', /.*/u);
+  }
   expect(await route.evaluate((element) => getComputedStyle(element).backgroundImage)).toBe('none');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1440);
   expect(errors).toEqual({ console: [], page: [], requests: [] });

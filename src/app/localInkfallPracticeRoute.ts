@@ -50,6 +50,7 @@ import {
   createOnlineAuthorityThreeRuntime,
   type OnlineAuthorityThreeRuntime,
 } from './onlineAuthorityThreeRuntime';
+import { ONLINE_AUTHORITY_MATCH_MODE_ID } from './onlineAuthorityModes';
 import {
   isOnlineBlinkPreviewCommitEligible,
   resolveOnlineBlinkPreview,
@@ -659,6 +660,7 @@ export async function mountLocalInkfallPracticeRoute(
       nowMilliseconds,
       presentation: projection.presentation,
       combat: projection.combat,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch,
       localYawMilliDegrees: projection.localMovement.yawMilliDegrees,
       localPitchMilliDegrees: projection.localMovement.pitchMilliDegrees,
       localSpeedMillimetersPerSecond: Math.hypot(

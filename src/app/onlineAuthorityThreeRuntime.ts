@@ -74,6 +74,10 @@ import {
   type OnlineInkfallRevision5MapBinding,
 } from './onlineAuthorityProfiles';
 import { createOnlineWeaponPresentationFx } from './onlineWeaponPresentationFx';
+import {
+  ONLINE_AUTHORITY_MATCH_MODE_ID,
+  type OnlineAuthorityMatchMode,
+} from './onlineAuthorityModes';
 
 type OnlineInkfallThreeMapBinding =
   | OnlineInkfallRevision4MapBinding
@@ -89,6 +93,7 @@ export interface OnlineAuthorityThreeFrame {
   readonly nowMilliseconds: number;
   readonly presentation: AuthorityEvidencePresentation;
   readonly combat: OnlineCombatView;
+  readonly matchMode: OnlineAuthorityMatchMode;
   readonly localYawMilliDegrees: number | null;
   readonly localPitchMilliDegrees: number | null;
   readonly localSpeedMillimetersPerSecond: number;
@@ -1035,7 +1040,12 @@ export async function createOnlineAuthorityThreeRuntime(
       );
       let avatar = avatars.get(remote.entityId);
       if (avatar === undefined) {
-        avatar = createPlayerAvatar(combatPlayer?.teamId ?? null, combatPlayer);
+        avatar = createPlayerAvatar(
+          frame.matchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll
+            ? 'team_red'
+            : combatPlayer?.teamId ?? null,
+          combatPlayer,
+        );
         avatars.set(remote.entityId, avatar);
         scene.add(avatar.root);
       }
