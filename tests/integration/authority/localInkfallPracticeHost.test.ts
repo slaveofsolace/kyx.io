@@ -2,11 +2,14 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import {
   LOCAL_INKFALL_PRACTICE_HOST_ID,
+  LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT,
   LOCAL_INKFALL_PRACTICE_BOT_PRESET_ORDER,
   LOCAL_INKFALL_PRACTICE_PLAYER_ID,
   LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS,
   LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ,
   LocalInkfallPracticeHost,
+  KYX_MODE_ID,
+  KYX_WEAPON_ID,
   deterministicCombatBotInput,
   localInkfallPracticeBotPresetId,
   RELAY_AUTHORITY_IDENTITY,
@@ -82,6 +85,59 @@ describe('browser-local Relay Practice authority host', () => {
           localInkfallPracticeBotPresetId(playerId),
         )).slots.slice(1)
       )));
+  });
+
+  it('runs Free For All on per-player authority score identities', async () => {
+    const practice = await LocalInkfallPracticeHost.create({
+      botCount: 3,
+      matchMode: KYX_MODE_ID.freeForAll,
+    });
+    hosts.push(practice);
+
+    expect(practice.matchMode).toBe(KYX_MODE_ID.freeForAll);
+    expect(practice.snapshot.match).toMatchObject({
+      rules: {
+        mode: KYX_MODE_ID.freeForAll,
+        teamScoreLimit: 25,
+      },
+    });
+    expect(practice.snapshot.match?.playerScores.map(({ playerId, teamId }) => ({
+      playerId,
+      teamId,
+    }))).toEqual(practice.snapshot.match?.playerScores.map(({ playerId }) => ({
+      playerId,
+      teamId: playerId,
+    })));
+  });
+
+  it('locks local Instagib Practice to the authoritative Longshot policy', async () => {
+    const practice = await LocalInkfallPracticeHost.create({
+      botCount: 3,
+      combatPresetId: 'assault',
+      matchMode: KYX_MODE_ID.instagib,
+    });
+    hosts.push(practice);
+
+    expect(practice.matchMode).toBe(KYX_MODE_ID.instagib);
+    expect(practice.authority.instagibWeaponMode).toEqual({
+      schemaVersion: 1,
+      policyId: 'instagib_longshot_v1',
+      lockedWeaponId: KYX_WEAPON_ID.sniper,
+      lockedWeaponSlot: LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT,
+      damagePoints: 100,
+    });
+    expect(practice.snapshot.players.map(({ combat }) => combat?.armory.selectedSlot))
+      .toEqual([3, 3, 3, 3]);
+    expect(() => practice.step({
+      moveX: 0,
+      moveY: 0,
+      lookYawDeltaMilliDegrees: 0,
+      lookPitchDeltaMilliDegrees: 0,
+      heldButtons: 0,
+      pressedButtons: 0,
+      releasedButtons: 0,
+      selectedSlot: 0,
+    })).toThrow('LOCAL_INKFALL_PRACTICE_WEAPON_SLOT_NOT_IN_PRESET');
   });
 
   it('accepts one local and one deterministic bot command per participant per tick', async () => {

@@ -1,7 +1,7 @@
 # KYX.IO final-completion gap matrix
 
 Date: 2026-08-24  
-Source checkpoint inspected: `a6d5cd8776cb65c59475d197949ff29c2991e99f` plus Instagib client negotiation batch 08
+Source checkpoint inspected: `e54d342321a3ad68b29f1abb0b80129b144b10c5` plus shared Practice deathmatch modes batch 09
 Classification: exact current-source inventory; historical documents are not treated as current runtime proof
 
 ## Current verified playable core
@@ -11,14 +11,14 @@ Classification: exact current-source inventory; historical documents are not tre
 - The player route negotiates `team_deathmatch`, `free_for_all`, and `instagib` through an exact authority-echoed mode contract. FFA and Instagib are exposed by the menu and preserve mode through create, invite, join, rotation, rejection, and reconnect. Both have genuine two-client Relay browser paths; Instagib locks Longshot slot 3 in the UI and Worker, applies one-shot authority damage, uses per-player scoring, and binds the exact mode into restart checkpoints. All three Worker modes use the lifecycle lobby, warmup, active, postmatch, and completed; terminal reasons are score limit and time limit.
 - Six Worker-authoritative weapon families exist: rifle, sidearm, shotgun, sniper, rocket, and melee. Local/offline presentation defines 20 procedural weapon variants, but those variants are not a shared online authority catalog.
 - Six server-modeled abilities exist: Blink, Launch, Frag, Smoke, Sticky, and Flash. Blink is fixed and three of the other five are selectable.
-- Local Relay practice has deterministic bots and shares substantial movement/combat/presentation code with online play.
+- Local Relay practice has deterministic bots and routes TDM, FFA, and Instagib through the same canonical mode identities, authority rules, HUD contract, weapon policy, and rematch continuity used by the online deathmatch slice.
 
 ## Exact completion gaps
 
 | Product area | Current source truth | Required completion |
 | --- | --- | --- |
 | Arenas | Relay, Switchyard, Crownpoint rotate online. Inkfall revisions remain inspection/development material. | Human-accept all three shipping arenas; author and accept one original large Battle Royale arena plus mode-specific objective/spawn/navigation data. |
-| Modes | TDM, FFA, and Instagib are fail-closed, restart-safe Worker runtimes with exact client negotiation. FFA and Instagib have menu selection, mode-specific HUD/scoreboard presentation, genuine two-client Relay browser play, reconnect, mismatch rejection, and arena-continuation preservation. Instagib additionally has Longshot-only equip, 100-damage body-region resolution, per-player score identities, respawn, schema-2 exact-mode checkpoint binding, and two-client restart proof. Local practice still explicitly runs TDM, so shared FFA/Instagib practice and human gameplay acceptance remain open. Other required identities are fail-closed foundation definitions. `src/core/GameModes.js` offers offline deathmatch and a local zombie-labeled practice mode; these are not the online contract. | Complete shared practice and human acceptance for FFA/Instagib, then implement CTF, Search and Destroy, Last Team Standing, Survival, Zombie Survival, Battle Royale, and custom/private rule loops; every loop must cover objective, elimination/respawn, result, rematch, rotation, reconnect, and spectator behavior. |
+| Modes | TDM, FFA, and Instagib are fail-closed, restart-safe Worker runtimes with exact client negotiation. FFA and Instagib have menu selection, mode-specific HUD/scoreboard presentation, genuine two-client Relay browser play, reconnect, mismatch rejection, and arena-continuation preservation. Instagib additionally has Longshot-only equip, 100-damage body-region resolution, per-player score identities, respawn, schema-2 exact-mode checkpoint binding, and two-client restart proof. Local Relay Practice now selects the same three canonical modes, binds FFA/Instagib individual scoring inside its authority room, locks Instagib to the Longshot one-shot contract, and preserves mode through HUD and rematch. Human gameplay acceptance and Practice coverage on Switchyard/Crownpoint remain open. Other required identities are fail-closed foundation definitions. `src/core/GameModes.js` offers offline deathmatch and a local zombie-labeled practice mode; these are not the online contract. | Human-accept FFA/Instagib and extend shared Practice beyond Relay, then implement CTF, Search and Destroy, Last Team Standing, Survival, Zombie Survival, Battle Royale, and custom/private rule loops; every loop must cover objective, elimination/respawn, result, rematch, rotation, reconnect, and spectator behavior. |
 | Spectating/rematch | Reconnect and three-arena continuation exist. No authority spectator role or player-voted/requested rematch contract exists. | Server-owned spectator permissions/camera targets, join-in-progress policy, elimination transition, rematch consensus, and abuse/reconnect tests. |
 | Weapons | Six online families; 20 offline procedural definitions. Online equip/reload/ammo/contact/recoil presentation exists, but online and offline inventories are not one catalog. | Add burst/beam, SMG, grenade launcher, guided launcher, pickups/loot tiers, and reconcile one shared practice/online weapon contract and player-eye acceptance. |
 | Abilities/upgrades | Blink, Launch, Frag, Smoke, Sticky, Flash. | Double/triple jump, stamina and movement upgrades, proximity/trip mines, handling/ammo upgrades, pickups, persistence, and shared practice/online acceptance. |
@@ -38,7 +38,7 @@ The six non-equivalent commits on the old integration re-audit line were compare
 ## Coherent implementation order
 
 1. Remove current security/toolchain audit findings without changing gameplay dependency majors.
-2. Define and integrate an authority-owned mode/rules contract, beginning with FFA and Instagib through the existing deathmatch lifecycle, then objective and elimination policies.
+2. Extend the accepted authority-owned TDM/FFA/Instagib contract into objective and elimination policies.
 3. Add spectator/rematch/custom-room contracts so every subsequent mode inherits the full lifecycle.
 4. Reconcile the shared weapon/ability/pickup contract and build the Battle Royale arena and rules.
 5. Add identity, signed match receipts, D1 progression, parties/social/moderation, then the authenticated editor.

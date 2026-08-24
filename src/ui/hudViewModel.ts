@@ -474,7 +474,7 @@ export function createPracticeHudViewModel(input: PracticeHudInput): HudViewMode
         : integer(input.opponentScore),
       timerLabel: cleanLabel(input.timerLabel, '', 12),
       phaseLabel: cleanLabel(input.phaseLabel, 'Practice', 24),
-      objectiveLabel: cleanLabel(input.objectiveLabel, 'Score', 24),
+      objectiveLabel: cleanLabel(input.objectiveLabel, 'Score', 40),
     },
     life: input.life,
   });
@@ -521,7 +521,7 @@ export function createOnlineHudViewModel(input: OnlineHudInput): HudViewModelV1 
       rightScore: integer(input.redScore),
       timerLabel: formatMatchClock(input.remainingSeconds),
       phaseLabel: cleanLabel(input.phase, 'Waiting', 24),
-      objectiveLabel: cleanLabel(input.objective, 'Team score', 24),
+      objectiveLabel: cleanLabel(input.objective, 'Team score', 40),
     },
     connection: connectionViewModel(input.connectionPhase, input.connectionError),
     life,

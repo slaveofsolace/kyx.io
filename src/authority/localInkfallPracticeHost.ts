@@ -36,8 +36,18 @@ import {
   G4_COMBAT_RULESET_ID,
   G4_COMBAT_RULESET_REVISION,
   type AuthorityFullSnapshot,
+  type AuthorityRoomCombatOptions,
   type AuthorityRoomTickResult,
 } from './room';
+import {
+  KYX_FFA_MATCH_RULES,
+  KYX_WEAPON_ID,
+} from './combat';
+import {
+  KYX_MODE_ID,
+  requireWorkerRuntimeAuthorityMode,
+  type KyxDeathmatchAuthorityModeId,
+} from './modes';
 import { reliableCombatEvents } from './combatEvents';
 import {
   createRelayPortalAuthorityPort,
@@ -49,12 +59,14 @@ export const LOCAL_INKFALL_PRACTICE_HOST_ID = LOCAL_RELAY_PRACTICE_HOST_ID;
 export const LOCAL_INKFALL_PRACTICE_TICK_RATE_HZ = 20 as const;
 export const LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS = 50 as const;
 export const LOCAL_INKFALL_PRACTICE_PLAYER_ID = 'practice.local.player' as const;
+export const LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT = 3 as const;
 
 export interface LocalInkfallPracticeHostOptions {
   readonly botCount?: number;
   readonly roomId?: string;
   readonly matchId?: string;
   readonly combatPresetId?: CombatPresetId;
+  readonly matchMode?: KyxDeathmatchAuthorityModeId;
 }
 
 export type LocalInkfallPracticeInput = Readonly<Omit<
@@ -100,6 +112,35 @@ function boundedBotCount(value: number | undefined): number {
   return count;
 }
 
+function localPracticeModeCombatOptions(
+  base: AuthorityRoomCombatOptions,
+  matchMode: KyxDeathmatchAuthorityModeId,
+): AuthorityRoomCombatOptions {
+  requireWorkerRuntimeAuthorityMode(matchMode);
+  if (matchMode === KYX_MODE_ID.teamDeathmatch) return base;
+  if (base.match === undefined) {
+    throw new Error('LOCAL_INKFALL_PRACTICE_MODE_REQUIRES_DEATHMATCH_CAPABILITY');
+  }
+  const weaponMode = matchMode === KYX_MODE_ID.instagib
+    ? Object.freeze({
+        schemaVersion: 1 as const,
+        policyId: 'instagib_longshot_v1' as const,
+        lockedWeaponId: KYX_WEAPON_ID.sniper,
+        lockedWeaponSlot: LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT,
+        damagePoints: 100 as const,
+      })
+    : undefined;
+  return Object.freeze({
+    ...base,
+    teamResolver: (playerId: string) => playerId,
+    match: Object.freeze({
+      ...base.match,
+      rules: KYX_FFA_MATCH_RULES,
+    }),
+    ...(weaponMode === undefined ? {} : { weaponMode }),
+  });
+}
+
 export function localInkfallPracticeBotInput(
   snapshot: AuthorityFullSnapshot,
   playerId: string,
@@ -127,6 +168,7 @@ export class LocalInkfallPracticeHost {
   readonly world: RapierMovementWorld;
   readonly localPlayerId = LOCAL_INKFALL_PRACTICE_PLAYER_ID;
   readonly botPlayerIds: readonly string[];
+  readonly matchMode: KyxDeathmatchAuthorityModeId;
 
   private readonly connectionIds = new Map<string, string>();
   private readonly inputSequences = new Map<string, number>();
@@ -143,13 +185,19 @@ export class LocalInkfallPracticeHost {
     authority: AuthoritativeRoom,
     botPlayerIds: readonly string[],
     combatPreset: CombatPresetV1,
+    matchMode: KyxDeathmatchAuthorityModeId,
   ) {
     this.world = world;
     this.authority = authority;
     this.botPlayerIds = Object.freeze([...botPlayerIds]);
-    this.localPrimaryWeaponSlot = combatPreset.authorityPrimaryWeaponSlot;
-    this.allowedLocalWeaponSlots = new Set(CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS);
-    this.localSelectedWeaponSlot = combatPreset.authorityPrimaryWeaponSlot;
+    this.matchMode = matchMode;
+    this.localPrimaryWeaponSlot = matchMode === KYX_MODE_ID.instagib
+      ? LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT
+      : combatPreset.authorityPrimaryWeaponSlot;
+    this.allowedLocalWeaponSlots = new Set(matchMode === KYX_MODE_ID.instagib
+      ? [LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT]
+      : CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS);
+    this.localSelectedWeaponSlot = this.localPrimaryWeaponSlot;
     for (const playerId of [this.localPlayerId, ...this.botPlayerIds]) {
       this.connectionIds.set(playerId, `connection.${playerId}`);
       this.inputSequences.set(playerId, 0);
@@ -161,6 +209,8 @@ export class LocalInkfallPracticeHost {
     options: LocalInkfallPracticeHostOptions = {},
   ): Promise<LocalInkfallPracticeHost> {
     const botCount = boundedBotCount(options.botCount);
+    const matchMode = options.matchMode ?? KYX_MODE_ID.teamDeathmatch;
+    requireWorkerRuntimeAuthorityMode(matchMode);
     const combatPreset = combatPresetById(
       options.combatPresetId ?? DEFAULT_COMBAT_PRESET.id,
     );
@@ -201,7 +251,10 @@ export class LocalInkfallPracticeHost {
       spawnResolver: (_playerId, ordinal) => (
         relayAuthoritySpawn(ordinal)
       ),
-      combat: createRelayAuthorityCombatOptions(world),
+      combat: localPracticeModeCombatOptions(
+        createRelayAuthorityCombatOptions(world),
+        matchMode,
+      ),
       worldPortal: createRelayPortalAuthorityPort(world),
       movementFailureRecovery: ({ playerId }) => (
         botPlayerIds.includes(playerId) ? 'recover_spawn' : 'reject'
@@ -212,6 +265,7 @@ export class LocalInkfallPracticeHost {
       authority,
       botPlayerIds,
       combatPreset,
+      matchMode,
     );
     try {
       for (const playerId of [host.localPlayerId, ...host.botPlayerIds]) {
@@ -227,7 +281,7 @@ export class LocalInkfallPracticeHost {
       authority.setPlayerCombatLoadout(
         host.localPlayerId,
         combatPreset.selectableAbilityIds,
-        combatPreset.authorityPrimaryWeaponSlot,
+        host.localPrimaryWeaponSlot,
       );
       for (const botPlayerId of host.botPlayerIds) {
         const botPreset = combatPresetById(
@@ -236,7 +290,9 @@ export class LocalInkfallPracticeHost {
         authority.setPlayerCombatLoadout(
           botPlayerId,
           botPreset.selectableAbilityIds,
-          botPreset.authorityPrimaryWeaponSlot,
+          matchMode === KYX_MODE_ID.instagib
+            ? LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT
+            : botPreset.authorityPrimaryWeaponSlot,
         );
       }
       if (!authority.startMatch()) {

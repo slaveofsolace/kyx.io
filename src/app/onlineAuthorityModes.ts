@@ -1,11 +1,12 @@
+import type { KyxDeathmatchAuthorityModeId } from '../authority/modes/modeCatalog';
+
 export const ONLINE_AUTHORITY_MATCH_MODE_ID = Object.freeze({
   teamDeathmatch: 'team_deathmatch',
   freeForAll: 'free_for_all',
   instagib: 'instagib',
 } as const);
 
-export type OnlineAuthorityMatchMode =
-  typeof ONLINE_AUTHORITY_MATCH_MODE_ID[keyof typeof ONLINE_AUTHORITY_MATCH_MODE_ID];
+export type OnlineAuthorityMatchMode = KyxDeathmatchAuthorityModeId;
 
 export function isOnlineAuthorityMatchMode(
   value: unknown,

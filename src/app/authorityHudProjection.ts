@@ -3,11 +3,15 @@ import {
   ABILITY_PRESENTATION,
   type AbilityId,
 } from '../abilities/abilityLoadout';
-import type {
-  AuthorityFullSnapshot,
-  AuthorityTdmMatchResultV1,
-  AuthorityTdmPlayerScoreV1,
+import {
+  type AuthorityFullSnapshot,
+  type AuthorityTdmMatchResultV1,
+  type AuthorityTdmPlayerScoreV1,
 } from '../authority';
+import {
+  KYX_MODE_ID,
+  type KyxDeathmatchAuthorityModeId,
+} from '../authority/modes/modeCatalog';
 import type { CombatPlayerSnapshotV1, CombatSnapshotV1 } from '../net';
 import {
   createPracticeHudViewModel,
@@ -103,6 +107,7 @@ export interface AuthorityPracticeHudProjectionInput {
   readonly combat: CombatSnapshotV1;
   readonly localPlayerId: string;
   readonly aimHeld: boolean;
+  readonly matchMode?: KyxDeathmatchAuthorityModeId;
 }
 
 export interface AuthorityScoreboardRow {
@@ -241,9 +246,10 @@ export function createAuthorityPracticeHudViewModel(
   const localTeamScore = input.combat.match.teamScores.find(
     ({ teamId }) => teamId === localTeamId,
   )?.score ?? 0;
-  const opposingTeamScore = input.combat.match.teamScores.find(
-    ({ teamId }) => teamId !== localTeamId,
-  )?.score ?? 0;
+  const opposingTeamScore = input.combat.match.teamScores
+    .filter(({ teamId }) => teamId !== localTeamId)
+    .reduce((highest, { score }) => Math.max(highest, score), 0);
+  const matchMode = input.matchMode ?? KYX_MODE_ID.teamDeathmatch;
   const lifeState: HudLifeState = localPlayer.lifePhase === 'dead'
     ? 'dead'
     : localPlayer.lifePhase === 'alive'
@@ -282,7 +288,11 @@ export function createAuthorityPracticeHudViewModel(
     opponentScore: opposingTeamScore,
     timerLabel: formatMatchClock(input.combat.match.activeTicksRemaining),
     phaseLabel: input.combat.match.phase,
-    objectiveLabel: 'Team deathmatch',
+    objectiveLabel: matchMode === KYX_MODE_ID.instagib
+      ? 'One shot · Individual score'
+      : matchMode === KYX_MODE_ID.freeForAll
+        ? 'Individual score'
+        : 'Team deathmatch',
     life: Object.freeze({
       state: lifeState,
       respawnSeconds,

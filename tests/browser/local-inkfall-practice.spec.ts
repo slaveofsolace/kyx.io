@@ -3,6 +3,59 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 test.describe('local Relay Practice route', () => {
+  test('routes FFA and Instagib through the shared local authority contracts', async ({
+    page,
+  }, testInfo) => {
+    test.skip(
+      testInfo.project.name === 'chromium-mobile-unsupported',
+      'The 8-player Practice runtime is intentionally desktop-only',
+    );
+    test.setTimeout(90_000);
+
+    for (const expected of [
+      {
+        mode: 'free_for_all',
+        title: 'First player to 25 wins',
+        objective: 'Individual score',
+        selectedWeaponSlot: 0,
+        allowedWeaponSlots: [0, 1, 2, 3, 4, 5],
+      },
+      {
+        mode: 'instagib',
+        title: 'One shot · First player to 25',
+        objective: 'One shot · Individual score',
+        selectedWeaponSlot: 3,
+        allowedWeaponSlots: [3],
+      },
+    ] as const) {
+      await page.goto(`/practice?match=${expected.mode}`);
+      await page.waitForFunction(() => window.__KYX_LOCAL_PRACTICE__ !== undefined);
+      await expect(page.locator('body')).toHaveAttribute(
+        'data-local-practice-match-mode',
+        expected.mode,
+      );
+      await expect(page.getByRole('dialog', { name: expected.title })).toBeVisible();
+      await expect(page.locator('.local-practice-gate__modes [aria-current="page"]'))
+        .toHaveAttribute('href', `/practice?match=${expected.mode}`);
+      await expect(page.locator('.hud-practice-label')).toContainText(expected.objective);
+
+      const diagnostics = await page.evaluate(() => (
+        window.__KYX_LOCAL_PRACTICE__?.getSnapshot() ?? null
+      ));
+      expect(diagnostics).toMatchObject({
+        matchMode: expected.mode,
+        playerCount: 8,
+        loadout: {
+          allowedWeaponSlots: expected.allowedWeaponSlots,
+          authoritativeSelectedWeaponSlot: expected.selectedWeaponSlot,
+        },
+      });
+      expect(diagnostics?.match.playerScores.every(({ playerId, teamId }) => (
+        playerId === teamId
+      ))).toBe(true);
+    }
+  });
+
   test('recovers from a stalled pointer-lock request and reconciles a late lock', async ({
     page,
   }) => {

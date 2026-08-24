@@ -2,6 +2,7 @@ import {
   combatSnapshotFromAuthority,
   type AuthorityFullSnapshot,
   type AuthorityPlayerSnapshot,
+  type KyxDeathmatchAuthorityModeId,
 } from '../authority';
 import {
   deriveLocomotionPresentationSignal,
@@ -43,6 +44,7 @@ export interface LocalInkfallPracticePresentationInput {
   readonly localPlayerId: string;
   readonly recentEvents?: readonly ReliableEvent[];
   readonly aimHeld?: boolean;
+  readonly matchMode?: KyxDeathmatchAuthorityModeId;
 }
 
 function clamp01(value: number | undefined): number {
@@ -182,6 +184,7 @@ export function createLocalInkfallPracticePresentation(
       combat: combatSnapshot,
       localPlayerId: input.localPlayerId,
       aimHeld: input.aimHeld === true,
+      ...(input.matchMode === undefined ? {} : { matchMode: input.matchMode }),
     }),
     localMovement,
   });

@@ -90,6 +90,7 @@ describe('shared HUD view model', () => {
       redScore: 5,
       remainingSeconds: 83,
       phase: 'active',
+      objective: 'One shot · Individual score',
       connectionPhase: 'failed',
       connectionError: 'INTERNAL_SOCKET_TOKEN=do-not-display',
       lifeState: 'dead',
@@ -102,6 +103,7 @@ describe('shared HUD view model', () => {
       leftScore: 7,
       rightScore: 5,
       timerLabel: '1:23',
+      objectiveLabel: 'One shot · Individual score',
     });
     expect(view.abilities[0]).toMatchObject({
       state: 'charging',

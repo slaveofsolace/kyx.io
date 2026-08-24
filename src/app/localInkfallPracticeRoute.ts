@@ -1,6 +1,8 @@
 import {
   LOCAL_INKFALL_PRACTICE_TICK_MILLISECONDS,
+  LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT,
   LocalInkfallPracticeHost,
+  KYX_MODE_ID,
   type AuthorityFullSnapshot,
   type LOCAL_INKFALL_PRACTICE_HOST_ID,
   RELAY_AUTHORITY_FIXTURE,
@@ -33,11 +35,11 @@ import {
 } from '../abilities/abilityLoadout';
 import { requestConfirmedPointerLock } from './movement/pointerLock';
 import {
-  LOCAL_PRACTICE_GOAL_SUMMARY,
-  LOCAL_PRACTICE_GOAL_TITLE,
-  LOCAL_PRACTICE_MODE_LABEL,
   LOCAL_PRACTICE_POINTER_LOCK_TIMEOUT_MILLISECONDS,
   localPracticeAbilityGuideRows,
+  localPracticeModeChoices,
+  localPracticeModeCopy,
+  type LocalPracticeModeCopy,
 } from './localPracticeEntryGate';
 import { LocalInkfallPracticeInputBuffer } from './localInkfallPracticeInput';
 import { createLocalInkfallPracticePresentation } from './localInkfallPracticePresentation';
@@ -50,7 +52,7 @@ import {
   createOnlineAuthorityThreeRuntime,
   type OnlineAuthorityThreeRuntime,
 } from './onlineAuthorityThreeRuntime';
-import { ONLINE_AUTHORITY_MATCH_MODE_ID } from './onlineAuthorityModes';
+import { buildPracticeHref, parsePracticeMatchMode } from '../ui/practiceRoute';
 import {
   isOnlineBlinkPreviewCommitEligible,
   resolveOnlineBlinkPreview,
@@ -83,6 +85,7 @@ interface LocalPracticeDiagnosticsV1 {
   readonly lifecycle: string;
   readonly playerCount: number;
   readonly botCount: number;
+  readonly matchMode: LocalInkfallPracticeHost['matchMode'];
   readonly mapId: string;
   readonly fixtureId: string;
   readonly fixtureHash: string;
@@ -213,6 +216,7 @@ function createResultStatRow(label: string, value: string | number): HTMLDivElem
 function createEntryGate(
   abilitySlots: readonly AbilityLoadoutUiSlot[],
   weaponControlLabel: string,
+  modeCopy: LocalPracticeModeCopy,
 ): Readonly<{
   root: HTMLElement;
   status: HTMLElement;
@@ -225,9 +229,9 @@ function createEntryGate(
   root.setAttribute('role', 'dialog');
   root.setAttribute('aria-labelledby', 'local-practice-gate-title');
   root.innerHTML = `
-    <div class="local-practice-gate__index">${LOCAL_PRACTICE_MODE_LABEL}</div>
-    <h1 id="local-practice-gate-title">${LOCAL_PRACTICE_GOAL_TITLE}</h1>
-    <p class="local-practice-gate__brief">${LOCAL_PRACTICE_GOAL_SUMMARY}</p>
+    <div class="local-practice-gate__index">${modeCopy.modeLabel}</div>
+    <h1 id="local-practice-gate-title">${modeCopy.goalTitle}</h1>
+    <p class="local-practice-gate__brief">${modeCopy.goalSummary}</p>
     <details class="local-practice-gate__reference">
       <summary>Controls - WASD / Mouse</summary>
       <dl class="local-practice-gate__controls">
@@ -239,6 +243,16 @@ function createEntryGate(
       </dl>
     </details>
   `;
+  const modeNavigation = document.createElement('nav');
+  modeNavigation.className = 'local-practice-gate__modes';
+  modeNavigation.setAttribute('aria-label', 'Practice match mode');
+  for (const choice of localPracticeModeChoices()) {
+    const link = document.createElement('a');
+    link.href = buildPracticeHref(window.location.search, choice.matchMode);
+    link.textContent = choice.actionLabel;
+    if (choice.matchMode === modeCopy.matchMode) link.setAttribute('aria-current', 'page');
+    modeNavigation.appendChild(link);
+  }
   const abilityGuide = document.createElement('div');
   abilityGuide.className = 'local-practice-gate__abilities';
   abilityGuide.setAttribute('aria-label', 'Selected abilities');
@@ -278,7 +292,7 @@ function createEntryGate(
   actions.append(enter, exit);
   // Keep the route into play ahead of optional reference material. The HUD
   // continues to expose the equipped ability names and keys during the match.
-  root.append(status, actions, loadoutGuide);
+  root.append(modeNavigation, status, actions, loadoutGuide);
   return Object.freeze({ root, status, enter, exit });
 }
 
@@ -308,18 +322,26 @@ export async function mountLocalInkfallPracticeRoute(
   const resultStats = requireElement('#gameover-stats', HTMLDivElement);
   const rematchButton = requireElement('#restart-btn', HTMLButtonElement);
   const menuButton = requireElement('#menu-btn', HTMLButtonElement);
+  const matchMode = parsePracticeMatchMode(window.location.search);
+  const modeCopy = localPracticeModeCopy(matchMode);
   hideLauncherChrome();
-  document.title = 'KYX.IO — Relay Practice';
+  document.title = `KYX.IO — ${modeCopy.modeLabel}`;
   document.querySelector('meta[name="description"]')?.setAttribute(
     'content',
-    'Play KYX.IO team deathmatch practice in the Relay arena.',
+    `Play KYX.IO ${modeCopy.actionLabel.toLocaleLowerCase()} in the Relay arena.`,
   );
   body.dataset.launchSupport = 'local-relay-practice-authority';
   body.dataset.localPracticeStatus = 'loading';
+  body.dataset.localPracticeMatchMode = matchMode;
   canvas.dataset.pointerLock = 'inactive';
 
   const combatPreset = Loadout.getCombatPreset();
-  const allowedWeaponSlots = CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS;
+  const allowedWeaponSlots = matchMode === KYX_MODE_ID.instagib
+    ? Object.freeze([LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT])
+    : CANONICAL_ARENA_AUTHORITY_WEAPON_SLOTS;
+  const initialWeaponSlot = matchMode === KYX_MODE_ID.instagib
+    ? LOCAL_INKFALL_PRACTICE_INSTAGIB_WEAPON_SLOT
+    : combatPreset.authorityPrimaryWeaponSlot;
   const abilityUiSlots = Loadout.getAbilityUiSlots() as readonly AbilityLoadoutUiSlot[];
   const weaponControlLabel = allowedWeaponSlots
     .map((slot) => {
@@ -327,18 +349,19 @@ export async function mountLocalInkfallPracticeRoute(
       return `${family[0]?.toUpperCase() ?? ''}${family.slice(1)} ${slot + 1}`;
     })
     .join(' / ');
-  const gate = createEntryGate(abilityUiSlots, weaponControlLabel);
+  const gate = createEntryGate(abilityUiSlots, weaponControlLabel, modeCopy);
   app.append(gate.root);
   const hud = new HUD();
   hud.hide();
-  hud.showPracticeStatus(true, 7, LOCAL_PRACTICE_MODE_LABEL);
+  hud.showPracticeStatus(true, 7, modeCopy.modeLabel);
   const input = new LocalInkfallPracticeInputBuffer({
-    initialSelectedSlot: combatPreset.authorityPrimaryWeaponSlot,
+    initialSelectedSlot: initialWeaponSlot,
     allowedSelectedSlots: allowedWeaponSlots,
   });
   let host = await LocalInkfallPracticeHost.create({
     botCount: 7,
     combatPresetId: combatPreset.id,
+    matchMode,
   });
   body.dataset.localPracticeMatchOrdinal = '1';
   body.dataset.combatPresetId = combatPreset.id;
@@ -553,7 +576,7 @@ export async function mountLocalInkfallPracticeRoute(
       ...row,
       name: displayPlayerName(row.playerId, host.localPlayerId),
     }));
-    hud.showScoreboard(rows, LOCAL_PRACTICE_MODE_LABEL);
+    hud.showScoreboard(rows, modeCopy.modeLabel);
     scoreboardOpen = true;
     lastScoreboardRefreshAt = nowMilliseconds;
   };
@@ -639,6 +662,7 @@ export async function mountLocalInkfallPracticeRoute(
       localPlayerId: host.localPlayerId,
       recentEvents,
       aimHeld: input.aimHeld,
+      matchMode,
     });
     const authoritativeLocal = snapshot.players.find(
       ({ playerId }) => playerId === host.localPlayerId,
@@ -660,7 +684,7 @@ export async function mountLocalInkfallPracticeRoute(
       nowMilliseconds,
       presentation: projection.presentation,
       combat: projection.combat,
-      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch,
+      matchMode,
       localYawMilliDegrees: projection.localMovement.yawMilliDegrees,
       localPitchMilliDegrees: projection.localMovement.pitchMilliDegrees,
       localSpeedMillimetersPerSecond: Math.hypot(
@@ -671,7 +695,7 @@ export async function mountLocalInkfallPracticeRoute(
       blinkPreview: latestBlinkPreview,
     });
     hud.render(projection.hud);
-    hud.showPracticeStatus(true, host.botPlayerIds.length, LOCAL_PRACTICE_MODE_LABEL);
+    hud.showPracticeStatus(true, host.botPlayerIds.length, modeCopy.modeLabel);
     renderScoreboard(nowMilliseconds);
     const localCombatPlayer = projection.combat.snapshot.players.find(
       ({ playerId }) => playerId === host.localPlayerId,
@@ -680,7 +704,7 @@ export async function mountLocalInkfallPracticeRoute(
       ({ playerId }) => playerId === host.localPlayerId,
     );
     const authoritativeWeaponSlot = localCombatPlayer?.selectedWeaponSlot
-      ?? combatPreset.authorityPrimaryWeaponSlot;
+      ?? initialWeaponSlot;
     body.dataset.localPracticeMatchPhase = projection.combat.snapshot.match.phase;
     body.dataset.localPracticeLifePhase = localCombatPlayer?.lifePhase ?? 'unknown';
     body.dataset.localPracticeKills = String(localScore?.kills ?? 0);
@@ -819,6 +843,7 @@ export async function mountLocalInkfallPracticeRoute(
       const nextHost = await LocalInkfallPracticeHost.create({
         botCount: 7,
         combatPresetId: combatPreset.id,
+        matchMode,
         ...localPracticeRematchIdentity(nextOrdinal),
       });
       if (disposed) {
@@ -938,6 +963,7 @@ export async function mountLocalInkfallPracticeRoute(
       lifecycle: snapshot.lifecycle,
       playerCount: snapshot.players.length,
       botCount: host.botPlayerIds.length,
+      matchMode: host.matchMode,
       mapId: snapshot.identity.mapId,
       fixtureId: snapshot.identity.fixtureId,
       fixtureHash: snapshot.identity.fixtureHash,
@@ -949,7 +975,7 @@ export async function mountLocalInkfallPracticeRoute(
       recentReliableEvents: recentEvents.length,
       loadout: Object.freeze({
         combatPresetId: combatPreset.id,
-        primaryWeaponSlot: combatPreset.authorityPrimaryWeaponSlot,
+        primaryWeaponSlot: initialWeaponSlot,
         allowedWeaponSlots,
         authoritativeSelectedWeaponSlot: localPlayer.combat.armory.selectedSlot,
         authoritativeSelectedWeaponId: selectedWeapon?.weaponId ?? null,

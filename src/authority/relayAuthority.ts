@@ -264,7 +264,12 @@ export const RELAY_AUTHORITY_MAP_BINDING = Object.freeze({
   distanceUnit: 'millimeters',
   angleUnit: 'milli_degrees',
   colliderCardinality: RELAY_AUTHORITY_IDENTITY.colliderCardinality,
-  supportedModes: Object.freeze(['deathmatch', 'team_deathmatch']),
+  supportedModes: Object.freeze([
+    'deathmatch',
+    'team_deathmatch',
+    'free_for_all',
+    'instagib',
+  ]),
   spawns: RELAY_AUTHORITY_SPAWNS,
   zones: RELAY_AUTHORITY_ZONES,
   pickups: Object.freeze([]),
