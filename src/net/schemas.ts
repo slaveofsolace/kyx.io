@@ -426,6 +426,46 @@ function validateResumeRoom(record: UnknownRecord): ClientMessage {
   return record as unknown as ClientMessage;
 }
 
+function validateJoinSpectator(record: UnknownRecord): ClientMessage {
+  exactKeys(record, '$', ['protocolVersion', 'type', 'requestId', 'roomCode', 'displayName']);
+  idAt(required(record, 'requestId', '$'), '$.requestId');
+  stringAt(required(record, 'roomCode', '$'), '$.roomCode', {
+    id: true,
+    maxBytes: PROTOCOL_LIMITS.maxRoomCodeBytes,
+  });
+  stringAt(required(record, 'displayName', '$'), '$.displayName', {
+    maxBytes: PROTOCOL_LIMITS.maxDisplayNameBytes,
+  });
+  return record as unknown as ClientMessage;
+}
+
+function validateResumeSpectator(record: UnknownRecord): ClientMessage {
+  exactKeys(record, '$', ['protocolVersion', 'type', 'requestId', 'roomCode', 'resumeToken']);
+  idAt(required(record, 'requestId', '$'), '$.requestId');
+  stringAt(required(record, 'roomCode', '$'), '$.roomCode', {
+    id: true,
+    maxBytes: PROTOCOL_LIMITS.maxRoomCodeBytes,
+  });
+  resumeTokenAt(required(record, 'resumeToken', '$'), '$.resumeToken');
+  return record as unknown as ClientMessage;
+}
+
+function validateSelectSpectatorTarget(record: UnknownRecord): ClientMessage {
+  exactKeys(record, '$', ['protocolVersion', 'type', 'requestId', 'targetPlayerId']);
+  idAt(required(record, 'requestId', '$'), '$.requestId');
+  nullableIdAt(required(record, 'targetPlayerId', '$'), '$.targetPlayerId');
+  return record as unknown as ClientMessage;
+}
+
+function validateRematchVote(record: UnknownRecord): ClientMessage {
+  exactKeys(record, '$', ['protocolVersion', 'type', 'requestId', 'decision']);
+  idAt(required(record, 'requestId', '$'), '$.requestId');
+  stringAt(required(record, 'decision', '$'), '$.decision', {
+    allowed: ['accept', 'decline'],
+  });
+  return record as unknown as ClientMessage;
+}
+
 function validateRequestFullSnapshot(record: UnknownRecord): ClientMessage {
   exactKeys(record, '$', ['protocolVersion', 'type', 'requestId', 'reason']);
   idAt(required(record, 'requestId', '$'), '$.requestId');
@@ -913,6 +953,144 @@ function validateJoinAccepted(record: UnknownRecord): ServerMessage {
   });
   resumeTokenAt(required(record, 'resumeToken', '$'), '$.resumeToken');
   validateSimulationIdentity(required(record, 'simulationIdentity', '$'), '$.simulationIdentity');
+  return record as unknown as ServerMessage;
+}
+
+function validateSpectatorAccepted(record: UnknownRecord): ServerMessage {
+  exactKeys(record, '$', [
+    'protocolVersion',
+    'type',
+    'requestId',
+    'spectatorId',
+    'roomId',
+    'matchId',
+    'serverTick',
+    'connectionMode',
+    'resumeToken',
+    'simulationIdentity',
+    'targetPlayerId',
+    'targetRevision',
+  ]);
+  for (const key of ['requestId', 'spectatorId', 'roomId', 'matchId'] as const) {
+    idAt(required(record, key, '$'), `$.${key}`);
+  }
+  tickAt(required(record, 'serverTick', '$'), '$.serverTick');
+  stringAt(required(record, 'connectionMode', '$'), '$.connectionMode', {
+    allowed: ['joined', 'resumed'],
+  });
+  resumeTokenAt(required(record, 'resumeToken', '$'), '$.resumeToken');
+  validateSimulationIdentity(required(record, 'simulationIdentity', '$'), '$.simulationIdentity');
+  nullableIdAt(required(record, 'targetPlayerId', '$'), '$.targetPlayerId');
+  numberAt(required(record, 'targetRevision', '$'), '$.targetRevision', {
+    integer: true,
+    min: 0,
+    max: PROTOCOL_LIMITS.maxSequence,
+  });
+  return record as unknown as ServerMessage;
+}
+
+function validateSpectatorTarget(value: unknown, path: string): string {
+  const target = recordAt(value, path);
+  exactKeys(target, path, ['playerId', 'connected', 'lifePhase']);
+  const playerId = idAt(required(target, 'playerId', path), `${path}.playerId`);
+  booleanAt(required(target, 'connected', path), `${path}.connected`);
+  stringAt(required(target, 'lifePhase', path), `${path}.lifePhase`, {
+    nullable: true,
+    allowed: ['alive', 'dead'],
+  });
+  return playerId;
+}
+
+function validateSpectatorState(record: UnknownRecord): ServerMessage {
+  exactKeys(record, '$', [
+    'protocolVersion',
+    'type',
+    'requestId',
+    'matchId',
+    'serverTick',
+    'targetPlayerId',
+    'targetRevision',
+    'targets',
+  ]);
+  nullableIdAt(required(record, 'requestId', '$'), '$.requestId');
+  idAt(required(record, 'matchId', '$'), '$.matchId');
+  tickAt(required(record, 'serverTick', '$'), '$.serverTick');
+  const targetPlayerId = nullableIdAt(required(record, 'targetPlayerId', '$'), '$.targetPlayerId');
+  numberAt(required(record, 'targetRevision', '$'), '$.targetRevision', {
+    integer: true,
+    min: 0,
+    max: PROTOCOL_LIMITS.maxSequence,
+  });
+  const targets = arrayAt(required(record, 'targets', '$'), '$.targets', 64)
+    .map((target, index) => validateSpectatorTarget(target, `$.targets[${index}]`));
+  assertUnique(targets, '$.targets');
+  if (targetPlayerId !== null && !targets.includes(targetPlayerId)) {
+    fail(
+      'PROTOCOL_INVALID_FIELD_VALUE',
+      '$.targetPlayerId',
+      'The current spectator target must exist in the target roster.',
+    );
+  }
+  return record as unknown as ServerMessage;
+}
+
+function validateRematchState(record: UnknownRecord): ServerMessage {
+  exactKeys(record, '$', [
+    'protocolVersion',
+    'type',
+    'requestId',
+    'matchId',
+    'serverTick',
+    'rematchOrdinal',
+    'openedAtTick',
+    'expiresAtTick',
+    'status',
+    'eligiblePlayerIds',
+    'votes',
+  ]);
+  nullableIdAt(required(record, 'requestId', '$'), '$.requestId');
+  idAt(required(record, 'matchId', '$'), '$.matchId');
+  const serverTick = tickAt(required(record, 'serverTick', '$'), '$.serverTick');
+  numberAt(required(record, 'rematchOrdinal', '$'), '$.rematchOrdinal', {
+    integer: true,
+    min: 1,
+    max: 10_000,
+  });
+  const openedAtTick = tickAt(required(record, 'openedAtTick', '$'), '$.openedAtTick');
+  const expiresAtTick = tickAt(required(record, 'expiresAtTick', '$'), '$.expiresAtTick');
+  if (openedAtTick > serverTick || expiresAtTick <= openedAtTick) {
+    fail('PROTOCOL_INVALID_FIELD_VALUE', '$.expiresAtTick', 'Rematch timing is inconsistent.');
+  }
+  stringAt(required(record, 'status', '$'), '$.status', {
+    allowed: ['open', 'accepted', 'declined', 'expired'],
+  });
+  const eligiblePlayerIds = validateStringIds(
+    required(record, 'eligiblePlayerIds', '$'),
+    '$.eligiblePlayerIds',
+    64,
+  );
+  if (eligiblePlayerIds.length === 0) {
+    fail('PROTOCOL_INVALID_FIELD_VALUE', '$.eligiblePlayerIds', 'A rematch requires eligible players.');
+  }
+  assertUnique(eligiblePlayerIds, '$.eligiblePlayerIds');
+  const votePlayerIds = arrayAt(required(record, 'votes', '$'), '$.votes', 64).map((value, index) => {
+    const path = `$.votes[${index}]`;
+    const vote = recordAt(value, path);
+    exactKeys(vote, path, ['playerId', 'decision', 'authorityTick']);
+    const playerId = idAt(required(vote, 'playerId', path), `${path}.playerId`);
+    stringAt(required(vote, 'decision', path), `${path}.decision`, {
+      allowed: ['accept', 'decline'],
+    });
+    const authorityTick = tickAt(required(vote, 'authorityTick', path), `${path}.authorityTick`);
+    if (authorityTick < openedAtTick || authorityTick > serverTick) {
+      fail('PROTOCOL_INVALID_FIELD_VALUE', `${path}.authorityTick`, 'Vote tick is outside the consensus window.');
+    }
+    if (!eligiblePlayerIds.includes(playerId)) {
+      fail('PROTOCOL_INVALID_FIELD_VALUE', `${path}.playerId`, 'Rematch voter is not eligible.');
+    }
+    return playerId;
+  });
+  assertUnique(votePlayerIds, '$.votes');
   return record as unknown as ServerMessage;
 }
 
@@ -2637,6 +2815,10 @@ export function validateClientMessage(input: unknown): ProtocolValidationResult<
       case 'authenticate': return validateAuthenticate(record);
       case 'joinRoom': return validateJoinRoom(record);
       case 'resumeRoom': return validateResumeRoom(record);
+      case 'joinSpectator': return validateJoinSpectator(record);
+      case 'resumeSpectator': return validateResumeSpectator(record);
+      case 'selectSpectatorTarget': return validateSelectSpectatorTarget(record);
+      case 'rematchVote': return validateRematchVote(record);
       case 'requestFullSnapshot': return validateRequestFullSnapshot(record);
       case 'inputBatch': return validateInputBatch(record);
       case 'loadoutRequest': return validateLoadoutRequest(record);
@@ -2672,6 +2854,9 @@ export function validateServerMessage(input: unknown): ProtocolValidationResult<
       case 'serverNotice': return validateServerNotice(record);
       case 'error': return validateError(record);
       case 'pong': return validatePong(record);
+      case 'spectatorAccepted': return validateSpectatorAccepted(record);
+      case 'spectatorState': return validateSpectatorState(record);
+      case 'rematchState': return validateRematchState(record);
       default: fail('PROTOCOL_TYPE_UNSUPPORTED', '$.type', 'Unsupported server message type.');
     }
   });

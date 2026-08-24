@@ -75,6 +75,36 @@ export interface ResumeRoomMessage extends ProtocolEnvelope {
   readonly resumeToken: string;
 }
 
+/** Requests a read-only room session. Identity and the initial target are server-owned. */
+export interface JoinSpectatorMessage extends ProtocolEnvelope {
+  readonly type: 'joinSpectator';
+  readonly requestId: string;
+  readonly roomCode: string;
+  readonly displayName: string;
+}
+
+/** Resumes one server-owned spectator session using only its opaque credential. */
+export interface ResumeSpectatorMessage extends ProtocolEnvelope {
+  readonly type: 'resumeSpectator';
+  readonly requestId: string;
+  readonly roomCode: string;
+  readonly resumeToken: string;
+}
+
+/** Requests a server-validated spectator camera target or a detached overview. */
+export interface SelectSpectatorTargetMessage extends ProtocolEnvelope {
+  readonly type: 'selectSpectatorTarget';
+  readonly requestId: string;
+  readonly targetPlayerId: string | null;
+}
+
+/** Records one connection-bound vote in the server-owned rematch consensus. */
+export interface RematchVoteMessage extends ProtocolEnvelope {
+  readonly type: 'rematchVote';
+  readonly requestId: string;
+  readonly decision: 'accept' | 'decline';
+}
+
 export type FullSnapshotRequestReason = 'missing_baseline' | 'history_gap' | 'manual_evidence';
 
 /**
@@ -145,7 +175,11 @@ export type ClientMessage =
   | InputBatchMessage
   | LoadoutRequestMessage
   | PingMessage
-  | AckMessage;
+  | AckMessage
+  | JoinSpectatorMessage
+  | ResumeSpectatorMessage
+  | SelectSpectatorTargetMessage
+  | RematchVoteMessage;
 
 export interface ProtocolConfig {
   readonly protocolVersion: ProtocolVersion;
@@ -287,6 +321,57 @@ export interface JoinAcceptedMessage extends ProtocolEnvelope {
   readonly connectionMode: 'joined' | 'resumed';
   readonly resumeToken: string;
   readonly simulationIdentity: SimulationIdentityV1;
+}
+
+export interface SpectatorAcceptedMessage extends ProtocolEnvelope {
+  readonly type: 'spectatorAccepted';
+  readonly requestId: string;
+  readonly spectatorId: string;
+  readonly roomId: string;
+  readonly matchId: string;
+  readonly serverTick: number;
+  readonly connectionMode: 'joined' | 'resumed';
+  readonly resumeToken: string;
+  readonly simulationIdentity: SimulationIdentityV1;
+  readonly targetPlayerId: string | null;
+  readonly targetRevision: number;
+}
+
+export interface SpectatorTargetSnapshotV1 {
+  readonly playerId: string;
+  readonly connected: boolean;
+  readonly lifePhase: 'alive' | 'dead' | null;
+}
+
+/** Current server-owned camera target and the complete target selection surface. */
+export interface SpectatorStateMessage extends ProtocolEnvelope {
+  readonly type: 'spectatorState';
+  readonly requestId: string | null;
+  readonly matchId: string;
+  readonly serverTick: number;
+  readonly targetPlayerId: string | null;
+  readonly targetRevision: number;
+  readonly targets: readonly SpectatorTargetSnapshotV1[];
+}
+
+export interface RematchVoteSnapshotV1 {
+  readonly playerId: string;
+  readonly decision: 'accept' | 'decline';
+  readonly authorityTick: number;
+}
+
+/** Public projection of server-owned consensus; request credentials are never disclosed. */
+export interface RematchStateMessage extends ProtocolEnvelope {
+  readonly type: 'rematchState';
+  readonly requestId: string | null;
+  readonly matchId: string;
+  readonly serverTick: number;
+  readonly rematchOrdinal: number;
+  readonly openedAtTick: number;
+  readonly expiresAtTick: number;
+  readonly status: 'open' | 'accepted' | 'declined' | 'expired';
+  readonly eligiblePlayerIds: readonly string[];
+  readonly votes: readonly RematchVoteSnapshotV1[];
 }
 
 export type JoinRejectionCode =
@@ -880,7 +965,10 @@ export type ServerMessage =
   | MatchStateMessage
   | ServerNoticeMessage
   | ErrorMessage
-  | PongMessage;
+  | PongMessage
+  | SpectatorAcceptedMessage
+  | SpectatorStateMessage
+  | RematchStateMessage;
 
 export type ProtocolMessage = ClientMessage | ServerMessage;
 
@@ -894,6 +982,10 @@ export const CLIENT_MESSAGE_TYPES = [
   'ping',
   'ack',
   'requestFullSnapshot',
+  'joinSpectator',
+  'resumeSpectator',
+  'selectSpectatorTarget',
+  'rematchVote',
 ] as const satisfies readonly ClientMessage['type'][];
 
 export const SERVER_MESSAGE_TYPES = [
@@ -908,6 +1000,9 @@ export const SERVER_MESSAGE_TYPES = [
   'serverNotice',
   'error',
   'pong',
+  'spectatorAccepted',
+  'spectatorState',
+  'rematchState',
 ] as const satisfies readonly ServerMessage['type'][];
 
 export const FORBIDDEN_CLIENT_COMMAND_TYPES = [
