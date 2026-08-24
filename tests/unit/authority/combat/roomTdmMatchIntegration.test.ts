@@ -8,10 +8,13 @@ import {
   G4_COMBAT_RULESET_ID,
   G4_COMBAT_RULESET_REVISION,
   G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
+  G4_HITSCAN_ROOM_CAPABILITY_ID,
   G4_TDM_MATCH_ROOM_CAPABILITY_ID,
+  KYX_FFA_MATCH_RULES,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
   type AuthorityImpulseGrenadeWorldPort,
   type AuthorityRoomOptions,
+  type AuthorityTdmMatchRulesV1,
   type AuthorityTeamResolver,
 } from '../../../../src/authority';
 import { hashRulesetContent, requireRuleset } from '../../../../src/content';
@@ -37,6 +40,7 @@ function roomOptions(options: {
   readonly activeTicks?: number;
   readonly postmatchTicks?: number;
   readonly teamResolver?: AuthorityTeamResolver;
+  readonly matchRules?: AuthorityTdmMatchRulesV1;
 } = {}): AuthorityRoomOptions {
   const content = requireRuleset(G4_COMBAT_RULESET_ID, G4_COMBAT_RULESET_REVISION);
   expect(hashRulesetContent(content)).toBe(G4_COMBAT_RULESET_HASH);
@@ -71,6 +75,15 @@ function roomOptions(options: {
       teamResolver: options.teamResolver ?? ((playerId) => (
         playerId === 'player_A' || playerId === 'player_C' ? 'team_blue' : 'team_red'
       )),
+      hitscan: {
+        capabilityId: G4_HITSCAN_ROOM_CAPABILITY_ID,
+        worldOcclusion: () => ({
+          schemaVersion: 1,
+          hit: false,
+          distanceMillimeters: null,
+          colliderId: null,
+        }),
+      },
       impulseGrenade: {
         capabilityId: G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
         world: grenadeWorld(),
@@ -80,7 +93,12 @@ function roomOptions(options: {
       },
       ...(options.match === false
         ? {}
-        : { match: { capabilityId: G4_TDM_MATCH_ROOM_CAPABILITY_ID } }),
+        : {
+            match: {
+              capabilityId: G4_TDM_MATCH_ROOM_CAPABILITY_ID,
+              ...(options.matchRules === undefined ? {} : { rules: options.matchRules }),
+            },
+          }),
     },
   };
 }
@@ -159,11 +177,81 @@ describe('P5.6 exact authoritative room TDM integration', () => {
       },
     } as never)).toThrow(/requires the exact P5.5 ability resource capability/u);
     expect(() => new AuthoritativeRoom(roomOptions({ activeTicks: 9_599 }))).toThrow(
-      /exact revision 3 match durations/u,
+      /exact selected match durations/u,
     );
     const noTeam = room({ teamResolver: () => null });
     expect(() => join(noTeam, 'A')).toThrow(/authority-owned team id/u);
     expect(noTeam.fullSnapshot().players).toEqual([]);
+  });
+
+  it('runs Free For All through the room lifecycle without trusting client teams or scores', () => {
+    const authority = room({
+      matchRules: KYX_FFA_MATCH_RULES,
+      teamResolver: (playerId) => playerId,
+    });
+    start(authority);
+    expect(authority.fullSnapshot().match).toMatchObject({
+      rules: { mode: 'free_for_all', teamScoreLimit: 25 },
+      teamScores: [
+        { teamId: 'player_A', score: 0 },
+        { teamId: 'player_B', score: 0 },
+      ],
+    });
+    advanceTo(authority, 40);
+    expect(authority.applyCombatDamage({
+      targetPlayerId: 'player_B',
+      sourcePlayerId: 'player_A',
+      damagePoints: 100,
+      causeId: 'weapon.ffa_room_test',
+    })).toMatchObject({
+      accepted: true,
+      matchEvents: expect.arrayContaining([
+        expect.objectContaining({
+          kind: 'team_score_changed',
+          teamId: 'player_A',
+          scoreAfter: 1,
+          scoreLimit: 25,
+        }),
+      ]),
+    });
+    expect(authority.fullSnapshot().match).toMatchObject({
+      rules: { mode: 'free_for_all' },
+      teamScores: [
+        { teamId: 'player_A', score: 1 },
+        { teamId: 'player_B', score: 0 },
+      ],
+      playerScores: [
+        { playerId: 'player_A', teamId: 'player_A', kills: 1 },
+        { playerId: 'player_B', teamId: 'player_B', deaths: 1 },
+      ],
+    });
+
+    const checkpoint = JSON.parse(JSON.stringify(
+      authority.exportActiveMatchCheckpoint(),
+    )) as unknown;
+    const restarted = room({
+      matchRules: KYX_FFA_MATCH_RULES,
+      teamResolver: (playerId) => playerId,
+    });
+    expect(restarted.restoreActiveMatchCheckpoint(checkpoint).match).toMatchObject({
+      rules: { mode: 'free_for_all', teamScoreLimit: 25 },
+      authorityTick: 40,
+      teamScores: [
+        { teamId: 'player_A', score: 1 },
+        { teamId: 'player_B', score: 0 },
+      ],
+      feedSequence: 1,
+    });
+    expect(restarted.exportActiveMatchCheckpoint()).toEqual(
+      authority.exportActiveMatchCheckpoint(),
+    );
+
+    const aliased = room({
+      matchRules: KYX_FFA_MATCH_RULES,
+      teamResolver: () => 'client_claimed_team',
+    });
+    expect(() => join(aliased, 'A')).toThrow(/score identity/u);
+    expect(aliased.fullSnapshot().players).toEqual([]);
   });
 
   it('publishes exact timer state and synchronizes warmup-to-active after the boundary tick', () => {

@@ -126,6 +126,7 @@ import {
   type AuthorityWeaponPhase,
   type AuthorityWeaponStateV1,
   type AuthorityTdmMatchEvent,
+  type AuthorityTdmMatchRulesV1,
   type AuthorityTdmMatchStateV1,
   type AuthorityTeleportMovementOutcomeV1,
   type AuthorityTeleportResourceEvent,
@@ -250,6 +251,7 @@ export interface AuthorityRoomAbilityResourceOptions {
 
 export interface AuthorityRoomTdmMatchOptions {
   readonly capabilityId: typeof G4_TDM_MATCH_ROOM_CAPABILITY_ID;
+  readonly rules?: AuthorityTdmMatchRulesV1;
 }
 
 export interface JoinNewAuthorityPlayerOptions {
@@ -1188,6 +1190,7 @@ function validateCheckpointImpulseGrenadeProjectile(
 
 function validateCheckpointTdmMatch(
   value: unknown,
+  expectedRules: AuthorityTdmMatchRulesV1,
   matchId: string,
   lifecycle: 'warmup' | 'active' | 'postmatch',
   phaseStartedAtTick: number,
@@ -1204,17 +1207,17 @@ function validateCheckpointTdmMatch(
   checkpointLiteral(state.matchId, matchId, 'TDM checkpoint match id');
   checkpointFlatRecordMatches(
     state.rules,
-    G4_TDM_MATCH_RULES as unknown as Readonly<Record<string, string | number | boolean | null>>,
+    expectedRules as unknown as Readonly<Record<string, string | number | boolean | null>>,
     'TDM checkpoint rules',
   );
   checkpointLiteral(state.authorityTick, serverTick, 'TDM checkpoint authority tick');
   checkpointLiteral(state.phase, lifecycle, 'TDM checkpoint phase');
   checkpointLiteral(state.phaseStartedAtTick, phaseStartedAtTick, 'TDM checkpoint phase start');
   const phaseDuration = lifecycle === 'warmup'
-    ? G4_TDM_MATCH_RULES.warmupTicks
+    ? expectedRules.warmupTicks
     : lifecycle === 'active'
-      ? G4_TDM_MATCH_RULES.activeTicks
-      : G4_TDM_MATCH_RULES.postmatchTicks;
+      ? expectedRules.activeTicks
+      : expectedRules.postmatchTicks;
   const phaseEndsAtTick = phaseStartedAtTick + phaseDuration;
   checkpointLiteral(state.phaseEndsAtTick, phaseEndsAtTick, 'TDM checkpoint phase end');
   checkpointLiteral(
@@ -1225,7 +1228,7 @@ function validateCheckpointTdmMatch(
   checkpointLiteral(
     state.activeTicksRemaining,
     lifecycle === 'warmup'
-      ? G4_TDM_MATCH_RULES.activeTicks
+      ? expectedRules.activeTicks
       : lifecycle === 'active' ? Math.max(0, phaseEndsAtTick - serverTick) : 0,
     'TDM checkpoint active ticks remaining',
   );
@@ -1241,7 +1244,7 @@ function validateCheckpointTdmMatch(
     }
     priorTeamId = teamId;
     teamIds.add(teamId);
-    checkpointInteger(entry.score, 0, G4_TDM_MATCH_RULES.teamScoreLimit, 'TDM team score');
+    checkpointInteger(entry.score, 0, expectedRules.teamScoreLimit, 'TDM team score');
   }
 
   const playerScores = checkpointArray(state.playerScores, 2, 64, 'TDM player scores');
@@ -1309,7 +1312,7 @@ function validateCheckpointTdmMatch(
       checkpointInteger(
         entry.teamScoreAfter,
         1,
-        G4_TDM_MATCH_RULES.teamScoreLimit,
+        expectedRules.teamScoreLimit,
         'TDM feed team score',
       );
     }
@@ -1350,6 +1353,7 @@ function validateCheckpointTdmMatch(
 
 function validateCheckpointPendingMatchEvents(
   value: unknown,
+  expectedRules: AuthorityTdmMatchRulesV1,
   matchId: string,
   lifecycle: 'warmup' | 'active' | 'postmatch',
   phaseStartedAtTick: number,
@@ -1372,7 +1376,7 @@ function validateCheckpointPendingMatchEvents(
   checkpointLiteral(event.from, 'lobby', 'pending TDM event source');
   checkpointLiteral(event.to, 'warmup', 'pending TDM event destination');
   checkpointLiteral(event.phaseStartedAtTick, phaseStartedAtTick, 'pending TDM phase start');
-  checkpointLiteral(event.phaseEndsAtTick, G4_TDM_MATCH_RULES.warmupTicks, 'pending TDM phase end');
+  checkpointLiteral(event.phaseEndsAtTick, expectedRules.warmupTicks, 'pending TDM phase end');
   checkpointLiteral(event.reason, 'match_started', 'pending TDM event reason');
   return events as readonly AuthorityTdmMatchEvent[];
 }
@@ -1443,6 +1447,7 @@ export class AuthoritativeRoom {
   private readonly impulseGrenadeWorldPort: AuthorityImpulseGrenadeWorldPort | null;
   private readonly worldPortalPort: AuthorityWorldPortalPort | null;
   private readonly movementFailureRecovery: AuthorityMovementFailureRecoveryPolicy | null;
+  private readonly tdmMatchRules: AuthorityTdmMatchRulesV1 | null;
   private tdmMatchState: AuthorityTdmMatchStateV1 | null = null;
   private activeTickMatchEvents: AuthorityTdmMatchEvent[] | null = null;
   private pendingMatchEvents: AuthorityTdmMatchEvent[] = [];
@@ -1538,6 +1543,7 @@ export class AuthoritativeRoom {
       this.impulseGrenadeCapabilityId = null;
       this.abilityResourceCapabilityId = null;
       this.tdmMatchCapabilityId = null;
+      this.tdmMatchRules = null;
       this.teamResolver = () => null;
       this.worldOcclusionPort = null;
       this.impulseGrenadeWorldPort = null;
@@ -1663,13 +1669,18 @@ export class AuthoritativeRoom {
       }
       if (combatOptions.match === undefined) {
         this.tdmMatchCapabilityId = null;
+        this.tdmMatchRules = null;
         this.tdmMatchState = null;
       } else {
         const matchOptions = snapshotPlainDataRecord(
           combatOptions.match,
           'room TDM match options',
         );
-        exactKeys(matchOptions, ['capabilityId'], 'room TDM match options');
+        exactKeys(
+          matchOptions,
+          Object.hasOwn(matchOptions, 'rules') ? ['capabilityId', 'rules'] : ['capabilityId'],
+          'room TDM match options',
+        );
         if (matchOptions.capabilityId !== G4_TDM_MATCH_ROOM_CAPABILITY_ID) {
           throw new RangeError('room TDM match capability is unsupported');
         }
@@ -1679,20 +1690,24 @@ export class AuthoritativeRoom {
         if (combatOptions.teamResolver === undefined) {
           throw new RangeError('room TDM match requires an authority team resolver');
         }
-        assertAuthorityTdmMatchRules(G4_TDM_MATCH_RULES);
+        const matchRules = Object.hasOwn(matchOptions, 'rules')
+          ? structuredClone(matchOptions.rules) as AuthorityTdmMatchRulesV1
+          : G4_TDM_MATCH_RULES;
+        assertAuthorityTdmMatchRules(matchRules);
         if (
-          this.warmupTicks !== G4_TDM_MATCH_RULES.warmupTicks
-          || this.activeTicks !== G4_TDM_MATCH_RULES.activeTicks
-          || this.postmatchTicks !== G4_TDM_MATCH_RULES.postmatchTicks
+          this.warmupTicks !== matchRules.warmupTicks
+          || this.activeTicks !== matchRules.activeTicks
+          || this.postmatchTicks !== matchRules.postmatchTicks
         ) {
-          throw new RangeError('room TDM match requires the exact revision 3 match durations');
+          throw new RangeError('room deathmatch requires the exact selected match durations');
         }
         this.tdmMatchCapabilityId = G4_TDM_MATCH_ROOM_CAPABILITY_ID;
+        this.tdmMatchRules = deepFreeze(matchRules);
         this.tdmMatchState = createAuthorityTdmMatchState({
           schemaVersion: 1,
           matchId: this.identity.matchId,
           authorityTick: this.tick,
-        }, G4_TDM_MATCH_RULES);
+        }, this.tdmMatchRules);
       }
     }
   }
@@ -4230,6 +4245,7 @@ export class AuthoritativeRoom {
     }
     const restoredMatch = validateCheckpointTdmMatch(
       root.match,
+      this.tdmMatchRules as AuthorityTdmMatchRulesV1,
       this.identity.matchId,
       lifecycle,
       phaseStartedAtTick,
@@ -4239,6 +4255,7 @@ export class AuthoritativeRoom {
     );
     const restoredPendingEvents = validateCheckpointPendingMatchEvents(
       root.pendingMatchEvents,
+      this.tdmMatchRules as AuthorityTdmMatchRulesV1,
       this.identity.matchId,
       lifecycle,
       phaseStartedAtTick,
