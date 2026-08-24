@@ -149,7 +149,15 @@ test('Cutline is a bounded human-review candidate backed by the shared practice 
   });
 
   await page.evaluate(async () => {
+    const requestLiveFrame = window.requestAnimationFrame.bind(window);
+    await new Promise<void>((resolve) => requestLiveFrame(() => resolve()));
     window.requestAnimationFrame = () => 0;
+  });
+  // The live loop schedules its successor before the test callback above runs.
+  // Let that already-queued frame render once with future scheduling disabled so
+  // it cannot overwrite the synthetic HUD state below.
+  await page.waitForTimeout(50);
+  await page.evaluate(async () => {
     const hudModulePath = '/src/ui/HUD.js';
     const { HUD } = await import(hudModulePath);
     const hud = new HUD();

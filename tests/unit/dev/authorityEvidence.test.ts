@@ -1293,6 +1293,7 @@ describe('authority evidence transport state', () => {
       rejectedCommands: 2,
       duplicateSequence: 1,
       staleSequence: 1,
+      clientTickTooFarAhead: 0,
       clientTickTooOld: 0,
       lastCategory: 'stale_sequence',
     });
@@ -1484,6 +1485,90 @@ describe('authority evidence transport state', () => {
     expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
       type: 'inputBatch',
       commands: [{ sequence: 2, clientTick: 502 }],
+    });
+    expect(client.diagnostics().connection.phase).toBe('joined');
+    client.dispose();
+  });
+
+  it('rebases a future client tick when an overloaded authority drops elapsed ticks', () => {
+    const transport = new FakeTransport();
+    const scheduler = new FakeScheduler();
+    const state = stateAtTick(createTestMovementState({ playerId: 'player.1' }), 10);
+    let requestSequence = 0;
+    const client = new AuthorityEvidenceClient({
+      config: {
+        authorityUrl: 'http://127.0.0.1:8787',
+        mode: 'join',
+        roomCode: 'KYX-234567',
+        displayName: 'Authority Lag Recovery Peer',
+        impairmentProfile: 'nominal',
+      },
+      roomCode: 'KYX-234567',
+      expectedIdentity: EXPECTED_IDENTITY,
+      profile: PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+      queries: new FakeMovementQueryPort(),
+      transport,
+      scheduler,
+      createRequestId: () => `request.${requestSequence++}`,
+    });
+    client.start();
+    const connection = transport.connections[0]!;
+    connection.open();
+    connection.receive(welcome('connection.authority-lag-recovery'));
+    const join = sentMessage(connection, 1);
+    connection.receive(joinAccepted(
+      join.type === 'joinRoom' ? join.requestId : '',
+      'joined',
+      'F',
+    ));
+    connection.receive(fullSnapshot(state));
+
+    scheduler.runTick();
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{ sequence: 1, clientTick: 11 }],
+    });
+    connection.receive({
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'error',
+      code: 'INPUT_REJECTED',
+      detail: '1:client_tick_too_far_ahead',
+      requestId: null,
+    });
+
+    expect(client.diagnostics()).toMatchObject({
+      connection: { phase: 'joined' },
+      input: {
+        nextSequence: 2,
+        nextClientTick: 10,
+        authorityInputRejections: {
+          messages: 1,
+          rejectedCommands: 1,
+          duplicateSequence: 0,
+          staleSequence: 0,
+          clientTickTooFarAhead: 1,
+          clientTickTooOld: 0,
+          lastCategory: 'client_tick_too_far_ahead',
+        },
+      },
+      lastNotice: 'INPUT_REJECTED: rebased after 1 authority-lagged input command',
+      counters: { applicationErrors: 0 },
+    });
+
+    const batchesBeforeReconciliation = connection.sent
+      .map((_, index) => sentMessage(connection, index))
+      .filter(({ type }) => type === 'inputBatch').length;
+    scheduler.runTick();
+    expect(connection.sent
+      .map((_, index) => sentMessage(connection, index))
+      .filter(({ type }) => type === 'inputBatch')).toHaveLength(batchesBeforeReconciliation);
+
+    connection.receive(fullSnapshot(stateAtTick(state, 12)));
+    scheduler.runTick();
+    expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
+      type: 'inputBatch',
+      commands: [{ sequence: 2, clientTick: 12 }],
     });
     expect(client.diagnostics().connection.phase).toBe('joined');
     client.dispose();

@@ -152,6 +152,7 @@ interface MutableAuthorityEvidenceCounters {
 type RecoverableInputRejectionCategory =
   | 'duplicate_sequence'
   | 'stale_sequence'
+  | 'client_tick_too_far_ahead'
   | 'client_tick_too_old'
   | 'mixed';
 
@@ -159,6 +160,7 @@ interface ParsedRecoverableInputRejections {
   readonly sequences: readonly number[];
   readonly duplicateSequence: number;
   readonly staleSequence: number;
+  readonly clientTickTooFarAhead: number;
   readonly clientTickTooOld: number;
   readonly category: RecoverableInputRejectionCategory;
 }
@@ -176,23 +178,26 @@ function parseRecoverableInputRejections(
   const sequences: number[] = [];
   let duplicateSequence = 0;
   let staleSequence = 0;
+  let clientTickTooFarAhead = 0;
   let clientTickTooOld = 0;
   for (const entry of entries) {
-    const match = /^(0|[1-9][0-9]*):(duplicate_sequence|stale_sequence|client_tick_too_old)$/u.exec(entry);
+    const match = /^(0|[1-9][0-9]*):(duplicate_sequence|stale_sequence|client_tick_too_far_ahead|client_tick_too_old)$/u.exec(entry);
     if (match === null) return null;
     const sequence = Number(match[1]);
     if (!Number.isSafeInteger(sequence) || sequence > PROTOCOL_LIMITS.maxSequence) return null;
     sequences.push(sequence);
     if (match[2] === 'duplicate_sequence') duplicateSequence += 1;
     else if (match[2] === 'stale_sequence') staleSequence += 1;
+    else if (match[2] === 'client_tick_too_far_ahead') clientTickTooFarAhead += 1;
     else clientTickTooOld += 1;
   }
-  const categories = [duplicateSequence, staleSequence, clientTickTooOld]
+  const categories = [duplicateSequence, staleSequence, clientTickTooFarAhead, clientTickTooOld]
     .filter((count) => count > 0).length;
   return Object.freeze({
     sequences: Object.freeze(sequences),
     duplicateSequence,
     staleSequence,
+    clientTickTooFarAhead,
     clientTickTooOld,
     category: categories > 1
       ? 'mixed'
@@ -200,7 +205,9 @@ function parseRecoverableInputRejections(
         ? 'duplicate_sequence'
         : staleSequence > 0
           ? 'stale_sequence'
-          : 'client_tick_too_old',
+          : clientTickTooFarAhead > 0
+            ? 'client_tick_too_far_ahead'
+            : 'client_tick_too_old',
   });
 }
 
@@ -257,6 +264,7 @@ export interface AuthorityEvidenceDiagnostics {
       readonly rejectedCommands: number;
       readonly duplicateSequence: number;
       readonly staleSequence: number;
+      readonly clientTickTooFarAhead: number;
       readonly clientTickTooOld: number;
       readonly lastCategory: RecoverableInputRejectionCategory | null;
     };
@@ -497,6 +505,7 @@ export class AuthorityEvidenceClient {
   private teleportCooldownTicksRemaining = 0;
   private duplicateSequenceInputRejections = 0;
   private staleSequenceInputRejections = 0;
+  private clientTickTooFarAheadInputRejections = 0;
   private clientTickTooOldInputRejections = 0;
   private lastInputRejectionCategory: RecoverableInputRejectionCategory | null = null;
   private correctionSampleCount = 0;
@@ -726,6 +735,7 @@ export class AuthorityEvidenceClient {
           rejectedCommands: this.counters.recoverableInputRejectedCommands,
           duplicateSequence: this.duplicateSequenceInputRejections,
           staleSequence: this.staleSequenceInputRejections,
+          clientTickTooFarAhead: this.clientTickTooFarAheadInputRejections,
           clientTickTooOld: this.clientTickTooOldInputRejections,
           lastCategory: this.lastInputRejectionCategory,
         },
@@ -1022,15 +1032,27 @@ export class AuthorityEvidenceClient {
     const rejectedCommands = (
       parsed.duplicateSequence
       + parsed.staleSequence
+      + parsed.clientTickTooFarAhead
       + parsed.clientTickTooOld
     );
     this.counters.recoverableInputRejectionMessages += 1;
     this.counters.recoverableInputRejectedCommands += rejectedCommands;
     this.duplicateSequenceInputRejections += parsed.duplicateSequence;
     this.staleSequenceInputRejections += parsed.staleSequence;
+    this.clientTickTooFarAheadInputRejections += parsed.clientTickTooFarAhead;
     this.clientTickTooOldInputRejections += parsed.clientTickTooOld;
     this.lastInputRejectionCategory = parsed.category;
-    if (parsed.clientTickTooOld > 0) {
+    if (parsed.clientTickTooFarAhead > 0) {
+      // A saturated authority can intentionally drop elapsed simulation ticks
+      // while the browser's input timer keeps its wall-clock cadence. Preserve
+      // the anti-future gate, discard speculation, and wait for an authoritative
+      // snapshot before generating another command.
+      this.neutralizeInput();
+      this.nextClientTick = this.serverTick;
+      this.prediction = null;
+      this.resetPredictionOnNextSnapshot = true;
+      this.lastNotice = `INPUT_REJECTED: rebased after ${parsed.clientTickTooFarAhead} authority-lagged input command${parsed.clientTickTooFarAhead === 1 ? '' : 's'}`;
+    } else if (parsed.clientTickTooOld > 0) {
       // Backgrounded browsers can suspend the 20 Hz input timer while the
       // authority keeps advancing. Rebase the client clock from elapsed
       // authority time and wait for a fresh reconciliation before generating
