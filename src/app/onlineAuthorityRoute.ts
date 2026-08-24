@@ -93,6 +93,7 @@ import { nextOnlineArenaProfile } from './onlineArenaRotation';
 import {
   ONLINE_AUTHORITY_MATCH_MODE_ID,
   defaultOnlineAuthorityMatchMode,
+  isOnlineIndividualDeathmatchMode,
   onlineAuthorityMatchModeLabel,
   type OnlineAuthorityMatchMode,
 } from './onlineAuthorityModes';
@@ -354,13 +355,28 @@ function renderLanding(
     element('span', '', 'Every player owns one score identity; first to 25 wins.'),
   );
   ffaModeOption.append(ffaModeCheckbox, ffaModeCopy);
+  const instagibModeOption = element('label', 'online-preview__profile-option');
+  const instagibModeCheckbox = document.createElement('input');
+  instagibModeCheckbox.type = 'radio';
+  instagibModeCheckbox.name = 'online-match-mode';
+  instagibModeCheckbox.required = true;
+  instagibModeCheckbox.checked = selectedMatchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.instagib;
+  instagibModeCheckbox.disabled = !configured;
+  instagibModeCheckbox.dataset.testid = 'online-instagib-mode';
+  const instagibModeCopy = element('span', '');
+  instagibModeCopy.append(
+    element('strong', '', 'Instagib'),
+    element('span', '', 'Longshot only. Every authority-confirmed hit eliminates.'),
+  );
+  instagibModeOption.append(instagibModeCheckbox, instagibModeCopy);
   const modePicker = element('details', 'online-preview__profile-picker');
   modePicker.hidden = !configured;
-  modePicker.open = selectedMatchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll;
+  modePicker.open = isOnlineIndividualDeathmatchMode(selectedMatchMode);
   modePicker.append(
     element('summary', '', 'Match mode'),
     tdmModeOption,
     ffaModeOption,
+    instagibModeOption,
   );
   content.append(modePicker);
   const profileOption = element('label', 'online-preview__profile-option');
@@ -454,9 +470,11 @@ function renderLanding(
     return selectedLegacyProfile;
   };
   const chosenMatchMode = (): OnlineAuthorityMatchMode => (
-    ffaModeCheckbox.checked
-      ? ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll
-      : ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch
+    instagibModeCheckbox.checked
+      ? ONLINE_AUTHORITY_MATCH_MODE_ID.instagib
+      : ffaModeCheckbox.checked
+        ? ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll
+        : ONLINE_AUTHORITY_MATCH_MODE_ID.teamDeathmatch
   );
   const lobby = element('section', 'online-preview__lobby');
   const createCard = element('article', 'online-preview__lobby-card');
@@ -886,7 +904,15 @@ async function mountSession(
     ? sessionBinding.proof
     : null;
   const matchMode = mapProof?.matchMode ?? defaultOnlineAuthorityMatchMode();
-  const freeForAllRuntime = matchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll;
+  const individualDeathmatchRuntime = isOnlineIndividualDeathmatchMode(matchMode);
+  const instagibRuntime = matchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.instagib;
+  if (instagibRuntime) {
+    allowedAuthorityWeaponSlots.clear();
+    allowedAuthorityWeaponSlots.add(3);
+  }
+  const initialAuthorityWeaponSlot = instagibRuntime
+    ? 3
+    : selectedCombatPreset.authorityPrimaryWeaponSlot;
   body.dataset.onlineMatchMode = matchMode;
   const mapProfile = mapProof?.roomProfile ?? null;
   const mapRuntime = mapProof !== null;
@@ -1060,7 +1086,7 @@ async function mountSession(
     button.dataset.testid = `online-weapon-slot-${definition.slot}`;
     button.dataset.slot = String(definition.slot);
     const allowed = allowedAuthorityWeaponSlots.has(definition.slot);
-    const active = definition.slot === selectedCombatPreset.authorityPrimaryWeaponSlot;
+    const active = definition.slot === initialAuthorityWeaponSlot;
     button.dataset.active = String(active);
     button.dataset.presetAllowed = String(allowed);
     button.disabled = !allowed;
@@ -1148,8 +1174,8 @@ async function mountSession(
   combatStrip.append(blueCombat, score, redCombat);
   const legend = element('div', 'online-session__legend');
   for (const [label, color] of [
-    [freeForAllRuntime ? 'You' : 'Team blue', '#14e0ff'],
-    [freeForAllRuntime ? 'Rivals' : 'Team red', '#ff6570'],
+    [individualDeathmatchRuntime ? 'You' : 'Team blue', '#14e0ff'],
+    [individualDeathmatchRuntime ? 'Rivals' : 'Team red', '#ff6570'],
     ['Server reconciliation', '#f3fbfd'],
     ['Impulse Grenade', '#c889ff'],
   ] as const) {
@@ -1577,7 +1603,7 @@ async function mountSession(
   let aimHeld = false;
   let blinkPreviewHeld = false;
   let latestBlinkPreview: OnlineBlinkPreview | null = null;
-  let selectedWeaponSlot: number = selectedCombatPreset.authorityPrimaryWeaponSlot;
+  let selectedWeaponSlot: number = initialAuthorityWeaponSlot;
   let loadoutSubmittedForPlayerId: string | null = null;
   let matchResultShown = false;
 
@@ -2522,7 +2548,7 @@ async function mountSession(
   for (const [slot, button] of weaponSlotButtons.entries()) {
     button.addEventListener('click', () => selectWeaponSlot(slot));
   }
-  selectWeaponSlot(selectedCombatPreset.authorityPrimaryWeaponSlot);
+  selectWeaponSlot(initialAuthorityWeaponSlot);
   window.addEventListener('keydown', keyboardHandler);
   window.addEventListener('keyup', keyboardHandler);
   window.addEventListener('keydown', scoreboardKeyboardHandler);
@@ -2967,7 +2993,7 @@ async function mountSession(
         threeRuntime = null;
       }
     } else if (!threeDimensionalMap) {
-      renderArena(canvas, presentation, combatView, mapRuntime, freeForAllRuntime);
+      renderArena(canvas, presentation, combatView, mapRuntime, individualDeathmatchRuntime);
     }
     if (renderRequested || nowMilliseconds - lastDiagnosticsRefresh >= 100) {
       const combat = diagnostics.combat.snapshot;
@@ -2985,16 +3011,16 @@ async function mountSession(
         .filter(({ teamId }) => teamId !== localScoreIdentity)
         .slice()
         .sort((left, right) => right.score - left.score || left.teamId.localeCompare(right.teamId))[0];
-      const bluePlayer = freeForAllRuntime
+      const bluePlayer = individualDeathmatchRuntime
         ? localPlayer
         : combat?.players.find(({ teamId }) => teamId === 'team_blue');
-      const redPlayer = freeForAllRuntime
+      const redPlayer = individualDeathmatchRuntime
         ? combat?.players.find(({ teamId }) => teamId === opposingLeader?.teamId)
         : combat?.players.find(({ teamId }) => teamId === 'team_red');
-      const blueScore = freeForAllRuntime
+      const blueScore = individualDeathmatchRuntime
         ? combat?.match.teamScores.find(({ teamId }) => teamId === localScoreIdentity)?.score ?? 0
         : combat?.match.teamScores.find(({ teamId }) => teamId === 'team_blue')?.score ?? 0;
-      const redScore = freeForAllRuntime
+      const redScore = individualDeathmatchRuntime
         ? opposingLeader?.score ?? 0
         : combat?.match.teamScores.find(({ teamId }) => teamId === 'team_red')?.score ?? 0;
       connectionFact.value.textContent = diagnostics.connection.phase.toUpperCase();
@@ -3035,7 +3061,9 @@ async function mountSession(
         redScore,
         remainingSeconds,
         phase: combat?.match.phase ?? diagnostics.authority.matchPhase ?? 'Waiting',
-        objective: freeForAllRuntime ? 'Individual score' : 'Team score',
+        objective: instagibRuntime
+          ? 'One shot · Individual score'
+          : individualDeathmatchRuntime ? 'Individual score' : 'Team score',
         connectionPhase: diagnostics.connection.phase,
         connectionError: presentationFailureDetail ?? diagnostics.lastError,
         lifeState: localPlayer?.lifePhase === 'dead'
@@ -3065,20 +3093,20 @@ async function mountSession(
           );
       const scoreboardRows = authorityScoreRows.map((player) => {
               const row = element('div', 'online-session__scoreboard-player');
-              const team = freeForAllRuntime
+              const team = individualDeathmatchRuntime
                 ? player.isYou ? 'blue' : 'red'
                 : player.teamId === 'team_red' ? 'red' : 'blue';
               row.dataset.team = team;
               const identityLabel = player.isYou
                 ? 'You'
-                : freeForAllRuntime
+                : individualDeathmatchRuntime
                   ? `Rival ${player.playerId.slice(-6)}`
                   : `${team === 'red' ? 'Red' : 'Blue'} peer`;
               row.append(
                 element(
                   'span',
                   'online-session__scoreboard-team',
-                  freeForAllRuntime ? player.isYou ? 'self' : 'rival' : team,
+                  individualDeathmatchRuntime ? player.isYou ? 'self' : 'rival' : team,
                 ),
                 element('strong', '', identityLabel),
                 element('span', '', `${player.kills} K`),
@@ -3125,14 +3153,14 @@ async function mountSession(
         blueState,
         blueHealthText,
         blueHealthFill,
-        freeForAllRuntime ? 'YOU' : 'BLUE',
+        individualDeathmatchRuntime ? 'YOU' : 'BLUE',
       );
       applyTeam(
         redPlayer,
         redState,
         redHealthText,
         redHealthFill,
-        freeForAllRuntime ? 'LEADER' : 'RED',
+        individualDeathmatchRuntime ? 'LEADER' : 'RED',
       );
       localHealth.value.textContent = hudView.life.state === 'dead'
         ? `Respawn ${hudView.life.respawnSeconds ?? 0}s`

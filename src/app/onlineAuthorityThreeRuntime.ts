@@ -75,7 +75,7 @@ import {
 } from './onlineAuthorityProfiles';
 import { createOnlineWeaponPresentationFx } from './onlineWeaponPresentationFx';
 import {
-  ONLINE_AUTHORITY_MATCH_MODE_ID,
+  isOnlineIndividualDeathmatchMode,
   type OnlineAuthorityMatchMode,
 } from './onlineAuthorityModes';
 
@@ -1041,7 +1041,7 @@ export async function createOnlineAuthorityThreeRuntime(
       let avatar = avatars.get(remote.entityId);
       if (avatar === undefined) {
         avatar = createPlayerAvatar(
-          frame.matchMode === ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll
+          isOnlineIndividualDeathmatchMode(frame.matchMode)
             ? 'team_red'
             : combatPlayer?.teamId ?? null,
           combatPlayer,

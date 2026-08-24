@@ -363,6 +363,55 @@ describe('createOnlineAuthorityRoom', () => {
     )).rejects.toThrow(/mismatched online match mode/u);
   });
 
+  it('binds Instagib creation and join verification without accepting an FFA alias', async () => {
+    const payload = {
+      ok: true,
+      roomCode: 'KYX-NST234',
+      roomProfile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+      mapBinding: ONLINE_RELAY_REV1_MAP_BINDING,
+    };
+    const createFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(createOnlineAuthorityModeCombatRoom(
+      'https://authority.example.test',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+      createFetch,
+    )).resolves.toMatchObject({
+      roomCode: 'KYX-NST234',
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+    });
+    expect(createFetch).toHaveBeenCalledWith(
+      'https://authority.example.test/api/rooms/create',
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          [ONLINE_MATCH_MODE_HEADER]: ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+        }),
+      }),
+    );
+
+    const joinFetch = vi.fn<OnlineAuthorityFetch>(async () => response(201, payload));
+    await expect(verifyOnlineAuthorityModeCombatRoom(
+      'https://authority.example.test',
+      'kyx-nst234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+      joinFetch,
+    )).resolves.toMatchObject({ matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.instagib });
+
+    const aliased = vi.fn<OnlineAuthorityFetch>(async () => response(201, {
+      ...payload,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
+    }));
+    await expect(verifyOnlineAuthorityModeCombatRoom(
+      'https://authority.example.test',
+      'KYX-NST234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+      aliased,
+    )).rejects.toThrow(/mismatched online match mode/u);
+  });
+
   it('does not retry a client-side denial and rejects malformed success payloads', async () => {
     const denied = vi.fn<OnlineAuthorityFetch>(async () => response(403, { ok: false }));
     await expect(createOnlineAuthorityRoom('https://authority.example.test', denied))

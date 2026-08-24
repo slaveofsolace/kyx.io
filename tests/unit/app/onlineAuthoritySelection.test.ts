@@ -201,6 +201,23 @@ describe('parseOnlineAuthorityRequest', () => {
       matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
     });
   });
+
+  it('negotiates Instagib as an exact mode while preserving create and join operations', () => {
+    expect(parseOnlineAuthorityRequest(
+      `?mode=create&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}&match=instagib`,
+    )).toEqual({
+      kind: 'create',
+      profile: ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+    });
+    expect(parseOnlineAuthorityRequest(
+      '?mode=join&room=kyx-nst234&match=instagib',
+    )).toEqual({
+      kind: 'join',
+      roomCode: 'KYX-NST234',
+      matchMode: ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+    });
+  });
 });
 
 describe('online URL and display-name boundaries', () => {
@@ -208,6 +225,7 @@ describe('online URL and display-name boundaries', () => {
     expect(ONLINE_AUTHORITY_MATCH_MODE_ID).toEqual({
       teamDeathmatch: KYX_MODE_ID.teamDeathmatch,
       freeForAll: KYX_MODE_ID.freeForAll,
+      instagib: KYX_MODE_ID.instagib,
     });
   });
 
@@ -252,6 +270,19 @@ describe('online URL and display-name boundaries', () => {
       ONLINE_AUTHORITY_MATCH_MODE_ID.freeForAll,
     )).toBe(
       `/online?mode=join&room=KYX-FFA234&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}&match=free_for_all`,
+    );
+    expect(onlineCreatePath(
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+    )).toBe(
+      `/online?mode=create&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}&match=instagib`,
+    );
+    expect(onlineJoinPath(
+      'kyx-nst234',
+      ONLINE_RELAY_REV1_COMBAT_PROFILE_ID,
+      ONLINE_AUTHORITY_MATCH_MODE_ID.instagib,
+    )).toBe(
+      `/online?mode=join&room=KYX-NST234&profile=${ONLINE_RELAY_REV1_COMBAT_PROFILE_ID}&match=instagib`,
     );
     expect(() => onlineJoinPath('not-a-room')).toThrow(/invalid/u);
   });
