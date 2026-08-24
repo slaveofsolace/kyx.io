@@ -1,0 +1,3739 @@
+{
+  "schemaVersion": 1,
+  "capturedAtUtc": "2026-08-24T18:57:15.361448+00:00",
+  "sourceRoot": "D:\\AI Projects\\Projects\\Games\\evio\\evio-repo",
+  "sourceBranch": "agent/relay-playable-slice-wip",
+  "sourceHead": "2afbf58f264289b28d8d1dd3993d894edc50686d",
+  "ownership": "protected-canonical-read-only",
+  "disposition": "preserve-until-proven-merged-reachable-and-explicitly-listed",
+  "untrackedCount": 621,
+  "totalSizeBytes": 298747343,
+  "entries": [
+    {
+      "path": ".codex-continuation-tail.stderr.log",
+      "type": "file",
+      "sizeBytes": 826,
+      "sha256": "863ffd0f4aaede78aabcdde84d7d4b275a7ff42561b3f11b45ef12401aed29d5"
+    },
+    {
+      "path": ".codex-continuation-tail.stdout.log",
+      "type": "file",
+      "sizeBytes": 15560378,
+      "sha256": "2954e79411b4b21cf2de440af70698f8488ba713b15782abb931f4e0b675d3a5"
+    },
+    {
+      "path": ".codex-e2e-local-8787.pid",
+      "type": "file",
+      "sizeBytes": 5,
+      "sha256": "76994333337b6a44448958273033d22990fdde2051ddbdaa3f6b1a771efbace9"
+    },
+    {
+      "path": ".codex-e2e-local-8787.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-e2e-local-8787.stdout.log",
+      "type": "file",
+      "sizeBytes": 2721,
+      "sha256": "efd11c4d6010df626fe240fe6297580920ab5d998f4c74b17ab93fe5cd6022d5"
+    },
+    {
+      "path": ".codex-final-browser-v2.pid",
+      "type": "file",
+      "sizeBytes": 5,
+      "sha256": "c242c6b4b04db072015303d6a74bc9d982dfc633ff55113bb4161a55f9098778"
+    },
+    {
+      "path": ".codex-final-browser-v2.stderr.log",
+      "type": "file",
+      "sizeBytes": 6194,
+      "sha256": "cf464206fad87fec0e3048afb6a8b6f8b07cc6396c8435093d9200f1c2a181e9"
+    },
+    {
+      "path": ".codex-final-browser-v2.stdout.log",
+      "type": "file",
+      "sizeBytes": 16067,
+      "sha256": "a69c80787e66fc959fc50e5daaabbba2b59bf62dd257d6c8f2940c550c2749ea"
+    },
+    {
+      "path": ".codex-final-browser-v3.pid",
+      "type": "file",
+      "sizeBytes": 5,
+      "sha256": "89bbfa87e811e43a567f06fd621254a9cd803a3d3d6ad0b41881c4e22329e5e8"
+    },
+    {
+      "path": ".codex-final-browser-v3.stderr.log",
+      "type": "file",
+      "sizeBytes": 5894,
+      "sha256": "45e0f0d8afe952d97cf9905397d70d136784fcb5584c3192d2ae7f9ab76e7407"
+    },
+    {
+      "path": ".codex-final-browser-v3.stdout.log",
+      "type": "file",
+      "sizeBytes": 12673,
+      "sha256": "48e2e089285558e73cb31cbe01c9b51525780f7bc225ac9ddb30851dbe422d48"
+    },
+    {
+      "path": ".codex-final-browser.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-final-browser.stdout.log",
+      "type": "file",
+      "sizeBytes": 183201,
+      "sha256": "352907f71a7afbe027d2a03d14103742db5a5b55ddc4f8e0f73ffb61547126d4"
+    },
+    {
+      "path": ".codex-final-vitest.pid",
+      "type": "file",
+      "sizeBytes": 5,
+      "sha256": "2edde4231a6d76deee68fb64bdeea3407ae6baa4efe7fb820e5bd3fe365f44de"
+    },
+    {
+      "path": ".codex-final-vitest.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-final-vitest.stdout.log",
+      "type": "file",
+      "sizeBytes": 246,
+      "sha256": "693d99c3478204676956d2573114a15a3d232308d489e0fd5034f81f4123aa4e"
+    },
+    {
+      "path": ".codex-final-worker.pid",
+      "type": "file",
+      "sizeBytes": 5,
+      "sha256": "f2443b57ede7e234b190507e1c3b1a9bc37dba1f19500cf0ed567db6b964ba92"
+    },
+    {
+      "path": ".codex-final-worker.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-final-worker.stdout.log",
+      "type": "file",
+      "sizeBytes": 271,
+      "sha256": "105951e872dc5adcad7f2757ce6d3add1e7c83fd082582c8641485e9e7c4471d"
+    },
+    {
+      "path": ".codex-player-eye-local.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-player-eye-local.stdout.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "311218e0c93507d200ed2a21089000cfd8dfda6fa9d0b0be0f3e3fcf33e3e69d"
+    },
+    {
+      "path": ".codex-recovery-preview.pid",
+      "type": "file",
+      "sizeBytes": 7,
+      "sha256": "60dca0f57953992e80965e2bad184655877f9302d2cee47b3cfb12fae27d28c9"
+    },
+    {
+      "path": ".codex-recovery-preview.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-recovery-preview.stdout.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "311218e0c93507d200ed2a21089000cfd8dfda6fa9d0b0be0f3e3fcf33e3e69d"
+    },
+    {
+      "path": ".codex-staging-parity-capture.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-staging-parity-capture.stdout.log",
+      "type": "file",
+      "sizeBytes": 308,
+      "sha256": "e2cc9630d7d7ef182f5a1cf8e59ef6044dccb21fbacde3551b6880ee80490511"
+    },
+    {
+      "path": ".codex-staging-tail.stderr.log",
+      "type": "file",
+      "sizeBytes": 1298,
+      "sha256": "1319a4294891f5a6b1b88e9c63147128b4f575474619d29b9e53169d462a42f6"
+    },
+    {
+      "path": ".codex-staging-tail.stdout.log",
+      "type": "file",
+      "sizeBytes": 27556946,
+      "sha256": "ef96ad4c8e2ea5a04e154345db27796d8748b6e75e864ab434c0b913f45029cf"
+    },
+    {
+      "path": ".codex-vite-6341.err.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-vite-6341.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "a355d28656a6beced31f4e6cfd25e9d11c87d4ed35270df7328581ca19b16ee5"
+    },
+    {
+      "path": ".codex-vite-6342.err.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-vite-6342.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "627e6fa7702c3b4a35699daf720f363a987e10b6efad82cb13e3965021681061"
+    },
+    {
+      "path": ".codex-vite-6343.err.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-vite-6343.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "949b2f3b0dee8971ac1164722f75c05288774a58c96ba115ad7927543ef28f9c"
+    },
+    {
+      "path": ".codex-vite-6344.err.log",
+      "type": "file",
+      "sizeBytes": 4256,
+      "sha256": "85cbc30fcb2b708f5aee29507a3920dcc55d1330b84b45babadf723c61bb4116"
+    },
+    {
+      "path": ".codex-vite-6344.log",
+      "type": "file",
+      "sizeBytes": 1154,
+      "sha256": "4606dba4551b620cb9b9fa4c9c1101d46afad95f10ffa6550d8db1f01fd9dae1"
+    },
+    {
+      "path": ".codex-vite-6345.err.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-vite-6345.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "8ab31e0db5d42511cdddcec9a7a496ef20bc9d8ff95ed906d6ee61a9c55894a9"
+    },
+    {
+      "path": ".codex-vite-6346.err.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": ".codex-vite-6346.log",
+      "type": "file",
+      "sizeBytes": 77,
+      "sha256": "d3e2fb0239b3c8da5cdb0bc4dd4a3d3aa719b8f7c167d29a7b342406c8e0de3d"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v2/character-lod0.glb",
+      "type": "file",
+      "sizeBytes": 4614416,
+      "sha256": "174285e5a0575a90ce6f2fc462181efd05293d08c4fc221db64f91928351067a"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v2/character-lod1.glb",
+      "type": "file",
+      "sizeBytes": 4559316,
+      "sha256": "067ec8974764ee0fc8d64f6169616436af86e74265d3255855b1a56d3e542681"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v2/character-lod2.glb",
+      "type": "file",
+      "sizeBytes": 4524412,
+      "sha256": "6a6001c7255575f8183675a658477bcfa5499115d4c03ca87ce3d5164e963ff0"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v2/manifest.json",
+      "type": "file",
+      "sizeBytes": 4196,
+      "sha256": "45b5be1f607ce1439bc2bf4521556208e09c3bb999c6181489269d18f54996a4"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v3/character-lod0.glb",
+      "type": "file",
+      "sizeBytes": 4614968,
+      "sha256": "e9ca055167921f599001a63235f9afc8a66030a829042851a4f8fb452379d77b"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v3/character-lod1.glb",
+      "type": "file",
+      "sizeBytes": 4559864,
+      "sha256": "fad6e5c7ee42437fe5f41abdb58539bc3162bf9fa94e970994f30257e811f180"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v3/character-lod2.glb",
+      "type": "file",
+      "sizeBytes": 4524964,
+      "sha256": "e6c7ec07bc4af5bff5ad1fb7f5af4cc930efdba6fa852ea172fe914feb7f10bc"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev40-cc0-weapon-ready-v3/manifest.json",
+      "type": "file",
+      "sizeBytes": 4199,
+      "sha256": "0c5ba6a6deb294f4815e8902fd7e47c1a7cb667b3acf13462aa031319d44b158"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev41-kevin-rifle-v1/character-lod0.glb",
+      "type": "file",
+      "sizeBytes": 4649228,
+      "sha256": "a2e65682c673938693f9b9b9538de9c834f835dc67d8900b6a81c1f1ba3aa920"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev41-kevin-rifle-v1/character-lod1.glb",
+      "type": "file",
+      "sizeBytes": 4594124,
+      "sha256": "6e9577ce9042e774d573e65d10d1adebbd582b6225334b224d8b86cd466f61d1"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev41-kevin-rifle-v1/character-lod2.glb",
+      "type": "file",
+      "sizeBytes": 4559224,
+      "sha256": "cd70171552dab83b781b0a612685fa3ce6abc22fa0ffce38d89e954b944d3cd9"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev41-kevin-rifle-v1/manifest.json",
+      "type": "file",
+      "sizeBytes": 4946,
+      "sha256": "6fd0595e74a037771cc917bd2a837b84f01d877277023455bd700c03e00acd5a"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev42-vlr7-constrained-v1/character-lod0.glb",
+      "type": "file",
+      "sizeBytes": 4617812,
+      "sha256": "24bca678711c917e8fe80925247deeeb6c01f17b6aacd5de284c2bf85f38c5d2"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev42-vlr7-constrained-v1/character-lod1.glb",
+      "type": "file",
+      "sizeBytes": 4562708,
+      "sha256": "16648aa6a650b5acd2af26590cdeb97324cf08758268312d3ff13ebfef096a89"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev42-vlr7-constrained-v1/character-lod2.glb",
+      "type": "file",
+      "sizeBytes": 4527808,
+      "sha256": "f64a08c190688554d418efb064103b8e4b9fc4c137010ac9bab497bac491a9ac"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev42-vlr7-constrained-v1/manifest.json",
+      "type": "file",
+      "sizeBytes": 5599,
+      "sha256": "53697c59f1a2bd82ff79f9c0b58135b76e48a00091f9c24843136e3ee4d9c1f8"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev43-vlr7-grip-v1/character-lod0.glb",
+      "type": "file",
+      "sizeBytes": 4620524,
+      "sha256": "f94b7302b1aa08de8cd190a8c92f6d74e56ea1c7462a55cf5488e748a6d41b0a"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev43-vlr7-grip-v1/character-lod1.glb",
+      "type": "file",
+      "sizeBytes": 4565424,
+      "sha256": "4c23f32111e734f2a75f5077655ddbcea6ccf1b28b91e9d870b107c082280178"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev43-vlr7-grip-v1/character-lod2.glb",
+      "type": "file",
+      "sizeBytes": 4530520,
+      "sha256": "d46d1c0746b49ef86f460cdb0fc3453cd0a44af1211bcfc368d2fe4749519370"
+    },
+    {
+      "path": "assets/review/runtime-candidates/g6-assault-rev43-vlr7-grip-v1/manifest.json",
+      "type": "file",
+      "sizeBytes": 6220,
+      "sha256": "a0c903208c5e3eedae33f2d3a23f4d89b1bfff824d22b610244b3e93c051fbc0"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault-weapon-ready-v2/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1679,
+      "sha256": "d814f60740022ca63590b581a0ba72286358bce5f242a9dd333f6f91640789f9"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault-weapon-ready-v2/kyx-v6c-character-rev40-cc0-assault-weapon-ready-v2-master.blend",
+      "type": "file",
+      "sizeBytes": 6629982,
+      "sha256": "10fdf80ac23d3217038b0b4beb95319b12226a20d8b8cdc5b4e4a688e5a6f199"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault-weapon-ready-v3/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1679,
+      "sha256": "e7dec5ec801285d799ce4c30aa4160ada3d33eed63f92bb45fb6c667db020ee2"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault-weapon-ready-v3/kyx-v6c-character-rev40-cc0-assault-weapon-ready-v3-master.blend",
+      "type": "file",
+      "sizeBytes": 6661162,
+      "sha256": "d1826f1da101e1bb51fd4ea811d6227d5d6fe9fd9d92a0f41b266a757c10d2ba"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault-weapon-ready-v4/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1679,
+      "sha256": "bcfb92108caf148a669d694f2ffa8327ce1fe12633d0b245e010e2a1c2e73c85"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault-weapon-ready-v4/kyx-v6c-character-rev40-cc0-assault-weapon-ready-v4-master.blend",
+      "type": "file",
+      "sizeBytes": 6662176,
+      "sha256": "4b8ac8c88f09c8ff5e4888bf9dff4a634a0b894094ebf386800fb86ac20b11b8"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1376,
+      "sha256": "dc2a865ec913f56fde820033f383b1579283b86830617d19a006d307c9041b48"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev40-cc0-assault/kyx-v6c-character-rev40-cc0-assault-master.blend",
+      "type": "file",
+      "sizeBytes": 6637203,
+      "sha256": "3aeba6c1d306ff5c0f0039c9eaf773dafab9beda606895b5c18c2a7254977a85"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev41-kevin-rifle-assault-v1/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1787,
+      "sha256": "1dd7a8936745422ae1dc2e380d42d73b587e0d6614e4d9e645531dec8c5edc34"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev41-kevin-rifle-assault-v1/kyx-v6c-character-rev41-kevin-rifle-assault-v1-master.blend",
+      "type": "file",
+      "sizeBytes": 6649218,
+      "sha256": "95796cd5f6f015ce083c726249858bf3ab7402c323127cc9fd598efdf727fa27"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev42-vlr7-constrained-assault-v1/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1777,
+      "sha256": "5daf7697b0d4ad7bb0d8cbb8c1ce4775d79d4753c8744d4c2f3dabd79851f9ef"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev42-vlr7-constrained-assault-v1/kyx-v6c-character-rev42-vlr7-constrained-assault-v1-master.blend",
+      "type": "file",
+      "sizeBytes": 6583581,
+      "sha256": "fb8750d8b50414e36469bb41bb27ef604f32ffa04d1db8a30866ec8e37f3ea54"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev43-vlr7-grip-assault-v1/DONOR_NOTICE.md",
+      "type": "file",
+      "sizeBytes": 1779,
+      "sha256": "9c8fc9699f197b944f438eebf31bf4f9a9143ad8dd323ff6081821f595e0f90e"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/model/v6c-character-rev43-vlr7-grip-assault-v1/kyx-v6c-character-rev43-vlr7-grip-assault-v1-master.blend",
+      "type": "file",
+      "sizeBytes": 6698474,
+      "sha256": "87afa8ca8afbc5726971b6c07bf742d6e21a13c0eb81848a025df351d42f8b3a"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev41_kevin_rifle_v1.py",
+      "type": "file",
+      "sizeBytes": 643,
+      "sha256": "f2c58b5e2a62aa11c572535670a8675b5531e344c563d99218923612291e85fc"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev42_vlr7_constrained_v1.py",
+      "type": "file",
+      "sizeBytes": 696,
+      "sha256": "7b4862b403f3a7ad821ac8aecceee365593a22d6b809521a279ee5bf91c8970a"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev43_vlr7_grip_v1.py",
+      "type": "file",
+      "sizeBytes": 761,
+      "sha256": "552ea307bef09819529d2a12ae1366144ea2c77dae16c4c6cc9a38d4543fd4b3"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev44_vlr7_landmark_grip_v1.py",
+      "type": "file",
+      "sizeBytes": 974,
+      "sha256": "02f1741178124b41c7be7d9ca8268aaba456f3e3053fb12fbea62ec2641eaa89"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev45_vlr7_anatomical_grip_v1.py",
+      "type": "file",
+      "sizeBytes": 1808,
+      "sha256": "9bcc3a16f241c44fc8c779c5a591ec399942d02c636e95a682be71bb8f69e18c"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev46_vlr7_diagnostic_v1.py",
+      "type": "file",
+      "sizeBytes": 5245,
+      "sha256": "b74b28556220a220f971a3655b08d1ff59b4fedb708313c0fdd8f9d0e85cd14e"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev47_vlr7_fixture_schema_v1.py",
+      "type": "file",
+      "sizeBytes": 5241,
+      "sha256": "974e274bf3b95d9cd1501f62b78486842fb0f1fb3f4d2b1a5b6a6d0ee1adf90c"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev48_vlr7_oriented_mesh_clearance_v1.py",
+      "type": "file",
+      "sizeBytes": 5488,
+      "sha256": "3c0ac065edbc90b951a7f5757f866af2c458a43ab7ff5ea4565fcbb903d9e2cd"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev49_vlr7_oriented_mesh_clearance_v1.py",
+      "type": "file",
+      "sizeBytes": 5488,
+      "sha256": "c1a83fa3c2eaab678d60f8e3eaf7fe621cfad04c978e085bb562ddfc544043b3"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_assault_rev50_vlr7_oriented_mesh_clearance_v1.py",
+      "type": "file",
+      "sizeBytes": 5610,
+      "sha256": "447173fe73e09b2a3fdb828c94297455a2c2c76541685a40f83abcc00e55411b"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev40.py",
+      "type": "file",
+      "sizeBytes": 100298,
+      "sha256": "92d917b670c836a4704753404116e8dad582267c8acc653f9c50bb7c2f00ad34"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev40_weapon_ready_v2.py",
+      "type": "file",
+      "sizeBytes": 581,
+      "sha256": "1107dd703d28fdcd57b6b0bb9ab9c1cebbf138588ac91e6c1416b8acb62a86b2"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev40_weapon_ready_v3.py",
+      "type": "file",
+      "sizeBytes": 552,
+      "sha256": "869696269b3d096f1f9f45a9923308f760a0efd3c1a0d2c23b3d9c33f4ae8504"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev40_weapon_ready_v4.py",
+      "type": "file",
+      "sizeBytes": 551,
+      "sha256": "aa1d8843dcba2f427ca4b75bf3080b4be240cf00a59350e30064c5b53ac657bb"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev43.py",
+      "type": "file",
+      "sizeBytes": 135798,
+      "sha256": "a84a6fad934c67d5d73b95346e687b5a658754648ae059b3a405ef94767b3403"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev44.py",
+      "type": "file",
+      "sizeBytes": 206850,
+      "sha256": "9d61110901f85206f2454b4ba046fb5e9b220efc4faf147e65a9bd4a4456efac"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev45.py",
+      "type": "file",
+      "sizeBytes": 221215,
+      "sha256": "2eb87de354d682f9fe35c0eda0e787c98b7eba779e9819b8ab4c761db656091f"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev46.py",
+      "type": "file",
+      "sizeBytes": 232975,
+      "sha256": "95b1fd2758200fbe06312692b21bbd3c37dbf22a274f1d13a119b9ad1216cc11"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev47.py",
+      "type": "file",
+      "sizeBytes": 239280,
+      "sha256": "618c7ac75b8dccf80b01494940ac406607649f18185056b307781764b01a6de0"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev48.py",
+      "type": "file",
+      "sizeBytes": 272521,
+      "sha256": "ae11c362991becb149ad434f7c05842c7b5f7680ce8b91eccbcbf00d2d4cd174"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev49.py",
+      "type": "file",
+      "sizeBytes": 273855,
+      "sha256": "fa62be0a7cf5f8caf8381cc4fc38f8281a81cd756bb5fa0547f6f80664f466f5"
+    },
+    {
+      "path": "assets/source/blender/phase7-character-original-v6/scripts/author_export_cc0_assault_rev50.py",
+      "type": "file",
+      "sizeBytes": 275311,
+      "sha256": "abed7a1689368029f941d828217645fa6470a2231ba710552754508b23aee0e2"
+    },
+    {
+      "path": "docs/resource-briefs/g6-assault-rev40-browser-character.md",
+      "type": "file",
+      "sizeBytes": 5724,
+      "sha256": "60ba65b668566da19d91dd503a4006b2f97e2ac696e3b7d01d7a272d2b6e56c0"
+    },
+    {
+      "path": "docs/work-log/2026-08-09-cutline-anti-generic-reaudit.md",
+      "type": "file",
+      "sizeBytes": 2470,
+      "sha256": "30f719e1e24a36d1f9ce891d2332201f2e13886a47b858662cf033ab5b61fc88"
+    },
+    {
+      "path": "evidence/2026-07-27/g5-inkfall-rev4-runtime-candidate/press-archive-rev4-clean-archive-landing.png",
+      "type": "file",
+      "sizeBytes": 632740,
+      "sha256": "1a2963cd428114f2418d37ece29989827f5a2277aa9424789d41c90d3282439f"
+    },
+    {
+      "path": "evidence/2026-07-27/g5-inkfall-rev4-runtime-candidate/press-archive-rev4-clean-archive-rise.png",
+      "type": "file",
+      "sizeBytes": 579550,
+      "sha256": "f3d3a536776988cc6c6e244f38bb8e0dc80cd443bfa6ce63c94fbdc0e7bffcc3"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 704043,
+      "sha256": "53925ee8b3405df669e93cc26ff15138eac7223dd9927e92bd28da6ecd169890"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 283388,
+      "sha256": "a47405053d387a5bc3c41ee032b5c20122537e936a8d388f011e7e36952b4258"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 171200,
+      "sha256": "82f95c1d8bb9128d2e800591c85ed0b3af0105d7127f7a0953ceefa68bf12e01"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 264024,
+      "sha256": "312a43b17a1c310881ca38a33957175fb3b2f2b078840c4c7b531fece4de64be"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 16022,
+      "sha256": "e1273c8e833d27ecce75ee46ea55d8b5908858426ffa4277e4c8580cb3292b6f"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470138,
+      "sha256": "e1e4f1486a6a59736721752bed59017f59dd849203feb55fcca795b87dcb0713"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 515478,
+      "sha256": "c4c05563430dd808a8802f9f648ddcddbaf836974983c001adfbd8b938446f3f"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 499115,
+      "sha256": "bbf31dcc4bead56b389e087566d04db6ec1fd3f2f6efa53b6961ff15e28ca846"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 492842,
+      "sha256": "4d88011fd7cfeb145561414440af2a0b7ea366a4dc1275a20f28d81e69b9ad20"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 330904,
+      "sha256": "ee867b2e59350c9de1debeb4d3dd4c388cd095cb7d7263ed447ad2c96135f37e"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 25227,
+      "sha256": "265ec7972a2c7099a5b06f1585d301fe3bb1fc3f1d5e4ad145104d5c20201bfc"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 701992,
+      "sha256": "b3d06b53139cf012ae22d3033c8c15b18caac1319f630d2286567349fa2cd87d"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 281335,
+      "sha256": "49dd490f5fbc4c14928a83b9c48349bde3422a6448a4f491955f1ed071e40231"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 170556,
+      "sha256": "d8794ec518fbdb5b329350264f4bf5c684415ee60ae9b1164709dd38f43112cc"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 263335,
+      "sha256": "8d6a8cf53eb9561199596fe3a3ac013530248d253b04829efc2d1fab649ee377"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 16032,
+      "sha256": "bb4ed8ca7a99950d11265ed9a502090152fff1ac93cb5112ee8bb54acc7e2d7c"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 16055,
+      "sha256": "773c03af2a803b2239fb1b7fab3f33d15ddcd1d88a49308f0c26ef07cde6d403"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470145,
+      "sha256": "aad1c7e3ed2973b36354cb008ecacb1b4f397311df9e840dfaed5ab2152afa5a"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 515467,
+      "sha256": "9cbca98383dbb571866ee799e794b645343d678bfd59dc3bd6d8b9123b17c1ec"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 499144,
+      "sha256": "e90cfddc988d5bacfb34210f642ca5a872a61e937b6244d39c7f70fd50aeb166"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 492760,
+      "sha256": "e22522f0f7674c85a8988e0f8305c1557135b34228a1db0cb2e8888621ecc1a0"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 330223,
+      "sha256": "4c9de4f4f2b12bcbe9e3e86ab418e13762eae7270005a8f4d97426d8da0e6543"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 27837,
+      "sha256": "e6b472393b907223d666940f786ce4923584b21f679cc273286d384cb31ce974"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 701856,
+      "sha256": "75db9659913278e69dd235cfd97c6cc2af1bd7915a96bab76f95cb686911018b"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 282133,
+      "sha256": "5e1255f13b9ceaea221730e732ff71bb93d5fff7c607795e03b3152f7fffc8ec"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 170742,
+      "sha256": "285c4eb7c4c7f8d8b208101eb72af65c8152dab9f0bf95f163341a025a8e90ee"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 263277,
+      "sha256": "1adef640f62b6c70d1662a81c95931fbbea4a5f33642e6126bf1d7131514957f"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 15988,
+      "sha256": "21e25bf9d5f1f397f640e85f1816b1a2ec52989b54d7377cceacafc4dba327b5"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 16907,
+      "sha256": "3d30badb579380e16da5211bfb9dde3d5b732b5b480c4ee42d1333bd8b05bc33"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470185,
+      "sha256": "b19ad5e31d31530545a77a5edb04e0293ffa680bb530c85b21096dca5fe2b870"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 515016,
+      "sha256": "37b56e8b57dac55eeea6ac0e767e6ea88bdc087f04fc03119936d18717a7c2c6"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 498915,
+      "sha256": "51f0ba3358a132be9d3b4b1c4b6cc5ac19d9e52650cdfe04f29338a3cddff9d5"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 494666,
+      "sha256": "3274d34dc2688533eeb2b83701bcc7e08c48be0b8df3d999508d479d51c1cae0"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 329147,
+      "sha256": "a354d131f662fd658b00a79ffe4271934a6182d1488a6935a10bafe09ba67bd4"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 27838,
+      "sha256": "57698b5ac03b358d2077174258aaee6bdcb7cf9385c4dadc89f56044395a6002"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 702282,
+      "sha256": "2ee28694297bf72befe00c51e08ddfbfbe122c25a7e3a31e452e3a7527dfc4e4"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 280901,
+      "sha256": "7f85c78f507d7e8dc78e54a65bd63507d4383942169807f5f971bbb8d8bbcee5"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 170637,
+      "sha256": "af3fd240b2a4a854996c8f0b3cafa468f4348b7a0223e264a321afe57fcf3469"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 264261,
+      "sha256": "4ba2312f7030b4e9aa727968680ff7103a8bd51b9b6029f4cf954e7dd9562d69"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 15936,
+      "sha256": "9f78981931a164eb3f0b2d48d071bf5b1480cacd411f3081177352a965b8e617"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 16607,
+      "sha256": "e4902507beb4c940498045724fb1d05de6b605b14ca8d1cb6d0b66782809c0f1"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470151,
+      "sha256": "c4a2f9d6688b579c8f7c6f1197870e77590992f64450ae6be350253f3f2ee72b"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 513973,
+      "sha256": "857cbd7b28484cc612030fec724ae25a9017dca600e040eafa65f8259ebc216c"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 499276,
+      "sha256": "55f37e3224f12babbb2515b50c8a30d42770fd57ca6e4a6483242cb37debf10a"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 493812,
+      "sha256": "640ab30ccaa4b770e160c91b51304ae7944b7688571217c127b88099f7e562fe"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 329627,
+      "sha256": "fab0188bcbb79c2a654b7f646f5f9fb7139361d028e6dbf1aee93cda6adedf67"
+    },
+    {
+      "path": "evidence/2026-08-08/g6-assault-rev39-skeletal-crouch-v4/runtime.json",
+      "type": "file",
+      "sizeBytes": 27796,
+      "sha256": "e6d8b5a9eee3a0cbf50915684f72371db1c8e9e6a2a6c1130695141909824e0c"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-cloudflare-7d2981d/01-vlr7-rifle.png",
+      "type": "file",
+      "sizeBytes": 503619,
+      "sha256": "d90550958ee6cfb7627e3d58d5c77b859071b5c232ffa0b2da8e9c9d6d57c28a"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-cloudflare-7d2981d/02-k9-sidearm.png",
+      "type": "file",
+      "sizeBytes": 494209,
+      "sha256": "9af54da37d09b031f43266ca064ac024892e346d07447e9172ca5f50b4fb6763"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-cloudflare-7d2981d/03-sg4-breach.png",
+      "type": "file",
+      "sizeBytes": 506447,
+      "sha256": "39e2cee475a84a50cebea9ef32d71678ab84a9fef99a826d74b111a96e5d6556"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-cloudflare-7d2981d/04-longbow12-sniper.png",
+      "type": "file",
+      "sizeBytes": 510188,
+      "sha256": "17c99516f1500a8faccab323997f68f3fce23f39628a9d48f444691600e19f61"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-cloudflare-7d2981d/05-br6-launcher.png",
+      "type": "file",
+      "sizeBytes": 494638,
+      "sha256": "5dd332e02f35b2ba288b96f95cb90494f536cde89521edbf95ea7a5176a9ef80"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-cloudflare-7d2981d/runtime.json",
+      "type": "file",
+      "sizeBytes": 3043,
+      "sha256": "df0da6bac68b754c1afa99f86e6f374551ca0949db018d15fa639f88054b74e3"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v1/01-vlr7-rifle.png",
+      "type": "file",
+      "sizeBytes": 520807,
+      "sha256": "0a0035c688f8f67297a98c119fb77157536deccdca2e743c36d4864898541432"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v1/02-k9-sidearm.png",
+      "type": "file",
+      "sizeBytes": 465093,
+      "sha256": "4f661642fdacdaf72f2f4ae2f299b0a494cb5718af9df35233667e0becc8f49d"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v1/03-sg4-breach.png",
+      "type": "file",
+      "sizeBytes": 484160,
+      "sha256": "a807ee2b6ae00ceb359b7fca4103c4c71c8256a5f8c785f0036accc6ef484880"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v1/04-longbow12-sniper.png",
+      "type": "file",
+      "sizeBytes": 489856,
+      "sha256": "5cc394da9df41bdf05fc59253565209deff4899dd94c7593e1b64bdfcf8756ea"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v1/05-br6-launcher.png",
+      "type": "file",
+      "sizeBytes": 540229,
+      "sha256": "86e2a55144281492b1390c98898b5de6ff2faabeb8ae44ffd8172488dc6f8e88"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 2890,
+      "sha256": "d2eb374e419c495c5342750fd79391f784de1abbd741b933d934969dc9e19ba4"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v2/01-vlr7-rifle.png",
+      "type": "file",
+      "sizeBytes": 503830,
+      "sha256": "708cc8dccdd3354f70e22a40e067f1247662d052bb39b7ad583a445029711a73"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v2/02-k9-sidearm.png",
+      "type": "file",
+      "sizeBytes": 493148,
+      "sha256": "2453fbb0a655dc4840feb41190a8bb095a7f3c7652d4d4f059e932ac54fc42d2"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v2/03-sg4-breach.png",
+      "type": "file",
+      "sizeBytes": 502083,
+      "sha256": "dbec78df870ba4a00ce620a768f5352f9193c632c609e282fab71dd42e25bfa9"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v2/04-longbow12-sniper.png",
+      "type": "file",
+      "sizeBytes": 512568,
+      "sha256": "136795201fd79cff097b42008fa9cc95df4dd9587d261793f59a074c13b003d3"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v2/05-br6-launcher.png",
+      "type": "file",
+      "sizeBytes": 492452,
+      "sha256": "4558251d726dde66f221b6de363c5c27dfb0e13c8259be10142a384f0a17ad74"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 2999,
+      "sha256": "85135fb32e31c0e1db07914c4af78ebc5bf472bee242dcad1ae94c69f4e356fa"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v3/01-vlr7-rifle.png",
+      "type": "file",
+      "sizeBytes": 503694,
+      "sha256": "bca34d484c6dd824d3f13890752682bbf1f43d65bd77e32cea8632811c374441"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v3/02-k9-sidearm.png",
+      "type": "file",
+      "sizeBytes": 494262,
+      "sha256": "a84cdbc9aef70d0cf5a21ab45f050e2a8a96480151e306730d21b6f63b06ca04"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v3/03-sg4-breach.png",
+      "type": "file",
+      "sizeBytes": 517181,
+      "sha256": "07dbc6919fa1c85216587b0d570df36b64d243c4bfb2fc9a920bdcdba2ff77ca"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v3/04-longbow12-sniper.png",
+      "type": "file",
+      "sizeBytes": 524359,
+      "sha256": "337cd4374db5dd04d197bd3a647dec0ec8a6d22b9164f485f1bd70f86a15e811"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v3/05-br6-launcher.png",
+      "type": "file",
+      "sizeBytes": 511410,
+      "sha256": "46033d6b9a92871030ec890110de2e4627fdcf589533cd686dc8593cf6b3ae05"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 2999,
+      "sha256": "85135fb32e31c0e1db07914c4af78ebc5bf472bee242dcad1ae94c69f4e356fa"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v4/01-vlr7-rifle.png",
+      "type": "file",
+      "sizeBytes": 542527,
+      "sha256": "0f0396ab603923e3f0fc19787784b13cce3378b91fa7d16f6a607459aae94d39"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v4/02-k9-sidearm.png",
+      "type": "file",
+      "sizeBytes": 491538,
+      "sha256": "9f6ad272d2e6c2641c9c7d882509caeb324be29e54bb644bd5db1d02e351bcb8"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v4/03-sg4-breach.png",
+      "type": "file",
+      "sizeBytes": 507921,
+      "sha256": "4a3a7b1f48d6cc3d8323b53a80d5595b2c77369652b1e45912f6639d61bd25ea"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v4/04-longbow12-sniper.png",
+      "type": "file",
+      "sizeBytes": 510748,
+      "sha256": "fd007d7251e3ded378963c82dd73e6b09a6c5c8996e613989c7614f80abbe765"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v4/05-br6-launcher.png",
+      "type": "file",
+      "sizeBytes": 495996,
+      "sha256": "55690c940b364c10a2b0182210dac5aa1834589a3e6f7a104a8063fb9db0e1a5"
+    },
+    {
+      "path": "evidence/2026-08-08/quaternius-armory-player-eye-v4/runtime.json",
+      "type": "file",
+      "sizeBytes": 2999,
+      "sha256": "85135fb32e31c0e1db07914c4af78ebc5bf472bee242dcad1ae94c69f4e356fa"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 295663,
+      "sha256": "d5f1ec529fec55f5ca2eac6271b11ee4528ba57a4b6644390bd9321f8322ac11"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 150662,
+      "sha256": "3f4a3cc51e2acd58dbda0f1fcc6701c2be303ddea2da77e64fac902b92899a13"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 330667,
+      "sha256": "8ebbee0c0cb034377513b18f818b4d19035619ba42f6c876be388a9e17a98b99"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 239835,
+      "sha256": "b7558feddbbf365ac0a6a6cf890a466b80a82e48ee66d158fcd25db8531be2fe"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 216879,
+      "sha256": "1fe94707209f048f058105c6610174e2757b58817ab9f6ac96d27e6a4febc936"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 325405,
+      "sha256": "d46b262e55b428e423511feabe7c494c279af985d83ac9f05d7a7c93b6b6f893"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 281419,
+      "sha256": "2745969f0d74c32d4b5b113ba8949c6af45080679a5cd2fda3cc158f9284e6f5"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-570e879/runtime.json",
+      "type": "file",
+      "sizeBytes": 43173,
+      "sha256": "dbfbef798c19f29e77c30609f0415fea099aed8edd2213c40332ba8cc11bf7c0"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 294676,
+      "sha256": "919a91542979ff28d5d4c2b56efb603429cb35e443e7ec8624e2e06e0deba877"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 150397,
+      "sha256": "97a3ef27ab9f31e1c08102c329ab5a6d77fc0105699578ed5ded21050febf07a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 330640,
+      "sha256": "0c07e654b132344f9d070fdc8babb8b8357bdaffe069b3310a4e6c2ee5ce4ffb"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 239858,
+      "sha256": "307e6c41f40afe8d75b60b307693d32a3b1d11b8ea68a174e649c6885064ffe3"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 224608,
+      "sha256": "c0704b0a2a8dce93390c850389946120db5d9f7632582ba16377aa7d6568f957"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 322181,
+      "sha256": "195c5cc1f6666fe1c51b62d20250cfe9f0e11aa17ac5fa666dcc84aeb7d2d976"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 286268,
+      "sha256": "245ebf7f65170b7b21406c59438c585a8400daf53ef154f30ad4d6a59cc0ec5e"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-cloudflare-wip-ee1937c/runtime.json",
+      "type": "file",
+      "sizeBytes": 36914,
+      "sha256": "6a3103fb9b2a64ed2c2b6d7dbcfd057593684e8f67291882a4146ec392a2e92d"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v1/01-west-spawn.png",
+      "type": "file",
+      "sizeBytes": 234415,
+      "sha256": "0a696d09c363a25fb9edff7be8ed50f285c7a780a6ee447c2aad88c345a2906a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v1/02-center-seam-crossed.png",
+      "type": "file",
+      "sizeBytes": 259342,
+      "sha256": "91be49a4382de032cbdd948ecf333219d6423faffc62045fb3d6ff41b8328bc3"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v1/03-service-gate-approach.png",
+      "type": "file",
+      "sizeBytes": 252836,
+      "sha256": "790c74369fafa274eef9ce7f3a15016bc8fdeb0a927988c2a3c6024436f0c303"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 28898,
+      "sha256": "f138c5b29ee8dfe5bf61c1d942eefc6d6aca1a771fd3f378bb154ef9712e25ba"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/01-west-spawn.png",
+      "type": "file",
+      "sizeBytes": 234483,
+      "sha256": "35c83ebc12f27a25879a8d9dfd1e8a7fc1d0177da10256de99883cfc00ce7604"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/02-center-seam-crossed.png",
+      "type": "file",
+      "sizeBytes": 258538,
+      "sha256": "c66c00d6c6ae75a9ff55e8d5f9ee2459e6b4ab7e889355faaf75400a2af5865c"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/03-service-gate-approach.png",
+      "type": "file",
+      "sizeBytes": 358535,
+      "sha256": "9c37a7111187ab9516c0956e28c61664810f0dff1caf0d277cb37dccfb5588c9"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/04-upper-overlook-arrival.png",
+      "type": "file",
+      "sizeBytes": 417457,
+      "sha256": "72999fcc4b9d903471cd671e5824770fcca6fd46bda6a7ae06c1cc1c68c73102"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/05-overlook-gate-approach.png",
+      "type": "file",
+      "sizeBytes": 314552,
+      "sha256": "daf6cb6e4ee1dfe6b0bc1765e0bf7986de8ea63354ee7cf3010e657976912dc4"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/06-lower-service-return.png",
+      "type": "file",
+      "sizeBytes": 272382,
+      "sha256": "6915a84bed6862b439e32e3d43dc408f904a94f41fc82d3659938562e9520367"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 43959,
+      "sha256": "e2134ab8145694dddc25a68bd5458d9d584bf68eeb9e44da6991f29ee046e19f"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v3/01-west-spawn.png",
+      "type": "file",
+      "sizeBytes": 234462,
+      "sha256": "09808275ff095b9d5e96cde22c238878531c3a82857219b064750f529ac867ee"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v3/02-center-seam-crossed.png",
+      "type": "file",
+      "sizeBytes": 261066,
+      "sha256": "9dd3f825e5caac97ae812528abe7483be0fb6b6f29f71d709aaf0d4850acde39"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v3/03-service-gate-approach.png",
+      "type": "file",
+      "sizeBytes": 382153,
+      "sha256": "cd28ecb02f270c457afaab6c2ba82795c451d45edf01fd7ba44dcaa348ea038a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v3/04-upper-overlook-arrival.png",
+      "type": "file",
+      "sizeBytes": 419024,
+      "sha256": "f1d4a52d17df1c0698f280699d3a3b34896432b3c378640bb085904071465bde"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v3/05-overlook-gate-approach.png",
+      "type": "file",
+      "sizeBytes": 324482,
+      "sha256": "a1b160064fbdce0755d45acf42a4897d3f33932696e4c072dc0d82db2bb706da"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 49810,
+      "sha256": "e9c062562f50d29b6f4c3f8caa72c50ecef926aadd9e3b6d35235d022820e9b7"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v5-visual-v3/01-west-spawn.png",
+      "type": "file",
+      "sizeBytes": 177499,
+      "sha256": "a92baa0f39cc8ce70e0e5334d3ac704e3859fd1a9cef08dcf21836b9e4801f2b"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v5-visual-v3/02-center-seam-crossed.png",
+      "type": "file",
+      "sizeBytes": 163053,
+      "sha256": "39b44d2d202e9d5c2b2161cd6db47abc8a7b0010b41d5a2ab5379ea50a1beb44"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v5-visual-v3/03-service-gate-approach.png",
+      "type": "file",
+      "sizeBytes": 155635,
+      "sha256": "ffa2e265954e38e6971fada50986cf025a720c7f0d75a702c8eca1b1cd52f4c5"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-portal-player-input-v5-visual-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 37260,
+      "sha256": "3de316e62cd01511a708ff77643490b8d2eafd6aac7fc22775b51cb2055632b1"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 315262,
+      "sha256": "468b5475795b2aac1bafedaa57ce63f17a646e2d9bef9308f1c72413892a34e3"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 148932,
+      "sha256": "8588888662415e5c1d9c132711c51d84432fe9c6ddc22c313ccceef1b9924277"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 381506,
+      "sha256": "4f4b8cb277a18b74e7eecb53c491bec80d1b18ffd0c7594e52b815c40b4da7b9"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 249617,
+      "sha256": "bb2ec387114a5fc0791627a69f124a8b6b83fd9b29b393830e14c810395020c2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 149658,
+      "sha256": "cc41e8b49ace049b1c616b60342a0717998b2df1bb99abae9e7abdbd148c3f64"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 247874,
+      "sha256": "26aa9a504f2401c35dc0f55ec2708d5ac5d5b9974c9e223dd243d7ce60c63fb9"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 238718,
+      "sha256": "43708faace651357e7d0e945680cb76ed4e7a487ed258fede3bd2631126de9cf"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 35252,
+      "sha256": "9cb302ce5e9ec0afdfae9e271d27f0430a687ec26710d7d8ae29ad9943b8c6b5"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 530390,
+      "sha256": "e297baa37638a635beb269417b49a51d4426c31a0b8b28d1d11af97fbb379ebf"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 231998,
+      "sha256": "a1cf5b016040b7d36d08803b39a6ab2aee3e81126e824ec348841ec78437d023"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 461409,
+      "sha256": "0a03261b6dbca16976a4aa9b230acddcfb8d43c62f91a62c47a9cdcb78944cae"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 483688,
+      "sha256": "e2d0c10f01e0295d5c54fbb9c44c744e7fca51ae26a8733c0d08539ed1ac76f7"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 549292,
+      "sha256": "ed7a3aa9957965405df694e4efec96635d3d697648bd47b34dcae6d5dc8ac4e6"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 572554,
+      "sha256": "4084842e93af320692c723e70e99864c17afac7bebc2efcce7de27964365552d"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 632000,
+      "sha256": "95bde0bd5c08638faa54ded46f6ed5559522e624f821fb9908440d3095936d1e"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v11-panels-zones/runtime.json",
+      "type": "file",
+      "sizeBytes": 36757,
+      "sha256": "029b6eec8f25e5f37b4f07fd360af61a17b2ae656d5c973c765a9dbea58140b6"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 534854,
+      "sha256": "d3247023d982c7da88a3ee076ca6d364f847ec062c572b2f65c3eeddc9f373cf"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 239843,
+      "sha256": "abd318bd553bfefe2e8adcf430b081f7bbf89093d58910114df97c91aab32dfe"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470714,
+      "sha256": "e213cfe1157b18673c8b0e0d98f3fe32dc95eceee45302ec85345ff8024c38e0"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491981,
+      "sha256": "d6006f9e36dc1229a92ad5d3bcdf3a15491c4356e6de1d53627a8b59e7d00d6b"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 558957,
+      "sha256": "ec8393a9d29fdf7910defdd9abcd2fe6fa3928410c5cd292d87df2e1a5bcc4a3"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 592336,
+      "sha256": "91d77b95881f56543feba209804d766b1f3072bf9ae5ce65b9a724a442d94b16"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 669605,
+      "sha256": "2fa471979f5a983716c8833277deb9e002c02917099f6b4e06d473dafb1bd2a7"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v12-open-sky-v4/runtime.json",
+      "type": "file",
+      "sizeBytes": 36757,
+      "sha256": "7da44a2fadf1f055613b8704f167b976f7f58cba9220fc331992eabac5a62382"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 288154,
+      "sha256": "20d0255fdd80d53100ea4ed888fc3c81318a7db2c163bce79b741c465b257a49"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 153145,
+      "sha256": "f9efe09a06c473438f0cd7d51f9c3c5d8ddf02e7c64e455d286854acbc3d2e84"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 342053,
+      "sha256": "3cd96295cda37bc733fc4164cb0b1069bf136b3a6cb4c846fed4fc15076ef415"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 217137,
+      "sha256": "44f54eefe93f589d79ea814baee9907808704a547257ca00941d13b478c5b9e8"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 239530,
+      "sha256": "c5d90c0f72218ef420966263fc7d138d4e7e7f1aa10d8e4b1893ad5ebd1252ec"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 233820,
+      "sha256": "cb42842e8c93c7b446068917c4707d783709697f7e336d4cba1bb8a33bddd690"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 219030,
+      "sha256": "e3b78d9706bab1ccc68aa1d29829a2bd9819ab79a455634dfd4c5b878a609262"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 34733,
+      "sha256": "fcfac04e41601b5f6ed3af928e471d21d07634ea316f3363329e6e131d874cda"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 323638,
+      "sha256": "223071e66e37d0924288aa4ea31b6e082dc05a4bbe8284bbbc179809e706b4f2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 155164,
+      "sha256": "f2ebb84971a3c28ba1427584a7d5386dd27a7b3f7cbfef1c6644a986fa9f4baf"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 328653,
+      "sha256": "9898a4f21eaafd39474636d6d2310df32264b16599f0027a9640b7292d2c998a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 237332,
+      "sha256": "8101d85c34cdb70fa8d634a403bc1872296341d6ef62b8dd0ec3ae7db3afe99f"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 182947,
+      "sha256": "85075e54e444a6cf57e7ceb4ff27f84f587e65bd1dfc938a0a07475794d1e2d2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 251513,
+      "sha256": "7a59fbe9ebba8adf325cac9f770d58d65a00bd263ef339911f1753bbaa1ca645"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 219044,
+      "sha256": "465e3e8e6bc9ae41902051c78dc96748541e300d65b5248b00ce571dceceb9cc"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 34721,
+      "sha256": "843f493d1ba93b0c042712adb760169c1cde6dd1293000e2679498a4aba75c50"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 366309,
+      "sha256": "4482d08986b446234cb189921289caf296ba13ae9e71881ef01c50d152f01c0d"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 167870,
+      "sha256": "e3fe4a728c687639d8b96fcbe2a071e2179f8b178c04d20d2204069bb6f6094c"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 337151,
+      "sha256": "373f2177e5c6e95cfd6b7bbacc015a9dcf00ddf01b00fccf1748d9859e63ae4c"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 254006,
+      "sha256": "addeb14d11358dd13f6a0c9cfde492494be8b69c65ed3bbc9520e029a35ca194"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 262642,
+      "sha256": "f31aa6ff1e58aa4d58019861ea96d6746ac1c2df88704b1a9ad8c3040c4aea1d"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 260887,
+      "sha256": "08e442a86107d0ba088b885e48d95bb1ff01ef60cd1ec37538ba9c05dbe7db96"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 269107,
+      "sha256": "d61ac50dc81e4ee660a545d19eb4606583c3edfc60a3e576f06fb581eeccb8f2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v4/runtime.json",
+      "type": "file",
+      "sizeBytes": 34722,
+      "sha256": "d560dd62cf2d100b26264587e49d5bb9d53ee7ba7d95b6d3ca0547aa9d7fe2c2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 370960,
+      "sha256": "d959f7c38c9faeeadb24d8daa944d3a51108f438bc5836ddc139de6f82825c9a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 167437,
+      "sha256": "3ff73b99ead47f73d3ec9a94bd468f0cc5accee9067e11dff3fe03828505d0b1"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 341320,
+      "sha256": "d4556ca48c0d93f2f032865918d4b6c6b340389bbb1a700b8b73e4d148566152"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 258986,
+      "sha256": "742c0214eab274cd4882a029a5fbd28edfd6097ba60140071a2783b70ef1f911"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 236244,
+      "sha256": "b810696f30c6bb71f22a4d5613d61ce6aa00cfecd7127d6d1a12f0d90ff2e894"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 289440,
+      "sha256": "7323685ebbe904b6a5e7dd0cf34039d1d747c84e0bf437523375d6ded4d3e6f2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 285208,
+      "sha256": "6b9d3f035fd0c5a46c1011bf573795986b67651c109394623be7e78338b8651a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v5/runtime.json",
+      "type": "file",
+      "sizeBytes": 34723,
+      "sha256": "bca019d36dc9790a2fcd2511f578675fc03016948d3803a491530d45a51ece56"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 287851,
+      "sha256": "f492bce56a0913cfbccaeb1da80fc9f9fb2cd8ed95ea9848121ee70503ad6109"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 150706,
+      "sha256": "cd12ea3ed0145a5bb538b4f3814bbe0e7850eda959ebb1384d9963b2f9cffa57"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 304311,
+      "sha256": "1aca1307ef40f45ec2f95814a03058de5b29a941c0dc046bf2d511e866e1b604"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 214190,
+      "sha256": "3ae2995f78b7e67883cb41ec1a72b89122cf1387a09a2c1f799e70fe9b85de61"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 201126,
+      "sha256": "83defb0eccd7a14d86657ccc370e7c2b7df592967707ffc493644e7470f344d2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 236059,
+      "sha256": "4eed81323b2636c52636115687206b06da8b39b45579e295fdbb304739111976"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 229546,
+      "sha256": "0b47fc70101436a2a7784f3b95b930fbb7e906440d45eacc62937c24d8611fc8"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v6/runtime.json",
+      "type": "file",
+      "sizeBytes": 34732,
+      "sha256": "7d86e3ed119cf9573b07d3516286cb03c79b6ca12eb5bd49b1bbe94aa47a7a09"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 293433,
+      "sha256": "516d1b3fa26e389e988f6eb488d9d1d442762552c9196c5282e270c4b3bd7727"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 149824,
+      "sha256": "5a97a091d9970c483e96493a26f7f138e8017a21adbdb3aea12426b95eb92c50"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 311027,
+      "sha256": "8d40de0e958f6cf3e28bedc91f074262c5b20511d0bb8412fe4e94eec2689c42"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 220143,
+      "sha256": "4be0d0e05ffe3a8d204af07a804fdfc26017202297165aa5f1d4c93c8c45277a"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 201623,
+      "sha256": "0d901d1bd9d3a6c44709be8a92c1d8386d37063c08b7750913af30db2a921317"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 244850,
+      "sha256": "bb97dbc1501751fd083af5d3e25b33a0b5d48369452cec55a1d4d78a01fbd7ae"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 245681,
+      "sha256": "6dc3b18e7314d798d49a9c2482b0da8517a0aae16f3b7f39de9af7048bafba1b"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v7/runtime.json",
+      "type": "file",
+      "sizeBytes": 34744,
+      "sha256": "5855b91cc57c19027bcca21d235f3da432c46e8dc73ca5b4589947eef5a1e358"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 287892,
+      "sha256": "b8f9b68b657ef57dd95314c5029e084565051cdea932c220e8e9f26e190b972b"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 149538,
+      "sha256": "811da00f1a103bfd3bd965be61ee2078d1b8fc519e377a2873f909d33d36194e"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 319299,
+      "sha256": "409e4168ee4be051ddfa5ba425f1a348f462349bfd1ac1763f5345faf8cf93e2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 224115,
+      "sha256": "a51f2dfebabc0f7168dad2c7dc360a4621c1f535bee8c4013b62180ab9f24768"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 208326,
+      "sha256": "93d692c67e5bf75719626e3cccb39cb8e64c46961c383ec5b8edeb9d92ce80a2"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 245461,
+      "sha256": "c0f3777ad9fea20a02bfc9f8c583e5134717cf0690f44e2d4763127a05ae358d"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 250614,
+      "sha256": "0407105cc032e2a34ee690879a1563a16ca7c9108c2ad14b6f4ebebbe8757892"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v8/runtime.json",
+      "type": "file",
+      "sizeBytes": 34741,
+      "sha256": "13a7c5bc35ec401846e1f7263cbe23830927d6121468defb78f12f465e69ebc1"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/01-relay-menu-flythrough-1440x900.png",
+      "type": "file",
+      "sizeBytes": 288217,
+      "sha256": "c48c6e7ad5f549c1e97c2797611cf72767a1be16d634ccc47360b094ba590d48"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/02-relay-arena-selection-1440x900.png",
+      "type": "file",
+      "sizeBytes": 149277,
+      "sha256": "a5bcfce2558cf9e85e7001c16bca385866cc151d0c95e51f7f5dfa7b18421c5f"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/03-relay-entry-gate-1440x900.png",
+      "type": "file",
+      "sizeBytes": 330346,
+      "sha256": "7dee9ff3da42964694b9d3ac289cf63d8f805369508cb9de7e3092b28d2d2509"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/04-relay-spawn-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 235272,
+      "sha256": "8d0c3c26000008d4159d71e19d64f9dad2343b8258a346af1b1db164a1e7bd3e"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/05-relay-route-one-1440x900.png",
+      "type": "file",
+      "sizeBytes": 249168,
+      "sha256": "678c8fd436767baa21ba750cead80062e371a0601450ab41626b51bbf73a6114"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/06-relay-route-two-1440x900.png",
+      "type": "file",
+      "sizeBytes": 240747,
+      "sha256": "7dc1788fd9d080bfa53120b3924626fe2a14f2858f3f202d0e40fd75497ec1e9"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/07-relay-movement-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 255622,
+      "sha256": "4e930bef0faba72bfc7097c59037e0e7e1e31ef4ed57559462381d75f0409e5c"
+    },
+    {
+      "path": "evidence/2026-08-08/relay-visual-candidate-player-eye-v9-portals/runtime.json",
+      "type": "file",
+      "sizeBytes": 34741,
+      "sha256": "3cef8f5e76dba456b7dc3b57e7bb9d90406ee11fcb632c6b55b7ca581b253521"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 703266,
+      "sha256": "50fcbac1eea29b2bb1328f73da3192cd2bcaee7e6b87a0d7571122ab557cd899"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 282218,
+      "sha256": "8cc1b44791823d057ab28612c4f4b725e35da0b5196bd599074b8529448a4e98"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 170376,
+      "sha256": "472761af4bade3a1efc0deb0d50fb4adea8889cba5de8bedca4e3536b3ecc075"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 263858,
+      "sha256": "a21bc29f41401df16ecd4beb68ee5b9619539f69a4275d4e1c7ee844125b090d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 16100,
+      "sha256": "154ca2906fe8fb90eed4afb3d2ef1ffdab8e9b3f2309cff65a2298caffe6d9f8"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 16134,
+      "sha256": "3a731953f07c072b9951f9a91e2596595bd360a0e34d494bc1e8e9340b3745af"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 7933,
+      "sha256": "4c96341f502a35036618b60dc0339ef1975c1e813d19022dea4268253535e1e9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 702093,
+      "sha256": "c1468bcfbb4ce870445ba8528e2268d207ad752c283cf3a32e9428817fa5ac4d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 279490,
+      "sha256": "2b54343e1d86d17741400772f057bfaf0ac45b2b51dd6aebaa0e9bae220dbb1b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 169656,
+      "sha256": "64c67abb87bb30814f92bebe5bbd24a5df53ed3f60d159a9e55b5170bc57073d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 265295,
+      "sha256": "b01a2ea126fd5d5e9e17c7d0ce418a98748e8f532d8289e7779951269f24c2d2"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 16086,
+      "sha256": "f71c6adabdb4d026ab932fd997f4c0937ed8a0075dd5e8153b19f1da166f34ae"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 15491,
+      "sha256": "d6e8b47a198f97cd320c841bb932f6d17c890096a1ad31e2e10afd3991219d59"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/05c-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 16816,
+      "sha256": "4d0f561d69626c394776086790056acaf6e87ac63c365ad4f38a45d106f292dc"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/05d-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 17246,
+      "sha256": "9267582ea6ca105ccb54f64894592d29f9497c9f33b28e6ebe48408b87ec2956"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470140,
+      "sha256": "9393c1b41c468f51d74e5840bada0a38414af9035f3e35eb79ae0d9355a16a63"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 514019,
+      "sha256": "09fbaa1997c603623886d84236a44618ef54c2e91f5cb79d294f1759e2dbec7c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 499121,
+      "sha256": "c4b8c853f60e6e76b541a37b75b4a5d77aedcc8f2ec65e94cfdb25dc3c2239ec"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 493162,
+      "sha256": "0f36a96e9af244a69240ccd901d00a21e23d61837883d5662148a1e5cba06f6f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 328413,
+      "sha256": "98b0af0b0430a7347eaaf8985ff5a549dd177a47c5c7b78d2f1fe32e2b731736"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 33890,
+      "sha256": "4674c3ad03d23a8169dc5211f319067b81c38a6d993075f236cdba88c69b43b3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 703449,
+      "sha256": "3d14de8ea7ce55bf3b2fb87a69b91fe53cbcbc479f5b2c4954de8d2a5ed5fe67"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 282437,
+      "sha256": "15b2084f50ffed2204dae5589e0dfa5d170f298c14bde23ddbc07761b90aa610"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 170629,
+      "sha256": "64747f94b727ddf561b2dcb90fbb9fe1a551ba015dce0e0378dd72e2c18affa1"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 264010,
+      "sha256": "c696402301288fd822e0793c783bdcd20e06d68ee78922c8003793d110933fad"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 16160,
+      "sha256": "72b3f8527bf42d560f1fb76c203dd94e9bd1114066a8f2d451db250b52e9a9d6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 15496,
+      "sha256": "44363dfce03c42d18ed685f535981dcb013fcdd735a312a9678a768bbaed3a81"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 17176,
+      "sha256": "c07a877b851a014eafb9c81d8a608f8211ac175493bf8768781dcbab1321ce17"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 19793,
+      "sha256": "90f032038927480b69eef3c48588cce7a6385692f1957e48058d95e129f0c35f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 17517,
+      "sha256": "add8232a93bb85a5fdeacd57b4f152366062b786dcb1e3c336c46f0faaf5e94e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 15209,
+      "sha256": "be117afba8ad2fd46a679b0b05153937e927fc8068897409b967c9f44a826bc1"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 17923,
+      "sha256": "dbd8843ba2f702fbae68530c55ddc5dd294018ae149d9a8b7c1b284a1e75559e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 16528,
+      "sha256": "629ae320dff294256a1087c53d810276b83fa042f628acc21aaded5c639abc08"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 17747,
+      "sha256": "ce9959d45b1723d36dde73575da408d7faf6bc9ad1a5a12e3556c34d6ed5fd95"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 15750,
+      "sha256": "9211d5109f7b6073042617db74dd83a590bf5e60813bbe08735cf847b5192733"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470156,
+      "sha256": "e051e27ff63a2832e6b197302ce40867d50b0ce662f2896d62c22f8bf2308226"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 520810,
+      "sha256": "26433ab2dedc2226e8d3f876afe985af92fd24374aa4f44e467007d25c3986c5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 523047,
+      "sha256": "b02aee519e8a01bdb09e84fbb93721d291bed43d5d6e05f0df92423a8d084f79"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 431843,
+      "sha256": "2c35067439b687bb52bbdd1dc57d182a637415d773713914523963869560ddaf"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 312587,
+      "sha256": "17db819c7ddb84839973dc3af4368f8fd345870a36886d18f2fe3591ac227c43"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev39-directional-motion-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 56962,
+      "sha256": "9cc1ad4b08f0d8c5e0f890964d729ed43b0da46f9a4c34e870000fc15ad192ad"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v1/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 705586,
+      "sha256": "aa88068a1ef745d060959bce63f2e7b6ffa5fdb8543b227edc17aa6ad5f35064"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v1/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 289506,
+      "sha256": "6e2f9930bc4bf15e28d20994b27c7e0834ad8e4832d46c6549db34ba4090ffbb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v1/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 173388,
+      "sha256": "1ed343956041e0367304b80f7290af4f459dad327631f786be159741c2e8c54c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 2719,
+      "sha256": "349e870ca69a30aa3ab168e22765f21a0e510f9fa2ba9b806db87bac1442c875"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 633762,
+      "sha256": "69b013d4cbb203782f83d2803e8c204ea8cc71ff2b41df347653f7d42e9b93cc"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 256256,
+      "sha256": "1da156692b75b98389440b69545aa568d65d1012e0ab00b89f0f886203cb669b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 168907,
+      "sha256": "9c97cf4d2447953dc27e9e57e98daf95e2c55b498025ef6405a7f7b957edaae7"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 274178,
+      "sha256": "c4227af76ee858382da94f5023b36416dfa52a2aae8427365c67d8f483c42a12"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 19190,
+      "sha256": "2e5eaba3b3c9999511839ceb4ec4596f8e6c5a7f3ebc3132dfc054dccfe4a274"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 18533,
+      "sha256": "aeefe5fe5aef0d373f055b5b87c3304b92f9b2802e69d37277aa129438112855"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 17952,
+      "sha256": "9f989a070142a66546b34ad1af2be9524f28461ca5e276856e13c223034d83d5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 16203,
+      "sha256": "4c5ebfa3da6e6883a6b1c4d585978df38c0fdb129c6c29167f93d0851ff5eec8"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 17738,
+      "sha256": "4fa3c23aa6f5b8177970b5ef22043db7fa2e49f3fedcaafc61509a6e2dab230a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 18361,
+      "sha256": "5f44804c2a0a353a6a091e098902f81e4c2fb92df49701aabc330863b171fcc4"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19655,
+      "sha256": "3139cde40b522c1c9055fd6d4157ab843d24bf880f4b2c825551822376af814c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19598,
+      "sha256": "8e9ab785a50eae25a0bb493d557aa5e5f07127e8ed3a704574de51c4b7ae22c6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 15942,
+      "sha256": "30d2288c854df09bbe5da660d8379967af186e71d0982a71bc3e0f2d1ec44376"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19551,
+      "sha256": "6a7dbed3ac600cc8692d4f2520cca5640ec04ed1ce8f411b6c58b9d1b64d0077"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470068,
+      "sha256": "2162656955571f50595f86561034d15bc9b012cf8e25f599a3fdd44d33a506eb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 518848,
+      "sha256": "b2e6ccba11a72e6c810f83d9a2394c08e5e1d0732e63b1460207ad9c63c043eb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 497623,
+      "sha256": "222dc175cc859b09447928459085c7dc890b8a91d57a530ebaa03744c0823284"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 492596,
+      "sha256": "2bfee6b8a518a9dca9e99ad9611ca28a90d3957062dd6a94a97ec67bcf047a8e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 326322,
+      "sha256": "c2578b810d25b01402148aa72f1cf732a88bca06cf328637b86561c178f6e9ac"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 60835,
+      "sha256": "b1c7afc7fd1bfcec303467893d41d6b01786efddac3845c5e055214ac8db20ae"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 632269,
+      "sha256": "c9b841036a92c38c1fcd2c4cb98d0714d97ad1215cfcff142545a249d5f9cdca"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 254930,
+      "sha256": "a03d86169cdbcc60dbff591eadee668f59d35b8857f09383360aabbb3ac2260c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 168708,
+      "sha256": "0ba811a5b5406fae2d98468b76f1de3dec90d06fe0a1852d97ac001782febeb5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 272884,
+      "sha256": "38d8e7784f6bf66992f4d7d33171f8475d0e9b9391b9ef18f5682c2ade3d6448"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 15724,
+      "sha256": "9400298009be266706d9279b404d7b8b6725c006f6e5033a130e7c6a062db6ab"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 15595,
+      "sha256": "773a02342c24d1b0ee223edc1574f51ac870b2d1154da0a1362a955b777703b4"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 21326,
+      "sha256": "bf54b940a6b4bfaf9a3ca2a2f1b8b8a25ac293c0d2fcf37430c2da89117303af"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 21560,
+      "sha256": "ebf681b38c37eab52ddafff94f511fed45d0f1c3f56f5417ccbeafc025bbc16d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 21985,
+      "sha256": "730ff96e12fbe7a999d8c1419d8b19e7ee03d1b6ba1437957aad828d59aa125b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22424,
+      "sha256": "794b853d0e68226723c8651edc4c0f2b545c66abc84ad782ca4f22e1803e49b2"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 21859,
+      "sha256": "ff42ccbc0dcb8feb246c313a0fa6612b981cefe11177886bf33652e11a3f9934"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 21243,
+      "sha256": "bf0a91d4de5fee3b2d10e79c4f50ce4f0102ce39d73fcc476bcc83ea70a6bfaa"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 17193,
+      "sha256": "204ee8b3b4b31418fe100b1333a14934163e131d76b6ce290066e5dca70ccc3c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19445,
+      "sha256": "9455e12aaf5e71959f1c8f7c6f39bffe714a187176261a3425e50be5bbf9e854"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470092,
+      "sha256": "f64c94a90301df97f19e911fcae66162083ba8170bb7849f0732c144256f1da3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 518626,
+      "sha256": "4f705d2322b4dd1031dd2f17eb200208e1c217476db43c3eadc581581cc4a8fd"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 497166,
+      "sha256": "01a2a5d743722c2888f3d9b329f1c839fec92152b06f6bbe39e41ad249a6a736"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491565,
+      "sha256": "49671fd554fab56f783dddd618704af3b3d4170ea1c619f13b91b485603717dc"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 326164,
+      "sha256": "59ef1e979571a2192e027b48a859df59ec7668a231b4f2cf4982844089d33dd7"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 64102,
+      "sha256": "7e3b4bf8133c721290b0df4a2d80c0e50bb6c4539dc13c3babab3768652d05fb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 704895,
+      "sha256": "db3399326c1ca432c70b4201729fe93e0b7a312667d1398cf18b3d743ab2e4e5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 293863,
+      "sha256": "971e0ad61840b5cb6c8231e141db77a6cc40fa96974f57324c538f46ecbd4bde"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 173780,
+      "sha256": "dcf5baa818b1ab5feb39cad3f8005cedf13278e40e46aa12771c96e612268fc9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 269735,
+      "sha256": "696d63f87c208c7ad66b940566a79132e4081947d39bf4e9357218c2b8dd4742"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 19982,
+      "sha256": "6edf1ccaa5613dbb8f4430b3c18efbfb191c7e6e07f4e5a3dc851816519f1e22"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 19308,
+      "sha256": "3ae65e1717931f1e9151ebdaefd51981ca9508e2f8f9010f9a4a2f7c8aebdc35"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 20852,
+      "sha256": "64376b6912b24adf2cd2ea06d781f0559c4a63df0c83d985e6a9a811be1e680f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 20372,
+      "sha256": "abb15db5cc9f6672a5a57995c9202bd434fdcbcfbf5475c6f2a453203dc4b4a7"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 17345,
+      "sha256": "36bd8767ace26fa4fc346589449b8fd32f67740545cab0739ba354f3ba72c0c6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 20731,
+      "sha256": "6e6732b195021ba0f0b2a84b4d674c014408b5a61ef9ea928a7f8328a9e7e6ba"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 20206,
+      "sha256": "01206394709947a7061878623015cb33799706ebe78aa27b8e939b2b1e72c6ef"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 24024,
+      "sha256": "9605a3bf7127df422dba72a79966c7e62574e583f9bc68ac67e6052a660a38b0"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 20949,
+      "sha256": "8b57a78993d5bda208d8864cecc95ccfbb198b86ea1bf5c39c9bf5d72a2fefb9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 24310,
+      "sha256": "e50dabb4bcc0fe8ad401455bea21b04fca3ea490982ff0d3dd0d0312464bfcfc"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470089,
+      "sha256": "6200f84dddf24ee7b7ecf0ee247f023733ba6222ffda77c58e3a86fe109c1f8b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 515719,
+      "sha256": "b761e6654d618aba52e20806fc871f59395afdbf351f347b077101c94b1f4c5f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 497180,
+      "sha256": "1941dbc503179d1460f34fff38d14c4e537011022d4ade752fe2f00a4b04ec63"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491417,
+      "sha256": "a8fcf99a95c80e553efaf3373b45fc833eb69d8db91d02ef0711786d45ac8e6d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 324164,
+      "sha256": "11016e46b42afb39d5efaf0ee458b1020f50fcd7f548ed8260d15e27dd88724b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v4/runtime.json",
+      "type": "file",
+      "sizeBytes": 64367,
+      "sha256": "795d0abd9d61512c827b05918f423fb7a59ae33938c88d1763d11c077421df7d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 632576,
+      "sha256": "b66d979434e8bcc99dd8f0418b238791e4d83370fd3e850c1f55bb133da4a84b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 256416,
+      "sha256": "cbdeca95a3da9deaff1c5ddb6d0681d08551ae14aed6efc35c9a2b586bf00601"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 168595,
+      "sha256": "339855bc5b6878b3895347a5c138805690942339ce1525aed6ccfddc90ed330f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 275284,
+      "sha256": "f45f39f4f23a0fb780984a2bf9431afb977dcaa48911c97228a16373272d6004"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 20581,
+      "sha256": "a81d0d2f393ed109996e563f3a003e9ed40b950ba9a2f12a743a86443bb130b1"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 19297,
+      "sha256": "722cb7874b9eca9f70561cd41c200bcdf98ba67854fee19661880a0e379ae963"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22127,
+      "sha256": "80b2000346890143243876133694a4c99c833d95384675623220402f5d8f011e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22835,
+      "sha256": "d0937bb3aa0326bc7e70cf841f67c2bf53eb4064ecfa7f08fd867d26151e25bd"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22824,
+      "sha256": "36cdeea5e479825d874551d292f290004c1b2debaf966f99204f85a241ac8972"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 19662,
+      "sha256": "3e79ce1b59e443dbc1044084ad672b00b30eeb34ebe1d5c790b41d701d526cb5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19762,
+      "sha256": "4709068a4cc08e1cd05926c53a91dcbd0c1a80eddd32b4522120b291936ae959"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 20479,
+      "sha256": "3053b4e864e82cd78c36aa4ba1c5bd2dfcdf9fe2e5f53fc05abc351fc7a1bb2b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 22026,
+      "sha256": "d39ee90556ea37d4f0196d341b66695ce34123c24d6e66118dbe335ffbdce33e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 20688,
+      "sha256": "b7b2dcaf17576269d24a80d9631bb31cff940b12ca9c714935451536470460fd"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470059,
+      "sha256": "2d953b1ccfbc85cc55e8800ef996afe1f213c614e0c7ed165a151c7b412b1e6c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 515849,
+      "sha256": "7ac5dfb6f567a49354855f78bd52283e4bc3dbdcfa3d316d1d056c0656320c5e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 497129,
+      "sha256": "666a3faa59f6991ccfbede395e622b1f55cfeea3be86de6882aea95e699b87a1"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491332,
+      "sha256": "0c8f6e61b8c2440c020c327ff4e62fdc1939535477faad9c2bac2112bfdf7c60"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 325624,
+      "sha256": "02dc6328042a8e6cb137bf855986e145704387da619935d85ddcd9465fa3423b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v5/runtime.json",
+      "type": "file",
+      "sizeBytes": 70071,
+      "sha256": "ecc0171083daca48daed3b3a5880196f5546b46b768b38928b83ef3f3dc0a683"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 705569,
+      "sha256": "78c777f19d8e0c17af0b837483c1d553223fdfa455f0e144eac9708e09c39930"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 289858,
+      "sha256": "9648d3984afde2bf6760745c4b9173c945b07c09ce3f7245c2c41ce321a83dea"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 173611,
+      "sha256": "509e7c479df6b4e462a27dbdfe06442ef4f61baebb8694876748746dea6a6562"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 269916,
+      "sha256": "70f696cc60f76e07249230b760b0f2e6516d0120138812736b4278af1f54b002"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 20629,
+      "sha256": "6933e4c3bdc172ab8e54b43b6ba58360bd45a41bc3e061351b0c213362e4ba34"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 19293,
+      "sha256": "38e0217b67d32c1bc60a2a1559b764cd6dcd9e41eebd321e7272336ebb21ead6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22567,
+      "sha256": "22d464e98dafc793df4973e4311333fca4df0dba79b0fdc98bce519647848402"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 23063,
+      "sha256": "5e528a2ef6f237722ff527937bea8511231ab12a3e6dc6804c8422a55dfebc80"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22857,
+      "sha256": "a79a18f7f12091190fc7014886d22d2782e01b162b4e32a8152200ac5f4ff011"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 22771,
+      "sha256": "0d2789cbdf85b5695a921e0657f1352fb3f75d590b1d49d643229b2ed6976787"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19772,
+      "sha256": "841ff4952b6b9c8d2501ba34d868c2cf89bae50f35478f9e696579185c666dd4"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 20778,
+      "sha256": "04e9a6ddda6f763c94e8a8a5723496d2c6e266d64227b55c9ba499926298f048"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 21859,
+      "sha256": "1d5a70cc86d2a98d07a997bbefa06554b86c73acd0dc655427b08483eac3017b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 21084,
+      "sha256": "f6ed76012f00180d58d49dad1fc8ab3de62a5355c174c55d16cd4695b74335d9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470099,
+      "sha256": "a220a5ca0b8f69e734b2ff8e1fea002151c5d768b373419bb304fc38111fdf38"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 515558,
+      "sha256": "989a9dead753e8a054f717cdeb0e7c294260a8b083bd2064beb6ae08c53d2028"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 497154,
+      "sha256": "6efd7feea3940c8eecdcc97a21c06379102dc10bff1d9247de98467e4339a7dc"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491387,
+      "sha256": "e8a303a4479f1e0581c750602d347379ca27825dbd6dfec1dd89a86ae23fa4f3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 325197,
+      "sha256": "836c4876ae6c9c1908bd994ef0044fcd3e5155dbee43dad14931a253aaba330f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v6/runtime.json",
+      "type": "file",
+      "sizeBytes": 71738,
+      "sha256": "886b8024168885ff7922521af069162b0c64e2f45ebf6d7d4da76ce59b556af6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 630919,
+      "sha256": "32f90ff793574453dfe01d10e3425e63e12561e1b4db8bc1c7750fa3eb6ebec7"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 254412,
+      "sha256": "05f173d6bf8da08114e6afd88a4dc3d455676551c0944be4a9f84fec25baca14"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 168691,
+      "sha256": "0ca3b24e807be7624d54389985120bce366d28af6027924918b40bf5945e96a8"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 278427,
+      "sha256": "e7e5c80e9ca717572ed879c85a078ca2a51fe32494b01fe779e33705218c370b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 22594,
+      "sha256": "7855cbabb4518513ab9a9f43f0e1ffaab652c4746f77f2a4914ae16d509d532e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 21332,
+      "sha256": "6ce32e49091c7067ea7bf26ab9fa003c35e50591f57b550cca67567beceb4ad5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 19819,
+      "sha256": "ba1e6ab4f7a33082b2dd7c5c407e685e3ea72a0446a480ddc3da03a4ed9244cd"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 19630,
+      "sha256": "0e849e1b90012f93e6b981932f4208ef56fe91debea5575f2549f1635c4c1cdf"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 21832,
+      "sha256": "bbd53187bd875dc3e7234009d4c7fbb89e6bc5574df2d9e685436b49d2a47f67"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 20444,
+      "sha256": "24a70c2f0a4ea637fee76e1b7107bad735c29e2bad4160c2b629480082a7828e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 21256,
+      "sha256": "cf6d69f484ce7d2a635857264c6cd31dcc5adf905ab534538e5c16ca0a6f13cb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 21263,
+      "sha256": "0fe2a1ef534bdb9373c91d437edcf8fce3f38630bda4836acc3693a5a68943d9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 18345,
+      "sha256": "350f1aaea2f9e8b916baabdf9ea90959305de36779f0553e6f0957a7c321121c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 19134,
+      "sha256": "ecd1d83cd9b554f87b9bed02cf492caef9464dfe29e252016da709dfbd52a618"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470118,
+      "sha256": "fb587e559c29ed81511f7c85a1c6e4bf4112b93cf4efec61b4e1c7027a0f8952"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 513849,
+      "sha256": "a6109dd043b1c1a2dfefb8d0688e554555aaa2415d52a74c199cfd621c52d1fb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 497374,
+      "sha256": "f46edaf7c33e41faa8c84ff7ca24e204b9816db75725da6746d181d660202fc9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491441,
+      "sha256": "8d7885a8206be39675dde2beede1183b797a36fc6fbf9588d60368b9bfa62582"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 323884,
+      "sha256": "a4cbc194189a9bfb331ee645072d5a91ff7c543873cf24ce8afcb9fc4bcd6347"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 2808,
+      "sha256": "89d738c5c3629c0d0671996758f1fbbe9b7a3f4b78dd97934ed89751ed171158"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-browser-player-eye-v7/runtime.json",
+      "type": "file",
+      "sizeBytes": 71612,
+      "sha256": "4cd015983af4d6e7a11a3bb4d304379c21249a7ada408eb80b582a64c764be49"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-source-build/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 10822,
+      "sha256": "8003c99a897d106b808d298e8945dd43f19e373e8be73c563ce4376fecc55ce4"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-source-build/kyx-rev40-assault-front.png",
+      "type": "file",
+      "sizeBytes": 893862,
+      "sha256": "7b054d1f609cf33596ce91c326274fe2d6b806149c1840b53dddaecdee1ed8a5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-source-build/kyx-rev40-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 898916,
+      "sha256": "c223a98415ff5c54fd7283544dcf1b9add47b14f61b7218b9476fd7ade78b5e3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-source-build/kyx-rev40-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 891692,
+      "sha256": "4373e7614b476f83fafdd798b26a994465c92ff1971285b4c3b44711eabc63e0"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v2/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 1899,
+      "sha256": "d221deef72e4b90abd025986163338a1456d0f197d6ac23d32b74ae5f156394e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v2/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 12040,
+      "sha256": "b09b806512fe1194521c21b9cc93edf22fa8e1555478e7502c840fd3117e0de3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v2/kyx-rev40-assault-front.png",
+      "type": "file",
+      "sizeBytes": 878429,
+      "sha256": "0be4a3e2bdbd58ea02c36dfced02a560c4a378bf277e516e03701aad8b5e2ccb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v2/kyx-rev40-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 929404,
+      "sha256": "5af5f50c8975a3de7e646f9460cebcdfe49e5d4fa4e68f578407288b56beff3c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v2/kyx-rev40-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 897409,
+      "sha256": "cc55bcf414b1c98fc5f36ba77d93990da455de159f56fa422a6effb929f4b652"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v3/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 1353,
+      "sha256": "35ef9561b819ae9a6a75decd67e5c30427caafb0c95eed6805940119ebadca80"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v3/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 12043,
+      "sha256": "6028e4c204c96c710b50d1680f7e1ac0284630644d08cb6a92ae8cab27ded708"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v3/kyx-rev40-assault-front.png",
+      "type": "file",
+      "sizeBytes": 878485,
+      "sha256": "53d1662e4eb0eabe6b0eff537f31d2a0b46fdfbfc35f1ada037ef0ea468a66fd"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v3/kyx-rev40-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 929704,
+      "sha256": "ea1919bb30746ad7747c18c12ef28feda312dfff79dd3e46684a2f5c21fe02ca"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v3/kyx-rev40-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 897482,
+      "sha256": "ba386351fc88276b7c75d963b031ff58caeeb9b55b42c15c6f97b1a68915401d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v4/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 1671,
+      "sha256": "1c50babf160d8ad3c09fdcb7eded799572e00aa1083ac9e154ed0c1beb52578a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v4/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 12621,
+      "sha256": "ca27e70a999b12e56f823105b091eec1595e443f8b5ede20de8c68bf3b04ffca"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v4/kyx-rev40-assault-front.png",
+      "type": "file",
+      "sizeBytes": 860007,
+      "sha256": "70864f6abe0c11312fa8f9ec9ac13271a34231f0218c3a48d80536c076ba7f4e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v4/kyx-rev40-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 884381,
+      "sha256": "7fa11adba17026b41e7ceb5a70a3dcb20796132560361c85c4009e759355ab75"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-source-build-v4/kyx-rev40-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 878511,
+      "sha256": "2faf83ccc76473a46cde6f9ad5494b13a7294070abe9095666cf016d66e9cbb0"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 703652,
+      "sha256": "8361aa56fa768ca2f121e9e0f29cbf0d11cbd8e15e5b4b8fff7d02363f01f842"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 285285,
+      "sha256": "d42080e79b9d1be9c24df09ec8afd476d7017022a43490824c12e1f96809b0e3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 170482,
+      "sha256": "715960c37686f599f91600ede6f78782b5a2d073db52cc9c1b1bca3088b46862"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 277117,
+      "sha256": "ea109f7d1668907d9b0f3a192cc0160bf9976dc974095fc179cd5f854a5dd46b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 28408,
+      "sha256": "7d8ae4af7bef9ef3dfbed549e7831001346249c15438a5ecaf5c72510e86b496"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 26909,
+      "sha256": "21f7f32e0a6e72966000df839d562f602663331817611d4516dd50f7585fafa7"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 25358,
+      "sha256": "3c8c2d2afda1b0eb952d7678160027129df209b1f529637187aa2cf9553abb0d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 25954,
+      "sha256": "426836ba0cea6bb3f30266d812d6f07ec993049b24324c67dd8ff32d3171abea"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 25881,
+      "sha256": "4f252c6d70a98d6f0393a349a9a3afccc3fedf4a941bcfd9ee0b6cab9672c984"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 25319,
+      "sha256": "0fc3de1c0a1e9d497d90d5b2a09b3518455853d92e4b0327781e3899d3a8aa3d"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 28735,
+      "sha256": "925e4d52d375f16077df999bffa3c0c119539f066f3c813ae07a2aa4c7e11cea"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 27135,
+      "sha256": "63dd320a716367fbfdad04d1deb16941526e7adc17a6d878a1ff7f22bfc2a662"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 22123,
+      "sha256": "965678c4c20eab7951db255caeee13df5fe9a16dce5ac109fdbf6c8ee1b8272f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 22161,
+      "sha256": "98b59ec2e97051fa9956403f50bb2ad13f73cceaa85a47ea89de67e59fc349d2"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470133,
+      "sha256": "32b636883319090ad941bc7e507203fed778708231ef9562727eb83f5dd318a3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 516058,
+      "sha256": "c3e0e4382b2e7ec5bd73b1e78b665703818941ef8663c95904166708fcb74c45"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 498558,
+      "sha256": "0886863e56f960a80b3a7e1c5f8bead5d766f490ddd43f995fdeeef886877c7a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491283,
+      "sha256": "908ec5f6427006735577b4db0cbc4ee400643510dc13777f8e2f57cf95e20cdd"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 327253,
+      "sha256": "368b0bd0f01037f107dd21d16a5a0853e6e967b51b4de90aab64facc0ef48d67"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 68923,
+      "sha256": "7a132e1aeca338d2bd917399abd6d1cc8e751e4993f799e708c1242c33220705"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/01-menu-first-impression-1440x900.png",
+      "type": "file",
+      "sizeBytes": 703153,
+      "sha256": "4ff73e77ef5e6bfff76d99533f150ede129493e645719518739454f33c01adfa"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/02-arena-selection-original-1440x900.png",
+      "type": "file",
+      "sizeBytes": 287047,
+      "sha256": "62264dc46a36c3fada5657ff88ec15130a2cb3f521eebf465d430bcda07372df"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/03-arena-selection-legacy-1440x900.png",
+      "type": "file",
+      "sizeBytes": 171149,
+      "sha256": "430139361c736a6dad693af1f735dcd8127cdc2cefdd292008b295d79fe6ddfe"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/04-loadout-armored-turntable-1440x900.png",
+      "type": "file",
+      "sizeBytes": 276217,
+      "sha256": "5a1b45d04146f553ad53a207d0f08ce196b0355de7d26c0122ea3edfad0c299c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05-armored-turntable-canvas.png",
+      "type": "file",
+      "sizeBytes": 27802,
+      "sha256": "d0c646dab81c5439667f75e71a9a16f32969950c0ba385d98d9d15d6d54d427f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05b-armored-turntable-crouch-canvas.png",
+      "type": "file",
+      "sizeBytes": 26220,
+      "sha256": "51e519f8a857874a088cc50a63febfdfcb606fc605d833fa22553fca47ea3084"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05c-1-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 23925,
+      "sha256": "f2091b35b2841f95846cdaf86feb58378cfca09301e68000ef44bd3c37018f46"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05c-2-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 24427,
+      "sha256": "1bcd601bdf4c8a6a4119eb0fa6192c56e177c1cdf51a4412bea8a8d83fd3a545"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05c-3-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 24674,
+      "sha256": "6a99117b53b00f923e9009cfde4ad8ecbaaa9ff4a1a3b62e02e4be872fe129af"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05c-4-armored-turntable-strafe-right-canvas.png",
+      "type": "file",
+      "sizeBytes": 26058,
+      "sha256": "64474f2f017cd373bd27877ce3ddbf123aa122e02cdcd1d54801aa6fd71c343c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05d-1-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 29814,
+      "sha256": "0c23e41b0ad946a7918d0f983e8747aae09fdddfdc344cbc2ed9b93183595f88"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05d-2-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 25783,
+      "sha256": "d5c963e2cf018f23f24776e11be45823fd80d089c03192a5c14f0140735635c8"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05d-3-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 28012,
+      "sha256": "8af22b13f1164fb216493947f654f56070f67b27447a44f25fcac7477ba43b0f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/05d-4-armored-turntable-backpedal-canvas.png",
+      "type": "file",
+      "sizeBytes": 22157,
+      "sha256": "09272122df8301a82601a62b4a8e181346601a7ff1c7d4fb6ea2e2e30c95fa86"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/06-inkfall-practice-paused-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470183,
+      "sha256": "95e6e3632ab6cf13516dc9551dcf764690ab4a16a89d2d249fbca39a6498355e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/07-inkfall-remote-assault-contact-1440x900.png",
+      "type": "file",
+      "sizeBytes": 516490,
+      "sha256": "71fc675686db7ffb5c9330b5b3b94a029608155b1dcd4113ed0318637d49a423"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/08-inkfall-after-primary-fire-1440x900.png",
+      "type": "file",
+      "sizeBytes": 498492,
+      "sha256": "213a7696ab993e2d603c93a0d77373f0b3ec6318862f9997035fe3bcb0df55eb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/09-inkfall-remote-assault-crouch-1440x900.png",
+      "type": "file",
+      "sizeBytes": 491356,
+      "sha256": "2c53ba6de06359fcb550ee14ca83fc0e31d92e2acb1eac3e60c7d62e07bfae33"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/10-inkfall-scoreboard-held-1440x900.png",
+      "type": "file",
+      "sizeBytes": 326982,
+      "sha256": "4bce6966f470d2f1a5f1667c8f9853fb07a6894bd9ed252b95589fdd30ec5135"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev40-weapon-ready-v4-browser-player-eye-v2-contact-telemetry/runtime.json",
+      "type": "file",
+      "sizeBytes": 75457,
+      "sha256": "711f40a25821718f2a9859811265b6ff52a682ddc67f9b267d703801588de97b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev41-kevin-rifle-source-build-v1/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 3564,
+      "sha256": "306dc146511bf4d3e091a4fd8744d93d7acbddd66a6f0560629a348c3a8b8606"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev41-kevin-rifle-source-build-v1/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 13282,
+      "sha256": "bee25445ab13ad3b22cc052527f73122a2d62cb085aec1087445242a5a9af14c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev41-kevin-rifle-source-build-v1/kyx-rev40-assault-front.png",
+      "type": "file",
+      "sizeBytes": 888627,
+      "sha256": "577fdc3bf67c7cf4a45c22fb62d903c2abc28f6e1e0dbeadae76f6a848a80a0e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev41-kevin-rifle-source-build-v1/kyx-rev40-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 907681,
+      "sha256": "50f6396a2e6c6424d5a83915c9a097c14f554e44e1fb2e092b489ea706e65bf4"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev41-kevin-rifle-source-build-v1/kyx-rev40-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 889882,
+      "sha256": "ebbb001e4e7a13a8505cde34c52e3cf04a304d6a8b0efd58eca8da6b0891a60a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 6210,
+      "sha256": "57776af06f84cf80a2d8a5acbe714ccb8dab17ddd8cd8f86a1212a2fe2cb00eb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/HUMAN_EYE_PRIORITY.md",
+      "type": "file",
+      "sizeBytes": 1200,
+      "sha256": "2975ae21d12f4c907f5fab8594986a7b33007bf324ceaa7cdea1762de7794064"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 25343,
+      "sha256": "5c25b07c21a1f548db0ee22ba8357339c5744387b61102249c201d566c7be374"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/human-eye-observations.json",
+      "type": "file",
+      "sizeBytes": 9448,
+      "sha256": "728b9ed4712bf4fe82aaa7b1dbd51fcfad4ccf60799a5fa44db5061d2292aae9"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/human-eye-scored.json",
+      "type": "file",
+      "sizeBytes": 9494,
+      "sha256": "291d41187265ce4acef5afe61633950fae3383c0880474ebe5633754144582de"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev40-assault-front.png",
+      "type": "file",
+      "sizeBytes": 879434,
+      "sha256": "c63d3bef4b58bc29c9fc4ff5bb857200dce83c049279567b001e2b9240b92dcb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev40-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 899552,
+      "sha256": "44da14427ec2be0aead639cec9cc62cbcee48141066a081dd38f4a401369ee10"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev40-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 886580,
+      "sha256": "d70308394cd2728087050588c311d08eec0ee86edfa85429c377ffb8a413df48"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev42-vlr7-contact-front.png",
+      "type": "file",
+      "sizeBytes": 883014,
+      "sha256": "5388a5be66c974280f796da90836d7bc8ec47294f8ac3c94d3e5db41fe7f1b2b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev42-vlr7-dominant-stock.png",
+      "type": "file",
+      "sizeBytes": 941037,
+      "sha256": "47214e32c162403ceadbb9534258e5a308d392c88a36e817e0b7ff9aef370da6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev42-vlr7-sightline-side.png",
+      "type": "file",
+      "sizeBytes": 925290,
+      "sha256": "a3ade4ca574d58edcf96047ba22db8969c3e4453a5737fb46c11a35fa9495a3b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev42-vlr7-constrained-source-build-v1/kyx-rev42-vlr7-support-handguard.png",
+      "type": "file",
+      "sizeBytes": 920887,
+      "sha256": "6aabea63ffb0857e1dc7b395264691321dd4c5f66b67cfcaf4523049bda7cb2c"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/HUMAN_EYE_AUDIT.md",
+      "type": "file",
+      "sizeBytes": 6597,
+      "sha256": "6d23131fef4d4e5bb4db7a9dbcf7365857994d260f62decdd42dffb94adcbb3e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/HUMAN_EYE_PRIORITY.md",
+      "type": "file",
+      "sizeBytes": 1220,
+      "sha256": "2b31503ba513c023e94de85236effbf2b3a56dfc61588f2811ca218aff9051f0"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/author-export-report.json",
+      "type": "file",
+      "sizeBytes": 38375,
+      "sha256": "51268de10a7a4ea021589661ce1d5ff16ea443c27b8eb2f7eac6189e701f035f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/blender-console-retry1.log",
+      "type": "file",
+      "sizeBytes": 13778,
+      "sha256": "53f184c349c49673d7702ded2dc6a352dacc4f353425e8ad087b9d66d0a7fee5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/blender-console.log",
+      "type": "file",
+      "sizeBytes": 8362,
+      "sha256": "7a88b787f9649d59ac7723c88a6fdca91549a9e95ccb45f9ee1a687eae8bc6fb"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/human-eye-observations.json",
+      "type": "file",
+      "sizeBytes": 10582,
+      "sha256": "d4850e0b881b94978a9471c925cc83aa147f2eadf0b226d10be1082cc5fbbffc"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/human-eye-scored.json",
+      "type": "file",
+      "sizeBytes": 10651,
+      "sha256": "082d7dd94eeef7508ddb11407e56a975b7e6dcc262b6a3a753ea3fc54e2137f8"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-assault-front.png",
+      "type": "file",
+      "sizeBytes": 837112,
+      "sha256": "79183106b8c30f830c6bf8e710f13edd18509162bbe40a1b0cd6bb51198ca1c1"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-assault-helmet-chest.png",
+      "type": "file",
+      "sizeBytes": 879161,
+      "sha256": "3395b92662c30e62fe5a84c071e6f047739e0e4495c4668b0571134cd4754939"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-assault-three-quarter.png",
+      "type": "file",
+      "sizeBytes": 863680,
+      "sha256": "aa02230b6d3fb40e9b202b084b666b579c1b6735815dba74612c4bc62f32c062"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-vlr7-contact-front.png",
+      "type": "file",
+      "sizeBytes": 881336,
+      "sha256": "ca2f9d61e184f1544dcf2964c00fc997f8c4e3a3d728dffd16df5ef1ecf2ea5a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-vlr7-contact-neutral.png",
+      "type": "file",
+      "sizeBytes": 899084,
+      "sha256": "fe518343bbda1122a90109e1e690074a7ef231e7b90a94528141d4a2ebe7418b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-vlr7-dominant-grip-rear.png",
+      "type": "file",
+      "sizeBytes": 899381,
+      "sha256": "1e899c3ed967b893e43c843a7c3863c2f9dbdd13b4a7f0d9d8a22097f5396f9a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-vlr7-dominant-stock.png",
+      "type": "file",
+      "sizeBytes": 942783,
+      "sha256": "14a86feb49048467d2d5c0e9869a46ea9c0ac0cf74a203006eb2effbe5396e5f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-vlr7-sightline-side.png",
+      "type": "file",
+      "sizeBytes": 896797,
+      "sha256": "670378e3b421efb4a0745e0c1a67119ff9ee103d94e9051b2c04f5754243c623"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev43-vlr7-grip-source-build-v1/kyx-rev43-vlr7-support-handguard.png",
+      "type": "file",
+      "sizeBytes": 943244,
+      "sha256": "05f1534eb2037093a79ec15fe31bb51381c9198eecbdaefacabf6e95318207d4"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev44-vlr7-landmark-grip-source-build-v1/blender-console.log",
+      "type": "file",
+      "sizeBytes": 7706,
+      "sha256": "6705ceb37e786320cf2bf85313af5f12e9b2b1d9fe2c9d73210c84d1e8996731"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev45-vlr7-anatomical-grip-source-build-v1/blender-stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev45-vlr7-anatomical-grip-source-build-v1/blender-stdout.log",
+      "type": "file",
+      "sizeBytes": 1110,
+      "sha256": "f8adf3734064b81ca88ac7564b33e643f5efa0c5cdb91f2dc77ded83e2724b44"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev46-vlr7-diagnostic-launch-v1/blender-stderr.log",
+      "type": "file",
+      "sizeBytes": 2137,
+      "sha256": "f6d9e6827c4db2436964975c16f2cd75f1c755cb0e9ef9e8610f711e11f45ba5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev46-vlr7-diagnostic-launch-v1/blender-stdout.log",
+      "type": "file",
+      "sizeBytes": 1961,
+      "sha256": "f6eaacd0a080dcda03a2be8e5ebed95377252145d5a6ed90e974cb5bb900a27b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev46-vlr7-diagnostic-source-build-v1/rev46-stage.jsonl",
+      "type": "file",
+      "sizeBytes": 3511,
+      "sha256": "0a21a38488b88cb965ba2bbc3550d8b357162e0b1dc1877bbfa60de691f41f48"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev46-vlr7-diagnostic-source-build-v1/rev46-traceback.txt",
+      "type": "file",
+      "sizeBytes": 1317,
+      "sha256": "dc88f78552deb2166eb2eee88d4580fd46c7ab9f1a5a0c89074f231f900f7502"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev47-vlr7-fixture-schema-launch-v1/blender-stderr.log",
+      "type": "file",
+      "sizeBytes": 3588,
+      "sha256": "f69ca74b700f6bf4b7757f3a9f0893c11e5727424e367be9250424b41735047e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev47-vlr7-fixture-schema-launch-v1/blender-stdout.log",
+      "type": "file",
+      "sizeBytes": 3404,
+      "sha256": "88426219aa2b2467717abdd799ada7b8edea4e66525bc878b6230be64a6e7611"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev47-vlr7-fixture-schema-source-build-v1/rev47-stage.jsonl",
+      "type": "file",
+      "sizeBytes": 22888,
+      "sha256": "adddec28c60aaf778605a9ea534fdc9f58f8c420b0fbb679b779868a27a47859"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev47-vlr7-fixture-schema-source-build-v1/rev47-traceback.txt",
+      "type": "file",
+      "sizeBytes": 2732,
+      "sha256": "222b8901c5873dfdbc49c3bc545bbb50f3951545214a013719cdab1404d4179f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev48-vlr7-oriented-mesh-clearance-launch-v1/blender-stderr.log",
+      "type": "file",
+      "sizeBytes": 1487,
+      "sha256": "77991bf6c7f478662135f6b2672aac383d4c4d877a53f32ecae4321d65f6a715"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev48-vlr7-oriented-mesh-clearance-launch-v1/blender-stdout.log",
+      "type": "file",
+      "sizeBytes": 1578,
+      "sha256": "d71bf0353d75fe36ad4f5c5141a2b8d3bbee65613f01de6d693e1b8008a42b84"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev48-vlr7-oriented-mesh-clearance-source-build-v1/rev48-wrapper-traceback.txt",
+      "type": "file",
+      "sizeBytes": 1260,
+      "sha256": "67cc94d5a0c97a41b1f3b829124ae64baca5f25031e8b9b065e83c695453153e"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev49-vlr7-oriented-mesh-clearance-launch-v1/blender-stderr.log",
+      "type": "file",
+      "sizeBytes": 3106,
+      "sha256": "3ea3cfbf0e2c3fe67f878e7ab8545a425fb81c0c862b99a29346a4ee234c5a3a"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev49-vlr7-oriented-mesh-clearance-launch-v1/blender-stdout.log",
+      "type": "file",
+      "sizeBytes": 2904,
+      "sha256": "147582db46f590322a6225f98959bee4128c5e2e11891e1f42da886d34b4d2a6"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev49-vlr7-oriented-mesh-clearance-source-build-v1/rev49-stage.jsonl",
+      "type": "file",
+      "sizeBytes": 3921,
+      "sha256": "763e8d16f31d18e751f62128f3896321a085e4745ae2849387356922c7962d25"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev49-vlr7-oriented-mesh-clearance-source-build-v1/rev49-traceback.txt",
+      "type": "file",
+      "sizeBytes": 2248,
+      "sha256": "5757403caaf4e4ebd63369bbd1a1662c1e39fe427c6d4218ed94dcce37ca2e0f"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev50-vlr7-oriented-mesh-clearance-launch-v1/blender-stderr.log",
+      "type": "file",
+      "sizeBytes": 3782,
+      "sha256": "c7b2757d4342ab322b8301139d1492ebba94dcb496ad3d3a5527b0b2e89ade40"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev50-vlr7-oriented-mesh-clearance-launch-v1/blender-stdout.log",
+      "type": "file",
+      "sizeBytes": 3580,
+      "sha256": "51c2dbeffd6a46b61f7fea362845322d786eaea1a8dae2d3e60883b351b39bf5"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev50-vlr7-oriented-mesh-clearance-source-build-v1/rev50-stage.jsonl",
+      "type": "file",
+      "sizeBytes": 28382,
+      "sha256": "10909b8c0a0a033d3a9923118d09291d09d6d0795e7c7ff42743a59f67f4f49b"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-assault-rev50-vlr7-oriented-mesh-clearance-source-build-v1/rev50-traceback.txt",
+      "type": "file",
+      "sizeBytes": 2906,
+      "sha256": "19f8d028aa123f5da61646a5e0b9197d1c123b82e3635dac136db49bef0dc5f2"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/idle-loop.png",
+      "type": "file",
+      "sizeBytes": 106909,
+      "sha256": "3246a82ae590dff1251b7a60c97c7189b7959f8213a1e29488129d6608946e57"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/jog-fwd-loop.png",
+      "type": "file",
+      "sizeBytes": 115696,
+      "sha256": "39762997481ec9f9443e46c185a2506b22ea3938833bda82537fac687dfc20d1"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/pistol-aim-neutral.png",
+      "type": "file",
+      "sizeBytes": 104438,
+      "sha256": "fbf7e99c4fe4a5480a5037c6e2cf9c8b571665b158f6314ceeee1f5786919dd3"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/pistol-idle-loop.png",
+      "type": "file",
+      "sizeBytes": 104214,
+      "sha256": "59091045ecccaad1075d1a773966c623cceaeeb1268601324799a4ac9d407aa2"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/pistol-shoot.png",
+      "type": "file",
+      "sizeBytes": 105359,
+      "sha256": "c72aa01273abd2c1780ec06dd1b9548d2d970816c39245ed8362b8397e0ba7bf"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 1957,
+      "sha256": "f4f1d625c3c5303f60fc4f6550a095d1f849e155d5cc06dd3b309014bc4208ff"
+    },
+    {
+      "path": "evidence/2026-08-09/g6-quaternius-weapon-pose-reference-v1/walk-loop.png",
+      "type": "file",
+      "sizeBytes": 114681,
+      "sha256": "cf7ab9eae3bdae88d6ce15a9a9180dbc8ec88dcde09f5e3102831bcd04c4f584"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2/README.md",
+      "type": "file",
+      "sizeBytes": 606,
+      "sha256": "28e0b2f6dfbd5194dcd051ecb4a49d3a9e25b95447ab0e120433203e9b2a068d"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2/authority-soak.json",
+      "type": "file",
+      "sizeBytes": 15248,
+      "sha256": "a20625bb8814c916b5bd21cd5065d30b16899019b83ceddc302b60501e0851b7"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2/vitest.stderr.log",
+      "type": "file",
+      "sizeBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak-v2/vitest.stdout.log",
+      "type": "file",
+      "sizeBytes": 5166,
+      "sha256": "59143ed2394e2ec89bfb5ba7ac56259a23c0585e116196ec25b91ad892fd6af2"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak/vitest.stderr.log",
+      "type": "file",
+      "sizeBytes": 762,
+      "sha256": "49169c9351b1dc228e21c237a19aaacebb4a7a70de8dee46ff2015ed557ce962"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/relay-authority-soak/vitest.stdout.log",
+      "type": "file",
+      "sizeBytes": 1990,
+      "sha256": "52d884c4f1e1881beb56b6799697ae38d177f1508ffe30a5d009f6efad8c9fb4"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/01-home-1440x900.png",
+      "type": "file",
+      "sizeBytes": 56852,
+      "sha256": "d26090f7eb5734e5fb25ac45ddb66620f6996e858ed31591b4f09bd7c67b7676"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/03-relay-combat-controls-1440x900.png",
+      "type": "file",
+      "sizeBytes": 524622,
+      "sha256": "37ba686d51bb440f492e36b7c35d224d28e174c0ae1ff800510256946635e17e"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/04-relay-scoreboard-1440x900.png",
+      "type": "file",
+      "sizeBytes": 470400,
+      "sha256": "940ea9f45d752c6bbb002ac17be2bb8195dfae3b8bf81c8c382cd39485db63c7"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/2-relay-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 531252,
+      "sha256": "30b0a70eacd3d0930d1ca16b02fb89684b9e797cd87ee5cb1e7692231ce392f1"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/3-switchyard-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 154890,
+      "sha256": "130b81cd021ae5ad1761a644d878322fef8fdcf07045f845a427686f119d5394"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/4-crownpoint-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 146616,
+      "sha256": "c4c9eb5f540e446c8c5bce9983fc0ec296fd7329f7ce73485201f1bdbdfd6462"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-13ec2fa-v1/runtime.json",
+      "type": "file",
+      "sizeBytes": 107203,
+      "sha256": "1be04010ac5ee77d8841e05fbc4749b2795ec3663303b3419514be5d95b18f1b"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/01-home-1440x900.png",
+      "type": "file",
+      "sizeBytes": 271833,
+      "sha256": "5cc5ec843d802dc3696d94d335fabafc54dc7b8aa70e0b850a982460cd6cbc89"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/03-relay-combat-controls-1440x900.png",
+      "type": "file",
+      "sizeBytes": 520388,
+      "sha256": "d5b1ade6b616a371fffff632ade90fda247f0544178cf1ec03e4ed5838f4393e"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/04-relay-scoreboard-1440x900.png",
+      "type": "file",
+      "sizeBytes": 465576,
+      "sha256": "617ae0599c925a881b68591bdfc4e0d57a1d5ee93e9060212d790a8c90220bba"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/2-relay-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 511423,
+      "sha256": "0f7d32649e42f8f5748d46070d4c8bf4bd1831e8e0a413b18950b6b83cd13d7c"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/3-switchyard-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 190682,
+      "sha256": "253bd1390e04ccad63b61dce787ebb884c5f099bec8cbcaad6aaef26fc674f98"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/4-crownpoint-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 144327,
+      "sha256": "a70f79e8c26a88933abf1f12fdf1b34fd817cb56b1c6e80d40c641df3cc2e626"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-29c7f0a-v2/runtime.json",
+      "type": "file",
+      "sizeBytes": 67393,
+      "sha256": "3f483968d9d65dafed7936a111d0a72577dd57274f40113dab04031326f8b8b2"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/01-home-1440x900.png",
+      "type": "file",
+      "sizeBytes": 271833,
+      "sha256": "5cc5ec843d802dc3696d94d335fabafc54dc7b8aa70e0b850a982460cd6cbc89"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/03-relay-combat-controls-1440x900.png",
+      "type": "file",
+      "sizeBytes": 548013,
+      "sha256": "dc2c0e8deb6cf0d5317837a12c0d759720ecb9b800c39bb1ed9385d7e866db21"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/04-relay-scoreboard-1440x900.png",
+      "type": "file",
+      "sizeBytes": 471744,
+      "sha256": "203b4187f40e4be38138a913acff62e9938dc6af4c83e0427a67805cb9caee22"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/2-relay-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 512208,
+      "sha256": "278af7bfd66f83ebc2266617d66e55b97292c4bf10f2b06a9eb621e596db83f9"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/3-switchyard-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 191741,
+      "sha256": "cf983cb1d46bef94d36d076f2ce2d6b98dad18f7877d29dc85c2a76faa3c9b52"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/4-crownpoint-active-1440x900.png",
+      "type": "file",
+      "sizeBytes": 149728,
+      "sha256": "83b1f5469a05aa85c492acafe46b6774756e5fa6ec411dbb8a22ccc658865a35"
+    },
+    {
+      "path": "evidence/2026-08-12/kyx-clean-room-parity-v1/staging-f9261f2-v3/runtime.json",
+      "type": "file",
+      "sizeBytes": 67373,
+      "sha256": "058a732776e22a0fa2a747c109db57de604c0abd901b9bfe432b87c3ae8391e9"
+    },
+    {
+      "path": "tools/evidence/capture-g6-quaternius-weapon-pose-reference.mjs",
+      "type": "file",
+      "sizeBytes": 9356,
+      "sha256": "d41f6b2045dec24e1c4e9efd094ee213497ae23f73723a8dc569885f39ef069e"
+    },
+    {
+      "path": "tools/evidence/verify-g6-assault-rev48-oriented-mesh-clearance.py",
+      "type": "file",
+      "sizeBytes": 50808,
+      "sha256": "7e376b0235da51cac4ae589b58572df5e960f20b530f36c1d951adcc9f159dfc"
+    },
+    {
+      "path": "tools/evidence/verify-g6-assault-rev49-oriented-mesh-clearance.py",
+      "type": "file",
+      "sizeBytes": 54495,
+      "sha256": "68427136fdf09f6c3b671143d05393a548c903d4546c60bd789ba630df621975"
+    },
+    {
+      "path": "tools/evidence/verify-g6-assault-rev50-oriented-mesh-clearance.py",
+      "type": "file",
+      "sizeBytes": 60421,
+      "sha256": "26cc415977f9dd31a54caa3e3e56f77014121a9b268023b76c6ee897e3b03f13"
+    },
+    {
+      "path": "tools/evidence/verify-g6-assault-skin-integrity.py",
+      "type": "file",
+      "sizeBytes": 7226,
+      "sha256": "5259f7ce9ad2e86af3b0a1269ec60aa77c189ebc5e5efc393cc99b9362a0d366"
+    }
+  ]
+}
