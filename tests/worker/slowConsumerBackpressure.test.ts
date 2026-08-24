@@ -58,12 +58,13 @@ interface FakeSocketProbe {
 
 function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment {
   return Object.freeze({
-    schemaVersion: 8,
+    schemaVersion: 9,
     roomCode: 'KYX-234567',
     connectionId: 'connection.slow-consumer',
     allocationLeaseId: null,
     preJoinExpiresAt: null,
     playerId: 'player.slow-consumer',
+    spectatorId: null,
     sessionGeneration: 1,
     rateWindowStartedAt: 1_000,
     messagesInRateWindow: 0,

@@ -51,12 +51,13 @@ export const PRE_JOIN_TIMEOUT_MILLISECONDS = 10_000 as const;
 export const FULL_SNAPSHOT_REQUEST_COOLDOWN_MILLISECONDS = 500 as const;
 
 export interface SocketAttachment {
-  readonly schemaVersion: 8;
+  readonly schemaVersion: 9;
   readonly roomCode: string;
   readonly connectionId: string;
   readonly allocationLeaseId: string | null;
   readonly preJoinExpiresAt: number | null;
   readonly playerId: string | null;
+  readonly spectatorId: string | null;
   readonly sessionGeneration: number;
   readonly rateWindowStartedAt: number;
   readonly messagesInRateWindow: number;
@@ -141,7 +142,7 @@ export function isAllowedOrigin(request: Request, configuredOrigins: string | un
 export function isSocketAttachment(value: unknown): value is SocketAttachment {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return false;
   const record = value as Partial<SocketAttachment>;
-  return record.schemaVersion === 8
+  return record.schemaVersion === 9
     && typeof record.roomCode === 'string'
     && normalizeRoomCode(record.roomCode) === record.roomCode
     && typeof record.connectionId === 'string'
@@ -150,11 +151,21 @@ export function isSocketAttachment(value: unknown): value is SocketAttachment {
     && nullableAllocationLeaseId(record.allocationLeaseId)
     && nullableTimestamp(record.preJoinExpiresAt)
     && (record.playerId === null || typeof record.playerId === 'string')
+    && (record.spectatorId === null || typeof record.spectatorId === 'string')
+    && !(record.playerId !== null && record.spectatorId !== null)
     && (
-      (record.playerId === null && record.allocationLeaseId === null)
-      || (record.playerId === null && record.preJoinExpiresAt !== null)
+      (
+        record.playerId === null
+        && record.spectatorId === null
+        && record.allocationLeaseId === null
+      )
       || (
-        record.playerId !== null
+        record.playerId === null
+        && record.spectatorId === null
+        && record.preJoinExpiresAt !== null
+      )
+      || (
+        (record.playerId !== null || record.spectatorId !== null)
         && record.allocationLeaseId === null
         && record.preJoinExpiresAt === null
       )
@@ -199,7 +210,8 @@ export function isSocketAttachment(value: unknown): value is SocketAttachment {
  * Rolling deployments may wake sockets serialized by any of the three prior
  * runtimes. Version 4 lacks snapshot-ACK debt, version 5 lacks the bounded
  * session-local sent-snapshot history, version 6 predates the global pre-join
- * allocation lease, and version 7 predates capability-gated combat scores.
+ * allocation lease, version 7 predates capability-gated combat scores, and
+ * version 8 predates the mutually-exclusive spectator session identity.
  * Prior sockets migrate without the new capability so a rolling deployment
  * never sends an unknown strict-v2 field to an older client.
  */
@@ -211,46 +223,55 @@ export function normalizeSocketAttachment(value: unknown): SocketAttachment | nu
     || Array.isArray(value)
   ) return null;
   const version = (value as { readonly schemaVersion?: unknown }).schemaVersion;
-  let version7: unknown = value;
-  if (version !== 7) {
-    let version6: unknown = value;
-    if (version !== 6) {
-      const version5 = version === 4
-        ? { ...value, schemaVersion: 5, snapshotAckDebtStartedAt: null }
-        : value;
-      if ((version5 as { readonly schemaVersion?: unknown }).schemaVersion !== 5) return null;
-      const previous = version5 as {
-        readonly lastSentSnapshotTick?: unknown;
-        readonly lastSentSnapshotBaselineId?: unknown;
-      };
-      const sentSnapshotHistory = (
-        typeof previous.lastSentSnapshotTick === 'number'
-        && Number.isSafeInteger(previous.lastSentSnapshotTick)
-        && previous.lastSentSnapshotTick >= 0
-        && typeof previous.lastSentSnapshotBaselineId === 'string'
-      ) ? [Object.freeze({
-          serverTick: previous.lastSentSnapshotTick,
-          snapshotBaselineId: previous.lastSentSnapshotBaselineId,
-        })] : [];
-      version6 = Object.freeze({
-        ...version5,
-        schemaVersion: 6,
-        sentSnapshotHistory: Object.freeze(sentSnapshotHistory),
+  let version8: unknown = value;
+  if (version !== 8) {
+    let version7: unknown = value;
+    if (version !== 7) {
+      let version6: unknown = value;
+      if (version !== 6) {
+        const version5 = version === 4
+          ? { ...value, schemaVersion: 5, snapshotAckDebtStartedAt: null }
+          : value;
+        if ((version5 as { readonly schemaVersion?: unknown }).schemaVersion !== 5) return null;
+        const previous = version5 as {
+          readonly lastSentSnapshotTick?: unknown;
+          readonly lastSentSnapshotBaselineId?: unknown;
+        };
+        const sentSnapshotHistory = (
+          typeof previous.lastSentSnapshotTick === 'number'
+          && Number.isSafeInteger(previous.lastSentSnapshotTick)
+          && previous.lastSentSnapshotTick >= 0
+          && typeof previous.lastSentSnapshotBaselineId === 'string'
+        ) ? [Object.freeze({
+            serverTick: previous.lastSentSnapshotTick,
+            snapshotBaselineId: previous.lastSentSnapshotBaselineId,
+          })] : [];
+        version6 = Object.freeze({
+          ...version5,
+          schemaVersion: 6,
+          sentSnapshotHistory: Object.freeze(sentSnapshotHistory),
+        });
+      }
+      if ((version6 as { readonly schemaVersion?: unknown }).schemaVersion !== 6) return null;
+      version7 = Object.freeze({
+        ...(version6 as object),
+        schemaVersion: 7,
+        allocationLeaseId: null,
+        preJoinExpiresAt: null,
       });
     }
-    if ((version6 as { readonly schemaVersion?: unknown }).schemaVersion !== 6) return null;
-    version7 = Object.freeze({
-      ...(version6 as object),
-      schemaVersion: 7,
-      allocationLeaseId: null,
-      preJoinExpiresAt: null,
+    if ((version7 as { readonly schemaVersion?: unknown }).schemaVersion !== 7) return null;
+    version8 = Object.freeze({
+      ...(version7 as object),
+      schemaVersion: 8,
+      combatPlayerScoresV1: false,
     });
   }
-  if ((version7 as { readonly schemaVersion?: unknown }).schemaVersion !== 7) return null;
+  if ((version8 as { readonly schemaVersion?: unknown }).schemaVersion !== 8) return null;
   const migrated = Object.freeze({
-    ...(version7 as object),
-    schemaVersion: 8,
-    combatPlayerScoresV1: false,
+    ...(version8 as object),
+    schemaVersion: 9,
+    spectatorId: null,
   });
   return isSocketAttachment(migrated) ? migrated : null;
 }
@@ -395,6 +416,7 @@ export function isSocketStale(
 ): boolean {
   return (
     attachment.playerId === null
+    && attachment.spectatorId === null
     && attachment.preJoinExpiresAt !== null
     && nowMilliseconds >= attachment.preJoinExpiresAt
   ) || nowMilliseconds - attachment.lastSeenAt >= SOCKET_STALE_MILLISECONDS;

@@ -14,6 +14,18 @@ import {
   authorityLoadoutRequestFingerprint,
   createInkfallRev5PortalAuthorityPort,
   createRelayPortalAuthorityPort,
+  createAuthorityRematchConsensus,
+  createAuthoritySpectatorState,
+  castAuthorityRematchVote,
+  advanceAuthorityRematchConsensus,
+  advanceAuthoritySpectators,
+  disconnectAuthoritySpectator,
+  joinAuthoritySpectator,
+  removeAuthoritySpectator,
+  restoreAuthorityRematchConsensus,
+  restoreAuthoritySpectatorState,
+  resumeAuthoritySpectator,
+  selectAuthoritySpectatorTarget,
   deterministicCombatBotPresetId,
   evaluateAuthorityLoadoutRequest,
   type AuthorityActiveMatchCheckpointV1,
@@ -22,6 +34,10 @@ import {
   type AuthoritySpawn,
   type AuthoritySpawnResolutionContext,
   type AuthoritySpawnSelectionResultV1,
+  type AuthorityRematchConsensusStateV1,
+  type AuthoritySpectatorRecordV1,
+  type AuthoritySpectatorStateV1,
+  type AuthoritySpectatorTargetV1,
 } from '../src/authority';
 import { hashRulesetContent, requireRuleset } from '../src/content';
 import {
@@ -104,6 +120,7 @@ import {
 } from './metricsAccess';
 import { parseRoomRoute } from './routes';
 import { ResumeSessionRegistry } from './resumeSessions';
+import { SpectatorResumeSessionRegistry } from './spectatorResumeSessions';
 import {
   FULL_SNAPSHOT_REQUEST_COOLDOWN_MILLISECONDS,
   MAX_SOCKET_BUFFERED_BYTES,
@@ -160,6 +177,10 @@ const INKFALL_SPAWN_SELECTION_STRATEGY =
   'rev3_authority_enemy_distance_fixture_occluded_los_v1' as const;
 const MAXIMUM_RETAINED_INKFALL_SPAWN_DECISIONS = 64;
 const INKFALL_RECENT_SPAWN_USE_WINDOW_TICKS = 160;
+const LIFECYCLE_CHECKPOINT_SCHEMA_VERSION = 1;
+const LIFECYCLE_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
+const SPECTATOR_RECONNECT_GRACE_TICKS = 1_200;
+const REMATCH_RESPONSE_WINDOW_TICKS = 400;
 
 type InkfallSpawnFallbackMode =
   | 'none'
@@ -217,6 +238,22 @@ interface RoomProfileRow {
   readonly [column: string]: string | number | ArrayBuffer | null;
   readonly schema_version: number;
   readonly profile_id: string;
+}
+
+interface RoomLifecycleCheckpointRow {
+  readonly [column: string]: string | number | ArrayBuffer | null;
+  readonly schema_version: number;
+  readonly room_code: string;
+  readonly room_id: string;
+  readonly match_id: string;
+  readonly mode_id: string;
+  readonly spectator_json: string;
+  readonly spectator_hash_algorithm: string;
+  readonly spectator_hash: string;
+  readonly rematch_json: string | null;
+  readonly rematch_hash_algorithm: string | null;
+  readonly rematch_hash: string | null;
+  readonly authority_tick: number;
 }
 
 interface RoomMatchModeRow {
@@ -513,7 +550,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     maximumCatchUpTicks: ROOM_TIMER_MAXIMUM_CATCH_UP_TICKS,
   });
   private readonly resumeSessions: ResumeSessionRegistry;
+  private readonly spectatorResumeSessions: SpectatorResumeSessionRegistry;
   private readonly sessionGenerations = new Map<string, number>();
+  private readonly spectatorSessionGenerations = new Map<string, number>();
+  private spectatorState: AuthoritySpectatorStateV1 | null = null;
+  private rematchConsensus: AuthorityRematchConsensusStateV1 | null = null;
   private readonly playerEventAcknowledgements = new Map<string, string | null>();
   private readonly serverBotPlayerIds = new Set<string>();
   private readonly serverBotInputSequences = new Map<string, number>();
@@ -578,6 +619,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     super(ctx, env);
     this.authorityEnv = env;
     this.resumeSessions = new ResumeSessionRegistry(ctx.storage);
+    this.spectatorResumeSessions = new SpectatorResumeSessionRegistry(ctx.storage);
   }
 
   override async fetch(request: Request): Promise<Response> {
@@ -750,12 +792,13 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const server = pair[1];
     const now = Date.now();
     const attachment: SocketAttachment = Object.freeze({
-      schemaVersion: 8,
+      schemaVersion: 9,
       roomCode: route.roomCode,
       connectionId: `connection.${crypto.randomUUID()}`,
       allocationLeaseId,
       preJoinExpiresAt: now + PRE_JOIN_TIMEOUT_MILLISECONDS,
       playerId: null,
+      spectatorId: null,
       sessionGeneration: 0,
       rateWindowStartedAt: now,
       messagesInRateWindow: 0,
@@ -916,7 +959,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           });
           return;
         }
-        if (rate.attachment.playerId !== null) {
+        if (this.hasBoundSession(rate.attachment)) {
           this.sendJoinRejection(webSocket, clientMessage.requestId, 'DUPLICATE_SESSION');
           return;
         }
@@ -999,6 +1042,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           return;
         }
         this.recordLifecycleEvent('playerJoined', playerId);
+        this.advanceLifecycleState();
         this.broadcastReliableEvents(new Map([[fullAttachment.connectionId, fullAttachment]]));
         if (
           authority.lifecycle === 'lobby'
@@ -1018,7 +1062,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       }
       case 'resumeRoom': {
         if (
-          rate.attachment.playerId !== null
+          this.hasBoundSession(rate.attachment)
           || clientMessage.roomCode.toUpperCase() !== rawAttachment.roomCode
         ) {
           this.sendJoinRejection(webSocket, clientMessage.requestId, 'RESUME_REJECTED');
@@ -1104,6 +1148,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
           return;
         }
+        this.advanceLifecycleState();
         this.broadcastReliableEvents(new Map([[fullAttachment.connectionId, fullAttachment]]));
         if (
           authority.lifecycle === 'lobby'
@@ -1121,9 +1166,280 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.ensureTimer();
         return;
       }
-      case 'requestFullSnapshot': {
+      case 'joinSpectator': {
+        if (clientMessage.roomCode.toUpperCase() !== rawAttachment.roomCode) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'ROOM_NOT_FOUND');
+          return;
+        }
+        if (this.hasBoundSession(rate.attachment)) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'DUPLICATE_SESSION');
+          return;
+        }
+        const spectatorId = `spectator.${crypto.randomUUID()}`;
+        const reason = authority.lifecycle === 'warmup' || authority.lifecycle === 'active'
+          ? 'late_join'
+          : 'voluntary';
+        const joined = joinAuthoritySpectator(this.requireSpectatorState(), {
+          spectatorId,
+          connectionId: rate.attachment.connectionId,
+          reason,
+          authorityTick: authority.serverTick,
+          lifecycle: authority.lifecycle,
+          targets: this.authoritySpectatorTargets(),
+        });
+        if (!joined.ok) {
+          safeSocketSend(webSocket, errorMessage(
+            'SPECTATOR_JOIN_REJECTED',
+            joined.reason,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        let issued: Awaited<ReturnType<SpectatorResumeSessionRegistry['issue']>>;
+        try {
+          issued = await this.spectatorResumeSessions.issue(
+            spectatorId,
+            authority.identity.roomId,
+            authority.identity.matchId,
+          );
+        } catch {
+          safeSocketSend(webSocket, errorMessage(
+            'SPECTATOR_STATE_UNAVAILABLE',
+            null,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        if (webSocket.readyState !== WebSocket.OPEN) {
+          this.spectatorResumeSessions.revokeSpectator(
+            spectatorId,
+            authority.identity.roomId,
+            authority.identity.matchId,
+          );
+          return;
+        }
+        await this.releaseAllocationLease(rate.attachment.allocationLeaseId);
+        const eventBaselineId = this.reliableEvents.latestId;
+        const nextAttachment: SocketAttachment = Object.freeze({
+          ...this.resetSnapshotAttachment(rate.attachment),
+          allocationLeaseId: null,
+          preJoinExpiresAt: null,
+          spectatorId,
+          sessionGeneration: issued.session.generation,
+          lastAcknowledgedEventId: eventBaselineId,
+          lastSentReliableEventId: eventBaselineId,
+        });
+        this.spectatorState = joined.state;
+        this.spectatorSessionGenerations.set(spectatorId, issued.session.generation);
+        this.writeSocketAttachment(webSocket, nextAttachment);
+        this.persistLifecycleState();
+        const accepted = safeSocketSend(webSocket, {
+          protocolVersion: PROTOCOL_VERSION,
+          type: 'spectatorAccepted',
+          requestId: clientMessage.requestId,
+          spectatorId,
+          roomId: authority.identity.roomId,
+          matchId: authority.identity.matchId,
+          serverTick: authority.serverTick,
+          connectionMode: 'joined',
+          resumeToken: issued.resumeToken,
+          simulationIdentity: this.simulationIdentity(),
+          targetPlayerId: joined.spectator.targetPlayerId,
+          targetRevision: joined.spectator.targetRevision,
+        });
+        const stateSent = accepted
+          && this.sendSpectatorState(webSocket, joined.spectator, clientMessage.requestId);
+        const fullAttachment = stateSent && joined.spectator.targetPlayerId !== null
+          ? this.sendFullSnapshot(webSocket, nextAttachment)
+          : nextAttachment;
+        if (!accepted || !stateSent || fullAttachment === null) {
+          this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
+          return;
+        }
+        this.advanceLifecycleState();
+        this.broadcastReliableEvents(new Map([[fullAttachment.connectionId, fullAttachment]]));
+        if (this.rematchConsensus !== null) this.sendRematchState(webSocket);
+        await this.scheduleMaintenanceAlarm();
+        return;
+      }
+      case 'resumeSpectator': {
+        if (
+          this.hasBoundSession(rate.attachment)
+          || clientMessage.roomCode.toUpperCase() !== rawAttachment.roomCode
+        ) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'RESUME_REJECTED');
+          return;
+        }
+        const prepared = await this.spectatorResumeSessions.prepareRotation(
+          clientMessage.resumeToken,
+        );
+        if (prepared === null || webSocket.readyState !== WebSocket.OPEN) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'RESUME_REJECTED');
+          return;
+        }
+        const current = this.spectatorResumeSessions.lookup(
+          prepared,
+          authority.identity.roomId,
+          authority.identity.matchId,
+          now,
+        );
+        if (current === null) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'RESUME_REJECTED');
+          return;
+        }
+        const resumed = resumeAuthoritySpectator(this.requireSpectatorState(), {
+          spectatorId: current.spectatorId,
+          connectionId: rate.attachment.connectionId,
+          authorityTick: authority.serverTick,
+          targets: this.authoritySpectatorTargets(),
+        });
+        if (!resumed.ok) {
+          this.sendJoinRejection(
+            webSocket,
+            clientMessage.requestId,
+            resumed.reason === 'spectator_already_connected'
+              ? 'DUPLICATE_SESSION'
+              : 'RESUME_REJECTED',
+          );
+          return;
+        }
+        const rotated = this.spectatorResumeSessions.commitRotation(current, prepared, now);
+        if (rotated === null) {
+          this.sendJoinRejection(webSocket, clientMessage.requestId, 'RESUME_REJECTED');
+          return;
+        }
+        await this.releaseAllocationLease(rate.attachment.allocationLeaseId);
+        const eventBaselineId = this.reliableEvents.latestId;
+        const nextAttachment: SocketAttachment = Object.freeze({
+          ...this.resetSnapshotAttachment(rate.attachment),
+          allocationLeaseId: null,
+          preJoinExpiresAt: null,
+          spectatorId: current.spectatorId,
+          sessionGeneration: rotated.generation,
+          lastAcknowledgedEventId: eventBaselineId,
+          lastSentReliableEventId: eventBaselineId,
+        });
+        this.spectatorState = resumed.state;
+        this.spectatorSessionGenerations.set(current.spectatorId, rotated.generation);
+        this.writeSocketAttachment(webSocket, nextAttachment);
+        this.persistLifecycleState();
+        const accepted = safeSocketSend(webSocket, {
+          protocolVersion: PROTOCOL_VERSION,
+          type: 'spectatorAccepted',
+          requestId: clientMessage.requestId,
+          spectatorId: current.spectatorId,
+          roomId: authority.identity.roomId,
+          matchId: authority.identity.matchId,
+          serverTick: authority.serverTick,
+          connectionMode: 'resumed',
+          resumeToken: prepared.rotatedResumeToken,
+          simulationIdentity: this.simulationIdentity(),
+          targetPlayerId: resumed.spectator.targetPlayerId,
+          targetRevision: resumed.spectator.targetRevision,
+        });
+        const stateSent = accepted
+          && this.sendSpectatorState(webSocket, resumed.spectator, clientMessage.requestId);
+        const fullAttachment = stateSent && resumed.spectator.targetPlayerId !== null
+          ? this.sendFullSnapshot(webSocket, nextAttachment)
+          : nextAttachment;
+        if (!accepted || !stateSent || fullAttachment === null) {
+          this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
+          return;
+        }
+        this.broadcastReliableEvents(new Map([[fullAttachment.connectionId, fullAttachment]]));
+        if (this.rematchConsensus !== null) this.sendRematchState(webSocket);
+        await this.scheduleMaintenanceAlarm();
+        return;
+      }
+      case 'selectSpectatorTarget': {
+        if (
+          rate.attachment.spectatorId === null
+          || !this.isCurrentSessionAttachment(rate.attachment, now)
+        ) {
+          safeSocketSend(webSocket, errorMessage(
+            'SPECTATOR_JOIN_REQUIRED',
+            null,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        const selected = selectAuthoritySpectatorTarget(this.requireSpectatorState(), {
+          spectatorId: rate.attachment.spectatorId,
+          connectionId: rate.attachment.connectionId,
+          authorityTick: authority.serverTick,
+          targetPlayerId: clientMessage.targetPlayerId,
+          targets: this.authoritySpectatorTargets(),
+        });
+        if (!selected.ok) {
+          safeSocketSend(webSocket, errorMessage(
+            'SPECTATOR_TARGET_REJECTED',
+            selected.reason,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        this.spectatorState = selected.state;
+        const nextAttachment = selected.replayed
+          ? rate.attachment
+          : this.resetSnapshotAttachment(rate.attachment);
+        if (nextAttachment !== rate.attachment) this.writeSocketAttachment(webSocket, nextAttachment);
+        this.persistLifecycleState();
+        if (!this.sendSpectatorState(webSocket, selected.spectator, clientMessage.requestId)) {
+          this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
+          return;
+        }
+        if (
+          selected.spectator.targetPlayerId !== null
+          && this.sendFullSnapshot(webSocket, nextAttachment) === null
+        ) this.disconnectSocket(webSocket, nextAttachment, 1013, 'Backpressure');
+        return;
+      }
+      case 'rematchVote': {
         if (
           rate.attachment.playerId === null
+          || !this.isCurrentSessionAttachment(rate.attachment, now)
+        ) {
+          safeSocketSend(webSocket, errorMessage(
+            'JOIN_REQUIRED',
+            null,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        if (this.rematchConsensus === null) {
+          safeSocketSend(webSocket, errorMessage(
+            'REMATCH_NOT_OPEN',
+            null,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        const vote = castAuthorityRematchVote(this.rematchConsensus, {
+          playerId: rate.attachment.playerId,
+          requestId: clientMessage.requestId,
+          decision: clientMessage.decision,
+          authorityTick: authority.serverTick,
+        });
+        this.rematchConsensus = vote.state;
+        this.persistLifecycleState();
+        if (!vote.ok) {
+          safeSocketSend(webSocket, errorMessage(
+            'REMATCH_VOTE_REJECTED',
+            vote.reason,
+            clientMessage.requestId,
+          ));
+          return;
+        }
+        if (!this.sendRematchState(webSocket, clientMessage.requestId)) {
+          this.disconnectSocket(webSocket, rate.attachment, 1013, 'Backpressure');
+          return;
+        }
+        this.broadcastRematchState();
+        return;
+      }
+      case 'requestFullSnapshot': {
+        if (
+          !this.hasBoundSession(rate.attachment)
           || !this.isCurrentSessionAttachment(rate.attachment, now)
         ) {
           safeSocketSend(webSocket, errorMessage(
@@ -1171,6 +1487,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           this.disconnectSocket(webSocket, permit.attachment, 1013, 'Slow consumer');
           return;
         }
+        if (
+          rate.attachment.spectatorId !== null
+          && this.snapshotViewPlayerId(rate.attachment) === null
+        ) {
+          const spectator = this.spectatorRecord(rate.attachment.spectatorId);
+          if (spectator !== null) this.sendSpectatorState(webSocket, spectator, clientMessage.requestId);
+          return;
+        }
         if (this.sendFullSnapshot(
           webSocket,
           permit.attachment,
@@ -1180,6 +1504,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         return;
       }
       case 'inputBatch': {
+        if (rate.attachment.spectatorId !== null) {
+          safeSocketSend(webSocket, errorMessage('SPECTATOR_INPUT_FORBIDDEN'));
+          return;
+        }
         if (
           rate.attachment.playerId === null
           || !this.isCurrentSessionAttachment(rate.attachment, now)
@@ -1229,7 +1557,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       }
       case 'ack': {
         if (
-          rate.attachment.playerId === null
+          !this.hasBoundSession(rate.attachment)
           || !this.isCurrentSessionAttachment(rate.attachment, now)
         ) {
           safeSocketSend(webSocket, errorMessage('JOIN_REQUIRED'));
@@ -1269,6 +1597,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         this.writeSocketAttachment(webSocket, nextAttachment);
         if (
           acknowledgesLatestSent
+          && rate.attachment.playerId !== null
           && rate.attachment.lastSnapshotSentAt !== null
           && authority.combatProfileId !== null
         ) {
@@ -1288,12 +1617,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             );
           }
         }
-        this.playerEventAcknowledgements.set(
-          rate.attachment.playerId,
-          clientMessage.lastEventId,
-        );
-        if (authority.lifecycle === 'lobby') this.persistLobbyReliabilityCheckpoint();
-        this.markActiveMatchCheckpointDirty();
+        if (rate.attachment.playerId !== null) {
+          this.playerEventAcknowledgements.set(
+            rate.attachment.playerId,
+            clientMessage.lastEventId,
+          );
+          if (authority.lifecycle === 'lobby') this.persistLobbyReliabilityCheckpoint();
+          this.markActiveMatchCheckpointDirty();
+        }
         this.transportMetrics.snapshotAcksAccepted += 1;
         this.transportMetrics.reliableEventAcksAccepted += 1;
         if (recoveredSnapshotAckDebt) {
@@ -1306,6 +1637,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         safeSocketSend(webSocket, errorMessage('AUTH_NOT_ENABLED', null, clientMessage.requestId));
         return;
       case 'loadoutRequest': {
+        if (rate.attachment.spectatorId !== null) {
+          safeSocketSend(webSocket, errorMessage(
+            'SPECTATOR_LOADOUT_FORBIDDEN',
+            null,
+            clientMessage.requestId,
+          ));
+          return;
+        }
         if (
           rate.attachment.playerId === null
           || !this.isCurrentSessionAttachment(rate.attachment, now)
@@ -1528,6 +1867,26 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           )
         `);
         this.resumeSessions.ensureSchema();
+        this.spectatorResumeSessions.ensureSchema();
+        this.ctx.storage.sql.exec(`
+          CREATE TABLE IF NOT EXISTS room_lifecycle_checkpoint_v1 (
+            singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
+            schema_version INTEGER NOT NULL,
+            room_code TEXT NOT NULL,
+            room_id TEXT NOT NULL,
+            match_id TEXT NOT NULL,
+            mode_id TEXT NOT NULL,
+            spectator_json TEXT NOT NULL,
+            spectator_hash_algorithm TEXT NOT NULL,
+            spectator_hash TEXT NOT NULL,
+            rematch_json TEXT,
+            rematch_hash_algorithm TEXT,
+            rematch_hash TEXT,
+            authority_tick INTEGER NOT NULL,
+            created_at INTEGER NOT NULL,
+            updated_at INTEGER NOT NULL
+          )
+        `);
         this.ctx.storage.sql.exec(`
           CREATE TABLE IF NOT EXISTS room_runtime_v2 (
             singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
@@ -1962,6 +2321,18 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
             return;
           }
         }
+        try {
+          this.restoreOrCreateLifecycleState();
+        } catch (error) {
+          world.dispose();
+          this.world = null;
+          this.authority = null;
+          this.compatibilityIdentity = null;
+          this.markRecoveryState('expired');
+          this.initializationFailure = error instanceof Error
+            ? `AUTHORITY_LIFECYCLE_CHECKPOINT_INVALID:${error.message.slice(0, 160)}`
+            : 'AUTHORITY_LIFECYCLE_CHECKPOINT_INVALID';
+        }
       });
     }
     await this.initialization;
@@ -1984,6 +2355,312 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       throw new Error('AUTHORITY_LOADOUT_NOT_INITIALIZED');
     }
     return this.authoritativeLoadout;
+  }
+
+  private requireSpectatorState(): AuthoritySpectatorStateV1 {
+    if (this.spectatorState === null) {
+      throw new Error('AUTHORITY_SPECTATOR_STATE_NOT_INITIALIZED');
+    }
+    return this.spectatorState;
+  }
+
+  private authoritySpectatorTargets(
+    snapshot = this.requireAuthority().fullSnapshot(),
+  ): readonly AuthoritySpectatorTargetV1[] {
+    return Object.freeze(snapshot.players.map((player) => Object.freeze({
+      playerId: player.playerId,
+      connected: player.connected,
+      lifePhase: player.combat?.life.phase ?? null,
+    })));
+  }
+
+  private restoreOrCreateLifecycleState(): void {
+    const authority = this.requireAuthority();
+    const row = [...this.ctx.storage.sql.exec<RoomLifecycleCheckpointRow>(
+      `SELECT schema_version, room_code, room_id, match_id, mode_id,
+              spectator_json, spectator_hash_algorithm, spectator_hash,
+              rematch_json, rematch_hash_algorithm, rematch_hash, authority_tick
+       FROM room_lifecycle_checkpoint_v1
+       WHERE singleton = 1
+       LIMIT 1`,
+    )][0];
+    if (row === undefined) {
+      this.spectatorState = createAuthoritySpectatorState({
+        modeId: this.roomMatchMode,
+        reconnectGraceTicks: SPECTATOR_RECONNECT_GRACE_TICKS,
+      });
+      this.rematchConsensus = null;
+      this.persistLifecycleState();
+      return;
+    }
+    if (
+      row.schema_version !== LIFECYCLE_CHECKPOINT_SCHEMA_VERSION
+      || row.room_code !== this.roomCode
+      || row.room_id !== authority.identity.roomId
+      || row.match_id !== authority.identity.matchId
+      || row.mode_id !== this.roomMatchMode
+      || row.authority_tick > authority.serverTick
+      || row.spectator_hash_algorithm !== LIFECYCLE_CHECKPOINT_HASH_ALGORITHM
+      || fnv1a64Json(row.spectator_json) !== row.spectator_hash
+    ) throw new Error('LIFECYCLE_CHECKPOINT_IDENTITY_OR_HASH_MISMATCH');
+    const restoredSpectators = restoreAuthoritySpectatorState(
+      JSON.parse(row.spectator_json) as unknown,
+      row.authority_tick,
+    );
+    if (restoredSpectators.modeId !== this.roomMatchMode) {
+      throw new Error('LIFECYCLE_SPECTATOR_MODE_MISMATCH');
+    }
+    const advancedSpectators = advanceAuthoritySpectators(
+      restoredSpectators,
+      authority.serverTick,
+      this.authoritySpectatorTargets(),
+    );
+    this.spectatorState = advancedSpectators.state;
+    for (const spectatorId of advancedSpectators.prunedSpectatorIds) {
+      this.spectatorResumeSessions.revokeSpectator(
+        spectatorId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+      );
+    }
+    const rematchFields = [row.rematch_json, row.rematch_hash_algorithm, row.rematch_hash];
+    if (rematchFields.every((value) => value === null)) {
+      this.rematchConsensus = null;
+    } else {
+      if (
+        row.rematch_json === null
+        || row.rematch_hash_algorithm !== LIFECYCLE_CHECKPOINT_HASH_ALGORITHM
+        || row.rematch_hash === null
+        || fnv1a64Json(row.rematch_json) !== row.rematch_hash
+      ) throw new Error('LIFECYCLE_REMATCH_HASH_MISMATCH');
+      const restored = restoreAuthorityRematchConsensus(
+        JSON.parse(row.rematch_json) as unknown,
+        row.authority_tick,
+      );
+      if (restored.matchId !== authority.identity.matchId) {
+        throw new Error('LIFECYCLE_REMATCH_MATCH_MISMATCH');
+      }
+      this.rematchConsensus = advanceAuthorityRematchConsensus(
+        restored,
+        authority.serverTick,
+      );
+    }
+    this.persistLifecycleState();
+  }
+
+  private persistLifecycleState(): void {
+    const authority = this.requireAuthority();
+    const spectatorJson = JSON.stringify(this.requireSpectatorState());
+    const rematchJson = this.rematchConsensus === null
+      ? null
+      : JSON.stringify(this.rematchConsensus);
+    const now = Date.now();
+    this.ctx.storage.sql.exec(
+      `INSERT INTO room_lifecycle_checkpoint_v1
+        (singleton, schema_version, room_code, room_id, match_id, mode_id,
+         spectator_json, spectator_hash_algorithm, spectator_hash,
+         rematch_json, rematch_hash_algorithm, rematch_hash,
+         authority_tick, created_at, updated_at)
+       VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(singleton) DO UPDATE SET
+         schema_version = excluded.schema_version,
+         room_code = excluded.room_code,
+         room_id = excluded.room_id,
+         match_id = excluded.match_id,
+         mode_id = excluded.mode_id,
+         spectator_json = excluded.spectator_json,
+         spectator_hash_algorithm = excluded.spectator_hash_algorithm,
+         spectator_hash = excluded.spectator_hash,
+         rematch_json = excluded.rematch_json,
+         rematch_hash_algorithm = excluded.rematch_hash_algorithm,
+         rematch_hash = excluded.rematch_hash,
+         authority_tick = excluded.authority_tick,
+         updated_at = excluded.updated_at`,
+      LIFECYCLE_CHECKPOINT_SCHEMA_VERSION,
+      this.roomCode,
+      authority.identity.roomId,
+      authority.identity.matchId,
+      this.roomMatchMode,
+      spectatorJson,
+      LIFECYCLE_CHECKPOINT_HASH_ALGORITHM,
+      fnv1a64Json(spectatorJson),
+      rematchJson,
+      rematchJson === null ? null : LIFECYCLE_CHECKPOINT_HASH_ALGORITHM,
+      rematchJson === null ? null : fnv1a64Json(rematchJson),
+      authority.serverTick,
+      now,
+      now,
+    );
+  }
+
+  private spectatorRecord(spectatorId: string): AuthoritySpectatorRecordV1 | null {
+    return this.requireSpectatorState().spectators.find(
+      (spectator) => spectator.spectatorId === spectatorId,
+    ) ?? null;
+  }
+
+  private hasBoundSession(attachment: SocketAttachment): boolean {
+    return attachment.playerId !== null || attachment.spectatorId !== null;
+  }
+
+  private snapshotViewPlayerId(attachment: SocketAttachment): string | null {
+    if (attachment.playerId !== null) return attachment.playerId;
+    if (attachment.spectatorId === null) return null;
+    const spectator = this.spectatorRecord(attachment.spectatorId);
+    if (
+      spectator === null
+      || !spectator.connected
+      || spectator.connectionId !== attachment.connectionId
+    ) return null;
+    return spectator.targetPlayerId;
+  }
+
+  private resetSnapshotAttachment(attachment: SocketAttachment): SocketAttachment {
+    return Object.freeze({
+      ...attachment,
+      lastAcknowledgedSnapshotTick: null,
+      lastAcknowledgedSnapshotBaselineId: null,
+      lastSentSnapshotTick: null,
+      lastSentSnapshotBaselineId: null,
+      sentSnapshotHistory: Object.freeze([]),
+      lastSnapshotSentAt: null,
+      snapshotAckDebtStartedAt: null,
+    });
+  }
+
+  private sendSpectatorState(
+    webSocket: WebSocket,
+    spectator: AuthoritySpectatorRecordV1,
+    requestId: string | null = null,
+  ): boolean {
+    const authority = this.requireAuthority();
+    return safeSocketSend(webSocket, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'spectatorState',
+      requestId,
+      matchId: authority.identity.matchId,
+      serverTick: authority.serverTick,
+      targetPlayerId: spectator.targetPlayerId,
+      targetRevision: spectator.targetRevision,
+      targets: this.authoritySpectatorTargets(),
+    });
+  }
+
+  private sendRematchState(webSocket: WebSocket, requestId: string | null = null): boolean {
+    const consensus = this.rematchConsensus;
+    if (consensus === null) return false;
+    return safeSocketSend(webSocket, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'rematchState',
+      requestId,
+      matchId: consensus.matchId,
+      serverTick: this.requireAuthority().serverTick,
+      rematchOrdinal: consensus.rematchOrdinal,
+      openedAtTick: consensus.openedAtTick,
+      expiresAtTick: consensus.expiresAtTick,
+      status: consensus.status,
+      eligiblePlayerIds: consensus.eligiblePlayerIds,
+      votes: consensus.votes.map(({ playerId, decision, authorityTick }) => Object.freeze({
+        playerId,
+        decision,
+        authorityTick,
+      })),
+    });
+  }
+
+  private broadcastRematchState(): void {
+    if (this.rematchConsensus === null) return;
+    for (const webSocket of this.ctx.getWebSockets()) {
+      const attachment = this.readSocketAttachment(webSocket);
+      if (attachment === null || !this.hasBoundSession(attachment)) continue;
+      if (!this.sendRematchState(webSocket)) {
+        this.disconnectSocket(webSocket, attachment, 1013, 'Backpressure');
+      }
+    }
+  }
+
+  private broadcastSpectatorStates(changedSpectatorIds: ReadonlySet<string>): void {
+    if (changedSpectatorIds.size === 0) return;
+    for (const webSocket of this.ctx.getWebSockets()) {
+      const attachment = this.readSocketAttachment(webSocket);
+      if (
+        attachment === null
+        || attachment.spectatorId === null
+        || !changedSpectatorIds.has(attachment.spectatorId)
+      ) continue;
+      const spectator = this.spectatorRecord(attachment.spectatorId);
+      if (spectator === null) {
+        this.disconnectSocket(webSocket, attachment, 1008, 'Spectator session expired');
+        continue;
+      }
+      const reset = this.resetSnapshotAttachment(attachment);
+      this.writeSocketAttachment(webSocket, reset);
+      if (!this.sendSpectatorState(webSocket, spectator)) {
+        this.disconnectSocket(webSocket, reset, 1013, 'Backpressure');
+        continue;
+      }
+      if (
+        spectator.targetPlayerId !== null
+        && this.sendFullSnapshot(webSocket, reset) === null
+      ) this.disconnectSocket(webSocket, reset, 1013, 'Backpressure');
+    }
+  }
+
+  private advanceLifecycleState(): void {
+    const authority = this.requireAuthority();
+    const previousSpectators = this.requireSpectatorState();
+    const advancedSpectators = advanceAuthoritySpectators(
+      previousSpectators,
+      authority.serverTick,
+      this.authoritySpectatorTargets(),
+    );
+    const previousById = new Map(previousSpectators.spectators.map((spectator) => (
+      [spectator.spectatorId, spectator] as const
+    )));
+    const changedSpectatorIds = new Set<string>(advancedSpectators.prunedSpectatorIds);
+    for (const spectator of advancedSpectators.state.spectators) {
+      const previous = previousById.get(spectator.spectatorId);
+      if (
+        previous === undefined
+        || previous.targetRevision !== spectator.targetRevision
+        || previous.connected !== spectator.connected
+      ) changedSpectatorIds.add(spectator.spectatorId);
+    }
+    this.spectatorState = advancedSpectators.state;
+    for (const spectatorId of advancedSpectators.prunedSpectatorIds) {
+      this.spectatorResumeSessions.revokeSpectator(
+        spectatorId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+      );
+      this.spectatorSessionGenerations.delete(spectatorId);
+    }
+
+    const previousRematch = this.rematchConsensus;
+    if (authority.lifecycle === 'postmatch' && this.rematchConsensus === null) {
+      const eligiblePlayerIds = authority.fullSnapshot().players
+        .filter(({ playerId, connected }) => connected && !this.serverBotPlayerIds.has(playerId))
+        .map(({ playerId }) => playerId);
+      if (eligiblePlayerIds.length > 0) {
+        this.rematchConsensus = createAuthorityRematchConsensus({
+          matchId: authority.identity.matchId,
+          rematchOrdinal: 1,
+          authorityTick: authority.serverTick,
+          responseWindowTicks: REMATCH_RESPONSE_WINDOW_TICKS,
+          eligiblePlayerIds,
+        });
+      }
+    } else if (this.rematchConsensus !== null) {
+      this.rematchConsensus = advanceAuthorityRematchConsensus(
+        this.rematchConsensus,
+        authority.serverTick,
+      );
+    }
+    const spectatorChanged = JSON.stringify(previousSpectators) !== JSON.stringify(this.spectatorState);
+    const rematchChanged = JSON.stringify(previousRematch) !== JSON.stringify(this.rematchConsensus);
+    if (spectatorChanged || rematchChanged) this.persistLifecycleState();
+    this.broadcastSpectatorStates(changedSpectatorIds);
+    if (rematchChanged) this.broadcastRematchState();
   }
 
   private async releaseRoomAllocationReservation(): Promise<void> {
@@ -3093,14 +3770,15 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     snapshot = this.requireAuthority().fullSnapshot(),
     resyncRequestId: string | null = null,
   ): SocketAttachment | null {
-    const player = attachment.playerId === null
+    const viewPlayerId = this.snapshotViewPlayerId(attachment);
+    const player = viewPlayerId === null
       ? null
-      : snapshot.players.find(({ playerId }) => playerId === attachment.playerId) ?? null;
+      : snapshot.players.find(({ playerId }) => playerId === viewPlayerId) ?? null;
     if (player === null) return null;
     const entities = this.requireAuthority().protocolEntities();
     const combat = combatSnapshotFromAuthority(
       snapshot,
-      attachment.playerId,
+      viewPlayerId,
       attachment.combatPlayerScoresV1,
     );
     const snapshotBaselineId = this.snapshotBaselines.remember(snapshot.serverTick, entities);
@@ -3156,9 +3834,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     snapshot: AuthorityFullSnapshot,
     snapshotBaselineId: string,
   ): SocketAttachment | null {
-    const player = attachment.playerId === null
+    const viewPlayerId = this.snapshotViewPlayerId(attachment);
+    const player = viewPlayerId === null
       ? null
-      : snapshot.players.find(({ playerId }) => playerId === attachment.playerId) ?? null;
+      : snapshot.players.find(({ playerId }) => playerId === viewPlayerId) ?? null;
     if (
       player === null
       || attachment.lastAcknowledgedSnapshotTick === null
@@ -3173,7 +3852,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     if (delta === null) return null;
     const combat = combatSnapshotFromAuthority(
       snapshot,
-      attachment.playerId,
+      viewPlayerId,
       attachment.combatPlayerScoresV1,
     );
     const sent = safeSocketSend(webSocket, {
@@ -3222,18 +3901,36 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     attachment: SocketAttachment,
     nowMilliseconds: number,
   ): boolean {
-    if (attachment.playerId === null) return false;
-    const cached = this.sessionGenerations.get(attachment.playerId);
-    if (cached !== undefined) return cached === attachment.sessionGeneration;
     const authority = this.requireAuthority();
-    const current = this.resumeSessions.isCurrentGeneration(
-      attachment.playerId,
+    if (attachment.playerId !== null) {
+      const cached = this.sessionGenerations.get(attachment.playerId);
+      if (cached !== undefined) return cached === attachment.sessionGeneration;
+      const current = this.resumeSessions.isCurrentGeneration(
+        attachment.playerId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+        attachment.sessionGeneration,
+        nowMilliseconds,
+      );
+      if (current) this.sessionGenerations.set(attachment.playerId, attachment.sessionGeneration);
+      return current;
+    }
+    if (attachment.spectatorId === null) return false;
+    const cached = this.spectatorSessionGenerations.get(attachment.spectatorId);
+    if (cached !== undefined) return cached === attachment.sessionGeneration;
+    const current = this.spectatorResumeSessions.isCurrentGeneration(
+      attachment.spectatorId,
       authority.identity.roomId,
       authority.identity.matchId,
       attachment.sessionGeneration,
       nowMilliseconds,
     );
-    if (current) this.sessionGenerations.set(attachment.playerId, attachment.sessionGeneration);
+    if (current) {
+      this.spectatorSessionGenerations.set(
+        attachment.spectatorId,
+        attachment.sessionGeneration,
+      );
+    }
     return current;
   }
 
@@ -3559,6 +4256,24 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
 
   private disconnectAttachment(attachment: SocketAttachment, nowMilliseconds: number): void {
     const authority = this.requireAuthority();
+    if (attachment.spectatorId !== null) {
+      const disconnected = disconnectAuthoritySpectator(
+        this.requireSpectatorState(),
+        attachment.connectionId,
+        authority.serverTick,
+      );
+      if (!disconnected.ok) return;
+      this.spectatorState = disconnected.state;
+      this.spectatorResumeSessions.armDisconnectGrace(
+        attachment.spectatorId,
+        authority.identity.roomId,
+        authority.identity.matchId,
+        attachment.sessionGeneration,
+        nowMilliseconds,
+      );
+      this.persistLifecycleState();
+      return;
+    }
     if (!authority.disconnectConnection(attachment.connectionId) || attachment.playerId === null) return;
     this.resumeSessions.armDisconnectGrace(
       attachment.playerId,
@@ -3691,6 +4406,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           console.warn('AUTHORITY_SERVER_BOT_MOVEMENT_RECOVERED', JSON.stringify(recovery));
         }
         this.respawnEligibleCombatPlayers();
+        this.advanceLifecycleState();
         const combatEvents = reliableCombatEvents(tickResult);
         for (const event of combatEvents) {
           this.reliableEvents.append(event);
@@ -3842,7 +4558,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const updatedAttachments = new Map<string, SocketAttachment>();
     for (const webSocket of this.ctx.getWebSockets()) {
       const attachment = this.readSocketAttachment(webSocket);
-      if (attachment === null || attachment.playerId === null) continue;
+      if (attachment === null || this.snapshotViewPlayerId(attachment) === null) continue;
       const debt = this.evaluateSnapshotDebt(webSocket, attachment);
       if (debt === null) continue;
       if (debt.action === 'coalesce') {
@@ -3901,7 +4617,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       const serialized = this.readSocketAttachment(webSocket);
       if (serialized === null) continue;
       const attachment = attachmentOverrides.get(serialized.connectionId) ?? serialized;
-      if (attachment.playerId === null) continue;
+      if (!this.hasBoundSession(attachment)) continue;
       const pending = this.reliableEvents.pendingAfter(attachment.lastAcknowledgedEventId);
       if (pending !== null && pending.length === 0) continue;
       const reliableResend = pending !== null
@@ -3920,6 +4636,21 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         continue;
       }
       if (pending === null) {
+        if (
+          debt.attachment.spectatorId !== null
+          && this.snapshotViewPlayerId(debt.attachment) === null
+        ) {
+          const eventBaselineId = this.reliableEvents.latestId;
+          const reset = Object.freeze({
+            ...debt.attachment,
+            lastAcknowledgedEventId: eventBaselineId,
+            lastSentReliableEventId: eventBaselineId,
+          }) satisfies SocketAttachment;
+          this.writeSocketAttachment(webSocket, reset);
+          const spectator = this.spectatorRecord(debt.attachment.spectatorId);
+          if (spectator !== null) this.sendSpectatorState(webSocket, spectator);
+          continue;
+        }
         const permit = this.prepareGameplaySend(webSocket, debt.attachment);
         if (permit.kind === 'coalesce') continue;
         if (permit.kind === 'evict') {
@@ -3979,6 +4710,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       authority.leavePlayer(playerId);
       this.recordPlayerLeft(playerId);
     }
+    const prunedSpectatorIds = this.spectatorResumeSessions.pruneExpired(now);
+    for (const spectatorId of prunedSpectatorIds) {
+      const removed = removeAuthoritySpectator(this.requireSpectatorState(), spectatorId);
+      this.spectatorState = removed.state;
+      this.spectatorSessionGenerations.delete(spectatorId);
+    }
+    if (prunedSpectatorIds.length > 0) this.persistLifecycleState();
+    this.advanceLifecycleState();
     if (prunedPlayerIds.length > 0) this.persistActiveMatchCheckpoint();
     this.broadcastReliableEvents();
     const metrics = authority.metricsSnapshot();

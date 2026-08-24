@@ -25,12 +25,13 @@ import {
 
 function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment {
   return {
-    schemaVersion: 8,
+    schemaVersion: 9,
     roomCode: 'KYX-234567',
     connectionId: 'connection.TEST',
     allocationLeaseId: null,
     preJoinExpiresAt: null,
     playerId: null,
+    spectatorId: null,
     sessionGeneration: 0,
     rateWindowStartedAt: 1_000,
     messagesInRateWindow: 0,
@@ -53,7 +54,7 @@ function attachment(overrides: Partial<SocketAttachment> = {}): SocketAttachment
 }
 
 describe('Worker socket security bounds', () => {
-  it('validates only complete version-8 bounded attachments', () => {
+  it('validates only complete version-9 bounded attachments', () => {
     expect(isSocketAttachment(attachment())).toBe(true);
     expect(isSocketAttachment({ ...attachment(), schemaVersion: 1 })).toBe(false);
     expect(isSocketAttachment({ ...attachment(), bytesInRateWindow: -1 })).toBe(false);
@@ -76,9 +77,18 @@ describe('Worker socket security bounds', () => {
     expect(isSocketAttachment({ ...attachment(), snapshotAckDebtStartedAt: -1 })).toBe(false);
     expect(isSocketAttachment({ ...attachment(), lastAcknowledgedEventId: '' })).toBe(false);
     expect(isSocketAttachment({ ...attachment(), backpressureStartedAt: -1 })).toBe(false);
+    expect(isSocketAttachment(attachment({ spectatorId: 'spectator.1' }))).toBe(true);
+    expect(isSocketAttachment(attachment({
+      playerId: 'player.1',
+      spectatorId: 'spectator.1',
+    }))).toBe(false);
+    expect(isSocketAttachment(attachment({
+      spectatorId: 'spectator.1',
+      preJoinExpiresAt: 2_000,
+    }))).toBe(false);
   });
 
-  it('migrates versions 4 through 7 into bounded version-8 attachments', () => {
+  it('migrates versions 4 through 8 into bounded version-9 attachments', () => {
     const version5 = {
       ...attachment({
         lastSentSnapshotTick: 20,
@@ -88,20 +98,23 @@ describe('Worker socket security bounds', () => {
     } as Record<string, unknown>;
     delete version5.sentSnapshotHistory;
     delete version5.combatPlayerScoresV1;
+    delete version5.spectatorId;
     expect(normalizeSocketAttachment(version5)).toMatchObject({
-      schemaVersion: 8,
+      schemaVersion: 9,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
       combatPlayerScoresV1: false,
+      spectatorId: null,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
     const version4: Record<string, unknown> = { ...version5, schemaVersion: 4 };
     delete version4.snapshotAckDebtStartedAt;
     expect(normalizeSocketAttachment(version4)).toMatchObject({
-      schemaVersion: 8,
+      schemaVersion: 9,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
       combatPlayerScoresV1: false,
+      spectatorId: null,
       snapshotAckDebtStartedAt: null,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
@@ -116,11 +129,13 @@ describe('Worker socket security bounds', () => {
     delete version6.allocationLeaseId;
     delete version6.preJoinExpiresAt;
     delete version6.combatPlayerScoresV1;
+    delete version6.spectatorId;
     expect(normalizeSocketAttachment(version6)).toMatchObject({
-      schemaVersion: 8,
+      schemaVersion: 9,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
       combatPlayerScoresV1: false,
+      spectatorId: null,
       sentSnapshotHistory: [{ serverTick: 20, snapshotBaselineId: 'baseline.20' }],
     });
     const version7 = {
@@ -128,8 +143,17 @@ describe('Worker socket security bounds', () => {
       schemaVersion: 7,
     } as Record<string, unknown>;
     delete version7.combatPlayerScoresV1;
+    delete version7.spectatorId;
     expect(normalizeSocketAttachment(version7)).toMatchObject({
-      schemaVersion: 8,
+      schemaVersion: 9,
+      combatPlayerScoresV1: false,
+      spectatorId: null,
+    });
+    const version8 = { ...attachment(), schemaVersion: 8 } as Record<string, unknown>;
+    delete version8.spectatorId;
+    expect(normalizeSocketAttachment(version8)).toMatchObject({
+      schemaVersion: 9,
+      spectatorId: null,
       combatPlayerScoresV1: false,
     });
     expect(normalizeSocketAttachment({ ...version4, schemaVersion: 3 })).toBeNull();
@@ -218,6 +242,10 @@ describe('Worker socket security bounds', () => {
   it('marks a socket stale at the explicit heartbeat threshold', () => {
     expect(isSocketStale(attachment(), 1_000 + SOCKET_STALE_MILLISECONDS - 1)).toBe(false);
     expect(isSocketStale(attachment(), 1_000 + SOCKET_STALE_MILLISECONDS)).toBe(true);
+    expect(isSocketStale(attachment({
+      spectatorId: 'spectator.1',
+      preJoinExpiresAt: null,
+    }), 1_000 + SOCKET_STALE_MILLISECONDS - 1)).toBe(false);
   });
 
   it('coalesces above 256 KiB, resets on drain, and evicts at the exact grace boundary', () => {

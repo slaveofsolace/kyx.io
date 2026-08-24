@@ -103,6 +103,11 @@ export interface AdvanceAuthoritySpectatorsResult {
   readonly prunedSpectatorIds: readonly string[];
 }
 
+export interface RemoveAuthoritySpectatorResult {
+  readonly state: AuthoritySpectatorStateV1;
+  readonly removed: boolean;
+}
+
 function integer(value: unknown, minimum: number, maximum: number, label: string): number {
   if (!Number.isSafeInteger(value) || (value as number) < minimum || (value as number) > maximum) {
     throw new RangeError(`${label} must be an integer from ${minimum} through ${maximum}`);
@@ -362,6 +367,24 @@ export function disconnectAuthoritySpectator(
       item.spectatorId === spectator.spectatorId ? spectator : item
     )),
   }), spectator);
+}
+
+/** Removes a server-expired credential without trusting a client disconnect tick. */
+export function removeAuthoritySpectator(
+  state: AuthoritySpectatorStateV1,
+  spectatorIdValue: string,
+): RemoveAuthoritySpectatorResult {
+  const spectatorId = stableId(spectatorIdValue, 'spectator id');
+  if (!state.spectators.some((spectator) => spectator.spectatorId === spectatorId)) {
+    return Object.freeze({ state, removed: false });
+  }
+  return Object.freeze({
+    state: frozenState({
+      ...state,
+      spectators: state.spectators.filter((spectator) => spectator.spectatorId !== spectatorId),
+    }),
+    removed: true,
+  });
 }
 
 export function advanceAuthoritySpectators(

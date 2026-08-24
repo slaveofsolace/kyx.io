@@ -1,43 +1,39 @@
 # KYX.IO
 
-> **Current work in progress — approximately 43% complete.**
+> **Work in progress: about 43% complete / 57% remaining.**
 >
-> KYX.IO is playable in development, but it is not feature-complete,
-> human-accepted, deployed, or release-ready.
+> Playable in development. Not feature-complete, release-ready, or deployed.
 
-KYX.IO is an original tactical sci-fi browser FPS built with Three.js,
-TypeScript, Rapier physics, Vite, and an authoritative Cloudflare
-Worker/Durable Object match service.
+KYX.IO is an original tactical sci-fi browser FPS. It uses Three.js, Rapier,
+TypeScript, and a server-authoritative Cloudflare Worker/Durable Object runtime.
 
-## What works now
+## Current build
 
 - Online Team Deathmatch, Free For All, and Instagib
-- Worker-authoritative movement, combat, score, results, reconnect, and arena rotation
-- Relay, Switchyard, and Crownpoint online
-- Relay Practice with bots and the same three deathmatch modes
-- Rifle, sidearm, shotgun, sniper, rocket, and melee authority families
-- Blink, launch, frag, smoke, sticky, and flash abilities
-- Desktop HUD, loadouts, match results, and automated browser/multiplayer coverage
+- Relay, Switchyard, and Crownpoint arenas
+- Relay Practice with bots
+- Authoritative movement, combat, scoring, results, reconnect, and rotation
+- Six weapon families and six ability families
+- Desktop HUD, loadouts, match results, and automated multiplayer coverage
+- Server-side spectator sessions and rematch consensus foundations
 
-## What is still being built
+## Still to build
 
-- Spectators, rematch consensus, custom/private rooms, and remaining match modes
+- Player-facing spectator/rematch flows, private matches, and remaining modes
 - Capture The Flag, Search and Destroy, Last Team Standing, Survival,
   Zombie Survival, and Battle Royale
 - A large original Battle Royale arena
-- Remaining weapons, movement upgrades, mines, pickups, and loot
-- Accounts, passkeys, recovery, signed match receipts, D1 progression,
-  inventory, cosmetics, leaderboards, parties, clans, and moderation
-- Authenticated map editing, publication, moderation, and rollback
-- Adverse-network, soak, performance, accessibility, controller, and human
-  gameplay acceptance
+- Remaining weapons, upgrades, mines, pickups, loot, and Practice parity
+- Accounts, progression, inventory, cosmetics, social systems, and moderation
+- Authenticated map editing and publishing
+- Full network, soak, performance, accessibility, controller, and human review
 
-No cryptocurrency, wallets, NFTs, real-money purchases, or pay-to-win systems
-are part of the project.
+The project has no cryptocurrency, wallets, NFTs, real-money purchases, or
+pay-to-win systems.
 
 ## Run locally
 
-Requirements: Node.js 22-24, npm 11, and Git LFS.
+Requires Node.js 22-24, npm 11, and Git LFS.
 
 ```powershell
 git lfs install
@@ -45,24 +41,7 @@ npm ci
 npm run dev
 ```
 
-For the local authority service, run this in a second terminal:
+Run `npm run dev:authority` in a second terminal for online authority.
 
-```powershell
-npm run dev:authority
-```
-
-## Verify
-
-```powershell
-npm run typecheck
-npm run typecheck:worker
-npm run typecheck:pages
-npm run typecheck:sim
-npm run lint
-npm run test
-npm run test:worker
-npm run build
-```
-
-Detailed status lives in [PROJECT_STATUS.md](./PROJECT_STATUS.md). The project
-remains private and `UNLICENSED`; do not redistribute its code or assets.
+See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the current scope and verified
+test state. The source and assets are `UNLICENSED`.

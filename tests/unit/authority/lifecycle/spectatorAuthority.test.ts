@@ -8,6 +8,7 @@ import {
   KYX_MODE_ID,
   restoreAuthoritySpectatorState,
   resumeAuthoritySpectator,
+  removeAuthoritySpectator,
   selectAuthoritySpectatorTarget,
   type AuthoritySpectatorStateV1,
   type AuthoritySpectatorTargetV1,
@@ -210,5 +211,19 @@ describe('authority spectator lifecycle foundation', () => {
       clientOwnsCamera: true,
     }, 120)).toThrow(/unsupported or missing/u);
     expect(() => restoreAuthoritySpectatorState(checkpoint, 131)).toThrow(/disconnect tick/u);
+  });
+
+  it('lets only the server remove an expired spectator identity', () => {
+    const joined = join(state());
+    if (!joined.ok) throw new Error('expected spectator join');
+    const removed = removeAuthoritySpectator(joined.state, 'spectator.one');
+    expect(removed).toEqual({
+      state: expect.objectContaining({ spectators: [] }),
+      removed: true,
+    });
+    expect(removeAuthoritySpectator(removed.state, 'spectator.one')).toEqual({
+      state: removed.state,
+      removed: false,
+    });
   });
 });

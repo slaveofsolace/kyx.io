@@ -12,12 +12,13 @@ interface SocketAttachmentCacheHarness {
 
 function attachment(connectionId: string): SocketAttachment {
   return Object.freeze({
-    schemaVersion: 8,
+    schemaVersion: 9,
     roomCode: 'KYX-234567',
     connectionId,
     allocationLeaseId: null,
     preJoinExpiresAt: null,
     playerId: 'player.cache-test',
+    spectatorId: null,
     sessionGeneration: 1,
     rateWindowStartedAt: 1,
     messagesInRateWindow: 0,
@@ -85,6 +86,7 @@ describe('KyxRoom socket attachment cache', () => {
     const legacy = { ...current, schemaVersion: 4 } as Record<string, unknown>;
     delete legacy.snapshotAckDebtStartedAt;
     delete legacy.sentSnapshotHistory;
+    delete legacy.spectatorId;
     let serializedWrite: unknown = null;
     const legacyWrapper = {
       deserializeAttachment: () => legacy,
@@ -96,11 +98,12 @@ describe('KyxRoom socket attachment cache', () => {
     const migrated = room.readSocketAttachment(legacyWrapper);
 
     expect(migrated).toMatchObject({
-      schemaVersion: 8,
+      schemaVersion: 9,
       connectionId: current.connectionId,
       allocationLeaseId: null,
       preJoinExpiresAt: null,
       combatPlayerScoresV1: false,
+      spectatorId: null,
       snapshotAckDebtStartedAt: null,
       sentSnapshotHistory: [{
         serverTick: 0,
