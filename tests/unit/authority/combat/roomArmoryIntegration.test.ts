@@ -11,7 +11,9 @@ import {
   G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
   G4_TDM_MATCH_ROOM_CAPABILITY_ID,
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
+  KYX_MODE_ID,
   KYX_WEAPON_ID,
+  type AuthorityRoomCombatOptions,
   type AuthorityRoomTickResult,
 } from '../../../../src/authority';
 import {
@@ -29,6 +31,7 @@ import {
 import { INTENT_BUTTON, PHASE3_HYPOTHESIS_MOVEMENT_PROFILE } from '../../../../src/sim';
 import {
   combatSnapshotFromAuthority,
+  createWorkerModeCombatOptions,
   reliableCombatEvents,
 } from '../../../../worker/combatRuntime';
 import { ReliableEventStore } from '../../../../worker/reliableEvents';
@@ -67,7 +70,38 @@ const WEAPON_EXPECTATIONS = [
   },
 ] as const;
 
-function room(): AuthoritativeRoom {
+function room(
+  matchMode: typeof KYX_MODE_ID.teamDeathmatch
+    | typeof KYX_MODE_ID.instagib = KYX_MODE_ID.teamDeathmatch,
+): AuthoritativeRoom {
+  const combat: AuthorityRoomCombatOptions = {
+    profileId: G4_COMBAT_ROOM_PROFILE_ID,
+    teamResolver: (playerId: string) => playerId === 'player_A' ? 'team_blue' : 'team_red',
+    hitscan: {
+      capabilityId: G4_HITSCAN_ROOM_CAPABILITY_ID,
+      worldOcclusion: () => ({
+        schemaVersion: 1 as const,
+        hit: false as const,
+        distanceMillimeters: null,
+        colliderId: null,
+      }),
+    },
+    impulseGrenade: {
+      capabilityId: G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
+      world: {
+        schemaVersion: IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
+        sweepSphere: () => ({ schemaVersion: 1 as const, contacts: [] }),
+        traceRadialOcclusion: () => ({ schemaVersion: 1 as const, kind: 'clear' as const }),
+        resolveCollisionSafeImpulse: (request) => ({
+          schemaVersion: 1 as const,
+          appliedImpulseMillimetersPerSecond:
+            request.requestedImpulseMillimetersPerSecond,
+        }),
+      },
+    },
+    abilityResources: { capabilityId: G4_ABILITY_RESOURCE_ROOM_CAPABILITY_ID },
+    match: { capabilityId: G4_TDM_MATCH_ROOM_CAPABILITY_ID },
+  };
   return new AuthoritativeRoom({
     identity: {
       roomId: 'room.armory.integration',
@@ -90,34 +124,7 @@ function room(): AuthoritativeRoom {
         : { x: 0, y: 0, z: 2_000 },
       yawMilliDegrees: playerId === 'player_A' ? 0 : 180_000,
     }),
-    combat: {
-      profileId: G4_COMBAT_ROOM_PROFILE_ID,
-      teamResolver: (playerId) => playerId === 'player_A' ? 'team_blue' : 'team_red',
-      hitscan: {
-        capabilityId: G4_HITSCAN_ROOM_CAPABILITY_ID,
-        worldOcclusion: () => ({
-          schemaVersion: 1,
-          hit: false,
-          distanceMillimeters: null,
-          colliderId: null,
-        }),
-      },
-      impulseGrenade: {
-        capabilityId: G4_IMPULSE_GRENADE_ROOM_CAPABILITY_ID,
-        world: {
-          schemaVersion: IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
-          sweepSphere: () => ({ schemaVersion: 1, contacts: [] }),
-          traceRadialOcclusion: () => ({ schemaVersion: 1, kind: 'clear' }),
-          resolveCollisionSafeImpulse: (request) => ({
-            schemaVersion: 1,
-            appliedImpulseMillimetersPerSecond:
-              request.requestedImpulseMillimetersPerSecond,
-          }),
-        },
-      },
-      abilityResources: { capabilityId: G4_ABILITY_RESOURCE_ROOM_CAPABILITY_ID },
-      match: { capabilityId: G4_TDM_MATCH_ROOM_CAPABILITY_ID },
-    },
+    combat: createWorkerModeCombatOptions(combat, matchMode),
   });
 }
 
@@ -328,6 +335,70 @@ function reliablePresentation(
 }
 
 describe('authoritative room KYX armory integration', () => {
+  it('locks Instagib to Longshot and resolves every authority hit region as one shot', () => {
+    const authority = room(KYX_MODE_ID.instagib);
+    expect(authority.joinNewPlayer({
+      playerId: 'player_A',
+      connectionId: 'connection_A',
+    })).toMatchObject({ ok: true });
+    expect(authority.joinNewPlayer({
+      playerId: 'player_B',
+      connectionId: 'connection_B',
+    })).toMatchObject({ ok: true });
+    expect(authority.fullSnapshot().players.every((player) => (
+      player.combat?.armory.selectedSlot === 3
+      && player.movement.player.intent.selectedSlot === 3
+    ))).toBe(true);
+    expect(() => authority.setPlayerCombatLoadout(
+      'player_A',
+      ['client_ability_one', 'client_ability_two', 'client_ability_three'],
+      0,
+    )).toThrow(/INSTAGIB_WEAPON_LOADOUT_LOCKED/u);
+
+    expect(authority.startMatch()).toBe(true);
+    while (authority.serverTick < 40) authority.advanceOneTick();
+    authority.recordServerObservedRtt('player_A', 0);
+    expect(authority.enqueueInputBatch(
+      'connection_A',
+      input(authority, 0, 0, INTENT_BUTTON.primaryFire),
+    ).accepted).toBe(1);
+    const fired = authority.advanceOneTick();
+    expect(fired.weaponAttackResults?.[0]).toMatchObject({
+      acceptedAttack: { weaponId: KYX_WEAPON_ID.sniper },
+      kind: 'hitscan',
+      resolution: {
+        damageTotals: [{ targetPlayerId: 'player_B', damagePoints: 100 }],
+      },
+      damages: [{ accepted: true, death: { victimPlayerId: 'player_B' } }],
+    });
+    const lethal = authority.fullSnapshot();
+    expect(lethal.players.find(({ playerId }) => playerId === 'player_A')).toMatchObject({
+      movement: { player: { intent: { selectedSlot: 3 } } },
+      combat: { armory: { selectedSlot: 3 } },
+    });
+    expect(lethal.players.find(({ playerId }) => playerId === 'player_B')?.combat?.life)
+      .toMatchObject({ phase: 'dead', healthPoints: 0 });
+    expect(lethal.match?.teamScores).toEqual(expect.arrayContaining([
+      { teamId: 'player_A', score: 1 },
+      { teamId: 'player_B', score: 0 },
+    ]));
+
+    const targetLife = lethal.players.find(
+      ({ playerId }) => playerId === 'player_B',
+    )?.combat?.life;
+    if (targetLife === undefined || targetLife.respawnEligibleAtTick === null) {
+      throw new Error('Instagib death did not receive an authority respawn tick');
+    }
+    while (authority.serverTick < targetLife.respawnEligibleAtTick) authority.advanceOneTick();
+    expect(authority.respawnCombatPlayer('player_B')).toMatchObject({ accepted: true });
+    expect(authority.fullSnapshot().players.find(
+      ({ playerId }) => playerId === 'player_B',
+    )).toMatchObject({
+      movement: { player: { intent: { selectedSlot: 3 } } },
+      combat: { armory: { selectedSlot: 3 } },
+    });
+  });
+
   it('owns equip, cadence, ammo, reload, damage, protocol, and presentation for every weapon family', () => {
     for (const expected of WEAPON_EXPECTATIONS) {
       const authority = startRoom();

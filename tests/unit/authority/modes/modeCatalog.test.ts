@@ -41,10 +41,12 @@ describe('KYX authority mode catalog', () => {
       .toBe('worker_preview_runtime');
     expect(() => requireRoutableAuthorityMode(KYX_MODE_ID.freeForAll))
       .toThrow(/not routable/u);
-    expect(() => requireWorkerRuntimeAuthorityMode(KYX_MODE_ID.instagib))
-      .toThrow(/not implemented/u);
-    expect(() => requireAuthorityCoreMode(KYX_MODE_ID.instagib))
-      .toThrow(/not implemented/u);
+    expect(requireWorkerRuntimeAuthorityMode(KYX_MODE_ID.instagib).implementationStatus)
+      .toBe('worker_preview_runtime');
+    expect(requireAuthorityCoreMode(KYX_MODE_ID.instagib).implementationStatus)
+      .toBe('worker_preview_runtime');
+    expect(() => requireRoutableAuthorityMode(KYX_MODE_ID.instagib))
+      .toThrow(/not routable/u);
     expect(() => requireRoutableAuthorityMode('client_claimed_mode'))
       .toThrow(/unsupported/u);
   });

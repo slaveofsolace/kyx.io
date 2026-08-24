@@ -1160,7 +1160,7 @@ describe('P5.11 explicit Inkfall Foundry revision-2 Worker combat profile', () =
     });
     expect(before.row).toEqual({ recovery_state: 'active_checkpointed' });
     expect(before.stored).toMatchObject({
-      schema_version: 1,
+      schema_version: 2,
       checkpoint_hash_algorithm: 'fnv1a64-json-v1',
       checkpoint_hash: expect.stringMatching(/^[a-f0-9]{16}$/u),
       authority_tick: before.authorityCheckpoint.clock.serverTick,

@@ -15,7 +15,8 @@ export const KYX_MODE_ID = Object.freeze({
 export type KyxAuthorityModeId = typeof KYX_MODE_ID[keyof typeof KYX_MODE_ID];
 export type KyxDeathmatchAuthorityModeId =
   | typeof KYX_MODE_ID.teamDeathmatch
-  | typeof KYX_MODE_ID.freeForAll;
+  | typeof KYX_MODE_ID.freeForAll
+  | typeof KYX_MODE_ID.instagib;
 
 export type AuthorityModeImplementationStatus =
   | 'shipping_runtime'
@@ -95,7 +96,7 @@ export const AUTHORITY_MODE_CATALOG: readonly AuthorityModeDefinitionV1[] = Obje
     id: KYX_MODE_ID.instagib,
     displayName: 'Instagib',
     family: 'slayer',
-    implementationStatus: 'foundation_only',
+    implementationStatus: 'worker_preview_runtime',
     teamPolicy: 'each_player',
     objectivePolicy: 'kills',
     respawnPolicy: 'timed',

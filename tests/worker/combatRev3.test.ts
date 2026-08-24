@@ -1,6 +1,13 @@
 /// <reference types="@cloudflare/vitest-pool-workers/types" />
 
-import { env, evictDurableObject, reset, runInDurableObject, SELF } from 'cloudflare:test';
+import {
+  abortAllDurableObjects,
+  env,
+  evictDurableObject,
+  reset,
+  runInDurableObject,
+  SELF,
+} from 'cloudflare:test';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
@@ -422,7 +429,7 @@ async function runWorkerImpairmentProfile(profile: DeliveryProfile) {
 
 describe('P5.8D explicit revision-3 Worker combat path', () => {
   it('persists an opt-in FFA Worker runtime without making it player-routable', async () => {
-    for (const matchMode of ['client_claimed_mode', KYX_MODE_ID.instagib]) {
+    for (const matchMode of ['client_claimed_mode']) {
       const unsupported = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
         method: 'POST',
         headers: {
@@ -438,20 +445,22 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
       });
     }
 
-    for (const profile of [null, P58D_REV3_COMBAT_PROFILE] as const) {
-      const missingPersistentProfile = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
-        method: 'POST',
-        headers: {
-          Origin: ALLOWED_ORIGIN,
-          ...(profile === null ? {} : { [P58D_COMBAT_PROFILE_HEADER]: profile }),
-          [KYX_MATCH_MODE_HEADER]: KYX_MODE_ID.freeForAll,
-        },
-      });
-      expect(missingPersistentProfile.status).toBe(400);
-      await expect(missingPersistentProfile.json()).resolves.toEqual({
-        ok: false,
-        code: 'MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE',
-      });
+    for (const matchMode of [KYX_MODE_ID.freeForAll, KYX_MODE_ID.instagib]) {
+      for (const profile of [null, P58D_REV3_COMBAT_PROFILE] as const) {
+        const missingPersistentProfile = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
+          method: 'POST',
+          headers: {
+            Origin: ALLOWED_ORIGIN,
+            ...(profile === null ? {} : { [P58D_COMBAT_PROFILE_HEADER]: profile }),
+            [KYX_MATCH_MODE_HEADER]: matchMode,
+          },
+        });
+        expect(missingPersistentProfile.status).toBe(400);
+        await expect(missingPersistentProfile.json()).resolves.toEqual({
+          ok: false,
+          code: 'MATCH_MODE_REQUIRES_PERSISTENT_MAP_PROFILE',
+        });
+      }
     }
 
     const internalHeaderProbe = await SELF.fetch(`${AUTHORITY_ORIGIN}/api/rooms/create`, {
@@ -560,6 +569,117 @@ describe('P5.8D explicit revision-3 Worker combat path', () => {
       ok: false,
       code: 'ROOM_MATCH_MODE_MISMATCH',
     });
+  }, 60_000);
+
+  it('locks Instagib to Longshot and binds restart checkpoints to the exact mode', async () => {
+    const room = await createRoom(
+      true,
+      KYX_MODE_ID.instagib,
+      RELAY_REV1_COMBAT_PROFILE,
+    );
+    expect(room).toMatchObject({
+      roomProfile: RELAY_REV1_COMBAT_PROFILE,
+      matchMode: KYX_MODE_ID.instagib,
+    });
+    const stub = authorityEnv.KYX_ROOM.getByName(room.roomCode);
+    const first = await connectSocket(room.socketPath);
+    const second = await connectSocket(room.socketPath);
+    await Promise.all([waitForType(first, 'welcome'), waitForType(second, 'welcome')]);
+    sendClient(first, joinMessage(room.roomCode, 'req.join.instagib.first', 'Instagib First'));
+    const firstJoin = await waitForType(first, 'joinAccepted');
+    sendClient(second, joinMessage(room.roomCode, 'req.join.instagib.second', 'Instagib Second'));
+    const secondJoin = await waitForType(second, 'joinAccepted');
+    const active = await waitForMessage(
+      first,
+      (message) => (
+        (message.type === 'fullSnapshot' || message.type === 'deltaSnapshot')
+        && message.combat?.match.phase === 'active'
+        && message.combat.players.every(({ selectedWeaponSlot }) => selectedWeaponSlot === 3)
+      ),
+      'Instagib active snapshot',
+    ) as FullSnapshotMessage | ServerMessageOfType<'deltaSnapshot'>;
+    expect(active.combat?.players).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        playerId: firstJoin.playerId,
+        teamId: firstJoin.playerId,
+        selectedWeaponSlot: 3,
+        selectedWeaponId: 'kyx_longshot_v1',
+      }),
+      expect.objectContaining({
+        playerId: secondJoin.playerId,
+        teamId: secondJoin.playerId,
+        selectedWeaponSlot: 3,
+        selectedWeaponId: 'kyx_longshot_v1',
+      }),
+    ]));
+
+    const messageCount = first.messages.length;
+    const checkpoint = await runInDurableObject(stub, async (instance, state) => {
+      const runtime = instance as unknown as {
+        persistActiveMatchCheckpoint(): void;
+        runTimer(): Promise<void>;
+      };
+      runtime.runTimer = async () => {};
+      runtime.persistActiveMatchCheckpoint();
+      const row = [...state.storage.sql.exec<Record<string, string | number>>(
+        `SELECT schema_version, checkpoint_json
+         FROM room_active_checkpoint_v1 WHERE singleton = 1`,
+      )][0];
+      return {
+        schemaVersion: row?.schema_version,
+        envelope: JSON.parse(String(row?.checkpoint_json)) as {
+          readonly schemaVersion: number;
+          readonly matchMode: string;
+        },
+      };
+    });
+    expect(checkpoint).toEqual({
+      schemaVersion: 2,
+      envelope: expect.objectContaining({
+        schemaVersion: 2,
+        matchMode: KYX_MODE_ID.instagib,
+      }),
+    });
+
+    await evictDurableObject(stub);
+    sendClient(first, {
+      protocolVersion: PROTOCOL_VERSION,
+      type: 'ping',
+      nonce: 5_002,
+      clientTick: active.serverTick,
+    });
+    await waitForType(first, 'pong', ({ nonce }) => nonce === 5_002);
+    const restored = await waitForMessage(
+      first,
+      (message) => (
+        message.type === 'fullSnapshot'
+        && first.messages.indexOf(message) >= messageCount
+        && message.combat?.players.every(({ selectedWeaponSlot }) => selectedWeaponSlot === 3)
+      ),
+      'Instagib restart snapshot',
+    ) as FullSnapshotMessage;
+    expect(restored.combat?.match.teamScores).toEqual(expect.arrayContaining([
+      { teamId: firstJoin.playerId, score: 0 },
+      { teamId: secondJoin.playerId, score: 0 },
+    ]));
+
+    await runInDurableObject(stub, async (_instance, state) => {
+      state.storage.sql.exec(
+        'UPDATE room_match_mode_v1 SET mode_id = ? WHERE singleton = 1',
+        KYX_MODE_ID.freeForAll,
+      );
+    });
+    await abortAllDurableObjects();
+    const rejected = await SELF.fetch(`${AUTHORITY_ORIGIN}${room.roomPath}`, {
+      method: 'POST',
+      headers: {
+        Origin: ALLOWED_ORIGIN,
+        [P58D_COMBAT_PROFILE_HEADER]: RELAY_REV1_COMBAT_PROFILE,
+        [KYX_MATCH_MODE_HEADER]: KYX_MODE_ID.instagib,
+      },
+    });
+    expect(rejected.status).toBe(503);
+    await expect(rejected.json()).resolves.toEqual({ ok: false, code: 'ROOM_UNAVAILABLE' });
   }, 60_000);
 
   it('backfills legacy rooms to TDM and fails closed on a corrupt persisted mode', async () => {

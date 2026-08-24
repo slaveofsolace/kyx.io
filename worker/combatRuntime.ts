@@ -10,6 +10,7 @@ import {
   IMPULSE_GRENADE_WORLD_PORT_SCHEMA_VERSION,
   KYX_FFA_MATCH_RULES,
   KYX_MODE_ID,
+  KYX_WEAPON_ID,
   RELAY_AUTHORITY_FIXTURE,
   RELAY_AUTHORITY_IDENTITY,
   RELAY_AUTHORITY_MAP_BINDING,
@@ -178,7 +179,11 @@ export function workerRoomProfileFromStorageId(value: string): WorkerRoomProfile
 export function isWorkerAuthorityMatchMode(
   value: unknown,
 ): value is WorkerAuthorityMatchMode {
-  if (value !== KYX_MODE_ID.teamDeathmatch && value !== KYX_MODE_ID.freeForAll) return false;
+  if (
+    value !== KYX_MODE_ID.teamDeathmatch
+    && value !== KYX_MODE_ID.freeForAll
+    && value !== KYX_MODE_ID.instagib
+  ) return false;
   try {
     requireWorkerRuntimeAuthorityMode(value);
     return true;
@@ -295,6 +300,15 @@ export function createWorkerModeCombatOptions(
   if (base.match === undefined) {
     throw new Error('WORKER_MATCH_MODE_REQUIRES_DEATHMATCH_CAPABILITY');
   }
+  const weaponMode = matchMode === KYX_MODE_ID.instagib
+    ? Object.freeze({
+        schemaVersion: 1 as const,
+        policyId: 'instagib_longshot_v1' as const,
+        lockedWeaponId: KYX_WEAPON_ID.sniper,
+        lockedWeaponSlot: 3 as const,
+        damagePoints: 100 as const,
+      })
+    : undefined;
   return Object.freeze({
     ...base,
     teamResolver: (playerId: string) => playerId,
@@ -302,6 +316,7 @@ export function createWorkerModeCombatOptions(
       ...base.match,
       rules: KYX_FFA_MATCH_RULES,
     }),
+    ...(weaponMode === undefined ? {} : { weaponMode }),
   });
 }
 

@@ -233,6 +233,15 @@ export interface AuthorityRoomCombatOptions {
   readonly impulseGrenade?: AuthorityRoomImpulseGrenadeOptions;
   readonly abilityResources?: AuthorityRoomAbilityResourceOptions;
   readonly match?: AuthorityRoomTdmMatchOptions;
+  readonly weaponMode?: AuthorityRoomInstagibWeaponModeOptions;
+}
+
+export interface AuthorityRoomInstagibWeaponModeOptions {
+  readonly schemaVersion: 1;
+  readonly policyId: 'instagib_longshot_v1';
+  readonly lockedWeaponId: typeof KYX_WEAPON_ID.sniper;
+  readonly lockedWeaponSlot: 3;
+  readonly damagePoints: 100;
 }
 
 export interface AuthorityRoomHitscanOptions {
@@ -1425,6 +1434,7 @@ export class AuthoritativeRoom {
   readonly abilityResourceCapabilityId!: typeof G4_ABILITY_RESOURCE_ROOM_CAPABILITY_ID | null;
   readonly tdmMatchCapabilityId!: typeof G4_TDM_MATCH_ROOM_CAPABILITY_ID | null;
   readonly teamResolver: AuthorityTeamResolver;
+  readonly instagibWeaponMode: AuthorityRoomInstagibWeaponModeOptions | null;
 
   private readonly players = new Map<string, AuthorityPlayerRecord>();
   private readonly impulseGrenadeProjectiles = new Map<string, ImpulseGrenadeProjectileState>();
@@ -1544,6 +1554,7 @@ export class AuthoritativeRoom {
       this.abilityResourceCapabilityId = null;
       this.tdmMatchCapabilityId = null;
       this.tdmMatchRules = null;
+      this.instagibWeaponMode = null;
       this.teamResolver = () => null;
       this.worldOcclusionPort = null;
       this.impulseGrenadeWorldPort = null;
@@ -1554,7 +1565,10 @@ export class AuthoritativeRoom {
       const combatOptions = snapshotPlainDataRecord(options.combat, 'room combat options');
       allowedKeys(
         combatOptions,
-        ['profileId', 'teamResolver', 'hitscan', 'impulseGrenade', 'abilityResources', 'match'],
+        [
+          'profileId', 'teamResolver', 'hitscan', 'impulseGrenade', 'abilityResources',
+          'match', 'weaponMode',
+        ],
         'room combat options',
       );
       if (!Object.hasOwn(combatOptions, 'profileId')) {
@@ -1580,6 +1594,35 @@ export class AuthoritativeRoom {
       this.teamResolver = combatOptions.teamResolver === undefined
         ? () => null
         : combatOptions.teamResolver as AuthorityTeamResolver;
+      if (combatOptions.weaponMode === undefined) {
+        this.instagibWeaponMode = null;
+      } else {
+        const weaponMode = snapshotPlainDataRecord(
+          combatOptions.weaponMode,
+          'room weapon mode options',
+        );
+        exactKeys(
+          weaponMode,
+          ['schemaVersion', 'policyId', 'lockedWeaponId', 'lockedWeaponSlot', 'damagePoints'],
+          'room weapon mode options',
+        );
+        if (
+          weaponMode.schemaVersion !== 1
+          || weaponMode.policyId !== 'instagib_longshot_v1'
+          || weaponMode.lockedWeaponId !== KYX_WEAPON_ID.sniper
+          || weaponMode.lockedWeaponSlot !== 3
+          || weaponMode.damagePoints !== 100
+        ) {
+          throw new RangeError('room weapon mode is unsupported');
+        }
+        this.instagibWeaponMode = deepFreeze({
+          schemaVersion: 1,
+          policyId: 'instagib_longshot_v1',
+          lockedWeaponId: KYX_WEAPON_ID.sniper,
+          lockedWeaponSlot: 3,
+          damagePoints: 100,
+        });
+      }
       if (combatOptions.hitscan === undefined) {
         this.hitscanCapabilityId = null;
         this.worldOcclusionPort = null;
@@ -1709,6 +1752,12 @@ export class AuthoritativeRoom {
           authorityTick: this.tick,
         }, this.tdmMatchRules);
       }
+      if (
+        this.instagibWeaponMode !== null
+        && (this.hitscanCapabilityId === null || this.tdmMatchCapabilityId === null)
+      ) {
+        throw new RangeError('room instagib weapon mode requires hitscan and match authority');
+      }
     }
   }
 
@@ -1766,9 +1815,17 @@ export class AuthoritativeRoom {
       },
       yawMilliDegrees: spawn.yawMilliDegrees ?? 0,
     });
+    const initialWeaponSlot = this.instagibWeaponMode?.lockedWeaponSlot ?? 0;
     const state: MovementSimulationState = {
       ...initial,
       tick: asSimulationTick(this.tick),
+      player: {
+        ...initial.player,
+        intent: {
+          ...initial.player.intent,
+          selectedSlot: initialWeaponSlot,
+        },
+      },
     };
     const teamId = this.combatProfileId === null
       ? null
@@ -1797,7 +1854,7 @@ export class AuthoritativeRoom {
           playerId,
           roomSeed: this.identity.matchId,
           authorityTick: this.tick,
-          selectedSlot: 0,
+          selectedSlot: initialWeaponSlot,
         }), autoRifle);
     const impulseGrenade = this.impulseGrenadeCapabilityId === null
       ? null
@@ -2021,6 +2078,12 @@ export class AuthoritativeRoom {
     selectableAbilityIds: readonly [string, string, string],
     primaryWeaponSlot: 0 | 2 | 3 | 5,
   ): AbilityLoadoutV1 {
+    if (
+      this.instagibWeaponMode !== null
+      && primaryWeaponSlot !== this.instagibWeaponMode.lockedWeaponSlot
+    ) {
+      throw new Error('AUTHORITY_INSTAGIB_WEAPON_LOADOUT_LOCKED');
+    }
     const loadout = this.setPlayerAbilityLoadout(playerIdValue, selectableAbilityIds);
     const playerId = stableId(playerIdValue, 'combat loadout player id');
     const player = this.players.get(playerId);
@@ -2236,7 +2299,18 @@ export class AuthoritativeRoom {
       yawMilliDegrees: spawn.yawMilliDegrees ?? 0,
     });
     player.life = result.state;
-    player.state = { ...initial, tick: asSimulationTick(this.tick) };
+    player.state = {
+      ...initial,
+      tick: asSimulationTick(this.tick),
+      player: {
+        ...initial.player,
+        intent: {
+          ...initial.player.intent,
+          selectedSlot: this.instagibWeaponMode?.lockedWeaponSlot
+            ?? player.state.player.intent.selectedSlot,
+        },
+      },
+    };
     player.flashImpairedUntilTick = this.tick;
     if (player.impulseGrenade !== null) {
       player.impulseGrenade = resetImpulseGrenadeAbilityForRespawn(
@@ -2482,6 +2556,21 @@ export class AuthoritativeRoom {
               heldButtons: 0,
               pressedButtons: 0,
               releasedButtons: 0,
+            },
+          },
+        };
+      }
+      if (
+        this.instagibWeaponMode !== null
+        && player.state.player.intent.selectedSlot !== this.instagibWeaponMode.lockedWeaponSlot
+      ) {
+        player.state = {
+          ...player.state,
+          player: {
+            ...player.state.player,
+            intent: {
+              ...player.state.player.intent,
+              selectedSlot: this.instagibWeaponMode.lockedWeaponSlot,
             },
           },
         };
@@ -3176,6 +3265,12 @@ export class AuthoritativeRoom {
         : left.attack.eventId > right.attack.eventId ? 1 : 0;
     });
     return ordered.map(({ playerId, attack }, resolutionOrdinal) => {
+      if (
+        this.instagibWeaponMode !== null
+        && attack.weaponId !== this.instagibWeaponMode.lockedWeaponId
+      ) {
+        throw new Error('AUTHORITY_INSTAGIB_WEAPON_POLICY_DIVERGED');
+      }
       const shooter = this.players.get(playerId);
       if (
         shooter === undefined
@@ -3237,7 +3332,16 @@ export class AuthoritativeRoom {
           observedRttHistory: shooter.observedRttHistory,
           targetHistories,
         }, hitscanOcclusionPort);
-        const damages = resolution.damageTotals.map((total) => (
+        const authorityResolution = this.instagibWeaponMode === null
+          ? resolution
+          : deepFreeze({
+              ...resolution,
+              damageTotals: resolution.damageTotals.map((total) => ({
+                ...total,
+                damagePoints: this.instagibWeaponMode?.damagePoints ?? total.damagePoints,
+              })),
+            });
+        const damages = authorityResolution.damageTotals.map((total) => (
           this.applyCombatDamageInternal({
             targetPlayerId: total.targetPlayerId,
             sourcePlayerId: attack.playerId,
@@ -3251,7 +3355,7 @@ export class AuthoritativeRoom {
           acceptedAttack: attack,
           kind: 'hitscan' as const,
           roomRejectionReason: null,
-          resolution,
+          resolution: authorityResolution,
           damages,
         });
       }
@@ -3986,6 +4090,16 @@ export class AuthoritativeRoom {
         selectedSlot: player.movement.player.intent.selectedSlot,
       });
       assertAuthorityWeaponLoadoutState(armorySource);
+      if (
+        this.instagibWeaponMode !== null
+        && (
+          armorySource.selectedSlot !== this.instagibWeaponMode.lockedWeaponSlot
+          || player.movement.player.intent.selectedSlot
+            !== this.instagibWeaponMode.lockedWeaponSlot
+        )
+      ) {
+        throw new RangeError('checkpoint instagib weapon mode binding disagrees');
+      }
       checkpointLiteral(armorySource.playerId, playerId, 'checkpoint armory player');
       checkpointLiteral(
         armorySource.catalogId,

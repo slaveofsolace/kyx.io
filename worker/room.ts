@@ -8,6 +8,7 @@ import {
   G4_COMBAT_RULESET_REVISION,
   INKFALL_AUTHORITY_MAP_IDENTITY_V3,
   INKFALL_AUTHORITY_MAP_IDENTITY_V4,
+  KYX_MODE_ID,
   assertAuthorityLoadoutSelection,
   authorityLoadoutFromRuleset,
   authorityLoadoutRequestFingerprint,
@@ -146,7 +147,8 @@ const LOBBY_CHECKPOINT_SCHEMA_VERSION = 1;
 const LOBBY_RELIABILITY_CHECKPOINT_SCHEMA_VERSION = 1;
 const LOBBY_RELIABILITY_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
 const LOADOUT_REQUEST_LEDGER_SCHEMA_VERSION = 1;
-const ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION = 1;
+const LEGACY_ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION = 1;
+const ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION = 2;
 const ACTIVE_MATCH_CHECKPOINT_HASH_ALGORITHM = 'fnv1a64-json-v1';
 const ACTIVE_MATCH_CHECKPOINT_INTERVAL_TICKS = 10;
 const MAXIMUM_LOBBY_RELIABILITY_CHECKPOINT_BYTES = 1_000_000;
@@ -281,10 +283,11 @@ interface ActiveMatchCheckpointRow {
   readonly authority_tick: number;
 }
 
-interface ActiveMatchCheckpointEnvelopeV1 {
+interface ActiveMatchCheckpointEnvelopeV2 {
   readonly schemaVersion: typeof ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION;
   readonly roomCode: string;
   readonly roomProfile: Parameters<typeof workerMapBinding>[0];
+  readonly matchMode: WorkerAuthorityMatchMode;
   readonly protocolVersion: typeof PROTOCOL_VERSION;
   readonly simulationIdentity: SimulationIdentityV1;
   readonly mapBinding: ReturnType<typeof workerMapBinding>;
@@ -2048,7 +2051,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         authority.setPlayerCombatLoadout(
           playerId,
           preset.selectableAbilityIds,
-          preset.authorityPrimaryWeaponSlot,
+          this.matchOwnedPrimaryWeaponSlot(preset.authorityPrimaryWeaponSlot),
         );
       }
       authority.recordServerObservedRtt(playerId, 0);
@@ -2150,7 +2153,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
           authority.setPlayerCombatLoadout(
             playerId,
             fallbackLoadout.damageAbilityIds,
-            fallbackLoadout.primaryWeaponSlot,
+            this.matchOwnedPrimaryWeaponSlot(fallbackLoadout.primaryWeaponSlot),
           );
         }
         return Object.freeze({
@@ -2317,10 +2320,11 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       }
       return Object.freeze({ playerId, generation });
     });
-    const envelope: ActiveMatchCheckpointEnvelopeV1 = Object.freeze({
+    const envelope: ActiveMatchCheckpointEnvelopeV2 = Object.freeze({
       schemaVersion: ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION,
       roomCode: this.roomCode as string,
       roomProfile,
+      matchMode: this.roomMatchMode,
       protocolVersion: PROTOCOL_VERSION,
       simulationIdentity: this.simulationIdentity(),
       mapBinding: workerMapBinding(roomProfile),
@@ -2561,7 +2565,10 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     const expectedIdentityJson = JSON.stringify(this.simulationIdentity());
     const expectedMapBindingJson = JSON.stringify(workerMapBinding(roomProfile));
     if (
-      row.schema_version !== ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION
+      (
+        row.schema_version !== LEGACY_ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION
+        && row.schema_version !== ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION
+      )
       || row.room_code !== this.roomCode
       || row.room_id !== authority.identity.roomId
       || row.match_id !== authority.identity.matchId
@@ -2585,13 +2592,19 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     }
     const envelope = exactCheckpointRecord(parsed, [
       'schemaVersion', 'roomCode', 'roomProfile', 'protocolVersion',
+      ...(row.schema_version === ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION ? ['matchMode'] : []),
       'simulationIdentity', 'mapBinding', 'authority', 'reliableEvents',
       'playerEventAcknowledgements', 'sessionGenerations',
     ], 'active match checkpoint envelope');
     if (
-      envelope.schemaVersion !== ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION
+      envelope.schemaVersion !== row.schema_version
       || envelope.roomCode !== this.roomCode
       || envelope.roomProfile !== roomProfile
+      || (
+        row.schema_version === LEGACY_ACTIVE_MATCH_CHECKPOINT_SCHEMA_VERSION
+          ? this.roomMatchMode !== DEFAULT_WORKER_AUTHORITY_MATCH_MODE
+          : envelope.matchMode !== this.roomMatchMode
+      )
       || envelope.protocolVersion !== PROTOCOL_VERSION
       || JSON.stringify(envelope.simulationIdentity) !== expectedIdentityJson
       || JSON.stringify(envelope.mapBinding) !== expectedMapBindingJson
@@ -3277,8 +3290,14 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
     this.requireAuthority().setPlayerCombatLoadout(
       playerId,
       selection.damageAbilityIds,
-      selection.primaryWeaponSlot,
+      this.matchOwnedPrimaryWeaponSlot(selection.primaryWeaponSlot),
     );
+  }
+
+  private matchOwnedPrimaryWeaponSlot(
+    requestedSlot: AuthorityLoadoutSelectionV1['primaryWeaponSlot'],
+  ): AuthorityLoadoutSelectionV1['primaryWeaponSlot'] {
+    return this.roomMatchMode === KYX_MODE_ID.instagib ? 3 : requestedSlot;
   }
 
   private persistedPlayerLoadout(playerId: string): AuthorityLoadoutSelectionV1 | null {
@@ -3468,7 +3487,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         authority.setPlayerCombatLoadout(
           attachment.playerId,
           decision.loadout.damageAbilityIds,
-          decision.loadout.primaryWeaponSlot,
+          this.matchOwnedPrimaryWeaponSlot(decision.loadout.primaryWeaponSlot),
         );
       }
     } catch {
