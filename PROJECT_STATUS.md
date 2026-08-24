@@ -42,6 +42,8 @@ candidate, or a deployment claim.
   project skips
 - The prior frozen multiplayer matrix passed all 6 tests, including 2, 4, and
   8 clients
+- The current WIP multiplayer rerun passed 3 of 6 tests; one join closed early
+  and two movement/timing thresholds failed, so this snapshot is not accepted
 - The current lifecycle diff security review completed with no findings
 - The production truth-surface release gate remains blocked because no
   production authority origin is configured
