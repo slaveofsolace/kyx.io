@@ -8,6 +8,7 @@ export * from './inputQueue';
 export * from './inkfallMapIdentity';
 export * from './inkfallRoomFactory';
 export * from './localInkfallPracticeHost';
+export * from './lifecycle';
 export * from './modes';
 export * from './originalArenaAuthority';
 export * from './relayAuthority';

@@ -2,7 +2,7 @@
   "name": "kyx.io",
   "version": "1.0.0",
   "private": true,
-  "description": "Desktop-browser arena FPS with deterministic simulation and authoritative Cloudflare multiplayer.",
+  "description": "Work-in-progress tactical sci-fi browser FPS with authoritative Cloudflare multiplayer (approximately 43% complete).",
   "type": "module",
   "scripts": {
     "dev": "vite",
