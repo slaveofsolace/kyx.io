@@ -2,7 +2,7 @@
   "name": "kyx.io",
   "version": "1.0.0",
   "private": true,
-  "description": "Work in progress: original tactical sci-fi browser FPS, about 43% complete.",
+  "description": "Work in progress (43% complete): original tactical sci-fi browser FPS.",
   "type": "module",
   "scripts": {
     "dev": "vite",

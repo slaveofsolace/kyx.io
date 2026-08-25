@@ -1,35 +1,28 @@
 # KYX.IO
 
-> **Work in progress: about 43% complete / 57% remaining.**
->
-> Playable in development. Not feature-complete, release-ready, or deployed.
+**Work in progress — about 43% complete, 57% remaining.**
 
-KYX.IO is an original tactical sci-fi browser FPS. It uses Three.js, Rapier,
-TypeScript, and a server-authoritative Cloudflare Worker/Durable Object runtime.
+Development is currently paused at an unfinished checkpoint. KYX.IO is a
+playable tactical sci-fi browser FPS, but it is not feature-complete,
+release-ready, or deployed.
 
-## Current build
+## Available now
 
-- Online Team Deathmatch, Free For All, and Instagib
+- Team Deathmatch, Free For All, and Instagib
 - Relay, Switchyard, and Crownpoint arenas
 - Relay Practice with bots
-- Authoritative movement, combat, scoring, results, reconnect, and rotation
-- Six weapon families and six ability families
-- Desktop HUD, loadouts, match results, and automated multiplayer coverage
-- Server-side spectator sessions and rematch consensus foundations
+- Server-authoritative movement, combat, scoring, reconnect, and rotation
+- Six weapon families, six ability families, loadouts, HUD, and match results
 
-## Still to build
+## Remaining
 
-- Player-facing spectator/rematch flows, private matches, and remaining modes
-- Capture The Flag, Search and Destroy, Last Team Standing, Survival,
-  Zombie Survival, and Battle Royale
-- A large original Battle Royale arena
-- Remaining weapons, upgrades, mines, pickups, loot, and Practice parity
-- Accounts, progression, inventory, cosmetics, social systems, and moderation
-- Authenticated map editing and publishing
-- Full network, soak, performance, accessibility, controller, and human review
+- Spectator, rematch, private-match, and remaining game-mode flows
+- Battle Royale and its large original arena
+- Remaining combat content and Practice parity
+- Accounts, progression, cosmetics, social systems, moderation, and map editing
+- Full network, performance, accessibility, controller, and human play review
 
-The project has no cryptocurrency, wallets, NFTs, real-money purchases, or
-pay-to-win systems.
+No cryptocurrency, wallets, NFTs, real-money purchases, or pay-to-win systems.
 
 ## Run locally
 
@@ -43,5 +36,5 @@ npm run dev
 
 Run `npm run dev:authority` in a second terminal for online authority.
 
-See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the current scope and verified
-test state. The source and assets are `UNLICENSED`.
+See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the full checkpoint and test
+state. The source and assets are `UNLICENSED`.

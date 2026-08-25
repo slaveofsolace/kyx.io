@@ -921,7 +921,12 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
       : rawBytes.byteLength;
     const rate = consumeSocketRate(rawAttachment, now, messageBytes);
     this.writeSocketAttachment(webSocket, rate.attachment);
-    await this.scheduleMaintenanceAlarm();
+    // Do not yield between publishing the fresh inbound timestamp and
+    // applying the decoded message. A queued ACK/input callback can otherwise
+    // advance the cached attachment while this callback is suspended, after
+    // which an ACK branch would overwrite it from the older rate snapshot and
+    // manufacture a heartbeat timeout for an active socket.
+    this.ctx.waitUntil(this.scheduleMaintenanceAlarm());
     if (!rate.ok) {
       this.transportMetrics.inboundMessagesRateRejected += 1;
       safeSocketSend(webSocket, errorMessage('RATE_LIMITED'));
@@ -2609,34 +2614,45 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
   private advanceLifecycleState(): void {
     const authority = this.requireAuthority();
     const previousSpectators = this.requireSpectatorState();
-    const advancedSpectators = advanceAuthoritySpectators(
-      previousSpectators,
-      authority.serverTick,
-      this.authoritySpectatorTargets(),
-    );
-    const previousById = new Map(previousSpectators.spectators.map((spectator) => (
-      [spectator.spectatorId, spectator] as const
-    )));
-    const changedSpectatorIds = new Set<string>(advancedSpectators.prunedSpectatorIds);
-    for (const spectator of advancedSpectators.state.spectators) {
-      const previous = previousById.get(spectator.spectatorId);
-      if (
-        previous === undefined
-        || previous.targetRevision !== spectator.targetRevision
-        || previous.connected !== spectator.connected
-      ) changedSpectatorIds.add(spectator.spectatorId);
-    }
-    this.spectatorState = advancedSpectators.state;
-    for (const spectatorId of advancedSpectators.prunedSpectatorIds) {
-      this.spectatorResumeSessions.revokeSpectator(
-        spectatorId,
-        authority.identity.roomId,
-        authority.identity.matchId,
+    const previousRematch = this.rematchConsensus;
+    if (
+      previousSpectators.spectators.length === 0
+      && authority.lifecycle !== 'postmatch'
+      && previousRematch === null
+    ) return;
+
+    const changedSpectatorIds = new Set<string>();
+    let spectatorChanged = false;
+    if (previousSpectators.spectators.length > 0) {
+      const advancedSpectators = advanceAuthoritySpectators(
+        previousSpectators,
+        authority.serverTick,
+        this.authoritySpectatorTargets(),
       );
-      this.spectatorSessionGenerations.delete(spectatorId);
+      const previousById = new Map(previousSpectators.spectators.map((spectator) => (
+        [spectator.spectatorId, spectator] as const
+      )));
+      for (const spectatorId of advancedSpectators.prunedSpectatorIds) {
+        changedSpectatorIds.add(spectatorId);
+        this.spectatorResumeSessions.revokeSpectator(
+          spectatorId,
+          authority.identity.roomId,
+          authority.identity.matchId,
+        );
+        this.spectatorSessionGenerations.delete(spectatorId);
+      }
+      for (const spectator of advancedSpectators.state.spectators) {
+        const previous = previousById.get(spectator.spectatorId);
+        if (
+          previous === undefined
+          || previous.targetRevision !== spectator.targetRevision
+          || previous.connected !== spectator.connected
+        ) changedSpectatorIds.add(spectator.spectatorId);
+      }
+      spectatorChanged = changedSpectatorIds.size > 0;
+      this.spectatorState = advancedSpectators.state;
     }
 
-    const previousRematch = this.rematchConsensus;
     if (authority.lifecycle === 'postmatch' && this.rematchConsensus === null) {
       const eligiblePlayerIds = authority.fullSnapshot().players
         .filter(({ playerId, connected }) => connected && !this.serverBotPlayerIds.has(playerId))
@@ -2656,8 +2672,7 @@ export class KyxRoom extends DurableObject<KyxAuthorityEnv> {
         authority.serverTick,
       );
     }
-    const spectatorChanged = JSON.stringify(previousSpectators) !== JSON.stringify(this.spectatorState);
-    const rematchChanged = JSON.stringify(previousRematch) !== JSON.stringify(this.rematchConsensus);
+    const rematchChanged = previousRematch !== this.rematchConsensus;
     if (spectatorChanged || rematchChanged) this.persistLifecycleState();
     this.broadcastSpectatorStates(changedSpectatorIds);
     if (rematchChanged) this.broadcastRematchState();
