@@ -8,11 +8,13 @@ owner authorization. Only safe preservation and the requested WIP repository
 handoff are in scope. Both lanes confirmed that their commands are stopped;
 the task's Vite server is stopped and its browser test has finished unsuccessfully.
 
-Local changes are preserved on the existing integration branch. GitHub `main`
-was verified at `373e9de6bff25e5ceae1c0af15839654273af6e1`. GitHub visibility is
-public, so new uploads are held pending resolution of the private-repository
-boundary. No deployment, history rewrite, deletion or protected-worktree cleanup
-has occurred.
+Local changes were saved as `346df1145492b1006ef193d5000dbbc1624f5035` on the
+existing integration branch. GitHub `main` was verified at
+`373e9de6bff25e5ceae1c0af15839654273af6e1` before publication. The owner then
+instructed that visibility be left unchanged and delegated the WIP handoff
+decision. The repository stays public; only this preserved unfinished checkpoint
+and its documentation are being published. Development is not resumed. No
+deployment, history rewrite, deletion or protected-worktree cleanup has occurred.
 
 Completed before the hold: shared eye/settings contract, immediate pending-look
 rendering, time-based camera smoothing, reduced-motion controls, and correction

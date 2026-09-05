@@ -61,9 +61,10 @@ These are historical results, not verification of the September 5 changes.
 
 ## Release status
 
-Release remains blocked. GitHub reported the repository as public at the pause,
-which conflicts with the task's private-repository boundary. Upload of the new
-checkpoint is held pending the owner's visibility decision. The project remains
+Release remains blocked. The repository remains public following the owner's
+instruction to leave its visibility unchanged and complete the WIP handoff.
+This checkpoint preserves unfinished source and review candidates; it does not
+approve those candidates for the game or its release ledger. The project remains
 `UNLICENSED`; third-party license, attribution and provenance records are retained.
 
 No deployment, history rewrite, branch deletion or protected-worktree cleanup is
