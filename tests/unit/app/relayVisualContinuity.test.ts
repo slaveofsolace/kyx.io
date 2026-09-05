@@ -12,6 +12,45 @@ import {
 import { RELAY_AUTHORITY_FIXTURE } from '../../../src/authority/relayAuthority';
 
 describe('Relay original visual continuity candidate', () => {
+  it('projects rotated collider corners onto the same visible ramp surfaces', () => {
+    const continuity = createRelayVisualContinuity(RELAY_AUTHORITY_FIXTURE);
+    const rotated = RELAY_AUTHORITY_FIXTURE.solids.filter((solid) => (
+      Object.values(solid.rotationMilliDegrees).some((angle) => angle !== 0)
+    ));
+    expect(rotated.length).toBeGreaterThan(0);
+    for (const solid of rotated) {
+      if (solid.shape.type !== 'box') throw new Error('expected box ramp');
+      let mesh: THREE.InstancedMesh | null = null;
+      let instance = -1;
+      continuity.group.traverse((object) => {
+        if (!(object instanceof THREE.InstancedMesh)) return;
+        if (!object.name.startsWith('RELAY_AUTHORITY_CLADDING_')) return;
+        const ids = object.userData.authorityAlignmentColliderIds as string[];
+        const index = ids.indexOf(solid.id);
+        if (index >= 0) { mesh = object; instance = index; }
+      });
+      if (mesh === null) throw new Error(`missing visual collider ${solid.id}`);
+      const matrix = new THREE.Matrix4();
+      (mesh as THREE.InstancedMesh).getMatrixAt(instance, matrix);
+      const rotation = solid.rotationMilliDegrees;
+      for (const x of [-1, 1]) for (const z of [-1, 1]) {
+        const actual = new THREE.Vector3(x / 2, 0.5, z / 2).applyMatrix4(matrix);
+        const expected = new THREE.Vector3(
+          x * solid.shape.halfExtentsMm.x,
+          solid.shape.halfExtentsMm.y,
+          -z * solid.shape.halfExtentsMm.z,
+        ).applyEuler(new THREE.Euler(
+          rotation.x * Math.PI / 180_000,
+          rotation.y * Math.PI / 180_000,
+          rotation.z * Math.PI / 180_000,
+          'ZYX',
+        )).add(new THREE.Vector3(solid.centerMm.x, solid.centerMm.y, solid.centerMm.z));
+        expected.set(expected.x / 1_000, expected.y / 1_000, -expected.z / 1_000);
+        expect(actual.distanceTo(expected), solid.id).toBeLessThan(0.00001);
+      }
+    }
+  });
+
   it('represents every Relay authority collider once without mounting Foundry presentation objects', () => {
     const fixture = RELAY_AUTHORITY_FIXTURE;
     const continuity = createRelayVisualContinuity(fixture);

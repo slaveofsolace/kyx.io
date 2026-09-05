@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { movementEyeHeightMillimeters, PHASE3_HYPOTHESIS_MOVEMENT_PROFILE, type MovementStance } from '../sim/movement';
+import { cameraPositionBlend, cameraSettingsFromPreferences } from './movement/firstPersonView';
+import { requireCameraPresentationSettings, type CameraPresentationSettingsV1 } from './movement/cameraSettings';
 
 import revision3CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision3.v1.json';
 import revision4CombatAuthorityFixtureSource from '../../assets/source/maps/inkfall-foundry/runtime/combat-authority-fixture.g5-revision4.v1.json';
@@ -96,6 +99,8 @@ export interface OnlineAuthorityThreeFrame {
   readonly matchMode: OnlineAuthorityMatchMode;
   readonly localYawMilliDegrees: number | null;
   readonly localPitchMilliDegrees: number | null;
+  readonly localStance: MovementStance;
+  readonly localPositionInterpolated?: boolean;
   readonly localSpeedMillimetersPerSecond: number;
   readonly aimHeld: boolean;
   readonly blinkPreview: OnlineBlinkPreview | null;
@@ -180,6 +185,12 @@ export interface OnlineAuthorityThreeDiagnostics {
   readonly selectedFirstPersonSprintMix: number;
   readonly selectedFirstPersonScale: number;
   readonly selectedFirstPersonFieldOfViewDegrees: number;
+  readonly cameraEyeHeightMillimeters: number;
+  readonly cameraPositionMillimeters: Readonly<{ x: number; y: number; z: number }>;
+  readonly cameraYawMilliDegrees: number;
+  readonly cameraPitchMilliDegrees: number;
+  readonly cameraReducedMotion: boolean;
+  readonly cameraMovementBob: number;
   readonly selectedFirstPersonFireImpulse: number;
   readonly selectedFirstPersonReloadProgress: number;
   readonly selectedFirstPersonReloadPoseMix: number;
@@ -201,6 +212,7 @@ export interface OnlineAuthorityThreeRuntime {
 }
 
 export interface OnlineAuthorityThreeRuntimeOptions {
+  readonly cameraSettings?: CameraPresentationSettingsV1;
   readonly onWorldPortalAudio?: InkfallRev5PortalAudioCallback;
   readonly mapBinding?: OnlineAuthorityMapBinding;
   readonly presentationFixture?: PhysicsFixtureV1;
@@ -290,7 +302,6 @@ function createOriginalArenaLoadedVisual(
 const PROCESSED_RELIABLE_EVENT_RETENTION = 2_048;
 const AUTHORITY_SIMULATION_RATE_HZ = 20;
 const DEATH_PRESENTATION_DURATION_MILLISECONDS = 2_550;
-const BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES = 72;
 
 function mapMillimetersToScene(
   value: Readonly<{ x: number; y: number; z: number }>,
@@ -661,6 +672,9 @@ export async function createOnlineAuthorityThreeRuntime(
   canvas: HTMLCanvasElement,
   options: OnlineAuthorityThreeRuntimeOptions = {},
 ): Promise<OnlineAuthorityThreeRuntime> {
+  const cameraSettings = requireCameraPresentationSettings(
+    options.cameraSettings ?? cameraSettingsFromPreferences({}),
+  );
   const mapBinding = options.mapBinding ?? ONLINE_INKFALL_REV5_MAP_BINDING;
   const presentationIdentity = options.presentationIdentity ?? Object.freeze({
     mapReference: mapBinding.mapReference,
@@ -705,13 +719,18 @@ export async function createOnlineAuthorityThreeRuntime(
   scene.add(loadedVisual.art, loadedVisual.containment);
 
   const camera = new THREE.PerspectiveCamera(
-    BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES,
+    cameraSettings.fovDegrees,
     16 / 9,
     0.025,
     150,
   );
   camera.rotation.order = 'YXZ';
   scene.add(camera);
+  const cameraFeet = new THREE.Vector3();
+  const previousCameraTarget = new THREE.Vector3();
+  let cameraPositionInitialized = false;
+  let cameraEyeHeight = 0;
+  let cameraMovementBob = 0;
 
   const firstPersonWeaponMount = new THREE.Group();
   firstPersonWeaponMount.name = 'ONLINE_FIRST_PERSON_WEAPON_ONLY';
@@ -1415,7 +1434,7 @@ export async function createOnlineAuthorityThreeRuntime(
     blinkPreviewPresentation.update(
       frame.blinkPreview,
       frame.nowMilliseconds,
-      reducedMotionQuery.matches,
+      cameraSettings.reducedMotion || reducedMotionQuery.matches,
     );
     syncAvatars(frame, deltaSeconds);
     syncGrenades(
@@ -1447,8 +1466,20 @@ export async function createOnlineAuthorityThreeRuntime(
     if (frame.presentation.localPredicted !== null) {
       const target = mapMillimetersToScene(
         frame.presentation.localPredicted,
-      ).add(new THREE.Vector3(0, 1.58, 0));
-      camera.position.lerp(target, 0.42);
+      );
+      const snapPosition = !cameraPositionInitialized
+        || frame.localPositionInterpolated === true
+        || previousCameraTarget.distanceToSquared(target) > 4;
+      cameraFeet.lerp(target, snapPosition ? 1 : cameraPositionBlend(deltaSeconds));
+      previousCameraTarget.copy(target);
+      cameraPositionInitialized = true;
+      cameraEyeHeight = movementEyeHeightMillimeters(
+        PHASE3_HYPOTHESIS_MOVEMENT_PROFILE,
+        frame.localStance,
+      );
+      // Stance changes use the same eye as the shot, without a second height lag.
+      camera.position.copy(cameraFeet);
+      camera.position.y += cameraEyeHeight / 1_000;
       camera.rotation.y = authorityCameraYawRadians(
         frame.localYawMilliDegrees ?? 0,
       );
@@ -1457,7 +1488,10 @@ export async function createOnlineAuthorityThreeRuntime(
       ) * Math.PI / 180_000;
       camera.rotation.z = 0;
     } else {
-      camera.position.lerp(new THREE.Vector3(-25, 8.5, 20), 0.08);
+      cameraPositionInitialized = false;
+      cameraEyeHeight = 0;
+      camera.position.lerp(new THREE.Vector3(-25, 8.5, 20),
+        cameraPositionBlend(deltaSeconds, 0.08));
       camera.lookAt(-14, 2.2, -5);
     }
 
@@ -1476,10 +1510,12 @@ export async function createOnlineAuthorityThreeRuntime(
           aim,
         ),
       );
-      const movementBob = Math.min(
+      const movementBob = (cameraSettings.reducedMotion || reducedMotionQuery.matches)
+        ? 0 : cameraSettings.headBobIntensity * Math.min(
         1,
         frame.localSpeedMillimetersPerSecond / 5_500,
       );
+      cameraMovementBob = movementBob;
       const bobPhase = frame.nowMilliseconds * 0.012;
       firstPersonWeaponMount.position.set(
         Math.sin(bobPhase) * 0.008 * movementBob
@@ -1520,8 +1556,8 @@ export async function createOnlineAuthorityThreeRuntime(
           + firstPersonMelee * -0.26,
       );
       const targetFieldOfView = THREE.MathUtils.lerp(
-        BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES,
-        pose.aimFieldOfViewDegrees,
+        cameraSettings.fovDegrees,
+        Math.min(cameraSettings.fovDegrees, pose.aimFieldOfViewDegrees),
         aim,
       );
       if (Math.abs(camera.fov - targetFieldOfView) > 0.005) {
@@ -1529,9 +1565,9 @@ export async function createOnlineAuthorityThreeRuntime(
         camera.updateProjectionMatrix();
       }
     } else if (
-      camera.fov !== BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES
+      camera.fov !== cameraSettings.fovDegrees
     ) {
-      camera.fov = BASE_FIRST_PERSON_FIELD_OF_VIEW_DEGREES;
+      camera.fov = cameraSettings.fovDegrees;
       camera.updateProjectionMatrix();
     }
     // Reliable presentation resolves from the current camera, hand socket, and
@@ -1695,6 +1731,16 @@ export async function createOnlineAuthorityThreeRuntime(
       selectedFirstPersonScale:
         firstPersonWeapon?.group.scale.x ?? 0,
       selectedFirstPersonFieldOfViewDegrees: camera.fov,
+      cameraEyeHeightMillimeters: cameraEyeHeight,
+      cameraPositionMillimeters: {
+        x: camera.position.x * 1_000,
+        y: camera.position.y * 1_000,
+        z: -camera.position.z * 1_000,
+      },
+      cameraYawMilliDegrees: -camera.rotation.y * 180_000 / Math.PI,
+      cameraPitchMilliDegrees: camera.rotation.x * 180_000 / Math.PI,
+      cameraReducedMotion: cameraSettings.reducedMotion || reducedMotionQuery.matches,
+      cameraMovementBob,
       selectedFirstPersonFireImpulse:
         firstPersonWeapon?.fireImpulse ?? 0,
       selectedFirstPersonReloadProgress:

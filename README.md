@@ -1,28 +1,25 @@
 # KYX.IO
 
-**Work in progress — about 43% complete, 57% remaining.**
+**Paused work in progress — approximately 43% complete / 57% remaining.**
 
-Development is currently paused at an unfinished checkpoint. KYX.IO is a
-playable tactical sci-fi browser FPS, but it is not feature-complete,
-release-ready, or deployed.
+KYX.IO is an original tactical sci-fi browser FPS. This is an unfinished
+development snapshot, not a release. Development is on hold as of September 5,
+2026. The percentage is a rough full-project estimate, not a test-pass score.
 
-## Available now
+## Current prototype
 
-- Team Deathmatch, Free For All, and Instagib
-- Relay, Switchyard, and Crownpoint arenas
-- Relay Practice with bots
-- Server-authoritative movement, combat, scoring, reconnect, and rotation
-- Six weapon families, six ability families, loadouts, HUD, and match results
+- TDM, FFA and Instagib across Relay, Switchyard and Crownpoint; Relay Practice with bots.
+- Server-authoritative combat, movement, weapons, abilities, loadouts and match results.
+- Camera, controls and new Relay art are being refined. Multiplayer reliability and full play acceptance remain unresolved.
 
 ## Remaining
 
-- Spectator, rematch, private-match, and remaining game-mode flows
-- Battle Royale and its large original arena
-- Remaining combat content and Practice parity
-- Accounts, progression, cosmetics, social systems, moderation, and map editing
-- Full network, performance, accessibility, controller, and human play review
+- Finish and play-test a coherent Relay match, including art, animation, audio and reconnect.
+- Complete the remaining modes, combat content, accounts, progression, social systems and map editor.
+- Finish network, performance, accessibility and controller acceptance.
 
-No cryptocurrency, wallets, NFTs, real-money purchases, or pay-to-win systems.
+No cryptocurrency, real-money purchases or pay-to-win systems. There is no
+completion ETA while development is paused.
 
 ## Run locally
 
@@ -36,5 +33,5 @@ npm run dev
 
 Run `npm run dev:authority` in a second terminal for online authority.
 
-See [PROJECT_STATUS.md](./PROJECT_STATUS.md) for the full checkpoint and test
-state. The source and assets are `UNLICENSED`.
+See [Project status](./PROJECT_STATUS.md) for known failures and remaining work.
+The project is `UNLICENSED`; third-party rights and attribution still apply.

@@ -1,4 +1,10 @@
 import { PROTOCOL_LIMITS } from '../net';
+import {
+  clampMilliDegrees,
+  MOVEMENT_PITCH_MAX_MILLI_DEGREES,
+  MOVEMENT_PITCH_MIN_MILLI_DEGREES,
+  normalizeYawMilliDegrees,
+} from '../sim';
 
 export interface AuthorityLookInputState {
   readonly continuousYawMilliDegrees: number;
@@ -10,6 +16,22 @@ export interface AuthorityLookInputState {
 export interface AuthorityLookDelta {
   readonly yawMilliDegrees: number;
   readonly pitchMilliDegrees: number;
+}
+
+/** Present queued mouse intent without consuming it or changing simulation. */
+export function projectAuthorityLook(
+  look: AuthorityLookDelta,
+  yawDelta: number,
+  pitchDelta: number,
+): AuthorityLookDelta {
+  return {
+    yawMilliDegrees: normalizeYawMilliDegrees(look.yawMilliDegrees + yawDelta),
+    pitchMilliDegrees: clampMilliDegrees(
+      look.pitchMilliDegrees + pitchDelta,
+      MOVEMENT_PITCH_MIN_MILLI_DEGREES,
+      MOVEMENT_PITCH_MAX_MILLI_DEGREES,
+    ),
+  };
 }
 
 const EMPTY_LOOK_INPUT: AuthorityLookInputState = Object.freeze({

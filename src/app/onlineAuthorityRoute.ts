@@ -80,6 +80,7 @@ import {
   type OnlineAuthorityThreeDiagnostics,
   type OnlineAuthorityThreeRuntime,
 } from './onlineAuthorityThreeRuntime';
+import { cameraSettingsFromPreferences, pointerLookDelta } from './movement/firstPersonView';
 import {
   ONLINE_CROWNPOINT_REV1_COMBAT_PROFILE_ID,
   ONLINE_INKFALL_REV2_COMBAT_PROFILE_ID,
@@ -1458,6 +1459,7 @@ async function mountSession(
   );
 
   const settings = GameSettings.snapshot();
+  const cameraSettings = cameraSettingsFromPreferences(settings);
   const portalAudio = threeDimensionalMap ? new AudioManager() : null;
   const portalCaptionCues = threeDimensionalMap
     ? new CaptionCueOverlay({
@@ -1506,6 +1508,7 @@ async function mountSession(
     body.dataset.online3dStatus = 'loading';
     try {
       threeRuntime = await createOnlineAuthorityThreeRuntime(canvas, {
+        cameraSettings,
         reducedEffects: settings.reducedEffects,
         mapBinding: mapProof.mapBinding,
         ...(relayRuntime || originalArenaRuntime
@@ -2328,10 +2331,8 @@ async function mountSession(
       || local.predictedYawMilliDegrees === null
       || local.predictedPitchMilliDegrees === null
     ) return false;
-    const look = {
-      yawMilliDegrees: local.predictedYawMilliDegrees,
-      pitchMilliDegrees: local.predictedPitchMilliDegrees,
-    };
+    const look = client.viewLook();
+    if (look === null) return false;
     return isOnlineBlinkPreviewCommitEligible(resolveOnlineBlinkPreview({
       active: true,
       feetPosition: local.predictedPosition,
@@ -2498,9 +2499,8 @@ async function mountSession(
       || !threeDimensionalMap
       || document.pointerLockElement !== canvas
     ) return;
-    const yaw = Math.max(-12_000, Math.min(12_000, Math.round(event.movementX * 110)));
-    const pitch = Math.max(-12_000, Math.min(12_000, Math.round(-event.movementY * 110)));
-    client.addLookDeltas(yaw, pitch);
+    const look = pointerLookDelta(event.movementX, event.movementY, cameraSettings, aimHeld);
+    client.addLookDeltas(look.yawMilliDegrees, look.pitchMilliDegrees);
     canvas.dataset.pointerLock = 'active';
     renderRequested = true;
   };
@@ -2955,8 +2955,9 @@ async function mountSession(
         previousMovementGrounded = grounded;
         previousMovementVerticalSpeed = velocity?.y ?? 0;
         const predictedPosition = diagnostics.local.predictedPosition;
-        const predictedYaw = diagnostics.local.predictedYawMilliDegrees;
-        const predictedPitch = diagnostics.local.predictedPitchMilliDegrees;
+        const viewLook = client.viewLook();
+        const predictedYaw = viewLook?.yawMilliDegrees ?? null;
+        const predictedPitch = viewLook?.pitchMilliDegrees ?? null;
         latestBlinkPreview = predictedPosition === null
           || predictedYaw === null
           || predictedPitch === null
@@ -2975,8 +2976,9 @@ async function mountSession(
           presentation,
           combat: combatView,
           matchMode,
-          localYawMilliDegrees: diagnostics.local.predictedYawMilliDegrees,
-          localPitchMilliDegrees: diagnostics.local.predictedPitchMilliDegrees,
+          localYawMilliDegrees: predictedYaw,
+          localPitchMilliDegrees: predictedPitch,
+          localStance: diagnostics.local.predictedStance ?? 'standing',
           localSpeedMillimetersPerSecond: horizontalSpeed,
           aimHeld,
           blinkPreview: latestBlinkPreview,

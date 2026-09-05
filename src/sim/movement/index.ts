@@ -1,6 +1,7 @@
 export * from './canonical';
 export * from './controller';
 export * from './events';
+export * from './eye';
 export * from './fixedMath';
 export * from './profile';
 export * from './profileIdentity';

@@ -724,6 +724,14 @@ describe('authority evidence transport state', () => {
     );
     expect(client.setInputButtons(movementAndCombatButtons)).toBe(true);
     expect(client.setLookDeltas(1_500)).toBe(true);
+    const beforePointer = client.diagnostics().local;
+    expect(client.addLookDeltas(440, -220)).toBe(true);
+    expect(client.viewLook()).toEqual({
+      yawMilliDegrees: (beforePointer.predictedYawMilliDegrees ?? 0) + 440,
+      pitchMilliDegrees: (beforePointer.predictedPitchMilliDegrees ?? 0) - 220,
+    });
+    expect(client.diagnostics().local.predictedYawMilliDegrees)
+      .toBe(beforePointer.predictedYawMilliDegrees);
     scheduler.runTick();
     expect(sentMessage(connection, connection.sent.length - 1)).toMatchObject({
       type: 'inputBatch',
@@ -732,9 +740,13 @@ describe('authority evidence transport state', () => {
         pressedButtons: movementAndCombatButtons,
         releasedButtons: 0,
         selectedSlot: 0,
-        lookYawDeltaMilliDegrees: 1_500,
-        lookPitchDeltaMilliDegrees: 0,
+        lookYawDeltaMilliDegrees: 1_940,
+        lookPitchDeltaMilliDegrees: -220,
       }],
+    });
+    expect(client.viewLook()).toEqual({
+      yawMilliDegrees: client.diagnostics().local.predictedYawMilliDegrees,
+      pitchMilliDegrees: client.diagnostics().local.predictedPitchMilliDegrees,
     });
     client.setInputButtons(INTENT_BUTTON.primaryFire);
     scheduler.runTick();

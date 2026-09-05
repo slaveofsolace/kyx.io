@@ -632,6 +632,7 @@ export class MenuUI {
   _buildSettings() {
     const ranges = [
       ['set-sens', 'set-sens-val', (value) => `${(value / 100).toFixed(2)}×`],
+      ['set-ads-sens', 'set-ads-sens-val', (value) => `${(value / 100).toFixed(2)}×`],
       ['set-fov', 'set-fov-val', (value) => `${value}°`],
       ['set-vol', 'set-vol-val', (value) => `${value}%`],
       ['set-hud-scale', 'set-hud-scale-val', (value) => `${value}%`],
@@ -654,6 +655,7 @@ export class MenuUI {
     document.getElementById('settings-save-btn')?.addEventListener('click', () => {
       const settings = {
         sensitivity: Number(document.getElementById('set-sens')?.value ?? 100) / 100,
+        adsSensitivity: Number(document.getElementById('set-ads-sens')?.value ?? 100) / 100,
         fov: Number(document.getElementById('set-fov')?.value ?? 78),
         volume: Number(document.getElementById('set-vol')?.value ?? 50) / 100,
         quality: getChoiceValue('quality-btns', 'q', 'medium'),
@@ -684,17 +686,19 @@ export class MenuUI {
   _loadSettings() {
     GameSettings.load();
     const sensitivity = document.getElementById('set-sens');
+    const adsSensitivity = document.getElementById('set-ads-sens');
     const fov = document.getElementById('set-fov');
     const volume = document.getElementById('set-vol');
     const hudScale = document.getElementById('set-hud-scale');
     const crosshairScale = document.getElementById('set-crosshair-scale');
     const settings = GameSettings.snapshot();
     if (sensitivity) sensitivity.value = Math.round(settings.sensitivity * 100);
+    if (adsSensitivity) adsSensitivity.value = Math.round(settings.adsSensitivity * 100);
     if (fov) fov.value = settings.fov;
     if (volume) volume.value = Math.round(settings.volume * 100);
     if (hudScale) hudScale.value = Math.round(settings.hudScale * 100);
     if (crosshairScale) crosshairScale.value = Math.round(settings.crosshairScale * 100);
-    for (const input of [sensitivity, fov, volume, hudScale, crosshairScale]) {
+    for (const input of [sensitivity, adsSensitivity, fov, volume, hudScale, crosshairScale]) {
       input?.dispatchEvent(new Event('input'));
     }
     setChoiceGroup('quality-btns', 'q', settings.quality);

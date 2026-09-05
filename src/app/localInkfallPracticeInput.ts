@@ -1,6 +1,8 @@
 import type { LocalInkfallPracticeInput } from '../authority';
 import { INTENT_BUTTON } from '../sim';
 import { axesFromPressedKeys } from '../dev/authorityEvidenceModel';
+import { DEFAULT_CAMERA_PRESENTATION_SETTINGS, type CameraPresentationSettingsV1 } from './movement/cameraSettings';
+import { pointerLookDelta } from './movement/firstPersonView';
 import {
   isOnlineAuthorityInputCode,
   onlineAuthorityInputButtonsFromPressedKeys,
@@ -9,10 +11,10 @@ import {
 
 // InputCommand is a wire-safe intent even for the browser-local host.
 const MAX_LOOK_DELTA_MILLI_DEGREES = 32_767;
-const MOUSE_MILLI_DEGREES_PER_PIXEL = 110;
 const ALL_AUTHORITY_WEAPON_SLOTS = Object.freeze([0, 1, 2, 3, 4, 5]);
 
 export interface LocalInkfallPracticeInputBufferOptions {
+  readonly cameraSettings?: CameraPresentationSettingsV1;
   readonly initialSelectedSlot?: number;
   readonly allowedSelectedSlots?: readonly number[];
 }
@@ -33,6 +35,7 @@ function clamp(value: number, minimum: number, maximum: number): number {
  * Press/release edges and mouse deltas therefore survive frames with no tick.
  */
 export class LocalInkfallPracticeInputBuffer {
+  private readonly cameraSettings: CameraPresentationSettingsV1;
   private readonly allowedSelectedSlots: ReadonlySet<number>;
   private readonly keys = new Set<string>();
   private pointerPrimaryHeld = false;
@@ -46,6 +49,7 @@ export class LocalInkfallPracticeInputBuffer {
   private selectedSlot: number;
 
   constructor(options: LocalInkfallPracticeInputBufferOptions = {}) {
+    this.cameraSettings = options.cameraSettings ?? DEFAULT_CAMERA_PRESENTATION_SETTINGS;
     const initialSelectedSlot = authorityWeaponSlot(
       options.initialSelectedSlot ?? 0,
       'initial selected weapon slot',
@@ -128,13 +132,14 @@ export class LocalInkfallPracticeInputBuffer {
 
   addPointerLook(movementX: number, movementY: number): void {
     if (!Number.isFinite(movementX) || !Number.isFinite(movementY)) return;
+    const delta = pointerLookDelta(movementX, movementY, this.cameraSettings, this.aimHeld);
     this.pendingYawMilliDegrees = clamp(
-      this.pendingYawMilliDegrees + Math.round(movementX * MOUSE_MILLI_DEGREES_PER_PIXEL),
+      this.pendingYawMilliDegrees + delta.yawMilliDegrees,
       -MAX_LOOK_DELTA_MILLI_DEGREES,
       MAX_LOOK_DELTA_MILLI_DEGREES,
     );
     this.pendingPitchMilliDegrees = clamp(
-      this.pendingPitchMilliDegrees + Math.round(-movementY * MOUSE_MILLI_DEGREES_PER_PIXEL),
+      this.pendingPitchMilliDegrees + delta.pitchMilliDegrees,
       -MAX_LOOK_DELTA_MILLI_DEGREES,
       MAX_LOOK_DELTA_MILLI_DEGREES,
     );

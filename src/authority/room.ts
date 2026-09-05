@@ -22,6 +22,7 @@ import {
   createMovementSimulationState,
   hashMovementProfile,
   INTENT_BUTTON,
+  movementEyeHeightMillimeters,
   stepMovementSimulation,
   type MovementProfileV1,
   type MovementQueryMetrics,
@@ -631,10 +632,7 @@ function authorityAimOffsets(
   state: MovementSimulationState,
   profile: MovementProfileV1,
 ) {
-  const shape = state.player.stance === 'crouched'
-    ? profile.crouchedShape
-    : profile.standingShape;
-  const eyeHeight = Math.max(shape.radius, shape.height - 100);
+  const eyeHeight = movementEyeHeightMillimeters(profile, state.player.stance);
   return {
     eyeOffsetMillimeters: { x: 0, y: eyeHeight, z: 0 },
     muzzleOffsetMillimeters: { x: 0, y: eyeHeight, z: 200 },

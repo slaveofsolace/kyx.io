@@ -58,6 +58,7 @@ import {
   consumeAuthorityLookImpulse,
   createAuthorityLookInputState,
   neutralizeAuthorityLookInput,
+  projectAuthorityLook,
   sampleAuthorityLookDelta,
   setAuthorityContinuousLook,
   type AuthorityLookInputState,
@@ -608,6 +609,15 @@ export class AuthorityEvidenceClient {
     );
     this.emitChange();
     return true;
+  }
+
+  viewLook(): Readonly<{ yawMilliDegrees: number; pitchMilliDegrees: number }> | null {
+    if (this.prediction === null) return null;
+    return projectAuthorityLook(
+      this.prediction.predictedState.player,
+      this.lookInput.pendingYawMilliDegrees,
+      this.lookInput.pendingPitchMilliDegrees,
+    );
   }
 
   setSelectedWeaponSlot(slot: number): boolean {

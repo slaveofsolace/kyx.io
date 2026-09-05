@@ -2,6 +2,7 @@ const STORAGE_KEY = 'sio_settings';
 
 export const DEFAULTS = Object.freeze({
   sensitivity: 1.0,       // mouse-look scale multiplier
+  adsSensitivity: 1.0,    // mouse-look multiplier while aiming
   volume: 0.5,            // master audio gain 0-1
   fov: 78,                // player camera field-of-view in degrees
   quality: 'medium',      // 'low' | 'medium' | 'high'
@@ -19,6 +20,7 @@ export const DEFAULTS = Object.freeze({
 
 const NUMBER_LIMITS = Object.freeze({
   sensitivity: Object.freeze([0.3, 3]),
+  adsSensitivity: Object.freeze([0.1, 1.5]),
   volume: Object.freeze([0, 1]),
   fov: Object.freeze([60, 110]),
   hudScale: Object.freeze([0.8, 1.4]),

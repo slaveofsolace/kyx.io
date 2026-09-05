@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "tool": "Blender 5.1.2",
+  "source": "assets\\source\\maps\\relay-reset",
+  "externalInputs": [],
+  "candidates": [
+    {
+      "treatment": "communications-deck",
+      "fixtureHash": "95ec4f13a599892b",
+      "authorityColliderCount": 56,
+      "sourceObjectCount": 450,
+      "runtimeMeshCount": 7,
+      "triangles": 14712,
+      "materialCount": 7,
+      "textureCount": 0,
+      "fileBytes": 770840,
+      "sha256": "7587e5bc8b7c620eed538a9c5f0750542bba8be70461a6fe96d7a8cdfdea36b6",
+      "blendSha256": "6b677cdd5ecd824347758aab10e2ac3c48dec87f3be95b8afeee7207f8d37331",
+      "stage": "isolated-candidate",
+      "humanAccepted": false,
+      "releaseEligible": false,
+      "runtimeProof": "pending"
+    },
+    {
+      "treatment": "ceramic-campus",
+      "fixtureHash": "95ec4f13a599892b",
+      "authorityColliderCount": 56,
+      "sourceObjectCount": 429,
+      "runtimeMeshCount": 7,
+      "triangles": 14476,
+      "materialCount": 7,
+      "textureCount": 0,
+      "fileBytes": 757804,
+      "sha256": "a50651d32bd535106187ec3c9c0029d2274047ec55d0b2f468c50590dbc29884",
+      "blendSha256": "93ff7635e039a7258791ae41e832bb62c3fc7b20ab64b3756a38d2334d09d945",
+      "stage": "isolated-candidate",
+      "humanAccepted": false,
+      "releaseEligible": false,
+      "runtimeProof": "pending"
+    },
+    {
+      "treatment": "transmitter-workshop",
+      "fixtureHash": "95ec4f13a599892b",
+      "authorityColliderCount": 56,
+      "sourceObjectCount": 465,
+      "runtimeMeshCount": 7,
+      "triangles": 15116,
+      "materialCount": 7,
+      "textureCount": 0,
+      "fileBytes": 795728,
+      "sha256": "395fb3cc265b1d95b3dc69f9d30a13c31dcfd556c7c206326e83a5fc28f171aa",
+      "blendSha256": "82ce6aef98db6298435ac25429e2a124ddbf5140e4d40ad6597347072aa15ff9",
+      "stage": "isolated-candidate",
+      "humanAccepted": false,
+      "releaseEligible": false,
+      "runtimeProof": "pending"
+    }
+  ]
+}

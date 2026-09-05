@@ -1,0 +1,1849 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "373e9de6bff25e5ceae1c0af15839654273af6e1",
+  "sourceSha256": "8bf51980244931e77fa5d839247ab95b60aa7bdcaf5314b20d8da99090f25150",
+  "fixtureHash": "95ec4f13a599892b",
+  "fixture": {
+    "schemaVersion": 1,
+    "id": "relay_map_collision",
+    "revision": 1,
+    "millimetersPerRapierUnit": 1000,
+    "spawn": {
+      "feetPositionMm": {
+        "x": -28000,
+        "y": 0,
+        "z": 0
+      },
+      "yawMilliDegrees": 90000
+    },
+    "solids": [
+      {
+        "id": "relay_boundary_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 34000,
+          "y": 750,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 500,
+            "y": 1250,
+            "z": 24000
+          }
+        }
+      },
+      {
+        "id": "relay_boundary_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 1500,
+          "z": 24000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 34000,
+            "y": 2000,
+            "z": 500
+          }
+        }
+      },
+      {
+        "id": "relay_boundary_south",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 750,
+          "z": -24000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 34000,
+            "y": 1250,
+            "z": 500
+          }
+        }
+      },
+      {
+        "id": "relay_boundary_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -34000,
+          "y": 750,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 500,
+            "y": 1250,
+            "z": 24000
+          }
+        }
+      },
+      {
+        "id": "relay_bridge_support_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 5600,
+          "y": 1750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 420,
+            "y": 1750,
+            "z": 420
+          }
+        }
+      },
+      {
+        "id": "relay_bridge_support_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -5600,
+          "y": 1750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 420,
+            "y": 1750,
+            "z": 420
+          }
+        }
+      },
+      {
+        "id": "relay_bridge_upper_center",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 3750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 7000,
+            "y": 180,
+            "z": 1850
+          }
+        }
+      },
+      {
+        "id": "relay_bridge_upper_north_link",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 3750,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 2600,
+            "y": 180,
+            "z": 3150
+          }
+        }
+      },
+      {
+        "id": "relay_floor_central_court",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": -250,
+          "z": 750
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 13000,
+            "y": 250,
+            "z": 9250
+          }
+        }
+      },
+      {
+        "id": "relay_floor_east_connector",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 18000,
+          "y": -250,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 250,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_east_lower_link",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 27000,
+          "y": -1750,
+          "z": -11000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 4000,
+            "y": 250,
+            "z": 3000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_east_north_link",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 28000,
+          "y": -250,
+          "z": 9500
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 250,
+            "z": 2500
+          }
+        }
+      },
+      {
+        "id": "relay_floor_lower_center",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": -3250,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 8000,
+            "y": 250,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_lower_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 16000,
+          "y": -3250,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 8000,
+            "y": 250,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_lower_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -16000,
+          "y": -3250,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 8000,
+            "y": 250,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_north_center",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": -250,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 10000,
+            "y": 250,
+            "z": 5000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_north_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 20000,
+          "y": -250,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 10000,
+            "y": 250,
+            "z": 5000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_north_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -20000,
+          "y": -250,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 10000,
+            "y": 250,
+            "z": 5000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_upper_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 10500,
+          "y": 3750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3500,
+            "y": 180,
+            "z": 3500
+          }
+        }
+      },
+      {
+        "id": "relay_floor_upper_overlook",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 3750,
+          "z": 20000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 180,
+            "z": 1850
+          }
+        }
+      },
+      {
+        "id": "relay_floor_upper_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -10500,
+          "y": 3750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3500,
+            "y": 180,
+            "z": 3500
+          }
+        }
+      },
+      {
+        "id": "relay_floor_west_connector",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -18000,
+          "y": -250,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 250,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_west_lower_link",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -27000,
+          "y": -1750,
+          "z": -11000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 4000,
+            "y": 250,
+            "z": 3000
+          }
+        }
+      },
+      {
+        "id": "relay_floor_west_north_link",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -28000,
+          "y": -250,
+          "z": 9500
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 250,
+            "z": 2500
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_overlook_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 4300,
+          "z": 21950
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_center_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 4300,
+          "z": 11950
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 7000,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_center_south",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": 4300,
+          "z": 8050
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 7000,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_east_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 10500,
+          "y": 4300,
+          "z": 13550
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3500,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_east_south",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 10500,
+          "y": 4300,
+          "z": 6450
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3500,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_link_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 2650,
+          "y": 4300,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 120,
+            "y": 550,
+            "z": 3150
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_link_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -2650,
+          "y": 4300,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 120,
+            "y": 550,
+            "z": 3150
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_west_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -10500,
+          "y": 4300,
+          "z": 13550
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3500,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_guard_rail_upper_west_south",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -10500,
+          "y": 4300,
+          "z": 6450
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3500,
+            "y": 550,
+            "z": 120
+          }
+        }
+      },
+      {
+        "id": "relay_module_full_cover_court_northeast",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 5800,
+          "y": 1200,
+          "z": 5800
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 900,
+            "y": 1200,
+            "z": 650
+          }
+        }
+      },
+      {
+        "id": "relay_module_full_cover_court_southwest",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -5800,
+          "y": 1200,
+          "z": -5800
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 900,
+            "y": 1200,
+            "z": 650
+          }
+        }
+      },
+      {
+        "id": "relay_module_full_cover_lower_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 10000,
+          "y": -1800,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 900,
+            "y": 1200,
+            "z": 650
+          }
+        }
+      },
+      {
+        "id": "relay_module_full_cover_lower_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -10000,
+          "y": -1800,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 900,
+            "y": 1200,
+            "z": 650
+          }
+        }
+      },
+      {
+        "id": "relay_module_half_cover_court_northwest",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -5500,
+          "y": 650,
+          "z": 5200
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 22500,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 1400,
+            "y": 650,
+            "z": 450
+          }
+        }
+      },
+      {
+        "id": "relay_module_half_cover_court_southeast",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 5500,
+          "y": 650,
+          "z": -5200
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 22500,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 1400,
+            "y": 650,
+            "z": 450
+          }
+        }
+      },
+      {
+        "id": "relay_module_half_cover_north_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 14000,
+          "y": 650,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 1600,
+            "y": 650,
+            "z": 500
+          }
+        }
+      },
+      {
+        "id": "relay_module_half_cover_north_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -14000,
+          "y": 650,
+          "z": 15000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 1600,
+            "y": 650,
+            "z": 500
+          }
+        }
+      },
+      {
+        "id": "relay_ramp_east_upper",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 14100,
+          "y": 1750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": -24000
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 4900,
+            "y": 160,
+            "z": 2100
+          }
+        }
+      },
+      {
+        "id": "relay_ramp_west_upper",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -14100,
+          "y": 1750,
+          "z": 10000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 24000
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 4900,
+            "y": 160,
+            "z": 2100
+          }
+        }
+      },
+      {
+        "id": "relay_spawn_pad_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 28000,
+          "y": -250,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 250,
+            "z": 7000
+          }
+        }
+      },
+      {
+        "id": "relay_spawn_pad_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -28000,
+          "y": -250,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 5000,
+            "y": 250,
+            "z": 7000
+          }
+        }
+      },
+      {
+        "id": "relay_step_east_lower",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 24000,
+          "y": -875,
+          "z": -8500
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3000,
+            "y": 875,
+            "z": 1500
+          }
+        }
+      },
+      {
+        "id": "relay_step_lower_one",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": -625,
+          "z": -9250
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 6000,
+            "y": 625,
+            "z": 750
+          }
+        }
+      },
+      {
+        "id": "relay_step_lower_three",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": -1875,
+          "z": -12250
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 6000,
+            "y": 1875,
+            "z": 750
+          }
+        }
+      },
+      {
+        "id": "relay_step_lower_two",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 0,
+          "y": -1250,
+          "z": -10750
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 6000,
+            "y": 1250,
+            "z": 750
+          }
+        }
+      },
+      {
+        "id": "relay_step_west_lower",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -24000,
+          "y": -875,
+          "z": -8500
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3000,
+            "y": 875,
+            "z": 1500
+          }
+        }
+      },
+      {
+        "id": "relay_wall_east_spawn_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 25000,
+          "y": 1050,
+          "z": 7600
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3000,
+            "y": 1050,
+            "z": 240
+          }
+        }
+      },
+      {
+        "id": "relay_wall_east_spawn_south",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 25000,
+          "y": 1050,
+          "z": -7600
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3000,
+            "y": 1050,
+            "z": 240
+          }
+        }
+      },
+      {
+        "id": "relay_wall_lower_east",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": 24000,
+          "y": -1100,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 300,
+            "y": 1900,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_wall_lower_west",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -24000,
+          "y": -1100,
+          "z": -17000
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 300,
+            "y": 1900,
+            "z": 4000
+          }
+        }
+      },
+      {
+        "id": "relay_wall_west_spawn_north",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -25000,
+          "y": 1050,
+          "z": 7600
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3000,
+            "y": 1050,
+            "z": 240
+          }
+        }
+      },
+      {
+        "id": "relay_wall_west_spawn_south",
+        "layer": "world_static",
+        "body": "fixed",
+        "centerMm": {
+          "x": -25000,
+          "y": 1050,
+          "z": -7600
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "velocityMmPerSecond": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 3000,
+            "y": 1050,
+            "z": 240
+          }
+        }
+      }
+    ],
+    "volumes": [
+      {
+        "id": "relay_kill_below_recovery",
+        "kind": "kill",
+        "layer": "kill_volume",
+        "centerMm": {
+          "x": 0,
+          "y": -13000,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 52000,
+            "y": 5000,
+            "z": 42000
+          }
+        }
+      },
+      {
+        "id": "relay_recovery_below_arena",
+        "kind": "recovery",
+        "layer": "recovery_volume",
+        "centerMm": {
+          "x": 0,
+          "y": -6000,
+          "z": 0
+        },
+        "rotationMilliDegrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "shape": {
+          "type": "box",
+          "halfExtentsMm": {
+            "x": 48000,
+            "y": 2000,
+            "z": 38000
+          }
+        }
+      }
+    ]
+  },
+  "spawns": [
+    {
+      "spawnId": "relay_spawn_west_a",
+      "feetPosition": {
+        "x": -29000,
+        "y": 0,
+        "z": 0
+      },
+      "yawMilliDegrees": 90000
+    },
+    {
+      "spawnId": "relay_spawn_east_a",
+      "feetPosition": {
+        "x": 29000,
+        "y": 0,
+        "z": 0
+      },
+      "yawMilliDegrees": 270000
+    },
+    {
+      "spawnId": "relay_spawn_west_b",
+      "feetPosition": {
+        "x": -28000,
+        "y": 0,
+        "z": 4500
+      },
+      "yawMilliDegrees": 90000
+    },
+    {
+      "spawnId": "relay_spawn_east_b",
+      "feetPosition": {
+        "x": 28000,
+        "y": 0,
+        "z": -4500
+      },
+      "yawMilliDegrees": 270000
+    },
+    {
+      "spawnId": "relay_spawn_north_west",
+      "feetPosition": {
+        "x": -20000,
+        "y": 0,
+        "z": 15000
+      },
+      "yawMilliDegrees": 90000
+    },
+    {
+      "spawnId": "relay_spawn_north_east",
+      "feetPosition": {
+        "x": 20000,
+        "y": 0,
+        "z": 15000
+      },
+      "yawMilliDegrees": 270000
+    },
+    {
+      "spawnId": "relay_spawn_lower_west",
+      "feetPosition": {
+        "x": -16000,
+        "y": -3000,
+        "z": -17000
+      },
+      "yawMilliDegrees": 90000
+    },
+    {
+      "spawnId": "relay_spawn_lower_east",
+      "feetPosition": {
+        "x": 16000,
+        "y": -3000,
+        "z": -17000
+      },
+      "yawMilliDegrees": 270000
+    }
+  ],
+  "zones": [
+    {
+      "zoneId": "relay_west_spawn",
+      "callout": "West Bay",
+      "family": "spawn",
+      "center": {
+        "x": -28000,
+        "y": 1500,
+        "z": 0
+      },
+      "halfExtents": {
+        "x": 6500,
+        "y": 3000,
+        "z": 8500
+      }
+    },
+    {
+      "zoneId": "relay_east_spawn",
+      "callout": "East Bay",
+      "family": "spawn",
+      "center": {
+        "x": 28000,
+        "y": 1500,
+        "z": 0
+      },
+      "halfExtents": {
+        "x": 6500,
+        "y": 3000,
+        "z": 8500
+      }
+    },
+    {
+      "zoneId": "relay_central_court",
+      "callout": "Signal Court",
+      "family": "main",
+      "center": {
+        "x": 0,
+        "y": 1500,
+        "z": 750
+      },
+      "halfExtents": {
+        "x": 13000,
+        "y": 3000,
+        "z": 9250
+      }
+    },
+    {
+      "zoneId": "relay_north_flank",
+      "callout": "North Gallery",
+      "family": "flank",
+      "center": {
+        "x": 0,
+        "y": 1500,
+        "z": 15000
+      },
+      "halfExtents": {
+        "x": 30000,
+        "y": 3000,
+        "z": 5000
+      }
+    },
+    {
+      "zoneId": "relay_upper_bridge",
+      "callout": "Relay Bridge",
+      "family": "upper",
+      "center": {
+        "x": 0,
+        "y": 4250,
+        "z": 11000
+      },
+      "halfExtents": {
+        "x": 15000,
+        "y": 2250,
+        "z": 5000
+      }
+    },
+    {
+      "zoneId": "relay_upper_overlook",
+      "callout": "Array Overlook",
+      "family": "upper",
+      "center": {
+        "x": 0,
+        "y": 4250,
+        "z": 19000
+      },
+      "halfExtents": {
+        "x": 5500,
+        "y": 2250,
+        "z": 4000
+      }
+    },
+    {
+      "zoneId": "relay_lower_descent",
+      "callout": "Service Descent",
+      "family": "lower",
+      "center": {
+        "x": 0,
+        "y": -1250,
+        "z": -11000
+      },
+      "halfExtents": {
+        "x": 31000,
+        "y": 3000,
+        "z": 3500
+      }
+    },
+    {
+      "zoneId": "relay_lower_service",
+      "callout": "Lower Relay",
+      "family": "lower",
+      "center": {
+        "x": 0,
+        "y": -1750,
+        "z": -17000
+      },
+      "halfExtents": {
+        "x": 24000,
+        "y": 3000,
+        "z": 4500
+      }
+    }
+  ],
+  "comparison": {
+    "authorityFeetMm": [
+      -29000,
+      0,
+      0
+    ],
+    "yawMilliDegrees": 90000,
+    "pitchMilliDegrees": 0,
+    "eyeHeightMeters": 1.7,
+    "verticalFovDegrees": 78,
+    "viewport": [
+      1707,
+      863
+    ]
+  }
+}

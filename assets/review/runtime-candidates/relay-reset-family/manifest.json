@@ -1,0 +1,261 @@
+{
+  "schema": "kyx-relay-family-review-v1",
+  "blender": "5.1.2",
+  "humanAccepted": false,
+  "releaseEligible": false,
+  "sourceDisposition": "ADAPT",
+  "treatments": {
+    "deck": {
+      "lods": [
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/deck-character-lod0.glb",
+          "bytes": 1268996,
+          "sha256": "8d1bc5123a579affd252f7b6e1ec6d75f88355135cc698b554bc138ac42de8a4",
+          "triangles": 12954,
+          "primitives": 14,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        },
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/deck-character-lod1.glb",
+          "bytes": 1247072,
+          "sha256": "65427006938f8303a9cc70a5dde31b9a72c65d5714160c5e2e1fdba6ceb7fb10",
+          "triangles": 12378,
+          "primitives": 14,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        },
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/deck-character-lod2.glb",
+          "bytes": 1228308,
+          "sha256": "272304bcae015dcf6066d93c09a20e477b687ca7af4b291e8f39f69b5eb00753",
+          "triangles": 11943,
+          "primitives": 14,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        }
+      ],
+      "rigidGloveVertices": 6578,
+      "rifle": {
+        "path": "assets/review/runtime-candidates/relay-reset-family/deck-rifle.glb",
+        "bytes": 203888,
+        "sha256": "d890e55158c44186af68abe1fcf91cedcd616cc17e0f76f6a43f70fe0c4e62ac",
+        "triangles": 3608,
+        "primitives": 34,
+        "bones": 0,
+        "animations": [],
+        "images": 0
+      }
+    },
+    "campus": {
+      "lods": [
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/campus-character-lod0.glb",
+          "bytes": 1247364,
+          "sha256": "9b892ba485bf51594c3b3e32a839d1f3167b76aa1a14c85a50d990b7c35b8595",
+          "triangles": 12726,
+          "primitives": 12,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        },
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/campus-character-lod1.glb",
+          "bytes": 1225440,
+          "sha256": "059899ed31b77df58dba8af052afaa076a4bd82b9d3fce19f89575120fab1e28",
+          "triangles": 12150,
+          "primitives": 12,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        },
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/campus-character-lod2.glb",
+          "bytes": 1206684,
+          "sha256": "1b036019550126ec1aa931be7fce43da46492b8eeb8d9edcccc2b1de5555e8ce",
+          "triangles": 11715,
+          "primitives": 12,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        }
+      ],
+      "rigidGloveVertices": 6578,
+      "rifle": {
+        "path": "assets/review/runtime-candidates/relay-reset-family/campus-rifle.glb",
+        "bytes": 180196,
+        "sha256": "f94a62fcef85dade9d320fbde5d00a30a77e78c1aad22e1cdb7d65a170ef3c0a",
+        "triangles": 3232,
+        "primitives": 32,
+        "bones": 0,
+        "animations": [],
+        "images": 0
+      }
+    },
+    "workshop": {
+      "lods": [
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/workshop-character-lod0.glb",
+          "bytes": 1243772,
+          "sha256": "442120b492873cd79480c381f354a038cd93097ac9789a8d230cfe3be524b97a",
+          "triangles": 12686,
+          "primitives": 12,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        },
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/workshop-character-lod1.glb",
+          "bytes": 1221856,
+          "sha256": "3c2b32cf6cde68b0891bfe7c28c7902d308856e802d9db8226edbd787f0aa741",
+          "triangles": 12110,
+          "primitives": 12,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        },
+        {
+          "path": "assets/review/runtime-candidates/relay-reset-family/workshop-character-lod2.glb",
+          "bytes": 1203100,
+          "sha256": "5e478fac0c81a6214da7adf947a9f2d632c23a55e271f484829cece73562d746",
+          "triangles": 11675,
+          "primitives": 12,
+          "bones": 66,
+          "animations": [
+            "KYX_REV17_TP_AIRBORNE_LOOP",
+            "KYX_REV17_TP_DEATH_FRONT",
+            "KYX_REV17_TP_HIT_REACTION_FRONT",
+            "KYX_REV17_TP_IDLE",
+            "KYX_REV17_TP_JUMP_START",
+            "KYX_REV17_TP_LAND",
+            "KYX_REV17_TP_PRIMARY_FIRE",
+            "KYX_REV17_TP_RELOAD",
+            "KYX_REV17_TP_RUN",
+            "KYX_REV17_TP_WALK",
+            "KYX_REV40_TP_ABILITY_THROW",
+            "KYX_REV40_TP_MELEE"
+          ],
+          "images": 0
+        }
+      ],
+      "rigidGloveVertices": 6578,
+      "rifle": {
+        "path": "assets/review/runtime-candidates/relay-reset-family/workshop-rifle.glb",
+        "bytes": 178568,
+        "sha256": "15ed728070b4e4054ea26cb90bf45792278a73db933c161ccbd695db82273336",
+        "triangles": 3200,
+        "primitives": 32,
+        "bones": 0,
+        "animations": [],
+        "images": 0
+      }
+    }
+  }
+}

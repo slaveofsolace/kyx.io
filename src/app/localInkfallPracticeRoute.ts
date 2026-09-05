@@ -42,6 +42,7 @@ import {
   type LocalPracticeModeCopy,
 } from './localPracticeEntryGate';
 import { LocalInkfallPracticeInputBuffer } from './localInkfallPracticeInput';
+import { cameraSettingsFromPreferences } from './movement/firstPersonView';
 import { createLocalInkfallPracticePresentation } from './localInkfallPracticePresentation';
 import {
   createAuthorityPracticeMatchResultViewModel,
@@ -354,7 +355,10 @@ export async function mountLocalInkfallPracticeRoute(
   const hud = new HUD();
   hud.hide();
   hud.showPracticeStatus(true, 7, modeCopy.modeLabel);
+  const settings = GameSettings.snapshot();
+  const cameraSettings = cameraSettingsFromPreferences(settings);
   const input = new LocalInkfallPracticeInputBuffer({
+    cameraSettings,
     initialSelectedSlot: initialWeaponSlot,
     allowedSelectedSlots: allowedWeaponSlots,
   });
@@ -367,7 +371,6 @@ export async function mountLocalInkfallPracticeRoute(
   body.dataset.combatPresetId = combatPreset.id;
   body.dataset.helmetVariantId = combatPreset.helmetVariantId;
   const gameplayAudio = new AudioManager();
-  const settings = GameSettings.snapshot();
   gameplayAudio.setVolume(settings.volume);
   const captionRegion = document.getElementById('caption-region');
   const audioCueRegion = document.getElementById('audio-cue-region');
@@ -379,6 +382,8 @@ export async function mountLocalInkfallPracticeRoute(
   let renderer: OnlineAuthorityThreeRuntime;
   try {
     renderer = await createOnlineAuthorityThreeRuntime(canvas, {
+      cameraSettings,
+      reducedEffects: settings.reducedEffects,
       presentationFixture: RELAY_AUTHORITY_FIXTURE,
       presentationIdentity: {
         mapReference: RELAY_AUTHORITY_MAP_BINDING.mapReference,
@@ -685,8 +690,10 @@ export async function mountLocalInkfallPracticeRoute(
       presentation: projection.presentation,
       combat: projection.combat,
       matchMode,
-      localYawMilliDegrees: projection.localMovement.yawMilliDegrees,
-      localPitchMilliDegrees: projection.localMovement.pitchMilliDegrees,
+      localYawMilliDegrees: previewLook?.yawMilliDegrees ?? projection.localMovement.yawMilliDegrees,
+      localPitchMilliDegrees: previewLook?.pitchMilliDegrees ?? projection.localMovement.pitchMilliDegrees,
+      localStance: authoritativeLocal?.stance ?? 'standing',
+      localPositionInterpolated: true,
       localSpeedMillimetersPerSecond: Math.hypot(
         projection.localMovement.velocity.x,
         projection.localMovement.velocity.z,

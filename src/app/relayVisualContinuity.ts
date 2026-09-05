@@ -262,13 +262,18 @@ function surfaceRole(solid: FixtureSolidV1): ColliderSurfaceRole {
 }
 
 function solidQuaternion(solid: FixtureSolidV1): THREE.Quaternion {
+  // Authority Euler rotations use ZYX composition. Reflecting authority +Z
+  // into Three -Z negates the quaternion's X/Y components, not its Z roll.
   SCENE_ROTATION.set(
     solid.rotationMilliDegrees.x * Math.PI / 180_000,
-    -solid.rotationMilliDegrees.y * Math.PI / 180_000,
-    -solid.rotationMilliDegrees.z * Math.PI / 180_000,
-    'YXZ',
+    solid.rotationMilliDegrees.y * Math.PI / 180_000,
+    solid.rotationMilliDegrees.z * Math.PI / 180_000,
+    'ZYX',
   );
-  return SCENE_QUATERNION.setFromEuler(SCENE_ROTATION);
+  SCENE_QUATERNION.setFromEuler(SCENE_ROTATION);
+  SCENE_QUATERNION.x *= -1;
+  SCENE_QUATERNION.y *= -1;
+  return SCENE_QUATERNION;
 }
 
 function scenePosition(solid: FixtureSolidV1): THREE.Vector3 {
